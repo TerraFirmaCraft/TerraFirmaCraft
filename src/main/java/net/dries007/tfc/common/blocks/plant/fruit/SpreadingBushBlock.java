@@ -41,7 +41,6 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 
-    @Override
     public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
     {
         if (lifecycle == Lifecycle.HEALTHY)

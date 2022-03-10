@@ -4,94 +4,10 @@
   "config": {
     "states": [
       {
-        "rock": "tfc:rock/raw/chalk",
+        "rock": "tfc:rock/raw/granite",
         "blocks": [
-          "tfc:rock/cobble/chalk",
-          "tfc:rock/mossy_cobble/chalk"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/chert",
-        "blocks": [
-          "tfc:rock/cobble/chert",
-          "tfc:rock/mossy_cobble/chert"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/claystone",
-        "blocks": [
-          "tfc:rock/cobble/claystone",
-          "tfc:rock/mossy_cobble/claystone"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/conglomerate",
-        "blocks": [
-          "tfc:rock/cobble/conglomerate",
-          "tfc:rock/mossy_cobble/conglomerate"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/dolomite",
-        "blocks": [
-          "tfc:rock/cobble/dolomite",
-          "tfc:rock/mossy_cobble/dolomite"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/limestone",
-        "blocks": [
-          "tfc:rock/cobble/limestone",
-          "tfc:rock/mossy_cobble/limestone"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/shale",
-        "blocks": [
-          "tfc:rock/cobble/shale",
-          "tfc:rock/mossy_cobble/shale"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/gneiss",
-        "blocks": [
-          "tfc:rock/cobble/gneiss",
-          "tfc:rock/mossy_cobble/gneiss"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/marble",
-        "blocks": [
-          "tfc:rock/cobble/marble",
-          "tfc:rock/mossy_cobble/marble"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/phyllite",
-        "blocks": [
-          "tfc:rock/cobble/phyllite",
-          "tfc:rock/mossy_cobble/phyllite"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/quartzite",
-        "blocks": [
-          "tfc:rock/cobble/quartzite",
-          "tfc:rock/mossy_cobble/quartzite"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/schist",
-        "blocks": [
-          "tfc:rock/cobble/schist",
-          "tfc:rock/mossy_cobble/schist"
-        ]
-      },
-      {
-        "rock": "tfc:rock/raw/slate",
-        "blocks": [
-          "tfc:rock/cobble/slate",
-          "tfc:rock/mossy_cobble/slate"
+          "tfc:rock/cobble/granite",
+          "tfc:rock/mossy_cobble/granite"
         ]
       },
       {
@@ -109,17 +25,59 @@
         ]
       },
       {
-        "rock": "tfc:rock/raw/granite",
+        "rock": "tfc:rock/raw/shale",
         "blocks": [
-          "tfc:rock/cobble/granite",
-          "tfc:rock/mossy_cobble/granite"
+          "tfc:rock/cobble/shale",
+          "tfc:rock/mossy_cobble/shale"
         ]
       },
       {
-        "rock": "tfc:rock/raw/andesite",
+        "rock": "tfc:rock/raw/claystone",
         "blocks": [
-          "tfc:rock/cobble/andesite",
-          "tfc:rock/mossy_cobble/andesite"
+          "tfc:rock/cobble/claystone",
+          "tfc:rock/mossy_cobble/claystone"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/limestone",
+        "blocks": [
+          "tfc:rock/cobble/limestone",
+          "tfc:rock/mossy_cobble/limestone"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/conglomerate",
+        "blocks": [
+          "tfc:rock/cobble/conglomerate",
+          "tfc:rock/mossy_cobble/conglomerate"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/dolomite",
+        "blocks": [
+          "tfc:rock/cobble/dolomite",
+          "tfc:rock/mossy_cobble/dolomite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/chert",
+        "blocks": [
+          "tfc:rock/cobble/chert",
+          "tfc:rock/mossy_cobble/chert"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/chalk",
+        "blocks": [
+          "tfc:rock/cobble/chalk",
+          "tfc:rock/mossy_cobble/chalk"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/rhyolite",
+        "blocks": [
+          "tfc:rock/cobble/rhyolite",
+          "tfc:rock/mossy_cobble/rhyolite"
         ]
       },
       {
@@ -130,6 +88,13 @@
         ]
       },
       {
+        "rock": "tfc:rock/raw/andesite",
+        "blocks": [
+          "tfc:rock/cobble/andesite",
+          "tfc:rock/mossy_cobble/andesite"
+        ]
+      },
+      {
         "rock": "tfc:rock/raw/dacite",
         "blocks": [
           "tfc:rock/cobble/dacite",
@@ -137,10 +102,45 @@
         ]
       },
       {
-        "rock": "tfc:rock/raw/rhyolite",
+        "rock": "tfc:rock/raw/quartzite",
         "blocks": [
-          "tfc:rock/cobble/rhyolite",
-          "tfc:rock/mossy_cobble/rhyolite"
+          "tfc:rock/cobble/quartzite",
+          "tfc:rock/mossy_cobble/quartzite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/slate",
+        "blocks": [
+          "tfc:rock/cobble/slate",
+          "tfc:rock/mossy_cobble/slate"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/phyllite",
+        "blocks": [
+          "tfc:rock/cobble/phyllite",
+          "tfc:rock/mossy_cobble/phyllite"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/schist",
+        "blocks": [
+          "tfc:rock/cobble/schist",
+          "tfc:rock/mossy_cobble/schist"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/gneiss",
+        "blocks": [
+          "tfc:rock/cobble/gneiss",
+          "tfc:rock/mossy_cobble/gneiss"
+        ]
+      },
+      {
+        "rock": "tfc:rock/raw/marble",
+        "blocks": [
+          "tfc:rock/cobble/marble",
+          "tfc:rock/mossy_cobble/marble"
         ]
       }
     ]

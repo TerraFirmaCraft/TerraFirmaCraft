@@ -60,54 +60,52 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor levelAccess, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!worldIn.isClientSide() && worldIn instanceof Level)
+        if (!levelAccess.isClientSide() && levelAccess instanceof Level level)
         {
             if (facingState.is(BlockTags.FIRE))
             {
-                BurningLogPileBlock.tryLightLogPile((Level) worldIn, currentPos);
+                BurningLogPileBlock.tryLightLogPile(level, currentPos);
             }
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(state, facing, facingState, levelAccess, currentPos, facingPos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         if (!player.isShiftKeyDown())
         {
             final ItemStack stack = player.getItemInHand(hand);
-            world.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).map(be -> {
+            level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
                 if (TFCTags.Items.LOG_PILE_LOGS.contains(stack.getItem()))
                 {
-                    return Helpers.getCapability(be, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
-                        ItemStack insertStack = stack.copy();
-                        insertStack.setCount(1);
-                        insertStack = Helpers.insertAllSlots(cap, insertStack);
-                        if (insertStack.isEmpty())
-                        {
-                            if (!world.isClientSide)
+                    if (!level.isClientSide)
+                    {
+                        // if we are holding logs, insert as much as possible
+                        Helpers.getCapability(logPile, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                            ItemStack insertStack = stack.copy();
+                            insertStack.setCount(1);
+                            insertStack = Helpers.insertAllSlots(cap, insertStack);
+                            if (insertStack.isEmpty())
                             {
-                                Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
+                                Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
                                 stack.shrink(1);
                             }
-                            return InteractionResult.SUCCESS;
-                        }
-                        return InteractionResult.FAIL;
-                    }).orElse(InteractionResult.PASS);
+                        });
+                    }
                 }
                 else
                 {
                     if (player instanceof ServerPlayer serverPlayer)
                     {
-                        NetworkHooks.openGui(serverPlayer, be, pos);
+                        NetworkHooks.openGui(serverPlayer, logPile, pos);
                     }
-                    return InteractionResult.SUCCESS;
                 }
             });
-
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
     }

@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -25,42 +26,51 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.FixedBiomeSource;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.*;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
-import net.minecraftforge.event.server.ServerStoppedEvent;
 
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -69,6 +79,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -84,17 +95,12 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
-import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
-import net.dries007.tfc.network.ChunkUnwatchPacket;
-import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
-import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.network.PlayerDrinkPacket;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.*;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
@@ -103,7 +109,6 @@ import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.NoopClimateSampler;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
-import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
@@ -135,7 +140,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::beforeServerStart);
-        bus.addListener(ForgeEventHandler::onServerStopped);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -147,6 +151,11 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
+        bus.addListener(ForgeEventHandler::onPlayerTick);
+        bus.addListener(ForgeEventHandler::onEffectRemove);
+        bus.addListener(ForgeEventHandler::onEffectExpire);
+        bus.addListener(ForgeEventHandler::onItemExpire);
+        bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
@@ -155,6 +164,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::onDataPackSync);
+        bus.addListener(ForgeEventHandler::onBoneMeal);
     }
 
     /**
@@ -345,9 +355,9 @@ public final class ForgeEventHandler
      */
     public static void onChunkDataSave(ChunkDataEvent.Save event)
     {
-        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
+        if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getChunk() instanceof ProtoChunk chunk && ((ServerChunkCache) event.getWorld().getChunkSource()).getGenerator() instanceof ChunkGeneratorExtension ex)
         {
-            CompoundTag nbt = ex.getChunkDataProvider().savePartial(event.getChunk());
+            CompoundTag nbt = ex.getChunkDataProvider().savePartial(chunk);
             if (nbt != null)
             {
                 event.getData().put("tfc_protochunk_data", nbt);
@@ -362,7 +372,7 @@ public final class ForgeEventHandler
     {
         if (event.getChunk().getStatus().getChunkType() == ChunkStatus.ChunkType.PROTOCHUNK && event.getData().contains("tfc_protochunk_data", Tag.TAG_COMPOUND) && event.getChunk() instanceof ProtoChunk chunk && ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension generator)
         {
-            generator.getChunkDataProvider().loadPartial(event.getChunk(), event.getData().getCompound("tfc_protochunk_data"));
+            generator.getChunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
     }
 
@@ -382,6 +392,8 @@ public final class ForgeEventHandler
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
+        event.addListener(LampFuel.MANAGER);
+        event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
         event.addListener(ClimateRange.MANAGER);
         event.addListener(Fauna.MANAGER);
@@ -395,18 +407,13 @@ public final class ForgeEventHandler
 
     public static void beforeServerStart(ServerAboutToStartEvent event)
     {
-        CacheInvalidationListener.INSTANCE.reloadSync();
-    }
-
-    public static void onServerStopped(ServerStoppedEvent event)
-    {
-        CacheInvalidationListener.INSTANCE.reloadSync();
+        CacheInvalidationListener.INSTANCE.invalidateServerCaches(event.getServer());
     }
 
     public static void registerCommands(RegisterCommandsEvent event)
     {
         LOGGER.debug("Registering TFC Commands");
-        TFCCommands.register(event.getDispatcher());
+        TFCCommands.registerCommands(event.getDispatcher());
     }
 
     public static void onBlockBroken(BlockEvent.BreakEvent event)
@@ -452,23 +459,22 @@ public final class ForgeEventHandler
 
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
-        // todo: why is this deprecated?
-        if (event.getWorld() instanceof final ServerLevel world && world.isAreaLoaded(event.getPos(), 3))
+        if (event.getWorld() instanceof final ServerLevel level)
         {
             for (Direction direction : event.getNotifiedSides())
             {
                 // Check each notified block for a potential gravity block
                 final BlockPos pos = event.getPos().relative(direction);
-                final BlockState state = world.getBlockState(pos);
+                final BlockState state = level.getBlockState(pos);
 
                 if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
                 {
-                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
+                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
                 }
 
                 if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
                 {
-                    world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
+                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
                 }
             }
         }
@@ -513,8 +519,8 @@ public final class ForgeEventHandler
                 // Update climate settings
                 final ClimateSettings settings = ex.getBiomeSource().getTemperatureSettings();
 
-                Climate.onWorldLoad(level, settings); // Server
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings)); // Client
+                Climate.updateCachedSettings(level, settings, ex.getClimateSeed()); // Server
+                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings, ex.getClimateSeed())); // Client
             }
         }
     }
@@ -546,14 +552,14 @@ public final class ForgeEventHandler
 
     public static void onFireStart(StartFireEvent event)
     {
-        Level world = event.getLevel();
+        Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         Block block = state.getBlock();
 
         if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
         {
-            final BlockEntity entity = world.getBlockEntity(pos);
+            final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
             {
                 event.setCanceled(true);
@@ -561,41 +567,52 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
         {
-            world.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.DEAD_TORCH.get())
         {
-            world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
+            level.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.DEAD_WALL_TORCH.get())
         {
             Direction direction = state.getValue(DeadWallTorchBlock.FACING);
-            world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
+            level.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.LOG_PILE.get())
         {
-            BurningLogPileBlock.tryLightLogPile(world, pos);
+            BurningLogPileBlock.tryLightLogPile(level, pos);
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            world.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
+            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
         }
-        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
         {
-            CharcoalForgeBlockEntity.createFromCharcoalPile(world, pos);
+            CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos))
         {
-            final BlockEntity entity = world.getBlockEntity(pos);
+            final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
             {
                 event.setCanceled(true);
             }
+        }
+        else if (block instanceof LampBlock)
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
+                if (lamp.getFuel() != null)
+                {
+                    level.setBlock(pos, state.setValue(LampBlock.LIT, true), 3);
+                    lamp.resetCounter();
+                    event.setCanceled(true);
+                }
+            });
         }
     }
 
@@ -612,6 +629,151 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onPlayerTick(TickEvent.PlayerTickEvent event)
+    {
+        // When facing up in the rain, player slowly recovers thirst.
+        final Player player = event.player;
+        final Level level = player.getLevel();
+        final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
+        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
+        {
+            foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
+        }
+    }
+
+    public static void onEffectRemove(PotionEvent.PotionRemoveEvent event)
+    {
+        if (event.getPotion() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+        {
+            player.setForcedPose(null);
+        }
+    }
+
+    public static void onEffectExpire(PotionEvent.PotionExpiryEvent event)
+    {
+        final MobEffectInstance instance = event.getPotionEffect();
+        if (instance != null)
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new EffectExpirePacket(instance.getEffect()));
+            if (instance.getEffect() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+            {
+                player.setForcedPose(null);
+            }
+        }
+    }
+
+    /**
+     * Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
+     */
+    public static void onEntityJoinWorld(EntityJoinWorldEvent event)
+    {
+        if (event.getEntity() instanceof ItemEntity entity && !event.getWorld().isClientSide && TFCConfig.SERVER.coolHeatablesinLevel.get())
+        {
+            final ItemStack item = entity.getItem();
+            item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
+                if (cap.getTemperature() > 0f)
+                {
+                    entity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
+                }
+            });
+        }
+    }
+
+    /**
+     * If the item is heated, we check for blocks below and within that would cause it to cool.
+     * Since we don't want the item to actually expire, we set the expiry time to a small number that allows us to revisit the same code soon.
+     *
+     * By cancelling the event, we guarantee that the item will not actually expire.
+     */
+    public static void onItemExpire(ItemExpireEvent event)
+    {
+        if (!TFCConfig.SERVER.coolHeatablesinLevel.get()) return;
+        final ItemEntity entity = event.getEntityItem();
+        final ServerLevel level = (ServerLevel) entity.getLevel();
+        final ItemStack stack = entity.getItem();
+        final BlockPos pos = entity.blockPosition();
+
+        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
+            final int lifespan = stack.getItem().getEntityLifespan(stack, level);
+            if (entity.lifespan >= lifespan) return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
+
+            final float itemTemp = heat.getTemperature();
+            if (itemTemp > 0f)
+            {
+                float coolAmount = 0;
+                final BlockState state = level.getBlockState(pos);
+                final FluidState fluid = level.getFluidState(pos);
+                if (fluid.is(FluidTags.WATER))
+                {
+                    coolAmount = 50f;
+                    if (level.random.nextFloat() < 0.001F)
+                    {
+                        level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                    }
+                }
+                else if (state.is(Blocks.SNOW))
+                {
+                    coolAmount = 70f;
+                    if (level.random.nextFloat() < 0.1F)
+                    {
+                        final int layers = state.getValue(SnowLayerBlock.LAYERS);
+                        if (layers > 1)
+                        {
+                            level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
+                        }
+                        else
+                        {
+                            level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+                        }
+                    }
+                }
+                else
+                {
+                    final BlockPos belowPos = pos.below();
+                    final BlockState belowState = level.getBlockState(belowPos);
+                    if (belowState.is(Blocks.SNOW_BLOCK))
+                    {
+                        coolAmount = 75f;
+                        if (level.random.nextFloat() < 0.1F)
+                        {
+                            level.setBlockAndUpdate(belowPos, Blocks.SNOW.defaultBlockState().setValue(SnowLayerBlock.LAYERS, 7));
+                        }
+                    }
+                    else if (belowState.getMaterial() == Material.ICE)
+                    {
+                        coolAmount = 100f;
+                        if (level.random.nextFloat() < 0.01F)
+                        {
+                            level.setBlockAndUpdate(belowPos, belowState.is(TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
+                        }
+                    }
+                    else if (belowState.getMaterial() == Material.ICE_SOLID)
+                    {
+                        coolAmount = 125f;
+                        if (level.random.nextFloat() < 0.005F)
+                        {
+                            level.setBlockAndUpdate(belowPos, Blocks.WATER.defaultBlockState());
+                        }
+                    }
+                }
+
+                if (coolAmount > 0f)
+                {
+                    heat.setTemperature(Math.max(0f, heat.getTemperature() - coolAmount));
+                    Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
+                    level.sendParticles(ParticleTypes.SMOKE, entity.getX(), entity.getY(), entity.getZ(), 1, 0D, 0D, 0D, 1f);
+                }
+                event.setExtraLife(heat.getTemperature() == 0f ? lifespan : TFCConfig.SERVER.ticksBeforeItemCool.get());
+                //entity.setNoPickUpDelay();
+            }
+            else
+            {
+                event.setExtraLife(lifespan);
+            }
+            event.setCanceled(true);
+        });
+    }
+
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
         if (event.getPlayer() instanceof ServerPlayer)
@@ -621,7 +783,7 @@ public final class ForgeEventHandler
             final ServerLevel overworld = ServerLifecycleHooks.getCurrentServer().overworld();
             if (overworld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
             {
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(ex.getBiomeSource().getTemperatureSettings()));
+                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(ex.getBiomeSource().getTemperatureSettings(), ex.getClimateSeed()));
             }
         }
     }
@@ -698,7 +860,7 @@ public final class ForgeEventHandler
     {
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
-            final InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), true);
+            final InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), true);
             if (result != InteractionResult.PASS)
             {
                 event.setCanceled(true);
@@ -721,7 +883,7 @@ public final class ForgeEventHandler
         if (event.getHand() == InteractionHand.MAIN_HAND && event.getItemStack().isEmpty())
         {
             // Cannot be cancelled, only fired on client.
-            InteractionResult result = attemptDrink(event.getWorld(), event.getPlayer(), false);
+            InteractionResult result = Drinkable.attemptDrink(event.getWorld(), event.getPlayer(), false);
             if (result == InteractionResult.SUCCESS)
             {
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlayerDrinkPacket());
@@ -737,51 +899,22 @@ public final class ForgeEventHandler
 
         PacketHandler.send(target, Metal.MANAGER.createSyncPacket());
         PacketHandler.send(target, Fuel.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Fertilizer.MANAGER.createSyncPacket());
         PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
     }
 
-    public static InteractionResult attemptDrink(Level level, Player player, boolean doDrink)
+    /**
+     * Deny all traditional uses of bone meal directly to grow crops.
+     * Fertilizer is used as a replacement.
+     */
+    public static void onBoneMeal(BonemealEvent event)
     {
-        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-        if (hit.getType() == HitResult.Type.BLOCK)
+        if (!TFCConfig.SERVER.enableVanillaBonemeal.get())
         {
-            final BlockPos pos = hit.getBlockPos();
-            final BlockState state = level.getBlockState(pos);
-            final Fluid fluid = state.getFluidState().getType();
-            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
-            final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
-            if (playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
-            {
-                final Drinkable drinkable = Drinkable.get(fluid);
-                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0))
-                {
-                    if (!level.isClientSide && doDrink)
-                    {
-                        doDrink(level, player, state, pos, playerData, drinkable);
-                    }
-                    return InteractionResult.SUCCESS;
-                }
-            }
-        }
-        return InteractionResult.PASS;
-    }
-
-    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, LazyOptional<PlayerData> playerData, Drinkable drinkable)
-    {
-        playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
-        level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
-        drinkable.onDrink(player);
-
-        // Since we're drinking from a source block, we need to apply the consume chance
-        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > player.getRandom().nextFloat())
-        {
-            final BlockState emptyState = FluidHelpers.isAirOrEmptyFluid(state) ? Blocks.AIR.defaultBlockState() : FluidHelpers.fillWithFluid(state, Fluids.EMPTY);
-            if (emptyState != null)
-            {
-                level.setBlock(pos, emptyState, 3);
-            }
+            event.setResult(Event.Result.DENY);
+            event.setCanceled(true);
         }
     }
 }

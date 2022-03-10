@@ -32,10 +32,7 @@ public class ServerConfig
     // Blocks - Grass Path
     public final ForgeConfigSpec.BooleanValue enableGrassPathCreation;
     // Blocks - Snow
-    public final ForgeConfigSpec.BooleanValue enableSnowAffectedByTemperature;
     public final ForgeConfigSpec.BooleanValue enableSnowSlowEntities;
-    // Blocks - Ice
-    public final ForgeConfigSpec.BooleanValue enableIceAffectedByTemperature;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
@@ -43,6 +40,8 @@ public class ServerConfig
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
+    // Blocks - Chest
+    public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Charcoal Pit
@@ -53,6 +52,13 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    // Blocks - Composter
+    public final ForgeConfigSpec.IntValue composterTicks;
+    public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
+    // Blocks - Sluice
+    public final ForgeConfigSpec.IntValue sluiceTicks;
+    // Blocks - Lamp
+    public final ForgeConfigSpec.IntValue lampCapacity;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -74,8 +80,13 @@ public class ServerConfig
     // Items - Jug
     public final ForgeConfigSpec.IntValue jugCapacity;
     public final ForgeConfigSpec.DoubleValue jugBreakChance;
+    // Items - Wooden Bucket
+    public final ForgeConfigSpec.IntValue woodenBucketCapacity;
+    public final ForgeConfigSpec.BooleanValue enableSourcesFromWoodenBucket;
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue heatingModifier;
+    public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
+    public final ForgeConfigSpec.BooleanValue coolHeatablesinLevel;
     // Mechanics - Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
@@ -89,10 +100,13 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue peacefulDifficultyPassiveRegeneration;
     public final ForgeConfigSpec.DoubleValue passiveExhaustionModifier;
     public final ForgeConfigSpec.DoubleValue thirstModifier;
+    public final ForgeConfigSpec.DoubleValue thirstGainedFromDrinkingInTheRain;
     public final ForgeConfigSpec.DoubleValue naturalRegenerationModifier;
     public final ForgeConfigSpec.IntValue nutritionRotationHungerWindow;
     public final ForgeConfigSpec.IntValue foodDecayStackWindow;
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
+    // Mechanics - Vanilla Changes
+    public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -121,12 +135,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("snow");
 
-        enableSnowAffectedByTemperature = builder.apply("enableSnowAffectedByTemperature").comment("If snow will melt in warm temperatures on random ticks").define("enableSnowAffectedByTemperature", true);
         enableSnowSlowEntities = builder.apply("enableSnowSlowEntities").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey.").define("enableSnowSlowEntities", true);
-
-        innerBuilder.pop().push("ice");
-
-        enableIceAffectedByTemperature = builder.apply("enableIceAffectedByTemperature").comment("If ice will melt in warm temperatures on random ticks").define("enableIceAffectedByTemperature", true);
 
         innerBuilder.pop().push("plants");
 
@@ -141,6 +150,9 @@ public class ServerConfig
         enableMossyRockSpreading = builder.apply("enableMossyRockSpreading").comment("If mossy rock blocks will spread their moss to nearby rock blocks (bricks and cobble; stairs, slabs and walls thereof).").define("enableMossyRockSpreading", true);
         mossyRockSpreadRate = builder.apply("mossyRockSpreadRate").comment("The rate at which rock blocks will accumulate moss. Higher value = slower.").defineInRange("mossyRockSpreadRate", 20, 1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("chest");
+        chestMaximumItemSize = builder.apply("chestMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a chest.").defineEnum("chestMaximumItemSize", Size.LARGE);
+
         innerBuilder.pop().push("torch");
 
         torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 7200, -1, Integer.MAX_VALUE);
@@ -149,7 +161,7 @@ public class ServerConfig
 
         charcoalTicks = builder.apply("charcoalTicks").comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.").defineInRange("charcoalTicks", 18000, -1, Integer.MAX_VALUE);
 
-        innerBuilder.pop().push("pit_kiln");
+        innerBuilder.pop().push("pitKiln");
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
         pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).").defineInRange("pitKilnTemperature", 1600, 0, Integer.MAX_VALUE);
@@ -159,7 +171,17 @@ public class ServerConfig
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
 
-        innerBuilder.pop().pop().push("items").push("small_vessel");
+        innerBuilder.pop().push("composter");
+        composterTicks = builder.apply("composterTicks").comment("Number of ticks required for a composter in normal conditions to complete. (24000 = 1 game day), default is 12 days.").defineInRange("composterTicks", 288000, 20, Integer.MAX_VALUE);
+        composterRainfallCheck = builder.apply("composterRainfallCheck").comment("Should the composter work less efficiently at high or low rainfalls?").define("composterRainfallCheck", true);
+
+        innerBuilder.pop().push("sluice");
+        sluiceTicks = builder.apply("sluiceTicks").comment("Number of ticks required for a sluice to process an item. (20 = 1 second), default is 5 seconds.").defineInRange("sluiceTicks", 100, 1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("composter");
+        lampCapacity = builder.apply("lampCapacity").comment("Tank capacity of a lamp (in mB).").defineInRange("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
+
+        innerBuilder.pop().pop().push("items").push("smallVessel");
 
         smallVesselCapacity = builder.apply("smallVesselCapacity").comment("Tank capacity of a small vessel (in mB).").defineInRange("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
         smallVesselMaximumItemSize = builder.apply("smallVesselMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a small vessel.").defineEnum("smallVesselMaximumItemSize", Size.SMALL);
@@ -186,9 +208,15 @@ public class ServerConfig
         jugCapacity = builder.apply("jugCapacity").comment("Tank capacity of a ceramic jug (in mB).").defineInRange("jugCapacity", 100, 0, Alloy.MAX_ALLOY);
         jugBreakChance = builder.apply("jugBreakChance").comment("The chance a jug will break after drinking.").defineInRange("jugBreakChance", 0.02, 0, 1);
 
+        innerBuilder.pop().push("woodenBucket");
+        woodenBucketCapacity = builder.apply("woodenBucketCapacity").comment("Tank capacity of a wooden bucket (in mB).").defineInRange("woodenBucketCapacity", 1000, 0, Alloy.MAX_ALLOY);
+        enableSourcesFromWoodenBucket = builder.apply("enableSourcesFromWoodenBucket").comment("Should the wooden bucket place source blocks?").define("enableSourcesFromWoodenBucket", false);
+
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
         heatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        coolHeatablesinLevel = builder.apply("coolHeatablesinLevel").comment("Should heatable items cool off when in contact with blocks like water or snow?").define("coolHeatablesinLevel", true);
+        ticksBeforeItemCool = builder.apply("ticksBeforeItemCool").comment("Ticks between each time an item loses temperature when sitting on a cold block. 20 ticks = 1 second.").defineInRange("itemHeatingModifier", 10, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("collapses");
 
@@ -212,6 +240,7 @@ public class ServerConfig
         thirstModifier = builder.apply("thirstModifier").comment(
             "A multiplier for how quickly the player gets thirsty.",
             "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier", 8d, 0d, 100d);
+        thirstGainedFromDrinkingInTheRain = builder.apply("thirstGainedFromDrinkingInTheRain").comment("How much thirst the player gains from drinking in the rain (standing outside in the rain and looking up) per tick.").defineInRange("thirstGainedFromDrinkingInTheRain", 5d / 24d, 0d, 100d);
         naturalRegenerationModifier = builder.apply("naturalRegenerationModifier").comment(
             "A multiplier for how quickly the player regenerates health, under TFC's passive regeneration.",
             "By default, the player regenerates 0.2 HP/second, or 0.6 HP/second when above 80% hunger and thirst, where 1 HP = 1/50 of a heart.").defineInRange("naturalRegenerationModifier", 1d, 0d, 100d);
@@ -222,6 +251,10 @@ public class ServerConfig
             "How many hours should different foods ignore when trying to stack together automatically?",
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 1, 6, 100);
         foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
+
+        innerBuilder.pop().push("vanillaChanges");
+
+        enableVanillaBonemeal = builder.apply("enableVanillaBonemeal").comment("If vanilla bonemeal's instant-growth effect should be enabled.").define("enableVanillaBonemeal", false);
 
         innerBuilder.pop().pop();
     }

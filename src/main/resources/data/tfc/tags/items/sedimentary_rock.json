@@ -2,12 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:rock/loose/chalk",
-    "tfc:rock/loose/chert",
+    "tfc:rock/loose/shale",
     "tfc:rock/loose/claystone",
+    "tfc:rock/loose/limestone",
     "tfc:rock/loose/conglomerate",
     "tfc:rock/loose/dolomite",
-    "tfc:rock/loose/limestone",
-    "tfc:rock/loose/shale"
+    "tfc:rock/loose/chert",
+    "tfc:rock/loose/chalk"
   ]
 }

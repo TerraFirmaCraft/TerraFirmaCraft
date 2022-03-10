@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.world.surface.builder;
 
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
@@ -48,8 +47,9 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                         surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 2, 0.1, -1);
                         if (surfaceDepth == -1)
                         {
+                            // Place one subsurface layer, skipping the top layer entirely
                             surfaceDepth = 0;
-                            context.setBlockState(y, SurfaceStates.WATER);
+                            context.setBlockState(y, SurfaceStates.LOW_UNDERWATER);
                         }
                         else
                         {
@@ -64,7 +64,7 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                         if (surfaceDepth == -1)
                         {
                             surfaceDepth = 0;
-                            context.setBlockState(y, Blocks.AIR.defaultBlockState());
+                            context.setBlockState(y, underState);
                         }
                         else
                         {

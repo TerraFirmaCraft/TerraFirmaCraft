@@ -24,7 +24,7 @@ import net.dries007.tfc.util.KnappingPattern;
 public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 {
     protected final ResourceLocation id;
-    protected final KnappingPattern pattern;
+    private final KnappingPattern pattern;
     protected final ItemStack result;
     protected final TypedRecipeSerializer<?> serializer;
 
@@ -39,7 +39,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     @Override
     public boolean matches(KnappingContainer container, Level level)
     {
-        return container.getPattern().matches(pattern);
+        return container.getPattern().matches(getPattern());
     }
 
     @Override
@@ -64,6 +64,11 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     public RecipeType<?> getType()
     {
         return serializer.getRecipeType();
+    }
+
+    public KnappingPattern getPattern()
+    {
+        return pattern;
     }
 
     public static class Serializer extends TypedRecipeSerializer<KnappingRecipe>
@@ -94,7 +99,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         @Override
         public void toNetwork(FriendlyByteBuf buffer, KnappingRecipe recipe)
         {
-            recipe.pattern.toNetwork(buffer);
+            recipe.getPattern().toNetwork(buffer);
             buffer.writeItem(recipe.getResultItem());
         }
 

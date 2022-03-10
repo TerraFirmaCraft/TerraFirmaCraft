@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -84,7 +86,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
                 if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
                 {
                     ItemStack output = recipe.assemble(new ItemStackInventory(inputStack));
-                    //todo: apply trait WOOD_GRILLED
+                    FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED);
                     inventory.setStackInSlot(finalSlot, output);
                     markForSync();
                 }

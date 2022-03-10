@@ -17,16 +17,10 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 /**
  * A default climate model, for dimensions that are entirely biome determined (i.e. vanilla).
  */
-public class BiomeBasedClimateModel implements WorldGenClimateModel
+public class BiomeBasedClimateModel implements TimeInvariantClimateModel
 {
     @Override
-    public float getTemperature(LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
-    {
-        return getAverageTemperature(level, pos);
-    }
-
-    @Override
-    public float getAverageTemperature(LevelReader level, BlockPos pos)
+    public float getTemperature(LevelReader level, BlockPos pos)
     {
         return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos)).invoke$getTemperature(pos));
     }
@@ -41,5 +35,11 @@ public class BiomeBasedClimateModel implements WorldGenClimateModel
     public Biome.Precipitation getPrecipitation(LevelReader level, BlockPos pos)
     {
         return level.getBiome(pos).getPrecipitation();
+    }
+
+    @Override
+    public float getFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    {
+        return 0;
     }
 }

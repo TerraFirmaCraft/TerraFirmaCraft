@@ -9,14 +9,15 @@ package net.dries007.tfc.util.climate;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -38,7 +39,7 @@ import net.dries007.tfc.world.settings.ClimateSettings;
 public final class Climate
 {
     private static final Map<ResourceKey<Level>, ClimateModel> DIMENSIONS = new IdentityHashMap<>();
-    private static final WorldGenClimateModel DEFAULT = new BiomeBasedClimateModel();
+    private static final ClimateModel DEFAULT = new BiomeBasedClimateModel();
 
     static
     {
@@ -52,11 +53,6 @@ public final class Climate
     public static synchronized void register(ResourceKey<Level> dimension, ClimateModel model)
     {
         DIMENSIONS.put(dimension, model);
-    }
-
-    public static float getAverageTemperature(Level level, BlockPos pos)
-    {
-        return model(level).getAverageTemperature(level, pos);
     }
 
     public static float getTemperature(Level level, BlockPos pos, long calendarTick, int daysInMonth)
@@ -79,6 +75,11 @@ public final class Climate
         return getTemperature(level, pos, Calendars.get(level));
     }
 
+    public static float getAverageTemperature(Level level, BlockPos pos)
+    {
+        return model(level).getAverageTemperature(level, pos);
+    }
+
     public static float getRainfall(Level level, BlockPos pos)
     {
         return model(level).getRainfall(level, pos);
@@ -87,6 +88,11 @@ public final class Climate
     public static Biome.Precipitation getPrecipitation(Level level, BlockPos pos)
     {
         return model(level).getPrecipitation(level, pos);
+    }
+
+    public static float getFogginess(Level level, BlockPos pos)
+    {
+        return model(level).getFogginess(level, pos, Calendars.get(level).getTicks());
     }
 
     /**
@@ -121,6 +127,11 @@ public final class Climate
     public static boolean warmEnoughToRain(LevelReader level, BlockPos pos, Biome fallback)
     {
         return getVanillaBiomeTemperatureSafely(level, pos, fallback) >= 0.15f;
+    }
+
+    public static void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
+    {
+        model(level.getLevel()).onChunkLoad(level, chunk, chunkData);
     }
 
     /**
@@ -174,9 +185,9 @@ public final class Climate
     /**
      * Update the per-dimension temperature settings when a world loads.
      */
-    public static void onWorldLoad(Level level, ClimateSettings settings)
+    public static void updateCachedSettings(Level level, ClimateSettings settings, long climateSeed)
     {
-        model(level).updateCachedTemperatureSettings(settings);
+        model(level).updateCachedTemperatureSettings(settings, climateSeed);
     }
 
     private static ClimateModel model(Level level)

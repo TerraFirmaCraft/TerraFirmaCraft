@@ -11,7 +11,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraftforge.network.NetworkEvent;
 
-import net.dries007.tfc.ForgeEventHandler;
+import net.dries007.tfc.util.Drinkable;
 
 /**
  * Sent to the server when the player clicks a location that might trigger a drinking.
@@ -27,7 +27,7 @@ public class PlayerDrinkPacket
             final ServerPlayer player = context.getSender();
             if (player != null)
             {
-                final InteractionResult result = ForgeEventHandler.attemptDrink(player.level, player, true);
+                final InteractionResult result = Drinkable.attemptDrink(player.level, player, true);
                 if (result.shouldSwing())
                 {
                     player.swing(InteractionHand.MAIN_HAND, true);

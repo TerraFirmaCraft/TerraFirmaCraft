@@ -361,14 +361,17 @@ public class TFCAquifer implements Aquifer
             // Above surface height, all aquifers must be sea level
             return seaLevelAquifer;
         }
-        final float cell = fluidCellNoise.noise(x, y / 0.6f, z);
-        final float cellY = fluidCellNoise.centerY() / (0.015f / 0.6f);
-        if (cell < 0.25f || (cellY > TFCChunkGenerator.SEA_LEVEL_Y - 10 && cell < 0.5f))
+
+        final Cellular3D.Cell cell = fluidCellNoise.cell(x, y / 0.6f, z);
+        final float cellNoise = cell.noise();
+        final float cellY = cell.y();
+
+        if (cellNoise < 0.25f || (cellY > TFCChunkGenerator.SEA_LEVEL_Y - 10 && cellNoise < 0.5f))
         {
             return new AquiferEntry(Blocks.WATER.defaultBlockState(), minY - 1);
         }
 
-        final RandomSource random = new XoroshiroRandomSource(fluidCellSeed, Float.floatToIntBits(cell));
+        final RandomSource random = new XoroshiroRandomSource(fluidCellSeed, Float.floatToIntBits(cellNoise));
         final float aquiferY = Math.min((random.nextFloat() - random.nextFloat() - 2) * 5 + cellY, surfaceHeight);
 
         final boolean lava = cellY < 40 && (random.nextInt(3) == 0);

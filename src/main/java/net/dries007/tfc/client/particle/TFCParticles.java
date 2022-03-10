@@ -20,4 +20,10 @@ public class TFCParticles
 
     public static final RegistryObject<SimpleParticleType> BUBBLE = PARTICLE_TYPES.register("bubble", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> STEAM = PARTICLE_TYPES.register("steam", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> NITROGEN = PARTICLE_TYPES.register("nitrogen", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> PHOSPHORUS = PARTICLE_TYPES.register("phosphorus", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> POTASSIUM = PARTICLE_TYPES.register("potassium", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> COMPOST_READY = PARTICLE_TYPES.register("compost_ready", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> COMPOST_ROTTEN = PARTICLE_TYPES.register("compost_rotten", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> SLEEP = PARTICLE_TYPES.register("sleep", () -> new SimpleParticleType(false));
 }

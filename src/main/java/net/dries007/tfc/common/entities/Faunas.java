@@ -17,6 +17,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.entities.aquatic.*;
+import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class Faunas
@@ -27,9 +28,15 @@ public class Faunas
     public static final FaunaType<Bluegill> BLUEGILL = registerFish(TFCEntities.BLUEGILL);
     public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
     public static final FaunaType<TFCSalmon> SALMON = registerFish(TFCEntities.SALMON);
-    public static final FaunaType<AquaticCritterEntity> LOBSTER = registerFish(TFCEntities.LOBSTER);
-    public static final FaunaType<AquaticCritterEntity> ISOPOD = registerFish(TFCEntities.ISOPOD);
-    public static final FaunaType<AquaticCritterEntity> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
+    public static final FaunaType<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
+    public static final FaunaType<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
+    public static final FaunaType<AquaticCritter> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
+    public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
+    public static final FaunaType<TFCDolphin> ORCA = registerFish(TFCEntities.ORCA);
+    public static final FaunaType<Manatee> MANATEE = registerFish(TFCEntities.MANATEE);
+    public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
+    public static final FaunaType<AmphibiousAnimal> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
+    public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
 
     public static void registerSpawnPlacements()
     {
@@ -42,6 +49,17 @@ public class Faunas
         registerSpawnPlacement(LOBSTER);
         registerSpawnPlacement(ISOPOD);
         registerSpawnPlacement(HORSESHOE_CRAB);
+        registerSpawnPlacement(DOLPHIN);
+        registerSpawnPlacement(ORCA);
+        registerSpawnPlacement(MANATEE);
+        registerSpawnPlacement(TURTLE);
+        registerSpawnPlacement(PENGUIN);
+        registerSpawnPlacement(POLAR_BEAR);
+    }
+
+    private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
+    {
+        return register(entity, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES);
     }
 
     private static <E extends Mob> FaunaType<E> registerFish(RegistryObject<EntityType<E>> entity)

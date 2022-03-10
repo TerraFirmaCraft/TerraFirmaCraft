@@ -1,0 +1,94 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:food/green_bean",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:crop/green_bean",
+              "properties": {
+                "age": "7",
+                "part": "bottom"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "tfc:crop_yield_uniform",
+                "min": 0,
+                "max": {
+                  "type": "minecraft:uniform",
+                  "min": 6,
+                  "max": 10
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "tfc:seeds/green_bean",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:crop/green_bean",
+              "properties": {
+                "part": "bottom"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:crop/green_bean",
+              "properties": {
+                "part": "bottom",
+                "stick": "true"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

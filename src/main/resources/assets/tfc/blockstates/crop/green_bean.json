@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "age=0,stick=false": {
+      "model": "tfc:block/crop/green_bean_age_0"
+    },
+    "age=1,stick=false": {
+      "model": "tfc:block/crop/green_bean_age_1"
+    },
+    "age=2,stick=false": {
+      "model": "tfc:block/crop/green_bean_age_2"
+    },
+    "age=3,stick=false": {
+      "model": "tfc:block/crop/green_bean_age_3"
+    },
+    "age=0,stick=true,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_0_stick"
+    },
+    "age=1,stick=true,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_1_stick"
+    },
+    "age=2,stick=true,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_2_stick"
+    },
+    "age=3,stick=true,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_3_stick"
+    },
+    "age=0,stick=true,part=top": {
+      "model": "tfc:block/crop/stick"
+    },
+    "age=1,stick=true,part=top": {
+      "model": "tfc:block/crop/stick"
+    },
+    "age=2,stick=true,part=top": {
+      "model": "tfc:block/crop/stick"
+    },
+    "age=3,stick=true,part=top": {
+      "model": "tfc:block/crop/stick"
+    },
+    "age=4,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_4_bottom"
+    },
+    "age=5,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_5_bottom"
+    },
+    "age=6,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_6_bottom"
+    },
+    "age=7,part=bottom": {
+      "model": "tfc:block/crop/green_bean_age_7_bottom"
+    },
+    "age=4,part=top": {
+      "model": "tfc:block/crop/green_bean_age_4_top"
+    },
+    "age=5,part=top": {
+      "model": "tfc:block/crop/green_bean_age_5_top"
+    },
+    "age=6,part=top": {
+      "model": "tfc:block/crop/green_bean_age_6_top"
+    },
+    "age=7,part=top": {
+      "model": "tfc:block/crop/green_bean_age_7_top"
+    }
+  }
+}

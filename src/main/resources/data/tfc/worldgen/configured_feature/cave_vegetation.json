@@ -5,195 +5,15 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/granite"
         ],
         "with": [
           {
-            "block": "tfc:rock/mossy_cobble/chalk",
+            "block": "tfc:rock/mossy_cobble/granite",
             "weight": 8
           },
           {
-            "block": "tfc:rock/cobble/chalk",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/chert",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/chert",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/claystone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/claystone",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/claystone",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/conglomerate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/conglomerate",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/conglomerate",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/dolomite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/dolomite",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/dolomite",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/limestone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/limestone",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/limestone",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/shale"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/shale",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/shale",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/gneiss"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/gneiss",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/gneiss",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/marble"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/marble",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/marble",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/phyllite",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/phyllite",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/quartzite",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/quartzite",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/schist",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/schist",
-            "weight": 2
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/slate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/mossy_cobble/slate",
-            "weight": 8
-          },
-          {
-            "block": "tfc:rock/cobble/slate",
+            "block": "tfc:rock/cobble/granite",
             "weight": 2
           }
         ]
@@ -230,30 +50,120 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/granite"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
-            "block": "tfc:rock/mossy_cobble/granite",
+            "block": "tfc:rock/mossy_cobble/shale",
             "weight": 8
           },
           {
-            "block": "tfc:rock/cobble/granite",
+            "block": "tfc:rock/cobble/shale",
             "weight": 2
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/claystone"
         ],
         "with": [
           {
-            "block": "tfc:rock/mossy_cobble/andesite",
+            "block": "tfc:rock/mossy_cobble/claystone",
             "weight": 8
           },
           {
-            "block": "tfc:rock/cobble/andesite",
+            "block": "tfc:rock/cobble/claystone",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/limestone",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/limestone",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/conglomerate"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/conglomerate",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/conglomerate",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/dolomite",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/dolomite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chert"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/chert",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/chert",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chalk"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/chalk",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/chalk",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/rhyolite",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/rhyolite",
             "weight": 2
           }
         ]
@@ -275,6 +185,21 @@
       },
       {
         "replace": [
+          "tfc:rock/raw/andesite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/andesite",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/andesite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/raw/dacite"
         ],
         "with": [
@@ -290,15 +215,90 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/rhyolite"
+          "tfc:rock/raw/quartzite"
         ],
         "with": [
           {
-            "block": "tfc:rock/mossy_cobble/rhyolite",
+            "block": "tfc:rock/mossy_cobble/quartzite",
             "weight": 8
           },
           {
-            "block": "tfc:rock/cobble/rhyolite",
+            "block": "tfc:rock/cobble/quartzite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/slate"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/slate",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/slate",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/phyllite",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/phyllite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/schist"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/schist",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/schist",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/gneiss"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/gneiss",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/gneiss",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/marble"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/mossy_cobble/marble",
+            "weight": 8
+          },
+          {
+            "block": "tfc:rock/cobble/marble",
             "weight": 2
           }
         ]

@@ -37,6 +37,8 @@ public interface ChunkGeneratorExtension
         return (BiomeSourceExtension) self().getBiomeSource();
     }
 
+    long getClimateSeed();
+
     default ChunkGenerator self()
     {
         return (ChunkGenerator) this;

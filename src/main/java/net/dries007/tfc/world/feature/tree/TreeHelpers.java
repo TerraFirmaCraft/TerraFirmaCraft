@@ -23,6 +23,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
+import net.dries007.tfc.util.EnvironmentHelpers;
 
 /**
  * Helpers class for working with tree generation
@@ -37,22 +38,22 @@ public final class TreeHelpers
      * A variant of {@link StructureTemplate#placeInWorld(ServerLevelAccessor, BlockPos, BlockPos, StructurePlaceSettings, Random, int)} that is much simpler and faster for use in tree generation
      * Allows replacing leaves and air blocks
      */
-    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placementIn, LevelAccessor worldIn, BlockPos pos)
+    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placementIn, LevelAccessor level, BlockPos pos)
     {
         final List<StructureTemplate.StructureBlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((StructureTemplateAccessor) template).accessor$getPalettes(), pos).blocks();
         BoundingBox boundingBox = placementIn.getBoundingBox();
-        for (StructureTemplate.StructureBlockInfo blockInfo : StructureTemplate.processBlockInfos(worldIn, pos, pos, placementIn, transformedBlockInfos, template))
+        for (StructureTemplate.StructureBlockInfo blockInfo : StructureTemplate.processBlockInfos(level, pos, pos, placementIn, transformedBlockInfos, template))
         {
             BlockPos posAt = blockInfo.pos;
             if (boundingBox == null || boundingBox.isInside(posAt))
             {
-                BlockState stateAt = worldIn.getBlockState(posAt);
-                if (stateAt.isAir() || BlockTags.LEAVES.contains(stateAt.getBlock()))
+                BlockState stateAt = level.getBlockState(posAt);
+                if (EnvironmentHelpers.isWorldgenReplaceable(stateAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
                 {
                     // No world, can't rotate with world context
                     @SuppressWarnings("deprecation")
                     BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
-                    worldIn.setBlock(posAt, stateReplace, 2);
+                    level.setBlock(posAt, stateReplace, 2);
                 }
             }
         }
@@ -64,7 +65,7 @@ public final class TreeHelpers
      * @param pos The center position of the trunk
      * @return The height of the trunk placed
      */
-    public static int placeTrunk(WorldGenLevel world, BlockPos pos, Random random, StructurePlaceSettings settings, TrunkConfig trunk)
+    public static int placeTrunk(WorldGenLevel level, BlockPos pos, Random random, StructurePlaceSettings settings, TrunkConfig trunk)
     {
         final int height = trunk.getHeight(random);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -77,16 +78,16 @@ public final class TreeHelpers
                     mutablePos.set(x, y, z);
                     transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
                     mutablePos.move(pos);
-                    world.setBlock(mutablePos, trunk.state(), 3);
+                    level.setBlock(mutablePos, trunk.state(), 3);
                 }
             }
         }
         return height;
     }
 
-    public static StructureManager getStructureManager(WorldGenLevel worldIn)
+    public static StructureManager getStructureManager(WorldGenLevel level)
     {
-        return worldIn.getLevel().getServer().getStructureManager();
+        return level.getLevel().getServer().getStructureManager();
     }
 
     /**

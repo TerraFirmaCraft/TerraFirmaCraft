@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:wood/planks/kapok"
+            "items": [
+              "tfc:wood/planks/kapok"
+            ]
           }
         ]
       }

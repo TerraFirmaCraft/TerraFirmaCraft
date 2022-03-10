@@ -1,4 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/metal/lamp/bismuth_bronze"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/metal/lamp/bismuth_bronze"
+  }
 }

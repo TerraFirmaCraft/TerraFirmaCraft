@@ -62,6 +62,17 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         return breakChance;
     }
 
+    public Ingredient getIngredient()
+    {
+        return ingredient;
+    }
+
+    public FluidStackIngredient getFluidIngredient()
+    {
+        return fluidIngredient;
+    }
+
+
     @Override
     public boolean matches(MoldLike mold, @Nullable Level level)
     {

@@ -7,15 +7,24 @@
 package net.dries007.tfc.world.biome;
 
 import net.dries007.tfc.Artist;
+import net.dries007.tfc.TestBase;
 import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public class BiomeNoiseVisualizations
+public class BiomeNoiseVisualizations extends TestBase
 {
     static final Artist.Noise<Noise2D> ARTIST = Artist.<Noise2D>forNoise(noise -> Artist.NoisePixel.coerceFloat(noise::noise)).centerSized(200);
     static final long seed = System.currentTimeMillis();
+
+    @Test
+    public void testFoo()
+    {
+        ARTIST.centerSized(1000).draw("badlands_height", new OpenSimplex2D(seed).octaves(2).scaled(0, 6).spread(0.0014f).terraces(6));
+        ARTIST.centerSized(1000).draw("badlands_style", new OpenSimplex2D(seed).octaves(2).scaled(-0.2f, 1.2f).spread(0.0003f).clamped(0, 1));
+    }
 
     @Test
     public void testBadlands()
@@ -75,5 +84,11 @@ public class BiomeNoiseVisualizations
     public void testShore()
     {
         ARTIST.draw("biome_noise_shore", BiomeNoise.shore(seed));
+    }
+
+    @Test
+    public void testBryceCanyon()
+    {
+        ARTIST.draw("bryce_canyon", BiomeNoise.bryceCanyon(seed));
     }
 }

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.container;
 
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
@@ -23,6 +24,16 @@ public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
         super(TFCContainerTypes.CRUCIBLE.get(), windowId, crucible);
 
         addDataSlots(crucible.getSyncableData());
+    }
+
+    @Override
+    protected boolean moveStack(ItemStack stack, int slotIndex)
+    {
+        return switch (typeOf(slotIndex))
+            {
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, CrucibleBlockEntity.SLOT_INPUT_START, CrucibleBlockEntity.SLOT_INPUT_END + 1, false);
+                case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
+            };
     }
 
     @Override

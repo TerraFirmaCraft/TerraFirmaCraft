@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -154,18 +152,17 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         isHoldingLargeItem = nbt.getBoolean("isHoldingLargeItem");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    @Nonnull
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putBoolean("isHoldingLargeItem", isHoldingLargeItem);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     protected void updateBlock()

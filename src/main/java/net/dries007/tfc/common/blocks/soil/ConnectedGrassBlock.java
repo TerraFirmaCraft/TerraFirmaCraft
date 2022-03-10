@@ -34,7 +34,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 
-@SuppressWarnings("deprecation")
 public class ConnectedGrassBlock extends Block implements IGrassBlock
 {
     // Used to determine connected textures
@@ -66,7 +65,8 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing == Direction.UP)
         {
@@ -74,18 +74,20 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         }
         else if (facing != Direction.DOWN)
         {
-            return updateStateFromDirection(worldIn, currentPos, stateIn, facing);
+            return updateStateFromDirection(level, currentPos, stateIn, facing);
         }
         return stateIn;
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         level.scheduleTick(pos, this, 0);
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -95,6 +97,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -105,31 +108,32 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
+    @SuppressWarnings("deprecation")
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (!canBeGrass(state, worldIn, pos))
+        if (!canBeGrass(state, level, pos))
         {
-            if (worldIn.isAreaLoaded(pos, 3))
+            if (level.isAreaLoaded(pos, 3))
             {
                 // Turn to not-grass
-                worldIn.setBlockAndUpdate(pos, getDirt());
+                level.setBlockAndUpdate(pos, getDirt());
             }
         }
         else
         {
-            if (worldIn.getMaxLocalRawBrightness(pos.above()) >= 9)
+            if (level.getMaxLocalRawBrightness(pos.above()) >= 9)
             {
                 for (int i = 0; i < 4; ++i)
                 {
                     BlockPos posAt = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
-                    BlockState stateAt = worldIn.getBlockState(posAt);
+                    BlockState stateAt = level.getBlockState(posAt);
                     if (stateAt.getBlock() instanceof IDirtBlock dirt)
                     {
                         // Spread grass to others
                         BlockState grassState = dirt.getGrass();
-                        if (canPropagate(grassState, worldIn, posAt))
+                        if (canPropagate(grassState, level, posAt))
                         {
-                            worldIn.setBlockAndUpdate(posAt, updateStateFromNeighbors(worldIn, posAt, grassState));
+                            level.setBlockAndUpdate(posAt, updateStateFromNeighbors(level, posAt, grassState));
                         }
                     }
                 }
@@ -138,12 +142,10 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (worldIn.isAreaLoaded(pos, 2))
-        {
-            worldIn.setBlock(pos, updateStateFromNeighbors(worldIn, pos, state), 2);
-        }
+        level.setBlock(pos, updateStateFromNeighbors(level, pos, state), 2);
     }
 
     @Override
@@ -173,29 +175,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         {
             return path.get().defaultBlockState();
         }
-        return state;
-    }
-
-    /**
-     * When a grass block changes (is placed or added), this is called to send updates to all diagonal neighbors to update their state from this one
-     *
-     * @param world The world
-     * @param pos   The position of the changing grass block
-     */
-    protected void updateSurroundingGrassConnections(LevelAccessor world, BlockPos pos)
-    {
-        if (world.isAreaLoaded(pos, 2))
-        {
-            for (Direction direction : Direction.Plane.HORIZONTAL)
-            {
-                BlockPos targetPos = pos.above().relative(direction);
-                BlockState targetState = world.getBlockState(targetPos);
-                if (targetState.getBlock() instanceof IGrassBlock)
-                {
-                    world.setBlock(targetPos, updateStateFromDirection(world, targetPos, targetState, direction.getOpposite()), 2);
-                }
-            }
-        }
+        return null;
     }
 
     /**

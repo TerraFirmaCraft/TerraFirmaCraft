@@ -14,39 +14,24 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
             "weight": 20,
-            "block": "tfc:ore/poor_limonite/chalk"
+            "block": "tfc:ore/poor_limonite/shale"
           },
           {
             "weight": 50,
-            "block": "tfc:ore/normal_limonite/chalk"
+            "block": "tfc:ore/normal_limonite/shale"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/rich_limonite/chalk"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "weight": 20,
-            "block": "tfc:ore/poor_limonite/chert"
+            "block": "tfc:ore/rich_limonite/shale"
           },
           {
-            "weight": 50,
-            "block": "tfc:ore/normal_limonite/chert"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/rich_limonite/chert"
+            "weight": 25,
+            "block": "tfc:ore/ruby/shale"
           }
         ]
       },
@@ -66,6 +51,29 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_limonite/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_limonite/limestone"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_limonite/limestone"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_limonite/limestone"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/ruby/limestone"
           }
         ]
       },
@@ -109,47 +117,39 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/chert"
         ],
         "with": [
           {
             "weight": 20,
-            "block": "tfc:ore/poor_limonite/limestone"
+            "block": "tfc:ore/poor_limonite/chert"
           },
           {
             "weight": 50,
-            "block": "tfc:ore/normal_limonite/limestone"
+            "block": "tfc:ore/normal_limonite/chert"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/rich_limonite/limestone"
-          },
-          {
-            "weight": 25,
-            "block": "tfc:ore/ruby/limestone"
+            "block": "tfc:ore/rich_limonite/chert"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
             "weight": 20,
-            "block": "tfc:ore/poor_limonite/shale"
+            "block": "tfc:ore/poor_limonite/chalk"
           },
           {
             "weight": 50,
-            "block": "tfc:ore/normal_limonite/shale"
+            "block": "tfc:ore/normal_limonite/chalk"
           },
           {
             "weight": 30,
-            "block": "tfc:ore/rich_limonite/shale"
-          },
-          {
-            "weight": 25,
-            "block": "tfc:ore/ruby/shale"
+            "block": "tfc:ore/rich_limonite/chalk"
           }
         ]
       }

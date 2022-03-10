@@ -27,7 +27,10 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -146,7 +149,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
-        if (entry != null && level.isEmptyBlock(mutablePos) && level.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (entry != null && EnvironmentHelpers.canPlaceBushOn(level, mutablePos))
         {
             entry.bushLog().ifPresent(log -> entry.bushLeaves().ifPresent(leaves -> {
                 placeBushPart(level, mutablePos, log, leaves, 1.0F, random);
@@ -180,7 +183,7 @@ public class ForestFeature extends Feature<ForestConfig>
             if (facing != Direction.DOWN)
             {
                 BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
-                if (level.isEmptyBlock(offsetPos) || level.getBlockState(offsetPos).is(TFCTags.Blocks.PLANT) && rand.nextFloat() < decay)
+                if (EnvironmentHelpers.isWorldgenReplaceable(level, offsetPos) && rand.nextFloat() < decay)
                 {
                     setBlock(level, offsetPos, leaves);
                 }
@@ -209,7 +212,7 @@ public class ForestFeature extends Feature<ForestConfig>
                     mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
                     placementState = FluidHelpers.fillWithFluid(placementState, level.getFluidState(mutablePos).getType());
-                    if (placementState != null && (level.isEmptyBlock(mutablePos) || level.isWaterAt(mutablePos)) && level.getBlockState(mutablePos.below()).isFaceSturdy(level, mutablePos, Direction.UP))
+                    if (placementState != null && EnvironmentHelpers.isWorldgenReplaceable(level.getBlockState(mutablePos)) && EnvironmentHelpers.isOnSturdyFace(level, mutablePos))
                     {
                         setBlock(level, mutablePos, placementState);
                     }
@@ -234,48 +237,58 @@ public class ForestFeature extends Feature<ForestConfig>
             final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
             if (entry != null)
             {
-                entry.fallenLog().ifPresent(log -> {
-                    if (log.hasProperty(TFCBlockStateProperties.NATURAL) && log.hasProperty(BlockStateProperties.AXIS))
-                    {
-                        final Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                        final Direction dirOpposite = dir.getOpposite();
-                        log = log.setValue(TFCBlockStateProperties.NATURAL, true).setValue(BlockStateProperties.AXIS, dir.getAxis());
+                BlockState log = entry.fallenLog().orElse(null);
+                if (log != null)
+                {
+                    final Direction axis = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 
-                        final int halfLength = Mth.nextInt(random, 2, 5);
-                        for (int i = 0; i < halfLength; i++)
+                    log = Helpers.setProperty(log, TFCBlockStateProperties.NATURAL, true);
+                    log = Helpers.setProperty(log, BlockStateProperties.AXIS, axis.getAxis());
+
+                    final int length = 4 + random.nextInt(10);
+                    final BlockPos start = mutablePos.immutable();
+                    final boolean[] moment = new boolean[length];
+
+                    mutablePos.set(start);
+                    int valid = 0;
+                    for (; valid < length; valid++)
+                    {
+                        final BlockState replaceState = level.getBlockState(mutablePos);
+                        if (replaceState.getMaterial().isReplaceable() || replaceState.getBlock() instanceof ILeavesBlock)
                         {
-                            mutablePos.move(dir);
-                            BlockState foundState = level.getBlockState(mutablePos);
-                            if (!(foundState.isAir() || foundState.is(TFCTags.Blocks.PLANT)))
-                            {
-                                mutablePos.move(dirOpposite);
-                                break;
-                            }
+                            mutablePos.move(Direction.DOWN);
+                            moment[valid] = level.getBlockState(mutablePos).isFaceSturdy(level, mutablePos, Direction.UP);
+                        }
+                        else
+                        {
+                            break;
                         }
 
-                        for (int i = 0; i < halfLength * 2; i++)
+                        mutablePos.move(Direction.UP);
+                        mutablePos.move(axis);
+                    }
+
+                    int left = 0, right = valid - 1;
+                    for (; left < moment.length; left++)
+                    {
+                        if (moment[left]) break;
+                    }
+                    for (; right >= 0; right--)
+                    {
+                        if (moment[right]) break;
+                    }
+
+                    if (left <= valid / 2 && right >= valid / 2 && valid >= 3)
+                    {
+                        // Balanced
+                        mutablePos.set(start);
+                        for (int i = 0; i < length; i++)
                         {
-                            BlockState stateAt = level.getBlockState(mutablePos);
-                            if (stateAt.isAir() || stateAt.is(TFCTags.Blocks.PLANT))
-                            {
-                                setBlock(level, mutablePos, log);
-                                if (random.nextInt(7) == 0)
-                                {
-                                    final Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                                    BlockState offsetLog = log.setValue(BlockStateProperties.AXIS, offset.getAxis());
-                                    mutablePos.move(offset);
-                                    setBlock(level, mutablePos, offsetLog);
-                                    mutablePos.move(offset.getOpposite());
-                                }
-                                mutablePos.move(dirOpposite);
-                            }
-                            else
-                            {
-                                return;
-                            }
+                            level.setBlock(mutablePos, log, 2);
+                            mutablePos.move(axis);
                         }
                     }
-                });
+                }
             }
         }
     }

@@ -27,15 +27,17 @@
       "tfc:flood_fill_lake"
     ],
     [
+      "tfc:surface_ore_deposits",
+      "tfc:deep_ore_deposits",
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc"
     ],
     [
       "tfc:vein/gravel",
+      "tfc:vein/granite_dike",
       "tfc:vein/diorite_dike",
       "tfc:vein/gabbro_dike",
-      "tfc:vein/granite_dike",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",
@@ -88,9 +90,11 @@
       "tfc:mega_calcite",
       "tfc:icicle",
       "tfc:underground_loose_rocks",
-      "tfc:underground_guano"
+      "tfc:underground_guano_patch",
+      "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:raw_boulder",
       "tfc:cobble_boulder",
       "tfc:mossy_boulder",
@@ -105,11 +109,12 @@
       "tfc:plant/ivy",
       "tfc:plant/jungle_vines",
       "tfc:plant/liana",
+      "tfc:plant/wild_crops",
       "tfc:sticks_forest_patch",
       "tfc:pinecone_patch",
       "tfc:salt_lick_patch",
       "tfc:dead_grass_patch",
-      "tfc:podzol_patch",
+      "tfc:humus_patch",
       "tfc:plant/bluegrass_patch",
       "tfc:plant/bromegrass_patch",
       "tfc:plant/fountain_grass_patch",
@@ -218,7 +223,16 @@
     []
   ],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "water_creature": [
+      {
+        "type": "tfc:manatee",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.5,
   "spawn_costs": {}

@@ -6,13 +6,8 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.Random;
 import java.util.function.Supplier;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;

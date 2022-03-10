@@ -40,10 +40,15 @@ public class ToolItem extends DiggerItem
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
     {
         // Mining plants should consume some durability
-        if (!level.isClientSide && (TFCTags.Blocks.PLANT.contains(state.getBlock()) || state.getDestroySpeed(level, pos) != 0.0F))
+        if (!level.isClientSide && willConsumeDurability(level, pos, state))
         {
             stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
         return true;
+    }
+
+    protected boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
+    {
+        return TFCTags.Blocks.PLANTS.contains(state.getBlock()) || state.getDestroySpeed(level, pos) != 0.0F;
     }
 }

@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:plant/arrowhead",
+    "tfc:plant/badderlocks",
+    "tfc:plant/cattail",
+    "tfc:plant/marigold",
+    "tfc:plant/bur_reed",
+    "tfc:plant/duckweed",
+    "tfc:plant/lotus",
+    "tfc:plant/morning_glory",
+    "tfc:plant/moss",
+    "tfc:plant/phragmite",
+    "tfc:plant/pickerelweed",
+    "tfc:plant/pistia",
+    "tfc:plant/reindeer_lichen",
+    "tfc:plant/sargassum",
+    "tfc:plant/water_canna",
+    "tfc:plant/water_lily",
+    "tfc:plant/water_taro"
+  ]
+}

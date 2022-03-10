@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class TickCounterBlockEntity extends TFCBlockEntity
@@ -35,26 +36,26 @@ public class TickCounterBlockEntity extends TFCBlockEntity
     public void resetCounter()
     {
         lastUpdateTick = Calendars.SERVER.getTicks();
-        markDirtyFast();
+        setChanged();
     }
 
     public void reduceCounter(long amount)
     {
         lastUpdateTick += amount;
-        markDirtyFast();
+        setChanged();
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         lastUpdateTick = nbt.getLong("tick");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putLong("tick", lastUpdateTick);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 }

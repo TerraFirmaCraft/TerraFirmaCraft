@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/raw/slate"
+            "items": [
+              "tfc:rock/raw/slate"
+            ]
           }
         ]
       }

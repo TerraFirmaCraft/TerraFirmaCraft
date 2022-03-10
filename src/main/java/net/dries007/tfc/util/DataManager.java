@@ -46,6 +46,8 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     protected final BiMap<ResourceLocation, T> types;
     protected final String typeName;
 
+    private int generation;
+
     protected final BiFunction<ResourceLocation, JsonObject, T> factory;
     @Nullable protected final Runnable postReloadCallback;
     @Nullable protected final BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory;
@@ -120,7 +122,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     public DataManagerSyncPacket<T> createSyncPacket()
     {
-        return createEmptyPacket().with(types);
+        return createEmptyPacket().with(types, generation);
     }
 
     public DataManagerSyncPacket<T> createEmptyPacket()
@@ -146,21 +148,32 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return networkFactory.apply(id, buffer);
     }
 
-    public void onSync(Map<ResourceLocation, T> elements)
+    public void onSync(Map<ResourceLocation, T> elements, int generation)
     {
-        types.clear();
-        types.putAll(elements);
-        if (postReloadCallback != null)
+        if (this.generation != generation)
         {
-            postReloadCallback.run();
+            // Only update if the incoming generation is not the same as the existing generation
+            // This prevents a sync form local server -> local client.
+            types.clear();
+            types.putAll(elements);
+            this.generation++;
+            if (postReloadCallback != null)
+            {
+                postReloadCallback.run();
+            }
+            LOGGER.info("Received {} {}(s) from server", types.size(), typeName);
         }
-        LOGGER.info("Received {} {}(s) from server", types.size(), typeName);
+        else
+        {
+            LOGGER.info("Ignored {}(s) sync with generation {}", typeName, generation);
+        }
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         types.clear();
+        generation++;
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             ResourceLocation name = entry.getKey();

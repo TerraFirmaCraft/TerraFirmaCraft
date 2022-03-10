@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:jute_fiber"
+            "items": [
+              "tfc:jute_fiber"
+            ]
           }
         ]
       }

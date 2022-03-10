@@ -10,7 +10,6 @@ public enum Powder
 {
     CHARCOAL,
     COKE,
-    FERTILIZER,
     FLUX,
     GRAPHITE,
     HEMATITE,
@@ -20,5 +19,6 @@ public enum Powder
     SALT,
     SALTPETER,
     SULFUR,
+    SYLVITE,
     WOOD_ASH
 }

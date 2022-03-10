@@ -56,9 +56,9 @@ public class Container extends AbstractContainerMenu
     public ItemStack quickMoveStack(Player player, int index)
     {
         final Slot slot = slots.get(index);
-        if (slot.hasItem()) // Only move a fluid when the index clicked has any contents
+        if (slot.hasItem()) // Only move an item when the index clicked has any contents
         {
-            final ItemStack stack = slot.getItem(); // The fluid in the current slot
+            final ItemStack stack = slot.getItem(); // The item in the current slot
             final ItemStack original = stack.copy(); // The original amount in the slot
             if (moveStack(stack, index))
             {
@@ -70,7 +70,7 @@ public class Container extends AbstractContainerMenu
                 return ItemStack.EMPTY;
             }
 
-            // Handle updates,
+            // Handle updates
             if (stack.isEmpty())
             {
                 slot.set(ItemStack.EMPTY);

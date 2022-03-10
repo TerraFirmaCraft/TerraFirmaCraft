@@ -14,21 +14,21 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/gneiss"
+          "tfc:rock/raw/quartzite"
         ],
         "with": [
           {
-            "block": "tfc:ore/gypsum/gneiss"
+            "block": "tfc:ore/gypsum/quartzite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/marble"
+          "tfc:rock/raw/slate"
         ],
         "with": [
           {
-            "block": "tfc:ore/gypsum/marble"
+            "block": "tfc:ore/gypsum/slate"
           }
         ]
       },
@@ -44,16 +44,6 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/gypsum/quartzite"
-          }
-        ]
-      },
-      {
-        "replace": [
           "tfc:rock/raw/schist"
         ],
         "with": [
@@ -64,11 +54,21 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/slate"
+          "tfc:rock/raw/gneiss"
         ],
         "with": [
           {
-            "block": "tfc:ore/gypsum/slate"
+            "block": "tfc:ore/gypsum/gneiss"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/marble"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/gypsum/marble"
           }
         ]
       }

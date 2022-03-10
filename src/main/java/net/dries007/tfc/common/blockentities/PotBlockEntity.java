@@ -71,25 +71,25 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         if (nbt.contains("output"))
         {
             output = PotRecipe.Output.read(nbt.getCompound("output"));
         }
         boilingTicks = nbt.getInt("boilingTicks");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         if (output != null)
         {
             nbt.put("output", PotRecipe.Output.write(output));
         }
         nbt.putInt("boilingTicks", boilingTicks);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override
@@ -117,6 +117,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
             if (boilingTicks < cachedRecipe.getDuration())
             {
                 boilingTicks++;
+                if (boilingTicks == 1) markForSync();
             }
             else
             {
@@ -143,6 +144,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 cachedRecipe = null;
                 boilingTicks = 0;
                 updateCachedRecipe();
+                markForSync();
             }
         }
         else
@@ -168,6 +170,14 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         // if we have a recipe, there is no output, and we're hot enough, we boil
         return cachedRecipe != null && output == null && cachedRecipe.isHotEnough(temperature);
+    }
+
+    /**
+     * The amount of info pots actually sync to clients is low. So checking output, cached recipe, etc. won't work.
+     */
+    public boolean shouldRenderAsBoiling()
+    {
+        return boilingTicks > 0;
     }
 
     public InteractionResult interactWithOutput(Player player, ItemStack stack)

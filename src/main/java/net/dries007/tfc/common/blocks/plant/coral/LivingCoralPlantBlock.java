@@ -39,38 +39,37 @@ public class LivingCoralPlantBlock extends TFCCoralPlantBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving)
     {
-        tryScheduleDieTick(state, worldIn, pos);
+        tryScheduleDieTick(state, level, pos);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (!scanForWater(state, worldIn, pos))
+        if (!scanForWater(state, level, pos))
         {
-            worldIn.setBlock(pos, deadBlock.get().defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 2);
+            level.setBlock(pos, deadBlock.get().defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 2);
         }
-
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !stateIn.canSurvive(level, currentPos))
+        if (facing == Direction.DOWN && !state.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
         else
         {
-            this.tryScheduleDieTick(stateIn, level, currentPos);
-            if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+            this.tryScheduleDieTick(state, level, currentPos);
+            if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
             {
                 level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }
 
-            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
     }
 }

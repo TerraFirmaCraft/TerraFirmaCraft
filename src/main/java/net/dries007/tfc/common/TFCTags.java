@@ -6,10 +6,8 @@
 
 package net.dries007.tfc.common;
 
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.*;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -28,7 +26,8 @@ public class TFCTags
         public static final Tag.Named<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final Tag.Named<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
         public static final Tag.Named<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
-        public static final Tag.Named<Block> PLANT = create("plant"); // for some decoration placement
+        public static final Tag.Named<Block> PLANTS = create("plants"); // for some decoration placement
+        public static final Tag.Named<Block> SINGLE_BLOCK_REPLACEABLE = create("single_block_replaceable"); // blocks that features can safely destroy
         public static final Tag.Named<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
         public static final Tag.Named<Block> CREEPING_PLANTABLE_ON = create("creeping_plantable_on");
         public static final Tag.Named<Block> KELP_TREE = create("kelp_tree");
@@ -46,6 +45,7 @@ public class TFCTags
         public static final Tag.Named<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
         public static final Tag.Named<Block> SNOW = create("snow"); // Blocks that cover grass with snow.
         public static final Tag.Named<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles
+        public static final Tag.Named<Block> CAN_BE_ICE_PILED = create("can_be_ice_piled"); // Blocks that need to be replaced with ice piles, either from ice freezing below it, or ice freezing inside the block itself.
         public static final Tag.Named<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
         public static final Tag.Named<Block> SMALL_SPIKE = create("small_spike");
         public static final Tag.Named<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
@@ -68,6 +68,11 @@ public class TFCTags
         public static final Tag.Named<Block> MINEABLE_WITH_KNIFE = create("mineable_with_knife");
         public static final Tag.Named<Block> MINEABLE_WITH_SCYTHE = create("mineable_with_scythe");
         public static final Tag.Named<Block> PROSPECTABLE = create("prospectable"); // can be found with the prospector pick
+        public static final Tag.Named<Block> CAN_BE_PANNED = create("can_be_panned"); // can be picked up with a pan
+        public static final Tag.Named<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
+        public static final Tag.Named<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
+        public static final Tag.Named<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
+        public static final Tag.Named<Block> LAMPS = create("lamps");
 
         private static Tag.Named<Block> create(String id)
         {
@@ -81,6 +86,7 @@ public class TFCTags
         public static final Tag.Named<Fluid> HYDRATING = create("hydrating"); // Fluids that work to hydrate farmland, berry bushes, or other growing things
         public static final Tag.Named<Fluid> USABLE_IN_POT = create("usable_in_pot");
         public static final Tag.Named<Fluid> USABLE_IN_JUG = create("usable_in_jug");
+        public static final Tag.Named<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
 
         private static Tag.Named<Fluid> create(String id)
         {
@@ -113,10 +119,24 @@ public class TFCTags
         public static final Tag.Named<Item> LEATHER_KNAPPING = create("leather_knapping");
         public static final Tag.Named<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
         public static final Tag.Named<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
+        public static final Tag.Named<Item> COMPOST_GREENS = create("compost_greens");
+        public static final Tag.Named<Item> COMPOST_BROWNS = create("compost_browns");
+        public static final Tag.Named<Item> COMPOST_POISONS = create("compost_poisons");
 
         private static Tag.Named<Item> create(String id)
         {
             return ItemTags.createOptional(Helpers.identifier(id));
+        }
+    }
+
+    public static class Entities
+    {
+        public static final Tag.Named<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
+        public static final Tag.Named<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
+
+        private static Tag.Named<EntityType<?>> create(String id)
+        {
+            return EntityTypeTags.createOptional(Helpers.identifier(id));
         }
     }
 }

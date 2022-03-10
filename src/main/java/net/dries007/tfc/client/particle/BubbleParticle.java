@@ -51,18 +51,11 @@ public class BubbleParticle extends TextureSheetParticle
         return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
     }
 
-    public static class Factory implements ParticleProvider<SimpleParticleType>
+    public record Provider(SpriteSet sprite) implements ParticleProvider<SimpleParticleType>
     {
-        private final SpriteSet sprite;
-
-        public Factory(SpriteSet spriteSet)
+        public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
-            sprite = spriteSet;
-        }
-
-        public Particle createParticle(SimpleParticleType typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
-        {
-            BubbleParticle particle = new BubbleParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed);
+            BubbleParticle particle = new BubbleParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
             particle.pickSprite(sprite);
             return particle;
         }

@@ -17,6 +17,7 @@ import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -28,6 +29,8 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.EnvironmentHelpers;
 
 public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends Feature<C>
 {
@@ -87,6 +90,8 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
 
     protected void place(WorldGenLevel level, ChunkGenerator generator, Random random, int blockX, int blockZ, V vein, C config)
     {
+        final boolean debugIndicatorLocations = false;
+
         final WorldGenerationContext context = new WorldGenerationContext(generator, level);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BoundingBox box = getBoundingBox(config, vein);
@@ -129,11 +134,14 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
                     {
                         mutablePos.set(indicatorX, indicatorY, indicatorZ);
                         final BlockState stateAt = level.getBlockState(mutablePos);
-                        final BlockState state = indicator.getStateToGenerate(random);
-                        if (stateAt.isAir() && state.canSurvive(level, mutablePos))
+                        final BlockState state = FluidHelpers.fillWithFluid(indicator.getStateToGenerate(random), level.getFluidState(mutablePos).getType());
+                        if (state != null && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && state.canSurvive(level, mutablePos))
                         {
                             level.setBlock(mutablePos, state, 3);
-                            //world.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                            if (debugIndicatorLocations)
+                            {
+                                level.setBlock(mutablePos.above(20), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                            }
                         }
                     }
                 }

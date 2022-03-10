@@ -43,6 +43,7 @@ import net.dries007.tfc.world.feature.vein.VeinFeature;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+// todo: subcommand of new TFCLocate command?
 public class LocateVeinCommand
 {
     public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.unknown_vein", args));

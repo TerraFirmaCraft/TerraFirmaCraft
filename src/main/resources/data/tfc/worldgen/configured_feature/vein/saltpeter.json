@@ -14,21 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
-            "block": "tfc:ore/saltpeter/chalk"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/saltpeter/chert"
+            "block": "tfc:ore/saltpeter/shale"
           }
         ]
       },
@@ -39,6 +29,16 @@
         "with": [
           {
             "block": "tfc:ore/saltpeter/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/saltpeter/limestone"
           }
         ]
       },
@@ -64,21 +64,21 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/chert"
         ],
         "with": [
           {
-            "block": "tfc:ore/saltpeter/limestone"
+            "block": "tfc:ore/saltpeter/chert"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
-            "block": "tfc:ore/saltpeter/shale"
+            "block": "tfc:ore/saltpeter/chalk"
           }
         ]
       }

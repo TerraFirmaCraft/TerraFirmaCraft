@@ -180,27 +180,6 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         }
     }
 
-    /**
-     * A means of performing X amount of random ticks to catch up with the calendar.
-     */
-    @Deprecated
-    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
-    {
-
-    }
-
-    @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
-    {
-        BerryBushBlockEntity te = Helpers.getBlockEntity(worldIn, pos, BerryBushBlockEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-            te.setGrowing(true);
-        }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
-    }
-
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {

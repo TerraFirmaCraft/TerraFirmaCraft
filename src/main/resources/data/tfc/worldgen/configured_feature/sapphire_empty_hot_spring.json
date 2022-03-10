@@ -8,11 +8,11 @@
       "blocks": [
         {
           "replace": [
-            "tfc:rock/raw/andesite"
+            "tfc:rock/raw/rhyolite"
           ],
           "with": [
             {
-              "block": "tfc:ore/sapphire/andesite"
+              "block": "tfc:ore/sapphire/rhyolite"
             }
           ]
         },
@@ -28,6 +28,16 @@
         },
         {
           "replace": [
+            "tfc:rock/raw/andesite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/sapphire/andesite"
+            }
+          ]
+        },
+        {
+          "replace": [
             "tfc:rock/raw/dacite"
           ],
           "with": [
@@ -38,11 +48,11 @@
         },
         {
           "replace": [
-            "tfc:rock/raw/rhyolite"
+            "tfc:rock/raw/granite"
           ],
           "with": [
             {
-              "block": "tfc:ore/sapphire/rhyolite"
+              "block": "tfc:ore/sapphire/granite"
             }
           ]
         },
@@ -68,11 +78,41 @@
         },
         {
           "replace": [
-            "tfc:rock/raw/granite"
+            "tfc:rock/raw/quartzite"
           ],
           "with": [
             {
-              "block": "tfc:ore/sapphire/granite"
+              "block": "tfc:ore/sapphire/quartzite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/slate"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/sapphire/slate"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/phyllite"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/sapphire/phyllite"
+            }
+          ]
+        },
+        {
+          "replace": [
+            "tfc:rock/raw/schist"
+          ],
+          "with": [
+            {
+              "block": "tfc:ore/sapphire/schist"
             }
           ]
         },
@@ -93,46 +133,6 @@
           "with": [
             {
               "block": "tfc:ore/sapphire/marble"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/phyllite"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/sapphire/phyllite"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/quartzite"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/sapphire/quartzite"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/schist"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/sapphire/schist"
-            }
-          ]
-        },
-        {
-          "replace": [
-            "tfc:rock/raw/slate"
-          ],
-          "with": [
-            {
-              "block": "tfc:ore/sapphire/slate"
             }
           ]
         }

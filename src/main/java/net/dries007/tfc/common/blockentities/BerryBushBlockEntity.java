@@ -59,7 +59,7 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         lastUpdateTick = nbt.getLong("lastUpdateTick");
         lastTick = nbt.getLong("lastTick");
@@ -68,11 +68,11 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
         harvested = nbt.getBoolean("harvested");
         useTicks = nbt.getInt("useTicks");
         deathTicks = nbt.getInt("deathTicks");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putLong("lastUpdateTick", lastUpdateTick);
         nbt.putLong("lastTick", lastTick);
@@ -81,7 +81,7 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
         nbt.putBoolean("harvested", harvested);
         nbt.putInt("useTicks", useTicks);
         nbt.putInt("deathTicks", deathTicks);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Deprecated

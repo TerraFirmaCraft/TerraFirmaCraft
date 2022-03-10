@@ -11,7 +11,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
@@ -143,12 +142,20 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         return getNoiseBiome(quartX, quartZ);
     }
 
+    @Override
     public Biome getNoiseBiome(int quartX, int quartZ)
     {
+        final boolean debugNoiseBiomeQueriesWithInvalidClimate = false;
+
         final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
         final ChunkData data = chunkDataProvider.get(chunkPos);
+        final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
 
-        final BiomeVariants variants = biomeLayer.get(quartX, quartZ);
+        if (debugNoiseBiomeQueriesWithInvalidClimate && data == ChunkData.EMPTY)
+        {
+            System.out.println("getNoiseBiome() called but no climate data could be found at " + quartX + ", " + quartZ);
+            new Exception("Stacktrace").printStackTrace();
+        }
 
         final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
         final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
@@ -156,11 +163,18 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         return biomeRegistry.getOrThrow(extension.key());
     }
 
+    @Override
     public Biome getNoiseBiomeIgnoreClimate(int quartX, int quartZ)
     {
-        final BiomeVariants variants = biomeLayer.get(quartX, quartZ);
+        final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
         final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
         return biomeRegistry.getOrThrow(extension.key());
+    }
+
+    @Override
+    public BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ)
+    {
+        return biomeLayer.get(quartX, quartZ);
     }
 
     @Override
@@ -179,6 +193,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     @Nullable
     public BlockPos findBiomeHorizontal(int blockX, int blockY, int blockZ, int maxRadius, int step, Predicate<Biome> biome, Random random, boolean findClosest, @Nullable Climate.Sampler sampler)
     {
+        // todo: can we avoid querying getNoiseBiome and instead query getNoiseBiomeIgnoreClimate ? as it causes a chunk data lookup which we don't have
         final int minQuartX = QuartPos.fromBlock(blockX);
         final int minQuartZ = QuartPos.fromBlock(blockZ);
         final int maxQuartRadius = QuartPos.fromBlock(maxRadius);

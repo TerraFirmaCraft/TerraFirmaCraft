@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:metal/hammer_head/wrought_iron"
+            "items": [
+              "tfc:metal/hammer_head/wrought_iron"
+            ]
           }
         ]
       }

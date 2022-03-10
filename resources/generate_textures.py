@@ -17,7 +17,7 @@ def create_chest(wood: str):
     empty = (0, 0, 0, 0)
     frame = log.copy()
     ImageDraw.Draw(frame).rectangle((1, 1, 12, 12), fill=empty)
-    top = sheet.copy()
+    top = sheet.copy().transpose(Image.TRANSVERSE)
     top.paste(frame, (0, 0), frame)
 
     side = top.copy()
@@ -25,6 +25,7 @@ def create_chest(wood: str):
     log_section = log.copy()
     ImageDraw.Draw(log_section).rectangle((0, 1, 14, 14), fill=empty)
     side.paste(log_section, (0, 4), log_section)
+    side.paste(log_section, (0, 13), log_section)
 
     rim = top.copy()
     ImageDraw.Draw(rim).rectangle((0, 0, 14, 9), fill=empty)
@@ -98,12 +99,16 @@ def create_chest(wood: str):
     ImageDraw.Draw(log_section).rectangle((0, 1, 15, 14), fill=empty)
     side_right.paste(log_section, (0, 4), log_section)
     side_right.paste(log_section, (1, 4), log_section)
+    side_right.paste(log_section, (0, 13), log_section)
+    side_right.paste(log_section, (1, 13), log_section)
     side_left = top_left.copy()
     ImageDraw.Draw(side_left).rectangle((0, 0, 15, 3), fill=empty)
     log_section = log.copy()
     ImageDraw.Draw(log_section).rectangle((0, 1, 15, 14), fill=empty)
     side_left.paste(log_section, (0, 4), log_section)
     side_left.paste(log_section, (1, 4), log_section)
+    side_left.paste(log_section, (0, 13), log_section)
+    side_left.paste(log_section, (1, 13), log_section)
 
     normal_left = Image.new('RGBA', (64, 64), empty)
     handle = Image.open('texture_templates/chest/handle_left.png')
@@ -131,8 +136,9 @@ def create_chest(wood: str):
     normal_right.paste(rim, (0, 5), rim)
     normal_right.paste(rim_left, (14, 5), rim_left)
     normal_right.paste(rim_right, (43, 5), rim_right)
-    normal_right.paste(top_left, (14, 19), top_right)
-    normal_right.paste(cover_left, (29, 19), cover_right)
+    normal_right.paste(top_left, (14, 19), top_left)
+    normal_right.paste(cover_left, (29, 19), cover_left)
+    normal_right.paste(underside_left, (29, 19), underside_left)
     normal_right.paste(side, (0, 29), side)
     normal_right.paste(side_left, (14, 29), side_right)
     normal_right.paste(side_right, (43, 29), side_left)
@@ -153,6 +159,9 @@ def main():
     for rock in ROCKS.keys():
         overlay_image('texture_templates/mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
         overlay_image('texture_templates/mossy_cobblestone', path + 'block/rock/cobble/%s' % rock, path + 'block/rock/mossy_cobble/%s' % rock)
+
+    for soil in SOIL_BLOCK_VARIANTS:
+        overlay_image('texture_templates/rooted_dirt', 'texture_templates/dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)
 
 
 if __name__ == '__main__':

@@ -5,6 +5,27 @@
     {
       "type": "minecraft:heightmap",
       "heightmap": "OCEAN_FLOOR_WG"
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "matching_blocks",
+        "blocks": [
+          "tfc:fluid/salt_water"
+        ]
+      }
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "tfc:would_survive_with_fluid",
+        "state": {
+          "Name": "tfc:groundcover/mussel",
+          "Properties": {
+            "fluid": "empty"
+          }
+        }
+      }
     }
   ]
 }

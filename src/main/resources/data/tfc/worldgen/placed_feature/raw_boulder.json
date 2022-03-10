@@ -14,7 +14,8 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "tfc:flat_enough"
+      "type": "tfc:flat_enough",
+      "flatness": 0.4
     }
   ]
 }

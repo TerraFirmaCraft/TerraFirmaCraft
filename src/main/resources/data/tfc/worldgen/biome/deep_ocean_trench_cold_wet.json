@@ -28,9 +28,9 @@
     [],
     [
       "tfc:vein/gravel",
+      "tfc:vein/granite_dike",
       "tfc:vein/diorite_dike",
       "tfc:vein/gabbro_dike",
-      "tfc:vein/granite_dike",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",
@@ -83,9 +83,11 @@
       "tfc:mega_calcite",
       "tfc:icicle",
       "tfc:underground_loose_rocks",
-      "tfc:underground_guano"
+      "tfc:underground_guano_patch",
+      "tfc:hanging_roots_patch"
     ],
     [
+      "tfc:geode",
       "tfc:iceberg_packed",
       "tfc:iceberg_blue",
       "tfc:iceberg_packed_rare",
@@ -156,6 +158,20 @@
         "weight": 1,
         "minCount": 2,
         "maxCount": 6
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "tfc:orca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:dolphin",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
       }
     ]
   },
