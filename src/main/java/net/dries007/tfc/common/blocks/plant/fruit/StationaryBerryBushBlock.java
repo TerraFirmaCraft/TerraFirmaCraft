@@ -114,13 +114,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        // Target average delay between random ticks = one day.
-        // Ticks are done at a rate of randomTickSpeed ticks / chunk section / world tick.
-        final int rarity = Math.max(1, (int) (ICalendar.TICKS_IN_DAY * level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING) * (1 / 4096f)));
-        if (random.nextInt(rarity) == 0)
-        {
-            onUpdate(level, pos, state);
-        }
+        IBushBlock.super.randomTick(state, level, pos, random);
     }
 
     @Override

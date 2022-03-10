@@ -19,9 +19,12 @@ import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfi
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.LIFECYCLE;
 import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.STAGE;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -44,23 +47,20 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
         BlockState banana = config.state;
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (int i = 0; i < 5; i++)
+        mutablePos.set(pos);
+        if (level.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
-            mutablePos.setWithOffset(pos, Helpers.triangle(random, 10), -1, Helpers.triangle(random, 10));
-            mutablePos.setY(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, mutablePos).getY());
-            if (level.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+            if (level.canSeeSky(mutablePos))
             {
-                mutablePos.move(Direction.UP);
-                if (level.canSeeSky(mutablePos))
+                TerraFirmaCraft.LOGGER.info("New banana at " + mutablePos.immutable());
+                for (int stage = 0; stage <= 2; stage++)
                 {
-                    for (int stage = 0; stage <= 2; stage++)
+                    final int height = Mth.nextInt(random, 2, 3);
+                    for (int k = 1; k < height; k++)
                     {
-                        for (int k = 1; k < Mth.nextInt(random, 1, 3); k++)
-                        {
-                            setBlock(level, mutablePos, banana.setValue(STAGE, stage));
-                            mutablePos.move(Direction.UP);
-                            if (stage == 2) return true;
-                        }
+                        setBlock(level, mutablePos, banana.setValue(STAGE, stage).setValue(LIFECYCLE, Lifecycle.HEALTHY));
+                        mutablePos.move(Direction.UP);
+                        if (stage == 2) return true;
                     }
                 }
             }

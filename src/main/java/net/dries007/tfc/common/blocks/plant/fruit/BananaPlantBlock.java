@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -34,19 +36,20 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
-public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock
+public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, HoeOverlayBlock
 {
     public static final VoxelShape PLANT = box(2.0, 0.0, 2.0, 14.0, 6.0, 14.0);
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
 
-    private final Supplier<ClimateRange> climateRange = ClimateRanges.BANANA_PLANT; //todo refactors coming soon
+    private final Supplier<ClimateRange> climateRange = ClimateRanges.BANANA_PLANT;
 
     public BananaPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
@@ -80,6 +83,16 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock
     public BlockState stateAfterPicking(BlockState state)
     {
         return TFCBlocks.DEAD_BANANA_PLANT.get().defaultBlockState().setValue(STAGE, 2);
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        final ClimateRange range = climateRange.get();
+        final BlockPos sourcePos = pos.below();
+
+        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
     }
 
     @Override
@@ -135,7 +148,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock
                 final int hydration = FarmlandBlock.getHydration(level, sourcePos);
 
                 int stage = state.getValue(STAGE);
-                boolean grewUpwards = false;
+                BlockPos abovePos = pos.above();
                 BlockState newState;
                 do
                 {
@@ -149,7 +162,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock
                     {
                         BlockPos downPos = pos.below(3);
                         // increase the stage 1/3 of the time, or always if we realize we're starting to get tall
-                        if (level.random.nextInt(3) == 0 || level.getBlockState(downPos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+                        if (!level.getBlockState(abovePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH) && (level.random.nextInt(4) == 0 || level.getBlockState(downPos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH)))
                         {
                             stage++;
                         }
@@ -173,11 +186,9 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock
 
                     newState = state.setValue(STAGE, stage).setValue(LIFECYCLE, currentLifecycle);
 
-                    // bananas only grow for stages 1 and 2
-                    if (!grewUpwards && stage < 2 && currentLifecycle.active())
+                    // bananas only grow for stages 0 and 1
+                    if (stage < 2 && currentLifecycle.active())
                     {
-                        grewUpwards = true;
-                        BlockPos abovePos = pos.above(); // if we have space to grow, let's grow
                         if (level.isEmptyBlock(abovePos) && level.canSeeSky(abovePos))
                         {
                             level.setBlockAndUpdate(abovePos, newState);
