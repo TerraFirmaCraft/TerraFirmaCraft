@@ -25,11 +25,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
         bush.checkForCalendarUpdate();
     }
 
-    // todo: old
-    private boolean isGrowing;
-    private boolean harvested;
-    private int deathTicks;
-
     private long lastTick, lastUpdateTick;
 
     public BerryBushBlockEntity(BlockPos pos, BlockState state)
@@ -40,9 +35,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
     protected BerryBushBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-        harvested = true;
-        deathTicks = 0;
-        isGrowing = true;
         lastTick = lastUpdateTick = Calendars.SERVER.getTicks();
     }
 
@@ -61,10 +53,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
     {
         lastUpdateTick = nbt.getLong("lastUpdateTick");
         lastTick = nbt.getLong("lastTick");
-
-        isGrowing = nbt.getBoolean("isGrowing");
-        harvested = nbt.getBoolean("harvested");
-        deathTicks = nbt.getInt("deathTicks");
         super.loadAdditional(nbt);
     }
 
@@ -73,59 +61,7 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
     {
         nbt.putLong("lastUpdateTick", lastUpdateTick);
         nbt.putLong("lastTick", lastTick);
-
-        nbt.putBoolean("isGrowing", isGrowing);
-        nbt.putBoolean("harvested", harvested);
-        nbt.putInt("deathTicks", deathTicks);
         super.saveAdditional(nbt);
-    }
-
-    @Deprecated
-    public boolean isGrowing()
-    {
-        return isGrowing;
-    }
-
-    @Deprecated
-    public void setGrowing(boolean growing)
-    {
-        isGrowing = growing;
-    }
-
-    @Deprecated
-    public boolean isHarvested()
-    {
-        return harvested;
-    }
-
-    @Deprecated
-    public void setHarvested(boolean isHarvested)
-    {
-        harvested = isHarvested;
-    }
-
-    @Deprecated
-    public void addDeath()
-    {
-        deathTicks++;
-    }
-
-    @Deprecated
-    public int getDeath()
-    {
-        return deathTicks;
-    }
-
-    @Deprecated
-    public boolean willDie()
-    {
-        return deathTicks > 15;
-    }
-
-    @Deprecated
-    public void resetDeath()
-    {
-        deathTicks = 0;
     }
 
     @Override

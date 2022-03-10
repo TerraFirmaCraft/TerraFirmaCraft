@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -19,76 +21,153 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
 
-public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBlockExtension
+public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBlockExtension, IBushBlock, HoeOverlayBlock
 {
     protected final Supplier<? extends Block> companion;
     protected final int maxHeight;
-    protected final int deathChance;
+    private final Supplier<ClimateRange> climateRange;
 
-    public SpreadingBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
+    public SpreadingBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, Supplier<ClimateRange> climateRange)
     {
         super(properties, productItem, stages);
         this.companion = companion;
         this.maxHeight = maxHeight;
-        this.deathChance = deathChance;
+        this.climateRange = climateRange;
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 
-    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    @Override
+    public void onUpdate(Level level, BlockPos pos, BlockState state)
     {
-        if (lifecycle == Lifecycle.HEALTHY)
-        {
-            if (!te.isGrowing() || te.isRemoved()) return;
+        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
+            Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
+            Lifecycle expectedLifecycle = getLifecycleForCurrentMonth();
+            // if we are not working with a plant that is or should be dormant
+            if (!checkAndSetDormant(level, pos, state, currentLifecycle, expectedLifecycle))
+            {
+                // Otherwise, we do a month-by-month evaluation of how the bush should have grown.
+                // We only do this up to a year. Why? Because eventually, it will have become dormant, and any 'progress' during that year would've been lost anyway because it would unconditionally become dormant.
+                long deltaTicks = Math.min(bush.getTicksSinceBushUpdate(), Calendars.SERVER.getCalendarTicksInYear());
+                long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
+                long nextCalendarTick = currentCalendarTick - deltaTicks;
 
-            if (distanceToGround(world, pos, maxHeight) >= maxHeight)
-            {
-                te.setGrowing(false);
-            }
-            else if (stage == 0)
-            {
-                world.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
-            }
-            else if (stage == 1 && random.nextInt(7) == 0)
-            {
-                world.setBlockAndUpdate(pos, state.setValue(STAGE, 2));
-                if (world.isEmptyBlock(pos.above()))
-                    world.setBlockAndUpdate(pos.above(), state.setValue(STAGE, 1));
-            }
-            else if (stage == 2)
-            {
-                Direction d = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                BlockPos offsetPos = pos.relative(d);
-                if (world.isEmptyBlock(offsetPos))
+                final BlockPos sourcePos = pos.below();
+                final ClimateRange range = climateRange.get();
+                final int hydration = FarmlandBlock.getHydration(level, sourcePos);
+
+                int stagesGrown = 0, monthsSpentDying = 0;
+                do
                 {
-                    world.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, d));
-                    TickCounterBlockEntity cane = Helpers.getBlockEntity(world, offsetPos, TickCounterBlockEntity.class);
-                    if (cane != null)
+                    // This always runs at least once. It is called through random ticks, and calendar updates - although calendar updates will only call this if they've waited at least a day, or the average delta between random ticks.
+                    // Otherwise it will just wait for the next random tick.
+
+                    // Jump forward to nextTick.
+                    // Advance both the stage (randomly, if the previous month was healthy), and lifecycle (if the at-the-time conditions were valid)
+                    nextCalendarTick = Math.min(nextCalendarTick + Calendars.SERVER.getCalendarTicksInMonth(), currentCalendarTick);
+
+                    if (currentLifecycle.active() && level.getRandom().nextInt(3) == 0)
                     {
-                        cane.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * te.getTicksSinceUpdate());
+                        stagesGrown++;
+                    }
+
+                    float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
+                    Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
+                    if (range.checkBoth(hydration, temperatureAtNextTick, false))
+                    {
+                        currentLifecycle = currentLifecycle.advanceTowards(lifecycleAtNextTick);
+                    }
+                    else
+                    {
+                        currentLifecycle = Lifecycle.DORMANT;
+                    }
+
+                    if (lifecycleAtNextTick != Lifecycle.DORMANT && currentLifecycle == Lifecycle.DORMANT)
+                    {
+                        monthsSpentDying++; // consecutive months spent where the conditions were invalid, but they shouldn't've been
+                    }
+                    else
+                    {
+                        monthsSpentDying = 0;
+                    }
+
+                } while (nextCalendarTick < currentCalendarTick);
+
+                BlockState newState;
+
+                if (monthsSpentDying > 0 && level.getRandom().nextInt(12) < monthsSpentDying && !level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
+                {
+                    // It may have died, as it spent too many consecutive months where it should've been healthy, in invalid conditions.
+                    newState = getDeadState(state);
+                }
+                else
+                {
+                    // It's not dead! Now, perform the actual update over the time taken.
+                    newState = state.setValue(STAGE, Math.min(2, state.getValue(STAGE) + stagesGrown))
+                        .setValue(LIFECYCLE, currentLifecycle);
+
+                    // Finally, possibly, cause a propagation event - this is based on the current time.
+                    if (newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0 && distanceToGround(level, pos, maxHeight) <= maxHeight)
+                    {
+                        propagate(level, pos, level.getRandom(), newState);
                     }
                 }
-                if (random.nextInt(deathChance) == 0)
+
+                // And update the block
+                if (state != newState)
                 {
-                    te.setGrowing(false);
+                    level.setBlock(pos, newState, 3);
                 }
             }
-        }
-        else if (lifecycle == Lifecycle.DORMANT && !te.isGrowing())
+            bush.afterUpdate();
+        });
+    }
+
+    protected BlockState getDeadState(BlockState state)
+    {
+        return TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, state.getValue(STAGE));
+    }
+
+    protected void propagate(Level level, BlockPos pos, Random random, BlockState state)
+    {
+        final int stage = state.getValue(STAGE);
+        final BlockPos abovePos = pos.above();
+        if (stage == 1 && level.isEmptyBlock(abovePos))
         {
-            te.addDeath();
-            if (te.willDie() && random.nextInt(3) == 0)
+            level.setBlockAndUpdate(abovePos, state.setValue(STAGE, 1));
+        }
+        else if (stage == 2)
+        {
+            Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+            BlockPos offsetPos = pos.relative(offset);
+            if (level.isEmptyBlock(offsetPos))
             {
-                if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.SPREADING_BUSH))
-                    world.setBlockAndUpdate(pos, TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, stage));
+                level.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, offset));
+                level.getBlockEntity(offsetPos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * bush.getTicksSinceUpdate()));
             }
         }
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        final BlockPos sourcePos = pos.below();
+        final ClimateRange range = climateRange.get();
+
+        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+        text.add(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
     }
 
     @Override

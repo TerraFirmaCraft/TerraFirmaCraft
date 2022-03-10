@@ -20,6 +20,7 @@ public class ClimateRanges
     public static final Supplier<ClimateRange> BANANA_PLANT = register("plant/banana_tree");
     public static final Supplier<ClimateRange> CRANBERRY_BUSH = register("plant/cranberry_bush");
     public static final Map<FruitBlocks.StationaryBush, Supplier<ClimateRange>> STATIONARY_BUSHES = Helpers.mapOfKeys(FruitBlocks.StationaryBush.class, bush -> register("plant/" + bush.name() + "_bush"));
+    public static final Map<FruitBlocks.SpreadingBush, Supplier<ClimateRange>> SPREADING_BUSHES = Helpers.mapOfKeys(FruitBlocks.SpreadingBush.class, bush -> register("plant/" + bush.name() + "_bush"));
 
     public static final Map<FruitBlocks.Tree, Supplier<ClimateRange>> FRUIT_TREES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_tree"));
 
