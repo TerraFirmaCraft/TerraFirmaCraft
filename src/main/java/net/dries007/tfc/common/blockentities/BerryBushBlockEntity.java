@@ -28,7 +28,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
     // todo: old
     private boolean isGrowing;
     private boolean harvested;
-    private int useTicks;
     private int deathTicks;
 
     private long lastTick, lastUpdateTick;
@@ -42,7 +41,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
     {
         super(type, pos, state);
         harvested = true;
-        useTicks = 0;
         deathTicks = 0;
         isGrowing = true;
         lastTick = lastUpdateTick = Calendars.SERVER.getTicks();
@@ -66,7 +64,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
 
         isGrowing = nbt.getBoolean("isGrowing");
         harvested = nbt.getBoolean("harvested");
-        useTicks = nbt.getInt("useTicks");
         deathTicks = nbt.getInt("deathTicks");
         super.loadAdditional(nbt);
     }
@@ -79,7 +76,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
 
         nbt.putBoolean("isGrowing", isGrowing);
         nbt.putBoolean("harvested", harvested);
-        nbt.putInt("useTicks", useTicks);
         nbt.putInt("deathTicks", deathTicks);
         super.saveAdditional(nbt);
     }
@@ -106,21 +102,6 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
     public void setHarvested(boolean isHarvested)
     {
         harvested = isHarvested;
-    }
-
-    public void use()
-    {
-        useTicks++;
-    }
-
-    public void stopUsing()
-    {
-        useTicks = 0;
-    }
-
-    public boolean willStopUsing()
-    {
-        return useTicks > 20;
     }
 
     @Deprecated

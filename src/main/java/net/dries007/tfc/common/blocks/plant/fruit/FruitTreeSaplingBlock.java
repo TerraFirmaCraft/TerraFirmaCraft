@@ -34,13 +34,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -48,13 +47,15 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     protected final Supplier<? extends Block> block;
     protected final int treeGrowthDays;
     private final ExtendedProperties properties;
+    private final Supplier<ClimateRange> climateRange;
 
-    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays)
+    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays, Supplier<ClimateRange> climateRange)
     {
         super(properties.properties());
         this.properties = properties;
         this.block = block;
         this.treeGrowthDays = treeGrowthDays;
+        this.climateRange = climateRange;
     }
 
     @Override
@@ -90,25 +91,23 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        TickCounterBlockEntity te = Helpers.getBlockEntity(level, pos, TickCounterBlockEntity.class);
-        if (te != null)
-        {
-            if (!level.isClientSide() && te.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+            if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
             {
-                ChunkData data = ChunkData.get(level, pos);
-                // todo: better climate checks
-                /*if (!tree.getBase().isValidConditions(data.getAverageTemp(pos), data.getRainfall(pos)))
+                int hydration = (int) Climate.getRainfall(level, pos) / 5;
+                float temp = Climate.getTemperature(level, pos);
+                if (climateRange.get().checkBoth(hydration, temp, false))
                 {
                     level.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
                 }
-                else*/
+                else
                 {
                     boolean onBranch = level.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
                     level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
                     Helpers.resetCounter(level, pos);
                 }
             }
-        }
+        });
     }
 
     @Override
@@ -137,11 +136,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterBlockEntity te = Helpers.getBlockEntity(level, pos, TickCounterBlockEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-        }
+        Helpers.resetCounter(level, pos);
         super.setPlacedBy(level, pos, state, placer, stack);
     }
 

@@ -28,6 +28,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class BananaSaplingBlock extends FruitTreeSaplingBlock
 {
@@ -35,7 +36,7 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
 
     public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, int treeGrowthDays)
     {
-        super(properties, block, treeGrowthDays);
+        super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT);
 
         this.stages = stages;
     }
