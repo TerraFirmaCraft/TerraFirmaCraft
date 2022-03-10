@@ -228,6 +228,14 @@
         "minCount": 2,
         "maxCount": 4
       }
+    ],
+    "water_creature": [
+      {
+        "type": "tfc:manatee",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
     ]
   },
   "player_spawn_friendly": false,

@@ -309,7 +309,7 @@ MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
-SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tannin', 'vinegar')
+SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
 
 WOODS: Dict[str, Wood] = {
     'acacia': Wood(650, 1000),
@@ -474,8 +474,8 @@ PLANT_COLORS: Dict[str, List[str]] = {
 }
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
-SIMPLE_ITEMS = ('alabaster_brick', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
-                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'rotten_compost', 'silk_cloth', 'spindle',
+SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glue',
+                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'rotten_compost', 'shell', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
@@ -516,10 +516,10 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
-MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish')
+MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'sugarcane')
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab']
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
 
@@ -542,25 +542,26 @@ OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
     'jellyfish': spawner('tfc:jellyfish', min_count=2, max_count=6)
 }
 
-"""OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
+OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
     'orca': spawner('tfc:orca', min_count=1, max_count=3),
     'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3)
-}"""
+}
 
 LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
     'salmon': spawner('tfc:salmon', min_count=2, max_count=6, weight=10),
     'bluegill': spawner('tfc:bluegill', min_count=2, max_count=4, weight=10)
 }
 
-"""LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
+LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
     'manatee': spawner('tfc:manatee', min_count=1, max_count=2)
 }
 
 SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
     'penguin': spawner('tfc:penguin', min_count=2, max_count=5),
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
-}"""
+}
 
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -588,6 +589,7 @@ DEFAULT_LANG = {
     'tfc.tile_entity.charcoal_forge': 'Forge',
     'tfc.tile_entity.crucible': 'Crucible',
     'item.tfc.handstone': 'Handstone',
+    'effect.tfc.pinned': 'Pinned',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -727,6 +729,7 @@ DEFAULT_LANG = {
     'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
     'entity.tfc.penguin': 'Penguin',
     'entity.tfc.turtle': 'Turtle',
+    'entity.tfc.polar_bear': 'Polar Bear',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},

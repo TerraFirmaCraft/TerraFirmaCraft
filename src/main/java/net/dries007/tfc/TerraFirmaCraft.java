@@ -23,6 +23,7 @@ import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -39,6 +40,7 @@ import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.Faunas;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
@@ -71,7 +73,6 @@ public final class TerraFirmaCraft
 {
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
-
     public static final Logger LOGGER = LogManager.getLogger();
 
     public TerraFirmaCraft()
@@ -102,6 +103,10 @@ public final class TerraFirmaCraft
         TFCCarvers.CARVERS.register(bus);
         TFCWorldType.WORLD_TYPES.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
+        TFCEffects.EFFECTS.register(bus);
+        TFCBrain.ACTIVITIES.register(bus);
+        TFCBrain.MEMORY_TYPES.register(bus);
+        TFCBrain.SCHEDULES.register(bus);
 
         TFCConfig.init();
         PacketHandler.init();

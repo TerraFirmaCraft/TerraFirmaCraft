@@ -18,6 +18,7 @@ public enum SimpleFluid
     OLIVE_OIL(0xFF6A7537),
     OLIVE_OIL_WATER(0xFF4A4702),
     TANNIN(0xFF63594E),
+    TALLOW(0xEDE9CF),
     VINEGAR(0xFFC7C2AA);
 
     private final String id;

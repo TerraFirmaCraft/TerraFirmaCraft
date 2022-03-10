@@ -15,8 +15,6 @@ import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 public class TFCRecipeTypes
 {
     public static final Supplier<RecipeType<CollapseRecipe>> COLLAPSE = register("collapse");

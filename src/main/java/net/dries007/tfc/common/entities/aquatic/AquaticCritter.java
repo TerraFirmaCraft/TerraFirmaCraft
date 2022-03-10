@@ -17,9 +17,9 @@ import net.minecraft.world.level.material.Fluid;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
-public class AquaticCritterEntity extends WaterAnimal implements AquaticMob
+public class AquaticCritter extends WaterAnimal implements AquaticMob
 {
-    public AquaticCritterEntity(EntityType<? extends WaterAnimal> type, Level level)
+    public AquaticCritter(EntityType<? extends WaterAnimal> type, Level level)
     {
         super(type, level);
     }

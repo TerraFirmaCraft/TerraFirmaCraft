@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,6 +28,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
+import net.dries007.tfc.client.model.Animation;
+import net.dries007.tfc.client.model.Easing;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -82,6 +86,16 @@ public final class ClientHelpers
     public static ResourceLocation animalTexture(String name)
     {
         return Helpers.identifier("textures/entity/animal/" + name + ".png");
+    }
+
+    public static ModelPart bakeSimple(EntityRendererProvider.Context ctx, String layerName)
+    {
+        return ctx.bakeLayer(modelIdentifier(layerName));
+    }
+
+    public static Animation.Bone.Builder newBone()
+    {
+        return new Animation.Bone.Builder(Easing.LINEAR);
     }
 
     public static float itemTimeRotation()

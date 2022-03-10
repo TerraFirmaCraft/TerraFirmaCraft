@@ -135,6 +135,7 @@ public final class TFCItems
         register("powder/" + powder.name(), MISC)
     );
 
+    public static final RegistryObject<Item> BLUBBER = register("blubber", MISC);
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms", MISC);
     public static final RegistryObject<Item> BURLAP_CLOTH = register("burlap_cloth", MISC);
     public static final RegistryObject<Item> COMPOST = register("compost", MISC);
@@ -152,6 +153,7 @@ public final class TFCItems
     public static final RegistryObject<Item> MORTAR = register("mortar", MISC);
     public static final RegistryObject<Item> OLIVE_PASTE = register("olive_paste", MISC);
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
+    public static final RegistryObject<Item> SHELL = register("shell", MISC);
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);
     public static final RegistryObject<Item> SPINDLE = register("spindle", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(40)));
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);
@@ -172,6 +174,15 @@ public final class TFCItems
     public static final RegistryObject<Item> JELLYFISH_EGG = registerSpawnEgg(TFCEntities.JELLYFISH, 0xE83D0E, 0x11F2F2);
     public static final RegistryObject<Item> SALMON_EGG = registerSpawnEgg(TFCEntities.SALMON, 10489616, 951412);
     public static final RegistryObject<Item> BLUEGILL_EGG = registerSpawnEgg(TFCEntities.BLUEGILL, 0x00658A, 0xE3E184);
+    public static final RegistryObject<Item> LOBSTER_EGG = registerSpawnEgg(TFCEntities.LOBSTER, 0xa63521, 0x312042);
+    public static final RegistryObject<Item> ISOPOD_EGG = registerSpawnEgg(TFCEntities.ISOPOD, 0xb970ba, 0x969377);
+    public static final RegistryObject<Item> HORSESHOE_CRAB_EGG = registerSpawnEgg(TFCEntities.HORSESHOE_CRAB, 0x45e2ed, 0x45e2ed);
+    public static final RegistryObject<Item> DOLPHIN_EGG = registerSpawnEgg(TFCEntities.DOLPHIN, 2243405, 16382457);
+    public static final RegistryObject<Item> ORCA_EGG = registerSpawnEgg(TFCEntities.ORCA, 0x000000, 0xffffff);
+    public static final RegistryObject<Item> MANATEE_EGG = registerSpawnEgg(TFCEntities.MANATEE, 0x65786C, 0x7FCFCF);
+    public static final RegistryObject<Item> TURTLE_EGG = registerSpawnEgg(TFCEntities.TURTLE, 15198183, 44975);
+    public static final RegistryObject<Item> PENGUIN_EGG = registerSpawnEgg(TFCEntities.PENGUIN, 0xFFEA00, 0x47452C);
+    public static final RegistryObject<Item> POLAR_BEAR_EGG = registerSpawnEgg(TFCEntities.POLAR_BEAR, 15921906, 9803152);
 
     // Pottery
 

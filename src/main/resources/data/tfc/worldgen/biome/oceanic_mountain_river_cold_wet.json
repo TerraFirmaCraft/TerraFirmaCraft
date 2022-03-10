@@ -26,8 +26,6 @@
       "tfc:underground_flood_fill_lake"
     ],
     [
-      "tfc:surface_ore_deposits",
-      "tfc:deep_ore_deposits",
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc",
@@ -238,6 +236,20 @@
         "weight": 10,
         "minCount": 2,
         "maxCount": 4
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "tfc:orca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:dolphin",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
       }
     ]
   },

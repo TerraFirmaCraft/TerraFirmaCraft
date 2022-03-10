@@ -60,10 +60,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.model.*;
-import net.dries007.tfc.client.particle.BubbleParticle;
-import net.dries007.tfc.client.particle.GlintParticleProvider;
-import net.dries007.tfc.client.particle.SteamParticle;
-import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -266,11 +263,17 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.SALMON.get(), SalmonRenderer::new);
         event.registerEntityRenderer(TFCEntities.TROPICAL_FISH.get(), TropicalFishRenderer::new);
         event.registerEntityRenderer(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
-        event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
+        event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), ctx -> new SimpleMobRenderer<>(ctx, new BluegillModel(ClientHelpers.bakeSimple(ctx, "bluegill")), "bluegill", true));
         event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
-        event.registerEntityRenderer(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
-        event.registerEntityRenderer(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
-        event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
+        event.registerEntityRenderer(TFCEntities.LOBSTER.get(), ctx -> new SimpleMobRenderer<>(ctx, new LobsterModel(ClientHelpers.bakeSimple(ctx, "lobster")), "lobster"));
+        event.registerEntityRenderer(TFCEntities.ISOPOD.get(), ctx -> new SimpleMobRenderer<>(ctx, new IsopodModel(ClientHelpers.bakeSimple(ctx, "isopod")), "isopod"));
+        event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), ctx -> new SimpleMobRenderer<>(ctx, new HorseshoeCrabModel(ClientHelpers.bakeSimple(ctx, "horseshoe_crab")), "horseshoe_crab"));
+        event.registerEntityRenderer(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
+        event.registerEntityRenderer(TFCEntities.ORCA.get(), ctx -> new SimpleMobRenderer<>(ctx, new OrcaModel(ClientHelpers.bakeSimple(ctx, "orca")), "orca"));
+        event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer<>(ctx, new ManateeModel(ClientHelpers.bakeSimple(ctx, "manatee")), "manatee"));
+        event.registerEntityRenderer(TFCEntities.TURTLE.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCTurtleModel(ClientHelpers.bakeSimple(ctx, "turtle")), "turtle"));
+        event.registerEntityRenderer(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
+        event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), TFCPolarBearRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -296,6 +299,11 @@ public final class ClientEventHandler
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("lobster"), LobsterModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("orca"), OrcaModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("manatee"), ManateeModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("turtle"), TFCTurtleModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("penguin"), PenguinModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("polar_bear"), TFCPolarBearModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)
@@ -364,7 +372,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.POTASSIUM.get(), set -> new GlintParticleProvider(set, ChatFormatting.LIGHT_PURPLE));
         particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
-
+        particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

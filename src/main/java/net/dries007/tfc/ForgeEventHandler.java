@@ -30,6 +30,7 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -57,6 +58,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -68,6 +70,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -96,10 +99,7 @@ import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
-import net.dries007.tfc.network.ChunkUnwatchPacket;
-import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
-import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.network.PlayerDrinkPacket;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -152,6 +152,8 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
+        bus.addListener(ForgeEventHandler::onEffectRemove);
+        bus.addListener(ForgeEventHandler::onEffectExpire);
         bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
@@ -636,6 +638,27 @@ public final class ForgeEventHandler
         if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
+        }
+    }
+
+    public static void onEffectRemove(PotionEvent.PotionRemoveEvent event)
+    {
+        if (event.getPotion() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+        {
+            player.setForcedPose(null);
+        }
+    }
+
+    public static void onEffectExpire(PotionEvent.PotionExpiryEvent event)
+    {
+        final MobEffectInstance instance = event.getPotionEffect();
+        if (instance != null)
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new EffectExpirePacket(instance.getEffect()));
+            if (instance.getEffect() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+            {
+                player.setForcedPose(null);
+            }
         }
     }
 

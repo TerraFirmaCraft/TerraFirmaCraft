@@ -266,8 +266,8 @@ def generate(rm: ResourceManager):
       {'name': 'tfc:wattle'},
       {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'type': 'filled'})]},
       {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'type': 'woven'})]},
-      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'up': 'true'})]},
-      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'down': 'true'})]},
+      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'top': 'true'})]},
+      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'bottom': 'true'})]},
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'left': 'true'})]},
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'right': 'true'})]}
     )
@@ -288,14 +288,7 @@ def generate(rm: ResourceManager):
             ({'bottom': True}, {'model': 'tfc:block/wattle/bottom'}),
             ({'left': True}, {'model': 'tfc:block/wattle/left'}),
             ({'right': True}, {'model': 'tfc:block/wattle/right'})
-        ).with_lang(lang('%s stained wattle', color))
-        rm.block_loot(wattle,
-            {'name': wattle},
-            {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'up': 'true'})]},
-            {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'down': 'true'})]},
-            {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'left': 'true'})]},
-            {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'right': 'true'})]}
-        )
+        ).with_lang(lang('%s stained wattle', color)).with_block_loot(wattle)
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
@@ -1150,7 +1143,7 @@ def generate(rm: ResourceManager):
 
         rm.block_model('wood/sluice/%s_upper' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_upper')
         rm.block_model('wood/sluice/%s_lower' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_lower')
-        block = rm.blockstate(('wood', 'sluice', wood), variants={**four_rotations('tfc:block/wood/sluice/%s_upper' % wood, (90, 0, 180, 270), suffix=',upper=true'), **four_rotations('tfc:block/wood/sluice/%s_lower' % wood, (90, 0, 180, 270), suffix=',upper=false')}).with_lang(lang('%s sluice', wood)).with_tag('tfc:sluices')
+        block = rm.blockstate(('wood', 'sluice', wood), variants={**four_rotations('tfc:block/wood/sluice/%s_upper' % wood, (90, 0, 180, 270), suffix=',upper=true'), **four_rotations('tfc:block/wood/sluice/%s_lower' % wood, (90, 0, 180, 270), suffix=',upper=false')}).with_lang(lang('%s sluice', wood))
         block.with_block_loot({'name': 'tfc:wood/sluice/%s' % wood, 'conditions': [block_state_property('tfc:wood/sluice/%s' % wood, {'upper': 'true'})]})
         rm.item_model(('wood', 'sluice', wood), parent='tfc:block/wood/sluice/%s_lower' % wood, no_textures=True)
 

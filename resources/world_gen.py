@@ -1233,16 +1233,24 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
         if name == 'shore':
             features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in SHORE_DECORATORS]
+            spawners.update({
+                'creature': [entity for entity in SHORE_CREATURES.values()]
+            })
         else:
             features[Decoration.SURFACE_DECORATION] += ['tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
             features[Decoration.SURFACE_DECORATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
 
         spawners.update({
-            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()]
+            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
+            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
         })
     if category == 'river':
         spawners.update({
             'water_ambient': [entity for entity in LAKE_AMBIENT.values()]
+        })
+    if name.find('lake') != -1:
+        spawners.update({
+            'water_creature': [entity for entity in LAKE_CREATURES.values()]
         })
         features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
 
