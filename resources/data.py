@@ -170,6 +170,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood, 'tfc:wood/wood/%s' % wood, 'tfc:wood/stripped_log/%s' % wood, 'tfc:wood/stripped_wood/%s' % wood)
         rm.item_tag('twigs', 'tfc:wood/twig/%s' % wood)
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
+        rm.item_tag('sluices', 'tfc:wood/sluice/%s' % wood)
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:
@@ -602,7 +603,7 @@ def generate(rm: ResourceManager):
     rm.entity_loot('orca', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
     rm.entity_loot('dolphin', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
     rm.entity_loot('manatee', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
-    rm.entity_loot('penguin', {'name': 'minecraft:feather', 'functions': loot_tables.random_chance(0.8)}, {'name': 'tfc:small_raw_hide', 'functions': loot_tables.random_chance(0.3)})
+    rm.entity_loot('penguin', {'name': 'minecraft:feather', 'conditions': [loot_tables.random_chance(0.8)]}, {'name': 'tfc:small_raw_hide', 'conditions': [loot_tables.random_chance(0.3)]})
     rm.entity_loot('turtle', 'minecraft:scute')
     rm.entity_loot('polar_bear', 'tfc:large_raw_hide')
 

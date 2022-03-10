@@ -29,8 +29,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandler
 {
-
-
     public static final EnumProperty<Type> TYPE = TFCBlockStateProperties.WATTLE_TYPE;
 
     public WattleBlock(ExtendedProperties properties)

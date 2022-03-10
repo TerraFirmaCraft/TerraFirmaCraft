@@ -9,7 +9,7 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:feather",
-          "functions": [
+          "conditions": [
             {
               "condition": "minecraft:random_chance",
               "chance": 0.8
@@ -25,7 +25,7 @@
         {
           "type": "minecraft:item",
           "name": "tfc:small_raw_hide",
-          "functions": [
+          "conditions": [
             {
               "condition": "minecraft:random_chance",
               "chance": 0.3

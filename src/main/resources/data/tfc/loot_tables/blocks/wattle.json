@@ -89,7 +89,7 @@
               "condition": "minecraft:block_state_property",
               "block": "tfc:wattle",
               "properties": {
-                "up": "true"
+                "top": "true"
               }
             }
           ]
@@ -113,7 +113,7 @@
               "condition": "minecraft:block_state_property",
               "block": "tfc:wattle",
               "properties": {
-                "down": "true"
+                "bottom": "true"
               }
             }
           ]

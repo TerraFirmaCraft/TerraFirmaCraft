@@ -561,6 +561,7 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
 }
 
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

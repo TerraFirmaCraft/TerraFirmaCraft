@@ -282,6 +282,9 @@ def generate(rm: ResourceManager):
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('#tfc:high_quality_cloth')
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
 
+    for name in DISABLED_VANILLA_RECIPES:
+        disable_recipe(rm, 'minecraft:' + name)
+
     # Quern
     quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
     quern_recipe(rm, 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
@@ -336,7 +339,7 @@ def generate(rm: ResourceManager):
         'fluid_output': fluid_stack('tfc:olive_oil_water', 1000)
     })
 
-    blubber = utils.ingredient('blubber')
+    blubber = utils.ingredient('tfc:blubber')
     rm.recipe(('pot', 'tallow'), 'tfc:pot_fluid', {
         'ingredients': [blubber, blubber, blubber, blubber],
         'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),
@@ -424,6 +427,9 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_steel', 'weak_steel', ('steel', 0.5, 0.7), ('nickel', 0.15, 0.25), ('black_bronze', 0.15, 0.25))
     alloy_recipe(rm, 'weak_blue_steel', 'weak_blue_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15))
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
+
+def disable_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier):
+    rm.recipe(name_parts, 'tfc:noop', {})
 
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
