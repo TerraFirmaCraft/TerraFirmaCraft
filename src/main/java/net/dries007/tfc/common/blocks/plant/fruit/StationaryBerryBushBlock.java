@@ -13,24 +13,15 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.ItemHandlerHelper;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -46,7 +37,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 {
     private static final VoxelShape HALF_PLANT = box(2, 0, 2, 14, 8, 14);
 
-    private final Supplier<ClimateRange> climateRange; // todo: move this field to SeasonalPlantBlock
+    protected final Supplier<ClimateRange> climateRange; // todo: move this field to SeasonalPlantBlock
 
     public StationaryBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle, Supplier<ClimateRange> climateRange)
     {
@@ -62,46 +53,9 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemStack getTrimItemStack()
     {
-        // Flowering bushes can be cut to create trimmings. This is how one moves or creates new bushes.
-        // The larger the bush is (higher stage), the better chance you have of
-        // 1. damaging it less (i.e. reducing the stage, or killing it), and
-        // 2. making a clipping.
-        if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
-        {
-            final ItemStack held = player.getItemInHand(hand);
-            if (Helpers.isItem(held.getItem(), TFCTags.Items.BUSH_CUTTING_TOOLS))
-            {
-                level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5f, 1.0f);
-                if (!level.isClientSide())
-                {
-                    level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
-                        final int finalStage = state.getValue(STAGE) - 1 - level.getRandom().nextInt(2);
-                        if (finalStage >= 0)
-                        {
-                            // We didn't kill the bush, but we have cut the flowers off
-                            level.setBlock(pos, state.setValue(STAGE, finalStage).setValue(LIFECYCLE, Lifecycle.HEALTHY), 3);
-                        }
-                        else
-                        {
-                            // Oops
-                            level.destroyBlock(pos, false, player);
-                        }
-
-                        held.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
-
-                        // But, if we were successful, we have obtained a clipping (2 / 3 chance)
-                        if (level.getRandom().nextInt(3) != 0)
-                        {
-                            ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(this));
-                        }
-                    });
-                }
-                return InteractionResult.SUCCESS;
-            }
-        }
-        return super.use(state, level, pos, player, hand, hit);
+        return new ItemStack(this);
     }
 
     @Override
@@ -185,10 +139,10 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 
                 BlockState newState;
 
-                if (monthsSpentDying > 0 && level.getRandom().nextInt(6) < monthsSpentDying)
+                if (monthsSpentDying > 0 && level.getRandom().nextInt(getDeathChance()) < monthsSpentDying && specialDeathCondition(level, pos, state))
                 {
                     // It may have died, as it spent too many consecutive months where it should've been healthy, in invalid conditions.
-                    newState = TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState();
+                    newState = getDeadState(state);
                 }
                 else
                 {
@@ -197,9 +151,9 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                         .setValue(LIFECYCLE, currentLifecycle);
 
                     // Finally, possibly, cause a propagation event - this is based on the current time.
-                    if (newState.getValue(STAGE) == 2 && newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0)
+                    if (mayPropagate(newState, level, pos))
                     {
-                        propagate(level, pos, level.getRandom());
+                        propagate(level, pos, level.getRandom(), newState);
                     }
                 }
 
@@ -213,6 +167,16 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         });
     }
 
+    protected boolean specialDeathCondition(Level level, BlockPos pos, BlockState state)
+    {
+        return true;
+    }
+
+    protected int getDeathChance()
+    {
+        return 6;
+    }
+
     protected BlockState getNewState(Level level, BlockPos pos)
     {
         return defaultBlockState().setValue(STAGE, 0).setValue(LIFECYCLE, Lifecycle.HEALTHY);
@@ -223,7 +187,17 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         return level.isEmptyBlock(pos) && placementState.canSurvive(level, pos);
     }
 
-    private void propagate(Level level, BlockPos pos, Random random)
+    protected BlockState getDeadState(BlockState state)
+    {
+        return TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, state.getValue(STAGE));
+    }
+
+    protected boolean mayPropagate(BlockState newState, Level level, BlockPos pos)
+    {
+        return newState.getValue(STAGE) == 2 && newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0;
+    }
+
+    protected void propagate(Level level, BlockPos pos, Random random, BlockState newState)
     {
         // Conditions:
         // 1. Must be in max growth stage, and an active lifecycle

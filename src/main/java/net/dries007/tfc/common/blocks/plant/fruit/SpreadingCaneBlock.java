@@ -11,11 +11,6 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -27,10 +22,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -55,39 +48,9 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    protected ItemStack getTrimItemStack()
     {
-        if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
-        {
-            ItemStack held = player.getItemInHand(hand);
-            if (Helpers.isItem(held, TFCTags.Items.BUSH_CUTTING_TOOLS))
-            {
-                level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5f, 1.0f);
-                if (!level.isClientSide())
-                {
-                    final int finalStage = state.getValue(STAGE) - 1 - level.getRandom().nextInt(2);
-                    if (finalStage >= 0)
-                    {
-                        // We didn't kill the bush, but we have cut the flowers off
-                        level.setBlock(pos, state.setValue(STAGE, finalStage).setValue(LIFECYCLE, Lifecycle.HEALTHY), 3);
-                    }
-                    else
-                    {
-                        // Oops
-                        level.destroyBlock(pos, false, player);
-                    }
-                }
-
-                held.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
-
-                // But, if we were successful, we have obtained a clipping (2 / 3 chance)
-                if (level.getRandom().nextInt(3) != 0)
-                {
-                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(this));
-                }
-            }
-        }
-        return super.use(state, level, pos, player, hand, hit);
+        return new ItemStack(companion.get());
     }
 
     @Override
@@ -118,11 +81,24 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     protected void propagate(Level level, BlockPos pos, Random random, BlockState state)
     {
         final int stage = state.getValue(STAGE);
-        if (stage == 2)
+        BlockState placeState = companion.get().defaultBlockState().setValue(STAGE, stage).setValue(LIFECYCLE, state.getValue(LIFECYCLE));
+        if (stage == 2 && placeState.canSurvive(level, pos))
         {
-            level.setBlockAndUpdate(pos, companion.get().defaultBlockState().setValue(STAGE, stage));
+            level.setBlockAndUpdate(pos, placeState);
             level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * bush.getTicksSinceUpdate()));
         }
+    }
+
+    @Override
+    protected boolean specialDeathCondition(Level level, BlockPos pos, BlockState state)
+    {
+        BlockState parent = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
+        // if the parent is alive we shouldn't die
+        if (Helpers.isBlock(parent, TFCTags.Blocks.SPREADING_BUSH))
+        {
+            return false;
+        }
+        return super.specialDeathCondition(level, pos, state);
     }
 
     @Override

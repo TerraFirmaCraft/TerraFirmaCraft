@@ -653,12 +653,10 @@ def generate(rm: ResourceManager):
 
     for berry, info in BERRIES.items():
         decorators = decorate_square(), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_chance(60)
-        if info.type == 'stationary':
+        if info.type == 'stationary' or info.type == 'spreading':
             configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0]' % berry, 1, 4, 4), *decorators)
         elif info.type == 'waterlogged':
             configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0,fluid=empty]' % berry, 1, 4, 4, water=True), *decorators)
-            # todo: implement spreading bush features
-        #    configured_placed_feature(rm, ('plant', berry + '_bush'), 'no_op', {})
 
     for fruit, info in FRUITS.items():
         config = {

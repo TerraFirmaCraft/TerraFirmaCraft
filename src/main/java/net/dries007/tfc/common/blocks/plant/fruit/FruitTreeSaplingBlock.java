@@ -33,7 +33,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.util.Helpers;
@@ -102,8 +101,10 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
                 }
                 else
                 {
-                    boolean onBranch = Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
-                    level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
+                    final boolean onBranch = Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
+                    int internalSapling = onBranch ? 3 : state.getValue(SAPLINGS);
+                    if (internalSapling == 1 && random.nextBoolean()) internalSapling += 1;
+                    level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, internalSapling).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
                     Helpers.resetCounter(level, pos);
                 }
             }

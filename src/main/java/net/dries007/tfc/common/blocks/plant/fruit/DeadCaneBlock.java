@@ -36,7 +36,6 @@ public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExte
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         if (random.nextInt(15) == 0 && !level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
@@ -53,7 +52,7 @@ public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExte
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     @Override
