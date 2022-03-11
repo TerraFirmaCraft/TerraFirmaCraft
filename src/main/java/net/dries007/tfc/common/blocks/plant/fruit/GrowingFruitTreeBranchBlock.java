@@ -29,7 +29,6 @@ import net.minecraft.world.phys.HitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -37,7 +36,6 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 
 /**
  * If I had my way, everything in this mod would be chorus fruit.
@@ -64,7 +62,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     private static boolean canGrowInto(LevelReader level, BlockPos pos)
     {
         BlockState state = level.getBlockState(pos);
-        return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
+        return state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.FRUIT_TREE_LEAVES);
     }
 
     private static boolean allNeighborsEmpty(LevelReader level, BlockPos pos, @Nullable Direction excludingSide)
@@ -108,7 +106,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                 boolean willGrowUpward = false;
                 BlockState belowState = level.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
-                if (TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(belowBlock))
+                if (Helpers.isBlock(belowBlock, TFCTags.Blocks.BUSH_PLANTABLE_ON))
                 {
                     willGrowUpward = true;
                 }
@@ -238,7 +236,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     {
         final BlockState leaves = this.leaves.get().defaultBlockState();
         BlockState downState = level.getBlockState(pos.below(2));
-        if (!(downState.isAir() || downState.is(TFCTags.Blocks.FRUIT_TREE_LEAVES) || downState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))) return;
+        if (!(downState.isAir() || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_LEAVES) || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH))) return;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : NOT_DOWN)
         {

@@ -27,6 +27,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
@@ -138,7 +139,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
     {
         BlockPos sidePos = pos.relative(side);
         BlockState sideState = world.getBlockState(sidePos);
-        return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || TFCTags.Blocks.SUPPORTS_LANDSLIDE.contains(sideState.getBlock());
+        return sideState.isFaceSturdy(world, sidePos, side.getOpposite()) || Helpers.isBlock(sideState, TFCTags.Blocks.SUPPORTS_LANDSLIDE);
     }
 
     public LandslideRecipe(ResourceLocation id, BlockIngredient ingredient, BlockState outputState, boolean copyInputState)

@@ -25,6 +25,7 @@ import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandler
@@ -43,11 +44,11 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
         if (hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
         final ItemStack item = player.getItemInHand(hand);
         final Type type = state.getValue(TYPE);
-        if (type == Type.EMPTY && item.is(Tags.Items.RODS_WOODEN) && item.getCount() >= 4)
+        if (type == Type.EMPTY && Helpers.isItem(item, Tags.Items.RODS_WOODEN) && item.getCount() >= 4)
         {
             return setState(level, pos, state.setValue(TYPE, Type.WOVEN), player, item, 4); // add sticks
         }
-        else if (type == Type.WOVEN && item.is(TFCItems.DAUB.get()))
+        else if (type == Type.WOVEN && Helpers.isItem(item, TFCItems.DAUB.get()))
         {
             return setState(level, pos, state.setValue(TYPE, Type.FILLED), player, item, 1); // add daub
         }
@@ -59,11 +60,11 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
     public BlockState getStateToDraw(Level level, Player player, BlockState lookState, Direction direction, BlockPos lookPos, double x, double y, double z, ItemStack item)
     {
         Type type = lookState.getValue(TYPE);
-        if (type == Type.EMPTY && item.is(Tags.Items.RODS_WOODEN) && item.getCount() >= 4)
+        if (type == Type.EMPTY && Helpers.isItem(item, Tags.Items.RODS_WOODEN) && item.getCount() >= 4)
         {
             return lookState.setValue(TYPE, Type.WOVEN);
         }
-        else if (type == Type.WOVEN && item.is(TFCItems.DAUB.get()))
+        else if (type == Type.WOVEN && Helpers.isItem(item, TFCItems.DAUB.get()))
         {
             return lookState.setValue(TYPE, Type.FILLED);
         }

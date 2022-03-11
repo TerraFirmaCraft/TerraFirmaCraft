@@ -80,6 +80,6 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return super.mayPlaceOn(state, level, pos) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(state.getBlock());
+        return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 }

@@ -23,6 +23,7 @@ import net.minecraft.world.level.material.Fluids;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.RockSpikeBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.settings.RockSettings;
@@ -76,7 +77,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 
     protected void placeSmallSpike(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
     {
-        if (!raw.is(BlockTags.BASE_STONE_OVERWORLD))
+        if (!Helpers.isBlock(raw, BlockTags.BASE_STONE_OVERWORLD))
             return;
         // Build a spike starting downwards from the target block
         if (sizeWeight < 0.2f)

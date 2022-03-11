@@ -37,6 +37,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -55,6 +56,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
@@ -933,6 +935,52 @@ public final class Helpers
             tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
                 .append(fluid.getDisplayName()));
         }
+    }
+
+    //todo: 1.18.2 - these methods will no longer compile and will be changed
+    public static boolean isItem(ItemStack first, Item second)
+    {
+        return first.is(second);
+    }
+
+    public static boolean isItem(ItemStack stack, Tag<Item> tag)
+    {
+        return stack.is(tag);
+    }
+
+    public static boolean isItem(Item item, Tag<Item> tag)
+    {
+        return tag.contains(item);
+    }
+
+    public static boolean isBlock(BlockState first, Block second)
+    {
+        return first.is(second);
+    }
+
+    public static boolean isBlock(BlockState state, Tag<Block> tag)
+    {
+        return isBlock(state.getBlock(), tag);
+    }
+
+    public static boolean isBlock(Block block, Tag<Block> tag)
+    {
+        return tag.contains(block);
+    }
+
+    public static boolean isFluid(FluidState state, Tag<Fluid> tag)
+    {
+        return state.is(tag);
+    }
+
+    public static boolean isFluid(Fluid first, Tag<Fluid> second)
+    {
+        return first.is(second);
+    }
+
+    public static boolean isEntity(EntityType<?> entity, Tag<EntityType<?>> tag)
+    {
+        return tag.contains(entity);
     }
 
     /**

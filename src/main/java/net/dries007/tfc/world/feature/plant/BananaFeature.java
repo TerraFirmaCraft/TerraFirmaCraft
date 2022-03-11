@@ -13,13 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.util.Helpers;
@@ -48,7 +45,7 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         mutablePos.set(pos);
-        if (level.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (Helpers.isBlock(level.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
             if (level.canSeeSky(mutablePos))
             {

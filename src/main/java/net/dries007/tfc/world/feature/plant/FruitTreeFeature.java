@@ -23,6 +23,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 public class FruitTreeFeature extends Feature<BlockStateConfiguration>
@@ -43,7 +44,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         mutablePos.set(pos);
 
-        if (level.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (Helpers.isBlock(level.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
             boolean blocked = false;
             for (int j = 1; j <= 10; j++)

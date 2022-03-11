@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,7 +26,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
@@ -232,7 +230,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.move(Direction.DOWN);
         BlockState downState = level.getBlockState(mutablePos);
         mutablePos.move(Direction.UP);
-        if (downState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || downState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        if (Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(downState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
         {
             final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
             if (entry != null)

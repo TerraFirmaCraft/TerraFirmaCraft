@@ -40,6 +40,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
+import net.dries007.tfc.util.Helpers;
 
 public final class FluidHelpers
 {
@@ -258,7 +259,7 @@ public final class FluidHelpers
      */
     public static boolean canMixFluids(Fluid fluid)
     {
-        return fluid instanceof FlowingFluid && TFCTags.Fluids.MIXABLE.contains(fluid);
+        return fluid instanceof FlowingFluid && Helpers.isFluid(fluid, TFCTags.Fluids.MIXABLE);
     }
 
     /**

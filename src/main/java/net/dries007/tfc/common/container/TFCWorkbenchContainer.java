@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.CraftingMenu;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCWorkbenchContainer extends CraftingMenu
 {
@@ -36,6 +37,6 @@ public class TFCWorkbenchContainer extends CraftingMenu
     @Override
     public boolean stillValid(Player playerIn)
     {
-        return access.evaluate((world, pos) -> world.getBlockState(pos).is(TFCTags.Blocks.WORKBENCH) && playerIn.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D, true);
+        return access.evaluate((world, pos) -> Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.WORKBENCH) && playerIn.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D, true);
     }
 }

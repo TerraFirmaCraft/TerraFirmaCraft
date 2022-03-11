@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
@@ -80,7 +81,7 @@ public class TopPlantBlock extends GrowingPlantHeadBlock
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
+            return block == getHeadBlock() || block == getBodyBlock() || Helpers.isBlock(blockstate, BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
         }
     }
 

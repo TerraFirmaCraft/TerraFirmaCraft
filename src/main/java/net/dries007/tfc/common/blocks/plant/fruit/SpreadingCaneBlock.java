@@ -36,6 +36,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRange;
 
@@ -59,7 +60,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
         if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
         {
             ItemStack held = player.getItemInHand(hand);
-            if (TFCTags.Items.BUSH_CUTTING_TOOLS.contains(held.getItem()))
+            if (Helpers.isItem(held, TFCTags.Items.BUSH_CUTTING_TOOLS))
             {
                 level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5f, 1.0f);
                 if (!level.isClientSide())
@@ -140,6 +141,6 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ANY_SPREADING_BUSH);
+        return Helpers.isBlock(level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())), TFCTags.Blocks.ANY_SPREADING_BUSH);
     }
 }

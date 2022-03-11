@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
@@ -58,7 +59,7 @@ public class TFCVinesFeature extends Feature<VineConfig>
                     {
                         mutablePos.move(direction);
                         BlockState foundState = world.getBlockState(mutablePos);
-                        if (direction != Direction.DOWN && (foundState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON) || foundState.is(BlockTags.LOGS) || foundState.is(BlockTags.LEAVES)))
+                        if (direction != Direction.DOWN && (Helpers.isBlock(foundState, TFCTags.Blocks.CREEPING_PLANTABLE_ON) || Helpers.isBlock(foundState, BlockTags.LOGS) || Helpers.isBlock(foundState, BlockTags.LEAVES)))
                         {
                             mutablePos.move(direction.getOpposite());
                             world.setBlock(mutablePos, state.setValue(VineBlock.getPropertyForFace(direction), true), 2);

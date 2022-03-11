@@ -37,6 +37,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -148,6 +149,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                 final int hydration = FarmlandBlock.getHydration(level, sourcePos);
 
                 int stage = state.getValue(STAGE);
+
                 BlockPos abovePos = pos.above();
                 BlockState newState;
                 do
@@ -213,7 +215,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, TFCTags.Blocks.FRUIT_TREE_BRANCH);
     }
 
     @Override

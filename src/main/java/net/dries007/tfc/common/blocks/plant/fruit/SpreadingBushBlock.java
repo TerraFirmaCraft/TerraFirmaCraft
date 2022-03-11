@@ -175,6 +175,6 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.ANY_SPREADING_BUSH) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, TFCTags.Blocks.ANY_SPREADING_BUSH) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
     }
 }

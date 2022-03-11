@@ -30,8 +30,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class CreepingPlantBlock extends PlantBlock
 {
@@ -77,7 +76,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), facingState.is(TFCTags.Blocks.CREEPING_PLANTABLE_ON));
+        state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), Helpers.isBlock(facingState, TFCTags.Blocks.CREEPING_PLANTABLE_ON));
         return isEmpty(state) ? Blocks.AIR.defaultBlockState() : state;
     }
 
@@ -87,7 +86,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
-            if (level.getBlockState(mutablePos.setWithOffset(pos, direction)).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON))
+            if (Helpers.isBlock(level.getBlockState(mutablePos.setWithOffset(pos, direction)), TFCTags.Blocks.CREEPING_PLANTABLE_ON))
             {
                 return true;
             }
@@ -131,7 +130,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         for (Direction direction : UPDATE_SHAPE_ORDER)
         {
             mutablePos.setWithOffset(pos, direction);
-            boolean ground = level.getBlockState(mutablePos).is(TFCTags.Blocks.CREEPING_PLANTABLE_ON);
+            boolean ground = Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.CREEPING_PLANTABLE_ON);
 
             state = state.setValue(PipeBlock.PROPERTY_BY_DIRECTION.get(direction), ground);
             hasEarth |= ground;

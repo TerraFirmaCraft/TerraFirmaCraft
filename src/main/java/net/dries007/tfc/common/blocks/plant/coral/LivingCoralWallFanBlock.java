@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * {@link CoralWallFanBlock}
@@ -63,7 +64,7 @@ public class LivingCoralWallFanBlock extends CoralWallFanBlock
         }
         else
         {
-            if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+            if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), FluidTags.WATER))
             {
                 level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }

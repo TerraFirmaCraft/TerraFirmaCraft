@@ -68,7 +68,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         else if (level.getGameTime() % 20 == 0)
         {
             Fluid fluid = level.getFluidState(sluice.getWaterInputPos()).getType();
-            if (!fluid.isSame(Fluids.EMPTY) && fluid.is(FluidTags.WATER)) // attempt to let water flow through the sluice
+            if (!fluid.isSame(Fluids.EMPTY) && Helpers.isFluid(fluid, FluidTags.WATER)) // attempt to let water flow through the sluice
             {
                 final BlockPos outputPos = sluice.getWaterOutputPos();
                 if (level.getBlockState(outputPos).getMaterial().isReplaceable())
@@ -83,7 +83,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 if (stack.getItem() instanceof BlockItem blockItem)
                 {
                     Block block = blockItem.getBlock();
-                    if (block.defaultBlockState().is(TFCTags.Blocks.CAN_BE_PANNED))
+                    if (Helpers.isBlock(block.defaultBlockState(), TFCTags.Blocks.CAN_BE_PANNED))
                     {
                         boolean itemUsed = false;
                         for (int slot = 0; slot < sluice.inventory.getSlots(); slot++)
@@ -164,7 +164,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         Fluid output = level.getFluidState(getWaterOutputPos()).getType();
         if (inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1)
         {
-            return input.is(FluidTags.WATER) && output.isSame(input);
+            return Helpers.isFluid(input, FluidTags.WATER) && output.isSame(input);
         }
         return false;
     }

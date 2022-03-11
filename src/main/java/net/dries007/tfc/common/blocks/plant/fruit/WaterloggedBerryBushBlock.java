@@ -6,35 +6,24 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.Random;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -98,7 +87,7 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return super.mayPlaceOn(state, level, pos) || level.getBlockState(pos.below()).is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+        return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
     }
 
     @Override

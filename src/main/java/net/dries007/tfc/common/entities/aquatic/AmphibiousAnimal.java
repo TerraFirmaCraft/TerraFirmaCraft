@@ -38,6 +38,7 @@ import net.minecraft.world.phys.Vec3;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.entities.ai.amphibian.AmphibianAi;
+import net.dries007.tfc.util.Helpers;
 
 public class AmphibiousAnimal extends PathfinderMob
 {
@@ -217,9 +218,9 @@ public class AmphibiousAnimal extends PathfinderMob
         @Override
         public boolean isStableDestination(BlockPos pos)
         {
-            if (level.getFluidState(mob.blockPosition()).is(FluidTags.WATER))
+            if (Helpers.isFluid(level.getFluidState(mob.blockPosition()), FluidTags.WATER))
             {
-                return level.getFluidState(pos).is(FluidTags.WATER);
+                return Helpers.isFluid(level.getFluidState(pos), FluidTags.WATER);
             }
             return !level.getBlockState(pos.below()).isAir();
         }

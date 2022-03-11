@@ -32,7 +32,6 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
-import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -105,7 +104,7 @@ public class PotBlock extends FirepitBlock
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
+            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER))
             {
                 pot.extinguish(state);
                 return InteractionResult.sidedSuccess(level.isClientSide);
