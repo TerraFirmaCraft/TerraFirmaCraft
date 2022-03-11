@@ -44,7 +44,7 @@ public class TFCLoomBlock extends DeviceBlock
 
     public TFCLoomBlock(ExtendedProperties properties, ResourceLocation woodTexture)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
         this.woodTexture = woodTexture;
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }

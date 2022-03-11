@@ -964,6 +964,8 @@ def generate(rm: ResourceManager):
         block.with_block_model(textures={'texture': 'tfc:block/wood/planks/%s' % wood, 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/loom')
         block.with_item_model()
         block.with_lang(lang('%s Loom', wood))
+        block.with_block_loot('tfc:wood/planks/%s_loom' % wood)
+        block.with_tag('minecraft:mineable/axe')
 
         # Bookshelf
         block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood)
