@@ -45,7 +45,7 @@ public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExte
             {
                 if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)
                 {
-                    if (!level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
+                    if (!Helpers.isBlock(level.getBlockState(pos.above()), TFCTags.Blocks.ANY_SPREADING_BUSH))
                     {
                         te.setRemoved();
                         level.destroyBlock(pos, true);

@@ -30,6 +30,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +63,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
     {
         final ItemStack heldStack = player.getItemInHand(hand);
         final BlockPos posAbove = pos.above();
-        if (Tags.Items.RODS_WOODEN.contains(heldStack.getItem()) && !state.getValue(STICK) && level.isEmptyBlock(posAbove) && posAbove.getY() <= level.getMaxBuildHeight())
+        if (Helpers.isItem(heldStack.getItem(), Tags.Items.RODS_WOODEN) && !state.getValue(STICK) && level.isEmptyBlock(posAbove) && posAbove.getY() <= level.getMaxBuildHeight())
         {
             if (!level.isClientSide())
             {
@@ -111,7 +112,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
     public BlockState getStateToDraw(Level level, Player player, BlockState state, Direction direction, BlockPos pos, double x, double y, double z, ItemStack item)
     {
         BlockPos abovePos = pos.above();
-        if (Tags.Items.RODS_WOODEN.contains(item.getItem()) && !state.getValue(STICK) && level.isEmptyBlock(abovePos) && abovePos.getY() <= level.getMaxBuildHeight())
+        if (Helpers.isItem(item.getItem(), Tags.Items.RODS_WOODEN) && !state.getValue(STICK) && level.isEmptyBlock(abovePos) && abovePos.getY() <= level.getMaxBuildHeight())
         {
             return state.setValue(STICK, true);
         }

@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -21,7 +20,6 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.HitResult;
 
 import net.dries007.tfc.common.TFCTags;
@@ -41,7 +39,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
      */
     public static boolean canPlaceSnowPile(LevelAccessor level, BlockPos pos, BlockState state)
     {
-        return TFCTags.Blocks.CAN_BE_SNOW_PILED.contains(state.getBlock()) && TFCBlocks.SNOW_PILE.get().defaultBlockState().canSurvive(level, pos);
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CAN_BE_SNOW_PILED) && TFCBlocks.SNOW_PILE.get().defaultBlockState().canSurvive(level, pos);
     }
 
     /**
@@ -52,7 +50,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
         // Create a snow pile block, accounting for double piles.
         final BlockPos posAbove = pos.above();
         final BlockState aboveState = level.getBlockState(posAbove);
-        final BlockState savedAboveState = TFCTags.Blocks.CAN_BE_SNOW_PILED.contains(aboveState.getBlock()) ? aboveState : null;
+        final BlockState savedAboveState = Helpers.isBlock(aboveState.getBlock(), TFCTags.Blocks.CAN_BE_SNOW_PILED) ? aboveState : null;
         final BlockState snowPile = TFCBlocks.SNOW_PILE.get().defaultBlockState();
 
         level.setBlock(pos, snowPile, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);

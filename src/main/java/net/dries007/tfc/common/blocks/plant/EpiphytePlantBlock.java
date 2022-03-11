@@ -27,7 +27,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class EpiphytePlantBlock extends PlantBlock
 {
@@ -73,7 +73,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         // Must be attached to a log
-        if (direction.getOpposite() == state.getValue(FACING) && !facingState.is(BlockTags.LOGS))
+        if (direction.getOpposite() == state.getValue(FACING) && !Helpers.isBlock(facingState, BlockTags.LOGS))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -84,7 +84,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos)
     {
         BlockState attachedState = world.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        return attachedState.is(BlockTags.LOGS);
+        return Helpers.isBlock(attachedState, BlockTags.LOGS);
     }
 
     @Override

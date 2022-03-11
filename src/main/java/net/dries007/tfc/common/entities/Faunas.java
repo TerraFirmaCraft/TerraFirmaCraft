@@ -18,6 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.entities.aquatic.*;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class Faunas
@@ -100,7 +101,7 @@ public class Faunas
             }
 
             final BlockPos below = pos.below();
-            return !fauna.isSolidGround() || level.getBlockState(below).is(BlockTags.VALID_SPAWN);
+            return !fauna.isSolidGround() || Helpers.isBlock(level.getBlockState(below), BlockTags.VALID_SPAWN);
         });
     }
 

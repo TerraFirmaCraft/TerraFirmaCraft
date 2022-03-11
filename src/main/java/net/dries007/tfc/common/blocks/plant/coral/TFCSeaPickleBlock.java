@@ -30,6 +30,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * {@link net.minecraft.world.level.block.SeaPickleBlock}
@@ -61,7 +62,7 @@ public class TFCSeaPickleBlock extends Block implements IFluidLoggable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
-        if (blockstate.is(this))
+        if (Helpers.isBlock(blockstate, this))
         {
             return blockstate.setValue(PICKLES, Math.min(4, blockstate.getValue(PICKLES) + 1));
         }

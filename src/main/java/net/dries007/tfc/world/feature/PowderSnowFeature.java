@@ -9,7 +9,6 @@ package net.dries007.tfc.world.feature;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -49,7 +48,7 @@ public class PowderSnowFeature extends Feature<BlockStateConfiguration>
                     {
                         mutablePos.setWithOffset(pos, x, y, z);
                         final BlockState foundState = level.getBlockState(mutablePos);
-                        if (foundState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || foundState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+                        if (Helpers.isBlock(foundState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(foundState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                         {
                             setBlock(level, mutablePos, state);
                         }

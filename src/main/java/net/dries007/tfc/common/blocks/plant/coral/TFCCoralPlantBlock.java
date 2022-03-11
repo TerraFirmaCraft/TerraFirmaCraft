@@ -32,6 +32,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Base class for all coral blocks added/duplicated by TFC
@@ -62,7 +63,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        return this.defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor((fluidstate.is(FluidTags.WATER) && fluidstate.getAmount() == 8) ? TFCFluids.SALT_WATER.getSource() : Fluids.EMPTY));
+        return this.defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor((Helpers.isFluid(fluidstate, FluidTags.WATER) && fluidstate.getAmount() == 8) ? TFCFluids.SALT_WATER.getSource() : Fluids.EMPTY));
     }
 
     @Override
@@ -75,7 +76,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+        if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), FluidTags.WATER))
         {
             level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
         }
@@ -133,7 +134,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
      */
     protected boolean scanForWater(BlockState state, BlockGetter level, BlockPos pos)
     {
-        if (state.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+        if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), FluidTags.WATER))
         {
             return true;
         }
@@ -141,7 +142,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
         {
             for (Direction direction : Direction.values())
             {
-                if (level.getFluidState(pos.relative(direction)).is(FluidTags.WATER))
+                if (Helpers.isFluid(level.getFluidState(pos.relative(direction)), FluidTags.WATER))
                 {
                     return true;
                 }

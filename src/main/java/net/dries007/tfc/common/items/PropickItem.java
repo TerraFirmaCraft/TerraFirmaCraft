@@ -53,7 +53,7 @@ public class PropickItem extends ToolItem
         for (BlockPos cursor : BlockPos.betweenClosed(center.getX() - radius, center.getY() - radius, center.getZ() - radius, center.getX() + radius, center.getY() + radius, center.getZ() + radius))
         {
             final BlockState state = level.getBlockState(cursor);
-            if (state.is(tag))
+            if (Helpers.isBlock(state, tag))
             {
                 results.mergeInt(state, 1, Integer::sum);
             }
@@ -92,7 +92,7 @@ public class PropickItem extends ToolItem
                 ProspectResult result;
                 BlockState found = state;
                 RANDOM.setSeed(Helpers.hash(19827384739241223L, pos));
-                if (state.is(TFCTags.Blocks.PROSPECTABLE))
+                if (Helpers.isBlock(state, TFCTags.Blocks.PROSPECTABLE))
                 {
                     // Found
                     result = ProspectResult.FOUND;

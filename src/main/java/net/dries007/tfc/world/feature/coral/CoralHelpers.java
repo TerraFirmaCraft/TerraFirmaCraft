@@ -19,6 +19,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.coral.CoralWallFanBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 public final class CoralHelpers
 {
@@ -33,7 +34,7 @@ public final class CoralHelpers
     {
         BlockPos abovePos = pos.above();
         BlockState blockstate = world.getBlockState(pos);
-        if ((blockstate.is(TFCBlocks.SALT_WATER.get()) || blockstate.is(TFCTags.Blocks.CORALS)) && world.getBlockState(abovePos).is(TFCBlocks.SALT_WATER.get()))
+        if ((Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()) || Helpers.isBlock(blockstate, TFCTags.Blocks.CORALS)) && Helpers.isBlock(world.getBlockState(abovePos), TFCBlocks.SALT_WATER.get()))
         {
             world.setBlock(pos, coralBlockState, 3);
             if (rand.nextFloat() < 0.25F)
@@ -50,7 +51,7 @@ public final class CoralHelpers
                 if (rand.nextFloat() < 0.2F)
                 {
                     BlockPos relativePos = pos.relative(direction);
-                    if (world.getBlockState(relativePos).is(TFCBlocks.SALT_WATER.get()))
+                    if (Helpers.isBlock(world.getBlockState(relativePos), TFCBlocks.SALT_WATER.get()))
                     {
                         BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).defaultBlockState()).setValue(CoralWallFanBlock.FACING, direction);
                         world.setBlock(relativePos, wallCoralState, 2);

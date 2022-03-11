@@ -131,11 +131,11 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
     @Override
     public BlockState getStateToDraw(Level level, Player player, BlockState lookState, Direction direction, BlockPos pos, double x, double y, double z, ItemStack item)
     {
-        if (item.is(TFCItems.POT.get()))
+        if (Helpers.isItem(item, TFCItems.POT.get()))
         {
             return TFCBlocks.POT.get().defaultBlockState().setValue(LIT, lookState.getValue(LIT));
         }
-        else if (item.is(TFCItems.WROUGHT_IRON_GRILL.get()))
+        else if (Helpers.isItem(item, TFCItems.WROUGHT_IRON_GRILL.get()))
         {
             return TFCBlocks.GRILL.get().defaultBlockState().setValue(LIT, lookState.getValue(LIT));
         }
@@ -182,7 +182,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()) && state.getValue(LIT))
+            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER) && state.getValue(LIT))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;

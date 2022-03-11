@@ -95,7 +95,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
     private static BlockState getPossibleDyedState(ItemStack item, BlockState current)
     {
         BlockState found = Arrays.stream(Helpers.DYE_COLORS)
-            .filter(color -> item.is(DyeItem.byColor(color)))
+            .filter(color -> Helpers.isItem(item, DyeItem.byColor(color)))
             .map(color -> TFCBlocks.STAINED_WATTLE.get(color).get().defaultBlockState())
             .findFirst().orElse(null);
         return found != null && found.getBlock() != current.getBlock() ? found : null;
@@ -117,7 +117,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         {
             return tryTakeStick(state, level, pos, player, item, hit);
         }
-        else if (item.is(Tags.Items.RODS_WOODEN))
+        else if (Helpers.isItem(item, Tags.Items.RODS_WOODEN))
         {
             return tryAddStick(state, level, pos, player, item, hit);
         }
@@ -144,7 +144,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         {
             return removeStateFor(state, direction, x, y, z);
         }
-        else if (item.is(Tags.Items.RODS_WOODEN))
+        else if (Helpers.isItem(item, Tags.Items.RODS_WOODEN))
         {
             return getStateFor(state, direction, x, y, z);
         }

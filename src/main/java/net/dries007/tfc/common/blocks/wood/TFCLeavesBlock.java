@@ -181,7 +181,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     private int getDistance(BlockState neighbor)
     {
-        if (BlockTags.LOGS.contains(neighbor.getBlock()))
+        if (Helpers.isBlock(neighbor.getBlock(), BlockTags.LOGS))
         {
             return 0;
         }

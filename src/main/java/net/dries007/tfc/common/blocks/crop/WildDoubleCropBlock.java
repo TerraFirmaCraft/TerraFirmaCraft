@@ -19,6 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.util.Helpers;
 
 public class WildDoubleCropBlock extends WildCropBlock
 {
@@ -49,11 +50,11 @@ public class WildDoubleCropBlock extends WildCropBlock
         final BlockState belowState = level.getBlockState(pos.below());
         if (part == DoubleCropBlock.Part.BOTTOM)
         {
-            return TFCTags.Blocks.WILD_CROP_GROWS_ON.contains(belowState.getBlock());
+            return Helpers.isBlock(belowState.getBlock(), TFCTags.Blocks.WILD_CROP_GROWS_ON);
         }
         else
         {
-            return belowState.is(this) && belowState.getValue(PART) == DoubleCropBlock.Part.BOTTOM;
+            return Helpers.isBlock(belowState, this) && belowState.getValue(PART) == DoubleCropBlock.Part.BOTTOM;
         }
     }
 

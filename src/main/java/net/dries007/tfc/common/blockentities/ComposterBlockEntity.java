@@ -91,12 +91,12 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
             if (!client) player.displayClientMessage(new TranslatableComponent("tfc.composter.rotten"), true);
             return finishUse(client);
         }
-        else if (stack.is(TFCTags.Items.COMPOST_POISONS))
+        else if (Helpers.isItem(stack, TFCTags.Items.COMPOST_POISONS))
         {
             if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
             return finishUse(client);
         }
-        else if (green <= 4 && stack.is(TFCTags.Items.COMPOST_GREENS))
+        else if (green <= 4 && Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS))
         {
             if (green == 4)
             {
@@ -113,7 +113,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
             }
             return finishUse(client);
         }
-        else if (brown <= 4 && stack.is(TFCTags.Items.COMPOST_BROWNS))
+        else if (brown <= 4 && Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS))
         {
             if (brown == 4)
             {

@@ -309,7 +309,7 @@ public final class TFCBlocks
 
     public static boolean onlyColdMobs(BlockState state, BlockGetter world, BlockPos pos, EntityType<?> type)
     {
-        return type.is(TFCTags.Entities.SPAWNS_ON_COLD_BLOCKS);
+        return Helpers.isEntity(type, TFCTags.Entities.SPAWNS_ON_COLD_BLOCKS);
     }
 
     private static ToIntFunction<BlockState> litBlockEmission(int lightValue)

@@ -247,7 +247,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     {
         return switch (slot)
             {
-                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && TFCTags.Items.FIREPIT_FUEL.contains(stack.getItem());
+                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && Helpers.isItem(stack.getItem(), TFCTags.Items.FIREPIT_FUEL);
                 case FirepitBlockEntity.SLOT_ITEM_INPUT -> stack.getCapability(HeatCapability.CAPABILITY).isPresent();
                 case FirepitBlockEntity.SLOT_OUTPUT_1, FirepitBlockEntity.SLOT_OUTPUT_2 -> true;
                 default -> false;

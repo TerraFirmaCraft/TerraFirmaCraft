@@ -71,7 +71,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
         {
             final ItemStack held = player.getItemInHand(hand);
-            if (TFCTags.Items.BUSH_CUTTING_TOOLS.contains(held.getItem()))
+            if (Helpers.isItem(held.getItem(), TFCTags.Items.BUSH_CUTTING_TOOLS))
             {
                 level.playSound(player, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5f, 1.0f);
                 if (!level.isClientSide())

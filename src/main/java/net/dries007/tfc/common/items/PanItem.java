@@ -68,7 +68,7 @@ public class PanItem extends Item
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
-        if (level.getFluidState(player.blockPosition()).is(FluidTags.WATER))
+        if (Helpers.isFluid(level.getFluidState(player.blockPosition()), FluidTags.WATER))
         {
             return ItemUtils.startUsingInstantly(level, player, hand);
         }

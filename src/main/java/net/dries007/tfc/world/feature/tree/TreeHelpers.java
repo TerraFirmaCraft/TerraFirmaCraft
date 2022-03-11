@@ -24,6 +24,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Helpers class for working with tree generation
@@ -48,7 +49,7 @@ public final class TreeHelpers
             if (boundingBox == null || boundingBox.isInside(posAt))
             {
                 BlockState stateAt = level.getBlockState(posAt);
-                if (EnvironmentHelpers.isWorldgenReplaceable(stateAt) || BlockTags.LEAVES.contains(stateAt.getBlock()))
+                if (EnvironmentHelpers.isWorldgenReplaceable(stateAt) || Helpers.isBlock(stateAt.getBlock(), BlockTags.LEAVES))
                 {
                     // No world, can't rotate with world context
                     @SuppressWarnings("deprecation")

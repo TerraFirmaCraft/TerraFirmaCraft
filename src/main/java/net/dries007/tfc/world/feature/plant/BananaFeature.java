@@ -12,13 +12,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.STAGE;
 
@@ -47,7 +47,7 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
         for (int i = 0; i < 15; i++)
         {
             mutablePos.setWithOffset(pos, random.nextInt(10) - random.nextInt(10), -1, random.nextInt(10) - random.nextInt(10));
-            if (world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+            if (Helpers.isBlock(world.getBlockState(mutablePos), TFCTags.Blocks.BUSH_PLANTABLE_ON))
             {
                 boolean blocked = false;
                 for (int j = 1; j <= 10; j++)

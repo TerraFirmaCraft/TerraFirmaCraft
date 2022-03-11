@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
@@ -70,7 +71,7 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
             {
                 if (i == height || !world.isWaterAt(mutablePos.above()))
                 {
-                    if (!world.getBlockState(mutablePos.below()).is(head.getBlock()))
+                    if (!Helpers.isBlock(world.getBlockState(mutablePos.below()), head.getBlock()))
                     {
                         world.setBlock(mutablePos, head.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 16);
                     }

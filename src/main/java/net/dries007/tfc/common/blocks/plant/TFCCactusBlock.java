@@ -18,8 +18,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class TFCCactusBlock extends TFCTallGrassBlock
 {
@@ -46,13 +45,13 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         BlockState blockstate = level.getBlockState(pos.below());
         if (state.getValue(PART) == Part.LOWER)
         {
-            return blockstate.is(BlockTags.SAND);
+            return Helpers.isBlock(blockstate, BlockTags.SAND);
         }
         else
         {
             if (state.getBlock() != this)
             {
-                return blockstate.is(BlockTags.SAND); //calling super here is stupid it does nothing lets just check tags
+                return Helpers.isBlock(blockstate, BlockTags.SAND); //calling super here is stupid it does nothing lets just check tags
             }
             return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
         }

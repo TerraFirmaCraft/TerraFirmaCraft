@@ -150,7 +150,7 @@ public class ClientForgeEventHandler
         final Player player = minecraft.player;
         if (player != null)
         {
-            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && minecraft.screen == null && (TFCTags.Items.HOES.contains(player.getMainHandItem().getItem())) || TFCTags.Items.HOES.contains(player.getOffhandItem().getItem()) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && minecraft.screen == null && (Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES)) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
             {
                 HoeOverlays.render(minecraft, event.getWindow(), stack);
             }
