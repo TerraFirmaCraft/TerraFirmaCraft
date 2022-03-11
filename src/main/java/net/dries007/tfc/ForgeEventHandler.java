@@ -423,7 +423,7 @@ public final class ForgeEventHandler
         final BlockPos pos = event.getPos();
         final BlockState state = world.getBlockState(pos);
 
-        if (TFCTags.Blocks.CAN_TRIGGER_COLLAPSE.contains(state.getBlock()) && world instanceof Level level)
+        if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && world instanceof Level level)
         {
             CollapseRecipe.tryTriggerCollapse(level, pos);
             return;
@@ -445,12 +445,12 @@ public final class ForgeEventHandler
             final BlockPos pos = event.getPos();
             final BlockState state = event.getState();
 
-            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+            if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
             {
                 world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
             }
 
-            if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+            if (Helpers.isBlock(state, TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
             {
                 world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
             }
@@ -467,12 +467,12 @@ public final class ForgeEventHandler
                 final BlockPos pos = event.getPos().relative(direction);
                 final BlockState state = level.getBlockState(pos);
 
-                if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+                if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
                 {
                     level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
                 }
 
-                if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+                if (Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
                 {
                     level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
                 }
@@ -703,7 +703,7 @@ public final class ForgeEventHandler
                 float coolAmount = 0;
                 final BlockState state = level.getBlockState(pos);
                 final FluidState fluid = level.getFluidState(pos);
-                if (fluid.is(FluidTags.WATER))
+                if (Helpers.isFluid(fluid, FluidTags.WATER))
                 {
                     coolAmount = 50f;
                     if (level.random.nextFloat() < 0.001F)
@@ -711,7 +711,7 @@ public final class ForgeEventHandler
                         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     }
                 }
-                else if (state.is(Blocks.SNOW))
+                else if (Helpers.isBlock(state, Blocks.SNOW))
                 {
                     coolAmount = 70f;
                     if (level.random.nextFloat() < 0.1F)
@@ -731,7 +731,7 @@ public final class ForgeEventHandler
                 {
                     final BlockPos belowPos = pos.below();
                     final BlockState belowState = level.getBlockState(belowPos);
-                    if (belowState.is(Blocks.SNOW_BLOCK))
+                    if (Helpers.isBlock(belowState, Blocks.SNOW_BLOCK))
                     {
                         coolAmount = 75f;
                         if (level.random.nextFloat() < 0.1F)
@@ -744,7 +744,7 @@ public final class ForgeEventHandler
                         coolAmount = 100f;
                         if (level.random.nextFloat() < 0.01F)
                         {
-                            level.setBlockAndUpdate(belowPos, belowState.is(TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
+                            level.setBlockAndUpdate(belowPos, Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
                         }
                     }
                     else if (belowState.getMaterial() == Material.ICE_SOLID)

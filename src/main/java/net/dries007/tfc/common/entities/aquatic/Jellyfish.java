@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -172,6 +171,6 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     @Override
     protected float getBlockSpeedFactor()
     {
-        return level.getBlockState(blockPosition()).is(TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

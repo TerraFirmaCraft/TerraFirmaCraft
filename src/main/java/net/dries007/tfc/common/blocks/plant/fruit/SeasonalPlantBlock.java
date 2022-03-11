@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
-import java.util.Random;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
@@ -20,7 +18,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -138,7 +135,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
             Helpers.slowEntityInBlock(entity, 0.2f, 5);
         }
         // todo: move this to bushes
-        if (entity.getType() != EntityType.ITEM && TFCTags.Blocks.THORNY_BUSHES.contains(this))
+        if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
             entity.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0f);
         }
@@ -193,7 +190,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return level.getBlockState(pos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override

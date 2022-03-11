@@ -23,6 +23,7 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public class ChunkData implements ICapabilitySerializable<CompoundTag>

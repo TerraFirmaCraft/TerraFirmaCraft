@@ -25,6 +25,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.util.Helpers;
 
 public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtension
 {
@@ -60,12 +61,12 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
         Block southBlock = world.getBlockState(pos.south()).getBlock();
         Block westBlock = world.getBlockState(pos.west()).getBlock();
         return defaultBlockState()
-            .setValue(DOWN, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(downBlock) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(downBlock))
-            .setValue(UP, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(upBlock) || TFCTags.Blocks.FRUIT_TREE_SAPLING.contains(upBlock))
-            .setValue(NORTH, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(northBlock))
-            .setValue(EAST, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(eastBlock))
-            .setValue(SOUTH, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(southBlock))
-            .setValue(WEST, TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(westBlock));
+            .setValue(DOWN, Helpers.isBlock(downBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(downBlock, TFCTags.Blocks.BUSH_PLANTABLE_ON))
+            .setValue(UP, Helpers.isBlock(upBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(upBlock, TFCTags.Blocks.FRUIT_TREE_SAPLING))
+            .setValue(NORTH, Helpers.isBlock(northBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            .setValue(EAST, Helpers.isBlock(eastBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            .setValue(SOUTH, Helpers.isBlock(southBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            .setValue(WEST, Helpers.isBlock(westBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH));
     }
 
     @Override
@@ -79,7 +80,7 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
         }
         else
         {
-            boolean flag = facingState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH) || (facing == Direction.DOWN && facingState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || (facing == Direction.UP && facingState.is(TFCTags.Blocks.FRUIT_TREE_SAPLING)));
+            boolean flag = Helpers.isBlock(facingState, TFCTags.Blocks.FRUIT_TREE_BRANCH) || (facing == Direction.DOWN && Helpers.isBlock(facingState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || (facing == Direction.UP && Helpers.isBlock(facingState, TFCTags.Blocks.FRUIT_TREE_SAPLING)));
             return stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
     }
@@ -92,17 +93,17 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
-            if (TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(worldIn.getBlockState(relativePos).getBlock()))
+            if (Helpers.isBlock(worldIn.getBlockState(relativePos).getBlock(), TFCTags.Blocks.FRUIT_TREE_BRANCH))
             {
                 Block below = worldIn.getBlockState(relativePos.below()).getBlock();
-                if (TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(below) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(below))
+                if (Helpers.isBlock(below, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(below, TFCTags.Blocks.BUSH_PLANTABLE_ON))
                 {
                     return true;
                 }
             }
         }
         Block blockIn = belowState.getBlock();
-        return TFCTags.Blocks.FRUIT_TREE_BRANCH.contains(blockIn) || TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(blockIn);
+        return Helpers.isBlock(blockIn, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(blockIn, TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override

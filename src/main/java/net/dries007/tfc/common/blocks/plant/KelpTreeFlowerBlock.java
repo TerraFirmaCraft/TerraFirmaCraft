@@ -37,6 +37,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Almost all methods in here are adapted from {@link net.minecraft.world.level.block.ChorusFlowerBlock}
@@ -110,7 +111,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
 
         BlockState blockstate = level.getBlockState(pos.below());
-        if (blockstate.getBlock() != body && !blockstate.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        if (blockstate.getBlock() != body && !Helpers.isBlock(blockstate, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
         {
             if (!isEmptyWaterBlock(level, pos.below()))
             {
@@ -122,7 +123,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 for (Direction direction : Direction.Plane.HORIZONTAL)
                 {
                     BlockState relativeState = level.getBlockState(pos.relative(direction));
-                    if (relativeState.is(body))
+                    if (Helpers.isBlock(relativeState, body))
                     {
                         if (isValid)
                         {
@@ -170,7 +171,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 boolean foundGroundFurtherDown = false;
                 BlockState belowState = level.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
-                if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlock))
+                if (Helpers.isBlock(belowBlock, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {
                     shouldPlaceNewBody = true;
                 }
@@ -183,7 +184,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                         Block belowBlockOffset = level.getBlockState(pos.below(j + 1)).getBlock();
                         if (belowBlockOffset != body)
                         {
-                            if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlockOffset))
+                            if (Helpers.isBlock(belowBlockOffset, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                             {
                                 foundGroundFurtherDown = true;
                             }

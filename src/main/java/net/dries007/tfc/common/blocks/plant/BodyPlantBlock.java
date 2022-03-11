@@ -24,6 +24,8 @@ import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.util.Helpers;
+
 public class BodyPlantBlock extends GrowingPlantBodyBlock
 {
     private final Supplier<? extends Block> headBlock;
@@ -64,7 +66,7 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
+            return block == getHeadBlock() || block == getBodyBlock() || Helpers.isBlock(blockstate, BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
         }
     }
 

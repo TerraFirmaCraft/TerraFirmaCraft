@@ -56,7 +56,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     private static boolean canGrowInto(LevelReader world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
-        return state.isAir() || state.is(TFCTags.Blocks.FRUIT_TREE_LEAVES);
+        return state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.FRUIT_TREE_LEAVES);
     }
 
     private static boolean allNeighborsEmpty(LevelReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
@@ -116,7 +116,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                 boolean willGrowUpward = false;
                 BlockState belowState = world.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
-                if (TFCTags.Blocks.BUSH_PLANTABLE_ON.contains(belowBlock))
+                if (Helpers.isBlock(belowBlock, TFCTags.Blocks.BUSH_PLANTABLE_ON))
                 {
                     willGrowUpward = true;
                 }
@@ -231,7 +231,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     {
         final BlockState leaves = this.leaves.get().defaultBlockState();
         BlockState downState = world.getBlockState(pos.below(2));
-        if (!(downState.isAir() || downState.is(TFCTags.Blocks.FRUIT_TREE_LEAVES) || downState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH)))
+        if (!(downState.isAir() || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_LEAVES) || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH)))
             return;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : NOT_DOWN)

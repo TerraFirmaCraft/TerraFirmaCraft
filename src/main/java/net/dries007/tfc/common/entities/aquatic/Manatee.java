@@ -54,12 +54,12 @@ public class Manatee extends Cod implements AquaticMob
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         // no-op vanilla's Bucketable implementation. We don't want to be bucketed at all.
-        return player.getItemInHand(hand).is(Items.WATER_BUCKET) ? InteractionResult.FAIL : super.mobInteract(player, hand);
+        return Helpers.isItem(player.getItemInHand(hand), Items.WATER_BUCKET) ? InteractionResult.FAIL : super.mobInteract(player, hand);
     }
 
     @Override
     protected float getBlockSpeedFactor()
     {
-        return level.getBlockState(blockPosition()).is(TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

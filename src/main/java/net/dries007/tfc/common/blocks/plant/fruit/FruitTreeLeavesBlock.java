@@ -159,7 +159,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         for (Direction direction : Helpers.DIRECTIONS)
         {
             mutablePos.set(pos).move(direction);
-            if (worldIn.getBlockState(mutablePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            if (Helpers.isBlock(worldIn.getBlockState(mutablePos), TFCTags.Blocks.FRUIT_TREE_BRANCH))
             {
                 return true;
             }

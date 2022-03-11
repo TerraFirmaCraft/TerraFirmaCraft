@@ -28,8 +28,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.StartFireEvent;
 
-import net.minecraft.world.item.Item.Properties;
-
 public class TorchItem extends StandingAndWallBlockItem
 {
     public TorchItem(Block floorBlock, Block wallBlockIn, Properties propertiesIn)
@@ -55,7 +53,7 @@ public class TorchItem extends StandingAndWallBlockItem
         final Level world = itemEntity.level;
         final BlockPos pos = itemEntity.blockPosition();
         final BlockState stateAt = world.getBlockState(pos);
-        if (stateAt.getFluidState().is(FluidTags.WATER))
+        if (Helpers.isFluid(stateAt.getFluidState(), FluidTags.WATER))
         {
             itemEntity.setItem(new ItemStack(Items.STICK, stack.getCount()));
             int ash = (int) Mth.clamp(stack.getCount() * 0.5 - 4, 0, 8);
@@ -72,7 +70,7 @@ public class TorchItem extends StandingAndWallBlockItem
         final BlockState checkState = isNotInBlock ? world.getBlockState(downPos) : stateAt;
         final int ageRequirement = isNotInBlock ? 20 : 160;
 
-        if (checkState.is(TFCTags.Blocks.LIT_BY_DROPPED_TORCH))
+        if (Helpers.isBlock(checkState, TFCTags.Blocks.LIT_BY_DROPPED_TORCH))
         {
             if (itemEntity.getAge() > ageRequirement && world.random.nextFloat() < 0.01f)
             {

@@ -32,13 +32,13 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
     {
         // Don't just check for water, check for water with plants that can freeze as well
         final FluidState fluid = groundState.getFluidState();
-        final boolean icePileAtGround = TFCTags.Blocks.CAN_BE_ICE_PILED.contains(groundState.getBlock());
+        final boolean icePileAtGround = Helpers.isBlock(groundState.getBlock(), TFCTags.Blocks.CAN_BE_ICE_PILED);
         if (fluid.getType() == Fluids.WATER && (icePileAtGround || groundState.getBlock() == Blocks.WATER) && (skipEdgeCheck || EnvironmentHelpers.isWaterAtEdge(level, groundPos)))
         {
             // Freeze block, handling possible plants *in* the block, and *above* the block
             final BlockPos surfacePos = groundPos.above();
             final BlockState surfaceState = level.getBlockState(surfacePos);
-            final boolean icePileAtSurface = TFCTags.Blocks.CAN_BE_ICE_PILED.contains(surfaceState.getBlock());
+            final boolean icePileAtSurface = Helpers.isBlock(surfaceState.getBlock(), TFCTags.Blocks.CAN_BE_ICE_PILED);
             if (icePileAtGround || icePileAtSurface)
             {
                 // Requires an ice pile

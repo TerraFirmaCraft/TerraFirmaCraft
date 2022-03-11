@@ -60,7 +60,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
         if (state.getValue(STAGE) == 2)
         {
             ItemStack held = player.getItemInHand(hand);
-            if (Tags.Items.SHEARS.contains(held.getItem()))
+            if (Helpers.isItem(held.getItem(), Tags.Items.SHEARS))
             {
                 BerryBushBlockEntity te = Helpers.getBlockEntity(level, pos, BerryBushBlockEntity.class);
                 if (te != null)
@@ -149,7 +149,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
             te.addDeath();
             if (te.willDie() && random.nextInt(3) == 0)
             {
-                if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.SPREADING_BUSH))
+                if (!Helpers.isBlock(world.getBlockState(pos.above()), TFCTags.Blocks.SPREADING_BUSH))
                     world.setBlockAndUpdate(pos, TFCBlocks.DEAD_CANE.get().defaultBlockState().setValue(STAGE, stage).setValue(FACING, state.getValue(FACING)));
             }
         }
@@ -171,6 +171,6 @@ public class SpreadingCaneBlock extends SpreadingBushBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).is(TFCTags.Blocks.ANY_SPREADING_BUSH);
+        return Helpers.isBlock(level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())), TFCTags.Blocks.ANY_SPREADING_BUSH);
     }
 }

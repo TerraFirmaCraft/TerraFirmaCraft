@@ -65,12 +65,12 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                         {
                             return SelectionPlace.HANDLE;
                         }
-                        else if (!quern.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(QuernBlockEntity.SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
+                        else if (!quern.isGrinding() && !held.isEmpty() || !inventory.getStackInSlot(SLOT_INPUT).isEmpty() && INPUT_SLOT_AABB.move(pos).contains(hit))
                         {
                             return SelectionPlace.INPUT_SLOT;
                         }
                     }
-                    if ((quern.hasHandstone() || quern.isItemValid(QuernBlockEntity.SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
+                    if ((quern.hasHandstone() || quern.isItemValid(SLOT_HANDSTONE, held)) && HANDSTONE_AABB.move(pos).contains(hit))
                     {
                         return SelectionPlace.HANDSTONE;
                     }

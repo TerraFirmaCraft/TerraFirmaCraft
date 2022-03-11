@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
+import net.dries007.tfc.util.Helpers;
 
 public class LeatherKnappingContainer extends KnappingContainer
 {
@@ -29,13 +30,13 @@ public class LeatherKnappingContainer extends KnappingContainer
         super.consumeIngredientStackAfterComplete();
 
         // offhand is not included in 'items'
-        if (TFCTags.Items.KNIVES.contains(player.getOffhandItem().getItem()))
+        if (Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.KNIVES))
         {
             player.getOffhandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.OFF_HAND));
         }
         for (ItemStack invItem : player.getInventory().items)
         {
-            if (TFCTags.Items.KNIVES.contains(invItem.getItem()))
+            if (Helpers.isItem(invItem.getItem(), TFCTags.Items.KNIVES))
             {
                 // safe to do nothing as broadcasting break handles item use (which you can't do in the inventory)
                 invItem.hurtAndBreak(1, player, p -> {});

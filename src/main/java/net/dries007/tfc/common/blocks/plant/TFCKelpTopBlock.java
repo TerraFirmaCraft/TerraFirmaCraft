@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -87,7 +88,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         {
             level.scheduleTick(currentPos, this, 1);
         }
-        if (facing != growthDirection || !facingState.is(this) && !facingState.is(getBodyBlock()))
+        if (facing != growthDirection || !Helpers.isBlock(facingState, this) && !Helpers.isBlock(facingState, getBodyBlock()))
         {
             //Not sure if this is necessary
             Fluid fluid = state.getFluidState().getType();

@@ -10,7 +10,6 @@ import java.util.Random;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.Direction;
@@ -29,9 +28,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public class ThinSpikeBlock extends Block implements IFluidLoggable
 {
@@ -89,7 +86,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !facingState.is(this))
+        if (facing == Direction.DOWN && !Helpers.isBlock(facingState, this))
         {
             return stateIn.setValue(TIP, true);
         }
@@ -104,7 +101,7 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
         {
             worldIn.destroyBlock(pos, false);
         }
-        if (TFCTags.Blocks.SMALL_SPIKE.contains(blockIn))
+        if (Helpers.isBlock(blockIn, TFCTags.Blocks.SMALL_SPIKE))
         {
             worldIn.setBlock(pos, state.setValue(TIP, false), 2);
         }

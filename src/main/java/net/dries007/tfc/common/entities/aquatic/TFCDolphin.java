@@ -17,6 +17,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCDolphin extends Dolphin implements AquaticMob
 {
@@ -50,6 +51,6 @@ public class TFCDolphin extends Dolphin implements AquaticMob
     @Override
     protected float getBlockSpeedFactor()
     {
-        return level.getBlockState(blockPosition()).is(TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

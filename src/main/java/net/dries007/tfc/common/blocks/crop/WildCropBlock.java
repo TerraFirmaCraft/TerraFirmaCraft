@@ -10,11 +10,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.TFCBushBlock;
+import net.dries007.tfc.util.Helpers;
 
 public class WildCropBlock extends TFCBushBlock
 {
@@ -33,6 +33,6 @@ public class WildCropBlock extends TFCBushBlock
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return level.getBlockState(pos.below()).is(TFCTags.Blocks.WILD_CROP_GROWS_ON);
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.WILD_CROP_GROWS_ON);
     }
 }

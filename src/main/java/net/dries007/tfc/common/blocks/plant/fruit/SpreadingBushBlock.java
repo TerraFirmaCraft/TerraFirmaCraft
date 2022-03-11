@@ -85,7 +85,7 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
             te.addDeath();
             if (te.willDie() && random.nextInt(3) == 0)
             {
-                if (!world.getBlockState(pos.above()).is(TFCTags.Blocks.SPREADING_BUSH))
+                if (!Helpers.isBlock(world.getBlockState(pos.above()), TFCTags.Blocks.SPREADING_BUSH))
                     world.setBlockAndUpdate(pos, TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, stage));
             }
         }
@@ -96,6 +96,6 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.ANY_SPREADING_BUSH) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, TFCTags.Blocks.ANY_SPREADING_BUSH) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
     }
 }

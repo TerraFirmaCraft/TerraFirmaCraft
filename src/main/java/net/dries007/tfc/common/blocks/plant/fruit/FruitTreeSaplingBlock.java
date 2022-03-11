@@ -68,7 +68,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
             //todo: require knife in offhand
             if (defaultBlockState().getBlock().asItem() == held.getItem() && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
             {
-                if (saplings > 2 && worldIn.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+                if (saplings > 2 && Helpers.isBlock(worldIn.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH))
                     return InteractionResult.FAIL;
                 if (!player.isCreative())
                     held.shrink(1);
@@ -103,7 +103,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
                 }
                 else*/
                 {
-                    boolean onBranch = world.getBlockState(pos.below()).is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
+                    boolean onBranch = Helpers.isBlock(world.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
                     world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
                     TickCounterBlockEntity newTE = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
                     if (newTE != null)
@@ -120,7 +120,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     {
         BlockPos downPos = pos.below();
         BlockState downState = worldIn.getBlockState(downPos);
-        if (downState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+        if (Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH))
         {
             if (downState.getValue(FruitTreeBranchBlock.STAGE) > 1)
             {
@@ -135,7 +135,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
             }
             return false;
         }
-        return super.canSurvive(state, worldIn, pos) || downState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return super.canSurvive(state, worldIn, pos) || Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override

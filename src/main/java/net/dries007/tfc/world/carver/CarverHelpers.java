@@ -23,6 +23,7 @@ import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.soil.IDirtBlock;
+import net.dries007.tfc.util.Helpers;
 
 public final class CarverHelpers
 {
@@ -55,7 +56,7 @@ public final class CarverHelpers
 
     public static boolean canReplaceBlock(BlockState state)
     {
-        return TFCTags.Blocks.CAN_CARVE.contains(state.getBlock());
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.CAN_CARVE);
     }
 
     @Nullable
@@ -78,18 +79,18 @@ public final class CarverHelpers
 
     public static BlockState getDebugState(CarverConfiguration config, BlockState state)
     {
-        if (state.is(Blocks.AIR))
+        if (Helpers.isBlock(state, Blocks.AIR))
         {
             return config.debugSettings.getAirState();
         }
-        else if (state.is(Blocks.WATER))
+        else if (Helpers.isBlock(state, Blocks.WATER))
         {
             final BlockState debugState = config.debugSettings.getWaterState();
             return debugState.hasProperty(BlockStateProperties.WATERLOGGED) ? debugState.setValue(BlockStateProperties.WATERLOGGED, true) : debugState;
         }
         else
         {
-            return state.is(Blocks.LAVA) ? config.debugSettings.getLavaState() : state;
+            return Helpers.isBlock(state, Blocks.LAVA) ? config.debugSettings.getLavaState() : state;
         }
     }
 

@@ -75,7 +75,7 @@ public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLogg
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (random.nextInt(15) == 0 && !level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
+        if (random.nextInt(15) == 0 && !Helpers.isBlock(level.getBlockState(pos.above()), TFCTags.Blocks.ANY_SPREADING_BUSH))
         {
             TickCounterBlockEntity te = Helpers.getBlockEntity(level, pos, TickCounterBlockEntity.class);
             if (te != null)

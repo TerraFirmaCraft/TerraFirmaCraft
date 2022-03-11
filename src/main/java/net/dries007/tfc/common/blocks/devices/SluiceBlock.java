@@ -133,7 +133,7 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
         {
             final BlockPos fluidPos = pos.relative(state.getValue(FACING).getOpposite()).below();
             final FluidState fluid = level.getFluidState(fluidPos);
-            if (fluid.is(FluidTags.WATER))
+            if (Helpers.isFluid(fluid, FluidTags.WATER))
             {
                 level.setBlockAndUpdate(fluidPos, Blocks.AIR.defaultBlockState());
             }
@@ -146,11 +146,11 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
     public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
         Direction facing = state.getValue(FACING);
-        if (!state.getValue(UPPER) && direction == facing.getOpposite() && !facingState.is(this))
+        if (!state.getValue(UPPER) && direction == facing.getOpposite() && !Helpers.isBlock(facingState, this))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        else if (state.getValue(UPPER) && direction == facing && !facingState.is(this))
+        else if (state.getValue(UPPER) && direction == facing && !Helpers.isBlock(facingState, this))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -164,7 +164,7 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
         if (state.hasProperty(FACING))
         {
             BlockPos fluidPos = pos.relative(state.getValue(FACING).getOpposite()).below();
-            if (level.getFluidState(fluidPos).is(FluidTags.WATER))
+            if (Helpers.isFluid(level.getFluidState(fluidPos), FluidTags.WATER))
             {
                 level.setBlockAndUpdate(fluidPos, Blocks.AIR.defaultBlockState());
             }

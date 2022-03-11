@@ -73,7 +73,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockE
             if (stage < 2)
             {
                 BlockPos downPos = pos.below(3);
-                if (random.nextInt(3) == 0 || world.getBlockState(downPos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+                if (random.nextInt(3) == 0 || Helpers.isBlock(world.getBlockState(downPos), TFCTags.Blocks.FRUIT_TREE_BRANCH))
                 {
                     stage++;
                 }
@@ -108,7 +108,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements EntityBlockE
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || belowState.is(TFCTags.Blocks.FRUIT_TREE_BRANCH);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, TFCTags.Blocks.FRUIT_TREE_BRANCH);
     }
 
     @Override

@@ -131,7 +131,7 @@ public class WoodenBucketItem extends Item
         Fluid fluid = handler.getFluidInTank(0).getFluid();
         if (state.isAir() || state.canBeReplaced(fluid))
         {
-            if (level.dimensionType().ultraWarm() && fluid.is(FluidTags.WATER))
+            if (level.dimensionType().ultraWarm() && Helpers.isFluid(fluid, FluidTags.WATER))
             {
                 Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
                 return true;

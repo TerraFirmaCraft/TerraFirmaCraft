@@ -28,7 +28,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public class CharcoalPileBlock extends Block
 {
@@ -77,7 +77,7 @@ public class CharcoalPileBlock extends Block
     {
         if (!level.isClientSide() && facing == Direction.DOWN)
         {
-            if (facingState.is(TFCBlocks.CHARCOAL_PILE.get()))
+            if (Helpers.isBlock(facingState, TFCBlocks.CHARCOAL_PILE.get()))
             {
                 int layersAt = stateIn.getValue(LAYERS);
                 int layersUnder = facingState.getValue(LAYERS);

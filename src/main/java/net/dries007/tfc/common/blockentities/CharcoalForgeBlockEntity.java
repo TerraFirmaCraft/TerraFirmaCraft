@@ -278,7 +278,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     {
         if (slot <= SLOT_FUEL_MAX)
         {
-            return TFCTags.Items.FORGE_FUEL.contains(stack.getItem());
+            return Helpers.isItem(stack.getItem(), TFCTags.Items.FORGE_FUEL);
         }
         else if (slot <= SLOT_INPUT_MAX)
         {

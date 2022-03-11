@@ -19,6 +19,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
+import net.dries007.tfc.util.Helpers;
 
 public class PlaceBlockSpecialPacket
 {
@@ -39,7 +40,7 @@ public class PlaceBlockSpecialPacket
                         final BlockPos above = pos.above();
                         final BlockState state = world.getBlockState(pos);
                         final ItemStack stack = player.getMainHandItem();
-                        if (state.is(TFCBlocks.PLACED_ITEM.get()))
+                        if (Helpers.isBlock(state, TFCBlocks.PLACED_ITEM.get()))
                         {
                             world.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.onRightClick(player, stack, blockResult));
                         }

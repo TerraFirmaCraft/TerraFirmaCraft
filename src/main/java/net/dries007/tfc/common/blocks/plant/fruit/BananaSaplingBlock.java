@@ -64,7 +64,7 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return Helpers.isBlock(worldIn.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override

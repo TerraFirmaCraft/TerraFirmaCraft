@@ -104,7 +104,7 @@ public class GrillBlock extends FirepitBlock
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
+            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;

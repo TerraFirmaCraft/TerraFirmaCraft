@@ -108,7 +108,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return slot != SLOT_HANDSTONE || TFCTags.Items.HANDSTONE.contains(stack.getItem());
+        return slot != SLOT_HANDSTONE || Helpers.isItem(stack.getItem(), TFCTags.Items.HANDSTONE);
     }
 
     @Override

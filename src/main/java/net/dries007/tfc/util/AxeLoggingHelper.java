@@ -74,11 +74,11 @@ public class AxeLoggingHelper
 
     public static boolean isLoggingAxe(ItemStack stack)
     {
-        return TFCTags.Items.AXES_THAT_LOG.contains(stack.getItem());
+        return Helpers.isItem(stack.getItem(), TFCTags.Items.AXES_THAT_LOG);
     }
 
     public static boolean isLoggingBlock(BlockState state)
     {
-        return TFCTags.Blocks.LOGS_THAT_LOG.contains(state.getBlock()) && (!state.hasProperty(NATURAL) || state.getValue(NATURAL));
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.LOGS_THAT_LOG) && (!state.hasProperty(NATURAL) || state.getValue(NATURAL));
     }
 }

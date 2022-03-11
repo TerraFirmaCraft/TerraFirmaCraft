@@ -22,6 +22,7 @@ import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
 public class FruitTreeFeature extends Feature<BlockStateConfiguration>
@@ -44,7 +45,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
         for (int i = 0; i < 12; i++)
         {
             mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos), rand.nextInt(10) - rand.nextInt(10), -1, rand.nextInt(10) - rand.nextInt(10));
-            if (world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+            if (Helpers.isBlock(world.getBlockState(mutablePos), TFCTags.Blocks.BUSH_PLANTABLE_ON))
             {
                 boolean blocked = false;
                 for (int j = 1; j <= 10; j++)

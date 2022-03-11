@@ -38,6 +38,7 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -227,7 +228,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         public PotInventory(InventoryBlockEntity<PotInventory> entity)
         {
             this.inventory = new InventoryItemHandler(entity, 9);
-            this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> TFCTags.Fluids.USABLE_IN_POT.contains(fluid.getFluid()));
+            this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT));
         }
 
         @Override

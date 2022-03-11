@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +23,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.items.VesselItem;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * A {@link IFluidHandler} capability provider implementation for item stacks.
@@ -46,7 +46,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
 
     public ItemStackFluidHandler(ItemStack stack, Tag<Fluid> allowedFluids, int capacity)
     {
-        this(stack, fluid -> fluid.is(allowedFluids), capacity);
+        this(stack, fluid -> Helpers.isFluid(fluid, allowedFluids), capacity);
     }
 
     public ItemStackFluidHandler(ItemStack stack, Predicate<Fluid> allowedFluids, int capacity)

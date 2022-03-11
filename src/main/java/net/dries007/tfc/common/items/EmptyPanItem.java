@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 public class EmptyPanItem extends Item
 {
@@ -44,7 +45,7 @@ public class EmptyPanItem extends Item
             final BlockPos pos = context.getClickedPos();
             final BlockState state = level.getBlockState(pos);
             final ItemStack stack = player.getItemInHand(context.getHand());
-            if (state.is(TFCTags.Blocks.CAN_BE_PANNED))
+            if (Helpers.isBlock(state, TFCTags.Blocks.CAN_BE_PANNED))
             {
                 if (level.isClientSide) return InteractionResult.SUCCESS;
 

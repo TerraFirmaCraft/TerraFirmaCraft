@@ -17,6 +17,7 @@ import net.minecraft.tags.Tag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class TagBlockIngredient implements BlockIngredient
@@ -31,7 +32,7 @@ public class TagBlockIngredient implements BlockIngredient
     @Override
     public boolean test(BlockState state)
     {
-        return state.is(tag);
+        return Helpers.isBlock(state, tag);
     }
 
     @Override

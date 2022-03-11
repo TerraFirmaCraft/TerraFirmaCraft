@@ -103,7 +103,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     {
                         // Check the current position for collapsing
                         BlockState stateAt = level.getBlockState(posAt);
-                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(level, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallThrough(level, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                         {
                             if (CollapseRecipe.collapseBlock(level, posAt, stateAt))
                             {
@@ -142,7 +142,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             {
                 final BlockPos pos = isolatedIterator.next();
                 final BlockState currentState = level.getBlockState(pos);
-                if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(currentState.getBlock()) && isIsolated(level, pos))
+                if (Helpers.isBlock(currentState.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED) && isIsolated(level, pos))
                 {
                     Helpers.destroyBlockAndDropBlocksManually((ServerLevel) level, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
                 }
