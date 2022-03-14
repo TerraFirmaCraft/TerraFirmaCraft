@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
@@ -35,38 +36,35 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
     @Override
     public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final BlockStateConfiguration config = context.config();
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        mutablePos.set(pos);
 
-        for (int i = 0; i < 12; i++)
+        if (Helpers.isBlock(level.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
-            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos), rand.nextInt(10) - rand.nextInt(10), -1, rand.nextInt(10) - rand.nextInt(10));
-            if (Helpers.isBlock(world.getBlockState(mutablePos), TFCTags.Blocks.BUSH_PLANTABLE_ON))
+            boolean blocked = false;
+            for (int j = 1; j <= 10; j++)
             {
-                boolean blocked = false;
-                for (int j = 1; j <= 10; j++)
+                mutablePos.move(Direction.UP);
+                if (!level.isEmptyBlock(mutablePos))
                 {
-                    mutablePos.move(Direction.UP);
-                    if (!world.isEmptyBlock(mutablePos))
-                    {
-                        blocked = true;
-                        break;
-                    }
+                    blocked = true;
+                    break;
                 }
-                if (!blocked)
-                {
-                    mutablePos.move(Direction.DOWN, 9);
-                    int saplings = Mth.clamp(rand.nextInt(5) + 1, 2, 4);
-                    BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
-                    setBlock(world, mutablePos, branch);
-                    world.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
-                    world.scheduleTick(mutablePos, branch.getBlock(), 1);
-                    return true;
-                }
+            }
+            if (!blocked)
+            {
+                mutablePos.move(Direction.DOWN, 9);
+                int saplings = Mth.clamp(rand.nextInt(5) + 1, 2, 4);
+                BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
+                setBlock(level, mutablePos, branch);
+                level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
+                level.scheduleTick(mutablePos, branch.getBlock(), 1);
+                return true;
             }
         }
         return false;

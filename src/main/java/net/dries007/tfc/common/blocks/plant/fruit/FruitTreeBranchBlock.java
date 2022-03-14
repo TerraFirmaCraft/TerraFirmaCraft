@@ -52,14 +52,14 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
         builder.add(NORTH, EAST, SOUTH, WEST, UP, DOWN, STAGE);
     }
 
-    public BlockState getStateForPlacement(BlockGetter world, BlockPos pos)
+    public BlockState getStateForPlacement(BlockGetter level, BlockPos pos)
     {
-        Block downBlock = world.getBlockState(pos.below()).getBlock();
-        Block upBlock = world.getBlockState(pos.above()).getBlock();
-        Block northBlock = world.getBlockState(pos.north()).getBlock();
-        Block eastBlock = world.getBlockState(pos.east()).getBlock();
-        Block southBlock = world.getBlockState(pos.south()).getBlock();
-        Block westBlock = world.getBlockState(pos.west()).getBlock();
+        Block downBlock = level.getBlockState(pos.below()).getBlock();
+        Block upBlock = level.getBlockState(pos.above()).getBlock();
+        Block northBlock = level.getBlockState(pos.north()).getBlock();
+        Block eastBlock = level.getBlockState(pos.east()).getBlock();
+        Block southBlock = level.getBlockState(pos.south()).getBlock();
+        Block westBlock = level.getBlockState(pos.west()).getBlock();
         return defaultBlockState()
             .setValue(DOWN, Helpers.isBlock(downBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(downBlock, TFCTags.Blocks.BUSH_PLANTABLE_ON))
             .setValue(UP, Helpers.isBlock(upBlock, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(upBlock, TFCTags.Blocks.FRUIT_TREE_SAPLING))
@@ -71,48 +71,48 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(level, currentPos))
+        if (!state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
-            return stateIn;
+            return state;
         }
         else
         {
             boolean flag = Helpers.isBlock(facingState, TFCTags.Blocks.FRUIT_TREE_BRANCH) || (facing == Direction.DOWN && Helpers.isBlock(facingState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || (facing == Direction.UP && Helpers.isBlock(facingState, TFCTags.Blocks.FRUIT_TREE_SAPLING)));
-            return stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
+            return state.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
+        BlockState belowState = level.getBlockState(pos.below());
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos relativePos = pos.relative(direction);
-            if (Helpers.isBlock(worldIn.getBlockState(relativePos).getBlock(), TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            if (Helpers.isBlock(level.getBlockState(relativePos).getBlock(), TFCTags.Blocks.FRUIT_TREE_BRANCH))
             {
-                Block below = worldIn.getBlockState(relativePos.below()).getBlock();
+                Block below = level.getBlockState(relativePos.below()).getBlock();
                 if (Helpers.isBlock(below, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(below, TFCTags.Blocks.BUSH_PLANTABLE_ON))
                 {
                     return true;
                 }
             }
         }
-        Block blockIn = belowState.getBlock();
-        return Helpers.isBlock(blockIn, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(blockIn, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        Block block = belowState.getBlock();
+        return Helpers.isBlock(block, TFCTags.Blocks.FRUIT_TREE_BRANCH) || Helpers.isBlock(block, TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (!state.canSurvive(worldIn, pos) && !worldIn.isClientSide())
+        if (!state.canSurvive(level, pos) && !level.isClientSide())
         {
-            worldIn.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
     }
 

@@ -32,14 +32,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -47,32 +46,33 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     protected final Supplier<? extends Block> block;
     protected final int treeGrowthDays;
     private final ExtendedProperties properties;
+    private final Supplier<ClimateRange> climateRange;
 
-    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays)
+    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays, Supplier<ClimateRange> climateRange)
     {
         super(properties.properties());
         this.properties = properties;
         this.block = block;
         this.treeGrowthDays = treeGrowthDays;
+        this.climateRange = climateRange;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
         int saplings = state.getValue(SAPLINGS);
-        if (!worldIn.isClientSide() && handIn == InteractionHand.MAIN_HAND && saplings < 4)
+        if (!level.isClientSide() && handIn == InteractionHand.MAIN_HAND && saplings < 4)
         {
             ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
-            //ItemStack off = player.getItemInHand(Hand.OFF_HAND);
-            //todo: require knife in offhand
-            if (defaultBlockState().getBlock().asItem() == held.getItem() && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
+            ItemStack off = player.getItemInHand(InteractionHand.OFF_HAND);
+            if (defaultBlockState().getBlock().asItem() == held.getItem() && off.is(TFCTags.Items.KNIVES) && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
             {
-                if (saplings > 2 && Helpers.isBlock(worldIn.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH))
+                if (saplings > 2 && Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH))
                     return InteractionResult.FAIL;
                 if (!player.isCreative())
                     held.shrink(1);
-                worldIn.setBlockAndUpdate(pos, state.setValue(SAPLINGS, saplings + 1));
+                level.setBlockAndUpdate(pos, state.setValue(SAPLINGS, saplings + 1));
                 return InteractionResult.SUCCESS;
             }
         }
@@ -81,45 +81,41 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SeasonalPlantBlock.PLANT_SHAPE;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
-        if (te != null)
-        {
-            if (!world.isClientSide() && te.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+            if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
             {
-                ChunkData data = ChunkData.get(world, pos);
-                // todo: better climate checks
-                /*if (!tree.getBase().isValidConditions(data.getAverageTemp(pos), data.getRainfall(pos)))
+                int hydration = (int) Climate.getRainfall(level, pos) / 5;
+                float temp = Climate.getTemperature(level, pos);
+                if (climateRange.get().checkBoth(hydration, temp, false))
                 {
-                    world.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
+                    level.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
                 }
-                else*/
+                else
                 {
-                    boolean onBranch = Helpers.isBlock(world.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
-                    world.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, onBranch ? 3 : state.getValue(SAPLINGS)).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
-                    TickCounterBlockEntity newTE = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
-                    if (newTE != null)
-                    {
-                        newTE.resetCounter();
-                    }
+                    final boolean onBranch = Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
+                    int internalSapling = onBranch ? 3 : state.getValue(SAPLINGS);
+                    if (internalSapling == 1 && random.nextBoolean()) internalSapling += 1;
+                    level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, internalSapling).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
+                    Helpers.resetCounter(level, pos);
                 }
             }
-        }
+        });
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos downPos = pos.below();
-        BlockState downState = worldIn.getBlockState(downPos);
+        BlockState downState = level.getBlockState(downPos);
         if (Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH))
         {
             if (downState.getValue(FruitTreeBranchBlock.STAGE) > 1)
@@ -135,18 +131,14 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
             }
             return false;
         }
-        return super.canSurvive(state, worldIn, pos) || Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return super.canSurvive(state, level, pos) || Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-        }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        Helpers.resetCounter(level, pos);
+        super.setPlacedBy(level, pos, state, placer, stack);
     }
 
     @Override

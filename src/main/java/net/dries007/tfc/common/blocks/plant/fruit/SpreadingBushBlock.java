@@ -6,89 +6,105 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.ClimateRange;
 
-public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBlockExtension
+public class SpreadingBushBlock extends StationaryBerryBushBlock implements IForgeBlockExtension, IBushBlock, HoeOverlayBlock
 {
     protected final Supplier<? extends Block> companion;
     protected final int maxHeight;
-    protected final int deathChance;
 
-    public SpreadingBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, int deathChance)
+    public SpreadingBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, Supplier<ClimateRange> climateRange)
     {
-        super(properties, productItem, stages);
+        super(properties, productItem, stages, climateRange);
         this.companion = companion;
         this.maxHeight = maxHeight;
-        this.deathChance = deathChance;
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 
-    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        if (lifecycle == Lifecycle.HEALTHY)
-        {
-            if (!te.isGrowing() || te.isRemoved()) return;
+        return state.getValue(STAGE) == 2 ? Shapes.block() : PLANT_SHAPE;
+    }
 
-            if (distanceToGround(world, pos, maxHeight) >= maxHeight)
-            {
-                te.setGrowing(false);
-            }
-            else if (stage == 0)
-            {
-                world.setBlockAndUpdate(pos, state.setValue(STAGE, 1));
-            }
-            else if (stage == 1 && random.nextInt(7) == 0)
-            {
-                world.setBlockAndUpdate(pos, state.setValue(STAGE, 2));
-                if (world.isEmptyBlock(pos.above()))
-                    world.setBlockAndUpdate(pos.above(), state.setValue(STAGE, 1));
-            }
-            else if (stage == 2)
-            {
-                Direction d = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                BlockPos offsetPos = pos.relative(d);
-                if (world.isEmptyBlock(offsetPos))
-                {
-                    world.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, d));
-                    TickCounterBlockEntity cane = Helpers.getBlockEntity(world, offsetPos, TickCounterBlockEntity.class);
-                    if (cane != null)
-                    {
-                        cane.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * te.getTicksSinceUpdate());
-                    }
-                }
-                if (random.nextInt(deathChance) == 0)
-                {
-                    te.setGrowing(false);
-                }
-            }
-        }
-        else if (lifecycle == Lifecycle.DORMANT && !te.isGrowing())
+    @Override
+    protected int getDeathChance()
+    {
+        return 14;
+    }
+
+    @Override
+    protected boolean mayPropagate(BlockState newState, Level level, BlockPos pos)
+    {
+        return newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0;
+    }
+
+    @Override
+    protected BlockState getDeadState(BlockState state)
+    {
+        return TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, state.getValue(STAGE));
+    }
+
+    @Override
+    protected void propagate(Level level, BlockPos pos, Random random, BlockState state)
+    {
+        final int stage = state.getValue(STAGE);
+        final BlockPos abovePos = pos.above();
+        if ((stage == 1 || (stage == 2 && level.random.nextInt(3) == 0)) && level.isEmptyBlock(abovePos) && distanceToGround(level, pos, maxHeight) < maxHeight)
         {
-            te.addDeath();
-            if (te.willDie() && random.nextInt(3) == 0)
+            level.setBlockAndUpdate(abovePos, state.setValue(STAGE, 1).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
+        }
+        else if (stage == 2)
+        {
+            final int count = Mth.nextInt(random, 1, 3);
+            for (int i = 0; i < count; i++)
             {
-                if (!Helpers.isBlock(world.getBlockState(pos.above()), TFCTags.Blocks.SPREADING_BUSH))
-                    world.setBlockAndUpdate(pos, TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, stage));
+                final Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                final BlockPos offsetPos = pos.relative(offset);
+                if (level.isEmptyBlock(offsetPos))
+                {
+                    level.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, offset).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
+                    level.getBlockEntity(offsetPos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * bush.getTicksSinceUpdate()));
+                }
             }
         }
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        final BlockPos sourcePos = pos.below();
+        final ClimateRange range = climateRange.get();
+
+        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+        text.add(FarmlandBlock.getTemperatureTooltip(level, sourcePos, range, false));
     }
 
     @Override
@@ -96,6 +112,6 @@ public class SpreadingBushBlock extends SeasonalPlantBlock implements IForgeBloc
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, TFCTags.Blocks.ANY_SPREADING_BUSH) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
+        return Helpers.isBlock(belowState, this) || this.mayPlaceOn(level.getBlockState(belowPos), level, belowPos);
     }
 }

@@ -50,7 +50,8 @@ public final class TFCBlockEntities
         TFCBlocks.WALL_TORCH,
         TFCBlocks.DEAD_BERRY_BUSH,
         TFCBlocks.DEAD_CANE,
-        TFCBlocks.BANANA_SAPLING
+        TFCBlocks.BANANA_SAPLING,
+        TFCBlocks.DEAD_BANANA_PLANT
         ).<Supplier<? extends Block>>flatMap(Helpers::flatten)
     );
 
@@ -68,8 +69,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<SluiceBlockEntity>> SLUICE = register("sluice", SluiceBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.SLUICE)));
     public static final RegistryObject<BlockEntityType<LampBlockEntity>> LAMP = register("lamp", LampBlockEntity::new, TFCBlocks.METALS.values().stream().filter(map -> map.get(Metal.BlockType.LAMP) != null).map(map -> map.get(Metal.BlockType.LAMP)));
 
-    public static final RegistryObject<BlockEntityType<BerryBushBlockEntity>> BERRY_BUSH = register("berry_bush", BerryBushBlockEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
-    public static final RegistryObject<BlockEntityType<FruitTreeLeavesBlockEntity>> FRUIT_TREE = register("fruit_tree", FruitTreeLeavesBlockEntity::new, TFCBlocks.FRUIT_TREE_LEAVES.values().stream());
+    public static final RegistryObject<BlockEntityType<BerryBushBlockEntity>> BERRY_BUSH = register("berry_bush", BerryBushBlockEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values(), TFCBlocks.FRUIT_TREE_LEAVES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
     public static final RegistryObject<BlockEntityType<CropBlockEntity>> CROP = register("crop", CropBlockEntity::new, TFCBlocks.CROPS.values().stream());
 
     private static final Logger LOGGER = LogManager.getLogger();

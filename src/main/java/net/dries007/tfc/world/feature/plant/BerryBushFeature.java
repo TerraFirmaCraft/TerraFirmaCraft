@@ -45,11 +45,12 @@ public class BerryBushFeature extends Feature<BlockStateConfiguration>
         final Random rand = context.random();
         final BlockStateConfiguration config = context.config();
 
+        final int y = pos.getY();
         BlockState bushState = config.state;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 15; i++)
         {
-            mutablePos.setWithOffset(level.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos), rand.nextInt(10) - rand.nextInt(10), -1, rand.nextInt(10) - rand.nextInt(10));
+            mutablePos.set(rand.nextInt(10) - rand.nextInt(10), y, rand.nextInt(10) - rand.nextInt(10));
             if (!EnvironmentHelpers.canPlaceBushOn(level, mutablePos)) continue;
 
             level.setBlock(mutablePos, bushState.setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY), 3);

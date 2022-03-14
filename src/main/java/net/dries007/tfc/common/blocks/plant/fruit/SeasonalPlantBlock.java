@@ -6,11 +6,13 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.util.Random;
 import java.util.function.Supplier;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -37,7 +39,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -46,6 +47,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
@@ -58,13 +60,13 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     /**
      * This function is essentially min(blocks to reach the ground, provided distance value)
      */
-    public static int distanceToGround(Level world, BlockPos pos, int distance)
+    protected static int distanceToGround(Level level, BlockPos pos, int distance)
     {
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
         for (int i = 1; i <= distance; i++)
         {
             mutablePos.move(Direction.DOWN);
-            if (world.getBlockState(mutablePos).isFaceSturdy(world, pos, Direction.UP))
+            if (!Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.ANY_SPREADING_BUSH))
             {
                 return i;
             }
@@ -72,7 +74,37 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return distance;
     }
 
-    private final Supplier<? extends Item> productItem;
+    /**
+     * Checks if the plant is outside its growing season, and if so sets it to dormant.
+     *
+     * @return if the plant is dormant
+     */
+    protected static boolean checkAndSetDormant(Level level, BlockPos pos, BlockState state, Lifecycle current, Lifecycle expected)
+    {
+        if (expected == Lifecycle.DORMANT)
+        {
+            // When we're in dormant time, no matter what conditions, or time since appearance, the bush will be dormant.
+            if (expected != current)
+            {
+                level.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.DORMANT));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    protected static void randomDestroyTick(ServerLevel level, BlockPos pos, int days)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(be -> {
+            if (be.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * days)
+            {
+                be.setRemoved();
+                level.destroyBlock(pos, true);
+            }
+        });
+    }
+
+    protected final Supplier<? extends Item> productItem;
     private final Lifecycle[] lifecycle;
     private final ExtendedProperties properties;
 
@@ -97,14 +129,54 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
+        if (!getTrimItemStack().isEmpty())
+        {
+            // Flowering bushes can be cut to create trimmings. This is how one moves or creates new bushes.
+            // The larger the bush is (higher stage), the better chance you have of
+            // 1. damaging it less (i.e. reducing the stage, or killing it), and
+            // 2. making a clipping.
+            if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
+            {
+                final ItemStack held = player.getItemInHand(hand);
+                if (Helpers.isItem(held.getItem(), TFCTags.Items.BUSH_CUTTING_TOOLS))
+                {
+                    level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5f, 1.0f);
+                    if (!level.isClientSide())
+                    {
+                        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
+                            final int finalStage = state.getValue(STAGE) - 1 - level.getRandom().nextInt(2);
+                            if (finalStage >= 0)
+                            {
+                                // We didn't kill the bush, but we have cut the flowers off
+                                level.setBlock(pos, state.setValue(STAGE, finalStage).setValue(LIFECYCLE, Lifecycle.HEALTHY), 3);
+                            }
+                            else
+                            {
+                                // Oops
+                                level.destroyBlock(pos, false, player);
+                            }
+
+                            held.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
+
+                            // But, if we were successful, we have obtained a clipping (2 / 3 chance)
+                            if (level.getRandom().nextInt(3) != 0)
+                            {
+                                ItemHandlerHelper.giveItemToPlayer(player, getTrimItemStack());
+                            }
+                        });
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
         if (state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
         {
             level.playSound(player, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.PLAYERS, 1.0f, level.getRandom().nextFloat() + 0.7f + 0.3f);
             if (!level.isClientSide())
             {
                 level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
-                    ItemHandlerHelper.giveItemToPlayer(player, getProductItem());
-                    level.setBlockAndUpdate(pos, state.setValue(LIFECYCLE, Lifecycle.HEALTHY));
+                    ItemHandlerHelper.giveItemToPlayer(player, getProductItem(level.random));
+                    level.setBlockAndUpdate(pos, stateAfterPicking(state));
                 });
             }
             return InteractionResult.SUCCESS;
@@ -112,9 +184,19 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return InteractionResult.PASS;
     }
 
+    protected ItemStack getTrimItemStack()
+    {
+        return ItemStack.EMPTY;
+    }
+
+    public BlockState stateAfterPicking(BlockState state)
+    {
+        return state.setValue(LIFECYCLE, Lifecycle.HEALTHY);
+    }
+
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(STAGE) == 2 ? Shapes.block() : PLANT_SHAPE;
     }
@@ -147,32 +229,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         builder.add(LIFECYCLE, STAGE);
     }
 
-    /**
-     * Queries the lifecycle based on the data, but catches certain conditions that would
-     */
-    protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
-    {
-        Lifecycle cycle = lifecycle[Calendars.SERVER.getCalendarMonthOfYear().ordinal()];
-
-        if ((cycle == Lifecycle.HEALTHY || cycle == Lifecycle.FLOWERING) && te.isGrowing())
-        {
-            te.setHarvested(false); // prepare to make fruit
-        }
-        if (cycle == Lifecycle.FRUITING || cycle == Lifecycle.FLOWERING)
-        {
-            if (te.isHarvested())
-            {
-                cycle = Lifecycle.DORMANT; // turn dormant after harvesting
-            }
-            else if (!te.isGrowing())
-            {
-                cycle = Lifecycle.HEALTHY; // if it can't grow, we prevent it from flowering or fruiting
-            }
-        }
-        return cycle;
-    }
-
-    protected ItemStack getProductItem()
+    protected ItemStack getProductItem(Random random)
     {
         return new ItemStack(productItem.get());
     }

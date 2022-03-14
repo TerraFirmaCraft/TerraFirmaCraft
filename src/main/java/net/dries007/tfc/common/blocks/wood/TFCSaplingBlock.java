@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -46,44 +47,39 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (worldIn.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0)
+        if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0)
         {
-            if (!worldIn.isAreaLoaded(pos, 1))
+            //noinspection deprecation
+            if (!level.isAreaLoaded(pos, 1))
                 return; // Forge: prevent loading unloaded chunks when checking neighbor's light
-            TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
-            if (te != null)
-            {
-                long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+                long days = counter.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
                 if (days > daysToGrow)
                 {
-                    this.advanceTree(worldIn, pos, state.setValue(STAGE, 1), random);
+                    this.advanceTree(level, pos, state.setValue(STAGE, 1), random);
                 }
-            }
+            });
         }
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient)
+    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-        }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        Helpers.resetCounter(level, pos);
+        super.setPlacedBy(level, pos, state, placer, stack);
     }
 
     @Override
-    protected boolean mayPlaceOn(BlockState state, BlockGetter worldIn, BlockPos pos)
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return super.mayPlaceOn(state, worldIn, pos) || Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BUSH_PLANTABLE_ON);
+        return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 }

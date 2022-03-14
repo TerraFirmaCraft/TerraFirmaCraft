@@ -42,6 +42,7 @@ import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.DeadBananaPlantBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadBerryBushBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadCaneBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
@@ -203,6 +204,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> CRANBERRY_BUSH = register("plant/cranberry_bush", FruitBlocks::createCranberry, FLORA);
 
     public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("plant/dead_berry_bush", () -> new DeadBerryBushBlock(ExtendedProperties.of(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
+    public static final RegistryObject<Block> DEAD_BANANA_PLANT = register("plant/dead_banana_plant", () -> new DeadBananaPlantBlock(ExtendedProperties.of(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
     public static final RegistryObject<Block> DEAD_CANE = register("plant/dead_cane", () -> new DeadCaneBlock(ExtendedProperties.of(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
     public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_leaves", tree::createLeaves, FLORA));
     public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_branch", tree::createBranch));

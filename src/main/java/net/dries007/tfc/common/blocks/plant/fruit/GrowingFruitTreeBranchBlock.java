@@ -15,20 +15,26 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.HitResult;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 /**
  * If I had my way, everything in this mod would be chorus fruit.
@@ -40,11 +46,11 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     public static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
     private static final Direction[] NOT_DOWN = new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH, Direction.NORTH, Direction.UP};
 
-    private static boolean canGrowIntoLocations(LevelReader world, BlockPos... pos)
+    private static boolean canGrowIntoLocations(LevelReader level, BlockPos... pos)
     {
         for (BlockPos p : pos)
         {
-            if (!canGrowInto(world, p))
+            if (!canGrowInto(level, p))
             {
                 return false;
             }
@@ -52,20 +58,19 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         return true;
     }
 
-    @SuppressWarnings("deprecation")
-    private static boolean canGrowInto(LevelReader world, BlockPos pos)
+    private static boolean canGrowInto(LevelReader level, BlockPos pos)
     {
-        BlockState state = world.getBlockState(pos);
+        BlockState state = level.getBlockState(pos);
         return state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.FRUIT_TREE_LEAVES);
     }
 
-    private static boolean allNeighborsEmpty(LevelReader worldIn, BlockPos pos, @Nullable Direction excludingSide)
+    private static boolean allNeighborsEmpty(LevelReader level, BlockPos pos, @Nullable Direction excludingSide)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             mutablePos.set(pos).move(direction);
-            if (direction != excludingSide && !canGrowInto(worldIn, mutablePos))
+            if (direction != excludingSide && !canGrowInto(level, mutablePos))
             {
                 return false;
             }
@@ -75,46 +80,30 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
 
     private final Supplier<? extends Block> body;
     private final Supplier<? extends Block> leaves;
+    private final Supplier<ClimateRange> climateRange;
 
-    public GrowingFruitTreeBranchBlock(ExtendedProperties properties, Supplier<? extends Block> body, Supplier<? extends Block> leaves)
+    public GrowingFruitTreeBranchBlock(ExtendedProperties properties, Supplier<? extends Block> body, Supplier<? extends Block> leaves, Supplier<ClimateRange> climateRange)
     {
         super(properties);
 
         this.body = body;
         this.leaves = leaves;
+        this.climateRange = climateRange;
 
         registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, true).setValue(STAGE, 0));
     }
 
-    @Override
-    @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
-    {
-        TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
-        if (te == null || world.isClientSide()) return;
-
-        // todo: better climate checks
-        /*
-        ChunkData chunkData = ChunkData.get(world, pos);
-        if (!fruitTree.getBase().isValidConditions(chunkData.getAverageTemp(pos), chunkData.getRainfall(pos)))
-        {
-            te.resetCounter();
-        }
-*/
-        super.randomTick(state, world, pos, random);
-    }
-
-    public void grow(BlockState state, ServerLevel world, BlockPos pos, Random random, int cyclesLeft)
+    public void grow(BlockState state, ServerLevel level, BlockPos pos, Random random, int cyclesLeft)
     {
         FruitTreeBranchBlock body = (FruitTreeBranchBlock) this.body.get();
         BlockPos abovePos = pos.above();
-        if (canGrowInto(world, abovePos) && abovePos.getY() < world.getMaxBuildHeight() - 1)
+        if (canGrowInto(level, abovePos) && abovePos.getY() < level.getMaxBuildHeight() - 1)
         {
             int stage = state.getValue(STAGE);
             if (stage < 3)
             {
                 boolean willGrowUpward = false;
-                BlockState belowState = world.getBlockState(pos.below());
+                BlockState belowState = level.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
                 if (Helpers.isBlock(belowBlock, TFCTags.Blocks.BUSH_PLANTABLE_ON))
                 {
@@ -127,7 +116,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                     for (int k = 0; k < 4; ++k)
                     {
                         mutablePos.setWithOffset(pos, 0, -1 * (j + 1), 0);
-                        if (world.getBlockState(mutablePos).getBlock() != body)
+                        if (level.getBlockState(mutablePos).getBlock() != body)
                         {
                             break;
                         }
@@ -138,15 +127,15 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                         willGrowUpward = true;
                     }
                 }
-                else if (canGrowInto(world, pos.below()))
+                else if (canGrowInto(level, pos.below()))
                 {
                     willGrowUpward = true;
                 }
 
-                if (willGrowUpward && allNeighborsEmpty(world, abovePos, null) && canGrowInto(world, pos.above(2)))
+                if (willGrowUpward && allNeighborsEmpty(level, abovePos, null) && canGrowInto(level, pos.above(2)))
                 {
-                    placeBody(world, pos, stage);
-                    placeGrownFlower(world, abovePos, stage, state.getValue(SAPLINGS), cyclesLeft - 1);
+                    placeBody(level, pos, stage);
+                    placeGrownFlower(level, abovePos, stage, state.getValue(SAPLINGS), cyclesLeft - 1);
                 }
                 else if (stage < 2)
                 {
@@ -159,22 +148,28 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                         if (directions.contains(test))
                         {
                             mutablePos.setWithOffset(pos, test);
-                            if (canGrowIntoLocations(world, mutablePos, mutablePos.below()) && allNeighborsEmpty(world, mutablePos, test.getOpposite()))
+                            if (canGrowIntoLocations(level, mutablePos, mutablePos.below()) && allNeighborsEmpty(level, mutablePos, test.getOpposite()))
                             {
-                                placeGrownFlower(world, mutablePos, stage + 1, state.getValue(SAPLINGS), cyclesLeft - 1);
+                                placeGrownFlower(level, mutablePos, stage + 1, state.getValue(SAPLINGS), cyclesLeft - 1);
                             }
                             directions.remove(test);
                             branches--;
                         }
                     }
-                    placeBody(world, pos, stage);
+                    placeBody(level, pos, stage);
                 }
                 else
                 {
-                    placeBody(world, pos, stage);
+                    placeBody(level, pos, stage);
                 }
             }
         }
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    {
+        super.createBlockStateDefinition(builder.add(SAPLINGS));
     }
 
     @Override
@@ -184,62 +179,71 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
+    @SuppressWarnings("deprecation")
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(SAPLINGS);
+        //todo: include root water?
+        final int hydration = (int) (Climate.getRainfall(level, pos) / 5f);
+        final float temp = Climate.getTemperature(level, pos);
+        if (!climateRange.get().checkBoth(hydration, temp, false))
+        {
+            Helpers.resetCounter(level, pos);
+        }
+        super.randomTick(state, level, pos, random);
     }
 
     @Override
-    public void tick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        super.tick(state, world, pos, rand);
-        TickCounterBlockEntity te = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
-        if (te == null || world.isEmptyBlock(pos) || world.isClientSide()) return;
-
-        long days = te.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
-        int cycles = (int) (days / 5);
-        if (cycles >= 1)
-        {
-            grow(state, world, pos, rand, cycles);
-            te.resetCounter();
-        }
+        super.tick(state, level, pos, rand);
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+            long days = counter.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
+            int cycles = (int) (days / 5);
+            if (cycles >= 1)
+            {
+                grow(state, level, pos, rand, cycles);
+                counter.resetCounter();
+            }
+        });
     }
 
-    private void placeGrownFlower(ServerLevel worldIn, BlockPos pos, int stage, int saplings, int cycles)
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
-        worldIn.setBlock(pos, getStateForPlacement(worldIn, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 3);
-        TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
-        if (te != null)
-        {
-            te.resetCounter();
-            te.reduceCounter(-1L * ICalendar.TICKS_IN_DAY * cycles * 5);
-        }
-        addLeaves(worldIn, pos);
-        worldIn.getBlockState(pos).randomTick(worldIn, pos, worldIn.random);
+        return ItemStack.EMPTY;
     }
 
-    private void placeBody(LevelAccessor worldIn, BlockPos pos, int stage)
+    private void placeGrownFlower(ServerLevel level, BlockPos pos, int stage, int saplings, int cycles)
+    {
+        level.setBlock(pos, getStateForPlacement(level, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 3);
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+            counter.resetCounter();
+            counter.reduceCounter(-1L * ICalendar.TICKS_IN_DAY * cycles * 5);
+        });
+        addLeaves(level, pos);
+        level.getBlockState(pos).randomTick(level, pos, level.random);
+    }
+
+    private void placeBody(LevelAccessor level, BlockPos pos, int stage)
     {
         FruitTreeBranchBlock plant = (FruitTreeBranchBlock) this.body.get();
-        worldIn.setBlock(pos, plant.getStateForPlacement(worldIn, pos).setValue(STAGE, stage), 3);
-        addLeaves(worldIn, pos);
+        level.setBlock(pos, plant.getStateForPlacement(level, pos).setValue(STAGE, stage), 3);
+        addLeaves(level, pos);
     }
 
-    @SuppressWarnings("deprecation")
-    private void addLeaves(LevelAccessor world, BlockPos pos)
+    private void addLeaves(LevelAccessor level, BlockPos pos)
     {
         final BlockState leaves = this.leaves.get().defaultBlockState();
-        BlockState downState = world.getBlockState(pos.below(2));
+        BlockState downState = level.getBlockState(pos.below(2));
         if (!(downState.isAir() || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_LEAVES) || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH)))
             return;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : NOT_DOWN)
         {
             mutablePos.setWithOffset(pos, d);
-            if (world.isEmptyBlock(mutablePos))
+            if (level.isEmptyBlock(mutablePos))
             {
-                world.setBlock(mutablePos, leaves, 2);
+                level.setBlock(mutablePos, leaves, 2);
             }
         }
     }

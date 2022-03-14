@@ -77,6 +77,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
@@ -206,6 +208,11 @@ public final class Helpers
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
     {
         return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
+    }
+
+    public static void resetCounter(Level level, BlockPos pos)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
     }
 
     /**

@@ -556,6 +556,8 @@ def generate(rm: ResourceManager):
 
     for berry, data in BERRIES.items():
         climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
+    for fruit, data in FRUITS.items():
+        climate_range(rm, 'plant/%s_tree' % fruit, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp - 7, data.max_temp + 7, 0))
 
     # Crops
     for crop, data in CROPS.items():
