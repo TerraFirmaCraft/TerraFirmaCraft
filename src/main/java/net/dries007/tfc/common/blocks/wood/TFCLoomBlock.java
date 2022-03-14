@@ -58,25 +58,20 @@ public class TFCLoomBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        switch (state.getValue(FACING))
-        {
-            case NORTH:
-            default:
-                return SHAPE_NORTH;
-            case SOUTH:
-                return SHAPE_SOUTH;
-            case WEST:
-                return SHAPE_WEST;
-            case EAST:
-                return SHAPE_EAST;
-        }
+        return switch (state.getValue(FACING))
+            {
+                case SOUTH -> SHAPE_SOUTH;
+                case WEST -> SHAPE_WEST;
+                case EAST -> SHAPE_EAST;
+                default -> SHAPE_NORTH;
+            };
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        LoomBlockEntity te = Helpers.getBlockEntity(worldIn, pos, LoomBlockEntity.class);
+        LoomBlockEntity te = Helpers.getBlockEntity(level, pos, LoomBlockEntity.class);
         if (te != null)
         {
             return te.onRightClick(player);
@@ -92,9 +87,9 @@ public class TFCLoomBlock extends DeviceBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> p_54794_)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        p_54794_.add(FACING);
+        builder.add(FACING);
     }
 
 }

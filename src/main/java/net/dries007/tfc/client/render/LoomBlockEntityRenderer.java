@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
@@ -25,47 +24,44 @@ import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 
 public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEntity>
 {
-    public LoomBlockEntityRenderer(BlockEntityRendererProvider.Context context)
-    {
-    }
 
     @Override
-    public void render(LoomBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(LoomBlockEntity loom, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        if (!(te.getBlockState().getBlock() instanceof TFCLoomBlock)) return;
+        if (!(loom.getBlockState().getBlock() instanceof TFCLoomBlock)) return;
 
-        matrixStack.pushPose();
-        matrixStack.translate(0.5D, 0.03125D, 0.5D);
-        int meta = te.getBlockState().getValue(TFCLoomBlock.FACING).get2DDataValue();
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(meta));
-        matrixStack.popPose();
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 0.03125D, 0.5D);
+        int meta = loom.getBlockState().getValue(TFCLoomBlock.FACING).get2DDataValue();
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(meta));
+        poseStack.popPose();
 
-        TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(((TFCLoomBlock) te.getBlockState().getBlock()).getTextureLocation());
+        TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(((TFCLoomBlock) loom.getBlockState().getBlock()).getTextureLocation());
 
-        float tileZ = (float) te.getAnimPos();
+        float tileZ = (float) loom.getAnimPos();
 
-        matrixStack.pushPose();
-        matrixStack.translate(0.5D, 0.0D, 0.5D);
-        matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
-        matrixStack.translate(-0.5D, 0.0D, -0.5D);
+        poseStack.pushPose();
+        poseStack.translate(0.5D, 0.0D, 0.5D);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
+        poseStack.translate(-0.5D, 0.0D, -0.5D);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
-        drawUpper(builder, matrixStack, planksSprite, te.currentBoolean() ? tileZ : 0, combinedOverlay, combinedLight);
-        drawLower(builder, matrixStack, planksSprite, te.currentBoolean() ? 0 : tileZ, combinedOverlay, combinedLight);
-        matrixStack.popPose();
+        drawUpper(builder, poseStack, planksSprite, loom.currentBoolean() ? tileZ : 0, combinedOverlay, combinedLight);
+        drawLower(builder, poseStack, planksSprite, loom.currentBoolean() ? 0 : tileZ, combinedOverlay, combinedLight);
+        poseStack.popPose();
 
-        if (te.hasRecipe())
+        if (loom.hasRecipe())
         {
-            matrixStack.pushPose();
-            matrixStack.translate(0.5D, 0.0D, 0.5D);
-            matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
-            matrixStack.translate(-0.5D, 0.0D, -0.5D);
+            poseStack.pushPose();
+            poseStack.translate(0.5D, 0.0D, 0.5D);
+            poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
+            poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-            TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(te.getInProgressTexture());
+            TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(loom.getInProgressTexture());
 
-            drawMaterial(builder, matrixStack, progressSprite, te, tileZ * 2F / 3F, combinedOverlay, combinedLight);
-            drawProduct(builder, matrixStack, progressSprite, te, combinedOverlay, combinedLight);
-            matrixStack.popPose();
+            drawMaterial(builder, poseStack, progressSprite, loom, tileZ * 2F / 3F, combinedOverlay, combinedLight);
+            drawProduct(builder, poseStack, progressSprite, loom, combinedOverlay, combinedLight);
+            poseStack.popPose();
         }
     }
 
@@ -113,7 +109,6 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
 
             for (float[] v : getPlaneVertices(0.1875F + (0.625F / maxPieces) * i, y1, z1 - 0.001F, 0.1875F + (0.625F / maxPieces) * (i + 1F), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
             {
-                //TerraFirmaCraft.LOGGER.info("mat u {} v {}",sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D));
                 vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
             }
 
