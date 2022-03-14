@@ -285,6 +285,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.LOOM.get(), ctx -> new LoomBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SLUICE.get(), ctx -> new SluiceBlockEntityRenderer());
     }
 
@@ -379,6 +380,10 @@ public final class ClientEventHandler
     public static void onTextureStitch(TextureStitchEvent.Pre event)
     {
         TextureAtlas atlas = event.getAtlas();
+        if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS))
+        {
+            event.addSprite(Helpers.identifier("block/burlap"));
+        }
         if (atlas.location().equals(Sheets.CHEST_SHEET))
         {
             Arrays.stream(Wood.values()).map(Wood::getSerializedName).forEach(name -> {

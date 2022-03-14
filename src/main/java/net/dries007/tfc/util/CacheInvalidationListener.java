@@ -29,7 +29,7 @@ public enum CacheInvalidationListener implements SyncReloadListener
             invalidateServerCaches(server);
         }
     }
-
+    
     public void invalidateServerCaches(MinecraftServer server)
     {
         final RecipeManager manager = server.getRecipeManager();
@@ -40,6 +40,7 @@ public enum CacheInvalidationListener implements SyncReloadListener
         QuernRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.QUERN.get()));
         ScrapingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.SCRAPING.get()));
         CastingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()));
+        LoomRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.LOOM.get()));
 
         LocateVeinCommand.clearCache();
         InteractionManager.reloadCache();

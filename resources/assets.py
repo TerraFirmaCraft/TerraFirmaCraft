@@ -1088,6 +1088,14 @@ def generate(rm: ResourceManager):
         rm.lang('block.tfc.wood.planks.%s_tool_rack' % wood, lang('%s Tool Rack', wood))
         rm.block_loot(rack_namespace, rack_namespace)
 
+        # Loom
+        block = rm.blockstate('tfc:wood/planks/%s_loom' % wood, model='tfc:block/wood/planks/%s_loom' % wood, variants=four_rotations('tfc:block/wood/planks/%s_loom' % wood, (270, 180, None, 90)))
+        block.with_block_model(textures={'texture': 'tfc:block/wood/planks/%s' % wood, 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/loom')
+        block.with_item_model()
+        block.with_lang(lang('%s Loom', wood))
+        block.with_block_loot('tfc:wood/planks/%s_loom' % wood)
+        block.with_tag('minecraft:mineable/axe')
+
         # Bookshelf
         block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood)
         block.with_block_model({'end': 'tfc:block/wood/planks/%s' % wood, 'side': 'tfc:block/wood/planks/%s_bookshelf' % wood}, parent='minecraft:block/bookshelf')

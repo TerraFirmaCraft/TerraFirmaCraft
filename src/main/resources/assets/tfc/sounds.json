@@ -45,6 +45,36 @@
       "tfc:stonedrag2"
     ]
   },
+  "loom_weave": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "minecraft:step/wood1",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood2",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood3",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood4",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood5",
+        "volume": 0.25,
+        "pitch": 0.5
+      }
+    ]
+  },
   "knap_stone": {
     "category": "player",
     "sounds": [

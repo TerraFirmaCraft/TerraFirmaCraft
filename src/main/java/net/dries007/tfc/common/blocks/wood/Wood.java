@@ -10,7 +10,6 @@ import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.core.Direction;
@@ -22,9 +21,9 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.common.blockentities.LoomBlockEntity;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -149,6 +148,7 @@ public enum Wood implements StringRepresentable
         WORKBENCH(wood -> new TFCCraftingTableBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30)), true),
         CHEST((self, wood) -> new TFCChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
         TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
+        LOOM(wood -> new TFCLoomBlock(ExtendedProperties.of(properties(wood).strength(2.5F).noOcclusion()).flammable(60, 30).blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.name().toLowerCase())), true),
         SLUICE(wood -> new SluiceBlock(ExtendedProperties.of(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false);
 
         public static final BlockType[] VALUES = values();
@@ -172,7 +172,7 @@ public enum Wood implements StringRepresentable
             this(blockFactory, isPlanksVariant, BlockItem::new);
         }
 
-        BlockType(BiFunction<BlockType, Wood, Block> blockFactory, boolean isPlanksVariant,  BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
+        BlockType(BiFunction<BlockType, Wood, Block> blockFactory, boolean isPlanksVariant, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
         {
             this.blockFactory = blockFactory;
             this.isPlanksVariant = isPlanksVariant;
