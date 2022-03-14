@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/smooth/dacite"
+            "items": [
+              "tfc:rock/smooth/dacite"
+            ]
           }
         ]
       }

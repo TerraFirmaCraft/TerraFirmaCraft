@@ -9,12 +9,15 @@ package net.dries007.tfc.common.recipes.ingredients;
 import java.util.Collection;
 
 import com.google.gson.JsonObject;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.SerializationTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class TagBlockIngredient implements BlockIngredient
@@ -29,7 +32,7 @@ public class TagBlockIngredient implements BlockIngredient
     @Override
     public boolean test(BlockState state)
     {
-        return state.is(tag);
+        return Helpers.isBlock(state, tag);
     }
 
     @Override
@@ -51,13 +54,13 @@ public class TagBlockIngredient implements BlockIngredient
         @Override
         public TagBlockIngredient fromJson(JsonObject json)
         {
-            return new TagBlockIngredient(JsonHelpers.getTag(json, "tag", BlockTags.getAllTags()));
+            return new TagBlockIngredient(JsonHelpers.getTag(json, "tag", SerializationTags.getInstance().getOrEmpty(Registry.BLOCK_REGISTRY)));
         }
 
         @Override
         public TagBlockIngredient fromNetwork(FriendlyByteBuf buffer)
         {
-            final Tag<Block> tag = BlockTags.getAllTags().getTagOrEmpty(buffer.readResourceLocation());
+            final Tag<Block> tag = SerializationTags.getInstance().getOrEmpty(Registry.BLOCK_REGISTRY).getTagOrEmpty(buffer.readResourceLocation());
             return new TagBlockIngredient(tag);
         }
 

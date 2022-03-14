@@ -62,7 +62,7 @@ public class TFCTwistingVinesFeature extends Feature<ColumnPlantConfig>
         {
             mutablePos.setWithOffset(pos, Helpers.triangle(rand, radius), 0, Helpers.triangle(rand, radius));
 
-            if (!world.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON)) return false;
+            if (!Helpers.isBlock(world.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON)) return false;
 
             if (world.isEmptyBlock(mutablePos))
             {

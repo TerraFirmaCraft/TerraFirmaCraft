@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * {@link CoralWallFanBlock}
@@ -55,21 +56,21 @@ public class LivingCoralWallFanBlock extends CoralWallFanBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing.getOpposite() == stateIn.getValue(FACING) && !stateIn.canSurvive(level, currentPos))
+        if (facing.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
         else
         {
-            if (stateIn.getValue(getFluidProperty()).getFluid().is(FluidTags.WATER))
+            if (Helpers.isFluid(state.getValue(getFluidProperty()).getFluid(), FluidTags.WATER))
             {
                 level.scheduleTick(currentPos, TFCFluids.SALT_WATER.getSource(), TFCFluids.SALT_WATER.getSource().getTickDelay(level));
             }
 
-            this.tryScheduleDieTick(stateIn, level, currentPos);
-            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+            this.tryScheduleDieTick(state, level, currentPos);
+            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
     }
 }

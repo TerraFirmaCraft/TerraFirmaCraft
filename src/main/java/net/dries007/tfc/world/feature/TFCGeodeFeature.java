@@ -72,7 +72,7 @@ public class TFCGeodeFeature extends Feature<TFCGeodeConfig>
             int z = outerWall.sample(random);
             BlockPos offsetPos = origin.offset(x, y, z);
             BlockState found = level.getBlockState(offsetPos);
-            if (found.isAir() || found.is(BlockTags.GEODE_INVALID_BLOCKS))
+            if (found.isAir() || Helpers.isBlock(found, BlockTags.GEODE_INVALID_BLOCKS))
             {
                 ++invalid;
                 if (invalid > 1) return false;

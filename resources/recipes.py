@@ -87,6 +87,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shapeless('crafting/wood/%s_trapped_chest' % wood, (item('chest'), 'minecraft:tripwire_hook'), (1, item('trapped_chest'))).with_advancement(item('chest'))
         damage_shapeless(rm, 'crafting/wood/%s_support' % wood, (item('log'), item('log'), '#tfc:saws'), (8, item('support'))).with_advancement('#tfc:saws')
         rm.crafting_shaped('crafting/wood/%s_loom' % wood, ['XXX', 'XSX', 'X X'], {'X': item('lumber'), 'S': 'minecraft:stick'}, plank('loom')).with_advancement(item('lumber'))
+        rm.crafting_shaped('crafting/wood/%s_sluice' % wood, ['  X', ' XY', 'XYY'], {'X': '#forge:rods/wooden', 'Y': item('lumber')}, item('sluice')).with_advancement(item('lumber'))
 
     rm.crafting_shaped('crafting/aggregate', ['XYX', 'Y Y', 'XYX'], {'X': '#forge:sand', 'Y': '#forge:gravel'}, (8, 'tfc:aggregate')).with_advancement('#forge:sand')
     damage_shapeless(rm, 'crafting/alabaster_brick', ('tfc:ore/gypsum', '#tfc:chisels'), (4, 'tfc:alabaster_brick')).with_advancement('tfc:ore/gypsum')
@@ -101,10 +102,8 @@ def generate(rm: ResourceManager):
     rm.crafting_shapeless('crafting/gunpowder_graphite', ('tfc:powder/saltpeter', 'tfc:powder/saltpeter', 'tfc:powder/saltpeter', 'tfc:powder/saltpeter', 'tfc:powder/sulfur', 'tfc:powder/sulfur', 'tfc:powder/charcoal', 'tfc:powder/charcoal', 'tfc:powder/graphite'), (12, 'minecraft:gunpowder')).with_advancement('tfc:powder/graphite')
     rm.crafting_shaped('crafting/halter', ['XYX', 'X X'], {'X': 'minecraft:leather', 'Y': 'minecraft:lead'}, 'tfc:halter').with_advancement('minecraft:lead')
     rm.crafting_shaped('crafting/handstone', ['Y  ', 'XXX'], {'X': '#forge:stone', 'Y': '#forge:rods/wooden'}, 'tfc:handstone').with_advancement('#forge:stone')
-    rm.crafting_shaped('crafting/jute_disc', [' X ', 'XXX', ' X '], {'X': 'tfc:jute_fiber'}, 'tfc:jute_disc').with_advancement('tfc:jute_fiber')
     rm.crafting_shaped('crafting/jute_net', ['X X', ' X ', 'X X'], {'X': 'tfc:jute_fiber'}, 'tfc:jute_net').with_advancement('tfc:jute_fiber')
     rm.crafting_shaped('crafting/lead', [' XX', ' XX', 'X  '], {'X': 'tfc:jute_fiber'}, 'minecraft:lead').with_advancement('tfc:jute_fiber')
-    rm.crafting_shapeless('crafting/olive_jute_disc', ('tfc:jute_disc', 'tfc:olive_paste'), 'tfc:olive_jute_disc').with_advancement('tfc:jute_disc')
     rm.crafting_shaped('crafting/quern', ['XXX', 'YYY'], {'X': '#forge:smooth_stone', 'Y': '#forge:stone'}, 'tfc:quern').with_advancement('#forge:smooth_stone')
     rm.crafting_shaped('crafting/spindle', ['X', 'Y'], {'X': 'tfc:ceramic/spindle_head', 'Y': '#forge:rods/wooden'}, 'tfc:spindle').with_advancement('tfc:ceramic/spindle_head')
     rm.crafting_shapeless('crafting/stick_from_bunch', 'tfc:stick_bunch', (9, 'minecraft:stick')).with_advancement('tfc:stick_bunch')
@@ -117,7 +116,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('#minecraft:logs')
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'tfc:straw', 'tfc:straw', 'minecraft:clay_ball', 'minecraft:clay_ball', 'minecraft:clay_ball', '#minecraft:dirt', '#minecraft:dirt', '#minecraft:dirt'), (6, 'tfc:daub'))
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
-    # todo: bellows, bf, bloomery, goldpan, nestbox, paper, pkeg, salting, food combining, wooden bucket
+    # todo: bellows, bf, bloomery, nestbox, paper, pkeg, salting, food combining, wooden bucket
 
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
@@ -202,6 +201,10 @@ def generate(rm: ResourceManager):
         rm.block_tag('can_collapse', spike)
         collapse_recipe(rm, '%s_spike' % rock, spike, copy_input=True)
 
+        for deposit in ORE_DEPOSITS:
+            rm.block_tag('can_landslide', 'tfc:deposit/%s/%s' % (deposit, rock))
+            landslide_recipe(rm, '%s_%s_deposit' % (deposit, rock), 'tfc:deposit/%s/%s' % (deposit, rock), gravel)
+
     # Soil Blocks
     for variant in SOIL_BLOCK_VARIANTS:
         for block_type in SOIL_BLOCK_TYPES:
@@ -243,10 +246,11 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item=(18, 'tfc:torch'))
     heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 180, result_item='minecraft:glass')
     heat_recipe(rm, 'glass_from_sand', '#forge:sand', 180, result_item='minecraft:glass')
-    heat_recipe(rm, 'brick', 'tfc:ceramic/unfired_brick', 1500, result_item='minecraft:brick')
-    heat_recipe(rm, 'flower_pot', 'tfc:ceramic/unfired_flower_pot', 1500, result_item='minecraft:flower_pot')
-    heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', 1500, result_item='tfc:ceramic/jug')
-    heat_recipe(rm, 'terracotta', 'minecraft:clay', 1200, result_item='minecraft:terracotta')
+    heat_recipe(rm, 'brick', 'tfc:ceramic/unfired_brick', POTTERY_MELT, result_item='minecraft:brick')
+    heat_recipe(rm, 'flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_MELT, result_item='minecraft:flower_pot')
+    heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', POTTERY_MELT, result_item='tfc:ceramic/jug')
+    heat_recipe(rm, 'ceramic_pan', 'tfc:ceramic/unfired_pan', POTTERY_MELT, result_item='tfc:pan/empty')
+    heat_recipe(rm, 'terracotta', 'minecraft:clay', POTTERY_MELT, result_item='minecraft:terracotta')
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -279,6 +283,9 @@ def generate(rm: ResourceManager):
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('#tfc:high_quality_cloth')
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
 
+    for name in DISABLED_VANILLA_RECIPES:
+        disable_recipe(rm, 'minecraft:' + name)
+
     # Quern
     quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
     quern_recipe(rm, 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
@@ -292,6 +299,7 @@ def generate(rm: ResourceManager):
     quern_recipe(rm, 'blaze_rod', 'minecraft:blaze_rod', 'minecraft:blaze_powder', count=2)
     quern_recipe(rm, 'raw_limestone', 'tfc:rock/raw/limestone', 'tfc:ore/gypsum')
     quern_recipe(rm, 'sylvite', 'tfc:ore/sylvite', 'tfc:powder/sylvite', count=4)
+    quern_recipe(rm, 'olives', 'tfc:food/olive', 'tfc:olive_paste')
 
     for grain in GRAINS:
         heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)
@@ -300,8 +308,7 @@ def generate(rm: ResourceManager):
     for meat in MEATS:
         heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item='tfc:food/cooked_%s' % meat)
 
-    for plant in SEAWEED:
-        heat_recipe(rm, plant, 'tfc:plant/%s' % plant, 200, 'tfc:food/dried_seaweed')
+    heat_recipe(rm, 'seaweed', 'tfc:groundcover/seaweed', 200, 'tfc:food/dried_seaweed')
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, 'tfc:food/dried_kelp')
 
     for ore in ['hematite', 'limonite', 'malachite']:
@@ -323,12 +330,23 @@ def generate(rm: ResourceManager):
         damage_shapeless(rm, 'crafting/%s_sheepskin' % size, ('tfc:%s_sheepskin_hide' % size, '#tfc:knives'), (i + 1, 'tfc:wool')).with_advancement('tfc:%s_sheepskin_hide' % size)
 
     # todo: actual pot recipes
-    rm.recipe(('pot', 'fresh_from_salt_water'), 'tfc:pot_fluid', {
-        'ingredients': [utils.ingredient('minecraft:gunpowder')],
-        'fluid_ingredient': fluid_stack_ingredient('tfc:salt_water', 1000),
-        'duration': 200,
+
+    paste = utils.ingredient('tfc:olive_paste')
+    rm.recipe(('pot', 'olive_oil_water'), 'tfc:pot_fluid', {
+        'ingredients': [paste, paste, paste, paste],
+        'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),
+        'duration': 4000,
         'temperature': 300,
-        'fluid_output': fluid_stack('minecraft:water', 1000)
+        'fluid_output': fluid_stack('tfc:olive_oil_water', 1000)
+    })
+
+    blubber = utils.ingredient('tfc:blubber')
+    rm.recipe(('pot', 'tallow'), 'tfc:pot_fluid', {
+        'ingredients': [blubber, blubber, blubber, blubber],
+        'fluid_ingredient': fluid_stack_ingredient('minecraft:water', 1000),
+        'duration': 8000,
+        'temperature': 600,
+        'fluid_output': fluid_stack('tfc:tallow', 1000)
     })
 
     rm.recipe(('pot', 'mushroom_soup'), 'tfc:pot_soup', {
@@ -417,6 +435,10 @@ def generate(rm: ResourceManager):
     loom_recipe(rm, 'wool_cloth', 'tfc:wool_yarn', 16, 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')
     loom_recipe(rm, 'silk_cloth', 'minecraft:string', 24, 'tfc:silk_cloth', 24, 'minecraft:block/white_wool')
     loom_recipe(rm, 'wool_block', 'tfc:wool_cloth', 4, (8, 'minecraft:white_wool'), 4, 'minecraft:block/white_wool')
+    
+    
+def disable_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier):
+    rm.recipe(name_parts, 'forge:conditional', {'recipes': []})
 
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):

@@ -28,9 +28,9 @@
     [],
     [
       "tfc:vein/gravel",
+      "tfc:vein/granite_dike",
       "tfc:vein/diorite_dike",
       "tfc:vein/gabbro_dike",
-      "tfc:vein/granite_dike",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",
@@ -116,6 +116,20 @@
   ],
   "starts": [],
   "spawners": {
+    "creature": [
+      {
+        "type": "tfc:penguin",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "tfc:turtle",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 5
+      }
+    ],
     "water_ambient": [
       {
         "type": "tfc:isopod",
@@ -158,6 +172,20 @@
         "weight": 1,
         "minCount": 2,
         "maxCount": 6
+      }
+    ],
+    "water_creature": [
+      {
+        "type": "tfc:orca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:dolphin",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
       }
     ]
   },

@@ -27,6 +27,12 @@
           }
         }
       }
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "tfc:replaceable"
+      }
     }
   ]
 }

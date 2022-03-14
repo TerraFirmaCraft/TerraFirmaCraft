@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:medium_sheepskin_hide"
+            "items": [
+              "tfc:medium_sheepskin_hide"
+            ]
           }
         ]
       }

@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
@@ -54,5 +55,11 @@ public class TFCCod extends Cod implements AquaticMob
     public boolean canSpawnIn(Fluid fluid)
     {
         return fluid.isSame(TFCFluids.SALT_WATER.getSource());
+    }
+
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

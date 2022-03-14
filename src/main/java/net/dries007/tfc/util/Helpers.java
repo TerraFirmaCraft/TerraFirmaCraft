@@ -9,10 +9,7 @@ package net.dries007.tfc.util;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nonnull;
@@ -40,6 +37,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -58,11 +56,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -77,6 +77,8 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
@@ -86,6 +88,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
+    public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
@@ -205,6 +208,11 @@ public final class Helpers
     public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
     {
         return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
+    }
+
+    public static void resetCounter(Level level, BlockPos pos)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
     }
 
     /**
@@ -442,46 +450,6 @@ public final class Helpers
     }
 
     /**
-     * Adds a tooltip based on an inventory, listing out the items inside.
-     * Modified from {@link net.minecraft.world.level.block.ShulkerBoxBlock#appendHoverText(ItemStack, BlockGetter, List, TooltipFlag)}
-     */
-    public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
-    {
-        int maximumItems = 0, totalItems = 0;
-        for (ItemStack stack : Helpers.iterate(inventory))
-        {
-            if (!stack.isEmpty())
-            {
-                ++totalItems;
-                if (maximumItems <= 4)
-                {
-                    ++maximumItems;
-                    tooltips.add(stack.getHoverName().copy()
-                        .append(" x")
-                        .append(String.valueOf(stack.getCount())));
-                }
-            }
-        }
-
-        if (totalItems - maximumItems > 0)
-        {
-            tooltips.add(new TranslatableComponent("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
-        }
-    }
-
-    /**
-     * Adds a tooltip based on a single fluid stack
-     */
-    public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
-    {
-        if (!fluid.isEmpty())
-        {
-            tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
-                .append(fluid.getDisplayName()));
-        }
-    }
-
-    /**
      * @return {@code true} if every slot in the provided inventory is empty.
      */
     public static boolean isEmpty(IItemHandler inventory)
@@ -500,33 +468,56 @@ public final class Helpers
      * Copied from {@link Level#destroyBlock(BlockPos, boolean, Entity, int)}
      * Allows the loot context to be modified
      */
-    public static void destroyBlockAndDropBlocksManually(Level worldIn, BlockPos pos, Consumer<LootContext.Builder> builder)
+    public static void destroyBlockAndDropBlocksManually(ServerLevel level, BlockPos pos, Consumer<LootContext.Builder> builder)
     {
-        BlockState state = worldIn.getBlockState(pos);
+        BlockState state = level.getBlockState(pos);
         if (!state.isAir())
         {
-            FluidState fluidstate = worldIn.getFluidState(pos);
+            FluidState fluidstate = level.getFluidState(pos);
             if (!(state.getBlock() instanceof BaseFireBlock))
             {
-                worldIn.levelEvent(2001, pos, Block.getId(state));
+                level.levelEvent(2001, pos, Block.getId(state));
             }
+            dropWithContext(level, state, pos, builder, true);
+            level.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
+        }
+    }
 
-            if (worldIn instanceof ServerLevel)
+    public static void dropWithContext(ServerLevel level, BlockState state, BlockPos pos, Consumer<LootContext.Builder> builder, boolean randomized)
+    {
+        BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+
+        // Copied from Block.getDrops()
+        LootContext.Builder lootContext = new LootContext.Builder(level)
+            .withRandom(level.random)
+            .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+            .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+            .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
+            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
+        builder.accept(lootContext);
+        state.getDrops(lootContext).forEach(stackToSpawn -> {
+            if (randomized)
             {
-                BlockEntity tileEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-
-                // Copied from Block.getDrops()
-                LootContext.Builder lootContext = new LootContext.Builder((ServerLevel) worldIn)
-                    .withRandom(worldIn.random)
-                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
-                    .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                    .withOptionalParameter(LootContextParams.THIS_ENTITY, null)
-                    .withOptionalParameter(LootContextParams.BLOCK_ENTITY, tileEntity);
-                builder.accept(lootContext);
-                state.getDrops(lootContext).forEach(stackToSpawn -> Block.popResource(worldIn, pos, stackToSpawn));
-                state.spawnAfterBreak((ServerLevel) worldIn, pos, ItemStack.EMPTY);
+                Block.popResource(level, pos, stackToSpawn);
             }
-            worldIn.setBlock(pos, fluidstate.createLegacyBlock(), 3, 512);
+            else
+            {
+                spawnDropsAtExactCenter(level, pos, stackToSpawn);
+            }
+        });
+        state.spawnAfterBreak(level, pos, ItemStack.EMPTY);
+    }
+
+    /**
+     * {@link Block#popResource(Level, BlockPos, ItemStack)} but without randomness as to the velocity and position.
+     */
+    public static void spawnDropsAtExactCenter(Level level, BlockPos pos, ItemStack stack)
+    {
+        if (!level.isClientSide && !stack.isEmpty() && level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS) && !level.restoringBlockSnapshots)
+        {
+            ItemEntity entity = new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, stack, 0D, 0D, 0D);
+            entity.setDefaultPickUpDelay();
+            level.addFreshEntity(entity);
         }
     }
 
@@ -646,6 +637,29 @@ public final class Helpers
     public static BlockPos quartToBlock(int x, int y, int z)
     {
         return new BlockPos(x << 2, y << 2, z << 2);
+    }
+
+    /**
+     * Rotates a VoxelShape 90 degrees. Assumes that the input facing is NORTH.
+     */
+    public static VoxelShape rotateShape(Direction direction, double x1, double y1, double z1, double x2, double y2, double z2)
+    {
+        return switch (direction)
+        {
+            case NORTH -> Block.box(x1, y1, z1, x2, y2, z2);
+            case EAST -> Block.box(16 - z2, y1, x1, 16 - z1, y2, x2);
+            case SOUTH -> Block.box(16 - x2, y1, 16 - z2, 16 - x1, y2, 16 - z1);
+            case WEST -> Block.box(z1, y1, 16 - x2, z2, y2, 16 - x1);
+            default -> throw new IllegalArgumentException("Not horizontal!");
+        };
+    }
+
+    /**
+     * Follows indexes for Direction#get2DDataValue()
+     */
+    public static VoxelShape[] computeHorizontalShapes(Function<Direction, VoxelShape> shapeGetter)
+    {
+        return new VoxelShape[] {shapeGetter.apply(Direction.SOUTH), shapeGetter.apply(Direction.WEST), shapeGetter.apply(Direction.NORTH), shapeGetter.apply(Direction.EAST)};
     }
 
     /**
@@ -881,6 +895,92 @@ public final class Helpers
             }
         }
         return perfectMatchDet(matrices, size);
+    }
+
+    /**
+     * Adds a tooltip based on an inventory, listing out the items inside.
+     * Modified from {@link net.minecraft.world.level.block.ShulkerBoxBlock#appendHoverText(ItemStack, BlockGetter, List, TooltipFlag)}
+     */
+    public static void addInventoryTooltipInfo(IItemHandler inventory, List<Component> tooltips)
+    {
+        int maximumItems = 0, totalItems = 0;
+        for (ItemStack stack : iterate(inventory))
+        {
+            if (!stack.isEmpty())
+            {
+                ++totalItems;
+                if (maximumItems <= 4)
+                {
+                    ++maximumItems;
+                    tooltips.add(stack.getHoverName().copy()
+                        .append(" x")
+                        .append(String.valueOf(stack.getCount())));
+                }
+            }
+        }
+
+        if (totalItems - maximumItems > 0)
+        {
+            tooltips.add(new TranslatableComponent("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
+        }
+    }
+
+    /**
+     * Adds a tooltip based on a single fluid stack
+     */
+    public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
+    {
+        if (!fluid.isEmpty())
+        {
+            tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
+                .append(fluid.getDisplayName()));
+        }
+    }
+
+    //todo: 1.18.2 - these methods will no longer compile and will be changed
+    public static boolean isItem(ItemStack first, Item second)
+    {
+        return first.is(second);
+    }
+
+    public static boolean isItem(ItemStack stack, Tag<Item> tag)
+    {
+        return stack.is(tag);
+    }
+
+    public static boolean isItem(Item item, Tag<Item> tag)
+    {
+        return tag.contains(item);
+    }
+
+    public static boolean isBlock(BlockState first, Block second)
+    {
+        return first.is(second);
+    }
+
+    public static boolean isBlock(BlockState state, Tag<Block> tag)
+    {
+        return isBlock(state.getBlock(), tag);
+    }
+
+    public static boolean isBlock(Block block, Tag<Block> tag)
+    {
+        return tag.contains(block);
+    }
+
+    public static boolean isFluid(FluidState state, Tag<Fluid> tag)
+    {
+        return state.is(tag);
+    }
+
+    public static boolean isFluid(Fluid first, Tag<Fluid> second)
+    {
+        return first.is(second);
+    }
+
+    public static boolean isEntity(EntityType<?> entity, Tag<EntityType<?>> tag)
+    {
+        return tag.contains(entity);
     }
 
     /**

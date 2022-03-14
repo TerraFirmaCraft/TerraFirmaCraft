@@ -1,0 +1,42 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "multipart": [
+    {
+      "apply": {
+        "model": "tfc:block/wattle/stained/gray"
+      }
+    },
+    {
+      "when": {
+        "top": true
+      },
+      "apply": {
+        "model": "tfc:block/wattle/top"
+      }
+    },
+    {
+      "when": {
+        "bottom": true
+      },
+      "apply": {
+        "model": "tfc:block/wattle/bottom"
+      }
+    },
+    {
+      "when": {
+        "left": true
+      },
+      "apply": {
+        "model": "tfc:block/wattle/left"
+      }
+    },
+    {
+      "when": {
+        "right": true
+      },
+      "apply": {
+        "model": "tfc:block/wattle/right"
+      }
+    }
+  ]
+}

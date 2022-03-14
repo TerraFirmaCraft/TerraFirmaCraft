@@ -26,12 +26,15 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -55,6 +58,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.items.EmptyPanItem;
+import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
@@ -90,6 +95,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
         bus.addListener(ClientForgeEventHandler::onFogRender);
+        bus.addListener(ClientForgeEventHandler::onHandRender);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -144,7 +150,7 @@ public class ClientForgeEventHandler
         final Player player = minecraft.player;
         if (player != null)
         {
-            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && minecraft.screen == null && (TFCTags.Items.HOES.contains(player.getMainHandItem().getItem())) || TFCTags.Items.HOES.contains(player.getOffhandItem().getItem()) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
+            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && minecraft.screen == null && (Helpers.isItem(player.getMainHandItem().getItem(), TFCTags.Items.HOES)) || Helpers.isItem(player.getOffhandItem().getItem(), TFCTags.Items.HOES) && (!TFCConfig.CLIENT.showHoeOverlaysOnlyWhenShifting.get() && player.isShiftKeyDown()))
             {
                 HoeOverlays.render(minecraft, event.getWindow(), stack);
             }
@@ -288,20 +294,29 @@ public class ClientForgeEventHandler
         final PoseStack poseStack = event.getPoseStack();
         final Entity entity = camera.getEntity();
         final Level level = entity.level;
-        final BlockHitResult traceResult = event.getTarget();
-        final BlockPos lookingAt = new BlockPos(traceResult.getLocation());
+        final BlockHitResult hit = event.getTarget();
+        final BlockPos pos = hit.getBlockPos();
+        final BlockPos lookingAt = new BlockPos(pos);
 
         //noinspection ConstantConditions
         if (lookingAt != null && entity instanceof Player player)
         {
-            Block blockAt = level.getBlockState(lookingAt).getBlock();
+            BlockState stateAt = level.getBlockState(lookingAt);
+            Block blockAt = stateAt.getBlock();
             //todo: chisel
             if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
-                if (handler.drawHighlight(level, lookingAt, player, traceResult, poseStack, event.getMultiBufferSource(), camera.getPosition()))
+                if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))
                 {
                     // Cancel drawing this block's bounding box
+                    event.setCanceled(true);
+                }
+            }
+            if (blockAt instanceof IGhostBlockHandler handler)
+            {
+                if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
+                {
                     event.setCanceled(true);
                 }
             }
@@ -321,6 +336,25 @@ public class ClientForgeEventHandler
             // let's just do this the same way MC does because the FogDensityEvent is crap
             RenderSystem.setShaderFogStart(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
             RenderSystem.setShaderFogEnd(density);
+        }
+    }
+
+    public static void onHandRender(RenderHandEvent event)
+    {
+        ItemStack stack = event.getItemStack();
+        final Item item = stack.getItem();
+        if (item instanceof PanItem || item instanceof EmptyPanItem)
+        {
+            if (event.getHand() == InteractionHand.OFF_HAND) // handled by main hand
+            {
+                event.setCanceled(true);
+                return;
+            }
+            PoseStack poseStack = event.getPoseStack();
+            poseStack.pushPose();
+            ClientHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
+            poseStack.popPose();
+            event.setCanceled(true);
         }
     }
 }

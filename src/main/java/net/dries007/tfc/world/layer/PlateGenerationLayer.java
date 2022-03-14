@@ -28,16 +28,19 @@ public class PlateGenerationLayer implements TypedSourceLayer<Plate>
     @Override
     public Plate apply(AreaContext context, int x, int z)
     {
-        plateNoise.noise(x, z);
-        float centerX = plateNoise.centerX();
-        float centerZ = plateNoise.centerY();
+        final Cellular2D.Cell cell = plateNoise.cell(x, z);
+        final float centerX = cell.x();
+        final float centerZ = cell.y();
+
         context.setSeed((long) centerX, (long) centerZ);
-        boolean oceanic = context.random().nextFloat() < oceanPercent;
-        float angle = 2 * PI * context.random().nextFloat();
-        float velocity = context.random().nextFloat();
-        float elevation = context.random().nextFloat();
-        float driftX = Mth.cos(angle) * velocity;
-        float driftZ = Mth.sin(angle) * velocity;
+
+        final boolean oceanic = context.random().nextFloat() < oceanPercent;
+        final float angle = 2 * PI * context.random().nextFloat();
+        final float velocity = context.random().nextFloat();
+        final float elevation = context.random().nextFloat();
+        final float driftX = Mth.cos(angle) * velocity;
+        final float driftZ = Mth.sin(angle) * velocity;
+
         return new Plate(centerX, centerZ, driftX, driftZ, elevation, oceanic);
     }
 }

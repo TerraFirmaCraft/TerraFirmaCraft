@@ -20,8 +20,7 @@ import net.minecraft.world.level.LevelReader;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggable
 {
@@ -72,10 +71,10 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
-        return belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && state.getValue(getFluidProperty()) != getFluidProperty().keyFor(Fluids.EMPTY);
+        BlockState belowState = level.getBlockState(pos.below());
+        return Helpers.isBlock(belowState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && state.getValue(getFluidProperty()) != getFluidProperty().keyFor(Fluids.EMPTY);
     }
 
     @Override

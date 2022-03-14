@@ -1,0 +1,91 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 1,
+    "max_radius": 3,
+    "height": 2,
+    "states": [
+      {
+        "replace": "tfc:rock/gravel/granite",
+        "with": "tfc:deposit/native_silver/granite"
+      },
+      {
+        "replace": "tfc:rock/gravel/diorite",
+        "with": "tfc:deposit/native_silver/diorite"
+      },
+      {
+        "replace": "tfc:rock/gravel/gabbro",
+        "with": "tfc:deposit/native_silver/gabbro"
+      },
+      {
+        "replace": "tfc:rock/gravel/shale",
+        "with": "tfc:deposit/native_silver/shale"
+      },
+      {
+        "replace": "tfc:rock/gravel/claystone",
+        "with": "tfc:deposit/native_silver/claystone"
+      },
+      {
+        "replace": "tfc:rock/gravel/limestone",
+        "with": "tfc:deposit/native_silver/limestone"
+      },
+      {
+        "replace": "tfc:rock/gravel/conglomerate",
+        "with": "tfc:deposit/native_silver/conglomerate"
+      },
+      {
+        "replace": "tfc:rock/gravel/dolomite",
+        "with": "tfc:deposit/native_silver/dolomite"
+      },
+      {
+        "replace": "tfc:rock/gravel/chert",
+        "with": "tfc:deposit/native_silver/chert"
+      },
+      {
+        "replace": "tfc:rock/gravel/chalk",
+        "with": "tfc:deposit/native_silver/chalk"
+      },
+      {
+        "replace": "tfc:rock/gravel/rhyolite",
+        "with": "tfc:deposit/native_silver/rhyolite"
+      },
+      {
+        "replace": "tfc:rock/gravel/basalt",
+        "with": "tfc:deposit/native_silver/basalt"
+      },
+      {
+        "replace": "tfc:rock/gravel/andesite",
+        "with": "tfc:deposit/native_silver/andesite"
+      },
+      {
+        "replace": "tfc:rock/gravel/dacite",
+        "with": "tfc:deposit/native_silver/dacite"
+      },
+      {
+        "replace": "tfc:rock/gravel/quartzite",
+        "with": "tfc:deposit/native_silver/quartzite"
+      },
+      {
+        "replace": "tfc:rock/gravel/slate",
+        "with": "tfc:deposit/native_silver/slate"
+      },
+      {
+        "replace": "tfc:rock/gravel/phyllite",
+        "with": "tfc:deposit/native_silver/phyllite"
+      },
+      {
+        "replace": "tfc:rock/gravel/schist",
+        "with": "tfc:deposit/native_silver/schist"
+      },
+      {
+        "replace": "tfc:rock/gravel/gneiss",
+        "with": "tfc:deposit/native_silver/gneiss"
+      },
+      {
+        "replace": "tfc:rock/gravel/marble",
+        "with": "tfc:deposit/native_silver/marble"
+      }
+    ]
+  }
+}

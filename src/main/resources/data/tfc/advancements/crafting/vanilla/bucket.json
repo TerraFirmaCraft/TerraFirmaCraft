@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:bucket/metal/red_steel"
+            "items": [
+              "tfc:bucket/metal/red_steel"
+            ]
           }
         ]
       }

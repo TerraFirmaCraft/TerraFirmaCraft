@@ -12,9 +12,8 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -30,126 +29,157 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
-import net.dries007.tfc.common.blockentities.FruitTreeLeavesBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
 
-public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock
+public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock, IBushBlock
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
-    public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
+    private final Supplier<ClimateRange> climateRange;
+
+    public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange)
     {
         super(properties, productItem, stages);
 
+        this.climateRange = climateRange;
         registerDefaultState(getStateDefinition().any().setValue(PERSISTENT, false).setValue(LIFECYCLE, Lifecycle.HEALTHY));
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.block();
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        FruitTreeLeavesBlockEntity te = Helpers.getBlockEntity(level, pos, FruitTreeLeavesBlockEntity.class);
-        if (te == null) return;
-
-        Lifecycle old = state.getValue(LIFECYCLE); // have to put this in random tick to capture the old state
-        if (old == Lifecycle.FLOWERING || old == Lifecycle.FRUITING)
-        {
-            if (!te.isOnYear() && te.isGrowing() && old == Lifecycle.FLOWERING && super.updateLifecycle(te) == Lifecycle.FRUITING)
-            {
-                te.addDeath();
-                int probability = Mth.clamp(te.getDeath(), 2, 10);
-                if (random.nextInt(probability) == 0)
-                {
-                    te.setOnYear(true);
-                }
-            }
-        }
-        else
-        {
-            te.setOnYear(false); // reset when we're not in season
-        }
-        super.randomTick(state, level, pos, random);
+        return defaultBlockState().setValue(PERSISTENT, context.getPlayer() != null);
     }
 
     @Override
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    public void onUpdate(Level level, BlockPos pos, BlockState state)
     {
-        // todo: remove this override
-        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
-        {
-            Helpers.slowEntityInBlock(entity, 0.2f, 5);
-        }
-    }
+        // Fruit tree leaves work like berry bushes, but don't have propagation or growth functionality.
+        // Which makes them relatively simple, as then they only need to keep track of their lifecycle.
+        if (state.getValue(PERSISTENT)) return; // persistent leaves don't grow
+        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(leaves -> {
+            Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
+            Lifecycle expectedLifecycle = getLifecycleForCurrentMonth();
+            // if we are not working with a plant that is or should be dormant
+            if (!checkAndSetDormant(level, pos, state, currentLifecycle, expectedLifecycle))
+            {
+                // Otherwise, we do a month-by-month evaluation of how the bush should have grown.
+                // We only do this up to a year. Why? Because eventually, it will have become dormant, and any 'progress' during that year would've been lost anyway because it would unconditionally become dormant.
+                long deltaTicks = Math.min(leaves.getTicksSinceBushUpdate(), Calendars.SERVER.getCalendarTicksInYear());
+                long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
+                long nextCalendarTick = currentCalendarTick - deltaTicks;
 
-    public void cycle(BerryBushBlockEntity te, Level world, BlockPos pos, BlockState state, int stage, Lifecycle lifecycle, Random random)
-    {
-        if (te.getDeath() > 10)
-        {
-            te.setGrowing(false);
-        }
+                final ClimateRange range = climateRange.get();
+                // todo: include root water?
+                final int hydration = (int) Climate.getRainfall(level, pos) / 5;
+
+                int monthsSpentDying = 0;
+                do
+                {
+                    // This always runs at least once. It is called through random ticks, and calendar updates - although calendar updates will only call this if they've waited at least a day, or the average delta between random ticks.
+                    // Otherwise it will just wait for the next random tick.
+
+                    // Jump forward to nextTick.
+                    // Advance the lifecycle (if the at-the-time conditions were valid)
+                    nextCalendarTick = Math.min(nextCalendarTick + Calendars.SERVER.getCalendarTicksInMonth(), currentCalendarTick);
+
+                    float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
+                    Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
+                    if (range.checkBoth(hydration, temperatureAtNextTick, false))
+                    {
+                        currentLifecycle = currentLifecycle.advanceTowards(lifecycleAtNextTick);
+                    }
+                    else
+                    {
+                        currentLifecycle = Lifecycle.DORMANT;
+                    }
+
+                    if (lifecycleAtNextTick != Lifecycle.DORMANT && currentLifecycle == Lifecycle.DORMANT)
+                    {
+                        monthsSpentDying++; // consecutive months spent where the conditions were invalid, but they shouldn't've been
+                    }
+                    else
+                    {
+                        monthsSpentDying = 0;
+                    }
+
+                } while (nextCalendarTick < currentCalendarTick);
+
+                BlockState newState;
+
+                if (monthsSpentDying > 0 && level.getRandom().nextInt(16) < monthsSpentDying)
+                {
+                    // It may have died, as it spent too many consecutive months when it should've been healthy, in invalid conditions.
+                    newState = Blocks.AIR.defaultBlockState();
+                }
+                else
+                {
+                    newState = state.setValue(LIFECYCLE, currentLifecycle);
+                }
+
+                // And update the block
+                if (state != newState)
+                {
+                    level.setBlock(pos, newState, 3);
+                }
+            }
+            leaves.afterUpdate();
+        });
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder);
-        builder.add(PERSISTENT);
-    }
-
-    protected Lifecycle updateLifecycle(BerryBushBlockEntity te)
-    {
-        Lifecycle lifecycle = super.updateLifecycle(te);
-
-        FruitTreeLeavesBlockEntity fruityTE = (FruitTreeLeavesBlockEntity) te;
-        if (lifecycle == Lifecycle.FRUITING && !fruityTE.isOnYear())
-        {
-            lifecycle = Lifecycle.HEALTHY;
-        }
-        return lifecycle;
+        builder.add(LIFECYCLE, PERSISTENT); // avoid "STAGE" property
     }
 
     @Override
-    public boolean isRandomlyTicking(BlockState state)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        return !state.getValue(PERSISTENT);
-    }
-
-    @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
-    {
-        return isValid(worldIn, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
+        return isValid(level, currentPos, stateIn) ? stateIn : Blocks.AIR.defaultBlockState();
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos)
+    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
     {
-        if (!isValid(worldIn, pos, state))
+        return 0.2F;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    {
+        if (!isValid(level, pos, state))
         {
-            worldIn.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
     }
 
-    private boolean isValid(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    private boolean isValid(LevelAccessor level, BlockPos pos, BlockState state)
     {
         if (state.getValue(PERSISTENT))
         {
@@ -159,7 +189,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         for (Direction direction : Helpers.DIRECTIONS)
         {
             mutablePos.set(pos).move(direction);
-            if (worldIn.getBlockState(mutablePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH))
+            if (Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.FRUIT_TREE_BRANCH))
             {
                 return true;
             }

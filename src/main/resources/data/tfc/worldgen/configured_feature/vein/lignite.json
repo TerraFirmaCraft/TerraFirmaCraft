@@ -14,21 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/chalk"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/lignite/chert"
+            "block": "tfc:ore/lignite/shale"
           }
         ]
       },
@@ -39,6 +29,16 @@
         "with": [
           {
             "block": "tfc:ore/lignite/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/lignite/limestone"
           }
         ]
       },
@@ -64,21 +64,21 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/chert"
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/limestone"
+            "block": "tfc:ore/lignite/chert"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
-            "block": "tfc:ore/lignite/shale"
+            "block": "tfc:ore/lignite/chalk"
           }
         ]
       }

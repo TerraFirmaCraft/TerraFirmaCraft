@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/plant/banana_trunk_2",
+  "textures": {
+    "particle": "tfc:block/fruit_tree/banana_leaves_dead",
+    "1_0": "tfc:block/fruit_tree/banana_leaves_dead"
+  }
+}

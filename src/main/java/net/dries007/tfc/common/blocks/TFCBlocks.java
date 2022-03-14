@@ -34,6 +34,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCItemGroup;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.devices.*;
@@ -41,6 +42,7 @@ import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.DeadBananaPlantBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadBerryBushBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.DeadCaneBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
@@ -52,6 +54,7 @@ import net.dries007.tfc.common.blocks.soil.ConnectedGrassBlock;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -104,7 +107,7 @@ public final class TFCBlocks
         register(("groundcover/" + type.name()), () -> new GroundcoverBlock(type), type.createBlockItem())
     );
 
-    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(BlockBehaviour.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyPolarBears)), EARTH);
+    public static final RegistryObject<Block> SEA_ICE = register("sea_ice", () -> new SeaIceBlock(BlockBehaviour.Properties.of(Material.ICE).friction(0.98f).randomTicks().strength(0.5f).sound(SoundType.GLASS).noOcclusion().isValidSpawn(TFCBlocks::onlyColdMobs)), EARTH);
 
     public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(ExtendedProperties.of(Properties.copy(Blocks.SNOW)).blockEntity(TFCBlockEntities.PILE)), EARTH);
     public static final RegistryObject<IcePileBlock> ICE_PILE = register("ice_pile", () -> new IcePileBlock(ExtendedProperties.of(Properties.copy(Blocks.ICE)).blockEntity(TFCBlockEntities.PILE)), EARTH);
@@ -127,8 +130,11 @@ public final class TFCBlocks
         )
     );
     public static final Map<Ore, RegistryObject<Block>> SMALL_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, type ->
-        register(("ore/small_" + type.name()), () -> GroundcoverBlock.looseOre(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noOcclusion()), TFCItemGroup.ORES)
+        register(("ore/small_" + type.name()), () -> GroundcoverBlock.looseOre(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noCollission()), TFCItemGroup.ORES)
     );
+    public static final Map<Rock, Map<OreDeposit, RegistryObject<Block>>> ORE_DEPOSITS = Helpers.mapOfKeys(Rock.class, rock -> Helpers.mapOfKeys(OreDeposit.class, ore ->
+            register("deposit/" + ore.name() + "/" + rock.name(), () -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f)), TFCItemGroup.ORES)
+    ));
 
     // Rock Stuff
 
@@ -154,7 +160,7 @@ public final class TFCBlocks
 
     public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
         Helpers.mapOfKeys(Metal.BlockType.class, type -> type.hasMetal(metal), type ->
-            register(("metal/" + type.name() + "/" + metal.name()), type.create(metal), METAL)
+            register(("metal/" + type.name() + "/" + metal.name()), type.create(metal), type.createBlockItem(new Item.Properties().tab(METAL)))
         )
     );
 
@@ -198,6 +204,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> CRANBERRY_BUSH = register("plant/cranberry_bush", FruitBlocks::createCranberry, FLORA);
 
     public static final RegistryObject<Block> DEAD_BERRY_BUSH = register("plant/dead_berry_bush", () -> new DeadBerryBushBlock(ExtendedProperties.of(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
+    public static final RegistryObject<Block> DEAD_BANANA_PLANT = register("plant/dead_banana_plant", () -> new DeadBananaPlantBlock(ExtendedProperties.of(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
     public static final RegistryObject<Block> DEAD_CANE = register("plant/dead_cane", () -> new DeadCaneBlock(ExtendedProperties.of(Properties.of(Material.LEAVES).strength(0.6f).noOcclusion().sound(SoundType.SWEET_BERRY_BUSH).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(120, 90)));
     public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_LEAVES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_leaves", tree::createLeaves, FLORA));
     public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_branch", tree::createBranch));
@@ -240,7 +247,11 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> FIRE_BRICKS = register("fire_bricks", () -> new Block(Properties.of(Material.STONE, MaterialColor.COLOR_RED).requiresCorrectToolForDrops().strength(2.0F, 6.0F)), DECORATIONS);
     public static final RegistryObject<Block> FIRE_CLAY_BLOCK = register("fire_clay_block", () -> new Block(Properties.of(Material.CLAY).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
+
     public static final RegistryObject<Block> WATTLE = register("wattle", () -> new WattleBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.3F).noOcclusion().sound(SoundType.SCAFFOLDING)).flammable(60, 30)), DECORATIONS);
+    public static final Map<DyeColor, RegistryObject<Block>> STAINED_WATTLE = Helpers.mapOfKeys(DyeColor.class, color ->
+        register("wattle/" + color.getName(), () -> new StainedWattleBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.3F).noOcclusion().sound(SoundType.SCAFFOLDING)).flammable(60, 30)), DECORATIONS)
+    );
 
     // Misc
 
@@ -265,8 +276,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> DEAD_TORCH = register("dead_torch", () -> new DeadTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
     public static final RegistryObject<Block> DEAD_WALL_TORCH = register("dead_wall_torch", () -> new DeadWallTorchBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().instabreak().sound(SoundType.WOOD), ParticleTypes.FLAME));
 
-    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), MISC);
-    public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), MISC);
+    public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), DECORATIONS);
+    public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), DECORATIONS);
 
     // Fluids
 
@@ -274,24 +285,33 @@ public final class TFCBlocks
         register("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).getSecond(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
     );
 
+    public static final Map<SimpleFluid, RegistryObject<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
+        register("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).getSecond(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
+    );
+
     public static final RegistryObject<LiquidBlock> SALT_WATER = register("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.getSecond(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));
     public static final RegistryObject<LiquidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.getSecond(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
 
     public static final RegistryObject<RiverWaterBlock> RIVER_WATER = register("fluid/river_water", () -> new RiverWaterBlock(BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()));
 
-    public static boolean always(BlockState state, BlockGetter world, BlockPos pos)
+    public static boolean always(BlockState state, BlockGetter level, BlockPos pos)
     {
         return true;
     }
 
-    public static boolean never(BlockState state, BlockGetter world, BlockPos pos)
+    public static boolean never(BlockState state, BlockGetter level, BlockPos pos)
     {
         return false;
     }
 
-    public static boolean onlyPolarBears(BlockState state, BlockGetter world, BlockPos pos, EntityType<?> type)
+    public static boolean never(BlockState state, BlockGetter world, BlockPos pos, EntityType<?> type)
     {
-        return type == EntityType.POLAR_BEAR; // todo: does this need to be expanded?
+        return false;
+    }
+
+    public static boolean onlyColdMobs(BlockState state, BlockGetter world, BlockPos pos, EntityType<?> type)
+    {
+        return Helpers.isEntity(type, TFCTags.Entities.SPAWNS_ON_COLD_BLOCKS);
     }
 
     private static ToIntFunction<BlockState> litBlockEmission(int lightValue)

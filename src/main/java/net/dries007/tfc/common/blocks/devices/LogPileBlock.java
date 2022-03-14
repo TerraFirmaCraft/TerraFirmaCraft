@@ -64,7 +64,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     {
         if (!levelAccess.isClientSide() && levelAccess instanceof Level level)
         {
-            if (facingState.is(BlockTags.FIRE))
+            if (Helpers.isBlock(facingState, BlockTags.FIRE))
             {
                 BurningLogPileBlock.tryLightLogPile(level, currentPos);
             }
@@ -80,7 +80,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
         {
             final ItemStack stack = player.getItemInHand(hand);
             level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).ifPresent(logPile -> {
-                if (TFCTags.Items.LOG_PILE_LOGS.contains(stack.getItem()))
+                if (Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS))
                 {
                     if (!level.isClientSide)
                     {

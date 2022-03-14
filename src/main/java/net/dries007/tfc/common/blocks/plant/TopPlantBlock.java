@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
@@ -37,21 +38,21 @@ public class TopPlantBlock extends GrowingPlantHeadBlock
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (state.getValue(AGE) < 25 && ForgeHooks.onCropsGrowPre(worldIn, pos.relative(growthDirection), worldIn.getBlockState(pos.relative(growthDirection)), random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get()))
+        if (state.getValue(AGE) < 25 && ForgeHooks.onCropsGrowPre(level, pos.relative(growthDirection), level.getBlockState(pos.relative(growthDirection)), random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get()))
         {
             BlockPos blockpos = pos.relative(growthDirection);
-            if (canGrowInto(worldIn.getBlockState(blockpos)))
+            if (canGrowInto(level.getBlockState(blockpos)))
             {
-                worldIn.setBlockAndUpdate(blockpos, state.cycle(AGE));
-                ForgeHooks.onCropsGrowPost(worldIn, blockpos, worldIn.getBlockState(blockpos));
+                level.setBlockAndUpdate(blockpos, state.cycle(AGE));
+                ForgeHooks.onCropsGrowPost(level, blockpos, level.getBlockState(blockpos));
             }
         }
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient)
+    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
     }
@@ -69,10 +70,10 @@ public class TopPlantBlock extends GrowingPlantHeadBlock
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos blockpos = pos.relative(growthDirection.getOpposite());
-        BlockState blockstate = worldIn.getBlockState(blockpos);
+        BlockState blockstate = level.getBlockState(blockpos);
         Block block = blockstate.getBlock();
         if (!canAttachTo(blockstate))
         {
@@ -80,7 +81,7 @@ public class TopPlantBlock extends GrowingPlantHeadBlock
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
+            return block == getHeadBlock() || block == getBodyBlock() || Helpers.isBlock(blockstate, BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
         }
     }
 

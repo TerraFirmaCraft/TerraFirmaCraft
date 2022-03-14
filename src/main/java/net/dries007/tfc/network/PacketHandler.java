@@ -45,6 +45,7 @@ public final class PacketHandler
         register(PlayerDataUpdatePacket.class, PlayerDataUpdatePacket::encode, PlayerDataUpdatePacket::new, PlayerDataUpdatePacket::handle);
         register(ProspectedPacket.class, ProspectedPacket::encode, ProspectedPacket::new, ProspectedPacket::handle);
         register(ClimateSettingsUpdatePacket.class, ClimateSettingsUpdatePacket::encode, ClimateSettingsUpdatePacket::new, ClimateSettingsUpdatePacket::handle);
+        register(EffectExpirePacket.class, EffectExpirePacket::encode, EffectExpirePacket::new, EffectExpirePacket::handle);
 
         registerDataManager(DataManagerSyncPacket.TMetal.class, Metal.MANAGER);
         registerDataManager(DataManagerSyncPacket.TFuel.class, Fuel.MANAGER);

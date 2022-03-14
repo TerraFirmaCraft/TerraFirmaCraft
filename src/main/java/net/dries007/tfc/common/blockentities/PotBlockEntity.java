@@ -38,6 +38,7 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -117,6 +118,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
             if (boilingTicks < cachedRecipe.getDuration())
             {
                 boilingTicks++;
+                if (boilingTicks == 1) markForSync();
             }
             else
             {
@@ -143,6 +145,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 cachedRecipe = null;
                 boilingTicks = 0;
                 updateCachedRecipe();
+                markForSync();
             }
         }
         else
@@ -168,6 +171,14 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         // if we have a recipe, there is no output, and we're hot enough, we boil
         return cachedRecipe != null && output == null && cachedRecipe.isHotEnough(temperature);
+    }
+
+    /**
+     * The amount of info pots actually sync to clients is low. So checking output, cached recipe, etc. won't work.
+     */
+    public boolean shouldRenderAsBoiling()
+    {
+        return boilingTicks > 0;
     }
 
     public InteractionResult interactWithOutput(Player player, ItemStack stack)
@@ -217,7 +228,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         public PotInventory(InventoryBlockEntity<PotInventory> entity)
         {
             this.inventory = new InventoryItemHandler(entity, 9);
-            this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> TFCTags.Fluids.USABLE_IN_POT.contains(fluid.getFluid()));
+            this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT));
         }
 
         @Override

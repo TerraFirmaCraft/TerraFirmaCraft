@@ -8,7 +8,20 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:metal/lamp/copper"
+          "name": "tfc:metal/lamp/copper",
+          "functions": [
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "",
+                  "target": "BlockEntityTag",
+                  "op": "replace"
+                }
+              ]
+            }
+          ]
         }
       ],
       "conditions": [

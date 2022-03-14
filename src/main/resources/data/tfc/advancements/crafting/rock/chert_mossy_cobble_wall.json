@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/mossy_cobble/chert"
+            "items": [
+              "tfc:rock/mossy_cobble/chert"
+            ]
           }
         ]
       }

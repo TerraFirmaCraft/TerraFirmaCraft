@@ -11,6 +11,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -89,9 +90,9 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         addCollapseData(new Collapse(centerPos, collapsePositions, maxRadiusSquared));
     }
 
-    public void tick(Level world)
+    public void tick(Level level)
     {
-        if (!world.isClientSide())
+        if (!level.isClientSide())
         {
             if (!collapsesInProgress.isEmpty() && random.nextInt(10) == 0)
             {
@@ -101,10 +102,10 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     for (BlockPos posAt : collapse.nextPositions)
                     {
                         // Check the current position for collapsing
-                        BlockState stateAt = world.getBlockState(posAt);
-                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        BlockState stateAt = level.getBlockState(posAt);
+                        if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallThrough(level, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                         {
-                            if (CollapseRecipe.collapseBlock(world, posAt, stateAt))
+                            if (CollapseRecipe.collapseBlock(level, posAt, stateAt))
                             {
                                 // This column has started to collapse. Mark the next block above as unstable for the "follow up"
                                 updatedPositions.add(posAt.above());
@@ -114,7 +115,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     collapse.nextPositions.clear();
                     if (!updatedPositions.isEmpty())
                     {
-                        world.playSound(null, collapse.centerPos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.6f, 1.0f);
+                        level.playSound(null, collapse.centerPos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.6f, 1.0f);
                         collapse.nextPositions.addAll(updatedPositions);
                         collapse.radiusSquared *= 0.8; // lower radius each successive time
                     }
@@ -129,8 +130,8 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                 TickEntry entry = tickIterator.next();
                 if (entry.tick())
                 {
-                    final BlockState currentState = world.getBlockState(entry.getPos());
-                    LandslideRecipe.tryLandslide(world, entry.getPos(), currentState);
+                    final BlockState currentState = level.getBlockState(entry.getPos());
+                    LandslideRecipe.tryLandslide(level, entry.getPos(), currentState);
                     tickIterator.remove();
                 }
             }
@@ -140,10 +141,10 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             while (isolatedIterator.hasNext())
             {
                 final BlockPos pos = isolatedIterator.next();
-                final BlockState currentState = world.getBlockState(pos);
-                if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(currentState.getBlock()) && isIsolated(world, pos))
+                final BlockState currentState = level.getBlockState(pos);
+                if (Helpers.isBlock(currentState.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED) && isIsolated(level, pos))
                 {
-                    Helpers.destroyBlockAndDropBlocksManually(world, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
+                    Helpers.destroyBlockAndDropBlocksManually((ServerLevel) level, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
                 }
                 isolatedIterator.remove();
             }

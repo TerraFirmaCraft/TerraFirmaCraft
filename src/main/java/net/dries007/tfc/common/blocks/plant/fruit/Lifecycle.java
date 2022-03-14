@@ -22,7 +22,7 @@ public enum Lifecycle implements StringRepresentable
     }
 
     /**
-     * Advances one 'stage' towards the target lifecycle, if it is greater. Otherwise defaults down to other.
+     * Advances one 'stage' towards the target lifecycle, if it is greater. Otherwise, defaults down to other.
      */
     public Lifecycle advanceTowards(Lifecycle other)
     {

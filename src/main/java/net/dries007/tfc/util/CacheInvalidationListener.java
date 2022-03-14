@@ -26,19 +26,24 @@ public enum CacheInvalidationListener implements SyncReloadListener
         final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server != null)
         {
-            final RecipeManager manager = server.getRecipeManager();
-
-            CollapseRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.COLLAPSE.get()));
-            LandslideRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.LANDSLIDE.get()));
-            HeatingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.HEATING.get()));
-            QuernRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.QUERN.get()));
-            ScrapingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.SCRAPING.get()));
-            CastingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()));
-            LoomRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.LOOM.get()));
-
-            InteractionManager.reload();
+            invalidateServerCaches(server);
         }
+    }
+    
+    public void invalidateServerCaches(MinecraftServer server)
+    {
+        final RecipeManager manager = server.getRecipeManager();
+
+        CollapseRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.COLLAPSE.get()));
+        LandslideRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.LANDSLIDE.get()));
+        HeatingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.HEATING.get()));
+        QuernRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.QUERN.get()));
+        ScrapingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.SCRAPING.get()));
+        CastingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()));
+        LoomRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.LOOM.get()));
 
         LocateVeinCommand.clearCache();
+        InteractionManager.reloadCache();
+
     }
 }

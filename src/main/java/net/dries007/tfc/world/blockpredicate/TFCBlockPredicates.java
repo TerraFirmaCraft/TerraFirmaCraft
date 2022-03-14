@@ -20,11 +20,13 @@ public class TFCBlockPredicates
 {
     public static final Supplier<BlockPredicateType<AirOrEmptyFluidPredicate>> AIR_OR_EMPTY_FLUID = register("air_or_empty_fluid", AirOrEmptyFluidPredicate.CODEC);
     public static final Supplier<BlockPredicateType<WouldSurviveWithFluidPredicate>> WOULD_SURVIVE_WITH_FLUID = register("would_survive_with_fluid", WouldSurviveWithFluidPredicate.CODEC);
+    public static final Supplier<BlockPredicateType<ReplaceablePredicate>> REPLACEABLE = register("replaceable", ReplaceablePredicate.CODEC);
 
     public static void registerBlockPredicates()
     {
         AIR_OR_EMPTY_FLUID.get();
         WOULD_SURVIVE_WITH_FLUID.get();
+        REPLACEABLE.get();
     }
 
     private static <T extends BlockPredicate> Supplier<BlockPredicateType<T>> register(String name, Codec<T> codec)

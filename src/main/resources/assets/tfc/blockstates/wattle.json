@@ -1,50 +1,137 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "variants": {
-    "facing=east,stage=0": {
-      "model": "tfc:block/wattle_0",
-      "y": 270
+  "multipart": [
+    {
+      "when": {
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_wattle"
+      }
     },
-    "facing=north,stage=0": {
-      "model": "tfc:block/wattle_0",
-      "y": 180
+    {
+      "when": {
+        "type": "woven"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/woven_wattle"
+      }
     },
-    "facing=south,stage=0": {
-      "model": "tfc:block/wattle_0"
+    {
+      "when": {
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/filled_wattle"
+      }
     },
-    "facing=west,stage=0": {
-      "model": "tfc:block/wattle_0",
-      "y": 90
+    {
+      "when": {
+        "top": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_top"
+      }
     },
-    "facing=east,stage=1": {
-      "model": "tfc:block/wattle_1",
-      "y": 270
+    {
+      "when": {
+        "bottom": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_bottom"
+      }
     },
-    "facing=north,stage=1": {
-      "model": "tfc:block/wattle_1",
-      "y": 180
+    {
+      "when": {
+        "left": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_left"
+      }
     },
-    "facing=south,stage=1": {
-      "model": "tfc:block/wattle_1"
+    {
+      "when": {
+        "right": true,
+        "type": "empty"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/empty_right"
+      }
     },
-    "facing=west,stage=1": {
-      "model": "tfc:block/wattle_1",
-      "y": 90
+    {
+      "when": {
+        "top": true,
+        "type": "woven"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/top"
+      }
     },
-    "facing=east,stage=2": {
-      "model": "tfc:block/wattle_2",
-      "y": 270
+    {
+      "when": {
+        "bottom": true,
+        "type": "woven"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/bottom"
+      }
     },
-    "facing=north,stage=2": {
-      "model": "tfc:block/wattle_2",
-      "y": 180
+    {
+      "when": {
+        "left": true,
+        "type": "woven"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/left"
+      }
     },
-    "facing=south,stage=2": {
-      "model": "tfc:block/wattle_2"
+    {
+      "when": {
+        "right": true,
+        "type": "woven"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/right"
+      }
     },
-    "facing=west,stage=2": {
-      "model": "tfc:block/wattle_2",
-      "y": 90
+    {
+      "when": {
+        "top": true,
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/top"
+      }
+    },
+    {
+      "when": {
+        "bottom": true,
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/bottom"
+      }
+    },
+    {
+      "when": {
+        "left": true,
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/left"
+      }
+    },
+    {
+      "when": {
+        "right": true,
+        "type": "filled"
+      },
+      "apply": {
+        "model": "tfc:block/wattle/right"
+      }
     }
-  }
+  ]
 }

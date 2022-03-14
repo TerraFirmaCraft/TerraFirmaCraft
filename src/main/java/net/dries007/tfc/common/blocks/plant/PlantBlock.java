@@ -53,20 +53,20 @@ public abstract class PlantBlock extends TFCBushBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return PLANT_SHAPE;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random random)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         if (random.nextDouble() < TFCConfig.SERVER.plantGrowthChance.get())
         {
             state = state.setValue(AGE, Math.min(state.getValue(AGE) + 1, 3));
         }
-        world.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
+        level.setBlockAndUpdate(pos, updateStateWithCurrentMonth(state));
     }
 
     /**

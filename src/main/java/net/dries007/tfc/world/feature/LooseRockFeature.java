@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.settings.RockSettings;
@@ -47,7 +48,7 @@ public class LooseRockFeature extends Feature<NoneFeatureConfiguration>
             final BlockState stateAt = level.getBlockState(pos);
             final BlockState rockState = FluidHelpers.fillWithFluid(loose.defaultBlockState(), stateAt.getFluidState().getType());
 
-            if (FluidHelpers.isAirOrEmptyFluid(stateAt) && rockState != null && rockState.canSurvive(level, pos))
+            if (EnvironmentHelpers.isWorldgenReplaceable(stateAt) && rockState != null && rockState.canSurvive(level, pos))
             {
                 setBlock(level, pos, rockState.setValue(TFCBlockStateProperties.COUNT_1_3, 1 + random.nextInt(2)));
                 return true;

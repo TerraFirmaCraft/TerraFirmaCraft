@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "axis=x": {
+      "model": "tfc:block/metal/chain/bismuth_bronze",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "tfc:block/metal/chain/bismuth_bronze"
+    },
+    "axis=z": {
+      "model": "tfc:block/metal/chain/bismuth_bronze",
+      "x": 90
+    }
+  }
+}

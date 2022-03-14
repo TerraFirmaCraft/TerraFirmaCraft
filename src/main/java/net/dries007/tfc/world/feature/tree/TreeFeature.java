@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class TreeFeature<C extends FeatureConfiguration> extends Feature<C>
 {
@@ -26,7 +27,7 @@ public abstract class TreeFeature<C extends FeatureConfiguration> extends Featur
     protected boolean isValidLocation(LevelAccessor worldIn, BlockPos pos)
     {
         BlockState stateDown = worldIn.getBlockState(pos.below());
-        if (!TFCTags.Blocks.TREE_GROWS_ON.contains(stateDown.getBlock()))
+        if (!Helpers.isBlock(stateDown, TFCTags.Blocks.TREE_GROWS_ON))
         {
             return false;
         }

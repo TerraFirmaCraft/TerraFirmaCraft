@@ -32,7 +32,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
-import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
@@ -69,57 +69,54 @@ public class PotBlock extends FirepitBlock
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
-        super.animateTick(state, world, pos, rand);
-        PotBlockEntity te = Helpers.getBlockEntity(world, pos, PotBlockEntity.class);
-        if (te != null && te.isBoiling())
-        {
+        super.animateTick(state, level, pos, rand);
+        level.getBlockEntity(pos, TFCBlockEntities.POT.get()).ifPresent(pot -> {
+            if (!pot.shouldRenderAsBoiling()) return;
             double x = pos.getX() + 0.5;
             double y = pos.getY();
             double z = pos.getZ() + 0.5;
             for (int i = 0; i < rand.nextInt(5) + 4; i++)
             {
-                world.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
+                level.addParticle(TFCParticles.BUBBLE.get(), false, x + rand.nextFloat() * 0.375 - 0.1875, y + 0.625, z + rand.nextFloat() * 0.375 - 0.1875, 0, 0.05D, 0);
             }
-            world.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.triangle(rand), 0.5, Helpers.triangle(rand));
-            world.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
-        }
+            level.addParticle(TFCParticles.STEAM.get(), false, x, y + 0.8, z, Helpers.triangle(rand), 0.5, Helpers.triangle(rand));
+            level.playLocalSound(x, y, z, SoundEvents.WATER_AMBIENT, SoundSource.BLOCKS, 1.0F, rand.nextFloat() * 0.7F + 0.4F, false);
+        });
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final PotBlockEntity firepit = Helpers.getBlockEntity(world, pos, PotBlockEntity.class);
-        if (firepit != null)
-        {
+        return level.getBlockEntity(pos, TFCBlockEntities.POT.get()).filter(pot -> !pot.isBoiling()).map(pot -> {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
                 if (state.getValue(LIT))
                 {
                     player.hurt(TFCDamageSources.POT, 1.0F);
-                    Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
+                    Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
                 }
                 else
                 {
-                    AbstractFirepitBlockEntity.convertTo(world, pos, state, firepit, TFCBlocks.FIREPIT.get());
+                    AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.FIREPIT.get());
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
+            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER))
             {
-                firepit.extinguish(state);
-                return InteractionResult.SUCCESS;
+                pot.extinguish(state);
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if (FluidUtil.interactWithFluidHandler(player, hand, world, pos, null))
+            else if (FluidUtil.interactWithFluidHandler(player, hand, level, pos, null))
             {
-                firepit.markForSync();
-                return InteractionResult.SUCCESS;
+                pot.markForSync();
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {
-                final InteractionResult interactResult = firepit.interactWithOutput(player, stack);
+                final InteractionResult interactResult = pot.interactWithOutput(player, stack);
                 if (interactResult != InteractionResult.PASS)
                 {
                     return interactResult;
@@ -127,16 +124,15 @@ public class PotBlock extends FirepitBlock
 
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, firepit, pos);
+                    NetworkHooks.openGui(serverPlayer, pot, pos);
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
-        }
-        return InteractionResult.PASS;
+        }).orElse(InteractionResult.PASS);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return POT_SHAPE;
     }

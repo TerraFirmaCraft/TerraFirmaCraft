@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -23,15 +24,18 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.Tags;
 
+import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
+import org.jetbrains.annotations.Nullable;
 
-public abstract class ClimbingCropBlock extends DoubleCropBlock
+public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhostBlockHandler
 {
     public static final BooleanProperty STICK = TFCBlockStateProperties.STICK;
 
@@ -59,7 +63,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
     {
         final ItemStack heldStack = player.getItemInHand(hand);
         final BlockPos posAbove = pos.above();
-        if (Tags.Items.RODS_WOODEN.contains(heldStack.getItem()) && !state.getValue(STICK) && level.isEmptyBlock(posAbove) && posAbove.getY() <= level.getMaxBuildHeight())
+        if (Helpers.isItem(heldStack.getItem(), Tags.Items.RODS_WOODEN) && !state.getValue(STICK) && level.isEmptyBlock(posAbove) && posAbove.getY() <= level.getMaxBuildHeight())
         {
             if (!level.isClientSide())
             {
@@ -101,5 +105,17 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock
             level.destroyBlock(posAbove, false);
         }
         level.setBlockAndUpdate(pos, deadState.setValue(DeadDoubleCropBlock.PART, Part.BOTTOM));
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateToDraw(Level level, Player player, BlockState state, Direction direction, BlockPos pos, double x, double y, double z, ItemStack item)
+    {
+        BlockPos abovePos = pos.above();
+        if (Helpers.isItem(item.getItem(), Tags.Items.RODS_WOODEN) && !state.getValue(STICK) && level.isEmptyBlock(abovePos) && abovePos.getY() <= level.getMaxBuildHeight())
+        {
+            return state.setValue(STICK, true);
+        }
+        return null;
     }
 }

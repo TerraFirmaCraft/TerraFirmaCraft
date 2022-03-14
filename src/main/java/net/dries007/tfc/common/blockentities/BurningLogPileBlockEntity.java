@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlockEntity extends TickCounterBlockEntity
 {
@@ -108,7 +109,7 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
                 return;
             }
 
-            if (state.is(TFCBlocks.CHARCOAL_PILE.get()))
+            if (Helpers.isBlock(state, TFCBlocks.CHARCOAL_PILE.get()))
             {
                 // Place what it can in the existing charcoal pit, then continue climbing
                 charcoal += state.getValue(CharcoalPileBlock.LAYERS);

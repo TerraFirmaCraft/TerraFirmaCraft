@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
 /**
@@ -154,7 +155,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                         ((FallingBlock) block).onLand(this.level, posAt, fallingBlockState, hitBlockState, this);
                                     }
 
-                                    if (TFCTags.Blocks.CAN_LANDSLIDE.contains(fallingBlockState.getBlock()))
+                                    if (Helpers.isBlock(fallingBlockState.getBlock(), TFCTags.Blocks.CAN_LANDSLIDE))
                                     {
                                         level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
                                     }
@@ -165,7 +166,7 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                                         BlockEntity tileEntity = level.getBlockEntity(posAt);
                                         if (tileEntity != null)
                                         {
-                                            CompoundTag tileEntityData = tileEntity.save(new CompoundTag());
+                                            CompoundTag tileEntityData = tileEntity.saveWithoutMetadata();
                                             for (String dataKey : tileEntityData.getAllKeys())
                                             {
                                                 Tag dataElement = tileEntityData.get(dataKey);
