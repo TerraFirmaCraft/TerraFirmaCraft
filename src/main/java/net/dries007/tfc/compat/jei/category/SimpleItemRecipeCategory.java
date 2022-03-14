@@ -8,8 +8,8 @@ package net.dries007.tfc.compat.jei.category;
 
 import java.util.Arrays;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -20,13 +20,14 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.SimpleItemRecipe;
 
 public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> extends BaseRecipeCategory<T>
 {
-    public SimpleItemRecipeCategory(ResourceLocation uId, IGuiHelper helper, ItemStack icon, Class<? extends T> recipeClass)
+    public SimpleItemRecipeCategory(RecipeType<T> type, IGuiHelper helper, ItemStack icon)
     {
-        super(uId, helper, helper.createBlankDrawable(120, 38), icon, recipeClass);
+        super(type, helper, helper.createBlankDrawable(120, 38), icon);
     }
 
     @Override
@@ -60,5 +61,5 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
         slot.draw(stack, 84, 16);
     }
 
-    protected abstract Tag<Item> getToolTag();
+    protected abstract TagKey<Item> getToolTag();
 }

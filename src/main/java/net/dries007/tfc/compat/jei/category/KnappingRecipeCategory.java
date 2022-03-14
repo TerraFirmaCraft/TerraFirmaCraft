@@ -19,6 +19,7 @@ import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
 import net.dries007.tfc.util.Helpers;
 
@@ -31,9 +32,9 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     @Nullable
     private final IDrawable high, low;
 
-    public KnappingRecipeCategory(ResourceLocation uId, IGuiHelper helper, ItemStack icon, Class<? extends T> recipeClass, @Nullable ResourceLocation high, @Nullable ResourceLocation low)
+    public KnappingRecipeCategory(RecipeType<T> type, IGuiHelper helper, ItemStack icon, @Nullable ResourceLocation high, @Nullable ResourceLocation low)
     {
-        super(uId, helper, helper.createBlankDrawable(135, 82), icon, recipeClass);
+        super(type, helper, helper.createBlankDrawable(135, 82), icon);
         arrow = helper.createDrawable(KNAP_TEXTURES, 97, 44, 22, 15);
         this.high = high == null ? null : helper.drawableBuilder(high, 0, 0, 16, 16).setTextureSize(16, 16).build();
         this.low = low == null ? null : helper.drawableBuilder(low, 0, 0, 16, 16).setTextureSize(16, 16).build();

@@ -25,6 +25,7 @@ import mezz.jei.api.gui.ingredient.IGuiIngredient;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.client.screen.KnappingScreen;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -35,9 +36,9 @@ public class RockKnappingRecipeCategory extends KnappingRecipeCategory<RockKnapp
     private final IDrawableStatic blank;
     private final LoadingCache<RockKnappingRecipe, DisplayData> cache;
 
-    public RockKnappingRecipeCategory(ResourceLocation uId, IGuiHelper helper)
+    public RockKnappingRecipeCategory(RecipeType<RockKnappingRecipe> type, IGuiHelper helper)
     {
-        super(uId, helper, new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.CHERT).get(Rock.BlockType.LOOSE).get()), RockKnappingRecipe.class, null, null);
+        super(type, helper, new ItemStack(TFCBlocks.ROCK_BLOCKS.get(Rock.CHERT).get(Rock.BlockType.LOOSE).get()), null, null);
         this.cache = CacheBuilder.newBuilder()
             .maximumSize(25)
             .build(new CacheLoader<>()

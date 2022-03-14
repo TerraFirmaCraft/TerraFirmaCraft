@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -42,12 +43,12 @@ public final class TFCTiers
     public static final Tier BLUE_STEEL = register("blue_steel", Tiers.NETHERITE, null, TFCTags.Blocks.NEEDS_COLORED_STEEL_TOOL, 6, 6500, 12.0f, 9.0f, 22);
     public static final Tier RED_STEEL = register("red_steel", Tiers.NETHERITE, null, TFCTags.Blocks.NEEDS_COLORED_STEEL_TOOL, 6, 6500, 12.0f, 9.0f, 22);
 
-    private static Tier register(String name, Tier before, @Nullable Tier after, Tag<Block> tag, int level, int uses, float speed, float damage, int enchantmentValue)
+    private static Tier register(String name, Tier before, @Nullable Tier after, TagKey<Block> tag, int level, int uses, float speed, float damage, int enchantmentValue)
     {
         return register(name, List.of(before), after == null ? List.of() : List.of(after), tag, level, uses, speed, damage, enchantmentValue);
     }
 
-    private static Tier register(String name, List<Object> before, List<Object> after, Tag<Block> tag, int level, int uses, float speed, float damage, int enchantmentValue)
+    private static Tier register(String name, List<Object> before, List<Object> after, TagKey<Block> tag, int level, int uses, float speed, float damage, int enchantmentValue)
     {
         final Tier tier = new ForgeTier(level, uses, speed, damage, enchantmentValue, tag, () -> Ingredient.EMPTY);
         TierSortingRegistry.registerTier(tier, Helpers.identifier(name), before, after);

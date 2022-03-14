@@ -63,7 +63,7 @@ public class VolcanoPlacement extends PlacementModifier
             localContext.set(local);
         }
 
-        final Biome biome = level.getBiome(pos);
+        final Biome biome = level.getBiome(pos).value();
         final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, biome).variants();
         if (variants.isVolcanic())
         {

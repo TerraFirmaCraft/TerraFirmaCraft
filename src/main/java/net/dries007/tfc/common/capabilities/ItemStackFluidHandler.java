@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
@@ -44,7 +45,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
         this(stack, f -> true, capacity);
     }
 
-    public ItemStackFluidHandler(ItemStack stack, Tag<Fluid> allowedFluids, int capacity)
+    public ItemStackFluidHandler(ItemStack stack, TagKey<Fluid> allowedFluids, int capacity)
     {
         this(stack, fluid -> Helpers.isFluid(fluid, allowedFluids), capacity);
     }

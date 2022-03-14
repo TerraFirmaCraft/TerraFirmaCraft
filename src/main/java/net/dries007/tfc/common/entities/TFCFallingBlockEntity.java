@@ -25,9 +25,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.rock.IFallableBlock;
+import net.dries007.tfc.mixin.accessor.FallingBlockEntityAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 
@@ -49,20 +51,25 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
     private final boolean dontSetBlock;
     private boolean failedBreakCheck;
 
-    public TFCFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, Level world)
+    public TFCFallingBlockEntity(EntityType<? extends FallingBlockEntity> entityType, Level level)
     {
-        super(entityType, world);
+        super(entityType, level);
 
         failedBreakCheck = false;
         dontSetBlock = false;
     }
 
-    public TFCFallingBlockEntity(Level worldIn, double x, double y, double z, BlockState fallingBlockState)
+    public TFCFallingBlockEntity(Level level, double x, double y, double z, BlockState fallingBlockState)
     {
-        super(worldIn, x, y, z, fallingBlockState);
-
-        failedBreakCheck = false;
-        dontSetBlock = false;
+        this(TFCEntities.FALLING_BLOCK.get(), level);
+        ((FallingBlockEntityAccessor) this).setBlockState(fallingBlockState);
+        blocksBuilding = true;
+        setPos(x, y, z);
+        setDeltaMovement(Vec3.ZERO);
+        xo = x;
+        yo = y;
+        zo = z;
+        setStartPos(blockPosition());
     }
 
     @Override

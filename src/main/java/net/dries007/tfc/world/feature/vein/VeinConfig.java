@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.biome.Biome;
@@ -100,9 +101,9 @@ public class VeinConfig implements FeatureConfiguration
         return null;
     }
 
-    public boolean canSpawnInBiome(Supplier<Biome> biome)
+    public boolean canSpawnInBiome(Holder<Biome> biome)
     {
-        return resolvedBiomeFilter.test(biome);
+        return resolvedBiomeFilter.test(biome::value);
     }
 
     public RandomSource random(long levelSeed, int chunkX, int chunkZ)
@@ -156,7 +157,8 @@ public class VeinConfig implements FeatureConfiguration
         }
         else
         {
-            final List<BiomeDictionary.Type> types = new ArrayList<>();
+            return supplier -> true; //TODO: can we still do biome filtering here?
+            /*final List<BiomeDictionary.Type> types = new ArrayList<>();
             final Set<Biome.BiomeCategory> categories = EnumSet.noneOf(Biome.BiomeCategory.class);
             for (Either<Biome.BiomeCategory, BiomeDictionary.Type> either : biomeFilter)
             {
@@ -181,7 +183,7 @@ public class VeinConfig implements FeatureConfiguration
                     }
                 }
                 return false;
-            };
+            };*/
         }
     }
 }

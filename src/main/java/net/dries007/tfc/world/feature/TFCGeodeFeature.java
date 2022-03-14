@@ -110,7 +110,7 @@ public class TFCGeodeFeature extends Feature<TFCGeodeConfig>
             }
         }
 
-        final Predicate<BlockState> predicate = isReplaceable(BlockTags.FEATURES_CANNOT_REPLACE.getName());
+        final Predicate<BlockState> predicate = isReplaceable(BlockTags.FEATURES_CANNOT_REPLACE);
 
         for (BlockPos pos : BlockPos.betweenClosed(origin.offset(-16, -16, -16), origin.offset(16, 16, 16)))
         {

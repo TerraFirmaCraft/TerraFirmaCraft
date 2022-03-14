@@ -6,22 +6,22 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import net.minecraft.resources.ResourceLocation;
-
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.RecipeType;
+import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 
-public class SoupPotRecipeCategory extends PotRecipeCategory<SoupPotRecipe>
+public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
-    public SoupPotRecipeCategory(ResourceLocation uId, IGuiHelper helper)
+    public SoupPotRecipeCategory(RecipeType<PotRecipe> type, IGuiHelper helper)
     {
-        super(uId, helper, helper.createBlankDrawable(175, 80), SoupPotRecipe.class);
+        super(type, helper, helper.createBlankDrawable(175, 80));
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, SoupPotRecipe recipe, IIngredients ingredients)
+    public void setRecipe(IRecipeLayout recipeLayout, PotRecipe recipe, IIngredients ingredients)
     {
         super.setRecipe(recipeLayout, recipe, ingredients);
     }

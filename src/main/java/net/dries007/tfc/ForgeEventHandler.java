@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -23,8 +24,8 @@ import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -42,6 +43,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -70,6 +72,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 
+import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
@@ -98,7 +101,6 @@ import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
-import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -168,7 +170,8 @@ public final class ForgeEventHandler
     }
 
     /**
-     * Duplicates logic from {@link MinecraftServer#setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
+     * Duplicates logic from {@link MinecraftServer#
+     * setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
@@ -179,12 +182,17 @@ public final class ForgeEventHandler
             final BiomeSourceExtension source = extension.getBiomeSource();
             final Random random = new Random(world.getSeed());
 
-            BlockPos pos = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(world, biome).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
+            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(world, biome.value()).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
+            BlockPos pos;
             ChunkPos chunkPos;
-            if (pos == null)
+            if (posPair == null)
             {
                 LOGGER.warn("Unable to find spawn biome!");
                 pos = new BlockPos(0, generator.getSeaLevel(), 0);
+            }
+            else
+            {
+                pos = posPair.getFirst();
             }
             chunkPos = new ChunkPos(pos);
 
@@ -380,13 +388,7 @@ public final class ForgeEventHandler
     {
         // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
         // So, we hack internal resource lists in order to stick metals before recipes.
-        final ResourceManager resourceManager = event.getDataPackRegistries().getResourceManager();
-        if (resourceManager instanceof SimpleReloadableResourceManager resources)
-        {
-            final List<PreparableReloadListener> listeners = ((SimpleReloadableResourceManagerAccessor) resources).accessor$getListeners();
-            final RecipeManager recipes = event.getDataPackRegistries().getRecipeManager();
-            Helpers.insertBefore(listeners, Metal.MANAGER, recipes);
-        }
+        // see ReloadableServerResourcesMixin
 
         // All other resource reload listeners can be inserted after recipes.
         event.addListener(Fuel.MANAGER);

@@ -19,14 +19,15 @@ import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
 
 public abstract class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeCategory<T>
 {
-    public PotRecipeCategory(ResourceLocation uId, IGuiHelper helper, IDrawable background, Class<? extends T> recipeClass)
+    public PotRecipeCategory(RecipeType<T> type, IGuiHelper helper, IDrawable background)
     {
-        super(uId, helper, background, new ItemStack(TFCItems.POT.get()), recipeClass);
+        super(type, helper, background, new ItemStack(TFCItems.POT.get()));
     }
 
     @Override

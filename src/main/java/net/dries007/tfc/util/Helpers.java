@@ -18,9 +18,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.AbstractIterator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
+import net.minecraft.core.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -31,7 +29,7 @@ import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -56,6 +54,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -561,17 +560,6 @@ public final class Helpers
         HoeItemProtectedAccessor.TILLABLES_VIEW.put(block, Pair.of(condition, action));
     }
 
-    public static <T> Tag<T> decodeTag(FriendlyByteBuf buffer, TagCollection<T> tags)
-    {
-        final ResourceLocation id = buffer.readResourceLocation();
-        return tags.getTagOrEmpty(id);
-    }
-
-    public static <T> void encodeTag(FriendlyByteBuf buffer, Tag<T> tag, TagCollection<T> tags)
-    {
-        buffer.writeResourceLocation(Objects.requireNonNull(tags.getId(tag), "Tried to write unknown tag to network"));
-    }
-
     public static <E, C extends Collection<E>> C decodeAll(FriendlyByteBuf buffer, C collection, Function<FriendlyByteBuf, E> decoder)
     {
         final int size = buffer.readVarInt();
@@ -692,6 +680,13 @@ public final class Helpers
         {
             list.add(index, element); // Insert at the target location, shifts the target forwards
         }
+    }
+
+    public static <T> Collection<T> getAllTagValues(TagKey<T> tag, Registry<T> registry)
+    {
+        List<T> list = new ArrayList<>();
+        registry.getTagOrEmpty(tag).forEach(holder -> list.add(holder.value()));
+        return list;
     }
 
     public static Field findUnobfField(Class<?> clazz, String fieldName)
@@ -943,14 +938,15 @@ public final class Helpers
         return first.is(second);
     }
 
-    public static boolean isItem(ItemStack stack, Tag<Item> tag)
+    public static boolean isItem(ItemStack stack, TagKey<Item> tag)
     {
         return stack.is(tag);
     }
 
-    public static boolean isItem(Item item, Tag<Item> tag)
+    @SuppressWarnings("deprecation")
+    public static boolean isItem(Item item, TagKey<Item> tag)
     {
-        return tag.contains(item);
+        return checkTag(Registry.ITEM, item, tag);
     }
 
     public static boolean isBlock(BlockState first, Block second)
@@ -958,29 +954,52 @@ public final class Helpers
         return first.is(second);
     }
 
-    public static boolean isBlock(BlockState state, Tag<Block> tag)
+    public static boolean isBlock(BlockState state, TagKey<Block> tag)
     {
         return isBlock(state.getBlock(), tag);
     }
 
-    public static boolean isBlock(Block block, Tag<Block> tag)
+    @SuppressWarnings("deprecation")
+    public static boolean isBlock(Block block, TagKey<Block> tag)
     {
-        return tag.contains(block);
+        return checkTag(Registry.BLOCK, block, tag);
     }
 
-    public static boolean isFluid(FluidState state, Tag<Fluid> tag)
+    public static boolean isFluid(FluidState state, TagKey<Fluid> tag)
     {
         return state.is(tag);
     }
 
-    public static boolean isFluid(Fluid first, Tag<Fluid> second)
+    public static boolean isFluid(Fluid first, TagKey<Fluid> second)
     {
         return first.is(second);
     }
 
-    public static boolean isEntity(EntityType<?> entity, Tag<EntityType<?>> tag)
+    @SuppressWarnings("deprecation")
+    public static boolean isEntity(EntityType<?> entity, TagKey<EntityType<?>> tag)
     {
-        return tag.contains(entity);
+        return checkTag(Registry.ENTITY_TYPE, entity, tag);
+    }
+
+    // todo: change this to forge registry checking when that's finished
+    public static <T> Holder<T> getHolder(Registry<T> registry, T object)
+    {
+        return registry.getHolderOrThrow(registry.getResourceKey(object).orElseThrow());
+    }
+
+    public static <T> boolean checkTag(Registry<T> registry, T object, TagKey<T> tag)
+    {
+        return getHolder(registry, object).is(tag);
+    }
+
+    public static <T> Optional<T> getRandomElement(Registry<T> registry, TagKey<T> tag, Random random)
+    {
+        return registry.getTag(tag).flatMap(set -> set.getRandomElement(random)).map(Holder::value);
+    }
+
+    public static double sampleNoiseAndMapToRange(NormalNoise noise, double x, double y, double z, double min, double max)
+    {
+        return Mth.map(noise.getValue(x, y, z), -1, 1, min, max);
     }
 
     /**

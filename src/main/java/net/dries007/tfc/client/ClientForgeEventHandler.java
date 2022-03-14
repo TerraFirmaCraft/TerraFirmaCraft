@@ -229,11 +229,12 @@ public class ClientForgeEventHandler
                     text.add(new TextComponent(GRAY + "[Debug] Cap NBT: " + DARK_GRAY + capTag));
                 }
 
-                final Set<ResourceLocation> tags = stack.getItem().getTags();
+                /*final Set<ResourceLocation> tags = stack.getItem().getTags();
                 if (!tags.isEmpty())
                 {
                     text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + tags.stream().map(t -> "#" + t).collect(Collectors.joining(", "))));
-                }
+                }*/
+                //todo: get all tags for an item stack
             }
         }
     }
