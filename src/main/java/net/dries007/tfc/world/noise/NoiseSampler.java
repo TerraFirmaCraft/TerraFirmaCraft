@@ -12,6 +12,8 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.NoiseUtils;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
+import net.dries007.tfc.util.Helpers;
+
 
 public class NoiseSampler
 {
@@ -147,8 +149,8 @@ public class NoiseSampler
 
     private double getPillars(int x, int y, int z)
     {
-        double rarityMod = NoiseUtils.sampleNoiseAndMapToRange(pillarRarenessModulator, x, y, z, 0, 2);
-        double thicknessMod = NoiseUtils.sampleNoiseAndMapToRange(pillarThicknessModulator, x, y, z, 0, 1.1);
+        double rarityMod = Helpers.sampleNoiseAndMapToRange(pillarRarenessModulator, x, y, z, 0, 2);
+        double thicknessMod = Helpers.sampleNoiseAndMapToRange(pillarThicknessModulator, x, y, z, 0, 1.1);
 
         thicknessMod *= thicknessMod * thicknessMod;
 
@@ -167,7 +169,7 @@ public class NoiseSampler
     {
         double d0 = spaghetti3DRarityModulator.getValue(x * 2, y, z * 2);
         double d1 = getDiscreteSpaghettiRarity3D(d0);
-        double d4 = NoiseUtils.sampleNoiseAndMapToRange(spaghetti3DThicknessModulator, x, y, z, 0.065, 0.088);
+        double d4 = Helpers.sampleNoiseAndMapToRange(spaghetti3DThicknessModulator, x, y, z, 0.065, 0.088);
         double d5 = sampleWithRarity(spaghetti3DNoiseSource1, x, y, z, d1);
         double d6 = Math.abs(d1 * d5) - d4;
         double d7 = sampleWithRarity(spaghetti3DNoiseSource2, x, y, z, d1);
@@ -179,11 +181,11 @@ public class NoiseSampler
     {
         double d0 = this.spaghetti2DRarityModulator.getValue(x * 2, y, z * 2);
         double d1 = getDiscreteSpaghettiRarity2D(d0);
-        double d4 = NoiseUtils.sampleNoiseAndMapToRange(this.spaghetti2DThicknessModulator, x * 2, y, z * 2, 0.6, 1.3);
+        double d4 = Helpers.sampleNoiseAndMapToRange(this.spaghetti2DThicknessModulator, x * 2, y, z * 2, 0.6, 1.3);
         double d5 = sampleWithRarity(this.spaghetti2DNoiseSource, x, y, z, d1);
         double d7 = Math.abs(d1 * d5) - 0.083D * d4;
         int i = this.noiseSettings.getMinCellY();
-        double d8 = NoiseUtils.sampleNoiseAndMapToRange(this.spaghetti2DElevationModulator, x, 0, z, i, 8);
+        double d8 = Helpers.sampleNoiseAndMapToRange(this.spaghetti2DElevationModulator, x, 0, z, i, 8);
         double d9 = Math.abs(d8 - (double) y / 8.0D) - d4;
         d9 = d9 * d9 * d9;
         return clampToUnit(Math.max(d9, d7));
@@ -191,7 +193,7 @@ public class NoiseSampler
 
     private double getSpaghettiRoughness(int x, int y, int z)
     {
-        double value = NoiseUtils.sampleNoiseAndMapToRange(spaghettiRoughnessModulator, x, y, z, 0, 0.1);
+        double value = Helpers.sampleNoiseAndMapToRange(spaghettiRoughnessModulator, x, y, z, 0, 0.1);
         return (0.4 - Math.abs(spaghettiRoughnessNoise.getValue(x, y, z))) * value;
     }
 

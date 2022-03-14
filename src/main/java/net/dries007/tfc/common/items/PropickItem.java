@@ -18,6 +18,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -47,7 +48,7 @@ public class PropickItem extends ToolItem
 
     private static final Random RANDOM = new Random();
 
-    public static Object2IntMap<BlockState> scanAreaFor(Level level, BlockPos center, int radius, Tag<Block> tag)
+    public static Object2IntMap<BlockState> scanAreaFor(Level level, BlockPos center, int radius, TagKey<Block> tag)
     {
         final Object2IntMap<BlockState> results = new Object2IntOpenHashMap<>();
         for (BlockPos cursor : BlockPos.betweenClosed(center.getX() - radius, center.getY() - radius, center.getZ() - radius, center.getX() + radius, center.getY() + radius, center.getZ() + radius))

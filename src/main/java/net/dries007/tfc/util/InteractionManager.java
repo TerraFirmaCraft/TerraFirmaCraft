@@ -17,11 +17,13 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -320,9 +322,10 @@ public final class InteractionManager
     /**
      * Register an interaction. This method is safe to call during parallel mod loading.
      */
-    public static void register(Tag<Item> tag, boolean targetAir, OnItemUseAction action)
+    @SuppressWarnings("deprecation")
+    public static void register(TagKey<Item> tag, boolean targetAir, OnItemUseAction action)
     {
-        register(new Entry(action, stack -> Helpers.isItem(stack.getItem(), tag), tag::getValues, targetAir));
+        register(new Entry(action, stack -> Helpers.isItem(stack.getItem(), tag), () -> Helpers.getAllTagValues(tag, Registry.ITEM), targetAir));
     }
 
     public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, ItemStackContainerProvider container)

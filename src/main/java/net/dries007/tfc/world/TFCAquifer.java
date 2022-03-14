@@ -16,10 +16,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-import net.minecraft.world.level.levelgen.RandomSource;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 import net.dries007.tfc.util.Helpers;
@@ -125,10 +122,10 @@ public class TFCAquifer implements Aquifer
 
     @Nullable
     @Override
-    public BlockState computeSubstance(int x, int y, int z, double baseNoise, double modifiedNoise)
+    public BlockState computeSubstance(DensityFunction.FunctionContext context, double baseNoise)
     {
         // Only used directly by carvers, where it passes in baseNoise = 0, modifiedNoise = 0
-        return sampleState(x, y, z, baseNoise);
+        return sampleState(context.blockX(), context.blockY(), context.blockZ(), baseNoise);
     }
 
     /**

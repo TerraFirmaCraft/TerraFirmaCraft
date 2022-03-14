@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -102,7 +103,7 @@ public class WoodenBucketItem extends Item
         return new ItemStackFluidHandler(stack, getWhitelistTag(), getCapacity());
     }
 
-    protected Tag.Named<Fluid> getWhitelistTag()
+    protected TagKey<Fluid> getWhitelistTag()
     {
         return TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET;
     }

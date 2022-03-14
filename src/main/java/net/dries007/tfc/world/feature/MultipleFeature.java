@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature;
 
 import java.util.function.Supplier;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
@@ -26,9 +27,9 @@ public class MultipleFeature extends Feature<MultipleConfig>
     public boolean place(FeaturePlaceContext<MultipleConfig> context)
     {
         boolean result = false;
-        for (Supplier<PlacedFeature> feature : context.config().features())
+        for (Holder<PlacedFeature> feature : context.config().features())
         {
-            result |= feature.get().placeWithBiomeCheck(context.level(), context.chunkGenerator(), context.random(), context.origin());
+            result |= feature.value().placeWithBiomeCheck(context.level(), context.chunkGenerator(), context.random(), context.origin());
         }
         return result;
     }

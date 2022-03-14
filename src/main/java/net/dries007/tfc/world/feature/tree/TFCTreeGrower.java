@@ -9,6 +9,7 @@ package net.dries007.tfc.world.feature.tree;
 import java.util.Random;
 import javax.annotation.Nullable;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.grower.AbstractTreeGrower;
@@ -43,7 +44,7 @@ public class TFCTreeGrower extends AbstractTreeGrower
 
     @Nullable
     @Override
-    protected ConfiguredFeature<TreeConfiguration, ?> getConfiguredFeature(Random randomIn, boolean largeHive)
+    protected Holder<ConfiguredFeature<TreeConfiguration, ?>> getConfiguredFeature(Random randomIn, boolean largeHive)
     {
         return null; // Not using vanilla's feature config
     }

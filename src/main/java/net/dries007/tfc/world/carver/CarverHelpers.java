@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
+import net.minecraft.world.level.levelgen.DensityFunction;
 import net.minecraft.world.level.levelgen.carver.CarverConfiguration;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.material.FluidState;
@@ -68,7 +69,7 @@ public final class CarverHelpers
         }
         else
         {
-            final BlockState carveState = aquifer.computeSubstance(pos.getX(), pos.getY(), pos.getZ(), 0, 0);
+            final BlockState carveState = aquifer.computeSubstance(new DensityFunction.SinglePointContext(pos.getX(), pos.getY(), pos.getZ()) , 0);
             if (carveState == null)
             {
                 return isDebugEnabled(config) ? config.debugSettings.getBarrierState() : null;

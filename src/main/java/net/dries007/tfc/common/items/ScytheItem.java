@@ -9,6 +9,7 @@ package net.dries007.tfc.common.items;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
@@ -19,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ScytheItem extends ToolItem
 {
-    public ScytheItem(Tier tier, float attackDamage, float attackSpeed, Tag<Block> mineableBlocks, Properties properties)
+    public ScytheItem(Tier tier, float attackDamage, float attackSpeed, TagKey<Block> mineableBlocks, Properties properties)
     {
         super(tier, attackDamage, attackSpeed, mineableBlocks, properties);
     }

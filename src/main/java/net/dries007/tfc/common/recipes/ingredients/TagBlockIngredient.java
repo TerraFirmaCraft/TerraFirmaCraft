@@ -11,9 +11,7 @@ import java.util.Collection;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.SerializationTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -22,9 +20,9 @@ import net.dries007.tfc.util.JsonHelpers;
 
 public class TagBlockIngredient implements BlockIngredient
 {
-    private final Tag<Block> tag;
+    private final TagKey<Block> tag;
 
-    private TagBlockIngredient(Tag<Block> tag)
+    private TagBlockIngredient(TagKey<Block> tag)
     {
         this.tag = tag;
     }
@@ -36,9 +34,10 @@ public class TagBlockIngredient implements BlockIngredient
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Collection<Block> getValidBlocks()
     {
-        return tag.getValues();
+        return Helpers.getAllTagValues(tag, Registry.BLOCK);
     }
 
     @Override
@@ -54,21 +53,19 @@ public class TagBlockIngredient implements BlockIngredient
         @Override
         public TagBlockIngredient fromJson(JsonObject json)
         {
-            return new TagBlockIngredient(JsonHelpers.getTag(json, "tag", SerializationTags.getInstance().getOrEmpty(Registry.BLOCK_REGISTRY)));
+            return new TagBlockIngredient(JsonHelpers.getTag(json, "tag", Registry.BLOCK_REGISTRY));
         }
 
         @Override
         public TagBlockIngredient fromNetwork(FriendlyByteBuf buffer)
         {
-            final Tag<Block> tag = SerializationTags.getInstance().getOrEmpty(Registry.BLOCK_REGISTRY).getTagOrEmpty(buffer.readResourceLocation());
-            return new TagBlockIngredient(tag);
+            return new TagBlockIngredient(JsonHelpers.getTag(buffer.readResourceLocation().toString(), Registry.BLOCK_REGISTRY));
         }
 
         @Override
-        @SuppressWarnings("ConstantConditions")
         public void toNetwork(FriendlyByteBuf buffer, TagBlockIngredient ingredient)
         {
-            buffer.writeResourceLocation(BlockTags.getAllTags().getId(ingredient.tag));
+            buffer.writeResourceLocation(ingredient.tag.location());
         }
     }
 }

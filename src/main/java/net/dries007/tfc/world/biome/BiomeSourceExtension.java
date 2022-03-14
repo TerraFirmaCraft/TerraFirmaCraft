@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.world.biome;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 
@@ -15,9 +16,9 @@ import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public interface BiomeSourceExtension
 {
-    Biome getNoiseBiome(int quartX, int quartZ);
+    Holder<Biome> getNoiseBiome(int quartX, int quartZ);
 
-    Biome getNoiseBiomeIgnoreClimate(int quartX, int quartZ);
+    Holder<Biome> getNoiseBiomeIgnoreClimate(int quartX, int quartZ);
 
     BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ);
 

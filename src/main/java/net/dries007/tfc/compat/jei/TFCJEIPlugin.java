@@ -6,54 +6,61 @@
 
 package net.dries007.tfc.compat.jei;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.common.recipes.KnappingRecipe;
-import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.compat.jei.category.*;
 import net.dries007.tfc.util.Helpers;
 
 @JeiPlugin
 public class TFCJEIPlugin implements IModPlugin
 {
-    private static <C extends Container, T extends Recipe<C>> Collection<T> getRecipes(RecipeType<T> type)
+    private static <C extends Container, T extends Recipe<C>> List<T> getRecipes(net.minecraft.world.item.crafting.RecipeType<T> type)
     {
         ClientLevel level = Minecraft.getInstance().level;
         assert level != null;
         return level.getRecipeManager().getAllRecipesFor(type);
     }
 
-    private static <C extends Container, T extends Recipe<C>> Collection<T> getRecipes(RecipeType<T> type, Predicate<T> filter)
+    private static <C extends Container, T extends Recipe<C>> List<T> getRecipes(net.minecraft.world.item.crafting.RecipeType<T> type, Predicate<T> filter)
     {
         return getRecipes(type).stream().filter(filter).collect(Collectors.toList());
     }
 
-    private static void addCatalystTag(IRecipeCatalystRegistration r, Tag<Item> tag, ResourceLocation uId)
+    //todo: use forge registry
+    @SuppressWarnings("deprecation")
+    private static void addCatalystTag(IRecipeCatalystRegistration r, TagKey<Item> tag, RecipeType<?> recipeType)
     {
-        tag.getValues().forEach(item -> r.addRecipeCatalyst(new ItemStack(item), uId));
+        Helpers.getAllTagValues(tag, Registry.ITEM).forEach(item -> r.addRecipeCatalyst(new ItemStack(item), recipeType));
+    }
+
+    private static <T> RecipeType<T> type(String name, Class<T> tClass)
+    {
+        return RecipeType.create(TerraFirmaCraft.MOD_ID, name, tClass);
     }
 
     private static final ResourceLocation CLAY_DISABLED_TEXTURE = Helpers.identifier("textures/gui/knapping/clay_ball_disabled.png");
@@ -62,16 +69,17 @@ public class TFCJEIPlugin implements IModPlugin
     private static final ResourceLocation FIRE_CLAY_TEXTURE = Helpers.identifier("textures/gui/knapping/fire_clay.png");
     private static final ResourceLocation LEATHER_TEXTURE = Helpers.identifier("textures/gui/knapping/leather.png");
 
-    private static final ResourceLocation HEATING = Helpers.identifier("heating");
-    private static final ResourceLocation SCRAPING = Helpers.identifier("scraping");
-    private static final ResourceLocation QUERN = Helpers.identifier("quern");
-    private static final ResourceLocation CLAY_KNAPPING = Helpers.identifier("clay_knapping");
-    private static final ResourceLocation FIRE_CLAY_KNAPPING = Helpers.identifier("fire_clay_knapping");
-    private static final ResourceLocation LEATHER_KNAPPING = Helpers.identifier("leather_knapping");
-    private static final ResourceLocation ROCK_KNAPPING = Helpers.identifier("rock_knapping");
-    private static final ResourceLocation SOUP_POT = Helpers.identifier("soup_pot");
-    private static final ResourceLocation FLUID_POT = Helpers.identifier("fluid_pot");
-    private static final ResourceLocation CASTING = Helpers.identifier("casting");
+    public static final RecipeType<HeatingRecipe> HEATING = type("heating", HeatingRecipe.class);
+    public static final RecipeType<ScrapingRecipe> SCRAPING = type("scraping", ScrapingRecipe.class);
+    public static final RecipeType<QuernRecipe> QUERN = type("quern", QuernRecipe.class);
+    public static final RecipeType<KnappingRecipe> CLAY_KNAPPING = type("clay_knapping", KnappingRecipe.class);
+    public static final RecipeType<KnappingRecipe> FIRE_CLAY_KNAPPING = type("fire_clay_knapping", KnappingRecipe.class);
+    public static final RecipeType<KnappingRecipe> LEATHER_KNAPPING = type("leather_knapping", KnappingRecipe.class);
+    public static final RecipeType<RockKnappingRecipe> ROCK_KNAPPING = type("rock_knapping", RockKnappingRecipe.class);
+    public static final RecipeType<PotRecipe> SOUP_POT = type("soup_pot", PotRecipe.class);
+    public static final RecipeType<PotRecipe> FLUID_POT = type("fluid_pot", PotRecipe.class);
+    public static final RecipeType<CastingRecipe> CASTING = type("casting", CastingRecipe.class);
+
 
     @Override
     public ResourceLocation getPluginUid()
@@ -86,9 +94,9 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new HeatingCategory(HEATING, gui));
         r.addRecipeCategories(new QuernRecipeCategory(QUERN, gui));
         r.addRecipeCategories(new ScrapingRecipeCategory(SCRAPING, gui));
-        r.addRecipeCategories(new KnappingRecipeCategory<>(CLAY_KNAPPING, gui, new ItemStack(Items.CLAY_BALL), KnappingRecipe.class, CLAY_TEXTURE, CLAY_DISABLED_TEXTURE));
-        r.addRecipeCategories(new KnappingRecipeCategory<>(FIRE_CLAY_KNAPPING, gui, new ItemStack(TFCItems.FIRE_CLAY.get()), KnappingRecipe.class, FIRE_CLAY_TEXTURE, FIRE_CLAY_DISABLED_TEXTURE));
-        r.addRecipeCategories(new KnappingRecipeCategory<>(LEATHER_KNAPPING, gui, new ItemStack(Items.LEATHER), KnappingRecipe.class, LEATHER_TEXTURE, null));
+        r.addRecipeCategories(new KnappingRecipeCategory<>(CLAY_KNAPPING, gui, new ItemStack(Items.CLAY_BALL), CLAY_TEXTURE, CLAY_DISABLED_TEXTURE));
+        r.addRecipeCategories(new KnappingRecipeCategory<>(FIRE_CLAY_KNAPPING, gui, new ItemStack(TFCItems.FIRE_CLAY.get()), FIRE_CLAY_TEXTURE, FIRE_CLAY_DISABLED_TEXTURE));
+        r.addRecipeCategories(new KnappingRecipeCategory<>(LEATHER_KNAPPING, gui, new ItemStack(Items.LEATHER), LEATHER_TEXTURE, null));
         r.addRecipeCategories(new RockKnappingRecipeCategory(ROCK_KNAPPING, gui));
         r.addRecipeCategories(new SoupPotRecipeCategory(SOUP_POT, gui));
         r.addRecipeCategories(new FluidPotRecipeCategory(FLUID_POT, gui));
@@ -98,16 +106,16 @@ public class TFCJEIPlugin implements IModPlugin
     @Override
     public void registerRecipes(IRecipeRegistration r)
     {
-        r.addRecipes(getRecipes(TFCRecipeTypes.HEATING.get()), HEATING);
-        r.addRecipes(getRecipes(TFCRecipeTypes.SCRAPING.get()), SCRAPING);
-        r.addRecipes(getRecipes(TFCRecipeTypes.QUERN.get()), QUERN);
-        r.addRecipes(getRecipes(TFCRecipeTypes.CLAY_KNAPPING.get()), CLAY_KNAPPING);
-        r.addRecipes(getRecipes(TFCRecipeTypes.FIRE_CLAY_KNAPPING.get()), FIRE_CLAY_KNAPPING);
-        r.addRecipes(getRecipes(TFCRecipeTypes.LEATHER_KNAPPING.get()), LEATHER_KNAPPING);
-        r.addRecipes(getRecipes(TFCRecipeTypes.ROCK_KNAPPING.get()), ROCK_KNAPPING);
-        r.addRecipes(getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SOUP.get()), SOUP_POT);
-        r.addRecipes(getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_FLUID.get()), FLUID_POT);
-        r.addRecipes(getRecipes(TFCRecipeTypes.CASTING.get()), CASTING);
+        r.addRecipes(HEATING, getRecipes(TFCRecipeTypes.HEATING.get()));
+        r.addRecipes(SCRAPING, getRecipes(TFCRecipeTypes.SCRAPING.get()));
+        r.addRecipes(QUERN, getRecipes(TFCRecipeTypes.QUERN.get()));
+        r.addRecipes(CLAY_KNAPPING, getRecipes(TFCRecipeTypes.CLAY_KNAPPING.get()));
+        r.addRecipes(FIRE_CLAY_KNAPPING, getRecipes(TFCRecipeTypes.FIRE_CLAY_KNAPPING.get()));
+        r.addRecipes(LEATHER_KNAPPING, getRecipes(TFCRecipeTypes.LEATHER_KNAPPING.get()));
+        r.addRecipes(ROCK_KNAPPING, getRecipes(TFCRecipeTypes.ROCK_KNAPPING.get()));
+        r.addRecipes(SOUP_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SOUP.get()));
+        r.addRecipes(FLUID_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_FLUID.get()));
+        r.addRecipes(CASTING, getRecipes(TFCRecipeTypes.CASTING.get()));
 
         //todo: ingredient info goes here
     }

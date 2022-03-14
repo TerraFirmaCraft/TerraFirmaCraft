@@ -16,15 +16,16 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.util.Metal;
 
 public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
 {
-    public CastingRecipeCategory(ResourceLocation uId, IGuiHelper helper)
+    public CastingRecipeCategory(RecipeType<CastingRecipe> type, IGuiHelper helper)
     {
-        super(uId, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCItems.MOLDS.get(Metal.ItemType.INGOT).get()), CastingRecipe.class);
+        super(type, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCItems.MOLDS.get(Metal.ItemType.INGOT).get()));
     }
 
     @Override

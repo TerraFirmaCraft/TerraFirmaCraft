@@ -80,6 +80,7 @@ public class PanItem extends Item
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onUseTick(Level level, LivingEntity entity, ItemStack stack, int countLeft)
     {
         if (countLeft % 16 == 0 && !level.isClientSide)

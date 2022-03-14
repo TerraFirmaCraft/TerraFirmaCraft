@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -76,7 +77,7 @@ public class JugItem extends WoodenBucketItem
     }
 
     @Override
-    protected Tag.Named<Fluid> getWhitelistTag()
+    protected TagKey<Fluid> getWhitelistTag()
     {
         return TFCTags.Fluids.USABLE_IN_JUG;
     }

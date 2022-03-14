@@ -21,15 +21,16 @@ import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
 import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 
 public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
 {
-    public HeatingCategory(ResourceLocation uId, IGuiHelper helper)
+    public HeatingCategory(RecipeType<HeatingRecipe> type, IGuiHelper helper)
     {
-        super(uId, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCBlocks.FIREPIT.get()), HeatingRecipe.class);
+        super(type, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCBlocks.FIREPIT.get()));
     }
 
     @Override
