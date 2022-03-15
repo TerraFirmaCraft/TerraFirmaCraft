@@ -1171,27 +1171,13 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     if lake_features == 'default':  # Default = Lakes are on all non-ocean biomes. True/False to force either way
         lake_features = not ocean_features
 
-    dike_veins = []
-    for rock, data in ROCKS.items():
-        if data.category == 'igneous_intrusive':
-            dike_veins += ['tfc:vein/%s_dike' % rock]
-
     # Features
     features = [
         ['tfc:erosion'],  # erosion
         ['tfc:underground_flood_fill_lake'],  # lakes
         [],  # soil disks
-        ['tfc:vein/gravel', *dike_veins, *('tfc:vein/%s' % v for v in ORE_VEINS.keys())],  # veins
-        ['tfc:cave_spike',
-         'tfc:large_cave_spike',
-         'tfc:water_spring',
-         'tfc:lava_spring',
-         'tfc:calcite',
-         'tfc:mega_calcite',
-         'tfc:icicle',
-         'tfc:underground_loose_rocks',
-         'tfc:underground_guano_patch',
-         'tfc:hanging_roots_patch'],  # underground decoration
+        ['#tfc:vein_features'],  # veins
+        ['#tfc:underground_features'],  # underground decoration
         ['tfc:geode'],  # large features
         ['tfc:surface_loose_rocks'],  # surface decoration
         [], []  # unused
@@ -1205,18 +1191,18 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     # Oceans
     if ocean_features:
         if temp.id in ('cold', 'frozen'):
-            features[Decoration.LARGE_FEATURES] += ['tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare']
+            features[Decoration.LARGE_FEATURES] += ['#tfc:iceberg_features']
 
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay]
+        features[Decoration.SURFACE_DECORATION] += ['#tfc:ocean_plant_features']
 
         if name == 'shore':
-            features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in SHORE_DECORATORS]
+            features[Decoration.SURFACE_DECORATION] += ['#tfc:shore_groundcover_features']
             spawners.update({
                 'creature': [entity for entity in SHORE_CREATURES.values()]
             })
         else:
-            features[Decoration.SURFACE_DECORATION] += ['tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
-            features[Decoration.SURFACE_DECORATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
+            features[Decoration.SURFACE_DECORATION] += ['#tfc:kelp-features']
+            features[Decoration.SURFACE_DECORATION] += ['#tfc:underwater_groundcover_features']
 
         spawners.update({
             'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
@@ -1240,20 +1226,13 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc']
         if temp.id in ('cold', 'frozen'):
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
-        features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES]
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/wild_crops']
-
-        features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in FOREST_DECORATORS if not ocean_features]
-
-        # leaving freshwater plants to spawn anywhere so that they populate small lakes (something vanilla doesn't think to do)
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay]
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/moss_cover', 'tfc:plant/reindeer_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo']
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s_bush_patch' % berry for berry, data in BERRIES.items() if data.type != 'spreading']
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/%s' % fruit for fruit in FRUITS]
+        features[Decoration.SURFACE_DECORATION] += ['#tfc:large_land_features']
+        features[Decoration.SURFACE_DECORATION] += ['#tfc:land_plant_features']
+        if not ocean_features:
+            features[Decoration.SURFACE_DECORATION] += ['#tfc:forest_groundcover_features']
 
     if volcano_features:
-        features[Decoration.LARGE_FEATURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure']
+        features[Decoration.LARGE_FEATURES] += ['#tfc:volcano_features']
         rm.tag('is_volcanic', 'worldgen/biome', 'tfc:%s' % true_name)
 
     if hot_spring_features:  # can be True, 'empty'

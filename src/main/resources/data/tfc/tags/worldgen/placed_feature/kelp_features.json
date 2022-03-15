@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:plant/giant_kelp_patch",
+    "tfc:plant/winged_kelp",
+    "tfc:plant/leafy_kelp"
+  ]
+}
