@@ -144,10 +144,6 @@
       }
     ],
     "random_name": "amethyst",
-    "biomes": [
-      {
-        "category": "river"
-      }
-    ]
+    "biomes": "#tfc:is_river"
   }
 }

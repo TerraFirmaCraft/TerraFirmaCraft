@@ -394,7 +394,7 @@ def generate(rm: ResourceManager):
                     }]
                 },
                 'random_name': vein_name,
-                'biomes': vein_biome_filter(vein.biomes)
+                'biomes': vein.biomes
             })
         else:  # non-graded ore vein (mineral)
             vein_config = {
@@ -408,7 +408,7 @@ def generate(rm: ResourceManager):
                     'with': [{'block': 'tfc:ore/%s/%s' % (vein.ore, rock)}]
                 } for rock in rocks],
                 'random_name': vein_name,
-                'biomes': vein_biome_filter(vein.biomes)
+                'biomes': vein.biomes
             }
             if vein.type == 'pipe':
                 vein_config['min_skew'] = 5
@@ -913,18 +913,6 @@ def vein_ore_blocks(vein: Vein, rock: str) -> List[Dict[str, Any]]:
         })
     return ore_blocks
 
-
-def vein_biome_filter(biome_filter: Optional[str] = None) -> Optional[List[Any]]:
-    if biome_filter == 'river':
-        return [{'category': 'river'}]
-    elif biome_filter == 'volcanic':
-        return [{'biome_dictionary': 'volcanic'}]
-    elif biome_filter is not None:
-        raise ValueError('Unknown biome filter %s? not sure how to handle...' % biome_filter)
-    else:
-        return None
-
-
 def vein_density(density: int) -> float:
     assert 0 <= density <= 100, 'Invalid density: %s' % str(density)
     return round(density * 0.01, 2)
@@ -1159,6 +1147,12 @@ def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: H
 
 
 def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
+    true_name = '%s_%s_%s' % (name, temp.id, rain.id)
+    rm.tag('rain_%s' % rain.id, 'worldgen/biome', 'tfc:%s' % true_name)
+    rm.tag('temperature_%s' % temp.id, 'worldgen/biome', 'tfc:%s' % true_name)
+    rm.tag('type_%s' % name, 'worldgen/biome', 'tfc:%s' % true_name)
+    rm.tag('is_%s' % category, 'worldgen/biome', 'tfc:%s' % true_name)
+
     # Temperature properties
     if rain.id == 'arid':
         rain_type = 'none'
@@ -1260,6 +1254,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
     if volcano_features:
         features[Decoration.LARGE_FEATURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure']
+        rm.tag('is_volcanic', 'worldgen/biome', 'tfc:%s' % true_name)
 
     if hot_spring_features:  # can be True, 'empty'
         if hot_spring_features == 'empty':
@@ -1279,7 +1274,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     # Generate based on properties
     rm.lang('biome.tfc.%s_%s_%s' % (name, temp.id, rain.id), '(%s / %s) %s' % (temp.id.title(), rain.id.title(), lang(name)))
     rm.biome(
-        name_parts='%s_%s_%s' % (name, temp.id, rain.id),
+        name_parts=true_name,
         precipitation=rain_type,
         category=category,
         temperature=temp.temperature,
