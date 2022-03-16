@@ -136,6 +136,7 @@ public class TFCJEIPlugin implements IModPlugin
         addCatalystTag(r, TFCTags.Items.ROCK_KNAPPING, ROCK_KNAPPING);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), FLUID_POT);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SOUP_POT);
+        addCatalystTag(r, TFCTags.Items.LOOMS, LOOM);
     }
 
 }

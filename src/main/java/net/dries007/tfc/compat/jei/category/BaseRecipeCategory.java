@@ -51,6 +51,11 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         return Arrays.asList(ingredient.getItems());
     }
 
+    protected static List<ItemStack> collapseWithAmount(Ingredient ingredient, int amount)
+    {
+        return Arrays.stream(ingredient.getItems()).map(stack -> new ItemStack(stack.getItem(), amount).copy()).collect(Collectors.toList());
+    }
+
     protected static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {
         return ingredient.getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount)).collect(Collectors.toList());

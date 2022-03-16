@@ -171,6 +171,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('twigs', 'tfc:wood/twig/%s' % wood)
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
         rm.item_tag('sluices', 'tfc:wood/sluice/%s' % wood)
+        rm.item_tag('looms', 'tfc:wood/planks/%s_loom' % wood)
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:
