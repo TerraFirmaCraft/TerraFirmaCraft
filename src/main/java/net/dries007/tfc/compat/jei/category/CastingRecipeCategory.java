@@ -25,15 +25,15 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
 {
     public CastingRecipeCategory(RecipeType<CastingRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCItems.MOLDS.get(Metal.ItemType.INGOT).get()));
+        super(type, helper, helper.createBlankDrawable(98, 26), new ItemStack(TFCItems.MOLDS.get(Metal.ItemType.INGOT).get()));
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, CastingRecipe recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder inputItem = builder.addSlot(RecipeIngredientRole.INPUT, 6, 17);
-        IRecipeSlotBuilder inputLiquid = builder.addSlot(RecipeIngredientRole.INPUT, 26, 17);
-        IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 17);
+        IRecipeSlotBuilder inputItem = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
+        IRecipeSlotBuilder inputLiquid = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
+        IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
         inputItem.addIngredients(recipe.getIngredient());
         inputLiquid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getFluidIngredient()));
@@ -44,10 +44,10 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
     @Override
     public void draw(CastingRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 5, 16);
-        slot.draw(stack, 25, 16);
-        arrow.draw(stack, 48, 16);
-        arrowAnimated.draw(stack, 48, 16);
-        slot.draw(stack, 84, 16);
+        slot.draw(stack, 5, 4);
+        slot.draw(stack, 25, 4);
+        slot.draw(stack, 75, 4);
+        arrow.draw(stack, 48, 5);
+        arrowAnimated.draw(stack, 48, 5);
     }
 }

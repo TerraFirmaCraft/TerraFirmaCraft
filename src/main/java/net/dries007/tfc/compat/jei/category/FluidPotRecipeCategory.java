@@ -22,14 +22,14 @@ public class FluidPotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
     public FluidPotRecipeCategory(RecipeType<PotRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, helper.createBlankDrawable(175, 80));
+        super(type, helper, helper.createBlankDrawable(154, 63));
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PotRecipe recipe, IFocusGroup focuses)
     {
         super.setRecipe(builder, recipe, focuses);
-        IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 146, 26);
+        IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 132, 26);
 
         fluidOutput.addIngredient(VanillaTypes.FLUID, ((FluidPotRecipe) recipe).getDisplayFluid());
         fluidOutput.setFluidRenderer(1, false, 16, 16);
@@ -39,6 +39,6 @@ public class FluidPotRecipeCategory extends PotRecipeCategory<PotRecipe>
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
         super.draw(recipe, recipeSlots, stack, mouseX, mouseY);
-        slot.draw(stack, 145, 25);
+        slot.draw(stack, 131, 25);
     }
 }

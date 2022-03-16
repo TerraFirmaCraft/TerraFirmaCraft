@@ -25,15 +25,15 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
 {
     public SimpleItemRecipeCategory(RecipeType<T> type, IGuiHelper helper, ItemStack icon)
     {
-        super(type, helper, helper.createBlankDrawable(120, 38), icon);
+        super(type, helper, helper.createBlankDrawable(98, 26), icon);
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 1, 17);
-        IRecipeSlotBuilder toolSlot = builder.addSlot(RecipeIngredientRole.CATALYST, 21, 17);
-        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 17);
+        IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
+        IRecipeSlotBuilder toolSlot = builder.addSlot(RecipeIngredientRole.CATALYST, 26, 5);
+        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
         inputSlot.addIngredients(recipe.getIngredient());
         toolSlot.addIngredients(Ingredient.of(getToolTag()));
@@ -43,11 +43,11 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        arrow.draw(stack, 50, 16);
-        arrowAnimated.draw(stack, 50, 16);
-        slot.draw(stack, 0, 16);
-        slot.draw(stack, 20, 16);
-        slot.draw(stack, 84, 16);
+        slot.draw(stack, 5, 4);
+        slot.draw(stack, 25, 4);
+        slot.draw(stack, 75, 4);
+        arrow.draw(stack, 48, 5);
+        arrowAnimated.draw(stack, 48, 5);
     }
 
     protected abstract TagKey<Item> getToolTag();

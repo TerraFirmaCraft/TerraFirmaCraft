@@ -37,7 +37,7 @@ public abstract class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeC
         List<Ingredient> inputs = recipe.getItemIngredients();
         for (int i = 0; i < 5; i++)
         {
-            IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 26 + 20 * i, 26);
+            IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6 + 20 * i, 6);
             if (i < inputs.size())
             {
                 // Functionally the same as using collapse
@@ -45,7 +45,7 @@ public abstract class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeC
             }
         }
 
-        IRecipeSlotBuilder inputFluid = builder.addSlot(RecipeIngredientRole.INPUT, 6, 26);
+        IRecipeSlotBuilder inputFluid = builder.addSlot(RecipeIngredientRole.INPUT, 46, 26);
         inputFluid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getFluidIngredient()));
         inputFluid.setFluidRenderer(1, false, 16, 16);
     }
@@ -54,15 +54,18 @@ public abstract class PotRecipeCategory<T extends PotRecipe> extends BaseRecipeC
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
         // Water Input
-        slot.draw(stack, 5, 25);
-        // item slots
-        slot.draw(stack, 25, 25);
         slot.draw(stack, 45, 25);
-        slot.draw(stack, 65, 25);
-        slot.draw(stack, 85, 25);
-        slot.draw(stack, 105, 25);
+        // item slots
+        slot.draw(stack, 5, 5);
+        slot.draw(stack, 25, 5);
+        slot.draw(stack, 45, 5);
+        slot.draw(stack, 65, 5);
+        slot.draw(stack, 85, 5);
         // fire
-        fire.draw(stack, 127, 27);
-        fireAnimated.draw(stack, 127, 27);
+        fire.draw(stack, 47, 45);
+        fireAnimated.draw(stack, 47, 45);
+        // arrow
+        arrow.draw(stack, 103, 26);
+        arrowAnimated.draw(stack, 103, 26);
     }
 }

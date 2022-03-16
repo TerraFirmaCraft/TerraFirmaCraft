@@ -40,6 +40,7 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     {
         slot.draw(stack, 116, 32);
         arrow.draw(stack, 86, 33);
+        arrowAnimated.draw(stack, 86, 33);
         IDrawable high = getHigh(recipe, recipeSlots);
         IDrawable low = getLow(recipe, recipeSlots);
 
