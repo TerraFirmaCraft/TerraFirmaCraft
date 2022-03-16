@@ -6,20 +6,18 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.Arrays;
-
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ingredient.IGuiItemStackGroup;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.SimpleItemRecipe;
 
@@ -31,28 +29,19 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     }
 
     @Override
-    public void setIngredients(T recipe, IIngredients ingredients)
+    public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
-        ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(recipe.getIngredient().getItems()));
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
+        IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 1, 17);
+        IRecipeSlotBuilder toolSlot = builder.addSlot(RecipeIngredientRole.CATALYST, 21, 17);
+        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 17);
+
+        inputSlot.addIngredients(recipe.getIngredient());
+        toolSlot.addIngredients(Ingredient.of(getToolTag()));
+        outputSlot.addItemStack(recipe.getResultItem());
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, T recipe, IIngredients ingredients)
-    {
-        IGuiItemStackGroup itemStacks = recipeLayout.getItemStacks();
-
-        itemStacks.init(0, true, 0, 16);
-        itemStacks.init(1, true, 20, 16);
-        itemStacks.init(2, false, 84, 16);
-
-        itemStacks.set(0, collapse(ingredients.getInputs(VanillaTypes.ITEM)));
-        itemStacks.set(1, collapse(Ingredient.of(getToolTag())));
-        itemStacks.set(2, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
-    }
-
-    @Override
-    public void draw(T recipe, PoseStack stack, double mouseX, double mouseY)
+    public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
         arrow.draw(stack, 50, 16);
         arrowAnimated.draw(stack, 50, 16);
