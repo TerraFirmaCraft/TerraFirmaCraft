@@ -79,6 +79,7 @@ public class TFCJEIPlugin implements IModPlugin
     public static final RecipeType<PotRecipe> SOUP_POT = type("soup_pot", PotRecipe.class);
     public static final RecipeType<PotRecipe> FLUID_POT = type("fluid_pot", PotRecipe.class);
     public static final RecipeType<CastingRecipe> CASTING = type("casting", CastingRecipe.class);
+    public static final RecipeType<LoomRecipe> LOOM = type("loom", LoomRecipe.class);
 
 
     @Override
@@ -101,6 +102,7 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new SoupPotRecipeCategory(SOUP_POT, gui));
         r.addRecipeCategories(new FluidPotRecipeCategory(FLUID_POT, gui));
         r.addRecipeCategories(new CastingRecipeCategory(CASTING, gui));
+        r.addRecipeCategories(new LoomRecipeCategory(LOOM, gui));
     }
 
     @Override
@@ -116,6 +118,7 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(SOUP_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SOUP.get()));
         r.addRecipes(FLUID_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_FLUID.get()));
         r.addRecipes(CASTING, getRecipes(TFCRecipeTypes.CASTING.get()));
+        r.addRecipes(LOOM, getRecipes(TFCRecipeTypes.LOOM.get()));
 
         //todo: ingredient info goes here
     }
