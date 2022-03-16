@@ -32,20 +32,6 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
         super(type, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCBlocks.FIREPIT.get()));
     }
 
-//    @Override
-//    public void setIngredients(HeatingRecipe recipe, IIngredients ingredients)
-//    {
-//        ingredients.setInputIngredients(List.of(recipe.getIngredient()));
-//        if (!recipe.getResultItem().isEmpty())
-//        {
-//            ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
-//        }
-//        if (!recipe.getDisplayOutputFluid().isEmpty())
-//        {
-//            ingredients.setOutput(VanillaTypes.FLUID, recipe.getDisplayOutputFluid());
-//        }
-//    }
-
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, HeatingRecipe recipe, IFocusGroup focuses)
     {
