@@ -24,7 +24,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCWorldType
 {
-    public static final DeferredRegister<ForgeWorldPreset> WORLD_TYPES = DeferredRegister.create(ForgeRegistries.WORLD_TYPES, MOD_ID);
+    public static final DeferredRegister<ForgeWorldPreset> WORLD_TYPES = DeferredRegister.create(ForgeRegistries.Keys.WORLD_TYPES, MOD_ID);
 
     public static final RegistryObject<ForgeWorldPreset> WORLD_TYPE = WORLD_TYPES.register("tng", () -> new ForgeWorldPreset((registries, seed, settings) -> {
         final Registry<StructureSet> structures = registries.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY);

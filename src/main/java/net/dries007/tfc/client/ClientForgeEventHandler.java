@@ -8,9 +8,7 @@ package net.dries007.tfc.client;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -20,14 +18,11 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -51,6 +46,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -232,9 +228,7 @@ public class ClientForgeEventHandler
                     text.add(new TextComponent(GRAY + "[Debug] Cap NBT: " + DARK_GRAY + capTag));
                 }
 
-                // todo: forge registry
-                // noinspection deprecation
-                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(Registry.ITEM, stack.getItem()).tags().map(t -> "#" + t).collect(Collectors.joining(", "))));
+                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t).collect(Collectors.joining(", "))));
             }
         }
     }

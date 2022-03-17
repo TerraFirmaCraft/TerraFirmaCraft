@@ -40,6 +40,7 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -322,10 +323,9 @@ public final class InteractionManager
     /**
      * Register an interaction. This method is safe to call during parallel mod loading.
      */
-    @SuppressWarnings("deprecation")
     public static void register(TagKey<Item> tag, boolean targetAir, OnItemUseAction action)
     {
-        register(new Entry(action, stack -> Helpers.isItem(stack.getItem(), tag), () -> Helpers.getAllTagValues(tag, Registry.ITEM), targetAir));
+        register(new Entry(action, stack -> Helpers.isItem(stack.getItem(), tag), () -> Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS), targetAir));
     }
 
     public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, ItemStackContainerProvider container)

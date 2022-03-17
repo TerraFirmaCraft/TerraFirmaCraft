@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
@@ -20,6 +19,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
+
+import net.minecraftforge.registries.ForgeRegistries;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -51,11 +52,9 @@ public class TFCJEIPlugin implements IModPlugin
         return getRecipes(type).stream().filter(filter).collect(Collectors.toList());
     }
 
-    //todo: use forge registry
-    @SuppressWarnings("deprecation")
     private static void addCatalystTag(IRecipeCatalystRegistration r, TagKey<Item> tag, RecipeType<?> recipeType)
     {
-        Helpers.getAllTagValues(tag, Registry.ITEM).forEach(item -> r.addRecipeCatalyst(new ItemStack(item), recipeType));
+        Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS).forEach(item -> r.addRecipeCatalyst(new ItemStack(item), recipeType));
     }
 
     private static <T> RecipeType<T> type(String name, Class<T> tClass)
