@@ -52,6 +52,6 @@ public class DirtBlock extends Block implements IDirtBlock
         {
             return path.get().defaultBlockState();
         }
-        return state;
+        return null;
     }
 }

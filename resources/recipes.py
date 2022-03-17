@@ -299,7 +299,6 @@ def generate(rm: ResourceManager):
     quern_recipe(rm, 'blaze_rod', 'minecraft:blaze_rod', 'minecraft:blaze_powder', count=2)
     quern_recipe(rm, 'raw_limestone', 'tfc:rock/raw/limestone', 'tfc:ore/gypsum')
     quern_recipe(rm, 'sylvite', 'tfc:ore/sylvite', 'tfc:powder/sylvite', count=4)
-    quern_recipe(rm, 'olives', 'tfc:food/olive', 'tfc:olive_paste')
 
     for grain in GRAINS:
         heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)

@@ -19,6 +19,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
@@ -42,14 +43,22 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         return returnList;
     }
 
+    /**
+     * Use {@link IIngredientAcceptor#addIngredients(Ingredient)} instead.
+     */
     protected static List<ItemStack> collapse(Ingredient ingredient)
     {
         return Arrays.asList(ingredient.getItems());
     }
 
+    protected static List<ItemStack> collapseWithAmount(Ingredient ingredient, int amount)
+    {
+        return Arrays.stream(ingredient.getItems()).map(stack -> new ItemStack(stack.getItem(), amount).copy()).collect(Collectors.toList());
+    }
+
     protected static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {
-        return ingredient.getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, 1000)).collect(Collectors.toList());
+        return ingredient.getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount)).collect(Collectors.toList());
     }
 
     protected final IDrawableStatic slot;

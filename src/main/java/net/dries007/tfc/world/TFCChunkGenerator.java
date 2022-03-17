@@ -270,7 +270,6 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     public TFCChunkGenerator(Registry<StructureSet> structures, Registry<NormalNoise.NoiseParameters> parameters, TFCBiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
     {
         super(structures, Optional.empty(), biomeSource);
-        // todo: obtain structure holderset
         this.structures = structures;
         this.parameters = parameters;
         this.settings = settings;

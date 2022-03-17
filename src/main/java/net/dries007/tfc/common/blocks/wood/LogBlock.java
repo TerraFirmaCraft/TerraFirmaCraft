@@ -71,6 +71,6 @@ public class LogBlock extends RotatedPillarBlock
         {
             return Helpers.copyProperties(stripped.get().defaultBlockState(), state);
         }
-        return state;
+        return null;
     }
 }

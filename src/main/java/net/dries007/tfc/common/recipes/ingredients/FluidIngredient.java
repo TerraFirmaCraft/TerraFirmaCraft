@@ -102,11 +102,9 @@ public final class FluidIngredient implements Predicate<Fluid>
         return entries;
     }
 
-    @SuppressWarnings("deprecation")
     private static Collection<Fluid> getAll(TagKey<Fluid> tag)
     {
-        // todo: forge registry
-        return Helpers.getAllTagValues(tag, Registry.FLUID);
+        return Helpers.getAllTagValues(tag, ForgeRegistries.FLUIDS);
     }
 
     private final Set<Fluid> fluids;

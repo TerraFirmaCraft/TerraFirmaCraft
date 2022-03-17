@@ -43,6 +43,6 @@ public class TFCRootedDirtBlock extends Block
         {
             return dirt.get().defaultBlockState();
         }
-        return state;
+        return null;
     }
 }

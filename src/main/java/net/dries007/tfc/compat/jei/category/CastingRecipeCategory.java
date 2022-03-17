@@ -6,16 +6,16 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.List;
-
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingRecipe;
@@ -25,39 +25,29 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
 {
     public CastingRecipeCategory(RecipeType<CastingRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, helper.createBlankDrawable(120, 38), new ItemStack(TFCItems.MOLDS.get(Metal.ItemType.INGOT).get()));
+        super(type, helper, helper.createBlankDrawable(98, 26), new ItemStack(TFCItems.MOLDS.get(Metal.ItemType.INGOT).get()));
     }
 
     @Override
-    public void setIngredients(CastingRecipe recipe, IIngredients ingredients)
+    public void setRecipe(IRecipeLayoutBuilder builder, CastingRecipe recipe, IFocusGroup focuses)
     {
-        ingredients.setInputIngredients(List.of(recipe.getIngredient()));
-        ingredients.setInputs(VanillaTypes.FLUID, collapse(recipe.getFluidIngredient()));
-        ingredients.setOutput(VanillaTypes.ITEM, recipe.getResultItem());
+        IRecipeSlotBuilder inputItem = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
+        IRecipeSlotBuilder inputLiquid = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
+        IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
+
+        inputItem.addIngredients(recipe.getIngredient());
+        inputLiquid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getFluidIngredient()));
+        inputLiquid.setFluidRenderer(1, false, 16, 16);
+        outputItem.addItemStack(recipe.getResultItem());
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, CastingRecipe recipe, IIngredients ingredients)
+    public void draw(CastingRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        var fluidStacks = recipeLayout.getFluidStacks();
-        var itemStacks = recipeLayout.getItemStacks();
-
-        itemStacks.init(0, true, 5, 16);
-        fluidStacks.init(1, true, 26, 17);
-        itemStacks.init(2, false, 84, 16);
-
-        itemStacks.set(0, collapse(ingredients.getInputs(VanillaTypes.ITEM)));
-        fluidStacks.set(1, collapse(ingredients.getInputs(VanillaTypes.FLUID)));
-        itemStacks.set(2, ingredients.getOutputs(VanillaTypes.ITEM).get(0));
-    }
-
-    @Override
-    public void draw(CastingRecipe recipe, PoseStack stack, double mouseX, double mouseY)
-    {
-        slot.draw(stack, 5, 16);
-        slot.draw(stack, 25, 16);
-        arrow.draw(stack, 48, 16);
-        arrowAnimated.draw(stack, 48, 16);
-        slot.draw(stack, 84, 16);
+        slot.draw(stack, 5, 4);
+        slot.draw(stack, 25, 4);
+        slot.draw(stack, 75, 4);
+        arrow.draw(stack, 48, 5);
+        arrowAnimated.draw(stack, 48, 5);
     }
 }

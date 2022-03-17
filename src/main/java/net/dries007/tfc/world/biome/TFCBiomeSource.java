@@ -83,6 +83,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         this.biomeLayer = new ConcurrentArea<>(TFCLayers.createOverworldBiomeLayerWithRivers(seed, watersheds, IArtist.nope(), IArtist.nope()), TFCLayers::getFromLayerId);
     }
 
+    @Override
     public Flow getRiverFlow(int quartX, int quartZ)
     {
         final float scale = 1f / (1 << 7);
@@ -153,6 +154,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         final ChunkData data = chunkDataProvider.get(chunkPos);
         final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
 
+        // noinspection ConstantConditions
         if (debugNoiseBiomeQueriesWithInvalidClimate && data == ChunkData.EMPTY)
         {
             System.out.println("getNoiseBiome() called but no climate data could be found at " + quartX + ", " + quartZ);

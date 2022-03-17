@@ -14,15 +14,13 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraftforge.common.BiomeDictionary;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -40,10 +38,7 @@ public class VeinConfig implements FeatureConfiguration
         VerticalAnchor.CODEC.fieldOf("min_y").forGetter(c -> c.minY),
         VerticalAnchor.CODEC.fieldOf("max_y").forGetter(c -> c.maxY),
         Codec.STRING.fieldOf("random_name").forGetter(c -> c.randomName),
-        Codec.either( // Filter can't accept biomes as it ends up resolving the biomes too early (circular reference)
-            Biome.BiomeCategory.CODEC.fieldOf("category").codec(),
-            Codecs.BIOME_DICTIONARY.fieldOf("biome_dictionary").codec()
-        ).listOf().optionalFieldOf("biomes", new ArrayList<>()).forGetter(c -> c.biomeFilter)
+        TagKey.hashedCodec(Registry.BIOME_REGISTRY).optionalFieldOf("biomes").forGetter(c -> Optional.ofNullable(c.biomes))
     ).apply(instance, VeinConfig::new));
 
     public static final Codec<VeinConfig> CODEC = MAP_CODEC.codec();
@@ -56,17 +51,16 @@ public class VeinConfig implements FeatureConfiguration
     private final VerticalAnchor minY;
     private final VerticalAnchor maxY;
     private final String randomName;
-    private final List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter;
+    @Nullable private final TagKey<Biome> biomes;
 
-    private final Predicate<Supplier<Biome>> resolvedBiomeFilter;
     private final PositionalRandomFactory fork;
 
     public VeinConfig(VeinConfig other)
     {
-        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, other.randomName, other.biomeFilter);
+        this(other.states, Optional.ofNullable(other.indicator), other.rarity, other.size, other.density, other.minY, other.maxY, other.randomName, Optional.ofNullable(other.biomes));
     }
 
-    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, VerticalAnchor minY, VerticalAnchor maxY, String randomName, List<Either<Biome.BiomeCategory, BiomeDictionary.Type>> biomeFilter)
+    public VeinConfig(Map<Block, IWeighted<BlockState>> states, Optional<Indicator> indicator, int rarity, int size, float density, VerticalAnchor minY, VerticalAnchor maxY, String randomName, Optional<TagKey<Biome>> biomes)
     {
         this.states = states;
         this.indicator = indicator.orElse(null);
@@ -76,9 +70,8 @@ public class VeinConfig implements FeatureConfiguration
         this.minY = minY;
         this.maxY = maxY;
         this.randomName = randomName;
-        this.biomeFilter = biomeFilter;
+        this.biomes = biomes.orElse(null);
 
-        this.resolvedBiomeFilter = resolveBiomeFilter();
         this.fork = new XoroshiroRandomSource(18729341234L, 9182639418231L)
             .forkPositional()
             .fromHashOf(randomName)
@@ -103,7 +96,7 @@ public class VeinConfig implements FeatureConfiguration
 
     public boolean canSpawnInBiome(Holder<Biome> biome)
     {
-        return resolvedBiomeFilter.test(biome::value);
+        return biomes == null || biome.is(biomes);
     }
 
     public RandomSource random(long levelSeed, int chunkX, int chunkZ)
@@ -145,45 +138,5 @@ public class VeinConfig implements FeatureConfiguration
     public int getMaxY(WorldGenerationContext context)
     {
         return maxY.resolveY(context);
-    }
-
-    private Predicate<Supplier<Biome>> resolveBiomeFilter()
-    {
-        // If there's no filter to be found, then importantly, we DO NOT RESOLVE the provided supplier
-        // This is important, as it is an expensive operation that need not be applied if not necessary
-        if (biomeFilter.isEmpty())
-        {
-            return supplier -> true;
-        }
-        else
-        {
-            return supplier -> true; //TODO: can we still do biome filtering here?
-            /*final List<BiomeDictionary.Type> types = new ArrayList<>();
-            final Set<Biome.BiomeCategory> categories = EnumSet.noneOf(Biome.BiomeCategory.class);
-            for (Either<Biome.BiomeCategory, BiomeDictionary.Type> either : biomeFilter)
-            {
-                either.map(categories::add, types::add);
-            }
-            if (types.isEmpty() && categories.isEmpty())
-            {
-                return supplier -> true; // No types or categories matches all biomes
-            }
-            return supplier -> {
-                final Biome biome = supplier.get();
-                if (categories.contains(biome.getBiomeCategory()))
-                {
-                    return true;
-                }
-                final Set<BiomeDictionary.Type> biomeTypes = BiomeDictionary.getTypes(ResourceKey.create(Registry.BIOME_REGISTRY, Objects.requireNonNull(biome.getRegistryName())));
-                for (BiomeDictionary.Type requiredType : types)
-                {
-                    if (biomeTypes.contains(requiredType))
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            };*/
-        }
     }
 }

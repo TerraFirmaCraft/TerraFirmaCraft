@@ -124,10 +124,6 @@
       }
     ],
     "random_name": "opal",
-    "biomes": [
-      {
-        "category": "river"
-      }
-    ]
+    "biomes": "#tfc:is_river"
   }
 }
