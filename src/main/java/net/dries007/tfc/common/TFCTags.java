@@ -7,7 +7,7 @@
 package net.dries007.tfc.common;
 
 import net.minecraft.core.Registry;
-import net.minecraft.tags.*;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -123,7 +123,6 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
-        public static final TagKey<Item> LOOMS = create("looms");
 
         private static TagKey<Item> create(String id)
         {

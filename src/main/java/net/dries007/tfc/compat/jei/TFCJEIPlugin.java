@@ -31,6 +31,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.compat.jei.category.*;
@@ -139,7 +140,7 @@ public class TFCJEIPlugin implements IModPlugin
         addCatalystTag(r, TFCTags.Items.ROCK_KNAPPING, ROCK_KNAPPING);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), FLUID_POT);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SOUP_POT);
-        addCatalystTag(r, TFCTags.Items.LOOMS, LOOM);
+        TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.LOOM)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), LOOM));
         r.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);
         r.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
         TFCItems.GLAZED_VESSELS.values().forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), ALLOYING));
