@@ -184,6 +184,7 @@ public final class InteractionManager
                     int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
                     if (layers != 8)
                     {
+                        stack.shrink(1);
                         world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
                         Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                         return InteractionResult.SUCCESS;
@@ -191,6 +192,7 @@ public final class InteractionManager
                 }
                 if (world.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(world, pos, Direction.UP))
                 {
+                    stack.shrink(1);
                     world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
                     Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                     return InteractionResult.SUCCESS;

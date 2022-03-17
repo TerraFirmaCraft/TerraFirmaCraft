@@ -32,6 +32,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.compat.jei.category.*;
@@ -78,6 +79,8 @@ public class TFCJEIPlugin implements IModPlugin
     public static final RecipeType<PotRecipe> SOUP_POT = type("soup_pot", PotRecipe.class);
     public static final RecipeType<PotRecipe> FLUID_POT = type("fluid_pot", PotRecipe.class);
     public static final RecipeType<CastingRecipe> CASTING = type("casting", CastingRecipe.class);
+    public static final RecipeType<LoomRecipe> LOOM = type("loom", LoomRecipe.class);
+    public static final RecipeType<AlloyRecipe> ALLOYING = type("alloying", AlloyRecipe.class);
 
 
     @Override
@@ -100,6 +103,8 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new SoupPotRecipeCategory(SOUP_POT, gui));
         r.addRecipeCategories(new FluidPotRecipeCategory(FLUID_POT, gui));
         r.addRecipeCategories(new CastingRecipeCategory(CASTING, gui));
+        r.addRecipeCategories(new LoomRecipeCategory(LOOM, gui));
+        r.addRecipeCategories(new AlloyRecipeCategory(ALLOYING, gui));
     }
 
     @Override
@@ -115,6 +120,8 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(SOUP_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SOUP.get()));
         r.addRecipes(FLUID_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_FLUID.get()));
         r.addRecipes(CASTING, getRecipes(TFCRecipeTypes.CASTING.get()));
+        r.addRecipes(LOOM, getRecipes(TFCRecipeTypes.LOOM.get()));
+        r.addRecipes(ALLOYING, getRecipes(TFCRecipeTypes.ALLOY.get()));
 
         //todo: ingredient info goes here
     }
@@ -132,6 +139,10 @@ public class TFCJEIPlugin implements IModPlugin
         addCatalystTag(r, TFCTags.Items.ROCK_KNAPPING, ROCK_KNAPPING);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), FLUID_POT);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SOUP_POT);
+        TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.LOOM)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), LOOM));
+        r.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);
+        r.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
+        TFCItems.GLAZED_VESSELS.values().forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), ALLOYING));
     }
 
 }
