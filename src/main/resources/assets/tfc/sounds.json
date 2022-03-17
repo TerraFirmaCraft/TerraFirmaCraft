@@ -3,7 +3,8 @@
     "category": "ambient",
     "sounds": [
       "tfc:ceramic_break"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.item.ceramic.break"
   },
   "firestarter": {
     "category": "ambient",
@@ -18,13 +19,15 @@
       "tfc:firestarter8",
       "tfc:firestarter9",
       "tfc:firestarter10"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.item.firestarter.use"
   },
   "jug_blow": {
     "category": "ambient",
     "sounds": [
       "tfc:jug_blow"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.item.jug.blow"
   },
   "item.throw": {
     "category": "ambient",
@@ -36,7 +39,8 @@
     "category": "ambient",
     "sounds": [
       "tfc:rooster1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.rooster.cry"
   },
   "quern_drag": {
     "category": "block",
@@ -172,7 +176,8 @@
       "tfc:deer5",
       "tfc:deer6",
       "tfc:deer7"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.deer.say"
   },
   "animal.deer.cry": {
     "category": "ambient",
@@ -181,19 +186,22 @@
       "tfc:deercry2",
       "tfc:deercry3",
       "tfc:deercry4"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.deer.cry"
   },
   "animal.deer.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:deerhurt1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.deer.hurt"
   },
   "animal.deer.death": {
     "category": "ambient",
     "sounds": [
       "tfc:deerdeath1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.deer.death"
   },
   "animal.bear.say": {
     "category": "ambient",
@@ -204,7 +212,8 @@
       "tfc:bear4",
       "tfc:bear5",
       "tfc:bear6"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.bear.say"
   },
   "animal.bear.cry": {
     "category": "ambient",
@@ -213,50 +222,58 @@
       "tfc:bearcry2",
       "tfc:bearcry3",
       "tfc:bearcry4"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.bear.cry"
   },
   "animal.bear.cub.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:bearcubcry1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.bear.cry"
   },
   "animal.bear.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:bearhurt1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.bear.hurt"
   },
   "animal.bear.death": {
     "category": "ambient",
     "sounds": [
       "tfc:beardeath1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.bear.death"
   },
   "animal.pheasant.say": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasant1",
       "tfc:pheasant2"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.pheasant.say"
   },
   "animal.pheasant.chick.say": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantchick1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.pheasant.say"
   },
   "animal.pheasant.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasanthurt1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.pheasant.hurt"
   },
   "animal.pheasant.death": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantdeath1"
-    ]
+    ],
+    "subtitle": "subtitles.tfc.entity.pheasant.death"
   },
   "animal.cricket": {
     "category": "ambient",
@@ -288,7 +305,8 @@
         "name": "tfc:charcoaldig1",
         "pitch": 1.1
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.break"
   },
   "charcoal_fall": {
     "category": "block",
@@ -322,7 +340,8 @@
         "name": "tfc:charcoalstep1",
         "pitch": 1.1
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.hit"
   },
   "charcoal_place": {
     "category": "block",
@@ -339,7 +358,8 @@
         "name": "tfc:charcoaldig1",
         "pitch": 1.1
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.place"
   },
   "charcoal_step": {
     "category": "block",
@@ -356,7 +376,8 @@
         "name": "tfc:charcoalstep1",
         "pitch": 1.1
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.footsteps"
   },
   "thatch_hit": {
     "category": "block",
@@ -377,7 +398,8 @@
         "name": "tfc:thatch_hit2",
         "pitch": 1.1
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.hit"
   },
   "thatch_place": {
     "category": "block",
@@ -394,7 +416,8 @@
         "name": "tfc:thatch_place1",
         "pitch": 1.1
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.place"
   },
   "thatch_step": {
     "category": "block",
@@ -411,7 +434,8 @@
         "name": "tfc:thatch_step3",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.footsteps"
   },
   "thatch_break": {
     "category": "block",
@@ -432,7 +456,8 @@
         "name": "tfc:thatch_break2",
         "pitch": 0.9
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.break"
   },
   "thatch_fall": {
     "category": "block",
@@ -462,7 +487,8 @@
         "name": "tfc:peat_break2",
         "pitch": 0.8
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.break"
   },
   "peat_fall": {
     "category": "block",
@@ -492,7 +518,8 @@
         "name": "tfc:peat_hit2",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.hit"
   },
   "peat_place": {
     "category": "block",
@@ -509,7 +536,8 @@
         "name": "tfc:peat_place3",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.place"
   },
   "peat_step": {
     "category": "block",
@@ -526,7 +554,8 @@
         "name": "tfc:peat_step3",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.footsteps"
   },
   "thin_hit": {
     "category": "block",
@@ -543,7 +572,8 @@
         "name": "tfc:thin_hit2",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.hit"
   },
   "thin_break": {
     "category": "block",
@@ -556,7 +586,8 @@
         "name": "tfc:thin_break2",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.break"
   },
   "thin_fall": {
     "category": "block",
@@ -582,7 +613,8 @@
         "name": "tfc:thin_place1",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.place"
   },
   "thin_step": {
     "category": "block",
@@ -599,7 +631,8 @@
         "name": "tfc:thin_step3",
         "pitch": 1.0
       }
-    ]
+    ],
+    "subtitle": "subtitles.block.generic.footsteps"
   },
   "music.tfc": {
     "category": "music",
