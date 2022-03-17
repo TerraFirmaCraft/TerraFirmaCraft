@@ -397,30 +397,6 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
 
-    # ==========
-    # WORLDGEN TAGS
-    # ==========
-
-    rm.tag('land_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES])
-    rm.tag('land_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay])
-    rm.tag('land_plant_features', 'worldgen/placed_feature', 'tfc:plant/wild_crops', 'tfc:plant/moss_cover', 'tfc:plant/reinder_lichen_cover', 'tfc:plant/morning_glory_cover', 'tfc:plant/tree_fern', 'tfc:plant/arundo', '#tfc:berry_bush_features', '#tfc:fruit_tree_features')
-    rm.tag('berry_bush_features', 'worldgen/placed_feature', *['tfc:plant/%s_bush_patch' % berry for berry, data in BERRIES.items()])
-    rm.tag('fruit_tree_features', 'worldgen/placed_feature', *['tfc:plant/%s' % fruit for fruit in FRUITS])
-    rm.tag('forest_groundcover_features', 'worldgen/placed_feature', *['tfc:%s_patch' % v for v in FOREST_DECORATORS])
-    rm.tag('large_land_features', 'worldgen/placed_feature', 'tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation')
-    rm.tag('kelp_features', 'worldgen/placed_feature', 'tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp')
-    rm.tag('underwater_groundcover_features', 'worldgen/placed_feature', 'tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch')
-    rm.tag('shore_groundcover_features', 'worldgen/placed_feature', *['tfc:%s_patch' % v for v in SHORE_DECORATORS])
-    rm.tag('ocean_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
-    rm.tag('iceberg_features', 'worldgen/placed_feature', 'tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare')
-
-    for rock, data in ROCKS.items():
-        if data.category == 'igneous_intrusive':
-            rm.tag('dike_vein_features', 'worldgen/placed_feature', 'tfc:vein/%s_dike' % rock)
-    rm.tag('vein_features', 'worldgen/placed_feature', 'tfc:vein/gravel', '#tfc:dike_vein_features', *['tfc:vein/%s' % v for v in ORE_VEINS.keys()])
-    rm.tag('underground_features', 'worldgen/placed_feature', 'tfc:cave_spike', 'tfc:large_cave_spike', 'tfc:water_spring', 'tfc:lava_spring', 'tfc:calcite', 'tfc:mega_calcite', 'tfc:icicle', 'tfc:underground_loose_rocks', 'tfc:underground_guano_patch', 'tfc:hanging_roots_patch')
-    rm.tag('volcano_features', 'worldgen/placed_feature', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure')
-
     # Item Sizes
 
     item_size(rm, 'logs', '#minecraft:logs', Size.very_large, Weight.medium)
