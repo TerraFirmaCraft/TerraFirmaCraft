@@ -175,14 +175,14 @@ public final class ForgeEventHandler
      */
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
-        if (event.getWorld() instanceof ServerLevel world && world.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
+        if (event.getWorld() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
         {
             final ChunkGenerator generator = extension.self();
             final ServerLevelData settings = event.getSettings();
             final BiomeSourceExtension source = extension.getBiomeSource();
-            final Random random = new Random(world.getSeed());
+            final Random random = new Random(level.getSeed());
 
-            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(world, biome.value()).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
+            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
             BlockPos pos;
             ChunkPos chunkPos;
             if (posPair == null)
@@ -196,7 +196,7 @@ public final class ForgeEventHandler
             }
             chunkPos = new ChunkPos(pos);
 
-            settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(world), 8), 0.0F);
+            settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(level), 8), 0.0F);
             boolean foundExactSpawn = false;
             int x = 0, z = 0;
             int xStep = 0;
@@ -206,7 +206,7 @@ public final class ForgeEventHandler
             {
                 if (x > -16 && x <= 16 && z > -16 && z <= 16)
                 {
-                    final BlockPos spawnPos = PlayerRespawnLogic.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
+                    final BlockPos spawnPos = PlayerRespawnLogic.getSpawnPosInChunk(level, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
                     if (spawnPos != null)
                     {
                         settings.setSpawn(spawnPos, 0);
@@ -231,7 +231,7 @@ public final class ForgeEventHandler
                 LOGGER.warn("Unable to find a suitable spawn location!");
             }
 
-            if (world.getServer().getWorldData().worldGenSettings().generateBonusChest())
+            if (level.getServer().getWorldData().worldGenSettings().generateBonusChest())
             {
                 LOGGER.warn("No bonus chest for you, you cheaty cheater!");
             }
