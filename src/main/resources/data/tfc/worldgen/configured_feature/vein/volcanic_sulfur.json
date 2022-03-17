@@ -84,10 +84,6 @@
       }
     ],
     "random_name": "volcanic_sulfur",
-    "biomes": [
-      {
-        "biome_dictionary": "volcanic"
-      }
-    ]
+    "biomes": "#tfc:is_volcanic"
   }
 }

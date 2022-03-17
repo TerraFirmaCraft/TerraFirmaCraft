@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.feature;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
@@ -16,6 +15,8 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
+
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Helpers;
@@ -77,6 +78,6 @@ public class SpringFeature extends Feature<SpringConfiguration>
 
     private static Holder<Block> getHolder(BlockState state)
     {
-        return Helpers.getHolder(Registry.BLOCK, state.getBlock());
+        return Helpers.getHolder(ForgeRegistries.BLOCKS, state.getBlock());
     }
 }

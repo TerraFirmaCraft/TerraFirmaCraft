@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:shore_cold_dry",
+    "tfc:shore_cold_normal",
+    "tfc:shore_cold_wet",
+    "tfc:shore_normal_dry",
+    "tfc:shore_normal_normal",
+    "tfc:shore_normal_wet",
+    "tfc:shore_warm_dry",
+    "tfc:shore_warm_normal",
+    "tfc:shore_warm_wet"
+  ]
+}

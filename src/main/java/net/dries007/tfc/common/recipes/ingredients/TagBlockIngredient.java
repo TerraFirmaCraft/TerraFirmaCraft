@@ -15,6 +15,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.minecraftforge.registries.ForgeRegistries;
+
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
@@ -34,10 +36,9 @@ public class TagBlockIngredient implements BlockIngredient
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Collection<Block> getValidBlocks()
     {
-        return Helpers.getAllTagValues(tag, Registry.BLOCK);
+        return Helpers.getAllTagValues(tag, ForgeRegistries.BLOCKS);
     }
 
     @Override

@@ -71,8 +71,10 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.registries.tags.ITag;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -682,11 +684,9 @@ public final class Helpers
         }
     }
 
-    public static <T> Collection<T> getAllTagValues(TagKey<T> tag, Registry<T> registry)
+    public static <T extends IForgeRegistryEntry<T>> Collection<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
     {
-        List<T> list = new ArrayList<>();
-        registry.getTagOrEmpty(tag).forEach(holder -> list.add(holder.value()));
-        return list;
+        return Objects.requireNonNull(registry.tags()).getTag(tag).stream().toList();
     }
 
     public static Field findUnobfField(Class<?> clazz, String fieldName)
@@ -932,7 +932,6 @@ public final class Helpers
         }
     }
 
-    //todo: 1.18.2 - these methods will no longer compile and will be changed
     public static boolean isItem(ItemStack first, Item second)
     {
         return first.is(second);
@@ -940,13 +939,12 @@ public final class Helpers
 
     public static boolean isItem(ItemStack stack, TagKey<Item> tag)
     {
-        return stack.is(tag);
+        return checkTag(ForgeRegistries.ITEMS, stack.getItem(), tag);
     }
 
-    @SuppressWarnings("deprecation")
     public static boolean isItem(Item item, TagKey<Item> tag)
     {
-        return checkTag(Registry.ITEM, item, tag);
+        return checkTag(ForgeRegistries.ITEMS, item, tag);
     }
 
     public static boolean isBlock(BlockState first, Block second)
@@ -959,42 +957,39 @@ public final class Helpers
         return isBlock(state.getBlock(), tag);
     }
 
-    @SuppressWarnings("deprecation")
     public static boolean isBlock(Block block, TagKey<Block> tag)
     {
-        return checkTag(Registry.BLOCK, block, tag);
+        return checkTag(ForgeRegistries.BLOCKS, block, tag);
     }
 
     public static boolean isFluid(FluidState state, TagKey<Fluid> tag)
     {
-        return state.is(tag);
+        return checkTag(ForgeRegistries.FLUIDS, state.getType(), tag);
     }
 
     public static boolean isFluid(Fluid first, TagKey<Fluid> second)
     {
-        return first.is(second);
+        return checkTag(ForgeRegistries.FLUIDS, first, second);
     }
 
-    @SuppressWarnings("deprecation")
     public static boolean isEntity(EntityType<?> entity, TagKey<EntityType<?>> tag)
     {
-        return checkTag(Registry.ENTITY_TYPE, entity, tag);
+        return checkTag(ForgeRegistries.ENTITIES, entity, tag);
     }
 
-    // todo: change this to forge registry checking when that's finished
-    public static <T> Holder<T> getHolder(Registry<T> registry, T object)
+    public static <T extends IForgeRegistryEntry<T>> Holder<T> getHolder(IForgeRegistry<T> registry, T object)
     {
-        return registry.getHolderOrThrow(registry.getResourceKey(object).orElseThrow());
+        return registry.getHolder(object).orElseThrow();
     }
 
-    public static <T> boolean checkTag(Registry<T> registry, T object, TagKey<T> tag)
+    public static <T extends IForgeRegistryEntry<T>> boolean checkTag(IForgeRegistry<T> registry, T object, TagKey<T> tag)
     {
-        return getHolder(registry, object).is(tag);
+        return Objects.requireNonNull(registry.tags()).getTag(tag).contains(object);
     }
 
-    public static <T> Optional<T> getRandomElement(Registry<T> registry, TagKey<T> tag, Random random)
+    public static <T extends IForgeRegistryEntry<T>> Optional<T> getRandomElement(IForgeRegistry<T> registry, TagKey<T> tag, Random random)
     {
-        return registry.getTag(tag).flatMap(set -> set.getRandomElement(random)).map(Holder::value);
+        return Objects.requireNonNull(registry.tags()).getTag(tag).getRandomElement(random);
     }
 
     public static double sampleNoiseAndMapToRange(NormalNoise noise, double x, double y, double z, double min, double max)

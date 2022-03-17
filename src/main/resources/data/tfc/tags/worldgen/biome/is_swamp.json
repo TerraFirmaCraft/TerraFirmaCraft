@@ -1,0 +1,24 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:low_canyons_cold_dry",
+    "tfc:lowlands_cold_dry",
+    "tfc:low_canyons_cold_normal",
+    "tfc:lowlands_cold_normal",
+    "tfc:low_canyons_cold_wet",
+    "tfc:lowlands_cold_wet",
+    "tfc:low_canyons_normal_dry",
+    "tfc:lowlands_normal_dry",
+    "tfc:low_canyons_normal_normal",
+    "tfc:lowlands_normal_normal",
+    "tfc:low_canyons_normal_wet",
+    "tfc:lowlands_normal_wet",
+    "tfc:low_canyons_warm_dry",
+    "tfc:lowlands_warm_dry",
+    "tfc:low_canyons_warm_normal",
+    "tfc:lowlands_warm_normal",
+    "tfc:low_canyons_warm_wet",
+    "tfc:lowlands_warm_wet"
+  ]
+}

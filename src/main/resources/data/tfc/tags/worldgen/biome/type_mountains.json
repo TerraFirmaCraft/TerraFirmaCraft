@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:mountains_cold_dry",
+    "tfc:mountains_cold_normal",
+    "tfc:mountains_cold_wet",
+    "tfc:mountains_normal_dry",
+    "tfc:mountains_normal_normal",
+    "tfc:mountains_normal_wet",
+    "tfc:mountains_warm_dry",
+    "tfc:mountains_warm_normal",
+    "tfc:mountains_warm_wet"
+  ]
+}
