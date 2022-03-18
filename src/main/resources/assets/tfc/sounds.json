@@ -4,7 +4,7 @@
     "sounds": [
       "tfc:ceramic_break"
     ],
-    "subtitle": "subtitles.tfc.item.ceramic.break"
+    "subtitle": "subtitles.item.tfc.ceramic.break"
   },
   "firestarter": {
     "category": "ambient",
@@ -20,14 +20,14 @@
       "tfc:firestarter9",
       "tfc:firestarter10"
     ],
-    "subtitle": "subtitles.tfc.item.firestarter.use"
+    "subtitle": "subtitles.item.tfc.firestarter.use"
   },
   "jug_blow": {
     "category": "ambient",
     "sounds": [
       "tfc:jug_blow"
     ],
-    "subtitle": "subtitles.tfc.item.jug.blow"
+    "subtitle": "subtitles.item.tfc.jug.blow"
   },
   "item.throw": {
     "category": "ambient",
@@ -40,7 +40,7 @@
     "sounds": [
       "tfc:rooster1"
     ],
-    "subtitle": "subtitles.tfc.entity.rooster.cry"
+    "subtitle": "subtitles.entity.tfc.rooster.cry"
   },
   "quern_drag": {
     "category": "block",
@@ -177,7 +177,7 @@
       "tfc:deer6",
       "tfc:deer7"
     ],
-    "subtitle": "subtitles.tfc.entity.deer.say"
+    "subtitle": "subtitles.entity.tfc.deer.say"
   },
   "animal.deer.cry": {
     "category": "ambient",
@@ -187,21 +187,21 @@
       "tfc:deercry3",
       "tfc:deercry4"
     ],
-    "subtitle": "subtitles.tfc.entity.deer.cry"
+    "subtitle": "subtitles.entity.tfc.deer.cry"
   },
   "animal.deer.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:deerhurt1"
     ],
-    "subtitle": "subtitles.tfc.entity.deer.hurt"
+    "subtitle": "subtitles.entity.tfc.deer.hurt"
   },
   "animal.deer.death": {
     "category": "ambient",
     "sounds": [
       "tfc:deerdeath1"
     ],
-    "subtitle": "subtitles.tfc.entity.deer.death"
+    "subtitle": "subtitles.entity.tfc.deer.death"
   },
   "animal.bear.say": {
     "category": "ambient",
@@ -213,7 +213,7 @@
       "tfc:bear5",
       "tfc:bear6"
     ],
-    "subtitle": "subtitles.tfc.entity.bear.say"
+    "subtitle": "subtitles.entity.tfc.bear.say"
   },
   "animal.bear.cry": {
     "category": "ambient",
@@ -223,28 +223,28 @@
       "tfc:bearcry3",
       "tfc:bearcry4"
     ],
-    "subtitle": "subtitles.tfc.entity.bear.cry"
+    "subtitle": "subtitles.entity.tfc.bear.cry"
   },
   "animal.bear.cub.cry": {
     "category": "ambient",
     "sounds": [
       "tfc:bearcubcry1"
     ],
-    "subtitle": "subtitles.tfc.entity.bear.cry"
+    "subtitle": "subtitles.entity.tfc.bear.cry"
   },
   "animal.bear.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:bearhurt1"
     ],
-    "subtitle": "subtitles.tfc.entity.bear.hurt"
+    "subtitle": "subtitles.entity.tfc.bear.hurt"
   },
   "animal.bear.death": {
     "category": "ambient",
     "sounds": [
       "tfc:beardeath1"
     ],
-    "subtitle": "subtitles.tfc.entity.bear.death"
+    "subtitle": "subtitles.entity.tfc.bear.death"
   },
   "animal.pheasant.say": {
     "category": "ambient",
@@ -252,28 +252,28 @@
       "tfc:pheasant1",
       "tfc:pheasant2"
     ],
-    "subtitle": "subtitles.tfc.entity.pheasant.say"
+    "subtitle": "subtitles.entity.tfc.pheasant.say"
   },
   "animal.pheasant.chick.say": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantchick1"
     ],
-    "subtitle": "subtitles.tfc.entity.pheasant.say"
+    "subtitle": "subtitles.entity.tfc.pheasant.say"
   },
   "animal.pheasant.hurt": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasanthurt1"
     ],
-    "subtitle": "subtitles.tfc.entity.pheasant.hurt"
+    "subtitle": "subtitles.entity.tfc.pheasant.hurt"
   },
   "animal.pheasant.death": {
     "category": "ambient",
     "sounds": [
       "tfc:pheasantdeath1"
     ],
-    "subtitle": "subtitles.tfc.entity.pheasant.death"
+    "subtitle": "subtitles.entity.tfc.pheasant.death"
   },
   "animal.cricket": {
     "category": "ambient",
