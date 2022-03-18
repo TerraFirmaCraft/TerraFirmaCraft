@@ -58,13 +58,13 @@ public final class ClearWorldCommand
     {
         source.sendSuccess(new TranslatableComponent(STARTING), true);
 
-        final Level world = source.getLevel();
+        final Level level = source.getLevel();
         final BlockPos center = new BlockPos(source.getPosition());
         final BlockState air = Blocks.AIR.defaultBlockState();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final Predicate<BlockState> predicate = preset.make(source.getServer());
-        final int minY = world.getMinBuildHeight();
+        final int minY = level.getMinBuildHeight();
 
         int blocksRemoved = 0;
 
@@ -72,14 +72,14 @@ public final class ClearWorldCommand
         {
             for (int z = -radius; z <= radius; z++)
             {
-                final int height = world.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX() + x, center.getZ() + z);
+                final int height = level.getHeight(Heightmap.Types.WORLD_SURFACE, center.getX() + x, center.getZ() + z);
                 for (int y = minY; y < height; y++)
                 {
                     mutablePos.set(center).move(x, 0, z).setY(y);
-                    BlockState state = world.getBlockState(mutablePos);
+                    BlockState state = level.getBlockState(mutablePos);
                     if (!state.isAir() && predicate.test(state))
                     {
-                        world.setBlock(mutablePos, air, 2 | 16);
+                        level.setBlock(mutablePos, air, 2 | 16);
                         blocksRemoved++;
                     }
                 }
