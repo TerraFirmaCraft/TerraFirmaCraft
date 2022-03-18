@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -23,7 +25,6 @@ import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
-import net.dries007.tfc.world.noise.Cellular2D;
 
 public class VolcanoPlacement extends PlacementModifier
 {
@@ -70,10 +71,12 @@ public class VolcanoPlacement extends PlacementModifier
             if (center)
             {
                 final BlockPos center = local.volcanoNoise.calculateCenter(pos.getX(), pos.getY(), pos.getZ(), variants.getVolcanoRarity());
-                if (center != null &&
-                    SectionPos.blockToSectionCoord(center.getX()) == SectionPos.blockToSectionCoord(pos.getX()) &&
-                    SectionPos.blockToSectionCoord(center.getZ()) == SectionPos.blockToSectionCoord(center.getZ()))
+                if (center != null)
                 {
+                    if (level instanceof WorldGenRegion generating && !ensureCanWrite(generating, center))
+                    {
+                        return Stream.empty();
+                    }
                     return Stream.of(center);
                 }
             }
@@ -83,6 +86,15 @@ public class VolcanoPlacement extends PlacementModifier
             }
         }
         return Stream.empty();
+    }
+
+    // todo: Alcatraz should find out why volcano center noise returns out of region so often
+    private boolean ensureCanWrite(WorldGenRegion level, BlockPos pos)
+    {
+        final int xSection = SectionPos.blockToSectionCoord(pos.getX());
+        final int zSection = SectionPos.blockToSectionCoord(pos.getZ());
+        final ChunkPos chunkpos = level.getCenter();
+        return chunkpos.x == xSection && chunkpos.z == zSection;
     }
 
     record LocalContext(long seed, VolcanoNoise volcanoNoise) {}
