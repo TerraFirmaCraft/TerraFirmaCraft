@@ -32,7 +32,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
 {
     public static TFCKelpBlock create(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
-        return new TFCKelpBlock(properties, headBlock, shape, direction)
+        return new TFCKelpBlock(properties.lootFrom(headBlock::get), headBlock, shape, direction)
         {
             @Override
             public FluidProperty getFluidProperty()
