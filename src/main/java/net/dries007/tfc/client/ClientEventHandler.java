@@ -343,8 +343,11 @@ public final class ClientEventHandler
         final ItemColor grassColor = (stack, tintIndex) -> TFCColors.getGrassColor(null, tintIndex);
         final ItemColor seasonalFoliageColor = (stack, tintIndex) -> TFCColors.getFoliageColor(null, tintIndex);
 
-        TFCBlocks.PLANTS.forEach((plant, reg) -> registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor));
-        TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get().asItem()));
+        TFCBlocks.PLANTS.forEach((plant, reg) -> {
+            if (plant.isItemTinted())
+                registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor, reg.get());
+        });
+        TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get(), value.get(LEAVES).get()));
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
