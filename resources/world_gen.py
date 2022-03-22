@@ -316,29 +316,57 @@ def generate(rm: ResourceManager):
     rm.placed_feature('random_active_hot_spring', 'tfc:random_active_hot_spring', decorate_chance(50), decorate_square())
 
     # Trees / Forests
+    forest_config(rm, 30, 210, 17, 40, 'acacia', True)
+    forest_config(rm, 60, 240, 1, 15, 'ash', True)
+    forest_config(rm, 350, 500, -18, 5, 'aspen', False)
+    forest_config(rm, 125, 310, -11, 7, 'birch', False)
+    forest_config(rm, 0, 180, 12, 35, 'blackwood', True)
+    forest_config(rm, 180, 370, -4, 17, 'chestnut', False)
+    forest_config(rm, 290, 500, -16, -1, 'douglas_fir', True)
+    forest_config(rm, 210, 400, 7, 15, 'hickory', True)
+    forest_config(rm, 270, 500, 17, 40, 'kapok', False)
+    forest_config(rm, 270, 500, -1, 15, 'maple', True)
+    forest_config(rm, 240, 450, -9, 11, 'oak', False)
+    forest_config(rm, 180, 470, 20, 35, 'palm', False)
+    forest_config(rm, 60, 270, -18, -4, 'pine', True)
+    forest_config(rm, 140, 310, 8, 31, 'rosewood', False)
+    forest_config(rm, 250, 420, -14, 2, 'sequoia', True, old_growth_chance=3)
+    forest_config(rm, 110, 320, -17, 1, 'spruce', True)
+    forest_config(rm, 230, 480, 15, 29, 'sycamore', True)
+    forest_config(rm, 10, 220, -13, 9, 'white_cedar', True)
+    forest_config(rm, 330, 500, 11, 35, 'willow', True)
+    # flat: acacia, ash, chestnut, maple, sequoia, spruce, willow
+
     configured_placed_feature(rm, 'forest', 'tfc:forest', {
-        'entries': [
-            forest_config(30, 210, 17, 40, 'acacia', True),
-            forest_config(60, 240, 1, 15, 'ash', True),
-            forest_config(350, 500, -18, 5, 'aspen', False),
-            forest_config(125, 310, -11, 7, 'birch', False),
-            forest_config(0, 180, 12, 35, 'blackwood', True),
-            forest_config(180, 370, -4, 17, 'chestnut', False),
-            forest_config(290, 500, -16, -1, 'douglas_fir', True),
-            forest_config(210, 400, 7, 15, 'hickory', True),
-            forest_config(270, 500, 17, 40, 'kapok', False),
-            forest_config(270, 500, -1, 15, 'maple', True),
-            forest_config(240, 450, -9, 11, 'oak', False),
-            forest_config(180, 470, 20, 35, 'palm', False),
-            forest_config(60, 270, -18, -4, 'pine', True),
-            forest_config(140, 310, 8, 31, 'rosewood', False),
-            forest_config(250, 420, -14, 2, 'sequoia', True),
-            forest_config(110, 320, -17, 1, 'spruce', True),
-            forest_config(230, 480, 15, 29, 'sycamore', True),
-            forest_config(10, 220, -13, 9, 'white_cedar', True),
-            forest_config(330, 500, 11, 35, 'willow', True),
-        ]
+        'entries': '#tfc:forest_trees',
+        'types': {
+            'none': {
+                'per_chunk_chance': 0
+            },
+            'sparse': {
+                'tree_count': uniform_int(1, 3),
+                'groundcover_count': 10,
+                'per_chunk_chance': 0.08,
+                'bush_count': 0,
+                'has_spoiler_old_growth': True
+            },
+            'edge': {
+                'tree_count': 2,
+                'groundcover_count': 15
+            },
+            'normal': {
+                'tree_count': 5,
+                'groundcover_count': 30,
+                'has_spoiler_old_growth': True
+            },
+            'old_growth': {
+                'tree_count': 7,
+                'groundcover_count': 40,
+                'allows_old_growth': True
+            }
+        }
     })
+    rm.tag('forest_trees', 'worldgen/configured_feature', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys()])
 
     configured_placed_feature(rm, ('tree', 'acacia'), 'tfc:random_tree', random_config('acacia', 35))
     configured_placed_feature(rm, ('tree', 'acacia_large'), 'tfc:random_tree', random_config('acacia', 6, 2, True))
@@ -920,25 +948,29 @@ def vein_density(density: int) -> float:
 
 # Tree Helper Functions
 
-def forest_config(min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool):
+def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_temp: float, max_temp: float, tree: str, old_growth: bool, old_growth_chance: int = None, spoiler_chance: int = None):
     cfg = {
         'min_rain': min_rain,
         'max_rain': max_rain,
         'min_temp': min_temp,
         'max_temp': max_temp,
-        'groundcover': ['tfc:wood/twig/%s' % tree],
-        'normal_tree': 'tfc:tree/%s' % tree
+        'groundcover': [{'block': 'tfc:wood/twig/%s' % tree}],
+        'normal_tree': 'tfc:tree/%s' % tree,
+        'old_growth_chance': old_growth_chance,
+        'spoiler_old_growth_chance': spoiler_chance,
     }
     if tree != 'palm':
-        cfg['groundcover'].append('tfc:wood/fallen_leaves/%s' % tree)
+        cfg['groundcover'] += [{'block': 'tfc:wood/fallen_leaves/%s' % tree}]
     if tree not in ('acacia', 'willow'):
         cfg.update({'fallen_log': 'tfc:wood/log/%s' % tree})
+    else:
+        cfg.update({'fallen_tree_chance': 0})
     if tree not in ('palm', 'rosewood', 'sycamore'):
         cfg['bush_log'] = utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree)
         cfg.update({'bush_leaves': 'tfc:wood/leaves/%s' % tree})
     if old_growth:
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
-    return cfg
+    rm.configured_feature('tree/%s_entry' % tree, 'tfc:forest_entry', cfg)
 
 
 def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False):

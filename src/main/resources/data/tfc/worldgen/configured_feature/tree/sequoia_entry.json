@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 250,
+    "max_rain": 420,
+    "min_temp": -14,
+    "max_temp": 2,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/sequoia"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/sequoia"
+      }
+    ],
+    "normal_tree": "tfc:tree/sequoia",
+    "old_growth_chance": 3,
+    "fallen_log": "tfc:wood/log/sequoia",
+    "bush_log": {
+      "Name": "tfc:wood/wood/sequoia",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/sequoia",
+    "old_growth_tree": "tfc:tree/sequoia_large",
+    "flatness_check": {
+      "radius": 2
+    }
+  }
+}

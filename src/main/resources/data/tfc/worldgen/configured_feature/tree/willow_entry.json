@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 330,
+    "max_rain": 500,
+    "min_temp": 11,
+    "max_temp": 35,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/willow"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/willow"
+      }
+    ],
+    "normal_tree": "tfc:tree/willow",
+    "flatness_is_old_growth": false,
+    "fallen_tree_chance": 0,
+    "bush_log": {
+      "Name": "tfc:wood/wood/willow",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/willow",
+    "old_growth_tree": "tfc:tree/willow_large",
+    "flatness_check": {
+      "radius": 2
+    }
+  }
+}

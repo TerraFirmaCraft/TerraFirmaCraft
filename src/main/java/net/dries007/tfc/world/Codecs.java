@@ -18,6 +18,8 @@ import javax.annotation.Nullable;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
@@ -63,6 +65,8 @@ public final class Codecs
     ).codec());
 
     public static final Codec<BlockStateConfiguration> BLOCK_STATE_CONFIG = BLOCK_STATE.fieldOf("state").xmap(BlockStateConfiguration::new, c -> c.state).codec();
+
+    public static final Codec<IntProvider> INT_OR_RANGE = Codec.either(Codec.INT, IntProvider.CODEC).xmap(either -> either.map(ConstantInt::of, uniform -> uniform), Either::right);
 
     /**
      * Creates a codec for a given registry which does not default
