@@ -49,6 +49,16 @@
           "model": "tfc:block/plant/trillium_4"
         }
       ]
+    },
+    {
+      "when": {
+        "stage": "5"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/trillium_5"
+        }
+      ]
     }
   ]
 }
