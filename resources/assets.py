@@ -1237,6 +1237,8 @@ def generate(rm: ResourceManager):
         corals(rm, color, False)
         corals(rm, color, True)
 
+    rm.lang('subtitles.block.tfc.tool_rack.place_item', 'Item placed on Tool Rack')
+
 
 def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifier, overrides: utils.Json, data: Dict[str, Any]) -> ItemContext:
     res = utils.resource_location(rm.domain, name_parts)
