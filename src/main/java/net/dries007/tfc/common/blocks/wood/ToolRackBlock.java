@@ -32,10 +32,10 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.ToolRackBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
-import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
@@ -43,10 +43,10 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 
-    public static final VoxelShape RACK_EAST_AABB = Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
-    public static final VoxelShape RACK_WEST_AABB = Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-    public static final VoxelShape RACK_SOUTH_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
-    public static final VoxelShape RACK_NORTH_AABB = Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
+    public static final VoxelShape SHAPE_EAST = Block.box(0.0D, 0.0D, 0.0D, 2.0D, 16.0D, 16.0D);
+    public static final VoxelShape SHAPE_WEST = Block.box(14.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+    public static final VoxelShape SHAPE_SOUTH = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 2.0D);
+    public static final VoxelShape SHAPE_NORTH = Block.box(0.0D, 0.0D, 14.0D, 16.0D, 16.0D, 16.0D);
 
     public ToolRackBlock(ExtendedProperties properties)
     {
@@ -90,14 +90,14 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
         switch (state.getValue(FACING))
         {
             case NORTH:
-                return RACK_NORTH_AABB;
+                return SHAPE_NORTH;
             case SOUTH:
-                return RACK_SOUTH_AABB;
+                return SHAPE_SOUTH;
             case WEST:
-                return RACK_WEST_AABB;
+                return SHAPE_WEST;
             case EAST:
             default:
-                return RACK_EAST_AABB;
+                return SHAPE_EAST;
         }
     }
 
@@ -145,10 +145,10 @@ public class ToolRackBlock extends DeviceBlock implements SimpleWaterloggedBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        ToolRackBlockEntity te = Helpers.getBlockEntity(level, pos, ToolRackBlockEntity.class);
-        if (te != null)
+        ToolRackBlockEntity toolRack = level.getBlockEntity(pos, TFCBlockEntities.TOOL_RACK.get()).orElse(null);
+        if (toolRack != null)
         {
-            return te.onRightClick(player, getSlotFromPos(state, hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ())));
+            return toolRack.onRightClick(player, getSlotFromPos(state, hit.getLocation().subtract(pos.getX(), pos.getY(), pos.getZ())));
         }
         return InteractionResult.PASS;
     }

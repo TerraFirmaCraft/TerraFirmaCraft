@@ -19,7 +19,8 @@ import net.dries007.tfc.common.blockentities.ToolRackBlockEntity;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
 
 public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRackBlockEntity>
-{    //direction, slot, axis, that's the order.
+{
+    //direction, slot, axis, that's the order.
     private static final float[][][] ITEM_LOCATION = new float[4][4][3];
     private static final float[] META_TO_ANGLE = new float[] {180f, 90f, 0f, 270f};
     private static final float ITEM_SCALE = .5f;
