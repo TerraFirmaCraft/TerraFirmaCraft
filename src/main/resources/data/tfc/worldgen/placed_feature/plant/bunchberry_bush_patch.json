@@ -3,9 +3,6 @@
   "feature": "tfc:plant/bunchberry_bush_patch",
   "placement": [
     {
-      "type": "minecraft:in_square"
-    },
-    {
       "type": "tfc:climate",
       "min_temperature": 15,
       "max_temperature": 35,
@@ -13,13 +10,6 @@
       "max_rainfall": 500,
       "min_forest": "edge",
       "max_forest": "normal"
-    },
-    {
-      "type": "minecraft:rarity_filter",
-      "chance": 60
-    },
-    {
-      "type": "minecraft:biome"
     }
   ]
 }

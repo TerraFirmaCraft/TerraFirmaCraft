@@ -25,9 +25,6 @@
       }
     },
     "bush_leaves": "tfc:wood/leaves/sequoia",
-    "old_growth_tree": "tfc:tree/sequoia_large",
-    "flatness_check": {
-      "radius": 2
-    }
+    "old_growth_tree": "tfc:tree/sequoia_large"
   }
 }

@@ -16,9 +16,6 @@
       "min_rainfall": 100,
       "max_rainfall": 500,
       "min_forest": "normal"
-    },
-    {
-      "type": "minecraft:biome"
     }
   ]
 }

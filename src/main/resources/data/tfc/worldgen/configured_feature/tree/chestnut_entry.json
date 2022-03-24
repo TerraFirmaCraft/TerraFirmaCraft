@@ -23,9 +23,6 @@
         "axis": "y"
       }
     },
-    "bush_leaves": "tfc:wood/leaves/chestnut",
-    "flatness_check": {
-      "radius": 2
-    }
+    "bush_leaves": "tfc:wood/leaves/chestnut"
   }
 }

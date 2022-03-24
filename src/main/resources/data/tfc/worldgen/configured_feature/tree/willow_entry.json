@@ -15,7 +15,6 @@
       }
     ],
     "normal_tree": "tfc:tree/willow",
-    "flatness_is_old_growth": false,
     "fallen_tree_chance": 0,
     "bush_log": {
       "Name": "tfc:wood/wood/willow",
@@ -25,9 +24,6 @@
       }
     },
     "bush_leaves": "tfc:wood/leaves/willow",
-    "old_growth_tree": "tfc:tree/willow_large",
-    "flatness_check": {
-      "radius": 2
-    }
+    "old_growth_tree": "tfc:tree/willow_large"
   }
 }

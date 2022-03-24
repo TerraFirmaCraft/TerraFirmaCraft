@@ -15,9 +15,6 @@
       "max_temperature": 22,
       "min_rainfall": 130,
       "max_rainfall": 300
-    },
-    {
-      "type": "minecraft:biome"
     }
   ]
 }
