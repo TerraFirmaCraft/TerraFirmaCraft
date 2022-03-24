@@ -42,6 +42,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
@@ -167,17 +168,17 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final AbstractFirepitBlockEntity<?> firepit = Helpers.getBlockEntity(world, pos, AbstractFirepitBlockEntity.class);
+        final AbstractFirepitBlockEntity<?> firepit = level.getBlockEntity(pos, TFCBlockEntities.FIREPIT.get()).orElse(null);
         if (firepit != null)
         {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem() == TFCItems.POT.get() || stack.getItem() == TFCItems.WROUGHT_IRON_GRILL.get())
             {
-                if (!world.isClientSide)
+                if (!level.isClientSide)
                 {
-                    AbstractFirepitBlockEntity.convertTo(world, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
+                    AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
                     stack.shrink(1);
                 }
                 return InteractionResult.SUCCESS;

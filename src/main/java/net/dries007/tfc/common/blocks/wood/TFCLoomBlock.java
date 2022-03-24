@@ -27,9 +27,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
-import net.dries007.tfc.util.Helpers;
 
 public class TFCLoomBlock extends DeviceBlock
 {
@@ -71,10 +71,10 @@ public class TFCLoomBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        LoomBlockEntity te = Helpers.getBlockEntity(level, pos, LoomBlockEntity.class);
-        if (te != null)
+        LoomBlockEntity loom = level.getBlockEntity(pos, TFCBlockEntities.LOOM.get()).orElse(null);
+        if (loom != null)
         {
-            return te.onRightClick(player);
+            return loom.onRightClick(player);
         }
         return InteractionResult.PASS;
     }

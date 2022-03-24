@@ -39,6 +39,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -132,14 +133,14 @@ public class CharcoalForgeBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        CharcoalForgeBlockEntity te = Helpers.getBlockEntity(world, pos, CharcoalForgeBlockEntity.class);
-        if (te != null)
+        CharcoalForgeBlockEntity forge = level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).orElse(null);
+        if (forge != null)
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, te, pos);
+                NetworkHooks.openGui(serverPlayer, forge, pos);
             }
             return InteractionResult.SUCCESS;
         }
