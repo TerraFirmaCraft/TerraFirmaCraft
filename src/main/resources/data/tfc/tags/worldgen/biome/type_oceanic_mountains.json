@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:oceanic_mountains_cold_dry",
+    "tfc:oceanic_mountains_cold_normal",
+    "tfc:oceanic_mountains_cold_wet",
+    "tfc:oceanic_mountains_normal_dry",
+    "tfc:oceanic_mountains_normal_normal",
+    "tfc:oceanic_mountains_normal_wet",
+    "tfc:oceanic_mountains_warm_dry",
+    "tfc:oceanic_mountains_warm_normal",
+    "tfc:oceanic_mountains_warm_wet"
+  ]
+}

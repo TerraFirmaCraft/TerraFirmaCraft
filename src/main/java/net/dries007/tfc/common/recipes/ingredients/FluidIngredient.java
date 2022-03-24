@@ -6,17 +6,16 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -94,13 +93,18 @@ public final class FluidIngredient implements Predicate<Fluid>
         }
         else if (json.has("tag"))
         {
-            entries.addAll(JsonHelpers.getTag(json, "tag", FluidTags.getAllTags()).getValues());
+            entries.addAll(getAll(JsonHelpers.getTag(json, "tag", Registry.FLUID_REGISTRY)));
         }
         else
         {
             throw new JsonParseException("Fluid ingredient must have one of 'fluid' or 'tag' entries");
         }
         return entries;
+    }
+
+    private static Collection<Fluid> getAll(TagKey<Fluid> tag)
+    {
+        return Helpers.getAllTagValues(tag, ForgeRegistries.FLUIDS);
     }
 
     private final Set<Fluid> fluids;

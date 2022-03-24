@@ -6,43 +6,39 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import net.minecraft.resources.ResourceLocation;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.gui.ingredient.IGuiFluidStackGroup;
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.FluidPotRecipe;
+import net.dries007.tfc.common.recipes.PotRecipe;
 
-public class FluidPotRecipeCategory extends PotRecipeCategory<FluidPotRecipe>
+public class FluidPotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
-    public FluidPotRecipeCategory(ResourceLocation uId, IGuiHelper helper)
+    public FluidPotRecipeCategory(RecipeType<PotRecipe> type, IGuiHelper helper)
     {
-        super(uId, helper, helper.createBlankDrawable(175, 80), FluidPotRecipe.class);
+        super(type, helper, helper.createBlankDrawable(154, 63));
     }
 
     @Override
-    public void setIngredients(FluidPotRecipe recipe, IIngredients ingredients)
+    public void setRecipe(IRecipeLayoutBuilder builder, PotRecipe recipe, IFocusGroup focuses)
     {
-        super.setIngredients(recipe, ingredients);
-        ingredients.setOutputs(VanillaTypes.FLUID, collapse(ingredients.getOutputs(VanillaTypes.FLUID)));
+        super.setRecipe(builder, recipe, focuses);
+        IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 132, 26);
+
+        fluidOutput.addIngredient(VanillaTypes.FLUID, ((FluidPotRecipe) recipe).getDisplayFluid());
+        fluidOutput.setFluidRenderer(1, false, 16, 16);
     }
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, FluidPotRecipe recipe, IIngredients ingredients)
+    public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        super.setRecipe(recipeLayout, recipe, ingredients);
-        IGuiFluidStackGroup fluidStacks = recipeLayout.getFluidStacks();
-        fluidStacks.init(7, false, 146, 26);
-        fluidStacks.set(7, recipe.getDisplayFluid());
-    }
-
-    @Override
-    public void draw(FluidPotRecipe recipe, PoseStack stack, double mouseX, double mouseY)
-    {
-        super.draw(recipe, stack, mouseX, mouseY);
-        slot.draw(stack, 145, 25);
+        super.draw(recipe, recipeSlots, stack, mouseX, mouseY);
+        slot.draw(stack, 131, 25);
     }
 }

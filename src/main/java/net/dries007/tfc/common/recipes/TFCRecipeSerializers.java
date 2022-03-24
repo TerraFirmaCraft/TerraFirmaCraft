@@ -43,6 +43,7 @@ public class TFCRecipeSerializers
     public static final RegistryObject<AlloyRecipe.Serializer> ALLOY = register("alloy", AlloyRecipe.Serializer::new);
     public static final RegistryObject<CastingRecipe.Serializer> CASTING = register("casting", CastingRecipe.Serializer::new);
     public static final RegistryObject<BloomeryRecipe.Serializer> BLOOMERY = register("bloomery", BloomeryRecipe.Serializer::new);
+    public static final RegistryObject<LoomRecipe.Serializer> LOOM = register("loom", LoomRecipe.Serializer::new);
 
 
     // Crafting

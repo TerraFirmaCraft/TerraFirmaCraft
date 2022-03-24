@@ -82,17 +82,17 @@ public class FirestarterItem extends Item
                         ItemStack foundStack = entity.getItem();
                         Item foundItem = foundStack.getItem();
                         int itemCount = foundStack.getCount();
-                        if (TFCTags.Items.FIREPIT_STICKS.contains(foundItem))
+                        if (Helpers.isItem(foundItem, TFCTags.Items.FIREPIT_STICKS))
                         {
                             sticks += itemCount;
                             usableItems.add(entity);
                         }
-                        else if (TFCTags.Items.FIREPIT_KINDLING.contains(foundItem))
+                        else if (Helpers.isItem(foundItem, TFCTags.Items.FIREPIT_KINDLING))
                         {
                             kindling += itemCount;
                             usableItems.add(entity);
                         }
-                        else if (logEntity == null && TFCTags.Items.FIREPIT_LOGS.contains(foundItem))
+                        else if (logEntity == null && Helpers.isItem(foundItem, TFCTags.Items.FIREPIT_LOGS))
                         {
                             logEntity = entity;
                         }

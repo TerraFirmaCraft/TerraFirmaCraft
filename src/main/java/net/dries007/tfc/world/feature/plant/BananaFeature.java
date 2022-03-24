@@ -8,18 +8,20 @@ package net.dries007.tfc.world.feature.plant;
 
 import java.util.Random;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
+import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.LIFECYCLE;
 import static net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock.STAGE;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -34,42 +36,27 @@ public class BananaFeature extends Feature<BlockStateConfiguration>
     @Override
     public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         BlockPos pos = context.origin();
         final Random random = context.random();
         final BlockStateConfiguration config = context.config();
 
         BlockState banana = config.state;
 
-        pos = world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos);
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-
-        for (int i = 0; i < 15; i++)
+        mutablePos.set(pos);
+        if (Helpers.isBlock(level.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
-            mutablePos.setWithOffset(pos, random.nextInt(10) - random.nextInt(10), -1, random.nextInt(10) - random.nextInt(10));
-            if (world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+            if (level.canSeeSky(mutablePos))
             {
-                boolean blocked = false;
-                for (int j = 1; j <= 10; j++)
+                for (int stage = 0; stage <= 2; stage++)
                 {
-                    mutablePos.move(Direction.UP);
-                    if (!world.isEmptyBlock(mutablePos))
+                    final int height = Mth.nextInt(random, 2, 3);
+                    for (int k = 1; k < height; k++)
                     {
-                        blocked = true;
-                        break;
-                    }
-                }
-                if (!blocked)
-                {
-                    mutablePos.move(Direction.DOWN, 10);
-                    for (int stage = 0; stage <= 2; stage++)
-                    {
-                        for (int k = 1; k < random.nextInt(3) + 1; k++)
-                        {
-                            mutablePos.move(Direction.UP);
-                            world.setBlock(mutablePos, banana.setValue(STAGE, 0), 3);
-                            if (stage == 2) return true;
-                        }
+                        setBlock(level, mutablePos, banana.setValue(STAGE, stage).setValue(LIFECYCLE, Lifecycle.HEALTHY));
+                        mutablePos.move(Direction.UP);
+                        if (stage == 2) return true;
                     }
                 }
             }

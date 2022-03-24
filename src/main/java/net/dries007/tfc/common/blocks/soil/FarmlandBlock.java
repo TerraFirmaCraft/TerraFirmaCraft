@@ -127,7 +127,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
                 for (int dy = -1; dy <= 0; dy++)
                 {
                     final int cost = Math.max(Math.abs(dx), Math.abs(dz)) + (-2 * dy);
-                    if (cost < minCostWater && TFCTags.Fluids.HYDRATING.contains(level.getFluidState(cursor.setWithOffset(pos, dx, dy, dz)).getType()))
+                    if (cost < minCostWater && Helpers.isFluid(level.getFluidState(cursor.setWithOffset(pos, dx, dy, dz)).getType(), TFCTags.Fluids.HYDRATING))
                     {
                         minCostWater = cost;
                         if (minCostWater == 1)

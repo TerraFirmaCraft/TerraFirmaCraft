@@ -33,6 +33,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
@@ -72,11 +73,11 @@ public abstract class DoubleCropBlock extends CropBlock
         final BlockState belowState = level.getBlockState(pos.below());
         if (part == Part.BOTTOM)
         {
-            return TFCTags.Blocks.FARMLAND.contains(belowState.getBlock());
+            return Helpers.isBlock(belowState.getBlock(), TFCTags.Blocks.FARMLAND);
         }
         else
         {
-            return belowState.is(this) && belowState.getValue(PART) == Part.BOTTOM;
+            return Helpers.isBlock(belowState, this) && belowState.getValue(PART) == Part.BOTTOM;
         }
     }
 

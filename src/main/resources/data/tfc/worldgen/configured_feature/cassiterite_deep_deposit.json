@@ -1,0 +1,91 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 3,
+    "max_radius": 10,
+    "height": 3,
+    "states": [
+      {
+        "replace": "tfc:rock/raw/granite",
+        "with": "tfc:deposit/cassiterite/granite"
+      },
+      {
+        "replace": "tfc:rock/raw/diorite",
+        "with": "tfc:deposit/cassiterite/diorite"
+      },
+      {
+        "replace": "tfc:rock/raw/gabbro",
+        "with": "tfc:deposit/cassiterite/gabbro"
+      },
+      {
+        "replace": "tfc:rock/raw/shale",
+        "with": "tfc:deposit/cassiterite/shale"
+      },
+      {
+        "replace": "tfc:rock/raw/claystone",
+        "with": "tfc:deposit/cassiterite/claystone"
+      },
+      {
+        "replace": "tfc:rock/raw/limestone",
+        "with": "tfc:deposit/cassiterite/limestone"
+      },
+      {
+        "replace": "tfc:rock/raw/conglomerate",
+        "with": "tfc:deposit/cassiterite/conglomerate"
+      },
+      {
+        "replace": "tfc:rock/raw/dolomite",
+        "with": "tfc:deposit/cassiterite/dolomite"
+      },
+      {
+        "replace": "tfc:rock/raw/chert",
+        "with": "tfc:deposit/cassiterite/chert"
+      },
+      {
+        "replace": "tfc:rock/raw/chalk",
+        "with": "tfc:deposit/cassiterite/chalk"
+      },
+      {
+        "replace": "tfc:rock/raw/rhyolite",
+        "with": "tfc:deposit/cassiterite/rhyolite"
+      },
+      {
+        "replace": "tfc:rock/raw/basalt",
+        "with": "tfc:deposit/cassiterite/basalt"
+      },
+      {
+        "replace": "tfc:rock/raw/andesite",
+        "with": "tfc:deposit/cassiterite/andesite"
+      },
+      {
+        "replace": "tfc:rock/raw/dacite",
+        "with": "tfc:deposit/cassiterite/dacite"
+      },
+      {
+        "replace": "tfc:rock/raw/quartzite",
+        "with": "tfc:deposit/cassiterite/quartzite"
+      },
+      {
+        "replace": "tfc:rock/raw/slate",
+        "with": "tfc:deposit/cassiterite/slate"
+      },
+      {
+        "replace": "tfc:rock/raw/phyllite",
+        "with": "tfc:deposit/cassiterite/phyllite"
+      },
+      {
+        "replace": "tfc:rock/raw/schist",
+        "with": "tfc:deposit/cassiterite/schist"
+      },
+      {
+        "replace": "tfc:rock/raw/gneiss",
+        "with": "tfc:deposit/cassiterite/gneiss"
+      },
+      {
+        "replace": "tfc:rock/raw/marble",
+        "with": "tfc:deposit/cassiterite/marble"
+      }
+    ]
+  }
+}

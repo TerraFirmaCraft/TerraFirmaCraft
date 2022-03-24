@@ -27,7 +27,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class EpiphytePlantBlock extends PlantBlock
 {
@@ -61,34 +61,34 @@ public abstract class EpiphytePlantBlock extends PlantBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
-        if (!canSurvive(state, worldIn, pos))
+        if (!canSurvive(state, level, pos))
         {
-            worldIn.destroyBlock(pos, false);
+            level.destroyBlock(pos, false);
         }
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction direction, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction direction, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         // Must be attached to a log
-        if (direction.getOpposite() == stateIn.getValue(FACING) && !facingState.is(BlockTags.LOGS))
+        if (direction.getOpposite() == state.getValue(FACING) && !Helpers.isBlock(facingState, BlockTags.LOGS))
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return stateIn;
+        return state;
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos)
     {
         BlockState attachedState = world.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        return attachedState.is(BlockTags.LOGS);
+        return Helpers.isBlock(attachedState, BlockTags.LOGS);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPES.get(state.getValue(FACING));
     }

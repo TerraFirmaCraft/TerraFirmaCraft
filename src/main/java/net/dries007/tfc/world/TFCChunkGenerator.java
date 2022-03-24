@@ -14,17 +14,12 @@ import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import com.google.common.collect.ImmutableMap;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.QuartPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.RegistryLookupCodec;
+import net.minecraft.core.*;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.LinearCongruentialGenerator;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -32,6 +27,7 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
@@ -47,7 +43,6 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.RockData;
-import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Kernel;
 import net.dries007.tfc.world.noise.NoiseSampler;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
@@ -56,9 +51,10 @@ import net.dries007.tfc.world.surface.SurfaceManager;
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
 {
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        RegistryLookupCodec.create(Registry.NOISE_REGISTRY).forGetter(c -> c.parameters),
+        RegistryOps.retrieveRegistry(Registry.STRUCTURE_SET_REGISTRY).forGetter(c -> c.structureSets),
+        RegistryOps.retrieveRegistry(Registry.NOISE_REGISTRY).forGetter(c -> c.parameters),
         BiomeSource.CODEC.comapFlatMap(TFCChunkGenerator::guardBiomeSource, Function.identity()).fieldOf("biome_source").forGetter(c -> c.customBiomeSource),
-        NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> () -> c.settings),
+        NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> c.settings),
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed)
     ).apply(instance, TFCChunkGenerator::new));
@@ -123,9 +119,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     /**
      * This is the default instance used in the TFC preset, both on client and server
      */
-    public static TFCChunkGenerator defaultChunkGenerator(Registry<NormalNoise.NoiseParameters> parameters, Supplier<NoiseGeneratorSettings> noiseGeneratorSettings, Registry<Biome> biomeRegistry, long seed)
+    public static TFCChunkGenerator defaultChunkGenerator(Registry<StructureSet> structures, Registry<NormalNoise.NoiseParameters> parameters, Holder<NoiseGeneratorSettings> noiseGeneratorSettings, Registry<Biome> biomeRegistry, long seed)
     {
-        return new TFCChunkGenerator(parameters, TFCBiomeSource.defaultBiomeSource(seed, biomeRegistry), noiseGeneratorSettings, false, seed);
+        return new TFCChunkGenerator(structures, parameters, TFCBiomeSource.defaultBiomeSource(seed, biomeRegistry), noiseGeneratorSettings, false, seed);
     }
 
     public static void sampleBiomesCornerContribution(Object2DoubleMap<Biome> accumulator, Object2DoubleMap<Biome> corner, double t)
@@ -254,9 +250,10 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     // Properties set from codec
+    private final Registry<StructureSet> structures;
     private final Registry<NormalNoise.NoiseParameters> parameters;
     private final TFCBiomeSource customBiomeSource; // narrowed type from superclass
-    private final NoiseGeneratorSettings settings; // Supplier is resolved in constructor
+    private final Holder<NoiseGeneratorSettings> settings; // Supplier is resolved in constructor
     private final boolean flatBedrock;
     private final long seed;
 
@@ -270,24 +267,24 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private final SurfaceManager surfaceManager;
     private final NoiseSampler noiseSampler;
 
-    public TFCChunkGenerator(Registry<NormalNoise.NoiseParameters> parameters, TFCBiomeSource biomeSource, Supplier<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
+    public TFCChunkGenerator(Registry<StructureSet> structures, Registry<NormalNoise.NoiseParameters> parameters, TFCBiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings, boolean flatBedrock, long seed)
     {
-        super(biomeSource, settings.get().structureSettings());
-
+        super(structures, Optional.empty(), biomeSource);
+        this.structures = structures;
         this.parameters = parameters;
-        this.settings = settings.get();
+        this.settings = settings;
         this.customBiomeSource = biomeSource;
         this.flatBedrock = flatBedrock;
         this.seed = seed;
         this.climateSeed = LinearCongruentialGenerator.next(seed, 719283741234L);
 
-        this.stupidMojangChunkGenerator = new NoiseBasedChunkGenerator(parameters, biomeSource, seed, settings);
+        this.stupidMojangChunkGenerator = new NoiseBasedChunkGenerator(structures, parameters, biomeSource, seed, settings);
         this.aquiferCache = new FastConcurrentCache<>(256);
 
         this.biomeNoiseSamplers = collectBiomeNoiseSamplers(seed);
         this.chunkDataProvider = customBiomeSource.getChunkDataProvider();
         this.surfaceManager = new SurfaceManager(seed);
-        this.noiseSampler = new NoiseSampler(settings.get().noiseSettings(), seed, parameters);
+        this.noiseSampler = new NoiseSampler(this.settings.value().noiseSettings(), seed, parameters);
     }
 
     @Override
@@ -311,7 +308,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public ChunkGenerator withSeed(long seed)
     {
-        return new TFCChunkGenerator(parameters, customBiomeSource.withSeed(seed), () -> settings, flatBedrock, seed);
+        return new TFCChunkGenerator(structures, parameters, customBiomeSource.withSeed(seed), settings, flatBedrock, seed);
     }
 
     @Override
@@ -366,23 +363,24 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 final ChunkAccess offsetChunk = level.getChunk(offsetChunkPos.x, offsetChunkPos.z);
 
                 @SuppressWarnings("deprecation")
-                final List<Supplier<ConfiguredWorldCarver<?>>> carvers = offsetChunk
+                final Iterable<Holder<ConfiguredWorldCarver<?>>> iterable = offsetChunk
                     .carverBiome(() -> customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(offsetChunkPos.getMinBlockX()), QuartPos.fromBlock(offsetChunkPos.getMinBlockZ())))
+                    .value()
                     .getGenerationSettings()
                     .getCarvers(step);
 
-                final ListIterator<Supplier<ConfiguredWorldCarver<?>>> iterator = carvers.listIterator();
-                while (iterator.hasNext())
+                int i = 1;
+                for (Holder<ConfiguredWorldCarver<?>> holder : iterable)
                 {
-                    final int index = iterator.nextIndex();
-                    final ConfiguredWorldCarver<?> carver = iterator.next().get();
-                    final long chunkSeed = fork.at(offsetChunkPos.x, index, offsetChunkPos.z).nextLong();
+                    final long chunkSeed = fork.at(offsetChunkPos.x, i, offsetChunkPos.z).nextLong();
 
                     random.setSeed(chunkSeed);
+                    final ConfiguredWorldCarver<?> carver = holder.value();
                     if (carver.isStartChunk(random))
                     {
                         carver.carve(context, chunk, customBiomeManager::getBiome, random, aquifer, offsetChunkPos, carvingMask);
                     }
+                    i++;
                 }
             }
         }
@@ -477,7 +475,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public int getMinY()
     {
-        return settings.noiseSettings().minY();
+        return settings.value().noiseSettings().minY();
     }
 
     @Override
@@ -493,9 +491,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public boolean hasStronghold(ChunkPos pos)
+    public void addDebugScreenInfo(List<String> list, BlockPos pos)
     {
-        return false;
+
     }
 
     /**
@@ -533,7 +531,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     private Biome sampleBiomeIgnoreClimate(int blockX, int blockZ)
     {
-        return customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ));
+        return customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ)).value();
     }
 
     private ChunkBaseBlockSource createBaseBlockSourceForChunk(ChunkAccess chunk)
@@ -545,7 +543,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
     private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkAccess chunk)
     {
-        final NoiseSettings noiseSettings = settings.noiseSettings();
+        final NoiseSettings noiseSettings = settings.value().noiseSettings();
         final LevelHeightAccessor level = chunk.getHeightAccessorForGeneration();
 
         final int cellWidth = noiseSettings.getCellWidth();

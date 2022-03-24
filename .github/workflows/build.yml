@@ -18,15 +18,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'adopt'
-    - name: Cache
-      uses: actions/cache@v2
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
     - name: Get Version
       id: version
       uses: actions/github-script@0.4.0
@@ -51,9 +42,12 @@ jobs:
         VERSION_TYPE: ${{ steps.version_type.outputs.result }}
       run: echo "version = $VERSION, type = $VERSION_TYPE"
     - name: Build
-      run: ./gradlew build
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
       env:
         VERSION: ${{ steps.version.outputs.result }}
+        GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
     - name: Create Release
       id: create_release
       if: ${{ steps.version.outputs.result != 'indev' && success() }}
@@ -79,6 +73,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./build/libs/TerraFirmaCraft-Forge-1.18.1-${{ steps.version.outputs.result }}.jar
-        asset_name: TerraFirmaCraft-Forge-1.18.1-${{ steps.version.outputs.result }}.jar
+        asset_path: ./build/libs/TerraFirmaCraft-Forge-1.18.2-${{ steps.version.outputs.result }}.jar
+        asset_name: TerraFirmaCraft-Forge-1.18.2-${{ steps.version.outputs.result }}.jar
         asset_content_type: application/java-archive

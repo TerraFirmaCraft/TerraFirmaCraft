@@ -8,7 +8,6 @@ package net.dries007.tfc.world.feature;
 
 import java.util.Random;
 
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Material;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.levelgen.feature.IcebergFeature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * This is a modified version which overrides two functions which only handle vanilla water blocks
@@ -67,11 +67,11 @@ public class TFCIcebergFeature extends IcebergFeature
     public void setIcebergBlock(BlockPos pos, LevelAccessor worldIn, Random random, int int_, int int1_, boolean boolean_, boolean boolean1_, BlockState state)
     {
         BlockState blockstate = worldIn.getBlockState(pos);
-        if (blockstate.getMaterial() == Material.AIR || blockstate.is(Blocks.SNOW_BLOCK) || blockstate.is(Blocks.ICE) || blockstate.is(TFCBlocks.SALT_WATER.get()))
+        if (blockstate.getMaterial() == Material.AIR || Helpers.isBlock(blockstate, Blocks.SNOW_BLOCK) || Helpers.isBlock(blockstate, Blocks.ICE) || Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()))
         {
             boolean flag = !boolean_ || random.nextDouble() > 0.05D;
             int i = boolean_ ? 3 : 2;
-            if (boolean1_ && !blockstate.is(TFCBlocks.SALT_WATER.get()) && (double) int_ <= (double) random.nextInt(Math.max(1, int1_ / i)) + (double) int1_ * 0.6D && flag)
+            if (boolean1_ && !Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()) && (double) int_ <= (double) random.nextInt(Math.max(1, int1_ / i)) + (double) int1_ * 0.6D && flag)
             {
                 this.setBlock(worldIn, pos, Blocks.SNOW_BLOCK.defaultBlockState());
             }

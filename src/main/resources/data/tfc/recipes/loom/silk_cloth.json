@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:loom",
+  "ingredient": {
+    "item": "minecraft:string"
+  },
+  "input_count": 24,
+  "result": {
+    "item": "tfc:silk_cloth"
+  },
+  "steps_required": 24,
+  "in_progress_texture": "minecraft:block/white_wool"
+}

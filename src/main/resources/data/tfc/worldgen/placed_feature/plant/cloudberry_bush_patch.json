@@ -10,13 +10,13 @@
       "min_temperature": 3,
       "max_temperature": 17,
       "min_rainfall": 80,
-      "max_rainfall": 370,
+      "max_rainfall": 500,
       "min_forest": "normal",
       "max_forest": "old_growth"
     },
     {
       "type": "minecraft:rarity_filter",
-      "chance": 15
+      "chance": 60
     },
     {
       "type": "minecraft:biome"

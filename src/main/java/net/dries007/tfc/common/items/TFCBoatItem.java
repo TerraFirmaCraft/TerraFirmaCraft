@@ -29,6 +29,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.entities.TFCBoat;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCBoatItem extends BoatItem
 {

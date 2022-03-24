@@ -6,12 +6,13 @@
 
 package net.dries007.tfc.common.capabilities;
 
+import java.util.function.Predicate;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,6 +24,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.items.VesselItem;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * A {@link IFluidHandler} capability provider implementation for item stacks.
@@ -32,7 +34,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
 {
     private final LazyOptional<IFluidHandlerItem> capability;
     private final ItemStack stack;
-    @Nullable private final Tag<Fluid> allowedFluids;
+    private final Predicate<Fluid> allowedFluids;
     private final int capacity;
 
     private boolean initialized; // If the internal capability objects have loaded their data.
@@ -40,10 +42,15 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
 
     public ItemStackFluidHandler(ItemStack stack, int capacity)
     {
-        this(stack, null, capacity);
+        this(stack, f -> true, capacity);
     }
 
-    public ItemStackFluidHandler(ItemStack stack, @Nullable Tag<Fluid> allowedFluids, int capacity)
+    public ItemStackFluidHandler(ItemStack stack, TagKey<Fluid> allowedFluids, int capacity)
+    {
+        this(stack, fluid -> Helpers.isFluid(fluid, allowedFluids), capacity);
+    }
+
+    public ItemStackFluidHandler(ItemStack stack, Predicate<Fluid> allowedFluids, int capacity)
     {
         this.capability = LazyOptional.of(() -> this);
         this.stack = stack;
@@ -76,7 +83,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     @Override
     public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
     {
-        return allowedFluids == null || allowedFluids.contains(stack.getFluid());
+        return allowedFluids.test(stack.getFluid());
     }
 
     @Override

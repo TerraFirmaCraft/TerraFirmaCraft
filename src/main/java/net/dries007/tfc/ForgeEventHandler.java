@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -23,13 +24,14 @@ import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleReloadableResourceManager;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +43,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
@@ -57,6 +60,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -68,6 +72,8 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.server.ServerLifecycleHooks;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 
+import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
@@ -77,6 +83,7 @@ import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -95,11 +102,7 @@ import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
-import net.dries007.tfc.mixin.accessor.SimpleReloadableResourceManagerAccessor;
-import net.dries007.tfc.network.ChunkUnwatchPacket;
-import net.dries007.tfc.network.ClimateSettingsUpdatePacket;
-import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.network.PlayerDrinkPacket;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -152,6 +155,8 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
+        bus.addListener(ForgeEventHandler::onEffectRemove);
+        bus.addListener(ForgeEventHandler::onEffectExpire);
         bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
@@ -166,27 +171,33 @@ public final class ForgeEventHandler
     }
 
     /**
-     * Duplicates logic from {@link MinecraftServer#setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
+     * Duplicates logic from {@link MinecraftServer#
+     * setInitialSpawn(ServerLevel, ServerLevelData, boolean, boolean)} as that version only asks the dimension for the sea level...
      */
     public static void onCreateWorldSpawn(WorldEvent.CreateSpawnPosition event)
     {
-        if (event.getWorld() instanceof ServerLevel world && world.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
+        if (event.getWorld() instanceof ServerLevel level && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension extension)
         {
             final ChunkGenerator generator = extension.self();
             final ServerLevelData settings = event.getSettings();
             final BiomeSourceExtension source = extension.getBiomeSource();
-            final Random random = new Random(world.getSeed());
+            final Random random = new Random(level.getSeed());
 
-            BlockPos pos = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(world, biome).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
+            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
+            BlockPos pos;
             ChunkPos chunkPos;
-            if (pos == null)
+            if (posPair == null)
             {
                 LOGGER.warn("Unable to find spawn biome!");
                 pos = new BlockPos(0, generator.getSeaLevel(), 0);
             }
+            else
+            {
+                pos = posPair.getFirst();
+            }
             chunkPos = new ChunkPos(pos);
 
-            settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(world), 8), 0.0F);
+            settings.setSpawn(chunkPos.getWorldPosition().offset(8, generator.getSpawnHeight(level), 8), 0.0F);
             boolean foundExactSpawn = false;
             int x = 0, z = 0;
             int xStep = 0;
@@ -196,7 +207,7 @@ public final class ForgeEventHandler
             {
                 if (x > -16 && x <= 16 && z > -16 && z <= 16)
                 {
-                    final BlockPos spawnPos = PlayerRespawnLogic.getSpawnPosInChunk(world, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
+                    final BlockPos spawnPos = PlayerRespawnLogic.getSpawnPosInChunk(level, new ChunkPos(chunkPos.x + x, chunkPos.z + z));
                     if (spawnPos != null)
                     {
                         settings.setSpawn(spawnPos, 0);
@@ -221,7 +232,7 @@ public final class ForgeEventHandler
                 LOGGER.warn("Unable to find a suitable spawn location!");
             }
 
-            if (world.getServer().getWorldData().worldGenSettings().generateBonusChest())
+            if (level.getServer().getWorldData().worldGenSettings().generateBonusChest())
             {
                 LOGGER.warn("No bonus chest for you, you cheaty cheater!");
             }
@@ -378,18 +389,13 @@ public final class ForgeEventHandler
     {
         // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
         // So, we hack internal resource lists in order to stick metals before recipes.
-        final ResourceManager resourceManager = event.getDataPackRegistries().getResourceManager();
-        if (resourceManager instanceof SimpleReloadableResourceManager resources)
-        {
-            final List<PreparableReloadListener> listeners = ((SimpleReloadableResourceManagerAccessor) resources).accessor$getListeners();
-            final RecipeManager recipes = event.getDataPackRegistries().getRecipeManager();
-            Helpers.insertBefore(listeners, Metal.MANAGER, recipes);
-        }
+        // see ReloadableServerResourcesMixin
 
         // All other resource reload listeners can be inserted after recipes.
         event.addListener(Fuel.MANAGER);
         event.addListener(Drinkable.MANAGER);
         event.addListener(Support.MANAGER);
+        event.addListener(LampFuel.MANAGER);
         event.addListener(Fertilizer.MANAGER);
         event.addListener(ItemSizeManager.MANAGER);
         event.addListener(ClimateRange.MANAGER);
@@ -420,7 +426,7 @@ public final class ForgeEventHandler
         final BlockPos pos = event.getPos();
         final BlockState state = world.getBlockState(pos);
 
-        if (TFCTags.Blocks.CAN_TRIGGER_COLLAPSE.contains(state.getBlock()) && world instanceof Level level)
+        if (Helpers.isBlock(state, TFCTags.Blocks.CAN_TRIGGER_COLLAPSE) && world instanceof Level level)
         {
             CollapseRecipe.tryTriggerCollapse(level, pos);
             return;
@@ -442,12 +448,12 @@ public final class ForgeEventHandler
             final BlockPos pos = event.getPos();
             final BlockState state = event.getState();
 
-            if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+            if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
             {
                 world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
             }
 
-            if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+            if (Helpers.isBlock(state, TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
             {
                 world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
             }
@@ -464,12 +470,12 @@ public final class ForgeEventHandler
                 final BlockPos pos = event.getPos().relative(direction);
                 final BlockState state = level.getBlockState(pos);
 
-                if (TFCTags.Blocks.CAN_LANDSLIDE.contains(state.getBlock()))
+                if (Helpers.isBlock(state, TFCTags.Blocks.CAN_LANDSLIDE))
                 {
                     level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(pos));
                 }
 
-                if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(state.getBlock()))
+                if (Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED))
                 {
                     level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
                 }
@@ -549,14 +555,14 @@ public final class ForgeEventHandler
 
     public static void onFireStart(StartFireEvent event)
     {
-        Level world = event.getLevel();
+        Level level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState state = event.getState();
         Block block = state.getBlock();
 
         if (block == TFCBlocks.FIREPIT.get() || block == TFCBlocks.POT.get() || block == TFCBlocks.GRILL.get())
         {
-            final BlockEntity entity = world.getBlockEntity(pos);
+            final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof AbstractFirepitBlockEntity<?> firepit && firepit.light(state))
             {
                 event.setCanceled(true);
@@ -564,37 +570,37 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.TORCH.get() || block == TFCBlocks.WALL_TORCH.get())
         {
-            world.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.DEAD_TORCH.get())
         {
-            world.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
+            level.setBlockAndUpdate(pos, TFCBlocks.TORCH.get().defaultBlockState());
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.DEAD_WALL_TORCH.get())
         {
             Direction direction = state.getValue(DeadWallTorchBlock.FACING);
-            world.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
+            level.setBlockAndUpdate(pos, TFCBlocks.WALL_TORCH.get().defaultBlockState().setValue(TFCWallTorchBlock.FACING, direction));
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.LOG_PILE.get())
         {
-            BurningLogPileBlock.tryLightLogPile(world, pos);
+            BurningLogPileBlock.tryLightLogPile(level, pos);
             event.setCanceled(true);
         }
         else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            world.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
+            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
         }
-        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
         {
-            CharcoalForgeBlockEntity.createFromCharcoalPile(world, pos);
+            CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(world, pos))
+        else if (block == TFCBlocks.CHARCOAL_FORGE.get() && CharcoalForgeBlock.isValid(level, pos))
         {
-            final BlockEntity entity = world.getBlockEntity(pos);
+            final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
             {
                 event.setCanceled(true);
@@ -607,6 +613,17 @@ public final class ForgeEventHandler
             {
                 event.setCanceled(true);
             }
+        }
+        else if (block instanceof LampBlock)
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
+                if (lamp.getFuel() != null)
+                {
+                    level.setBlock(pos, state.setValue(LampBlock.LIT, true), 3);
+                    lamp.resetCounter();
+                    event.setCanceled(true);
+                }
+            });
         }
     }
 
@@ -632,6 +649,27 @@ public final class ForgeEventHandler
         if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
+        }
+    }
+
+    public static void onEffectRemove(PotionEvent.PotionRemoveEvent event)
+    {
+        if (event.getPotion() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+        {
+            player.setForcedPose(null);
+        }
+    }
+
+    public static void onEffectExpire(PotionEvent.PotionExpiryEvent event)
+    {
+        final MobEffectInstance instance = event.getPotionEffect();
+        if (instance != null)
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new EffectExpirePacket(instance.getEffect()));
+            if (instance.getEffect() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+            {
+                player.setForcedPose(null);
+            }
         }
     }
 
@@ -676,7 +714,7 @@ public final class ForgeEventHandler
                 float coolAmount = 0;
                 final BlockState state = level.getBlockState(pos);
                 final FluidState fluid = level.getFluidState(pos);
-                if (fluid.is(FluidTags.WATER))
+                if (Helpers.isFluid(fluid, FluidTags.WATER))
                 {
                     coolAmount = 50f;
                     if (level.random.nextFloat() < 0.001F)
@@ -684,7 +722,7 @@ public final class ForgeEventHandler
                         level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
                     }
                 }
-                else if (state.is(Blocks.SNOW))
+                else if (Helpers.isBlock(state, Blocks.SNOW))
                 {
                     coolAmount = 70f;
                     if (level.random.nextFloat() < 0.1F)
@@ -704,7 +742,7 @@ public final class ForgeEventHandler
                 {
                     final BlockPos belowPos = pos.below();
                     final BlockState belowState = level.getBlockState(belowPos);
-                    if (belowState.is(Blocks.SNOW_BLOCK))
+                    if (Helpers.isBlock(belowState, Blocks.SNOW_BLOCK))
                     {
                         coolAmount = 75f;
                         if (level.random.nextFloat() < 0.1F)
@@ -717,7 +755,7 @@ public final class ForgeEventHandler
                         coolAmount = 100f;
                         if (level.random.nextFloat() < 0.01F)
                         {
-                            level.setBlockAndUpdate(belowPos, belowState.is(TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
+                            level.setBlockAndUpdate(belowPos, Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()) ? TFCBlocks.SALT_WATER.get().defaultBlockState() : Blocks.WATER.defaultBlockState());
                         }
                     }
                     else if (belowState.getMaterial() == Material.ICE_SOLID)

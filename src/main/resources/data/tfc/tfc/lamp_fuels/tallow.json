@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "fluid": "tfc:tallow",
+  "burn_rate": 1800,
+  "valid_lamps": {
+    "type": "tfc:tag",
+    "tag": "tfc:lamps"
+  }
+}

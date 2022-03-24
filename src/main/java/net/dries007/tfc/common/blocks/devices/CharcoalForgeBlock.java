@@ -54,11 +54,11 @@ public class CharcoalForgeBlock extends DeviceBlock
     static
     {
         BiPredicate<LevelAccessor, BlockPos> skyMatcher = LevelAccessor::canSeeSky;
-        BiPredicate<LevelAccessor, BlockPos> isValidSide = (world, pos) -> world.getBlockState(pos).is(TFCTags.Blocks.FORGE_INSULATION);
+        BiPredicate<LevelAccessor, BlockPos> isValidSide = (world, pos) -> Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.FORGE_INSULATION);
         BlockPos origin = BlockPos.ZERO;
         FORGE_MULTIBLOCK = new MultiBlock()
             // Top block
-            .match(origin.above(), state -> state.isAir() || state.is(TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))
+            .match(origin.above(), state -> state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))
             // Chimney
             .matchOneOf(origin.above(), new MultiBlock()
                 .match(origin, skyMatcher)

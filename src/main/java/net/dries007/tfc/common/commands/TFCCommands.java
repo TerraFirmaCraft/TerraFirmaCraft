@@ -39,6 +39,7 @@ public final class TFCCommands
             .then(PlayerCommand.create())
             .then(TreeCommand.create())
             .then(LocateVeinCommand.create())
+            .then(CountBlockCommand.create())
             .then(TFCLocateCommand.create())
         );
 

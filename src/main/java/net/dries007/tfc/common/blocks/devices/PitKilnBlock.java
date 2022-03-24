@@ -112,13 +112,13 @@ public class PitKilnBlock extends DeviceBlock
                 ItemStack held = player.getItemInHand(hand);
                 Item item = held.getItem();
                 int stage = state.getValue(STAGE);
-                if (stage < STRAW_END && TFCTags.Items.PIT_KILN_STRAW.contains(item))
+                if (stage < STRAW_END && Helpers.isItem(item, TFCTags.Items.PIT_KILN_STRAW))
                 {
                     world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                     te.addStraw(held.split(1), stage + 1);
                     Helpers.playSound(world, pos, SoundEvents.GRASS_PLACE);
                 }
-                else if (stage >= STRAW_END && stage < LIT - 1 && TFCTags.Items.PIT_KILN_LOGS.contains(item))
+                else if (stage >= STRAW_END && stage < LIT - 1 && Helpers.isItem(item, TFCTags.Items.PIT_KILN_LOGS))
                 {
                     world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                     te.addLog(held.split(1), stage - LOG_START + 1);

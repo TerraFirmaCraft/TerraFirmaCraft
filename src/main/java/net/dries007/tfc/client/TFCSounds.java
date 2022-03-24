@@ -51,6 +51,7 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> FIRESTARTER = create("firestarter");
 
     public static final RegistryObject<SoundEvent> QUERN_DRAG = create("quern_drag");
+    public static final RegistryObject<SoundEvent> LOOM_WEAVE = create("loom_weave");
 
     public static final RegistryObject<SoundEvent> KNAP_STONE = create("knap_stone");
     public static final RegistryObject<SoundEvent> KNAP_CLAY = create("knap_clay");

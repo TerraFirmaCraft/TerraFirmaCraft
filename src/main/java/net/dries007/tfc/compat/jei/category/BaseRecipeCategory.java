@@ -19,10 +19,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -41,14 +43,22 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         return returnList;
     }
 
+    /**
+     * Use {@link IIngredientAcceptor#addIngredients(Ingredient)} instead.
+     */
     protected static List<ItemStack> collapse(Ingredient ingredient)
     {
         return Arrays.asList(ingredient.getItems());
     }
 
+    protected static List<ItemStack> collapseWithAmount(Ingredient ingredient, int amount)
+    {
+        return Arrays.stream(ingredient.getItems()).map(stack -> new ItemStack(stack.getItem(), amount).copy()).collect(Collectors.toList());
+    }
+
     protected static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {
-        return ingredient.getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, 1000)).collect(Collectors.toList());
+        return ingredient.getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount)).collect(Collectors.toList());
     }
 
     protected final IDrawableStatic slot;
@@ -57,20 +67,17 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     protected final IDrawableStatic arrow;
     protected final IDrawableAnimated arrowAnimated;
 
-
-    private final ResourceLocation uId;
+    private final RecipeType<T> type;
     private final Component title;
     private final IDrawable background;
     private final IDrawable icon;
-    private final Class<? extends T> recipeClass;
 
-    public BaseRecipeCategory(ResourceLocation uId, IGuiHelper helper, IDrawable background, ItemStack icon, Class<? extends T> recipeClass)
+    public BaseRecipeCategory(RecipeType<T> type, IGuiHelper helper, IDrawable background, ItemStack icon)
     {
-        this.uId = uId;
-        this.title = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".jei." + uId.getPath());
+        this.type = type;
+        this.title = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".jei." + type.getUid().getPath());
         this.background = background;
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, icon);
-        this.recipeClass = recipeClass;
         this.slot = helper.getSlotDrawable();
 
         this.fire = helper.createDrawable(ICONS, 0, 0, 14, 14);
@@ -83,15 +90,23 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     }
 
     @Override
-    public ResourceLocation getUid()
+    @SuppressWarnings("remove")
+    public Class<? extends T> getRecipeClass()
     {
-        return uId;
+        return type.getRecipeClass();
     }
 
     @Override
-    public Class<? extends T> getRecipeClass()
+    @SuppressWarnings("remove")
+    public ResourceLocation getUid()
     {
-        return recipeClass;
+        return type.getUid();
+    }
+
+    @Override
+    public RecipeType<T> getRecipeType()
+    {
+        return type;
     }
 
     @Override

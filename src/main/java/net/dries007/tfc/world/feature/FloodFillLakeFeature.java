@@ -8,7 +8,6 @@ package net.dries007.tfc.world.feature;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,7 +18,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;

@@ -34,6 +34,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.util.Helpers;
+
 /**
  * Lots of parts borrowed from {@link BedBlock}
  * Avoid extending directly as it implements {@link EntityBlock} which we don't want, and also defines the 'occupied' state which we don't use.
@@ -60,7 +62,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
     {
         if (facing == getNeighbourDirection(state.getValue(PART), state.getValue(FACING)))
         {
-            return facingState.is(this) && facingState.getValue(PART) != state.getValue(PART) ? state : Blocks.AIR.defaultBlockState();
+            return Helpers.isBlock(facingState, this) && facingState.getValue(PART) != state.getValue(PART) ? state : Blocks.AIR.defaultBlockState();
         }
         else
         {
@@ -142,7 +144,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
             {
                 BlockPos neighbourPos = pos.relative(getNeighbourDirection(part, state.getValue(FACING)));
                 BlockState neighbourState = level.getBlockState(neighbourPos);
-                if (neighbourState.is(this) && neighbourState.getValue(PART) == BedPart.HEAD)
+                if (Helpers.isBlock(neighbourState, this) && neighbourState.getValue(PART) == BedPart.HEAD)
                 {
                     level.setBlock(neighbourPos, Blocks.AIR.defaultBlockState(), 35);
                     level.levelEvent(player, 2001, neighbourPos, Block.getId(neighbourState));
@@ -177,7 +179,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
     public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         Direction facing = state.getValue(FACING);
-        if (!(world.getBlockState(pos.relative(facing)).is(TFCBlocks.THATCH_BED.get())) || world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP))
+        if (!(Helpers.isBlock(world.getBlockState(pos.relative(facing)), TFCBlocks.THATCH_BED.get())) || world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP))
         {
             world.destroyBlock(pos, true);
         }

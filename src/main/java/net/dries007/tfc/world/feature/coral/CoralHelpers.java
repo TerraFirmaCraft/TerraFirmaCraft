@@ -14,11 +14,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 
+import net.minecraftforge.registries.ForgeRegistries;
+
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.coral.CoralWallFanBlock;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.util.Helpers;
 
 public final class CoralHelpers
 {
@@ -29,20 +32,22 @@ public final class CoralHelpers
      *
      * {@link net.minecraft.world.level.levelgen.feature.CoralFeature#placeCoralBlock(LevelAccessor, Random, BlockPos, BlockState)}
      */
-    public static boolean placeCoralBlock(LevelAccessor world, Random rand, BlockPos pos, BlockState coralBlockState)
+    public static boolean placeCoralBlock(LevelAccessor level, Random rand, BlockPos pos, BlockState coralBlockState)
     {
         BlockPos abovePos = pos.above();
-        BlockState blockstate = world.getBlockState(pos);
-        if ((blockstate.is(TFCBlocks.SALT_WATER.get()) || blockstate.is(TFCTags.Blocks.CORALS)) && world.getBlockState(abovePos).is(TFCBlocks.SALT_WATER.get()))
+        BlockState blockstate = level.getBlockState(pos);
+        if ((Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()) || Helpers.isBlock(blockstate, TFCTags.Blocks.CORALS)) && Helpers.isBlock(level.getBlockState(abovePos), TFCBlocks.SALT_WATER.get()))
         {
-            world.setBlock(pos, coralBlockState, 3);
+            level.setBlock(pos, coralBlockState, 3);
             if (rand.nextFloat() < 0.25F)
             {
-                world.setBlock(abovePos, salty(TFCTags.Blocks.CORALS.getRandomElement(rand).defaultBlockState()), 2);
+                Helpers.getRandomElement(ForgeRegistries.BLOCKS, TFCTags.Blocks.CORALS, rand).ifPresent(block -> {
+                    level.setBlock(abovePos, salty(block.defaultBlockState()), 2);
+                });
             }
             else if (rand.nextFloat() < 0.05F)
             {
-                world.setBlock(abovePos, salty(TFCBlocks.SEA_PICKLE.get().defaultBlockState().setValue(SeaPickleBlock.PICKLES, rand.nextInt(4) + 1)), 2);
+                level.setBlock(abovePos, salty(TFCBlocks.SEA_PICKLE.get().defaultBlockState().setValue(SeaPickleBlock.PICKLES, rand.nextInt(4) + 1)), 2);
             }
 
             for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -50,10 +55,15 @@ public final class CoralHelpers
                 if (rand.nextFloat() < 0.2F)
                 {
                     BlockPos relativePos = pos.relative(direction);
-                    if (world.getBlockState(relativePos).is(TFCBlocks.SALT_WATER.get()))
+                    if (Helpers.isBlock(level.getBlockState(relativePos), TFCBlocks.SALT_WATER.get()))
                     {
-                        BlockState wallCoralState = salty(TFCTags.Blocks.WALL_CORALS.getRandomElement(rand).defaultBlockState()).setValue(CoralWallFanBlock.FACING, direction);
-                        world.setBlock(relativePos, wallCoralState, 2);
+                        Helpers.getRandomElement(ForgeRegistries.BLOCKS, TFCTags.Blocks.WALL_CORALS, rand).ifPresent(block -> {
+                            BlockState wallCoralState = block.defaultBlockState();
+                            if (wallCoralState.hasProperty(CoralWallFanBlock.FACING))
+                            {
+                                level.setBlock(relativePos, wallCoralState.setValue(CoralWallFanBlock.FACING, direction), 2);
+                            }
+                        });
                     }
                 }
             }

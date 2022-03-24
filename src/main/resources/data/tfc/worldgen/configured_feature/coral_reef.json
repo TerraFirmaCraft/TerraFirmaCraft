@@ -2,10 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:simple_random_selector",
   "config": {
-    "features": [
-      "tfc:coral_tree",
-      "tfc:coral_mushroom",
-      "tfc:coral_claw"
-    ]
+    "features": "#tfc:coral_features"
   }
 }

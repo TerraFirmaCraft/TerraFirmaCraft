@@ -37,6 +37,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Almost all methods in here are adapted from {@link net.minecraft.world.level.block.ChorusFlowerBlock}
@@ -81,19 +82,19 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
+        final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
             level.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(level));
         }
-        if (facing != Direction.UP && !stateIn.canSurvive(level, currentPos))
+        if (facing != Direction.UP && !state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
             return Blocks.AIR.defaultBlockState();
         }
-        return stateIn;
+        return state;
     }
 
     @Override
@@ -110,7 +111,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
 
         BlockState blockstate = level.getBlockState(pos.below());
-        if (blockstate.getBlock() != body && !blockstate.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        if (blockstate.getBlock() != body && !Helpers.isBlock(blockstate, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
         {
             if (!isEmptyWaterBlock(level, pos.below()))
             {
@@ -122,7 +123,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 for (Direction direction : Direction.Plane.HORIZONTAL)
                 {
                     BlockState relativeState = level.getBlockState(pos.relative(direction));
-                    if (relativeState.is(body))
+                    if (Helpers.isBlock(relativeState, body))
                     {
                         if (isValid)
                         {
@@ -170,7 +171,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 boolean foundGroundFurtherDown = false;
                 BlockState belowState = level.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
-                if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlock))
+                if (Helpers.isBlock(belowBlock, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {
                     shouldPlaceNewBody = true;
                 }
@@ -183,7 +184,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                         Block belowBlockOffset = level.getBlockState(pos.below(j + 1)).getBlock();
                         if (belowBlockOffset != body)
                         {
-                            if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlockOffset))
+                            if (Helpers.isBlock(belowBlockOffset, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                             {
                                 foundGroundFurtherDown = true;
                             }

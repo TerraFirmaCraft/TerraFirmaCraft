@@ -58,7 +58,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
 
     private static boolean isValidCoverBlock(BlockState offsetState, Level world, BlockPos pos, Direction side)
     {
-        if (offsetState.is(TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
+        if (Helpers.isBlock(offsetState, TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
         {
             return true;
         }
@@ -74,7 +74,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
             BlockState offsetState = world.getBlockState(offsetPos);
             if (isValidCoverBlock(offsetState, world, offsetPos, side.getOpposite()))
             {
-                if (offsetState.is(TFCBlocks.LOG_PILE.get()))
+                if (Helpers.isBlock(offsetState, TFCBlocks.LOG_PILE.get()))
                 {
                     tryLightLogPile(world, offsetPos);
                 }

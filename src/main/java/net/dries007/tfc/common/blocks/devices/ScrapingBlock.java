@@ -49,7 +49,7 @@ public class ScrapingBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !facingState.is(TFCTags.Blocks.SCRAPING_SURFACE))
+        if (facing == Direction.DOWN && !Helpers.isBlock(facingState, TFCTags.Blocks.SCRAPING_SURFACE))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -64,7 +64,7 @@ public class ScrapingBlock extends DeviceBlock
         if (te != null)
         {
             ItemStack stack = player.getItemInHand(hand);
-            if (TFCTags.Items.KNIVES.contains(stack.getItem()))
+            if (Helpers.isItem(stack.getItem(), TFCTags.Items.KNIVES))
             {
                 Vec3 point = calculatePoint(player.getLookAngle(), hit.getLocation().subtract(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
                 te.onClicked((float) point.x, (float) point.z);

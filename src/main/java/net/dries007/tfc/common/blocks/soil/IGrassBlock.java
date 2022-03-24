@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.lighting.LayerLightEngine;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Grass blocks, which MUST
@@ -30,7 +31,7 @@ public interface IGrassBlock extends ISoilBlock
     {
         BlockPos posUp = pos.above();
         BlockState stateUp = world.getBlockState(posUp);
-        if (stateUp.is(TFCTags.Blocks.SNOW))
+        if (Helpers.isBlock(stateUp, TFCTags.Blocks.SNOW))
         {
             return true;
         }
@@ -53,6 +54,6 @@ public interface IGrassBlock extends ISoilBlock
     default boolean canPropagate(BlockState state, LevelReader world, BlockPos pos)
     {
         BlockPos posUp = pos.above();
-        return canBeGrass(state, world, pos) && !world.getFluidState(posUp).is(FluidTags.WATER);
+        return canBeGrass(state, world, pos) && !Helpers.isFluid(world.getFluidState(posUp), FluidTags.WATER);
     }
 }

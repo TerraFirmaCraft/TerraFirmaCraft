@@ -14,7 +14,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,9 +26,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -148,7 +147,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
-        if (entry != null && level.isEmptyBlock(mutablePos) && level.getBlockState(mutablePos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (entry != null && EnvironmentHelpers.canPlaceBushOn(level, mutablePos))
         {
             entry.bushLog().ifPresent(log -> entry.bushLeaves().ifPresent(leaves -> {
                 placeBushPart(level, mutablePos, log, leaves, 1.0F, random);
@@ -182,7 +181,7 @@ public class ForestFeature extends Feature<ForestConfig>
             if (facing != Direction.DOWN)
             {
                 BlockPos offsetPos = mutablePos.offset(facing.getStepX(), facing.getStepY(), facing.getStepZ());
-                if (level.isEmptyBlock(offsetPos) || level.getBlockState(offsetPos).is(TFCTags.Blocks.PLANTS) && rand.nextFloat() < decay)
+                if (EnvironmentHelpers.isWorldgenReplaceable(level, offsetPos) && rand.nextFloat() < decay)
                 {
                     setBlock(level, offsetPos, leaves);
                 }
@@ -211,7 +210,7 @@ public class ForestFeature extends Feature<ForestConfig>
                     mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
 
                     placementState = FluidHelpers.fillWithFluid(placementState, level.getFluidState(mutablePos).getType());
-                    if (placementState != null && (level.isEmptyBlock(mutablePos) || level.isWaterAt(mutablePos)) && level.getBlockState(mutablePos.below()).isFaceSturdy(level, mutablePos, Direction.UP))
+                    if (placementState != null && EnvironmentHelpers.isWorldgenReplaceable(level.getBlockState(mutablePos)) && EnvironmentHelpers.isOnSturdyFace(level, mutablePos))
                     {
                         setBlock(level, mutablePos, placementState);
                     }
@@ -231,7 +230,7 @@ public class ForestFeature extends Feature<ForestConfig>
         mutablePos.move(Direction.DOWN);
         BlockState downState = level.getBlockState(mutablePos);
         mutablePos.move(Direction.UP);
-        if (downState.is(TFCTags.Blocks.BUSH_PLANTABLE_ON) || downState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        if (Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(downState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
         {
             final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
             if (entry != null)

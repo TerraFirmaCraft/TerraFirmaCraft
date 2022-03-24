@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:lake_cold_dry",
+    "tfc:lake_cold_normal",
+    "tfc:lake_cold_wet",
+    "tfc:lake_normal_dry",
+    "tfc:lake_normal_normal",
+    "tfc:lake_normal_wet",
+    "tfc:lake_warm_dry",
+    "tfc:lake_warm_normal",
+    "tfc:lake_warm_wet"
+  ]
+}

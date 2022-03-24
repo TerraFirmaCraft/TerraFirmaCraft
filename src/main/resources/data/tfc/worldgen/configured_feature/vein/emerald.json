@@ -14,6 +14,16 @@
     "blocks": [
       {
         "replace": [
+          "tfc:rock/raw/granite"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/emerald/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/raw/diorite"
         ],
         "with": [
@@ -29,16 +39,6 @@
         "with": [
           {
             "block": "tfc:ore/emerald/gabbro"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/granite"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/emerald/granite"
           }
         ]
       }

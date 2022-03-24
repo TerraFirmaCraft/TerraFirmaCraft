@@ -1,8 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/metal/lamp/copper"
+    "hanging=false,lit=false": {
+      "model": "tfc:block/metal/lamp/copper_off"
+    },
+    "hanging=true,lit=false": {
+      "model": "tfc:block/metal/lamp/copper_hanging_off"
+    },
+    "hanging=false,lit=true": {
+      "model": "tfc:block/metal/lamp/copper_on"
+    },
+    "hanging=true,lit=true": {
+      "model": "tfc:block/metal/lamp/copper_hanging_on"
     }
   }
 }

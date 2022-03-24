@@ -8,14 +8,15 @@ package net.dries007.tfc.common.commands;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.QuartPos;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.commands.LocateCommand;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.biome.BiomeSource;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
@@ -73,7 +74,7 @@ public class TFCLocateCommand
         {
             throw ERROR_NOT_FOUND.create(id);
         }
-        return LocateCommand.showLocateResult(source, id.toString(), center, result, "commands.locate.success");
+        return showRawLocateResult(source, id.toString(), center, result, "commands.locate.success");
     }
 
     private static int locateVolcano(CommandSourceStack source) throws CommandSyntaxException
@@ -105,7 +106,24 @@ public class TFCLocateCommand
         {
             throw ERROR_VOLCANO_NOT_FOUND.create();
         }
-        return LocateCommand.showLocateResult(source, "volcano", center, result, "commands.locate.success");
+        return showRawLocateResult(source, "volcano", center, result, "commands.locate.success");
+    }
+
+    private static int showRawLocateResult(CommandSourceStack source, String name, BlockPos original, BlockPos found, String key)
+    {
+        int distance = Mth.floor(dist(original.getX(), original.getZ(), found.getX(), found.getZ()));
+        Component component = ComponentUtils.wrapInSquareBrackets(new TranslatableComponent("chat.coordinates", found.getX(), "~", found.getZ())).withStyle((p_207527_) -> {
+            return p_207527_.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + found.getX() + " ~ " + found.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.coordinates.tooltip")));
+        });
+        source.sendSuccess(new TranslatableComponent(key, name, component, distance), false);
+        return distance;
+    }
+
+    private static float dist(int x1, int z1, int x2, int z2)
+    {
+        final int dx = x2 - x1;
+        final int dz = z2 - z1;
+        return Mth.sqrt((float)(dx * dx + dz * dz));
     }
 
     @Nullable

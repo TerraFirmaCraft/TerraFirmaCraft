@@ -23,13 +23,17 @@ import net.dries007.tfc.util.Helpers;
 public class TFCLoot
 {
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
+    public static final LootContextParam<Boolean> PANNED = new LootContextParam<>(Helpers.identifier("panned"));
 
+    // Loot Conditions
+    public static final Supplier<LootItemConditionType> IS_PANNED = lootCondition("is_panned", new PannedCondition.Serializer());
     public static final Supplier<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new IsIsolatedCondition.Serializer());
     public static final Supplier<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new CropYieldProvider.Serializer());
 
     public static void registerLootSerializers()
     {
         IS_ISOLATED.get();
+        IS_PANNED.get();
         CROP_YIELD.get();
     }
 

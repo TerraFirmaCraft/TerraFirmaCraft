@@ -20,9 +20,11 @@ import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfi
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock;
 import net.dries007.tfc.common.blocks.plant.fruit.WaterloggedBerryBushBlock;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -38,28 +40,21 @@ public class BerryBushFeature extends Feature<BlockStateConfiguration>
     @Override
     public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final BlockStateConfiguration config = context.config();
 
+        final int y = pos.getY();
         BlockState bushState = config.state;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 15; i++)
         {
-            mutablePos.setWithOffset(world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, pos), rand.nextInt(10) - rand.nextInt(10), -1, rand.nextInt(10) - rand.nextInt(10));
-            if (!world.isEmptyBlock(mutablePos)) continue;
-            mutablePos.move(Direction.DOWN);
-            if (!world.getBlockState(mutablePos).is(TFCTags.Blocks.BUSH_PLANTABLE_ON)) continue;
-            mutablePos.move(Direction.UP);
+            mutablePos.set(rand.nextInt(10) - rand.nextInt(10), y, rand.nextInt(10) - rand.nextInt(10));
+            if (!EnvironmentHelpers.canPlaceBushOn(level, mutablePos)) continue;
 
-            world.setBlock(mutablePos, bushState.setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY), 3);
-
-            BerryBushBlockEntity te = Helpers.getBlockEntity(world, pos, BerryBushBlockEntity.class);
-            if (te != null)
-            {
-                te.reduceCounter(REDUCTION_AMOUNT);
-            }
+            level.setBlock(mutablePos, bushState.setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY), 3);
+            level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> bush.reduceCounter(REDUCTION_AMOUNT));
             return true;
         }
         return false;

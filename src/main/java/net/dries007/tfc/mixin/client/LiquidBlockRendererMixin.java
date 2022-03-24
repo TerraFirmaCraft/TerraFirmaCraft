@@ -33,7 +33,7 @@ public abstract class LiquidBlockRendererMixin
      * We redirect the sameness call to one which compares for mixable fluids as well.
      * Non-critical, so require none.
      */
-    @Redirect(method = "getWaterHeight", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), require = 0)
+    @Redirect(method = "getHeight(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/material/FluidState;)F", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), require = 0)
     private boolean getWaterHeightWithMixing(Fluid fluid, Fluid fluidIn)
     {
         return fluid.isSame(fluidIn) || FluidHelpers.canMixFluids(fluid, fluidIn);

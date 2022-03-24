@@ -27,6 +27,8 @@
       "tfc:flood_fill_lake"
     ],
     [
+      "tfc:surface_ore_deposits",
+      "tfc:deep_ore_deposits",
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc",
@@ -34,9 +36,9 @@
     ],
     [
       "tfc:vein/gravel",
+      "tfc:vein/granite_dike",
       "tfc:vein/diorite_dike",
       "tfc:vein/gabbro_dike",
-      "tfc:vein/granite_dike",
       "tfc:vein/normal_native_copper",
       "tfc:vein/surface_native_copper",
       "tfc:vein/normal_native_gold",
@@ -198,6 +200,13 @@
       "tfc:plant/morning_glory_cover",
       "tfc:plant/tree_fern",
       "tfc:plant/arundo",
+      "tfc:plant/bunchberry_bush_patch",
+      "tfc:plant/gooseberry_bush_patch",
+      "tfc:plant/snowberry_bush_patch",
+      "tfc:plant/cloudberry_bush_patch",
+      "tfc:plant/strawberry_bush_patch",
+      "tfc:plant/wintergreen_berry_bush_patch",
+      "tfc:plant/cranberry_bush_patch",
       "tfc:plant/banana",
       "tfc:plant/cherry",
       "tfc:plant/green_apple",
@@ -214,7 +223,16 @@
     []
   ],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "water_creature": [
+      {
+        "type": "tfc:manatee",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ]
+  },
   "player_spawn_friendly": false,
   "creature_spawn_probability": 0.5,
   "spawn_costs": {}

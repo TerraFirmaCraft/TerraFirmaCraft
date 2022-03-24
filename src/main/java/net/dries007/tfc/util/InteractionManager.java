@@ -17,11 +17,13 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +40,7 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -76,7 +79,7 @@ public final class InteractionManager
                 for (Direction direction : new Direction[] {facing, facing.getClockWise(), facing.getOpposite(), facing.getCounterClockWise()})
                 {
                     final BlockPos headPos = basePos.relative(direction, 1);
-                    if (world.getBlockState(basePos).is(TFCTags.Blocks.THATCH_BED_THATCH) && world.getBlockState(headPos).is(TFCTags.Blocks.THATCH_BED_THATCH))
+                    if (Helpers.isBlock(world.getBlockState(basePos), TFCTags.Blocks.THATCH_BED_THATCH) && Helpers.isBlock(world.getBlockState(headPos), TFCTags.Blocks.THATCH_BED_THATCH))
                     {
                         final BlockPos playerPos = player.blockPosition();
                         if (playerPos != headPos && playerPos != basePos)
@@ -176,11 +179,12 @@ public final class InteractionManager
                 final BlockPos pos = context.getClickedPos();
                 final BlockState stateAt = world.getBlockState(pos);
                 if (player != null && (player.blockPosition().equals(pos) || player.blockPosition().equals(pos.above()))) return InteractionResult.FAIL;
-                if (stateAt.is(TFCBlocks.CHARCOAL_PILE.get()))
+                if (Helpers.isBlock(stateAt, TFCBlocks.CHARCOAL_PILE.get()))
                 {
                     int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
                     if (layers != 8)
                     {
+                        stack.shrink(1);
                         world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
                         Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                         return InteractionResult.SUCCESS;
@@ -188,6 +192,7 @@ public final class InteractionManager
                 }
                 if (world.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(world, pos, Direction.UP))
                 {
+                    stack.shrink(1);
                     world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
                     Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                     return InteractionResult.SUCCESS;
@@ -206,25 +211,25 @@ public final class InteractionManager
             final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())
             {
-                final Level world = context.getLevel();
+                final Level level = context.getLevel();
                 final Direction direction = context.getClickedFace();
                 final BlockPos posClicked = context.getClickedPos();
-                final BlockState stateClicked = world.getBlockState(posClicked);
+                final BlockState stateClicked = level.getBlockState(posClicked);
                 final BlockPos relativePos = posClicked.relative(direction);
 
                 // If we're targeting a log pile, we can do one of two insertion operations
-                if (stateClicked.is(TFCBlocks.LOG_PILE.get()))
+                if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
-                    return world.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
+                    return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
                         .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(t -> t))
                         .map(cap -> {
                             ItemStack insertStack = stack.copy();
                             insertStack = Helpers.insertAllSlots(cap, insertStack);
                             if (insertStack.getCount() < stack.getCount()) // Some logs were inserted
                             {
-                                if (!world.isClientSide())
+                                if (!level.isClientSide())
                                 {
-                                    Helpers.playSound(world, relativePos, SoundEvents.WOOD_PLACE);
+                                    Helpers.playSound(level, relativePos, SoundEvents.WOOD_PLACE);
                                     stack.setCount(insertStack.getCount());
                                 }
                                 return InteractionResult.SUCCESS;
@@ -239,14 +244,14 @@ public final class InteractionManager
                             return result;
                         }).orElse(InteractionResult.PASS);
                 }
-                else
+                else if (!level.getBlockState(relativePos.below()).isAir())
                 {
                     // Trying to place a log pile.
                     final ItemStack insertStack = stack.copy();
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        world.getBlockEntity(relativePos, TFCBlockEntities.LOG_PILE.get())
+                        level.getBlockEntity(relativePos, TFCBlockEntities.LOG_PILE.get())
                             .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
                             .ifPresent(cap -> {
                                 insertStack.setCount(1);
@@ -267,7 +272,7 @@ public final class InteractionManager
                 final BlockPos pos = context.getClickedPos();
                 final BlockPos abovePos = pos.above();
                 Player player = context.getPlayer();
-                if (player != null && context.getClickedFace() == Direction.UP && level.getBlockState(pos).is(TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
+                if (player != null && context.getClickedFace() == Direction.UP && Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SCRAPING_SURFACE) && level.getBlockState(abovePos).isAir())
                 {
                     level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
                     level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
@@ -320,9 +325,9 @@ public final class InteractionManager
     /**
      * Register an interaction. This method is safe to call during parallel mod loading.
      */
-    public static void register(Tag<Item> tag, boolean targetAir, OnItemUseAction action)
+    public static void register(TagKey<Item> tag, boolean targetAir, OnItemUseAction action)
     {
-        register(new Entry(action, stack -> tag.contains(stack.getItem()), tag::getValues, targetAir));
+        register(new Entry(action, stack -> Helpers.isItem(stack.getItem(), tag), () -> Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS), targetAir));
     }
 
     public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, ItemStackContainerProvider container)

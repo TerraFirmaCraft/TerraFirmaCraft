@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,6 +31,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;
@@ -166,5 +166,11 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     public boolean canSpawnIn(Fluid fluid)
     {
         return fluid.isSame(TFCFluids.SALT_WATER.getSource());
+    }
+
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
@@ -24,7 +25,7 @@ public record ForestConfig(List<Entry> entries) implements FeatureConfiguration
         Entry.CODEC.listOf().fieldOf("entries").forGetter(c -> c.entries)
     ).apply(instance, ForestConfig::new));
 
-    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<List<BlockState>> groundcover, Supplier<ConfiguredFeature<?, ?>> treeFeature, Optional<Supplier<ConfiguredFeature<?, ?>>> oldGrowthFeature)
+    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<List<BlockState>> groundcover, Holder<ConfiguredFeature<?, ?>> treeFeature, Optional<Holder<ConfiguredFeature<?, ?>>> oldGrowthFeature)
     {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("min_rain").forGetter(c -> c.minRainfall),
@@ -61,12 +62,12 @@ public record ForestConfig(List<Entry> entries) implements FeatureConfiguration
 
         public ConfiguredFeature<?, ?> getFeature()
         {
-            return treeFeature.get();
+            return treeFeature.value();
         }
 
         public ConfiguredFeature<?, ?> getOldGrowthFeature()
         {
-            return oldGrowthFeature.orElse(treeFeature).get();
+            return oldGrowthFeature.orElse(treeFeature).value();
         }
     }
 }

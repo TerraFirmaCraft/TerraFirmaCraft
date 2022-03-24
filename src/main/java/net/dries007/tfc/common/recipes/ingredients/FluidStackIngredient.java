@@ -40,7 +40,7 @@ public final class FluidStackIngredient implements Predicate<FluidStack>
     }
 
     private final FluidIngredient fluid;
-    private final int amount;
+    public final int amount;
 
     private FluidStackIngredient(JsonObject json)
     {

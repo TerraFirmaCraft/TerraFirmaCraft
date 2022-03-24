@@ -6,16 +6,17 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.Random;
-
+import net.minecraft.core.Holder;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.SpringConfiguration;
+
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.util.Helpers;
@@ -39,21 +40,21 @@ public class SpringFeature extends Feature<SpringConfiguration>
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos).move(0, 1, 0);
         final BlockState stateAbove = world.getBlockState(mutablePos);
-        if (config.validBlocks.contains(stateAbove.getBlock()))
+        if (config.validBlocks.contains(getHolder(stateAbove)))
         {
             mutablePos.move(0, -2, 0);
             final BlockState stateBelow = world.getBlockState(mutablePos);
-            if (!config.requiresBlockBelow || config.validBlocks.contains(stateBelow.getBlock()))
+            if (!config.requiresBlockBelow || config.validBlocks.contains(getHolder(stateBelow)))
             {
                 final BlockState stateAt = world.getBlockState(pos);
-                if (stateAt.isAir() || config.validBlocks.contains(stateAt.getBlock()))
+                if (stateAt.isAir() || config.validBlocks.contains(getHolder(stateAt)))
                 {
                     int rockCount = 0, holeCount = 0;
                     for (Direction direction : Helpers.DIRECTIONS)
                     {
                         mutablePos.set(pos).move(direction);
                         final BlockState stateAdjacent = world.getBlockState(mutablePos);
-                        if (config.validBlocks.contains(stateAdjacent.getBlock()))
+                        if (config.validBlocks.contains(getHolder(stateAdjacent)))
                         {
                             rockCount++;
                         }
@@ -73,5 +74,10 @@ public class SpringFeature extends Feature<SpringConfiguration>
             }
         }
         return false;
+    }
+
+    private static Holder<Block> getHolder(BlockState state)
+    {
+        return Helpers.getHolder(ForgeRegistries.BLOCKS, state.getBlock());
     }
 }

@@ -40,6 +40,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -59,13 +60,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.model.*;
-import net.dries007.tfc.client.particle.BubbleParticle;
-import net.dries007.tfc.client.particle.GlintParticleProvider;
-import net.dries007.tfc.client.particle.SteamParticle;
-import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
@@ -73,6 +72,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
@@ -146,6 +146,24 @@ public final class ClientEventHandler
                             return (main || off) && entity instanceof Player && ((Player) entity).fishing != null ? 1.0F : 0.0F;
                         }
                     });
+
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
+                        if (entity instanceof Player player && player.isUsingItem())
+                        {
+                            return (float) player.getUseItemRemainingTicks() / PanItem.USE_TIME;
+                        }
+                        return 1F;
+                    });
+
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("rock"), (stack, level, entity, unused) -> {
+                        final BlockState state = PanItem.readState(stack);
+                        return state != null ? OreDeposit.rockValue(state) : 0F;
+                    });
+
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("ore"), (stack, level, entity, unused) -> {
+                        final BlockState state = PanItem.readState(stack);
+                        return state != null ? OreDeposit.oreValue(state) : 0F;
+                    });
                 }
             }
         });
@@ -163,6 +181,7 @@ public final class ClientEventHandler
         TFCBlocks.ROCK_BLOCKS.values().stream().map(map -> map.get(Rock.BlockType.SPIKE)).forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout));
         TFCBlocks.ORES.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
         TFCBlocks.GRADED_ORES.values().forEach(map -> map.values().forEach(inner -> inner.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout))));
+        TFCBlocks.ORE_DEPOSITS.values().forEach(map -> map.values().forEach(reg -> ItemBlockRenderTypes.setRenderLayer(reg.get(), cutout)));
 
         // Wood blocks
         TFCBlocks.WOODS.values().forEach(map -> {
@@ -202,6 +221,7 @@ public final class ClientEventHandler
         TFCBlocks.FRUIT_TREE_LEAVES.values().forEach(leaves -> ItemBlockRenderTypes.setRenderLayer(leaves.get(), cutoutMipped));
         TFCBlocks.FRUIT_TREE_SAPLINGS.values().forEach(leaves -> ItemBlockRenderTypes.setRenderLayer(leaves.get(), cutout));
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BANANA_PLANT.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_BANANA_PLANT.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BANANA_SAPLING.get(), cutout);
 
         // Other
@@ -211,6 +231,10 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), cutout);
+        TFCBlocks.STAINED_WATTLE.values().forEach(wattle -> ItemBlockRenderTypes.setRenderLayer(wattle.get(), cutout));
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), cutout);
+
+
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICE_PILE.get(), translucent);
 
@@ -240,11 +264,17 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.SALMON.get(), SalmonRenderer::new);
         event.registerEntityRenderer(TFCEntities.TROPICAL_FISH.get(), TropicalFishRenderer::new);
         event.registerEntityRenderer(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
-        event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), BluegillRenderer::new);
+        event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), ctx -> new SimpleMobRenderer<>(ctx, new BluegillModel(ClientHelpers.bakeSimple(ctx, "bluegill")), "bluegill", true));
         event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
-        event.registerEntityRenderer(TFCEntities.LOBSTER.get(), LobsterRenderer::new);
-        event.registerEntityRenderer(TFCEntities.ISOPOD.get(), IsopodRenderer::new);
-        event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), HorseshoeCrabRenderer::new);
+        event.registerEntityRenderer(TFCEntities.LOBSTER.get(), ctx -> new SimpleMobRenderer<>(ctx, new LobsterModel(ClientHelpers.bakeSimple(ctx, "lobster")), "lobster"));
+        event.registerEntityRenderer(TFCEntities.ISOPOD.get(), ctx -> new SimpleMobRenderer<>(ctx, new IsopodModel(ClientHelpers.bakeSimple(ctx, "isopod")), "isopod"));
+        event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), ctx -> new SimpleMobRenderer<>(ctx, new HorseshoeCrabModel(ClientHelpers.bakeSimple(ctx, "horseshoe_crab")), "horseshoe_crab"));
+        event.registerEntityRenderer(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
+        event.registerEntityRenderer(TFCEntities.ORCA.get(), ctx -> new SimpleMobRenderer<>(ctx, new OrcaModel(ClientHelpers.bakeSimple(ctx, "orca")), "orca"));
+        event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer<>(ctx, new ManateeModel(ClientHelpers.bakeSimple(ctx, "manatee")), "manatee"));
+        event.registerEntityRenderer(TFCEntities.TURTLE.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCTurtleModel(ClientHelpers.bakeSimple(ctx, "turtle")), "turtle"));
+        event.registerEntityRenderer(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
+        event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), TFCPolarBearRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -255,6 +285,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.LOOM.get(), ctx -> new LoomBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.SLUICE.get(), ctx -> new SluiceBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -269,6 +301,11 @@ public final class ClientEventHandler
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("lobster"), LobsterModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("orca"), OrcaModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("manatee"), ManateeModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("turtle"), TFCTurtleModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("penguin"), PenguinModel::createBodyLayer);
+        event.registerLayerDefinition(ClientHelpers.modelIdentifier("polar_bear"), TFCPolarBearModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)
@@ -337,12 +374,16 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.POTASSIUM.get(), set -> new GlintParticleProvider(set, ChatFormatting.LIGHT_PURPLE));
         particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
-
+        particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)
     {
         TextureAtlas atlas = event.getAtlas();
+        if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS))
+        {
+            event.addSprite(Helpers.identifier("block/burlap"));
+        }
         if (atlas.location().equals(Sheets.CHEST_SHEET))
         {
             Arrays.stream(Wood.values()).map(Wood::getSerializedName).forEach(name -> {
