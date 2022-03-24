@@ -34,13 +34,16 @@ public class LeatherKnappingContainer extends KnappingContainer
         {
             player.getOffhandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.OFF_HAND));
         }
-        for (ItemStack invItem : player.getInventory().items)
+        else
         {
-            if (Helpers.isItem(invItem.getItem(), TFCTags.Items.KNIVES))
+            for (ItemStack invItem : player.getInventory().items)
             {
-                // safe to do nothing as broadcasting break handles item use (which you can't do in the inventory)
-                invItem.hurtAndBreak(1, player, p -> {});
-                break;
+                if (Helpers.isItem(invItem.getItem(), TFCTags.Items.KNIVES))
+                {
+                    // safe to do nothing as broadcasting break handles item use (which you can't do in the inventory)
+                    invItem.hurtAndBreak(1, player, p -> {});
+                    break;
+                }
             }
         }
     }

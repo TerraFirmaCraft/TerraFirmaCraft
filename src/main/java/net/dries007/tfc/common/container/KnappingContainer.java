@@ -169,12 +169,7 @@ public class KnappingContainer extends ItemStackContainer implements ButtonHandl
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        return switch (typeOf(slotIndex))
-            {
-                case CONTAINER -> !moveItemStackTo(stack, containerSlots, containerSlots + 36, true); // Hotbar first
-                case HOTBAR -> !moveItemStackTo(stack, containerSlots, containerSlots + 27, false);
-                case MAIN_INVENTORY -> !moveItemStackTo(stack, containerSlots + 27, containerSlots + 36, false);
-            };
+        return true; // no shift clicking
     }
 
     @Override
