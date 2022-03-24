@@ -603,6 +603,8 @@ def generate(rm: ResourceManager):
                'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_panned'}}]
             }))
     item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+    item_model_property(rm, 'handstone', [{'predicate': {'tfc:damaged': 1.0}, 'model': 'tfc:item/handstone_damaged'}], {'parent': 'tfc:item/handstone_healthy'}).with_lang(lang('Handstone'))
+    rm.item_model('handstone_damaged', {'handstone': 'tfc:block/devices/quern/handstone_top_damaged', 'particle': 'tfc:block/devices/quern/handstone_top_damaged', 'side': 'tfc:block/devices/quern/handstone_side_damaged'}, parent='tfc:item/handstone_healthy')
 
     # Pottery
     for pottery in SIMPLE_POTTERY:  # both fired and unfired items

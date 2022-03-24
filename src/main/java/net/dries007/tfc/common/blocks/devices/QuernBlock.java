@@ -88,6 +88,10 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         else
         {
             ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(slot, inventory.getStackInSlot(slot).getCount(), false));
+            if (slot == SLOT_HANDSTONE)
+            {
+                insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_INPUT); // extract the grinding item too
+            }
         }
         quern.setAndUpdateSlots(slot);
         return InteractionResult.sidedSuccess(level.isClientSide);

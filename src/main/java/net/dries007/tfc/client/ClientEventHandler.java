@@ -164,6 +164,8 @@ public final class ClientEventHandler
                         final BlockState state = PanItem.readState(stack);
                         return state != null ? OreDeposit.oreValue(state) : 0F;
                     });
+
+                    ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
                 }
             }
         });

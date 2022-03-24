@@ -6,7 +6,8 @@
 
 package net.dries007.tfc.common.container;
 
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
  */
 public class ItemStackContainer extends Container
 {
-    private static final List<ClickType> ILLEGAL_ITEM_CLICKS = List.of(ClickType.QUICK_MOVE, ClickType.PICKUP, ClickType.THROW, ClickType.SWAP);
+    private static final Set<ClickType> ILLEGAL_ITEM_CLICKS = EnumSet.of(ClickType.QUICK_MOVE, ClickType.PICKUP, ClickType.THROW, ClickType.SWAP);
 
     protected final ItemStack stack;
     protected final Player player;
@@ -82,7 +83,6 @@ public class ItemStackContainer extends Container
         // the slot is the item index, and it's an illegal action (like, swapping the items)
         // the hotbar item is being swapped out
         // the action is "pickup all" (this ignores every slot, so we cannot allow it)
-        // we also ignore all shift clicking container-wide
         if (!(slot == itemIndex && ILLEGAL_ITEM_CLICKS.contains(clickType)) && !(dragType == hotbarIndex && clickType == ClickType.SWAP) && clickType != ClickType.PICKUP_ALL)
         {
             super.clicked(slot, dragType, clickType, player);

@@ -589,7 +589,6 @@ DEFAULT_LANG = {
     'tfc.tile_entity.log_pile': 'Log Pile',
     'tfc.tile_entity.charcoal_forge': 'Forge',
     'tfc.tile_entity.crucible': 'Crucible',
-    'item.tfc.handstone': 'Handstone',
     'effect.tfc.pinned': 'Pinned',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
