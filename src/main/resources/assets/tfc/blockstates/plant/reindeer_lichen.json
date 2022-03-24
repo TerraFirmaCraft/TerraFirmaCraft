@@ -42,8 +42,7 @@
         "up": "true"
       },
       "apply": {
-        "model": "tfc:block/plant/reindeer_lichen",
-        "x": 180
+        "model": "tfc:block/plant/reindeer_lichen_hanging"
       }
     },
     {

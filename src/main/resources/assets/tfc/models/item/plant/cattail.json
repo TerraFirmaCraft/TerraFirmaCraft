@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plant/cattail_single_2"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/plant/cattail"
+  }
 }

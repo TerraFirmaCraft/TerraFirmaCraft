@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import javax.annotation.Nullable;
@@ -157,6 +158,8 @@ public enum Plant implements IPlant
     @Nullable private final int[] stagesByMonth;
     private final BlockType type;
 
+    private static final List<Plant> tintedItems = Arrays.asList(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, KANGAROO_PAW, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
+
     Plant(BlockType type, float speedFactor, @Nullable int[] stagesByMonth)
     {
         this.type = type;
@@ -208,6 +211,11 @@ public enum Plant implements IPlant
     public boolean isSeasonal()
     {
         return type == BlockType.VINE;
+    }
+
+    public boolean isItemTinted()
+    {
+        return tintedItems.contains(this);
     }
 
     @VisibleForTesting

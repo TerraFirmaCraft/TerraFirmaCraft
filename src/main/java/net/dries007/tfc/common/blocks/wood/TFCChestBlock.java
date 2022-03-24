@@ -6,21 +6,31 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.CompoundContainer;
+import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.DoubleBlockCombiner;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -30,6 +40,49 @@ public class TFCChestBlock extends ChestBlock implements IForgeBlockExtension, E
     private final String textureLocation;
     private final ExtendedProperties extendedProperties;
 
+    // WHY MINECRAFT :(
+    private static final DoubleBlockCombiner.Combiner<ChestBlockEntity, Optional<MenuProvider>> MENU_PROVIDER_COMBINER = new DoubleBlockCombiner.Combiner<>()
+    {
+        public Optional<MenuProvider> acceptDouble(final ChestBlockEntity chest1, final ChestBlockEntity chest2)
+        {
+            final Container container = new CompoundContainer(chest1, chest2);
+            return Optional.of(new MenuProvider()
+            {
+                @Nullable
+                public AbstractContainerMenu createMenu(int id, Inventory inventory, Player player)
+                {
+                    if (chest1.canOpen(player) && chest2.canOpen(player))
+                    {
+                        chest1.unpackLootTable(inventory.player);
+                        chest2.unpackLootTable(inventory.player);
+                        return new ChestMenu(MenuType.GENERIC_9x4, id, inventory, container, 4);
+                    }
+                    return null;
+                }
+
+                public Component getDisplayName()
+                {
+                    if (chest1.hasCustomName())
+                    {
+                        return chest1.getDisplayName();
+                    }
+                    return chest2.hasCustomName() ? chest2.getDisplayName() : new TranslatableComponent("container.chestDouble");
+                }
+            });
+        }
+
+        @Override
+        public Optional<MenuProvider> acceptSingle(ChestBlockEntity chest)
+        {
+            return Optional.of(chest);
+        }
+
+        @Override
+        public Optional<MenuProvider> acceptNone()
+        {
+            return Optional.empty();
+        }
+    };
 
     public TFCChestBlock(ExtendedProperties properties, String textureLocation)
     {
@@ -59,6 +112,13 @@ public class TFCChestBlock extends ChestBlock implements IForgeBlockExtension, E
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return EntityBlockExtension.super.newBlockEntity(pos, state);
+    }
+
+    @Nullable
+    @Override
+    public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos)
+    {
+        return this.combine(state, level, pos, false).apply(MENU_PROVIDER_COMBINER).orElse(null);
     }
 
     @Nullable
