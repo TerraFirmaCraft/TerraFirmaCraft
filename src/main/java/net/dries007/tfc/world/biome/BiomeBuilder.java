@@ -9,7 +9,7 @@ package net.dries007.tfc.world.biome;
 import java.util.Objects;
 import java.util.function.*;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.TFCChunkGenerator;

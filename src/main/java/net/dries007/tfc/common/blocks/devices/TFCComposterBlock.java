@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks.devices;
 import java.util.Locale;
 import java.util.Random;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

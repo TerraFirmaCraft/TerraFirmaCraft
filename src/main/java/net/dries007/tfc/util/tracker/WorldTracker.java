@@ -7,8 +7,8 @@
 package net.dries007.tfc.util.tracker;
 
 import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -203,7 +203,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {

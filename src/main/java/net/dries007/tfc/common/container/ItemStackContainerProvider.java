@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.container;
 
 import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;

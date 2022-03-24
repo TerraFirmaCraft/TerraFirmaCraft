@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonElement;
 import net.minecraft.world.item.ItemStack;

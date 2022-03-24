@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.*;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;

@@ -7,8 +7,8 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -206,7 +206,7 @@ public class VesselItem extends Item
             }
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack getContainer()
         {
@@ -219,9 +219,9 @@ public class VesselItem extends Item
             return inventory;
         }
 
-        @Nonnull
+        @NotNull
         @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
+        public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
         {
             if (cap == HeatCapability.CAPABILITY || cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
             {
@@ -231,7 +231,7 @@ public class VesselItem extends Item
             return LazyOptional.empty();
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack getFluidInTank(int tank)
         {
@@ -245,7 +245,7 @@ public class VesselItem extends Item
         }
 
         @Override
-        public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+        public boolean isFluidValid(int tank, @NotNull FluidStack stack)
         {
             return Metal.get(stack.getFluid()) != null;
         }
@@ -261,7 +261,7 @@ public class VesselItem extends Item
             return 0;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {
@@ -286,7 +286,7 @@ public class VesselItem extends Item
             inventory.setStackInSlot(slot, stack);
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
@@ -299,7 +299,7 @@ public class VesselItem extends Item
             return result;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {

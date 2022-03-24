@@ -8,7 +8,7 @@ package net.dries007.tfc.util;
 
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;

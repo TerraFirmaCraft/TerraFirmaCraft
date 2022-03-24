@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -84,8 +84,8 @@ public class LampBlockEntity extends TickCounterBlockEntity
     }
 
     @Override
-    @Nonnull
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing)
+    @NotNull
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return holder.cast();

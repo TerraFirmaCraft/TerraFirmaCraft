@@ -29,31 +29,31 @@ public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
     @Override
     public boolean place(FeaturePlaceContext<OverlayTreeConfig> context)
     {
-        final WorldGenLevel worldIn = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random random = context.random();
         final OverlayTreeConfig config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
-        final StructureManager manager = TreeHelpers.getStructureManager(worldIn);
-        final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(worldIn, chunkPos, random);
+        final StructureManager manager = TreeHelpers.getStructureManager(level);
+        final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);
         final StructureTemplate structureBase = manager.getOrCreate(config.base());
         final StructureTemplate structureOverlay = manager.getOrCreate(config.overlay());
 
-        if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius(), 3))
+        if (!isValidLocation(level, mutablePos) || !isAreaClear(level, mutablePos, config.radius(), 3))
         {
             return false;
         }
 
         config.trunk().ifPresent(trunk -> {
-            final int height = TreeHelpers.placeTrunk(worldIn, mutablePos, random, settings, trunk);
+            final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
             mutablePos.move(0, height, 0);
         });
 
-        TreeHelpers.placeTemplate(structureBase, settings, worldIn, mutablePos.subtract(TreeHelpers.transformCenter(structureBase.getSize(), settings)));
+        TreeHelpers.placeTemplate(structureBase, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureBase.getSize(), settings)));
         settings.addProcessor(new BlockRotProcessor(config.overlayIntegrity()));
-        TreeHelpers.placeTemplate(structureOverlay, settings, worldIn, mutablePos.subtract(TreeHelpers.transformCenter(structureOverlay.getSize(), settings)));
+        TreeHelpers.placeTemplate(structureOverlay, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureOverlay.getSize(), settings)));
         return true;
     }
 }
