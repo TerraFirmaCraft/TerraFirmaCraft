@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant.coral;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;

@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Objects;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;

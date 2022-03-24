@@ -9,7 +9,7 @@ package net.dries007.tfc.common.capabilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;

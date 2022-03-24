@@ -9,7 +9,7 @@ package net.dries007.tfc.util;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;

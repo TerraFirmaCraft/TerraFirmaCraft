@@ -8,7 +8,7 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.world.level.block.Block;
@@ -110,7 +110,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
         return shapeCache.get(state);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {

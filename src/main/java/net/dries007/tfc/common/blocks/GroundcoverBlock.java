@@ -7,8 +7,8 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -84,7 +84,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {

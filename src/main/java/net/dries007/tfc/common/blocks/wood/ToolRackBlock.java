@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;

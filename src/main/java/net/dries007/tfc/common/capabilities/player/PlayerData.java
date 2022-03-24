@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.capabilities.player;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -93,7 +93,7 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
         this.intoxicationTick = intoxicationTick;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
