@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
@@ -25,6 +24,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.items.VesselItem;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A {@link IFluidHandler} capability provider implementation for item stacks.
@@ -125,7 +125,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
 
     @NotNull
     @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @NotNull Direction direction)
+    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction direction)
     {
         if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
         {
