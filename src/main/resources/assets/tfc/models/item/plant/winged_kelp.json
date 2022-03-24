@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/winged_kelp/top"
+    "layer0": "tfc:item/plant/winged_kelp"
   }
 }

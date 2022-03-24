@@ -140,7 +140,7 @@ public enum Wood implements StringRepresentable
         PRESSURE_PLATE(wood -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties(wood).noCollission().strength(0.5F).sound(SoundType.WOOD)), true),
         SLAB(wood -> new SlabBlock(properties(wood).strength(2.0F, 3.0F)), true),
         STAIRS(wood -> new StairBlock(() -> getBlock(PLANKS, wood).get().defaultBlockState(), properties(wood).strength(2.0F, 3.0F).sound(SoundType.WOOD)), true),
-        TOOL_RACK(wood -> new ToolRackBlock(properties(wood).strength(2.0F).noOcclusion()), true),
+        TOOL_RACK(wood -> new ToolRackBlock(ExtendedProperties.of(properties(wood).strength(2.0F).noOcclusion()).blockEntity(TFCBlockEntities.TOOL_RACK)), true),
         TWIG(wood -> GroundcoverBlock.twig(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noCollission()), false),
         FALLEN_LEAVES(wood -> new FallenLeavesBlock(Block.Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP)), false),
         VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(ExtendedProperties.of(properties(wood).strength(1.0F).noOcclusion()).flammable(60, 60)), false),

@@ -1,1 +1,6 @@
-{"parent":"item/generated","textures":{"layer0":"tfc:block/plant/bur_reed/bur_reed_item"}}
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/plant/bur_reed"
+  }
+}
