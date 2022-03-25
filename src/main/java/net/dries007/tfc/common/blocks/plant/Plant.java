@@ -7,12 +7,12 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.jetbrains.annotations.Nullable;
 
-import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -155,12 +155,12 @@ public enum Plant implements IPlant
 
     private final float speedFactor;
     @Nullable private final IntegerProperty property;
-    @Nullable private final int[] stagesByMonth;
+    private final int @Nullable[] stagesByMonth;
     private final BlockType type;
 
-    private static final List<Plant> tintedItems = Arrays.asList(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, KANGAROO_PAW, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
+    private static final Set<Plant> TINTED_ITEMS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, KANGAROO_PAW, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
 
-    Plant(BlockType type, float speedFactor, @Nullable int[] stagesByMonth)
+    Plant(BlockType type, float speedFactor, int @Nullable[] stagesByMonth)
     {
         this.type = type;
         this.speedFactor = speedFactor;
@@ -215,13 +215,7 @@ public enum Plant implements IPlant
 
     public boolean isItemTinted()
     {
-        return tintedItems.contains(this);
-    }
-
-    @VisibleForTesting
-    public BlockType getType()
-    {
-        return type;
+        return TINTED_ITEMS.contains(this);
     }
 
     /**
@@ -273,7 +267,7 @@ public enum Plant implements IPlant
         KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALT_WATER)),
         KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()))),
         FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), nonSolid(plant)), WaterLilyBlockItem::new),
-        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, solid()), WaterLilyBlockItem::new),
+        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, nonSolid(plant)), WaterLilyBlockItem::new),
         TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         TALL_WATER_FRESH((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         WATER((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
@@ -346,11 +340,6 @@ public enum Plant implements IPlant
         {
             this.factory = factory;
             this.blockItemFactory = blockItemFactory;
-        }
-
-        public int getFallFoliageCoords()
-        {
-            return 200;
         }
     }
 }
