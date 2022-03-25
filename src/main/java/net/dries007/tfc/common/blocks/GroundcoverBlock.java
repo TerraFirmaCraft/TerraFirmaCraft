@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.function.Supplier;
+
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,7 +91,6 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         final FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
-
         BlockState state = defaultBlockState();
         if (getFluidProperty().canContain(fluidState.getType()))
         {
@@ -106,32 +107,21 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
-        {
-            return Blocks.AIR.defaultBlockState();
-        }
-        else
-        {
-            final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
-            if (containedFluid != Fluids.EMPTY)
-            {
-                worldIn.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(worldIn));
-            }
-            return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
-        }
+        FluidHelpers.tickFluid(level, currentPos, state, this);
+        return state.canSurvive(level, currentPos) ? super.updateShape(state, facing, facingState, level, currentPos, facingPos) : state.getFluidState().createLegacyBlock();
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
-        worldIn.removeBlock(pos, false);
-        if (!player.isCreative() && worldIn instanceof ServerLevel)
+        level.removeBlock(pos, false);
+        if (!player.isCreative() && level instanceof ServerLevel)
         {
-            BlockEntity tileEntity = state.hasBlockEntity() ? worldIn.getBlockEntity(pos) : null;
-            getDrops(state, (ServerLevel) worldIn, pos, tileEntity, null, ItemStack.EMPTY).forEach(stackToSpawn -> ItemHandlerHelper.giveItemToPlayer(player, stackToSpawn));
+            BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;
+            getDrops(state, (ServerLevel) level, pos, tileEntity, null, ItemStack.EMPTY).forEach(stackToSpawn -> ItemHandlerHelper.giveItemToPlayer(player, stackToSpawn));
         }
         return InteractionResult.SUCCESS;
     }
@@ -145,14 +135,14 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.below()).isFaceSturdy(worldIn, pos, Direction.UP);
+        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return shape;
     }
@@ -164,8 +154,8 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
-        return pickBlock != null ? new ItemStack(pickBlock.get()) : super.getCloneItemStack(state, target, world, pos, player);
+        return pickBlock != null ? new ItemStack(pickBlock.get()) : super.getCloneItemStack(state, target, level, pos, player);
     }
 }

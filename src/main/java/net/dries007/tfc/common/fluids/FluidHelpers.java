@@ -375,4 +375,11 @@ public final class FluidHelpers
             level.setBlock(pos, fluid.defaultFluidState().createLegacyBlock(), 3);
         }
     }
+
+    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state, IFluidLoggable loggable)
+    {
+        final Fluid contained = state.getValue(loggable.getFluidProperty()).getFluid();
+        if (contained.isSame(Fluids.EMPTY)) return;
+        level.scheduleTick(pos, contained, contained.getTickDelay(level));
+    }
 }

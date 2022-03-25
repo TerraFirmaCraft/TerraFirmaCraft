@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks;
 
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -59,11 +60,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        final Fluid contained = state.getValue(getFluidProperty()).getFluid();
-        if (!contained.isSame(Fluids.EMPTY))
-        {
-            level.scheduleTick(currentPos, contained, contained.getTickDelay(level));
-        }
+        FluidHelpers.tickFluid(level, currentPos, state, this);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
