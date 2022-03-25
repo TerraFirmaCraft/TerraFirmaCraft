@@ -1,0 +1,52 @@
+{
+  "music.game": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "tfc:music/m0-dreams_of_the_phae",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m1-firmavista",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m2-sycamore_heights",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m3-terrafirmacraft",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m4-through_the_willows",
+        "stream": true
+      }
+    ]
+  },
+  "music.menu": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "tfc:music/m0-dreams_of_the_phae",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m1-firmavista",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m2-sycamore_heights",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m3-terrafirmacraft",
+        "stream": true
+      },
+      {
+        "name": "tfc:music/m4-through_the_willows",
+        "stream": true
+      }
+    ]
+  }
+}
