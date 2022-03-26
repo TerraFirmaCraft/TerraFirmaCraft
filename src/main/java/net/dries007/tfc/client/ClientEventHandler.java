@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -31,6 +32,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockModelShaper;
+import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -40,7 +42,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.Mth;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -258,7 +260,7 @@ public final class ClientEventHandler
         // Entities
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
         event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), FishingHookRenderer::new);
-        for (Wood wood : Wood.values())
+        for (Wood wood : Wood.VALUES)
         {
             event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));
         }
@@ -290,14 +292,17 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.LOOM.get(), ctx -> new LoomBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SLUICE.get(), ctx -> new SluiceBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.TOOL_RACK.get(), ctx -> new ToolRackBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.SIGN.get(), TFCSignBlockEntityRenderer::new);
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
     {
-        LayerDefinition model = BoatModel.createBodyModel();
-        for (Wood wood : Wood.values())
+        LayerDefinition boatLayer = BoatModel.createBodyModel();
+        LayerDefinition signLayer = SignRenderer.createSignLayer();
+        for (Wood wood : Wood.VALUES)
         {
-            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), () -> model);
+            event.registerLayerDefinition(TFCBoatRenderer.boatName(wood.getSerializedName()), () -> boatLayer);
+            event.registerLayerDefinition(ClientHelpers.modelIdentifier("sign/" + wood.name().toLowerCase(Locale.ROOT)), () -> signLayer);
         }
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("bluegill"), BluegillModel::createBodyLayer);
         event.registerLayerDefinition(ClientHelpers.modelIdentifier("jellyfish"), JellyfishModel::createBodyLayer);
@@ -385,14 +390,15 @@ public final class ClientEventHandler
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)
     {
-        TextureAtlas atlas = event.getAtlas();
-        if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS))
+        final ResourceLocation sheet = event.getAtlas().location();
+        // noinspection deprecation
+        if (sheet.equals(TextureAtlas.LOCATION_BLOCKS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
         }
-        if (atlas.location().equals(Sheets.CHEST_SHEET))
+        else if (sheet.equals(Sheets.CHEST_SHEET))
         {
-            Arrays.stream(Wood.values()).map(Wood::getSerializedName).forEach(name -> {
+            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> {
                 event.addSprite(Helpers.identifier("entity/chest/normal/" + name));
                 event.addSprite(Helpers.identifier("entity/chest/normal_left/" + name));
                 event.addSprite(Helpers.identifier("entity/chest/normal_right/" + name));
@@ -400,6 +406,10 @@ public final class ClientEventHandler
                 event.addSprite(Helpers.identifier("entity/chest/trapped_left/" + name));
                 event.addSprite(Helpers.identifier("entity/chest/trapped_right/" + name));
             });
+        }
+        else if (sheet.equals(Sheets.SIGN_SHEET))
+        {
+            Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> event.addSprite(Helpers.identifier("entity/signs/" + name)));
         }
     }
 

@@ -57,6 +57,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
             poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
             poseStack.translate(-0.5D, 0.0D, -0.5D);
 
+            // noinspection deprecation
             TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(loom.getInProgressTexture());
 
             drawMaterial(builder, poseStack, progressSprite, loom, tileZ * 2F / 3F, combinedOverlay, combinedLight);

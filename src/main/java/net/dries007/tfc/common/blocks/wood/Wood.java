@@ -59,6 +59,8 @@ public enum Wood implements StringRepresentable
     WHITE_CEDAR(true, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 7, 7),
     WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 7, 11);
 
+    public static final Wood[] VALUES = values();
+
     private final String serializedName;
     private final boolean conifer;
     private final MaterialColor mainColor;
@@ -149,7 +151,9 @@ public enum Wood implements StringRepresentable
         CHEST((self, wood) -> new TFCChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
         TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
         LOOM(wood -> new TFCLoomBlock(ExtendedProperties.of(properties(wood).strength(2.5F).noOcclusion()).flammable(60, 30).blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.name().toLowerCase())), true),
-        SLUICE(wood -> new SluiceBlock(ExtendedProperties.of(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false);
+        SLUICE(wood -> new SluiceBlock(ExtendedProperties.of(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false),
+        SIGN(wood -> new TFCStandingSignBlock(ExtendedProperties.of(properties(wood).noCollission().strength(1F)).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
+        WALL_SIGN(wood -> new TFCWallSignBlock(ExtendedProperties.of(properties(wood).noCollission().strength(1F).lootFrom(getBlock(SIGN, wood))).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true);
 
         public static final BlockType[] VALUES = values();
 
@@ -197,7 +201,7 @@ public enum Wood implements StringRepresentable
 
         public boolean needsItem()
         {
-            return this != VERTICAL_SUPPORT && this != HORIZONTAL_SUPPORT;
+            return this != VERTICAL_SUPPORT && this != HORIZONTAL_SUPPORT && this != SIGN && this != WALL_SIGN;
         }
 
         private BlockType stripped()
