@@ -235,28 +235,24 @@ public final class InteractionManager
                                 return InteractionResult.SUCCESS;
                             }
 
+                            // if we placed instead, insert logs at the RELATIVE position using the mutated stack
                             final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                             if (result.consumesAction())
                             {
-                                insertStack.setCount(1);
-                                cap.insertItem(0, insertStack, false);
+                                // shrinking is handled by the item placement
+                                Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), insertStack);
                             }
                             return result;
                         }).orElse(InteractionResult.PASS);
                 }
                 else if (!level.getBlockState(relativePos.below()).isAir())
                 {
-                    // Trying to place a log pile.
-                    final ItemStack insertStack = stack.copy();
+                    // when placing against a non-pile block
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        level.getBlockEntity(relativePos, TFCBlockEntities.LOG_PILE.get())
-                            .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
-                            .ifPresent(cap -> {
-                                insertStack.setCount(1);
-                                cap.insertItem(0, insertStack, false);
-                            });
+                        // shrinking is handled by the item placement
+                        Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), stack);
                     }
                     return result;
                 }

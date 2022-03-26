@@ -68,6 +68,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -416,6 +417,24 @@ public final class Helpers
             }
         }
         return stack;
+    }
+
+    /**
+     * This WILL NOT MUTATE the stack you give it. Do your own handling!
+     */
+    public static boolean insertOne(Level level, BlockPos pos, BlockEntityType<? extends BlockEntity> type, ItemStack stack)
+    {
+        return insertOne(level.getBlockEntity(pos, type), stack);
+    }
+
+    public static boolean insertOne(Optional<? extends BlockEntity> blockEntity, ItemStack stack)
+    {
+        ItemStack toInsert = stack.copy();
+        return blockEntity.flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
+            .map(cap -> {
+                toInsert.setCount(1);
+                return insertAllSlots(cap, toInsert).isEmpty();
+        }).orElse(false);
     }
 
     /**

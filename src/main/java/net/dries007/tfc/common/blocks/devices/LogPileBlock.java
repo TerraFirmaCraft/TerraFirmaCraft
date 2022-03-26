@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.Optional;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -84,17 +86,11 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 {
                     if (!level.isClientSide)
                     {
-                        // if we are holding logs, insert as much as possible
-                        Helpers.getCapability(logPile, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                            ItemStack insertStack = stack.copy();
-                            insertStack.setCount(1);
-                            insertStack = Helpers.insertAllSlots(cap, insertStack);
-                            if (insertStack.isEmpty())
-                            {
-                                Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
-                                stack.shrink(1);
-                            }
-                        });
+                        if (Helpers.insertOne(Optional.of(logPile), stack))
+                        {
+                            Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
+                            stack.shrink(1);
+                        }
                     }
                 }
                 else
