@@ -38,7 +38,7 @@ public class BellowsEntityRenderer implements BlockEntityRenderer<BellowsBlockEn
     private static final float bellowsWidthMax = 0.875f;
 
     private static final float indentBase = 0.0125f;
-    private static final float indentFactor = 1.5f;
+    private static final float indentFactor = 1.8f;
 
 
     @Override
