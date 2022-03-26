@@ -1019,7 +1019,7 @@ def generate(rm: ResourceManager):
             if variant == 'log':
                 block.with_tag('minecraft:logs')
         rm.item_model(('wood', 'lumber', wood)).with_lang(lang('%s Lumber', wood))
-        rm.item_model(('wood', 'sign', wood)).with_lang(lang('%s Sign', wood))
+        rm.item_model(('wood', 'sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:signs')
         rm.item_model(('wood', 'boat', wood)).with_lang(lang('%s Boat', wood))
 
         # Groundcover
@@ -1163,8 +1163,8 @@ def generate(rm: ResourceManager):
         block.with_block_loot({'name': 'tfc:wood/sluice/%s' % wood, 'conditions': [block_state_property('tfc:wood/sluice/%s' % wood, {'upper': 'true'})]})
         rm.item_model(('wood', 'sluice', wood), parent='tfc:block/wood/sluice/%s_lower' % wood, no_textures=True)
 
-        rm.blockstate(('wood', 'planks', '%s_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_block_model({'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None).with_block_loot('tfc:wood/sign/%s' % wood)
-        rm.blockstate(('wood', 'planks', '%s_wall_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_lang(lang('%s Sign', wood))
+        rm.blockstate(('wood', 'planks', '%s_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_block_model({'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None).with_block_loot('tfc:wood/sign/%s' % wood).with_tag('minecraft:standing_sings')
+        rm.blockstate(('wood', 'planks', '%s_wall_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:wall_signs')
 
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
