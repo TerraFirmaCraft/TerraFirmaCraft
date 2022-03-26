@@ -18,7 +18,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
 import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 
@@ -150,17 +150,17 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
 
     private void drawUpper(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float z, int combinedOverlay, int combinedLight)
     {
-        float[][] sidesX = ClientHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "x");
-        float[][] sidesY = ClientHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "y");
-        float[][] sidesZ = ClientHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "z");
+        float[][] sidesX = RenderHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "x");
+        float[][] sidesY = RenderHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "y");
+        float[][] sidesZ = RenderHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "z");
         draw3D(b, matrixStack, sprite, sidesX, sidesY, sidesZ, combinedOverlay, combinedLight);
     }
 
     private void drawLower(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float z, int combinedOverlay, int combinedLight)
     {
-        float[][] sidesX = ClientHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "x");
-        float[][] sidesY = ClientHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "y");
-        float[][] sidesZ = ClientHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "z");
+        float[][] sidesX = RenderHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "x");
+        float[][] sidesY = RenderHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "y");
+        float[][] sidesZ = RenderHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "z");
         draw3D(b, matrixStack, sprite, sidesX, sidesY, sidesZ, combinedOverlay, combinedLight);
     }
 
