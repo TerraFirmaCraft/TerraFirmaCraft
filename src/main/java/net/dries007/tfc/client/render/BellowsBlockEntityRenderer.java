@@ -24,7 +24,7 @@ import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BellowsBlock;
 import net.dries007.tfc.util.Helpers;
 
-public class BellowsEntityRenderer implements BlockEntityRenderer<BellowsBlockEntity>
+public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBlockEntity>
 {
     private static final ResourceLocation BACK_TEXTURE = Helpers.identifier("block/bellows_back");
     private static final ResourceLocation SIDE_TEXTURE = Helpers.identifier("block/bellows_side");
