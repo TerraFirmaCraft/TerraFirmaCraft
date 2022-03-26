@@ -1237,6 +1237,11 @@ def generate(rm: ResourceManager):
         corals(rm, color, False)
         corals(rm, color, True)
 
+    block = rm.blockstate("bellows",model='tfc:block/bellows', variants=four_rotations('tfc:block/bellows', (270, 180, None, 90)))
+    block.with_lang(lang('Bellows'))
+    block.with_block_loot('tfc:bellows')
+    block.with_tag('minecraft:mineable/axe')
+
 
 def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifier, overrides: utils.Json, data: Dict[str, Any]) -> ItemContext:
     res = utils.resource_location(rm.domain, name_parts)

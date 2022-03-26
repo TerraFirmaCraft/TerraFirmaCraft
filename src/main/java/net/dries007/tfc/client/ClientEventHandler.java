@@ -287,6 +287,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.TRAPPED_CHEST.get(), TFCChestBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.LOOM.get(), ctx -> new LoomBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SLUICE.get(), ctx -> new SluiceBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.BELLOWS.get(), ctx -> new BellowsEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -383,6 +384,8 @@ public final class ClientEventHandler
         if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
+            event.addSprite(Helpers.identifier("block/bellows_back"));
+            event.addSprite(Helpers.identifier("block/bellows_side"));
         }
         if (atlas.location().equals(Sheets.CHEST_SHEET))
         {

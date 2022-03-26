@@ -46,7 +46,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
 
-public class CharcoalForgeBlock extends DeviceBlock
+public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
 {
     public static final IntegerProperty HEAT = TFCBlockStateProperties.HEAT_LEVEL;
 
@@ -116,6 +116,22 @@ public class CharcoalForgeBlock extends DeviceBlock
             entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
         }
         super.stepOn(world, pos, state, entity);
+    }
+
+    @Override
+    public boolean canAcceptAir(BlockState state, Level level, BlockPos pos, Direction facing)
+    {
+        return facing == Direction.UP;
+    }
+
+    @Override
+    public void intakeAir(BlockState state, Level level, BlockPos pos, Direction facing, int amount)
+    {
+        CharcoalForgeBlockEntity forge = level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).orElse(null);
+        if (forge != null)
+        {
+            forge.onAirIntake(amount);
+        }
     }
 
     @Override
