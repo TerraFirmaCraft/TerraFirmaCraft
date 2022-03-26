@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.client;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;

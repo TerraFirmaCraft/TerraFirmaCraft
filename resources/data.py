@@ -176,11 +176,15 @@ def generate(rm: ResourceManager):
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
+            rm.item_tag("usable_on_tool_rack", 'tfc:stone/%s/%s' % (tool, category))
 
     for metal, metal_data in METALS.items():  # Metal Tools
         if 'tool' in metal_data.types:
             for tool_type, tool_tag in TOOL_TAGS.items():
                 rm.item_tag(tool_tag, 'tfc:metal/%s/%s' % (tool_type, metal))
+                rm.item_tag("usable_on_tool_rack", 'tfc:metal/%s/%s' % (tool_type, metal))
+            rm.item_tag("usable_on_tool_rack", 'tfc:metal/fishing_rod/%s' % metal, 'tfc:metal/tuyere/%s' % metal)
+        
 
     # Blocks and Items
     block_and_item_tag(rm, 'forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
@@ -232,6 +236,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)

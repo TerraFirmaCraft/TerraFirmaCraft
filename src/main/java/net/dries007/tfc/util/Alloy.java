@@ -7,7 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Sets;
 import net.minecraft.nbt.CompoundTag;

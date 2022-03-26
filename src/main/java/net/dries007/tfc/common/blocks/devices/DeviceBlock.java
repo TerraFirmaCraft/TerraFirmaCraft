@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;

@@ -8,8 +8,8 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.IntSupplier;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -180,16 +180,16 @@ public class MoldItem extends Item
             }
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack getContainer()
         {
             return stack;
         }
 
-        @Nonnull
+        @NotNull
         @Override
-        public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
+        public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
         {
             if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY || cap == HeatCapability.CAPABILITY)
             {
@@ -212,7 +212,7 @@ public class MoldItem extends Item
             return amount;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack drain(FluidStack resource, FluidAction action)
         {
@@ -229,7 +229,7 @@ public class MoldItem extends Item
             return FluidStack.EMPTY;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {

@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -50,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension, IGhostBlockHandler
 {
-    public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public static final VoxelShape BASE_SHAPE = Shapes.or(
         box(0, 0, 0.5, 3, 1.5, 3),

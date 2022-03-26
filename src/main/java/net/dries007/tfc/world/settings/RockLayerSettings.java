@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.settings;
 
 import java.util.*;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.resources.ResourceLocation;

@@ -7,7 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Locale;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

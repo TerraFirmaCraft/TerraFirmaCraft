@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tfc:block/plant/tree_fern/item"
+    "layer0": "tfc:item/plant/tree_fern"
   }
 }

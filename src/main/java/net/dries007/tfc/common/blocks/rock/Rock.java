@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks.rock;
 import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;

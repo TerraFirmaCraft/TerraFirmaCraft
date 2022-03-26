@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
