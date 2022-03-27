@@ -38,4 +38,6 @@ It is also included in [LICENSE.txt](LICENSE.txt)
 
 Based on original work by Robert "Bioxx" Anthony, Amanda "Kittychanley" Halek and others.
 
-Parts of this project are edited source code from the original TerraFirmaCraft for 1.7.10 mod. They are used under with permission from the original author (Bioxx).
+Music by Mike "Menoch" Pelaez
+
+Parts of this project are edited source code from the original TerraFirmaCraft for 1.7.10 mod. They are used under a different license with permission from the original author (Bioxx).

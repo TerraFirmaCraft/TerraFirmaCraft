@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:multiple",
+  "config": {
+    "features": "#tfc:ocean_plant_features",
+    "biome_check": false
+  }
+}

@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.state.BlockState;

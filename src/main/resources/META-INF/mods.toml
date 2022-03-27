@@ -16,7 +16,7 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
     # A file name (in the root of the mod JAR) containing a logo for display
     #logoFile="examplemod.png" #optional
     # A text field displayed in the mod UI
-    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
+    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty. Music by Mike \"Menoch\" Pelaez" #optional
     # A text field displayed in the mod UI
     authors = "AlcatrazEscapee" #optional
     # The description text for the mod (multi line!) (#mandatory)

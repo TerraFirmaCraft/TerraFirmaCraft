@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;

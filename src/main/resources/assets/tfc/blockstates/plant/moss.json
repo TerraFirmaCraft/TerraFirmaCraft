@@ -42,8 +42,7 @@
         "up": "true"
       },
       "apply": {
-        "model": "tfc:block/plant/moss",
-        "x": 180
+        "model": "tfc:block/plant/moss_hanging"
       }
     },
     {

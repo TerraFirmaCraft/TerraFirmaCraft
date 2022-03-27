@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;

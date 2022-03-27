@@ -7,13 +7,16 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.config.TFCConfig;
 
 public class TFCChestBlockEntity extends ChestBlockEntity
@@ -26,6 +29,18 @@ public class TFCChestBlockEntity extends ChestBlockEntity
     public TFCChestBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.CHEST.get(), pos, state);
+    }
+
+    @Override
+    public int getContainerSize()
+    {
+        return 18;
+    }
+
+    @Override
+    protected AbstractContainerMenu createMenu(int id, Inventory inventory)
+    {
+        return new ChestMenu(MenuType.GENERIC_9x2, id, inventory, this, 2);
     }
 
     @Override

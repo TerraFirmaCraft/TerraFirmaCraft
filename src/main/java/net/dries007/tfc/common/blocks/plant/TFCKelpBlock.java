@@ -8,21 +8,22 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -31,7 +32,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
 {
     public static TFCKelpBlock create(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
-        return new TFCKelpBlock(properties, headBlock, shape, direction)
+        return new TFCKelpBlock(properties.lootFrom(headBlock::get), headBlock, shape, direction)
         {
             @Override
             public FluidProperty getFluidProperty()
@@ -111,6 +112,13 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     {
         super.createBlockStateDefinition(builder);
         builder.add(getFluidProperty());
+    }
+
+    @Override
+    public ItemStack pickupBlock(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    {
+        // Don't allow taking the fluid
+        return ItemStack.EMPTY;
     }
 
     protected GrowingPlantHeadBlock getHeadBlock()

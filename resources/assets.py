@@ -1241,6 +1241,8 @@ def generate(rm: ResourceManager):
     block.with_lang(lang('Bellows'))
     block.with_block_loot('tfc:bellows')
     block.with_tag('minecraft:mineable/axe')
+    
+    rm.lang('subtitles.block.tfc.tool_rack.place_item', 'Item placed on Tool Rack')
 
 
 def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifier, overrides: utils.Json, data: Dict[str, Any]) -> ItemContext:

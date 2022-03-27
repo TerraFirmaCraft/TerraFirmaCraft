@@ -8,7 +8,7 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 import java.util.function.Supplier;
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.Item;
@@ -107,7 +107,7 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
         return true;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
