@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -26,6 +24,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
 {
@@ -40,7 +39,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return Blocks.CHAIN.defaultBlockState().getShape(level, pos, context);
+        return Blocks.CHAIN.withPropertiesOf(state).getShape(level, pos, context);
     }
 
     @Nullable
@@ -50,7 +49,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
         FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
         if (state != null && !fluidState.isEmpty())
         {
-            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            return state.setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidState.getType()));
         }
         return state;
     }
