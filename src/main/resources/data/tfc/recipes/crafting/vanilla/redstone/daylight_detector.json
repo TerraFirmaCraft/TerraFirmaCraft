@@ -2,23 +2,22 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "S S",
-    "SWS",
-    "SRS"
+    "GGG",
+    "RRR",
+    "WWW"
   ],
   "key": {
-    "S": {
-      "tag": "forge:rods/steel"
-    },
-    "W": {
-      "tag": "minecraft:stone_pressure_plates"
+    "G": {
+      "tag": "forge:glass"
     },
     "R": {
       "tag": "forge:dusts/redstone"
+    },
+    "W": {
+      "tag": "tfc:lumber"
     }
   },
   "result": {
-    "item": "minecraft:detector_rail",
-    "count": 8
+    "item": "minecraft:daylight_detector"
   }
 }
