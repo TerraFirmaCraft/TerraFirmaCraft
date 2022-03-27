@@ -11,7 +11,7 @@
       "tag": "tfc:lumber"
     },
     "Y": {
-      "item": "minecraft:leather"
+      "tag": "minecraft:leather"
     }
   },
   "result": {

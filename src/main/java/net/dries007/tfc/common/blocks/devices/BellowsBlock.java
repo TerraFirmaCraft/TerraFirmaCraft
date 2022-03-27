@@ -60,12 +60,7 @@ public class BellowsBlock extends BaseEntityBlock implements IForgeBlockExtensio
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        BellowsBlockEntity bellows = level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).orElse(null);
-        if (bellows != null)
-        {
-            return bellows.onRightClick();
-        }
-        return InteractionResult.PASS;
+        return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).map(BellowsBlockEntity::onRightClick).orElse(InteractionResult.PASS);
     }
 
     @Override
@@ -75,7 +70,7 @@ public class BellowsBlock extends BaseEntityBlock implements IForgeBlockExtensio
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState p_49232_)
+    public RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.MODEL;
     }

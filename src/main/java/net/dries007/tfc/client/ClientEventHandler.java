@@ -384,8 +384,8 @@ public final class ClientEventHandler
         if (atlas.location().equals(TextureAtlas.LOCATION_BLOCKS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
-            event.addSprite(Helpers.identifier("block/bellows_back"));
-            event.addSprite(Helpers.identifier("block/bellows_side"));
+            event.addSprite(Helpers.identifier("block/devices/bellows/back"));
+            event.addSprite(Helpers.identifier("block/devices/bellows/side"));
         }
         if (atlas.location().equals(Sheets.CHEST_SHEET))
         {

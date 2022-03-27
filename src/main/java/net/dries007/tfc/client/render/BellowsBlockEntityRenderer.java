@@ -26,8 +26,8 @@ import net.dries007.tfc.util.Helpers;
 
 public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBlockEntity>
 {
-    private static final ResourceLocation BACK_TEXTURE = Helpers.identifier("block/bellows_back");
-    private static final ResourceLocation SIDE_TEXTURE = Helpers.identifier("block/bellows_side");
+    private static final ResourceLocation BACK_TEXTURE = Helpers.identifier("block/devices/bellows/back");
+    private static final ResourceLocation SIDE_TEXTURE = Helpers.identifier("block/devices/bellows/side");
     // The number of planes each side of the bellows has
     private static final int planeCount = 4;
     private static final double texWidth = 16D / planeCount;
