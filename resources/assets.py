@@ -539,7 +539,8 @@ def generate(rm: ResourceManager):
                         'axis=x': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90, 'y': 90},
                         'axis=y': {'model': 'tfc:block/metal/chain/%s' % metal},
                         'axis=z': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90}
-                    }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal).with_item_model()
+                    }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal)
+                    rm.item_model(('metal', 'chain', metal), 'tfc:item/metal/chain/%s' % metal)
                 elif metal_block == 'trapdoor':
                     rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture='tfc:block/metal/%s_trapdoor' % metal).with_lang(lang('%s trapdoor', metal))
                 else:
