@@ -155,7 +155,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("torch");
 
-        torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 7200, -1, Integer.MAX_VALUE);
+        torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (1000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 72000, -1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("charcoal");
 
