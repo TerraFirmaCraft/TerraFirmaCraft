@@ -21,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -29,7 +28,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 
@@ -61,7 +60,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         }
         poseStack.mulPose(Vector3f.YP.rotationDegrees(state.getValue(SluiceBlock.FACING).get2DDataValue() * 90F));
 
-        final float rotation = ClientHelpers.itemTimeRotation();
+        final float rotation = RenderHelpers.itemTimeRotation();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         sluice.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inv -> {
             for (int i = 0; i < inv.getSlots(); i++)

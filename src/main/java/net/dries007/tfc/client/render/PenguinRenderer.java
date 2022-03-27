@@ -12,17 +12,17 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.PenguinModel;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
 
 public class PenguinRenderer extends MobRenderer<AmphibiousAnimal, PenguinModel>
 {
-    private static final ResourceLocation LOCATION = ClientHelpers.animalTexture("penguin");
+    private static final ResourceLocation LOCATION = RenderHelpers.animalTexture("penguin");
 
     public PenguinRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new PenguinModel(ctx.bakeLayer(ClientHelpers.modelIdentifier("penguin"))), 0.2F);
+        super(ctx, new PenguinModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("penguin"))), 0.2F);
     }
 
     @Override

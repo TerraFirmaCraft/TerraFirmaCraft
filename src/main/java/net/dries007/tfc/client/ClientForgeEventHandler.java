@@ -34,10 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.client.event.DrawSelectionEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -209,9 +205,12 @@ public class ClientForgeEventHandler
             if (fertilizer != null)
             {
                 final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
-                if (n != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
-                if (p != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
-                if (k != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+                if (n != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                if (p != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                if (k != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get())
@@ -347,7 +346,7 @@ public class ClientForgeEventHandler
             }
             PoseStack poseStack = event.getPoseStack();
             poseStack.pushPose();
-            ClientHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
+            RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
             poseStack.popPose();
             event.setCanceled(true);
         }

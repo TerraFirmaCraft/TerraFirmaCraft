@@ -16,7 +16,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 
 public class PlacedItemBlockEntityRenderer implements BlockEntityRenderer<PlacedItemBlockEntity>
@@ -26,7 +26,7 @@ public class PlacedItemBlockEntityRenderer implements BlockEntityRenderer<Placed
     {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-            float timeD = ClientHelpers.itemTimeRotation();
+            float timeD = RenderHelpers.itemTimeRotation();
             matrixStack.translate(0.25D, 0.25D, 0.25D);
             if (te.holdingLargeItem())
             {
