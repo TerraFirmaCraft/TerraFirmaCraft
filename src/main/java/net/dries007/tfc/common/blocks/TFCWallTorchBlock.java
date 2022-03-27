@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -21,6 +20,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+
+import org.jetbrains.annotations.Nullable;
 
 public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -49,7 +50,7 @@ public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExte
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
     {
-        TFCTorchBlock.onRandomTick(world, pos, TFCBlocks.DEAD_WALL_TORCH.get().defaultBlockState());
+        TFCTorchBlock.onRandomTick(world, pos, TFCBlocks.DEAD_WALL_TORCH.get().withPropertiesOf(state));
     }
 
     @Override
