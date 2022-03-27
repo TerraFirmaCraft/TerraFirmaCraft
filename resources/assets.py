@@ -515,10 +515,11 @@ def generate(rm: ResourceManager):
         for metal_block, metal_block_data in METAL_BLOCKS.items():
             if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':
                 rm.block_tag('minecraft:mineable/pickaxe', 'tfc:metal/%s/%s' % (metal_block, metal))
-                metal_tex = 'tfc:block/metal/%s' % metal
+                metal_dir = 'tfc:block/metal/%s/%s'
+                metal_tex = metal_dir % ('full', metal)
                 if metal_block == 'lamp':
-                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': metal_tex + '_chain', 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
-                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': metal_tex + '_chain', 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': metal_dir % ('chain', metal), 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': metal_dir % ('chain', metal), 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
                     rm.block_model('tfc:metal/lamp/%s_on' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp')
                     rm.block_model('tfc:metal/lamp/%s_off' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp')
                     rm.item_model(('metal', 'lamp', metal))
@@ -534,7 +535,7 @@ def generate(rm: ResourceManager):
                     rm.item_tag('lamps', 'tfc:metal/%s/%s' % (metal_block, metal))
                     rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
                 elif metal_block == 'chain':
-                    rm.block_model(('metal', 'chain', metal), {'all': metal_tex + '_chain', 'particle': metal_tex + '_chain'}, parent='minecraft:block/chain')
+                    rm.block_model(('metal', 'chain', metal), {'all': metal_dir % (metal_block, metal), 'particle': metal_dir % (metal_block, metal)}, parent='minecraft:block/chain')
                     rm.blockstate(('metal', 'chain', metal), variants={
                         'axis=x': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90, 'y': 90},
                         'axis=y': {'model': 'tfc:block/metal/chain/%s' % metal},
@@ -542,12 +543,12 @@ def generate(rm: ResourceManager):
                     }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal)
                     rm.item_model(('metal', 'chain', metal), 'tfc:item/metal/chain/%s' % metal)
                 elif metal_block == 'trapdoor':
-                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture='tfc:block/metal/%s_trapdoor' % metal).with_lang(lang('%s trapdoor', metal))
+                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture=metal_dir % (metal_block, metal)).with_lang(lang('%s trapdoor', metal))
                 else:
                     block = rm.blockstate(('metal', '%s' % metal_block, metal))
                     block.with_block_model({
-                        'all': 'tfc:block/metal/%s' % metal,
-                        'particle': 'tfc:block/metal/%s' % metal
+                        'all': metal_tex,
+                        'particle': metal_tex
                     }, parent=metal_block_data.parent_model)
                     block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
                     block.with_lang(lang('%s %s' % (metal, metal_block)))
@@ -577,7 +578,7 @@ def generate(rm: ResourceManager):
     ]
     for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
         ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
-        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/' + metal}, parent='tfc:item/pan/result')
+        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/full/' + metal}, parent='tfc:item/pan/result')
         for rock_id, rock in enumerate(ROCKS.keys()):
             rm.item_model(('pan', ore, rock + '_full'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/full')
             rm.item_model(('pan', ore, rock + '_half'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/half')
