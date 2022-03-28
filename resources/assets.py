@@ -231,10 +231,10 @@ def generate(rm: ResourceManager):
     rm.item_model('dead_torch', 'tfc:block/torch_off')
     rm.block_model('dead_torch', parent='minecraft:block/template_torch', textures={'torch': 'tfc:block/torch_off'})
     rm.block_model('dead_wall_torch', parent='minecraft:block/template_torch_wall', textures={'torch': 'tfc:block/torch_off'})
-    rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch')).with_block_loot('minecraft:stick')
-    rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
-    rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
-    rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
+    rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch'))
+    rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_lang(lang('Burnt Out Torch'))
+    rm.blockstate('torch', 'minecraft:block/torch').with_block_loot('tfc:torch').with_lang(lang('Torch'))
+    rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
 
     for wattle in ('woven_wattle', 'filled_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
