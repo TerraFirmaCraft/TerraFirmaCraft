@@ -15,7 +15,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "tfc:crafting/vanilla/item_frame"
+        "recipe": "tfc:crafting/bellows"
       }
     }
   },
@@ -27,7 +27,7 @@
   ],
   "rewards": {
     "recipes": [
-      "tfc:crafting/vanilla/item_frame"
+      "tfc:crafting/bellows"
     ]
   }
 }

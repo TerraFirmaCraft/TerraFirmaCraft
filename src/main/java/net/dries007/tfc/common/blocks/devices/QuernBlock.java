@@ -33,7 +33,6 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
 
@@ -112,19 +111,19 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
             final ItemStack heldStack = player.getItemInHand(hand);
             final SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
             return quern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> switch (selection)
-                {
-                    case HANDLE -> {
-                        if (quern.startGrinding())
-                        {
-                            level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                            yield InteractionResult.SUCCESS;
+                    {
+                        case HANDLE -> {
+                            if (quern.startGrinding())
+                            {
+                                level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+                                yield InteractionResult.SUCCESS;
+                            }
+                            yield InteractionResult.FAIL;
                         }
-                        yield InteractionResult.FAIL;
-                    }
-                    case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
-                    case HANDSTONE -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE);
-                    case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
-                })
+                        case INPUT_SLOT -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_INPUT);
+                        case HANDSTONE -> insertOrExtract(level, quern, inventory, player, heldStack, SLOT_HANDSTONE);
+                        case BASE -> insertOrExtract(level, quern, inventory, player, ItemStack.EMPTY, SLOT_OUTPUT);
+                    })
                 .orElse(InteractionResult.PASS);
         }
         return InteractionResult.PASS;
@@ -132,10 +131,10 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        QuernBlockEntity te = Helpers.getBlockEntity(world, pos, QuernBlockEntity.class);
-        return te != null && te.hasHandstone() ? FULL_SHAPE : BASE_SHAPE;
+        QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
+        return quern != null && quern.hasHandstone() ? FULL_SHAPE : BASE_SHAPE;
     }
 
     @Override

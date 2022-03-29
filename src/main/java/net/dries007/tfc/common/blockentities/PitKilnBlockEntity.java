@@ -29,7 +29,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class PitKilnBlockEntity extends PlacedItemBlockEntity
@@ -81,15 +80,15 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         }
     }
 
-    public static void convertPitKilnToPlacedItem(Level world, BlockPos pos)
+    public static void convertPitKilnToPlacedItem(Level level, BlockPos pos)
     {
-        PitKilnBlockEntity teOld = Helpers.getBlockEntity(world, pos, PitKilnBlockEntity.class);
-        if (teOld != null)
+        PitKilnBlockEntity pitKiln = level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
+        if (pitKiln != null)
         {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
             ItemStack[] inventory = new ItemStack[4];
-            teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+            pitKiln.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                 for (int i = 0; i < 4; i++)
                 {
                     inventory[i] = cap.extractItem(i, 64, false);
@@ -97,13 +96,13 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
             });
 
             // Replace the block
-            world.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
+            level.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
 
             // Replace inventory items
-            PlacedItemBlockEntity teNew = Helpers.getBlockEntity(world, pos, PlacedItemBlockEntity.class);
-            if (teNew != null)
+            PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
+            if (placedItem != null)
             {
-                teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                placedItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
                     for (int i = 0; i < 4; i++)
                     {
                         if (inventory[i] != null && !inventory[i].isEmpty())
@@ -114,7 +113,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 });
 
                 // Copy misc data
-                teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
+                placedItem.isHoldingLargeItem = pitKiln.isHoldingLargeItem;
             }
         }
     }
@@ -233,7 +232,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
-                    PitKilnBlockEntity pitKiln = Helpers.getBlockEntity(level, pitPos, PitKilnBlockEntity.class);
+                    PitKilnBlockEntity pitKiln = level.getBlockEntity(pitPos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
                     if (pitKiln != null)
                     {
                         pitKiln.tryLight();

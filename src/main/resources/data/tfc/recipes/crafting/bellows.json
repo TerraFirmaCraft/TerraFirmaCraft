@@ -3,7 +3,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "XXX",
-    "XYX",
+    "YYY",
     "XXX"
   ],
   "key": {
@@ -15,7 +15,6 @@
     }
   },
   "result": {
-    "item": "minecraft:item_frame",
-    "count": 4
+    "item": "tfc:bellows"
   }
 }

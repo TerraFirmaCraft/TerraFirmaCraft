@@ -147,7 +147,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('fire_clay_knapping', 'tfc:fire_clay')
-    rm.item_tag('leather_knapping', 'minecraft:leather')
+    rm.item_tag('leather_knapping', '#forge:leather')
     rm.item_tag('knapping_any', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
     rm.item_tag('forge:gems/diamond', 'tfc:gem/diamond')
     rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
