@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlockEntity extends TickCounterBlockEntity
 {
@@ -119,6 +120,6 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
 
     private static boolean isPileBlock(BlockState state)
     {
-        return state.is(TFCBlocks.CHARCOAL_PILE.get()) || state.is(TFCBlocks.BURNING_LOG_PILE.get());
+        return Helpers.isBlock(state, TFCBlocks.CHARCOAL_PILE.get()) || Helpers.isBlock(state, TFCBlocks.BURNING_LOG_PILE.get());
     }
 }
