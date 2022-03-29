@@ -11,14 +11,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlockEntity extends TickCounterBlockEntity
 {
@@ -58,73 +56,69 @@ public class BurningLogPileBlockEntity extends TickCounterBlockEntity
         markForSync();
     }
 
-    /**
-     * This function does some magic **** to not create floating charcoal.
-     */
+    public int getLogs()
+    {
+        return logs;
+    }
+
     private void createCharcoal()
     {
         if (level == null) return;
-        final BlockState pile = TFCBlocks.CHARCOAL_PILE.get().defaultBlockState();
-        final BlockPos.MutableBlockPos mutablePos = worldPosition.mutable();
+        if (isPileBlock(level.getBlockState(worldPosition.above()))) return;
+        int charcoal = getCharcoalAmount(level, this.logs);
+        int height = 1;
 
-        int j = 0;
-        Block block;
-        do
+        BlockPos.MutableBlockPos currentPos = worldPosition.mutable().move(Direction.DOWN);
+        BlockState currentState = level.getBlockState(currentPos);
+        while (currentState.is(TFCBlocks.BURNING_LOG_PILE.get()))
         {
-            j++;
-            mutablePos.move(Direction.DOWN);
-            block = level.getBlockState(mutablePos).getBlock();
-            // This is here so that the charcoal pile will collapse Bottom > Top
-            // Because the pile scans Top > Bottom this is necessary to avoid floating blocks
-            if (block == TFCBlocks.LOG_PILE.get())
-            {
-                return;
-            }
-        } while (level.isEmptyBlock(worldPosition) || block == TFCBlocks.CHARCOAL_PILE.get() || block == TFCBlocks.BURNING_LOG_PILE.get());
-
-        double logs = this.logs * (0.25 + 0.25 * level.getRandom().nextFloat());
-        int charcoal = (int) Mth.clamp(logs, 0, 8);
-        if (charcoal == 0)
-        {
-            level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
-            return;
+            height += 1;
+            int logs = level.getBlockEntity(currentPos, TFCBlockEntities.BURNING_LOG_PILE.get()).map(BurningLogPileBlockEntity::getLogs).orElse(0);
+            charcoal += getCharcoalAmount(level, logs);
+            currentPos.move(Direction.DOWN);
+            currentState = level.getBlockState(currentPos);
         }
-        if (j == 1)
-        {
-            // This log pile is at the bottom of the charcoal pit
-            level.setBlockAndUpdate(worldPosition, pile.setValue(CharcoalPileBlock.LAYERS, charcoal));
-            return;
-        }
-        mutablePos.setWithOffset(worldPosition, 0, j - 1, 0);
-        for (int k = j - 1; k >= 0; k--)
-        {
-            // Climb back up from the bottom
-            mutablePos.move(Direction.DOWN);
-            BlockState state = level.getBlockState(mutablePos);
-            if (level.isEmptyBlock(mutablePos))
-            {
-                // If it hits air, place the remaining pile in that block
-                level.setBlockAndUpdate(mutablePos, pile.setValue(CharcoalPileBlock.LAYERS, charcoal));
-                level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
-                return;
-            }
 
-            if (Helpers.isBlock(state, TFCBlocks.CHARCOAL_PILE.get()))
-            {
-                // Place what it can in the existing charcoal pit, then continue climbing
-                charcoal += state.getValue(CharcoalPileBlock.LAYERS);
-                int toCreate = Math.min(charcoal, 8);
-                level.setBlockAndUpdate(mutablePos, pile.setValue(CharcoalPileBlock.LAYERS, toCreate));
-                charcoal -= toCreate;
-            }
+        // Set the current position to the bottom of the pile
+        currentPos.set(worldPosition).move(0, 1 - height, 0);
 
-            if (charcoal <= 0)
+        // If the block below is charcoal stack that first
+        BlockState belowState = level.getBlockState(currentPos.below());
+        if (belowState.is(TFCBlocks.CHARCOAL_PILE.get()))
+        {
+            int currentAmount = belowState.getValue(CharcoalPileBlock.LAYERS);
+            int amount = Mth.clamp(charcoal, 0, 8 - currentAmount);
+            if (amount > 0)
             {
-                level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
-                return;
+                charcoal -= amount;
+                level.setBlockAndUpdate(currentPos.below(), belowState.setValue(CharcoalPileBlock.LAYERS, currentAmount + amount));
             }
         }
-        // If you exit the loop, its arrived back at the original position OR needs to rest the original position, and needs to replace that block
-        level.setBlockAndUpdate(worldPosition, pile.setValue(CharcoalPileBlock.LAYERS, charcoal));
+
+        for (int i = 0; i < height; i++)
+        {
+            if (charcoal > 0)
+            {
+                int amount = Mth.clamp(charcoal, 0, 8);
+                charcoal -= amount;
+                level.setBlockAndUpdate(currentPos, TFCBlocks.CHARCOAL_PILE.get().defaultBlockState().setValue(CharcoalPileBlock.LAYERS, amount));
+            }
+            else
+            {
+                level.setBlockAndUpdate(currentPos, Blocks.AIR.defaultBlockState());
+            }
+            currentPos.move(Direction.UP);
+        }
+
+    }
+
+    private static int getCharcoalAmount(Level level, int logs)
+    {
+        return (int) Mth.clamp(logs * (0.25 + 0.25 * level.getRandom().nextFloat()), 0, 8);
+    }
+
+    private static boolean isPileBlock(BlockState state)
+    {
+        return state.is(TFCBlocks.CHARCOAL_PILE.get()) || state.is(TFCBlocks.BURNING_LOG_PILE.get());
     }
 }

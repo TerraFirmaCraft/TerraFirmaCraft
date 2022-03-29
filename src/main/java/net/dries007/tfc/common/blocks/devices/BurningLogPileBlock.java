@@ -21,6 +21,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -129,5 +130,11 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Items.CHARCOAL);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state)
+    {
+        return RenderShape.MODEL;
     }
 }
