@@ -19,9 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -41,7 +39,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return Blocks.CHAIN.defaultBlockState().getShape(level, pos, context);
+        return Blocks.CHAIN.withPropertiesOf(state).getShape(level, pos, context);
     }
 
     @Nullable
@@ -51,7 +49,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
         FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
         if (state != null && !fluidState.isEmpty())
         {
-            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            return state.setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidState.getType()));
         }
         return state;
     }

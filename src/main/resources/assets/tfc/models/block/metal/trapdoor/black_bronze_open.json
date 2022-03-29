@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "block/template_orientable_trapdoor_open",
   "textures": {
-    "texture": "tfc:block/metal/black_bronze_trapdoor"
+    "texture": "tfc:block/metal/trapdoor/black_bronze"
   }
 }
