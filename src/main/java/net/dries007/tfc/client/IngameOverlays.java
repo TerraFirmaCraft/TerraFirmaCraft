@@ -9,6 +9,8 @@ package net.dries007.tfc.client;
 import java.awt.*;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffects;
@@ -18,7 +20,9 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
@@ -29,6 +33,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_NAME;
 public class IngameOverlays
 {
     public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/icons/overlay.png");
+    public static final ResourceLocation INK_TEXTURE = Helpers.identifier("textures/misc/ink_splatter.png");
+    public static final ResourceLocation GLOW_INK_TEXTURE = Helpers.identifier("textures/misc/glow_ink_splatter.png");
 
     public static final IIngameOverlay HEALTH = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, MOD_NAME + " Health", IngameOverlays::renderHealth);
 
@@ -36,6 +42,8 @@ public class IngameOverlays
 
     public static final IIngameOverlay FOOD = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.FOOD_LEVEL_ELEMENT, MOD_NAME + " Food Bar", IngameOverlays::renderFood);
     public static final IIngameOverlay THIRST = OverlayRegistry.registerOverlayAbove(FOOD, MOD_NAME + " Thirst Bar", IngameOverlays::renderThirst);
+
+    public static final IIngameOverlay INK = OverlayRegistry.registerOverlayTop(MOD_NAME + " Ink", IngameOverlays::renderInk);
 
     public static void reloadOverlays()
     {
@@ -52,6 +60,7 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(MOUNT_HEALTH, enableHealth);
         OverlayRegistry.enableOverlay(FOOD, enableFood);
         OverlayRegistry.enableOverlay(THIRST, enableThirst);
+        OverlayRegistry.enableOverlay(INK, TFCConfig.CLIENT.enableInkSplatter.get());
     }
 
     public static void renderHealth(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
@@ -125,6 +134,25 @@ public class IngameOverlays
         }
     }
 
+    private static void renderInk(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    {
+        if (Minecraft.getInstance().options.getCameraType().isFirstPerson())
+        {
+            LocalPlayer player = Minecraft.getInstance().player;
+            if (player != null)
+            {
+                if (player.hasEffect(TFCEffects.INK.get()))
+                {
+                    renderTextureOverlay(INK_TEXTURE, 1F);
+                }
+                else if (player.hasEffect(TFCEffects.GLOW_INK.get()))
+                {
+                    renderTextureOverlay(GLOW_INK_TEXTURE, 1F);
+                }
+            }
+        }
+    }
+
     private static void renderHealthBar(LivingEntity entity, ForgeIngameGui gui, PoseStack stack, int width, int height)
     {
         HealthDisplayStyle style = TFCConfig.CLIENT.healthDisplayStyle.get();
@@ -168,6 +196,33 @@ public class IngameOverlays
         stack.popPose();
 
         gui.left_height += 10;
+    }
+
+    private static void renderTextureOverlay(ResourceLocation location, float alpha)
+    {
+        Minecraft mc = Minecraft.getInstance();
+        int screenWidth = mc.getWindow().getGuiScaledWidth();
+        int screenHeight = mc.getWindow().getGuiScaledHeight();
+
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
+        RenderSystem.setShaderTexture(0, location);
+
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buffer = tesselator.getBuilder();
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        buffer.vertex(0.0D, screenHeight, -90.0D).uv(0.0F, 1.0F).endVertex();
+        buffer.vertex(screenWidth, screenHeight, -90.0D).uv(1.0F, 1.0F).endVertex();
+        buffer.vertex(screenWidth, 0.0D, -90.0D).uv(1.0F, 0.0F).endVertex();
+        buffer.vertex(0.0D, 0.0D, -90.0D).uv(0.0F, 0.0F).endVertex();
+        tesselator.end();
+
+        RenderSystem.depthMask(true);
+        RenderSystem.enableDepthTest();
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     private static boolean setupForSurvival(ForgeIngameGui gui, Minecraft minecraft)

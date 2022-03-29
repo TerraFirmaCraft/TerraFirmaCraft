@@ -158,6 +158,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
     rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
+    rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -595,6 +596,8 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
     rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
     rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
+    rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -615,6 +618,8 @@ def generate(rm: ResourceManager):
     rm.entity_loot('penguin', {'name': 'minecraft:feather', 'conditions': [loot_tables.random_chance(0.8)]}, {'name': 'tfc:small_raw_hide', 'conditions': [loot_tables.random_chance(0.3)]})
     rm.entity_loot('turtle', 'minecraft:scute')
     rm.entity_loot('polar_bear', 'tfc:large_raw_hide')
+    rm.entity_loot('squid', {'name': 'minecraft:ink_sac', 'functions': loot_tables.set_count(1, 3)})
+    rm.entity_loot('octopoteuthis', {'name': 'minecraft:glow_ink_sac', 'functions': loot_tables.set_count(1, 3)})
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {
@@ -642,12 +647,13 @@ def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] =
     }
 
 
-def fauna(chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None) -> Dict[str, Any]:
+def fauna(chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None, max_brightness: int = None) -> Dict[str, Any]:
     return {
         'chance': chance,
         'distance_below_sea_level': distance_below_sea_level,
         'climate': climate,
-        'solid_ground': solid_ground
+        'solid_ground': solid_ground,
+        'max_brightness': max_brightness
     }
 
 

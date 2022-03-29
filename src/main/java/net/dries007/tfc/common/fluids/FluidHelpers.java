@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.fluids;
 
+import java.util.Optional;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -195,6 +197,16 @@ public final class FluidHelpers
     public static boolean isAirOrEmptyFluid(BlockState state)
     {
         return state.isAir() || state.getBlock() == state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock();
+    }
+
+    public static Optional<FluidState> isEmptyFluid(BlockState state)
+    {
+        FluidState fluidState = state.getFluidState().getType().defaultFluidState();
+        if (state.getBlock() == fluidState.createLegacyBlock().getBlock())
+        {
+            return Optional.of(fluidState);
+        }
+        return Optional.empty();
     }
 
     /**

@@ -146,6 +146,7 @@ public final class TFCItems
     public static final RegistryObject<Item> FIRE_CLAY = register("fire_clay", MISC);
     public static final RegistryObject<Item> FIRESTARTER = register("firestarter", () -> new FirestarterItem(new Item.Properties().tab(MISC).defaultDurability(8)));
     public static final RegistryObject<Item> GLASS_SHARD = register("glass_shard", MISC);
+    public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> GLUE = register("glue", MISC);
     public static final RegistryObject<Item> HALTER = register("halter", MISC);
     public static final RegistryObject<Item> JUTE = register("jute", MISC);
@@ -185,6 +186,8 @@ public final class TFCItems
     public static final RegistryObject<Item> TURTLE_EGG = registerSpawnEgg(TFCEntities.TURTLE, 15198183, 44975);
     public static final RegistryObject<Item> PENGUIN_EGG = registerSpawnEgg(TFCEntities.PENGUIN, 0xFFEA00, 0x47452C);
     public static final RegistryObject<Item> POLAR_BEAR_EGG = registerSpawnEgg(TFCEntities.POLAR_BEAR, 15921906, 9803152);
+    public static final RegistryObject<Item> SQUID_EGG = registerSpawnEgg(TFCEntities.SQUID, 2243405, 7375001);
+    public static final RegistryObject<Item> OCTOPOTEUTHIS_EGG = registerSpawnEgg(TFCEntities.OCTOPOTEUTHIS, 611926, 8778172);
 
     // Pottery
 

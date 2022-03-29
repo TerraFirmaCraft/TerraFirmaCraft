@@ -622,30 +622,5 @@
         "pitch": 1.0
       }
     ]
-  },
-  "music.tfc": {
-    "category": "music",
-    "sounds": [
-      {
-        "name": "tfc:music/m0",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m1",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m2",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m3",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m4",
-        "stream": true
-      }
-    ]
   }
 }

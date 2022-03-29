@@ -228,7 +228,7 @@ public class ClientForgeEventHandler
                     text.add(new TextComponent(GRAY + "[Debug] Cap NBT: " + DARK_GRAY + capTag));
                 }
 
-                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t).collect(Collectors.joining(", "))));
+                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
             }
         }
     }

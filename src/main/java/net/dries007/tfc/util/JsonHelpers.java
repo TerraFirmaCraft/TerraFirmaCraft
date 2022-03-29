@@ -139,6 +139,15 @@ public final class JsonHelpers extends GsonHelper
         }
     }
 
+    public static <T> T decodeCodecDefaulting(JsonObject json, Codec<T> codec, String key, T defaultValue)
+    {
+        if (!json.has("key"))
+        {
+            return defaultValue;
+        }
+        return decodeCodec(json, codec, key);
+    }
+
     public static <T> T decodeCodec(JsonObject json, Codec<T> codec, String key)
     {
         T result = codec.decode(JsonOps.INSTANCE, json.get(key)).getOrThrow(false, e -> {}).getFirst();
