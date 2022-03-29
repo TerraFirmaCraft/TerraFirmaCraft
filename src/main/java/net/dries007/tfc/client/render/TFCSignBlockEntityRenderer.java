@@ -34,7 +34,7 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blocks.wood.AbstractSignBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStandingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -61,7 +61,7 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
         super(context);
         this.font = context.getFont();
         this.materials = Arrays.stream(Wood.VALUES).collect(ImmutableMap.toImmutableMap(Functions.identity(), wood -> createSignMaterial(wood.name().toLowerCase(Locale.ROOT))));
-        this.models = Arrays.stream(Wood.VALUES).collect(ImmutableMap.toImmutableMap(Functions.identity(), wood -> new SignModel(context.bakeLayer(ClientHelpers.modelIdentifier("sign/" + wood.name().toLowerCase(Locale.ROOT))))));
+        this.models = Arrays.stream(Wood.VALUES).collect(ImmutableMap.toImmutableMap(Functions.identity(), wood -> new SignModel(context.bakeLayer(RenderHelpers.modelIdentifier("sign/" + wood.name().toLowerCase(Locale.ROOT))))));
     }
 
     public void render(SignBlockEntity sign, float partialTicks, PoseStack poseStack, MultiBufferSource source, int packedLight, int overlay)
