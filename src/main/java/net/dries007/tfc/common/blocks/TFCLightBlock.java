@@ -11,12 +11,14 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -38,6 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCLightBlock extends Block implements IFluidLoggable
 {
@@ -49,6 +52,19 @@ public class TFCLightBlock extends Block implements IFluidLoggable
     {
         super(properties);
         registerDefaultState(this.stateDefinition.any().setValue(LEVEL, MAX_LEVEL).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
+    }
+
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        BlockState state = defaultBlockState();
+        CompoundTag tag = context.getItemInHand().getTag();
+        if (tag != null && tag.contains("level", Tag.TAG_INT))
+        {
+            state = state.setValue(LEVEL, tag.getInt("level"));
+        }
+        return state;
     }
 
     @Override
@@ -87,7 +103,7 @@ public class TFCLightBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext ctx)
     {
-        return ctx.isHoldingItem(Items.LIGHT) ? Shapes.block() : Shapes.empty();
+        return ctx.isHoldingItem(asItem()) ? Shapes.block() : Shapes.empty();
     }
 
     @Override
@@ -139,8 +155,7 @@ public class TFCLightBlock extends Block implements IFluidLoggable
         if (state.getValue(LEVEL) != MAX_LEVEL)
         {
             CompoundTag tag = new CompoundTag();
-            tag.putString(LEVEL.getName(), String.valueOf(state.getValue(LEVEL)));
-            stack.addTagElement("BlockStateTag", tag);
+            tag.putInt("level", state.getValue(LEVEL));
         }
         return stack;
     }

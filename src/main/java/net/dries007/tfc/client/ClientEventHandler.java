@@ -68,7 +68,6 @@ import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCLightBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -172,17 +171,10 @@ public final class ClientEventHandler
 
                     ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), new ResourceLocation("level"), (stack, level, entity, unused) -> {
                         CompoundTag stackTag = stack.getTagElement("BlockStateTag");
-                        // mojang does a try catch. do we need to?
-                        try {
-                            if (stackTag != null)
-                            {
-                                Tag tag = stackTag.get(TFCLightBlock.LEVEL.getName());
-                                if (tag != null)
-                                {
-                                    return Integer.parseInt(tag.getAsString()) / 16.0F;
-                                }
-                            }
-                        } catch (NumberFormatException ignored) { }
+                        if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
+                        {
+                            return stackTag.getInt("level") / 16F;
+                        }
                         return 1.0F;
                     });
                 }
