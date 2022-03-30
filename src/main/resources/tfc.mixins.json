@@ -9,6 +9,7 @@
     "FallingBlockMixin",
     "FlowingFluidMixin",
     "FriendlyByteBufMixin",
+    "IceBlockMixin",
     "LevelMixin",
     "ReloadableServerResourcesMixin",
     "ServerLevelMixin",

@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -137,5 +138,11 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Blocks.ICE);
+    }
+
+    @Override
+    public boolean skipRendering(BlockState state, BlockState otherState, Direction facing)
+    {
+        return Helpers.isBlock(otherState, Blocks.ICE) || super.skipRendering(state, otherState, facing);
     }
 }
