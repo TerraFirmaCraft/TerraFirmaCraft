@@ -64,7 +64,7 @@ public abstract class SnowLayerBlockMixin extends Block
         {
             // Snow should not survive on ice (this adds to the big existing conditional)
             BlockState belowState = level.getBlockState(pos.below());
-            if (Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()))
+            if (Helpers.isBlock(belowState, TFCBlocks.SEA_ICE.get()) || Helpers.isBlock(belowState, TFCBlocks.ICE_PILE.get()))
             {
                 cir.setReturnValue(false);
             }
