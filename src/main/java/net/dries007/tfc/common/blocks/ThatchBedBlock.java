@@ -20,6 +20,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -31,6 +32,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +40,7 @@ import org.jetbrains.annotations.Nullable;
  * Lots of parts borrowed from {@link BedBlock}
  * Avoid extending directly as it implements {@link EntityBlock} which we don't want, and also defines the 'occupied' state which we don't use.
  */
-public class ThatchBedBlock extends HorizontalDirectionalBlock
+public class ThatchBedBlock extends HorizontalDirectionalBlock implements EntityBlockExtension, IForgeBlockExtension
 {
     public static final EnumProperty<BedPart> PART = BlockStateProperties.BED_PART;
 
@@ -49,9 +51,25 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
         return part == BedPart.FOOT ? direction : direction.getOpposite();
     }
 
-    public ThatchBedBlock(Properties properties)
+    private ExtendedProperties properties;
+
+    public ThatchBedBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties.properties());
+        this.properties = properties;
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
+    }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+    {
+        return state.getValue(PART).equals(BedPart.HEAD) ? getExtendedProperties().newBlockEntity(pos, state) : null;
     }
 
     @Override
@@ -180,5 +198,16 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(PART, FACING));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get()).ifPresent(bed -> {
+            bed.ejectInventory();
+            bed.invalidateCapabilities();
+        });
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 }

@@ -17,12 +17,10 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -74,19 +72,21 @@ public final class InteractionManager
             if (!world.isClientSide() && player != null)
             {
                 final BlockPos basePos = context.getClickedPos();
+                final BlockState baseState = world.getBlockState(basePos);
                 final Direction facing = context.getHorizontalDirection();
                 final BlockState bed = TFCBlocks.THATCH_BED.get().defaultBlockState();
                 for (Direction direction : new Direction[] {facing, facing.getClockWise(), facing.getOpposite(), facing.getCounterClockWise()})
                 {
                     final BlockPos headPos = basePos.relative(direction, 1);
-                    if (Helpers.isBlock(world.getBlockState(basePos), TFCTags.Blocks.THATCH_BED_THATCH) && Helpers.isBlock(world.getBlockState(headPos), TFCTags.Blocks.THATCH_BED_THATCH))
+                    final BlockState headState = world.getBlockState(headPos);
+                    if (Helpers.isBlock(baseState, TFCTags.Blocks.THATCH_BED_THATCH) && Helpers.isBlock(headState, TFCTags.Blocks.THATCH_BED_THATCH))
                     {
                         final BlockPos playerPos = player.blockPosition();
                         if (playerPos != headPos && playerPos != basePos)
                         {
                             world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 18);
                             world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction.getOpposite()), 18);
-                            stack.shrink(1);
+                            world.getBlockEntity(headPos, TFCBlockEntities.THATCH_BED.get()).ifPresent(entity -> entity.setBed(headState, baseState, stack.split(1)));
                             return InteractionResult.SUCCESS;
                         }
 
