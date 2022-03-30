@@ -58,7 +58,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 
     protected static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {
-        return ingredient.getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount)).collect(Collectors.toList());
+        return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).collect(Collectors.toList());
     }
 
     protected final IDrawableStatic slot;
