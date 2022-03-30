@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "minecraft:boat",
+    "tfc:boat/acacia",
+    "tfc:boat/ash",
+    "tfc:boat/aspen",
+    "tfc:boat/birch",
+    "tfc:boat/blackwood",
+    "tfc:boat/chestnut",
+    "tfc:boat/douglas_fir",
+    "tfc:boat/hickory",
+    "tfc:boat/kapok",
+    "tfc:boat/maple",
+    "tfc:boat/oak",
+    "tfc:boat/palm",
+    "tfc:boat/pine",
+    "tfc:boat/rosewood",
+    "tfc:boat/sequoia",
+    "tfc:boat/spruce",
+    "tfc:boat/sycamore",
+    "tfc:boat/white_cedar",
+    "tfc:boat/willow"
+  ]
+}

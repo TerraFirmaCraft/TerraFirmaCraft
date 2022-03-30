@@ -852,6 +852,9 @@ def generate(rm: ResourceManager):
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'liana'):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
 
+    for plant in ('duckweed', 'lotus', 'sargassum', 'water_lily'):
+        rm.block_model('plant/%s' % plant, parent='tfc:block/plant/template_floating_tinted', textures={'plant': 'tfc:block/plant/%s/%s' % (plant, plant)})
+
     # Food
     for berry in BERRIES.keys():
         rm.item_model('food/' + berry).with_lang(lang(berry))
@@ -1237,7 +1240,7 @@ def generate(rm: ResourceManager):
             'tip=true': {'model': 'tfc:block/%s_tip' % variant},
             'tip=false': {'model': 'tfc:block/%s' % variant}
         })
-        block.with_item_model()
+        rm.item_model(variant)
         block.with_lang(lang(variant))
 
         rm.block_model(variant, textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike')
@@ -1251,8 +1254,6 @@ def generate(rm: ResourceManager):
     block.with_lang(lang('Bellows'))
     block.with_block_loot('tfc:bellows')
     block.with_tag('minecraft:mineable/axe')
-    
-    rm.lang('subtitles.block.tfc.tool_rack.place_item', 'Item placed on Tool Rack')
 
 
 def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifier, overrides: utils.Json, data: Dict[str, Any]) -> ItemContext:

@@ -989,6 +989,11 @@ public final class Helpers
         return checkTag(ForgeRegistries.FLUIDS, first, second);
     }
 
+    public static boolean isEntity(Entity entity, TagKey<EntityType<?>> tag)
+    {
+        return checkTag(ForgeRegistries.ENTITIES, entity.getType(), tag);
+    }
+
     public static boolean isEntity(EntityType<?> entity, TagKey<EntityType<?>> tag)
     {
         return checkTag(ForgeRegistries.ENTITIES, entity, tag);

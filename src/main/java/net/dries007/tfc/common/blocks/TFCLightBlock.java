@@ -17,7 +17,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -152,11 +151,8 @@ public class TFCLightBlock extends Block implements IFluidLoggable
     public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state)
     {
         ItemStack stack = super.getCloneItemStack(level, pos, state);
-        if (state.getValue(LEVEL) != MAX_LEVEL)
-        {
-            CompoundTag tag = new CompoundTag();
-            tag.putInt("level", state.getValue(LEVEL));
-        }
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putInt("level", state.getValue(LEVEL));
         return stack;
     }
 
