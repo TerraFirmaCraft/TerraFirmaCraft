@@ -1275,6 +1275,9 @@ def generate(rm: ResourceManager):
     block.with_block_loot('tfc:bellows')
     block.with_tag('minecraft:mineable/axe')
 
+    for be in BLOCK_ENTITIES:
+        rm.lang('tfc.block_entity.%s' % be, lang(be))
+
 
 def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifier, overrides: utils.Json, data: Dict[str, Any]) -> ItemContext:
     res = utils.resource_location(rm.domain, name_parts)

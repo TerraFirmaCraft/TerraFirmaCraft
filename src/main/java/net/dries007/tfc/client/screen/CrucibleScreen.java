@@ -87,7 +87,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         super.renderBg(stack, partialTicks, mouseX, mouseY);
 
         // Draw the temperature indicator
-        int temperature = (int) (51 * tile.getSyncableData().get(CrucibleBlockEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
+        int temperature = (int) (51 * blockEntity.getSyncableData().get(CrucibleBlockEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
             blit(stack, leftPos + 7, topPos + 131 - Math.min(temperature, 51), 176, 0, 15, 5);
@@ -97,7 +97,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         blit(stack, leftPos + 154, topPos + 11 + scrollPos, 176, 7, 12, 15);
 
         // Draw the fluid + detailed content
-        AlloyView alloy = tile.getAlloy();
+        AlloyView alloy = blockEntity.getAlloy();
         if (alloy.getAmount() > 0)
         {
             int startX = 97;

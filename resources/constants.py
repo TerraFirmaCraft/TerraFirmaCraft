@@ -523,6 +523,7 @@ VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
+BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop']
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
     return {
@@ -585,12 +586,6 @@ DEFAULT_LANG = {
     'death.attack.tfc.pot.player': '%1$s boiled themself while trying to escape %2$s',
     'death.attack.tfc.dehydration': '%1$s dehydrated to death',
     'death.attack.tfc.dehydration.player': '%1$s dehydrated to death while trying to escape %2$s',
-    'tfc.tile_entity.pot': 'Pot',
-    'tfc.tile_entity.grill': 'Grill',
-    'tfc.tile_entity.firepit': 'Firepit',
-    'tfc.tile_entity.log_pile': 'Log Pile',
-    'tfc.tile_entity.charcoal_forge': 'Forge',
-    'tfc.tile_entity.crucible': 'Crucible',
     'effect.tfc.pinned': 'Pinned',
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',

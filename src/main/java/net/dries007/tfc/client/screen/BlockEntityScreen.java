@@ -15,11 +15,11 @@ import net.dries007.tfc.common.container.BlockEntityContainer;
 
 public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> extends TFCContainerScreen<C>
 {
-    protected final T tile;
+    protected final T blockEntity;
 
     public BlockEntityScreen(C container, Inventory playerInventory, Component name, ResourceLocation texture)
     {
         super(container, playerInventory, name, texture);
-        this.tile = container.getBlockEntity();
+        this.blockEntity = container.getBlockEntity();
     }
 }
