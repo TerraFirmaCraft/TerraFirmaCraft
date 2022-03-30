@@ -6,34 +6,29 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.Random;
-import java.util.function.Supplier;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 
-public class MultipleFeature extends Feature<MultipleConfig>
+public class MultipleFeature extends Feature<SimpleRandomFeatureConfiguration>
 {
-    public MultipleFeature(Codec<MultipleConfig> codec)
+    public MultipleFeature(Codec<SimpleRandomFeatureConfiguration> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<MultipleConfig> context)
+    public boolean place(FeaturePlaceContext<SimpleRandomFeatureConfiguration> context)
     {
         boolean result = false;
-        for (Supplier<PlacedFeature> feature : context.config().features())
+        for (Holder<PlacedFeature> feature : context.config().features)
         {
-            result |= feature.get().placeWithBiomeCheck(context.level(), context.chunkGenerator(), context.random(), context.origin());
+            result |= feature.value().placeWithBiomeCheck(context.level(), context.chunkGenerator(), context.random(), context.origin());
         }
         return result;
     }

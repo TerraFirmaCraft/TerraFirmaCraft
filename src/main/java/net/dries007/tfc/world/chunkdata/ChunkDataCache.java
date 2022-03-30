@@ -8,7 +8,7 @@ package net.dries007.tfc.world.chunkdata;
 
 import java.util.*;
 import java.util.function.Function;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;

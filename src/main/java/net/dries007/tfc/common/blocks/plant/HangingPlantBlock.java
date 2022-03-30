@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -49,25 +49,25 @@ public abstract class HangingPlantBlock extends PlantBlock
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         for (Direction direction : Direction.Plane.VERTICAL)
         {
-            BlockState attach = worldIn.getBlockState(currentPos.relative(direction));
+            BlockState attach = level.getBlockState(currentPos.relative(direction));
             if (attach.getMaterial() == Material.LEAVES)
             {
-                return stateIn.setValue(HANGING, direction == Direction.UP);
+                return state.setValue(HANGING, direction == Direction.UP);
             }
         }
         return Blocks.AIR.defaultBlockState();
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         for (Direction direction : Direction.Plane.VERTICAL)
         {
-            if (worldIn.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
+            if (level.getBlockState(pos.relative(direction)).getMaterial() == Material.LEAVES)
             {
                 return true;
             }
@@ -76,11 +76,11 @@ public abstract class HangingPlantBlock extends PlantBlock
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         if (state.getValue(HANGING))
         {
-            return super.getShape(state, worldIn, pos, context);
+            return super.getShape(state, level, pos, context);
         }
         else
         {

@@ -7,7 +7,7 @@
 package net.dries007.tfc.world;
 
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;

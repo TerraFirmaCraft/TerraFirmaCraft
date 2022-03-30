@@ -32,6 +32,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.util.Helpers;
 
@@ -69,15 +70,15 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
         return !Shapes.joinIsNotEmpty(supportShape, SHAPES[slot], BooleanOp.ONLY_SECOND);
     }
 
-    private static void convertPlacedItemToPitKiln(Level world, BlockPos pos, ItemStack strawStack)
+    private static void convertPlacedItemToPitKiln(Level level, BlockPos pos, ItemStack strawStack)
     {
-        PlacedItemBlockEntity teOld = Helpers.getBlockEntity(world, pos, PlacedItemBlockEntity.class);
-        if (teOld != null)
+        PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
+        if (placedItem != null)
         {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
             ItemStack[] inventory = new ItemStack[4];
-            teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
+            placedItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
                 for (int i = 0; i < 4; i++)
                 {
                     inventory[i] = cap.extractItem(i, 64, false);
@@ -85,16 +86,16 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             });
 
             // Replace the block
-            world.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
-            teOld.setRemoved();
+            level.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
+            placedItem.setRemoved();
             // Play placement sound
-            world.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
+            level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
             // Copy TE data
-            PitKilnBlockEntity teNew = Helpers.getBlockEntity(world, pos, PitKilnBlockEntity.class);
-            if (teNew != null)
+            PitKilnBlockEntity pitKiln = level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
+            if (pitKiln != null)
             {
                 // Copy inventory
-                teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
+                pitKiln.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
                     for (int i = 0; i < 4; i++)
                     {
                         if (inventory[i] != null && !inventory[i].isEmpty())
@@ -104,8 +105,8 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
                     }
                 });
                 // Copy misc data
-                teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
-                teNew.addStraw(strawStack, 0);
+                pitKiln.isHoldingLargeItem = placedItem.isHoldingLargeItem;
+                pitKiln.addStraw(strawStack, 0);
             }
         }
     }
@@ -118,11 +119,11 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
-        BlockState updateState = updateStateValues(worldIn, currentPos.below(), stateIn);
-        PlacedItemBlockEntity te = Helpers.getBlockEntity(worldIn, currentPos, PlacedItemBlockEntity.class);
-        if (te != null)
+        BlockState updateState = updateStateValues(level, pos.below(), state);
+        PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
+        if (placedItem != null)
         {
             if (isEmpty(updateState))
             {
@@ -134,20 +135,20 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!worldIn.isClientSide())
+        if (!level.isClientSide())
         {
-            PlacedItemBlockEntity te = Helpers.getBlockEntity(worldIn, pos, PlacedItemBlockEntity.class);
-            if (te != null)
+            PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
+            if (placedItem != null)
             {
-                ItemStack held = player.getItemInHand(handIn);
-                if (TFCTags.Items.PIT_KILN_STRAW.contains(held.getItem()) && held.getCount() >= 4 && PitKilnBlockEntity.isValid(worldIn, pos))
+                ItemStack held = player.getItemInHand(hand);
+                if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4 && PitKilnBlockEntity.isValid(level, pos))
                 {
-                    convertPlacedItemToPitKiln(worldIn, pos, held.split(4));
+                    convertPlacedItemToPitKiln(level, pos, held.split(4));
                     return InteractionResult.SUCCESS;
                 }
-                return te.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
+                return placedItem.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
             }
         }
         return InteractionResult.FAIL;

@@ -23,6 +23,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.util.Helpers;
 
 public class DeadDoubleCropBlock extends DeadCropBlock
 {
@@ -53,11 +54,11 @@ public class DeadDoubleCropBlock extends DeadCropBlock
         final BlockState belowState = level.getBlockState(pos.below());
         if (part == DoubleCropBlock.Part.BOTTOM)
         {
-            return TFCTags.Blocks.FARMLAND.contains(belowState.getBlock());
+            return Helpers.isBlock(belowState.getBlock(), TFCTags.Blocks.FARMLAND);
         }
         else
         {
-            return belowState.is(this) && belowState.getValue(PART) == DoubleCropBlock.Part.BOTTOM;
+            return Helpers.isBlock(belowState, this) && belowState.getValue(PART) == DoubleCropBlock.Part.BOTTOM;
         }
     }
 

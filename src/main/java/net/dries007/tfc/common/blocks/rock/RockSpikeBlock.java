@@ -32,8 +32,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 @SuppressWarnings("deprecation")
 public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBlock
@@ -110,7 +109,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         }
 
         // No support, so either collapse, or break
-        if (TFCTags.Blocks.CAN_COLLAPSE.contains(this) && CollapseRecipe.collapseBlock(level, pos, state))
+        if (Helpers.isBlock(this, TFCTags.Blocks.CAN_COLLAPSE) && CollapseRecipe.collapseBlock(level, pos, state))
         {
             level.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.8f, 1.0f);
         }

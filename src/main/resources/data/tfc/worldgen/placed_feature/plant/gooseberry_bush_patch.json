@@ -3,23 +3,13 @@
   "feature": "tfc:plant/gooseberry_bush_patch",
   "placement": [
     {
-      "type": "minecraft:in_square"
-    },
-    {
       "type": "tfc:climate",
       "min_temperature": 5,
       "max_temperature": 27,
       "min_rainfall": 100,
-      "max_rainfall": 400,
+      "max_rainfall": 500,
       "min_forest": "none",
       "max_forest": "sparse"
-    },
-    {
-      "type": "minecraft:rarity_filter",
-      "chance": 15
-    },
-    {
-      "type": "minecraft:biome"
     }
   ]
 }

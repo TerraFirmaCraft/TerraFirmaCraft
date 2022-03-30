@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -36,6 +36,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.util.Helpers;
 
 public class VerticalSupportBlock extends Block implements IForgeBlockExtension
 {
@@ -74,7 +75,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             mutablePos.setWithOffset(context.getClickedPos(), d);
-            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), context.getLevel().getBlockState(mutablePos).is(TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), Helpers.isBlock(context.getLevel().getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAM));
         }
         return state;
     }
@@ -118,11 +119,11 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
     {
         if (facing.getAxis().isHorizontal())
         {
-            stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), facingState.is(TFCTags.Blocks.SUPPORT_BEAM));
+            stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
         }
         else if (facing == Direction.DOWN)
         {
-            if (facingState.is(TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
+            if (Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
             {
                 return stateIn;
             }
@@ -137,7 +138,7 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.SUPPORT_BEAM) || belowState.isFaceSturdy(level, belowPos, Direction.UP, SupportType.CENTER);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.SUPPORT_BEAM) || belowState.isFaceSturdy(level, belowPos, Direction.UP, SupportType.CENTER);
     }
 
     @Override

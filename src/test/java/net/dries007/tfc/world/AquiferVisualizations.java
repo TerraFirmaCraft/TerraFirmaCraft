@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 
 import net.dries007.tfc.Artist;
+import net.dries007.tfc.TestBase;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Cellular3D;
@@ -32,7 +33,7 @@ import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.TestHelper.*;
 
-public class AquiferVisualizations
+public class AquiferVisualizations extends TestBase
 {
     @BeforeAll
     public static void setup()

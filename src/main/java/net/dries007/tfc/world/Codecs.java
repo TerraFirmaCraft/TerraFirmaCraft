@@ -13,16 +13,17 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.BiomeDictionary;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -40,11 +41,6 @@ public final class Codecs
     public static final Codec<Integer> POSITIVE_INT = ExtraCodecs.POSITIVE_INT;
     public static final Codec<Integer> NONNEGATIVE_INT = ExtraCodecs.NON_NEGATIVE_INT;
     public static final Codec<Float> UNIT_FLOAT = Codec.floatRange(0, 1);
-
-    public static final Codec<BiomeDictionary.Type> BIOME_DICTIONARY = Codec.STRING.comapFlatMap(
-        t -> BiomeDictionary.Type.hasType(t) ? DataResult.success(BiomeDictionary.Type.getType(t)) : DataResult.error("No biome dictionary type: " + t),
-        BiomeDictionary.Type::getName
-    );
 
     @SuppressWarnings("deprecation") public static final Codec<Block> BLOCK = nonDefaultedRegistryCodec(Registry.BLOCK);
     @SuppressWarnings("deprecation") public static final Codec<Fluid> FLUID = nonDefaultedRegistryCodec(Registry.FLUID);
@@ -69,6 +65,8 @@ public final class Codecs
     ).codec());
 
     public static final Codec<BlockStateConfiguration> BLOCK_STATE_CONFIG = BLOCK_STATE.fieldOf("state").xmap(BlockStateConfiguration::new, c -> c.state).codec();
+
+    public static final Codec<IntProvider> INT_OR_RANGE = Codec.either(Codec.INT, IntProvider.CODEC).xmap(either -> either.map(ConstantInt::of, uniform -> uniform), Either::right);
 
     /**
      * Creates a codec for a given registry which does not default

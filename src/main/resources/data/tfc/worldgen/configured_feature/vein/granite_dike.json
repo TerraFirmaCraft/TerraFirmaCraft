@@ -14,127 +14,7 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/claystone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/conglomerate"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/dolomite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/limestone"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/shale"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/gneiss"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/marble"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/slate"
+          "tfc:rock/raw/granite"
         ],
         "with": [
           {
@@ -164,7 +44,7 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/granite"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
@@ -174,7 +54,7 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/claystone"
         ],
         "with": [
           {
@@ -184,7 +64,7 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/basalt"
+          "tfc:rock/raw/limestone"
         ],
         "with": [
           {
@@ -194,7 +74,37 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/dacite"
+          "tfc:rock/raw/conglomerate"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dolomite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chert"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
@@ -214,7 +124,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/chalk"
+          "tfc:rock/raw/basalt"
         ],
         "with": [
           {
@@ -224,7 +134,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/chert"
+          "tfc:rock/raw/andesite"
         ],
         "with": [
           {
@@ -234,7 +144,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/claystone"
+          "tfc:rock/raw/dacite"
         ],
         "with": [
           {
@@ -244,7 +154,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/conglomerate"
+          "tfc:rock/raw/quartzite"
         ],
         "with": [
           {
@@ -254,7 +164,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/dolomite"
+          "tfc:rock/raw/slate"
         ],
         "with": [
           {
@@ -264,7 +174,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/limestone"
+          "tfc:rock/raw/phyllite"
         ],
         "with": [
           {
@@ -274,7 +184,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/shale"
+          "tfc:rock/raw/schist"
         ],
         "with": [
           {
@@ -284,7 +194,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/gneiss"
+          "tfc:rock/raw/gneiss"
         ],
         "with": [
           {
@@ -294,7 +204,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/marble"
+          "tfc:rock/raw/marble"
         ],
         "with": [
           {
@@ -304,37 +214,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/gravel/slate"
+          "tfc:rock/gravel/granite"
         ],
         "with": [
           {
@@ -364,7 +244,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/granite"
+          "tfc:rock/gravel/shale"
         ],
         "with": [
           {
@@ -374,7 +254,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/andesite"
+          "tfc:rock/gravel/claystone"
         ],
         "with": [
           {
@@ -384,7 +264,7 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/basalt"
+          "tfc:rock/gravel/limestone"
         ],
         "with": [
           {
@@ -394,7 +274,37 @@
       },
       {
         "replace": [
-          "tfc:rock/gravel/dacite"
+          "tfc:rock/gravel/conglomerate"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/gravel/dolomite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/gravel/chert"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/gravel/chalk"
         ],
         "with": [
           {
@@ -414,7 +324,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/chalk"
+          "tfc:rock/gravel/basalt"
         ],
         "with": [
           {
@@ -424,7 +334,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/chert"
+          "tfc:rock/gravel/andesite"
         ],
         "with": [
           {
@@ -434,7 +344,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/claystone"
+          "tfc:rock/gravel/dacite"
         ],
         "with": [
           {
@@ -444,7 +354,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/conglomerate"
+          "tfc:rock/gravel/quartzite"
         ],
         "with": [
           {
@@ -454,7 +364,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/dolomite"
+          "tfc:rock/gravel/slate"
         ],
         "with": [
           {
@@ -464,7 +374,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/limestone"
+          "tfc:rock/gravel/phyllite"
         ],
         "with": [
           {
@@ -474,7 +384,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/shale"
+          "tfc:rock/gravel/schist"
         ],
         "with": [
           {
@@ -484,7 +394,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/gneiss"
+          "tfc:rock/gravel/gneiss"
         ],
         "with": [
           {
@@ -494,7 +404,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/marble"
+          "tfc:rock/gravel/marble"
         ],
         "with": [
           {
@@ -504,37 +414,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:rock/raw/granite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/hardened/slate"
+          "tfc:rock/hardened/granite"
         ],
         "with": [
           {
@@ -564,7 +444,7 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/granite"
+          "tfc:rock/hardened/shale"
         ],
         "with": [
           {
@@ -574,7 +454,67 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/andesite"
+          "tfc:rock/hardened/claystone"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/conglomerate"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/dolomite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/chert"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/chalk"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/rhyolite"
         ],
         "with": [
           {
@@ -594,6 +534,16 @@
       },
       {
         "replace": [
+          "tfc:rock/hardened/andesite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/hardened/dacite"
         ],
         "with": [
@@ -604,7 +554,57 @@
       },
       {
         "replace": [
-          "tfc:rock/hardened/rhyolite"
+          "tfc:rock/hardened/quartzite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/slate"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/phyllite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/schist"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/gneiss"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/raw/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/hardened/marble"
         ],
         "with": [
           {

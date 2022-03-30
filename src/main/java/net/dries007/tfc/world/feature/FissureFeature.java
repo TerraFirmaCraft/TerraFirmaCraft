@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.feature;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,7 +25,7 @@ import net.dries007.tfc.world.settings.RockSettings;
 
 public class FissureFeature extends Feature<FissureConfig>
 {
-    public static void placeFissure(WorldGenLevel world, BlockPos startPos, BlockPos centerPos, BlockPos.MutableBlockPos mutablePos, Random random, BlockState insideState, BlockState wallState, int minPieces, int maxPieces, int maxPieceLength, int minDepth, int radius, @Nullable FissureConfig.Decoration decoration)
+    public static void placeFissure(WorldGenLevel level, BlockPos startPos, BlockPos centerPos, BlockPos.MutableBlockPos mutablePos, Random random, BlockState insideState, BlockState wallState, int minPieces, int maxPieces, int maxPieceLength, int minDepth, int radius, @Nullable FissureConfig.Decoration decoration)
     {
         // Carve a fissure down from this position, by carving a series of tubes straight down
         final int pieces = minPieces + random.nextInt(maxPieces - minPieces);
@@ -37,11 +37,11 @@ public class FissureFeature extends Feature<FissureConfig>
             final int pieceDepth = 1 + random.nextInt(maxPieceLength);
             for (int dy = 1; dy <= pieceDepth; dy++)
             {
-                world.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, 0), insideState, 2);
-                world.setBlock(mutablePos.setWithOffset(topPos, -1, -dy, 0), wallState, 2);
-                world.setBlock(mutablePos.setWithOffset(topPos, 1, -dy, 0), wallState, 2);
-                world.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, -1), wallState, 2);
-                world.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, 1), wallState, 2);
+                level.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, 0), insideState, 2);
+                level.setBlock(mutablePos.setWithOffset(topPos, -1, -dy, 0), wallState, 2);
+                level.setBlock(mutablePos.setWithOffset(topPos, 1, -dy, 0), wallState, 2);
+                level.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, -1), wallState, 2);
+                level.setBlock(mutablePos.setWithOffset(topPos, 0, -dy, 1), wallState, 2);
 
                 if (decoration != null)
                 {
@@ -51,11 +51,11 @@ public class FissureFeature extends Feature<FissureConfig>
                         if (random.nextInt(decoration.rarity()) == 0)
                         {
                             mutablePos.setWithOffset(topPos, random.nextInt(decoration.radius()) - random.nextInt(decoration.radius()), random.nextInt(3) - random.nextInt(3) - dy, random.nextInt(decoration.radius()) - random.nextInt(decoration.radius()));
-                            final BlockState stoneState = world.getBlockState(mutablePos);
+                            final BlockState stoneState = level.getBlockState(mutablePos);
                             final BlockState decorationState = decoration.getState(stoneState, random);
                             if (decorationState != null)
                             {
-                                world.setBlock(mutablePos, decorationState, 2);
+                                level.setBlock(mutablePos, decorationState, 2);
                             }
                         }
                     }
@@ -68,13 +68,13 @@ public class FissureFeature extends Feature<FissureConfig>
             topPos = mutablePos.setWithOffset(topPos, 0, -pieceDepth, 0).move(branchDirection).immutable();
 
             // Place the joining pieces
-            world.setBlock(mutablePos.set(topPos), insideState, 2);
-            world.setBlock(mutablePos.setWithOffset(topPos, 0, 1, 0), wallState, 2);
+            level.setBlock(mutablePos.set(topPos), insideState, 2);
+            level.setBlock(mutablePos.setWithOffset(topPos, 0, 1, 0), wallState, 2);
             for (Direction direction : Direction.Plane.HORIZONTAL)
             {
                 if (direction != branchDirection.getOpposite()) // Fill all sides except the one we came from
                 {
-                    world.setBlock(mutablePos.setWithOffset(topPos, direction), wallState, 2);
+                    level.setBlock(mutablePos.setWithOffset(topPos, direction), wallState, 2);
                 }
             }
 

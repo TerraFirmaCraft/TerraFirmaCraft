@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/chain",
+  "textures": {
+    "all": "tfc:block/metal/chain/bismuth_bronze",
+    "particle": "tfc:block/metal/chain/bismuth_bronze"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": {
+      "type": "tfc:has_trait",
+      "trait": "tfc:pickled",
+      "ingredient": [
+        {
+          "tag": "tfc:food/fruits"
+        },
+        {
+          "tag": "tfc:food/vegetables"
+        },
+        {
+          "tag": "tfc:food/meats"
+        }
+      ]
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:vinegar",
+    "amount": 125
+  },
+  "duration": -1,
+  "on_seal": {
+    "apply": [
+      "tfc:copy_input",
+      {
+        "type": "tfc:add_trait",
+        "trait": "tfc:vinegar"
+      }
+    ]
+  },
+  "on_unseal": {
+    "apply": [
+      "tfc:copy_input",
+      {
+        "type": "tfc:remove_trait",
+        "trait": "tfc:vinegar"
+      }
+    ]
+  }
+}

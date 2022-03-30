@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -39,15 +40,18 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
+import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
-public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
+public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension, IGhostBlockHandler
 {
-    public static final BooleanProperty LIT = TFCBlockStateProperties.LIT;
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public static final VoxelShape BASE_SHAPE = Shapes.or(
         box(0, 0, 0.5, 3, 1.5, 3),
@@ -125,6 +129,27 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
         super.stepOn(world, pos, state, entity);
     }
 
+    @Nullable
+    @Override
+    public BlockState getStateToDraw(Level level, Player player, BlockState lookState, Direction direction, BlockPos pos, double x, double y, double z, ItemStack item)
+    {
+        if (Helpers.isItem(item, TFCItems.POT.get()))
+        {
+            return TFCBlocks.POT.get().defaultBlockState().setValue(LIT, lookState.getValue(LIT));
+        }
+        else if (Helpers.isItem(item, TFCItems.WROUGHT_IRON_GRILL.get()))
+        {
+            return TFCBlocks.GRILL.get().defaultBlockState().setValue(LIT, lookState.getValue(LIT));
+        }
+        return null;
+    }
+
+    @Override
+    public float alpha()
+    {
+        return 0.33F;
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
@@ -133,9 +158,9 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(worldIn, currentPos))
+        if (!stateIn.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -144,22 +169,22 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final AbstractFirepitBlockEntity<?> firepit = Helpers.getBlockEntity(world, pos, AbstractFirepitBlockEntity.class);
+        final AbstractFirepitBlockEntity<?> firepit = level.getBlockEntity(pos, TFCBlockEntities.FIREPIT.get()).orElse(null);
         if (firepit != null)
         {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem() == TFCItems.POT.get() || stack.getItem() == TFCItems.WROUGHT_IRON_GRILL.get())
             {
-                if (!world.isClientSide)
+                if (!level.isClientSide)
                 {
-                    AbstractFirepitBlockEntity.convertTo(world, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
+                    AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
                     stack.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()) && state.getValue(LIT))
+            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER) && state.getValue(LIT))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;
@@ -185,7 +210,7 @@ public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return BASE_SHAPE;
     }

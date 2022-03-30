@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -33,6 +33,7 @@ import net.minecraftforge.common.ToolActions;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 public class ConnectedGrassBlock extends Block implements IGrassBlock
 {
@@ -70,7 +71,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     {
         if (facing == Direction.UP)
         {
-            return stateIn.setValue(SNOWY, facingState.is(TFCTags.Blocks.SNOW));
+            return stateIn.setValue(SNOWY, Helpers.isBlock(facingState, TFCTags.Blocks.SNOW));
         }
         else if (facing != Direction.DOWN)
         {
@@ -152,7 +153,7 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState stateUp = context.getLevel().getBlockState(context.getClickedPos().above());
-        return updateStateFromNeighbors(context.getLevel(), context.getClickedPos(), defaultBlockState()).setValue(SNOWY, stateUp.is(Blocks.SNOW_BLOCK) || stateUp.is(Blocks.SNOW));
+        return updateStateFromNeighbors(context.getLevel(), context.getClickedPos(), defaultBlockState()).setValue(SNOWY, Helpers.isBlock(stateUp, Blocks.SNOW_BLOCK) || Helpers.isBlock(stateUp, Blocks.SNOW));
     }
 
     @Override

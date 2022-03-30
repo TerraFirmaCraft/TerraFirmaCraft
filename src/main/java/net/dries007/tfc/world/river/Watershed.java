@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
@@ -20,6 +21,7 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.FastConcurrentCache;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.TypedArea;
@@ -138,10 +140,8 @@ public abstract class Watershed
 
             // We need to have a consistent iteration order across sources, in order to deterministically generate a watershed from any given sample position
             // The easiest way to guarantee this, is to sort the sources.
-            final List<Long> sortedSources = sources.stream().sorted().toList();
             final RiverFractal.MultiParallelBuilder context = new Builder();
-            for (long key : sortedSources)
-            {
+            sources.longStream().sorted().forEach(key -> {
                 final float x0 = RiverHelpers.unpackX(key) + 0.5f, z0 = RiverHelpers.unpackZ(key) + 0.5f;
                 if (random.nextFloat() < sourceChance)
                 {
@@ -160,7 +160,8 @@ public abstract class Watershed
                         angle += 0.25f * Mth.PI;
                     }
                 }
-            }
+            });
+
 
             this.rivers = context.build();
         }

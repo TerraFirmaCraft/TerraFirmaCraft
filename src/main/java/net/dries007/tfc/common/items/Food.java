@@ -103,6 +103,7 @@ public enum Food
     SALMON(true, false),
     BLUEGILL(true, false),
     TROPICAL_FISH(true, false),
+    TURTLE(true, false),
     // Cooked Meats
     COOKED_BEEF(true, false),
     COOKED_PORK(true, false),
@@ -122,7 +123,8 @@ public enum Food
     COOKED_COD(true, false),
     COOKED_SALMON(true, false),
     COOKED_BLUEGILL(true, false),
-    COOKED_TROPICAL_FISH(true, false);
+    COOKED_TROPICAL_FISH(true, false),
+    COOKED_TURTLE(true, false);
 
     private final boolean meat, fast;
 

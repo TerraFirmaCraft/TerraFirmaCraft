@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": {
+      "type": "tfc:has_trait",
+      "trait": "brined",
+      "ingredient": [
+        {
+          "tag": "tfc:food/fruits"
+        },
+        {
+          "tag": "tfc:food/vegetables"
+        },
+        {
+          "tag": "tfc:food/meats"
+        }
+      ]
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:vinegar",
+    "amount": 125
+  },
+  "output_item": {
+    "apply": [
+      "tfc:copy_input",
+      {
+        "type": "tfc:add_trait",
+        "trait": "tfc:pickled"
+      }
+    ]
+  },
+  "duration": 4000
+}

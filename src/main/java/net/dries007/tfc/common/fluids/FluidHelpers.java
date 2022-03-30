@@ -6,13 +6,16 @@
 
 package net.dries007.tfc.common.fluids;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
+
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -25,15 +28,21 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
+import net.dries007.tfc.util.Helpers;
 
 public final class FluidHelpers
 {
@@ -49,6 +58,59 @@ public final class FluidHelpers
             if (filled > 0)
             {
                 return transferExact(from, to, filled);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Simpler version of FluidUtil#interactWithFluidHandler. Returns true if we think a transfer occurred.
+     *
+     * The major motivation:
+     * Vanilla / forge buckets require at least 1000mB to be drained, or else nothing happens, so we have to pretend we are asking for that much if that's the case.
+     *
+     * Stuff like pots that are either always 1000mB or 0mb should not need this.
+     */
+    public static boolean itemInteractsWithFluidHandler(ItemStack stack, BlockEntity blockEntity, int preferredAmount, Player player)
+    {
+        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(itemCap -> {
+            return blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(blockEntityCap -> {
+                if (itemCap.getFluidInTank(0).isEmpty()) // try to fill it from the fluid tank
+                {
+                    return player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inv -> {
+                        FluidActionResult result = FluidUtil.tryFillContainerAndStow(stack, blockEntityCap, inv, preferredAmount, player, true);
+                        if (result.isSuccess())
+                        {
+                            player.setItemInHand(player.getUsedItemHand(), result.getResult());
+                            return true;
+                        }
+                        return false;
+                    }).orElse(false);
+                }
+                else
+                {
+                    final boolean bucketTransfer = itemCap instanceof FluidBucketWrapper && preferredAmount < FluidAttributes.BUCKET_VOLUME; // todo: does this suck?
+                    return tryEmptyItem(player, itemCap, blockEntityCap, bucketTransfer ? FluidAttributes.BUCKET_VOLUME : preferredAmount, !bucketTransfer);
+                }
+            }).orElse(false);
+        }).orElse(false);
+    }
+
+    /**
+     * See javadoc above. Bucket-safe version of tryEmptyContainer and related functions.
+     */
+    public static boolean tryEmptyItem(Player player, IFluidHandlerItem from, IFluidHandler to, int amount, boolean exact)
+    {
+        if (exact) return transferExact(from, to, amount);
+        final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
+        if (drained.getAmount() == amount)
+        {
+            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
+            if (filled > 0) // we only need it to be filled *at all* rather than the exact amount
+            {
+                to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                if (!player.isCreative()) player.setItemInHand(player.getUsedItemHand(), from.getContainer());
+                return true;
             }
         }
         return false;
@@ -137,6 +199,16 @@ public final class FluidHelpers
         return state.isAir() || state.getBlock() == state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock();
     }
 
+    public static Optional<FluidState> isEmptyFluid(BlockState state)
+    {
+        FluidState fluidState = state.getFluidState().getType().defaultFluidState();
+        if (state.getBlock() == fluidState.createLegacyBlock().getBlock())
+        {
+            return Optional.of(fluidState);
+        }
+        return Optional.empty();
+    }
+
     /**
      * Given a block state and a fluid, attempts to fill the block state with the fluid
      * Returns null if the provided combination cannot be filled
@@ -199,7 +271,7 @@ public final class FluidHelpers
      */
     public static boolean canMixFluids(Fluid fluid)
     {
-        return fluid instanceof FlowingFluid && TFCTags.Fluids.MIXABLE.contains(fluid);
+        return fluid instanceof FlowingFluid && Helpers.isFluid(fluid, TFCTags.Fluids.MIXABLE);
     }
 
     /**
@@ -302,5 +374,24 @@ public final class FluidHelpers
             // Cause the maximum adjacent fluid to flow into this block
             return maxAdjacentFluid.getFlowing(selfFluidAmount, false);
         }
+    }
+
+    public static void setSourceBlock(Level level, BlockPos pos, Fluid fluid)
+    {
+        if (fluid instanceof FlowingFluid flow)
+        {
+            level.setBlock(pos, flow.getSource().defaultFluidState().createLegacyBlock(), 3);
+        }
+        else
+        {
+            level.setBlock(pos, fluid.defaultFluidState().createLegacyBlock(), 3);
+        }
+    }
+
+    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state, IFluidLoggable loggable)
+    {
+        final Fluid contained = state.getValue(loggable.getFluidProperty()).getFluid();
+        if (contained.isSame(Fluids.EMPTY)) return;
+        level.scheduleTick(pos, contained, contained.getTickDelay(level));
     }
 }

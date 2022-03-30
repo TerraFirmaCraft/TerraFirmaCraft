@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/cube_column_overlay",
+  "textures": {
+    "all": "tfc:block/wattle/woven_wattle",
+    "particle": "tfc:block/wattle/wattle_sides",
+    "overlay": "tfc:block/wattle/wattle_sides",
+    "overlay_end": "tfc:block/wattle/end"
+  }
+}

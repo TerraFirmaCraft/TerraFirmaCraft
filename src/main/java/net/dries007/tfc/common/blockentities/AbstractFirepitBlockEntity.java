@@ -39,7 +39,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
 
     public static final int DATA_SLOT_TEMPERATURE = 0;
 
-    public static void convertTo(LevelAccessor world, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
+    public static void convertTo(LevelAccessor level, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
     {
         // Convert firepit to another device
         // Normally, as soon as we set the block, it would eject all contents thanks to DeviceBlock and InventoryBlockEntity
@@ -47,9 +47,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         firepit.ejectMainInventory();
         NonNullList<ItemStack> saved = Helpers.extractAllItems(firepit.inventory);
 
-        world.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
+        level.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
 
-        final BlockEntity newEntity = world.getBlockEntity(pos);
+        final BlockEntity newEntity = level.getBlockEntity(pos);
         if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)
         {
             Helpers.insertAllItems(newFirepit.inventory, saved);
@@ -247,7 +247,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     {
         return switch (slot)
             {
-                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && TFCTags.Items.FIREPIT_FUEL.contains(stack.getItem());
+                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && Helpers.isItem(stack.getItem(), TFCTags.Items.FIREPIT_FUEL);
                 case FirepitBlockEntity.SLOT_ITEM_INPUT -> stack.getCapability(HeatCapability.CAPABILITY).isPresent();
                 case FirepitBlockEntity.SLOT_OUTPUT_1, FirepitBlockEntity.SLOT_OUTPUT_2 -> true;
                 default -> false;

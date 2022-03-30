@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": {
+      "item": "tfc:limewater"
+    }
+  },
+  "input_fluid": {
+    "ingredient": "minecraft:bone_meal"
+  },
+  "output_item": {
+    "item": "tfc:glue"
+  },
+  "duration": 8000
+}

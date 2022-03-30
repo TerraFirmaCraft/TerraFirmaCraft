@@ -8,27 +8,29 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeHooks;
 
 import net.dries007.tfc.common.TFCTags;
@@ -37,6 +39,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Almost all methods in here are adapted from {@link net.minecraft.world.level.block.ChorusFlowerBlock}
@@ -44,6 +47,7 @@ import net.dries007.tfc.config.TFCConfig;
 public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggable
 {
     public static final IntegerProperty AGE = BlockStateProperties.AGE_5;
+    public static final DirectionProperty FACING = BlockStateProperties.FACING;
     private static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 15.0D, 15.0D);
 
     public static KelpTreeFlowerBlock create(BlockBehaviour.Properties builder, Supplier<? extends Block> plant)
@@ -64,7 +68,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     {
         super(builder);
         this.bodyBlock = bodyBlock;
-        registerDefaultState(stateDefinition.any().setValue(AGE, 0).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(stateDefinition.any().setValue(AGE, 0).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(FACING, Direction.UP));
     }
 
     @Override
@@ -76,24 +80,24 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(getFluidProperty(), AGE);
+        builder.add(getFluidProperty(), AGE, FACING);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
+        final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
         if (containedFluid != Fluids.EMPTY)
         {
             level.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(level));
         }
-        if (facing != Direction.UP && !stateIn.canSurvive(level, currentPos))
+        if (facing != Direction.UP && !state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
             return Blocks.AIR.defaultBlockState();
         }
-        return stateIn;
+        return state;
     }
 
     @Override
@@ -110,7 +114,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         KelpTreeBlock body = (KelpTreeBlock) getBodyBlock().get();
 
         BlockState blockstate = level.getBlockState(pos.below());
-        if (blockstate.getBlock() != body && !blockstate.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        if (blockstate.getBlock() != body && !Helpers.isBlock(blockstate, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
         {
             if (!isEmptyWaterBlock(level, pos.below()))
             {
@@ -122,7 +126,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 for (Direction direction : Direction.Plane.HORIZONTAL)
                 {
                     BlockState relativeState = level.getBlockState(pos.relative(direction));
-                    if (relativeState.is(body))
+                    if (Helpers.isBlock(relativeState, body))
                     {
                         if (isValid)
                         {
@@ -170,7 +174,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 boolean foundGroundFurtherDown = false;
                 BlockState belowState = level.getBlockState(pos.below());
                 Block belowBlock = belowState.getBlock();
-                if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlock))
+                if (Helpers.isBlock(belowBlock, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {
                     shouldPlaceNewBody = true;
                 }
@@ -183,7 +187,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                         Block belowBlockOffset = level.getBlockState(pos.below(j + 1)).getBlock();
                         if (belowBlockOffset != body)
                         {
-                            if (TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON.contains(belowBlockOffset))
+                            if (Helpers.isBlock(belowBlockOffset, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                             {
                                 foundGroundFurtherDown = true;
                             }
@@ -206,7 +210,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                 if (shouldPlaceNewBody && allNeighborsEmpty(level, abovePos, null) && isEmptyWaterBlock(level, pos.above(2)))
                 {
                     setBodyBlockWithFluid(level, pos, fluid);
-                    this.placeGrownFlower(level, abovePos, i);
+                    this.placeGrownFlower(level, abovePos, i, Direction.UP);
                 }
                 else if (i < 4)
                 {
@@ -222,7 +226,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                         BlockPos relativePos = pos.relative(direction);
                         if (isEmptyWaterBlock(level, relativePos) && isEmptyWaterBlock(level, relativePos.below()) && allNeighborsEmpty(level, relativePos, direction.getOpposite()))
                         {
-                            this.placeGrownFlower(level, relativePos, i + 1);
+                            this.placeGrownFlower(level, relativePos, i + 1, direction);
                             foundValidGrowthSpace = true;
                         }
                     }
@@ -232,17 +236,18 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
                     }
                     else
                     {
-                        this.placeDeadFlower(level, pos);
+                        this.placeDeadFlower(level, pos, level.getBlockState(pos).getValue(FACING));
                     }
                 }
                 else
                 {
-                    this.placeDeadFlower(level, pos);
+                    this.placeDeadFlower(level, pos, level.getBlockState(pos).getValue(FACING));
                 }
                 ForgeHooks.onCropsGrowPost(level, pos, state);
             }
         }
     }
+
 
     @Override
     @SuppressWarnings("deprecation")
@@ -345,17 +350,17 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
         return true;
     }
 
-    protected void placeGrownFlower(Level level, BlockPos pos, int age)
+    protected void placeGrownFlower(Level level, BlockPos pos, int age, Direction facing)
     {
         Fluid fluid = level.getFluidState(pos).getType();
-        level.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, age), 2);
+        level.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, age).setValue(FACING, facing), 2);
         level.levelEvent(1033, pos, 0);
     }
 
-    protected void placeDeadFlower(Level level, BlockPos pos)
+    protected void placeDeadFlower(Level level, BlockPos pos, Direction facing)
     {
         Fluid fluid = level.getFluidState(pos).getType();
-        level.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, 5), 2);
+        level.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, 5).setValue(FACING, facing), 2);
         level.levelEvent(1034, pos, 0);
     }
 
@@ -369,6 +374,25 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     {
         KelpTreeBlock plant = (KelpTreeBlock) getBodyBlock().get();
         return plant.getStateForPlacement(level, pos).setValue(getFluidProperty(), getFluidProperty().keyFor(fluid));
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        Level world = context.getLevel();
+        BlockPos pos = context.getClickedPos();
+        Direction direction = context.getClickedFace();
+        BlockState state = defaultBlockState();
+        if (world.getBlockState(pos.relative(direction.getOpposite())).is(getBodyBlock().get()))
+        {
+            state = state.setValue(FACING, context.getClickedFace());
+        }
+        FluidState fluidState = world.getFluidState(context.getClickedPos());
+        if (!fluidState.isEmpty() && getFluidProperty().canContain(fluidState.getType()))
+        {
+            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+        }
+        return null;
     }
 
     protected Supplier<? extends Block> getBodyBlock()

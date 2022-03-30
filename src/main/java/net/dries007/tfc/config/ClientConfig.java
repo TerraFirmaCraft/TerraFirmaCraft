@@ -27,6 +27,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableHungerBar;
     public final ForgeConfigSpec.BooleanValue enableHealthBar;
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
+    public final ForgeConfigSpec.BooleanValue enableInkSplatter;
     public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
     public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
@@ -54,6 +55,7 @@ public class ClientConfig
         enableHungerBar = builder.apply("enableHungerBar").comment("Replace the vanilla hunger bar with a TFC one.").define("enableHungerBar", true);
         enableHealthBar = builder.apply("enableHealthBar").comment("Replaces the vanilla health bar with a TFC one.").define("enableHealthBar", true);
         enableThirstBar = builder.apply("enableThirstBar").comment("Adds a TFC thirst bar over the hotbar.").define("enableThirstBar", true);
+        enableInkSplatter = builder.apply("enableInkSplatter").comment("Enables squids inking your screen.").define("enableInkSplatter", true);
 
         healthDisplayStyle = builder.apply("healthDisplayStyle").comment(
             "Health display format. This affects what number is displayed on top of the tfc-style health bar",

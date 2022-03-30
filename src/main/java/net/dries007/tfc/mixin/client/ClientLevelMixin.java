@@ -9,6 +9,7 @@ package net.dries007.tfc.mixin.client;
 import java.util.function.Supplier;
 
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.CubicSampler;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -27,7 +28,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 @Mixin(ClientLevel.class)
 public abstract class ClientLevelMixin extends Level
 {
-    protected ClientLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, DimensionType dimensionType, Supplier<ProfilerFiller> profiler, boolean isClientSide, boolean isDebug, long biomeZoomSeed)
+    protected ClientLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, Holder<DimensionType> dimensionType, Supplier<ProfilerFiller> profiler, boolean isClientSide, boolean isDebug, long biomeZoomSeed)
     {
         super(levelData, dimension, dimensionType, profiler, isClientSide, isDebug, biomeZoomSeed);
     }
@@ -40,7 +41,7 @@ public abstract class ClientLevelMixin extends Level
     private CubicSampler.Vec3Fetcher getSkyColorWithColormap(CubicSampler.Vec3Fetcher fetcher)
     {
         return (x, y, z) -> {
-            final Biome biome = getBiomeManager().getNoiseBiomeAtQuart(x, y, z);
+            final Biome biome = getBiomeManager().getNoiseBiomeAtQuart(x, y, z).value();
             return Vec3.fromRGB24(TFCColors.getSkyColor(this, biome, Helpers.quartToBlock(x, y, z)));
         };
     }

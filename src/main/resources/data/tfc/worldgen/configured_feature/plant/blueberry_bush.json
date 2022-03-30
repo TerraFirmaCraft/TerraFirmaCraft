@@ -1,5 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:no_op",
-  "config": {}
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "tfc:plant/blueberry_bush",
+        "Properties": {
+          "lifecycle": "healthy",
+          "stage": "0"
+        }
+      }
+    }
+  }
 }

@@ -8,22 +8,24 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.GrowingPlantHeadBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
@@ -31,7 +33,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
 {
     public static TFCKelpBlock create(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
-        return new TFCKelpBlock(properties, headBlock, shape, direction)
+        return new TFCKelpBlock(properties.lootFrom(headBlock), headBlock, shape, direction)
         {
             @Override
             public FluidProperty getFluidProperty()
@@ -50,9 +52,9 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == this.growthDirection.getOpposite() && !stateIn.canSurvive(level, currentPos))
+        if (facing == this.growthDirection.getOpposite() && !state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
         }
@@ -63,14 +65,14 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
             Block block = facingState.getBlock();
             if (block != this && block != topBlock)
             {
-                return topBlock.getStateForPlacement(level).setValue(getFluidProperty(), stateIn.getValue(getFluidProperty()));
+                return topBlock.getStateForPlacement(level).setValue(getFluidProperty(), state.getValue(getFluidProperty()));
             }
         }
-        if (this.scheduleFluidTicks)
+        if (scheduleFluidTicks)
         {
-            level.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            FluidHelpers.tickFluid(level, currentPos, state, this);
         }
-        return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -93,16 +95,16 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState)
     {
         return false;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
-        Vec3 vector3d = state.getOffset(worldIn, pos);
+        VoxelShape voxelshape = super.getShape(state, level, pos, context);
+        Vec3 vector3d = state.getOffset(level, pos);
         return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
     }
 
@@ -111,6 +113,13 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
     {
         super.createBlockStateDefinition(builder);
         builder.add(getFluidProperty());
+    }
+
+    @Override
+    public ItemStack pickupBlock(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    {
+        // Don't allow taking the fluid
+        return ItemStack.EMPTY;
     }
 
     protected GrowingPlantHeadBlock getHeadBlock()

@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -64,11 +65,11 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
                 }
                 BlockState finalState = world.getBlockState(mutablePos);
                 mutablePos.move(Direction.UP);
-                if (finalState.is(BlockTags.BASE_STONE_OVERWORLD))
+                if (Helpers.isBlock(finalState, BlockTags.BASE_STONE_OVERWORLD))
                 {
                     placeDisc(world, mutablePos, rand);
                 }
-                else if (finalState.is(BlockTags.ICE) && rand.nextFloat() < 0.03F)
+                else if (Helpers.isBlock(finalState, BlockTags.ICE) && rand.nextFloat() < 0.03F)
                 {
                     placeDisc(world, mutablePos, rand);
                 }
@@ -89,7 +90,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
                 if (world.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.UP);
-                    if (world.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                    if (Helpers.isBlock(world.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
                     {
                         setBlock(world, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
                         world.scheduleTick(mutablePos, Fluids.WATER, 0);
@@ -98,7 +99,7 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
             }
             if (rand.nextFloat() < 0.03F)//large spikes
             {
-                if (mutablePos.getY() < 96 && world.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                if (mutablePos.getY() < 96 && Helpers.isBlock(world.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
                 {
                     mutablePos.move(Direction.DOWN);
                     if (world.isEmptyBlock(mutablePos))

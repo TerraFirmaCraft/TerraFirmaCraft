@@ -57,6 +57,9 @@
     },
     {
       "item": "tfc:food/tropical_fish"
+    },
+    {
+      "item": "tfc:food/turtle"
     }
   ],
   "heat_capacity": 1

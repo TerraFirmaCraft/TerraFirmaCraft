@@ -8,7 +8,7 @@ package net.dries007.tfc.util.climate;
 
 import java.util.OptionalLong;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -239,7 +239,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                     final float temperatureModifier, waterDepthModifier;
                     final float threshold = icePatchNoise.noise(x * 0.2f, z * 0.2f) + Mth.clamp(temperature * 0.1f, -0.2f, 0.2f);
 
-                    if (stateAt.is(Blocks.ICE) || stateAt.is(Blocks.WATER))
+                    if (Helpers.isBlock(stateAt, Blocks.ICE) || Helpers.isBlock(stateAt, Blocks.WATER))
                     {
                         // Fresh water areas don't freeze over in deep water
                         final int waterDepth = mutablePos.getY() - level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
@@ -259,7 +259,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                     if (waterDepthModifier + temperatureModifier < threshold && temperatureModifier < 1)
                     {
                         // Sea Ice, Ice, or Ice Pile
-                        if (stateAt.is(TFCBlocks.SALT_WATER.get()))
+                        if (Helpers.isBlock(stateAt, TFCBlocks.SALT_WATER.get()))
                         {
                             level.setBlock(mutablePos, TFCBlocks.SEA_ICE.get().defaultBlockState(), 2);
                         }
@@ -271,7 +271,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                     else
                     {
                         // None of the above - melt ice if possible
-                        if (stateAt.is(TFCBlocks.SEA_ICE.get()))
+                        if (Helpers.isBlock(stateAt, TFCBlocks.SEA_ICE.get()))
                         {
                             level.setBlock(mutablePos, TFCBlocks.SALT_WATER.get().defaultBlockState(), 2);
                             level.scheduleTick(mutablePos, TFCFluids.SALT_WATER.getSource(), 0);

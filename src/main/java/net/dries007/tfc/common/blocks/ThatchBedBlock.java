@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -21,7 +19,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -33,6 +30,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Lots of parts borrowed from {@link BedBlock}
@@ -56,27 +56,13 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (facing == getNeighbourDirection(state.getValue(PART), state.getValue(FACING)))
+        if (!level.isClientSide())
         {
-            return facingState.is(this) && facingState.getValue(PART) != state.getValue(PART) ? state : Blocks.AIR.defaultBlockState();
-        }
-        else
-        {
-            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
-    {
-        if (!worldIn.isClientSide())
-        {
-            if (BedBlock.canSetSpawn(worldIn))
+            if (BedBlock.canSetSpawn(level))
             {
-                if (!worldIn.isThundering())
+                if (!level.isThundering())
                 {
                     player.displayClientMessage(new TranslatableComponent("tfc.thatch_bed.use"), true);
                 }
@@ -87,7 +73,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
             }
             else
             {
-                worldIn.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.BlockInteraction.DESTROY);
+                level.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.BlockInteraction.DESTROY);
             }
             return InteractionResult.SUCCESS;
         }
@@ -103,7 +89,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return BED_SHAPE;
     }
@@ -133,6 +119,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
         }
     }
 
+    @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
         if (!level.isClientSide && player.isCreative())
@@ -142,7 +129,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
             {
                 BlockPos neighbourPos = pos.relative(getNeighbourDirection(part, state.getValue(FACING)));
                 BlockState neighbourState = level.getBlockState(neighbourPos);
-                if (neighbourState.is(this) && neighbourState.getValue(PART) == BedPart.HEAD)
+                if (Helpers.isBlock(neighbourState, this) && neighbourState.getValue(PART) == BedPart.HEAD)
                 {
                     level.setBlock(neighbourPos, Blocks.AIR.defaultBlockState(), 35);
                     level.levelEvent(player, 2001, neighbourPos, Block.getId(neighbourState));
@@ -174,12 +161,12 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock
 
     @SuppressWarnings("deprecation")
     @Override
-    public void neighborChanged(BlockState state, Level world, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         Direction facing = state.getValue(FACING);
-        if (!(world.getBlockState(pos.relative(facing)).is(TFCBlocks.THATCH_BED.get())) || world.getBlockState(pos.below()).isFaceSturdy(world, pos.below(), Direction.UP))
+        if (pos.relative(facing).equals(fromPos) || !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
         {
-            world.destroyBlock(pos, true);
+            level.destroyBlock(pos, true);
         }
     }
 

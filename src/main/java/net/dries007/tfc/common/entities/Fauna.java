@@ -28,6 +28,7 @@ public class Fauna
     private final int distanceBelowSeaLevel;
     private final ClimatePlacement climate;
     private final boolean solidGround;
+    private final int maxBrightness;
 
     public Fauna(ResourceLocation id)
     {
@@ -36,6 +37,7 @@ public class Fauna
         this.distanceBelowSeaLevel = -1;
         this.climate = DEFAULT_CLIMATE;
         this.solidGround = false;
+        this.maxBrightness = -1;
     }
 
     public Fauna(ResourceLocation id, JsonObject json)
@@ -43,8 +45,9 @@ public class Fauna
         this.id = id;
         this.chance = JsonHelpers.getAsInt(json, "chance", 1);
         this.distanceBelowSeaLevel = JsonHelpers.getAsInt(json, "distance_below_sea_level", -1);
-        this.climate = JsonHelpers.decodeCodec(json, ClimatePlacement.CODEC, "climate");
+        this.climate = JsonHelpers.decodeCodecDefaulting(json, ClimatePlacement.CODEC, "climate", DEFAULT_CLIMATE);
         this.solidGround = JsonHelpers.getAsBoolean(json, "solid_ground", false);
+        this.maxBrightness = JsonHelpers.getAsInt(json, "max_brightness", -1);
     }
 
     public ResourceLocation getId()
@@ -70,5 +73,10 @@ public class Fauna
     public boolean isSolidGround()
     {
         return solidGround;
+    }
+
+    public int getMaxBrightness()
+    {
+        return maxBrightness;
     }
 }

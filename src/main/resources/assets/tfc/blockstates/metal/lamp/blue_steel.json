@@ -1,8 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "tfc:block/metal/lamp/blue_steel"
+    "hanging=false,lit=false": {
+      "model": "tfc:block/metal/lamp/blue_steel_off"
+    },
+    "hanging=true,lit=false": {
+      "model": "tfc:block/metal/lamp/blue_steel_hanging_off"
+    },
+    "hanging=false,lit=true": {
+      "model": "tfc:block/metal/lamp/blue_steel_on"
+    },
+    "hanging=true,lit=true": {
+      "model": "tfc:block/metal/lamp/blue_steel_hanging_on"
     }
   }
 }

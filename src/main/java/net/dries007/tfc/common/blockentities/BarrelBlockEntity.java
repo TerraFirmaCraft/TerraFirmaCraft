@@ -285,7 +285,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel = (BarrelBlockEntity) entity;
             inventory = new InventoryItemHandler(entity, SLOTS);
             excess = new ArrayList<>();
-            tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> TFCTags.Fluids.USABLE_IN_BARREL.contains(stack.getFluid()));
+            tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL));
         }
 
         public void whileMutable(Runnable action)

@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageEnhance
 
 from constants import *
 
@@ -147,6 +147,48 @@ def create_chest(wood: str):
     right_trapped = Image.alpha_composite(normal_right, right_trapped_overlay)
     right_trapped.save(path + 'entity/chest/trapped_right/%s' % wood + '.png')
 
+def create_sign(wood: str):
+    log = Image.open(path + 'block/wood/log/%s' % wood + '.png').convert('RGBA')
+    planks = Image.open(path + 'block/wood/planks/%s' % wood + '.png').convert('RGBA')
+    image = Image.new('RGBA', (64, 32), (0, 0, 0, 0))
+    for coord in ((0, 0), (16, 0), (32, 0), (48, 0)):
+        image.paste(planks, coord)
+    image.paste(log, (0, 16))
+    image.save(path + 'entity/signs/%s.png' % wood)
+
+def create_sign_item(wood: str, plank_color, log_color):
+    head = Image.open('texture_templates/sign_head.png')
+    mast = Image.open('texture_templates/sign_mast.png')
+    head = put_on_all_pixels(head, plank_color)
+    mast = put_on_all_pixels(mast, log_color)
+    image = Image.alpha_composite(mast, head)
+    image = ImageEnhance.Color(image).enhance(2)
+    image.save(path + 'item/wood/sign/%s.png' % wood)
+
+def get_wood_colors(wood_path: str):
+    wood = Image.open(path + 'block/wood/%s.png' % wood_path)
+    return wood.getpixel((0, 0))
+
+def easy_colorize(color, from_path, to_path, saturation: float = 1):
+    img = Image.open(from_path + '.png')
+    new_image = put_on_all_pixels(img, color)
+    if saturation != 1:
+        new_image = ImageEnhance.Color(new_image).enhance(saturation)
+    new_image.save(to_path + '.png')
+
+def put_on_all_pixels(img: Image, color) -> Image:
+    if isinstance(color, int):
+        color = (color, color, color, 255)
+    img = img.convert('RGBA')
+    for x in range(0, img.width):
+        for y in range(0, img.height):
+            dat = img.getpixel((x, y))
+            grey = (dat[0] + dat[1] + dat[2]) / 3 / 255
+            if dat[3] > 0:
+                tup = (int(color[0] * grey), int(color[1] * grey), int(color[2] * grey))
+                img.putpixel((x, y), tup)
+    return img
+
 def main():
     for wood in WOODS.keys():
         overlay_image('texture_templates/bookshelf', path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_bookshelf' % wood)
@@ -155,6 +197,12 @@ def main():
         for bench in ('workbench_front', 'workbench_side', 'workbench_top'):
             overlay_image('texture_templates/' + bench, path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_' % wood + bench)
         create_chest(wood)
+        create_sign(wood)
+        plank_color = get_wood_colors('planks/%s' % wood)
+        log_color = get_wood_colors('log/%s' % wood)
+        create_sign_item(wood, plank_color, log_color)
+        for item in ('twig', 'boat', 'lumber'):
+            easy_colorize(plank_color, 'texture_templates/%s' % item, path + 'item/wood/%s/%s' % (item, wood), 2)
 
     for rock in ROCKS.keys():
         overlay_image('texture_templates/mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)

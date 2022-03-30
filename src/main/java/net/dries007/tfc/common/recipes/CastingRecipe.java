@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;

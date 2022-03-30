@@ -39,6 +39,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class CropBlock extends net.minecraft.world.level.block.CropBlock implements HoeOverlayBlock, ICropBlock, IForgeBlockExtension, EntityBlockExtension
@@ -109,7 +110,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return level.getBlockState(pos.below()).is(TFCTags.Blocks.FARMLAND);
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FARMLAND);
     }
 
     @Override

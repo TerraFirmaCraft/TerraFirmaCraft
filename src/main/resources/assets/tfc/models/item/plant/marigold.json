@@ -1,3 +1,6 @@
 {
-  "parent": "tfc:block/plant/marigold_single_2"
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "tfc:item/plant/marigold"
+  }
 }

@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
 public class ShallowWaterPlacement extends PlacementModifier
@@ -40,7 +41,7 @@ public class ShallowWaterPlacement extends PlacementModifier
         for (int i = 0; i < maxDepth; i++)
         {
             mutablePos.move(Direction.DOWN);
-            if (!ctx.getLevel().isFluidAtPosition(mutablePos, state -> state.is(FluidTags.WATER)))
+            if (!ctx.getLevel().isFluidAtPosition(mutablePos, state -> Helpers.isFluid(state, FluidTags.WATER)))
             {
                 return rand.nextFloat() > (double) i / maxDepth ? Stream.of(pos) : Stream.empty();
             }

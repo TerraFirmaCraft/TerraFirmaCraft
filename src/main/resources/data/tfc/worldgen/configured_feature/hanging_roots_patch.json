@@ -23,7 +23,7 @@
         "max_inclusive": 2
       }
     },
-    "replaceable": "minecraft:base_stone_overworld",
+    "replaceable": "#minecraft:base_stone_overworld",
     "ground_state": {
       "type": "minecraft:simple_state_provider",
       "state": {

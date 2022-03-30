@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
@@ -49,7 +49,7 @@ public interface VesselLike extends MoldLike, IItemHandlerModifiable, IFluidHand
      * Need to override to resolve default method conflict
      */
     @Override
-    boolean isItemValid(int slot, @Nonnull ItemStack stack);
+    boolean isItemValid(int slot, @NotNull ItemStack stack);
 
     enum Mode
     {

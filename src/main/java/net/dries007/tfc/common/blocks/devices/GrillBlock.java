@@ -26,8 +26,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.TFCTags;
@@ -82,29 +82,29 @@ public class GrillBlock extends FirepitBlock
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        final AbstractFirepitBlockEntity<?> firepit = Helpers.getBlockEntity(world, pos, AbstractFirepitBlockEntity.class);
+        final AbstractFirepitBlockEntity<?> firepit = level.getBlockEntity(pos, TFCBlockEntities.GRILL.get()).orElse(null);
         if (firepit != null)
         {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                if (!world.isClientSide)
+                if (!level.isClientSide)
                 {
                     if (state.getValue(LIT))
                     {
                         player.hurt(TFCDamageSources.GRILL, 1.0F);
-                        Helpers.playSound(world, pos, SoundEvents.LAVA_EXTINGUISH);
+                        Helpers.playSound(level, pos, SoundEvents.LAVA_EXTINGUISH);
                     }
                     else
                     {
-                        AbstractFirepitBlockEntity.convertTo(world, pos, state, firepit, TFCBlocks.FIREPIT.get());
+                        AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, TFCBlocks.FIREPIT.get());
                     }
                 }
                 return InteractionResult.SUCCESS;
             }
-            else if (TFCTags.Items.EXTINGUISHER.contains(stack.getItem()))
+            else if (Helpers.isItem(stack.getItem(), TFCTags.Items.EXTINGUISHER))
             {
                 firepit.extinguish(state);
                 return InteractionResult.SUCCESS;

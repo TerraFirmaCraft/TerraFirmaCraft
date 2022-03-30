@@ -14,9 +14,9 @@ import net.minecraft.world.level.BlockGetter;
 
 public interface ITallPlant
 {
-    default Part getPlantPart(BlockGetter world, BlockPos pos)
+    default Part getPlantPart(BlockGetter level, BlockPos pos)
     {
-        if (world.getBlockState(pos.below()).getBlock() != this)
+        if (level.getBlockState(pos.below()).getBlock() != this)
         {
             return Part.LOWER;
         }

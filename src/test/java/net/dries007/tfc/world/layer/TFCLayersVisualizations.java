@@ -7,11 +7,12 @@
 package net.dries007.tfc.world.layer;
 
 import java.awt.*;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.Artist;
+import net.dries007.tfc.TestBase;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -22,7 +23,7 @@ import static net.dries007.tfc.TestHelper.*;
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 @Disabled
-public class TFCLayersVisualizations
+public class TFCLayersVisualizations extends TestBase
 {
     @Test
     public void testCreateOverworldBiomeLayer()

@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import javax.annotation.Nullable;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -20,8 +23,7 @@ import net.minecraft.world.level.LevelReader;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggable
 {
@@ -65,6 +67,13 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     }
 
     @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    {
+        FluidHelpers.tickFluid(level, currentPos, state, this);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
@@ -72,10 +81,10 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
-        return belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && state.getValue(getFluidProperty()) != getFluidProperty().keyFor(Fluids.EMPTY);
+        BlockState belowState = level.getBlockState(pos.below());
+        return Helpers.isBlock(belowState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && state.getValue(getFluidProperty()) != getFluidProperty().keyFor(Fluids.EMPTY);
     }
 
     @Override

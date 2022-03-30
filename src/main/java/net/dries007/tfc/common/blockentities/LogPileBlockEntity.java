@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -104,7 +104,7 @@ public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> i
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return TFCTags.Items.LOG_PILE_LOGS.contains(stack.getItem());
+        return Helpers.isItem(stack.getItem(), TFCTags.Items.LOG_PILE_LOGS);
     }
 
     @Nullable

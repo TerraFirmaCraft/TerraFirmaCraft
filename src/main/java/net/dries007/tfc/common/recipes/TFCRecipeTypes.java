@@ -10,12 +10,9 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.util.Helpers;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCRecipeTypes
 {
@@ -33,6 +30,7 @@ public class TFCRecipeTypes
     public static final Supplier<RecipeType<CastingRecipe>> CASTING = register("casting");
     public static final Supplier<RecipeType<InstantBarrelRecipe>> BARREL_INSTANT = register("barrel_instant");
     public static final Supplier<RecipeType<SealedBarrelRecipe>> BARREL_SEALED = register("barrel_sealed");
+    public static final Supplier<RecipeType<LoomRecipe>> LOOM = register("loom");
 
     public static void registerRecipeTypes()
     {
@@ -50,6 +48,7 @@ public class TFCRecipeTypes
         CASTING.get();
         BARREL_INSTANT.get();
         BARREL_SEALED.get();
+        LOOM.get();
     }
 
     public static void registerPotRecipeOutputTypes()

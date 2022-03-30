@@ -52,6 +52,16 @@ class Count:  # global mutable variables that doesn't require using the word "gl
 
 
 def main():
+    print('Verifying tree structures')
+    verify_center_trunk('acacia', 35)
+    verify_center_trunk('aspen', 16)
+    verify_center_trunk('blackwood', 10)
+    verify_center_trunk('conifer', 9)
+    verify_center_trunk('fir', 9)
+    verify_center_trunk('jungle', 17)
+    verify_center_trunk('tropical', 7)
+    verify_center_trunk('willow', 7)
+
     print('Tree sapling drop chances:')
     for tree in NORMAL_TREES:
         analyze_tree_leaves(tree)
@@ -162,9 +172,33 @@ def leaf_ids(file: nbt.File) -> Set[int]:
     return {i for i, block in enumerate(file['palette']) if block['Name'] == 'minecraft:oak_leaves'}
 
 
-def pos_key(tag: Any) -> Tuple[int, int, int]:
-    pos = tag['pos']
+def pos_key(tag: Any, key: str = 'pos') -> Tuple[int, int, int]:
+    pos = tag[key]
     return int(pos[0]), int(pos[1]), int(pos[2])
+
+
+def verify_center_trunk(prefix: str, count: int):
+    for i in range(1, 1 + count):
+        root = nbt.load('./structure_templates/%s%d.nbt' % (prefix, i))
+        sx, sy, sz = pos_key(root, 'size')
+        if sx % 2 != 1 or sz % 2 != 1:
+            print('Non-odd dimensions: %d x %d x %d on %s%d' % (sx, sy, sz, prefix, i))
+            continue
+
+        center = sx // 2, 0, sz // 2
+        center_state = None
+        for block in root['blocks']:
+            if pos_key(block) == center:
+                center_state = int(block['state'])
+                break
+
+        if center_state is None:
+            print('Cannot find center trunk state on %s%d' % (prefix, i))
+            continue
+
+        state = str(root['palette'][center_state]['Name'])
+        if state not in ('minecraft:oak_wood', 'minecraft:oak_log'):
+            print('Illegal center state, expected log, got: %s, on %s%d' % (state,prefix, i))
 
 
 if __name__ == '__main__':

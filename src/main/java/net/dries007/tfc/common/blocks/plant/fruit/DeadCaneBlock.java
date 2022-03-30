@@ -22,43 +22,37 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class DeadCaneBlock extends SpreadingCaneBlock implements EntityBlockExtension
 {
     public DeadCaneBlock(ExtendedProperties properties)
     {
-        super(properties, () -> Items.AIR, new Lifecycle[12], () -> Blocks.AIR, 0, 0);
+        super(properties, () -> Items.AIR, new Lifecycle[12], () -> Blocks.AIR, 0, ClimateRanges.BANANA_PLANT);
     }
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (random.nextInt(15) == 0 && level.isEmptyBlock(pos.above()))
+        if (random.nextInt(15) == 0 && !level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
         {
-            TickCounterBlockEntity te = Helpers.getBlockEntity(level, pos, TickCounterBlockEntity.class);
-            if (te != null)
-            {
-                if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+                if (counter.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)
                 {
-                    if (!level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
-                    {
-                        te.setRemoved();
-                        level.destroyBlock(pos, true);
-                    }
+                    level.destroyBlock(pos, true);
                 }
-            }
+            });
         }
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     @Override

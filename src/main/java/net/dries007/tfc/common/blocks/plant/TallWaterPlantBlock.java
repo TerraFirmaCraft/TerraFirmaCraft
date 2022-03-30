@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,8 +26,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements IFluidLoggable
 {
@@ -59,18 +58,18 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState belowState = worldIn.getBlockState(pos.below());
+        BlockState belowState = level.getBlockState(pos.below());
         if (state.getValue(PART) == Part.LOWER)
         {
-            return belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
+            return Helpers.isBlock(belowState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON);
         }
         else
         {
             if (state.getBlock() != this)
             {
-                return belowState.is(TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+                return Helpers.isBlock(belowState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             }
             return belowState.getBlock() == this && belowState.getValue(PART) == Part.LOWER;
         }
@@ -99,20 +98,20 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
     }
 
     @Override
-    public void placeTwoHalves(LevelAccessor world, BlockPos pos, int flags, Random random)
+    public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags, Random random)
     {
         final BlockPos posAbove = pos.above();
         final int age = random.nextInt(4);
-        final Fluid fluidBottom = world.getFluidState(pos).getType();
-        final Fluid fluidTop = world.getFluidState(posAbove).getType();
-        if (fluidBottom != Fluids.EMPTY)
+        final Fluid fluidBottom = level.getFluidState(pos).getType();
+        final Fluid fluidTop = level.getFluidState(posAbove).getType();
+        if (!fluidBottom.isSame(Fluids.EMPTY))
         {
             final BlockState state = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age).setValue(PART, Part.LOWER), fluidBottom);
             final BlockState stateUp = FluidHelpers.fillWithFluid(defaultBlockState().setValue(AGE, age).setValue(PART, Part.UPPER), fluidTop);
             if (state != null && stateUp != null)
             {
-                world.setBlock(pos, state, flags);
-                world.setBlock(posAbove, stateUp, flags);
+                level.setBlock(pos, state, flags);
+                level.setBlock(posAbove, stateUp, flags);
             }
         }
     }

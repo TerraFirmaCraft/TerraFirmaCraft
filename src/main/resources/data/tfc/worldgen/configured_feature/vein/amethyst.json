@@ -14,21 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/chalk"
+          "tfc:rock/raw/shale"
         ],
         "with": [
           {
-            "block": "tfc:ore/amethyst/chalk"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/chert"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/amethyst/chert"
+            "block": "tfc:ore/amethyst/shale"
           }
         ]
       },
@@ -39,6 +29,16 @@
         "with": [
           {
             "block": "tfc:ore/amethyst/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/amethyst/limestone"
           }
         ]
       },
@@ -64,21 +64,61 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/limestone"
+          "tfc:rock/raw/chert"
         ],
         "with": [
           {
-            "block": "tfc:ore/amethyst/limestone"
+            "block": "tfc:ore/amethyst/chert"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/shale"
+          "tfc:rock/raw/chalk"
         ],
         "with": [
           {
-            "block": "tfc:ore/amethyst/shale"
+            "block": "tfc:ore/amethyst/chalk"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/amethyst/quartzite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/slate"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/amethyst/slate"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/amethyst/phyllite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/schist"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/amethyst/schist"
           }
         ]
       },
@@ -101,53 +141,9 @@
             "block": "tfc:ore/amethyst/marble"
           }
         ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/phyllite"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/amethyst/phyllite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/quartzite"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/amethyst/quartzite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/schist"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/amethyst/schist"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/slate"
-        ],
-        "with": [
-          {
-            "block": "tfc:ore/amethyst/slate"
-          }
-        ]
       }
     ],
     "random_name": "amethyst",
-    "biomes": [
-      {
-        "category": "river"
-      }
-    ]
+    "biomes": "#tfc:is_river"
   }
 }

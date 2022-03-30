@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks.rock;
 import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
@@ -47,6 +47,8 @@ public enum Rock implements StringRepresentable
     SCHIST(RockCategory.METAMORPHIC, SandBlockType.GREEN),
     GNEISS(RockCategory.METAMORPHIC, SandBlockType.GREEN),
     MARBLE(RockCategory.METAMORPHIC, SandBlockType.WHITE);
+
+    public static final Rock[] VALUES = values();
 
     private final String serializedName;
     private final RockCategory category;
@@ -89,7 +91,7 @@ public enum Rock implements StringRepresentable
         MOSSY_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops()), true),
         MOSSY_COBBLE((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops()), true),
         CHISELED((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops()), false),
-        LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of(TFCMaterials.NON_SOLID_STONE).strength(0.05f, 0.0f).sound(SoundType.STONE).noOcclusion()), false),
+        LOOSE((rock, self) -> new LooseRockBlock(Block.Properties.of(TFCMaterials.NON_SOLID_STONE).strength(0.05f, 0.0f).sound(SoundType.STONE).noCollission()), false),
         PRESSURE_PLATE((rock, self) -> new PressurePlateBlock(PressurePlateBlock.Sensitivity.MOBS, BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().noCollission().strength(0.5F)), false),
         BUTTON((rock, self) -> new StoneButtonBlock(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().strength(0.5F)), false);
 

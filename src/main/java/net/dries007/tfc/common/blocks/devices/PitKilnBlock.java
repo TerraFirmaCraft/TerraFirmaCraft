@@ -38,6 +38,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
@@ -101,28 +102,28 @@ public class PitKilnBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!world.isClientSide() && hand == InteractionHand.MAIN_HAND)
+        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND)
         {
-            PitKilnBlockEntity te = Helpers.getBlockEntity(world, pos, PitKilnBlockEntity.class);
+            PitKilnBlockEntity te = level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
             if (te != null)
             {
 
                 ItemStack held = player.getItemInHand(hand);
                 Item item = held.getItem();
                 int stage = state.getValue(STAGE);
-                if (stage < STRAW_END && TFCTags.Items.PIT_KILN_STRAW.contains(item))
+                if (stage < STRAW_END && Helpers.isItem(item, TFCTags.Items.PIT_KILN_STRAW))
                 {
-                    world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
+                    level.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                     te.addStraw(held.split(1), stage + 1);
-                    Helpers.playSound(world, pos, SoundEvents.GRASS_PLACE);
+                    Helpers.playSound(level, pos, SoundEvents.GRASS_PLACE);
                 }
-                else if (stage >= STRAW_END && stage < LIT - 1 && TFCTags.Items.PIT_KILN_LOGS.contains(item))
+                else if (stage >= STRAW_END && stage < LIT - 1 && Helpers.isItem(item, TFCTags.Items.PIT_KILN_LOGS))
                 {
-                    world.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
+                    level.setBlock(pos, state.setValue(STAGE, stage + 1), 10);
                     te.addLog(held.split(1), stage - LOG_START + 1);
-                    Helpers.playSound(world, pos, SoundEvents.WOOD_PLACE);
+                    Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
                 }
                 else if (held.isEmpty())
                 {
@@ -147,11 +148,11 @@ public class PitKilnBlock extends DeviceBlock
                         }
                         if (stage == 0)
                         {
-                            PitKilnBlockEntity.convertPitKilnToPlacedItem(world, pos);
+                            PitKilnBlockEntity.convertPitKilnToPlacedItem(level, pos);
                         }
                         else
                         {
-                            world.setBlock(pos, state.setValue(STAGE, stage - 1), 10);
+                            level.setBlock(pos, state.setValue(STAGE, stage - 1), 10);
                         }
                     }
                 }

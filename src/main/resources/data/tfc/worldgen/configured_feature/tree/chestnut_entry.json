@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 180,
+    "max_rain": 370,
+    "min_temp": -4,
+    "max_temp": 17,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/chestnut"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/chestnut"
+      }
+    ],
+    "normal_tree": "tfc:tree/chestnut",
+    "fallen_log": "tfc:wood/log/chestnut",
+    "bush_log": {
+      "Name": "tfc:wood/wood/chestnut",
+      "Properties": {
+        "natural": "true",
+        "axis": "y"
+      }
+    },
+    "bush_leaves": "tfc:wood/leaves/chestnut"
+  }
+}

@@ -30,19 +30,4 @@ public abstract class MinecraftMixin
     {
         ClientEventHandler.selfTest();
     }
-
-    /**
-     * Removes the experimental world gen screen warning that shows up every time loading a TFC world.
-     * Incidentally, saves the second 'reload' of data, cutting world loading time in half.
-     */
-    @Redirect(method = "doLoadLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/WorldData;worldGenSettingsLifecycle()Lcom/mojang/serialization/Lifecycle;"))
-    private Lifecycle ignoreExperimentalWarningsScreen(WorldData instance)
-    {
-        if (TFCConfig.CLIENT.ignoreExperimentalWorldGenWarning.get())
-        {
-            TerraFirmaCraft.LOGGER.warn("Experimental world gen... dragons or some such.. blah blah.");
-            return Lifecycle.stable();
-        }
-        return instance.worldGenSettingsLifecycle();
-    }
 }

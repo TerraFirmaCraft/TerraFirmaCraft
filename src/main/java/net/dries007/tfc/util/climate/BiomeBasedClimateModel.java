@@ -28,13 +28,13 @@ public class BiomeBasedClimateModel implements TimeInvariantClimateModel
     @Override
     public float getRainfall(LevelReader level, BlockPos pos)
     {
-        return Mth.clamp(level.getBiome(pos).getDownfall(), 0, 1) * ClimateModel.MAXIMUM_RAINFALL;
+        return Mth.clamp(level.getBiome(pos).value().getDownfall(), 0, 1) * ClimateModel.MAXIMUM_RAINFALL;
     }
 
     @Override
     public Biome.Precipitation getPrecipitation(LevelReader level, BlockPos pos)
     {
-        return level.getBiome(pos).getPrecipitation();
+        return level.getBiome(pos).value().getPrecipitation();
     }
 
     @Override

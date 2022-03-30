@@ -8,7 +8,7 @@ package net.dries007.tfc.common.entities.ai;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -21,6 +21,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.AABB;
 
 import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.util.Helpers;
 
 public class GetHookedGoal extends MoveToBlockGoal
 {
@@ -53,7 +54,7 @@ public class GetHookedGoal extends MoveToBlockGoal
     @Override
     protected boolean isValidTarget(LevelReader level, BlockPos pos)
     {
-        return level.getFluidState(pos).is(FluidTags.WATER);
+        return Helpers.isFluid(level.getFluidState(pos), FluidTags.WATER);
     }
 
     @Override

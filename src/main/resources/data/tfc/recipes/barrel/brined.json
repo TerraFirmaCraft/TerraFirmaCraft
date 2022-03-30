@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": [
+      {
+        "tag": "tfc:food/fruits"
+      },
+      {
+        "tag": "tfc:food/vegetables"
+      },
+      {
+        "tag": "tfc:food/meats"
+      }
+    ]
+  },
+  "input_fluid": {
+    "ingredient": "tfc:brine",
+    "amount": 125
+  },
+  "output_item": {
+    "apply": [
+      "tfc:copy_input",
+      {
+        "type": "tfc:add_trait",
+        "trait": "tfc:brined"
+      }
+    ]
+  },
+  "duration": 4000
+}

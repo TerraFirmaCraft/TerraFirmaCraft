@@ -7,7 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +27,7 @@ import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 
@@ -63,17 +64,17 @@ public final class EnvironmentHelpers
 
     public static boolean isSnow(BlockState state)
     {
-        return state.is(Blocks.SNOW) || state.is(TFCBlocks.SNOW_PILE.get());
+        return Helpers.isBlock(state, Blocks.SNOW) || Helpers.isBlock(state, TFCBlocks.SNOW_PILE.get());
     }
 
     public static boolean isIce(BlockState state)
     {
-        return state.is(Blocks.ICE) || state.is(TFCBlocks.ICE_PILE.get()) || state.is(TFCBlocks.SEA_ICE.get());
+        return Helpers.isBlock(state, Blocks.ICE) || Helpers.isBlock(state, TFCBlocks.ICE_PILE.get()) || Helpers.isBlock(state, TFCBlocks.SEA_ICE.get());
     }
 
     public static boolean isWater(BlockState state)
     {
-        return state.is(Blocks.WATER) || state.is(TFCBlocks.SALT_WATER.get());
+        return Helpers.isBlock(state, Blocks.WATER) || Helpers.isBlock(state, TFCBlocks.SALT_WATER.get());
     }
 
     public static boolean isWaterAtEdge(LevelAccessor level, BlockPos pos)
@@ -168,7 +169,7 @@ public final class EnvironmentHelpers
                 final BlockPos adjPos = pos.relative(direction);
                 final BlockState adjState = level.getBlockState(adjPos);
                 if ((isSnow(adjState) && adjState.getValue(SnowLayerBlock.LAYERS) < state.getValue(SnowLayerBlock.LAYERS)) // Adjacent snow that's lower than this one
-                    || ((adjState.isAir() || TFCTags.Blocks.CAN_BE_SNOW_PILED.contains(adjState.getBlock())) && Blocks.SNOW.defaultBlockState().canSurvive(level, adjPos))) // Or, empty space that could support snow
+                    || ((adjState.isAir() || Helpers.isBlock(adjState.getBlock(), TFCTags.Blocks.CAN_BE_SNOW_PILED)) && Blocks.SNOW.defaultBlockState().canSurvive(level, adjPos))) // Or, empty space that could support snow
                 {
                     found++;
                     if (targetPos == null || random.nextInt(found) == 0)
@@ -226,7 +227,7 @@ public final class EnvironmentHelpers
             {
                 BlockPos posAbove = iciclePos.above();
                 BlockState stateAbove = level.getBlockState(posAbove);
-                if (stateAbove.is(TFCBlocks.ICICLE.get()))
+                if (Helpers.isBlock(stateAbove, TFCBlocks.ICICLE.get()))
                 {
                     level.setBlock(posAbove, stateAbove.setValue(ThinSpikeBlock.TIP, false), 3 | 16);
                 }
@@ -259,5 +260,26 @@ public final class EnvironmentHelpers
             adjacentPos = posAbove;
         }
         return foundPos;
+    }
+
+    public static boolean isWorldgenReplaceable(WorldGenLevel level, BlockPos pos)
+    {
+        return isWorldgenReplaceable(level.getBlockState(pos));
+    }
+
+    public static boolean isWorldgenReplaceable(BlockState state)
+    {
+        return FluidHelpers.isAirOrEmptyFluid(state) || Helpers.isBlock(state, TFCTags.Blocks.SINGLE_BLOCK_REPLACEABLE);
+    }
+
+    public static boolean canPlaceBushOn(WorldGenLevel level, BlockPos pos)
+    {
+        return isWorldgenReplaceable(level, pos) && Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
+    }
+
+    public static boolean isOnSturdyFace(WorldGenLevel level, BlockPos pos)
+    {
+        pos = pos.below();
+        return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
     }
 }

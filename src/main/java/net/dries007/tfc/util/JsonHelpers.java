@@ -7,15 +7,17 @@
 package net.dries007.tfc.util;
 
 import java.util.Locale;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.Tag;
-import net.minecraft.tags.TagCollection;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,20 +56,15 @@ public final class JsonHelpers extends GsonHelper
         return obj;
     }
 
-    public static <T> Tag<T> getTag(JsonObject json, String key, TagCollection<T> tags)
+    public static <T> TagKey<T> getTag(JsonObject json, String key, ResourceKey<? extends Registry<T>> registry)
     {
-        return getTag(GsonHelper.getAsString(json, key), tags);
+        return getTag(GsonHelper.getAsString(json, key), registry);
     }
 
-    public static <T> Tag<T> getTag(String key, TagCollection<T> tags)
+    public static <T> TagKey<T> getTag(String key, ResourceKey<? extends Registry<T>> registry)
     {
         final ResourceLocation res = new ResourceLocation(key);
-        final Tag<T> tag = tags.getTag(res);
-        if (tag == null)
-        {
-            throw new JsonParseException("Invalid tag name: " + key);
-        }
-        return tag;
+        return TagKey.create(registry, res);
     }
 
     public static <E extends Enum<E>> E getEnum(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
@@ -139,6 +136,15 @@ public final class JsonHelpers extends GsonHelper
         {
             throw new JsonParseException(e.getMessage());
         }
+    }
+
+    public static <T> T decodeCodecDefaulting(JsonObject json, Codec<T> codec, String key, T defaultValue)
+    {
+        if (!json.has("key"))
+        {
+            return defaultValue;
+        }
+        return decodeCodec(json, codec, key);
     }
 
     public static <T> T decodeCodec(JsonObject json, Codec<T> codec, String key)

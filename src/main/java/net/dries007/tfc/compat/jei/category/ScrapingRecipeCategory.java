@@ -6,12 +6,12 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
@@ -19,13 +19,13 @@ import net.dries007.tfc.util.Metal;
 
 public class ScrapingRecipeCategory extends SimpleItemRecipeCategory<ScrapingRecipe>
 {
-    public ScrapingRecipeCategory(ResourceLocation uId, IGuiHelper helper)
+    public ScrapingRecipeCategory(RecipeType<ScrapingRecipe> type, IGuiHelper helper)
     {
-        super(uId, helper, new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BLACK_BRONZE).get(Metal.ItemType.KNIFE).get()), ScrapingRecipe.class);
+        super(type, helper, new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BLACK_BRONZE).get(Metal.ItemType.KNIFE).get()));
     }
 
     @Override
-    protected Tag<Item> getToolTag()
+    protected TagKey<Item> getToolTag()
     {
         return TFCTags.Items.KNIVES;
     }

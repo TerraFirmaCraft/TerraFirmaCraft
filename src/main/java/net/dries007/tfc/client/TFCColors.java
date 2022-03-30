@@ -7,7 +7,7 @@
 package net.dries007.tfc.client;
 
 import java.util.function.ToIntFunction;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

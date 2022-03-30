@@ -64,7 +64,7 @@ public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
             mutablePos.move(Direction.UP);
             BlockState aboveState = world.getBlockState(mutablePos);
             mutablePos.move(Direction.DOWN);
-            if ((aboveState.is(BlockTags.LEAVES) || aboveState.is(BlockTags.LOGS) || aboveState.is(BlockTags.BASE_STONE_OVERWORLD)) && world.isEmptyBlock(mutablePos))
+            if ((Helpers.isBlock(aboveState, BlockTags.LEAVES) || Helpers.isBlock(aboveState, BlockTags.LOGS) || Helpers.isBlock(aboveState, BlockTags.BASE_STONE_OVERWORLD)) && world.isEmptyBlock(mutablePos))
             {
                 placeColumn(world, rand, mutablePos, rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, config.bodyState(), config.headState());
                 placedAny = true;

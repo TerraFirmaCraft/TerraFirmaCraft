@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -278,7 +278,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     {
         if (slot <= SLOT_FUEL_MAX)
         {
-            return TFCTags.Items.FORGE_FUEL.contains(stack.getItem());
+            return Helpers.isItem(stack.getItem(), TFCTags.Items.FORGE_FUEL);
         }
         else if (slot <= SLOT_INPUT_MAX)
         {
