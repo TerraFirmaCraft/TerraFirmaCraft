@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "sealed=true": {
-      "model": "tfc:wood/barrel_sealed/hickory"
+      "model": "tfc:block/wood/barrel_sealed/hickory"
     },
     "sealed=false": {
-      "model": "tfc:wood/barrel/hickory"
+      "model": "tfc:block/wood/barrel/hickory"
     }
   }
 }

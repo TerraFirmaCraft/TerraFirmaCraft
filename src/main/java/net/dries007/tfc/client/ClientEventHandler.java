@@ -452,11 +452,11 @@ public final class ClientEventHandler
         final BakedModel missingModel = shaper.getModelManager().getMissingModel();
         final TextureAtlasSprite missingParticle = missingModel.getParticleIcon();
 
-        final List<Block> missingModelErrors = blocksWithStateMatching(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel);
-        final List<Block> missingParticleErrors = blocksWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
+        final List<BlockState> missingModelErrors = blockStatesWithStateMatching(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel);
+        final List<BlockState> missingParticleErrors = blockStatesWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
 
-        return logValidationErrors("Blocks with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
-            | logValidationErrors("Blocks with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e));
+        return logValidationErrors("BlockStates with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
+            | logValidationErrors("BlockStates with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e));
     }
 
     private static boolean validateTranslations()
@@ -499,10 +499,10 @@ public final class ClientEventHandler
         }
     }
 
-    private static List<Block> blocksWithStateMatching(Predicate<BlockState> condition)
+    private static List<BlockState> blockStatesWithStateMatching(Predicate<BlockState> condition)
     {
         return Helpers.streamOurs(ForgeRegistries.BLOCKS)
-            .filter(b -> b.getStateDefinition().getPossibleStates().stream().anyMatch(condition))
+            .flatMap(b -> b.getStateDefinition().getPossibleStates().stream().filter(condition))
             .collect(Collectors.toList());
     }
 

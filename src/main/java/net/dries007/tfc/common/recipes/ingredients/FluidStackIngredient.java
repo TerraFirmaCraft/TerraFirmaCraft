@@ -28,7 +28,7 @@ public record FluidStackIngredient(FluidIngredient ingredient, int amount) imple
 
     public static FluidStackIngredient fromJson(JsonObject json)
     {
-        final FluidIngredient fluid = FluidIngredient.fromJson(JsonHelpers.get(json, "fluid"));
+        final FluidIngredient fluid = FluidIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
         final int amount = JsonHelpers.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
         return new FluidStackIngredient(fluid, amount);
     }

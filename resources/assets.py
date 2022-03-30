@@ -1175,8 +1175,8 @@ def generate(rm: ResourceManager):
         texture = 'tfc:block/wood/planks/%s' % wood
         textures = {'particle': texture, 'planks': texture, 'sheet': 'tfc:block/wood/sheet/%s' % wood, 'hoop': 'tfc:block/barrel_hoop'}
         block = rm.blockstate(('wood', 'barrel', wood), variants={
-            'sealed=true': {'model': 'tfc:wood/barrel_sealed/%s' % wood},
-            'sealed=false': {'model': 'tfc:wood/barrel/%s' % wood}
+            'sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s' % wood},
+            'sealed=false': {'model': 'tfc:block/wood/barrel/%s' % wood}
         })
         block.with_block_model(textures, 'tfc:block/barrel')
         rm.item_model(('wood', 'barrel', wood), parent='tfc:block/wood/barrel_sealed/%s' % wood, no_textures=True)

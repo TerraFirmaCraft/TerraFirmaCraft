@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
     "sealed=true": {
-      "model": "tfc:wood/barrel_sealed/sycamore"
+      "model": "tfc:block/wood/barrel_sealed/sycamore"
     },
     "sealed=false": {
-      "model": "tfc:wood/barrel/sycamore"
+      "model": "tfc:block/wood/barrel/sycamore"
     }
   }
 }
