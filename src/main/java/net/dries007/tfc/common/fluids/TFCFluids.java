@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.fluids;
 
+import java.awt.*;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -16,6 +17,7 @@ import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
@@ -118,7 +120,6 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     ));
 
-    // todo effects
     public static final Map<Alcohol, FluidPair<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
         fluid.getId(),
         "flowing_" + fluid.getId(),
@@ -131,6 +132,22 @@ public final class TFCFluids
         MixingFluid.Source::new,
         MixingFluid.Flowing::new
     ));
+
+    public static final Map<DyeColor, FluidPair<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> {
+        float[] colors = color.getTextureDiffuseColors();
+        return register(
+            color.getName() + "_dye",
+            "flowing_" + color.getName() + "_dye",
+            properties -> properties.block(TFCBlocks.COLORED_FLUIDS.get(color)).bucket(TFCItems.COLORED_FLUID_BUCKETS.get(color)),
+            FluidAttributes.builder(WATER_STILL, WATER_FLOW)
+                .translationKey("fluid.tfc." + color.getName() + "_dye")
+                .color(new Color(colors[0], colors[1], colors[2]).getRGB())
+                .overlay(WATER_OVERLAY)
+                .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+            MixingFluid.Source::new,
+            MixingFluid.Flowing::new
+        );
+    });
 
     /**
      * Registration helper for fluids and this stupid API

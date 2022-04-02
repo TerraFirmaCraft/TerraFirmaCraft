@@ -20,7 +20,7 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
 {
     public static BarrelContainer create(BarrelBlockEntity barrel, Inventory playerInv, int windowId)
     {
-        return new BarrelContainer(windowId, barrel).init(playerInv);
+        return new BarrelContainer(windowId, barrel).init(playerInv, 6);
     }
 
     private BarrelContainer(int windowId, BarrelBlockEntity barrel)

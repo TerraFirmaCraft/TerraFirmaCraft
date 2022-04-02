@@ -12,17 +12,27 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
+
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.dries007.tfc.client.model.Animation;
 import net.dries007.tfc.client.model.Easing;
 import net.dries007.tfc.util.Helpers;
@@ -182,6 +192,38 @@ public class RenderHelpers
     public static float itemTimeRotation()
     {
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
+    }
+
+    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    {
+        renderFluidFace(poseStack, fluidStack, buffer, f -> f, f -> f, f -> f, minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
+    }
+
+    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, Float2FloatFunction red, Float2FloatFunction blue, Float2FloatFunction green, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    {
+        Fluid fluid = fluidStack.getFluid();
+        FluidAttributes attributes = fluid.getAttributes();
+        ResourceLocation texture = attributes.getStillTexture(fluidStack);
+        // noinspection deprecation
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
+        int color = attributes.getColor();
+
+        float r = ((color >> 16) & 0xFF) / 255F;
+        float g = ((color >> 8) & 0xFF) / 255F;
+        float b = (color & 0xFF) / 255F;
+        float a = ((color >> 24) & 0xFF) / 255F;
+
+        r = red.apply(r);
+        g = green.apply(g);
+        b = blue.apply(b);
+
+        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+        Matrix4f matrix4f = poseStack.last().pose();
+
+        builder.vertex(matrix4f, minX, y, minZ).color(r, g, b, a).uv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+        builder.vertex(matrix4f, minX, y, maxZ).color(r, g, b, a).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+        builder.vertex(matrix4f, maxX, y, maxZ).color(r, g, b, a).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+        builder.vertex(matrix4f, maxX, y, minZ).color(r, g, b, a).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
     }
 
     private static float calculateTilt(float pitch)

@@ -41,7 +41,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     public BarrelScreen(BarrelContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        inventoryLabelY += 1;
+        inventoryLabelY += 8;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
 
             // Draw the text displaying both the seal date, and the recipe name
             boolean isLong = false;
-            BarrelRecipe recipe = blockEntity.getOrUpdateRecipe();
+            BarrelRecipe recipe = blockEntity.getRecipe();
             if (recipe != null)
             {
                 String resultName = recipe.getTranslationComponent().getString();

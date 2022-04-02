@@ -16,6 +16,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -78,6 +79,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 {
                     // Recipe completed, so fill outputs
                     recipe.assembleOutputs(barrel.inventory);
+                    Helpers.playSound(level, barrel.getBlockPos(), SoundEvents.BREWING_STAND_BREW);
                 }
 
                 // In both cases, update the recipe and sync
@@ -93,6 +95,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             {
                 level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level)
                     .ifPresent(instantRecipe -> instantRecipe.assembleOutputs(barrel.inventory));
+                Helpers.playSound(level, barrel.getBlockPos(), SoundEvents.BREWING_STAND_BREW);
                 barrel.markForSync();
             }
         }
@@ -148,6 +151,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     {
         super.setAndUpdateSlots(slot);
         needsRecipeUpdate = needsInstantRecipeUpdate = true;
+        if (level != null && level.isClientSide) updateRecipe();
     }
 
     @Override
@@ -280,17 +284,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     @Nullable
     public BarrelRecipe getRecipe()
     {
-        return recipe;
-    }
-
-    /**
-     * For use on the client
-     */
-    @Nullable
-    public BarrelRecipe getOrUpdateRecipe()
-    {
-        if (recipe != null) return recipe;
-        updateRecipe();
         return recipe;
     }
 

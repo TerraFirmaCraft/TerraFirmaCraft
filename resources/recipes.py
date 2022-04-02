@@ -365,6 +365,24 @@ def generate(rm: ResourceManager):
         'fluid_output': fluid_stack('1000 tfc:tallow')
     })
 
+    ash = utils.ingredient('tfc:powder/wood_ash')
+    rm.recipe(('pot', 'lye'), 'tfc:pot_fluid', {
+        'ingredients': [ash, ash, ash, ash, ash],
+        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
+        'duration': 4000,
+        'temperature': 600,
+        'fluid_output': fluid_stack('1000 tfc:lye')
+    })
+
+    for color in COLORS:
+        rm.recipe(('pot', '%s_dye' % color), 'tfc:pot_fluid', {
+            'ingredients': [utils.ingredient('minecraft:%s_dye' % color)],
+            'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
+            'duration': 1000,
+            'temperature': 600,
+            'fluid_output': fluid_stack('1000 tfc:%s_dye' % color)
+        })
+
     # todo: remove
     rm.recipe(('pot', 'mushroom_soup'), 'tfc:pot_soup', {
         'ingredients': [utils.ingredient('minecraft:red_mushroom'), utils.ingredient('minecraft:brown_mushroom')],
@@ -473,6 +491,41 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'preserved_in_vinegar', 'Preserving in Vinegar', -1, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:pickled')), '125 tfc:vinegar', on_seal=item_stack_provider(copy_input=True, add_trait='tfc:vinegar'), on_unseal=item_stack_provider(copy_input=True, remove_trait='tfc:vinegar'))
 
     barrel_sealed_recipe(rm, 'mortar', 'Mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
+    barrel_sealed_recipe(rm, 'curdling', 'Curdling Milk', 8000, input_fluid='1 tfc:milk_vinegar', output_fluid='1 tfc:curdled_milk')
+    barrel_sealed_recipe(rm, 'cheese', 'Cheese', 8000, input_fluid='625 tfc:curdled_milk', output_item='2 tfc:food/cheese')
+    barrel_sealed_recipe(rm, 'raw_alabaster', 'Raw Alabaster', 1000, 'tfc:ore/gypsum', '100 tfc:limewater', output_item='tfc:alabaster/raw/alabaster')
+    barrel_sealed_recipe(rm, 'clean_jute_net', 'Cleaning Jute Net', 1000, 'tfc:dirty_jute_net', '125 minecraft:water', output_item='tfc:jute_net')
+
+    # Bleaching Recipes
+    for variant in VANILLA_DYED_ITEMS:
+        cost = 125 if variant != 'carpet' else 25
+        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s' % variant, 1000, '#tfc:colored_%s' % variant, '%d tfc:lye' % cost, output_item='minecraft:white_%s' % variant)
+    barrel_sealed_recipe(rm, 'dye/bleach_shulkers', 'Bleaching Shulker Box', 1000, '#tfc:colored_shulker_boxes', '125 tfc:lye', output_item='minecraft:shulker_box')
+    barrel_sealed_recipe(rm, 'dye/bleach_concrete_powder', 'Bleaching Concrete Powder', 1000, '#tfc:colored_concrete_powder', '125 tfc:lye', output_item='tfc:aggregate')
+    for variant in ('raw_alabaster', 'alabaster_bricks', 'polished_alabaster'):
+        result_name = 'tfc:alabaster/raw/%s' % variant if variant != 'raw_alabaster' else 'tfc:alabaster/raw/alabaster'
+        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s' % variant, 1000, '#tfc:colored_%s' % variant, '125 tfc:lye', output_item=result_name)
+
+    # Dyeing Items
+    for color in COLORS:
+        fluid = '125 tfc:%s_dye' % color
+        for variant in VANILLA_DYED_ITEMS:
+            item = 'minecraft:%s_%s' % (color, variant)
+            if color != 'white':
+                barrel_sealed_recipe(rm, 'dye/%s_%s' % (color, variant), 'Dyeing %s %s' % (variant, color), 1000, 'minecraft:white_%s' % variant, fluid, item)
+
+        barrel_sealed_recipe(rm, 'dye/%s_shulker' % color, 'Dyeing Shulker %s' % color, 1000, 'minecraft:shulker_box', fluid, 'minecraft:%s_shulker_box' % color)
+        barrel_sealed_recipe(rm, 'dye/%s_glazed_vessel' % color, 'Dyeing Unfired Vessel %s' % color, 1000, 'tfc:ceramic/unfired_vessel', fluid, 'tfc:ceramic/%s_unfired_vessel' % color)
+        barrel_sealed_recipe(rm, 'dye/%s_concrete_powder' % color, 'Dyeing Aggregate %s' % color, 1000, 'tfc:aggregate', fluid, 'minecraft:%s_concrete_powder' % color)
+    # todo: mixing dye using fluid item ingredients
+
+    # Instant Barrel Recipes
+    barrel_instant_recipe(rm, 'fresh_to_salt_water', 'tfc:powder/salt', '125 minecraft:water', output_fluid='125 tfc:salt_water')
+    barrel_instant_recipe(rm, 'limewater', 'tfc:powder/flux', '500 minecraft:water', output_fluid='500 tfc:limewater')
+    barrel_instant_recipe(rm, 'olive_oil', 'tfc:jute_net', '250 tfc:olive_oil_water', 'tfc:dirty_jute_net', '50 tfc:olive_oil')
+    # todo: FluidItemIngredient to make brine, milk vinegar
+    # todo: barrel cooling of items
+    # todo: cleaning out food bowls in barrels? may not still be necessary depending on which route we go.
 
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
@@ -604,15 +657,24 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
 def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, translation: str, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None):
     rm.recipe(('barrel', name_parts), 'tfc:barrel_sealed', {
         'input_item': item_stack_ingredient(input_item) if input_item is not None else None,
-        'input_fluid': fluid_stack_ingredient(input_fluid) if input_item is not None else None,
-        'output_item': item_stack_provider(output_item) if input_item is not None else None,
-        'output_fluid': fluid_stack(output_fluid) if input_item is not None and output_fluid is not None else None,
+        'input_fluid': fluid_stack_ingredient(input_fluid) if input_fluid is not None else None,
+        'output_item': item_stack_provider(output_item) if output_item is not None else None,
+        'output_fluid': fluid_stack(output_fluid) if output_fluid is not None else None,
         'duration': duration,
         'on_seal': on_seal,
         'on_unseal': on_unseal
     })
     res = utils.resource_location('tfc', name_parts)
     rm.lang('tfc.recipe.barrel.' + res.domain + '.barrel.' + res.path.replace('/', '.'), lang(translation))
+
+
+def barrel_instant_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None):
+    rm.recipe(('barrel', name_parts), 'tfc:barrel_instant', {
+        'input_item': item_stack_ingredient(input_item) if input_item is not None else None,
+        'input_fluid': fluid_stack_ingredient(input_fluid) if input_fluid is not None else None,
+        'output_item': item_stack_provider(output_item) if output_item is not None else None,
+        'output_fluid': fluid_stack(output_fluid) if output_fluid is not None else None,
+    })
 
 def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: str, input_count: int, result: utils.Json, steps: int, in_progress_texture: str):
     return rm.recipe(('loom', name), 'tfc:loom', {

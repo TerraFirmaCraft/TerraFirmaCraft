@@ -166,6 +166,13 @@ def generate(rm: ResourceManager):
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
         rm.item_tag('dyes', 'minecraft:%s_dye' % color)
 
+        if color != 'white':
+            for variant in VANILLA_DYED_ITEMS:
+                rm.item_tag('colored_%s' % variant, 'minecraft:%s_%s' % (color, variant))
+            for variant in ('raw_alabaster', 'alabaster_bricks', 'polished_alabaster'):
+                rm.item_tag('colored_%s' % variant, 'tfc:alabaster/stained/%s_%s' % (color, variant))
+        rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
+        rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
 
@@ -399,7 +406,7 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
     rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols')
     rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
 
