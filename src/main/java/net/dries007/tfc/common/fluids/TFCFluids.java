@@ -125,7 +125,7 @@ public final class TFCFluids
         properties -> properties.block(TFCBlocks.ALCOHOLS.get(fluid)).bucket(TFCItems.ALCOHOL_BUCKETS.get(fluid)),
         FluidAttributes.builder(WATER_STILL, WATER_FLOW)
             .translationKey("fluid.tfc." + fluid.getId())
-            .color(0)//todo: color
+            .color(fluid.getColor())
             .overlay(WATER_OVERLAY)
             .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
         MixingFluid.Source::new,

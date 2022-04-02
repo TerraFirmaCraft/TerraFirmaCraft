@@ -124,6 +124,26 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
         return id;
     }
 
+    public ItemStackIngredient getInputItem()
+    {
+        return inputItem;
+    }
+
+    public ItemStackProvider getOutputItem()
+    {
+        return outputItem;
+    }
+
+    public FluidStackIngredient getInputFluid()
+    {
+        return inputFluid;
+    }
+
+    public FluidStack getOutputFluid()
+    {
+        return outputFluid;
+    }
+
     public TranslatableComponent getTranslationComponent()
     {
         return new TranslatableComponent("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));

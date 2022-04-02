@@ -474,11 +474,6 @@ def generate(rm: ResourceManager):
 
     barrel_sealed_recipe(rm, 'mortar', 'Mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
 
-    # todo: #tfc:tannin_logs
-    # todo: #tfc:food/apples
-    # todo: #tfc:alcohols
-
-
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
     loom_recipe(rm, 'wool_cloth', 'tfc:wool_yarn', 16, 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')

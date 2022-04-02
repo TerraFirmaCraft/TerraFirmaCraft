@@ -43,14 +43,6 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         return returnList;
     }
 
-    /**
-     * Use {@link IIngredientAcceptor#addIngredients(Ingredient)} instead.
-     */
-    protected static List<ItemStack> collapse(Ingredient ingredient)
-    {
-        return Arrays.asList(ingredient.getItems());
-    }
-
     protected static List<ItemStack> collapseWithAmount(Ingredient ingredient, int amount)
     {
         return Arrays.stream(ingredient.getItems()).map(stack -> new ItemStack(stack.getItem(), amount).copy()).collect(Collectors.toList());

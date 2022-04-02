@@ -41,7 +41,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     public BarrelScreen(BarrelContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        inventoryLabelY -= 1;
+        inventoryLabelY += 1;
     }
 
     @Override
@@ -85,10 +85,10 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 {
                     isLong = true;
                 }
-                font.draw(poseStack, resultName, isLong ? recipeWidth / 2f - 42 : 28, isLong ? 73 : 61, 0x404040);
+                font.draw(poseStack, resultName, isLong ? recipeWidth / 2f - 42 : 70, isLong ? 73 : 61, 0x404040);
             }
             String date = ICalendar.getTimeAndDate(blockEntity.getSealedTick(), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
-            font.draw(poseStack, date, isLong ? 58 : font.width(date) / 2f, isLong ? 19 : 73, 0x404040);
+            font.draw(poseStack, date, isLong ? 58 : font.width(date) / 2f + 4, isLong ? 19 : 73, 0x404040);
         }
     }
 
