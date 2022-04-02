@@ -33,6 +33,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.ThatchBedBlockEntity;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,7 +70,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
-        return state.getValue(PART).equals(BedPart.HEAD) ? getExtendedProperties().newBlockEntity(pos, state) : null;
+        return state.getValue(PART) == BedPart.HEAD ? getExtendedProperties().newBlockEntity(pos, state) : null;
     }
 
     @Override
@@ -204,10 +205,10 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get()).ifPresent(bed -> {
-            bed.ejectInventory();
-            bed.invalidateCapabilities();
-        });
+        if (state.getValue(PART) == BedPart.HEAD)
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get()).ifPresent(ThatchBedBlockEntity::destroyBed);
+        }
         super.onRemove(state, level, pos, newState, isMoving);
     }
 }
