@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -121,6 +122,11 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
     public ResourceLocation getId()
     {
         return id;
+    }
+
+    public TranslatableComponent getTranslationComponent()
+    {
+        return new TranslatableComponent("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
     }
 
     public record Builder(ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid)

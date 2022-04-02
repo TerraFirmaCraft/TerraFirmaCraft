@@ -6,11 +6,17 @@
 
 package net.dries007.tfc.common.container;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.Level;
+
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import org.jetbrains.annotations.Nullable;
 
-public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity>
+public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> implements ButtonHandlerContainer
 {
     public static BarrelContainer create(BarrelBlockEntity barrel, Inventory playerInv, int windowId)
     {
@@ -23,8 +29,22 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity>
     }
 
     @Override
+    public void onButtonPress(int buttonID, @Nullable CompoundTag extraNBT)
+    {
+        Level level = blockEntity.getLevel();
+        if (level != null)
+        {
+            BarrelBlock.toggleSeal(level, blockEntity.getBlockPos(), blockEntity.getBlockState());
+        }
+    }
+
+    @Override
     protected void addContainerSlots()
     {
-        // todo: slots
+        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
+            addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, 35, 20));
+            addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_FLUID_CONTAINER_OUT, 35, 54));
+            addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_ITEM, 89, 37));
+        });
     }
 }

@@ -6,13 +6,11 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 

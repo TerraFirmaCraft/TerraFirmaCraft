@@ -4,16 +4,16 @@
   "input_item": {
     "ingredient": {
       "type": "tfc:has_trait",
-      "trait": "brined",
+      "trait": "tfc:brined",
       "ingredient": [
         {
-          "tag": "tfc:food/fruits"
+          "tag": "tfc:foods/fruits"
         },
         {
-          "tag": "tfc:food/vegetables"
+          "tag": "tfc:foods/vegetables"
         },
         {
-          "tag": "tfc:food/meats"
+          "tag": "tfc:foods/meats"
         }
       ]
     }

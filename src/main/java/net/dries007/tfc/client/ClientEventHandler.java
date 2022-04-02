@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.base.Stopwatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.ChatFormatting;
@@ -435,6 +436,7 @@ public final class ClientEventHandler
     {
         if (Helpers.detectAssertionsEnabled())
         {
+            Stopwatch stopwatch = Stopwatch.createStarted();
             LOGGER.info("Running Self Test");
             if (ClientEventHandler.validateModels() |
                 ClientEventHandler.validateTranslations() |
@@ -442,6 +444,7 @@ public final class ClientEventHandler
             {
                 throw new AssertionError("Self-Test Validation Failed! Fix the above errors!");
             }
+            LOGGER.info("Self test passed in {}", stopwatch.stop());
         }
     }
 

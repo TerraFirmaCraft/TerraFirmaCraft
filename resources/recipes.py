@@ -448,31 +448,31 @@ def generate(rm: ResourceManager):
 
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
-        barrel_sealed_recipe(rm, '%s_soaked_hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='%d tfc:%s_soaked_hide' % (output, size))
-        barrel_sealed_recipe(rm, '%s_prepared_hide' % size, 8000, 'tfc:%s_scraped_hide' % size, '%d minecraft:water' % amount, output_item='%d tfc:%s_prepared_hide' % (output, size))
-        barrel_sealed_recipe(rm, '%s_leather' % size, 8000, 'tfc:%s_prepared_hide' % size, '%d tfc:tannin' % amount, output_item='%d minecraft:leather' % output)
+        barrel_sealed_recipe(rm, '%s_soaked_hide' % size, '%s Soaked Hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='%d tfc:%s_soaked_hide' % (output, size))
+        barrel_sealed_recipe(rm, '%s_prepared_hide' % size, '%s Prepared Hide' % size, 8000, 'tfc:%s_scraped_hide' % size, '%d minecraft:water' % amount, output_item='%d tfc:%s_prepared_hide' % (output, size))
+        barrel_sealed_recipe(rm, '%s_leather' % size, 'Leather', 8000, 'tfc:%s_prepared_hide' % size, '%d tfc:tannin' % amount, output_item='%d minecraft:leather' % output)
 
-    barrel_sealed_recipe(rm, 'tannin', 8000, '#tfc:tannin_logs', '1000 minecraft:water', output_fluid='1000 tfc:tannin')
-    barrel_sealed_recipe(rm, 'jute_fiber', 8000, 'tfc:jute', '200 minecraft:water', output_item='tfc:jute_fiber')
-    barrel_sealed_recipe(rm, 'sugar', 8000, 'tfc:food/sugarcane', '600 minecraft:water', output_item='minecraft:sugar')
-    barrel_sealed_recipe(rm, 'glue', 8000, 'tfc:limewater', 'minecraft:bone_meal', output_item='tfc:glue')
+    barrel_sealed_recipe(rm, 'tannin', 'Tannin', 8000, '#tfc:makes_tannin', '1000 minecraft:water', output_fluid='1000 tfc:tannin')
+    barrel_sealed_recipe(rm, 'jute_fiber', 'Jute Fiber', 8000, 'tfc:jute', '200 minecraft:water', output_item='tfc:jute_fiber')
+    barrel_sealed_recipe(rm, 'sugar', 'Sugar', 8000, 'tfc:food/sugarcane', '600 minecraft:water', output_item='minecraft:sugar')
+    barrel_sealed_recipe(rm, 'glue', 'Glue', 8000, 'tfc:limewater', 'minecraft:bone_meal', output_item='tfc:glue')
 
-    barrel_sealed_recipe(rm, 'beer', 72000, 'tfc:food/barley_flour', '500 minecraft:water', output_fluid='500 tfc:beer')
-    barrel_sealed_recipe(rm, 'cider', 72000, '#tfc:food/apples', '500 minecraft:water', output_fluid='500 tfc:cider')
-    barrel_sealed_recipe(rm, 'rum', 72000, 'minecraft:sugar', '500 minecraft:water', output_fluid='500 tfc:rum')
-    barrel_sealed_recipe(rm, 'sake', 72000, 'tfc:food/rice_flour', '500 minecraft:water', output_fluid='500 tfc:sake')
-    barrel_sealed_recipe(rm, 'vodka', 72000, 'tfc:food/potato', '500 minecraft:water', output_fluid='500 tfc:vodka')
-    barrel_sealed_recipe(rm, 'whiskey', 72000, 'tfc:food/wheat_flour', '500 minecraft:water', output_fluid='500 tfc:whiskey')
-    barrel_sealed_recipe(rm, 'corn_whiskey', 72000, 'tfc:food/corn_flour', '500 minecraft:water', output_fluid='500 tfc:corn_whiskey')
-    barrel_sealed_recipe(rm, 'rye_whiskey', 72000, 'tfc:food/rye_flour', '500 minecraft:water', output_fluid='500 tfc:rye_whiskey')
+    barrel_sealed_recipe(rm, 'beer', 'Fermenting Beer', 72000, 'tfc:food/barley_flour', '500 minecraft:water', output_fluid='500 tfc:beer')
+    barrel_sealed_recipe(rm, 'cider', 'Fermenting Cider', 72000, '#tfc:food/apples', '500 minecraft:water', output_fluid='500 tfc:cider')
+    barrel_sealed_recipe(rm, 'rum', 'Fermenting Rum', 72000, 'minecraft:sugar', '500 minecraft:water', output_fluid='500 tfc:rum')
+    barrel_sealed_recipe(rm, 'sake', 'Fermenting Sake', 72000, 'tfc:food/rice_flour', '500 minecraft:water', output_fluid='500 tfc:sake')
+    barrel_sealed_recipe(rm, 'vodka', 'Fermenting Vodka', 72000, 'tfc:food/potato', '500 minecraft:water', output_fluid='500 tfc:vodka')
+    barrel_sealed_recipe(rm, 'whiskey', 'Fermenting Whiskey', 72000, 'tfc:food/wheat_flour', '500 minecraft:water', output_fluid='500 tfc:whiskey')
+    barrel_sealed_recipe(rm, 'corn_whiskey', 'Fermenting Corn Whiskey', 72000, 'tfc:food/corn_flour', '500 minecraft:water', output_fluid='500 tfc:corn_whiskey')
+    barrel_sealed_recipe(rm, 'rye_whiskey', 'Fermenting Rye Whiskey', 72000, 'tfc:food/rye_flour', '500 minecraft:water', output_fluid='500 tfc:rye_whiskey')
 
-    barrel_sealed_recipe(rm, 'vinegar', 8000, 'tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
+    barrel_sealed_recipe(rm, 'vinegar', 'Vinegar', 8000, 'tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
 
-    barrel_sealed_recipe(rm, 'pickling', 4000, not_rotten(has_trait(['#tfc:food/fruits', '#tfc:food/vegetables', '#tfc:food/meats'], 'brined')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
-    barrel_sealed_recipe(rm, 'brined', 4000, not_rotten(['#tfc:food/fruits', '#tfc:food/vegetables', '#tfc:food/meats']), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
-    barrel_sealed_recipe(rm, 'preserved_in_vinegar', -1, not_rotten(has_trait(['#tfc:food/fruits', '#tfc:food/vegetables', '#tfc:food/meats'], 'tfc:pickled')), '125 tfc:vinegar', on_seal=item_stack_provider(copy_input=True, add_trait='tfc:vinegar'), on_unseal=item_stack_provider(copy_input=True, remove_trait='tfc:vinegar'))
+    barrel_sealed_recipe(rm, 'pickling', 'Pickling', 4000, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
+    barrel_sealed_recipe(rm, 'brined', 'Brining', 4000, not_rotten(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats']), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
+    barrel_sealed_recipe(rm, 'preserved_in_vinegar', 'Preserving in Vinegar', -1, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:pickled')), '125 tfc:vinegar', on_seal=item_stack_provider(copy_input=True, add_trait='tfc:vinegar'), on_unseal=item_stack_provider(copy_input=True, remove_trait='tfc:vinegar'))
 
-    barrel_sealed_recipe(rm, 'mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
+    barrel_sealed_recipe(rm, 'mortar', 'Mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
 
     # todo: #tfc:tannin_logs
     # todo: #tfc:food/apples
@@ -606,7 +606,7 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
     })
 
 
-def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None):
+def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, translation: str, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None):
     rm.recipe(('barrel', name_parts), 'tfc:barrel_sealed', {
         'input_item': item_stack_ingredient(input_item) if input_item is not None else None,
         'input_fluid': fluid_stack_ingredient(input_fluid) if input_item is not None else None,
@@ -616,6 +616,8 @@ def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifi
         'on_seal': on_seal,
         'on_unseal': on_unseal
     })
+    res = utils.resource_location('tfc', name_parts)
+    rm.lang('tfc.recipe.barrel.' + res.domain + '.barrel.' + res.path.replace('/', '.'), lang(translation))
 
 def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: str, input_count: int, result: utils.Json, steps: int, in_progress_texture: str):
     return rm.recipe(('loom', name), 'tfc:loom', {

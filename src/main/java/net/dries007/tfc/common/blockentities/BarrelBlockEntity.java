@@ -8,8 +8,6 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,7 +39,6 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
-import net.dries007.tfc.common.recipes.InstantBarrelRecipe;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
@@ -49,6 +46,8 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.*;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockEntity.BarrelInventory> implements ICalendarTickable
 {
@@ -133,7 +132,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return BarrelContainer.create(this, player.getInventory(), containerId);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -278,6 +277,28 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         needsRecipeUpdate = false;
     }
 
+    @Nullable
+    public BarrelRecipe getRecipe()
+    {
+        return recipe;
+    }
+
+    /**
+     * For use on the client
+     */
+    @Nullable
+    public BarrelRecipe getOrUpdateRecipe()
+    {
+        if (recipe != null) return recipe;
+        updateRecipe();
+        return recipe;
+    }
+
+    public long getSealedTick()
+    {
+        return sealedTick;
+    }
+
     public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory
     {
         private final BarrelBlockEntity barrel;
@@ -334,28 +355,28 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             return canModify() ? tank.fill(resource, action) : 0;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack drain(FluidStack resource, FluidAction action)
         {
             return canModify() ? tank.drain(resource, action) : FluidStack.EMPTY;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {
             return canModify() ? tank.drain(maxDrain, action) : FluidStack.EMPTY;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
             return canModify() ? inventory.insertItem(slot, stack, simulate) : stack;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {

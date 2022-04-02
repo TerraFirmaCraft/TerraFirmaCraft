@@ -26,6 +26,22 @@
     "tfc:flowing_tannin",
     "tfc:vinegar",
     "tfc:flowing_vinegar",
+    "tfc:beer",
+    "tfc:flowing_beer",
+    "tfc:cider",
+    "tfc:flowing_cider",
+    "tfc:rum",
+    "tfc:flowing_rum",
+    "tfc:sake",
+    "tfc:flowing_sake",
+    "tfc:vodka",
+    "tfc:flowing_vodka",
+    "tfc:whiskey",
+    "tfc:flowing_whiskey",
+    "tfc:corn_whiskey",
+    "tfc:flowing_corn_whiskey",
+    "tfc:rye_whiskey",
+    "tfc:flowing_rye_whiskey",
     "tfc:river_water"
   ]
 }

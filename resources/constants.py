@@ -310,6 +310,7 @@ MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
+ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
 
 WOODS: Dict[str, Wood] = {
     'acacia': Wood(650, 1000),
@@ -524,6 +525,7 @@ SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish',
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
 BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop']
+TANNIN_WOOD_TYPES = ['oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia']
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
     return {
@@ -692,6 +694,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
     'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
+    'tfc.tooltip.seal_barrel': 'Seal',
+    'tfc.tooltip.unseal_barrel': 'Unseal',
 
     # Commands
 

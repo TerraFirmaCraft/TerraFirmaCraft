@@ -160,6 +160,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
     rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
+    rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -174,6 +175,8 @@ def generate(rm: ResourceManager):
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
         rm.item_tag('sluices', 'tfc:wood/sluice/%s' % wood)
         rm.item_tag('looms', 'tfc:wood/planks/%s_loom' % wood)
+        if wood in TANNIN_WOOD_TYPES:
+            rm.item_tag('makes_tannin', 'tfc:wood/log/%s' % wood, 'tfc:wood/wood/%s' % wood)
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:
@@ -396,14 +399,14 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
-    rm.fluid_tag('fluid_ingredients', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
+    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols')
     rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
+    rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
 
     # Item Sizes
 
@@ -674,7 +677,7 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
     rm.item_tag('foods', ingredient)
     if category in (Category.fruit, Category.vegetable):
-        rm.item_tag('foods/%s' % category.name.lower(), ingredient)
+        rm.item_tag('foods/%ss' % category.name.lower(), ingredient)
     if category in (Category.meat, Category.cooked_meat):
         rm.item_tag('foods/meats')
 

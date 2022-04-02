@@ -118,6 +118,20 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     ));
 
+    // todo effects
+    public static final Map<Alcohol, FluidPair<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
+        fluid.getId(),
+        "flowing_" + fluid.getId(),
+        properties -> properties.block(TFCBlocks.ALCOHOLS.get(fluid)).bucket(TFCItems.ALCOHOL_BUCKETS.get(fluid)),
+        FluidAttributes.builder(WATER_STILL, WATER_FLOW)
+            .translationKey("fluid.tfc." + fluid.getId())
+            .color(0)//todo: color
+            .overlay(WATER_OVERLAY)
+            .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
+        MixingFluid.Source::new,
+        MixingFluid.Flowing::new
+    ));
+
     /**
      * Registration helper for fluids and this stupid API
      *

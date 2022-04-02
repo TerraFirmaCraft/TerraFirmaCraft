@@ -30,6 +30,7 @@ import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
@@ -238,6 +239,10 @@ public final class TFCItems
 
     public static final Map<SimpleFluid, RegistryObject<BucketItem>> SIMPLE_FLUID_BUCKETS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
         register("bucket/" + fluid.getId(), () -> new BucketItem(TFCFluids.SIMPLE_FLUIDS.get(fluid).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
+    );
+
+    public static final Map<Alcohol, RegistryObject<BucketItem>> ALCOHOL_BUCKETS = Helpers.mapOfKeys(Alcohol.class, fluid ->
+        register("bucket/" + fluid.getId(), () -> new BucketItem(TFCFluids.ALCOHOLS.get(fluid).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
     );
 
     public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));

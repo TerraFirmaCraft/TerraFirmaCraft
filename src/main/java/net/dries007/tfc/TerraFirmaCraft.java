@@ -29,6 +29,7 @@ import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
@@ -143,6 +144,7 @@ public final class TerraFirmaCraft
             TFCBlockPredicates.registerBlockPredicates();
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
+            FoodTraits.registerFoodTraits();
 
             Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
             Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);

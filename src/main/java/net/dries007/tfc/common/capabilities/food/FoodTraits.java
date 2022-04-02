@@ -20,6 +20,8 @@ public class FoodTraits
     public static final FoodTrait WOOD_GRILLED = register("wood_grilled", 0.8f); // Slight buff when cooking in a grill
     public static final FoodTrait BURNT_TO_A_CRISP = register("burnt_to_a_crisp", 2.5f); // Cooking food in something that's WAY TOO HOT too cook food in you fool!
 
+    public static void registerFoodTraits() { }
+
     private static FoodTrait register(String name, float decayModifier)
     {
         return FoodTrait.register(Helpers.identifier(name), new FoodTrait(decayModifier, "tfc.tooltip.food_trait." + name));

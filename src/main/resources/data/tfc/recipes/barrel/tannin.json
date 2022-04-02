@@ -3,7 +3,7 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "tag": "tfc:tannin_logs"
+      "tag": "tfc:makes_tannin"
     }
   },
   "input_fluid": {

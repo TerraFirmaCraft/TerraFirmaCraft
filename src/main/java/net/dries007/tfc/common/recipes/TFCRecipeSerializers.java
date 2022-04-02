@@ -42,7 +42,7 @@ public class TFCRecipeSerializers
     public static final RegistryObject<RockKnappingRecipe.RockSerializer> ROCK_KNAPPING = register("rock_knapping", RockKnappingRecipe.RockSerializer::new);
     public static final RegistryObject<AlloyRecipe.Serializer> ALLOY = register("alloy", AlloyRecipe.Serializer::new);
     public static final RegistryObject<CastingRecipe.Serializer> CASTING = register("casting", CastingRecipe.Serializer::new);
-    public static final RegistryObject<SealedBarrelRecipe.Serializer> SEALED_BARREL = register("sealed_barrel", SealedBarrelRecipe.Serializer::new);
+    public static final RegistryObject<SealedBarrelRecipe.Serializer> SEALED_BARREL = register("barrel_sealed", SealedBarrelRecipe.Serializer::new);
     public static final RegistryObject<InstantBarrelRecipe.Serializer> INSTANT_BARREL = register("instant_barrel", InstantBarrelRecipe.Serializer::new);
     public static final RegistryObject<LoomRecipe.Serializer> LOOM = register("loom", LoomRecipe.Serializer::new);
 
