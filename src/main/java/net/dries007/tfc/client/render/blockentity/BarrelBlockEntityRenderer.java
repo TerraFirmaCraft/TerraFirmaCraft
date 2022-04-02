@@ -4,14 +4,13 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -28,7 +27,7 @@ public class BarrelBlockEntityRenderer implements BlockEntityRenderer<BarrelBloc
     public void render(BarrelBlockEntity barrel, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         BlockState state = barrel.getBlockState();
-        if (!state.getValue(BarrelBlock.SEALED)) return;
+        if (state.getValue(BarrelBlock.SEALED)) return;
 
         barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(handler -> handler.getFluidInTank(0)).filter(fluid -> !fluid.isEmpty()).ifPresent(fluidStack -> {
             RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, 0.1875F, 0.1875F, 0.8125F, 0.8125F, 0.140625F + (0.75F - 0.015625F) * fluidStack.getAmount() / TFCConfig.SERVER.barrelCapacity.get(), combinedOverlay, combinedLight);

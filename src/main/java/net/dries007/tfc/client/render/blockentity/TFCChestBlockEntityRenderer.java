@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -22,6 +22,21 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCChestBlockEntityRenderer extends ChestRenderer<TFCChestBlockEntity>
 {
+    private static String getFolder(BlockEntity blockEntity, ChestType type)
+    {
+        final String prefix = blockEntity instanceof TFCTrappedChestBlockEntity ? "trapped" : "normal";
+        return chooseForType(type, prefix, prefix + "_left", prefix + "_right");
+    }
+
+    private static String chooseForType(ChestType type, String single, String left, String right)
+    {
+        return switch (type)
+            {
+                case LEFT -> left;
+                case RIGHT -> right;
+                case SINGLE -> single;
+            };
+    }
     private String wood;
 
     public TFCChestBlockEntityRenderer(BlockEntityRendererProvider.Context context)
@@ -44,21 +59,5 @@ public class TFCChestBlockEntityRenderer extends ChestRenderer<TFCChestBlockEnti
     protected Material getMaterial(TFCChestBlockEntity blockEntity, ChestType chestType)
     {
         return new Material(Sheets.CHEST_SHEET, Helpers.identifier("entity/chest/" + getFolder(blockEntity, chestType) + "/" + wood));
-    }
-
-    private static String getFolder(BlockEntity blockEntity, ChestType type)
-    {
-        final String prefix = blockEntity instanceof TFCTrappedChestBlockEntity ? "trapped" : "normal";
-        return chooseForType(type, prefix, prefix + "_left", prefix + "_right");
-    }
-
-    private static String chooseForType(ChestType type, String single, String left, String right)
-    {
-        return switch (type)
-        {
-            case LEFT -> left;
-            case RIGHT -> right;
-            case SINGLE -> single;
-        };
     }
 }

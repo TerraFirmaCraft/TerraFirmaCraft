@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -19,39 +19,39 @@ import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 
-public class PlacedItemBlockEntityRenderer implements BlockEntityRenderer<PlacedItemBlockEntity>
+public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> implements BlockEntityRenderer<T>
 {
     @Override
-    public void render(PlacedItemBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(T placedItem, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        placedItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
             float timeD = RenderHelpers.itemTimeRotation();
-            matrixStack.translate(0.25D, 0.25D, 0.25D);
-            if (te.holdingLargeItem())
+            poseStack.translate(0.25D, 0.25D, 0.25D);
+            if (placedItem.holdingLargeItem())
             {
                 ItemStack stack = cap.getStackInSlot(0);
                 if (!stack.isEmpty())
                 {
-                    matrixStack.pushPose();
-                    matrixStack.translate(0.25D, 0, 0.25D);
-                    matrixStack.mulPose(Vector3f.YP.rotationDegrees(90F));
-                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
-                    matrixStack.popPose();
+                    poseStack.pushPose();
+                    poseStack.translate(0.25D, 0, 0.25D);
+                    poseStack.mulPose(Vector3f.YP.rotationDegrees(90F));
+                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    poseStack.popPose();
                 }
             }
             else
             {
-                matrixStack.scale(0.5F, 0.5F, 0.5F);
+                poseStack.scale(0.5F, 0.5F, 0.5F);
                 for (int i = 0; i < cap.getSlots(); i++)
                 {
                     ItemStack stack = cap.getStackInSlot(i);
                     if (stack.isEmpty()) continue;
-                    matrixStack.pushPose();
-                    matrixStack.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
-                    matrixStack.mulPose(Vector3f.YP.rotationDegrees(timeD));
-                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
-                    matrixStack.popPose();
+                    poseStack.pushPose();
+                    poseStack.translate((i % 2 == 0 ? 1 : 0), 0, (i < 2 ? 1 : 0));
+                    poseStack.mulPose(Vector3f.YP.rotationDegrees(timeD));
+                    itemRenderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    poseStack.popPose();
                 }
             }
         });

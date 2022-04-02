@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -23,38 +23,38 @@ import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_
 public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockEntity>
 {
     @Override
-    public void render(GrillBlockEntity te, float partialTicks, PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(GrillBlockEntity grill, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        grill.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
             for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
             {
                 ItemStack item = cap.getStackInSlot(i);
                 if (!item.isEmpty())
                 {
                     float yOffset = 0.625f;
-                    matrixStack.pushPose();
-                    matrixStack.translate(0.3, 0.003125D + yOffset, 0.28);
-                    matrixStack.scale(0.3f, 0.3f, 0.3f);
-                    matrixStack.mulPose(Vector3f.XP.rotationDegrees(90F));
-                    matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+                    poseStack.pushPose();
+                    poseStack.translate(0.3, 0.003125D + yOffset, 0.28);
+                    poseStack.scale(0.3f, 0.3f, 0.3f);
+                    poseStack.mulPose(Vector3f.XP.rotationDegrees(90F));
+                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
 
                     float translateAmount = -1.4F;
                     int ordinal = i - SLOT_EXTRA_INPUT_START;
                     if (ordinal == 1 || ordinal == 3)
                     {
-                        matrixStack.translate(translateAmount, 0, 0);
+                        poseStack.translate(translateAmount, 0, 0);
                     }
                     if (ordinal == 2 || ordinal == 3)
                     {
-                        matrixStack.translate(0, translateAmount, 0);
+                        poseStack.translate(0, translateAmount, 0);
                     }
                     if (ordinal == 4)
                     {
-                        matrixStack.translate(translateAmount / 2, translateAmount / 2, 0);
+                        poseStack.translate(translateAmount / 2, translateAmount / 2, 0);
                     }
 
-                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, matrixStack, buffer, 0);
-                    matrixStack.popPose();
+                    Minecraft.getInstance().getItemRenderer().renderStatic(item, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+                    poseStack.popPose();
                 }
             }
         });

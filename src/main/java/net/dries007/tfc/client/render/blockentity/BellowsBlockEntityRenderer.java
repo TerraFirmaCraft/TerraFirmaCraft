@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -40,6 +40,34 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     private static final float indentBase = 0.0125f;
     private static final float indentFactor = 1.8f;
 
+    public static float[][] getVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float changeX, float changeY)
+    {
+        return new float[][] {
+            // Main +X Side
+            {minX, minY, minZ, 0, 1},
+            {minX + changeX, minY - changeY, maxZ, 1, 1},
+            {minX + changeX, maxY + changeY, maxZ, 1, 0},
+            {minX, maxY, minZ, 0, 0},
+
+            // Main -X Side
+            {maxX - changeX, minY - changeY, maxZ, 1, 0},
+            {maxX, minY, minZ, 0, 0},
+            {maxX, maxY, minZ, 0, 1},
+            {maxX - changeX, maxY + changeY, maxZ, 1, 1},
+
+            // Bottom
+            {minX, maxY, minZ, 0, 1},
+            {minX + changeX, maxY + changeY, maxZ, 1, 1},
+            {maxX - changeX, maxY + changeY, maxZ, 1, 0},
+            {maxX, maxY, minZ, 0, 0},
+
+            // Top
+            {minX + changeX, minY - changeY, maxZ, 1, 0},
+            {minX, minY, minZ, 0, 0},
+            {maxX, minY, minZ, 0, 1},
+            {maxX - changeX, minY - changeY, maxZ, 1, 1}
+        };
+    }
 
     @Override
     public void render(BellowsBlockEntity bellows, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
@@ -101,35 +129,6 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     private void vertex(VertexConsumer builder, Matrix4f mat, Matrix3f norm, float x, float y, float z, float u, float v, int combinedOverlay, int combinedLight)
     {
         builder.vertex(mat, x, y, z).color(1.0F, 1.0F, 1.0F, 1.0F).uv(u, v).uv2(combinedLight).overlayCoords(combinedOverlay).normal(norm, 1, 1, 1).endVertex();
-    }
-
-    public static float[][] getVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float changeX, float changeY)
-    {
-        return new float[][] {
-            // Main +X Side
-            {minX, minY, minZ, 0, 1},
-            {minX + changeX, minY - changeY, maxZ, 1, 1},
-            {minX + changeX, maxY + changeY, maxZ, 1, 0},
-            {minX, maxY, minZ, 0, 0},
-
-            // Main -X Side
-            {maxX - changeX, minY - changeY, maxZ, 1, 0},
-            {maxX, minY, minZ, 0, 0},
-            {maxX, maxY, minZ, 0, 1},
-            {maxX - changeX, maxY + changeY, maxZ, 1, 1},
-
-            // Bottom
-            {minX, maxY, minZ, 0, 1},
-            {minX + changeX, maxY + changeY, maxZ, 1, 1},
-            {maxX - changeX, maxY + changeY, maxZ, 1, 0},
-            {maxX, maxY, minZ, 0, 0},
-
-            // Top
-            {minX + changeX, minY - changeY, maxZ, 1, 0},
-            {minX, minY, minZ, 0, 0},
-            {maxX, minY, minZ, 0, 1},
-            {maxX - changeX, minY - changeY, maxZ, 1, 1}
-        };
     }
 
 

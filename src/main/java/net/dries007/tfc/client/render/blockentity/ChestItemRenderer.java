@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import java.util.Objects;
 
@@ -20,9 +20,6 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.dries007.tfc.common.blockentities.TFCChestBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCTrappedChestBlockEntity;
-import net.dries007.tfc.common.blocks.wood.TFCTrappedChestBlock;
 
 public class ChestItemRenderer extends BlockEntityWithoutLevelRenderer
 {

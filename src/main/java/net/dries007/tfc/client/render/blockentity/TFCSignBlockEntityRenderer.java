@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +52,36 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
         return new Material(SIGN_SHEET, Helpers.identifier("entity/signs/" + name.toLowerCase(Locale.ROOT)));
     }
 
+    private static int getDarkColor(SignBlockEntity sign)
+    {
+        int i = sign.getColor().getTextColor();
+        int j = (int) ((double) NativeImage.getR(i) * 0.4D);
+        int k = (int) ((double) NativeImage.getG(i) * 0.4D);
+        int l = (int) ((double) NativeImage.getB(i) * 0.4D);
+        return i == DyeColor.BLACK.getTextColor() && sign.hasGlowingText() ? -988212 : NativeImage.combine(0, l, k, j);
+    }
+
+    private static boolean isOutlineVisible(SignBlockEntity sing, int dyeIndex)
+    {
+        if (dyeIndex == DyeColor.BLACK.getTextColor())
+        {
+            return true;
+        }
+        else
+        {
+            Minecraft minecraft = Minecraft.getInstance();
+            LocalPlayer localplayer = minecraft.player;
+            if (localplayer != null && minecraft.options.getCameraType().isFirstPerson() && localplayer.isScoping())
+            {
+                return true;
+            }
+            else
+            {
+                Entity entity = minecraft.getCameraEntity();
+                return entity != null && entity.distanceToSqr(Vec3.atCenterOf(sing.getBlockPos())) < (double) OUTLINE_RENDER_DISTANCE;
+            }
+        }
+    }
     private final Font font;
     private final Map<Wood, Material> materials;
     private final Map<Wood, SignModel> models;
@@ -134,36 +164,5 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
         }
 
         poseStack.popPose();
-    }
-
-    private static int getDarkColor(SignBlockEntity sign)
-    {
-        int i = sign.getColor().getTextColor();
-        int j = (int) ((double) NativeImage.getR(i) * 0.4D);
-        int k = (int) ((double) NativeImage.getG(i) * 0.4D);
-        int l = (int) ((double) NativeImage.getB(i) * 0.4D);
-        return i == DyeColor.BLACK.getTextColor() && sign.hasGlowingText() ? -988212 : NativeImage.combine(0, l, k, j);
-    }
-
-    private static boolean isOutlineVisible(SignBlockEntity sing, int dyeIndex)
-    {
-        if (dyeIndex == DyeColor.BLACK.getTextColor())
-        {
-            return true;
-        }
-        else
-        {
-            Minecraft minecraft = Minecraft.getInstance();
-            LocalPlayer localplayer = minecraft.player;
-            if (localplayer != null && minecraft.options.getCameraType().isFirstPerson() && localplayer.isScoping())
-            {
-                return true;
-            }
-            else
-            {
-                Entity entity = minecraft.getCameraEntity();
-                return entity != null && entity.distanceToSqr(Vec3.atCenterOf(sing.getBlockPos())) < (double) OUTLINE_RENDER_DISTANCE;
-            }
-        }
     }
 }

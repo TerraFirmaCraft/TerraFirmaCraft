@@ -36,7 +36,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.grill");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.grill");
 
     private final HeatingRecipe[] cachedRecipes;
 

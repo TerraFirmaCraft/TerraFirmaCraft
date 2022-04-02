@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.render;
+package net.dries007.tfc.client.render.blockentity;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -34,6 +34,21 @@ import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 
 public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBlockEntity>
 {
+    private static void drawItem(ItemStack stack, float x, float y, float z, float rotation, ItemRenderer renderer, PoseStack poseStack, int combinedLight, int combinedOverlay, MultiBufferSource buffer)
+    {
+        poseStack.pushPose();
+        poseStack.translate(x, y, z);
+        poseStack.scale(0.3F, 0.3F, 0.3F);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(rotation));
+        renderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
+        poseStack.popPose();
+    }
+
+    private static void vertex(QuadRenderInfo info, float x, float y, float z, int color, float u, float v)
+    {
+        info.builder.vertex(info.matrix4f, x, y, z).color(color).uv(u, v).overlayCoords(info.combinedOverlay).uv2(info.combinedLight).normal(0, 0, 1).endVertex();
+    }
+
     @Override
     @SuppressWarnings("deprecation")
     public void render(SluiceBlockEntity sluice, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
@@ -119,21 +134,6 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         vertex(info, 0.95F, 0.833F, 0F, color, sprite.getU1(), sprite.getV0());
 
         poseStack.popPose();
-    }
-
-    private static void drawItem(ItemStack stack, float x, float y, float z, float rotation, ItemRenderer renderer, PoseStack poseStack, int combinedLight, int combinedOverlay, MultiBufferSource buffer)
-    {
-        poseStack.pushPose();
-        poseStack.translate(x, y, z);
-        poseStack.scale(0.3F, 0.3F, 0.3F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(rotation));
-        renderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
-        poseStack.popPose();
-    }
-
-    private static void vertex(QuadRenderInfo info, float x, float y, float z, int color, float u, float v)
-    {
-        info.builder.vertex(info.matrix4f, x, y, z).color(color).uv(u, v).overlayCoords(info.combinedOverlay).uv2(info.combinedLight).normal(0, 0, 1).endVertex();
     }
 
     private record QuadRenderInfo(VertexConsumer builder, Matrix4f matrix4f, int combinedOverlay, int combinedLight) {}
