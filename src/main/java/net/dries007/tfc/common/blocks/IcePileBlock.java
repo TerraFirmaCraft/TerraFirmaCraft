@@ -145,4 +145,10 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
     {
         return Helpers.isBlock(otherState, Blocks.ICE) || super.skipRendering(state, otherState, facing);
     }
+
+    @Override
+    public boolean hidesNeighborFace(BlockGetter level, BlockPos pos, BlockState state, BlockState neighborState, Direction dir)
+    {
+        return Helpers.isBlock(neighborState, Blocks.ICE);
+    }
 }
