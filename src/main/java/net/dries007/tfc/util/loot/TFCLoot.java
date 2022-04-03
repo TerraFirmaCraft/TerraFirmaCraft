@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
@@ -30,11 +32,19 @@ public class TFCLoot
     public static final Supplier<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new IsIsolatedCondition.Serializer());
     public static final Supplier<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new CropYieldProvider.Serializer());
 
+    public static final Supplier<LootItemFunctionType> COPY_FLUID = lootFunction("copy_fluid", new CopyFluidFunction.Serializer());
+
     public static void registerLootSerializers()
     {
         IS_ISOLATED.get();
         IS_PANNED.get();
         CROP_YIELD.get();
+        COPY_FLUID.get();
+    }
+
+    private static Supplier<LootItemFunctionType> lootFunction(String id, Serializer<? extends LootItemFunction> serializer)
+    {
+        return register(id, serializer, LootItemFunctionType::new, Registry.LOOT_FUNCTION_TYPE);
     }
 
     private static Supplier<LootItemConditionType> lootCondition(String id, Serializer<? extends LootItemCondition> serializer)

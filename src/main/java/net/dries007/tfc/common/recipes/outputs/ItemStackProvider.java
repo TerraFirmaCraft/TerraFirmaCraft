@@ -34,11 +34,13 @@ public final class ItemStackProvider
     {
         final ItemStack stack;
         final ItemStackModifier[] modifiers;
-        if (json.has("stack") || json.has("modifiers"))
+        final boolean hasStack = json.has("stack");
+        final boolean hasMods = json.has("modifiers");
+        if (hasStack || hasMods)
         {
             // Provider
-            stack = json.has("stack") ? ShapedRecipe.itemStackFromJson(JsonHelpers.getAsJsonObject(json, "stack")) : ItemStack.EMPTY;
-            if (json.has("apply"))
+            stack = hasStack ? ShapedRecipe.itemStackFromJson(JsonHelpers.getAsJsonObject(json, "stack")) : ItemStack.EMPTY;
+            if (hasMods)
             {
                 final JsonArray modifiersJson = JsonHelpers.getAsJsonArray(json, "modifiers");
                 modifiers = new ItemStackModifier[modifiersJson.size()];

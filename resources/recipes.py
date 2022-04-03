@@ -473,7 +473,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'tannin', 'Tannin', 8000, '#tfc:makes_tannin', '1000 minecraft:water', output_fluid='1000 tfc:tannin')
     barrel_sealed_recipe(rm, 'jute_fiber', 'Jute Fiber', 8000, 'tfc:jute', '200 minecraft:water', output_item='tfc:jute_fiber')
     barrel_sealed_recipe(rm, 'sugar', 'Sugar', 8000, 'tfc:food/sugarcane', '600 minecraft:water', output_item='minecraft:sugar')
-    barrel_sealed_recipe(rm, 'glue', 'Glue', 8000, 'tfc:limewater', 'minecraft:bone_meal', output_item='tfc:glue')
+    barrel_sealed_recipe(rm, 'glue', 'Glue', 8000, 'minecraft:bone_meal', '500 tfc:limewater',  output_item='tfc:glue')
 
     barrel_sealed_recipe(rm, 'beer', 'Fermenting Beer', 72000, 'tfc:food/barley_flour', '500 minecraft:water', output_fluid='500 tfc:beer')
     barrel_sealed_recipe(rm, 'cider', 'Fermenting Cider', 72000, '#tfc:food/apples', '500 minecraft:water', output_fluid='500 tfc:cider')
@@ -481,10 +481,10 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'sake', 'Fermenting Sake', 72000, 'tfc:food/rice_flour', '500 minecraft:water', output_fluid='500 tfc:sake')
     barrel_sealed_recipe(rm, 'vodka', 'Fermenting Vodka', 72000, 'tfc:food/potato', '500 minecraft:water', output_fluid='500 tfc:vodka')
     barrel_sealed_recipe(rm, 'whiskey', 'Fermenting Whiskey', 72000, 'tfc:food/wheat_flour', '500 minecraft:water', output_fluid='500 tfc:whiskey')
-    barrel_sealed_recipe(rm, 'corn_whiskey', 'Fermenting Corn Whiskey', 72000, 'tfc:food/corn_flour', '500 minecraft:water', output_fluid='500 tfc:corn_whiskey')
+    barrel_sealed_recipe(rm, 'corn_whiskey', 'Fermenting Corn Whiskey', 72000, 'tfc:food/maize_flour', '500 minecraft:water', output_fluid='500 tfc:corn_whiskey')
     barrel_sealed_recipe(rm, 'rye_whiskey', 'Fermenting Rye Whiskey', 72000, 'tfc:food/rye_flour', '500 minecraft:water', output_fluid='500 tfc:rye_whiskey')
 
-    barrel_sealed_recipe(rm, 'vinegar', 'Vinegar', 8000, 'tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
+    barrel_sealed_recipe(rm, 'vinegar', 'Vinegar', 8000, '#tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
 
     barrel_sealed_recipe(rm, 'pickling', 'Pickling', 4000, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
     barrel_sealed_recipe(rm, 'brined', 'Brining', 4000, not_rotten(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats']), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
@@ -757,7 +757,7 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
     if modifiers:
         return {
             'stack': stack,
-            'apply': modifiers
+            'modifiers': modifiers
         }
     return stack
 

@@ -24,7 +24,7 @@
   },
   "duration": -1,
   "on_seal": {
-    "apply": [
+    "modifiers": [
       "tfc:copy_input",
       {
         "type": "tfc:add_trait",
@@ -33,7 +33,7 @@
     ]
   },
   "on_unseal": {
-    "apply": [
+    "modifiers": [
       "tfc:copy_input",
       {
         "type": "tfc:remove_trait",

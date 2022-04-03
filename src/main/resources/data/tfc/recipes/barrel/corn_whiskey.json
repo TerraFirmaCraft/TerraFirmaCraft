@@ -3,7 +3,7 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "item": "tfc:food/corn_flour"
+      "item": "tfc:food/maize_flour"
     }
   },
   "input_fluid": {

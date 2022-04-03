@@ -530,7 +530,7 @@ def generate(rm: ResourceManager):
                         'hanging=true,lit=true': {'model': 'tfc:block/metal/lamp/%s_hanging_on' % metal},
                     }).with_lang(lang('%s lamp', metal)).with_block_loot({
                         'name': 'tfc:metal/lamp/%s' % metal,
-                        'functions': [loot_tables.copy_block_entity_nbt()]
+                        'functions': [{'function': 'tfc:copy_fluid'}]
                     }).with_tag('lamps')
                     rm.item_tag('lamps', 'tfc:metal/%s/%s' % (metal_block, metal))
                     rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))

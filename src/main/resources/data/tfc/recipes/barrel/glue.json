@@ -3,11 +3,12 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "item": "tfc:limewater"
+      "item": "minecraft:bone_meal"
     }
   },
   "input_fluid": {
-    "ingredient": "minecraft:bone_meal"
+    "ingredient": "tfc:limewater",
+    "amount": 500
   },
   "output_item": {
     "item": "tfc:glue"

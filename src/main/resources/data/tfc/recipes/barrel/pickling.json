@@ -23,7 +23,7 @@
     "amount": 125
   },
   "output_item": {
-    "apply": [
+    "modifiers": [
       "tfc:copy_input",
       {
         "type": "tfc:add_trait",

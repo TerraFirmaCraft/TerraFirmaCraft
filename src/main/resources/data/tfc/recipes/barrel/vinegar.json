@@ -3,7 +3,7 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "item": "tfc:foods/fruits"
+      "tag": "tfc:foods/fruits"
     }
   },
   "input_fluid": {

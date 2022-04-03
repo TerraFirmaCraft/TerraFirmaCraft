@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +28,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -68,6 +71,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         {
             barrel.updateRecipe();
         }
+        if (level.getGameTime() % 5 == 0) barrel.updateFluidIOSlots();
+        List<ItemStack> excess = barrel.inventory.excess;
+        if (!excess.isEmpty() && barrel.inventory.getStackInSlot(SLOT_ITEM).isEmpty())
+        {
+            barrel.inventory.setStackInSlot(SLOT_ITEM, excess.remove(0));
+        }
 
         final SealedBarrelRecipe recipe = barrel.recipe;
         if (recipe != null && state.getValue(BarrelBlock.SEALED))
@@ -94,8 +103,10 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             if (barrel.inventory.excess.isEmpty()) // Excess must be empty for instant recipes to apply
             {
                 level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level)
-                    .ifPresent(instantRecipe -> instantRecipe.assembleOutputs(barrel.inventory));
-                Helpers.playSound(level, barrel.getBlockPos(), SoundEvents.BREWING_STAND_BREW);
+                    .ifPresent(instantRecipe -> {
+                        instantRecipe.assembleOutputs(barrel.inventory);
+                        Helpers.playSound(level, barrel.getBlockPos(), SoundEvents.BREWING_STAND_BREW);
+                    });
                 barrel.markForSync();
             }
         }
@@ -158,7 +169,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     public boolean isItemValid(int slot, ItemStack stack)
     {
         return switch (slot) {
-            case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent();
+            case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent() || stack.getItem() instanceof BucketItem;
             case SLOT_ITEM -> ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.HUGE);
             default -> true;
         };
@@ -189,6 +200,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                         {
                             // Recipe completed, so fill outputs
                             recipe.assembleOutputs(inventory);
+                            this.recipe = null;
                         }
                         updateRecipe();
                     });
@@ -225,6 +237,14 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     public void setLastUpdateTick(long tick)
     {
         lastUpdateTick = tick;
+    }
+
+    @Override
+    public void ejectInventory()
+    {
+        super.ejectInventory();
+        assert level != null;
+        inventory.excess.stream().filter(item -> !item.isEmpty()).forEach(item -> Helpers.spawnItem(level, worldPosition, item));
     }
 
     public void onSeal()
@@ -279,6 +299,43 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
 
         needsRecipeUpdate = false;
+    }
+
+    private void updateFluidIOSlots()
+    {
+        assert level != null;
+        ItemStack input = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
+        if (!input.isEmpty() && inventory.getStackInSlot(SLOT_FLUID_CONTAINER_OUT).isEmpty())
+        {
+            input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(cap -> {
+                if (cap.getFluidInTank(0).getAmount() > 0)
+                {
+                    final int maxFill = TFCConfig.SERVER.barrelCapacity.get() - inventory.tank.getFluid().getAmount();
+                    if (maxFill > 0)
+                    {
+                        if (inventory.tank.fill(cap.drain(maxFill, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.SIMULATE) > 0)
+                        {
+                            if (inventory.tank.fill(cap.drain(maxFill, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE) > 0)
+                            {
+                                Helpers.playSound(level, getBlockPos(), SoundEvents.BUCKET_EMPTY);
+                                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, cap.getContainer());
+                                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    FluidActionResult result = FluidUtil.tryFillContainer(input, inventory, TFCConfig.SERVER.barrelCapacity.get(), null, true);
+                    if (result.isSuccess())
+                    {
+                        Helpers.playSound(level, getBlockPos(), SoundEvents.BUCKET_FILL);
+                        inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, result.getResult());
+                        inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
+                    }
+                }
+            });
+        }
     }
 
     @Nullable
