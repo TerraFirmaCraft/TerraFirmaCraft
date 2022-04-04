@@ -25,5 +25,6 @@
         "temperature": -5
       }
     ]
-  }
+  },
+  "sound": "minecraft:block.fire.extinguish"
 }

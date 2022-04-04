@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -29,6 +30,7 @@ import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.SimpleFluid;
@@ -101,6 +103,8 @@ public final class TFCItems
     // Food
 
     public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food -> register("food/" + food.name(), () -> new DecayingItem(new Item.Properties().food(food.getFoodProperties()).tab(TFCItemGroup.FOOD))));
+
+    public static final Map<Nutrient, RegistryObject<SoupItem>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient -> register("food/" + nutrient.name() + "_soup", () -> new SoupItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
 
     // Flora
 

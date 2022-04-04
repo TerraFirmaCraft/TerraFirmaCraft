@@ -383,11 +383,23 @@ def generate(rm: ResourceManager):
             'fluid_output': fluid_stack('1000 tfc:%s_dye' % color)
         })
 
-    # todo: remove
-    rm.recipe(('pot', 'mushroom_soup'), 'tfc:pot_soup', {
-        'ingredients': [utils.ingredient('minecraft:red_mushroom'), utils.ingredient('minecraft:brown_mushroom')],
+    soup_food = not_rotten(utils.ingredient('#tfc:foods/usable_in_soup'))
+    rm.recipe(('pot', 'soup_3'), 'tfc:pot_soup', {
+        'ingredients': [soup_food, soup_food, soup_food],
         'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 200,
+        'duration': 1000,
+        'temperature': 300
+    })
+    rm.recipe(('pot', 'soup_4'), 'tfc:pot_soup', {
+        'ingredients': [soup_food, soup_food, soup_food, soup_food],
+        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
+        'duration': 1150,
+        'temperature': 300
+    })
+    rm.recipe(('pot', 'soup_5'), 'tfc:pot_soup', {
+        'ingredients': [soup_food, soup_food, soup_food, soup_food, soup_food],
+        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
+        'duration': 1300,
         'temperature': 300
     })
 
@@ -522,11 +534,12 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'fresh_to_salt_water', 'tfc:powder/salt', '125 minecraft:water', output_fluid='125 tfc:salt_water')
     barrel_instant_recipe(rm, 'limewater', 'tfc:powder/flux', '500 minecraft:water', output_fluid='500 tfc:limewater')
     barrel_instant_recipe(rm, 'olive_oil', 'tfc:jute_net', '250 tfc:olive_oil_water', 'tfc:dirty_jute_net', '50 tfc:olive_oil')
-    barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5))
-    barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5))
-    barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40))
+    barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
+    barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
+    barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 tfc:salt_water', output_fluid='10 tfc:brine')
     barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 minecraft:milk', output_fluid='10 tfc:milk_vinegar')
+    barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soup_bowls', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
 
     for first, second, output in COLOR_COMBOS:
         first_fluid = '1 tfc:%s_dye' % first
@@ -535,8 +548,6 @@ def generate(rm: ResourceManager):
         barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (second, first), {'ingredient': fluid_item_ingredient(second_fluid)}, first_fluid, output_fluid='2 tfc:%s_dye' % output)
         barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (first, second), 'minecraft:%s_dye' % first, '1000 tfc:%s_dye' % second, output_fluid='1000 tfc:%s_dye' % output)
         barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (second, first), 'minecraft:%s_dye' % second, '1000 tfc:%s_dye' % first, output_fluid='1000 tfc:%s_dye' % output)
-
-    # todo: cleaning out food bowls in barrels? may not still be necessary depending on which route we go.
 
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
@@ -665,7 +676,7 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
     })
 
 
-def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, translation: str, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None):
+def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, translation: str, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None, sound: Optional[str] = None):
     rm.recipe(('barrel', name_parts), 'tfc:barrel_sealed', {
         'input_item': item_stack_ingredient(input_item) if input_item is not None else None,
         'input_fluid': fluid_stack_ingredient(input_fluid) if input_fluid is not None else None,
@@ -673,18 +684,20 @@ def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifi
         'output_fluid': fluid_stack(output_fluid) if output_fluid is not None else None,
         'duration': duration,
         'on_seal': on_seal,
-        'on_unseal': on_unseal
+        'on_unseal': on_unseal,
+        'sound': sound
     })
     res = utils.resource_location('tfc', name_parts)
     rm.lang('tfc.recipe.barrel.' + res.domain + '.barrel.' + res.path.replace('/', '.'), lang(translation))
 
 
-def barrel_instant_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None):
+def barrel_instant_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, sound: Optional[str] = None):
     rm.recipe(('barrel', name_parts), 'tfc:barrel_instant', {
         'input_item': item_stack_ingredient(input_item) if input_item is not None else None,
         'input_fluid': fluid_stack_ingredient(input_fluid) if input_fluid is not None else None,
         'output_item': item_stack_provider(output_item) if output_item is not None else None,
         'output_fluid': fluid_stack(output_fluid) if output_fluid is not None else None,
+        'sound': sound
     })
 
 def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: str, input_count: int, result: utils.Json, steps: int, in_progress_texture: str):
@@ -767,7 +780,7 @@ def fluid_item_ingredient(fluid: Json, delegate: Json = None):
         'fluid_ingredient': fluid_stack_ingredient(fluid)
     }
 
-def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None) -> Json:
+def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None, empty_bowl: bool = False) -> Json:
     if isinstance(data_in, dict):
         return data_in
     stack = utils.item_stack(data_in) if data_in is not None else None
@@ -776,6 +789,7 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
         ('tfc:copy_heat', copy_heat),
         ('tfc:copy_food', copy_food),
         ('tfc:reset_food', reset_food),
+        ('tfc:empty_bowl', empty_bowl),
         ({'type': 'tfc:add_heat', 'temperature': add_heat}, add_heat is not None),
         ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None),
         ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None)

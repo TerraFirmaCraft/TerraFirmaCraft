@@ -13,11 +13,14 @@ import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
@@ -35,6 +38,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
     protected final FluidStackIngredient inputFluid;
     protected final ItemStackProvider outputItem;
     protected final FluidStack outputFluid;
+    protected final SoundEvent sound;
 
     public BarrelRecipe(ResourceLocation id, Builder builder)
     {
@@ -43,6 +47,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
         this.inputFluid = builder.inputFluid;
         this.outputItem = builder.outputItem;
         this.outputFluid = builder.outputFluid;
+        this.sound = builder.sound;
     }
 
     public void assembleOutputs(BarrelBlockEntity.BarrelInventory inventory)
@@ -144,12 +149,17 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
         return outputFluid;
     }
 
+    public SoundEvent getCompleteSound()
+    {
+        return sound;
+    }
+
     public TranslatableComponent getTranslationComponent()
     {
         return new TranslatableComponent("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
     }
 
-    public record Builder(ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid)
+    public record Builder(ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, SoundEvent sound)
     {
         public static Builder fromJson(JsonObject json)
         {
@@ -163,8 +173,9 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
 
             final ItemStackProvider outputItem = json.has("output_item") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "output_item")) : ItemStackProvider.empty();
             final FluidStack outputFluid = json.has("output_fluid") ? JsonHelpers.getFluidStack(JsonHelpers.getAsJsonObject(json, "output_fluid")) : FluidStack.EMPTY;
+            final SoundEvent sound = json.has("sound") ? JsonHelpers.getRegistryEntry(json, "sound", ForgeRegistries.SOUND_EVENTS) : SoundEvents.BREWING_STAND_BREW;
 
-            return new Builder(inputItem, inputFluid, outputItem, outputFluid);
+            return new Builder(inputItem, inputFluid, outputItem, outputFluid, sound);
         }
 
         public static Builder fromNetwork(FriendlyByteBuf buffer)
@@ -173,8 +184,9 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
             final FluidStackIngredient inputFluid = FluidStackIngredient.fromNetwork(buffer);
             final ItemStackProvider outputItem = ItemStackProvider.fromNetwork(buffer);
             final FluidStack outputFluid = FluidStack.readFromPacket(buffer);
+            final SoundEvent sound = buffer.readRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS);
 
-            return new Builder(inputItem, inputFluid, outputItem, outputFluid);
+            return new Builder(inputItem, inputFluid, outputItem, outputFluid, sound);
         }
 
         public static void toNetwork(BarrelRecipe recipe, FriendlyByteBuf buffer)
@@ -183,6 +195,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
             recipe.inputFluid.toNetwork(buffer);
             recipe.outputItem.toNetwork(buffer);
             recipe.outputFluid.writeToPacket(buffer);
+            buffer.writeRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS, recipe.sound);
         }
     }
 }

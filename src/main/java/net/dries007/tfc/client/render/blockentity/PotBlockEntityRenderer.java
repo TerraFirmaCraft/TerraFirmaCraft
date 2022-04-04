@@ -37,10 +37,16 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
         final boolean useDefaultFluid = output != null && output.renderDefaultFluid();
         final FluidStack fluidStack = pot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             .map(cap -> cap.getFluidInTank(0))
+            .filter(f -> !f.isEmpty())
             .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME) : FluidStack.EMPTY);
         if (!fluidStack.isEmpty())
         {
-            RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, r -> useDefaultFluid ? r * 3 : r, g -> useDefaultFluid ? g /= 4 : g, b -> useDefaultFluid ? 0 : b, 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
+            RenderHelpers.RGBA color = RenderHelpers.getFluidColor(fluidStack);
+            if (useDefaultFluid)
+            {
+                color = new RenderHelpers.RGBA(color.r() * 3, color.g() / 4, 0, color.a());
+            }
+            RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color.r(), color.g(), color.b(), color.a(), 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
         }
 
         pot.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {

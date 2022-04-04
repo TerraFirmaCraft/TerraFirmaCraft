@@ -868,6 +868,8 @@ def generate(rm: ResourceManager):
         rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
     for veg in VEGETABLES:
         rm.item_model(('food', veg)).with_lang(lang(veg))
+    for nut, name in NUTRIENTS.items():
+        rm.item_model(('food', '%s_soup' % nut)).with_lang(lang('%s Soup', name)).with_tag('soup_bowls')
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}

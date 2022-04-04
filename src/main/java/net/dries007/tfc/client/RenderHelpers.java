@@ -32,7 +32,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import it.unimi.dsi.fastutil.floats.Float2FloatFunction;
 import net.dries007.tfc.client.model.Animation;
 import net.dries007.tfc.client.model.Easing;
 import net.dries007.tfc.util.Helpers;
@@ -194,28 +193,24 @@ public class RenderHelpers
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
     }
 
-    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    public static RGBA getFluidColor(FluidStack fluid)
     {
-        renderFluidFace(poseStack, fluidStack, buffer, f -> f, f -> f, f -> f, minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
+        return RGBA.of(fluid.getFluid().getAttributes().getColor());
     }
 
-    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, Float2FloatFunction red, Float2FloatFunction blue, Float2FloatFunction green, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
+    {
+        final RGBA colors = getFluidColor(fluidStack);
+        renderFluidFace(poseStack, fluidStack, buffer, colors.r, colors.g, colors.b, colors.a, minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float r, float g, float b, float a, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
     {
         Fluid fluid = fluidStack.getFluid();
         FluidAttributes attributes = fluid.getAttributes();
         ResourceLocation texture = attributes.getStillTexture(fluidStack);
-        // noinspection deprecation
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
-        int color = attributes.getColor();
-
-        float r = ((color >> 16) & 0xFF) / 255F;
-        float g = ((color >> 8) & 0xFF) / 255F;
-        float b = (color & 0xFF) / 255F;
-        float a = ((color >> 24) & 0xFF) / 255F;
-
-        r = red.apply(r);
-        g = green.apply(g);
-        b = blue.apply(b);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
         Matrix4f matrix4f = poseStack.last().pose();
@@ -271,5 +266,17 @@ public class RenderHelpers
             return 10f * Mth.cos(degrees);
         }
         return 0f;
+    }
+
+    public record RGBA(float r, float g, float b, float a)
+    {
+        public static RGBA of(int color)
+        {
+            final float r = ((color >> 16) & 0xFF) / 255F;
+            final float g = ((color >> 8) & 0xFF) / 255F;
+            final float b = (color & 0xFF) / 255F;
+            final float a = ((color >> 24) & 0xFF) / 255F;
+            return new RGBA(r, g, b, a);
+        }
     }
 }

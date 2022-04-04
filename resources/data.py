@@ -86,7 +86,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
-    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower'], 1)
+    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
@@ -161,6 +161,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
+    rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
+    rm.item_tag('soup_bowl', 'tfc:ceramic/bowl')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -687,7 +689,7 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     if category in (Category.fruit, Category.vegetable):
         rm.item_tag('foods/%ss' % category.name.lower(), ingredient)
     if category in (Category.meat, Category.cooked_meat):
-        rm.item_tag('foods/meats')
+        rm.item_tag('foods/meats', ingredient)
 
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):

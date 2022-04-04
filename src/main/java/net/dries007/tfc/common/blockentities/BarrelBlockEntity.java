@@ -88,7 +88,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 {
                     // Recipe completed, so fill outputs
                     recipe.assembleOutputs(barrel.inventory);
-                    Helpers.playSound(level, barrel.getBlockPos(), SoundEvents.BREWING_STAND_BREW);
+                    Helpers.playSound(level, barrel.getBlockPos(), recipe.getCompleteSound());
                 }
 
                 // In both cases, update the recipe and sync
@@ -105,7 +105,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level)
                     .ifPresent(instantRecipe -> {
                         instantRecipe.assembleOutputs(barrel.inventory);
-                        Helpers.playSound(level, barrel.getBlockPos(), SoundEvents.BREWING_STAND_BREW);
+                        Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
                     });
                 barrel.markForSync();
             }
