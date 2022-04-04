@@ -27,7 +27,7 @@ public class InstantBarrelRecipe extends BarrelRecipe
     public boolean matches(BarrelBlockEntity.BarrelInventory container, @Nullable Level level)
     {
         // Instant recipes must have enough input items to convert fully, all the fluid. Excess items will get placed into the overflow
-        return super.matches(container, level) && (inputFluid.amount() == 0 || container.getFluidInTank(0).getAmount() / this.inputFluid.amount() <= container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM).getCount() / this.inputItem.count());
+        return super.matches(container, level) && (inputFluid.amount() == 0 || outputFluid.getAmount() == 0 || container.getFluidInTank(0).getAmount() / this.inputFluid.amount() <= container.getStackInSlot(BarrelBlockEntity.SLOT_ITEM).getCount() / this.inputItem.count());
     }
 
     @Override

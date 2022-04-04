@@ -517,14 +517,25 @@ def generate(rm: ResourceManager):
         barrel_sealed_recipe(rm, 'dye/%s_shulker' % color, 'Dyeing Shulker %s' % color, 1000, 'minecraft:shulker_box', fluid, 'minecraft:%s_shulker_box' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_vessel' % color, 'Dyeing Unfired Vessel %s' % color, 1000, 'tfc:ceramic/unfired_vessel', fluid, 'tfc:ceramic/%s_unfired_vessel' % color)
         barrel_sealed_recipe(rm, 'dye/%s_concrete_powder' % color, 'Dyeing Aggregate %s' % color, 1000, 'tfc:aggregate', fluid, 'minecraft:%s_concrete_powder' % color)
-    # todo: mixing dye using fluid item ingredients
 
     # Instant Barrel Recipes
     barrel_instant_recipe(rm, 'fresh_to_salt_water', 'tfc:powder/salt', '125 minecraft:water', output_fluid='125 tfc:salt_water')
     barrel_instant_recipe(rm, 'limewater', 'tfc:powder/flux', '500 minecraft:water', output_fluid='500 tfc:limewater')
     barrel_instant_recipe(rm, 'olive_oil', 'tfc:jute_net', '250 tfc:olive_oil_water', 'tfc:dirty_jute_net', '50 tfc:olive_oil')
-    # todo: FluidItemIngredient to make brine, milk vinegar
-    # todo: barrel cooling of items
+    barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5))
+    barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5))
+    barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0, 'ingredient': true_ingredient()}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40))
+    barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 tfc:salt_water', output_fluid='10 tfc:brine')
+    barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 minecraft:milk', output_fluid='10 tfc:milk_vinegar')
+
+    for first, second, output in COLOR_COMBOS:
+        first_fluid = '1 tfc:%s_dye' % first
+        second_fluid = '1 tfc:%s_dye' % second
+        barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (first, second), {'ingredient': fluid_item_ingredient(first_fluid)}, second_fluid, output_fluid='2 tfc:%s_dye' % output)
+        barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (second, first), {'ingredient': fluid_item_ingredient(second_fluid)}, first_fluid, output_fluid='2 tfc:%s_dye' % output)
+        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (first, second), 'minecraft:%s_dye' % first, '1000 tfc:%s_dye' % second, output_fluid='1000 tfc:%s_dye' % output)
+        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (second, first), 'minecraft:%s_dye' % second, '1000 tfc:%s_dye' % first, output_fluid='1000 tfc:%s_dye' % output)
+
     # todo: cleaning out food bowls in barrels? may not still be necessary depending on which route we go.
 
     # Loom Recipes
@@ -740,6 +751,21 @@ def item_stack_ingredient(data_in: Json):
     else:
         return {'ingredient': {'item': item}, 'count': count}
 
+def not_ingredient(data_in: Json):
+    return {'type': 'tfc:not', 'ingredient': data_in}
+
+def false_ingredient():
+    return {'tag': 'tfc:empty'}
+
+def true_ingredient():
+    return not_ingredient(false_ingredient())
+
+def fluid_item_ingredient(fluid: Json, delegate: Json = None):
+    return {
+        'type': 'tfc:fluid_item',
+        'ingredient': delegate if delegate is not None else true_ingredient(),
+        'fluid_ingredient': fluid_stack_ingredient(fluid)
+    }
 
 def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None) -> Json:
     if isinstance(data_in, dict):
@@ -750,7 +776,7 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
         ('tfc:copy_heat', copy_heat),
         ('tfc:copy_food', copy_food),
         ('tfc:reset_food', reset_food),
-        ({'type': 'tfc:add_head', 'temperature': add_heat}, add_heat is not None),
+        ({'type': 'tfc:add_heat', 'temperature': add_heat}, add_heat is not None),
         ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None),
         ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None)
     ) if v]

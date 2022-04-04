@@ -50,7 +50,8 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 
     protected static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {
-        return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).collect(Collectors.toList());
+        // should I be setting this to 1000? IDK
+        return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, 1000)).collect(Collectors.toList());
     }
 
     protected final IDrawableStatic slot;

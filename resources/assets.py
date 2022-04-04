@@ -1179,7 +1179,8 @@ def generate(rm: ResourceManager):
             'sealed=false': {'model': 'tfc:block/wood/barrel/%s' % wood}
         })
         block.with_block_model(textures, 'tfc:block/barrel')
-        rm.item_model(('wood', 'barrel', wood), parent='tfc:block/wood/barrel_sealed/%s' % wood, no_textures=True)
+        # todo: item model properties, switch to sealed when the item is sealed.
+        rm.item_model(('wood', 'barrel', wood), parent='tfc:block/wood/barrel/%s' % wood, no_textures=True)
         rm.block_model(('wood', 'barrel_sealed', wood), textures, 'tfc:block/barrel_sealed')
         block.with_lang(lang('%s barrel', wood))
         block.with_tag('tfc:barrels')

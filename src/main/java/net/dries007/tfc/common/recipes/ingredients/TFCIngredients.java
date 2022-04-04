@@ -18,6 +18,9 @@ public final class TFCIngredients
     {
         register("not_rotten", NotRottenIngredient.Serializer.INSTANCE);
         register("has_trait", HasTraitIngredient.Serializer.INSTANCE);
+        register("heatable", HeatableIngredient.Serializer.INSTANCE);
+        register("not", NotIngredient.Serializer.INSTANCE);
+        register("fluid_item", FluidItemIngredient.Serializer.INSTANCE);
     }
 
     private static <T extends Ingredient> void register(String name, IIngredientSerializer<T> serializer)

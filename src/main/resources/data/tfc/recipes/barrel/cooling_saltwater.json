@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_instant",
+  "input_item": {
+    "ingredient": {
+      "type": "tfc:heatable",
+      "min_temp": 0,
+      "ingredient": {
+        "type": "tfc:not",
+        "ingredient": {
+          "tag": "tfc:empty"
+        }
+      }
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:salt_water",
+    "amount": 1
+  },
+  "output_item": {
+    "modifiers": [
+      "tfc:copy_input",
+      {
+        "type": "tfc:add_heat",
+        "temperature": -5
+      }
+    ]
+  }
+}

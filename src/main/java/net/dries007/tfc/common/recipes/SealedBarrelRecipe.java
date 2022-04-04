@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +17,7 @@ import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
+import org.jetbrains.annotations.Nullable;
 
 public class SealedBarrelRecipe extends BarrelRecipe
 {
@@ -44,6 +43,18 @@ public class SealedBarrelRecipe extends BarrelRecipe
     public boolean isInfinite()
     {
         return duration <= 0;
+    }
+
+    @Nullable
+    public ItemStackProvider getOnSeal()
+    {
+        return onSeal;
+    }
+
+    @Nullable
+    public ItemStackProvider getOnUnseal()
+    {
+        return onUnseal;
     }
 
     public void onSealed(BarrelBlockEntity.BarrelInventory inventory)
