@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.entities.predator;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,6 +33,7 @@ import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
+import org.jetbrains.annotations.Nullable;
 
 public class Predator extends PathfinderMob
 {
@@ -119,7 +118,7 @@ public class Predator extends PathfinderMob
         level.broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
 
-        if (target instanceof Player player)
+        if (hurt && target instanceof Player player)
         {
             pinPlayer(player);
         }

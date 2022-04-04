@@ -708,7 +708,8 @@ public final class ForgeEventHandler
 
         stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
             final int lifespan = stack.getItem().getEntityLifespan(stack, level);
-            if (entity.lifespan >= lifespan) return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
+            if (entity.lifespan >= lifespan)
+                return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
 
             final float itemTemp = heat.getTemperature();
             if (itemTemp > 0f)
