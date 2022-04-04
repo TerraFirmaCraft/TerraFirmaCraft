@@ -642,19 +642,23 @@ public final class ForgeEventHandler
 
     public static void onEffectRemove(PotionEvent.PotionRemoveEvent event)
     {
-        if (event.getPotion() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+        if (event.getEntityLiving() instanceof ServerPlayer player)
         {
-            player.setForcedPose(null);
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(event.getPotion()));
+            if (event.getPotion() == TFCEffects.PINNED.get())
+            {
+                player.setForcedPose(null);
+            }
         }
     }
 
     public static void onEffectExpire(PotionEvent.PotionExpiryEvent event)
     {
         final MobEffectInstance instance = event.getPotionEffect();
-        if (instance != null)
+        if (instance != null && event.getEntityLiving() instanceof ServerPlayer player)
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new EffectExpirePacket(instance.getEffect()));
-            if (instance.getEffect() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(instance.getEffect()));
+            if (instance.getEffect() == TFCEffects.PINNED.get())
             {
                 player.setForcedPose(null);
             }
