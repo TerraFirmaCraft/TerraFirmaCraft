@@ -29,6 +29,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -56,6 +57,7 @@ import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -160,6 +162,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onBoneMeal);
+        bus.addListener(ForgeEventHandler::onLivingJump);
     }
 
     /**
@@ -655,6 +658,16 @@ public final class ForgeEventHandler
             {
                 player.setForcedPose(null);
             }
+        }
+    }
+
+    public static void onLivingJump(LivingEvent.LivingJumpEvent event)
+    {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.hasEffect(TFCEffects.PINNED.get()))
+        {
+            entity.setDeltaMovement(0, 0, 0);
+            entity.hasImpulse = false;
         }
     }
 
