@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
@@ -91,8 +92,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         if (facing != growthDirection || !Helpers.isBlock(facingState, this) && !Helpers.isBlock(facingState, getBodyBlock()))
         {
             //Not sure if this is necessary
-            Fluid fluid = state.getFluidState().getType();
-            level.scheduleTick(currentPos, fluid, fluid.getTickDelay(level));
+            FluidHelpers.tickFluid(level, currentPos, state, this);
             return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
