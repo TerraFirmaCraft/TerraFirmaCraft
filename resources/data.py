@@ -448,6 +448,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
+    item_size(rm, 'soups', '#tfc:soup_bowls', Size.very_small, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)

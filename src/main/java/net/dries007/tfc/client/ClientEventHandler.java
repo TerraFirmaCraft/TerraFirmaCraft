@@ -179,6 +179,10 @@ public final class ClientEventHandler
                         }
                         return 1.0F;
                     });
+
+                    TFCBlocks.WOODS.values().stream().map(map -> map.get(BARREL).get().asItem()).forEach(barrel -> {
+                        ItemProperties.register(barrel, Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f);
+                    });
                 }
             }
         });

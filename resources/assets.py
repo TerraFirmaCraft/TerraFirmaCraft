@@ -1180,12 +1180,11 @@ def generate(rm: ResourceManager):
             'sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s' % wood},
             'sealed=false': {'model': 'tfc:block/wood/barrel/%s' % wood}
         })
+        item_model_property(rm, ('wood', 'barrel', wood), [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/wood/barrel_sealed/%s' % wood}], {'parent': 'tfc:block/wood/barrel/%s' % wood})
         block.with_block_model(textures, 'tfc:block/barrel')
-        # todo: item model properties, switch to sealed when the item is sealed.
-        rm.item_model(('wood', 'barrel', wood), parent='tfc:block/wood/barrel/%s' % wood, no_textures=True)
         rm.block_model(('wood', 'barrel_sealed', wood), textures, 'tfc:block/barrel_sealed')
         block.with_lang(lang('%s barrel', wood))
-        block.with_tag('tfc:barrels')
+        block.with_tag('tfc:barrels').with_tag('minecraft:mineable/axe')
         block.with_block_loot(({
             'name': 'tfc:wood/barrel/%s' % wood,
             'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],

@@ -1,12 +1,16 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.items;
 
 
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -66,7 +70,9 @@ public class SoupItem extends DecayingItem
 
         public void setBowl(ItemStack bowl)
         {
-            this.bowl = bowl;
+            ItemStack copy = bowl.copy();
+            copy.setCount(1);
+            this.bowl = copy;
         }
 
         @Override
@@ -92,9 +98,7 @@ public class SoupItem extends DecayingItem
 
         public ItemStack getBowl()
         {
-            ItemStack copy = bowl.copy();
-            copy.setCount(1);
-            return copy;
+            return bowl.copy();
         }
     }
 }
