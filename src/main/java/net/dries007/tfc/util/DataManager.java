@@ -29,6 +29,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.TerraFirmaCraft;
@@ -180,7 +181,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), typeName);
             try
             {
-                if (CraftingHelper.processConditions(json, "conditions"))
+                if (CraftingHelper.processConditions(json, "conditions", ICondition.IContext.EMPTY))
                 {
                     T object = read(name, json);
                     types.put(name, object);
