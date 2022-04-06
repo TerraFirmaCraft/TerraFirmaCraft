@@ -6,31 +6,24 @@
 
 package net.dries007.tfc.world.blockpredicate;
 
-import java.util.function.Supplier;
-
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicateType;
-import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
-import com.mojang.serialization.Codec;
-import net.dries007.tfc.util.Helpers;
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class TFCBlockPredicates
 {
-    public static final Supplier<BlockPredicateType<AirOrEmptyFluidPredicate>> AIR_OR_EMPTY_FLUID = register("air_or_empty_fluid", AirOrEmptyFluidPredicate.CODEC);
-    public static final Supplier<BlockPredicateType<WouldSurviveWithFluidPredicate>> WOULD_SURVIVE_WITH_FLUID = register("would_survive_with_fluid", WouldSurviveWithFluidPredicate.CODEC);
-    public static final Supplier<BlockPredicateType<ReplaceablePredicate>> REPLACEABLE = register("replaceable", ReplaceablePredicate.CODEC);
+    public static final DeferredRegister<BlockPredicateType<?>> BLOCK_PREDICATES = DeferredRegister.create(Registry.BLOCK_PREDICATE_TYPE_REGISTRY, MOD_ID);
 
-    public static void registerBlockPredicates()
-    {
-        AIR_OR_EMPTY_FLUID.get();
-        WOULD_SURVIVE_WITH_FLUID.get();
-        REPLACEABLE.get();
-    }
+    public static final RegistryObject<BlockPredicateType<AirOrEmptyFluidPredicate>> AIR_OR_EMPTY_FLUID = register("air_or_empty_fluid", () -> AirOrEmptyFluidPredicate.CODEC);
+    public static final RegistryObject<BlockPredicateType<WouldSurviveWithFluidPredicate>> WOULD_SURVIVE_WITH_FLUID = register("would_survive_with_fluid", () -> WouldSurviveWithFluidPredicate.CODEC);
+    public static final RegistryObject<BlockPredicateType<ReplaceablePredicate>> REPLACEABLE = register("replaceable", () -> ReplaceablePredicate.CODEC);
 
-    private static <T extends BlockPredicate> Supplier<BlockPredicateType<T>> register(String name, Codec<T> codec)
+    private static <T extends BlockPredicate> RegistryObject<BlockPredicateType<T>> register(String name, BlockPredicateType<T> codec)
     {
-        return Lazy.of(() -> Registry.register(Registry.BLOCK_PREDICATE_TYPES, Helpers.identifier(name), () -> codec));
+        return BLOCK_PREDICATES.register(name, () -> codec);
     }
 }

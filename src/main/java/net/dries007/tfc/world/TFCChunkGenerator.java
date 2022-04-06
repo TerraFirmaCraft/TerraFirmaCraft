@@ -30,6 +30,7 @@ import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
+import net.minecraftforge.registries.DeferredRegister;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -48,6 +49,8 @@ import net.dries007.tfc.world.noise.NoiseSampler;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 import net.dries007.tfc.world.surface.SurfaceManager;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
 public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorExtension
 {
     public static final Codec<TFCChunkGenerator> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -58,6 +61,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
         Codec.LONG.fieldOf("seed").forGetter(c -> c.seed)
     ).apply(instance, TFCChunkGenerator::new));
+
+    public static final DeferredRegister<Codec<? extends ChunkGenerator>> CHUNK_GENERATOR = DeferredRegister.create(Registry.CHUNK_GENERATOR_REGISTRY, MOD_ID);
+
+    static
+    {
+        CHUNK_GENERATOR.register("overworld", () -> CODEC);
+    }
 
     public static final int SEA_LEVEL_Y = 63; // Matches vanilla
 
