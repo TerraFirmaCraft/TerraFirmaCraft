@@ -170,7 +170,7 @@ public final class ClientEventHandler
                     ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
 
                     ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), new ResourceLocation("level"), (stack, level, entity, unused) -> {
-                        CompoundTag stackTag = stack.getTagElement("BlockStateTag");
+                        CompoundTag stackTag = stack.getTag();
                         if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
                         {
                             return stackTag.getInt("level") / 16F;

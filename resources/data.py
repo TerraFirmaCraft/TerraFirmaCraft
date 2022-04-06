@@ -70,6 +70,7 @@ def generate(rm: ResourceManager):
 
     rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
     rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'minecraft:polar_bear')
+    rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
 
     # Item Heats
 

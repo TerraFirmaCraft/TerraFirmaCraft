@@ -1,91 +1,28 @@
 {
-  "ambientocclusion": false,
-  "textures": {
-    "particle": "tfc:block/plant/water_lily/water_lily",
-    "stem": "tfc:block/plant/water_lily/water_lily_0"
-  },
-  "elements": [
-    {
-      "from": [
-        3,
-        -16,
-        6
-      ],
-      "to": [
-        15,
-        8.9,
-        6
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#stem"
-        },
-        "south": {
-          "uv": [
-            16,
-            0,
-            0,
-            16
-          ],
-          "texture": "#stem"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          6
-        ],
-        "axis": "y",
-        "angle": -45
-      }
-    },
-    {
-      "from": [
-        3,
-        -16,
-        6
-      ],
-      "to": [
-        15,
-        8.9,
-        6
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#stem"
-        },
-        "south": {
-          "uv": [
-            16,
-            0,
-            0,
-            16
-          ],
-          "texture": "#stem"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          6
-        ],
-        "axis": "y",
-        "angle": 45
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"stem": "tfc:block/plant/water_lily/water_lily_0",
+		"particle": "tfc:block/plant/water_lily/water_lily"
+	},
+	"elements": [
+		{
+			"from": [3, -14, 6],
+			"to": [15, 10.9, 6],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 10, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
+			}
+		},
+		{
+			"from": [3, -14, 6],
+			"to": [15, 10.9, 6],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 10, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
+			}
+		}
+	]
 }

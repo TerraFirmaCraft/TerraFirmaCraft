@@ -595,6 +595,7 @@ DEFAULT_LANG = {
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
+    'subtitles.block.tfc.tool_rack.place_item': 'Item placed on Tool Rack',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
