@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

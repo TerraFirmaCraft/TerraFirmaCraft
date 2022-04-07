@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "RRR",
+    "WWW"
+  ],
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "W": {
+      "tag": "tfc:lumber"
+    }
+  },
+  "result": {
+    "item": "minecraft:daylight_detector"
+  }
+}

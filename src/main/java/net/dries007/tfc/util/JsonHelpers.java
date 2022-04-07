@@ -7,7 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Locale;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -137,6 +137,15 @@ public final class JsonHelpers extends GsonHelper
         {
             throw new JsonParseException(e.getMessage());
         }
+    }
+
+    public static <T> T decodeCodecDefaulting(JsonObject json, Codec<T> codec, String key, T defaultValue)
+    {
+        if (!json.has("key"))
+        {
+            return defaultValue;
+        }
+        return decodeCodec(json, codec, key);
     }
 
     public static <T> T decodeCodec(JsonObject json, Codec<T> codec, String key)

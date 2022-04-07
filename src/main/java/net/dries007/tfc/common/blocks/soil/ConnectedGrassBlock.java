@@ -9,7 +9,7 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;

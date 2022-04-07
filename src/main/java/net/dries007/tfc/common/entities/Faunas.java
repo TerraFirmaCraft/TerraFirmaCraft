@@ -38,6 +38,8 @@ public class Faunas
     public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
     public static final FaunaType<AmphibiousAnimal> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
+    public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
+    public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
 
     public static void registerSpawnPlacements()
     {
@@ -56,6 +58,8 @@ public class Faunas
         registerSpawnPlacement(TURTLE);
         registerSpawnPlacement(PENGUIN);
         registerSpawnPlacement(POLAR_BEAR);
+        registerSpawnPlacement(SQUID);
+        registerSpawnPlacement(OCTOPOTEUTHIS);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
@@ -101,7 +105,12 @@ public class Faunas
             }
 
             final BlockPos below = pos.below();
-            return !fauna.isSolidGround() || Helpers.isBlock(level.getBlockState(below), BlockTags.VALID_SPAWN);
+            if (fauna.isSolidGround() && !Helpers.isBlock(level.getBlockState(below), BlockTags.VALID_SPAWN))
+            {
+                return false;
+            }
+
+            return fauna.getMaxBrightness() == -1 || level.getRawBrightness(pos, 0) <= fauna.getMaxBrightness();
         });
     }
 

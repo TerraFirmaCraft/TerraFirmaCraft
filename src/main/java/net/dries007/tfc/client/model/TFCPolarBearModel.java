@@ -15,7 +15,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.predator.Predator;
 
 public class TFCPolarBearModel extends QuadrupedModel<Predator>
@@ -45,16 +45,16 @@ public class TFCPolarBearModel extends QuadrupedModel<Predator>
     }
 
     public static final Animation SPRINT = new Animation.Builder(0.7f)
-        .bone("right_front_leg", ClientHelpers.newBone().rotation(0F, 17.5F, 0F, 0F).rotation(0.30F, -20F, 0F, 0F).rotation(0.7F, 17.5F, 0F, 0F).build())
-        .bone("left_front_leg", ClientHelpers.newBone().rotation(0F, 17.5F, 0F, 0F).rotation(0.30F, -20F, 0F, 0F).rotation(0.7F, 17.5F, 0F, 0F).build())
-        .bone("right_hind_leg", ClientHelpers.newBone().rotation(0F, -15F, 0F, 0F).rotation(0.05F, -15F, 0F, 0F).rotation(0.35F, 20F, 0F, 0F).rotation(0.7F, -15F, 0F, 0F).build())
-        .bone("left_hind_leg", ClientHelpers.newBone().rotation(0F, -15F, 0F, 0F).rotation(0.05F, -15F, 0F, 0F).rotation(0.35F, 20F, 0F, 0F).rotation(0.7F, -15F, 0F, 0F).build())
+        .bone("right_front_leg", RenderHelpers.newBone().rotation(0F, 17.5F, 0F, 0F).rotation(0.30F, -20F, 0F, 0F).rotation(0.7F, 17.5F, 0F, 0F).build())
+        .bone("left_front_leg", RenderHelpers.newBone().rotation(0F, 17.5F, 0F, 0F).rotation(0.30F, -20F, 0F, 0F).rotation(0.7F, 17.5F, 0F, 0F).build())
+        .bone("right_hind_leg", RenderHelpers.newBone().rotation(0F, -15F, 0F, 0F).rotation(0.05F, -15F, 0F, 0F).rotation(0.35F, 20F, 0F, 0F).rotation(0.7F, -15F, 0F, 0F).build())
+        .bone("left_hind_leg", RenderHelpers.newBone().rotation(0F, -15F, 0F, 0F).rotation(0.05F, -15F, 0F, 0F).rotation(0.35F, 20F, 0F, 0F).rotation(0.7F, -15F, 0F, 0F).build())
         .bone("body", new Animation.Bone.Builder(Easing.EASE_IN_OUT_CUBIC).rotation(0F, -5F, 0F, 0F).noRotation(0.30F).rotation(0.7F, -5F, 0F, 0F).build())
         .bone("head", new Animation.Bone.Builder(Easing.EASE_IN_OUT_CUBIC).rotation(0F, -10F, 0F, 0F).rotation(0.30F, 10F, 0F, 0F).rotation(0.7F, -10F, 0F, 0F).build())
         .build();
 
     public static final Animation ATTACK = new Animation.Builder(0.5F)
-        .bone("head", ClientHelpers.newBone().noRotation(0f).rotation(0.15f, -20f, 0f, 0f).noRotation(0.3f).build())
+        .bone("head", RenderHelpers.newBone().noRotation(0f).rotation(0.15f, -20f, 0f, 0f).noRotation(0.3f).build())
         .build();
 
     public final Map<String, ModelPart> parts;

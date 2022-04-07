@@ -9,7 +9,7 @@ package net.dries007.tfc.world.biome;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -202,7 +202,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         final int minQuartZ = QuartPos.fromBlock(blockZ);
         final int maxQuartRadius = QuartPos.fromBlock(maxRadius);
 
-        BlockPos pos = null;
+        Pair<BlockPos, Holder<Biome>> pair = null;
         int count = 0;
         for (int radius = findClosest ? 0 : maxQuartRadius; radius <= maxQuartRadius; radius += step)
         {
@@ -224,20 +224,21 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
                     Holder<Biome> found = getNoiseBiome(x, z);
                     if (biome.test(found))
                     {
-                        if (pos == null || random.nextInt(count + 1) == 0)
+                        if (pair == null || random.nextInt(count + 1) == 0)
                         {
-                            pos = new BlockPos(QuartPos.toBlock(x), blockY, QuartPos.toBlock(z));
+                            BlockPos pos = new BlockPos(QuartPos.toBlock(x), blockY, QuartPos.toBlock(z));
                             if (findClosest)
                             {
                                 return Pair.of(pos, found);
                             }
+                            pair = Pair.of(pos, found);
                         }
                         count++;
                     }
                 }
             }
         }
-        return null;
+        return pair;
     }
 
     private BiomeRainfall calculateRainfall(float rainfall)

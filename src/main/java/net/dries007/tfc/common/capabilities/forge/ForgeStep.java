@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public enum ForgeStep
 {

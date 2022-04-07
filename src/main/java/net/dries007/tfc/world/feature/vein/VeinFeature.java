@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -95,9 +95,8 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
 
         final WorldGenerationContext context = new WorldGenerationContext(generator, level);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        final BoundingBox box = getBoundingBox(config, vein);
         final BlockPos pos = vein.getPos();
-        box.moved(pos.getX(), pos.getY(), pos.getZ());
+        final BoundingBox box = getBoundingBox(config, vein).moved(pos.getX(), pos.getY(), pos.getZ());
 
         // Intersect the bounding box with the chunk allowed region
         int minX = Math.max(blockX, box.minX()), maxX = Math.min(blockX + 15, box.maxX());

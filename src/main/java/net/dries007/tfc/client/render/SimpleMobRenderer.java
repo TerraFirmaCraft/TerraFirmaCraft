@@ -15,7 +15,7 @@ import net.minecraft.world.entity.Mob;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 
 public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends MobRenderer<T, M>
 {
@@ -36,7 +36,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     {
         super(ctx, model, shadow);
         doesFlop = flop;
-        texture = ClientHelpers.animalTexture(name);
+        texture = RenderHelpers.animalTexture(name);
     }
 
     @Override

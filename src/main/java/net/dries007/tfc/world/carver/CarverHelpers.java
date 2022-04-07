@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.world.carver;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import net.minecraft.core.BlockPos;

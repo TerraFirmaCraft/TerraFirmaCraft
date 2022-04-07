@@ -49,6 +49,28 @@
       "tfc:stonedrag2"
     ]
   },
+  "tool_rack_place": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "minecraft:entity/itemframe/add_item1",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:entity/itemframe/add_item2",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:entity/itemframe/add_item3",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:entity/itemframe/add_item4",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.tool_rack.place_item"
+  },
   "loom_weave": {
     "category": "block",
     "sounds": [

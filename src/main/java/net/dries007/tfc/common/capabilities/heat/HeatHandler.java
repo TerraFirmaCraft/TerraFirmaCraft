@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -94,7 +94,7 @@ public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat,
         return weldingTemp;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {

@@ -155,7 +155,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("torch");
 
-        torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (72000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 7200, -1, Integer.MAX_VALUE);
+        torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (1000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 72000, -1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("charcoal");
 
@@ -216,7 +216,7 @@ public class ServerConfig
 
         heatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
         coolHeatablesinLevel = builder.apply("coolHeatablesinLevel").comment("Should heatable items cool off when in contact with blocks like water or snow?").define("coolHeatablesinLevel", true);
-        ticksBeforeItemCool = builder.apply("ticksBeforeItemCool").comment("Ticks between each time an item loses temperature when sitting on a cold block. 20 ticks = 1 second.").defineInRange("itemHeatingModifier", 10, 1, Integer.MAX_VALUE);
+        ticksBeforeItemCool = builder.apply("ticksBeforeItemCool").comment("Ticks between each time an item loses temperature when sitting on a cold block. 20 ticks = 1 second.").defineInRange("ticksBeforeItemCool", 10, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("collapses");
 

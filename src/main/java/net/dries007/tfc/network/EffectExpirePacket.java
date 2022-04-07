@@ -16,6 +16,7 @@ import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 
 // Tracking Issue: https://github.com/MinecraftForge/MinecraftForge/issues/8506
+// Update: Forge does not believe that this is an issue.
 public class EffectExpirePacket
 {
     private final MobEffect effect;

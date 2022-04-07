@@ -123,6 +123,7 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
+        public static final TagKey<Item> GOES_ON_TOOL_RACK = create("goes_on_tool_rack");
 
         private static TagKey<Item> create(String id)
         {
@@ -134,6 +135,7 @@ public class TFCTags
     {
         public static final TagKey<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
         public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
+        public static final TagKey<EntityType<?>> DESTROYS_FLOATING_PLANTS = create("destroys_floating_plants");
 
         private static TagKey<EntityType<?>> create(String id)
         {

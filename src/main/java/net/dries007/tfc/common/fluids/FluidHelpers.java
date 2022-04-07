@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.common.fluids;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
+
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -197,6 +199,16 @@ public final class FluidHelpers
         return state.isAir() || state.getBlock() == state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock();
     }
 
+    public static Optional<FluidState> isEmptyFluid(BlockState state)
+    {
+        FluidState fluidState = state.getFluidState().getType().defaultFluidState();
+        if (state.getBlock() == fluidState.createLegacyBlock().getBlock())
+        {
+            return Optional.of(fluidState);
+        }
+        return Optional.empty();
+    }
+
     /**
      * Given a block state and a fluid, attempts to fill the block state with the fluid
      * Returns null if the provided combination cannot be filled
@@ -374,5 +386,12 @@ public final class FluidHelpers
         {
             level.setBlock(pos, fluid.defaultFluidState().createLegacyBlock(), 3);
         }
+    }
+
+    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state, IFluidLoggable loggable)
+    {
+        final Fluid contained = state.getValue(loggable.getFluidProperty()).getFluid();
+        if (contained.isSame(Fluids.EMPTY)) return;
+        level.scheduleTick(pos, contained, contained.getTickDelay(level));
     }
 }

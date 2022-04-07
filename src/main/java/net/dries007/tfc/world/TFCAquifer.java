@@ -7,7 +7,7 @@
 package net.dries007.tfc.world;
 
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableDouble;
 import net.minecraft.core.BlockPos;

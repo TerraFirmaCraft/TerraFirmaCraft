@@ -102,7 +102,7 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
                 });
             }
         }
-        else
+        else if (state.getBlock() == Blocks.ICE || state.getBlock() == TFCBlocks.ICE_PILE.get())
         {
             level.removeBlock(pos, false);
         }

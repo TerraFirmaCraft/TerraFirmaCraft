@@ -52,6 +52,7 @@ public final class TFCSounds
 
     public static final RegistryObject<SoundEvent> QUERN_DRAG = create("quern_drag");
     public static final RegistryObject<SoundEvent> LOOM_WEAVE = create("loom_weave");
+    public static final RegistryObject<SoundEvent> TOOL_RACK_PLACE = create("tool_rack_place");
 
     public static final RegistryObject<SoundEvent> KNAP_STONE = create("knap_stone");
     public static final RegistryObject<SoundEvent> KNAP_CLAY = create("knap_clay");
@@ -59,6 +60,8 @@ public final class TFCSounds
 
     public static final RegistryObject<SoundEvent> CERAMIC_BREAK = create("ceramic_break");
     public static final RegistryObject<SoundEvent> JUG_BLOW = create("jug_blow");
+
+    public static final RegistryObject<SoundEvent> BELLOWS = create("bellows.blow.air");
 
     public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_HIT, CHARCOAL_PILE_FALL);
     public static final ForgeSoundType THATCH = new ForgeSoundType(1.0f, 1.0f, THATCH_BREAK, THATCH_STEP, THATCH_PLACE, THATCH_HIT, THATCH_FALL);

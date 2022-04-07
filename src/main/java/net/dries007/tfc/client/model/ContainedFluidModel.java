@@ -8,7 +8,7 @@ package net.dries007.tfc.client.model;
 
 import java.util.*;
 import java.util.function.Function;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

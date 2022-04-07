@@ -14,14 +14,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.vehicle.Boat;
 
 import com.mojang.datafixers.util.Pair;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCBoatRenderer extends BoatRenderer
 {
     public static ModelLayerLocation boatName(String name)
     {
-        return ClientHelpers.modelIdentifier("boat/" + name);
+        return RenderHelpers.modelIdentifier("boat/" + name);
     }
 
     private final Pair<ResourceLocation, BoatModel> location;

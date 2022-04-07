@@ -1,91 +1,27 @@
 {
-  "ambientocclusion": false,
-  "textures": {
-    "particle": "tfc:block/plant/lotus/lotus",
-    "stem": "tfc:block/plant/lotus/lotus_0"
-  },
-  "elements": [
-    {
-      "from": [
-        2,
-        -16,
-        6
-      ],
-      "to": [
-        14,
-        8.9,
-        6
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#stem"
-        },
-        "south": {
-          "uv": [
-            16,
-            0,
-            0,
-            16
-          ],
-          "texture": "#stem"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          6
-        ],
-        "axis": "y",
-        "angle": -45
-      }
-    },
-    {
-      "from": [
-        2,
-        -16,
-        6
-      ],
-      "to": [
-        14,
-        8.9,
-        6
-      ],
-      "faces": {
-        "north": {
-          "uv": [
-            0,
-            0,
-            16,
-            16
-          ],
-          "texture": "#stem"
-        },
-        "south": {
-          "uv": [
-            16,
-            0,
-            0,
-            16
-          ],
-          "texture": "#stem"
-        }
-      },
-      "rotation": {
-        "origin": [
-          8,
-          8,
-          6
-        ],
-        "axis": "y",
-        "angle": 45
-      }
-    }
-  ]
+	"credit": "Made with Blockbench",
+	"ambientocclusion": false,
+	"textures": {
+		"stem": "tfc:block/plant/lotus/lotus_0"
+	},
+	"elements": [
+		{
+			"from": [2, -12, 6],
+			"to": [14, 12.9, 6],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 12, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
+			}
+		},
+		{
+			"from": [2, -12, 6],
+			"to": [14, 12.9, 6],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 12, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
+				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
+			}
+		}
+	]
 }

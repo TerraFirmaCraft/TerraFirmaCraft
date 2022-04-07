@@ -8,7 +8,7 @@ package net.dries007.tfc.util.climate;
 
 import java.util.OptionalLong;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

@@ -7,7 +7,7 @@
   ],
   "key": {
     "X": {
-      "item": "minecraft:leather"
+      "tag": "forge:leather"
     },
     "Y": {
       "item": "minecraft:lead"

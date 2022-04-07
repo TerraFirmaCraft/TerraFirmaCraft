@@ -12,8 +12,8 @@ import java.util.concurrent.Callable;
 import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.AbstractIterator;
 import net.minecraft.ChatFormatting;
@@ -28,7 +28,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -69,12 +68,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.tags.ITag;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -123,7 +122,7 @@ public final class Helpers
      *
      * @return Not null!
      */
-    @Nonnull
+    @NotNull
     @SuppressWarnings("ConstantConditions")
     public static <T> T notNull()
     {
@@ -418,6 +417,24 @@ public final class Helpers
             }
         }
         return stack;
+    }
+
+    /**
+     * This WILL NOT MUTATE the stack you give it. Do your own handling!
+     */
+    public static boolean insertOne(Level level, BlockPos pos, BlockEntityType<? extends BlockEntity> type, ItemStack stack)
+    {
+        return insertOne(level.getBlockEntity(pos, type), stack);
+    }
+
+    public static boolean insertOne(Optional<? extends BlockEntity> blockEntity, ItemStack stack)
+    {
+        ItemStack toInsert = stack.copy();
+        return blockEntity.flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
+            .map(cap -> {
+                toInsert.setCount(1);
+                return insertAllSlots(cap, toInsert).isEmpty();
+        }).orElse(false);
     }
 
     /**
@@ -970,6 +987,11 @@ public final class Helpers
     public static boolean isFluid(Fluid first, TagKey<Fluid> second)
     {
         return checkTag(ForgeRegistries.FLUIDS, first, second);
+    }
+
+    public static boolean isEntity(Entity entity, TagKey<EntityType<?>> tag)
+    {
+        return checkTag(ForgeRegistries.ENTITIES, entity.getType(), tag);
     }
 
     public static boolean isEntity(EntityType<?> entity, TagKey<EntityType<?>> tag)

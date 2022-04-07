@@ -7,7 +7,7 @@
 package net.dries007.tfc.common;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;

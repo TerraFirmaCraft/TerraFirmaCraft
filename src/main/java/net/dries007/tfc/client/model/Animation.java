@@ -7,7 +7,7 @@
 package net.dries007.tfc.client.model;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.model.geom.ModelPart;
