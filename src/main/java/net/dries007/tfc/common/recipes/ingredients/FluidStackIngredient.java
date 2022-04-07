@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -21,47 +20,33 @@ import net.dries007.tfc.util.JsonHelpers;
  * An ingredient for a (fluid, amount) pair.
  * Used in conjunction with recipes that accept {@link FluidStack}s.
  */
-public final class FluidStackIngredient implements Predicate<FluidStack>
+public record FluidStackIngredient(FluidIngredient ingredient, int amount) implements Predicate<FluidStack>
 {
+    public static final FluidStackIngredient EMPTY = new FluidStackIngredient(new FluidIngredient(Collections.emptySet()), 0);
+
     public static FluidStackIngredient fromJson(JsonObject json)
     {
-        return new FluidStackIngredient(json);
+        final FluidIngredient fluid = FluidIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
+        final int amount = JsonHelpers.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
+        return new FluidStackIngredient(fluid, amount);
     }
 
     public static FluidStackIngredient fromNetwork(FriendlyByteBuf buffer)
     {
-        return new FluidStackIngredient(buffer);
+        final FluidIngredient fluid = FluidIngredient.fromNetwork(buffer);
+        final int amount = buffer.readVarInt();
+        return new FluidStackIngredient(fluid, amount);
     }
 
-    public static void toNetwork(FriendlyByteBuf buffer, FluidStackIngredient ingredient)
+    public void toNetwork(FriendlyByteBuf buffer)
     {
-        FluidIngredient.toNetwork(buffer, ingredient.fluid);
-        buffer.writeVarInt(ingredient.amount);
-    }
-
-    private final FluidIngredient fluid;
-    public final int amount;
-
-    private FluidStackIngredient(JsonObject json)
-    {
-        this.fluid = FluidIngredient.fromJson(JsonHelpers.get(json, "fluid"));
-        this.amount = JsonHelpers.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
-    }
-
-    private FluidStackIngredient(FriendlyByteBuf buffer)
-    {
-        this.fluid = FluidIngredient.fromNetwork(buffer);
-        this.amount = buffer.readVarInt();
+        FluidIngredient.toNetwork(buffer, ingredient);
+        buffer.writeVarInt(amount);
     }
 
     @Override
     public boolean test(FluidStack stack)
     {
-        return stack.getAmount() >= amount && fluid.test(stack.getFluid());
-    }
-
-    public Collection<Fluid> getMatchingFluids()
-    {
-        return fluid.getMatchingFluids();
+        return stack.getAmount() >= amount && ingredient.test(stack.getFluid());
     }
 }

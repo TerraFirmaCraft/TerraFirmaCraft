@@ -8,6 +8,8 @@ package net.dries007.tfc.util.loot;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.storage.loot.Serializer;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParam;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
@@ -25,13 +27,20 @@ public class TFCLoot
 {
     public static final DeferredRegister<LootItemConditionType> CONDITIONS = DeferredRegister.create(Registry.LOOT_ITEM_REGISTRY, MOD_ID);
     public static final DeferredRegister<LootNumberProviderType> NUMBER_PROVIDERS = DeferredRegister.create(Registry.LOOT_NUMBER_PROVIDER_REGISTRY, MOD_ID);
+    public static final DeferredRegister<LootItemFunctionType> LOOT_FUNCTIONS = DeferredRegister.create(Registry.LOOT_FUNCTION_REGISTRY, MOD_ID);
+
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
     public static final LootContextParam<Boolean> PANNED = new LootContextParam<>(Helpers.identifier("panned"));
 
-    // Loot Conditions
     public static final RegistryObject<LootItemConditionType> IS_PANNED = lootCondition("is_panned", new PannedCondition.Serializer());
     public static final RegistryObject<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new IsIsolatedCondition.Serializer());
     public static final RegistryObject<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new CropYieldProvider.Serializer());
+    public static final RegistryObject<LootItemFunctionType> COPY_FLUID = lootFunction("copy_fluid", new CopyFluidFunction.Serializer());
+
+    private static RegistryObject<LootItemFunctionType> lootFunction(String id, Serializer<? extends LootItemFunction> serializer)
+    {
+        return LOOT_FUNCTIONS.register(id, () -> new LootItemFunctionType(serializer));
+    }
 
     private static RegistryObject<LootItemConditionType> lootCondition(String id, Serializer<? extends LootItemCondition> serializer)
     {
@@ -47,5 +56,6 @@ public class TFCLoot
     {
         CONDITIONS.register(bus);
         NUMBER_PROVIDERS.register(bus);
+        LOOT_FUNCTIONS.register(bus);
     }
 }

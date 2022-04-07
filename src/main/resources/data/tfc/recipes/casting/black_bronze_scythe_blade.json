@@ -5,7 +5,7 @@
     "item": "tfc:ceramic/scythe_blade_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/black_bronze",
+    "ingredient": "tfc:metal/black_bronze",
     "amount": 100
   },
   "result": {

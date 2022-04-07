@@ -13,6 +13,7 @@ import java.util.function.Supplier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
@@ -29,7 +30,9 @@ import net.dries007.tfc.common.blocks.rock.Ore;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
@@ -100,6 +103,8 @@ public final class TFCItems
     // Food
 
     public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food -> register("food/" + food.name(), () -> new DecayingItem(new Item.Properties().food(food.getFoodProperties()).tab(TFCItemGroup.FOOD))));
+
+    public static final Map<Nutrient, RegistryObject<SoupItem>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient -> register("food/" + nutrient.name() + "_soup", () -> new SoupItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
 
     // Flora
 
@@ -238,6 +243,14 @@ public final class TFCItems
 
     public static final Map<SimpleFluid, RegistryObject<BucketItem>> SIMPLE_FLUID_BUCKETS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
         register("bucket/" + fluid.getId(), () -> new BucketItem(TFCFluids.SIMPLE_FLUIDS.get(fluid).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
+    );
+
+    public static final Map<DyeColor, RegistryObject<BucketItem>> COLORED_FLUID_BUCKETS = Helpers.mapOfKeys(DyeColor.class, fluid ->
+        register("bucket/" + fluid.getName() + "_dye", () -> new BucketItem(TFCFluids.COLORED_FLUIDS.get(fluid).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
+    );
+
+    public static final Map<Alcohol, RegistryObject<BucketItem>> ALCOHOL_BUCKETS = Helpers.mapOfKeys(Alcohol.class, fluid ->
+        register("bucket/" + fluid.getId(), () -> new BucketItem(TFCFluids.ALCOHOLS.get(fluid).getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
     );
 
     public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.getSecond(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));

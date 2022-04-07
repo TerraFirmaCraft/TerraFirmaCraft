@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * No-op implementation of {@link net.minecraft.world.entity.player.Inventory}, as the generic for recipes requires this implementation but using it is never required.
+ * No-op implementation of {@link Container}, as the generic for recipes requires this implementation but using it is never required.
  * Methods are deprecated because we really shouldn't be calling them in lieu of specific methods on the subclasses
  */
 public interface EmptyInventory extends Container

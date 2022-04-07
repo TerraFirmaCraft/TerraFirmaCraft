@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/barrel",
+  "textures": {
+    "particle": "tfc:block/wood/planks/white_cedar",
+    "planks": "tfc:block/wood/planks/white_cedar",
+    "sheet": "tfc:block/wood/sheet/white_cedar",
+    "hoop": "tfc:block/barrel_hoop"
+  }
+}

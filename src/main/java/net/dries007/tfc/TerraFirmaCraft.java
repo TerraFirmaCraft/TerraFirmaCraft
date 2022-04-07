@@ -28,6 +28,7 @@ import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
@@ -46,6 +47,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
+import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.DispenserBehaviors;
@@ -135,6 +137,7 @@ public final class TerraFirmaCraft
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
         BlockIngredients.registerBlockIngredientTypes();
+        ItemStackModifiers.registerItemStackModifierTypes();
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
@@ -142,6 +145,7 @@ public final class TerraFirmaCraft
             // Vanilla Registries (not thread safe)
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
+            FoodTraits.registerFoodTraits();
 
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerAll();

@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+import net.dries007.tfc.common.fluids.Alcohol;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -290,6 +291,14 @@ public final class TFCBlocks
 
     public static final Map<SimpleFluid, RegistryObject<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
         register("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).getSecond(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
+    );
+
+    public static final Map<DyeColor, RegistryObject<LiquidBlock>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, fluid ->
+        register("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).getSecond(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
+    );
+
+    public static final Map<Alcohol, RegistryObject<LiquidBlock>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid ->
+        register("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.ALCOHOLS.get(fluid).getSecond(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
     );
 
     public static final RegistryObject<LiquidBlock> SALT_WATER = register("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.getSecond(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));

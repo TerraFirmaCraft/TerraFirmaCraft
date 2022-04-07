@@ -78,7 +78,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
     @Override
     public Size getSize(ItemStack stack)
     {
-        final CompoundTag tag = stack.getTagElement("BlockEntityTag" /* BlockItem.BLOCK_ENTITY_TAG */);
+        final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
         if (tag != null && tag.contains("empty") && !tag.getBoolean("empty"))
         {
             return Size.HUGE;

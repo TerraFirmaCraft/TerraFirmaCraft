@@ -5,6 +5,8 @@
     "minecraft:water",
     "tfc:salt_water",
     "tfc:spring_water",
+    "#tfc:alcohols",
+    "#tfc:dye_fluids",
     "tfc:brine",
     "tfc:curdled_milk",
     "tfc:limewater",

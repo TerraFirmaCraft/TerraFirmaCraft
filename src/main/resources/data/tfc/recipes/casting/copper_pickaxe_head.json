@@ -5,7 +5,7 @@
     "item": "tfc:ceramic/pickaxe_head_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/copper",
+    "ingredient": "tfc:metal/copper",
     "amount": 100
   },
   "result": {

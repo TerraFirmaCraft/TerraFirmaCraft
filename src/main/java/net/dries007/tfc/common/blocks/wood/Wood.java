@@ -23,12 +23,14 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
@@ -148,12 +150,13 @@ public enum Wood implements StringRepresentable
         VERTICAL_SUPPORT(wood -> new VerticalSupportBlock(ExtendedProperties.of(properties(wood).strength(1.0F).noOcclusion()).flammable(60, 60)), false),
         HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(ExtendedProperties.of(properties(wood).strength(1.0F).noOcclusion()).flammable(60, 60)), false),
         WORKBENCH(wood -> new TFCCraftingTableBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30)), true),
+        TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
         CHEST((self, wood) -> new TFCChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
-        TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(ExtendedProperties.of(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
         LOOM(wood -> new TFCLoomBlock(ExtendedProperties.of(properties(wood).strength(2.5F).noOcclusion()).flammable(60, 30).blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.name().toLowerCase())), true),
         SLUICE(wood -> new SluiceBlock(ExtendedProperties.of(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false),
         SIGN(wood -> new TFCStandingSignBlock(ExtendedProperties.of(properties(wood).noCollission().strength(1F)).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
-        WALL_SIGN(wood -> new TFCWallSignBlock(ExtendedProperties.of(properties(wood).noCollission().strength(1F).lootFrom(getBlock(SIGN, wood))).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true);
+        WALL_SIGN(wood -> new TFCWallSignBlock(ExtendedProperties.of(properties(wood).noCollission().strength(1F).lootFrom(getBlock(SIGN, wood))).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
+        BARREL((self, wood) -> new BarrelBlock(ExtendedProperties.of(properties(wood).strength(2.5f)).flammable(60, 30).blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false);
 
         public static final BlockType[] VALUES = values();
 

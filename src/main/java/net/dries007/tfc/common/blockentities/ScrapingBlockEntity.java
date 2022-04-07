@@ -23,7 +23,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.scraping");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.scraping");
     private ItemStack cachedItem; // for visual purposes only
     private short positions; // essentially a boolean[16]
 

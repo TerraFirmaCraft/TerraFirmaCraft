@@ -1,0 +1,31 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pot_fluid",
+  "ingredients": [
+    {
+      "item": "tfc:powder/wood_ash"
+    },
+    {
+      "item": "tfc:powder/wood_ash"
+    },
+    {
+      "item": "tfc:powder/wood_ash"
+    },
+    {
+      "item": "tfc:powder/wood_ash"
+    },
+    {
+      "item": "tfc:powder/wood_ash"
+    }
+  ],
+  "fluid_ingredient": {
+    "ingredient": "minecraft:water",
+    "amount": 1000
+  },
+  "duration": 4000,
+  "temperature": 600,
+  "fluid_output": {
+    "fluid": "tfc:lye",
+    "amount": 1000
+  }
+}

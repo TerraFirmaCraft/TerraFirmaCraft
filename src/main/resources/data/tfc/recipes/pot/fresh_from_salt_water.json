@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pot_fluid",
+  "ingredients": [
+    {
+      "item": "minecraft:gunpowder"
+    }
+  ],
+  "fluid_ingredient": {
+    "ingredient": "tfc:salt_water",
+    "amount": 1000
+  },
+  "duration": 200,
+  "temperature": 300,
+  "fluid_output": {
+    "fluid": "minecraft:water",
+    "amount": 1000
+  }
+}

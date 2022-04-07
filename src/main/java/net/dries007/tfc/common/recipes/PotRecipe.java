@@ -268,7 +268,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
             {
                 ingredient.toNetwork(buffer);
             }
-            FluidStackIngredient.toNetwork(buffer, recipe.fluidIngredient);
+            recipe.fluidIngredient.toNetwork(buffer);
             buffer.writeVarInt(recipe.duration);
             buffer.writeFloat(recipe.minTemp);
         }

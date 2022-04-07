@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.google.common.base.Stopwatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.ChatFormatting;
@@ -49,7 +50,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
@@ -64,6 +64,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.client.model.*;
 import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.*;
+import net.dries007.tfc.client.render.blockentity.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.OreDeposit;
@@ -118,6 +119,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
             MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
             MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
+            MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
@@ -177,6 +179,8 @@ public final class ClientEventHandler
                         }
                         return 1.0F;
                     });
+
+                    TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
                 }
             }
         });
@@ -198,7 +202,7 @@ public final class ClientEventHandler
 
         // Wood blocks
         TFCBlocks.WOODS.values().forEach(map -> {
-            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
             Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid));
         });
 
@@ -295,7 +299,7 @@ public final class ClientEventHandler
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.GRILL.get(), ctx -> new GrillBlockEntityRenderer());
-        event.registerBlockEntityRenderer(TFCBlockEntities.PLACED_ITEM.get(), ctx -> new PlacedItemBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.PLACED_ITEM.get(), ctx -> new PlacedItemBlockEntityRenderer<>());
         event.registerBlockEntityRenderer(TFCBlockEntities.PIT_KILN.get(), ctx -> new PitKilnBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.QUERN.get(), ctx -> new QuernBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SCRAPING.get(), ctx -> new ScrapingBlockEntityRenderer());
@@ -306,6 +310,8 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.BELLOWS.get(), ctx -> new BellowsBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.TOOL_RACK.get(), ctx -> new ToolRackBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SIGN.get(), TFCSignBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(TFCBlockEntities.BARREL.get(), ctx -> new BarrelBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.CRUCIBLE.get(), ctx -> new CrucibleBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -434,6 +440,7 @@ public final class ClientEventHandler
     {
         if (Helpers.detectAssertionsEnabled())
         {
+            Stopwatch stopwatch = Stopwatch.createStarted();
             LOGGER.info("Running Self Test");
             if (ClientEventHandler.validateModels() |
                 ClientEventHandler.validateTranslations() |
@@ -441,6 +448,7 @@ public final class ClientEventHandler
             {
                 throw new AssertionError("Self-Test Validation Failed! Fix the above errors!");
             }
+            LOGGER.info("Self test passed in {}", stopwatch.stop());
         }
     }
 
@@ -451,11 +459,11 @@ public final class ClientEventHandler
         final BakedModel missingModel = shaper.getModelManager().getMissingModel();
         final TextureAtlasSprite missingParticle = missingModel.getParticleIcon();
 
-        final List<Block> missingModelErrors = blocksWithStateMatching(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel);
-        final List<Block> missingParticleErrors = blocksWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
+        final List<BlockState> missingModelErrors = blockStatesWithStateMatching(s -> s.getRenderShape() == RenderShape.MODEL && shaper.getBlockModel(s) == missingModel);
+        final List<BlockState> missingParticleErrors = blockStatesWithStateMatching(s -> !s.isAir() && shaper.getParticleIcon(s) == missingParticle);
 
-        return logValidationErrors("Blocks with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
-            | logValidationErrors("Blocks with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e));
+        return logValidationErrors("BlockStates with missing models:", missingModelErrors, e -> LOGGER.error("  {}", e))
+            | logValidationErrors("BlockStates with missing particles:", missingParticleErrors, e -> LOGGER.error("  {}", e));
     }
 
     private static boolean validateTranslations()
@@ -498,10 +506,10 @@ public final class ClientEventHandler
         }
     }
 
-    private static List<Block> blocksWithStateMatching(Predicate<BlockState> condition)
+    private static List<BlockState> blockStatesWithStateMatching(Predicate<BlockState> condition)
     {
         return Helpers.streamOurs(ForgeRegistries.BLOCKS)
-            .filter(b -> b.getStateDefinition().getPossibleStates().stream().anyMatch(condition))
+            .flatMap(b -> b.getStateDefinition().getPossibleStates().stream().filter(condition))
             .collect(Collectors.toList());
     }
 

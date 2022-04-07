@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_instant",
+  "input_item": {
+    "ingredient": {
+      "type": "tfc:fluid_item",
+      "ingredient": {
+        "type": "tfc:not",
+        "ingredient": {
+          "tag": "tfc:empty"
+        }
+      },
+      "fluid_ingredient": {
+        "ingredient": "tfc:purple_dye",
+        "amount": 1
+      }
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:pink_dye",
+    "amount": 1
+  },
+  "output_fluid": {
+    "fluid": "tfc:magenta_dye",
+    "amount": 2
+  }
+}

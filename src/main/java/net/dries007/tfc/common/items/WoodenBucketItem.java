@@ -150,7 +150,7 @@ public class WoodenBucketItem extends Item
                     toPlace = toPlace.setValue(LiquidBlock.LEVEL, 2);
                 }
 
-                if (!level.setBlock(pos,toPlace , 11))
+                if (!level.setBlock(pos, toPlace, 11))
                 {
                     return false;
                 }

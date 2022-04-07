@@ -33,6 +33,8 @@ public class TFCRecipeTypes
     public static final RegistryObject<RecipeType<AlloyRecipe>> ALLOY = register("alloy");
     public static final RegistryObject<RecipeType<CastingRecipe>> CASTING = register("casting");
     public static final RegistryObject<RecipeType<LoomRecipe>> LOOM = register("loom");
+    public static final RegistryObject<RecipeType<SealedBarrelRecipe>> BARREL_SEALED = register("barrel_sealed");
+    public static final RegistryObject<RecipeType<InstantBarrelRecipe>> BARREL_INSTANT = register("barrel_instant");
 
     public static void registerPotRecipeOutputTypes()
     {

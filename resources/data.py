@@ -86,7 +86,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
-    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower'], 1)
+    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
@@ -160,11 +160,21 @@ def generate(rm: ResourceManager):
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
     rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
+    rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
+    rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
+    rm.item_tag('soup_bowl', 'tfc:ceramic/bowl')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
         rm.item_tag('dyes', 'minecraft:%s_dye' % color)
 
+        if color != 'white':
+            for variant in VANILLA_DYED_ITEMS:
+                rm.item_tag('colored_%s' % variant, 'minecraft:%s_%s' % (color, variant))
+            for variant in ('raw_alabaster', 'alabaster_bricks', 'polished_alabaster'):
+                rm.item_tag('colored_%s' % variant, 'tfc:alabaster/stained/%s_%s' % (color, variant))
+        rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
+        rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
 
@@ -174,6 +184,8 @@ def generate(rm: ResourceManager):
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
         rm.item_tag('sluices', 'tfc:wood/sluice/%s' % wood)
         rm.item_tag('looms', 'tfc:wood/planks/%s_loom' % wood)
+        if wood in TANNIN_WOOD_TYPES:
+            rm.item_tag('makes_tannin', 'tfc:wood/log/%s' % wood, 'tfc:wood/wood/%s' % wood)
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:
@@ -396,14 +408,14 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
-    rm.fluid_tag('fluid_ingredients', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
+    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols')
     rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
+    rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
 
     # Item Sizes
 
@@ -436,6 +448,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
+    item_size(rm, 'soups', '#tfc:soup_bowls', Size.very_small, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
@@ -560,6 +573,7 @@ def generate(rm: ResourceManager):
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
+    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=1000)
 
     # Climate Ranges
 
@@ -673,6 +687,10 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'dairy': dairy
     })
     rm.item_tag('foods', ingredient)
+    if category in (Category.fruit, Category.vegetable):
+        rm.item_tag('foods/%ss' % category.name.lower(), ingredient)
+    if category in (Category.meat, Category.cooked_meat):
+        rm.item_tag('foods/meats', ingredient)
 
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):
