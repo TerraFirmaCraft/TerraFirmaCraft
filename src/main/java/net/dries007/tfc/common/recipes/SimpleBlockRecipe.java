@@ -117,7 +117,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             }
         }
 
-        protected interface Factory<R extends SimpleBlockRecipe>
+        public interface Factory<R extends SimpleBlockRecipe>
         {
             R create(ResourceLocation id, BlockIngredient ingredient, BlockState state, boolean copyInputState);
         }

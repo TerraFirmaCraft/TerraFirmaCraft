@@ -108,7 +108,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
             buffer.writeItem(recipe.getResultItem());
         }
 
-        protected interface Factory<R extends SimpleItemRecipe>
+        public interface Factory<R extends SimpleItemRecipe>
         {
             R create(ResourceLocation id, Ingredient ingredient, ItemStackProvider result);
         }
