@@ -8,9 +8,9 @@ package net.dries007.tfc.client;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.util.ForgeSoundType;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -24,29 +24,29 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_SHORT = create("rock_slide_short");
     public static final RegistryObject<SoundEvent> DIRT_SLIDE_SHORT = create("dirt_slide_short");
 
-    public static final RegistryObject<SoundEvent> THATCH_HIT = create("thatch_hit");
-    public static final RegistryObject<SoundEvent> THATCH_PLACE = create("thatch_place");
-    public static final RegistryObject<SoundEvent> THATCH_STEP = create("thatch_step");
-    public static final RegistryObject<SoundEvent> THATCH_FALL = create("thatch_fall");
-    public static final RegistryObject<SoundEvent> THATCH_BREAK = create("thatch_break");
+    public static final RegistryObject<SoundEvent> THATCH_HIT = create("block.thatch.hit");
+    public static final RegistryObject<SoundEvent> THATCH_PLACE = create("block.thatch.place");
+    public static final RegistryObject<SoundEvent> THATCH_STEP = create("block.thatch.step");
+    public static final RegistryObject<SoundEvent> THATCH_FALL = create("block.thatch.fall");
+    public static final RegistryObject<SoundEvent> THATCH_BREAK = create("block.thatch.break");
 
-    public static final RegistryObject<SoundEvent> PEAT_HIT = create("peat_hit");
-    public static final RegistryObject<SoundEvent> PEAT_PLACE = create("peat_place");
-    public static final RegistryObject<SoundEvent> PEAT_STEP = create("peat_step");
-    public static final RegistryObject<SoundEvent> PEAT_FALL = create("peat_fall");
-    public static final RegistryObject<SoundEvent> PEAT_BREAK = create("peat_break");
+    public static final RegistryObject<SoundEvent> PEAT_HIT = create("block.peat.hit");
+    public static final RegistryObject<SoundEvent> PEAT_PLACE = create("block.peat.place");
+    public static final RegistryObject<SoundEvent> PEAT_STEP = create("block.peat.step");
+    public static final RegistryObject<SoundEvent> PEAT_FALL = create("block.peat.fall");
+    public static final RegistryObject<SoundEvent> PEAT_BREAK = create("block.peat.break");
 
-    public static final RegistryObject<SoundEvent> THIN_HIT = create("thin_hit");
-    public static final RegistryObject<SoundEvent> THIN_PLACE = create("thin_place");
-    public static final RegistryObject<SoundEvent> THIN_STEP = create("thin_step");
-    public static final RegistryObject<SoundEvent> THIN_FALL = create("thin_fall");
-    public static final RegistryObject<SoundEvent> THIN_BREAK = create("thin_break");
+    public static final RegistryObject<SoundEvent> THIN_HIT = create("block.thin.hit");
+    public static final RegistryObject<SoundEvent> THIN_PLACE = create("block.thin.place");
+    public static final RegistryObject<SoundEvent> THIN_STEP = create("block.thin.step");
+    public static final RegistryObject<SoundEvent> THIN_FALL = create("block.thin.fall");
+    public static final RegistryObject<SoundEvent> THIN_BREAK = create("block.thin.break");
 
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_BREAK = create("charcoal_break");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_FALL = create("charcoal_fall");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_HIT = create("charcoal_hit");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_PLACE = create("charcoal_place");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_STEP = create("charcoal_step");
+    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_HIT = create("block.charcoal.hit");
+    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_PLACE = create("block.charcoal.place");
+    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_STEP = create("block.charcoal.step");
+    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_FALL = create("block.charcoal.fall");
+    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_BREAK = create("block.charcoal.break");
 
     public static final RegistryObject<SoundEvent> FIRESTARTER = create("firestarter");
 
