@@ -93,6 +93,16 @@
       }
     ]
   },
+  "panning": {
+    "category": "player",
+    "sounds": [
+      "minecraft:dig/sand1",
+      "minecraft:dig/sand2",
+      "minecraft:dig/sand3",
+      "minecraft:dig/sand4"
+    ],
+    "subtitle": "subtitles.item.tfc.pan.use"
+  },
   "knap_stone": {
     "sounds": [
       {

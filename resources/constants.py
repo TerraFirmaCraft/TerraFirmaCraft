@@ -310,6 +310,7 @@ MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone'
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
 
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
+ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
 
 WOODS: Dict[str, Wood] = {
     'acacia': Wood(650, 1000),
@@ -473,12 +474,26 @@ PLANT_COLORS: Dict[str, List[str]] = {
     'red': ['guzmania', 'poppy', 'rose', 'snapdragon_red', 'tropical_milkweed', 'tulip_red', 'vriesea']
 }
 
+COLOR_COMBOS = [
+    ('red', 'yellow', 'orange'),
+    ('blue', 'white', 'light_blue'),
+    ('purple', 'pink', 'magenta'),
+    ('red', 'white', 'pink'),
+    ('white', 'gray', 'light_gray'),
+    ('white', 'black', 'gray'),
+    ('green', 'white', 'lime'),
+    ('green', 'blue', 'cyan'),
+    ('red', 'blue', 'purple'),
+    ('yellow', 'green', 'blue')
+]
+
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
                 'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'rotten_compost', 'shell', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
+VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'stained_glass', 'stained_glass_pane', 'banner', 'glazed_terracotta')
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
 SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan')
 VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
@@ -519,10 +534,19 @@ GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'sugarcane')
+NUTRIENTS = {
+    'grain': 'Wholesome',
+    'fruit': 'Tasty',
+    'vegetables': 'Filling',
+    'protein': 'Hearty',
+    'dairy': 'Creamy'
+}
 
 SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
+BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter']
+TANNIN_WOOD_TYPES = ['oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia']
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
     return {
@@ -585,17 +609,12 @@ DEFAULT_LANG = {
     'death.attack.tfc.pot.player': '%1$s boiled themself while trying to escape %2$s',
     'death.attack.tfc.dehydration': '%1$s dehydrated to death',
     'death.attack.tfc.dehydration.player': '%1$s dehydrated to death while trying to escape %2$s',
-    'tfc.tile_entity.pot': 'Pot',
-    'tfc.tile_entity.grill': 'Grill',
-    'tfc.tile_entity.firepit': 'Firepit',
-    'tfc.tile_entity.log_pile': 'Log Pile',
-    'tfc.tile_entity.charcoal_forge': 'Forge',
-    'tfc.tile_entity.crucible': 'Crucible',
     'effect.tfc.pinned': 'Pinned',
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'subtitles.block.tfc.tool_rack.place_item': 'Item placed on Tool Rack',
+    'subtitles.item.tfc.pan.use': 'Pan sifting',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -646,6 +665,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.nutrition_water': ' - Water: %s%%',
     'tfc.tooltip.nutrition_none': '- None!',
     'tfc.tooltip.hold_shift_for_nutrition_info': 'Hold (Shift) for Nutrition Info',
+    'tfc.tooltip.contents': 'Contents:',
     'tfc.tooltip.propick.found_very_large': 'Found a very large sample of',
     'tfc.tooltip.propick.found_large': 'Found a large sample of',
     'tfc.tooltip.propick.found_medium': 'Found a medium sample of',
@@ -696,6 +716,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
     'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
+    'tfc.tooltip.seal_barrel': 'Seal',
+    'tfc.tooltip.unseal_barrel': 'Unseal',
 
     # Commands
 
@@ -815,6 +837,8 @@ DEFAULT_LANG = {
     'tfc.jei.casting': 'Casting',
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom' : 'Loom',
+    'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
+    'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe'
 }
 
 # Automatically Generated by generate_trees.py

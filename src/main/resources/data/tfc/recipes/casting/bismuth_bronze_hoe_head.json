@@ -5,7 +5,7 @@
     "item": "tfc:ceramic/hoe_head_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/bismuth_bronze",
+    "ingredient": "tfc:metal/bismuth_bronze",
     "amount": 100
   },
   "result": {

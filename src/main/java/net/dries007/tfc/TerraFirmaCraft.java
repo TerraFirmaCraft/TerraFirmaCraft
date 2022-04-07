@@ -8,7 +8,6 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.core.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -29,6 +28,7 @@ import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
@@ -47,6 +47,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeSerializers;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
+import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.DispenserBehaviors;
@@ -93,14 +94,20 @@ public final class TerraFirmaCraft
         TFCContainerTypes.CONTAINERS.register(bus);
         TFCEntities.ENTITIES.register(bus);
         TFCFluids.FLUIDS.register(bus);
+        TFCRecipeTypes.RECIPE_TYPES.register(bus);
         TFCRecipeSerializers.RECIPE_SERIALIZERS.register(bus);
         TFCSounds.SOUNDS.register(bus);
         TFCParticles.PARTICLE_TYPES.register(bus);
         TFCBlockEntities.TILE_ENTITIES.register(bus);
+        TFCLoot.registerAll(bus);
 
         TFCBiomes.BIOMES.register(bus);
+        TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
+        TFCPlacements.PLACEMENT_MODIFIERS.register(bus);
         TFCFeatures.FEATURES.register(bus);
         TFCCarvers.CARVERS.register(bus);
+        TFCChunkGenerator.CHUNK_GENERATOR.register(bus);
+        TFCBiomeSource.BIOME_SOURCE.register(bus);
         TFCWorldType.WORLD_TYPES.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCEffects.EFFECTS.register(bus);
@@ -130,20 +137,15 @@ public final class TerraFirmaCraft
         TFCRecipeTypes.registerPotRecipeOutputTypes();
         RockSettings.registerDefaultRocks();
         BlockIngredients.registerBlockIngredientTypes();
+        ItemStackModifiers.registerItemStackModifierTypes();
         TFCWorldType.overrideDefaultWorldType();
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {
             // Vanilla Registries (not thread safe)
-            TFCRecipeTypes.registerRecipeTypes();
-            TFCLoot.registerLootSerializers();
-            TFCPlacements.registerPlacements();
-            TFCBlockPredicates.registerBlockPredicates();
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
-
-            Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
-            Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
+            FoodTraits.registerFoodTraits();
 
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerAll();

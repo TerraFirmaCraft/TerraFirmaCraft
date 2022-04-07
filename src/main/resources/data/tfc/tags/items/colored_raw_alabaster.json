@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:alabaster/stained/orange_raw_alabaster",
+    "tfc:alabaster/stained/magenta_raw_alabaster",
+    "tfc:alabaster/stained/light_blue_raw_alabaster",
+    "tfc:alabaster/stained/yellow_raw_alabaster",
+    "tfc:alabaster/stained/lime_raw_alabaster",
+    "tfc:alabaster/stained/pink_raw_alabaster",
+    "tfc:alabaster/stained/gray_raw_alabaster",
+    "tfc:alabaster/stained/light_gray_raw_alabaster",
+    "tfc:alabaster/stained/cyan_raw_alabaster",
+    "tfc:alabaster/stained/purple_raw_alabaster",
+    "tfc:alabaster/stained/blue_raw_alabaster",
+    "tfc:alabaster/stained/brown_raw_alabaster",
+    "tfc:alabaster/stained/green_raw_alabaster",
+    "tfc:alabaster/stained/red_raw_alabaster",
+    "tfc:alabaster/stained/black_raw_alabaster"
+  ]
+}

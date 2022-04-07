@@ -51,14 +51,8 @@ public class FluidPotRecipe extends PotRecipe
     /**
      * Has no persistent output, thus uses the {@link PotRecipe#EMPTY} output type.
      */
-    static class FluidOutput implements Output
+    record FluidOutput(FluidStack stack) implements Output
     {
-        private final FluidStack stack;
-
-        FluidOutput(FluidStack stack)
-        {
-            this.stack = stack;
-        }
 
         @Override
         public void onFinish(PotBlockEntity.PotInventory inventory)

@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/barrel_sealed",
+  "textures": {
+    "particle": "tfc:block/wood/planks/blackwood",
+    "planks": "tfc:block/wood/planks/blackwood",
+    "sheet": "tfc:block/wood/sheet/blackwood",
+    "hoop": "tfc:block/barrel_hoop"
+  }
+}

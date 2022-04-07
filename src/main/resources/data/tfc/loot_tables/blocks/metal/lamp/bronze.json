@@ -11,15 +11,7 @@
           "name": "tfc:metal/lamp/bronze",
           "functions": [
             {
-              "function": "minecraft:copy_nbt",
-              "source": "block_entity",
-              "ops": [
-                {
-                  "source": "",
-                  "target": "BlockEntityTag",
-                  "op": "replace"
-                }
-              ]
+              "function": "tfc:copy_fluid"
             }
           ]
         }
