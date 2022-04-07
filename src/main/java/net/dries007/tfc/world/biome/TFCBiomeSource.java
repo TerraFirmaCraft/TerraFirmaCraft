@@ -20,6 +20,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
+import net.minecraftforge.registries.DeferredRegister;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -36,6 +37,8 @@ import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
 public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension, RiverSource
 {
     public static final Codec<TFCBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
@@ -48,6 +51,13 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
         ClimateSettings.CODEC.fieldOf("rainfall_settings").forGetter(c -> c.rainfallSettings),
         RegistryOps.retrieveRegistry(Registry.BIOME_REGISTRY).forGetter(c -> c.biomeRegistry)
     ).apply(instance, TFCBiomeSource::new));
+    
+    public static final DeferredRegister<Codec<? extends BiomeSource>> BIOME_SOURCE = DeferredRegister.create(Registry.BIOME_SOURCE_REGISTRY, MOD_ID);
+
+    static
+    {
+        BIOME_SOURCE.register("overworld", () -> CODEC);
+    }
 
     public static TFCBiomeSource defaultBiomeSource(long seed, Registry<Biome> biomeRegistry)
     {

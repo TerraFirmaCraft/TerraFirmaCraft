@@ -39,7 +39,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.devices.*;
-import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.coral.Coral;
 import net.dries007.tfc.common.blocks.plant.coral.TFCSeaPickleBlock;
@@ -257,7 +256,7 @@ public final class TFCBlocks
     // Misc
 
     public static final RegistryObject<Block> THATCH = register("thatch", () -> new ThatchBlock(ExtendedProperties.of(Properties.of(Material.PLANT).strength(0.6F, 0.4F).noOcclusion().sound(TFCSounds.THATCH)).flammable(50, 100)), MISC);
-    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(Properties.of(Material.REPLACEABLE_PLANT).sound(TFCSounds.THATCH).strength(0.6F, 0.4F)));
+    public static final RegistryObject<Block> THATCH_BED = register("thatch_bed", () -> new ThatchBedBlock(ExtendedProperties.of(Properties.of(Material.REPLACEABLE_PLANT).sound(TFCSounds.THATCH).strength(0.6F, 0.4F)).flammable(50, 100).blockEntity(TFCBlockEntities.THATCH_BED)));
     public static final RegistryObject<Block> LOG_PILE = register("log_pile", () -> new LogPileBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).blockEntity(TFCBlockEntities.LOG_PILE)));
     public static final RegistryObject<Block> BURNING_LOG_PILE = register("burning_log_pile", () -> new BurningLogPileBlock(ExtendedProperties.of(Properties.of(Material.WOOD).randomTicks().strength(0.6F).sound(SoundType.WOOD)).flammable(60, 30).blockEntity(TFCBlockEntities.BURNING_LOG_PILE).serverTicks(BurningLogPileBlockEntity::serverTick)));
     public static final RegistryObject<Block> FIREPIT = register("firepit", () -> new FirepitBlock(ExtendedProperties.of(Properties.of(Material.DIRT).strength(0.4F, 0.4F).sound(SoundType.NETHER_WART).noOcclusion().lightLevel(litBlockEmission(15))).blockEntity(TFCBlockEntities.FIREPIT).<AbstractFirepitBlockEntity<?>>serverTicks(AbstractFirepitBlockEntity::serverTick)), MISC);

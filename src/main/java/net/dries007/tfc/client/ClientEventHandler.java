@@ -150,7 +150,7 @@ public final class ClientEventHandler
                     });
 
                     ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
-                        if (entity instanceof Player player && player.isUsingItem())
+                        if (entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem())
                         {
                             return (float) player.getUseItemRemainingTicks() / PanItem.USE_TIME;
                         }

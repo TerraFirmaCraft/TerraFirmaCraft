@@ -305,15 +305,7 @@ def generate(rm: ResourceManager):
         'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()]
     })
 
-    block = rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
-    block.with_block_loot({
-        'name': 'tfc:thatch',
-        'functions': [loot_tables.set_count(2)],
-        'conditions': [
-            'minecraft:survives_explosion',
-            block_state_property('tfc:thatch_bed', {'part': 'head'})
-        ]
-    })
+    rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
 
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},

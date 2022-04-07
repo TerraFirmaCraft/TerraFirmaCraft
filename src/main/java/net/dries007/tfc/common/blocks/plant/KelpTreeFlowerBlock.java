@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,10 +35,12 @@ import net.minecraftforge.common.ForgeHooks;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Almost all methods in here are adapted from {@link net.minecraft.world.level.block.ChorusFlowerBlock}
@@ -87,11 +88,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
-        if (containedFluid != Fluids.EMPTY)
-        {
-            level.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(level));
-        }
+        FluidHelpers.tickFluid(level, currentPos, state, this);
         if (facing != Direction.UP && !state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
