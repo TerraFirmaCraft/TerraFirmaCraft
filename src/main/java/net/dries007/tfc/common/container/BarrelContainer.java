@@ -8,8 +8,10 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
@@ -46,5 +48,16 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
             addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_FLUID_CONTAINER_OUT, 35, 54));
             addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_ITEM, 89, 37));
         });
+    }
+
+    @Override
+    protected boolean moveStack(ItemStack stack, int slotIndex)
+    {
+        final int containerSlot = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
+        return switch (typeOf(slotIndex))
+            {
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, containerSlot, containerSlot + 1, false);
+                case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
+            };
     }
 }

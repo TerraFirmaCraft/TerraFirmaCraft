@@ -7,18 +7,12 @@
 package net.dries007.tfc.mixin.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.level.storage.WorldData;
 
-import com.mojang.serialization.Lifecycle;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.ClientEventHandler;
-import net.dries007.tfc.config.TFCConfig;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Minecraft.class)

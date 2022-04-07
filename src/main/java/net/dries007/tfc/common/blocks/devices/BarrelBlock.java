@@ -129,7 +129,7 @@ public class BarrelBlock extends DeviceBlock implements IItemSize
         final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
         if (tag != null)
         {
-            // Decode the contents of the crucible
+            // Decode the contents of the barrel
             final CompoundTag inventoryTag = tag.getCompound("inventory");
             final CompoundTag tankTag = tag.getCompound("tank");
             final ItemStackHandler inventory = new ItemStackHandler();

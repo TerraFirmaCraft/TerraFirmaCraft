@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.awt.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -41,12 +43,12 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
             .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME) : FluidStack.EMPTY);
         if (!fluidStack.isEmpty())
         {
-            RenderHelpers.RGBA color = RenderHelpers.getFluidColor(fluidStack);
+            Color color = RenderHelpers.getFluidColor(fluidStack);
             if (useDefaultFluid)
             {
-                color = new RenderHelpers.RGBA(color.r() * 3, color.g() / 4, 0, color.a());
+                color = new Color(color.getRed() * 3, color.getGreen() / 4, 0, color.getAlpha());
             }
-            RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color.r(), color.g(), color.b(), color.a(), 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
+            RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha(), 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
         }
 
         pot.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {

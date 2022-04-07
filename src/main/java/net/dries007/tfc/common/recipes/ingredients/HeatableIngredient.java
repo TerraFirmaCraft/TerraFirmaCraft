@@ -42,9 +42,8 @@ public class HeatableIngredient extends DelegateIngredient
         {
             return stack.getCapability(HeatCapability.CAPABILITY)
                 .map(IHeat::getTemperature)
-                .filter(temp -> temp > minTemp)
-                .filter(temp -> temp < maxTemp)
-                .isPresent();
+                .map(temp -> temp > minTemp && temp < maxTemp)
+                .orElse(false);
         }
         return false;
     }

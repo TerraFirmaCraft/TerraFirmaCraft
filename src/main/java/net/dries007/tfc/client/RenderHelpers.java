@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client;
 
+import java.awt.*;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -193,15 +195,15 @@ public class RenderHelpers
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
     }
 
-    public static RGBA getFluidColor(FluidStack fluid)
+    public static Color getFluidColor(FluidStack fluid)
     {
-        return RGBA.of(fluid.getFluid().getAttributes().getColor());
+        return new Color(fluid.getFluid().getAttributes().getColor(), true);
     }
 
     public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
     {
-        final RGBA colors = getFluidColor(fluidStack);
-        renderFluidFace(poseStack, fluidStack, buffer, colors.r, colors.g, colors.b, colors.a, minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
+        final Color colors = getFluidColor(fluidStack);
+        renderFluidFace(poseStack, fluidStack, buffer, colors.getRed(), colors.getGreen(), colors.getBlue(), colors.getAlpha(), minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
     }
 
     @SuppressWarnings("deprecation")
@@ -266,17 +268,5 @@ public class RenderHelpers
             return 10f * Mth.cos(degrees);
         }
         return 0f;
-    }
-
-    public record RGBA(float r, float g, float b, float a)
-    {
-        public static RGBA of(int color)
-        {
-            final float r = ((color >> 16) & 0xFF) / 255F;
-            final float g = ((color >> 8) & 0xFF) / 255F;
-            final float b = (color & 0xFF) / 255F;
-            final float a = ((color >> 24) & 0xFF) / 255F;
-            return new RGBA(r, g, b, a);
-        }
     }
 }

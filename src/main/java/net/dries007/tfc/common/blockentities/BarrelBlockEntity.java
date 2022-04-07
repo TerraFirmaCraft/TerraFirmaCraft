@@ -42,6 +42,7 @@ import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.container.BarrelContainer;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
@@ -113,7 +114,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     }
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
-    private final IntArrayBuilder syncableData;
 
     @Nullable private SealedBarrelRecipe recipe;
     private long lastUpdateTick; // The last tick this barrel was updated in serverTick()
@@ -135,8 +135,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         sidedFluidInventory = new SidedHandler.Builder<IFluidHandler>(inventory)
             .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
             .on(new PartialFluidHandler(inventory).extract(), Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
-
-        syncableData = new IntArrayBuilder();
     }
 
     @Nullable
@@ -307,22 +305,13 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         ItemStack input = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
         if (!input.isEmpty() && inventory.getStackInSlot(SLOT_FLUID_CONTAINER_OUT).isEmpty())
         {
-            input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(cap -> {
-                if (cap.getFluidInTank(0).getAmount() > 0)
+            input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemCap -> {
+                final int amount = itemCap.getFluidInTank(0).getAmount();
+                if (amount > 0 && FluidHelpers.transferUpTo(itemCap, inventory.tank, amount))
                 {
-                    final int maxFill = TFCConfig.SERVER.barrelCapacity.get() - inventory.tank.getFluid().getAmount();
-                    if (maxFill > 0)
-                    {
-                        if (inventory.tank.fill(cap.drain(maxFill, IFluidHandler.FluidAction.SIMULATE), IFluidHandler.FluidAction.SIMULATE) > 0)
-                        {
-                            if (inventory.tank.fill(cap.drain(maxFill, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE) > 0)
-                            {
-                                Helpers.playSound(level, getBlockPos(), SoundEvents.BUCKET_EMPTY);
-                                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, cap.getContainer());
-                                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
-                            }
-                        }
-                    }
+                    Helpers.playSound(level, getBlockPos(), SoundEvents.BUCKET_EMPTY);
+                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, itemCap.getContainer());
+                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
                 }
                 else
                 {

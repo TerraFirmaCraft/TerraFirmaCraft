@@ -39,7 +39,7 @@ public class TFCLoot
 
     private static RegistryObject<LootItemFunctionType> lootFunction(String id, Serializer<? extends LootItemFunction> serializer)
     {
-        LOOT_FUNCTIONS.register(id, () -> new LootItemFunctionType(serializer));
+        return LOOT_FUNCTIONS.register(id, () -> new LootItemFunctionType(serializer));
     }
 
     private static RegistryObject<LootItemConditionType> lootCondition(String id, Serializer<? extends LootItemCondition> serializer)
