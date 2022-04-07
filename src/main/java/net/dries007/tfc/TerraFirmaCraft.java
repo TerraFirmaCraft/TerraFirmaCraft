@@ -8,7 +8,6 @@ package net.dries007.tfc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.core.Registry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -95,14 +94,20 @@ public final class TerraFirmaCraft
         TFCContainerTypes.CONTAINERS.register(bus);
         TFCEntities.ENTITIES.register(bus);
         TFCFluids.FLUIDS.register(bus);
+        TFCRecipeTypes.RECIPE_TYPES.register(bus);
         TFCRecipeSerializers.RECIPE_SERIALIZERS.register(bus);
         TFCSounds.SOUNDS.register(bus);
         TFCParticles.PARTICLE_TYPES.register(bus);
         TFCBlockEntities.TILE_ENTITIES.register(bus);
+        TFCLoot.registerAll(bus);
 
         TFCBiomes.BIOMES.register(bus);
+        TFCBlockPredicates.BLOCK_PREDICATES.register(bus);
+        TFCPlacements.PLACEMENT_MODIFIERS.register(bus);
         TFCFeatures.FEATURES.register(bus);
         TFCCarvers.CARVERS.register(bus);
+        TFCChunkGenerator.CHUNK_GENERATOR.register(bus);
+        TFCBiomeSource.BIOME_SOURCE.register(bus);
         TFCWorldType.WORLD_TYPES.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCEffects.EFFECTS.register(bus);
@@ -138,16 +143,9 @@ public final class TerraFirmaCraft
 
         event.enqueueWork(() -> {
             // Vanilla Registries (not thread safe)
-            TFCRecipeTypes.registerRecipeTypes();
-            TFCLoot.registerLootSerializers();
-            TFCPlacements.registerPlacements();
-            TFCBlockPredicates.registerBlockPredicates();
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
             FoodTraits.registerFoodTraits();
-
-            Registry.register(Registry.CHUNK_GENERATOR, Helpers.identifier("overworld"), TFCChunkGenerator.CODEC);
-            Registry.register(Registry.BIOME_SOURCE, Helpers.identifier("overworld"), TFCBiomeSource.CODEC);
 
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerAll();

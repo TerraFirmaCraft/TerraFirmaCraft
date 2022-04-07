@@ -29,6 +29,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -56,6 +57,7 @@ import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -160,6 +162,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onBoneMeal);
+        bus.addListener(ForgeEventHandler::onLivingJump);
     }
 
     /**
@@ -639,22 +642,36 @@ public final class ForgeEventHandler
 
     public static void onEffectRemove(PotionEvent.PotionRemoveEvent event)
     {
-        if (event.getPotion() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+        if (event.getEntityLiving() instanceof ServerPlayer player)
         {
-            player.setForcedPose(null);
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(event.getPotion()));
+            if (event.getPotion() == TFCEffects.PINNED.get())
+            {
+                player.setForcedPose(null);
+            }
         }
     }
 
     public static void onEffectExpire(PotionEvent.PotionExpiryEvent event)
     {
         final MobEffectInstance instance = event.getPotionEffect();
-        if (instance != null)
+        if (instance != null && event.getEntityLiving() instanceof ServerPlayer player)
         {
-            PacketHandler.send(PacketDistributor.SERVER.noArg(), new EffectExpirePacket(instance.getEffect()));
-            if (instance.getEffect() == TFCEffects.PINNED.get() && event.getEntityLiving() instanceof Player player)
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new EffectExpirePacket(instance.getEffect()));
+            if (instance.getEffect() == TFCEffects.PINNED.get())
             {
                 player.setForcedPose(null);
             }
+        }
+    }
+
+    public static void onLivingJump(LivingEvent.LivingJumpEvent event)
+    {
+        LivingEntity entity = event.getEntityLiving();
+        if (entity.hasEffect(TFCEffects.PINNED.get()))
+        {
+            entity.setDeltaMovement(0, 0, 0);
+            entity.hasImpulse = false;
         }
     }
 
@@ -691,7 +708,8 @@ public final class ForgeEventHandler
 
         stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat -> {
             final int lifespan = stack.getItem().getEntityLifespan(stack, level);
-            if (entity.lifespan >= lifespan) return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
+            if (entity.lifespan >= lifespan)
+                return; // the case where the item has been sitting out for longer than the lifespan. So it should be removed by the game.
 
             final float itemTemp = heat.getTemperature();
             if (itemTemp > 0f)

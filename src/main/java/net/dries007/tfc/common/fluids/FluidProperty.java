@@ -18,8 +18,6 @@ import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.util.Helpers;
-
 public class FluidProperty extends Property<FluidProperty.FluidKey>
 {
     public static FluidProperty create(String name, Stream<Object> fluids)
@@ -124,7 +122,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         private FluidKey(ResourceLocation name)
         {
             this.name = name;
-            this.fluid = RegistryObject.of(name, ForgeRegistries.FLUIDS);
+            this.fluid = RegistryObject.create(name, ForgeRegistries.FLUIDS);
         }
 
         public Fluid getFluid()
