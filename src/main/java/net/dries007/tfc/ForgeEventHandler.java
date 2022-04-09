@@ -680,7 +680,7 @@ public final class ForgeEventHandler
      */
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
-        if (event.getEntity() instanceof ItemEntity entity && !event.getWorld().isClientSide && TFCConfig.SERVER.coolHeatablesinLevel.get())
+        if (event.getEntity() instanceof ItemEntity entity && !event.getWorld().isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
         {
             final ItemStack item = entity.getItem();
             item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
@@ -700,7 +700,7 @@ public final class ForgeEventHandler
      */
     public static void onItemExpire(ItemExpireEvent event)
     {
-        if (!TFCConfig.SERVER.coolHeatablesinLevel.get()) return;
+        if (!TFCConfig.SERVER.coolHotItemEntities.get()) return;
         final ItemEntity entity = event.getEntityItem();
         final ServerLevel level = (ServerLevel) entity.getLevel();
         final ItemStack stack = entity.getItem();
