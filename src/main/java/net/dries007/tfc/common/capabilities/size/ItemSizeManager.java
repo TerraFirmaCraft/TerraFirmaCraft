@@ -10,25 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.logging.LogUtils;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.slf4j.Logger;
 
 public final class ItemSizeManager
 {
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = new IndirectHashCollection<>(ItemSizeDefinition::getValidItems);
     public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>("item_sizes", "item size", ItemSizeDefinition::new, ItemSizeManager::reload, ItemSizeDefinition::new, ItemSizeDefinition::encode, DataManagerSyncPacket.TItemSizeDefinition::new);
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
 
     @SuppressWarnings("deprecation")

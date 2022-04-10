@@ -6,8 +6,6 @@
 
 package net.dries007.tfc;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -18,6 +16,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
+import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientEventHandler;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import net.dries007.tfc.client.TFCSounds;
@@ -68,13 +67,14 @@ import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.feature.TFCFeatures;
 import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
+import org.slf4j.Logger;
 
 @Mod(TerraFirmaCraft.MOD_ID)
 public final class TerraFirmaCraft
 {
     public static final String MOD_ID = "tfc";
     public static final String MOD_NAME = "TerraFirmaCraft";
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public TerraFirmaCraft()
     {
