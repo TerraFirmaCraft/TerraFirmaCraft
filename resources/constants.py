@@ -614,6 +614,9 @@ DEFAULT_LANG = {
     'effect.tfc.glow_ink': 'Glowing Ink',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'subtitles.block.tfc.tool_rack.place_item': 'Item placed on Tool Rack',
+    'subtitles.block.tfc.wattle.dyed': 'Wattle stained',
+    'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
+    'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',

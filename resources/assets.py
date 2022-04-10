@@ -236,7 +236,7 @@ def generate(rm: ResourceManager):
     rm.blockstate('torch', 'minecraft:block/torch').with_block_loot('tfc:torch').with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
 
-    for wattle in ('woven_wattle', 'filled_wattle'):
+    for wattle in ('woven_wattle', 'unstained_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
             'all': 'tfc:block/wattle/%s' % wattle if wattle != 'wattle' else 'tfc:block/empty',
             'particle': 'tfc:block/wattle/wattle_sides',
@@ -246,32 +246,42 @@ def generate(rm: ResourceManager):
     for part in ('top', 'bottom', 'left', 'right'):
         rm.block_model('tfc:wattle/%s' % part, {'side': 'tfc:block/wattle/%s' % part, 'end': 'tfc:block/wattle/end'}, parent='minecraft:block/cube_column')
     rm.blockstate_multipart('wattle',
-        ({'type': 'empty'}, {'model': 'tfc:block/wattle/empty_wattle'}),
-        ({'type': 'woven'}, {'model': 'tfc:block/wattle/woven_wattle'}),
-        ({'type': 'filled'}, {'model': 'tfc:block/wattle/filled_wattle'}),
-        ({'top': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_top'}),
-        ({'bottom': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_bottom'}),
-        ({'left': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_left'}),
-        ({'right': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_right'}),
-        ({'top': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/top'}),
-        ({'bottom': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/bottom'}),
-        ({'left': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/left'}),
-        ({'right': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/right'}),
-        ({'top': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/top'}),
-        ({'bottom': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/bottom'}),
-        ({'left': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/left'}),
-        ({'right': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/right'})
+        ({'woven': False}, {'model': 'tfc:block/wattle/empty_wattle'}),
+        ({'woven': True}, {'model': 'tfc:block/wattle/woven_wattle'}),
+        ({'top': True, 'woven': False}, {'model': 'tfc:block/wattle/empty_top'}),
+        ({'bottom': True, 'woven': False}, {'model': 'tfc:block/wattle/empty_bottom'}),
+        ({'left': True, 'woven': False}, {'model': 'tfc:block/wattle/empty_left'}),
+        ({'right': True, 'woven': False}, {'model': 'tfc:block/wattle/empty_right'}),
+        ({'top': True, 'woven': True}, {'model': 'tfc:block/wattle/top'}),
+        ({'bottom': True, 'woven': True}, {'model': 'tfc:block/wattle/bottom'}),
+        ({'left': True, 'woven': True}, {'model': 'tfc:block/wattle/left'}),
+        ({'right': True, 'woven': True}, {'model': 'tfc:block/wattle/right'})
     ).with_lang(lang('wattle'))
     rm.block_loot('wattle',
       {'name': 'tfc:wattle'},
-      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'type': 'filled'})]},
-      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'type': 'woven'})]},
+      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'woven': "true"})]},
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'top': 'true'})]},
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'bottom': 'true'})]},
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'left': 'true'})]},
       {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'right': 'true'})]}
     )
     rm.item_model('wattle', parent='tfc:block/wattle/empty_wattle', no_textures=True)
+
+    rm.item_model('wattle/unstained', parent='tfc:block/wattle/unstained_wattle', no_textures=True)
+    rm.blockstate_multipart('wattle/unstained',
+        ({'model': 'tfc:block/wattle/unstained_wattle'}),
+        ({'top': True}, {'model': 'tfc:block/wattle/top'}),
+        ({'bottom': True}, {'model': 'tfc:block/wattle/bottom'}),
+        ({'left': True}, {'model': 'tfc:block/wattle/left'}),
+        ({'right': True}, {'model': 'tfc:block/wattle/right'})
+    ).with_lang(lang('Unstained Wattle'))
+    rm.block_loot('wattle/unstained',
+      {'name': 'tfc:wattle/unstained'},
+      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle/unstained', {'top': 'true'})]},
+      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle/unstained', {'bottom': 'true'})]},
+      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle/unstained', {'left': 'true'})]},
+      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle/unstained', {'right': 'true'})]}
+    )
 
     for color in COLORS:
         wattle = 'tfc:wattle/%s' % color
@@ -289,6 +299,13 @@ def generate(rm: ResourceManager):
             ({'left': True}, {'model': 'tfc:block/wattle/left'}),
             ({'right': True}, {'model': 'tfc:block/wattle/right'})
         ).with_lang(lang('%s stained wattle', color)).with_block_loot(wattle)
+        rm.block_loot(wattle,
+        {'name': wattle},
+        {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'top': 'true'})]},
+        {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'bottom': 'true'})]},
+        {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'left': 'true'})]},
+        {'name': 'minecraft:stick', 'conditions': [block_state_property(wattle, {'right': 'true'})]}
+        )
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')

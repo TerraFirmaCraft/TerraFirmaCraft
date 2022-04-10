@@ -65,6 +65,10 @@ public final class TFCSounds
 
     public static final RegistryObject<SoundEvent> PANNING = create("panning");
 
+    public static final RegistryObject<SoundEvent> WATTLE_DYED = create("wattle_dyed");
+    public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("wattle_daubed");
+    public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("wattle_woven");
+
     public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_HIT, CHARCOAL_PILE_FALL);
     public static final ForgeSoundType THATCH = new ForgeSoundType(1.0f, 1.0f, THATCH_BREAK, THATCH_STEP, THATCH_PLACE, THATCH_HIT, THATCH_FALL);
     public static final ForgeSoundType PEAT = new ForgeSoundType(1.0f, 1.0f, PEAT_BREAK, PEAT_STEP, PEAT_PLACE, PEAT_HIT, PEAT_FALL);

@@ -90,7 +90,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
     public static final BooleanProperty RIGHT = BooleanProperty.create("right");
     public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
-    public static final EnumProperty<WattleBlock.Type> WATTLE_TYPE = EnumProperty.create("type", WattleBlock.Type.class);
+    public static final BooleanProperty WATTLE_WOVEN = BooleanProperty.create("woven");
 
     public static final IntegerProperty PIT_KILN_STAGE = IntegerProperty.create("stage", 0, 16);
     public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);
