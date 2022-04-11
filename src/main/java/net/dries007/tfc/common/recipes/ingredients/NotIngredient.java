@@ -12,12 +12,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
 
 public class NotIngredient extends DelegateIngredient
 {
-    protected NotIngredient(Ingredient delegate)
+    public NotIngredient(@Nullable Ingredient delegate)
     {
         super(delegate);
     }
@@ -41,21 +42,21 @@ public class NotIngredient extends DelegateIngredient
         @Override
         public NotIngredient parse(FriendlyByteBuf buffer)
         {
-            final Ingredient internal = Ingredient.fromNetwork(buffer);
+            final Ingredient internal = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
             return new NotIngredient(internal);
         }
 
         @Override
         public NotIngredient parse(JsonObject json)
         {
-            final Ingredient internal = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
+            final Ingredient internal = json.has("ingredient") ? Ingredient.fromJson(JsonHelpers.get(json, "ingredient")) : null;
             return new NotIngredient(internal);
         }
 
         @Override
         public void write(FriendlyByteBuf buffer, NotIngredient ingredient)
         {
-            ingredient.delegate.toNetwork(buffer);
+            encodeNullable(ingredient, buffer);
         }
     }
 }

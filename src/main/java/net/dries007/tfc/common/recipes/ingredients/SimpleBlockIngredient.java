@@ -22,12 +22,12 @@ public class SimpleBlockIngredient implements BlockIngredient
 {
     private final Collection<Block> blocks;
 
-    SimpleBlockIngredient(Block block)
+    public SimpleBlockIngredient(Block block)
     {
         this(Collections.singleton(block));
     }
 
-    SimpleBlockIngredient(Collection<Block> blocks)
+    public SimpleBlockIngredient(Collection<Block> blocks)
     {
         this.blocks = blocks;
     }

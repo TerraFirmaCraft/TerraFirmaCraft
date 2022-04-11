@@ -20,15 +20,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
-public class TagBlockIngredient implements BlockIngredient
+public record TagBlockIngredient(TagKey<Block> tag) implements BlockIngredient
 {
-    private final TagKey<Block> tag;
-
-    private TagBlockIngredient(TagKey<Block> tag)
-    {
-        this.tag = tag;
-    }
-
     @Override
     public boolean test(BlockState state)
     {

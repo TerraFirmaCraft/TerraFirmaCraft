@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
@@ -22,7 +23,7 @@ import net.dries007.tfc.util.JsonHelpers;
  */
 public class NotRottenIngredient extends DelegateIngredient
 {
-    protected NotRottenIngredient(Ingredient delegate)
+    public NotRottenIngredient(@Nullable Ingredient delegate)
     {
         super(delegate);
     }
@@ -46,20 +47,20 @@ public class NotRottenIngredient extends DelegateIngredient
         @Override
         public NotRottenIngredient parse(JsonObject json)
         {
-            final Ingredient internal = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
+            final Ingredient internal = json.has("ingredient") ? Ingredient.fromJson(JsonHelpers.get(json, "ingredient")) : null;
             return new NotRottenIngredient(internal);
         }
 
         @Override
         public NotRottenIngredient parse(FriendlyByteBuf buffer)
         {
-            return new NotRottenIngredient(Ingredient.fromNetwork(buffer));
+            return new NotRottenIngredient(Helpers.decodeNullable(buffer, Ingredient::fromNetwork));
         }
 
         @Override
         public void write(FriendlyByteBuf buffer, NotRottenIngredient ingredient)
         {
-            ingredient.delegate.toNetwork(buffer);
+            encodeNullable(ingredient, buffer);
         }
     }
 }

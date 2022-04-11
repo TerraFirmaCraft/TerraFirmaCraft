@@ -7,9 +7,13 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.stream.Stream;
+
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
@@ -18,9 +22,19 @@ import it.unimi.dsi.fastutil.ints.IntList;
 
 public abstract class DelegateIngredient extends Ingredient
 {
+    public static void encodeNullable(DelegateIngredient ingredient, FriendlyByteBuf buffer)
+    {
+        Helpers.encodeNullable(ingredient, buffer, (ing, buf) -> {
+            // we null-checked in the Helpers call
+            assert ing.delegate != null;
+            ing.delegate.toNetwork(buf);
+        });
+    }
+
+    @Nullable
     protected final Ingredient delegate;
 
-    protected DelegateIngredient(Ingredient delegate)
+    public DelegateIngredient(@Nullable Ingredient delegate)
     {
         super(Stream.empty());
         this.delegate = delegate;
@@ -29,31 +43,31 @@ public abstract class DelegateIngredient extends Ingredient
     @Override
     public ItemStack[] getItems()
     {
-        return delegate.getItems();
+        return delegate != null ? delegate.getItems() : new ItemStack[] {};
     }
 
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        return delegate.test(stack);
+        return delegate == null || delegate.test(stack);
     }
 
     @Override
     public IntList getStackingIds()
     {
-        return delegate.getStackingIds();
+        return delegate != null ? delegate.getStackingIds() : IntList.of();
     }
 
     @Override
     public JsonElement toJson()
     {
-        return delegate.toJson();
+        return delegate != null ? delegate.toJson() : new JsonArray();
     }
 
     @Override
     public boolean isEmpty()
     {
-        return delegate.isEmpty();
+        return delegate == null || delegate.isEmpty();
     }
 
     @Override
@@ -68,7 +82,7 @@ public abstract class DelegateIngredient extends Ingredient
     @Override
     public boolean isSimple()
     {
-        return delegate.isSimple();
+        return delegate == null || delegate.isSimple();
     }
 
     @Override

@@ -109,17 +109,17 @@ public final class FluidIngredient implements Predicate<Fluid>
 
     private final Set<Fluid> fluids;
 
-    FluidIngredient(Fluid fluid)
+    public FluidIngredient(Fluid fluid)
     {
         this(Collections.singleton(fluid));
     }
 
-    FluidIngredient(Set<Fluid> fluids)
+    public FluidIngredient(Set<Fluid> fluids)
     {
         this.fluids = fluids;
     }
 
-    FluidIngredient(FriendlyByteBuf buffer)
+    public FluidIngredient(FriendlyByteBuf buffer)
     {
         this.fluids = Helpers.decodeAll(buffer, new ObjectOpenHashSet<>(), b -> b.readRegistryIdUnsafe(ForgeRegistries.FLUIDS));
     }
