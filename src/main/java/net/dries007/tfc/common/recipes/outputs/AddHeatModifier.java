@@ -25,7 +25,7 @@ public record AddHeatModifier(float temperature) implements ItemStackModifier
     @Override
     public Serializer serializer()
     {
-        return null;
+        return Serializer.INSTANCE;
     }
 
     public enum Serializer implements ItemStackModifier.Serializer<AddHeatModifier>
