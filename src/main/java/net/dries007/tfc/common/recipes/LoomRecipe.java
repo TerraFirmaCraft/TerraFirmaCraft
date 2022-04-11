@@ -7,7 +7,9 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.Objects;
-import javax.annotation.Nullable;
+
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
@@ -47,7 +49,7 @@ public class LoomRecipe extends SimpleItemRecipe
     private final ResourceLocation inProgressTexture;
 
 
-    public LoomRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result, int inputCount, int stepsRequired, ResourceLocation inProgressTexture)
+    public LoomRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result, int inputCount, int stepsRequired, ResourceLocation inProgressTexture)
     {
         super(id, ingredient, result);
         this.inputCount = inputCount;
@@ -130,7 +132,7 @@ public class LoomRecipe extends SimpleItemRecipe
         public LoomRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Ingredient ingredient = Ingredient.fromJson(Objects.requireNonNull(json.get("ingredient"), "Missing required field 'ingredient'"));
-            final ItemStack stack = ShapedRecipe.itemStackFromJson(JsonHelpers.getAsJsonObject(json, "result"));
+            final ItemStackProvider stack = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
             final int inputCount = json.get("input_count").getAsInt();
             final int stepsRequired = json.get("steps_required").getAsInt();
             final ResourceLocation inProgressTexture = new ResourceLocation(JsonHelpers.convertToString(json.get("in_progress_texture"), "in_progress_texture"));
@@ -142,7 +144,7 @@ public class LoomRecipe extends SimpleItemRecipe
         public LoomRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            final ItemStack stack = buffer.readItem();
+            final ItemStackProvider stack = ItemStackProvider.fromNetwork(buffer);
             final int inputCount = buffer.readVarInt();
             final int steps = buffer.readVarInt();
             final ResourceLocation inProgressTexture = new ResourceLocation(buffer.readUtf());
@@ -153,7 +155,7 @@ public class LoomRecipe extends SimpleItemRecipe
         public void toNetwork(FriendlyByteBuf buffer, LoomRecipe recipe)
         {
             recipe.getIngredient().toNetwork(buffer);
-            buffer.writeItem(recipe.getResultItem());
+            recipe.result.toNetwork(buffer);
             buffer.writeVarInt(recipe.inputCount);
             buffer.writeVarInt(recipe.stepsRequired);
             buffer.writeUtf(recipe.inProgressTexture.toString());

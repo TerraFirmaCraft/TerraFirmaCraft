@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.util.climate;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
@@ -86,7 +86,7 @@ public class ClimateRange
         return checkHydration(hydration, allowWiggle) == Result.VALID && checkTemperature(temperature, allowWiggle) == Result.VALID;
     }
 
-    @Nonnull
+    @NotNull
     private Result check(float value, float min, float max, float range, boolean allowRange)
     {
         if (allowRange)

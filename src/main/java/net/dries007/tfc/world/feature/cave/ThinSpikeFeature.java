@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.Helpers;
 
 public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
 {
@@ -61,6 +62,15 @@ public class ThinSpikeFeature extends Feature<ThinSpikeConfig>
     private boolean placeSpike(WorldGenLevel level, BlockPos.MutableBlockPos pos, BlockState spike, Random random, ThinSpikeConfig config)
     {
         // Place the first spike block
+        // Ensure we're not appending to an existing spike - the canSurvive() check will pass, but will result in a broken tip
+        pos.move(0, 1, 0);
+        final BlockState stateAbove = level.getBlockState(pos);
+        if (Helpers.isBlock(stateAbove, spike.getBlock()))
+        {
+            return false;
+        }
+
+        pos.move(0, -1, 0);
         if (!placeSpikeBlock(level, pos, spike))
         {
             return false;

@@ -9,7 +9,7 @@ package net.dries007.tfc.world.feature;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;

@@ -17,7 +17,7 @@ import net.dries007.tfc.common.items.ProspectResult;
  * This event is purely informational, it cannot change the result or displayed information in any way.
  * This event is fired on both sides, on the {@link net.minecraftforge.common.MinecraftForge#EVENT_BUS}
  */
-public class ProspectedEvent extends Event
+public final class ProspectedEvent extends Event
 {
     private final Player player;
     private final ProspectResult type;

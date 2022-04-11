@@ -32,7 +32,7 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock
 
     public BodyPlantBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
-        super(properties, direction, shape, false);
+        super(properties, direction, shape, true);
         this.headBlock = headBlock;
     }
 

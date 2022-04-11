@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,12 +29,12 @@ import net.dries007.tfc.util.Helpers;
 
 public class HorizontalSupportBlock extends VerticalSupportBlock implements IForgeBlockExtension
 {
-    private final Map<BlockState, VoxelShape> SHAPE_BY_STATE;
+    private final Map<BlockState, VoxelShape> cachedShapes;
 
     public HorizontalSupportBlock(ExtendedProperties properties)
     {
         super(properties);
-        SHAPE_BY_STATE = makeShapes(box(5.0D, 10.0D, 5.0D, 11.0D, 16.0D, 11.0D), getStateDefinition().getPossibleStates());
+        cachedShapes = makeShapes(box(5.0D, 10.0D, 5.0D, 11.0D, 16.0D, 11.0D), getStateDefinition().getPossibleStates());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        VoxelShape shape = SHAPE_BY_STATE.get(state);
+        VoxelShape shape = cachedShapes.get(state);
         if (shape != null) return shape;
         throw new IllegalArgumentException("Asked for Support VoxelShape that was not cached");
     }

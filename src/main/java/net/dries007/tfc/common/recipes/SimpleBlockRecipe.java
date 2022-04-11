@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -117,7 +117,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
             }
         }
 
-        protected interface Factory<R extends SimpleBlockRecipe>
+        public interface Factory<R extends SimpleBlockRecipe>
         {
             R create(ResourceLocation id, BlockIngredient ingredient, BlockState state, boolean copyInputState);
         }

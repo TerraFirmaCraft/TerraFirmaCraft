@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/lamp",
   "textures": {
-    "metal": "tfc:block/metal/bismuth_bronze",
+    "metal": "tfc:block/metal/full/bismuth_bronze",
     "lamp": "tfc:block/lamp_off"
   }
 }

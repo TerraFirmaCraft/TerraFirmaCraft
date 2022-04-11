@@ -7,8 +7,11 @@
 package net.dries007.tfc.util.tracker;
 
 import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
+import net.dries007.tfc.util.climate.ClimateModel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -35,42 +38,53 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.BufferedList;
 import net.dries007.tfc.util.loot.TFCLoot;
 
-public class WorldTracker implements IWorldTracker, ICapabilitySerializable<CompoundTag>
+public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 {
-    private final Random random = new Random();
+    private final Random random;
+    private final LazyOptional<WorldTracker> capability;
 
-    private final LazyOptional<IWorldTracker> capability;
     private final BufferedList<TickEntry> landslideTicks;
     private final BufferedList<BlockPos> isolatedPositions;
     private final List<Collapse> collapsesInProgress;
 
+    private final ClimateModel defaultClimateModel = new BiomeBasedClimateModel();
+    @Nullable private ClimateModel climateModel;
+
     public WorldTracker()
     {
+        this.random = new Random();
         this.capability = LazyOptional.of(() -> this);
+        this.climateModel = null;
         this.landslideTicks = new BufferedList<>();
         this.isolatedPositions = new BufferedList<>();
         this.collapsesInProgress = new ArrayList<>();
     }
 
-    @Override
     public void addLandslidePos(BlockPos pos)
     {
         landslideTicks.add(new TickEntry(pos, 2));
     }
 
-    @Override
     public void addIsolatedPos(BlockPos pos)
     {
         isolatedPositions.add(pos);
     }
 
-    @Override
     public void addCollapseData(Collapse collapse)
     {
         collapsesInProgress.add(collapse);
     }
 
-    @Override
+    public void setClimateModel(ClimateModel climateModel)
+    {
+        this.climateModel = climateModel;
+    }
+
+    public ClimateModel getClimateModel()
+    {
+        return climateModel == null ? defaultClimateModel : climateModel;
+    }
+
     public void addCollapsePositions(BlockPos centerPos, Collection<BlockPos> positions)
     {
         List<BlockPos> collapsePositions = new ArrayList<>();
@@ -203,7 +217,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -212,7 +226,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
 
     private boolean isIsolated(LevelAccessor world, BlockPos pos)
     {
-        for (Direction direction : Direction.values())
+        for (Direction direction : Helpers.DIRECTIONS)
         {
             if (!world.isEmptyBlock(pos.relative(direction)))
             {

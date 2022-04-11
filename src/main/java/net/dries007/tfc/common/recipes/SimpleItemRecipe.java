@@ -9,7 +9,7 @@ package net.dries007.tfc.common.recipes;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 
 /**
@@ -30,10 +31,10 @@ import net.dries007.tfc.util.JsonHelpers;
 public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInventory>
 {
     protected final ResourceLocation id;
-    private final Ingredient ingredient;
-    protected final ItemStack result;
+    protected final Ingredient ingredient;
+    protected final ItemStackProvider result;
 
-    public SimpleItemRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result)
+    public SimpleItemRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result)
     {
         this.id = id;
         this.ingredient = ingredient;
@@ -54,7 +55,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
     @Override
     public ItemStack getResultItem()
     {
-        return result;
+        return result.getStack(ItemStack.EMPTY);
     }
 
     @Override
@@ -66,7 +67,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
     @Override
     public ItemStack assemble(ItemStackInventory wrapper)
     {
-        return result.copy();
+        return result.getStack(wrapper.getStack());
     }
 
     public Ingredient getIngredient()
@@ -87,8 +88,8 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
         public R fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
-            final ItemStack stack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
-            return factory.create(recipeId, ingredient, stack);
+            final ItemStackProvider result = ItemStackProvider.fromJson(GsonHelper.getAsJsonObject(json, "result"));
+            return factory.create(recipeId, ingredient, result);
         }
 
         @Nullable
@@ -96,8 +97,8 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
         public R fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            final ItemStack stack = buffer.readItem();
-            return factory.create(recipeId, ingredient, stack);
+            final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
+            return factory.create(recipeId, ingredient, result);
         }
 
         @Override
@@ -107,9 +108,9 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
             buffer.writeItem(recipe.getResultItem());
         }
 
-        protected interface Factory<R extends SimpleItemRecipe>
+        public interface Factory<R extends SimpleItemRecipe>
         {
-            R create(ResourceLocation id, Ingredient ingredient, ItemStack stack);
+            R create(ResourceLocation id, Ingredient ingredient, ItemStackProvider result);
         }
     }
 }

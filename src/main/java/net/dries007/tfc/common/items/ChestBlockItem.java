@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.util.NonNullLazy;
 
-import net.dries007.tfc.client.render.ChestItemRenderer;
+import net.dries007.tfc.client.render.blockentity.ChestItemRenderer;
 
 public class ChestBlockItem extends BlockItem
 {

@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +30,8 @@ import net.dries007.tfc.common.recipes.RockKnappingRecipe;
 
 public class RockKnappingRecipeCategory extends KnappingRecipeCategory<RockKnappingRecipe>
 {
-    private static final String rockSlotName = "input";
+    private static final String ROCK_SLOT_NAME = "input";
+
     private final IDrawableStatic blank;
     private final IGuiHelper helper;
 
@@ -52,7 +53,7 @@ public class RockKnappingRecipeCategory extends KnappingRecipeCategory<RockKnapp
     @Override
     public IDrawable getHigh(RockKnappingRecipe recipe, IRecipeSlotsView recipeSlots)
     {
-        IRecipeSlotView inputSlot = recipeSlots.findSlotByName(rockSlotName).get();
+        IRecipeSlotView inputSlot = recipeSlots.findSlotByName(ROCK_SLOT_NAME).get();
         ItemStack displayed = inputSlot.getDisplayedIngredient(VanillaTypes.ITEM).orElse(null);
         if (displayed == null) return blank;
 
@@ -65,7 +66,7 @@ public class RockKnappingRecipeCategory extends KnappingRecipeCategory<RockKnapp
     {
         IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 89, 61);
         inputSlot.addIngredients(recipe.getIngredient());
-        inputSlot.setSlotName(rockSlotName);
+        inputSlot.setSlotName(ROCK_SLOT_NAME);
         super.setRecipe(builder, recipe, focuses);
     }
 }

@@ -15,52 +15,33 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.util.JsonHelpers;
 
-public final class ItemStackIngredient implements Predicate<ItemStack>
+public record ItemStackIngredient(Ingredient ingredient, int count) implements Predicate<ItemStack>
 {
+    public static final ItemStackIngredient EMPTY = new ItemStackIngredient(Ingredient.EMPTY, 0);
+
     public static ItemStackIngredient fromJson(JsonObject json)
     {
-        return new ItemStackIngredient(json);
+        final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
+        final int count = JsonHelpers.getAsInt(json, "count", 1);
+        return new ItemStackIngredient(ingredient, count);
     }
 
     public static ItemStackIngredient fromNetwork(FriendlyByteBuf buffer)
     {
-        return new ItemStackIngredient(buffer);
-    }
-
-    private final Ingredient item;
-    private final int count;
-
-    private ItemStackIngredient(JsonObject json)
-    {
-        this.item = Ingredient.fromJson(JsonHelpers.get(json, "item"));
-        this.count = JsonHelpers.getAsInt(json, "count");
-    }
-
-    private ItemStackIngredient(FriendlyByteBuf buffer)
-    {
-        this.item = Ingredient.fromNetwork(buffer);
-        this.count = buffer.readVarInt();
+        final Ingredient ingredient = Ingredient.fromNetwork(buffer);
+        final int count = buffer.readVarInt();
+        return new ItemStackIngredient(ingredient, count);
     }
 
     @Override
     public boolean test(ItemStack stack)
     {
-        return stack.getCount() >= count && item.test(stack);
+        return ingredient.test(stack) && stack.getCount() >= count;
     }
 
     public void toNetwork(FriendlyByteBuf buffer)
     {
-        item.toNetwork(buffer);
+        ingredient.toNetwork(buffer);
         buffer.writeVarInt(count);
-    }
-
-    public int getCount()
-    {
-        return count;
-    }
-
-    public Ingredient getItem()
-    {
-        return item;
     }
 }

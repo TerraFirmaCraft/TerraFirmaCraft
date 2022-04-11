@@ -6,56 +6,44 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.function.Supplier;
-
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+
 public class TFCRecipeTypes
 {
-    public static final Supplier<RecipeType<CollapseRecipe>> COLLAPSE = register("collapse");
-    public static final Supplier<RecipeType<LandslideRecipe>> LANDSLIDE = register("landslide");
-    public static final Supplier<RecipeType<HeatingRecipe>> HEATING = register("heating");
-    public static final Supplier<RecipeType<QuernRecipe>> QUERN = register("quern");
-    public static final Supplier<RecipeType<PotRecipe>> POT = register("pot");
-    public static final Supplier<RecipeType<ScrapingRecipe>> SCRAPING = register("scraping");
-    public static final Supplier<RecipeType<KnappingRecipe>> CLAY_KNAPPING = register("clay_knapping");
-    public static final Supplier<RecipeType<KnappingRecipe>> FIRE_CLAY_KNAPPING = register("fire_clay_knapping");
-    public static final Supplier<RecipeType<KnappingRecipe>> LEATHER_KNAPPING = register("leather_knapping");
-    public static final Supplier<RecipeType<RockKnappingRecipe>> ROCK_KNAPPING = register("rock_knapping");
-    public static final Supplier<RecipeType<AlloyRecipe>> ALLOY = register("alloy");
-    public static final Supplier<RecipeType<CastingRecipe>> CASTING = register("casting");
-    public static final Supplier<RecipeType<BloomeryRecipe>> BLOOMERY = register("bloomery");
-    public static final Supplier<RecipeType<LoomRecipe>> LOOM = register("loom");
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, MOD_ID);
 
-    public static void registerRecipeTypes()
-    {
-        COLLAPSE.get();
-        LANDSLIDE.get();
-        HEATING.get();
-        QUERN.get();
-        POT.get();
-        SCRAPING.get();
-        CLAY_KNAPPING.get();
-        FIRE_CLAY_KNAPPING.get();
-        LEATHER_KNAPPING.get();
-        ROCK_KNAPPING.get();
-        ALLOY.get();
-        CASTING.get();
-        BLOOMERY.get();
-        LOOM.get();
-    }
+    public static final RegistryObject<RecipeType<CollapseRecipe>> COLLAPSE = register("collapse");
+    public static final RegistryObject<RecipeType<LandslideRecipe>> LANDSLIDE = register("landslide");
+    public static final RegistryObject<RecipeType<HeatingRecipe>> HEATING = register("heating");
+    public static final RegistryObject<RecipeType<QuernRecipe>> QUERN = register("quern");
+    public static final RegistryObject<RecipeType<PotRecipe>> POT = register("pot");
+    public static final RegistryObject<RecipeType<ScrapingRecipe>> SCRAPING = register("scraping");
+    public static final RegistryObject<RecipeType<KnappingRecipe>> CLAY_KNAPPING = register("clay_knapping");
+    public static final RegistryObject<RecipeType<KnappingRecipe>> FIRE_CLAY_KNAPPING = register("fire_clay_knapping");
+    public static final RegistryObject<RecipeType<KnappingRecipe>> LEATHER_KNAPPING = register("leather_knapping");
+    public static final RegistryObject<RecipeType<RockKnappingRecipe>> ROCK_KNAPPING = register("rock_knapping");
+    public static final RegistryObject<RecipeType<AlloyRecipe>> ALLOY = register("alloy");
+    public static final RegistryObject<RecipeType<CastingRecipe>> CASTING = register("casting");
+    public static final RegistryObject<RecipeType<LoomRecipe>> LOOM = register("loom");
+    public static final RegistryObject<RecipeType<SealedBarrelRecipe>> BARREL_SEALED = register("barrel_sealed");
+    public static final RegistryObject<RecipeType<InstantBarrelRecipe>> BARREL_INSTANT = register("barrel_instant");
+    public static final RegistryObject<RecipeType<BloomeryRecipe>> BLOOMERY = register("bloomery");
 
     public static void registerPotRecipeOutputTypes()
     {
         PotRecipe.register(Helpers.identifier("soup"), SoupPotRecipe.OUTPUT_TYPE);
     }
 
-    private static <R extends Recipe<?>> Supplier<RecipeType<R>> register(String name)
+    private static <R extends Recipe<?>> RegistryObject<RecipeType<R>> register(String name)
     {
-        return Lazy.of(() -> RecipeType.register(Helpers.identifier(name).toString()));
+        return RECIPE_TYPES.register(name, () -> new RecipeType<>() {});
     }
 }

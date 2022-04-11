@@ -6,7 +6,8 @@
 
 package net.dries007.tfc.common.recipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -73,9 +74,9 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 
     public static class Serializer extends TypedRecipeSerializer<KnappingRecipe>
     {
-        private final RecipeType<?> type;
+        private final Supplier<RecipeType<KnappingRecipe>> type;
 
-        public Serializer(RecipeType<?> type)
+        public Serializer(Supplier<RecipeType<KnappingRecipe>> type)
         {
             this.type = type;
         }
@@ -106,7 +107,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         @Override
         public RecipeType<?> getRecipeType()
         {
-            return type;
+            return type.get();
         }
     }
 }

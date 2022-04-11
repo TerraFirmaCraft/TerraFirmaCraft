@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import javax.annotation.Nullable;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -61,6 +64,13 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
             state = state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
         return state;
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    {
+        FluidHelpers.tickFluid(level, currentPos, state, this);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override

@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_instant",
+  "input_item": {
+    "ingredient": {
+      "type": "tfc:fluid_item",
+      "fluid_ingredient": {
+        "ingredient": "tfc:vinegar",
+        "amount": 1
+      }
+    }
+  },
+  "input_fluid": {
+    "ingredient": "minecraft:milk",
+    "amount": 9
+  },
+  "output_fluid": {
+    "fluid": "tfc:milk_vinegar",
+    "amount": 10
+  }
+}

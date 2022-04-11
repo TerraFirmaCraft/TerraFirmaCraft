@@ -88,7 +88,6 @@ public class VolcanoPlacement extends PlacementModifier
         return Stream.empty();
     }
 
-    // todo: Alcatraz should find out why volcano center noise returns out of region so often
     private boolean ensureCanWrite(WorldGenRegion level, BlockPos pos)
     {
         final int xSection = SectionPos.blockToSectionCoord(pos.getX());

@@ -29,23 +29,23 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
     @Override
     public boolean place(FeaturePlaceContext<StackedTreeConfig> context)
     {
-        final WorldGenLevel worldIn = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random random = context.random();
         final StackedTreeConfig config = context.config();
 
         final ChunkPos chunkPos = new ChunkPos(pos);
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos().set(pos);
-        final StructureManager manager = TreeHelpers.getStructureManager(worldIn);
-        final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(worldIn, chunkPos, random);
+        final StructureManager manager = TreeHelpers.getStructureManager(level);
+        final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);
 
-        if (!isValidLocation(worldIn, mutablePos) || !isAreaClear(worldIn, mutablePos, config.radius(), 2))
+        if (!isValidLocation(level, mutablePos) || !isAreaClear(level, mutablePos, config.radius(), 2))
         {
             return false;
         }
 
         // Trunk first
-        int trunkHeight = TreeHelpers.placeTrunk(worldIn, mutablePos, random, settings, config.trunk());
+        int trunkHeight = TreeHelpers.placeTrunk(level, mutablePos, random, settings, config.trunk());
         mutablePos.move(0, trunkHeight, 0);
 
         for (StackedTreeConfig.Layer layer : config.layers())
@@ -56,7 +56,7 @@ public class StackedTreeFeature extends TreeFeature<StackedTreeConfig>
             {
                 final ResourceLocation structureId = layer.templates().get(random.nextInt(layer.templates().size()));
                 final StructureTemplate structure = manager.getOrCreate(structureId);
-                TreeHelpers.placeTemplate(structure, settings, worldIn, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
+                TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
                 mutablePos.move(0, structure.getSize().getY(), 0);
             }
         }

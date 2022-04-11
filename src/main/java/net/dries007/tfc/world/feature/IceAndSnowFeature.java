@@ -33,8 +33,7 @@ public class IceAndSnowFeature extends Feature<NoneFeatureConfiguration>
         final ChunkPos chunkPos = new ChunkPos(pos);
         final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) context.chunkGenerator();
         final ChunkData chunkData = extension.getChunkDataProvider().get(level, chunkPos);
-        Climate.updateCachedSettings(level.getLevel(), extension.getBiomeSource().getTemperatureSettings(), extension.getClimateSeed()); // Update the cached settings for this dimension early
-        Climate.onChunkLoad(level, level.getChunk(pos), chunkData); // Then call into chunk load
+        Climate.onChunkLoad(level, level.getChunk(pos), chunkData);
         return true;
     }
 }

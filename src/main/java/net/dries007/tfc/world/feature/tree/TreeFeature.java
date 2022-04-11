@@ -24,19 +24,19 @@ public abstract class TreeFeature<C extends FeatureConfiguration> extends Featur
         super(codec);
     }
 
-    protected boolean isValidLocation(LevelAccessor worldIn, BlockPos pos)
+    protected boolean isValidLocation(LevelAccessor level, BlockPos pos)
     {
-        BlockState stateDown = worldIn.getBlockState(pos.below());
+        BlockState stateDown = level.getBlockState(pos.below());
         if (!Helpers.isBlock(stateDown, TFCTags.Blocks.TREE_GROWS_ON))
         {
             return false;
         }
 
-        BlockState stateAt = worldIn.getBlockState(pos);
+        BlockState stateAt = level.getBlockState(pos);
         return stateAt.getBlock() instanceof SaplingBlock || stateAt.isAir();
     }
 
-    protected boolean isAreaClear(LevelAccessor world, BlockPos pos, int radius, int height)
+    protected boolean isAreaClear(LevelAccessor level, BlockPos pos, int radius, int height)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int y = 0; y < height; y++)
@@ -48,7 +48,7 @@ public abstract class TreeFeature<C extends FeatureConfiguration> extends Featur
                 {
                     mutablePos.set(pos);
                     mutablePos.move(x, y, z);
-                    BlockState stateAt = world.getBlockState(mutablePos);
+                    BlockState stateAt = level.getBlockState(mutablePos);
                     if (!stateAt.isAir())
                     {
                         passed = false;

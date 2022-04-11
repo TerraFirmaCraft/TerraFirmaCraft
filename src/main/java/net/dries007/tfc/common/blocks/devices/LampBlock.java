@@ -7,7 +7,9 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+
+import net.dries007.tfc.util.loot.CopyFluidFunction;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -125,7 +127,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
         ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
-        level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> lamp.saveToItem(stack));
+        CopyFluidFunction.copyToItem(stack, level.getBlockEntity(pos));
         return stack;
     }
 
@@ -186,8 +188,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
 
     }
 
-
-        @Override
+    @Override
     @SuppressWarnings("deprecation")
     public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType path)
     {

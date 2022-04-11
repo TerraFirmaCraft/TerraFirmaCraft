@@ -39,7 +39,7 @@ def generate(rm: ResourceManager):
                     'functions': [
                         {**loot_tables.set_count(2), 'conditions': [block_state_property('tfc:rock/loose/%s' % rock, {'count': '2'})]},
                         {**loot_tables.set_count(3), 'conditions': [block_state_property('tfc:rock/loose/%s' % rock, {'count': '3'})]},
-                        explosion_decay()
+                        loot_tables.explosion_decay()
                     ]
                 })
 
@@ -73,7 +73,7 @@ def generate(rm: ResourceManager):
                     rm.block_loot(slab_namespace, {
                         'functions': [
                             {**loot_tables.set_count(2), 'conditions': [block_state_property(slab_namespace, {'type': 'double'})]},
-                            explosion_decay()
+                            loot_tables.explosion_decay()
                         ],
                         'name': slab_namespace
                     })
@@ -94,7 +94,7 @@ def generate(rm: ResourceManager):
                     }))
                 elif block_type == 'gravel':
                     block.with_block_loot(({
-                        'conditions': [silk_touch()],
+                        'conditions': [loot_tables.silk_touch()],
                         'name': 'tfc:rock/gravel/%s' % rock
                     }, {
                         'type': 'minecraft:alternatives',
@@ -231,10 +231,10 @@ def generate(rm: ResourceManager):
     rm.item_model('dead_torch', 'tfc:block/torch_off')
     rm.block_model('dead_torch', parent='minecraft:block/template_torch', textures={'torch': 'tfc:block/torch_off'})
     rm.block_model('dead_wall_torch', parent='minecraft:block/template_torch_wall', textures={'torch': 'tfc:block/torch_off'})
-    rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch')).with_block_loot('minecraft:stick')
-    rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
-    rm.blockstate('torch', 'minecraft:block/torch').with_lang(lang('Torch'))
-    rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_lang(lang('Burnt Out Torch'))
+    rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch'))
+    rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_lang(lang('Burnt Out Torch'))
+    rm.blockstate('torch', 'minecraft:block/torch').with_block_loot('tfc:torch').with_lang(lang('Torch'))
+    rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
 
     for wattle in ('woven_wattle', 'filled_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
@@ -305,15 +305,7 @@ def generate(rm: ResourceManager):
         'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()]
     })
 
-    block = rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
-    block.with_block_loot({
-        'name': 'tfc:thatch',
-        'functions': [loot_tables.set_count(2)],
-        'conditions': [
-            'minecraft:survives_explosion',
-            block_state_property('tfc:thatch_bed', {'part': 'head'})
-        ]
-    })
+    rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
 
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},
@@ -472,7 +464,7 @@ def generate(rm: ResourceManager):
     # Loot table for snow blocks and snow piles - override the vanilla one to only return one snowball per layer
     def snow_block_loot_table(block: str):
         rm.block_loot(block, loot_tables.pool(loot_tables.alternatives({
-            'conditions': [silk_touch()],
+            'conditions': [loot_tables.silk_touch()],
             'name': 'minecraft:snow'
         }, 'minecraft:snowball'), conditions=({
             'condition': 'minecraft:entity_properties',
@@ -487,7 +479,7 @@ def generate(rm: ResourceManager):
     block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
     block.with_block_loot({
         'name': 'minecraft:ice',
-        'conditions': [silk_touch()]
+        'conditions': [loot_tables.silk_touch()]
     })
 
     # Hides
@@ -529,10 +521,11 @@ def generate(rm: ResourceManager):
         for metal_block, metal_block_data in METAL_BLOCKS.items():
             if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':
                 rm.block_tag('minecraft:mineable/pickaxe', 'tfc:metal/%s/%s' % (metal_block, metal))
-                metal_tex = 'tfc:block/metal/%s' % metal
+                metal_dir = 'tfc:block/metal/%s/%s'
+                metal_tex = metal_dir % ('full', metal)
                 if metal_block == 'lamp':
-                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': metal_tex + '_chain', 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
-                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': metal_tex + '_chain', 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_hanging_on' % metal, {'metal': metal_tex, 'chain': metal_dir % ('chain', metal), 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp_hanging')
+                    rm.block_model('tfc:metal/lamp/%s_hanging_off' % metal, {'metal': metal_tex, 'chain': metal_dir % ('chain', metal), 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp_hanging')
                     rm.block_model('tfc:metal/lamp/%s_on' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp'}, parent='tfc:block/lamp')
                     rm.block_model('tfc:metal/lamp/%s_off' % metal, {'metal': metal_tex, 'lamp': 'tfc:block/lamp_off'}, parent='tfc:block/lamp')
                     rm.item_model(('metal', 'lamp', metal))
@@ -543,24 +536,25 @@ def generate(rm: ResourceManager):
                         'hanging=true,lit=true': {'model': 'tfc:block/metal/lamp/%s_hanging_on' % metal},
                     }).with_lang(lang('%s lamp', metal)).with_block_loot({
                         'name': 'tfc:metal/lamp/%s' % metal,
-                        'functions': [loot_tables.copy_block_entity_nbt()]
+                        'functions': [{'function': 'tfc:copy_fluid'}]
                     }).with_tag('lamps')
                     rm.item_tag('lamps', 'tfc:metal/%s/%s' % (metal_block, metal))
                     rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
                 elif metal_block == 'chain':
-                    rm.block_model(('metal', 'chain', metal), {'all': metal_tex + '_chain', 'particle': metal_tex + '_chain'}, parent='minecraft:block/chain')
+                    rm.block_model(('metal', 'chain', metal), {'all': metal_dir % (metal_block, metal), 'particle': metal_dir % (metal_block, metal)}, parent='minecraft:block/chain')
                     rm.blockstate(('metal', 'chain', metal), variants={
                         'axis=x': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90, 'y': 90},
                         'axis=y': {'model': 'tfc:block/metal/chain/%s' % metal},
                         'axis=z': {'model': 'tfc:block/metal/chain/%s' % metal, 'x': 90}
-                    }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal).with_item_model()
+                    }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal)
+                    rm.item_model(('metal', 'chain', metal), 'tfc:item/metal/chain/%s' % metal)
                 elif metal_block == 'trapdoor':
-                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture='tfc:block/metal/%s_trapdoor' % metal).with_lang(lang('%s trapdoor', metal))
+                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture=metal_dir % (metal_block, metal)).with_lang(lang('%s trapdoor', metal))
                 else:
                     block = rm.blockstate(('metal', '%s' % metal_block, metal))
                     block.with_block_model({
-                        'all': 'tfc:block/metal/%s' % metal,
-                        'particle': 'tfc:block/metal/%s' % metal
+                        'all': metal_tex,
+                        'particle': metal_tex
                     }, parent=metal_block_data.parent_model)
                     block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
                     block.with_lang(lang('%s %s' % (metal, metal_block)))
@@ -590,7 +584,7 @@ def generate(rm: ResourceManager):
     ]
     for metal_id, metal in enumerate(('copper', 'silver', 'gold', 'tin')):
         ore = 'native_' + metal if metal != 'tin' else 'cassiterite'
-        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/' + metal}, parent='tfc:item/pan/result')
+        rm.item_model(('pan', ore, 'result'), {'material': 'tfc:block/metal/full/' + metal}, parent='tfc:item/pan/result')
         for rock_id, rock in enumerate(ROCKS.keys()):
             rm.item_model(('pan', ore, rock + '_full'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/full')
             rm.item_model(('pan', ore, rock + '_half'), {'material': 'tfc:block/rock/gravel/%s' % rock}, parent='tfc:item/pan/half')
@@ -617,6 +611,8 @@ def generate(rm: ResourceManager):
                'conditions': [{'condition': 'minecraft:inverted', 'term': {'condition': 'tfc:is_panned'}}]
             }))
     item_model_property(rm, ('pan', 'filled'), stages, {'parent': 'tfc:item/pan/empty'}).with_lang(lang('Filled Pan'))
+    item_model_property(rm, 'handstone', [{'predicate': {'tfc:damaged': 1.0}, 'model': 'tfc:item/handstone_damaged'}], {'parent': 'tfc:item/handstone_healthy'}).with_lang(lang('Handstone'))
+    rm.item_model('handstone_damaged', {'handstone': 'tfc:block/devices/quern/handstone_top_damaged', 'particle': 'tfc:block/devices/quern/handstone_top_damaged', 'side': 'tfc:block/devices/quern/handstone_side_damaged'}, parent='tfc:item/handstone_healthy')
 
     # Pottery
     for pottery in SIMPLE_POTTERY:  # both fired and unfired items
@@ -862,6 +858,9 @@ def generate(rm: ResourceManager):
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'liana'):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
 
+    for plant in ('duckweed', 'lotus', 'sargassum', 'water_lily'):
+        rm.block_model('plant/%s' % plant, parent='tfc:block/plant/template_floating_tinted', textures={'plant': 'tfc:block/plant/%s/%s' % (plant, plant)})
+
     # Food
     for berry in BERRIES.keys():
         rm.item_model('food/' + berry).with_lang(lang(berry))
@@ -875,6 +874,8 @@ def generate(rm: ResourceManager):
         rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
     for veg in VEGETABLES:
         rm.item_model(('food', veg)).with_lang(lang(veg))
+    for nut, name in NUTRIENTS.items():
+        rm.item_model(('food', '%s_soup' % nut)).with_lang(lang('%s Soup', name)).with_tag('soup_bowls')
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
@@ -961,7 +962,7 @@ def generate(rm: ResourceManager):
             rm.blockstate(('plant', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/plant/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit)).with_tag('fruit_tree_sapling')
             rm.block_loot(('plant', '%s_sapling' % fruit), {
                 'name': 'tfc:plant/%s_sapling' % fruit,
-                'functions': [list({**loot_tables.set_count(i), 'conditions': [block_state_property('tfc:plant/%s_sapling' % fruit, {'saplings': '%s' % i})]} for i in range(1, 5)), explosion_decay()]
+                'functions': [list({**loot_tables.set_count(i), 'conditions': [block_state_property('tfc:plant/%s_sapling' % fruit, {'saplings': '%s' % i})]} for i in range(1, 5)), loot_tables.explosion_decay()]
             })
             for stage in range(2, 4 + 1):
                 rm.block_model(('plant', '%s_sapling_%d' % (fruit, stage)), parent='tfc:block/plant/cross_%s' % stage, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
@@ -1031,6 +1032,7 @@ def generate(rm: ResourceManager):
             if variant == 'log':
                 block.with_tag('minecraft:logs')
         rm.item_model(('wood', 'lumber', wood)).with_lang(lang('%s Lumber', wood))
+        rm.item_model(('wood', 'sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:signs')
         rm.item_model(('wood', 'boat', wood)).with_lang(lang('%s Boat', wood))
 
         # Groundcover
@@ -1058,7 +1060,7 @@ def generate(rm: ResourceManager):
         block.with_tag('minecraft:leaves')
         block.with_block_loot(({
             'name': 'tfc:wood/leaves/%s' % wood,
-            'conditions': [loot_tables.or_condition(match_tag('forge:shears'), silk_touch())]
+            'conditions': [loot_tables.or_condition(match_tag('forge:shears'), loot_tables.silk_touch())]
         }, {
             'name': 'tfc:wood/sapling/%s' % wood,
             'conditions': ['minecraft:survives_explosion', condition_chance(TREE_SAPLING_DROP_CHANCES[wood])]
@@ -1167,7 +1169,6 @@ def generate(rm: ResourceManager):
             rm.block_model(('wood', chest, wood), textures={'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None)
             rm.item_model(('wood', chest, wood), {'particle': 'tfc:block/wood/planks/%s' % wood}, parent='minecraft:item/chest')
             rm.block_loot(('wood', chest, wood), {'name': 'tfc:wood/%s/%s'%(chest,wood)})
-            
 
         rm.block_model('wood/sluice/%s_upper' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_upper')
         rm.block_model('wood/sluice/%s_lower' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_lower')
@@ -1175,12 +1176,34 @@ def generate(rm: ResourceManager):
         block.with_block_loot({'name': 'tfc:wood/sluice/%s' % wood, 'conditions': [block_state_property('tfc:wood/sluice/%s' % wood, {'upper': 'true'})]})
         rm.item_model(('wood', 'sluice', wood), parent='tfc:block/wood/sluice/%s_lower' % wood, no_textures=True)
 
+        rm.blockstate(('wood', 'planks', '%s_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_block_model({'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None).with_block_loot('tfc:wood/sign/%s' % wood).with_tag('minecraft:standing_sings')
+        rm.blockstate(('wood', 'planks', '%s_wall_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:wall_signs')
+
+        # Barrels
+        texture = 'tfc:block/wood/planks/%s' % wood
+        textures = {'particle': texture, 'planks': texture, 'sheet': 'tfc:block/wood/sheet/%s' % wood, 'hoop': 'tfc:block/barrel_hoop'}
+        block = rm.blockstate(('wood', 'barrel', wood), variants={
+            'sealed=true': {'model': 'tfc:block/wood/barrel_sealed/%s' % wood},
+            'sealed=false': {'model': 'tfc:block/wood/barrel/%s' % wood}
+        })
+        item_model_property(rm, ('wood', 'barrel', wood), [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/wood/barrel_sealed/%s' % wood}], {'parent': 'tfc:block/wood/barrel/%s' % wood})
+        block.with_block_model(textures, 'tfc:block/barrel')
+        rm.block_model(('wood', 'barrel_sealed', wood), textures, 'tfc:block/barrel_sealed')
+        block.with_lang(lang('%s barrel', wood))
+        block.with_tag('tfc:barrels').with_tag('minecraft:mineable/axe')
+        block.with_block_loot(({
+            'name': 'tfc:wood/barrel/%s' % wood,
+            'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+            'conditions': [loot_tables.block_state_property('tfc:wood/barrel/%s[sealed=true]' % wood)]
+        }, 'tfc:wood/barrel/%s' % wood))
+
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
             rm.block_tag('minecraft:wooden_fences', fence_namespace)
             rm.block_tag('minecraft:fences', fence_namespace)
             rm.block_tag('forge:fences', fence_namespace)
             rm.block_tag('forge:fences/wooden', fence_namespace)
+
         fence_gate_namespace = 'tfc:wood/planks/' + wood + '_fence_gate'
         rm.block_tag('forge:fence_gates/wooden', fence_gate_namespace)
         rm.block_tag('forge:fence_gates', fence_gate_namespace)
@@ -1190,6 +1213,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/' + wood + '_pressure_plate')
         rm.block_tag('minecraft:wooden_slabs', 'tfc:wood/planks/' + wood + '_slab')
         rm.block_tag('minecraft:wooden_stairs', 'tfc:wood/planks/' + wood + '_stairs')
+
         for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):
             if variant != 'log':
                 rm.block_tag('minecraft:logs', 'tfc:wood/' + variant + '/' + wood)
@@ -1201,6 +1225,9 @@ def generate(rm: ResourceManager):
             rm.lang('block.tfc.wood.planks.' + wood + '_' + variant, lang('%s %s', wood, variant))
         for variant in ('sapling', 'leaves'):
             rm.lang('block.tfc.wood.' + variant + '.' + wood, lang('%s %s', wood, variant))
+
+    rm.blockstate('light', variants={'level=%s' % i: {'model': 'minecraft:block/light_%s' % i if i >= 10 else 'minecraft:block/light_0%s' % i} for i in range(0, 15 + 1)}).with_lang(lang('Light'))
+    rm.item_model('light', no_textures=True, parent='minecraft:item/light')
 
     # Entity Stuff
     for creature in SPAWN_EGG_ENTITIES:
@@ -1215,6 +1242,12 @@ def generate(rm: ResourceManager):
 
     for fluid in SIMPLE_FLUIDS:
         water_based_fluid(rm, fluid)
+    for fluid in ALCOHOLS:
+        water_based_fluid(rm, fluid)
+        rm.fluid_tag('alcohols', 'tfc:%s' % fluid)
+    for color in COLORS:
+        water_based_fluid(rm, color + '_dye')
+        rm.fluid_tag('dye_fluids', 'tfc:%s_dye' % color)
 
     # River water, since it doesn't have a bucket
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
@@ -1241,7 +1274,7 @@ def generate(rm: ResourceManager):
             'tip=true': {'model': 'tfc:block/%s_tip' % variant},
             'tip=false': {'model': 'tfc:block/%s' % variant}
         })
-        block.with_item_model()
+        rm.item_model(variant)
         block.with_lang(lang(variant))
 
         rm.block_model(variant, textures={'0': texture, 'particle': texture}, parent='tfc:block/thin_spike')
@@ -1250,6 +1283,14 @@ def generate(rm: ResourceManager):
     for color in ('tube', 'brain', 'bubble', 'fire', 'horn'):
         corals(rm, color, False)
         corals(rm, color, True)
+
+    block = rm.blockstate("bellows",model='tfc:block/bellows', variants=four_rotations('tfc:block/bellows', (270, 180, None, 90)))
+    block.with_lang(lang('Bellows'))
+    block.with_block_loot('tfc:bellows')
+    block.with_tag('minecraft:mineable/axe')
+
+    for be in BLOCK_ENTITIES:
+        rm.lang('tfc.block_entity.%s' % be, lang(be))
 
 
 def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifier, overrides: utils.Json, data: Dict[str, Any]) -> ItemContext:
@@ -1320,31 +1361,6 @@ def block_state_property(block: str, properties: Dict[str, str]) -> Dict[str, An
         'condition': 'minecraft:block_state_property',
         'block': block,
         'properties': dict((k, str(v)) for k, v in properties.items())
-    }
-
-
-def explosion_decay() -> Dict[str, Any]:
-    return {
-        'function': 'minecraft:explosion_decay'
-    }
-
-
-def condition_alternatives(*terms) -> Dict[str, Any]:
-    return {
-        'condition': 'minecraft:alternative',
-        'terms': utils.loot_condition_list(terms)
-    }
-
-
-def silk_touch() -> Dict[str, Any]:
-    return {
-        'condition': 'minecraft:match_tool',
-        'predicate': {
-            'enchantments': [{
-                'enchantment': 'minecraft:silk_touch',
-                'levels': {'min': 1}
-            }]
-        }
     }
 
 

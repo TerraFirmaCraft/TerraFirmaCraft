@@ -48,21 +48,10 @@ public class WaterloggedBerryBushBlock extends StationaryBerryBushBlock implemen
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!canSurvive(stateIn, level, currentPos))
-        {
-            return Blocks.AIR.defaultBlockState();
-        }
-        else
-        {
-            final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
-            if (containedFluid != Fluids.EMPTY)
-            {
-                level.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(level));
-            }
-            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
-        }
+        FluidHelpers.tickFluid(level, currentPos, state, this);
+        return state.canSurvive(level, currentPos) ? super.updateShape(state, facing, facingState, level, currentPos, facingPos) : state.getFluidState().createLegacyBlock();
     }
 
     @Override

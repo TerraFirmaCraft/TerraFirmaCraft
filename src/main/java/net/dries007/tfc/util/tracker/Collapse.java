@@ -12,9 +12,8 @@ import java.util.stream.Collectors;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.core.BlockPos;
-import net.minecraftforge.common.util.INBTSerializable;
 
-public class Collapse implements INBTSerializable<CompoundTag>
+public class Collapse
 {
     BlockPos centerPos;
     List<BlockPos> nextPositions;
@@ -29,10 +28,11 @@ public class Collapse implements INBTSerializable<CompoundTag>
 
     public Collapse(CompoundTag nbt)
     {
-        deserializeNBT(nbt);
+        centerPos = BlockPos.of(nbt.getLong("centerPos"));
+        nextPositions = Arrays.stream(nbt.getLongArray("nextPositions")).mapToObj(BlockPos::of).collect(Collectors.toList());
+        radiusSquared = nbt.getDouble("radiusSquared");
     }
 
-    @Override
     public CompoundTag serializeNBT()
     {
         CompoundTag nbt = new CompoundTag();
@@ -40,13 +40,5 @@ public class Collapse implements INBTSerializable<CompoundTag>
         nbt.putLongArray("nextPositions", nextPositions.stream().mapToLong(BlockPos::asLong).toArray());
         nbt.putDouble("radiusSquared", radiusSquared);
         return nbt;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt)
-    {
-        centerPos = BlockPos.of(nbt.getLong("centerPos"));
-        nextPositions = Arrays.stream(nbt.getLongArray("nextPositions")).mapToObj(BlockPos::of).collect(Collectors.toList());
-        radiusSquared = nbt.getDouble("radiusSquared");
     }
 }

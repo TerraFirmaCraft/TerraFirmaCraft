@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.util.events;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +32,7 @@ import net.dries007.tfc.util.InteractionManager;
  * reflect what would happen if a block was clicked on. Direction refers to the face that was clicked.
  */
 @Cancelable
-public class StartFireEvent extends Event
+public final class StartFireEvent extends Event
 {
     public static boolean startFire(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, @Nullable ItemStack stack)
     {

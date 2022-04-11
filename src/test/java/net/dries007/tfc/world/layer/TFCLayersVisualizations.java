@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.layer;
 
 import java.awt.*;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.Mth;
 

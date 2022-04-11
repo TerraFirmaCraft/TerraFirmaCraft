@@ -7,6 +7,7 @@
 package net.dries007.tfc.compat.jei;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -81,6 +83,8 @@ public class TFCJEIPlugin implements IModPlugin
     public static final RecipeType<CastingRecipe> CASTING = type("casting", CastingRecipe.class);
     public static final RecipeType<LoomRecipe> LOOM = type("loom", LoomRecipe.class);
     public static final RecipeType<AlloyRecipe> ALLOYING = type("alloying", AlloyRecipe.class);
+    public static final RecipeType<SealedBarrelRecipe> SEALED_BARREL = type("sealed_barrel", SealedBarrelRecipe.class);
+    public static final RecipeType<InstantBarrelRecipe> INSTANT_BARREL = type("instant_barrel", InstantBarrelRecipe.class);
 
 
     @Override
@@ -105,6 +109,8 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new CastingRecipeCategory(CASTING, gui));
         r.addRecipeCategories(new LoomRecipeCategory(LOOM, gui));
         r.addRecipeCategories(new AlloyRecipeCategory(ALLOYING, gui));
+        r.addRecipeCategories(new SealedBarrelRecipeCategory(SEALED_BARREL, gui));
+        r.addRecipeCategories(new InstantBarrelRecipeCategory(INSTANT_BARREL, gui));
     }
 
     @Override
@@ -122,6 +128,8 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(CASTING, getRecipes(TFCRecipeTypes.CASTING.get()));
         r.addRecipes(LOOM, getRecipes(TFCRecipeTypes.LOOM.get()));
         r.addRecipes(ALLOYING, getRecipes(TFCRecipeTypes.ALLOY.get()));
+        r.addRecipes(SEALED_BARREL, getRecipes(TFCRecipeTypes.BARREL_SEALED.get()));
+        r.addRecipes(INSTANT_BARREL, getRecipes(TFCRecipeTypes.BARREL_INSTANT.get()));
 
         //todo: ingredient info goes here
     }
@@ -139,10 +147,26 @@ public class TFCJEIPlugin implements IModPlugin
         addCatalystTag(r, TFCTags.Items.ROCK_KNAPPING, ROCK_KNAPPING);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), FLUID_POT);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SOUP_POT);
-        TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.LOOM)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), LOOM));
+        woodCatalyst(r, Wood.BlockType.LOOM, LOOM);
         r.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);
         r.addRecipeCatalyst(new ItemStack(TFCItems.VESSEL.get()), ALLOYING);
-        TFCItems.GLAZED_VESSELS.values().forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), ALLOYING));
+        mapCatalyst(r, TFCItems.GLAZED_VESSELS, ALLOYING);
+        woodCatalyst(r, Wood.BlockType.BARREL, SEALED_BARREL);
+        woodCatalyst(r, Wood.BlockType.BARREL, INSTANT_BARREL);
     }
 
+    public static void woodCatalyst(IRecipeCatalystRegistration r, Wood.BlockType wood, RecipeType<?> recipeType)
+    {
+        TFCBlocks.WOODS.values().stream().map(map -> map.get(wood)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));
+    }
+
+    /*public static <T, V> void doubleMapCatalyst(IRecipeCatalystRegistration r, Map<T, Map<V, RegistryObject<Item>>> map, T getter, RecipeType<?> recipeType)
+    {
+        map.values().stream().map(set -> set.get(getter)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));
+    }*/
+
+    public static <T> void mapCatalyst(IRecipeCatalystRegistration r, Map<T, RegistryObject<Item>> map, RecipeType<?> recipeType)
+    {
+        map.values().forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));
+    }
 }

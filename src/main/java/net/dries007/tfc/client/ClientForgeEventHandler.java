@@ -34,10 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.client.event.DrawSelectionEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -65,6 +61,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
+import net.dries007.tfc.network.RequestClimateModelPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
@@ -90,6 +87,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onItemTooltip);
         bus.addListener(ClientForgeEventHandler::onInitGuiPost);
         bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
+        bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedIn);
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
@@ -209,9 +207,12 @@ public class ClientForgeEventHandler
             if (fertilizer != null)
             {
                 final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
-                if (n != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
-                if (p != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
-                if (k != 0) text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+                if (n != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                if (p != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                if (k != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             if (TFCConfig.CLIENT.enableDebug.get())
@@ -228,7 +229,7 @@ public class ClientForgeEventHandler
                     text.add(new TextComponent(GRAY + "[Debug] Cap NBT: " + DARK_GRAY + capTag));
                 }
 
-                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t).collect(Collectors.joining(", "))));
+                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
             }
         }
     }
@@ -259,6 +260,13 @@ public class ClientForgeEventHandler
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache(TFCColors::getWaterColor));
 
         }
+    }
+
+    public static void onClientPlayerLoggedIn(ClientPlayerNetworkEvent.LoggedInEvent event)
+    {
+        // We can't send this on client world load, it's too early, as the connection is not setup yet
+        // This is the closest point after that which will work
+        PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestClimateModelPacket());
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event)
@@ -347,7 +355,7 @@ public class ClientForgeEventHandler
             }
             PoseStack poseStack = event.getPoseStack();
             poseStack.pushPose();
-            ClientHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
+            RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
             poseStack.popPose();
             event.setCanceled(true);
         }

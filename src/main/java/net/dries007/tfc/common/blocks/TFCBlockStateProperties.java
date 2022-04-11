@@ -74,11 +74,11 @@ public class TFCBlockStateProperties
     public static final EnumProperty<TFCComposterBlock.CompostType> COMPOST_TYPE = EnumProperty.create("type", TFCComposterBlock.CompostType.class);
 
     public static final BooleanProperty TIP = BooleanProperty.create("tip");
-    public static final BooleanProperty LIT = BooleanProperty.create("lit");
     public static final BooleanProperty UPPER = BooleanProperty.create("upper");
     public static final BooleanProperty STICK = BooleanProperty.create("stick");
     public static final BooleanProperty MATURE = BooleanProperty.create("mature");
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
+    public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");

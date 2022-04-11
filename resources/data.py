@@ -70,6 +70,7 @@ def generate(rm: ResourceManager):
 
     rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
     rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'minecraft:polar_bear')
+    rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
 
     # Item Heats
 
@@ -85,7 +86,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
-    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower'], 1)
+    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
@@ -147,7 +148,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('scrapable', 'tfc:large_soaked_hide', 'tfc:medium_soaked_hide', 'tfc:small_soaked_hide')
     rm.item_tag('clay_knapping', 'minecraft:clay_ball')
     rm.item_tag('fire_clay_knapping', 'tfc:fire_clay')
-    rm.item_tag('leather_knapping', 'minecraft:leather')
+    rm.item_tag('leather_knapping', '#forge:leather')
     rm.item_tag('knapping_any', '#tfc:clay_knapping', '#tfc:fire_clay_knapping', '#tfc:leather_knapping', '#tfc:rock_knapping')
     rm.item_tag('forge:gems/diamond', 'tfc:gem/diamond')
     rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
@@ -160,11 +161,22 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:double_sheets/any_bronze', *['#forge:double_sheets/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('tfc:bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
+    rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
+    rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
+    rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
+    rm.item_tag('soup_bowl', 'tfc:ceramic/bowl')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
         rm.item_tag('dyes', 'minecraft:%s_dye' % color)
 
+        if color != 'white':
+            for variant in VANILLA_DYED_ITEMS:
+                rm.item_tag('colored_%s' % variant, 'minecraft:%s_%s' % (color, variant))
+            for variant in ('raw_alabaster', 'alabaster_bricks', 'polished_alabaster'):
+                rm.item_tag('colored_%s' % variant, 'tfc:alabaster/stained/%s_%s' % (color, variant))
+        rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
+        rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
     for gem in GEMS:
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
 
@@ -174,15 +186,21 @@ def generate(rm: ResourceManager):
         rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
         rm.item_tag('sluices', 'tfc:wood/sluice/%s' % wood)
         rm.item_tag('looms', 'tfc:wood/planks/%s_loom' % wood)
+        if wood in TANNIN_WOOD_TYPES:
+            rm.item_tag('makes_tannin', 'tfc:wood/log/%s' % wood, 'tfc:wood/wood/%s' % wood)
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
+            rm.item_tag("usable_on_tool_rack", 'tfc:stone/%s/%s' % (tool, category))
 
     for metal, metal_data in METALS.items():  # Metal Tools
         if 'tool' in metal_data.types:
             for tool_type, tool_tag in TOOL_TAGS.items():
                 rm.item_tag(tool_tag, 'tfc:metal/%s/%s' % (tool_type, metal))
+                rm.item_tag("usable_on_tool_rack", 'tfc:metal/%s/%s' % (tool_type, metal))
+            rm.item_tag("usable_on_tool_rack", 'tfc:metal/fishing_rod/%s' % metal, 'tfc:metal/tuyere/%s' % metal)
+        
 
     # Blocks and Items
     block_and_item_tag(rm, 'forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag for some reason
@@ -235,6 +253,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
@@ -394,14 +413,14 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water')
-    rm.fluid_tag('fluid_ingredients', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
+    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols')
     rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
+    rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
 
     # Item Sizes
 
@@ -434,6 +453,8 @@ def generate(rm: ResourceManager):
     item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
+    item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
+    item_size(rm, 'soups', '#tfc:soup_bowls', Size.very_small, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
@@ -557,6 +578,7 @@ def generate(rm: ResourceManager):
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
+    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=1000)
 
     # Climate Ranges
 
@@ -594,6 +616,8 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
     rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
     rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
+    rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -614,6 +638,8 @@ def generate(rm: ResourceManager):
     rm.entity_loot('penguin', {'name': 'minecraft:feather', 'conditions': [loot_tables.random_chance(0.8)]}, {'name': 'tfc:small_raw_hide', 'conditions': [loot_tables.random_chance(0.3)]})
     rm.entity_loot('turtle', 'minecraft:scute')
     rm.entity_loot('polar_bear', 'tfc:large_raw_hide')
+    rm.entity_loot('squid', {'name': 'minecraft:ink_sac', 'functions': loot_tables.set_count(1, 3)})
+    rm.entity_loot('octopoteuthis', {'name': 'minecraft:glow_ink_sac', 'functions': loot_tables.set_count(1, 3)})
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {
@@ -641,12 +667,13 @@ def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] =
     }
 
 
-def fauna(chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None) -> Dict[str, Any]:
+def fauna(chance: int = None, distance_below_sea_level: int = None, climate: Dict[str, Any] = None, solid_ground: bool = None, max_brightness: int = None) -> Dict[str, Any]:
     return {
         'chance': chance,
         'distance_below_sea_level': distance_below_sea_level,
         'climate': climate,
-        'solid_ground': solid_ground
+        'solid_ground': solid_ground,
+        'max_brightness': max_brightness
     }
 
 
@@ -665,6 +692,10 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'dairy': dairy
     })
     rm.item_tag('foods', ingredient)
+    if category in (Category.fruit, Category.vegetable):
+        rm.item_tag('foods/%ss' % category.name.lower(), ingredient)
+    if category in (Category.meat, Category.cooked_meat):
+        rm.item_tag('foods/meats', ingredient)
 
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):

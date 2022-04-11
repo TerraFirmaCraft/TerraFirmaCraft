@@ -17,12 +17,10 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -69,24 +67,26 @@ public final class InteractionManager
     public static void registerDefaultInteractions()
     {
         register(TFCTags.Items.THATCH_BED_HIDES, false, (stack, context) -> {
-            final Level world = context.getLevel();
+            final Level level = context.getLevel();
             final Player player = context.getPlayer();
-            if (!world.isClientSide() && player != null)
+            if (!level.isClientSide() && player != null)
             {
                 final BlockPos basePos = context.getClickedPos();
+                final BlockState baseState = level.getBlockState(basePos);
                 final Direction facing = context.getHorizontalDirection();
                 final BlockState bed = TFCBlocks.THATCH_BED.get().defaultBlockState();
                 for (Direction direction : new Direction[] {facing, facing.getClockWise(), facing.getOpposite(), facing.getCounterClockWise()})
                 {
                     final BlockPos headPos = basePos.relative(direction, 1);
-                    if (Helpers.isBlock(world.getBlockState(basePos), TFCTags.Blocks.THATCH_BED_THATCH) && Helpers.isBlock(world.getBlockState(headPos), TFCTags.Blocks.THATCH_BED_THATCH))
+                    final BlockState headState = level.getBlockState(headPos);
+                    if (Helpers.isBlock(baseState, TFCTags.Blocks.THATCH_BED_THATCH) && Helpers.isBlock(headState, TFCTags.Blocks.THATCH_BED_THATCH))
                     {
                         final BlockPos playerPos = player.blockPosition();
                         if (playerPos != headPos && playerPos != basePos)
                         {
-                            world.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 18);
-                            world.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction.getOpposite()), 18);
-                            stack.shrink(1);
+                            level.setBlock(basePos, bed.setValue(ThatchBedBlock.PART, BedPart.FOOT).setValue(ThatchBedBlock.FACING, direction), 18);
+                            level.setBlock(headPos, bed.setValue(ThatchBedBlock.PART, BedPart.HEAD).setValue(ThatchBedBlock.FACING, direction.getOpposite()), 18);
+                            level.getBlockEntity(headPos, TFCBlockEntities.THATCH_BED.get()).ifPresent(entity -> entity.setBed(headState, baseState, stack.split(1)));
                             return InteractionResult.SUCCESS;
                         }
 
@@ -98,11 +98,11 @@ public final class InteractionManager
 
         register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, false, (stack, context) -> {
             final Player player = context.getPlayer();
-            final Level world = context.getLevel();
+            final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
-            if (player != null && StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+            if (player != null && StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), player, stack))
             {
-                world.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, world.getRandom().nextFloat() * 0.4F + 0.8F);
+                level.playSound(player, pos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
                 if (!player.isCreative())
                 {
                     stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
@@ -116,11 +116,11 @@ public final class InteractionManager
             final Player playerEntity = context.getPlayer();
             if (playerEntity instanceof final ServerPlayer player)
             {
-                final Level world = context.getLevel();
+                final Level level = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
                 if (!player.isCreative())
                     stack.shrink(1);
-                if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), player, stack))
+                if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), player, stack))
                     return InteractionResult.SUCCESS;
             }
             return InteractionResult.FAIL;
@@ -175,26 +175,27 @@ public final class InteractionManager
             }
             else
             {
-                final Level world = context.getLevel();
+                final Level level = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
-                final BlockState stateAt = world.getBlockState(pos);
-                if (player != null && (player.blockPosition().equals(pos) || player.blockPosition().equals(pos.above()))) return InteractionResult.FAIL;
+                final BlockState stateAt = level.getBlockState(pos);
+                if (player != null && (player.blockPosition().equals(pos) || player.blockPosition().equals(pos.above())))
+                    return InteractionResult.FAIL;
                 if (Helpers.isBlock(stateAt, TFCBlocks.CHARCOAL_PILE.get()))
                 {
                     int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
                     if (layers != 8)
                     {
                         stack.shrink(1);
-                        world.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
-                        Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                        level.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
+                        Helpers.playSound(level, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                         return InteractionResult.SUCCESS;
                     }
                 }
-                if (world.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(world, pos, Direction.UP))
+                if (level.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(level, pos, Direction.UP))
                 {
                     stack.shrink(1);
-                    world.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
-                    Helpers.playSound(world, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                    level.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
+                    Helpers.playSound(level, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.FAIL;
@@ -235,28 +236,24 @@ public final class InteractionManager
                                 return InteractionResult.SUCCESS;
                             }
 
+                            // if we placed instead, insert logs at the RELATIVE position using the mutated stack
                             final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                             if (result.consumesAction())
                             {
-                                insertStack.setCount(1);
-                                cap.insertItem(0, insertStack, false);
+                                // shrinking is handled by the item placement
+                                Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), insertStack);
                             }
                             return result;
                         }).orElse(InteractionResult.PASS);
                 }
                 else if (!level.getBlockState(relativePos.below()).isAir())
                 {
-                    // Trying to place a log pile.
-                    final ItemStack insertStack = stack.copy();
+                    // when placing against a non-pile block
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        level.getBlockEntity(relativePos, TFCBlockEntities.LOG_PILE.get())
-                            .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
-                            .ifPresent(cap -> {
-                                insertStack.setCount(1);
-                                cap.insertItem(0, insertStack, false);
-                            });
+                        // shrinking is handled by the item placement
+                        Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), stack);
                     }
                     return result;
                 }

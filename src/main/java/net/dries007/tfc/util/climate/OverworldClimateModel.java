@@ -6,17 +6,18 @@
 
 package net.dries007.tfc.util.climate;
 
-import java.util.OptionalLong;
 import java.util.Random;
-import javax.annotation.Nullable;
+
+import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowyDirtBlock;
@@ -30,7 +31,6 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendar;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
@@ -45,8 +45,6 @@ import net.dries007.tfc.world.settings.ClimateSettings;
  * - seasonal, monthly, and daily temperature variance.
  * - altitude based temperature, including both above and below ground effects.
  * - time varying precipitation types.
- *
- * This class can be used directly via static methods <strong>only if</strong> it is used through world generation, and the call site can assume that it is in the overworld.
  */
 public class OverworldClimateModel implements WorldGenClimateModel
 {
@@ -79,32 +77,46 @@ public class OverworldClimateModel implements WorldGenClimateModel
     public static final float FOGGY_RAINFALL_MINIMUM = 150f;
     public static final float FOGGY_RAINFALL_PEAK = 300f;
 
-    public static final OverworldClimateModel INSTANCE = new OverworldClimateModel();
-
-    /**
-     * Calculates the average monthly temperature for a location and given month.
-     */
-    public static float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor)
+    @Override
+    public ClimateModelType type()
     {
-        final float monthlyTemperature = INSTANCE.calculateMonthlyTemperature(z, monthFactor);
-        return INSTANCE.adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
+        return ClimateModels.OVERWORLD.get();
     }
 
     /**
-     * Calculates the exact temperature at a given location and time.
+     * Obtain the climate model for the current dimension, assuming it is an {@link OverworldClimateModel}
+     * This is intended for use in select world generation, which is fine with only functioning in an overworld climate model like scenario
      */
-    public static float getTemperature(BlockPos pos, ChunkData data, Calendar calendar)
+    @Nullable
+    public static OverworldClimateModel getIfPresent(Object maybeLevel)
     {
-        return INSTANCE.getTemperature(null, pos, data, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
+        final Level unsafeLevel = Helpers.getUnsafeLevel(maybeLevel);
+        if (unsafeLevel != null)
+        {
+            final ClimateModel model = Climate.model(unsafeLevel);
+            if (model instanceof OverworldClimateModel overworldClimateModel)
+            {
+                return overworldClimateModel;
+            }
+        }
+        return null;
     }
-
 
     private ClimateSettings temperatureSettings = ClimateSettings.DEFAULT_TEMPERATURE;
-    private OptionalLong climateSeed = OptionalLong.empty();
+    private long climateSeed = 0;
 
     // For world generation climate
     private Noise2D snowPatchNoise = (x, z) -> 0;
     private Noise2D icePatchNoise = (x, z) -> 0;
+
+    /**
+     * Calculates the average monthly temperature for a location and given month.
+     */
+    public float getAverageMonthlyTemperature(int z, int y, float averageTemperature, float monthFactor)
+    {
+        final float monthlyTemperature = calculateMonthlyTemperature(z, monthFactor);
+        return adjustTemperatureByElevation(y, averageTemperature, monthlyTemperature, 0);
+    }
 
     @Override
     public float getTemperature(@Nullable LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
@@ -198,7 +210,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
                 mutablePos.set(x, level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z), z);
 
                 final float noise = snowPatchNoise.noise(x, z);
-                final float temperature = OverworldClimateModel.getTemperature(mutablePos, chunkData, Calendars.SERVER);
+                final float temperature = getTemperature(null, mutablePos, chunkData, Calendars.SERVER.getCalendarTicks(), Calendars.SERVER.getCalendarDaysInMonth());
                 final float snowTemperatureModifier = Mth.clampedMap(temperature, -10f, 2f, -1, 1);
 
                 // Handle snow
@@ -287,21 +299,47 @@ public class OverworldClimateModel implements WorldGenClimateModel
     }
 
     @Override
-    public void updateCachedTemperatureSettings(ClimateSettings settings, long climateSeed)
+    public void onWorldLoad(ServerLevel level)
     {
-        if (this.climateSeed.isEmpty() || this.climateSeed.getAsLong() != climateSeed)
-        {
-            this.temperatureSettings = settings;
-            this.climateSeed = OptionalLong.of(climateSeed);
-            this.snowPatchNoise = new OpenSimplex2D(climateSeed + 72397489123L).octaves(2).spread(0.3f).scaled(-1, 1);
-            this.icePatchNoise = new OpenSimplex2D(climateSeed + 192639412341L).octaves(3).spread(0.6f);
-        }
+        // Update climate settings
+        temperatureSettings = level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex ? ex.getBiomeSource().getTemperatureSettings() : ClimateSettings.DEFAULT_TEMPERATURE;
+        climateSeed = LinearCongruentialGenerator.next(level.getSeed(), 719283741234L);
+
+        updateNoise();
+    }
+
+    @Override
+    public void onSyncToClient(FriendlyByteBuf buffer)
+    {
+        buffer.writeFloat(temperatureSettings.lowThreshold());
+        buffer.writeFloat(temperatureSettings.highThreshold());
+        buffer.writeInt(temperatureSettings.scale());
+        buffer.writeBoolean(temperatureSettings.endlessPoles());
+        buffer.writeLong(climateSeed);
+    }
+
+    @Override
+    public void onReceiveOnClient(FriendlyByteBuf buffer)
+    {
+        final float lo = buffer.readFloat();
+        final float hi = buffer.readFloat();
+        final int scale = buffer.readInt();
+        final boolean endless = buffer.readBoolean();
+
+        temperatureSettings = new ClimateSettings(lo, hi, scale, endless);
+        climateSeed = buffer.readLong();
+    }
+
+    protected void updateNoise()
+    {
+        this.snowPatchNoise = new OpenSimplex2D(climateSeed + 72397489123L).octaves(2).spread(0.3f).scaled(-1, 1);
+        this.icePatchNoise = new OpenSimplex2D(climateSeed + 192639412341L).octaves(3).spread(0.6f);
     }
 
     /**
      * Adjusts a series of temperature factors by elevation. Returns the sum temperature after adjustment.
      */
-    private float adjustTemperatureByElevation(int y, float averageTemperature, float monthTemperature, float dailyTemperature)
+    protected float adjustTemperatureByElevation(int y, float averageTemperature, float monthTemperature, float dailyTemperature)
     {
         // Adjust temperature based on elevation
         // Above sea level, temperature lowers linearly with y.
@@ -332,7 +370,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
     /**
      * Calculates the monthly temperature for a given latitude and month modifier
      */
-    private float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
+    protected float calculateMonthlyTemperature(int z, float monthTemperatureModifier)
     {
         return monthTemperatureModifier * Helpers.triangle(LATITUDE_TEMPERATURE_VARIANCE_AMPLITUDE, LATITUDE_TEMPERATURE_VARIANCE_MEAN, 1f / (4f * temperatureSettings.scale()), z);
     }
@@ -342,7 +380,7 @@ public class OverworldClimateModel implements WorldGenClimateModel
      * Influenced by both random variation day by day, and the time of day.
      * Range: -3.9 - 3.9
      */
-    private float calculateDailyTemperature(long calendarTime)
+    protected float calculateDailyTemperature(long calendarTime)
     {
         // Hottest part of the day at 12, coldest at 0
         int hourOfDay = ICalendar.getHourOfDay(calendarTime);
@@ -360,9 +398,9 @@ public class OverworldClimateModel implements WorldGenClimateModel
         return ((random.nextFloat() - random.nextFloat()) + 0.3f * hourModifier) * 3f;
     }
 
-    private Random seededRandom(long day, long salt)
+    protected Random seededRandom(long day, long salt)
     {
-        long seed = LinearCongruentialGenerator.next(climateSeed.orElse(0L), day);
+        long seed = LinearCongruentialGenerator.next(climateSeed, day);
         seed = LinearCongruentialGenerator.next(seed, salt);
         return new Random(seed);
     }

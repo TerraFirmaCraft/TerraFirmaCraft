@@ -8,7 +8,7 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +16,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
@@ -30,6 +30,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.loot.TFCLoot;
 
@@ -85,7 +86,7 @@ public class PanItem extends Item
     {
         if (countLeft % 16 == 0 && !level.isClientSide)
         {
-            entity.playSound(SoundEvents.SAND_BREAK, 1F, 1F);
+            level.playSound(null, entity, TFCSounds.PANNING.get(), SoundSource.PLAYERS, 1f, 1f);
         }
     }
 

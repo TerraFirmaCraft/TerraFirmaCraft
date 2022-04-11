@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -49,14 +49,14 @@ public class PartialFluidHandler implements DelegateFluidHandler
         return insert ? internal.fill(resource, action) : 0;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action)
     {
         return extract ? internal.drain(resource, action) : FluidStack.EMPTY;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public FluidStack drain(int maxDrain, FluidAction action)
     {

@@ -5,7 +5,7 @@
     "item": "tfc:ceramic/ingot_mold"
   },
   "fluid": {
-    "fluid": "tfc:metal/high_carbon_steel",
+    "ingredient": "tfc:metal/high_carbon_steel",
     "amount": 100
   },
   "result": {

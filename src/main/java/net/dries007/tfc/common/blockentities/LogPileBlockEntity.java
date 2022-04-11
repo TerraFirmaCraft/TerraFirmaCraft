@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -29,7 +29,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class LogPileBlockEntity extends InventoryBlockEntity<ItemStackHandler> implements MenuProvider
 {
     public static final int SLOTS = 4;
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.log_pile");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.log_pile");
 
     private int playersUsing;
 

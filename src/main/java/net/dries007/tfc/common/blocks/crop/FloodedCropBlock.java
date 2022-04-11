@@ -9,8 +9,11 @@ package net.dries007.tfc.common.blocks.crop;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -22,6 +25,7 @@ import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.common.items.TFCItems;
@@ -74,6 +78,26 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
         return state.getFluidState().getType() == Fluids.EMPTY ? 0 : CropHelpers.GROWTH_LIMIT;
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    {
+        FluidHelpers.tickFluid(level, currentPos, state, this);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        Level world = context.getLevel();
+        BlockState state = defaultBlockState();
+        FluidState fluidState = world.getFluidState(context.getClickedPos());
+        if (!fluidState.isEmpty() && getFluidProperty().canContain(fluidState.getType()))
+        {
+            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+        }
+        return state;
     }
 
     @Override

@@ -27,6 +27,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
@@ -60,7 +61,7 @@ public class ScrapingBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        ScrapingBlockEntity te = Helpers.getBlockEntity(level, pos, ScrapingBlockEntity.class);
+        ScrapingBlockEntity te = level.getBlockEntity(pos, TFCBlockEntities.SCRAPING.get()).orElse(null);
         if (te != null)
         {
             ItemStack stack = player.getItemInHand(hand);

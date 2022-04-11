@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -62,9 +62,10 @@ public final class FoodCapability
         }
     }
 
-    public static void applyTrait(ItemStack stack, FoodTrait trait)
+    public static ItemStack applyTrait(ItemStack stack, FoodTrait trait)
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> applyTrait(food, trait));
+        return stack;
     }
 
     /**
@@ -84,9 +85,10 @@ public final class FoodCapability
         }
     }
 
-    public static void removeTrait(ItemStack stack, FoodTrait trait)
+    public static ItemStack removeTrait(ItemStack stack, FoodTrait trait)
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> removeTrait(food, trait));
+        return stack;
     }
 
     /**

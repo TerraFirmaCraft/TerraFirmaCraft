@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:forest_entry",
+  "config": {
+    "min_rain": 140,
+    "max_rain": 310,
+    "min_temp": 8,
+    "max_temp": 31,
+    "groundcover": [
+      {
+        "block": "tfc:wood/twig/rosewood"
+      },
+      {
+        "block": "tfc:wood/fallen_leaves/rosewood"
+      }
+    ],
+    "normal_tree": "tfc:tree/rosewood",
+    "fallen_log": "tfc:wood/log/rosewood"
+  }
+}

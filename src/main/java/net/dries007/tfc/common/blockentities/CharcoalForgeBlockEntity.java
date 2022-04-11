@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -56,7 +56,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public static final int SLOT_EXTRA_MAX = 13;
     public static final int DATA_SLOT_TEMPERATURE = 0;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.charcoal_forge");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.charcoal_forge");
     private static final int MAX_AIR_TICKS = 600;
 
     public static void createFromCharcoalPile(Level level, BlockPos pos)

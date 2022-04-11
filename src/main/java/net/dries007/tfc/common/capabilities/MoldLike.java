@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;

@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -21,9 +20,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
+
 public abstract class FloatingWaterPlantBlock extends PlantBlock
 {
-    protected static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 1.5D, 15.0D);
+    protected static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 1.5D, 15.0D);
 
     public static FloatingWaterPlantBlock create(IPlant plant, Supplier<? extends Fluid> fluid, Properties properties)
     {
@@ -56,12 +58,12 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
      */
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        super.entityInside(state, level, pos, entityIn);
-        if (level instanceof ServerLevel && entityIn instanceof Boat)
+        super.entityInside(state, level, pos, entity);
+        if (level instanceof ServerLevel && Helpers.isEntity(entity, TFCTags.Entities.DESTROYS_FLOATING_PLANTS))
         {
-            level.destroyBlock(new BlockPos(pos), true, entityIn);
+            level.destroyBlock(new BlockPos(pos), true, entity);
         }
     }
 

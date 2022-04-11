@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -89,8 +89,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
 
     protected void beforeRemove(InventoryBlockEntity<?> entity)
     {
-        // todo: remove debug
-        if (removeBehavior == InventoryRemoveBehavior.DROP || (this instanceof QuernBlock) || (this instanceof FirepitBlock) || (this instanceof CharcoalForgeBlock))
+        if (removeBehavior == InventoryRemoveBehavior.DROP)
         {
             entity.ejectInventory();
         }

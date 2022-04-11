@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -264,7 +264,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         super.saveAdditional(nbt);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -338,7 +338,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             alloy.deserializeNBT(nbt.getCompound("alloy"));
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack getFluidInTank(int tank)
         {
@@ -352,7 +352,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
 
         @Override
-        public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+        public boolean isFluidValid(int tank, @NotNull FluidStack stack)
         {
             return Metal.get(stack.getFluid()) != null;
         }
@@ -368,7 +368,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             return 0;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {

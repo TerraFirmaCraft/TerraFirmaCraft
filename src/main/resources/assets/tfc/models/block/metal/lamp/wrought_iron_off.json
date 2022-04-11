@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/lamp",
   "textures": {
-    "metal": "tfc:block/metal/wrought_iron",
+    "metal": "tfc:block/metal/full/wrought_iron",
     "lamp": "tfc:block/lamp_off"
   }
 }

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/lamp",
   "textures": {
-    "metal": "tfc:block/metal/black_steel",
+    "metal": "tfc:block/metal/full/black_steel",
     "lamp": "tfc:block/lamp"
   }
 }

@@ -1,0 +1,16 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "#pad"
+	},
+	"elements": [
+		{
+			"from": [0, 0.25, 0],
+			"to": [16, 0.25, 16],
+			"faces": {
+				"up": {"uv": [16, 0, 0, 16], "texture": "#pad", "tintindex": 0},
+				"down": {"uv": [16, 16, 0, 0], "texture": "#pad", "tintindex": 0}
+			}
+		}
+	]
+}
