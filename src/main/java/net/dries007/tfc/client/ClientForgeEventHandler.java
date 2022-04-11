@@ -61,6 +61,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
+import net.dries007.tfc.network.RequestClimateModelPacket;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
@@ -86,6 +87,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onItemTooltip);
         bus.addListener(ClientForgeEventHandler::onInitGuiPost);
         bus.addListener(ClientForgeEventHandler::onClientWorldLoad);
+        bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedIn);
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
@@ -258,6 +260,13 @@ public class ClientForgeEventHandler
             colorCaches.putIfAbsent(TFCColors.SALT_WATER, new BlockTintCache(TFCColors::getWaterColor));
 
         }
+    }
+
+    public static void onClientPlayerLoggedIn(ClientPlayerNetworkEvent.LoggedInEvent event)
+    {
+        // We can't send this on client world load, it's too early, as the connection is not setup yet
+        // This is the closest point after that which will work
+        PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestClimateModelPacket());
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event)

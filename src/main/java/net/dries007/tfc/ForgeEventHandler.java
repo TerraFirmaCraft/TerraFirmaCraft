@@ -98,8 +98,8 @@ import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.*;
+import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -110,7 +110,6 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
-import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import org.slf4j.Logger;
 
@@ -163,6 +162,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onLivingJump);
+        bus.addListener(ForgeEventHandler::onSelectClimateModel);
     }
 
     /**
@@ -512,14 +512,7 @@ public final class ForgeEventHandler
                 LOGGER.info("Updating TFC Relevant Game Rules for level {}.", level.dimension().location());
             }
 
-            if (level.dimension() == Level.OVERWORLD && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
-            {
-                // Update climate settings
-                final ClimateSettings settings = ex.getBiomeSource().getTemperatureSettings();
-
-                Climate.updateCachedSettings(level, settings, ex.getClimateSeed()); // Server
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings, ex.getClimateSeed())); // Client
-            }
+            Climate.onWorldLoad(level);
         }
     }
 
@@ -793,12 +786,6 @@ public final class ForgeEventHandler
         if (event.getPlayer() instanceof ServerPlayer)
         {
             TFCFoodData.replaceFoodStats(event.getPlayer());
-
-            final ServerLevel overworld = ServerLifecycleHooks.getCurrentServer().overworld();
-            if (overworld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
-            {
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(ex.getBiomeSource().getTemperatureSettings(), ex.getClimateSeed()));
-            }
         }
     }
 
@@ -929,6 +916,16 @@ public final class ForgeEventHandler
         {
             event.setResult(Event.Result.DENY);
             event.setCanceled(true);
+        }
+    }
+
+    public static void onSelectClimateModel(SelectClimateModelEvent event)
+    {
+        final ServerLevel level = event.level();
+        if (event.level().dimension() == Level.OVERWORLD && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension)
+        {
+            // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
+            event.setModel(new OverworldClimateModel());
         }
     }
 }

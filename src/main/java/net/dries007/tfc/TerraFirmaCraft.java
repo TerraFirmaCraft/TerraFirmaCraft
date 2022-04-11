@@ -55,7 +55,7 @@ import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.loot.TFCLoot;
-import net.dries007.tfc.util.tracker.IWorldTracker;
+import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.TFCWorldType;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
@@ -146,6 +146,7 @@ public final class TerraFirmaCraft
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
             FoodTraits.registerFoodTraits();
+            ClimateModels.registerAll();
 
             ItemSizeManager.setupItemStackSizeOverrides();
             DispenserBehaviors.registerAll();
@@ -161,7 +162,7 @@ public final class TerraFirmaCraft
         event.register(IHeatBlock.class);
         event.register(IForging.class);
         event.register(ChunkData.class);
-        event.register(IWorldTracker.class);
+        event.register(WorldTracker.class);
         event.register(IFood.class);
         event.register(PlayerData.class);
         event.register(ISyncable.class);
