@@ -1,7 +1,6 @@
 {
-  "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:block/plant/template_floating_tinted",
   "textures": {
-    "plant": "tfc:block/plant/duckweed/duckweed"
+    "pad": "tfc:block/plant/duckweed/duckweed"
   }
 }
