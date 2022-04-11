@@ -6,41 +6,37 @@
       },
       "apply": [
         {
-          "model": "tfc:block/plant/water_lily_0",
-          "weight": 3
+          "model": "tfc:block/plant/water_lily",
+          "weight": 2
         },
         {
-          "model": "tfc:block/plant/water_lily_0",
-          "weight": 3,
+          "model": "tfc:block/plant/water_lily",
+          "weight": 2,
           "y": 90
         },
         {
-          "model": "tfc:block/plant/water_lily_0",
-          "weight": 3,
+          "model": "tfc:block/plant/water_lily",
+          "weight": 2,
           "y": 180
         },
         {
-          "model": "tfc:block/plant/water_lily_0",
-          "weight": 3,
+          "model": "tfc:block/plant/water_lily",
+          "weight": 2,
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily",
-          "weight": 1
+          "model": "tfc:block/plant/water_lily_0"
         },
         {
-          "model": "tfc:block/plant/water_lily",
-          "weight": 1,
+          "model": "tfc:block/plant/water_lily_0",
           "y": 90
         },
         {
-          "model": "tfc:block/plant/water_lily",
-          "weight": 1,
+          "model": "tfc:block/plant/water_lily_0",
           "y": 180
         },
         {
-          "model": "tfc:block/plant/water_lily",
-          "weight": 1,
+          "model": "tfc:block/plant/water_lily_0",
           "y": 270
         }
       ]
@@ -52,40 +48,59 @@
       "apply": [
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 3
+          "weight": 8
         },
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 3,
+          "weight": 8,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 3,
+          "weight": 8,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 3,
+          "weight": 8,
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/water_lily_0",
+          "weight": 4
+        },
+        {
+          "model": "tfc:block/plant/water_lily_0",
+          "weight": 4,
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/water_lily_0",
+          "weight": 4,
+          "y": 180
+        },
+        {
+          "model": "tfc:block/plant/water_lily_0",
+          "weight": 4,
           "y": 270
         },
         {
           "model": "tfc:block/plant/water_lily_1",
-          "weight": 1
+          "weight": 4
         },
         {
           "model": "tfc:block/plant/water_lily_1",
-          "weight": 1,
+          "weight": 2,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily_1",
-          "weight": 1,
+          "weight": 2,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily_1",
-          "weight": 1,
+          "weight": 2,
           "y": 270
         }
       ]
@@ -115,60 +130,67 @@
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1
+          "model": "tfc:block/plant/water_lily_1",
+          "weight": 3
         },
         {
-          "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1,
+          "model": "tfc:block/plant/water_lily_1",
+          "weight": 3,
           "y": 90
         },
         {
-          "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1,
+          "model": "tfc:block/plant/water_lily_1",
+          "weight": 3,
           "y": 180
         },
         {
-          "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1,
+          "model": "tfc:block/plant/water_lily_1",
+          "weight": 3,
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1
+          "model": "tfc:block/plant/water_lily_2_purple"
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1,
+          "model": "tfc:block/plant/water_lily_2_purple",
           "y": 90
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1,
+          "model": "tfc:block/plant/water_lily_2_purple",
           "y": 180
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1,
+          "model": "tfc:block/plant/water_lily_2_purple",
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1
+          "model": "tfc:block/plant/water_lily_2_white"
         },
         {
           "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1,
+          "y": 270
+        },
+        {
+          "model": "tfc:block/plant/water_lily_2_white"
+        },
+        {
+          "model": "tfc:block/plant/water_lily_2_white",
+          "y": 90
+        },
+        {
+          "model": "tfc:block/plant/water_lily_2_white",
+          "y": 180
+        },
+        {
+          "model": "tfc:block/plant/water_lily_2_white",
           "y": 270
         }
       ]
@@ -180,97 +202,66 @@
       "apply": [
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 12
+          "weight": 8
         },
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 12,
+          "weight": 8,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 12,
+          "weight": 8,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily",
-          "weight": 12,
+          "weight": 8,
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily_2",
-          "weight": 3
-        },
-        {
-          "model": "tfc:block/plant/water_lily_2",
-          "weight": 3,
-          "y": 90
-        },
-        {
-          "model": "tfc:block/plant/water_lily_2",
-          "weight": 3,
-          "y": 180
-        },
-        {
-          "model": "tfc:block/plant/water_lily_2",
-          "weight": 3,
-          "y": 270
+          "model": "tfc:block/plant/water_lily_2_purple"
         },
         {
           "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1
-        },
-        {
-          "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily_2_purple",
-          "weight": 1,
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1
+          "model": "tfc:block/plant/water_lily_2_white"
         },
         {
           "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily_2_white",
-          "white": 1,
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1
+          "model": "tfc:block/plant/water_lily_2_yellow"
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1,
+          "model": "tfc:block/plant/water_lily_2_yellow",
           "y": 90
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1,
+          "model": "tfc:block/plant/water_lily_2_yellow",
           "y": 180
         },
         {
-          "model": "tfc:block/plant/water_lily_2_white",
-          "yellow": 1,
+          "model": "tfc:block/plant/water_lily_2_yellow",
           "y": 270
         }
       ]
@@ -281,18 +272,22 @@
       },
       "apply": [
         {
-          "model": "tfc:block/plant/water_lily"
+          "model": "tfc:block/plant/water_lily",
+          "weight": 4
         },
         {
           "model": "tfc:block/plant/water_lily",
+          "weight": 4,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily",
+          "weight": 4,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily",
+          "weight": 4,
           "y": 270
         },
         {
@@ -318,18 +313,18 @@
       },
       "apply": [
         {
-          "model": "tfc:block/plant/water_lily_0"
+          "model": "tfc:block/plant/water_lily"
         },
         {
-          "model": "tfc:block/plant/water_lily_0",
+          "model": "tfc:block/plant/water_lily",
           "y": 90
         },
         {
-          "model": "tfc:block/plant/water_lily_0",
+          "model": "tfc:block/plant/water_lily",
           "y": 180
         },
         {
-          "model": "tfc:block/plant/water_lily_0",
+          "model": "tfc:block/plant/water_lily",
           "y": 270
         }
       ]
@@ -359,22 +354,18 @@
           "y": 270
         },
         {
-          "model": "tfc:block/plant/water_lily_0",
-          "weight": 1
+          "model": "tfc:block/plant/water_lily_0"
         },
         {
           "model": "tfc:block/plant/water_lily_0",
-          "weight": 1,
           "y": 90
         },
         {
           "model": "tfc:block/plant/water_lily_0",
-          "weight": 1,
           "y": 180
         },
         {
           "model": "tfc:block/plant/water_lily_0",
-          "weight": 1,
           "y": 270
         }
       ]
