@@ -82,8 +82,13 @@ public final class TFCBlockEntities
 
     public static boolean validateBlockEntities()
     {
+        return validateBlockEntities(MOD_ID);
+    }
+
+    public static boolean validateBlockEntities(String modID)
+    {
         final List<Block> fbeButNoEbe = new ArrayList<>(), ebeButNoFbe = new ArrayList<>(), ebButNoEbe = new ArrayList<>();
-        Helpers.streamOurs(ForgeRegistries.BLOCKS)
+        Helpers.streamOurs(ForgeRegistries.BLOCKS, modID)
             .forEach(b -> {
                 if (b instanceof IForgeBlockExtension ex && ex.getExtendedProperties().hasBlockEntity() && !(b instanceof EntityBlockExtension))
                 {
