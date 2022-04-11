@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.Map;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -42,7 +46,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     private static final BooleanProperty ITEM_1 = TFCBlockStateProperties.ITEM_1;
     private static final BooleanProperty ITEM_2 = TFCBlockStateProperties.ITEM_2;
     private static final BooleanProperty ITEM_3 = TFCBlockStateProperties.ITEM_3;
-    public static final BooleanProperty[] ITEMS = new BooleanProperty[] {ITEM_0, ITEM_1, ITEM_2, ITEM_3};
+    public static final BooleanProperty[] ITEM_PROPERTIES = new BooleanProperty[] {ITEM_0, ITEM_1, ITEM_2, ITEM_3};
     private static final VoxelShape SHAPE_0 = box(0, 0, 0, 8.0D, 1.0D, 8.0D);
     private static final VoxelShape SHAPE_1 = box(8.0D, 0, 0, 16.0D, 1.0D, 8.0D); // x
     private static final VoxelShape SHAPE_2 = box(0, 0, 8.0D, 8.0D, 1.0D, 16.0D); // z
@@ -52,11 +56,11 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     /**
      * Pos refers to below block, state refers to the placed item state.
      */
-    public static BlockState updateStateValues(LevelAccessor world, BlockPos pos, BlockState state)
+    public static BlockState updateStateValues(LevelAccessor level, BlockPos pos, BlockState state)
     {
         for (int i = 0; i < 4; i++)
         {
-            state = state.setValue(ITEMS[i], isSlotSupportedOn(world, pos, world.getBlockState(pos), i));
+            state = state.setValue(ITEM_PROPERTIES[i], isSlotSupportedOn(level, pos, level.getBlockState(pos), i));
         }
         return state;
     }
@@ -64,17 +68,15 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     /**
      * Pos and state refer to the below block
      */
-    public static boolean isSlotSupportedOn(LevelAccessor world, BlockPos pos, BlockState state, int slot)
+    public static boolean isSlotSupportedOn(LevelAccessor level, BlockPos pos, BlockState state, int slot)
     {
-        VoxelShape supportShape = state.getBlockSupportShape(world, pos).getFaceShape(Direction.UP);
+        VoxelShape supportShape = state.getBlockSupportShape(level, pos).getFaceShape(Direction.UP);
         return !Shapes.joinIsNotEmpty(supportShape, SHAPES[slot], BooleanOp.ONLY_SECOND);
     }
 
     private static void convertPlacedItemToPitKiln(Level level, BlockPos pos, ItemStack strawStack)
     {
-        PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
-        if (placedItem != null)
-        {
+        level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(placedItem -> {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
             ItemStack[] inventory = new ItemStack[4];
@@ -91,9 +93,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             // Play placement sound
             level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
             // Copy TE data
-            PitKilnBlockEntity pitKiln = level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
-            if (pitKiln != null)
-            {
+            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
                 // Copy inventory
                 pitKiln.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
                     for (int i = 0; i < 4; i++)
@@ -107,14 +107,35 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
                 // Copy misc data
                 pitKiln.isHoldingLargeItem = placedItem.isHoldingLargeItem;
                 pitKiln.addStraw(strawStack, 0);
-            }
-        }
+            });
+        });
     }
+
+    private static Map<BlockState, VoxelShape> makeShapes(ImmutableList<BlockState> possibleStates)
+    {
+        final ImmutableMap.Builder<BlockState, VoxelShape> builder = ImmutableMap.builder();
+        for (BlockState state : possibleStates)
+        {
+            VoxelShape shape = Shapes.empty();
+            for (int i = 0; i < 4; i++)
+            {
+                if (state.getValue(ITEM_PROPERTIES[i]))
+                {
+                    shape = Shapes.or(shape, SHAPES[i]);
+                }
+            }
+            builder.put(state, shape);
+        }
+        return builder.build();
+    }
+
+    private final Map<BlockState, VoxelShape> cachedShapes;
 
     public PlacedItemBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
         registerDefaultState(getStateDefinition().any().setValue(ITEM_0, true).setValue(ITEM_1, true).setValue(ITEM_2, true).setValue(ITEM_3, true));
+        cachedShapes = makeShapes(getStateDefinition().getPossibleStates());
     }
 
     @Override
@@ -156,37 +177,30 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        VoxelShape shape = Shapes.empty();
-        for (int i = 0; i < 4; i++)
-        {
-            if (state.getValue(ITEMS[i]))
-                shape = Shapes.or(shape, SHAPES[i]);
-        }
-        return shape;
+        return cachedShapes.get(state);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
-    }
-
-    public boolean isEmpty(BlockState state)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (state.getValue(ITEMS[i]))
-                return false;
-        }
-        return true;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(ITEM_0, ITEM_1, ITEM_2, ITEM_3);
+    }
+
+    public boolean isEmpty(BlockState state)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (state.getValue(ITEM_PROPERTIES[i])) return false;
+        }
+        return true;
     }
 }
