@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -106,6 +106,16 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.POT.get();
+    }
+
+    public FluidStackIngredient getFluidIngredient()
+    {
+        return fluidIngredient;
+    }
+
+    public List<Ingredient> getItemIngredients()
+    {
+        return itemIngredients;
     }
 
     /**
@@ -258,7 +268,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
             {
                 ingredient.toNetwork(buffer);
             }
-            FluidStackIngredient.toNetwork(buffer, recipe.fluidIngredient);
+            recipe.fluidIngredient.toNetwork(buffer);
             buffer.writeVarInt(recipe.duration);
             buffer.writeFloat(recipe.minTemp);
         }

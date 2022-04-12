@@ -7,7 +7,7 @@
     }
   ],
   "fluid_ingredient": {
-    "fluid": "tfc:salt_water",
+    "ingredient": "tfc:salt_water",
     "amount": 1000
   },
   "duration": 200,

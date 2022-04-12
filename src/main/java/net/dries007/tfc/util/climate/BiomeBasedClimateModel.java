@@ -12,34 +12,42 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
-import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * A default climate model, for dimensions that are entirely biome determined (i.e. vanilla).
  */
-public class BiomeBasedClimateModel implements WorldGenClimateModel
+public class BiomeBasedClimateModel implements TimeInvariantClimateModel
 {
+    public static final BiomeBasedClimateModel INSTANCE = new BiomeBasedClimateModel();
+
     @Override
-    public float getTemperature(LevelReader level, BlockPos pos, ChunkData data, long calendarTicks, int daysInMonth)
+    public ClimateModelType type()
     {
-        return getAverageTemperature(level, pos);
+        return ClimateModels.BIOME_BASED.get();
     }
 
     @Override
-    public float getAverageTemperature(LevelReader level, BlockPos pos)
+    public float getTemperature(LevelReader level, BlockPos pos)
     {
-        return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos)).invoke$getTemperature(pos));
+        return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos).value()).invoke$getTemperature(pos));
     }
 
     @Override
     public float getRainfall(LevelReader level, BlockPos pos)
     {
-        return Mth.clamp(level.getBiome(pos).getDownfall(), 0, 1) * ClimateModel.MAXIMUM_RAINFALL;
+        return Mth.clamp(level.getBiome(pos).value().getDownfall(), 0, 1) * ClimateModel.MAXIMUM_RAINFALL;
     }
 
     @Override
     public Biome.Precipitation getPrecipitation(LevelReader level, BlockPos pos)
     {
-        return level.getBiome(pos).getPrecipitation();
+        return level.getBiome(pos).value().getPrecipitation();
+    }
+
+    @Override
+    public float getFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    {
+        return 0;
     }
 }

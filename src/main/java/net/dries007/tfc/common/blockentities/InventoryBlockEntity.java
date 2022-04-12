@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -78,28 +78,28 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         if (nbt.contains("CustomName"))
         {
             customName = Component.Serializer.fromJson(nbt.getString("CustomName"));
         }
         inventory.deserializeNBT(nbt.getCompound("inventory"));
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         if (customName != null)
         {
             nbt.putString("CustomName", Component.Serializer.toJson(customName));
         }
         nbt.put("inventory", inventory.serializeNBT());
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -139,7 +139,7 @@ public abstract class InventoryBlockEntity<C extends IItemHandlerModifiable & IN
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        markDirtyFast();
+        setChanged();
     }
 
     public boolean canInteractWith(Player player)

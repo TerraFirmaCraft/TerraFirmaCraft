@@ -11,11 +11,10 @@ import net.minecraft.world.level.biome.Biome;
 
 /**
  * This is a wrapper class around extra data, which is assigned to particular biomes
- * Some functionality of biomes is also redirected (through mixins) to call this extension where possible.
  * This extension is tracked in {@link TFCBiomes} by registry key.
  */
-public record BiomeExtension(ResourceKey<Biome> key, BiomeVariants variants)
+public record BiomeExtension(ResourceKey<Biome> key, BiomeTemperature temperature, BiomeRainfall rainfall, BiomeVariants variants)
 {
     @SuppressWarnings("ConstantConditions")
-    public static final BiomeExtension EMPTY = new BiomeExtension(null, null);
+    public static final BiomeExtension EMPTY = new BiomeExtension(null, BiomeTemperature.NORMAL, BiomeRainfall.NORMAL, null);
 }

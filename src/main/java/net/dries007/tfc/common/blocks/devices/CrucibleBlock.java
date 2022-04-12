@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
@@ -79,7 +78,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
     @Override
     public Size getSize(ItemStack stack)
     {
-        final CompoundTag tag = stack.getTagElement("BlockEntityTag" /* BlockItem.BLOCK_ENTITY_TAG */);
+        final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
         if (tag != null && tag.contains("empty") && !tag.getBoolean("empty"))
         {
             return Size.HUGE;

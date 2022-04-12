@@ -26,6 +26,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 
 public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpawnData
@@ -71,7 +72,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     }
 
     @Override
-    public boolean shouldStopFishing(Player player)//todo: remove after forge PR #8168
+    public boolean shouldStopFishing(Player player)//todo: remove after forge PR ~#8168, #8424
     {
         boolean main = player.getMainHandItem().getItem() instanceof TFCFishingRodItem;
         boolean off = player.getOffhandItem().getItem() instanceof TFCFishingRodItem;
@@ -132,7 +133,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
         }
         if (getPlayerOwner() == null)
         {
-            LOGGER.error("Failed to recreate fishing hook on client. {} (id: {}) is not a valid owner.", this.level.getEntity(id), id);
+            TerraFirmaCraft.LOGGER.error("Failed to recreate fishing hook on client. {} (id: {}) is not a valid owner.", this.level.getEntity(id), id);
             kill();
         }
     }

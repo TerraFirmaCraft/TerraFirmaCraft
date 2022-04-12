@@ -3,7 +3,7 @@
   "replace": false,
   "values": [
     "minecraft:grass_block",
-    "#forge:dirt",
+    "#minecraft:dirt",
     "#tfc:grass"
   ]
 }

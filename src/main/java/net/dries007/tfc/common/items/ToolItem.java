@@ -8,6 +8,7 @@ package net.dries007.tfc.common.items;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.DiggerItem;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 public class ToolItem extends DiggerItem
 {
@@ -31,7 +33,7 @@ public class ToolItem extends DiggerItem
         return (attackDamage - 1) * tier.getAttackDamageBonus();
     }
 
-    public ToolItem(Tier tier, float attackDamage, float attackSpeed, Tag<Block> mineableBlocks, Properties properties)
+    public ToolItem(Tier tier, float attackDamage, float attackSpeed, TagKey<Block> mineableBlocks, Properties properties)
     {
         super(calculateVanillaAttackDamage(attackDamage, tier), attackSpeed, tier, mineableBlocks, properties);
     }
@@ -40,10 +42,15 @@ public class ToolItem extends DiggerItem
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
     {
         // Mining plants should consume some durability
-        if (!level.isClientSide && (TFCTags.Blocks.PLANT.contains(state.getBlock()) || state.getDestroySpeed(level, pos) != 0.0F))
+        if (!level.isClientSide && willConsumeDurability(level, pos, state))
         {
             stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
         return true;
+    }
+
+    protected boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
+    {
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.PLANTS) || state.getDestroySpeed(level, pos) != 0.0F;
     }
 }

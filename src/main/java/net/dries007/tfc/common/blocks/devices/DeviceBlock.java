@@ -6,17 +6,14 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
@@ -26,6 +23,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * Base class for blocks which:
@@ -57,7 +55,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
         final BlockEntity entity = level.getBlockEntity(pos);
-        if (entity instanceof InventoryBlockEntity<?> inv && !(state.is(newState.getBlock())))
+        if (entity instanceof InventoryBlockEntity<?> inv && !(Helpers.isBlock(state, newState.getBlock())))
         {
             beforeRemove(inv);
         }
@@ -83,7 +81,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
             final BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
             {
-                stack.addTagElement("BlockEntityTag" /* BlockItem.BLOCK_ENTITY_TAG */, inv.save(new CompoundTag()));
+                inv.saveToItem(stack);
             }
         }
         return stack;
@@ -91,8 +89,7 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
 
     protected void beforeRemove(InventoryBlockEntity<?> entity)
     {
-        // todo: remove debug
-        if (removeBehavior == InventoryRemoveBehavior.DROP || (this instanceof QuernBlock) || (this instanceof FirepitBlock) || (this instanceof CharcoalForgeBlock))
+        if (removeBehavior == InventoryRemoveBehavior.DROP)
         {
             entity.ejectInventory();
         }

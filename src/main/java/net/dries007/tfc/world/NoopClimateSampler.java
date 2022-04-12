@@ -6,17 +6,39 @@
 
 package net.dries007.tfc.world;
 
+import java.util.List;
+
 import net.minecraft.world.level.biome.Climate;
+import net.minecraft.world.level.levelgen.DensityFunction;
 
-public enum NoopClimateSampler implements Climate.Sampler
+import com.mojang.serialization.Codec;
+
+public class NoopClimateSampler
 {
-    INSTANCE;
+    private static final DensityFunction NONE = new DensityFunction.SimpleFunction() {
+        @Override
+        public double compute(FunctionContext ctx)
+        {
+            return 0;
+        }
 
-    private static final Climate.TargetPoint TARGET = new Climate.TargetPoint(0, 0, 0, 0, 0, 0);
+        @Override
+        public double minValue()
+        {
+            return 0;
+        }
 
-    @Override
-    public Climate.TargetPoint sample(int x, int y, int z)
-    {
-        return TARGET;
-    }
+        @Override
+        public double maxValue()
+        {
+            return 0;
+        }
+
+        @Override
+        public Codec<? extends DensityFunction> codec()
+        {
+            return Codec.unit(() -> NONE);
+        }
+    };
+    public static final Climate.Sampler INSTANCE = new Climate.Sampler(NONE, NONE, NONE, NONE, NONE, NONE, List.of());
 }

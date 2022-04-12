@@ -6,57 +6,65 @@
 
 package net.dries007.tfc.util.climate;
 
-import java.util.IdentityHashMap;
-import java.util.Map;
+import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.chunk.ChunkAccess;
+
+import net.minecraftforge.common.MinecraftForge;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.events.SelectClimateModelEvent;
+import net.dries007.tfc.util.tracker.WorldTracker;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
-import net.dries007.tfc.world.settings.ClimateSettings;
 
 /**
  * Central location for all climate handling.
- * Each dimension provides a climate model. Addons or other mods wishing to register their dimensions may do so via {@link #register(ResourceKey, ClimateModel)}.
+ * Models are assigned during world load with {@link SelectClimateModelEvent}
+ *
  * This model is responsible for calculating the climate parameters (temperature, rainfall, precipitation, etc.) at given positions and locations.
- * TFC hooks all vanilla based locations to go through this. If no climate model is registered, it will fallback to the {@link #DEFAULT} model, which uses biome based properties instead.
  * All methods here are really bouncers to their relevant methods in {@link ClimateModel}, and are named the same. See them for documentation.
  *
  * @see ClimateModel
  */
 public final class Climate
 {
-    private static final Map<ResourceKey<Level>, ClimateModel> DIMENSIONS = new IdentityHashMap<>();
-    private static final WorldGenClimateModel DEFAULT = new BiomeBasedClimateModel();
-
-    static
-    {
-        register(Level.OVERWORLD, OverworldClimateModel.INSTANCE);
-    }
+    private static final BiMap<ResourceLocation, ClimateModelType> REGISTRY = HashBiMap.create();
 
     /**
-     * Register a climate model for a dimension.
-     * This method is safe to call during parallel mod loading.
+     * Register a new climate model factory.
+     * The supplier should return a <strong>new instance</strong> each time it is invoked, as it may be used for multiple dimensions.
+     * The only exception to this, is if the climate model has no persistent data (such as {@link BiomeBasedClimateModel}.
      */
-    public static synchronized void register(ResourceKey<Level> dimension, ClimateModel model)
+    public static synchronized ClimateModelType register(ResourceLocation id, Supplier<ClimateModel> model)
     {
-        DIMENSIONS.put(dimension, model);
+        final ClimateModelType type = new ClimateModelType(model, id);
+        REGISTRY.put(id, type);
+        return type;
     }
 
-    public static float getAverageTemperature(Level level, BlockPos pos)
+    public static ClimateModel create(ResourceLocation id)
     {
-        return model(level).getAverageTemperature(level, pos);
+        return REGISTRY.getOrDefault(id, ClimateModels.BIOME_BASED.get()).create();
+    }
+
+    public static ResourceLocation getId(ClimateModel model)
+    {
+        return REGISTRY.inverse().getOrDefault(model.type(), ClimateModels.BIOME_BASED.get().id());
     }
 
     public static float getTemperature(Level level, BlockPos pos, long calendarTick, int daysInMonth)
@@ -79,6 +87,11 @@ public final class Climate
         return getTemperature(level, pos, Calendars.get(level));
     }
 
+    public static float getAverageTemperature(Level level, BlockPos pos)
+    {
+        return model(level).getAverageTemperature(level, pos);
+    }
+
     public static float getRainfall(Level level, BlockPos pos)
     {
         return model(level).getRainfall(level, pos);
@@ -87,6 +100,11 @@ public final class Climate
     public static Biome.Precipitation getPrecipitation(Level level, BlockPos pos)
     {
         return model(level).getPrecipitation(level, pos);
+    }
+
+    public static float getFogginess(Level level, BlockPos pos)
+    {
+        return model(level).getFogginess(level, pos, Calendars.get(level).getTicks());
     }
 
     /**
@@ -121,6 +139,19 @@ public final class Climate
     public static boolean warmEnoughToRain(LevelReader level, BlockPos pos, Biome fallback)
     {
         return getVanillaBiomeTemperatureSafely(level, pos, fallback) >= 0.15f;
+    }
+
+    public static void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
+    {
+        model(level.getLevel()).onChunkLoad(level, chunk, chunkData);
+    }
+
+    public static void onWorldLoad(ServerLevel level)
+    {
+        final SelectClimateModelEvent event = new SelectClimateModelEvent(level);
+        MinecraftForge.EVENT_BUS.post(event);
+        level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.setClimateModel(event.getModel()));
+        model(level).onWorldLoad(level);
     }
 
     /**
@@ -171,16 +202,10 @@ public final class Climate
         return ((BiomeAccessor) (Object) fallback).invoke$getTemperature(pos);
     }
 
-    /**
-     * Update the per-dimension temperature settings when a world loads.
-     */
-    public static void onWorldLoad(Level level, ClimateSettings settings)
+    public static ClimateModel model(Level level)
     {
-        model(level).updateCachedTemperatureSettings(settings);
-    }
-
-    private static ClimateModel model(Level level)
-    {
-        return DIMENSIONS.getOrDefault(level.dimension(), DEFAULT);
+        return level.getCapability(WorldTrackerCapability.CAPABILITY)
+            .map(WorldTracker::getClimateModel)
+            .orElse(ClimateModels.BIOME_BASED.get().create());
     }
 }

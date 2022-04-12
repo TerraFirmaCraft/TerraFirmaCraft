@@ -7,7 +7,6 @@
 package net.dries007.tfc.world.feature.cave;
 
 import java.util.Random;
-import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
@@ -16,10 +15,10 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
@@ -67,7 +66,7 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
                 if (worldIn.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.UP);
-                    if (worldIn.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                    if (Helpers.isBlock(worldIn.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
                     {
                         setBlock(worldIn, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
                         worldIn.scheduleTick(mutablePos, Fluids.WATER, 0);
@@ -77,7 +76,7 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
             if (rand.nextFloat() < 0.02f)//cobwebs
             {
                 mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
-                if (worldIn.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                if (Helpers.isBlock(worldIn.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
                 {
                     mutablePos.move(Direction.DOWN);
                     if (worldIn.isEmptyBlock(mutablePos))

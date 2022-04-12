@@ -6,8 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -24,13 +23,14 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.scraping");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.scraping");
     private ItemStack cachedItem; // for visual purposes only
     private short positions; // essentially a boolean[16]
 
     public ScrapingBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.SCRAPING.get(), pos, state, defaultInventory(1), NAME);
+        cachedItem = ItemStack.EMPTY;
         positions = 0;
         setCachedItem(ItemStack.EMPTY);
     }
@@ -74,19 +74,18 @@ public class ScrapingBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
-        super.load(nbt);
+        super.loadAdditional(nbt);
         positions = nbt.getShort("positions");
         updateDisplayCache();
     }
 
     @Override
-    @Nonnull
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putShort("positions", positions);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     public ItemStack getCachedItem()

@@ -21,10 +21,7 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.util.DataManager;
-import net.dries007.tfc.util.Fuel;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.*;
 
 public final class PacketHandler
 {
@@ -47,10 +44,12 @@ public final class PacketHandler
         register(FoodDataUpdatePacket.class, FoodDataUpdatePacket::encode, FoodDataUpdatePacket::new, FoodDataUpdatePacket::handle);
         register(PlayerDataUpdatePacket.class, PlayerDataUpdatePacket::encode, PlayerDataUpdatePacket::new, PlayerDataUpdatePacket::handle);
         register(ProspectedPacket.class, ProspectedPacket::encode, ProspectedPacket::new, ProspectedPacket::handle);
-        register(ClimateSettingsUpdatePacket.class, ClimateSettingsUpdatePacket::encode, ClimateSettingsUpdatePacket::new, ClimateSettingsUpdatePacket::handle);
+        register(EffectExpirePacket.class, EffectExpirePacket::encode, EffectExpirePacket::new, EffectExpirePacket::handle);
+        register(UpdateClimateModelPacket.class, UpdateClimateModelPacket::encode, UpdateClimateModelPacket::decode, UpdateClimateModelPacket::handle);
 
         registerDataManager(DataManagerSyncPacket.TMetal.class, Metal.MANAGER);
         registerDataManager(DataManagerSyncPacket.TFuel.class, Fuel.MANAGER);
+        registerDataManager(DataManagerSyncPacket.TFertilizer.class, Fertilizer.MANAGER);
         registerDataManager(DataManagerSyncPacket.TFoodDefinition.class, FoodCapability.MANAGER);
         registerDataManager(DataManagerSyncPacket.THeatDefinition.class, HeatCapability.MANAGER);
         registerDataManager(DataManagerSyncPacket.TItemSizeDefinition.class, ItemSizeManager.MANAGER);
@@ -60,6 +59,7 @@ public final class PacketHandler
         register(PlaceBlockSpecialPacket.class, PlaceBlockSpecialPacket::new, PlaceBlockSpecialPacket::handle);
         register(ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
         register(PlayerDrinkPacket.class, PlayerDrinkPacket::new, PlayerDrinkPacket::handle);
+        register(RequestClimateModelPacket.class, RequestClimateModelPacket::new, RequestClimateModelPacket::handle);
     }
 
     @SuppressWarnings("unchecked")

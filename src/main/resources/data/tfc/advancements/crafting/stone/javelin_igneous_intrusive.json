@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:stone/javelin_head/igneous_intrusive"
+            "items": [
+              "tfc:stone/javelin_head/igneous_intrusive"
+            ]
           }
         ]
       }

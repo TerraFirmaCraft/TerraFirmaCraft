@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.recipes;
 
 import java.util.function.BiFunction;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;

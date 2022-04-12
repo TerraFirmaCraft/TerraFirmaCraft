@@ -12,7 +12,9 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+
+import com.mojang.logging.LogUtils;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -20,8 +22,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -29,22 +29,26 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.DataManagerSyncPacket;
+import org.slf4j.Logger;
 
 /**
  * An implementation of a typical json reload manager.
  */
 public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new Gson();
     private static final Map<Class<?>, DataManager<?>> NETWORK_TYPES = new HashMap<>();
 
     protected final BiMap<ResourceLocation, T> types;
     protected final String typeName;
+
+    private int generation;
 
     protected final BiFunction<ResourceLocation, JsonObject, T> factory;
     @Nullable protected final Runnable postReloadCallback;
@@ -120,7 +124,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     public DataManagerSyncPacket<T> createSyncPacket()
     {
-        return createEmptyPacket().with(types);
+        return createEmptyPacket().with(types, generation);
     }
 
     public DataManagerSyncPacket<T> createEmptyPacket()
@@ -146,28 +150,39 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return networkFactory.apply(id, buffer);
     }
 
-    public void onSync(Map<ResourceLocation, T> elements)
+    public void onSync(Map<ResourceLocation, T> elements, int generation)
     {
-        types.clear();
-        types.putAll(elements);
-        if (postReloadCallback != null)
+        if (this.generation != generation)
         {
-            postReloadCallback.run();
+            // Only update if the incoming generation is not the same as the existing generation
+            // This prevents a sync form local server -> local client.
+            types.clear();
+            types.putAll(elements);
+            this.generation++;
+            if (postReloadCallback != null)
+            {
+                postReloadCallback.run();
+            }
+            LOGGER.info("Received {} {}(s) from server", types.size(), typeName);
         }
-        LOGGER.info("Received {} {}(s) from server", types.size(), typeName);
+        else
+        {
+            LOGGER.info("Ignored {}(s) sync with generation {}", typeName, generation);
+        }
     }
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         types.clear();
+        generation++;
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             ResourceLocation name = entry.getKey();
             JsonObject json = GsonHelper.convertToJsonObject(entry.getValue(), typeName);
             try
             {
-                if (CraftingHelper.processConditions(json, "conditions"))
+                if (CraftingHelper.processConditions(json, "conditions", ICondition.IContext.EMPTY))
                 {
                     T object = read(name, json);
                     types.put(name, object);

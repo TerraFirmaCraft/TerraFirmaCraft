@@ -22,7 +22,7 @@ public enum EdgeBiomeLayer implements AdjacentTransformLayer
     public int apply(AreaContext context, int north, int east, int south, int west, int center)
     {
         Predicate<IntPredicate> matcher = p -> p.test(north) || p.test(east) || p.test(south) || p.test(west);
-        if (center == PLATEAU || center == BADLANDS)
+        if (center == PLATEAU || center == BADLANDS || center == INVERTED_BADLANDS)
         {
             if (matcher.test(i -> i == LOW_CANYONS || i == LOWLANDS))
             {
@@ -43,7 +43,7 @@ public enum EdgeBiomeLayer implements AdjacentTransformLayer
         // Inverses of above conditions
         else if (center == LOWLANDS || center == LOW_CANYONS)
         {
-            if (matcher.test(i -> i == PLATEAU || i == BADLANDS))
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS || i == INVERTED_BADLANDS))
             {
                 return HILLS;
             }
@@ -54,7 +54,7 @@ public enum EdgeBiomeLayer implements AdjacentTransformLayer
         }
         else if (center == PLAINS || center == HILLS)
         {
-            if (matcher.test(i -> i == PLATEAU || i == BADLANDS))
+            if (matcher.test(i -> i == PLATEAU || i == BADLANDS || i == INVERTED_BADLANDS))
             {
                 return HILLS;
             }

@@ -9,21 +9,42 @@ package net.dries007.tfc.util;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.capabilities.player.PlayerData;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class Drinkable extends FluidDefinition
@@ -44,9 +65,51 @@ public class Drinkable extends FluidDefinition
         return null;
     }
 
-    private static void reload()
+    /**
+     * Attempt to drink from a fluid source block.
+     * Called by TFC through both right click block and right click empty events.
+     */
+    public static InteractionResult attemptDrink(Level level, Player player, boolean doDrink)
     {
-        CACHE.reload(MANAGER.getValues());
+        final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        if (hit.getType() == HitResult.Type.BLOCK)
+        {
+            final BlockPos pos = hit.getBlockPos();
+            final BlockState state = level.getBlockState(pos);
+            final Fluid fluid = state.getFluidState().getType();
+            final float thirst = player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : TFCFoodData.MAX_THIRST;
+            final LazyOptional<PlayerData> playerData = player.getCapability(PlayerDataCapability.CAPABILITY);
+            if (playerData.map(p -> p.getLastDrinkTick() + 10 < Calendars.get(level).getTicks()).orElse(false))
+            {
+                final Drinkable drinkable = get(fluid);
+                if (drinkable != null && (thirst < TFCFoodData.MAX_THIRST || drinkable.getThirst() == 0))
+                {
+                    if (!level.isClientSide && doDrink)
+                    {
+                        doDrink(level, player, state, pos, playerData, drinkable);
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, LazyOptional<PlayerData> playerData, Drinkable drinkable)
+    {
+        playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
+        level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
+
+        drinkable.onDrink(player);
+
+        if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > level.getRandom().nextFloat())
+        {
+            final BlockState emptyState = FluidHelpers.isAirOrEmptyFluid(state) ? Blocks.AIR.defaultBlockState() : FluidHelpers.fillWithFluid(state, Fluids.EMPTY);
+            if (emptyState != null)
+            {
+                level.setBlock(pos, emptyState, 3);
+            }
+        }
     }
 
     private final float consumeChance;
@@ -78,6 +141,11 @@ public class Drinkable extends FluidDefinition
             }
         }
         this.effects = builder.build();
+    }
+
+    private static void reload()
+    {
+        CACHE.reload(MANAGER.getValues());
     }
 
     public void onDrink(Player player)

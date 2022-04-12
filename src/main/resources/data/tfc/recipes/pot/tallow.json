@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:pot_fluid",
+  "ingredients": [
+    {
+      "item": "tfc:blubber"
+    },
+    {
+      "item": "tfc:blubber"
+    },
+    {
+      "item": "tfc:blubber"
+    },
+    {
+      "item": "tfc:blubber"
+    }
+  ],
+  "fluid_ingredient": {
+    "ingredient": "minecraft:water",
+    "amount": 1000
+  },
+  "duration": 8000,
+  "temperature": 600,
+  "fluid_output": {
+    "fluid": "tfc:tallow",
+    "amount": 1000
+  }
+}

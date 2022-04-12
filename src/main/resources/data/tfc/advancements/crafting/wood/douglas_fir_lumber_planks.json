@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:wood/planks/douglas_fir"
+            "items": [
+              "tfc:wood/planks/douglas_fir"
+            ]
           }
         ]
       }

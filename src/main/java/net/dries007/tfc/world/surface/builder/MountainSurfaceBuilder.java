@@ -28,10 +28,10 @@ public class MountainSurfaceBuilder implements SurfaceBuilder
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
         final NormalSurfaceBuilder surfaceBuilder = NormalSurfaceBuilder.INSTANCE;
-        final double heightNoise = this.heightNoise.noise(context.pos().getX(), context.pos().getZ()) * 3f + startY;
+        final double heightNoise = this.heightNoise.noise(context.pos().getX(), context.pos().getZ()) * 4f + startY;
         if (heightNoise > 130)
         {
-            float surfaceMaterialValue = surfaceMaterialNoise.noise(context.pos().getX(), context.pos().getZ()) + 0.1f * context.getRandom().nextFloat() - 0.05f;
+            float surfaceMaterialValue = surfaceMaterialNoise.noise(context.pos().getX(), context.pos().getZ()) + 0.1f * context.random().nextFloat() - 0.05f;
             if (surfaceMaterialValue > 0.3f)
             {
                 surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.COBBLE, SurfaceStates.COBBLE, SurfaceStates.RAW);

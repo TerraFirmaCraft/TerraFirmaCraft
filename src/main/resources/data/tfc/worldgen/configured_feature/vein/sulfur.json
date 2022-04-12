@@ -14,11 +14,11 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/andesite"
+          "tfc:rock/raw/rhyolite"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/andesite"
+            "block": "tfc:ore/sulfur/rhyolite"
           }
         ]
       },
@@ -34,21 +34,21 @@
       },
       {
         "replace": [
-          "tfc:rock/raw/dacite"
+          "tfc:rock/raw/andesite"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/dacite"
+            "block": "tfc:ore/sulfur/andesite"
           }
         ]
       },
       {
         "replace": [
-          "tfc:rock/raw/rhyolite"
+          "tfc:rock/raw/dacite"
         ],
         "with": [
           {
-            "block": "tfc:ore/sulfur/rhyolite"
+            "block": "tfc:ore/sulfur/dacite"
           }
         ]
       }

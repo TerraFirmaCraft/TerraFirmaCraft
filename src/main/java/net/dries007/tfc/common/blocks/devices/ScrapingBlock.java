@@ -27,6 +27,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
@@ -49,7 +50,7 @@ public class ScrapingBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !facingState.is(TFCTags.Blocks.SCRAPING_SURFACE))
+        if (facing == Direction.DOWN && !Helpers.isBlock(facingState, TFCTags.Blocks.SCRAPING_SURFACE))
         {
             return Blocks.AIR.defaultBlockState();
         }
@@ -60,11 +61,11 @@ public class ScrapingBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        ScrapingBlockEntity te = Helpers.getBlockEntity(level, pos, ScrapingBlockEntity.class);
+        ScrapingBlockEntity te = level.getBlockEntity(pos, TFCBlockEntities.SCRAPING.get()).orElse(null);
         if (te != null)
         {
             ItemStack stack = player.getItemInHand(hand);
-            if (TFCTags.Items.KNIVES.contains(stack.getItem()))
+            if (Helpers.isItem(stack.getItem(), TFCTags.Items.KNIVES))
             {
                 Vec3 point = calculatePoint(player.getLookAngle(), hit.getLocation().subtract(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
                 te.onClicked((float) point.x, (float) point.z);

@@ -32,7 +32,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public static final int SLOT_INPUT = 1;
     public static final int SLOT_OUTPUT = 2;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.quern");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.quern");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {
@@ -108,21 +108,21 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return slot != SLOT_HANDSTONE || TFCTags.Items.HANDSTONE.contains(stack.getItem());
+        return slot != SLOT_HANDSTONE || Helpers.isItem(stack.getItem(), TFCTags.Items.HANDSTONE);
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         rotationTimer = nbt.getInt("rotationTimer");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putInt("rotationTimer", rotationTimer);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override

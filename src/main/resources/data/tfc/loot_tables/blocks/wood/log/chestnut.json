@@ -11,13 +11,22 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "tfc:wood/log/chestnut",
+              "name": "minecraft:stick",
               "conditions": [
                 {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:wood/log/chestnut",
-                  "properties": {
-                    "natural": "false"
+                  "condition": "minecraft:match_tool",
+                  "predicate": {
+                    "tag": "tfc:hammers"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:set_count",
+                  "count": {
+                    "min": 1,
+                    "max": 4,
+                    "type": "minecraft:uniform"
                   }
                 }
               ]

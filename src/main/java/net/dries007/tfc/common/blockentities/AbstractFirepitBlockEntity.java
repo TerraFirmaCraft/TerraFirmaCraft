@@ -39,7 +39,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
 
     public static final int DATA_SLOT_TEMPERATURE = 0;
 
-    public static void convertTo(LevelAccessor world, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
+    public static void convertTo(LevelAccessor level, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
     {
         // Convert firepit to another device
         // Normally, as soon as we set the block, it would eject all contents thanks to DeviceBlock and InventoryBlockEntity
@@ -47,9 +47,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         firepit.ejectMainInventory();
         NonNullList<ItemStack> saved = Helpers.extractAllItems(firepit.inventory);
 
-        world.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
+        level.setBlock(pos, newBlock.defaultBlockState().setValue(FirepitBlock.LIT, state.getValue(FirepitBlock.LIT)), 3);
 
-        final BlockEntity newEntity = world.getBlockEntity(pos);
+        final BlockEntity newEntity = level.getBlockEntity(pos);
         if (newEntity instanceof AbstractFirepitBlockEntity<?> newFirepit)
         {
             Helpers.insertAllItems(newFirepit.inventory, saved);
@@ -61,6 +61,12 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     {
         firepit.checkForLastTickSync();
         firepit.checkForCalendarUpdate();
+
+        if (firepit.needsRecipeUpdate)
+        {
+            firepit.needsRecipeUpdate = false;
+            firepit.updateCachedRecipe();
+        }
 
         boolean isRaining = level.isRainingAt(pos);
         if (state.getValue(FirepitBlock.LIT))
@@ -91,7 +97,9 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     }
 
     protected final ContainerData syncableData;
-    protected boolean needsSlotUpdate = false; // sets when fuel needs to be cascaded
+
+    protected boolean needsSlotUpdate = false; // set when fuel needs to be cascaded
+    protected boolean needsRecipeUpdate = false; // set when the recipe needs to be re-cached on tick
     protected int burnTicks; // ticks remaining for the burning of the fuel item
     protected int airTicks; // ticks remaining for bellows provided air
     protected float burnTemperature; // burn temperature of the current fuel item
@@ -111,7 +119,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
@@ -119,21 +127,20 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
 
-        // todo: set a flag that is checked on tick
-        // updateCachedRecipe();
+        needsRecipeUpdate = true;
 
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putInt("burnTicks", burnTicks);
         nbt.putInt("airTicks", airTicks);
         nbt.putFloat("burnTemperature", burnTemperature);
         nbt.putLong("lastPlayerTick", lastPlayerTick);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override
@@ -240,7 +247,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     {
         return switch (slot)
             {
-                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && TFCTags.Items.FIREPIT_FUEL.contains(stack.getItem());
+                case SLOT_FUEL_INPUT -> Fuel.get(stack) != null && Helpers.isItem(stack.getItem(), TFCTags.Items.FIREPIT_FUEL);
                 case FirepitBlockEntity.SLOT_ITEM_INPUT -> stack.getCapability(HeatCapability.CAPABILITY).isPresent();
                 case FirepitBlockEntity.SLOT_OUTPUT_1, FirepitBlockEntity.SLOT_OUTPUT_2 -> true;
                 default -> false;

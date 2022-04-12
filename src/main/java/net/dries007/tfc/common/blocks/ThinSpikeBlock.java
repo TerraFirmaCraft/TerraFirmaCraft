@@ -8,9 +8,9 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
 
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.core.Direction;
@@ -27,11 +27,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class ThinSpikeBlock extends Block implements IFluidLoggable
 {
@@ -87,26 +87,30 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == Direction.DOWN && !facingState.is(this))
+        FluidHelpers.tickFluid(level, currentPos, state, this);
+        if (facing == Direction.DOWN)
         {
-            return stateIn.setValue(TIP, true);
+            return state.setValue(TIP, !Helpers.isBlock(facingState, this));
         }
-        return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
+    }
+
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        return defaultBlockState().setValue(TIP, true);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving)
     {
-        if (!canSurvive(state, worldIn, pos))
+        if (!canSurvive(state, level, pos))
         {
-            worldIn.destroyBlock(pos, false);
-        }
-        if (TFCTags.Blocks.SMALL_SPIKE.contains(blockIn))
-        {
-            worldIn.setBlock(pos, state.setValue(TIP, false), 2);
+            level.destroyBlock(pos, false);
         }
     }
 
@@ -123,29 +127,30 @@ public class ThinSpikeBlock extends Block implements IFluidLoggable
                 level.scheduleTick(posDown, this, 0);
             }
         }
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos abovePos = pos.above();
-        BlockState aboveState = worldIn.getBlockState(abovePos);
-        return (aboveState.getBlock() == this && !aboveState.getValue(TIP)) || aboveState.isFaceSturdy(worldIn, abovePos, Direction.DOWN);
+        BlockState aboveState = level.getBlockState(abovePos);
+        return aboveState.getBlock() == this || aboveState.isFaceSturdy(level, abovePos, Direction.DOWN);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(TIP) ? TIP_SHAPE : PILLAR_SHAPE;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        worldIn.destroyBlock(pos, false);
+        level.destroyBlock(pos, false);
     }
 
     @Override

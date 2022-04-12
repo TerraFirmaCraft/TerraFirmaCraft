@@ -2,11 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:rock/loose/gneiss",
-    "tfc:rock/loose/marble",
-    "tfc:rock/loose/phyllite",
     "tfc:rock/loose/quartzite",
+    "tfc:rock/loose/slate",
+    "tfc:rock/loose/phyllite",
     "tfc:rock/loose/schist",
-    "tfc:rock/loose/slate"
+    "tfc:rock/loose/gneiss",
+    "tfc:rock/loose/marble"
   ]
 }

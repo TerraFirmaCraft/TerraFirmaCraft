@@ -122,7 +122,7 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
         private FluidKey(ResourceLocation name)
         {
             this.name = name;
-            this.fluid = RegistryObject.of(name, ForgeRegistries.FLUIDS);
+            this.fluid = RegistryObject.create(name, ForgeRegistries.FLUIDS);
         }
 
         public Fluid getFluid()

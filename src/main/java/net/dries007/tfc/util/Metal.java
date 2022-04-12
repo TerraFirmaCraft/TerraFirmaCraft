@@ -10,9 +10,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,9 +27,13 @@ import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -35,6 +41,11 @@ import net.dries007.tfc.common.TFCArmorMaterial;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TFCChainBlock;
+import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.items.*;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 
@@ -69,7 +80,7 @@ public final class Metal
     private static void reload()
     {
         // Ensure 'unknown' metal exists
-        MANAGER.getOrThrow(UNKNOWN_ID);
+        unknown();
 
         // Reload fluid -> metal map
         METAL_FLUIDS.clear();
@@ -324,7 +335,9 @@ public final class Metal
     public enum BlockType
     {
         ANVIL(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(4, 10).requiresCorrectToolForDrops())),
-        LAMP(Type.UTILITY, metal -> new Block(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(4, 10)));
+        CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.CHAIN))),
+        LAMP(null, Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0)).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties)),
+        TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never)));
 
         public static final Metal.BlockType[] VALUES = values();
 
@@ -334,14 +347,21 @@ public final class Metal
         }
 
         private final NonNullFunction<Metal.Default, Block> blockFactory;
+        private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
         private final Type type;
         @Nullable private final String tag;
 
-        BlockType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Block> blockFactory)
+        BlockType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Block> blockFactory, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
         {
             this.type = type;
             this.blockFactory = blockFactory;
             this.tag = tag;
+            this.blockItemFactory = blockItemFactory;
+        }
+
+        BlockType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Block> blockFactory)
+        {
+            this(tag, type, blockFactory, BlockItem::new);
         }
 
         BlockType(Type type, NonNullFunction<Metal.Default, Block> blockFactory)
@@ -352,6 +372,11 @@ public final class Metal
         public Supplier<Block> create(Metal.Default metal)
         {
             return () -> blockFactory.apply(metal);
+        }
+
+        public Function<Block, BlockItem> createBlockItem(Item.Properties properties)
+        {
+            return block -> blockItemFactory.apply(block, properties);
         }
 
         public boolean hasMetal(Default metal)
@@ -403,7 +428,7 @@ public final class Metal
         MACE_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         KNIFE(Type.TOOL, metal -> new ToolItem(metal.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(TFCItemGroup.METAL))),
         KNIFE_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        SCYTHE(Type.TOOL, metal -> new ToolItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(2, metal.getTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, new Item.Properties().tab(TFCItemGroup.METAL))),
+        SCYTHE(Type.TOOL, metal -> new ScytheItem(metal.getTier(), ToolItem.calculateVanillaAttackDamage(2, metal.getTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, new Item.Properties().tab(TFCItemGroup.METAL))),
         SCYTHE_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SHEARS(Type.TOOL, metal -> new ShearsItem(new Item.Properties().tab(TFCItemGroup.METAL).defaultDurability(metal.getTier().getUses()))),
 

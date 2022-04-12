@@ -12,14 +12,7 @@
       "fuzzy": true
     },
     {
-      "type": "minecraft:count",
-      "count": 4
-    },
-    {
       "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:biome"
     }
   ]
 }

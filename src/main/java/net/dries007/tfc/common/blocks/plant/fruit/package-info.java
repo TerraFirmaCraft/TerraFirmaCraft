@@ -10,5 +10,6 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
@@ -101,6 +101,7 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
             {
                 final JsonObject content = JsonHelpers.convertToJsonObject(element, "entry in 'contents'");
                 final Metal metal = JsonHelpers.getFrom(content, "metal", Metal.MANAGER);
+                final Supplier<Metal> resolvedMetal = () -> Metal.MANAGER.get(metal.getId());
                 final double min = JsonHelpers.getAsDouble(content, "min");
                 final double max = JsonHelpers.getAsDouble(content, "max");
                 builder.put(metal, new Range(min, max));

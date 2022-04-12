@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,6 +38,7 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -46,7 +47,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.pot");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.pot");
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     @Nullable private PotRecipe.Output output;
@@ -71,25 +72,25 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         if (nbt.contains("output"))
         {
             output = PotRecipe.Output.read(nbt.getCompound("output"));
         }
         boilingTicks = nbt.getInt("boilingTicks");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         if (output != null)
         {
             nbt.put("output", PotRecipe.Output.write(output));
         }
         nbt.putInt("boilingTicks", boilingTicks);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override
@@ -117,6 +118,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
             if (boilingTicks < cachedRecipe.getDuration())
             {
                 boilingTicks++;
+                if (boilingTicks == 1) markForSync();
             }
             else
             {
@@ -143,6 +145,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 cachedRecipe = null;
                 boilingTicks = 0;
                 updateCachedRecipe();
+                markForSync();
             }
         }
         else
@@ -170,6 +173,14 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         return cachedRecipe != null && output == null && cachedRecipe.isHotEnough(temperature);
     }
 
+    /**
+     * The amount of info pots actually sync to clients is low. So checking output, cached recipe, etc. won't work.
+     */
+    public boolean shouldRenderAsBoiling()
+    {
+        return boilingTicks > 0;
+    }
+
     public InteractionResult interactWithOutput(Player player, ItemStack stack)
     {
         if (output != null)
@@ -191,7 +202,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         return output;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -217,7 +228,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         public PotInventory(InventoryBlockEntity<PotInventory> entity)
         {
             this.inventory = new InventoryItemHandler(entity, 9);
-            this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> TFCTags.Fluids.USABLE_IN_POT.contains(fluid.getFluid()));
+            this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT));
         }
 
         @Override

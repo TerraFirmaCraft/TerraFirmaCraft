@@ -6,17 +6,19 @@
 
 package net.dries007.tfc.client.screen;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -27,16 +29,21 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     private final ResourceLocation buttonLocation;
     @Nullable private final ResourceLocation buttonDisabledLocation;
 
+    public static ResourceLocation getButtonLocation(Item item, boolean disabled)
+    {
+        ResourceLocation buttonAssetPath = item.getRegistryName();
+        assert buttonAssetPath != null;
+        return Helpers.identifier( "textures/gui/knapping/" + buttonAssetPath.getPath() + (disabled ? "_disabled" : "") + ".png");
+    }
+
     public KnappingScreen(KnappingContainer container, Inventory inv, Component name)
     {
         super(container, inv, name, KNAPPING_BACKGROUND);
         imageHeight = 186;
         inventoryLabelY += 22;
         titleLabelY -= 2;
-        ResourceLocation buttonAssetPath = container.getOriginalStack().getItem().getRegistryName();
-        assert buttonAssetPath != null;
-        buttonLocation = new ResourceLocation(MOD_ID, "textures/gui/knapping/" + buttonAssetPath.getPath() + ".png");
-        buttonDisabledLocation = container.usesDisabledTexture() ? new ResourceLocation(MOD_ID, "textures/gui/knapping/" + buttonAssetPath.getPath() + "_disabled.png") : null;
+        buttonLocation = getButtonLocation(container.getOriginalStack().getItem(), false);
+        buttonDisabledLocation = container.usesDisabledTexture() ? getButtonLocation(container.getOriginalStack().getItem(), true) : null;
     }
 
     @Override

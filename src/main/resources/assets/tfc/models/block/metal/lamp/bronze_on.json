@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/lamp",
+  "textures": {
+    "metal": "tfc:block/metal/full/bronze",
+    "lamp": "tfc:block/lamp"
+  }
+}

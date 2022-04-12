@@ -8,7 +8,7 @@ package net.dries007.tfc.util;
 
 import java.util.Collections;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.world.level.block.Block;

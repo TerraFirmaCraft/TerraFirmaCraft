@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -32,10 +32,15 @@ public class RockKnappingRecipe extends KnappingRecipe
         this.ingredient = ingredient;
     }
 
+    public Ingredient getIngredient()
+    {
+        return ingredient;
+    }
+
     @Override
     public boolean matches(KnappingContainer container, Level level)
     {
-        return container.getPattern().matches(this.pattern) && ingredient.test(container.getOriginalStack());
+        return container.getPattern().matches(this.getPattern()) && ingredient.test(container.getOriginalStack());
     }
 
     public static class RockSerializer extends TypedRecipeSerializer<RockKnappingRecipe>
@@ -61,7 +66,7 @@ public class RockKnappingRecipe extends KnappingRecipe
         @Override
         public void toNetwork(FriendlyByteBuf buffer, RockKnappingRecipe recipe)
         {
-            recipe.pattern.toNetwork(buffer);
+            recipe.getPattern().toNetwork(buffer);
             buffer.writeItem(recipe.getResultItem());
             recipe.ingredient.toNetwork(buffer);
         }

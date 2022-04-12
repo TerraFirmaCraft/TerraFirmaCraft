@@ -4,6 +4,7 @@
   "values": [
     "minecraft:water",
     "tfc:salt_water",
-    "tfc:river_water"
+    "tfc:river_water",
+    "#tfc:alcohols"
   ]
 }

@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "age=0": {
+      "model": "tfc:block/crop/barley_age_0"
+    },
+    "age=1": {
+      "model": "tfc:block/crop/barley_age_1"
+    },
+    "age=2": {
+      "model": "tfc:block/crop/barley_age_2"
+    },
+    "age=3": {
+      "model": "tfc:block/crop/barley_age_3"
+    },
+    "age=4": {
+      "model": "tfc:block/crop/barley_age_4"
+    },
+    "age=5": {
+      "model": "tfc:block/crop/barley_age_5"
+    },
+    "age=6": {
+      "model": "tfc:block/crop/barley_age_6"
+    },
+    "age=7": {
+      "model": "tfc:block/crop/barley_age_7"
+    }
+  }
+}

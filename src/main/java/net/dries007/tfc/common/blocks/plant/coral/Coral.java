@@ -10,6 +10,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -68,9 +70,10 @@ public enum Coral
             return () -> factory.apply(color, this);
         }
 
+        @Nullable
         public Function<Block, BlockItem> createBlockItem(Item.Properties properties)
         {
-            return block -> blockItemFactory.apply(block, properties);
+            return needsItem() ? block -> blockItemFactory.apply(block, properties) : null;
         }
     }
 }

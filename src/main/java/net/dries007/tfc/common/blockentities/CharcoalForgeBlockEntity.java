@@ -7,8 +7,7 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -57,7 +56,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public static final int SLOT_EXTRA_MAX = 13;
     public static final int DATA_SLOT_TEMPERATURE = 0;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.charcoal_forge");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.charcoal_forge");
     private static final int MAX_AIR_TICKS = 600;
 
     public static void createFromCharcoalPile(Level level, BlockPos pos)
@@ -239,25 +238,25 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         burnTicks = nbt.getInt("burnTicks");
         airTicks = nbt.getInt("airTicks");
         burnTemperature = nbt.getFloat("burnTemperature");
         lastPlayerTick = nbt.getLong("lastPlayerTick");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putInt("burnTicks", burnTicks);
         nbt.putInt("airTicks", airTicks);
         nbt.putFloat("burnTemperature", burnTemperature);
         nbt.putLong("lastPlayerTick", lastPlayerTick);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override
@@ -279,7 +278,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     {
         if (slot <= SLOT_FUEL_MAX)
         {
-            return TFCTags.Items.FORGE_FUEL.contains(stack.getItem());
+            return Helpers.isItem(stack.getItem(), TFCTags.Items.FORGE_FUEL);
         }
         else if (slot <= SLOT_INPUT_MAX)
         {

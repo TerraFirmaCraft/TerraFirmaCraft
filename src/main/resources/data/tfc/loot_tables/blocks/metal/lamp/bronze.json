@@ -8,7 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:metal/lamp/bronze"
+          "name": "tfc:metal/lamp/bronze",
+          "functions": [
+            {
+              "function": "tfc:copy_fluid"
+            }
+          ]
         }
       ],
       "conditions": [

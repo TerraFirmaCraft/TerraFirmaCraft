@@ -27,10 +27,8 @@ import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.*;
-
 @Disabled
-public class RiverVisualizations
+public class RiverVisualizations extends TestHelper
 {
     @Test
     public void testBisectingRiverFractal()

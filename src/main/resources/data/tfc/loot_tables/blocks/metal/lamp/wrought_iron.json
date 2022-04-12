@@ -8,7 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:metal/lamp/wrought_iron"
+          "name": "tfc:metal/lamp/wrought_iron",
+          "functions": [
+            {
+              "function": "tfc:copy_fluid"
+            }
+          ]
         }
       ],
       "conditions": [

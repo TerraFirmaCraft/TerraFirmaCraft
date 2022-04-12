@@ -6,9 +6,8 @@
 
 package net.dries007.tfc.world;
 
-import java.awt.*;
 import java.util.Arrays;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import org.apache.commons.lang3.mutable.MutableDouble;
 import net.minecraft.core.BlockPos;
@@ -17,13 +16,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraft.world.level.levelgen.Aquifer;
-import net.minecraft.world.level.levelgen.PositionalRandomFactory;
-import net.minecraft.world.level.levelgen.RandomSource;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.noise.Cellular3D;
 import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 
@@ -126,10 +122,10 @@ public class TFCAquifer implements Aquifer
 
     @Nullable
     @Override
-    public BlockState computeSubstance(int x, int y, int z, double baseNoise, double modifiedNoise)
+    public BlockState computeSubstance(DensityFunction.FunctionContext context, double baseNoise)
     {
         // Only used directly by carvers, where it passes in baseNoise = 0, modifiedNoise = 0
-        return sampleState(x, y, z, baseNoise);
+        return sampleState(context.blockX(), context.blockY(), context.blockZ(), baseNoise);
     }
 
     /**
@@ -148,7 +144,7 @@ public class TFCAquifer implements Aquifer
             BlockState state; // The result aquifer state
             boolean isSurfaceLevelAquifer; // If the aquifer is a surface/sea level one, which needs to be affected by the water type
 
-            if (global.at(y).is(Blocks.LAVA))
+            if (Helpers.isBlock(global.at(y), Blocks.LAVA))
             {
                 // Always lava below lava level, and don't generate adjacent borders.
                 state = Blocks.LAVA.defaultBlockState();
@@ -233,7 +229,7 @@ public class TFCAquifer implements Aquifer
                 final double similarity13 = similarity(distance1, distance3);
                 final double similarity23 = similarity(distance2, distance3);
 
-                if (entry1.at(y).is(Blocks.WATER) && globalAquifer(y - 1).at(y - 1).is(Blocks.LAVA))
+                if (Helpers.isBlock(entry1.at(y), Blocks.WATER) && Helpers.isBlock(globalAquifer(y - 1).at(y - 1), Blocks.LAVA))
                 {
                     // Border lava and water with solid blocks.
                     aquiferNoiseContribution = 1;
@@ -289,7 +285,7 @@ public class TFCAquifer implements Aquifer
         final BlockState leftState = leftAquifer.at(y);
         final BlockState rightState = rightAquifer.at(y);
 
-        if ((leftState.is(Blocks.LAVA) && rightState.is(Blocks.WATER)) || (leftState.is(Blocks.WATER) && rightState.is(Blocks.LAVA)))
+        if ((Helpers.isBlock(leftState, Blocks.LAVA) && Helpers.isBlock(rightState, Blocks.WATER)) || (Helpers.isBlock(leftState, Blocks.WATER) && Helpers.isBlock(rightState, Blocks.LAVA)))
         {
             // Pressure between different fluid types aquifers is always one (maximum).
             return 1;
@@ -361,14 +357,17 @@ public class TFCAquifer implements Aquifer
             // Above surface height, all aquifers must be sea level
             return seaLevelAquifer;
         }
-        final float cell = fluidCellNoise.noise(x, y / 0.6f, z);
-        final float cellY = fluidCellNoise.centerY() / (0.015f / 0.6f);
-        if (cell < 0.25f || (cellY > TFCChunkGenerator.SEA_LEVEL_Y - 10 && cell < 0.5f))
+
+        final Cellular3D.Cell cell = fluidCellNoise.cell(x, y / 0.6f, z);
+        final float cellNoise = cell.noise();
+        final float cellY = cell.y();
+
+        if (cellNoise < 0.25f || (cellY > TFCChunkGenerator.SEA_LEVEL_Y - 10 && cellNoise < 0.5f))
         {
             return new AquiferEntry(Blocks.WATER.defaultBlockState(), minY - 1);
         }
 
-        final RandomSource random = new XoroshiroRandomSource(fluidCellSeed, Float.floatToIntBits(cell));
+        final RandomSource random = new XoroshiroRandomSource(fluidCellSeed, Float.floatToIntBits(cellNoise));
         final float aquiferY = Math.min((random.nextFloat() - random.nextFloat() - 2) * 5 + cellY, surfaceHeight);
 
         final boolean lava = cellY < 40 && (random.nextInt(3) == 0);

@@ -8,7 +8,6 @@ package net.dries007.tfc.world.feature;
 
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,11 +18,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.soil.IGrassBlock;
+import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
 
 /**
  * This fills in natural depressions using a localized flood fill.
@@ -84,7 +83,6 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
                         }
                     }
                 }
-                //LOGGER.debug("Flood Fill Lake generated at {} {} {}", pos.getX(), pos.getY(), pos.getZ());
                 return true;
             }
         }
@@ -167,6 +165,6 @@ public class FloodFillLakeFeature extends Feature<FloodFillLakeConfig>
 
     private boolean isFloodFillable(BlockState state, FloodFillLakeConfig config)
     {
-        return !state.getMaterial().isSolid() && config.shouldReplace(state.getFluidState().getType());
+        return !state.getMaterial().isSolid() && !(state.getBlock() instanceof ILeavesBlock) && config.shouldReplace(state.getFluidState().getType());
     }
 }

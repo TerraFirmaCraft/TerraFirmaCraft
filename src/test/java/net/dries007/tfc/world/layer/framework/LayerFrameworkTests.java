@@ -14,21 +14,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import net.dries007.tfc.TestHelper;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.boostrap;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LayerFrameworkTests
+public class LayerFrameworkTests extends TestHelper
 {
-    @BeforeAll
-    public static void setup()
-    {
-        boostrap();
-    }
-
     @Test
     public void testAreaFactoriesReturnNewInstances()
     {

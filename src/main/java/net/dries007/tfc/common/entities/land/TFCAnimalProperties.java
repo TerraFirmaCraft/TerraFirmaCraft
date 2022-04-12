@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -165,7 +166,7 @@ public interface TFCAnimalProperties
     /**
      * Default tag checked by isFood (edible items)
      */
-    Tag<Item> getFoodTag();
+    TagKey<Item> getFoodTag();
 
     boolean eatsRottenFood();
 

@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.soil;
 
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -52,6 +52,6 @@ public class DirtBlock extends Block implements IDirtBlock
         {
             return path.get().defaultBlockState();
         }
-        return state;
+        return null;
     }
 }

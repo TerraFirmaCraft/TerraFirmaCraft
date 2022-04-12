@@ -6,7 +6,8 @@
 
 package net.dries007.tfc.common.recipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
+import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -24,7 +25,7 @@ import net.dries007.tfc.util.KnappingPattern;
 public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 {
     protected final ResourceLocation id;
-    protected final KnappingPattern pattern;
+    private final KnappingPattern pattern;
     protected final ItemStack result;
     protected final TypedRecipeSerializer<?> serializer;
 
@@ -39,7 +40,7 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
     @Override
     public boolean matches(KnappingContainer container, Level level)
     {
-        return container.getPattern().matches(pattern);
+        return container.getPattern().matches(getPattern());
     }
 
     @Override
@@ -66,11 +67,16 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         return serializer.getRecipeType();
     }
 
+    public KnappingPattern getPattern()
+    {
+        return pattern;
+    }
+
     public static class Serializer extends TypedRecipeSerializer<KnappingRecipe>
     {
-        private final RecipeType<?> type;
+        private final Supplier<RecipeType<KnappingRecipe>> type;
 
-        public Serializer(RecipeType<?> type)
+        public Serializer(Supplier<RecipeType<KnappingRecipe>> type)
         {
             this.type = type;
         }
@@ -94,14 +100,14 @@ public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
         @Override
         public void toNetwork(FriendlyByteBuf buffer, KnappingRecipe recipe)
         {
-            recipe.pattern.toNetwork(buffer);
+            recipe.getPattern().toNetwork(buffer);
             buffer.writeItem(recipe.getResultItem());
         }
 
         @Override
         public RecipeType<?> getRecipeType()
         {
-            return type;
+            return type.get();
         }
     }
 }

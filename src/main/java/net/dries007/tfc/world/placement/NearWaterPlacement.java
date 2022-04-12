@@ -18,6 +18,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
 public class NearWaterPlacement extends PlacementModifier
@@ -52,7 +53,7 @@ public class NearWaterPlacement extends PlacementModifier
                     mutablePos.set(pos).move(x, y, z);
 
                     final BlockState state = context.getBlockState(mutablePos);
-                    if (state.getFluidState().is(FluidTags.WATER))
+                    if (Helpers.isFluid(state.getFluidState(), FluidTags.WATER))
                     {
                         return Stream.of(pos);
                     }

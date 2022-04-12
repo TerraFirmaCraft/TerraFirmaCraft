@@ -2,9 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:rock/loose/andesite",
+    "tfc:rock/loose/rhyolite",
     "tfc:rock/loose/basalt",
-    "tfc:rock/loose/dacite",
-    "tfc:rock/loose/rhyolite"
+    "tfc:rock/loose/andesite",
+    "tfc:rock/loose/dacite"
   ]
 }

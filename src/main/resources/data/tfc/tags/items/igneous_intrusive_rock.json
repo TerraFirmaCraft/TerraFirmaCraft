@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:rock/loose/granite",
     "tfc:rock/loose/diorite",
-    "tfc:rock/loose/gabbro",
-    "tfc:rock/loose/granite"
+    "tfc:rock/loose/gabbro"
   ]
 }

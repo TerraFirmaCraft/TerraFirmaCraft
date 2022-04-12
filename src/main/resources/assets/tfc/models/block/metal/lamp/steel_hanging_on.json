@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/lamp_hanging",
+  "textures": {
+    "metal": "tfc:block/metal/full/steel",
+    "chain": "tfc:block/metal/chain/steel",
+    "lamp": "tfc:block/lamp"
+  }
+}

@@ -7,22 +7,22 @@
 package net.dries007.tfc.world.layer;
 
 import java.awt.*;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.Artist;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.*;
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 @Disabled
-public class TFCLayersVisualizations
+public class TFCLayersVisualizations extends TestHelper
 {
     @Test
     public void testCreateOverworldBiomeLayer()
@@ -153,6 +153,7 @@ public class TFCLayersVisualizations
         if (id == LOW_CANYONS) return new Color(40, 100, 40);
         if (id == ROLLING_HILLS) return new Color(100, 100, 0);
         if (id == BADLANDS) return new Color(150, 100, 0);
+        if (id == INVERTED_BADLANDS) return new Color(250, 100, 0);
         if (id == PLATEAU) return new Color(200, 100, 0);
         if (id == OLD_MOUNTAINS) return new Color(200, 150, 100);
         if (id == MOUNTAINS) return new Color(200, 200, 200);

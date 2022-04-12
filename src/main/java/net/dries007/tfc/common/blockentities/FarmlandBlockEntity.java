@@ -8,24 +8,24 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
 import java.util.function.IntFunction;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.util.Fertilizer;
 
 public class FarmlandBlockEntity extends TFCBlockEntity
 {
     private float nitrogen, phosphorous, potassium;
-    @Nullable private Integer hydration; // Cached, not generally valid. Only used for non-critical situations (like hoe overlays)
 
     public FarmlandBlockEntity(BlockPos pos, BlockState state)
     {
@@ -37,30 +37,29 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         super(type, pos, state);
 
         nitrogen = phosphorous = potassium = 0;
-        hydration = null;
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         nitrogen = nbt.getFloat("n");
         phosphorous = nbt.getFloat("p");
         potassium = nbt.getFloat("k");
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("n", nitrogen);
         nbt.putFloat("p", phosphorous);
         nbt.putFloat("k", potassium);
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, @Nullable IntFunction<Component> hydrationValidity, boolean includeNutrients)
     {
-        final int value = getCachedHydration(level, pos);
+        final int value = FarmlandBlock.getHydration(level, pos);
         final MutableComponent hydration = new TranslatableComponent("tfc.tooltip.farmland.hydration", value);
         if (hydrationValidity != null)
         {
@@ -70,16 +69,77 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         text.add(hydration);
         if (includeNutrients)
         {
-            text.add(new TranslatableComponent("tfc.tooltip.farmland.nutrients", nitrogen, phosphorous, potassium));
+            text.add(new TranslatableComponent("tfc.tooltip.farmland.nutrients", format(nitrogen), format(phosphorous), format(potassium)));
         }
     }
 
-    private int getCachedHydration(LevelAccessor level, BlockPos pos)
+    private String format(float value)
     {
-        if (hydration == null)
+        return String.format("%.2f", value * 100);
+    }
+
+
+    /**
+     * Consume up to {@code amount} of nutrient {@code type}.
+     * Additionally, increase all other nutrients by 1/6 the consumed value (effectively, recovering 33% of the consumed nutrients)
+     * @return The amount of nutrient {@code type} that was actually consumed.
+     */
+    public float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
+    {
+        final float startValue = getNutrient(type);
+        final float consumed = Math.min(startValue, amount);
+
+        setNutrient(type, startValue - consumed);
+        for (NutrientType other : NutrientType.VALUES)
         {
-            hydration = FarmlandBlock.getHydration(level, pos);
+            if (other != type)
+            {
+                addNutrient(other, consumed * (1 / 6f));
+            }
         }
-        return hydration;
+
+        return consumed;
+    }
+
+    public float getNutrient(NutrientType type)
+    {
+        return switch (type)
+            {
+                case NITROGEN -> nitrogen;
+                case PHOSPHOROUS -> phosphorous;
+                case POTASSIUM -> potassium;
+            };
+    }
+
+    public void addNutrients(Fertilizer fertilizer)
+    {
+        nitrogen = Math.min(1, nitrogen + fertilizer.getNitrogen());
+        phosphorous = Math.min(1, phosphorous + fertilizer.getPhosphorus());
+        potassium = Math.min(1, potassium + fertilizer.getPotassium());
+        markForSync();
+    }
+
+    public void addNutrient(NutrientType type, float value)
+    {
+        setNutrient(type, getNutrient(type) + value);
+    }
+
+    public void setNutrient(NutrientType type, float value)
+    {
+        value = Mth.clamp(value, 0, 1);
+        switch (type)
+        {
+            case NITROGEN -> nitrogen = value;
+            case PHOSPHOROUS -> phosphorous = value;
+            case POTASSIUM -> potassium = value;
+        }
+        markForSync();
+    }
+
+    public enum NutrientType
+    {
+        NITROGEN, PHOSPHOROUS, POTASSIUM;
+
+        private static final NutrientType[] VALUES = values();
     }
 }

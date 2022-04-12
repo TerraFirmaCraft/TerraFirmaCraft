@@ -6,17 +6,16 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -94,7 +93,7 @@ public final class FluidIngredient implements Predicate<Fluid>
         }
         else if (json.has("tag"))
         {
-            entries.addAll(JsonHelpers.getTag(json, "tag", FluidTags.getAllTags()).getValues());
+            entries.addAll(getAll(JsonHelpers.getTag(json, "tag", Registry.FLUID_REGISTRY)));
         }
         else
         {
@@ -103,19 +102,24 @@ public final class FluidIngredient implements Predicate<Fluid>
         return entries;
     }
 
+    private static Collection<Fluid> getAll(TagKey<Fluid> tag)
+    {
+        return Helpers.getAllTagValues(tag, ForgeRegistries.FLUIDS);
+    }
+
     private final Set<Fluid> fluids;
 
-    FluidIngredient(Fluid fluid)
+    public FluidIngredient(Fluid fluid)
     {
         this(Collections.singleton(fluid));
     }
 
-    FluidIngredient(Set<Fluid> fluids)
+    public FluidIngredient(Set<Fluid> fluids)
     {
         this.fluids = fluids;
     }
 
-    FluidIngredient(FriendlyByteBuf buffer)
+    public FluidIngredient(FriendlyByteBuf buffer)
     {
         this.fluids = Helpers.decodeAll(buffer, new ObjectOpenHashSet<>(), b -> b.readRegistryIdUnsafe(ForgeRegistries.FLUIDS));
     }

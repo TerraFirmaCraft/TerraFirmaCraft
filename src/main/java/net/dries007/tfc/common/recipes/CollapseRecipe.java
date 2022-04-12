@@ -9,7 +9,7 @@ package net.dries007.tfc.common.recipes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +27,7 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.inventory.BlockInventory;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.tracker.Collapse;
@@ -90,7 +91,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean canStartCollapse(LevelAccessor world, BlockPos pos)
     {
-        return TFCTags.Blocks.CAN_START_COLLAPSE.contains(world.getBlockState(pos).getBlock()) && TFCFallingBlockEntity.canFallThrough(world, pos.below());
+        return Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.CAN_START_COLLAPSE) && TFCFallingBlockEntity.canFallThrough(world, pos.below());
     }
 
     /**
@@ -113,7 +114,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
             {
                 BlockPos posAt = pos.above(y);
                 BlockState stateAt = world.getBlockState(posAt);
-                if (foundEmpty && TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()))
+                if (foundEmpty && Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE))
                 {
                     // Check for a possible collapse
                     if (posAt.distSqr(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())

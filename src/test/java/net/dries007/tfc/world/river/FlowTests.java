@@ -10,13 +10,14 @@ import java.util.stream.IntStream;
 
 import net.minecraft.util.Mth;
 
+import net.dries007.tfc.TestHelper;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.river.Flow.*;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FlowTests
+public class FlowTests extends TestHelper
 {
     @Test
     public void testFromAngle()

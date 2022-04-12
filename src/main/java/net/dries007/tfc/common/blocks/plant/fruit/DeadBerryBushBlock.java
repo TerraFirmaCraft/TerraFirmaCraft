@@ -22,20 +22,18 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.ICalendar;
 
 public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLoggable, EntityBlockExtension
 {
@@ -49,43 +47,32 @@ public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLogg
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!stateIn.canSurvive(level, currentPos))
+        if (!state.canSurvive(level, currentPos))
         {
             return Blocks.AIR.defaultBlockState();
         }
         else
         {
-            final Fluid containedFluid = stateIn.getValue(getFluidProperty()).getFluid();
-            if (containedFluid != Fluids.EMPTY)
-            {
-                level.scheduleTick(currentPos, containedFluid, containedFluid.getTickDelay(level));
-            }
-            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+            FluidHelpers.tickFluid(level, currentPos, state, this);
+            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        if (random.nextInt(15) == 0 && !level.getBlockState(pos.above()).is(TFCTags.Blocks.ANY_SPREADING_BUSH))
+        if (random.nextInt(15) == 0 && !Helpers.isBlock(level.getBlockState(pos.above()), TFCTags.Blocks.ANY_SPREADING_BUSH))
         {
-            TickCounterBlockEntity te = Helpers.getBlockEntity(level, pos, TickCounterBlockEntity.class);
-            if (te != null)
-            {
-                if (te.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY * 80)
-                {
-                    te.setRemoved();
-                    level.destroyBlock(pos, true);
-                }
-            }
+            randomDestroyTick(level, pos, 80);
         }
     }
 

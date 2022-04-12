@@ -8,7 +8,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:metal/lamp/copper"
+          "name": "tfc:metal/lamp/copper",
+          "functions": [
+            {
+              "function": "tfc:copy_fluid"
+            }
+          ]
         }
       ],
       "conditions": [

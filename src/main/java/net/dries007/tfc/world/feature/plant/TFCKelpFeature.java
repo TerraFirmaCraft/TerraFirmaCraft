@@ -21,6 +21,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
@@ -33,7 +34,7 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
 
     public boolean place(FeaturePlaceContext<ColumnPlantConfig> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final ColumnPlantConfig config = context.config();
@@ -46,37 +47,37 @@ public class TFCKelpFeature extends Feature<ColumnPlantConfig>
         for (int i = 0; i < config.tries(); i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(radius) - rand.nextInt(radius), 0, rand.nextInt(radius) - rand.nextInt(radius));
-            mutablePos.set(world.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, mutablePos));
+            mutablePos.set(level.getHeightmapPos(Heightmap.Types.OCEAN_FLOOR, mutablePos));
 
-            final BlockState state = world.getBlockState(mutablePos);
+            final BlockState state = level.getBlockState(mutablePos);
             final Fluid fluid = state.getFluidState().getType();
             final BlockState bodyState = FluidHelpers.fillWithFluid(config.bodyState(), fluid);
             final BlockState headState = FluidHelpers.fillWithFluid(config.headState(), fluid);
 
-            if (bodyState != null && headState != null && bodyState.canSurvive(world, mutablePos) && FluidHelpers.isAirOrEmptyFluid(state))
+            if (bodyState != null && headState != null && bodyState.canSurvive(level, mutablePos) && FluidHelpers.isAirOrEmptyFluid(state))
             {
-                placeColumn(world, rand, mutablePos, rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, bodyState, headState);
+                placeColumn(level, rand, mutablePos, Mth.nextInt(rand, config.minHeight(), config.maxHeight()), 17, 25, bodyState, headState);
                 placedAny = true;
             }
         }
         return placedAny;
     }
 
-    private void placeColumn(LevelAccessor world, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
+    private void placeColumn(LevelAccessor level, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
     {
         for (int i = 1; i <= height; ++i)
         {
-            if (world.isWaterAt(mutablePos) && body.canSurvive(world, mutablePos))
+            if (level.isWaterAt(mutablePos) && body.canSurvive(level, mutablePos))
             {
-                if (i == height || !world.isWaterAt(mutablePos.above()))
+                if (i == height || !level.isWaterAt(mutablePos.above()))
                 {
-                    if (!world.getBlockState(mutablePos.below()).is(head.getBlock()))
+                    if (!Helpers.isBlock(level.getBlockState(mutablePos.below()), head.getBlock()))
                     {
-                        world.setBlock(mutablePos, head.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 16);
+                        level.setBlock(mutablePos, head.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 16);
                     }
                     return;
                 }
-                world.setBlock(mutablePos, body, 16);
+                level.setBlock(mutablePos, body, 16);
             }
             mutablePos.move(Direction.UP);
         }

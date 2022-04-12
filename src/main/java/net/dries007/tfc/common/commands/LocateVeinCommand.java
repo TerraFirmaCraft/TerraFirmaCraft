@@ -12,12 +12,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
@@ -43,6 +44,7 @@ import net.dries007.tfc.world.feature.vein.VeinFeature;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
+// todo: subcommand of new TFCLocate command?
 public class LocateVeinCommand
 {
     public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.unknown_vein", args));
@@ -61,7 +63,7 @@ public class LocateVeinCommand
                 final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
                 VEINS_CACHE = registry.entrySet()
                     .stream()
-                    .filter(entry -> entry.getValue().feature instanceof VeinFeature)
+                    .filter(entry -> entry.getValue().feature() instanceof VeinFeature)
                     .collect(Collectors.toMap(entry -> entry.getKey().location(), entry -> (ConfiguredFeature<?, ? extends VeinFeature<?, ?>>) entry.getValue()));
             }
             return Collections.emptyMap();
@@ -95,7 +97,7 @@ public class LocateVeinCommand
         final Climate.Sampler sampler = world.getChunkSource().getGenerator().climateSampler();
         final BiomeManager biomeManager = world.getBiomeManager().withDifferentSource((x, y, z) -> source.getNoiseBiome(x, y, z, sampler));
         final WorldGenerationContext generationContext = new WorldGenerationContext(world.getChunkSource().getGenerator(), world);
-        final Function<BlockPos, Biome> biomeQuery = biomeManager::getBiome;
+        final Function<BlockPos, Holder<Biome>> biomeQuery = biomeManager::getBiome;
         for (int radius = 0; radius <= 16; radius++)
         {
             for (int dz = -radius; dz <= radius; dz++)

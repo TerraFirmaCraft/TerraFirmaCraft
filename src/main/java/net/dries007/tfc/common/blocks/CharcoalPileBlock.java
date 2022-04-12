@@ -28,7 +28,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.Helpers;
 
 public class CharcoalPileBlock extends Block
 {
@@ -41,43 +41,43 @@ public class CharcoalPileBlock extends Block
     }
 
     @Override
-    public boolean onDestroyedByPlayer(BlockState state, Level world, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid)
     {
-        playerWillDestroy(world, pos, state, player);
+        playerWillDestroy(level, pos, state, player);
 
         if (player.isCreative())
         {
-            return world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+            return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         }
 
         int prevLayers = state.getValue(LAYERS);
         if (prevLayers == 1)
         {
-            return true;
+            return level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
         }
-        return world.setBlock(pos, state.setValue(LAYERS, prevLayers - 1), world.isClientSide ? 11 : 3);
+        return level.setBlock(pos, state.setValue(LAYERS, prevLayers - 1), level.isClientSide ? 11 : 3);
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
         return new ItemStack(Items.CHARCOAL);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean isPathfindable(BlockState state, BlockGetter worldIn, BlockPos pos, PathComputationType type)
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
     {
         return type == PathComputationType.LAND && state.getValue(LAYERS) < 5;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (!worldIn.isClientSide() && facing == Direction.DOWN)
+        if (!level.isClientSide() && facing == Direction.DOWN)
         {
-            if (facingState.is(TFCBlocks.CHARCOAL_PILE.get()))
+            if (Helpers.isBlock(facingState, TFCBlocks.CHARCOAL_PILE.get()))
             {
                 int layersAt = stateIn.getValue(LAYERS);
                 int layersUnder = facingState.getValue(LAYERS);
@@ -85,18 +85,18 @@ public class CharcoalPileBlock extends Block
                 {
                     if (layersUnder + layersAt <= 8)
                     {
-                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
+                        level.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
                         return Blocks.AIR.defaultBlockState();
                     }
                     else
                     {
-                        worldIn.setBlock(facingPos, facingState.setValue(LAYERS, 8), 3);
+                        level.setBlock(facingPos, facingState.setValue(LAYERS, 8), 3);
                         return stateIn.setValue(LAYERS, layersAt + layersUnder - 8);
                     }
                 }
             }
         }
-        return canSurvive(stateIn, worldIn, currentPos) ? stateIn : Blocks.AIR.defaultBlockState();
+        return canSurvive(stateIn, level, currentPos) ? stateIn : Blocks.AIR.defaultBlockState();
     }
 
     @Override

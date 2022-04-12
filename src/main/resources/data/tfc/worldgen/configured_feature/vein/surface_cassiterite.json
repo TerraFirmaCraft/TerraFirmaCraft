@@ -14,6 +14,29 @@
     "blocks": [
       {
         "replace": [
+          "tfc:rock/raw/granite"
+        ],
+        "with": [
+          {
+            "weight": 60,
+            "block": "tfc:ore/poor_cassiterite/granite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_cassiterite/granite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_cassiterite/granite"
+          },
+          {
+            "weight": 25,
+            "block": "tfc:ore/topaz/granite"
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/raw/diorite"
         ],
         "with": [
@@ -28,6 +51,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_cassiterite/diorite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:deposit/cassiterite/diorite"
           }
         ]
       },
@@ -47,29 +74,10 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_cassiterite/gabbro"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/granite"
-        ],
-        "with": [
-          {
-            "weight": 60,
-            "block": "tfc:ore/poor_cassiterite/granite"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_cassiterite/granite"
           },
           {
             "weight": 10,
-            "block": "tfc:ore/rich_cassiterite/granite"
-          },
-          {
-            "weight": 25,
-            "block": "tfc:ore/topaz/granite"
+            "block": "tfc:deposit/cassiterite/gabbro"
           }
         ]
       }

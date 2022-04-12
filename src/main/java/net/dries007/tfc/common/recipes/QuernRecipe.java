@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class QuernRecipe extends SimpleItemRecipe
@@ -36,7 +37,7 @@ public class QuernRecipe extends SimpleItemRecipe
         return null;
     }
 
-    public QuernRecipe(ResourceLocation id, Ingredient ingredient, ItemStack result)
+    public QuernRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result)
     {
         super(id, ingredient, result);
     }

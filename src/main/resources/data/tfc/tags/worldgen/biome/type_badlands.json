@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:badlands_cold_dry",
+    "tfc:badlands_cold_normal",
+    "tfc:badlands_cold_wet",
+    "tfc:badlands_normal_dry",
+    "tfc:badlands_normal_normal",
+    "tfc:badlands_normal_wet",
+    "tfc:badlands_warm_dry",
+    "tfc:badlands_warm_normal",
+    "tfc:badlands_warm_wet"
+  ]
+}

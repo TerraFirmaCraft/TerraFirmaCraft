@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.LongFunction;
 
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
@@ -20,8 +22,6 @@ import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 /**
  * This is a version of {@link RegistryObject} for biomes.
  * Since we have variants in both temperature and rainfall, we use this as the "biome main type" object.
- * To get the variant holder from the biome, use {@link TFCBiomes#getVariants()}
- * To get the biome from the variants, use one of the {@link BiomeVariants#get(BiomeTemperature, BiomeRainfall)} methods.
  */
 public class BiomeVariants
 {
@@ -32,11 +32,11 @@ public class BiomeVariants
     private final Group group;
     private final boolean salty;
     private final boolean volcanic;
-    private final int volcanoFrequency;
+    private final int volcanoRarity;
     private final int volcanoBasaltHeight;
     private final boolean spawnable;
 
-    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoFrequency, int volcanoBasaltHeight, boolean spawnable)
+    BiomeVariants(LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable)
     {
         this.noiseFactory = noiseFactory;
         this.surfaceBuilderFactory = surfaceBuilderFactory;
@@ -44,7 +44,7 @@ public class BiomeVariants
         this.group = group;
         this.salty = salty;
         this.volcanic = volcanic;
-        this.volcanoFrequency = volcanoFrequency;
+        this.volcanoRarity = volcanoRarity;
         this.volcanoBasaltHeight = volcanoBasaltHeight;
         this.spawnable = spawnable;
 
@@ -85,9 +85,9 @@ public class BiomeVariants
         return spawnable;
     }
 
-    public float getVolcanoChance()
+    public int getVolcanoRarity()
     {
-        return 1f / volcanoFrequency;
+        return volcanoRarity;
     }
 
     public int getVolcanoBasaltHeight()
@@ -95,14 +95,14 @@ public class BiomeVariants
         return volcanoBasaltHeight;
     }
 
-    public BiomeNoiseSampler createNoiseSampler(long seed)
-    {
-        return noiseFactory.apply(seed);
-    }
-
     public double getAquiferSurfaceHeight(double height)
     {
         return aquiferSurfaceHeight.applyAsDouble(height);
+    }
+
+    public BiomeNoiseSampler createNoiseSampler(long seed)
+    {
+        return noiseFactory.apply(seed);
     }
 
     public SurfaceBuilder createSurfaceBuilder(long seed)
@@ -110,9 +110,11 @@ public class BiomeVariants
         return surfaceBuilderFactory.apply(seed);
     }
 
-    public void put(BiomeTemperature temperature, BiomeRainfall rainfall, BiomeExtension extension)
+    public BiomeExtension createBiomeExtension(ResourceKey<Biome> key, BiomeTemperature temperature, BiomeRainfall rainfall)
     {
-        extensions.get(temperature).put(rainfall, extension);
+        final BiomeExtension ex = new BiomeExtension(key, temperature, rainfall, this);
+        extensions.get(temperature).put(rainfall, ex);
+        return ex;
     }
 
     /**

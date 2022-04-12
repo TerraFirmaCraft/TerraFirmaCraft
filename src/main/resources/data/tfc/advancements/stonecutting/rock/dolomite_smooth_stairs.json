@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:rock/smooth/dolomite"
+            "items": [
+              "tfc:rock/smooth/dolomite"
+            ]
           }
         ]
       }

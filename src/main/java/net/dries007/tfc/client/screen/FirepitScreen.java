@@ -33,7 +33,7 @@ public class FirepitScreen extends BlockEntityScreen<FirepitBlockEntity, Firepit
     protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * tile.getSyncableData().get(AbstractFirepitBlockEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
+        int temp = (int) (51 * blockEntity.getSyncableData().get(AbstractFirepitBlockEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
         if (temp > 0)
         {
             blit(matrixStack, leftPos + 30, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);

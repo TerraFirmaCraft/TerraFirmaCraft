@@ -13,9 +13,9 @@ import net.minecraft.client.model.geom.builders.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.dries007.tfc.common.entities.aquatic.AquaticCritterEntity;
+import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
-public class HorseshoeCrabModel extends EntityModel<AquaticCritterEntity>
+public class HorseshoeCrabModel extends EntityModel<AquaticCritter>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -42,7 +42,7 @@ public class HorseshoeCrabModel extends EntityModel<AquaticCritterEntity>
     }
 
     @Override
-    public void setupAnim(AquaticCritterEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    public void setupAnim(AquaticCritter entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
 
     }

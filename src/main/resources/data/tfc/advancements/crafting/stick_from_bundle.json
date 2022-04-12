@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:stick_bundle"
+            "items": [
+              "tfc:stick_bundle"
+            ]
           }
         ]
       }

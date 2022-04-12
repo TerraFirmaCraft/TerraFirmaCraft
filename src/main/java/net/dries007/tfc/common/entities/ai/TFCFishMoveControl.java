@@ -8,15 +8,16 @@ package net.dries007.tfc.common.entities.ai;
 
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.animal.AbstractFish;
 
 public class TFCFishMoveControl extends MoveControl
 {
-    private final AbstractFish fish;
+    private final PathfinderMob fish;
 
-    public TFCFishMoveControl(AbstractFish fish)
+    public TFCFishMoveControl(PathfinderMob fish)
     {
         super(fish);
         this.fish = fish;

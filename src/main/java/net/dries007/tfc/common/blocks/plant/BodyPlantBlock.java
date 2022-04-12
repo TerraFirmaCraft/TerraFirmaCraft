@@ -24,39 +24,41 @@ import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.util.Helpers;
+
 public class BodyPlantBlock extends GrowingPlantBodyBlock
 {
     private final Supplier<? extends Block> headBlock;
 
     public BodyPlantBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
-        super(properties, direction, shape, false);
+        super(properties, direction, shape, true);
         this.headBlock = headBlock;
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient)
+    public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
     }
 
     @Override
-    public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state)
+    public boolean isBonemealSuccess(Level level, Random rand, BlockPos pos, BlockState state)
     {
         return false;
     }
 
     @Override
-    public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state)
+    public void performBonemeal(ServerLevel level, Random rand, BlockPos pos, BlockState state)
     {
 
     }
 
     @Override // lifted from AbstractPlantBlock to add leaves to it
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos blockpos = pos.relative(growthDirection.getOpposite());
-        BlockState blockstate = worldIn.getBlockState(blockpos);
+        BlockState blockstate = level.getBlockState(blockpos);
         Block block = blockstate.getBlock();
         if (!canAttachTo(blockstate))
         {
@@ -64,7 +66,7 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock
         }
         else
         {
-            return block == getHeadBlock() || block == getBodyBlock() || blockstate.is(BlockTags.LEAVES) || blockstate.isFaceSturdy(worldIn, blockpos, growthDirection);
+            return block == getHeadBlock() || block == getBodyBlock() || Helpers.isBlock(blockstate, BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
         }
     }
 

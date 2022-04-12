@@ -6,14 +6,9 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.Random;
-import java.util.function.Predicate;
-import javax.annotation.Nullable;
-
-import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.biome.Climate;
 
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.settings.ClimateSettings;
@@ -21,6 +16,12 @@ import net.dries007.tfc.world.settings.RockLayerSettings;
 
 public interface BiomeSourceExtension
 {
+    Holder<Biome> getNoiseBiome(int quartX, int quartZ);
+
+    Holder<Biome> getNoiseBiomeIgnoreClimate(int quartX, int quartZ);
+
+    BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ);
+
     int getSpawnDistance();
 
     int getSpawnCenterX();

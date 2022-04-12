@@ -33,6 +33,82 @@
       },
       {
         "replace": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "with": [
+          {
+            "weight": 40,
+            "block": "tfc:ore/poor_native_silver/quartzite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_native_silver/quartzite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_native_silver/quartzite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/slate"
+        ],
+        "with": [
+          {
+            "weight": 40,
+            "block": "tfc:ore/poor_native_silver/slate"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_native_silver/slate"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_native_silver/slate"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "with": [
+          {
+            "weight": 40,
+            "block": "tfc:ore/poor_native_silver/phyllite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_native_silver/phyllite"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_native_silver/phyllite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/schist"
+        ],
+        "with": [
+          {
+            "weight": 40,
+            "block": "tfc:ore/poor_native_silver/schist"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/normal_native_silver/schist"
+          },
+          {
+            "weight": 10,
+            "block": "tfc:ore/rich_native_silver/schist"
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/raw/gneiss"
         ],
         "with": [
@@ -66,82 +142,6 @@
           {
             "weight": 10,
             "block": "tfc:ore/rich_native_silver/marble"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/phyllite"
-        ],
-        "with": [
-          {
-            "weight": 40,
-            "block": "tfc:ore/poor_native_silver/phyllite"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_native_silver/phyllite"
-          },
-          {
-            "weight": 10,
-            "block": "tfc:ore/rich_native_silver/phyllite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/quartzite"
-        ],
-        "with": [
-          {
-            "weight": 40,
-            "block": "tfc:ore/poor_native_silver/quartzite"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_native_silver/quartzite"
-          },
-          {
-            "weight": 10,
-            "block": "tfc:ore/rich_native_silver/quartzite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/schist"
-        ],
-        "with": [
-          {
-            "weight": 40,
-            "block": "tfc:ore/poor_native_silver/schist"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_native_silver/schist"
-          },
-          {
-            "weight": 10,
-            "block": "tfc:ore/rich_native_silver/schist"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/slate"
-        ],
-        "with": [
-          {
-            "weight": 40,
-            "block": "tfc:ore/poor_native_silver/slate"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/normal_native_silver/slate"
-          },
-          {
-            "weight": 10,
-            "block": "tfc:ore/rich_native_silver/slate"
           }
         ]
       }

@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -23,7 +21,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
@@ -83,42 +80,24 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         }
     }
 
-    public static void convertPitKilnToPlacedItem(Level world, BlockPos pos)
+    public static void convertPitKilnToPlacedItem(Level level, BlockPos pos)
     {
-        PitKilnBlockEntity teOld = Helpers.getBlockEntity(world, pos, PitKilnBlockEntity.class);
-        if (teOld != null)
-        {
+        level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
-            ItemStack[] inventory = new ItemStack[4];
-            teOld.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                for (int i = 0; i < 4; i++)
-                {
-                    inventory[i] = cap.extractItem(i, 64, false);
-                }
-            });
+            NonNullList<ItemStack> items = Helpers.extractAllItems(pitKiln.inventory);
 
             // Replace the block
-            world.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
+            level.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
 
             // Replace inventory items
-            PlacedItemBlockEntity teNew = Helpers.getBlockEntity(world, pos, PlacedItemBlockEntity.class);
-            if (teNew != null)
-            {
-                teNew.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        if (inventory[i] != null && !inventory[i].isEmpty())
-                        {
-                            cap.insertItem(i, inventory[i], false);
-                        }
-                    }
-                });
+            level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(placedItem -> {
+                Helpers.insertAllItems(placedItem.inventory, items);
 
                 // Copy misc data
-                teNew.isHoldingLargeItem = teOld.isHoldingLargeItem;
-            }
-        }
+                placedItem.isHoldingLargeItem = pitKiln.isHoldingLargeItem;
+            });
+        });
     }
 
     public static boolean isValid(Level level, BlockPos worldPosition)
@@ -154,25 +133,24 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         isLit = nbt.getBoolean("isLit");
         litTick = nbt.getLong("litTick");
         ContainerHelper.loadAllItems(nbt.getCompound("strawItems"), strawItems);
         ContainerHelper.loadAllItems(nbt.getCompound("logItems"), logItems);
         updateCache();
-        super.load(nbt);
+        super.loadAdditional(nbt);
     }
 
     @Override
-    @Nonnull
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putBoolean("isLit", isLit);
         nbt.putLong("litTick", litTick);
         nbt.put("strawItems", ContainerHelper.saveAllItems(new CompoundTag(), strawItems));
         nbt.put("logItems", ContainerHelper.saveAllItems(new CompoundTag(), logItems));
-        return super.save(nbt);
+        super.saveAdditional(nbt);
     }
 
     @Override
@@ -236,7 +214,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
-                    PitKilnBlockEntity pitKiln = Helpers.getBlockEntity(level, pitPos, PitKilnBlockEntity.class);
+                    PitKilnBlockEntity pitKiln = level.getBlockEntity(pitPos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
                     if (pitKiln != null)
                     {
                         pitKiln.tryLight();

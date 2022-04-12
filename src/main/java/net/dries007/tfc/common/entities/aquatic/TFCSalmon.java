@@ -16,11 +16,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCSalmon extends Salmon implements AquaticMob
 {
@@ -54,5 +56,11 @@ public class TFCSalmon extends Salmon implements AquaticMob
     public boolean canSpawnIn(Fluid fluid)
     {
         return fluid.isSame(Fluids.WATER);
+    }
+
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

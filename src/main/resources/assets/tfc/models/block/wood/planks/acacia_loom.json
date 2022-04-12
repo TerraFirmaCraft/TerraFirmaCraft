@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/loom",
+  "textures": {
+    "texture": "tfc:block/wood/planks/acacia",
+    "particle": "tfc:block/wood/planks/acacia"
+  }
+}

@@ -13,9 +13,9 @@ import net.minecraft.client.model.geom.builders.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.dries007.tfc.common.entities.aquatic.AquaticCritterEntity;
+import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 
-public class IsopodModel extends EntityModel<AquaticCritterEntity>
+public class IsopodModel extends EntityModel<AquaticCritter>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -61,7 +61,7 @@ public class IsopodModel extends EntityModel<AquaticCritterEntity>
     }
 
     @Override
-    public void setupAnim(AquaticCritterEntity pEntity, float pLimbSwing, float pLimbSwingAmount, float pAgeInTicks, float pNetHeadYaw, float pHeadPitch)
+    public void setupAnim(AquaticCritter entity, float limbSwing, float limbSwingAmount, float age, float headYaw, float headPitch)
     {
 
     }

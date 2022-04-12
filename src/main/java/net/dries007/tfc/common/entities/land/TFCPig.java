@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.land;
 
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
@@ -33,8 +34,8 @@ public class TFCPig extends Mammal
     }
 
     @Override
-    public Tag<Item> getFoodTag()
+    public TagKey<Item> getFoodTag()
     {
-        return TFCTags.Items.PIG_FOOD; //todo Alcatraz: tags don't work in entity constructors. why?
+        return TFCTags.Items.PIG_FOOD;
     }
 }

@@ -6,17 +6,10 @@
 
 package net.dries007.tfc.world.biome;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.*;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraftforge.common.BiomeDictionary;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.TFCChunkGenerator;
@@ -30,8 +23,6 @@ public class BiomeBuilder
     {
         return new BiomeBuilder();
     }
-
-    private final List<BiomeDictionary.Type> dictionaryTypes;
 
     @Nullable private LongFunction<Noise2D> heightNoiseFactory;
     @Nullable private LongFunction<BiomeNoiseSampler> noiseFactory;
@@ -47,7 +38,6 @@ public class BiomeBuilder
 
     private BiomeBuilder()
     {
-        dictionaryTypes = new ArrayList<>();
         aquiferSurfaceHeight = height -> height;
         group = BiomeVariants.Group.LAND;
         salty = false;
@@ -96,12 +86,6 @@ public class BiomeBuilder
         return this;
     }
 
-    public BiomeBuilder types(BiomeDictionary.Type... types)
-    {
-        this.dictionaryTypes.addAll(Arrays.asList(types));
-        return this;
-    }
-
     public BiomeBuilder group(BiomeVariants.Group group)
     {
         this.group = group;
@@ -138,10 +122,6 @@ public class BiomeBuilder
         return this;
     }
 
-    public void registerTypes(ResourceKey<Biome> biome)
-    {
-        dictionaryTypes.forEach(type -> BiomeDictionary.addTypes(biome, type));
-    }
 
     public BiomeVariants build()
     {

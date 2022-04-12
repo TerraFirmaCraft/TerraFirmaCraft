@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blocks;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.IceBlock;
@@ -32,37 +32,37 @@ public class SeaIceBlock extends IceBlock
      * Override to change a reference to water to salt water
      */
     @Override
-    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack)
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity te, ItemStack stack)
     {
-        super.playerDestroy(worldIn, player, pos, state, te, stack);
+        super.playerDestroy(level, player, pos, state, te, stack);
         if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.SILK_TOUCH, stack) == 0)
         {
-            if (worldIn.dimensionType().ultraWarm())
+            if (level.dimensionType().ultraWarm())
             {
-                worldIn.removeBlock(pos, false);
+                level.removeBlock(pos, false);
                 return;
             }
 
-            Material material = worldIn.getBlockState(pos.below()).getMaterial();
+            Material material = level.getBlockState(pos.below()).getMaterial();
             if (material.blocksMotion() || material.isLiquid())
             {
-                worldIn.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().defaultBlockState());
+                level.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().defaultBlockState());
             }
         }
     }
 
     @Override
-    protected void melt(BlockState state, Level worldIn, BlockPos pos)
+    protected void melt(BlockState state, Level level, BlockPos pos)
     {
-        if (worldIn.dimensionType().ultraWarm())
+        if (level.dimensionType().ultraWarm())
         {
-            worldIn.removeBlock(pos, false);
+            level.removeBlock(pos, false);
         }
         else
         {
             // Use salt water here
-            worldIn.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().defaultBlockState());
-            worldIn.neighborChanged(pos, TFCBlocks.SALT_WATER.get(), pos);
+            level.setBlockAndUpdate(pos, TFCBlocks.SALT_WATER.get().defaultBlockState());
+            level.neighborChanged(pos, TFCBlocks.SALT_WATER.get(), pos);
         }
     }
 }

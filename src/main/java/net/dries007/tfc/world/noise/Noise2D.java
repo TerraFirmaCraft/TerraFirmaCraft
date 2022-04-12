@@ -107,6 +107,11 @@ public interface Noise2D
     {
         final float scale = (max - min) / (oldMax - oldMin);
         final float shift = min - oldMin * scale;
+        return affine(scale, shift);
+    }
+
+    default Noise2D affine(float scale, float shift)
+    {
         return (x, y) -> Noise2D.this.noise(x, y) * scale + shift;
     }
 
@@ -125,20 +130,34 @@ public interface Noise2D
     }
 
     /**
-     * Creates flattened noise by cutting off values above or below a threshold
+     * Creates clamped noise by cutting off values above or below a threshold
      *
      * @param min the minimum noise value
      * @param max the maximum noise value
      * @return a new noise function
      */
-    default Noise2D flattened(float min, float max)
+    default Noise2D clamped(float min, float max)
     {
         return (x, y) -> Mth.clamp(Noise2D.this.noise(x, y), min, max);
     }
 
+    /**
+     * Sum of two noises.
+     */
     default Noise2D add(Noise2D other)
     {
         return (x, y) -> Noise2D.this.noise(x, y) + other.noise(x, y);
+    }
+
+    /**
+     * Product of two noises - lazily evaluates the second if the first evaluates to zero.
+     */
+    default Noise2D lazyProduct(Noise2D other)
+    {
+        return (x, y) -> {
+            final float value = Noise2D.this.noise(x, y);
+            return value == 0 ? 0 : value * other.noise(x, y);
+        };
     }
 
     default Noise2D map(FloatOperator mappingFunction)

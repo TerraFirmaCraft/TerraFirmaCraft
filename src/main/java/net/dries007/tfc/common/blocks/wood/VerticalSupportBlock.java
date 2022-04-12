@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -36,6 +36,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.util.Helpers;
 
 public class VerticalSupportBlock extends Block implements IForgeBlockExtension
 {
@@ -74,27 +75,27 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             mutablePos.setWithOffset(context.getClickedPos(), d);
-            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), context.getLevel().getBlockState(mutablePos).is(TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(d), Helpers.isBlock(context.getLevel().getBlockState(mutablePos), TFCTags.Blocks.SUPPORT_BEAM));
         }
         return state;
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        if (worldIn.isClientSide() || placer == null) return;
+        if (level.isClientSide() || placer == null) return;
         if (stack.getCount() > 2 && !placer.isShiftKeyDown()) // need two because the item block hasn't shrunk the stack yet
         {
             BlockPos above = pos.above();
             BlockPos above2 = above.above();
-            if (worldIn.isEmptyBlock(above) && worldIn.isEmptyBlock(above2))
+            if (level.isEmptyBlock(above) && level.isEmptyBlock(above2))
             {
-                if (worldIn.getEntities(null, new AABB(above)).isEmpty())
+                if (level.getEntities(null, new AABB(above)).isEmpty())
                 {
-                    worldIn.setBlock(above, defaultBlockState(), 2);
-                    if (worldIn.getEntities(null, new AABB(above2)).isEmpty())
+                    level.setBlock(above, defaultBlockState(), 2);
+                    if (level.getEntities(null, new AABB(above2)).isEmpty())
                     {
-                        worldIn.setBlock(above2, defaultBlockState(), 2);
+                        level.setBlock(above2, defaultBlockState(), 2);
                         stack.shrink(2);
                     }
                     else
@@ -114,15 +115,15 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getAxis().isHorizontal())
         {
-            stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), facingState.is(TFCTags.Blocks.SUPPORT_BEAM));
+            stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
         }
         else if (facing == Direction.DOWN)
         {
-            if (facingState.is(TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(world, facingPos, Direction.UP, SupportType.CENTER))
+            if (Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM) || facingState.isFaceSturdy(level, facingPos, Direction.UP, SupportType.CENTER))
             {
                 return stateIn;
             }
@@ -133,16 +134,16 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         BlockPos belowPos = pos.below();
-        BlockState belowState = worldIn.getBlockState(belowPos);
-        return belowState.is(TFCTags.Blocks.SUPPORT_BEAM) || belowState.isFaceSturdy(worldIn, belowPos, Direction.UP, SupportType.CENTER);
+        BlockState belowState = level.getBlockState(belowPos);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.SUPPORT_BEAM) || belowState.isFaceSturdy(level, belowPos, Direction.UP, SupportType.CENTER);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         VoxelShape shape = cachedShapes.get(state);
         if (shape != null) return shape;
@@ -159,22 +160,14 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension
             {
                 if (state.getValue(PROPERTY_BY_DIRECTION.get(d)))
                 {
-                    VoxelShape joinShape = Shapes.empty();
-                    switch (d)
-                    {
-                        case NORTH:
-                            joinShape = box(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 10.0D);
-                            break;
-                        case SOUTH:
-                            joinShape = box(5.0D, 10.0D, 11.0D, 11.0D, 16.0D, 16.0D);
-                            break;
-                        case EAST:
-                            joinShape = box(11.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D);
-                            break;
-                        case WEST:
-                            joinShape = box(0.0D, 10.0D, 5.0D, 5.0D, 16.0D, 11.0D);
-                            break;
-                    }
+                    VoxelShape joinShape = switch (d)
+                        {
+                            case NORTH -> box(5.0D, 10.0D, 0.0D, 11.0D, 16.0D, 10.0D);
+                            case SOUTH -> box(5.0D, 10.0D, 11.0D, 11.0D, 16.0D, 16.0D);
+                            case EAST -> box(11.0D, 10.0D, 5.0D, 16.0D, 16.0D, 11.0D);
+                            case WEST -> box(0.0D, 10.0D, 5.0D, 5.0D, 16.0D, 11.0D);
+                            default -> Shapes.empty();
+                        };
                     shape = Shapes.or(shape, joinShape);
                 }
             }

@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class TreeFeature<C extends FeatureConfiguration> extends Feature<C>
 {
@@ -23,19 +24,19 @@ public abstract class TreeFeature<C extends FeatureConfiguration> extends Featur
         super(codec);
     }
 
-    protected boolean isValidLocation(LevelAccessor worldIn, BlockPos pos)
+    protected boolean isValidLocation(LevelAccessor level, BlockPos pos)
     {
-        BlockState stateDown = worldIn.getBlockState(pos.below());
-        if (!TFCTags.Blocks.TREE_GROWS_ON.contains(stateDown.getBlock()))
+        BlockState stateDown = level.getBlockState(pos.below());
+        if (!Helpers.isBlock(stateDown, TFCTags.Blocks.TREE_GROWS_ON))
         {
             return false;
         }
 
-        BlockState stateAt = worldIn.getBlockState(pos);
+        BlockState stateAt = level.getBlockState(pos);
         return stateAt.getBlock() instanceof SaplingBlock || stateAt.isAir();
     }
 
-    protected boolean isAreaClear(LevelAccessor world, BlockPos pos, int radius, int height)
+    protected boolean isAreaClear(LevelAccessor level, BlockPos pos, int radius, int height)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int y = 0; y < height; y++)
@@ -47,7 +48,7 @@ public abstract class TreeFeature<C extends FeatureConfiguration> extends Featur
                 {
                     mutablePos.set(pos);
                     mutablePos.move(x, y, z);
-                    BlockState stateAt = world.getBlockState(mutablePos);
+                    BlockState stateAt = level.getBlockState(mutablePos);
                     if (!stateAt.isAir())
                     {
                         passed = false;

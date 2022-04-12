@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.util.calendar;
 
-import javax.annotation.Nullable;
+import com.mojang.logging.LogUtils;
+import org.jetbrains.annotations.Nullable;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
 import net.dries007.tfc.config.TFCConfig;
+import org.slf4j.Logger;
 
 /**
  * This is the central tick tracking mechanism for all of TFC
@@ -25,7 +25,7 @@ import net.dries007.tfc.config.TFCConfig;
  */
 public class Calendar implements ICalendar
 {
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     protected long playerTicks, calendarTicks;
     protected int daysInMonth;

@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:canyons_cold_dry",
+    "tfc:canyons_cold_normal",
+    "tfc:canyons_cold_wet",
+    "tfc:canyons_normal_dry",
+    "tfc:canyons_normal_normal",
+    "tfc:canyons_normal_wet",
+    "tfc:canyons_warm_dry",
+    "tfc:canyons_warm_normal",
+    "tfc:canyons_warm_wet"
+  ]
+}

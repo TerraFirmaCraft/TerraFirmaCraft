@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.GrillContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -34,7 +36,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.grill");
+    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.grill");
 
     private final HeatingRecipe[] cachedRecipes;
 
@@ -84,7 +86,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
                 if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
                 {
                     ItemStack output = recipe.assemble(new ItemStackInventory(inputStack));
-                    //todo: apply trait WOOD_GRILLED
+                    FoodCapability.applyTrait(output, FoodTraits.WOOD_GRILLED);
                     inventory.setStackInSlot(finalSlot, output);
                     markForSync();
                 }

@@ -7,7 +7,9 @@
       "conditions": {
         "items": [
           {
-            "item": "tfc:gem/lapis_lazuli"
+            "items": [
+              "tfc:gem/lapis_lazuli"
+            ]
           }
         ]
       }

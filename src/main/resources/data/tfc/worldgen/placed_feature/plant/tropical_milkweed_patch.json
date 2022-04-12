@@ -17,9 +17,6 @@
       "max_rainfall": 300,
       "min_forest": "sparse",
       "max_forest": "old_growth"
-    },
-    {
-      "type": "minecraft:biome"
     }
   ]
 }

@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -58,6 +58,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         crucible.checkForLastTickSync();
         crucible.checkForCalendarUpdate();
+
+        if (crucible.needsRecipeUpdate)
+        {
+            crucible.needsRecipeUpdate = false;
+            crucible.updateCaches();
+        }
 
         if (crucible.temperature != crucible.targetTemperature)
         {
@@ -149,11 +155,11 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     private final SidedHandler.Noop<IHeatBlock> sidedHeat;
     private final IntArrayBuilder syncableData;
-    private final AlloyView readonlyAlloyView;
 
     private final HeatingRecipe[] cachedRecipes;
     private float temperature;
     private float targetTemperature;
+    private boolean needsRecipeUpdate;
 
     /**
      * Prevent the target temperature from "hovering" around a particular value.
@@ -168,6 +174,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         super(TFCBlockEntities.CRUCIBLE.get(), pos, state, CrucibleInventory::new, NAME);
 
         cachedRecipes = new HeatingRecipe[9];
+        needsRecipeUpdate = true;
         temperature = targetTemperature = 0;
         lastFillTicks = 0;
         lastUpdateTick = 0;
@@ -187,8 +194,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         syncableData = new IntArrayBuilder()
             .add(() -> (int) temperature, value -> temperature = value);
-
-        readonlyAlloyView = inventory.alloy.unmodifiableView();
     }
 
     public ContainerData getSyncableData()
@@ -201,7 +206,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
      */
     public AlloyView getAlloy()
     {
-        return readonlyAlloyView;
+        return inventory.alloy;
     }
 
     @Override
@@ -212,6 +217,12 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         // Crucible has no fuel to consume, but it does drop the internal target and temperature over time.
         targetTemperature = HeatCapability.adjustTempTowards(targetTemperature, 0, ticks);
         temperature = HeatCapability.adjustTempTowards(temperature, targetTemperature, ticks);
+    }
+
+    @Override
+    public int getSlotStackLimit(int slot)
+    {
+        return 1;
     }
 
     @Override
@@ -234,25 +245,26 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     @Override
-    public void load(CompoundTag nbt)
+    public void loadAdditional(CompoundTag nbt)
     {
         temperature = nbt.getFloat("temperature");
         targetTemperature = nbt.getFloat("targetTemperature");
         targetTemperatureStabilityTicks = nbt.getInt("targetTemperatureStabilityTicks");
-        super.load(nbt);
+        needsRecipeUpdate = true;
+        super.loadAdditional(nbt);
     }
 
     @Override
-    public CompoundTag save(CompoundTag nbt)
+    public void saveAdditional(CompoundTag nbt)
     {
         nbt.putFloat("temperature", temperature);
         nbt.putFloat("targetTemperature", targetTemperature);
         nbt.putInt("targetTemperatureStabilityTicks", targetTemperatureStabilityTicks);
-        nbt.putBoolean("empty", Helpers.isEmpty(inventory) && readonlyAlloyView.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
-        return super.save(nbt);
+        nbt.putBoolean("empty", Helpers.isEmpty(inventory) && inventory.alloy.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
+        super.saveAdditional(nbt);
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -272,6 +284,14 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     {
         super.setAndUpdateSlots(slot);
         if (slot != SLOT_OUTPUT)
+        {
+            cachedRecipes[slot] = HeatingRecipe.getRecipe(inventory.getStackInSlot(slot));
+        }
+    }
+
+    private void updateCaches()
+    {
+        for (int slot = SLOT_INPUT_START; slot <= SLOT_INPUT_END; slot++)
         {
             cachedRecipes[slot] = HeatingRecipe.getRecipe(inventory.getStackInSlot(slot));
         }
@@ -318,7 +338,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             alloy.deserializeNBT(nbt.getCompound("alloy"));
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack getFluidInTank(int tank)
         {
@@ -332,7 +352,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         }
 
         @Override
-        public boolean isFluidValid(int tank, @Nonnull FluidStack stack)
+        public boolean isFluidValid(int tank, @NotNull FluidStack stack)
         {
             return Metal.get(stack.getFluid()) != null;
         }
@@ -348,7 +368,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
             return 0;
         }
 
-        @Nonnull
+        @NotNull
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {

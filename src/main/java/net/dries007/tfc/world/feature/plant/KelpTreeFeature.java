@@ -19,7 +19,7 @@ import net.dries007.tfc.world.Codecs;
 
 public class KelpTreeFeature extends Feature<BlockStateConfiguration>
 {
-    public static final Codec<BlockStateConfiguration> CODEC = Codecs.blockStateConfigCodec(b -> b instanceof KelpTreeFlowerBlock, "Must be a KelpTreeFlowerBlock");
+    public static final Codec<BlockStateConfiguration> CODEC = Codecs.blockStateConfigCodec(b -> b instanceof KelpTreeFlowerBlock, "Must be a " + KelpTreeFlowerBlock.class.getSimpleName());
 
     public KelpTreeFeature(Codec<BlockStateConfiguration> codec)
     {
@@ -35,7 +35,6 @@ public class KelpTreeFeature extends Feature<BlockStateConfiguration>
         final FluidState fluidAt = level.getFluidState(pos);
         final KelpTreeFlowerBlock flower = (KelpTreeFlowerBlock) context.config().state.getBlock();
 
-        flower.generatePlant(level, pos, context.random(), 8, fluidAt.getType());
-        return true;
+        return flower.generatePlant(level, pos, context.random(), 8, fluidAt.getType());
     }
 }

@@ -7,7 +7,7 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.Map;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.MapMaker;
 import net.minecraft.core.BlockPos;
@@ -15,8 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkAccess;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.*;
 
 import net.dries007.tfc.world.settings.RockLayerSettings;
 
@@ -43,8 +42,8 @@ public final class ChunkDataProvider
     private final ChunkDataGenerator generator;
     private final RockLayerSettings rockLayerSettings;
 
-    private final Map<ChunkAccess, ChunkData> partialChunkData;
-    private final Map<ChunkPos, ChunkAccess> partialChunkLookup; // Needed in order to find pos -> chunks, as when we promote partial -> full, we don't have access to the protochunk.
+    private final Map<ProtoChunk, ChunkData> partialChunkData;
+    private final Map<ChunkPos, ProtoChunk> partialChunkLookup; // Needed in order to find pos -> chunks, as when we promote partial -> full, we don't have access to the protochunk.
 
     public ChunkDataProvider(ChunkDataGenerator generator, RockLayerSettings rockLayerSettings)
     {
@@ -72,17 +71,36 @@ public final class ChunkDataProvider
      */
     public ChunkData get(ChunkAccess chunk)
     {
-        final ChunkData data = partialChunkData.computeIfAbsent(chunk, c -> {
-            final ChunkData d = new ChunkData(c.getPos(), rockLayerSettings);
-            partialChunkLookup.put(c.getPos(), c);
-            return d;
-        });
-        if (data.getStatus() == ChunkData.Status.EMPTY)
+        if (chunk instanceof ImposterProtoChunk imposter)
         {
-            generator.generate(data);
-            data.setStatus(ChunkData.Status.FULL);
+            // Impostor chunks can be present in adjacent chunks, during later stages such as feature generation
+            // When this occurs, queries to these chunks need to obtain the correct data (which is in the capability on the wrapped chunk), rather than generating new data (which omits parts generated later such as rock surface height)
+            return imposter.getWrapped()
+                .getCapability(ChunkDataCapability.CAPABILITY)
+                .orElse(ChunkData.EMPTY);
         }
-        return data;
+        else if (chunk instanceof ProtoChunk proto)
+        {
+            // Ensure we only generate data for proto chunks
+            final ChunkData data = partialChunkData.computeIfAbsent(proto, c -> {
+                final ChunkData d = new ChunkData(c.getPos(), rockLayerSettings);
+                partialChunkLookup.put(c.getPos(), c);
+                return d;
+            });
+            if (data.getStatus() == ChunkData.Status.EMPTY)
+            {
+                generator.generate(data);
+                data.setStatus(ChunkData.Status.FULL);
+            }
+            return data;
+        }
+        else if (chunk instanceof LevelChunk levelChunk)
+        {
+            // We can query the level chunk's capability...
+            return levelChunk.getCapability(ChunkDataCapability.CAPABILITY)
+                .orElse(ChunkData.EMPTY);
+        }
+        throw new IllegalStateException("Cannot get chunk data from an unknown chunk: " + chunk.getClass() + " at " + chunk.getPos());
     }
 
     /**
@@ -103,7 +121,7 @@ public final class ChunkDataProvider
     /**
      * Create, and load a partial chunk data from NBT.
      */
-    public void loadPartial(ChunkAccess chunk, CompoundTag nbt)
+    public void loadPartial(ProtoChunk chunk, CompoundTag nbt)
     {
         partialChunkData.computeIfAbsent(chunk, c -> {
             ChunkData d = new ChunkData(c.getPos(), rockLayerSettings);
@@ -116,7 +134,7 @@ public final class ChunkDataProvider
      * Writes a chunk data's partial data to a tag, if it exists.
      */
     @Nullable
-    public CompoundTag savePartial(ChunkAccess chunk)
+    public CompoundTag savePartial(ProtoChunk chunk)
     {
         final ChunkData data = partialChunkData.get(chunk);
         return data == null ? null : data.serializeNBT();
@@ -128,7 +146,7 @@ public final class ChunkDataProvider
      */
     public ChunkData promotePartialOrCreate(ChunkPos pos)
     {
-        final ChunkAccess partial = partialChunkLookup.remove(pos);
+        final ProtoChunk partial = partialChunkLookup.remove(pos);
         final ChunkData partialData = partialChunkData.remove(partial);
         if (partialData != null)
         {

@@ -21,6 +21,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,6 +30,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.BurningLogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -37,28 +39,28 @@ import net.dries007.tfc.util.Helpers;
 
 public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    public static void tryLightLogPile(Level world, BlockPos pos)
+    public static void tryLightLogPile(Level level, BlockPos pos)
     {
-        LogPileBlockEntity pile = Helpers.getBlockEntity(world, pos, LogPileBlockEntity.class);
+        LogPileBlockEntity pile = level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get()).orElse(null);
         if (pile != null)
         {
             int logs = pile.logCount();
             pile.clearContent(); // avoid dumping when onRemove is called
-            world.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
-            Helpers.playSound(world, pos, SoundEvents.BLAZE_SHOOT);
+            level.setBlockAndUpdate(pos, TFCBlocks.BURNING_LOG_PILE.get().defaultBlockState());
+            Helpers.playSound(level, pos, SoundEvents.BLAZE_SHOOT);
 
-            BurningLogPileBlockEntity newPile = Helpers.getBlockEntity(world, pos, BurningLogPileBlockEntity.class);
-            if (newPile != null)
+            BurningLogPileBlockEntity burningPile = level.getBlockEntity(pos, TFCBlockEntities.BURNING_LOG_PILE.get()).orElse(null);
+            if (burningPile != null)
             {
-                newPile.light(logs);
-                tryLightNearby(world, pos);
+                burningPile.light(logs);
+                tryLightNearby(level, pos);
             }
         }
     }
 
     private static boolean isValidCoverBlock(BlockState offsetState, Level world, BlockPos pos, Direction side)
     {
-        if (offsetState.is(TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
+        if (Helpers.isBlock(offsetState, TFCTags.Blocks.CHARCOAL_COVER_WHITELIST))// log pile, charcoal pile, this
         {
             return true;
         }
@@ -74,7 +76,7 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
             BlockState offsetState = world.getBlockState(offsetPos);
             if (isValidCoverBlock(offsetState, world, offsetPos, side.getOpposite()))
             {
-                if (offsetState.is(TFCBlocks.LOG_PILE.get()))
+                if (Helpers.isBlock(offsetState, TFCBlocks.LOG_PILE.get()))
                 {
                     tryLightLogPile(world, offsetPos);
                 }
@@ -129,5 +131,11 @@ public class BurningLogPileBlock extends BaseEntityBlock implements IForgeBlockE
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(Items.CHARCOAL);
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state)
+    {
+        return RenderShape.MODEL;
     }
 }

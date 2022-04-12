@@ -9,7 +9,9 @@ package net.dries007.tfc.common.recipes;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -54,11 +56,11 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 
     private final ResourceLocation id;
     private final Ingredient ingredient;
-    private final ItemStack outputItem;
+    private final ItemStackProvider outputItem;
     private final FluidStack outputFluid;
     private final float temperature;
 
-    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStack outputItem, FluidStack outputFluid, float temperature)
+    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature)
     {
         this.id = id;
         this.ingredient = ingredient;
@@ -70,13 +72,13 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     @Override
     public boolean matches(ItemStackInventory inv, @Nullable Level worldIn)
     {
-        return ingredient.test(inv.getStack());
+        return getIngredient().test(inv.getStack());
     }
 
     @Override
     public ItemStack getResultItem()
     {
-        return outputItem;
+        return outputItem.getStack(ItemStack.EMPTY);
     }
 
     @Override
@@ -101,7 +103,8 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     public ItemStack assemble(ItemStackInventory inventory)
     {
         final ItemStack inputStack = inventory.getStack();
-        final ItemStack outputStack = outputItem.copy();
+        final ItemStack outputStack = outputItem.getStack(inputStack);
+        // We always upgrade the heat regardless
         inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(oldCap ->
             outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(newCap ->
                 newCap.setTemperature(oldCap.getTemperature())));
@@ -110,7 +113,12 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 
     public FluidStack getOutputFluid(ItemStackInventory inventory)
     {
-        return outputFluid.copy();
+        return outputFluid.copy(); //todo remove inventory param?
+    }
+
+    public FluidStack getDisplayOutputFluid()
+    {
+        return outputFluid.copy(); //todo see above, maybe remove
     }
 
     public float getTemperature()
@@ -125,7 +133,12 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 
     public Collection<Item> getValidItems()
     {
-        return Arrays.stream(this.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
+        return Arrays.stream(this.getIngredient().getItems()).map(ItemStack::getItem).collect(Collectors.toSet());
+    }
+
+    public Ingredient getIngredient()
+    {
+        return ingredient;
     }
 
     public static class Serializer extends RecipeSerializerImpl<HeatingRecipe>
@@ -134,7 +147,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         public HeatingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
-            final ItemStack outputItem = json.has("result_item") ? new ItemStack(ShapedRecipe.itemFromJson(json.getAsJsonObject("result_item"))) : ItemStack.EMPTY;
+            final ItemStackProvider outputItem = json.has("result_item") ? ItemStackProvider.fromJson(json.getAsJsonObject("result_item")): ItemStackProvider.empty();
             final FluidStack outputFluid = json.has("result_fluid") ? JsonHelpers.getFluidStack(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
             final float temperature = GsonHelper.getAsFloat(json, "temperature");
             return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
@@ -145,7 +158,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         public HeatingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            ItemStack outputItem = buffer.readItem();
+            ItemStackProvider outputItem = ItemStackProvider.fromNetwork(buffer);
             FluidStack outputFluid = buffer.readFluidStack();
             float temperature = buffer.readFloat();
             return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
@@ -154,8 +167,8 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         @Override
         public void toNetwork(FriendlyByteBuf buffer, HeatingRecipe recipe)
         {
-            recipe.ingredient.toNetwork(buffer);
-            buffer.writeItem(recipe.outputItem);
+            recipe.getIngredient().toNetwork(buffer);
+            recipe.outputItem.toNetwork(buffer);
             buffer.writeFluidStack(recipe.outputFluid);
             buffer.writeFloat(recipe.temperature);
         }

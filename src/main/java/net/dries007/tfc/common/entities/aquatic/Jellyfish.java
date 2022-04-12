@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
-import javax.annotation.Nullable;
+import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -31,7 +31,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
 
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
@@ -43,11 +44,11 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Jellyfish.class, EntityDataSerializers.INT);
 
     private static final ResourceLocation[] LOCATIONS = {
-        ClientHelpers.animalTexture("jellyfish_blue"),
-        ClientHelpers.animalTexture("jellyfish_red"),
-        ClientHelpers.animalTexture("jellyfish_yellow"),
-        ClientHelpers.animalTexture("jellyfish_purple"),
-        ClientHelpers.animalTexture("jellyfish_orange"),
+        RenderHelpers.animalTexture("jellyfish_blue"),
+        RenderHelpers.animalTexture("jellyfish_red"),
+        RenderHelpers.animalTexture("jellyfish_yellow"),
+        RenderHelpers.animalTexture("jellyfish_purple"),
+        RenderHelpers.animalTexture("jellyfish_orange"),
     };
 
     public Jellyfish(EntityType<? extends AbstractSchoolingFish> type, Level level)
@@ -166,5 +167,11 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     public boolean canSpawnIn(Fluid fluid)
     {
         return fluid.isSame(TFCFluids.SALT_WATER.getSource());
+    }
+
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 }

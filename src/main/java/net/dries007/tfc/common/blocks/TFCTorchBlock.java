@@ -8,7 +8,7 @@ package net.dries007.tfc.common.blocks;
 
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -25,21 +25,22 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    public static void onRandomTick(ServerLevel world, BlockPos pos, BlockState placeState)
+    public static void onRandomTick(ServerLevel level, BlockPos pos, BlockState placeState)
     {
-        TickCounterBlockEntity entity = Helpers.getBlockEntity(world, pos, TickCounterBlockEntity.class);
-        if (entity != null)
+        TickCounterBlockEntity torch = level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).orElse(null);
+        if (torch != null)
         {
             final int torchTicks = TFCConfig.SERVER.torchTicks.get();
-            if (entity.getTicksSinceUpdate() > torchTicks && torchTicks > 0)
+            if (torch.getTicksSinceUpdate() > torchTicks && torchTicks > 0)
             {
-                world.setBlockAndUpdate(pos, placeState);
+                level.setBlockAndUpdate(pos, placeState);
             }
         }
     }
@@ -65,7 +66,7 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
         if (!world.isClientSide())
         {
             ItemStack held = player.getItemInHand(hand);
-            if (TFCTags.Items.CAN_BE_LIT_ON_TORCH.contains(held.getItem()))
+            if (Helpers.isItem(held.getItem(), TFCTags.Items.CAN_BE_LIT_ON_TORCH))
             {
                 held.shrink(1);
                 ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCBlocks.TORCH.get()));
@@ -82,13 +83,13 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterBlockEntity te = Helpers.getBlockEntity(worldIn, pos, TickCounterBlockEntity.class);
-        if (te != null)
+        TickCounterBlockEntity torch = level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).orElse(null);
+        if (torch != null)
         {
-            te.resetCounter();
+            torch.resetCounter();
         }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
+        super.setPlacedBy(level, pos, state, placer, stack);
     }
 }

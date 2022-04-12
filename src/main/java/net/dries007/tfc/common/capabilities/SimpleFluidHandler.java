@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.capabilities;
 
-import javax.annotation.Nonnull;
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -22,7 +22,7 @@ public interface SimpleFluidHandler extends IFluidHandler
         return 1;
     }
 
-    @Nonnull
+    @NotNull
     @Override
     default FluidStack drain(FluidStack resource, FluidAction action)
     {

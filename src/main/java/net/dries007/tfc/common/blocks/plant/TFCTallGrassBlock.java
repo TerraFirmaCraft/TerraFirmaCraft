@@ -7,7 +7,7 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -59,12 +59,12 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        Part part = stateIn.getValue(PART);
+        Part part = state.getValue(PART);
         if (facing.getAxis() != Direction.Axis.Y || part == Part.LOWER != (facing == Direction.UP) || facingState.getBlock() == this && facingState.getValue(PART) != part)
         {
-            return part == Part.LOWER && facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+            return part == Part.LOWER && facing == Direction.DOWN && !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
         else
         {
@@ -73,18 +73,18 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         if (state.getValue(PART) == Part.LOWER)
         {
-            return super.canSurvive(state, worldIn, pos);
+            return super.canSurvive(state, level, pos);
         }
         else
         {
-            BlockState blockstate = worldIn.getBlockState(pos.below());
+            BlockState blockstate = level.getBlockState(pos.below());
             if (state.getBlock() != this)
             {
-                return super.canSurvive(state, worldIn, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
+                return super.canSurvive(state, level, pos); //Forge: This function is called during world gen and placement, before this block is set, so if we are not 'here' then assume it's the pre-check.
             }
             return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
         }
@@ -105,32 +105,32 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, Part.UPPER));
+        level.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, Part.UPPER));
     }
 
     @Override
-    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player)
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
-        if (!worldIn.isClientSide)
+        if (!level.isClientSide)
         {
             if (player.isCreative())
             {
                 if (state.getValue(PART) == Part.UPPER)
                 {
                     BlockPos blockpos = pos.below();
-                    BlockState blockstate = worldIn.getBlockState(blockpos);
+                    BlockState blockstate = level.getBlockState(blockpos);
                     if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == Part.LOWER)
                     {
-                        worldIn.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-                        worldIn.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
+                        level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                        level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
                     }
                 }
             }
             else
             {
-                dropResources(state, worldIn, pos, null, player, player.getMainHandItem());
+                dropResources(state, level, pos, null, player, player.getMainHandItem());
             }
         }
     }
@@ -145,7 +145,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         Part part = state.getValue(PART);
         if (part == Part.LOWER)

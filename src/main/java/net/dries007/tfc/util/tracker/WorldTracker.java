@@ -7,10 +7,14 @@
 package net.dries007.tfc.util.tracker;
 
 import java.util.*;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+
+import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
+import net.dries007.tfc.util.climate.ClimateModel;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -34,42 +38,53 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.BufferedList;
 import net.dries007.tfc.util.loot.TFCLoot;
 
-public class WorldTracker implements IWorldTracker, ICapabilitySerializable<CompoundTag>
+public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 {
-    private static final Random RANDOM = new Random();
+    private final Random random;
+    private final LazyOptional<WorldTracker> capability;
 
-    private final LazyOptional<IWorldTracker> capability;
     private final BufferedList<TickEntry> landslideTicks;
     private final BufferedList<BlockPos> isolatedPositions;
     private final List<Collapse> collapsesInProgress;
 
+    private final ClimateModel defaultClimateModel = new BiomeBasedClimateModel();
+    @Nullable private ClimateModel climateModel;
+
     public WorldTracker()
     {
+        this.random = new Random();
         this.capability = LazyOptional.of(() -> this);
+        this.climateModel = null;
         this.landslideTicks = new BufferedList<>();
         this.isolatedPositions = new BufferedList<>();
         this.collapsesInProgress = new ArrayList<>();
     }
 
-    @Override
     public void addLandslidePos(BlockPos pos)
     {
         landslideTicks.add(new TickEntry(pos, 2));
     }
 
-    @Override
     public void addIsolatedPos(BlockPos pos)
     {
         isolatedPositions.add(pos);
     }
 
-    @Override
     public void addCollapseData(Collapse collapse)
     {
         collapsesInProgress.add(collapse);
     }
 
-    @Override
+    public void setClimateModel(ClimateModel climateModel)
+    {
+        this.climateModel = climateModel;
+    }
+
+    public ClimateModel getClimateModel()
+    {
+        return climateModel == null ? defaultClimateModel : climateModel;
+    }
+
     public void addCollapsePositions(BlockPos centerPos, Collection<BlockPos> positions)
     {
         List<BlockPos> collapsePositions = new ArrayList<>();
@@ -81,7 +96,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             {
                 maxRadiusSquared = distSquared;
             }
-            if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseExplosionPropagateChance.get())
+            if (random.nextFloat() < TFCConfig.SERVER.collapseExplosionPropagateChance.get())
             {
                 collapsePositions.add(pos.above()); // Check the above position
             }
@@ -89,11 +104,11 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         addCollapseData(new Collapse(centerPos, collapsePositions, maxRadiusSquared));
     }
 
-    public void tick(Level world)
+    public void tick(Level level)
     {
-        if (!world.isClientSide())
+        if (!level.isClientSide())
         {
-            if (!collapsesInProgress.isEmpty() && RANDOM.nextInt(10) == 0)
+            if (!collapsesInProgress.isEmpty() && random.nextInt(10) == 0)
             {
                 for (Collapse collapse : collapsesInProgress)
                 {
@@ -101,10 +116,10 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     for (BlockPos posAt : collapse.nextPositions)
                     {
                         // Check the current position for collapsing
-                        BlockState stateAt = world.getBlockState(posAt);
-                        if (TFCTags.Blocks.CAN_COLLAPSE.contains(stateAt.getBlock()) && TFCFallingBlockEntity.canFallThrough(world, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        BlockState stateAt = level.getBlockState(posAt);
+                        if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallThrough(level, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                         {
-                            if (CollapseRecipe.collapseBlock(world, posAt, stateAt))
+                            if (CollapseRecipe.collapseBlock(level, posAt, stateAt))
                             {
                                 // This column has started to collapse. Mark the next block above as unstable for the "follow up"
                                 updatedPositions.add(posAt.above());
@@ -114,7 +129,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                     collapse.nextPositions.clear();
                     if (!updatedPositions.isEmpty())
                     {
-                        world.playSound(null, collapse.centerPos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.6f, 1.0f);
+                        level.playSound(null, collapse.centerPos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.6f, 1.0f);
                         collapse.nextPositions.addAll(updatedPositions);
                         collapse.radiusSquared *= 0.8; // lower radius each successive time
                     }
@@ -129,8 +144,8 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
                 TickEntry entry = tickIterator.next();
                 if (entry.tick())
                 {
-                    final BlockState currentState = world.getBlockState(entry.getPos());
-                    LandslideRecipe.tryLandslide(world, entry.getPos(), currentState);
+                    final BlockState currentState = level.getBlockState(entry.getPos());
+                    LandslideRecipe.tryLandslide(level, entry.getPos(), currentState);
                     tickIterator.remove();
                 }
             }
@@ -140,10 +155,10 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
             while (isolatedIterator.hasNext())
             {
                 final BlockPos pos = isolatedIterator.next();
-                final BlockState currentState = world.getBlockState(pos);
-                if (TFCTags.Blocks.BREAKS_WHEN_ISOLATED.contains(currentState.getBlock()) && isIsolated(world, pos))
+                final BlockState currentState = level.getBlockState(pos);
+                if (Helpers.isBlock(currentState.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED) && isIsolated(level, pos))
                 {
-                    Helpers.destroyBlockAndDropBlocksManually(world, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
+                    Helpers.destroyBlockAndDropBlocksManually((ServerLevel) level, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
                 }
                 isolatedIterator.remove();
             }
@@ -177,7 +192,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt)
+    public void deserializeNBT(@Nullable CompoundTag nbt)
     {
         if (nbt != null)
         {
@@ -202,7 +217,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
         }
     }
 
-    @Nonnull
+    @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
@@ -211,7 +226,7 @@ public class WorldTracker implements IWorldTracker, ICapabilitySerializable<Comp
 
     private boolean isIsolated(LevelAccessor world, BlockPos pos)
     {
-        for (Direction direction : Direction.values())
+        for (Direction direction : Helpers.DIRECTIONS)
         {
             if (!world.isEmptyBlock(pos.relative(direction)))
             {

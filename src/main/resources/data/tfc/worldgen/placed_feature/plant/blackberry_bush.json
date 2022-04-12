@@ -1,5 +1,38 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "feature": "tfc:plant/blackberry_bush",
-  "placement": []
+  "placement": [
+    {
+      "type": "minecraft:heightmap",
+      "heightmap": "WORLD_SURFACE_WG"
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "matching_blocks",
+        "blocks": [
+          "minecraft:air"
+        ]
+      }
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "would_survive",
+        "state": {
+          "Name": "tfc:plant/blackberry_bush",
+          "Properties": {
+            "lifecycle": "healthy",
+            "stage": "0"
+          }
+        }
+      }
+    },
+    {
+      "type": "block_predicate_filter",
+      "predicate": {
+        "type": "tfc:replaceable"
+      }
+    }
+  ]
 }

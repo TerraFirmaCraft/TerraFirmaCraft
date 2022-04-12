@@ -45,6 +45,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -396,7 +397,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
                 return false;
             }
         }
-        return stack.is(getFoodTag());
+        return Helpers.isItem(stack, getFoodTag());
     }
 
     protected boolean isLivestock()

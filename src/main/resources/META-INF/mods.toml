@@ -1,6 +1,6 @@
 # Loader metadata
 modLoader = "javafml" # mandatory
-loaderVersion = "[39,)" # mandatory
+loaderVersion = "[40,)" # mandatory
 license = "EUPL-1.2"
 issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
@@ -16,7 +16,7 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
     # A file name (in the root of the mod JAR) containing a logo for display
     #logoFile="examplemod.png" #optional
     # A text field displayed in the mod UI
-    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianGuy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty." #optional
+    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty. Music by Mike \"Menoch\" Pelaez" #optional
     # A text field displayed in the mod UI
     authors = "AlcatrazEscapee" #optional
     # The description text for the mod (multi line!) (#mandatory)
@@ -26,13 +26,13 @@ issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 [[dependencies.tfc]]
     modId = "forge"
     mandatory = true
-    versionRange = "[39.0.5,)"
+    versionRange = "[40.0.15,)"
     ordering = "AFTER"
     side = "BOTH"
 
 [[dependencies.tfc]]
     modId = "minecraft"
     mandatory = true
-    versionRange = "[1.18.1,)"
+    versionRange = "[1.18.2,)"
     ordering = "AFTER"
     side = "BOTH"

@@ -22,6 +22,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -36,80 +37,86 @@ public class IceCaveFeature extends Feature<NoneFeatureConfiguration>
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
+
+        final OverworldClimateModel model = OverworldClimateModel.getIfPresent(level);
+        if (model == null)
+        {
+            return false;
+        }
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final ChunkPos chunkPos = new ChunkPos(pos);
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
-        final ChunkData chunkData = provider.get(world, chunkPos);
+        final ChunkData chunkData = provider.get(level, chunkPos);
         for (int i = 0; i < 72; i++)
         {
             mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), -3, rand.nextInt(15) - rand.nextInt(15));
-            float maxTemperature = OverworldClimateModel.getAverageMonthlyTemperature(mutablePos.getZ(), mutablePos.getY(), chunkData.getAverageTemp(mutablePos), 1);
+            float maxTemperature = model.getAverageMonthlyTemperature(mutablePos.getZ(), mutablePos.getY(), chunkData.getAverageTemp(mutablePos), 1);
             if (maxTemperature > -4)
             {
                 return false;
             }
-            if (world.getBlockState(mutablePos).getBlock() == Blocks.CAVE_AIR)
+            if (level.getBlockState(mutablePos).getBlock() == Blocks.CAVE_AIR)
             {
                 for (int j = 0; j < 7; j++)
                 {
                     mutablePos.move(0, -1, 0);
-                    if (!world.isEmptyBlock(mutablePos))
+                    if (!level.isEmptyBlock(mutablePos))
                     {
                         break;
                     }
                 }
-                BlockState finalState = world.getBlockState(mutablePos);
+                BlockState finalState = level.getBlockState(mutablePos);
                 mutablePos.move(Direction.UP);
-                if (finalState.is(BlockTags.BASE_STONE_OVERWORLD))
+                if (Helpers.isBlock(finalState, BlockTags.BASE_STONE_OVERWORLD))
                 {
-                    placeDisc(world, mutablePos, rand);
+                    placeDisc(level, mutablePos, rand);
                 }
-                else if (finalState.is(BlockTags.ICE) && rand.nextFloat() < 0.03F)
+                else if (Helpers.isBlock(finalState, BlockTags.ICE) && rand.nextFloat() < 0.03F)
                 {
-                    placeDisc(world, mutablePos, rand);
+                    placeDisc(level, mutablePos, rand);
                 }
             }
             else if (mutablePos.getY() < 96 && rand.nextFloat() < 0.1F)//occluding thin areas
             {
                 mutablePos.move(Direction.UP, 5);
-                if (!world.isEmptyBlock(mutablePos))
+                if (!level.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.DOWN, 3);
-                    if (world.isEmptyBlock(mutablePos))
-                        placeSphere(world, mutablePos, rand);
+                    if (level.isEmptyBlock(mutablePos))
+                        placeSphere(level, mutablePos, rand);
                 }
             }
             if (rand.nextFloat() < 0.002F)//extra springs
             {
                 mutablePos.setY(4 + rand.nextInt(7));
-                if (world.isEmptyBlock(mutablePos))
+                if (level.isEmptyBlock(mutablePos))
                 {
                     mutablePos.move(Direction.UP);
-                    if (world.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                    if (Helpers.isBlock(level.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
                     {
-                        setBlock(world, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
-                        world.scheduleTick(mutablePos, Fluids.WATER, 0);
+                        setBlock(level, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
+                        level.scheduleTick(mutablePos, Fluids.WATER, 0);
                     }
                 }
             }
             if (rand.nextFloat() < 0.03F)//large spikes
             {
-                if (mutablePos.getY() < 96 && world.getBlockState(mutablePos).is(BlockTags.BASE_STONE_OVERWORLD))
+                if (mutablePos.getY() < 96 && Helpers.isBlock(level.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
                 {
                     mutablePos.move(Direction.DOWN);
-                    if (world.isEmptyBlock(mutablePos))
+                    if (level.isEmptyBlock(mutablePos))
                     {
-                        placeSpike(world, mutablePos, rand, Direction.DOWN);
+                        placeSpike(level, mutablePos, rand, Direction.DOWN);
                     }
                     else
                     {
                         mutablePos.move(Direction.UP, 2);
-                        if (world.isEmptyBlock(mutablePos))
-                            placeSpike(world, mutablePos, rand, Direction.UP);
+                        if (level.isEmptyBlock(mutablePos))
+                            placeSpike(level, mutablePos, rand, Direction.UP);
                     }
                 }
             }

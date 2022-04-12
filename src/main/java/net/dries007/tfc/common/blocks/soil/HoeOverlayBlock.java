@@ -15,5 +15,5 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public interface HoeOverlayBlock
 {
-    void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text);
+    void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug);
 }

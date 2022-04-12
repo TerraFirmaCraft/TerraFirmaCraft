@@ -39,13 +39,14 @@ import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
 
-public class CharcoalForgeBlock extends DeviceBlock
+public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
 {
     public static final IntegerProperty HEAT = TFCBlockStateProperties.HEAT_LEVEL;
 
@@ -54,11 +55,11 @@ public class CharcoalForgeBlock extends DeviceBlock
     static
     {
         BiPredicate<LevelAccessor, BlockPos> skyMatcher = LevelAccessor::canSeeSky;
-        BiPredicate<LevelAccessor, BlockPos> isValidSide = (world, pos) -> world.getBlockState(pos).is(TFCTags.Blocks.FORGE_INSULATION);
+        BiPredicate<LevelAccessor, BlockPos> isValidSide = (world, pos) -> Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.FORGE_INSULATION);
         BlockPos origin = BlockPos.ZERO;
         FORGE_MULTIBLOCK = new MultiBlock()
             // Top block
-            .match(origin.above(), state -> state.isAir() || state.is(TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))
+            .match(origin.above(), state -> state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.FORGE_INVISIBLE_WHITELIST))
             // Chimney
             .matchOneOf(origin.above(), new MultiBlock()
                 .match(origin, skyMatcher)
@@ -118,6 +119,18 @@ public class CharcoalForgeBlock extends DeviceBlock
     }
 
     @Override
+    public boolean canAcceptAir(BlockState state, Level level, BlockPos pos, Direction facing)
+    {
+        return facing == Direction.UP;
+    }
+
+    @Override
+    public void intakeAir(BlockState state, Level level, BlockPos pos, Direction facing, int amount)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(forge -> forge.onAirIntake(amount));
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(HEAT));
@@ -132,14 +145,14 @@ public class CharcoalForgeBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        CharcoalForgeBlockEntity te = Helpers.getBlockEntity(world, pos, CharcoalForgeBlockEntity.class);
-        if (te != null)
+        CharcoalForgeBlockEntity forge = level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).orElse(null);
+        if (forge != null)
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, te, pos);
+                NetworkHooks.openGui(serverPlayer, forge, pos);
             }
             return InteractionResult.SUCCESS;
         }

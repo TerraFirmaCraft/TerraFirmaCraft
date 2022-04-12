@@ -45,6 +45,68 @@
       "tfc:stonedrag2"
     ]
   },
+  "tool_rack_place": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "minecraft:entity/itemframe/add_item1",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:entity/itemframe/add_item2",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:entity/itemframe/add_item3",
+        "pitch": 0.8
+      },
+      {
+        "name": "minecraft:entity/itemframe/add_item4",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.tool_rack.place_item"
+  },
+  "loom_weave": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "minecraft:step/wood1",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood2",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood3",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood4",
+        "volume": 0.25,
+        "pitch": 0.5
+      },
+      {
+        "name": "minecraft:step/wood5",
+        "volume": 0.25,
+        "pitch": 0.5
+      }
+    ]
+  },
+  "panning": {
+    "category": "player",
+    "sounds": [
+      "minecraft:dig/sand1",
+      "minecraft:dig/sand2",
+      "minecraft:dig/sand3",
+      "minecraft:dig/sand4"
+    ],
+    "subtitle": "subtitles.item.tfc.pan.use"
+  },
   "knap_stone": {
     "category": "player",
     "sounds": [
@@ -568,31 +630,6 @@
       {
         "name": "tfc:thin_step3",
         "pitch": 1.0
-      }
-    ]
-  },
-  "music.tfc": {
-    "category": "music",
-    "sounds": [
-      {
-        "name": "tfc:music/m0",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m1",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m2",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m3",
-        "stream": true
-      },
-      {
-        "name": "tfc:music/m4",
-        "stream": true
       }
     ]
   }

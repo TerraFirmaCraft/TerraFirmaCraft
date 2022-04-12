@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:item/pan/result",
+  "textures": {
+    "material": "tfc:block/metal/full/gold"
+  }
+}

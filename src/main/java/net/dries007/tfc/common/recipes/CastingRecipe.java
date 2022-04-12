@@ -8,7 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -61,6 +61,17 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
     {
         return breakChance;
     }
+
+    public Ingredient getIngredient()
+    {
+        return ingredient;
+    }
+
+    public FluidStackIngredient getFluidIngredient()
+    {
+        return fluidIngredient;
+    }
+
 
     @Override
     public boolean matches(MoldLike mold, @Nullable Level level)
@@ -119,7 +130,7 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         public void toNetwork(FriendlyByteBuf buffer, CastingRecipe recipe)
         {
             recipe.ingredient.toNetwork(buffer);
-            FluidStackIngredient.toNetwork(buffer, recipe.fluidIngredient);
+            recipe.fluidIngredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
             buffer.writeFloat(recipe.breakChance);
         }

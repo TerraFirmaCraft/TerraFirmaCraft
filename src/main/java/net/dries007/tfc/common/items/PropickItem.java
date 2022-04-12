@@ -9,7 +9,7 @@ package net.dries007.tfc.common.items;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -18,6 +18,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -47,13 +48,13 @@ public class PropickItem extends ToolItem
 
     private static final Random RANDOM = new Random();
 
-    public static Object2IntMap<BlockState> scanAreaFor(Level level, BlockPos center, int radius, Tag<Block> tag)
+    public static Object2IntMap<BlockState> scanAreaFor(Level level, BlockPos center, int radius, TagKey<Block> tag)
     {
         final Object2IntMap<BlockState> results = new Object2IntOpenHashMap<>();
         for (BlockPos cursor : BlockPos.betweenClosed(center.getX() - radius, center.getY() - radius, center.getZ() - radius, center.getX() + radius, center.getY() + radius, center.getZ() + radius))
         {
             final BlockState state = level.getBlockState(cursor);
-            if (state.is(tag))
+            if (Helpers.isBlock(state, tag))
             {
                 results.mergeInt(state, 1, Integer::sum);
             }
@@ -92,7 +93,7 @@ public class PropickItem extends ToolItem
                 ProspectResult result;
                 BlockState found = state;
                 RANDOM.setSeed(Helpers.hash(19827384739241223L, pos));
-                if (state.is(TFCTags.Blocks.PROSPECTABLE))
+                if (Helpers.isBlock(state, TFCTags.Blocks.PROSPECTABLE))
                 {
                     // Found
                     result = ProspectResult.FOUND;

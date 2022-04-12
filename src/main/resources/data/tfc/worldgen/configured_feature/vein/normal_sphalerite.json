@@ -14,6 +14,82 @@
     "blocks": [
       {
         "replace": [
+          "tfc:rock/raw/quartzite"
+        ],
+        "with": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/quartzite"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/quartzite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/quartzite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/slate"
+        ],
+        "with": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/slate"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/slate"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/slate"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/phyllite"
+        ],
+        "with": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/phyllite"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/phyllite"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/phyllite"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/schist"
+        ],
+        "with": [
+          {
+            "weight": 20,
+            "block": "tfc:ore/poor_sphalerite/schist"
+          },
+          {
+            "weight": 50,
+            "block": "tfc:ore/normal_sphalerite/schist"
+          },
+          {
+            "weight": 30,
+            "block": "tfc:ore/rich_sphalerite/schist"
+          }
+        ]
+      },
+      {
+        "replace": [
           "tfc:rock/raw/gneiss"
         ],
         "with": [
@@ -47,82 +123,6 @@
           {
             "weight": 30,
             "block": "tfc:ore/rich_sphalerite/marble"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/phyllite"
-        ],
-        "with": [
-          {
-            "weight": 20,
-            "block": "tfc:ore/poor_sphalerite/phyllite"
-          },
-          {
-            "weight": 50,
-            "block": "tfc:ore/normal_sphalerite/phyllite"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/rich_sphalerite/phyllite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/quartzite"
-        ],
-        "with": [
-          {
-            "weight": 20,
-            "block": "tfc:ore/poor_sphalerite/quartzite"
-          },
-          {
-            "weight": 50,
-            "block": "tfc:ore/normal_sphalerite/quartzite"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/rich_sphalerite/quartzite"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/schist"
-        ],
-        "with": [
-          {
-            "weight": 20,
-            "block": "tfc:ore/poor_sphalerite/schist"
-          },
-          {
-            "weight": 50,
-            "block": "tfc:ore/normal_sphalerite/schist"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/rich_sphalerite/schist"
-          }
-        ]
-      },
-      {
-        "replace": [
-          "tfc:rock/raw/slate"
-        ],
-        "with": [
-          {
-            "weight": 20,
-            "block": "tfc:ore/poor_sphalerite/slate"
-          },
-          {
-            "weight": 50,
-            "block": "tfc:ore/normal_sphalerite/slate"
-          },
-          {
-            "weight": 30,
-            "block": "tfc:ore/rich_sphalerite/slate"
           }
         ]
       }

@@ -10,6 +10,9 @@ import java.util.Random;
 import java.util.stream.Stream;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.server.level.WorldGenRegion;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.placement.PlacementContext;
@@ -22,7 +25,6 @@ import net.dries007.tfc.world.Codecs;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
-import net.dries007.tfc.world.noise.Cellular2D;
 
 public class VolcanoPlacement extends PlacementModifier
 {
@@ -58,39 +60,41 @@ public class VolcanoPlacement extends PlacementModifier
         LocalContext local = localContext.get();
         if (local == null || local.seed != seed)
         {
-            local = new LocalContext(seed, VolcanoNoise.cellNoise(seed));
+            local = new LocalContext(seed, new VolcanoNoise(seed));
             localContext.set(local);
         }
 
-        final Biome biome = level.getBiome(pos);
+        final Biome biome = level.getBiome(pos).value();
         final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, biome).variants();
         if (variants.isVolcanic())
         {
-            // Sample volcano noise
-            final float value = local.cellNoise.noise(pos.getX(), pos.getZ());
-            final float distance = local.cellNoise.f1();
-            if (value < variants.getVolcanoChance())
+            if (center)
             {
-                if (center)
+                final BlockPos center = local.volcanoNoise.calculateCenter(pos.getX(), pos.getY(), pos.getZ(), variants.getVolcanoRarity());
+                if (center != null)
                 {
-                    final BlockPos centerPos = new BlockPos((int) local.cellNoise.centerX(), pos.getY(), (int) local.cellNoise.centerY());
-                    if (centerPos.getX() >> 4 == pos.getX() >> 4 && centerPos.getZ() >> 4 == pos.getZ() >> 4)
+                    if (level instanceof WorldGenRegion generating && !ensureCanWrite(generating, center))
                     {
-                        return Stream.of(centerPos);
+                        return Stream.empty();
                     }
+                    return Stream.of(center);
                 }
-                else
-                {
-                    final float easing = VolcanoNoise.calculateEasing(distance);
-                    if (easing > distance)
-                    {
-                        return Stream.of(pos);
-                    }
-                }
+            }
+            else if (local.volcanoNoise.calculateEasing(pos.getX(), pos.getZ(), variants.getVolcanoRarity()) > this.distance)
+            {
+                return Stream.of(pos);
             }
         }
         return Stream.empty();
     }
 
-    record LocalContext(long seed, Cellular2D cellNoise) {}
+    private boolean ensureCanWrite(WorldGenRegion level, BlockPos pos)
+    {
+        final int xSection = SectionPos.blockToSectionCoord(pos.getX());
+        final int zSection = SectionPos.blockToSectionCoord(pos.getZ());
+        final ChunkPos chunkpos = level.getCenter();
+        return chunkpos.x == xSection && chunkpos.z == zSection;
+    }
+
+    record LocalContext(long seed, VolcanoNoise volcanoNoise) {}
 }

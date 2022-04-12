@@ -7,10 +7,12 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.function.BiFunction;
-import javax.annotation.Nullable;
+import java.util.function.Function;
+import org.jetbrains.annotations.Nullable;
 
-import com.google.common.annotations.VisibleForTesting;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -153,28 +155,27 @@ public enum Plant implements IPlant
 
     private final float speedFactor;
     @Nullable private final IntegerProperty property;
-    @Nullable private final int[] stagesByMonth;
+    private final int @Nullable[] stagesByMonth;
     private final BlockType type;
 
-    Plant(BlockType type, float speedFactor, @Nullable int[] stagesByMonth)
+    private static final Set<Plant> TINTED_ITEMS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, KANGAROO_PAW, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
+
+    Plant(BlockType type, float speedFactor, int @Nullable[] stagesByMonth)
     {
         this.type = type;
         this.speedFactor = speedFactor;
         this.stagesByMonth = stagesByMonth;
 
+        int maxStage = 1;
         if (stagesByMonth != null)
         {
-            int maxStage = Arrays.stream(stagesByMonth).max().orElse(1);
-            if (maxStage > TFCBlockStateProperties.STAGES.length)
-            {
-                throw new IllegalStateException("Max stage = " + maxStage + " is larger than the max stage of any provided property!");
-            }
-            this.property = TFCBlockStateProperties.STAGES[maxStage];
+            maxStage = Arrays.stream(stagesByMonth).max().orElse(1);
         }
-        else
-        {
-            this.property = null;
-        }
+
+        // todo: this should really not stick an extra stage property on stuff that doesn't need it
+        // but to handle that we'd need to make this properly nullable, and then trace down all locations where plant blocks don't actually have a stage property (mostly likely adding setStage(BlockState, int) to IPlant
+        // For now, this will do to avoid errors elsewhere
+        this.property = maxStage > 0 ? TFCBlockStateProperties.getStageProperty(maxStage) : TFCBlockStateProperties.getStageProperty(1);
     }
 
     public Block create()
@@ -182,9 +183,10 @@ public enum Plant implements IPlant
         return type.factory.apply(this, type);
     }
 
-    public BlockItem createBlockItem(Block block, Item.Properties properties)
+    @Nullable
+    public Function<Block, BlockItem> createBlockItem(Item.Properties properties)
     {
-        return type.blockItemFactory.apply(block, properties);
+        return needsItem() ? block -> type.blockItemFactory.apply(block, properties) : null;
     }
 
     @Override
@@ -211,10 +213,9 @@ public enum Plant implements IPlant
         return type == BlockType.VINE;
     }
 
-    @VisibleForTesting
-    public BlockType getType()
+    public boolean isItemTinted()
     {
-        return type;
+        return TINTED_ITEMS.contains(this);
     }
 
     /**
@@ -264,9 +265,9 @@ public enum Plant implements IPlant
         KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getThinBodyShape(), TFCBlockStateProperties.SALT_WATER)),
         KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALT_WATER))),
         KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALT_WATER)),
-        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()), TFCBlockStateProperties.SALT_WATER)),
-        FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), solid()), WaterLilyBlockItem::new),
-        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, solid()), WaterLilyBlockItem::new),
+        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()))),
+        FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), nonSolid(plant)), WaterLilyBlockItem::new),
+        FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, nonSolid(plant)), WaterLilyBlockItem::new),
         TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         TALL_WATER_FRESH((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         WATER((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
@@ -339,11 +340,6 @@ public enum Plant implements IPlant
         {
             this.factory = factory;
             this.blockItemFactory = blockItemFactory;
-        }
-
-        public int getFallFoliageCoords()
-        {
-            return 200;
         }
     }
 }

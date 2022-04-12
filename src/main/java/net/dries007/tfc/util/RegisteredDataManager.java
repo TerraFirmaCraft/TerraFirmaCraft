@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import javax.annotation.Nullable;
+
+import com.mojang.logging.LogUtils;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -18,8 +20,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -27,6 +27,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import org.slf4j.Logger;
 
 /**
  * An implementation of a json reload listener, which has an internal backing registry which is then populated via json.
@@ -34,7 +35,7 @@ import net.dries007.tfc.TerraFirmaCraft;
  */
 public class RegisteredDataManager<T> extends SimpleJsonResourceReloadListener
 {
-    public static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     protected final BiMap<ResourceLocation, Entry<T>> types;
     protected final BiFunction<ResourceLocation, JsonObject, T> factory;

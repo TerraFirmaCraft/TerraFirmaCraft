@@ -8,28 +8,30 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.Level;
-
-import net.dries007.tfc.common.fluids.FluidProperty;
-import net.dries007.tfc.common.fluids.IFluidLoggable;
-
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.GrowingPlantBodyBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.FluidProperty;
+import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLoggable
 {
@@ -59,7 +61,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         Level world = context.getLevel();
         BlockState state = defaultBlockState().setValue(AGE, world.getRandom().nextInt(25));
         FluidState fluidState = world.getFluidState(context.getClickedPos());
-        if (getFluidProperty().canContain(fluidState.getType()))
+        if (!fluidState.isEmpty() && getFluidProperty().canContain(fluidState.getType()))
         {
             return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
@@ -73,30 +75,29 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        VoxelShape voxelshape = super.getShape(state, worldIn, pos, context);
-        Vec3 vector3d = state.getOffset(worldIn, pos);
+        VoxelShape voxelshape = super.getShape(state, level, pos, context);
+        Vec3 vector3d = state.getOffset(level, pos);
         return voxelshape.move(vector3d.x, vector3d.y, vector3d.z);
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        if (facing == growthDirection.getOpposite() && !stateIn.canSurvive(level, currentPos))
+        if (facing == growthDirection.getOpposite() && !state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
         }
-        if (facing != growthDirection || !facingState.is(this) && !facingState.is(getBodyBlock()))
+        if (facing != growthDirection || !Helpers.isBlock(facingState, this) && !Helpers.isBlock(facingState, getBodyBlock()))
         {
             //Not sure if this is necessary
-            Fluid fluid = stateIn.getFluidState().getType();
-            level.scheduleTick(currentPos, fluid, fluid.getTickDelay(level));
-            return super.updateShape(stateIn, facing, facingState, level, currentPos, facingPos);
+            FluidHelpers.tickFluid(level, currentPos, state, this);
+            return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
         {
-            return this.getBodyBlock().defaultBlockState().setValue(getFluidProperty(), stateIn.getValue(getFluidProperty()));
+            return this.getBodyBlock().defaultBlockState().setValue(getFluidProperty(), state.getValue(getFluidProperty()));
         }
     }
 
@@ -127,9 +128,16 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState)
     {
         return false;
+    }
+
+    @Override
+    public ItemStack pickupBlock(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    {
+        // Don't allow taking the fluid
+        return ItemStack.EMPTY;
     }
 
     @Override
