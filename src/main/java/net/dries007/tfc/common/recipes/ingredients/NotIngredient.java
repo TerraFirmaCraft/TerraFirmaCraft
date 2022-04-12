@@ -18,7 +18,19 @@ import org.jetbrains.annotations.Nullable;
 
 public class NotIngredient extends DelegateIngredient
 {
-    public NotIngredient(@Nullable Ingredient delegate)
+    private static final NotIngredient ALWAYS_TRUE = new NotIngredient(null);
+
+    public static NotIngredient of(Ingredient ingredient)
+    {
+        return new NotIngredient(ingredient);
+    }
+
+    public static NotIngredient alwaysTrue()
+    {
+        return ALWAYS_TRUE;
+    }
+
+    protected NotIngredient(@Nullable Ingredient delegate)
     {
         super(delegate);
     }
@@ -56,7 +68,7 @@ public class NotIngredient extends DelegateIngredient
         @Override
         public void write(FriendlyByteBuf buffer, NotIngredient ingredient)
         {
-            encodeNullable(ingredient, buffer);
+            Helpers.encodeNullable(ingredient.delegate, buffer, Ingredient::toNetwork);
         }
     }
 }

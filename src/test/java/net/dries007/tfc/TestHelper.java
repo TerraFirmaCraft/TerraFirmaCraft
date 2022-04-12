@@ -19,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
+import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.Area;
@@ -89,6 +90,7 @@ public class TestHelper
             // Various TFC bootstraps that we can do
             ItemStackModifiers.registerItemStackModifierTypes();
             BlockIngredients.registerBlockIngredientTypes();
+            TFCIngredients.registerIngredientTypes();
         }
     }
 
