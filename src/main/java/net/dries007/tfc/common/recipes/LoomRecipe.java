@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -29,7 +28,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class LoomRecipe extends SimpleItemRecipe
 {
-    public static final IndirectHashCollection<Item, LoomRecipe> CACHE = new IndirectHashCollection<>(LoomRecipe::getValidItems);
+    public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(LoomRecipe::getValidItems, TFCRecipeTypes.LOOM);
 
     @Nullable
     public static LoomRecipe getRecipe(Level world, ItemStackInventory wrapper)

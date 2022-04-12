@@ -19,8 +19,10 @@ import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.noise.Cellular3D;
 import net.dries007.tfc.world.noise.Noise3D;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class AquiferVisualizations extends TestHelper
 {
     @BeforeAll

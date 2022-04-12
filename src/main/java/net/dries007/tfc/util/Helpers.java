@@ -612,12 +612,12 @@ public final class Helpers
         return collection;
     }
 
-    public static <E, C extends Collection<E>> void encodeAll(FriendlyByteBuf buffer, C collection, BiConsumer<FriendlyByteBuf, E> encoder)
+    public static <E, C extends Collection<E>> void encodeAll(FriendlyByteBuf buffer, C collection, BiConsumer<E, FriendlyByteBuf> encoder)
     {
         buffer.writeVarInt(collection.size());
         for (E e : collection)
         {
-            encoder.accept(buffer, e);
+            encoder.accept(e, buffer);
         }
     }
 

@@ -27,7 +27,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class CastingRecipe implements ISimpleRecipe<MoldLike>
 {
-    public static final IndirectHashCollection<Item, CastingRecipe> CACHE = new IndirectHashCollection<>(recipe -> Arrays.stream(recipe.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toList()));
+    public static final IndirectHashCollection<Item, CastingRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> Arrays.stream(recipe.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toList()), TFCRecipeTypes.CASTING);
 
     @Nullable
     public static CastingRecipe get(MoldLike mold)

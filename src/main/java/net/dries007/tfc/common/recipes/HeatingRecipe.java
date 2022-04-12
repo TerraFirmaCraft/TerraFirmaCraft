@@ -33,7 +33,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 {
-    public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = new IndirectHashCollection<>(HeatingRecipe::getValidItems);
+    public static final IndirectHashCollection<Item, HeatingRecipe> CACHE = IndirectHashCollection.createForRecipe(HeatingRecipe::getValidItems, TFCRecipeTypes.HEATING);
 
     @Nullable
     public static HeatingRecipe getRecipe(ItemStack stack)
