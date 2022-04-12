@@ -56,7 +56,8 @@ public class OverworldClimateModel implements WorldGenClimateModel
 
     public static final float ICICLE_MIN_FREEZE_TEMPERATURE = -10f;
     public static final float ICICLE_MAX_FREEZE_TEMPERATURE = -2f;
-    public static final float ICICLE_MELT_TEMPERATURE = 2f;
+    public static final float ICICLE_DRIP_TEMPERATURE = 0f;
+    public static final float ICICLE_MELT_TEMPERATURE = 4f;
 
     public static final float LAVA_LEVEL_TEMPERATURE = 15f;
 
