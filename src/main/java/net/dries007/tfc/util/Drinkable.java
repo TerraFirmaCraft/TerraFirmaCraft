@@ -23,8 +23,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -34,23 +32,19 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidAttributes;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
-import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class Drinkable extends FluidDefinition
 {
-    public static final DataManager<Drinkable> MANAGER = new DataManager<>("drinkables", "drinkable", Drinkable::new, Drinkable::reload);
-    public static final IndirectHashCollection<Fluid, Drinkable> CACHE = new IndirectHashCollection<>(Drinkable::getFluids);
+    public static final DataManager<Drinkable> MANAGER = new DataManager<>("drinkables", "drinkable", Drinkable::new);
+    public static final IndirectHashCollection<Fluid, Drinkable> CACHE = IndirectHashCollection.create(Drinkable::getFluids, MANAGER::getValues);
 
     @Nullable
     public static Drinkable get(Fluid fluid)
@@ -141,11 +135,6 @@ public class Drinkable extends FluidDefinition
             }
         }
         this.effects = builder.build();
-    }
-
-    private static void reload()
-    {
-        CACHE.reload(MANAGER.getValues());
     }
 
     public void onDrink(Player player)

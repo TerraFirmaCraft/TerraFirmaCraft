@@ -15,6 +15,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
@@ -27,6 +29,7 @@ import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.RiverFractal;
 import org.junit.jupiter.api.BeforeAll;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
@@ -134,5 +137,27 @@ public class TestHelper
         {
             return new Color(0, random.nextInt(155) + 100, 0);
         }
+    }
+
+    public static void assertIngredientEquals(Ingredient expected, Ingredient actual)
+    {
+        assertEquals(expected.getClass(), actual.getClass());
+        assertEquals(expected.getSerializer(), actual.getSerializer());
+        assertEquals(expected.toJson(), actual.toJson());
+
+        final ItemStack[] expectedItems = expected.getItems(), actualItems = actual.getItems();
+        assertEquals(expectedItems.length, actualItems.length);
+        for (int i = 0; i < Math.min(expectedItems.length, actualItems.length); i++)
+        {
+            assertItemStackEquals(expectedItems[i], actualItems[i]);
+        }
+    }
+
+    public static void assertItemStackEquals(ItemStack expected, ItemStack actual)
+    {
+        assertEquals(expected.getItem(), actual.getItem());
+        assertEquals(expected.getCount(), actual.getCount());
+        assertEquals(expected.getTag(), actual.getTag());
+        assertEquals(expected.toString(), actual.toString());
     }
 }

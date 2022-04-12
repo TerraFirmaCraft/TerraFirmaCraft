@@ -12,10 +12,12 @@ import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Cellular2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 public class VolcanoVisualizations extends TestHelper
 {
     @Test

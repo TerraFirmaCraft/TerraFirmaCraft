@@ -207,13 +207,12 @@ def generate(rm: ResourceManager):
 
     for wood in WOODS.keys():
         block_and_item_tag(rm, 'tool_racks', 'tfc:wood/planks/%s_tool_rack' % wood)
+        rm.block_tag('single_block_replaceable', 'tfc:wood/twig/%s' % wood, 'tfc:wood/fallen_leaves/%s' % wood)
 
     for plant in PLANTS.keys():
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)
-        rm.block_tag('single_block_replaceable', 'tfc:wood/twig/%s' % wood)
-        rm.block_tag('single_block_replaceable', 'tfc:wood/fallen_leaves/%s' % wood)
 
     # Sand
     for color in SAND_BLOCK_TYPES:
@@ -247,12 +246,21 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
-    rm.block_tag('prospectable', '#forge:ores')
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
+
+    for ore, ore_data in ORES.items():
+        for rock in ROCKS.keys():
+            if ore_data.graded:
+                for grade in ORE_GRADES.keys():
+                    rm.block_tag('prospectable', 'tfc:ore/%s_%s/%s' % (grade, ore, rock))
+                    rm.block('tfc:ore/%s_%s/%s/prospected' % (grade, ore, rock)).with_lang(lang(ore))
+            else:
+                rm.block_tag('prospectable', 'tfc:ore/%s/%s' % (ore, rock))
+                rm.block('tfc:ore/%s/%s/prospected' % (ore, rock)).with_lang(lang(ore))
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)

@@ -9,7 +9,6 @@ package net.dries007.tfc.common.recipes;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -22,7 +21,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public class QuernRecipe extends SimpleItemRecipe
 {
-    public static final IndirectHashCollection<Item, QuernRecipe> CACHE = new IndirectHashCollection<>(QuernRecipe::getValidItems);
+    public static final IndirectHashCollection<Item, QuernRecipe> CACHE = IndirectHashCollection.createForRecipe(QuernRecipe::getValidItems, TFCRecipeTypes.QUERN);
 
     @Nullable
     public static QuernRecipe getRecipe(Level world, ItemStackInventory wrapper)

@@ -36,14 +36,7 @@ public class NetworkTests extends TestHelper
     {
         final Ingredient before = Ingredient.of(Items.ACACIA_BOAT);
         final Ingredient after = encodeAndDecode(before, Ingredient::toNetwork, Ingredient::fromNetwork);
-
-        final ItemStack[] beforeItems = before.getItems(), afterItems = after.getItems();
-        assertEquals(beforeItems.length, afterItems.length);
-        for (int i = 0; i < beforeItems.length; i++)
-        {
-            assertEquals(beforeItems[i].getItem(), afterItems[i].getItem());
-            assertEquals(beforeItems[i].getTag(), afterItems[i].getTag());
-        }
+        assertIngredientEquals(before, after);
     }
 
     @Test

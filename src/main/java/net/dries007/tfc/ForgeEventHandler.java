@@ -514,6 +514,7 @@ public final class ForgeEventHandler
             }
 
             Climate.onWorldLoad(level);
+            ItemSizeManager.applyItemStackSizeOverrides();
         }
     }
 
