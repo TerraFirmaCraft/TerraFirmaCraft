@@ -20,10 +20,20 @@ import org.jetbrains.annotations.Nullable;
 
 public class HeatableIngredient extends DelegateIngredient
 {
+    public static HeatableIngredient of(int minTemp, int maxTemp)
+    {
+        return of(null, minTemp, maxTemp);
+    }
+
+    public static HeatableIngredient of(@Nullable Ingredient ingredient, int minTemp, int maxTemp)
+    {
+        return new HeatableIngredient(ingredient, minTemp, maxTemp);
+    }
+
     private final int minTemp;
     private final int maxTemp;
 
-    public HeatableIngredient(@Nullable Ingredient delegate, int minTemp, int maxTemp)
+    protected HeatableIngredient(@Nullable Ingredient delegate, int minTemp, int maxTemp)
     {
         super(delegate);
         this.minTemp = minTemp;

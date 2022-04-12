@@ -188,7 +188,8 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     @Override
     public BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ)
     {
-        return biomeLayer.get(quartX, quartZ);
+        return TFCBiomes.LOWLANDS;
+        // return biomeLayer.get(quartX, quartZ);
     }
 
     @Override

@@ -73,7 +73,7 @@ public interface IGlow
                 if (entity instanceof AquaticMob)
                 {
                     // if we have an empty fluid, we are good to go
-                    FluidHelpers.isEmptyFluid(currentState).ifPresent(fluid -> {
+                    FluidHelpers.asEmptyFluid(currentState).ifPresent(fluid -> {
                         // since we know what we're dealing with, FluidHelpers#fillWithFluid has more checks than we need.
                         BlockState newState = TFCBlocks.LIGHT.get().defaultBlockState().setValue(TFCLightBlock.LEVEL, getLightLevel()).setValue(TFCLightBlock.FLUID, TFCLightBlock.FLUID.keyFor(fluid.getType()));
                         entity.level.setBlockAndUpdate(currentPos, newState);
