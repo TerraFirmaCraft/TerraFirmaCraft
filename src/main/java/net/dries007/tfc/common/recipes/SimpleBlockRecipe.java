@@ -109,7 +109,7 @@ public abstract class SimpleBlockRecipe implements IBlockRecipe
         @Override
         public void toNetwork(FriendlyByteBuf buffer, R recipe)
         {
-            BlockIngredients.toNetwork(buffer, recipe.ingredient);
+            recipe.ingredient.toNetwork(buffer);
             buffer.writeBoolean(recipe.copyInputState);
             if (!recipe.copyInputState)
             {
