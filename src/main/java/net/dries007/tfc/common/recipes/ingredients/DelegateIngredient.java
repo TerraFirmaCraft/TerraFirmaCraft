@@ -22,15 +22,6 @@ import it.unimi.dsi.fastutil.ints.IntList;
 
 public abstract class DelegateIngredient extends Ingredient
 {
-    public static void encodeNullable(DelegateIngredient ingredient, FriendlyByteBuf buffer)
-    {
-        Helpers.encodeNullable(ingredient, buffer, (ing, buf) -> {
-            // we null-checked in the Helpers call
-            assert ing.delegate != null;
-            ing.delegate.toNetwork(buf);
-        });
-    }
-
     @Nullable
     protected final Ingredient delegate;
 

@@ -65,7 +65,7 @@ public class HasTraitIngredient extends DelegateIngredient
         @Override
         public void write(FriendlyByteBuf buffer, HasTraitIngredient ingredient)
         {
-            encodeNullable(ingredient, buffer);
+            Helpers.encodeNullable(ingredient.delegate, buffer, Ingredient::toNetwork);
             buffer.writeResourceLocation(FoodTrait.getId(ingredient.trait));
         }
     }

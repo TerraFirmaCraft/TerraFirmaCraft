@@ -74,7 +74,7 @@ public class HeatableIngredient extends DelegateIngredient
         @Override
         public void write(FriendlyByteBuf buffer, HeatableIngredient ingredient)
         {
-            encodeNullable(ingredient, buffer);
+            Helpers.encodeNullable(ingredient.delegate, buffer, Ingredient::toNetwork);
             buffer.writeVarInt(ingredient.minTemp);
             buffer.writeVarInt(ingredient.maxTemp);
         }
