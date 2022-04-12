@@ -19,6 +19,7 @@ public interface ItemStackModifier
     @SuppressWarnings("unchecked")
     default void toNetwork(FriendlyByteBuf buffer)
     {
+        buffer.writeResourceLocation(ItemStackModifiers.getId(serializer()));
         ((Serializer<ItemStackModifier>) serializer()).toNetwork(this, buffer);
     }
 

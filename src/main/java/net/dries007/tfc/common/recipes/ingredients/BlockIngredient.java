@@ -32,7 +32,14 @@ public interface BlockIngredient extends Predicate<BlockState>
      */
     Collection<Block> getValidBlocks();
 
-    BlockIngredient.Serializer<?> getSerializer();
+    BlockIngredient.Serializer<?> serializer();
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    default void toNetwork(FriendlyByteBuf buffer)
+    {
+        buffer.writeResourceLocation(BlockIngredients.getId(serializer()));
+        ((BlockIngredient.Serializer) serializer()).toNetwork(buffer, this);
+    }
 
     interface Serializer<T extends BlockIngredient>
     {

@@ -71,8 +71,18 @@ public class ItemStackModifiers
     public static ItemStackModifier fromNetwork(FriendlyByteBuf buffer)
     {
         final ResourceLocation id = buffer.readResourceLocation();
-        final ItemStackModifier.Serializer<?> serializer = Objects.requireNonNull(REGISTRY.get(id), "Unknown item stack modifier: " + id);
+        final ItemStackModifier.Serializer<?> serializer = byId(id);
         return serializer.fromNetwork(buffer);
+    }
+
+    public static ItemStackModifier.Serializer<?> byId(ResourceLocation id)
+    {
+        return Objects.requireNonNull(REGISTRY.get(id), () -> "No serializer by id: " + id);
+    }
+
+    public static ResourceLocation getId(ItemStackModifier.Serializer<?> serializer)
+    {
+        return Objects.requireNonNull(REGISTRY.inverse().get(serializer), () -> "Unregistered serializer: " + serializer);
     }
 
     private static ItemStackModifier.Serializer<?> getSerializer(String type)

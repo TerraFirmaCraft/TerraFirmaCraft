@@ -18,18 +18,20 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+
 public class SimpleBlockIngredient implements BlockIngredient
 {
-    private final Collection<Block> blocks;
+    private final Set<Block> blocks;
 
-    public SimpleBlockIngredient(Block block)
+    SimpleBlockIngredient(Block block)
     {
-        this(Collections.singleton(block));
+        this.blocks = Collections.singleton(block);
     }
 
-    public SimpleBlockIngredient(Collection<Block> blocks)
+    SimpleBlockIngredient(Collection<Block> blocks)
     {
-        this.blocks = blocks;
+        this.blocks = new ObjectOpenHashSet<>(blocks);
     }
 
     @Override
@@ -45,7 +47,7 @@ public class SimpleBlockIngredient implements BlockIngredient
     }
 
     @Override
-    public BlockIngredient.Serializer<?> getSerializer()
+    public BlockIngredient.Serializer<?> serializer()
     {
         return Serializer.INSTANCE;
     }

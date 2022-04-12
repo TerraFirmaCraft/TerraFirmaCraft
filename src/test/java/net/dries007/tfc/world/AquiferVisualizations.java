@@ -7,38 +7,26 @@
 package net.dries007.tfc.world;
 
 import java.awt.*;
-import java.util.function.DoubleFunction;
 import java.util.function.IntFunction;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.levelgen.Noises;
-import net.minecraft.world.level.levelgen.PositionalRandomFactory;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-import net.minecraft.world.level.levelgen.synth.NormalNoise;
 
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.TestBase;
 import net.dries007.tfc.TestHelper;
-import net.dries007.tfc.world.noise.Cellular2D;
 import net.dries007.tfc.world.noise.Cellular3D;
-import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.Noise3D;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.*;
-
-public class AquiferVisualizations extends TestBase
+public class AquiferVisualizations extends TestHelper
 {
     @BeforeAll
     public static void setup()
     {
-        boostrap();
+        bootstrap();
     }
 
     @Test
