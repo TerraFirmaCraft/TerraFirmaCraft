@@ -49,7 +49,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public class FirepitBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension, IGhostBlockHandler
+public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 

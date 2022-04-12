@@ -58,6 +58,11 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
         return result.getStack(ItemStack.EMPTY);
     }
 
+    public ItemStackProvider getResult()
+    {
+        return result;
+    }
+
     @Override
     public ResourceLocation getId()
     {
@@ -105,7 +110,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
         public void toNetwork(FriendlyByteBuf buffer, R recipe)
         {
             recipe.getIngredient().toNetwork(buffer);
-            buffer.writeItem(recipe.getResultItem());
+            recipe.getResult().toNetwork(buffer);
         }
 
         public interface Factory<R extends SimpleItemRecipe>
