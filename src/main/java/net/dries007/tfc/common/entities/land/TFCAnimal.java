@@ -266,27 +266,38 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor pLevel, DifficultyInstance pDifficulty, MobSpawnType pReason, @Nullable SpawnGroupData pSpawnData, @Nullable CompoundTag pDataTag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
     {
-        if (pReason != MobSpawnType.BREEDING)
+        if (reason != MobSpawnType.BREEDING)
         {
             setGender(Gender.valueOf(random.nextBoolean()));
             setAge(0);
-            setBirthDay(EntityHelpers.getRandomGrowth(level, getDaysToAdulthood()));
+            setBirthDay(EntityHelpers.getRandomGrowth(this.level, getDaysToAdulthood()));
             setFamiliarity(0);
             setFertilized(false);
         }
-        return super.finalizeSpawn(pLevel, pDifficulty, pReason, pSpawnData, pDataTag);
+        return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
     }
 
     @Override
-    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos)
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos)
     {
         if (getTFCAnimalType() != Type.OVIPAROUS)
         {
-            super.checkFallDamage(pY, pOnGround, pState, pPos);
+            super.checkFallDamage(y, onGround, state, pos);
         }
     }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> data)
+    {
+        super.onSyncedDataUpdated(data);
+        if (BIRTHDAY.equals(data))
+        {
+            refreshDimensions();
+        }
+    }
+
 
     @Override
     public void tick()

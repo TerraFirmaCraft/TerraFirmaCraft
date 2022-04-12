@@ -52,11 +52,11 @@ public abstract class Mammal extends TFCAnimal
 
     @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
     {
-        data = super.finalizeSpawn(level, difficulty, reason, data, tag);
+        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
         setPregnantTime(-1L);
-        return data;
+        return spawnData;
     }
 
     @Override

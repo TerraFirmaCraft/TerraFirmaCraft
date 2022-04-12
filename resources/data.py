@@ -629,22 +629,30 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'lamp_fuels', 'tallow'), lamp_fuel('tfc:tallow', 1800))
     rm.data(('tfc', 'lamp_fuels', 'lava'), lamp_fuel('minecraft:lava', -1, 'tfc:metal/lamp/blue_steel'))
 
-    rm.entity_loot('cod', 'tfc:food/cod')
-    rm.entity_loot('bluegill', 'tfc:food/bluegill')
-    rm.entity_loot('tropical_fish', 'tfc:food/tropical_fish')
-    rm.entity_loot('salmon', 'tfc:food/salmon')
-    rm.entity_loot('pufferfish', 'minecraft:pufferfish')
-    rm.entity_loot('isopod', 'tfc:shell')
-    rm.entity_loot('lobster', 'tfc:shell')
-    rm.entity_loot('horseshoe_crab', 'tfc:shell')
-    rm.entity_loot('orca', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
-    rm.entity_loot('dolphin', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
-    rm.entity_loot('manatee', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
-    rm.entity_loot('penguin', {'name': 'minecraft:feather', 'conditions': [loot_tables.random_chance(0.8)]}, {'name': 'tfc:small_raw_hide', 'conditions': [loot_tables.random_chance(0.3)]})
-    rm.entity_loot('turtle', 'minecraft:scute')
-    rm.entity_loot('polar_bear', 'tfc:large_raw_hide')
-    rm.entity_loot('squid', {'name': 'minecraft:ink_sac', 'functions': loot_tables.set_count(1, 3)})
-    rm.entity_loot('octopoteuthis', {'name': 'minecraft:glow_ink_sac', 'functions': loot_tables.set_count(1, 3)})
+    for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
+        mob_loot(rm, mob, 'tfc:food/%s' % mob)
+    mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
+    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=3)
+    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=3)
+    for mob in ('isopod', 'lobster', 'horseshoe_crab'):
+        mob_loot(rm, mob, 'tfc:shell')
+    for mob in ('orca', 'dolphin', 'manatee'):
+        mob_loot(rm, mob, 'tfc:blubber', min_amount=0, max_amount=2, bones=4)
+    mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)
+    mob_loot(rm, 'turtle', 'minecraft:scute')
+    mob_loot(rm, 'polar_bear', 'tfc:large_raw_hide', bones=6)
+
+    mob_loot(rm, 'pig', 'tfc:food/pork', 1, 4, 'medium', bones=3)
+
+def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0):
+    func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
+    pools = [{'name': drop, 'functions': func}]
+    if hide_size is not None:
+        func = None if hide_chance is None else loot_tables.random_chance(hide_chance)
+        pools.append({'name': 'tfc:%s_raw_hide' % hide_size, 'conditions': func})
+    if bones != 0:
+        pools.append({'name': 'minecraft:bone', 'functions': loot_tables.set_count(1, bones)})
+    rm.entity_loot(name, *pools)
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {
