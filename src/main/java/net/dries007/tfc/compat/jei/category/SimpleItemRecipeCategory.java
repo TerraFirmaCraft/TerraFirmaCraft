@@ -20,6 +20,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.SimpleItemRecipe;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> extends BaseRecipeCategory<T>
 {
@@ -32,11 +33,19 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
         IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
-        IRecipeSlotBuilder toolSlot = builder.addSlot(RecipeIngredientRole.CATALYST, 26, 5);
+        IRecipeSlotBuilder toolSlot = null;
+        if (getToolTag() != null)
+        {
+            toolSlot = builder.addSlot(RecipeIngredientRole.CATALYST, 26, 5);
+            toolSlot.setSlotName("tool");
+        }
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
         inputSlot.addIngredients(recipe.getIngredient());
-        toolSlot.addIngredients(Ingredient.of(getToolTag()));
+        if (toolSlot != null)
+        {
+            toolSlot.addIngredients(Ingredient.of(getToolTag()));
+        }
         outputSlot.addItemStack(recipe.getResultItem());
     }
 
@@ -44,11 +53,15 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
         slot.draw(stack, 5, 4);
-        slot.draw(stack, 25, 4);
+        if (recipeSlots.findSlotByName("tool").isPresent())
+        {
+            slot.draw(stack, 25, 4);
+        }
         slot.draw(stack, 75, 4);
         arrow.draw(stack, 48, 5);
         arrowAnimated.draw(stack, 48, 5);
     }
 
+    @Nullable
     protected abstract TagKey<Item> getToolTag();
 }

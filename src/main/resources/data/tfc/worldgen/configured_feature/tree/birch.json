@@ -21,6 +21,11 @@
       "tfc:birch/16"
     ],
     "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 5,
+      "allow_submerged": false
+    },
     "trunk": {
       "state": {
         "Name": "tfc:wood/log/birch",

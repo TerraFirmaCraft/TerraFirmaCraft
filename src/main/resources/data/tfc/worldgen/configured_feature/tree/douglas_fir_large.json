@@ -9,6 +9,11 @@
       "tfc:douglas_fir_large/4",
       "tfc:douglas_fir_large/5"
     ],
-    "radius": 2
+    "radius": 2,
+    "placement": {
+      "width": 1,
+      "height": 9,
+      "allow_submerged": false
+    }
   }
 }

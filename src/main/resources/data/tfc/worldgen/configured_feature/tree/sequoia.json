@@ -11,6 +11,11 @@
       "tfc:sequoia/6",
       "tfc:sequoia/7"
     ],
-    "radius": 1
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 3,
+      "allow_submerged": false
+    }
   }
 }

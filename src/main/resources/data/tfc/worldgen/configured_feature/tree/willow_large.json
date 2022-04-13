@@ -18,6 +18,11 @@
       "tfc:willow_large/13",
       "tfc:willow_large/14"
     ],
-    "radius": 1
+    "radius": 1,
+    "placement": {
+      "width": 2,
+      "height": 3,
+      "allow_submerged": true
+    }
   }
 }

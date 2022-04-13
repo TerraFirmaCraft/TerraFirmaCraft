@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+
+import com.mojang.logging.LogUtils;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.BiMap;
@@ -20,8 +22,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -34,13 +34,14 @@ import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.DataManagerSyncPacket;
+import org.slf4j.Logger;
 
 /**
  * An implementation of a typical json reload manager.
  */
 public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final Gson GSON = new Gson();
     private static final Map<Class<?>, DataManager<?>> NETWORK_TYPES = new HashMap<>();
 
@@ -63,6 +64,11 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, Runnable postReloadCallback)
     {
         this(domain, typeName, factory, postReloadCallback, null, null, null);
+    }
+
+    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
+    {
+        this(domain, typeName, factory, null, networkFactory, networkEncoder, networkPacketFactory);
     }
 
     public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable Runnable postReloadCallback, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)

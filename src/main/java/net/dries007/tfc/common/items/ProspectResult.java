@@ -42,7 +42,8 @@ public enum ProspectResult
         MutableComponent text = new TranslatableComponent(translationKey);
         if (this != NOTHING && this != NOTHING_FALSE_NEGATIVE)
         {
-            text = text.append(" ").append(block.getName());
+            // Use a custom translation for prospecting blocks
+            text = text.append(" ").append(new TranslatableComponent(block.getDescriptionId() + ".prospected"));
         }
         return text;
     }

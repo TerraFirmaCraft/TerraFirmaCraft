@@ -1,28 +1,7 @@
 {
-	"credit": "Made with Blockbench",
-	"ambientocclusion": false,
-	"textures": {
-		"stem": "tfc:block/plant/water_lily/water_lily_0",
-		"particle": "tfc:block/plant/water_lily/water_lily"
-	},
-	"elements": [
-		{
-			"from": [3, -14, 6],
-			"to": [15, 10.9, 6],
-			"rotation": {"angle": -45, "axis": "y", "origin": [8, 10, 6]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
-			}
-		},
-		{
-			"from": [3, -14, 6],
-			"to": [15, 10.9, 6],
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 10, 6]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
-			}
-		}
-	]
+  "parent": "tfc:block/plant/template_floating_tinted_flower",
+  "textures": {
+    "pad": "tfc:block/plant/water_lily/water_lily",
+	"flower": "tfc:block/plant/water_lily/water_lily_0"
+  }
 }

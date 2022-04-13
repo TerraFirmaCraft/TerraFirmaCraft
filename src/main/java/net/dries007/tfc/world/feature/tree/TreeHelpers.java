@@ -15,13 +15,17 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.Fluids;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -34,6 +38,74 @@ public final class TreeHelpers
 {
     private static final Rotation[] ROTATION_VALUES = Rotation.values();
     private static final Mirror[] MIRROR_VALUES = Mirror.values();
+
+    public static boolean isValidLocation(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
+    {
+        return isValidGround(level, pos, settings, config) && isValidTrunk(level, pos, settings, config);
+    }
+
+    /**
+     * Checks if there is valid ground for a tree placement (at y = 0 and y = -1)
+     * @return {@code true} if the tree is legal to grow here.
+     */
+    public static boolean isValidGround(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
+    {
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (int x = (1 - config.width()) / 2; x <= config.width() / 2; x++)
+        {
+            for (int z = (1 - config.width()) / 2; z <= config.width() / 2; z++)
+            {
+                mutablePos.set(x, 0, z);
+                transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
+                mutablePos.move(pos);
+
+                final BlockState stateAt = level.getBlockState(mutablePos);
+                if (!(config.allowSubmerged() && FluidHelpers.isAirOrEmptyFluid(stateAt) && stateAt.getFluidState().getType() == Fluids.WATER)
+                    && !stateAt.isAir()
+                    && !(stateAt.getBlock() instanceof SaplingBlock))
+                {
+                    return false;
+                }
+
+                mutablePos.move(0, -1, 0);
+
+                final BlockState stateBelow = level.getBlockState(mutablePos);
+                if (!Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if there is enough free space above the tree, for a tree placement (at y > 0), for a given height and radius around the trunk
+     * @return {@code true} if the tree is legal to grow here.
+     */
+    public static boolean isValidTrunk(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
+    {
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
+        for (int x = (1 - config.width()) / 2; x <= config.width() / 2; x++)
+        {
+            for (int z = (1 - config.width()) / 2; z <= config.width() / 2; z++)
+            {
+                for (int y = 1; y < config.height(); y++)
+                {
+                    mutablePos.set(x, y, z);
+                    transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
+                    mutablePos.move(pos);
+
+                    final BlockState stateAt = level.getBlockState(mutablePos);
+                    if (!stateAt.isAir())
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
     /**
      * A variant of {@link StructureTemplate#placeInWorld(ServerLevelAccessor, BlockPos, BlockPos, StructurePlaceSettings, Random, int)} that is much simpler and faster for use in tree generation

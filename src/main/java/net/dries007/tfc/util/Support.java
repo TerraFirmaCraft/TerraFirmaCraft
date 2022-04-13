@@ -26,7 +26,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public final class Support
 {
     public static final DataManager<Support> MANAGER = new DataManager<>("supports", "support", Support::new, Support::reload);
-    public static final IndirectHashCollection<Block, Support> CACHE = new IndirectHashCollection<>(s -> s.ingredient.getValidBlocks());
+    public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.getValidBlocks(), MANAGER::getValues);
 
     /**
      * The maximum range of all supports, used for support radius checks.
@@ -103,8 +103,6 @@ public final class Support
 
     private static void reload()
     {
-        CACHE.reload(MANAGER.getValues());
-
         // Re-calculate maximum support range
         int up = 0, down = 0, horizontal = 0;
         for (Support support : MANAGER.getValues())

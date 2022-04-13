@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
 import net.dries007.tfc.util.JsonHelpers;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public final class ItemStackProvider
 {
@@ -28,6 +29,11 @@ public final class ItemStackProvider
     public static ItemStackProvider copyInput()
     {
         return COPY_INPUT;
+    }
+
+    public static ItemStackProvider of(ItemStack stack, ItemStackModifier... modifiers)
+    {
+        return new ItemStackProvider(stack, modifiers);
     }
 
     public static ItemStackProvider fromJson(JsonObject json)
@@ -105,5 +111,17 @@ public final class ItemStackProvider
         {
             modifier.toNetwork(buffer);
         }
+    }
+
+    @VisibleForTesting
+    public ItemStack stack()
+    {
+        return stack;
+    }
+
+    @VisibleForTesting
+    public ItemStackModifier[] modifiers()
+    {
+        return modifiers;
     }
 }

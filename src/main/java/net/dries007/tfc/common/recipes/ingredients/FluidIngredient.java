@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes.ingredients;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -29,108 +30,165 @@ import net.dries007.tfc.util.JsonHelpers;
  */
 public final class FluidIngredient implements Predicate<Fluid>
 {
+    public static FluidIngredient of(Fluid... fluids)
+    {
+        return new FluidIngredient(Arrays.stream(fluids).map(FluidEntry::new));
+    }
+
+    public static FluidIngredient of(TagKey<Fluid> tag)
+    {
+        return new FluidIngredient(Stream.of(new TagEntry(tag)));
+    }
+
+    public static FluidIngredient of(FluidIngredient... others)
+    {
+        return new FluidIngredient(Arrays.stream(others).flatMap(e -> e.entries.stream()));
+    }
+
     public static FluidIngredient fromJson(JsonElement json)
     {
         if (json.isJsonPrimitive())
         {
-            return new FluidIngredient(JsonHelpers.getRegistryEntry(json, ForgeRegistries.FLUIDS));
+            return new FluidIngredient(Collections.singletonList(new FluidEntry(JsonHelpers.getRegistryEntry(json, ForgeRegistries.FLUIDS))));
         }
         if (json.isJsonObject())
         {
-            return new FluidIngredient(fromJsonObject(json.getAsJsonObject(), new ObjectOpenHashSet<>()));
+            final JsonObject obj = json.getAsJsonObject();
+            if (obj.has("fluid") && obj.has("tag"))
+            {
+                throw new JsonParseException("Fluid ingredient cannot have both 'fluid' and 'tag' entries");
+            }
+            if (obj.has("fluid"))
+            {
+                return FluidIngredient.of(JsonHelpers.getRegistryEntry(obj, "fluid", ForgeRegistries.FLUIDS));
+            }
+            else if (obj.has("tag"))
+            {
+                return FluidIngredient.of(JsonHelpers.getTag(obj, "tag", Registry.FLUID_REGISTRY));
+            }
+            else
+            {
+                throw new JsonParseException("Fluid ingredient must have one of 'fluid' or 'tag' entries");
+            }
         }
-        return new FluidIngredient(fromJsonArray(JsonHelpers.convertToJsonArray(json, "fluid ingredient"), new ObjectOpenHashSet<>()));
+        final JsonArray array = JsonHelpers.convertToJsonArray(json, "fluid ingredient");
+        final List<FluidIngredient> entries = new ArrayList<>();
+        for (JsonElement element : array)
+        {
+            entries.add(FluidIngredient.fromJson(element));
+        }
+        return new FluidIngredient(entries.stream().flatMap(e -> e.entries.stream()));
     }
 
     public static FluidIngredient fromNetwork(FriendlyByteBuf buffer)
     {
-        return new FluidIngredient(buffer);
+        return new FluidIngredient(Helpers.decodeAll(buffer, new ArrayList<>(), Entry::fromNetwork));
     }
 
     public static void toNetwork(FriendlyByteBuf buffer, FluidIngredient ingredient)
     {
-        Helpers.encodeAll(buffer, ingredient.fluids, (b, f) -> b.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, f));
+        Helpers.encodeAll(buffer, ingredient.entries, Entry::toNetwork);
     }
 
-    private static void fromJson(JsonElement json, Set<Fluid> entries)
+    private final List<Entry> entries;
+
+    private FluidIngredient(Stream<Entry> entries)
     {
-        if (json.isJsonPrimitive())
-        {
-            entries.add(JsonHelpers.getRegistryEntry(json, ForgeRegistries.FLUIDS));
-        }
-        else if (json.isJsonObject())
-        {
-            fromJsonObject(json.getAsJsonObject(), entries);
-        }
-        else if (json.isJsonArray())
-        {
-            fromJsonArray(JsonHelpers.convertToJsonArray(json, "fluid ingredient array entry"), entries);
-        }
-        else
-        {
-            throw new JsonParseException("Expected fluid ingredient array entry to be either string, object, or array, was " + JsonHelpers.getType(json));
-        }
+        this(entries.toList());
     }
 
-    private static Set<Fluid> fromJsonArray(JsonArray array, Set<Fluid> entries)
+    private FluidIngredient(List<Entry> entries)
     {
-        for (JsonElement json : array)
-        {
-            fromJson(json, entries);
-        }
-        return entries;
+        this.entries = entries;
     }
 
-    private static Set<Fluid> fromJsonObject(JsonObject json, Set<Fluid> entries)
-    {
-        if (json.has("fluid") && json.has("tag"))
-        {
-            throw new JsonParseException("Fluid ingredient cannot have both 'fluid' and 'tag' entries");
-        }
-        if (json.has("fluid"))
-        {
-            entries.add(JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS));
-        }
-        else if (json.has("tag"))
-        {
-            entries.addAll(getAll(JsonHelpers.getTag(json, "tag", Registry.FLUID_REGISTRY)));
-        }
-        else
-        {
-            throw new JsonParseException("Fluid ingredient must have one of 'fluid' or 'tag' entries");
-        }
-        return entries;
-    }
-
-    private static Collection<Fluid> getAll(TagKey<Fluid> tag)
-    {
-        return Helpers.getAllTagValues(tag, ForgeRegistries.FLUIDS);
-    }
-
-    private final Set<Fluid> fluids;
-
-    FluidIngredient(Fluid fluid)
-    {
-        this(Collections.singleton(fluid));
-    }
-
-    FluidIngredient(Set<Fluid> fluids)
-    {
-        this.fluids = fluids;
-    }
-
-    FluidIngredient(FriendlyByteBuf buffer)
-    {
-        this.fluids = Helpers.decodeAll(buffer, new ObjectOpenHashSet<>(), b -> b.readRegistryIdUnsafe(ForgeRegistries.FLUIDS));
-    }
-
+    @Override
     public boolean test(Fluid fluid)
     {
-        return fluids.contains(fluid);
+        for (Entry entry : entries)
+        {
+            if (entry.test(fluid))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void toNetwork(FriendlyByteBuf buffer)
+    {
+        Helpers.encodeAll(buffer, entries, Entry::toNetwork);
     }
 
     public Collection<Fluid> getMatchingFluids()
     {
-        return fluids;
+        return entries.stream().flatMap(Entry::fluids).toList();
+    }
+
+    private interface Entry extends Predicate<Fluid>
+    {
+        static Entry fromNetwork(FriendlyByteBuf buffer)
+        {
+            final byte id = buffer.readByte();
+            if (id == 0)
+            {
+                final Fluid fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
+                return new FluidEntry(fluid);
+            }
+            else if (id == 1)
+            {
+                final TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, buffer.readResourceLocation());
+                return new TagEntry(tag);
+            }
+            throw new IllegalArgumentException("Illegal id: " + id);
+        }
+
+        void toNetwork(FriendlyByteBuf buffer);
+
+        Stream<Fluid> fluids();
+    }
+
+    private record FluidEntry(Fluid fluid) implements Entry
+    {
+        @Override
+        public boolean test(Fluid fluid)
+        {
+            return this.fluid == fluid;
+        }
+
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer)
+        {
+            buffer.writeByte(0);
+            buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
+        }
+
+        @Override
+        public Stream<Fluid> fluids()
+        {
+            return Stream.of(fluid);
+        }
+    }
+
+    private record TagEntry(TagKey<Fluid> tag) implements Entry
+    {
+        @Override
+        public boolean test(Fluid fluid)
+        {
+            return Helpers.isFluid(fluid, tag);
+        }
+
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer)
+        {
+            buffer.writeByte(1);
+            buffer.writeResourceLocation(tag.location());
+        }
+
+        @Override
+        public Stream<Fluid> fluids()
+        {
+            return Helpers.getAllTagValues(tag, ForgeRegistries.FLUIDS).stream();
+        }
     }
 }

@@ -862,7 +862,7 @@ def generate(rm: ResourceManager):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
 
     for plant in ('duckweed', 'lotus', 'sargassum', 'water_lily'):
-        rm.block_model('plant/%s' % plant, parent='tfc:block/plant/template_floating_tinted', textures={'plant': 'tfc:block/plant/%s/%s' % (plant, plant)})
+        rm.block_model('plant/%s' % plant, parent='tfc:block/plant/template_floating_tinted', textures={'pad': 'tfc:block/plant/%s/%s' % (plant, plant)})
 
     # Food
     for berry in BERRIES.keys():

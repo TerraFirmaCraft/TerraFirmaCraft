@@ -12,18 +12,17 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.TestBase;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.IArtist;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.*;
 import static net.dries007.tfc.world.layer.TFCLayers.*;
 
 @Disabled
-public class TFCLayersVisualizations extends TestBase
+public class TFCLayersVisualizations extends TestHelper
 {
     @Test
     public void testCreateOverworldBiomeLayer()
