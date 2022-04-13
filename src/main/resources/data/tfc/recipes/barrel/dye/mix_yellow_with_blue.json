@@ -5,17 +5,17 @@
     "ingredient": {
       "type": "tfc:fluid_item",
       "fluid_ingredient": {
-        "ingredient": "tfc:green_dye",
+        "ingredient": "tfc:yellow_dye",
         "amount": 1
       }
     }
   },
   "input_fluid": {
-    "ingredient": "tfc:yellow_dye",
+    "ingredient": "tfc:blue_dye",
     "amount": 1
   },
   "output_fluid": {
-    "fluid": "tfc:blue_dye",
+    "fluid": "tfc:green_dye",
     "amount": 2
   }
 }

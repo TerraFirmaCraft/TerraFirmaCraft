@@ -3,15 +3,15 @@
   "type": "tfc:barrel_instant",
   "input_item": {
     "ingredient": {
-      "item": "minecraft:yellow_dye"
+      "item": "minecraft:blue_dye"
     }
   },
   "input_fluid": {
-    "ingredient": "tfc:green_dye",
+    "ingredient": "tfc:yellow_dye",
     "amount": 1000
   },
   "output_fluid": {
-    "fluid": "tfc:blue_dye",
+    "fluid": "tfc:green_dye",
     "amount": 2000
   }
 }

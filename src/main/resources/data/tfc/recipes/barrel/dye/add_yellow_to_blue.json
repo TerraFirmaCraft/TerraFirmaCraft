@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_instant",
+  "input_item": {
+    "ingredient": {
+      "item": "minecraft:yellow_dye"
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:blue_dye",
+    "amount": 1000
+  },
+  "output_fluid": {
+    "fluid": "tfc:green_dye",
+    "amount": 2000
+  }
+}

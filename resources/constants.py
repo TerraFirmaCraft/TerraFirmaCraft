@@ -484,7 +484,7 @@ COLOR_COMBOS = [
     ('green', 'white', 'lime'),
     ('green', 'blue', 'cyan'),
     ('red', 'blue', 'purple'),
-    ('yellow', 'green', 'blue')
+    ('yellow', 'blue', 'green')
 ]
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
