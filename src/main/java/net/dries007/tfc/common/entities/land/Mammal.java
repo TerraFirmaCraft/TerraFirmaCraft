@@ -14,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -111,7 +112,8 @@ public abstract class Mammal extends TFCAnimal
 
     public void birthChildren()
     {
-        for (int i = 0; i < getChildCount(); i++)
+        final int kids = Mth.nextInt(random, 1, getChildCount());
+        for (int i = 0; i < kids; i++)
         {
             AgeableMob offspring = getBreedOffspring((ServerLevel) level, this);
             if (offspring == null) continue;

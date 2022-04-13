@@ -718,6 +718,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
     'tfc.tooltip.seal_barrel': 'Seal',
     'tfc.tooltip.unseal_barrel': 'Unseal',
+    'tfc.tooltip.pregnant': 'This animal is pregnant!',
 
     # Commands
 

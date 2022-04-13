@@ -12,9 +12,11 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -351,7 +353,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
                         //Show tooltips
                         if (this.isFertilized() && this.getTFCAnimalType() == Type.MAMMAL)
                         {
-                            //todo mating pregnant chat message
+                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.pregnant"), true);
                         }
                     }
                 }

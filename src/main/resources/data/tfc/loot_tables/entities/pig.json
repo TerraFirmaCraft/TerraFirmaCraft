@@ -28,13 +28,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:medium_raw_hide",
-          "conditions": [
-            {
-              "condition": "minecraft:random_chance",
-              "chance": 1
-            }
-          ]
+          "name": "tfc:medium_raw_hide"
         }
       ]
     },

@@ -277,7 +277,7 @@ public class ServerConfig
         innerBuilder.pop().push("animals").push("pig");
 
         pigAdulthoodDays = builder.apply("pigAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("pigAdulthoodDays", 80, 0, Integer.MAX_VALUE);
-        pigChildCount = builder.apply("pigChildCount").comment("Number of children born").defineInRange("pigChildCount", 10, 0, 100);
+        pigChildCount = builder.apply("pigChildCount").comment("Max number of children born").defineInRange("pigChildCount", 10, 0, 100);
         pigEatsRottenFood = builder.apply("pigEatsRottenFood").comment("Does the animal eat rotten food?").define("pigEatsRottenFood", true);
         pigFamiliarityCap = builder.apply("pigFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("pigFamiliarityCap", 0.35, 0, 1);
         pigUses = builder.apply("pigUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("pigUses", 5, 0, Integer.MAX_VALUE);

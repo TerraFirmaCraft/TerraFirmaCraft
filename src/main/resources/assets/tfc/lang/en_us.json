@@ -113,6 +113,7 @@
   "tfc.tooltip.fertilizer.potassium": "\u00a7d(K) Potassium: \u00a7r%s%%",
   "tfc.tooltip.seal_barrel": "Seal",
   "tfc.tooltip.unseal_barrel": "Unseal",
+  "tfc.tooltip.pregnant": "This animal is pregnant!",
   "tfc.commands.time.query.daytime": "The day time is %s",
   "tfc.commands.time.query.game_time": "The game time is %s",
   "tfc.commands.time.query.day": "The day is %s",

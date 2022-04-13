@@ -623,6 +623,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
     rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
     rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
+    rm.data(('tfc', 'fauna', 'pig'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -648,7 +649,7 @@ def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
     pools = [{'name': drop, 'functions': func}]
     if hide_size is not None:
-        func = None if hide_chance is None else loot_tables.random_chance(hide_chance)
+        func = None if hide_chance == 1 else loot_tables.random_chance(hide_chance)
         pools.append({'name': 'tfc:%s_raw_hide' % hide_size, 'conditions': func})
     if bones != 0:
         pools.append({'name': 'minecraft:bone', 'functions': loot_tables.set_count(1, bones)})
