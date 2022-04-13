@@ -7,10 +7,16 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.constants.VanillaTypes;
@@ -18,78 +24,179 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
-import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.NotNull;
 
 // todo: make this nice and show extra cool info
 public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCategory<T>
 {
-    public BarrelRecipeCategory(RecipeType<T> type, IGuiHelper helper, int height, Wood iconType)
+
+    protected static final String FLUID_INPUT = "fluidInput";
+    protected static final String ITEM_INPUT = "itemInput";
+    protected static final String FLUID_OUTPUT = "fluidOutput";
+    protected static final String ITEM_OUTPUT = "itemOutput";
+    protected IRecipeSlotBuilder inputFluidSlot;
+    protected IRecipeSlotBuilder inputItemSlot;
+    protected IRecipeSlotBuilder outputFluidSlot;
+    protected IRecipeSlotBuilder outputItemSlot;
+
+    public BarrelRecipeCategory(RecipeType<T> type, IGuiHelper helper, int width, int height, Wood iconType)
     {
-        super(type, helper, helper.createBlankDrawable(118, height), new ItemStack(TFCBlocks.WOODS.get(iconType).get(Wood.BlockType.BARREL).get()));
+        super(type, helper, helper.createBlankDrawable(width, height), new ItemStack(TFCBlocks.WOODS.get(iconType).get(Wood.BlockType.BARREL).get()));
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder inputItem = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
-        if (recipe.getInputFluid() != FluidStackIngredient.EMPTY)
+        inputFluidSlot = null;
+        inputItemSlot = null;
+        outputFluidSlot = null;
+        outputItemSlot = null;
+        int[] positions = slotPositions(recipe);
+        List<FluidStack> inputFluid = getFluidInput(recipe);
+        Ingredient inputItem = getItemInput(recipe);
+        RecipeResult<FluidStack> outputFluid = getFluidResult(recipe);
+        RecipeResult<Ingredient> outputItem = getItemResult(recipe);
+        TerraFirmaCraft.LOGGER.info("{} {} {} {} {} {}", recipe.getId(), inputFluid, inputItem, outputFluid, outputItem, recipe.getResultItem());
+        if (!inputFluid.isEmpty())
         {
-            IRecipeSlotBuilder inputFluid = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
-            // todo: reflect fluid stack amount of the ingredient
-            inputFluid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getInputFluid()));
-            inputFluid.setFluidRenderer(1, false, 16, 16);
+            inputFluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, inputItem.isEmpty() ? positions[1] : positions[0], 5).setSlotName(FLUID_INPUT);
+            inputFluidSlot.addIngredients(VanillaTypes.FLUID, inputFluid);
+            inputFluidSlot.setFluidRenderer(1, false, 16, 16);
         }
-        IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
-        if (!recipe.getOutputFluid().isEmpty())
+        if (!inputItem.isEmpty())
         {
-            IRecipeSlotBuilder outputFluid = builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5);
-            outputFluid.addIngredient(VanillaTypes.FLUID, recipe.getOutputFluid());
-            outputFluid.setFluidRenderer(1, false, 16, 16);
+            inputItemSlot = builder.addSlot(RecipeIngredientRole.INPUT, positions[1], 5).setSlotName(ITEM_INPUT);
+            inputItemSlot.addIngredients(inputItem);
+        }
+        if (!outputFluid.result().isEmpty())
+        {
+            outputFluidSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, positions[2], 5).setSlotName(FLUID_OUTPUT);
+            outputFluidSlot.addIngredient(VanillaTypes.FLUID, outputFluid.result());
+            outputFluidSlot.setFluidRenderer(1, false, 16, 16);
+            if (!inputFluid.isEmpty() && !outputFluid.transforms())
+            {
+                builder.createFocusLink(inputFluidSlot, outputFluidSlot);
+            }
+        }
+        if (!outputItem.result().isEmpty())
+        {
+            outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.result().isEmpty() ? positions[2] : positions[3], 5).setSlotName(ITEM_OUTPUT);
+            outputItemSlot.addIngredients(outputItem.result());
+            if (!inputItem.isEmpty() && !outputItem.transforms())
+            {
+                builder.createFocusLink(inputItemSlot, outputItemSlot);
+            }
         }
 
-        // todo: this should reflect the count part of the itemstack ingredient
-        inputItem.addIngredients(recipe.getInputItem().ingredient());
-
-
-        outputItem.addIngredients(itemStackProviderIngredient(recipe.getOutputItem(), recipe.getInputItem()));
     }
 
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 5, 4);
-        if (recipe.getInputFluid() != FluidStackIngredient.EMPTY)
+        int positions[] = slotPositions(recipe);
+        int arrowPosition = arrowPosition(recipe);
+        slot.draw(stack, positions[1] - 1, 4);
+        if (recipeSlots.findSlotByName(FLUID_INPUT).isPresent() && recipeSlots.findSlotByName(ITEM_INPUT).isPresent())
         {
-            slot.draw(stack, 25, 4);
+            slot.draw(stack, positions[0] - 1, 4);
         }
-        slot.draw(stack, 75, 4);
-        if (!recipe.getOutputFluid().isEmpty())
+        slot.draw(stack, positions[2] - 1, 4);
+        if (recipeSlots.findSlotByName(FLUID_OUTPUT).isPresent() && recipeSlots.findSlotByName(ITEM_OUTPUT).isPresent())
         {
-            slot.draw(stack, 95, 4);
+            slot.draw(stack, positions[3] - 1, 4);
         }
 
-        arrow.draw(stack, 48, 5);
-        arrowAnimated.draw(stack, 48, 5);
+        arrow.draw(stack, arrowPosition, 5);
+        arrowAnimated.draw(stack, arrowPosition, 5);
     }
 
-    protected Ingredient itemStackProviderIngredient(ItemStackProvider output, ItemStackIngredient input)
+    protected int[] slotPositions(T recipe)
+    {
+        return new int[] {6, 26, 76, 96};
+    }
+
+    protected int arrowPosition(T recipe)
+    {
+        return 48;
+    }
+
+    protected static RecipeResult<Ingredient> itemStackProviderIngredient(ItemStackProvider output, ItemStackIngredient input)
     {
         // todo: this sucks and may not be properly sensitive to everything
         // todo: maybe we should just list the item stack modifiers
         ItemStack[] possibleItems = input.ingredient().getItems();
         List<ItemStack> items = new ArrayList<>(possibleItems.length);
+        boolean transforms = false;
         for (ItemStack item : possibleItems)
         {
-            items.add(output.getStack(item));
+            ItemStack result = output.getStack(item);
+            items.add(result);
+            if (!Helpers.isItem(result, item.getItem())) transforms = true;
         }
-        return Ingredient.of(items.stream());
+        return new RecipeResult<>(transforms, Ingredient.of(items.stream()));
     }
+
+    @NotNull
+    protected List<FluidStack> getFluidInput(T recipe)
+    {
+        return collapse(recipe.getInputFluid());
+    }
+
+    @NotNull
+    protected Ingredient getItemInput(T recipe)
+    {
+        return recipe.getInputItem().ingredient();
+    }
+
+    @NotNull
+    protected RecipeResult<Ingredient> getItemResult(T recipe)
+    {
+        return new RecipeResult<>(!isSame(recipe.getResultItem(), recipe.getInputItem().ingredient().getItems(), ItemStack::getItem), Ingredient.of(recipe.getResultItem()));
+    }
+
+    @NotNull
+    protected RecipeResult<FluidStack> getFluidResult(T recipe)
+    {
+        return new RecipeResult<>(!isSame(recipe.getOutputFluid().getFluid(), recipe.getInputFluid().ingredient().getMatchingFluids()), recipe.getOutputFluid());
+    }
+
+    @NotNull
+    protected <I> Optional<I> getFocusedIngredient(IIngredientType<I> type, RecipeIngredientRole role, IFocusGroup focuses, Predicate<I> filter)
+    {
+        return focuses.getFocuses(type, role).map(focus -> focus.getTypedValue().getIngredient()).filter(filter).findFirst();
+    }
+
+    protected static <I, C> boolean isSame(I result, I[] inputs, Function<I, C> mapper)
+    {
+        return inputs.length == 1 && Stream.of(inputs).map(mapper).anyMatch(v -> mapper.apply(result) == v);
+    }
+
+    protected static <I> boolean isSame(I result, Collection<I> inputs)
+    {
+        return inputs.size() == 1 && inputs.contains(result);
+    }
+
+    /**
+     * @param transforms determines if the result is the same item as the input, if false a {@link IRecipeLayoutBuilder#createFocusLink(IRecipeSlotBuilder...) focus link} is created between the input and output
+     */
+    protected record RecipeResult<I>(boolean transforms, I result)
+    {
+        @Override
+        public String toString()
+        {
+            return "RecipeResult[" + transforms + ", " + result + "]";
+        }
+    }
+
 }

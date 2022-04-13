@@ -17,7 +17,7 @@ public class InstantBarrelRecipeCategory extends BarrelRecipeCategory<InstantBar
 {
     public InstantBarrelRecipeCategory(RecipeType<InstantBarrelRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, 26, Wood.DOUGLAS_FIR);
+        super(type, helper, 118, 26, Wood.DOUGLAS_FIR);
     }
 
     @Override

@@ -19,7 +19,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
 import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.builder.IIngredientAcceptor;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
@@ -50,8 +49,9 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 
     protected static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {
-        // should I be setting this to 1000? IDK
-        return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, 1000)).collect(Collectors.toList());
+        // Setting this to 1000 makes the liquid amount on the tooltip to display incorrectly
+        // use IRecipeSlotBuilder.setFluidRenderer(1, false, 16, 16)} to make the liquid display in the whole slot
+        return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).collect(Collectors.toList());
     }
 
     protected final IDrawableStatic slot;
