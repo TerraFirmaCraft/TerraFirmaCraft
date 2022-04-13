@@ -30,8 +30,6 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings({"unchecked", "unused", "UnusedReturnValue"})
 public abstract class Artist<T, A extends Artist<T, A>>
 {
-    private static final Logger LOGGER = LogManager.getLogger("Artist");
-
     public static Artist.Raw raw()
     {
         return new Raw(); // An empty artist, for drawing direct pixel -> color objects
@@ -379,11 +377,11 @@ public abstract class Artist<T, A extends Artist<T, A>>
                 })
                 .map(Local.map(value -> color.apply(scaleTransformer.apply(value, sourceMinMax[0], sourceMinMax[1]))))
             );
-            LOGGER.info("Range for {}: {} - {}", name, sourceMinMax[0], sourceMinMax[1]);
+            //LOGGER.info("Range for {}: {} - {}", name, sourceMinMax[0], sourceMinMax[1]);
             if (histogram)
             {
-                LOGGER.info("Histogram for {}", name);
-                LOGGER.info("Min = {}, Max = {} Distribution =\n{}", sourceMinMax[0], sourceMinMax[1], Arrays.stream(distribution).mapToObj(i -> "" + i).collect(Collectors.joining("\n")));
+                //LOGGER.info("Histogram for {}", name);
+                //LOGGER.info("Min = {}, Max = {} Distribution =\n{}", sourceMinMax[0], sourceMinMax[1], Arrays.stream(distribution).mapToObj(i -> "" + i).collect(Collectors.joining("\n")));
             }
         }
     }

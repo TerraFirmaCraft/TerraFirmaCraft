@@ -7,14 +7,14 @@
 package net.dries007.tfc.world.biome;
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.TestBase;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 @Disabled
-public class BiomeNoiseVisualizations extends TestBase
+public class BiomeNoiseVisualizations extends TestHelper
 {
     static final Artist.Noise<Noise2D> ARTIST = Artist.<Noise2D>forNoise(noise -> Artist.NoisePixel.coerceFloat(noise::noise)).centerSized(200);
     static final long seed = System.currentTimeMillis();

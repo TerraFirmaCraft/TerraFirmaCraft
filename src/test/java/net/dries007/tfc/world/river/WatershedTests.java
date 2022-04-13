@@ -6,17 +6,16 @@
 
 package net.dries007.tfc.world.river;
 
-import net.dries007.tfc.TestBase;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.seed;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WatershedTests extends TestBase
+public class WatershedTests extends TestHelper
 {
     @Test
     public void testBasicWatershedProperties()

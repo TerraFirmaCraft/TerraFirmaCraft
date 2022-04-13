@@ -14,16 +14,14 @@ import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.TestBase;
 import net.dries007.tfc.TestHelper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.seed;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MidpointFractalTests extends TestBase
+public class MidpointFractalTests extends TestHelper
 {
     @RepeatedTest(10)
     public void testIntersectImpliesMaybeIntersect()

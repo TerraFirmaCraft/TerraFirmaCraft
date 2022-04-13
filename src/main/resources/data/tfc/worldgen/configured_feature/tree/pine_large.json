@@ -9,6 +9,11 @@
       "tfc:pine_large/4",
       "tfc:pine_large/5"
     ],
-    "radius": 2
+    "radius": 2,
+    "placement": {
+      "width": 1,
+      "height": 5,
+      "allow_submerged": false
+    }
   }
 }

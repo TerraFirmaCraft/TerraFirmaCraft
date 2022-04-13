@@ -114,7 +114,7 @@ public class TFCFoodData extends FoodData
     public void tick(Player player)
     {
         final Difficulty difficulty = player.level.getDifficulty();
-        if (difficulty == Difficulty.PEACEFUL && TFCConfig.SERVER.peacefulDifficultyPassiveRegeneration.get())
+        if (difficulty == Difficulty.PEACEFUL && TFCConfig.SERVER.enablePeacefulDifficultyPassiveRegeneration.get())
         {
             // Extra-Peaceful Difficulty
             // Health regeneration modified from PlayerEntity#aiStep()

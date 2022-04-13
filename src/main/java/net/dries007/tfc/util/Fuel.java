@@ -21,8 +21,8 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 
 public final class Fuel extends ItemDefinition
 {
-    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::reload, Fuel::new, Fuel::encode, DataManagerSyncPacket.TFuel::new);
-    public static final IndirectHashCollection<Item, Fuel> CACHE = new IndirectHashCollection<>(Fuel::getValidItems);
+    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::new, Fuel::encode, DataManagerSyncPacket.TFuel::new);
+    public static final IndirectHashCollection<Item, Fuel> CACHE = IndirectHashCollection.create(Fuel::getValidItems, MANAGER::getValues);
 
     @Nullable
     public static Fuel get(ItemStack stack)
@@ -35,11 +35,6 @@ public final class Fuel extends ItemDefinition
             }
         }
         return null;
-    }
-
-    private static void reload()
-    {
-        CACHE.reload(MANAGER.getValues());
     }
 
     private final int duration;

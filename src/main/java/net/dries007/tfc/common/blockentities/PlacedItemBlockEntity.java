@@ -8,27 +8,57 @@ package net.dries007.tfc.common.blockentities;
 
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
+    public static void convertPlacedItemToPitKiln(Level level, BlockPos pos, ItemStack strawStack)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(placedItem -> {
+            // Remove inventory items
+            // This happens here to stop the block dropping its items in onBreakBlock()
+            NonNullList<ItemStack> items = Helpers.extractAllItems(placedItem.inventory);
+
+            // Replace the block
+            level.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
+            placedItem.setRemoved();
+            // Play placement sound
+            level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
+            // Copy TE data
+            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
+                // Copy inventory
+                Helpers.insertAllItems(pitKiln.inventory, items);
+                // Copy misc data
+                pitKiln.isHoldingLargeItem = placedItem.isHoldingLargeItem;
+                pitKiln.addStraw(strawStack, 0);
+            });
+        });
+    }
+
     public static final int SLOT_LARGE_ITEM = 0;
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.placed_item");
     public boolean isHoldingLargeItem;

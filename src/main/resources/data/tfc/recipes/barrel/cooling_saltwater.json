@@ -4,13 +4,7 @@
   "input_item": {
     "ingredient": {
       "type": "tfc:heatable",
-      "min_temp": 0,
-      "ingredient": {
-        "type": "tfc:not",
-        "ingredient": {
-          "tag": "tfc:empty"
-        }
-      }
+      "min_temp": 0
     }
   },
   "input_fluid": {

@@ -1,5 +1,4 @@
 {
-	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
 	"textures": {
 		"particle": "tfc:block/plant/pistia/pistia_0",
@@ -8,16 +7,16 @@
 	},
 	"elements": [
 		{
-			"from": [0, 1, 0],
-			"to": [16, 1, 16],
+			"from": [0, 0.25, 0],
+			"to": [16, 0.25, 16],
 			"faces": {
 				"up": {"uv": [16, 0, 0, 16], "texture": "#layer0", "tintindex": 0},
 				"down": {"uv": [16, 16, 0, 0], "texture": "#layer0", "tintindex": 0}
 			}
 		},
 		{
-			"from": [0, 1.5, 0],
-			"to": [16, 1.5, 16],
+			"from": [0, 0.75, 0],
+			"to": [16, 0.75, 16],
 			"faces": {
 				"up": {"uv": [16, 0, 0, 16], "texture": "#layer1", "tintindex": 0},
 				"down": {"uv": [16, 16, 0, 0], "texture": "#layer1", "tintindex": 0}

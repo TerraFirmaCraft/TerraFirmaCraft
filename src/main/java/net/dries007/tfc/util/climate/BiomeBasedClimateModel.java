@@ -12,17 +12,25 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
-import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * A default climate model, for dimensions that are entirely biome determined (i.e. vanilla).
  */
 public class BiomeBasedClimateModel implements TimeInvariantClimateModel
 {
+    public static final BiomeBasedClimateModel INSTANCE = new BiomeBasedClimateModel();
+
+    @Override
+    public ClimateModelType type()
+    {
+        return ClimateModels.BIOME_BASED.get();
+    }
+
     @Override
     public float getTemperature(LevelReader level, BlockPos pos)
     {
-        return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos)).invoke$getTemperature(pos));
+        return Climate.toActualTemperature(((BiomeAccessor) (Object) level.getBiome(pos).value()).invoke$getTemperature(pos));
     }
 
     @Override

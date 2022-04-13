@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.TestBase;
+import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
@@ -24,9 +24,7 @@ import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestHelper.seed;
-
-public class RockLayerSettingsTests extends TestBase
+public class RockLayerSettingsTests extends TestHelper
 {
     @Test
     public void testOldRockLayers()

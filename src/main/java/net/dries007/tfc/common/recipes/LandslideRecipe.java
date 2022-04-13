@@ -39,7 +39,7 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
  */
 public class LandslideRecipe extends SimpleBlockRecipe
 {
-    public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
+    public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.LANDSLIDE);
     private static final Random RANDOM = new Random();
 
     @Nullable

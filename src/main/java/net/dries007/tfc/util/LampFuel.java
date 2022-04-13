@@ -19,8 +19,8 @@ import org.jetbrains.annotations.Nullable;
 
 public final class LampFuel
 {
-    public static final DataManager<LampFuel> MANAGER = new DataManager<>("lamp_fuels", "lamp_fuel", LampFuel::new, LampFuel::reload);
-    public static final IndirectHashCollection<Fluid, LampFuel> CACHE = new IndirectHashCollection<>(s -> s.getFluidIngredient().getMatchingFluids());
+    public static final DataManager<LampFuel> MANAGER = new DataManager<>("lamp_fuels", "lamp_fuel", LampFuel::new);
+    public static final IndirectHashCollection<Fluid, LampFuel> CACHE = IndirectHashCollection.create(s -> s.getFluidIngredient().getMatchingFluids(), MANAGER::getValues);
 
     @Nullable
     public static LampFuel get(Fluid fluid, BlockState state)
@@ -33,11 +33,6 @@ public final class LampFuel
             }
         }
         return null;
-    }
-
-    private static void reload()
-    {
-        CACHE.reload(MANAGER.getValues());
     }
 
     private final ResourceLocation id;

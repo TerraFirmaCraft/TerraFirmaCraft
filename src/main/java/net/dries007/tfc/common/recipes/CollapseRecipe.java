@@ -41,7 +41,7 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public class CollapseRecipe extends SimpleBlockRecipe
 {
-    public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
+    public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.COLLAPSE);
     private static final Random RANDOM = new Random();
 
     @Nullable

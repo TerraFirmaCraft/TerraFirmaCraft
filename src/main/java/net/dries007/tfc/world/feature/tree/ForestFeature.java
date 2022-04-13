@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.placement.PlacementContext;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
@@ -86,7 +85,7 @@ public class ForestFeature extends Feature<ForestConfig>
         final int chunkZ = chunkBlockPos.getZ();
 
         mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(level.getHeight(Heightmap.Types.WORLD_SURFACE_WG, mutablePos.getX(), mutablePos.getZ()));
+        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, mutablePos.getX(), mutablePos.getZ()));
 
         final ForestConfig.Entry entry = getTree(data, random, config, mutablePos);
         if (entry != null)

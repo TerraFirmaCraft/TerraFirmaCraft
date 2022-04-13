@@ -1,27 +1,7 @@
 {
-	"credit": "Made with Blockbench",
-	"ambientocclusion": false,
-	"textures": {
-		"stem": "tfc:block/plant/lotus/lotus_0"
-	},
-	"elements": [
-		{
-			"from": [2, -12, 6],
-			"to": [14, 12.9, 6],
-			"rotation": {"angle": -45, "axis": "y", "origin": [8, 12, 6]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
-			}
-		},
-		{
-			"from": [2, -12, 6],
-			"to": [14, 12.9, 6],
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 12, 6]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#stem"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#stem"}
-			}
-		}
-	]
+  "parent": "tfc:block/plant/template_floating_tinted_flower",
+  "textures": {
+    "pad": "tfc:block/plant/lotus/lotus",
+	"flower": "tfc:block/plant/lotus/lotus_0"
+  }
 }

@@ -67,7 +67,7 @@ public class PitKilnBlock extends DeviceBlock
 
     public PitKilnBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 

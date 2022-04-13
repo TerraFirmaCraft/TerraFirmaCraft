@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 
 import com.google.common.base.Stopwatch;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -61,6 +60,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.model.*;
 import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.*;
@@ -80,12 +80,13 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import org.slf4j.Logger;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
 public final class ClientEventHandler
 {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public static void init()
     {

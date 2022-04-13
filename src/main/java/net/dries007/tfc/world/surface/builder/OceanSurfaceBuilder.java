@@ -60,7 +60,13 @@ public class OceanSurfaceBuilder implements SurfaceBuilder
         final int z = context.pos().getZ();
         final RandomSource random = context.random();
 
-        final float maxAnnualTemperature = OverworldClimateModel.getAverageMonthlyTemperature(z, seaLevel, context.averageTemperature(), 1);
+        final OverworldClimateModel model = OverworldClimateModel.getIfPresent(context.level());
+        if (model == null)
+        {
+            return;
+        }
+
+        final float maxAnnualTemperature = model.getAverageMonthlyTemperature(z, seaLevel, context.averageTemperature(), 1);
         if (maxAnnualTemperature > 2)
         {
             // This is ran for all climates, and needs to exist early if we possibly can.

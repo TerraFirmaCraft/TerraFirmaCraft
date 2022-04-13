@@ -88,7 +88,7 @@ public class ServerConfig
     // Mechanics - Heat
     public final ForgeConfigSpec.DoubleValue heatingModifier;
     public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
-    public final ForgeConfigSpec.BooleanValue coolHeatablesinLevel;
+    public final ForgeConfigSpec.BooleanValue coolHotItemEntities;
     // Mechanics - Collapses
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
@@ -99,7 +99,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
     // Mechanics - Food / Nutrition
-    public final ForgeConfigSpec.BooleanValue peacefulDifficultyPassiveRegeneration;
+    public final ForgeConfigSpec.BooleanValue enablePeacefulDifficultyPassiveRegeneration;
     public final ForgeConfigSpec.DoubleValue passiveExhaustionModifier;
     public final ForgeConfigSpec.DoubleValue thirstModifier;
     public final ForgeConfigSpec.DoubleValue thirstGainedFromDrinkingInTheRain;
@@ -109,6 +109,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
     // Mechanics - Vanilla Changes
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
+    public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -222,7 +223,7 @@ public class ServerConfig
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
         heatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
-        coolHeatablesinLevel = builder.apply("coolHeatablesinLevel").comment("Should heatable items cool off when in contact with blocks like water or snow?").define("coolHeatablesinLevel", true);
+        coolHotItemEntities = builder.apply("coolHotItemEntities").comment("Should hot item entities cool off when in contact with blocks like water or snow?").define("coolHotItemEntities", true);
         ticksBeforeItemCool = builder.apply("ticksBeforeItemCool").comment("Ticks between each time an item loses temperature when sitting on a cold block. 20 ticks = 1 second.").defineInRange("ticksBeforeItemCool", 10, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("collapses");
@@ -239,7 +240,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("player");
 
-        peacefulDifficultyPassiveRegeneration = builder.apply("peacefulDifficultyPassiveRegeneration").comment("If peaceful difficulty should still have vanilla-esque passive regeneration of health, food, and hunger").define("peacefulDifficultyPassiveRegeneration", false);
+        enablePeacefulDifficultyPassiveRegeneration = builder.apply("enablePeacefulDifficultyPassiveRegeneration").comment("If peaceful difficulty should still have vanilla-esque passive regeneration of health, food, and hunger").define("enablePeacefulDifficultyPassiveRegeneration", false);
         passiveExhaustionModifier = builder.apply("passiveExhaustionMultiplier").comment(
             "A multiplier for passive exhaustion accumulation.",
             "Exhaustion is the hidden stat which controls when you get hungry. In vanilla it is incremented by running and jumping for example. In TFC, exhaustion is added just by existing.",
@@ -262,6 +263,7 @@ public class ServerConfig
         innerBuilder.pop().push("vanillaChanges");
 
         enableVanillaBonemeal = builder.apply("enableVanillaBonemeal").comment("If vanilla bonemeal's instant-growth effect should be enabled.").define("enableVanillaBonemeal", false);
+        enableVanillaWeatherEffects = builder.apply("enableVanillaWeatherEffects").comment("If true, vanilla's snow and ice formation mechanics will be used, and none of the TFC mechanics (improved snow and ice placement, snow stacking, icicle formation, passive snow or ice melting) will exist.").define("enableVanillaWeatherEffects", false);
 
         innerBuilder.pop().pop();
     }

@@ -10,6 +10,11 @@
       "tfc:acacia_large/5",
       "tfc:acacia_large/6"
     ],
-    "radius": 2
+    "radius": 2,
+    "placement": {
+      "width": 2,
+      "height": 5,
+      "allow_submerged": false
+    }
   }
 }

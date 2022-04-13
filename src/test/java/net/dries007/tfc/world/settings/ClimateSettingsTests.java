@@ -11,13 +11,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
 import com.mojang.serialization.JsonOps;
-import net.dries007.tfc.TestBase;
+import net.dries007.tfc.TestHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ClimateSettingsTests extends TestBase
+public class ClimateSettingsTests extends TestHelper
 {
     @Test
     public void testEncodeDecodePresets()
