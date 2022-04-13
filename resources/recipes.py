@@ -548,8 +548,8 @@ def generate(rm: ResourceManager):
         second_fluid = '1 tfc:%s_dye' % second
         barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (first, second), {'ingredient': fluid_item_ingredient(first_fluid)}, second_fluid, output_fluid='2 tfc:%s_dye' % output)
         barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (second, first), {'ingredient': fluid_item_ingredient(second_fluid)}, first_fluid, output_fluid='2 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (first, second), 'minecraft:%s_dye' % first, '1000 tfc:%s_dye' % second, output_fluid='1000 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (second, first), 'minecraft:%s_dye' % second, '1000 tfc:%s_dye' % first, output_fluid='1000 tfc:%s_dye' % output)
+        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (first, second), 'minecraft:%s_dye' % first, '1000 tfc:%s_dye' % second, output_fluid='2000 tfc:%s_dye' % output)
+        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (second, first), 'minecraft:%s_dye' % second, '1000 tfc:%s_dye' % first, output_fluid='2000 tfc:%s_dye' % output)
 
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
