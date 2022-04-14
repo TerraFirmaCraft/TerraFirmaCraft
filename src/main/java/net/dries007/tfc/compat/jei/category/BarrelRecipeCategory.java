@@ -162,6 +162,11 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
     @NotNull
     protected RecipeResult<Ingredient> getItemResult(T recipe)
     {
+        ItemStack result = recipe.getResultItem();
+        if (result.isEmpty())
+        {
+            return itemStackProviderIngredient(recipe.getOutputItem(), recipe.getInputItem());
+        }
         return new RecipeResult<>(!isSame(recipe.getResultItem(), recipe.getInputItem().ingredient().getItems(), ItemStack::getItem), Ingredient.of(recipe.getResultItem()));
     }
 
