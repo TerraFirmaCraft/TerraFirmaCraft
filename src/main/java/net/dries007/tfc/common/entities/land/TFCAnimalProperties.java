@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -74,11 +75,14 @@ public interface TFCAnimalProperties
     void setFamiliarity(float value);
 
     /**
-     * Set this animal's uses
-     *
-     * @param uses integer
+     * Add a 'use' to the animal
      */
-    void addUses(int uses);
+    default void addUses(int uses)
+    {
+        setUses(getUses() + 1);
+    }
+
+    void setUses(int uses);
 
     /**
      * Get the uses this animal has
@@ -100,7 +104,7 @@ public interface TFCAnimalProperties
     void setFertilized(boolean value);
 
     /**
-     * Event: Do things on fertilization of females (ie: save the male genes for some sort of genetic selection)
+     * Do things on fertilization of females (ie: save the male genes for some sort of genetic selection)
      */
     default void onFertilized(@Nonnull TFCAnimalProperties male)
     {
@@ -211,37 +215,26 @@ public interface TFCAnimalProperties
     }
 
     /**
-     * Get the products of this animal
-     * Can return more than one item itemstack
-     * fortune and other behaviour should not be handled here
-     * Suggestion: EntityLiving#processInteract() for right clicking handling
-     *
-     * (This function should be implemented with TOP integration in mind ie: what would
-     * you like for the tooltip to show when #isReadyForAnimalProduct returns true?)
-     *
-     * @return a list of itemstack
-     */
-    default List<ItemStack> getProducts()
-    {
-        return Collections.emptyList();
-    }
-
-    /**
      * Set this animal on produce cooldown
-     * This means that you just sheared a sheep, your chicken just laiyed eggs or you just milked your cow
+     * This means that you just sheared a sheep, your chicken just laid eggs, or you just milked your cow
      */
     default void setProductsCooldown()
     {
     }
 
     /**
-     * Returns the number of ticks remaining for this animal to finish it's produce cooldown
+     * Returns the number of ticks remaining for this animal to finish its produce cooldown
      *
      * @return ticks remaining to finish cooldown
      */
     default long getProductsCooldown()
     {
         return 0;
+    }
+
+    default boolean displayMaleCharacteristics()
+    {
+        return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.MALE;
     }
 
     enum Age

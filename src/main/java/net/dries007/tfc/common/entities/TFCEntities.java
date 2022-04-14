@@ -9,25 +9,31 @@ package net.dries007.tfc.common.entities;
 import java.util.Locale;
 import java.util.Map;
 
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.animal.AbstractFish;
-import net.minecraft.world.entity.animal.Pig;
-import net.minecraft.world.entity.animal.Dolphin;
-import net.minecraft.world.entity.animal.Squid;
+import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.entities.land.TFCPig;
+import net.dries007.tfc.common.entities.land.DairyAnimal;
+import net.dries007.tfc.common.entities.land.Mammal;
 import net.dries007.tfc.common.entities.aquatic.*;
+import net.dries007.tfc.common.entities.land.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -82,7 +88,8 @@ public class TFCEntities
     public static final RegistryObject<EntityType<AmphibiousAnimal>> PENGUIN = register("penguin", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::createDiurnal, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
 
-    public static final RegistryObject<EntityType<TFCPig>> PIG = register("pig", EntityType.Builder.of(TFCPig::new, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Mammal>> PIG = register("pig", EntityType.Builder.of(TFCEntities::makePig, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<DairyAnimal>> COW = register("cow", EntityType.Builder.of(TFCEntities::makeCow, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
 
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
@@ -116,5 +123,42 @@ public class TFCEntities
         event.put(SQUID.get(), Squid.createAttributes().build());
         event.put(OCTOPOTEUTHIS.get(), GlowSquid.createAttributes().build());
         event.put(PIG.get(), Pig.createAttributes().build());
+        event.put(COW.get(), Cow.createAttributes().build());
     }
+
+    public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)
+    {
+        return new Mammal(animal, level, () -> SoundEvents.PIG_AMBIENT, () -> SoundEvents.PIG_HURT, () -> SoundEvents.PIG_DEATH, () -> SoundEvents.PIG_STEP, TFCConfig.SERVER.pigFamiliarityCap, TFCConfig.SERVER.pigAdulthoodDays, TFCConfig.SERVER.pigUses, TFCConfig.SERVER.pigEatsRottenFood, TFCConfig.SERVER.pigChildCount, TFCConfig.SERVER.pigGestationDays)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.PIG_FOOD;
+            }
+        };
+    }
+
+    public static DairyAnimal makeCow(EntityType<? extends DairyAnimal> animal, Level level)
+    {
+        return new DairyAnimal(animal, level, () -> SoundEvents.COW_AMBIENT, () -> SoundEvents.COW_HURT, () -> SoundEvents.COW_DEATH, () -> SoundEvents.COW_STEP, TFCConfig.SERVER.cowFamiliarityCap, TFCConfig.SERVER.cowAdulthoodDays, TFCConfig.SERVER.cowUses, TFCConfig.SERVER.cowEatsRottenFood, TFCConfig.SERVER.cowChildCount, TFCConfig.SERVER.cowGestationDays, TFCConfig.SERVER.cowMilkTicks, TFCConfig.SERVER.cowMinMilkFamiliarity)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.COW_FOOD;
+            }
+        };
+    }
+
+    public static WoolyAnimal makeAlpaca(EntityType<? extends WoolyAnimal> animal, Level level)
+    {
+        return new WoolyAnimal(animal, level, TFCSounds.ALPACA_AMBIENT, TFCSounds.ALPACA_HURT, TFCSounds.ALPACA_DEATH, TFCSounds.ALPACA_STEP, TFCConfig.SERVER.alpacaFamiliarityCap, TFCConfig.SERVER.alpacaAdulthoodDays, TFCConfig.SERVER.alpacaUses, TFCConfig.SERVER.alpacaEatsRottenFood, TFCConfig.SERVER.alpacaChildCount, TFCConfig.SERVER.alpacaGestationDays, TFCConfig.SERVER.alpacaWoolTicks, TFCConfig.SERVER.alpacaMinWoolFamiliarity) {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.ALPACA_FOOD;
+            }
+        };
+    }
+
 }

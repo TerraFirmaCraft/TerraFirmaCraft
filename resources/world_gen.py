@@ -1216,8 +1216,6 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     if lake_features == 'default':  # Default = Lakes are on all non-ocean biomes. True/False to force either way
         lake_features = not ocean_features
 
-
-
     # Features
     features = [
         ['tfc:erosion'],  # erosion
@@ -1275,6 +1273,9 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
         features[Decoration.SURFACE_DECORATION] += ['tfc:land_plants']
+        spawners.update({
+            'creature': [entity for entity in LAND_CREATURES.values()]
+        })
 
     if volcano_features:
         features[Decoration.LARGE_FEATURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure']

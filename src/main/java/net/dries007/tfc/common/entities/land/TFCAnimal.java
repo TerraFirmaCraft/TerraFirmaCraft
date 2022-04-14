@@ -25,6 +25,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -36,6 +37,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
@@ -143,9 +145,9 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     }
 
     @Override
-    public void addUses(int uses)
+    public void setUses(int uses)
     {
-        entityData.set(USES, getUses() + uses);
+        entityData.set(USES, uses);
     }
 
     @Override
@@ -353,7 +355,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
                         //Show tooltips
                         if (this.isFertilized() && this.getTFCAnimalType() == Type.MAMMAL)
                         {
-                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.pregnant"), true);
+                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getTypeName().getString()), true);
                         }
                     }
                 }
@@ -380,6 +382,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
      */
     protected InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
     {
+        heal(1f);
         if (!this.level.isClientSide)
         {
             lastFed = Calendars.SERVER.getTotalDays();

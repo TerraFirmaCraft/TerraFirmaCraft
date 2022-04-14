@@ -155,8 +155,11 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
-    rm.item_tag('tfc:pig_food', '#tfc:foods')
 
+    rm.item_tag('pig_food', '#tfc:foods')
+    rm.item_tag('cow_food', '#tfc:foods/grains')
+
+    rm.item_tag('tfc:foods/grains', *['tfc:food/%s_grain' % grain for grain in GRAINS])
     rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
     rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
@@ -418,9 +421,10 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols')
-    rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS], '#tfc:milks')
+    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols', '#tfc:milks')
+    rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water', '#tfc:milks')
+    rm.fluid_tag('milks', 'minecraft:milk')
 
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
@@ -584,6 +588,7 @@ def generate(rm: ResourceManager):
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
     drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=1000)
+    drinkable(rm, 'milk', '#tfc:milks', thirst=10)
 
     # Climate Ranges
 
@@ -624,6 +629,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
     rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
     rm.data(('tfc', 'fauna', 'pig'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'cow'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))

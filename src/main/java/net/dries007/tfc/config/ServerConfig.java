@@ -120,6 +120,26 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue pigGestationDays;
     public final ForgeConfigSpec.IntValue pigChildCount;
 
+    // Cow
+    public final ForgeConfigSpec.DoubleValue cowFamiliarityCap;
+    public final ForgeConfigSpec.IntValue cowAdulthoodDays;
+    public final ForgeConfigSpec.IntValue cowUses;
+    public final ForgeConfigSpec.BooleanValue cowEatsRottenFood;
+    public final ForgeConfigSpec.IntValue cowGestationDays;
+    public final ForgeConfigSpec.IntValue cowChildCount;
+    public final ForgeConfigSpec.IntValue cowMilkTicks;
+    public final ForgeConfigSpec.DoubleValue cowMinMilkFamiliarity;
+
+    // Alpaca
+    public final ForgeConfigSpec.DoubleValue alpacaFamiliarityCap;
+    public final ForgeConfigSpec.IntValue alpacaAdulthoodDays;
+    public final ForgeConfigSpec.IntValue alpacaUses;
+    public final ForgeConfigSpec.BooleanValue alpacaEatsRottenFood;
+    public final ForgeConfigSpec.IntValue alpacaGestationDays;
+    public final ForgeConfigSpec.IntValue alpacaChildCount;
+    public final ForgeConfigSpec.IntValue alpacaWoolTicks;
+    public final ForgeConfigSpec.DoubleValue alpacaMinWoolFamiliarity;
+
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.server." + name);
@@ -275,13 +295,32 @@ public class ServerConfig
         enableVanillaWeatherEffects = builder.apply("enableVanillaWeatherEffects").comment("If true, vanilla's snow and ice formation mechanics will be used, and none of the TFC mechanics (improved snow and ice placement, snow stacking, icicle formation, passive snow or ice melting) will exist.").define("enableVanillaWeatherEffects", false);
 
         innerBuilder.pop().push("animals").push("pig");
-
         pigAdulthoodDays = builder.apply("pigAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("pigAdulthoodDays", 80, 0, Integer.MAX_VALUE);
         pigChildCount = builder.apply("pigChildCount").comment("Max number of children born").defineInRange("pigChildCount", 10, 0, 100);
         pigEatsRottenFood = builder.apply("pigEatsRottenFood").comment("Does the animal eat rotten food?").define("pigEatsRottenFood", true);
         pigFamiliarityCap = builder.apply("pigFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("pigFamiliarityCap", 0.35, 0, 1);
         pigUses = builder.apply("pigUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("pigUses", 5, 0, Integer.MAX_VALUE);
         pigGestationDays = builder.apply("pigGestationDays").comment("Length of pregnancy in days").defineInRange("pigGestationDays", 19, 0, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("cow");
+        cowAdulthoodDays = builder.apply("cowAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("cowAdulthoodDays", 80, 0, Integer.MAX_VALUE);
+        cowChildCount = builder.apply("cowChildCount").comment("Max number of children born").defineInRange("cowChildCount", 10, 0, 100);
+        cowEatsRottenFood = builder.apply("cowEatsRottenFood").comment("Does the animal eat rotten food?").define("cowEatsRottenFood", true);
+        cowFamiliarityCap = builder.apply("cowFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("cowFamiliarityCap", 0.35, 0, 1);
+        cowUses = builder.apply("cowUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("cowUses", 5, 0, Integer.MAX_VALUE);
+        cowGestationDays = builder.apply("cowGestationDays").comment("Length of pregnancy in days").defineInRange("cowGestationDays", 19, 0, Integer.MAX_VALUE);
+        cowMilkTicks = builder.apply("cowMilkTicks").comment("Ticks until milk is ready").defineInRange("cowMilkTicks", 24000, 0, Integer.MAX_VALUE);
+        cowMinMilkFamiliarity = builder.apply("cowMinMilkFamiliarity").comment("Minimum familiarity [0-1] needed to milk. Set above 1 to disable milking.").defineInRange("cowMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
+
+        innerBuilder.pop().push("alpaca");
+        alpacaAdulthoodDays = builder.apply("alpacaAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("alpacaAdulthoodDays", 80, 0, Integer.MAX_VALUE);
+        alpacaChildCount = builder.apply("alpacaChildCount").comment("Max number of children born").defineInRange("alpacaChildCount", 10, 0, 100);
+        alpacaEatsRottenFood = builder.apply("alpacaEatsRottenFood").comment("Does the animal eat rotten food?").define("alpacaEatsRottenFood", true);
+        alpacaFamiliarityCap = builder.apply("alpacaFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("alpacaFamiliarityCap", 0.35, 0, 1);
+        alpacaUses = builder.apply("alpacaUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("alpacaUses", 5, 0, Integer.MAX_VALUE);
+        alpacaGestationDays = builder.apply("alpacaGestationDays").comment("Length of pregnancy in days").defineInRange("alpacaGestationDays", 19, 0, Integer.MAX_VALUE);
+        alpacaWoolTicks = builder.apply("alpacaWoolTicks").comment("Ticks until wool is ready").defineInRange("alpacaWoolTicks", 24000, 0, Integer.MAX_VALUE);
+        alpacaMinWoolFamiliarity = builder.apply("alpacaMinWoolFamiliarity").comment("Minimum familiarity [0-1] needed to grow wool. Set above 1 to disable shearing.").defineInRange("alpacaMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
 
         innerBuilder.pop();
 

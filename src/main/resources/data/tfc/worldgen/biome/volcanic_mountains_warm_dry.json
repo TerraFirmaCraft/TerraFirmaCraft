@@ -57,7 +57,22 @@
     []
   ],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "creature": [
+      {
+        "type": "tfc:pig",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:cow",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      }
+    ]
+  },
   "player_spawn_friendly": true,
   "creature_spawn_probability": 0.5,
   "spawn_costs": {}

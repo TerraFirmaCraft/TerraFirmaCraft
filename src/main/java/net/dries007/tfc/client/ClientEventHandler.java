@@ -289,7 +289,6 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
         event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), ctx -> new SimpleMobRenderer<>(ctx, new BluegillModel(RenderHelpers.bakeSimple(ctx, "bluegill")), "bluegill", true));
         event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
-        event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
         event.registerEntityRenderer(TFCEntities.LOBSTER.get(), ctx -> new SimpleMobRenderer<>(ctx, new LobsterModel(RenderHelpers.bakeSimple(ctx, "lobster")), "lobster"));
         event.registerEntityRenderer(TFCEntities.ISOPOD.get(), ctx -> new SimpleMobRenderer<>(ctx, new IsopodModel(RenderHelpers.bakeSimple(ctx, "isopod")), "isopod"));
         event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), ctx -> new SimpleMobRenderer<>(ctx, new HorseshoeCrabModel(RenderHelpers.bakeSimple(ctx, "horseshoe_crab")), "horseshoe_crab"));
@@ -301,6 +300,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), TFCPolarBearRenderer::new);
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
+        event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
+        event.registerEntityRenderer(TFCEntities.COW.get(), ctx -> new AnimalRenderer<>(ctx, new TFCCowModel(RenderHelpers.bakeSimple(ctx, "cow")), "cow"));
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -342,6 +343,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cow"), TFCCowModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

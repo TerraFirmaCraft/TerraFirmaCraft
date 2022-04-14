@@ -17,7 +17,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.entities.aquatic.*;
-import net.dries007.tfc.common.entities.land.TFCPig;
+import net.dries007.tfc.common.entities.land.DairyAnimal;
+import net.dries007.tfc.common.entities.land.Mammal;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -41,7 +42,8 @@ public class Faunas
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
-    //public static final FaunaType<TFCPig> PIG = registerAnimal(TFCEntities.PIG);
+    public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
+    public static final FaunaType<DairyAnimal> COW = registerAnimal(TFCEntities.COW);
 
     public static void registerSpawnPlacements()
     {
@@ -62,7 +64,8 @@ public class Faunas
         registerSpawnPlacement(POLAR_BEAR);
         registerSpawnPlacement(SQUID);
         registerSpawnPlacement(OCTOPOTEUTHIS);
-        //registerSpawnPlacement(PIG);
+        registerSpawnPlacement(PIG);
+        registerSpawnPlacement(COW);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)

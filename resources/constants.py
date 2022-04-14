@@ -542,7 +542,7 @@ NUTRIENTS = {
     'dairy': 'Creamy'
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig']
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
 BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter']
@@ -588,6 +588,11 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
 }
 
+LAND_CREATURES: Dict[str, Dict[str, Any]] = {
+    'pig': spawner('tfc:pig', min_count=1, max_count=4),
+    'cow': spawner('tfc:cow', min_count=1, max_count=4)
+}
+
 DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
 
 # This is here because it's used all over, and it's easier to import with all constants
@@ -615,6 +620,11 @@ DEFAULT_LANG = {
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'subtitles.block.tfc.tool_rack.place_item': 'Item placed on Tool Rack',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
+    # Sounds todo: subtitles for everything and standardize the format
+    'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
+    'tfc.animal.alpaca.hurt': 'Alpaca Yelps',
+    'tfc.animal.alpaca.death': 'Alpaca Dies',
+    'tfc.animal.alpaca.step': 'Alpaca Steps',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -718,7 +728,13 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
     'tfc.tooltip.seal_barrel': 'Seal',
     'tfc.tooltip.unseal_barrel': 'Unseal',
-    'tfc.tooltip.pregnant': 'This animal is pregnant!',
+    'tfc.tooltip.animal.pregnant': 'This %s is pregnant!',
+    'tfc.tooltip.animal.male_milk': 'This %s is a male.',
+    'tfc.tooltip.animal.old': 'This %s is too old to produce.',
+    'tfc.tooltip.animal.young': 'This %s is too young to produce.',
+    'tfc.tooltip.animal.low_familiarity': 'This %s is not familiar enough to produce.',
+    'tfc.tooltip.animal.no_milk': 'This %s has no milk.',
+    'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
 
     # Commands
 
@@ -761,6 +777,9 @@ DEFAULT_LANG = {
     'entity.tfc.pig': 'Pig',
     'entity.tfc.pig.male': 'Pig',
     'entity.tfc.pig.female': 'Sow',
+    'entity.tfc.cow': 'Cow',
+    'entity.tfc.cow.female': 'Cow',
+    'entity.tfc.cow.male': 'Bull',
     'entity.tfc.polar_bear': 'Polar Bear',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
