@@ -31,7 +31,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public abstract class DairyAnimal extends ProducingMammal
 {
-    public DairyAnimal(EntityType<? extends TFCAnimal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue milkTicks, ForgeConfigSpec.DoubleValue milkingFamiliarity)
+    public DairyAnimal(EntityType<? extends DairyAnimal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue milkTicks, ForgeConfigSpec.DoubleValue milkingFamiliarity)
     {
         super(animal, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, childCount, gestationDays, milkTicks, milkingFamiliarity);
     }

@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.client.model.PenguinModel;
+import net.dries007.tfc.client.model.entity.PenguinModel;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
 
 public class PenguinRenderer extends MobRenderer<AmphibiousAnimal, PenguinModel>

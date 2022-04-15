@@ -280,6 +280,7 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> CRUCIBLE = register("crucible", () -> new CrucibleBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.CRUCIBLE).serverTicks(CrucibleBlockEntity::serverTick)), DECORATIONS);
     public static final RegistryObject<Block> COMPOSTER = register("composter", () -> new TFCComposterBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(0.6F).noOcclusion().sound(SoundType.WOOD).randomTicks()).flammable(60, 90).blockEntity(TFCBlockEntities.COMPOSTER)), DECORATIONS);
+    public static final RegistryObject<Block> NEST_BOX = register("nest_box", () -> new NestBoxBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(3f).noOcclusion().sound(TFCSounds.THATCH)).blockEntity(TFCBlockEntities.NEST_BOX).serverTicks(NestBoxBlockEntity::serverTick)));
 
     public static final RegistryObject<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noDrops().noOcclusion().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()), MISC);
 

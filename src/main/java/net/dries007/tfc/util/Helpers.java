@@ -61,6 +61,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -92,6 +93,8 @@ public final class Helpers
 
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
+
+    public static final ForgeConfigSpec.IntValue NO_CONFIG_INT = new ForgeConfigSpec.Builder().defineInRange("null", 0, 0, 0);
 
     private static final Random RANDOM = new Random();
     private static final int PRIME_X = 501125321;

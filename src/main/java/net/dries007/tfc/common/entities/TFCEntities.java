@@ -30,6 +30,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.entities.land.DairyAnimal;
 import net.dries007.tfc.common.entities.land.Mammal;
 import net.dries007.tfc.common.entities.aquatic.*;
+import net.dries007.tfc.common.entities.land.OviparousAnimal;
 import net.dries007.tfc.common.entities.land.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.items.TFCItems;
@@ -57,6 +58,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCFallingBlockEntity>> FALLING_BLOCK = register("falling_block", EntityType.Builder.<TFCFallingBlockEntity>of(TFCFallingBlockEntity::new, MobCategory.MISC).sized(0.98f, 0.98f));
     public static final RegistryObject<EntityType<TFCFishingHook>> FISHING_BOBBER = register("fishing_bobber", EntityType.Builder.<TFCFishingHook>of(TFCFishingHook::new, MobCategory.MISC).noSave().noSummon().sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(5));
     public static final RegistryObject<EntityType<GlowArrow>> GLOW_ARROW = register("glow_arrow", EntityType.Builder.<GlowArrow>of(GlowArrow::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
+    public static final RegistryObject<EntityType<Seat>> SEAT = register("seat", EntityType.Builder.of(Seat::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(4).updateInterval(20));
 
     public static final Map<Wood, RegistryObject<EntityType<TFCBoat>>> BOATS = Helpers.mapOfKeys(Wood.class, wood ->
         register("boat/" + wood.name(), EntityType.Builder.<TFCBoat>of((type, level) -> new TFCBoat(type, level, TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))
@@ -90,7 +92,8 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<Mammal>> PIG = register("pig", EntityType.Builder.of(TFCEntities::makePig, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<DairyAnimal>> COW = register("cow", EntityType.Builder.of(TFCEntities::makeCow, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
-
+    public static final RegistryObject<EntityType<WoolyAnimal>> ALPACA = register("alpaca", EntityType.Builder.of(TFCEntities::makeAlpaca, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<OviparousAnimal>> CHICKEN = register("chicken", EntityType.Builder.of(TFCEntities::makeChicken, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -124,6 +127,7 @@ public class TFCEntities
         event.put(OCTOPOTEUTHIS.get(), GlowSquid.createAttributes().build());
         event.put(PIG.get(), Pig.createAttributes().build());
         event.put(COW.get(), Cow.createAttributes().build());
+        event.put(ALPACA.get(), Cow.createAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)
@@ -157,6 +161,17 @@ public class TFCEntities
             public TagKey<Item> getFoodTag()
             {
                 return TFCTags.Items.ALPACA_FOOD;
+            }
+        };
+    }
+
+    public static OviparousAnimal makeChicken(EntityType<? extends OviparousAnimal> animal, Level level)
+    {
+        return new OviparousAnimal(animal, level, () -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_STEP, TFCConfig.SERVER.chickenFamiliarityCap, TFCConfig.SERVER.chickenAdulthoodDays, TFCConfig.SERVER.chickenUses, TFCConfig.SERVER.chickenEatsRottenFood, TFCConfig.SERVER.alpacaWoolTicks, TFCConfig.SERVER.alpacaMinWoolFamiliarity, TFCConfig.SERVER.chickenHatchDays) {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.CHICKEN_FOOD;
             }
         };
     }

@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.model;
+package net.dries007.tfc.client.model.entity;
 
 import java.util.Map;
 
@@ -16,6 +16,8 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.model.Animation;
+import net.dries007.tfc.client.model.Easing;
 import net.dries007.tfc.common.entities.predator.Predator;
 
 public class TFCPolarBearModel extends QuadrupedModel<Predator>

@@ -7,16 +7,13 @@
 package net.dries007.tfc.common.entities.land;
 
 import java.util.Locale;
-import java.util.Optional;
 import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -25,7 +22,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -37,7 +33,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
@@ -89,6 +84,13 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         this.daysToAdulthood = daysToAdulthood;
         this.usesToElderly = usesToElderly;
         this.eatsRottenFood = eatsRottenFood;
+    }
+
+    @Override
+    public void registerGoals()
+    {
+        super.registerGoals();
+        EntityHelpers.addCommonPreyGoals(this, goalSelector);
     }
 
     @Override
@@ -284,12 +286,9 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     }
 
     @Override
-    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos)
+    public boolean causeFallDamage(float amount, float speed, DamageSource src)
     {
-        if (getTFCAnimalType() != Type.OVIPAROUS)
-        {
-            super.checkFallDamage(y, onGround, state, pos);
-        }
+        return getTFCAnimalType() != Type.OVIPAROUS;
     }
 
     @Override
@@ -405,15 +404,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     @Override
     public boolean isFood(ItemStack stack)
     {
-        if (!eatsRottenFood())
-        {
-            Optional<Boolean> rot = stack.getCapability(FoodCapability.CAPABILITY).map(IFood::isRotten);
-            if (rot.isPresent() && rot.get())
-            {
-                return false;
-            }
-        }
-        return Helpers.isItem(stack, getFoodTag());
+        return TFCAnimalProperties.super.isFood(stack);
     }
 
     protected boolean isLivestock()

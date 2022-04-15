@@ -542,7 +542,7 @@ NUTRIENTS = {
     'dairy': 'Creamy'
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow']
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
 BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter']
@@ -728,6 +728,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
     'tfc.tooltip.seal_barrel': 'Seal',
     'tfc.tooltip.unseal_barrel': 'Unseal',
+    'tfc.tooltip.fertilized': '§6Fertilized',
+    'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
+    'tfc.tooltip.egg_hatch_today': 'Will hatch today!',
     'tfc.tooltip.animal.pregnant': 'This %s is pregnant!',
     'tfc.tooltip.animal.male_milk': 'This %s is a male.',
     'tfc.tooltip.animal.old': 'This %s is too old to produce.',
@@ -780,12 +783,16 @@ DEFAULT_LANG = {
     'entity.tfc.cow': 'Cow',
     'entity.tfc.cow.female': 'Cow',
     'entity.tfc.cow.male': 'Bull',
+    'entity.tfc.alpaca': 'Alpaca',
+    'entity.tfc.alpaca.female': 'Female Alpaca',
+    'entity.tfc.alpaca.male': 'Male Alpaca',
     'entity.tfc.polar_bear': 'Polar Bear',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',
+    'entity.tfc.seat': 'Seat',
     **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums

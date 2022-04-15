@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.client.model;
+package net.dries007.tfc.client.model.entity;
 
 import java.util.Map;
 
@@ -17,6 +17,8 @@ import net.minecraft.util.Mth;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.dries007.tfc.client.model.Animation;
+import net.dries007.tfc.client.model.Easing;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
 
 public class PenguinModel extends EntityModel<AmphibiousAnimal>

@@ -57,6 +57,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
@@ -171,6 +172,7 @@ public class ClientForgeEventHandler
             ItemSizeManager.addTooltipInfo(stack, text);
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+            stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
 
             // Metal content, inferred from a matching heat recipe.
             ItemStackInventory wrapper = new ItemStackInventory(stack);

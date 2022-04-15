@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.client.model.TFCPolarBearModel;
+import net.dries007.tfc.client.model.entity.TFCPolarBearModel;
 import net.dries007.tfc.common.entities.predator.Predator;
 
 public class TFCPolarBearRenderer extends MobRenderer<Predator, TFCPolarBearModel>

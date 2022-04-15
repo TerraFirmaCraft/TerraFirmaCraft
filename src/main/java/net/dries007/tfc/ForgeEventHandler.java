@@ -32,6 +32,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
@@ -79,6 +80,8 @@ import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
@@ -296,6 +299,11 @@ public final class ForgeEventHandler
             if (food != null)
             {
                 event.addCapability(FoodCapability.KEY, new FoodHandler(food.getData()));
+            }
+
+            if (stack.getItem() == Items.EGG)
+            {
+                event.addCapability(EggCapability.KEY, new EggHandler());
             }
         }
     }

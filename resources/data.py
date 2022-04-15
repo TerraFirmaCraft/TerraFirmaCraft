@@ -648,8 +648,8 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)
     mob_loot(rm, 'turtle', 'minecraft:scute')
     mob_loot(rm, 'polar_bear', 'tfc:large_raw_hide', bones=6)
-
     mob_loot(rm, 'pig', 'tfc:food/pork', 1, 4, 'medium', bones=3)
+    mob_loot(rm, 'cow', 'tfc:food/beef', 1, 4, 'large', bones=4)
 
 def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)

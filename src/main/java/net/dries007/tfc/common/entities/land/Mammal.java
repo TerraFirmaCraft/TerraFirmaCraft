@@ -14,14 +14,12 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
@@ -51,13 +49,6 @@ public abstract class Mammal extends TFCAnimal
     private void setPregnantTime(long day)
     {
         entityData.set(PREGNANT_TIME, day);
-    }
-
-    @Override
-    public void registerGoals()
-    {
-        super.registerGoals();
-        EntityHelpers.addCommonPreyGoals(this, goalSelector);
     }
 
     @Nullable

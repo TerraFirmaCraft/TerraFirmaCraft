@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.land;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import net.minecraft.tags.Tag;
@@ -17,6 +18,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -215,6 +219,14 @@ public interface TFCAnimalProperties
     }
 
     /**
+     * Weaker sub-check of isReadyForAnimalProduct that isn't concerned with familiarity
+     */
+    default boolean hasProduct()
+    {
+        return false;
+    }
+
+    /**
      * Set this animal on produce cooldown
      * This means that you just sheared a sheep, your chicken just laid eggs, or you just milked your cow
      */
@@ -235,6 +247,19 @@ public interface TFCAnimalProperties
     default boolean displayMaleCharacteristics()
     {
         return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.MALE;
+    }
+
+    default boolean isFood(ItemStack stack)
+    {
+        if (!eatsRottenFood())
+        {
+            Optional<Boolean> rot = stack.getCapability(FoodCapability.CAPABILITY).map(IFood::isRotten);
+            if (rot.isPresent() && rot.get())
+            {
+                return false;
+            }
+        }
+        return Helpers.isItem(stack, getFoodTag());
     }
 
     enum Age

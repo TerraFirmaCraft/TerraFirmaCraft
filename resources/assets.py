@@ -307,6 +307,8 @@ def generate(rm: ResourceManager):
 
     rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
 
+    rm.blockstate('nest_box', model='tfc:block/nest_box').with_block_loot('tfc:nest_box').with_lang(lang('nest box')).with_item_model().with_tag('minecraft:mineable/axe')
+
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},
         'lit=false': {'model': 'tfc:block/firepit_unlit'}

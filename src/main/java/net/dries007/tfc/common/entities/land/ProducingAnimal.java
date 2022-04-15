@@ -19,16 +19,16 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class ProducingMammal extends Mammal
+public abstract class ProducingAnimal extends TFCAnimal
 {
-    public static final EntityDataAccessor<Long> DATA_PRODUCED = SynchedEntityData.defineId(ProducingMammal.class, EntityHelpers.LONG_SERIALIZER);
+    public static final EntityDataAccessor<Long> DATA_PRODUCED = SynchedEntityData.defineId(ProducingAnimal.class, EntityHelpers.LONG_SERIALIZER);
 
     protected final ForgeConfigSpec.IntValue produceTicks;
     protected final ForgeConfigSpec.DoubleValue produceFamiliarity;
 
-    public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity)
+    public ProducingAnimal(EntityType<? extends TFCAnimal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity)
     {
-        super(animal, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, childCount, gestationDays);
+        super(type, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood);
         this.produceTicks = produceTicks;
         this.produceFamiliarity = produceFamiliarity;
     }
