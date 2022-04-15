@@ -19,12 +19,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.MinecraftForge;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.ai.FindNestGoal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class OviparousAnimal extends ProducingAnimal
@@ -122,6 +124,11 @@ public abstract class OviparousAnimal extends ProducingAnimal
                 }
             });
         }
-        return stack;
+        AnimalProductEvent event = new AnimalProductEvent(level, blockPosition(), null, this, stack, ItemStack.EMPTY, 1);
+        if (!MinecraftForge.EVENT_BUS.post(event))
+        {
+            addUses(1);
+        }
+        return event.getProduct();
     }
 }
