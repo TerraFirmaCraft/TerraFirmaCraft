@@ -19,6 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.dries007.tfc.common.entities.aquatic.*;
 import net.dries007.tfc.common.entities.land.DairyAnimal;
 import net.dries007.tfc.common.entities.land.Mammal;
+import net.dries007.tfc.common.entities.land.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -44,6 +45,7 @@ public class Faunas
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
     public static final FaunaType<DairyAnimal> COW = registerAnimal(TFCEntities.COW);
+    public static final FaunaType<WoolyAnimal> ALPACA = registerAnimal(TFCEntities.ALPACA);
 
     public static void registerSpawnPlacements()
     {
@@ -66,6 +68,7 @@ public class Faunas
         registerSpawnPlacement(OCTOPOTEUTHIS);
         registerSpawnPlacement(PIG);
         registerSpawnPlacement(COW);
+        registerSpawnPlacement(ALPACA);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)

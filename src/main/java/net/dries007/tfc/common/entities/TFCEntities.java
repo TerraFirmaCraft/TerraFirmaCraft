@@ -128,6 +128,7 @@ public class TFCEntities
         event.put(PIG.get(), Pig.createAttributes().build());
         event.put(COW.get(), Cow.createAttributes().build());
         event.put(ALPACA.get(), Cow.createAttributes().build());
+        event.put(CHICKEN.get(), Chicken.createAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)
@@ -167,7 +168,7 @@ public class TFCEntities
 
     public static OviparousAnimal makeChicken(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, () -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_STEP, TFCConfig.SERVER.chickenFamiliarityCap, TFCConfig.SERVER.chickenAdulthoodDays, TFCConfig.SERVER.chickenUses, TFCConfig.SERVER.chickenEatsRottenFood, TFCConfig.SERVER.alpacaWoolTicks, TFCConfig.SERVER.alpacaMinWoolFamiliarity, TFCConfig.SERVER.chickenHatchDays) {
+        return new OviparousAnimal(animal, level, () -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_STEP, TFCConfig.SERVER.chickenFamiliarityCap, TFCConfig.SERVER.chickenAdulthoodDays, TFCConfig.SERVER.chickenUses, TFCConfig.SERVER.chickenEatsRottenFood, TFCConfig.SERVER.chickenEggTicks, TFCConfig.SERVER.chickenMinEggFamiliarity, TFCConfig.SERVER.chickenHatchDays) {
             @Override
             public TagKey<Item> getFoodTag()
             {

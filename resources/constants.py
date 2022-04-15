@@ -542,7 +542,7 @@ NUTRIENTS = {
     'dairy': 'Creamy'
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca']
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
 BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter']
@@ -590,7 +590,8 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
 
 LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'pig': spawner('tfc:pig', min_count=1, max_count=4),
-    'cow': spawner('tfc:cow', min_count=1, max_count=4)
+    'cow': spawner('tfc:cow', min_count=1, max_count=4),
+    'alpaca': spawner('tfc:alpaca', min_count=1, max_count=4)
 }
 
 DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
@@ -793,6 +794,9 @@ DEFAULT_LANG = {
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',
     'entity.tfc.seat': 'Seat',
+    'entity.tfc.chicken': 'Chicken',
+    'entity.tfc.chicken.male': 'Rooster',
+    'entity.tfc.chicken.female': 'Chicken',
     **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums

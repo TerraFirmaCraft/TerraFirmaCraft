@@ -304,7 +304,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
         event.registerEntityRenderer(TFCEntities.COW.get(), ctx -> new AnimalRenderer<>(ctx, new TFCCowModel(RenderHelpers.bakeSimple(ctx, "cow")), "cow"));
         event.registerEntityRenderer(TFCEntities.ALPACA.get(), ctx -> new AnimalRenderer<>(ctx, new AlpacaModel(RenderHelpers.bakeSimple(ctx, "alpaca")), "alpaca"));
-        event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new AnimalRenderer<>(ctx, new ChickenModel<>(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken"));
+        event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new OviparousRenderer<>(ctx, new ChickenModel<>(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken", "rooster"));
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());

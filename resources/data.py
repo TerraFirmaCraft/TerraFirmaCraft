@@ -630,6 +630,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
     rm.data(('tfc', 'fauna', 'pig'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
     rm.data(('tfc', 'fauna', 'cow'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'alpaca'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -650,8 +651,10 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'polar_bear', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'pig', 'tfc:food/pork', 1, 4, 'medium', bones=3)
     mob_loot(rm, 'cow', 'tfc:food/beef', 1, 4, 'large', bones=4)
+    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 1, 4, 'medium', bones=4, extra_pool={'name': 'tfc:wool'})
+    mob_loot(rm, 'chicken', 'tfc:food/chicken', extra_pool={'name': 'minecraft:feather', })
 
-def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0):
+def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
     pools = [{'name': drop, 'functions': func}]
     if hide_size is not None:
@@ -659,6 +662,8 @@ def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max
         pools.append({'name': 'tfc:%s_raw_hide' % hide_size, 'conditions': func})
     if bones != 0:
         pools.append({'name': 'minecraft:bone', 'functions': loot_tables.set_count(1, bones)})
+    if extra_pool is not None:
+        pools.append(extra_pool)
     rm.entity_loot(name, *pools)
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):

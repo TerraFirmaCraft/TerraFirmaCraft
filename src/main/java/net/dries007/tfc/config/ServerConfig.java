@@ -331,8 +331,8 @@ public class ServerConfig
         alpacaWoolTicks = builder.apply("alpacaWoolTicks").comment("Ticks until wool is ready").defineInRange("alpacaWoolTicks", 24000, 0, Integer.MAX_VALUE);
         alpacaMinWoolFamiliarity = builder.apply("alpacaMinWoolFamiliarity").comment("Minimum familiarity [0-1] needed to grow wool. Set above 1 to disable shearing.").defineInRange("alpacaMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
 
-        innerBuilder.pop().push("alpaca");
-        chickenAdulthoodDays = builder.apply("chickenAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("chickenAdulthoodDays", 80, 0, Integer.MAX_VALUE);
+        innerBuilder.pop().push("chicken");
+        chickenAdulthoodDays = builder.apply("chickenAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("chickenAdulthoodDays", 20, 0, Integer.MAX_VALUE);
         chickenEatsRottenFood = builder.apply("chickenEatsRottenFood").comment("Does the animal eat rotten food?").define("chickenEatsRottenFood", true);
         chickenFamiliarityCap = builder.apply("chickenFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("chickenFamiliarityCap", 0.35, 0, 1);
         chickenUses = builder.apply("chickenUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("chickenUses", 128, 0, Integer.MAX_VALUE);

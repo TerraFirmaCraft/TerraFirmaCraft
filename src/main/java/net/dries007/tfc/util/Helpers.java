@@ -94,8 +94,6 @@ public final class Helpers
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
 
-    public static final ForgeConfigSpec.IntValue NO_CONFIG_INT = new ForgeConfigSpec.Builder().defineInRange("null", 0, 0, 0);
-
     private static final Random RANDOM = new Random();
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;

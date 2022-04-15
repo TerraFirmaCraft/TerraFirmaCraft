@@ -21,22 +21,21 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.ai.FindNestGoal;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class OviparousAnimal extends ProducingAnimal
 {
     public float flapping = 1f;
     private final ForgeConfigSpec.IntValue hatchDays;
-    private float oFlap;
-    private float flap;
-    private float oFlapSpeed;
-    private float flapSpeed;
+    public float oFlap;
+    public float flap;
+    public float oFlapSpeed;
+    public float flapSpeed;
     private float nextFlap = 1f;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity, ForgeConfigSpec.IntValue hatchDays)
     {
-        super(type, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, Helpers.NO_CONFIG_INT, Helpers.NO_CONFIG_INT, produceTicks, produceFamiliarity);
+        super(type, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, produceTicks, produceFamiliarity);
         this.hatchDays = hatchDays;
     }
 
@@ -62,7 +61,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     @Override
     protected float getStandingEyeHeight(Pose pose, EntityDimensions dims)
     {
-        return isBaby() ? dims.height * 0.85F : dims.height * 0.92F;
+        return dims.height * 0.92F;
     }
 
     @Override
