@@ -10,6 +10,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.Mth;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -42,7 +43,12 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
         return LayerDefinition.create(mesh, 128, 128);
     }
 
+    private final ModelPart neck;
     private final ModelPart body;
+    private final ModelPart legBL;
+    private final ModelPart legBR;
+    private final ModelPart legFL;
+    private final ModelPart legFR;
     private final ModelPart wool_body_f;
     private final ModelPart wool_head_f;
     private final ModelPart wool_neck_f;
@@ -54,21 +60,31 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
     public AlpacaModel(ModelPart root)
     {
         body = root.getChild("body");
-        ModelPart neck = body.getChild("neck");
+        neck = body.getChild("neck");
         ModelPart head = neck.getChild("head");
         wool_body_f = body.getChild("wool_body_f");
         wool_head_f = head.getChild("wool_head_f");
         wool_neck_f = neck.getChild("wool_neck_f");
-        wool_legBL_f = body.getChild("legBL").getChild("wool_legBL_f");
-        wool_legBR_f = body.getChild("legBR").getChild("wool_legBR_f");
-        wool_legFL_f = body.getChild("legFL").getChild("wool_legFL_f");
-        wool_legFR_f = body.getChild("legFR").getChild("wool_legFR_f");
+        legBL = body.getChild("legBL");
+        wool_legBL_f = legBL.getChild("wool_legBL_f");
+        legBR = body.getChild("legBR");
+        wool_legBR_f = legBR.getChild("wool_legBR_f");
+        legFL = body.getChild("legFL");
+        wool_legFL_f = legFL.getChild("wool_legFL_f");
+        legFR = body.getChild("legFR");
+        wool_legFR_f = legFR.getChild("wool_legFR_f");
     }
 
     @Override
     public void setupAnim(WoolyAnimal animal, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         wool_body_f.visible = wool_head_f.visible = wool_neck_f.visible = wool_legBL_f.visible = wool_legBR_f.visible = wool_legFL_f.visible = wool_legFR_f.visible = animal.hasProduct();
+        neck.xRot = headPitch * ((float)Math.PI / 180F);
+        neck.yRot = headYaw * ((float)Math.PI / 180F);
+        legBR.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        legBL.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+        legFR.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+        legFL.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
     }
 
     @Override

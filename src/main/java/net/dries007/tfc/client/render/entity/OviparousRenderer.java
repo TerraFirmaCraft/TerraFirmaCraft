@@ -17,12 +17,17 @@ public class OviparousRenderer<T extends OviparousAnimal, M extends EntityModel<
 {
     public OviparousRenderer(EntityRendererProvider.Context ctx, M model, String name)
     {
-        super(ctx, model, name);
+        this(ctx, model, name, null);
     }
 
     public OviparousRenderer(EntityRendererProvider.Context ctx, M model, String name, @Nullable String maleName)
     {
-        super(ctx, model, name, maleName);
+        this(ctx, model, name, maleName, null);
+    }
+
+    public OviparousRenderer(EntityRendererProvider.Context ctx, M model, String name, @Nullable String maleName, @Nullable String babyName)
+    {
+        super(ctx, model, name, maleName, babyName);
     }
 
     @Override

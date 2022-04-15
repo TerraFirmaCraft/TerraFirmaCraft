@@ -312,33 +312,33 @@ public class ServerConfig
         pigGestationDays = builder.apply("pigGestationDays").comment("Length of pregnancy in days").defineInRange("pigGestationDays", 19, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("cow");
-        cowAdulthoodDays = builder.apply("cowAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("cowAdulthoodDays", 80, 0, Integer.MAX_VALUE);
-        cowChildCount = builder.apply("cowChildCount").comment("Max number of children born").defineInRange("cowChildCount", 4, 0, 100);
+        cowAdulthoodDays = builder.apply("cowAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("cowAdulthoodDays", 192, 0, Integer.MAX_VALUE);
+        cowChildCount = builder.apply("cowChildCount").comment("Max number of children born").defineInRange("cowChildCount", 2, 0, 100);
         cowEatsRottenFood = builder.apply("cowEatsRottenFood").comment("Does the animal eat rotten food?").define("cowEatsRottenFood", true);
         cowFamiliarityCap = builder.apply("cowFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("cowFamiliarityCap", 0.35, 0, 1);
-        cowUses = builder.apply("cowUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("cowUses", 40, 0, Integer.MAX_VALUE);
-        cowGestationDays = builder.apply("cowGestationDays").comment("Length of pregnancy in days").defineInRange("cowGestationDays", 19, 0, Integer.MAX_VALUE);
+        cowUses = builder.apply("cowUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("cowUses", 128, 0, Integer.MAX_VALUE);
+        cowGestationDays = builder.apply("cowGestationDays").comment("Length of pregnancy in days").defineInRange("cowGestationDays", 58, 0, Integer.MAX_VALUE);
         cowMilkTicks = builder.apply("cowMilkTicks").comment("Ticks until milk is ready").defineInRange("cowMilkTicks", 24000, 0, Integer.MAX_VALUE);
         cowMinMilkFamiliarity = builder.apply("cowMinMilkFamiliarity").comment("Minimum familiarity [0-1] needed to milk. Set above 1 to disable milking.").defineInRange("cowMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
 
         innerBuilder.pop().push("alpaca");
-        alpacaAdulthoodDays = builder.apply("alpacaAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("alpacaAdulthoodDays", 80, 0, Integer.MAX_VALUE);
-        alpacaChildCount = builder.apply("alpacaChildCount").comment("Max number of children born").defineInRange("alpacaChildCount", 5, 0, 100);
-        alpacaEatsRottenFood = builder.apply("alpacaEatsRottenFood").comment("Does the animal eat rotten food?").define("alpacaEatsRottenFood", true);
+        alpacaAdulthoodDays = builder.apply("alpacaAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("alpacaAdulthoodDays", 98, 0, Integer.MAX_VALUE);
+        alpacaChildCount = builder.apply("alpacaChildCount").comment("Max number of children born").defineInRange("alpacaChildCount", 2, 0, 100);
+        alpacaEatsRottenFood = builder.apply("alpacaEatsRottenFood").comment("Does the animal eat rotten food?").define("alpacaEatsRottenFood", false);
         alpacaFamiliarityCap = builder.apply("alpacaFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("alpacaFamiliarityCap", 0.35, 0, 1);
         alpacaUses = builder.apply("alpacaUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("alpacaUses", 128, 0, Integer.MAX_VALUE);
-        alpacaGestationDays = builder.apply("alpacaGestationDays").comment("Length of pregnancy in days").defineInRange("alpacaGestationDays", 19, 0, Integer.MAX_VALUE);
-        alpacaWoolTicks = builder.apply("alpacaWoolTicks").comment("Ticks until wool is ready").defineInRange("alpacaWoolTicks", 24000, 0, Integer.MAX_VALUE);
+        alpacaGestationDays = builder.apply("alpacaGestationDays").comment("Length of pregnancy in days").defineInRange("alpacaGestationDays", 36, 0, Integer.MAX_VALUE);
+        alpacaWoolTicks = builder.apply("alpacaWoolTicks").comment("Ticks until wool is ready").defineInRange("alpacaWoolTicks", 120000, 0, Integer.MAX_VALUE);
         alpacaMinWoolFamiliarity = builder.apply("alpacaMinWoolFamiliarity").comment("Minimum familiarity [0-1] needed to grow wool. Set above 1 to disable shearing.").defineInRange("alpacaMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
 
         innerBuilder.pop().push("chicken");
-        chickenAdulthoodDays = builder.apply("chickenAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("chickenAdulthoodDays", 20, 0, Integer.MAX_VALUE);
+        chickenAdulthoodDays = builder.apply("chickenAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("chickenAdulthoodDays", 24, 0, Integer.MAX_VALUE);
         chickenEatsRottenFood = builder.apply("chickenEatsRottenFood").comment("Does the animal eat rotten food?").define("chickenEatsRottenFood", true);
         chickenFamiliarityCap = builder.apply("chickenFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("chickenFamiliarityCap", 0.35, 0, 1);
         chickenUses = builder.apply("chickenUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("chickenUses", 128, 0, Integer.MAX_VALUE);
-        chickenEggTicks = builder.apply("chickenEggTicks").comment("Ticks until an egg is ready for laying").defineInRange("chickenEggTicks", 24000, 0, Integer.MAX_VALUE);
+        chickenEggTicks = builder.apply("chickenEggTicks").comment("Ticks until an egg is ready for laying").defineInRange("chickenEggTicks", 30000, 0, Integer.MAX_VALUE);
         chickenMinEggFamiliarity = builder.apply("chickenMinEggFamiliarity").comment("Minimum familiarity [0-1] needed to lay eggs. Set above 1 to disable egg laying.").defineInRange("chickenMinEggFamiliarity", 0.15d, 0, Float.MAX_VALUE);
-        chickenHatchDays = builder.apply("chickenHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("chickenHatchDays", 6, 0, Integer.MAX_VALUE);
+        chickenHatchDays = builder.apply("chickenHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("chickenHatchDays", 8, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop();
 

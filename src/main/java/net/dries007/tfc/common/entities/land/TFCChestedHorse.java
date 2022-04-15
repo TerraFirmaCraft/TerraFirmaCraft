@@ -410,7 +410,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     }
 
     @Override
-    protected void playStepSound(BlockPos pPos, BlockState pBlock)
+    protected void playStepSound(BlockPos pos, BlockState block)
     {
         this.playSound(step.get(), 0.15F, 1.0F);
     }

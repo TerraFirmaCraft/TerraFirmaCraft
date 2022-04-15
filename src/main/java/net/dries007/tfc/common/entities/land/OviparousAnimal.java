@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
@@ -19,19 +20,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.ai.FindNestGoal;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class OviparousAnimal extends ProducingAnimal
 {
     public float flapping = 1f;
-    private final ForgeConfigSpec.IntValue hatchDays;
+    @Nullable
+    public Entity willSitOn = null;
     public float oFlap;
     public float flap;
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
+    private final ForgeConfigSpec.IntValue hatchDays;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity, ForgeConfigSpec.IntValue hatchDays)
     {
@@ -72,6 +78,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
         oFlapSpeed = flapSpeed;
         flapSpeed += (onGround ? -1.0F : 4.0F) * 0.3F;
         flapSpeed = Mth.clamp(flapSpeed, 0.0F, 1.0F);
+        if (isPassenger()) flapSpeed = 0F;
         if (!onGround && flapping < 1.0F)
         {
             flapping = 1.0F;

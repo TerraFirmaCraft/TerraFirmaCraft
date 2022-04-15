@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.entities;
 
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -17,6 +19,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.land.OviparousAnimal;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,8 +27,7 @@ public class Seat extends Entity
 {
     public static void sit(Level level, BlockPos pos, Entity sitter)
     {
-        BlockState state = level.getBlockState(pos);
-        if (!level.isClientSide && (state.isAir() || Helpers.isBlock(state, TFCTags.Blocks.PLANTS)))
+        if (!level.isClientSide)
         {
             Seat seat = TFCEntities.SEAT.get().create(level);
             assert seat != null;
@@ -38,7 +40,16 @@ public class Seat extends Entity
     @Nullable
     public static Entity getSittingEntity(Level level, BlockPos pos)
     {
-        return level.getEntitiesOfClass(Seat.class, new AABB(pos)).stream().map(s -> s.getPassengers().get(0)).findFirst().orElse(null);
+        List<Seat> entities = level.getEntitiesOfClass(Seat.class, new AABB(pos));
+        if (!entities.isEmpty())
+        {
+            List<Entity> passengers = entities.get(0).getPassengers();
+            if (!passengers.isEmpty())
+            {
+                return passengers.get(0);
+            }
+        }
+        return null;
     }
 
     public Seat(EntityType<?> type, Level level)
@@ -60,7 +71,7 @@ public class Seat extends Entity
     @Override
     public double getPassengersRidingOffset()
     {
-        return 0;
+        return -0.25;
     }
 
     @Override

@@ -4677,6 +4677,7 @@
   "tfc.block_entity.pile": "Pile",
   "tfc.block_entity.farmland": "Farmland",
   "tfc.block_entity.tick_counter": "Tick Counter",
+  "tfc.block_entity.nest_box": "Nest Box",
   "block.tfc.ore.normal_native_copper.granite.prospected": "Native Copper",
   "block.tfc.ore.poor_native_copper.granite.prospected": "Native Copper",
   "block.tfc.ore.rich_native_copper.granite.prospected": "Native Copper",

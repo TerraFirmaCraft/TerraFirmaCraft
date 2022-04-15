@@ -18,21 +18,44 @@ import net.dries007.tfc.util.Helpers;
 public class FindNestGoal extends MoveToBlockGoal
 {
     private final OviparousAnimal bird;
+    private boolean reachedTarget;
 
     public FindNestGoal(OviparousAnimal mob)
     {
         super(mob, 2.0f, 16);
         this.bird = mob;
+        this.reachedTarget = false;
     }
 
     @Override
     public void tick()
     {
-        super.tick();
-        if (isReachedTarget())
+        BlockPos target = getMoveToTarget();
+        if (getMoveToTarget() == mob.blockPosition())
+        {
+            reachedTarget = false;
+            ++tryTicks;
+            if (shouldRecalculatePath())
+            {
+                mob.getNavigation().moveTo(target.getX() + 0.5D, target.getY(), target.getZ() + 0.5D, speedModifier);
+            }
+        }
+        else
+        {
+            reachedTarget = true;
+            --tryTicks;
+        }
+
+        if (isReachedTarget() && isValidTarget(bird.level, bird.blockPosition()))
         {
             Seat.sit(bird.level, bird.blockPosition(), bird);
         }
+    }
+
+    @Override
+    public boolean isReachedTarget()
+    {
+        return reachedTarget;
     }
 
     @Override

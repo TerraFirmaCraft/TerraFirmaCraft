@@ -124,6 +124,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
             MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
             MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+            MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
             MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
             MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
@@ -280,6 +281,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
         event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), FishingHookRenderer::new);
         event.registerEntityRenderer(TFCEntities.GLOW_ARROW.get(), GlowArrowRenderer::new);
+        event.registerEntityRenderer(TFCEntities.SEAT.get(), NoopRenderer::new);
         for (Wood wood : Wood.VALUES)
         {
             event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));
@@ -304,7 +306,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
         event.registerEntityRenderer(TFCEntities.COW.get(), ctx -> new AnimalRenderer<>(ctx, new TFCCowModel(RenderHelpers.bakeSimple(ctx, "cow")), "cow"));
         event.registerEntityRenderer(TFCEntities.ALPACA.get(), ctx -> new AnimalRenderer<>(ctx, new AlpacaModel(RenderHelpers.bakeSimple(ctx, "alpaca")), "alpaca"));
-        event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new OviparousRenderer<>(ctx, new ChickenModel<>(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken", "rooster"));
+        event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new OviparousRenderer<>(ctx, new ChickenModel<>(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken", "rooster", "chick"));
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());

@@ -71,6 +71,12 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 4
+      },
+      {
+        "type": "tfc:chicken",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
       }
     ]
   },
