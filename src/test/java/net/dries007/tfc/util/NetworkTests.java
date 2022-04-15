@@ -19,10 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import io.netty.buffer.Unpooled;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
-import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
-import net.dries007.tfc.common.recipes.ingredients.NotIngredient;
-import net.dries007.tfc.common.recipes.ingredients.NotRottenIngredient;
+import net.dries007.tfc.common.recipes.ingredients.*;
 import net.dries007.tfc.common.recipes.outputs.*;
 import org.junit.jupiter.api.Test;
 
@@ -61,6 +58,22 @@ public class NetworkTests extends TestHelper
     public void testNotRottenIngredient()
     {
         final Ingredient before = NotRottenIngredient.of(Ingredient.of(Items.ACACIA_BUTTON));
+        final Ingredient after = encodeAndDecode(before, Ingredient::toNetwork, Ingredient::fromNetwork);
+        assertIngredientEquals(before, after);
+    }
+
+    @Test
+    public void testHeatableIngredient()
+    {
+        final Ingredient before = HeatableIngredient.of(Ingredient.of(Items.ACACIA_BOAT), 30, 50);
+        final Ingredient after = encodeAndDecode(before, Ingredient::toNetwork, Ingredient::fromNetwork);
+        assertIngredientEquals(before, after);
+    }
+
+    @Test
+    public void testHeatableNoDelegateIngredient()
+    {
+        final Ingredient before = HeatableIngredient.of(30, 50);
         final Ingredient after = encodeAndDecode(before, Ingredient::toNetwork, Ingredient::fromNetwork);
         assertIngredientEquals(before, after);
     }

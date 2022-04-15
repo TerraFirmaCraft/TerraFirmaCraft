@@ -35,7 +35,7 @@ public class Calendar implements ICalendar
     {
         daysInMonth = TFCConfig.COMMON.defaultMonthLength.get();
         playerTicks = 0;
-        calendarTicks = (5L * daysInMonth * ICalendar.TICKS_IN_DAY) + (6 * ICalendar.TICKS_IN_HOUR);
+        calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.TICKS_IN_DAY) + (6L * ICalendar.TICKS_IN_HOUR);
         doDaylightCycle = true;
         arePlayersLoggedOn = false;
     }

@@ -11,6 +11,11 @@
       "tfc:palm/6",
       "tfc:palm/7"
     ],
-    "radius": 1
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 5,
+      "allow_submerged": false
+    }
   }
 }
