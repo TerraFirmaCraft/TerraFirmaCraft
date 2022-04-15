@@ -107,26 +107,6 @@ public final class Helpers
     }
 
     /**
-     * Filter method for TFC namespaced resources
-     */
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamOurs(IForgeRegistry<T> registry)
-    {
-        return streamOurs(registry, MOD_ID);
-    }
-
-    /**
-     * Filter method for TFC namespaced resources
-     */
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamOurs(IForgeRegistry<T> registry, String modID)
-    {
-        return registry.getValues().stream()
-            .filter(e -> {
-                assert e.getRegistryName() != null;
-                return e.getRegistryName().getNamespace().equals(modID);
-            });
-    }
-
-    /**
      * Avoids IDE warnings by returning null for fields that are injected in by forge.
      *
      * @return Not null!

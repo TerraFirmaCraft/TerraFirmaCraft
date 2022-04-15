@@ -70,6 +70,7 @@ import net.minecraftforge.network.PacketDistributor;
 import net.dries007.tfc.client.ClientForgeEventHandler;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
@@ -523,6 +524,11 @@ public final class ForgeEventHandler
 
             Climate.onWorldLoad(level);
             ItemSizeManager.applyItemStackSizeOverrides();
+
+            if (level.dimension() == Level.OVERWORLD)
+            {
+                SelfTests.runServerSelfTests();
+            }
         }
     }
 
