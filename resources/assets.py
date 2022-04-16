@@ -50,10 +50,12 @@ def generate(rm: ResourceManager):
                 block = rm.block(('rock', 'pressure_plate', rock))
                 block.make_pressure_plate(pressure_plate_suffix='', texture='tfc:block/rock/raw/%s' % rock)
                 block.with_lang(lang('%s pressure plate', rock))
+                block.with_block_loot('tfc:rock/oressure_plate/%s' % rock)
             elif block_type == 'button':
                 block = rm.block(('rock', 'button', rock))
                 block.make_button(button_suffix='', texture='tfc:block/rock/raw/%s' % rock)
                 block.with_lang(lang('%s button', rock))
+                block.with_block_loot('tfc:rock/button/%s' % rock)
             else:
                 block = rm.blockstate(('rock', block_type, rock))
                 if block_type == 'hardened':
@@ -173,7 +175,7 @@ def generate(rm: ResourceManager):
         cut = 'tfc:block/sandstone/cut/%s' % sand  # vanilla sandstone side
 
         for variant in ('raw', 'cut', 'smooth'):
-            block = rm.blockstate(('%s_sandstone' % variant, sand))
+            block = rm.blockstate(('%s_sandstone' % variant, sand)).with_block_loot('tfc:%s_sandstone/%s' % (variant, sand))
             if variant == 'raw':
                 block.with_block_model(raw)
                 block.make_slab(bottom_texture=raw, side_texture=raw, top_texture=raw)
@@ -196,7 +198,7 @@ def generate(rm: ResourceManager):
             rm.block_tag('minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, sand))
 
             for extra in ('', '_slab', '_stairs', '_wall'):
-                rm.block(('%s_sandstone' % variant, sand + extra)).with_lang(lang('%s %s sandstone' + extra, variant, sand))
+                rm.block(('%s_sandstone' % variant, sand + extra)).with_lang(lang('%s %s sandstone' + extra, variant, sand)).with_block_loot('tfc:%s_sandstone/%s%s' % (variant, sand, extra))
 
     # Groundcover
     for misc in MISC_GROUNDCOVER:
@@ -224,8 +226,8 @@ def generate(rm: ResourceManager):
         bricks.make_slab().make_stairs().make_wall()
         polished.make_slab().make_stairs().make_wall()
         for extra in ('slab', 'stairs', 'wall'):
-            rm.block(('alabaster', 'stained', color + '_alabaster_bricks_' + extra)).with_lang(lang('%s Alabaster Bricks %s', color, extra))
-            rm.block(('alabaster', 'stained', color + '_polished_alabaster_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra))
+            rm.block(('alabaster', 'stained', color + '_alabaster_bricks_' + extra)).with_lang(lang('%s Alabaster Bricks %s', color, extra)).with_block_loot('tfc:alabaster/stained/%s_alabaster_bricks_%s' % (color, extra))
+            rm.block(('alabaster', 'stained', color + '_polished_alabaster_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra)).with_block_loot('tfc:alabaster/stained/%s_polished_alabaster_%s' % (color, extra))
 
     rm.item_model('torch', 'minecraft:block/torch')
     rm.item_model('dead_torch', 'tfc:block/torch_off')
@@ -245,23 +247,11 @@ def generate(rm: ResourceManager):
         }, parent='tfc:block/cube_column_overlay')
     for part in ('top', 'bottom', 'left', 'right'):
         rm.block_model('tfc:wattle/%s' % part, {'side': 'tfc:block/wattle/%s' % part, 'end': 'tfc:block/wattle/end'}, parent='minecraft:block/cube_column')
-    rm.blockstate_multipart('wattle',
-        ({'type': 'empty'}, {'model': 'tfc:block/wattle/empty_wattle'}),
-        ({'type': 'woven'}, {'model': 'tfc:block/wattle/woven_wattle'}),
-        ({'type': 'filled'}, {'model': 'tfc:block/wattle/filled_wattle'}),
-        ({'top': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_top'}),
-        ({'bottom': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_bottom'}),
-        ({'left': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_left'}),
-        ({'right': True, 'type': 'empty'}, {'model': 'tfc:block/wattle/empty_right'}),
-        ({'top': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/top'}),
-        ({'bottom': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/bottom'}),
-        ({'left': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/left'}),
-        ({'right': True, 'type': 'woven'}, {'model': 'tfc:block/wattle/right'}),
-        ({'top': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/top'}),
-        ({'bottom': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/bottom'}),
-        ({'left': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/left'}),
-        ({'right': True, 'type': 'filled'}, {'model': 'tfc:block/wattle/right'})
-    ).with_lang(lang('wattle'))
+    stages = ['empty', 'woven', 'filled']
+    wattle_variants = []
+    wattle_variants += [({'type': stage}, {'model': 'tfc:block/wattle/%s_wattle' % stage}) for stage in stages]
+    wattle_variants += [({side: True, 'type': stage}, {'model': 'tfc:block/wattle/%s%s' % ('empty_' if stage == 'empty' else '', side)}) for (stage, side) in itertools.product(stages, ('top', 'bottom', 'left', 'right'))]
+    rm.blockstate_multipart('wattle', *wattle_variants).with_lang(lang('wattle'))
     rm.block_loot('wattle',
       {'name': 'tfc:wattle'},
       {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'type': 'filled'})]},
@@ -398,17 +388,11 @@ def generate(rm: ResourceManager):
         ]
 
     def grass_models(name: utils.ResourceIdentifier, texture: str):
-        rm.block_model((name, 'top'), {'texture': texture}, parent='tfc:block/grass_top')
-        rm.block_model((name, 'snowy_top'), {'texture': texture}, parent='tfc:block/grass_snowy_top')
-        rm.block_model((name, 'side'), {'texture': texture}, parent='tfc:block/grass_side')
-        rm.block_model((name, 'snowy_side'), {'texture': texture}, parent='tfc:block/grass_snowy_side')
-        rm.block_model((name, 'bottom'), {'texture': texture}, parent='tfc:block/grass_bottom')
+        for variant in ('top', 'snowy_top', 'side', 'snowy_side', 'bottom'):
+            rm.block_model((name, variant), {'texture': texture}, parent='tfc:block/grass_%s' % variant)
 
     # Peat Grass
-    block = rm.blockstate_multipart('peat_grass', *grass_multipart('tfc:block/peat_grass'))
-    block.with_block_loot('tfc:peat')
-    block.with_tag('grass')
-    block.with_lang(lang('Peat Grass'))
+    rm.blockstate_multipart('peat_grass', *grass_multipart('tfc:block/peat_grass')).with_block_loot('tfc:peat').with_tag('grass').with_lang(lang('Peat Grass'))
     grass_models('peat_grass', 'tfc:block/peat')
 
     # Grass Blocks
@@ -537,7 +521,7 @@ def generate(rm: ResourceManager):
                     }).with_lang(lang('%s chain', metal)).with_block_loot('tfc:metal/chain/%s' % metal)
                     rm.item_model(('metal', 'chain', metal), 'tfc:item/metal/chain/%s' % metal)
                 elif metal_block == 'trapdoor':
-                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture=metal_dir % (metal_block, metal)).with_lang(lang('%s trapdoor', metal))
+                    rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture=metal_dir % (metal_block, metal)).with_lang(lang('%s trapdoor', metal)).with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
                 else:
                     block = rm.blockstate(('metal', '%s' % metal_block, metal))
                     block.with_block_model({
@@ -943,7 +927,10 @@ def generate(rm: ResourceManager):
                 'lifecycle=fruiting': {'model': 'tfc:block/plant/%s_fruiting_leaves' % fruit},
                 'lifecycle=dormant': {'model': 'tfc:block/plant/%s_dry_leaves' % fruit},
                 'lifecycle=healthy': {'model': 'tfc:block/plant/%s_leaves' % fruit}
-            }).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves').with_lang(lang('%s Leaves', fruit))
+            }).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves').with_lang(lang('%s Leaves', fruit)).with_block_loot({
+                'name': 'tfc:plant/%s_leaves' % fruit,
+                'conditions': [loot_tables.block_state_property('tfc:plant/%s_leaves[lifecycle=fruiting]' % fruit)]
+            })
             for life in ('', '_fruiting', '_flowering', '_dry'):
                 rm.block_model('tfc:plant/%s%s_leaves' % (fruit, life), parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s%s_leaves' % (fruit, life)})
 
@@ -1086,25 +1073,18 @@ def generate(rm: ResourceManager):
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood
-        rm.blockstate(rack_namespace, model='tfc:block/wood/planks/%s_tool_rack' % wood, variants=four_rotations('tfc:block/wood/planks/%s_tool_rack' % wood, (270, 180, None, 90)))
-        rm.block_model(rack_namespace, textures={'texture': 'tfc:block/wood/planks/%s' % wood, 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/tool_rack')
-        rm.item_model(rack_namespace, parent='tfc:block/wood/planks/%s_tool_rack' % wood, no_textures=True)
-        rm.lang('block.tfc.wood.planks.%s_tool_rack' % wood, lang('%s Tool Rack', wood))
-        rm.block_loot(rack_namespace, rack_namespace)
+        block = rm.blockstate(rack_namespace, model='tfc:block/wood/planks/%s_tool_rack' % wood, variants=four_rotations('tfc:block/wood/planks/%s_tool_rack' % wood, (270, 180, None, 90)))
+        block.with_block_model(textures={'texture': 'tfc:block/wood/planks/%s' % wood, 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/tool_rack')
+        block.with_lang(lang('%s Tool Rack', wood)).with_block_loot(rack_namespace).with_item_model()
 
         # Loom
         block = rm.blockstate('tfc:wood/planks/%s_loom' % wood, model='tfc:block/wood/planks/%s_loom' % wood, variants=four_rotations('tfc:block/wood/planks/%s_loom' % wood, (270, 180, None, 90)))
         block.with_block_model(textures={'texture': 'tfc:block/wood/planks/%s' % wood, 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/loom')
-        block.with_item_model()
-        block.with_lang(lang('%s Loom', wood))
-        block.with_block_loot('tfc:wood/planks/%s_loom' % wood)
-        block.with_tag('minecraft:mineable/axe')
+        block.with_item_model().with_lang(lang('%s loom', wood)).with_block_loot('tfc:wood/planks/%s_loom' % wood).with_tag('minecraft:mineable/axe')
 
         # Bookshelf
-        block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood)
+        block = rm.blockstate('tfc:wood/planks/%s_bookshelf' % wood).with_item_model().with_lang(lang('%s bookshelf', wood))
         block.with_block_model({'end': 'tfc:block/wood/planks/%s' % wood, 'side': 'tfc:block/wood/planks/%s_bookshelf' % wood}, parent='minecraft:block/bookshelf')
-        block.with_item_model()
-        block.with_lang(lang('%s Bookshelf', wood))
 
         # Workbench
         rm.blockstate(('wood', 'planks', '%s_workbench' % wood)).with_block_model(parent='minecraft:block/cube', textures={
@@ -1115,7 +1095,7 @@ def generate(rm: ResourceManager):
             'west': 'tfc:block/wood/planks/%s_workbench_front' % wood,
             'up': 'tfc:block/wood/planks/%s_workbench_top' % wood,
             'down': 'tfc:block/wood/planks/%s' % wood
-        }).with_item_model().with_lang(lang('%s Workbench', wood)).with_tag('tfc:workbench')
+        }).with_item_model().with_lang(lang('%s Workbench', wood)).with_tag('tfc:workbench').with_block_loot('tfc:wood/planks/%s_workbench' % wood)
 
         # Doors
         rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
@@ -1272,10 +1252,7 @@ def generate(rm: ResourceManager):
         corals(rm, color, False)
         corals(rm, color, True)
 
-    block = rm.blockstate("bellows",model='tfc:block/bellows', variants=four_rotations('tfc:block/bellows', (270, 180, None, 90)))
-    block.with_lang(lang('Bellows'))
-    block.with_block_loot('tfc:bellows')
-    block.with_tag('minecraft:mineable/axe')
+    rm.blockstate('bellows', model='tfc:block/bellows', variants=four_rotations('tfc:block/bellows', (270, 180, None, 90))).with_lang(lang('Bellows')).with_block_loot('tfc:bellows').with_tag('minecraft:mineable/axe')
 
     for be in BLOCK_ENTITIES:
         rm.lang('tfc.block_entity.%s' % be, lang(be))
@@ -1309,12 +1286,12 @@ def corals(rm: ResourceManager, color: str, dead: bool):
     left = 'dead_' + color if dead else color
     right = color + '_dead' if dead else color
 
-    rm.blockstate('coral/%s_coral' % right, 'minecraft:block/%s_coral' % left)
-    rm.blockstate('coral/%s_coral_fan' % right, 'minecraft:block/%s_coral_fan' % left)
+    rm.blockstate('coral/%s_coral' % right, 'minecraft:block/%s_coral' % left).with_block_loot('tfc:coral/%s_coral' % right)
+    rm.blockstate('coral/%s_coral_fan' % right, 'minecraft:block/%s_coral_fan' % left).with_block_loot('tfc:coral/%s_coral_fan' % right)
     rm.blockstate('coral/%s_coral_wall_fan' % right, variants=dict(
         ('facing=%s' % d, {'model': 'minecraft:block/%s_coral_wall_fan' % left, 'y': r})
         for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
-    ))
+    )).with_block_loot('tfc:coral/%s_coral_fan' % right)
 
     for variant in ('coral', 'coral_fan', 'coral_wall_fan'):
         rm.item_model('coral/%s_%s' % (right, variant), 'minecraft:block/%s_%s' % (left, variant))
