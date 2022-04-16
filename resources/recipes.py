@@ -543,14 +543,6 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 minecraft:milk', output_fluid='10 tfc:milk_vinegar')
     barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soup_bowls', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
 
-    for first, second, output in COLOR_COMBOS:
-        first_fluid = '1 tfc:%s_dye' % first
-        second_fluid = '1 tfc:%s_dye' % second
-        barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (first, second), {'ingredient': fluid_item_ingredient(first_fluid)}, second_fluid, output_fluid='2 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (second, first), {'ingredient': fluid_item_ingredient(second_fluid)}, first_fluid, output_fluid='2 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (first, second), 'minecraft:%s_dye' % first, '1000 tfc:%s_dye' % second, output_fluid='2000 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (second, first), 'minecraft:%s_dye' % second, '1000 tfc:%s_dye' % first, output_fluid='2000 tfc:%s_dye' % output)
-
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
     loom_recipe(rm, 'wool_cloth', 'tfc:wool_yarn', 16, 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')
