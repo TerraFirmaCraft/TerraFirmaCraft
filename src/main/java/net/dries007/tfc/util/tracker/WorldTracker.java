@@ -117,7 +117,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
                     {
                         // Check the current position for collapsing
                         BlockState stateAt = level.getBlockState(posAt);
-                        if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallThrough(level, posAt.below()) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallInDirection(level, posAt, Direction.DOWN) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                         {
                             if (CollapseRecipe.collapseBlock(level, posAt, stateAt))
                             {

@@ -112,7 +112,7 @@ public final class TFCBlocks
 
     public static final RegistryObject<SnowPileBlock> SNOW_PILE = register("snow_pile", () -> new SnowPileBlock(ExtendedProperties.of(Properties.copy(Blocks.SNOW)).blockEntity(TFCBlockEntities.PILE)), EARTH);
     public static final RegistryObject<IcePileBlock> ICE_PILE = register("ice_pile", () -> new IcePileBlock(ExtendedProperties.of(Properties.copy(Blocks.ICE)).blockEntity(TFCBlockEntities.PILE)), EARTH);
-    public static final RegistryObject<ThinSpikeBlock> ICICLE = register("icicle", () -> new ThinSpikeBlock(Properties.of(Material.ICE).noDrops().strength(0.4f).sound(SoundType.GLASS).noOcclusion()), EARTH);
+    public static final RegistryObject<ThinSpikeBlock> ICICLE = register("icicle", () -> new IcicleBlock(Properties.of(Material.ICE).noDrops().strength(0.4f).sound(SoundType.GLASS).noOcclusion().randomTicks()), EARTH);
 
     public static final RegistryObject<ThinSpikeBlock> CALCITE = register("calcite", () -> new ThinSpikeBlock(Properties.of(Material.GLASS).noDrops().strength(0.2f).sound(TFCSounds.THIN)), EARTH);
 
@@ -283,6 +283,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> BLOOMERY = register("bloomery", () -> new BloomeryBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(3).sound(SoundType.METAL).lightLevel(litBlockEmission(15))).blockEntity(TFCBlockEntities.BLOOMERY).serverTicks(BloomeryBlockEntity::serverTick)), MISC);
     public static final RegistryObject<Block> BLOOM = register("bloom", () -> new BloomBlock(ExtendedProperties.of(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.0F, 6.0F).noOcclusion()).blockEntity(TFCBlockEntities.BLOOM)), MISC);
     public static final RegistryObject<Block> MOLTEN = register("molten", () -> new MoltenBlock(ExtendedProperties.of(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(-1.0F, 3600000.0F).noOcclusion().lightLevel(litBlockEmission(15)))), MISC);
+    public static final RegistryObject<Block> NEST_BOX = register("nest_box", () -> new NestBoxBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(3f).noOcclusion().sound(TFCSounds.THATCH)).blockEntity(TFCBlockEntities.NEST_BOX).serverTicks(NestBoxBlockEntity::serverTick)), DECORATIONS);
 
     public static final RegistryObject<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noDrops().noOcclusion().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()), MISC);
 

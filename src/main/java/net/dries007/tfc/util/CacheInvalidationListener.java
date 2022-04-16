@@ -6,8 +6,10 @@
 
 package net.dries007.tfc.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.common.commands.LocateVeinCommand;
@@ -19,6 +21,18 @@ import net.dries007.tfc.common.recipes.*;
 public enum CacheInvalidationListener implements SyncReloadListener
 {
     INSTANCE;
+
+    private final List<Runnable> actions;
+
+    CacheInvalidationListener()
+    {
+        actions = new ArrayList<>();
+    }
+
+    public void doOnInvalidate(Runnable action)
+    {
+        this.actions.add(action);
+    }
 
     @Override
     public void reloadSync()
@@ -32,18 +46,7 @@ public enum CacheInvalidationListener implements SyncReloadListener
     
     public void invalidateServerCaches(MinecraftServer server)
     {
-        final RecipeManager manager = server.getRecipeManager();
-
-        CollapseRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.COLLAPSE.get()));
-        LandslideRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.LANDSLIDE.get()));
-        HeatingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.HEATING.get()));
-        QuernRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.QUERN.get()));
-        ScrapingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.SCRAPING.get()));
-        CastingRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.CASTING.get()));
-        LoomRecipe.CACHE.reload(manager.getAllRecipesFor(TFCRecipeTypes.LOOM.get()));
-
         LocateVeinCommand.clearCache();
-        InteractionManager.reloadCache();
-
+        actions.forEach(Runnable::run);
     }
 }

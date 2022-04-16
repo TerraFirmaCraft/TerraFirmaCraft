@@ -37,6 +37,8 @@ public interface ChunkGeneratorExtension
         return (BiomeSourceExtension) self().getBiomeSource();
     }
 
+    Aquifer getOrCreateAquifer(ChunkAccess chunk);
+
     long getClimateSeed();
 
     default ChunkGenerator self()

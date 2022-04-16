@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:nest_box",
     "tfc:wood/planks/acacia_loom",
     "tfc:wood/barrel/acacia",
     "tfc:wood/planks/ash_loom",

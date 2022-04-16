@@ -12,8 +12,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +29,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
@@ -72,43 +69,6 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     {
         VoxelShape supportShape = state.getBlockSupportShape(level, pos).getFaceShape(Direction.UP);
         return !Shapes.joinIsNotEmpty(supportShape, SHAPES[slot], BooleanOp.ONLY_SECOND);
-    }
-
-    private static void convertPlacedItemToPitKiln(Level level, BlockPos pos, ItemStack strawStack)
-    {
-        level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(placedItem -> {
-            // Remove inventory items
-            // This happens here to stop the block dropping its items in onBreakBlock()
-            ItemStack[] inventory = new ItemStack[4];
-            placedItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
-                for (int i = 0; i < 4; i++)
-                {
-                    inventory[i] = cap.extractItem(i, 64, false);
-                }
-            });
-
-            // Replace the block
-            level.setBlockAndUpdate(pos, TFCBlocks.PIT_KILN.get().defaultBlockState());
-            placedItem.setRemoved();
-            // Play placement sound
-            level.playSound(null, pos, SoundEvents.GRASS_PLACE, SoundSource.BLOCKS, 0.5f, 1.0f);
-            // Copy TE data
-            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
-                // Copy inventory
-                pitKiln.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).ifPresent(cap -> {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        if (inventory[i] != null && !inventory[i].isEmpty())
-                        {
-                            cap.insertItem(i, inventory[i], false);
-                        }
-                    }
-                });
-                // Copy misc data
-                pitKiln.isHoldingLargeItem = placedItem.isHoldingLargeItem;
-                pitKiln.addStraw(strawStack, 0);
-            });
-        });
     }
 
     private static Map<BlockState, VoxelShape> makeShapes(ImmutableList<BlockState> possibleStates)
@@ -166,7 +126,7 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
                 ItemStack held = player.getItemInHand(hand);
                 if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4 && PitKilnBlockEntity.isValid(level, pos))
                 {
-                    convertPlacedItemToPitKiln(level, pos, held.split(4));
+                    PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(4));
                     return InteractionResult.SUCCESS;
                 }
                 return placedItem.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;

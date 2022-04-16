@@ -368,37 +368,37 @@ def generate(rm: ResourceManager):
     })
     rm.tag('forest_trees', 'worldgen/configured_feature', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys()])
 
-    configured_placed_feature(rm, ('tree', 'acacia'), 'tfc:random_tree', random_config('acacia', 35))
-    configured_placed_feature(rm, ('tree', 'acacia_large'), 'tfc:random_tree', random_config('acacia', 6, 2, True))
-    configured_placed_feature(rm, ('tree', 'ash'), 'tfc:overlay_tree', overlay_config('ash', 3, 5))
-    configured_placed_feature(rm, ('tree', 'ash_large'), 'tfc:random_tree', random_config('ash', 5, 2, True))
-    configured_placed_feature(rm, ('tree', 'aspen'), 'tfc:random_tree', random_config('aspen', 16, trunk=[3, 5, 1]))
-    configured_placed_feature(rm, ('tree', 'birch'), 'tfc:random_tree', random_config('birch', 16, trunk=[2, 3, 1]))
-    configured_placed_feature(rm, ('tree', 'blackwood'), 'tfc:random_tree', random_config('blackwood', 10))
-    configured_placed_feature(rm, ('tree', 'blackwood_large'), 'tfc:random_tree', random_config('blackwood', 10, 1, True))
-    configured_placed_feature(rm, ('tree', 'chestnut'), 'tfc:overlay_tree', overlay_config('chestnut', 2, 4))
-    configured_placed_feature(rm, ('tree', 'douglas_fir'), 'tfc:random_tree', random_config('douglas_fir', 9))
-    configured_placed_feature(rm, ('tree', 'douglas_fir_large'), 'tfc:random_tree', random_config('douglas_fir', 5, 2, True))
-    configured_placed_feature(rm, ('tree', 'hickory'), 'tfc:random_tree', random_config('hickory', 9))
-    configured_placed_feature(rm, ('tree', 'hickory_large'), 'tfc:random_tree', random_config('hickory', 5, 2, True))
-    configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17))
-    configured_placed_feature(rm, ('tree', 'maple'), 'tfc:overlay_tree', overlay_config('maple', 2, 4))
-    configured_placed_feature(rm, ('tree', 'maple_large'), 'tfc:random_tree', random_config('maple', 5, 2, True))
-    configured_placed_feature(rm, ('tree', 'oak'), 'tfc:overlay_tree', overlay_config('oak', 3, 5))
-    configured_placed_feature(rm, ('tree', 'palm'), 'tfc:random_tree', random_config('palm', 7))
-    configured_placed_feature(rm, ('tree', 'pine'), 'tfc:random_tree', random_config('pine', 9))
-    configured_placed_feature(rm, ('tree', 'pine_large'), 'tfc:random_tree', random_config('pine', 5, 2, True))
-    configured_placed_feature(rm, ('tree', 'rosewood'), 'tfc:overlay_tree', overlay_config('rosewood', 1, 3))
-    configured_placed_feature(rm, ('tree', 'sequoia'), 'tfc:random_tree', random_config('sequoia', 7))
-    configured_placed_feature(rm, ('tree', 'sequoia_large'), 'tfc:stacked_tree', stacked_config('sequoia', 8, 16, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True))
-    configured_placed_feature(rm, ('tree', 'spruce'), 'tfc:random_tree', random_config('spruce', 7))
-    configured_placed_feature(rm, ('tree', 'spruce_large'), 'tfc:stacked_tree', stacked_config('spruce', 5, 9, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True))
-    configured_placed_feature(rm, ('tree', 'sycamore'), 'tfc:overlay_tree', overlay_config('sycamore', 2, 5))
-    configured_placed_feature(rm, ('tree', 'sycamore_large'), 'tfc:random_tree', random_config('sycamore', 5, 2, True))
-    configured_placed_feature(rm, ('tree', 'white_cedar'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 4))
-    configured_placed_feature(rm, ('tree', 'white_cedar_large'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 5, 1, 1, True))
-    configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7))
-    configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, True))
+    configured_placed_feature(rm, ('tree', 'acacia'), 'tfc:random_tree', random_config('acacia', 35, place=tree_placement_config(1, 3)))
+    configured_placed_feature(rm, ('tree', 'acacia_large'), 'tfc:random_tree', random_config('acacia', 6, 2, True, place=tree_placement_config(2, 5)))
+    configured_placed_feature(rm, ('tree', 'ash'), 'tfc:overlay_tree', overlay_config('ash', 3, 5, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'ash_large'), 'tfc:random_tree', random_config('ash', 5, 2, True, place=tree_placement_config(2, 5)))
+    configured_placed_feature(rm, ('tree', 'aspen'), 'tfc:random_tree', random_config('aspen', 16, trunk=[3, 5, 1], place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'birch'), 'tfc:random_tree', random_config('birch', 16, trunk=[2, 3, 1], place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'blackwood'), 'tfc:random_tree', random_config('blackwood', 10, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'blackwood_large'), 'tfc:random_tree', random_config('blackwood', 10, 1, True, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'chestnut'), 'tfc:overlay_tree', overlay_config('chestnut', 2, 4, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'douglas_fir'), 'tfc:random_tree', random_config('douglas_fir', 9, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'douglas_fir_large'), 'tfc:random_tree', random_config('douglas_fir', 5, 2, True, place=tree_placement_config(1, 9)))
+    configured_placed_feature(rm, ('tree', 'hickory'), 'tfc:random_tree', random_config('hickory', 9, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'hickory_large'), 'tfc:random_tree', random_config('hickory', 5, 2, True, place=tree_placement_config(1, 9)))
+    configured_placed_feature(rm, ('tree', 'kapok'), 'tfc:random_tree', random_config('kapok', 17, place=tree_placement_config(1, 5, True)))
+    configured_placed_feature(rm, ('tree', 'maple'), 'tfc:overlay_tree', overlay_config('maple', 2, 4, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'maple_large'), 'tfc:random_tree', random_config('maple', 5, 2, True, place=tree_placement_config(2, 5)))
+    configured_placed_feature(rm, ('tree', 'oak'), 'tfc:overlay_tree', overlay_config('oak', 3, 5, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'palm'), 'tfc:random_tree', random_config('palm', 7, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'pine'), 'tfc:random_tree', random_config('pine', 9, place=tree_placement_config(1, 3)))
+    configured_placed_feature(rm, ('tree', 'pine_large'), 'tfc:random_tree', random_config('pine', 5, 2, True, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'rosewood'), 'tfc:overlay_tree', overlay_config('rosewood', 1, 3, place=tree_placement_config(1, 9)))
+    configured_placed_feature(rm, ('tree', 'sequoia'), 'tfc:random_tree', random_config('sequoia', 7, place=tree_placement_config(1, 3)))
+    configured_placed_feature(rm, ('tree', 'sequoia_large'), 'tfc:stacked_tree', stacked_config('sequoia', 8, 16, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True, place=tree_placement_config(2, 7)))
+    configured_placed_feature(rm, ('tree', 'spruce'), 'tfc:random_tree', random_config('spruce', 7, place=tree_placement_config(1, 3)))
+    configured_placed_feature(rm, ('tree', 'spruce_large'), 'tfc:stacked_tree', stacked_config('spruce', 5, 9, 2, [(2, 3, 3), (1, 2, 3), (1, 1, 3)], 2, True, place=tree_placement_config(2, 7)))
+    configured_placed_feature(rm, ('tree', 'sycamore'), 'tfc:overlay_tree', overlay_config('sycamore', 2, 5, place=tree_placement_config(1, 5, True)))
+    configured_placed_feature(rm, ('tree', 'sycamore_large'), 'tfc:random_tree', random_config('sycamore', 5, 2, True, place=tree_placement_config(2, 5, True)))
+    configured_placed_feature(rm, ('tree', 'white_cedar'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 4, place=tree_placement_config(1, 5)))
+    configured_placed_feature(rm, ('tree', 'white_cedar_large'), 'tfc:overlay_tree', overlay_config('white_cedar', 2, 5, 1, 1, True, place=tree_placement_config(1, 9)))
+    configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7, place=tree_placement_config(1, 3, True)))
+    configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, True, place=tree_placement_config(2, 3, True)))
 
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
@@ -975,18 +975,18 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
     if tree != 'palm':
         cfg['groundcover'] += [{'block': 'tfc:wood/fallen_leaves/%s' % tree}]
     if tree not in ('acacia', 'willow'):
-        cfg.update({'fallen_log': 'tfc:wood/log/%s' % tree})
+        cfg['fallen_log'] = 'tfc:wood/log/%s' % tree
     else:
-        cfg.update({'fallen_tree_chance': 0})
+        cfg['fallen_tree_chance'] = 0
     if tree not in ('palm', 'rosewood', 'sycamore'):
         cfg['bush_log'] = utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree)
-        cfg.update({'bush_leaves': 'tfc:wood/leaves/%s' % tree})
+        cfg['bush_leaves'] = 'tfc:wood/leaves/%s' % tree
     if old_growth:
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
     rm.configured_feature('tree/%s_entry' % tree, 'tfc:forest_entry', cfg)
 
 
-def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False):
+def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, radius: int = 1, large: bool = False, place = None):
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     if large:
         tree += '_large'
@@ -994,24 +994,26 @@ def overlay_config(tree: str, min_height: int, max_height: int, width: int = 1, 
         'base': 'tfc:%s/base' % tree,
         'overlay': 'tfc:%s/overlay' % tree,
         'trunk': trunk_config(block, min_height, max_height, width),
-        'radius': radius
+        'radius': radius,
+        'placement': place
     }
 
 
-def random_config(tree: str, structure_count: int, radius: int = 1, large: bool = False, trunk: List = None):
+def random_config(tree: str, structure_count: int, radius: int = 1, large: bool = False, trunk: List = None, place = None):
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     if large:
         tree += '_large'
     cfg = {
         'structures': ['tfc:%s/%d' % (tree, i) for i in range(1, 1 + structure_count)],
-        'radius': radius
+        'radius': radius,
+        'placement': place
     }
     if trunk is not None:
         cfg['trunk'] = trunk_config(block, *trunk)
     return cfg
 
 
-def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, large: bool = False):
+def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, large: bool = False, place = None):
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     if large:
@@ -1023,7 +1025,8 @@ def stacked_config(tree: str, min_height: int, max_height: int, width: int, laye
             'min_count': layer[0],
             'max_count': layer[1]
         } for i, layer in enumerate(layers)],
-        'radius': radius
+        'radius': radius,
+        'placement': place
     }
 
 
@@ -1033,6 +1036,14 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
         'min_height': min_height,
         'max_height': max_height,
         'width': width
+    }
+
+
+def tree_placement_config(width: int, height: int, allow_submerged: bool = False):
+    return {
+        'width': width,
+        'height': height,
+        'allow_submerged': allow_submerged
     }
 
 
@@ -1216,8 +1227,6 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     if lake_features == 'default':  # Default = Lakes are on all non-ocean biomes. True/False to force either way
         lake_features = not ocean_features
 
-
-
     # Features
     features = [
         ['tfc:erosion'],  # erosion
@@ -1244,25 +1253,17 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
         if name == 'shore':
             features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in SHORE_DECORATORS]
-            spawners.update({
-                'creature': [entity for entity in SHORE_CREATURES.values()]
-            })
+            spawners['creature'] = [entity for entity in SHORE_CREATURES.values()]
         else:
             features[Decoration.SURFACE_DECORATION] += ['tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
             features[Decoration.SURFACE_DECORATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
 
-        spawners.update({
-            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
-            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
-        })
+        spawners['water_ambient'] = [entity for entity in OCEAN_AMBIENT.values()],
+        spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()],
     if category == 'river':
-        spawners.update({
-            'water_ambient': [entity for entity in LAKE_AMBIENT.values()]
-        })
+        spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
     if name.find('lake') != -1:
-        spawners.update({
-            'water_creature': [entity for entity in LAKE_CREATURES.values()]
-        })
+        spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
         features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
@@ -1275,6 +1276,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
         features[Decoration.SURFACE_DECORATION] += ['tfc:land_plants']
+        spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
 
     if volcano_features:
         features[Decoration.LARGE_FEATURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure']

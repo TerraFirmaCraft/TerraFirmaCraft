@@ -36,6 +36,8 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.model.Animation;
 import net.dries007.tfc.client.model.Easing;
+import net.dries007.tfc.common.entities.land.TFCAnimal;
+import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
 public class RenderHelpers
@@ -221,6 +223,11 @@ public class RenderHelpers
         builder.vertex(matrix4f, minX, y, maxZ).color(r, g, b, a).uv(sprite.getU(minX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
         builder.vertex(matrix4f, maxX, y, maxZ).color(r, g, b, a).uv(sprite.getU(maxX * 16), sprite.getV(maxZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
         builder.vertex(matrix4f, maxX, y, minZ).color(r, g, b, a).uv(sprite.getU(maxX * 16), sprite.getV(minX * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+    }
+
+    public static ResourceLocation getTextureForAge(TFCAnimal animal, ResourceLocation young, ResourceLocation old)
+    {
+        return animal.getAgeType() == TFCAnimalProperties.Age.OLD ? old : young;
     }
 
     private static float calculateTilt(float pitch)

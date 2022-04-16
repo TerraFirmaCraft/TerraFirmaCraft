@@ -61,6 +61,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -257,7 +258,7 @@ public final class Helpers
 
     public static void insertTFCAvoidGoal(PathfinderMob mob, GoalSelector selector, int priority)
     {
-        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal);
+        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal<?>);
         selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
     }
 
@@ -612,12 +613,12 @@ public final class Helpers
         return collection;
     }
 
-    public static <E, C extends Collection<E>> void encodeAll(FriendlyByteBuf buffer, C collection, BiConsumer<FriendlyByteBuf, E> encoder)
+    public static <E, C extends Collection<E>> void encodeAll(FriendlyByteBuf buffer, C collection, BiConsumer<E, FriendlyByteBuf> encoder)
     {
         buffer.writeVarInt(collection.size());
         for (E e : collection)
         {
-            encoder.accept(buffer, e);
+            encoder.accept(e, buffer);
         }
     }
 

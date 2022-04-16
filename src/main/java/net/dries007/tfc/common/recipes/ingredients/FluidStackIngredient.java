@@ -11,6 +11,8 @@ import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -22,7 +24,7 @@ import net.dries007.tfc.util.JsonHelpers;
  */
 public record FluidStackIngredient(FluidIngredient ingredient, int amount) implements Predicate<FluidStack>
 {
-    public static final FluidStackIngredient EMPTY = new FluidStackIngredient(new FluidIngredient(Collections.emptySet()), 0);
+    public static final FluidStackIngredient EMPTY = new FluidStackIngredient(FluidIngredient.of(Fluids.EMPTY), 0);
 
     public static FluidStackIngredient fromJson(JsonObject json)
     {

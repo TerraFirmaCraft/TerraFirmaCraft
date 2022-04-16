@@ -39,6 +39,11 @@
       "tfc:acacia/34",
       "tfc:acacia/35"
     ],
-    "radius": 1
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 3,
+      "allow_submerged": false
+    }
   }
 }

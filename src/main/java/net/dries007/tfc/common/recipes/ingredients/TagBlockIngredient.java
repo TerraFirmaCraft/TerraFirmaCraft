@@ -35,7 +35,7 @@ public record TagBlockIngredient(TagKey<Block> tag) implements BlockIngredient
     }
 
     @Override
-    public BlockIngredient.Serializer<?> getSerializer()
+    public BlockIngredient.Serializer<?> serializer()
     {
         return Serializer.INSTANCE;
     }

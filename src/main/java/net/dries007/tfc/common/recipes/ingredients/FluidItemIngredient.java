@@ -69,7 +69,7 @@ public class FluidItemIngredient extends DelegateIngredient
         @Override
         public void write(FriendlyByteBuf buffer, FluidItemIngredient ingredient)
         {
-            encodeNullable(ingredient, buffer);
+            Helpers.encodeNullable(ingredient.delegate, buffer, Ingredient::toNetwork);
             ingredient.fluid.toNetwork(buffer);
         }
     }

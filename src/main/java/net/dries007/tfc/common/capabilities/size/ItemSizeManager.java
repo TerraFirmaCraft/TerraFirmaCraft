@@ -9,7 +9,6 @@ package net.dries007.tfc.common.capabilities.size;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -26,8 +25,8 @@ import org.slf4j.Logger;
 
 public final class ItemSizeManager
 {
-    public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = new IndirectHashCollection<>(ItemSizeDefinition::getValidItems);
-    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>("item_sizes", "item size", ItemSizeDefinition::new, ItemSizeManager::reload, ItemSizeDefinition::new, ItemSizeDefinition::encode, DataManagerSyncPacket.TItemSizeDefinition::new);
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>("item_sizes", "item size", ItemSizeDefinition::new, ItemSizeDefinition::new, ItemSizeDefinition::encode, DataManagerSyncPacket.TItemSizeDefinition::new);
+    public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = IndirectHashCollection.create(ItemSizeDefinition::getValidItems, MANAGER::getValues);
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final List<Item> MODIFIABLE_ITEMS = new ArrayList<>();
@@ -45,6 +44,19 @@ public final class ItemSizeManager
             {
                 MODIFIABLE_ITEMS.add(item);
             }
+        }
+    }
+
+    public static void applyItemStackSizeOverrides()
+    {
+        // Edit item stack sizes for all editable items in the game (that we can find)
+        // Do this once, here, for all items, rather than individually in AttachCapabilitiesEvent handlers
+        LOGGER.info("Editing item stack sizes: found {} editable of {} total.", MODIFIABLE_ITEMS.size(), ForgeRegistries.ITEMS.getValues().size());
+        for (Item item : MODIFIABLE_ITEMS)
+        {
+            final ItemStack stack = new ItemStack(item);
+            final IItemSize size = get(stack);
+            ((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
         }
     }
 
@@ -99,21 +111,6 @@ public final class ItemSizeManager
         else
         {
             return ItemSize.of(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
-        }
-    }
-
-    private static void reload()
-    {
-        CACHE.reload(MANAGER.getValues());
-
-        // Edit item stack sizes for all editable items in the game (that we can find)
-        // Do this once, here, for all items, rather than individually in AttachCapabilitiesEvent handlers
-        LOGGER.info("Editing item stack sizes: found {} editable of {} total.", MODIFIABLE_ITEMS.size(), ForgeRegistries.ITEMS.getValues().size());
-        for (Item item : MODIFIABLE_ITEMS)
-        {
-            final ItemStack stack = new ItemStack(item);
-            final IItemSize size = get(stack);
-            ((ItemAccessor) item).accessor$setMaxStackSize(size.getWeight(stack).stackSize);
         }
     }
 }

@@ -9,6 +9,7 @@ package net.dries007.tfc.world.feature.tree;
 import java.util.Random;
 import java.util.function.Function;
 
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Codec;

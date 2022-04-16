@@ -38,14 +38,65 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public class TFCFallingBlockEntity extends FallingBlockEntity
 {
-    public static boolean canFallThrough(BlockGetter world, BlockPos pos)
-    {
-        return canFallThrough(world, pos, world.getBlockState(pos));
-    }
-
     public static boolean canFallThrough(BlockGetter world, BlockPos pos, BlockState state)
     {
         return !state.isFaceSturdy(world, pos, Direction.UP);
+    }
+
+    /**
+     * Can the existing block at {@code pos} fall through the block in the direction {@code fallingDirection}.
+     * @param level The world
+     * @param pos The position of the existing block that might fall
+     * @param fallingDirection The direction that the existing block might fall in
+     * @return {@code true} if the block at {@code pos} can fall through the block in the direction {@code fallingDirection}.
+     */
+    public static boolean canFallInDirection(BlockGetter level, BlockPos pos, Direction fallingDirection)
+    {
+        final BlockPos fallThroughPos = pos.relative(fallingDirection);
+        return canFallThrough(level, fallThroughPos, level.getBlockState(fallThroughPos), fallingDirection, level.getBlockState(pos));
+    }
+
+    public static boolean canFallThrough(BlockGetter level, BlockPos pos, Direction fallingDirection)
+    {
+        final BlockState state = level.getBlockState(pos);
+        return canFallThrough(level, pos, state, fallingDirection, state);
+    }
+
+    public static boolean canFallThrough(BlockGetter level, BlockPos pos, Direction fallingDirection, BlockState fallingState)
+    {
+        return canFallThrough(level, pos, level.getBlockState(pos), fallingDirection, fallingState);
+    }
+
+    /**
+     * Can the falling block fall through (effectively destroying) a specific block
+     * @param level The world
+     * @param pos The position of the block in world that we want to fall through
+     * @param state {@code level.getBlockState(pos)}
+     * @param fallingDirection The direction of the fall. For most falls this will be {@link Direction#DOWN}, however for landslides, this may be a horizontal direction, indicating we want to move into the block from the side.
+     * @param fallingState The state of the falling block. This is used in order to calculate toughness, if the falling block can break the existing block.
+     * @return {@code true} if the falling block can fall through the existing block.
+     */
+    public static boolean canFallThrough(BlockGetter level, BlockPos pos, BlockState state, Direction fallingDirection, BlockState fallingState)
+    {
+        return !state.isFaceSturdy(level, pos, fallingDirection.getOpposite()) // Must be non sturdy in the direction opposed to the fall
+            && getBlockToughness(fallingState) >= getBlockToughness(state); // Must be of an equal or greater toughness
+    }
+
+    public static int getBlockToughness(BlockState state)
+    {
+        if (Helpers.isBlock(state, TFCTags.Blocks.TOUGHNESS_3))
+        {
+            return 3;
+        }
+        if (Helpers.isBlock(state, TFCTags.Blocks.TOUGHNESS_2))
+        {
+            return 2;
+        }
+        if (Helpers.isBlock(state, TFCTags.Blocks.TOUGHNESS_1))
+        {
+            return 1;
+        }
+        return 0;
     }
 
     private final boolean dontSetBlock;
@@ -125,13 +176,13 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                     // On ground
                     if (!failedBreakCheck)
                     {
-                        if (!level.isEmptyBlock(posAt) && canFallThrough(level, posAt, level.getBlockState(posAt)))
+                        if (!level.isEmptyBlock(posAt) && canFallThrough(level, posAt, Direction.DOWN, fallingBlockState))
                         {
                             level.destroyBlock(posAt, true);
                             failedBreakCheck = true;
                             return;
                         }
-                        else if (!level.isEmptyBlock(posAt.below()) && canFallThrough(level, posAt.below(), level.getBlockState(posAt.below())))
+                        else if (!level.isEmptyBlock(posAt.below()) && canFallThrough(level, posAt.below(), Direction.DOWN, fallingBlockState))
                         {
                             level.destroyBlock(posAt.below(), true);
                             failedBreakCheck = true;
@@ -149,12 +200,6 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         {
                             if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canSurvive(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.below())))
                             {
-                                if (fallingBlockState.hasProperty(BlockStateProperties.WATERLOGGED) && this.level.getFluidState(posAt).getType() == Fluids.WATER)
-                                {
-                                    // todo: mixin
-                                    // ((FallingBlockEntityAccessor) this).accessor$setBlockState(fallingBlockState.setValue(BlockStateProperties.WATERLOGGED, Boolean.TRUE));
-                                }
-
                                 if (level.setBlockAndUpdate(posAt, fallingBlockState))
                                 {
                                     if (block instanceof FallingBlock)

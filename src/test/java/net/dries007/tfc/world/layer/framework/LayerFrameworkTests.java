@@ -14,13 +14,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import net.dries007.tfc.TestBase;
+import net.dries007.tfc.TestHelper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class LayerFrameworkTests extends TestBase
+public class LayerFrameworkTests extends TestHelper
 {
     @Test
     public void testAreaFactoriesReturnNewInstances()

@@ -13,6 +13,11 @@
       "tfc:pine/8",
       "tfc:pine/9"
     ],
-    "radius": 1
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 3,
+      "allow_submerged": false
+    }
   }
 }

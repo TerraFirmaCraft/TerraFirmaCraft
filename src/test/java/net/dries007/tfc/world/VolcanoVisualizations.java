@@ -9,15 +9,16 @@ package net.dries007.tfc.world;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.Artist;
-import net.dries007.tfc.TestBase;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Cellular2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class VolcanoVisualizations extends TestBase
+@Disabled
+public class VolcanoVisualizations extends TestHelper
 {
     @Test
     public void testVolcanoNoise()

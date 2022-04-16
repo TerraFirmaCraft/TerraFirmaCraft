@@ -12,6 +12,7 @@ import java.util.Random;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -19,6 +20,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -41,8 +43,7 @@ import net.dries007.tfc.util.tracker.WorldTrackerCapability;
  */
 public class CollapseRecipe extends SimpleBlockRecipe
 {
-    public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = new IndirectHashCollection<>(recipe -> recipe.getBlockIngredient().getValidBlocks());
-    private static final Random RANDOM = new Random();
+    public static final IndirectHashCollection<Block, CollapseRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.COLLAPSE);
 
     @Nullable
     public static CollapseRecipe getRecipe(Level world, BlockInventory wrapper)
@@ -62,16 +63,18 @@ public class CollapseRecipe extends SimpleBlockRecipe
      *
      * @return true if a collapse occurred.
      */
+    @SuppressWarnings("deprecation") // Level.isAreaLoaded
     public static boolean tryTriggerCollapse(Level world, BlockPos pos)
     {
+        final Random random = world.getRandom();
         if (!world.isClientSide() && world.isAreaLoaded(pos, 32))
         {
-            if (RANDOM.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
+            if (random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
             {
                 // Random radius
-                int radX = (RANDOM.nextInt(5) + 4) / 2;
-                int radY = (RANDOM.nextInt(3) + 2) / 2;
-                int radZ = (RANDOM.nextInt(5) + 4) / 2;
+                int radX = (random.nextInt(5) + 4) / 2;
+                int radY = (random.nextInt(3) + 2) / 2;
+                int radZ = (random.nextInt(5) + 4) / 2;
                 for (BlockPos checking : Support.findUnsupportedPositions(world, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
                 {
                     if (canStartCollapse(world, checking))
@@ -89,9 +92,9 @@ public class CollapseRecipe extends SimpleBlockRecipe
     /**
      * Checks if a single block is possible to be the locus of a collapse
      */
-    public static boolean canStartCollapse(LevelAccessor world, BlockPos pos)
+    public static boolean canStartCollapse(LevelAccessor level, BlockPos pos)
     {
-        return Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.CAN_START_COLLAPSE) && TFCFallingBlockEntity.canFallThrough(world, pos.below());
+        return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.CAN_START_COLLAPSE) && TFCFallingBlockEntity.canFallInDirection(level, pos, Direction.DOWN);
     }
 
     /**
@@ -102,9 +105,10 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static void startCollapse(Level world, BlockPos centerPos)
     {
-        int radius = TFCConfig.SERVER.collapseMinRadius.get() + RANDOM.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
-        int radiusSquared = radius * radius;
-        List<BlockPos> secondaryPositions = new ArrayList<>();
+        final Random random = world.getRandom();
+        final int radius = TFCConfig.SERVER.collapseMinRadius.get() + random.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
+        final int radiusSquared = radius * radius;
+        final List<BlockPos> secondaryPositions = new ArrayList<>();
 
         // Initially only scan on the bottom layer, and advance upwards
         for (BlockPos pos : BlockPos.betweenClosed(centerPos.offset(-radius, -4, -radius), centerPos.offset(radius, -4, radius)))
@@ -117,7 +121,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                 if (foundEmpty && Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE))
                 {
                     // Check for a possible collapse
-                    if (posAt.distSqr(centerPos) < radiusSquared && RANDOM.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                    if (posAt.distSqr(centerPos) < radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                     {
                         if (collapseBlock(world, posAt, stateAt))
                         {
@@ -127,7 +131,7 @@ public class CollapseRecipe extends SimpleBlockRecipe
                         }
                     }
                 }
-                if (TFCFallingBlockEntity.canFallThrough(world, posAt))
+                if (TFCFallingBlockEntity.canFallThrough(world, posAt, Direction.DOWN))
                 {
                     foundEmpty = true;
                 }

@@ -62,7 +62,7 @@ public final class InteractionManager
 {
     private static final ThreadLocal<Boolean> ACTIVE = ThreadLocal.withInitial(() -> false);
     private static final List<Entry> ACTIONS = new ArrayList<>();
-    private static final IndirectHashCollection<Item, Entry> CACHE = new IndirectHashCollection<>(wrapper -> wrapper.keyExtractor.get());
+    private static final IndirectHashCollection<Item, Entry> CACHE = IndirectHashCollection.create(wrapper -> wrapper.keyExtractor.get(), () -> ACTIONS);
 
     public static void registerDefaultInteractions()
     {
@@ -366,11 +366,6 @@ public final class InteractionManager
             }
         }
         return Optional.empty();
-    }
-
-    public static void reloadCache()
-    {
-        CACHE.reload(ACTIONS);
     }
 
     /**

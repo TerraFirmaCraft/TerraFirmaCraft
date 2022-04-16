@@ -23,7 +23,12 @@ import net.dries007.tfc.util.JsonHelpers;
  */
 public class NotRottenIngredient extends DelegateIngredient
 {
-    public NotRottenIngredient(@Nullable Ingredient delegate)
+    public static NotRottenIngredient of(Ingredient ingredient)
+    {
+        return new NotRottenIngredient(ingredient);
+    }
+
+    protected NotRottenIngredient(@Nullable Ingredient delegate)
     {
         super(delegate);
     }
@@ -60,7 +65,7 @@ public class NotRottenIngredient extends DelegateIngredient
         @Override
         public void write(FriendlyByteBuf buffer, NotRottenIngredient ingredient)
         {
-            encodeNullable(ingredient, buffer);
+            Helpers.encodeNullable(ingredient.delegate, buffer, Ingredient::toNetwork);
         }
     }
 }
