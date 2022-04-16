@@ -155,6 +155,13 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
+
+    rm.item_tag('pig_food', '#tfc:foods')
+    rm.item_tag('cow_food', '#tfc:foods/grains')
+    rm.item_tag('chicken_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables') # todo : seeds
+    rm.item_tag('alpaca_food', '#tfc:foods/grains', '#tfc:foods/fruits')
+
+    rm.item_tag('tfc:foods/grains', *['tfc:food/%s_grain' % grain for grain in GRAINS])
     rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
     rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
@@ -423,9 +430,10 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS])
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols')
-    rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water')
+    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS], '#tfc:milks')
+    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols', '#tfc:milks')
+    rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water', '#tfc:milks')
+    rm.fluid_tag('milks', 'minecraft:milk')
 
     rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
@@ -589,6 +597,7 @@ def generate(rm: ResourceManager):
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
     drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=1000)
+    drinkable(rm, 'milk', '#tfc:milks', thirst=10)
 
     # Climate Ranges
 
@@ -628,28 +637,44 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
     rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
     rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
+    rm.data(('tfc', 'fauna', 'pig'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'cow'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'alpaca'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'chicken'), fauna(climate=climate_config(min_temp=0, max_temp=25, min_rain=100)))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
     rm.data(('tfc', 'lamp_fuels', 'tallow'), lamp_fuel('tfc:tallow', 1800))
     rm.data(('tfc', 'lamp_fuels', 'lava'), lamp_fuel('minecraft:lava', -1, 'tfc:metal/lamp/blue_steel'))
 
-    rm.entity_loot('cod', 'tfc:food/cod')
-    rm.entity_loot('bluegill', 'tfc:food/bluegill')
-    rm.entity_loot('tropical_fish', 'tfc:food/tropical_fish')
-    rm.entity_loot('salmon', 'tfc:food/salmon')
-    rm.entity_loot('pufferfish', 'minecraft:pufferfish')
-    rm.entity_loot('isopod', 'tfc:shell')
-    rm.entity_loot('lobster', 'tfc:shell')
-    rm.entity_loot('horseshoe_crab', 'tfc:shell')
-    rm.entity_loot('orca', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
-    rm.entity_loot('dolphin', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
-    rm.entity_loot('manatee', {'name': 'tfc:blubber', 'functions': loot_tables.set_count(0, 2)})
-    rm.entity_loot('penguin', {'name': 'minecraft:feather', 'conditions': [loot_tables.random_chance(0.8)]}, {'name': 'tfc:small_raw_hide', 'conditions': [loot_tables.random_chance(0.3)]})
-    rm.entity_loot('turtle', 'minecraft:scute')
-    rm.entity_loot('polar_bear', 'tfc:large_raw_hide')
-    rm.entity_loot('squid', {'name': 'minecraft:ink_sac', 'functions': loot_tables.set_count(1, 3)})
-    rm.entity_loot('octopoteuthis', {'name': 'minecraft:glow_ink_sac', 'functions': loot_tables.set_count(1, 3)})
+    for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
+        mob_loot(rm, mob, 'tfc:food/%s' % mob)
+    mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
+    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=3)
+    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=3)
+    for mob in ('isopod', 'lobster', 'horseshoe_crab'):
+        mob_loot(rm, mob, 'tfc:shell')
+    for mob in ('orca', 'dolphin', 'manatee'):
+        mob_loot(rm, mob, 'tfc:blubber', min_amount=0, max_amount=2, bones=4)
+    mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)
+    mob_loot(rm, 'turtle', 'minecraft:scute')
+    mob_loot(rm, 'polar_bear', 'tfc:large_raw_hide', bones=6)
+    mob_loot(rm, 'pig', 'tfc:food/pork', 1, 4, 'medium', bones=3)
+    mob_loot(rm, 'cow', 'tfc:food/beef', 1, 4, 'large', bones=4)
+    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 1, 4, 'medium', bones=4, extra_pool={'name': 'tfc:wool'})
+    mob_loot(rm, 'chicken', 'tfc:food/chicken', extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
+
+def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
+    func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
+    pools = [{'name': drop, 'functions': func}]
+    if hide_size is not None:
+        func = None if hide_chance == 1 else loot_tables.random_chance(hide_chance)
+        pools.append({'name': 'tfc:%s_raw_hide' % hide_size, 'conditions': func})
+    if bones != 0:
+        pools.append({'name': 'minecraft:bone', 'functions': loot_tables.set_count(1, bones)})
+    if extra_pool is not None:
+        pools.append(extra_pool)
+    rm.entity_loot(name, *pools)
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {
@@ -688,6 +713,7 @@ def fauna(chance: int = None, distance_below_sea_level: int = None, climate: Dic
 
 
 def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, category: Category, hunger: int, saturation: float, water: int, decay: float, fruit: Optional[float] = None, veg: Optional[float] = None, protein: Optional[float] = None, grain: Optional[float] = None, dairy: Optional[float] = None):
+    rm.item_tag('tfc:foods', ingredient)
     rm.data(('tfc', 'food_items', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'category': category.name,

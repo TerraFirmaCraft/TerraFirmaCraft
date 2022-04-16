@@ -227,7 +227,12 @@ public class IngameOverlays
 
     private static boolean setupForSurvival(ForgeIngameGui gui, Minecraft minecraft)
     {
-        if (!minecraft.options.hideGui && gui.shouldDrawSurvivalElements() && minecraft.getCameraEntity() instanceof Player)
+        return gui.shouldDrawSurvivalElements() && setup(gui, minecraft);
+    }
+
+    public static boolean setup(ForgeIngameGui gui, Minecraft minecraft)
+    {
+        if (!minecraft.options.hideGui && minecraft.getCameraEntity() instanceof Player)
         {
             gui.setupOverlayRenderState(true, false, TEXTURE);
             return true;

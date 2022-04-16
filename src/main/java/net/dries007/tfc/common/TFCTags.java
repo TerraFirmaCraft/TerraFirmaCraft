@@ -128,6 +128,10 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
         public static final TagKey<Item> GOES_ON_TOOL_RACK = create("goes_on_tool_rack");
         public static final TagKey<Item> SOUP_BOWL = create("soup_bowl");
+        public static final TagKey<Item> PIG_FOOD = create("pig_food");
+        public static final TagKey<Item> COW_FOOD = create("cow_food");
+        public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
+        public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
 
         private static TagKey<Item> create(String id)
         {
