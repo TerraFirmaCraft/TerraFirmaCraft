@@ -45,6 +45,7 @@ public class SurfaceBuilderContext
     private final BlockPos.MutableBlockPos cursor;
 
     @Nullable private Biome biome;
+    private double biomeWeight;
     private double slope;
     private float temperature;
     private float rainfall;
@@ -73,13 +74,14 @@ public class SurfaceBuilderContext
         defaultFluidStates.add(Blocks.WATER.defaultBlockState());
     }
 
-    public void buildSurface(Biome biome, BiomeVariants variants, SurfaceBuilder builder, int x, int y, int z, double slope)
+    public void buildSurface(Biome biome, double biomeWeight, boolean salty, SurfaceBuilder builder, int x, int y, int z, double slope)
     {
         this.biome = biome;
+        this.biomeWeight = biomeWeight;
         this.slope = slope;
         this.temperature = chunkData.getAverageTemp(x, z);
         this.rainfall = chunkData.getRainfall(x, z);
-        this.salty = variants.isSalty();
+        this.salty = salty;
 
         // We iterate down based on the actual surface height (since our capability for overhangs is much more limited than vanilla)
         final int oceanFloor = chunk.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
@@ -93,6 +95,11 @@ public class SurfaceBuilderContext
     {
         assert biome != null;
         return biome;
+    }
+
+    public double weight()
+    {
+        return biomeWeight;
     }
 
     public BlockPos pos()
