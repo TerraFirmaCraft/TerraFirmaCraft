@@ -6,14 +6,10 @@
 
 package net.dries007.tfc.world.feature;
 
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Aquifer;
@@ -25,11 +21,11 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
+import net.dries007.tfc.world.MutableDensityFunctionContext;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
-import net.dries007.tfc.world.settings.RockSettings;
 
 public class ErosionFeature extends Feature<NoneFeatureConfiguration>
 {
@@ -50,12 +46,10 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final RockData rockData = ChunkDataProvider.get(context.chunkGenerator()).get(chunk).getRockData();
 
-        final ChunkGeneratorExtension ex = (ChunkGeneratorExtension) context.chunkGenerator();
-        final RockLayerSettings rockSettings = ex.getRockLayerSettings();
-        // todo: everything here was completely nuked and needs to be redone
-        // final Aquifer aquifer = ex.getAquifer(chunk);
-        // final BaseBlockSource blockSource = ex.createBaseStoneSource(level, chunk);
-        final Map<Block, Block> hardeningBlocks = rockSettings.getRocks().stream().collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened));
+        final ChunkGeneratorExtension extension = (ChunkGeneratorExtension) context.chunkGenerator();
+        final RockLayerSettings rockSettings = extension.getRockLayerSettings();
+        final Aquifer aquifer = extension.getOrCreateAquifer(chunk);
+        final MutableDensityFunctionContext point = new MutableDensityFunctionContext(mutablePos);
 
         for (int x = 0; x < 16; x++)
         {
@@ -99,11 +93,13 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                                     // See if we can delete the block above (if the above of that is air)
                                     // We then choose either a solid or full block by passing in a positive or negative value to the aquifer's computeState
                                     mutablePos.setY(y + 2);
-                                    if (level.getBlockState(mutablePos).isAir())
+                                    final boolean blockAboveIsAir = level.getBlockState(mutablePos).isAir();
+
+                                    mutablePos.setY(y + 1);
+                                    final BlockState airOrLiquidState = aquifer.computeSubstance(point, -1);
+
+                                    if (blockAboveIsAir && airOrLiquidState != null)
                                     {
-                                        mutablePos.setY(y + 1);
-                                        // todo
-                                        BlockState airOrLiquidState = Blocks.AIR.defaultBlockState(); // aquifer.computeState(blockSource, chunkX + x, y + 1, chunkZ + z, -1);
                                         level.setBlock(mutablePos, airOrLiquidState, 2);
                                     }
                                     else
@@ -145,7 +141,7 @@ public class ErosionFeature extends Feature<NoneFeatureConfiguration>
                     }
                     else
                     {
-                        prevBlockHardened = hardeningBlocks.get(stateAt.getBlock());
+                        prevBlockHardened = rockSettings.getHardened(stateAt.getBlock());
                     }
                 }
             }

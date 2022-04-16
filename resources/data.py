@@ -321,6 +321,13 @@ def generate(rm: ResourceManager):
     for soil in SOIL_BLOCK_VARIANTS:
         rm.block_tag('can_carve', 'tfc:dirt/%s' % soil, 'tfc:grass/%s' % soil)
 
+    # Soil / Standard blocks are toughness 0 - dirt destroys charcoal
+    rm.block_tag('toughness_1', 'tfc:charcoal_pile', 'tfc:charcoal_forge')  # Charcoal is toughness 1 - resistant against destruction from soil
+    rm.block_tag('toughness_2', *[
+        'tfc:rock/%s/%s' % (variant, rock) for variant in ('raw', 'cobble', 'mossy_cobble') for rock in ROCKS.keys()
+    ])  # Stone type blocks are toughness 2
+    rm.block_tag('toughness_3', 'minecraft:bedrock')  # Used as a top level 'everything goes'
+
     # Harvest Tool + Level Tags
 
     rm.block_tag('needs_stone_tool', '#forge:needs_wood_tool')

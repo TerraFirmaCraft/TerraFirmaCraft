@@ -310,6 +310,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
+    public Aquifer getOrCreateAquifer(ChunkAccess chunk)
+    {
+        final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
+        final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
+        return getOrCreateAquifer(chunk, settings, baseBlockSource);
+    }
+
+    @Override
     protected Codec<TFCChunkGenerator> codec()
     {
         return CODEC;
