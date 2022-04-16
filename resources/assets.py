@@ -37,8 +37,8 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang('loose %s', rock)).with_tag('can_be_snow_piled').with_block_loot({
                     'name': 'tfc:rock/loose/%s' % rock,
                     'functions': [
-                        {**loot_tables.set_count(2), 'conditions': [block_state_property('tfc:rock/loose/%s' % rock, {'count': '2'})]},
-                        {**loot_tables.set_count(3), 'conditions': [block_state_property('tfc:rock/loose/%s' % rock, {'count': '3'})]},
+                        {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=2]' % rock)]},
+                        {**loot_tables.set_count(3), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=3]' % rock)]},
                         loot_tables.explosion_decay()
                     ]
                 })
@@ -74,7 +74,7 @@ def generate(rm: ResourceManager):
                     slab_namespace = 'tfc:rock/' + block_type + '/' + rock + '_slab'
                     rm.block_loot(slab_namespace, {
                         'functions': [
-                            {**loot_tables.set_count(2), 'conditions': [block_state_property(slab_namespace, {'type': 'double'})]},
+                            {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property(slab_namespace + '[type=double]')]},
                             loot_tables.explosion_decay()
                         ],
                         'name': slab_namespace
@@ -254,12 +254,12 @@ def generate(rm: ResourceManager):
     rm.blockstate_multipart('wattle', *wattle_variants).with_lang(lang('wattle'))
     rm.block_loot('wattle',
       {'name': 'tfc:wattle'},
-      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'type': 'filled'})]},
-      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [block_state_property('tfc:wattle', {'type': 'woven'})]},
-      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'top': 'true'})]},
-      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'bottom': 'true'})]},
-      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'left': 'true'})]},
-      {'name': 'minecraft:stick', 'conditions': [block_state_property('tfc:wattle', {'right': 'true'})]}
+      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [loot_tables.block_state_property('tfc:wattle[type=filled]')]},
+      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [loot_tables.block_state_property('tfc:wattle[type=woven]')]},
+      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[top=true]')]},
+      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[bottom=true]')]},
+      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[left=true]')]},
+      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[right=true]')]}
     )
     rm.item_model('wattle', parent='tfc:block/wattle/empty_wattle', no_textures=True)
 
@@ -637,7 +637,7 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot({
                 'name': name,
-                'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1}),
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s]' % (crop, crop_data.stages - 1)),
                 'functions': crop_yield(0, (6, 10))
             }, {
                 'name': 'tfc:seeds/%s' % crop
@@ -653,11 +653,11 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=true]' % crop),
                 'functions': loot_tables.set_count(1, 3)
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false'})
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false]' % crop)
             }))
 
             block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop))
@@ -686,7 +686,7 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot({
                 'name': name,
-                'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1, 'part': 'bottom'}),
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s,part=bottom]' % (crop, crop_data.stages - 1)),
                 'functions': crop_yield(0, (6, 10))
             }, {
                 'name': 'tfc:seeds/%s' % crop
@@ -703,11 +703,11 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true'}),
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=true]' % crop),
                 'functions': loot_tables.set_count(1, 3)
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false'})
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false]' % crop)
             }))
 
         elif crop_data.type == 'double_stick':
@@ -730,14 +730,14 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot({
                 'name': name,
-                'conditions': block_state_property('tfc:crop/%s' % crop, {'age': crop_data.stages - 1, 'part': 'bottom'}),
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s,part=bottom]' % (crop, crop_data.stages - 1)),
                 'functions': crop_yield(0, (6, 10))
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:crop/%s' % crop, {'part': 'bottom'})
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom]' % crop)
             }, {
                 'name': 'minecraft:stick',
-                'conditions': block_state_property('tfc:crop/%s' % crop, {'part': 'bottom', 'stick': 'true'})
+                'conditions': loot_tables.block_state_property('tfc:crop/%s[part=bottom,stick=true]' % crop)
             })
 
             block = rm.blockstate(('dead_crop', crop), variants={
@@ -753,11 +753,11 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot(loot_tables.alternatives({
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'true', 'part': 'bottom'}),
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=true,part=bottom]' % crop),
                 'functions': loot_tables.set_count(1, 3)
             }, {
                 'name': 'tfc:seeds/%s' % crop,
-                'conditions': block_state_property('tfc:dead_crop/%s' % crop, {'mature': 'false', 'part': 'bottom'})
+                'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false,part=bottom]' % crop)
             }), {
                 'name': 'tfc:seeds/%s' % crop
             })
@@ -774,7 +774,7 @@ def generate(rm: ResourceManager):
 
             block.with_block_loot({
                 'name': name,
-                'conditions': block_state_property('tfc:wild_crop/%s' % crop, {'part': 'bottom'}),
+                'conditions': loot_tables.block_state_property('tfc:wild_crop/%s[part=bottom]' % crop),
                 'functions': loot_tables.set_count(1, 3)
             }, {
                 'name': 'tfc:seeds/%s' % crop
@@ -786,7 +786,7 @@ def generate(rm: ResourceManager):
     for plant, plant_data in PLANTS.items():
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         p = 'tfc:plant/%s' % plant
-        lower_only = block_state_property(p, {'part': 'lower'})
+        lower_only = loot_tables.block_state_property(p + '[part=lower]')
         if plant_data.type == 'short_grass':
             rm.block_loot(p, ({
                 'name': p,
@@ -915,7 +915,7 @@ def generate(rm: ResourceManager):
                         'conditions': [{
                             'condition': 'alternative',
                             'terms': [
-                                block_state_property('tfc:plant/%s_branch' % fruit, {'up': 'true', '%s' % direction: 'true'}) for direction in ['west', 'east', 'north', 'south']
+                                loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ['west', 'east', 'north', 'south']
                             ]
                         }],
                         'name': 'tfc:plant/%s_sapling' % fruit
@@ -937,7 +937,7 @@ def generate(rm: ResourceManager):
             rm.blockstate(('plant', '%s_sapling' % fruit), variants={'saplings=%d' % i: {'model': 'tfc:block/plant/%s_sapling_%d' % (fruit, i)} for i in range(1, 4 + 1)}).with_lang(lang('%s Sapling', fruit)).with_tag('fruit_tree_sapling')
             rm.block_loot(('plant', '%s_sapling' % fruit), {
                 'name': 'tfc:plant/%s_sapling' % fruit,
-                'functions': [list({**loot_tables.set_count(i), 'conditions': [block_state_property('tfc:plant/%s_sapling' % fruit, {'saplings': '%s' % i})]} for i in range(1, 5)), loot_tables.explosion_decay()]
+                'functions': [list({**loot_tables.set_count(i), 'conditions': [loot_tables.block_state_property('tfc:plant/%s_sapling[saplings=%s]' % (fruit, i))]} for i in range(1, 5)), loot_tables.explosion_decay()]
             })
             for stage in range(2, 4 + 1):
                 rm.block_model(('plant', '%s_sapling_%d' % (fruit, stage)), parent='tfc:block/plant/cross_%s' % stage, textures={'cross': 'tfc:block/fruit_tree/%s_sapling' % fruit})
@@ -951,7 +951,7 @@ def generate(rm: ResourceManager):
             rm.blockstate('plant/banana_plant', variants=dict({'lifecycle=%s,stage=%d' % (state, i): {'model': 'tfc:block/plant/banana_trunk_%s' % banana_suffix(state, i)} for state, i in itertools.product(lifecycles, range(0, 3))})).with_lang(lang('Banana Plant')).with_tag('fruit_tree_branch').with_block_loot({
                 'name': 'tfc:plant/banana_sapling',
                 'functions': [{**loot_tables.set_count(1, 2)}],
-                'conditions': [block_state_property('tfc:plant/banana_plant', {'stage': '2'})]
+                'conditions': [loot_tables.block_state_property('tfc:plant/banana_plant[stage=2]')]
             })
             rm.blockstate(('plant', 'dead_banana_plant'), variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/banana_trunk_%d_dead' % i} for i in range(0, 3)})).with_lang(lang('Dead Banana Plant')).with_tag('fruit_tree_branch')
             rm.block_model(('plant', 'banana_trunk_0_dead'), textures={"particle": "tfc:block/fruit_tree/banana_branch", "0": "tfc:block/fruit_tree/banana_branch"}, parent='tfc:block/plant/banana_trunk_0')
@@ -983,7 +983,7 @@ def generate(rm: ResourceManager):
                     stick_with_hammer,
                     {  # wood blocks will only drop themselves if non-natural
                         'name': 'tfc:wood/%s/%s' % (variant, wood),
-                        'conditions': block_state_property('tfc:wood/%s/%s' % (variant, wood), {'natural': 'false'})
+                        'conditions': loot_tables.block_state_property('tfc:wood/%s/%s[natural=false]' % (variant, wood))
                     },
                     'tfc:wood/%s/%s' % (variant.replace('wood', 'log'), wood)
                 ))
@@ -1141,7 +1141,7 @@ def generate(rm: ResourceManager):
         rm.block_model('wood/sluice/%s_upper' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_upper')
         rm.block_model('wood/sluice/%s_lower' % wood, textures={'texture': 'tfc:block/wood/sheet/%s' % wood}, parent='tfc:block/sluice_lower')
         block = rm.blockstate(('wood', 'sluice', wood), variants={**four_rotations('tfc:block/wood/sluice/%s_upper' % wood, (90, 0, 180, 270), suffix=',upper=true'), **four_rotations('tfc:block/wood/sluice/%s_lower' % wood, (90, 0, 180, 270), suffix=',upper=false')}).with_lang(lang('%s sluice', wood))
-        block.with_block_loot({'name': 'tfc:wood/sluice/%s' % wood, 'conditions': [block_state_property('tfc:wood/sluice/%s' % wood, {'upper': 'true'})]})
+        block.with_block_loot({'name': 'tfc:wood/sluice/%s' % wood, 'conditions': [loot_tables.block_state_property('tfc:wood/sluice/%s[upper=true]' % wood)]})
         rm.item_model(('wood', 'sluice', wood), parent='tfc:block/wood/sluice/%s_lower' % wood, no_textures=True)
 
         rm.blockstate(('wood', 'planks', '%s_sign' % wood), model='tfc:block/wood/planks/%s_sign' % wood).with_lang(lang('%s Sign', wood)).with_block_model({'particle': 'tfc:block/wood/planks/%s' % wood}, parent=None).with_block_loot('tfc:wood/sign/%s' % wood).with_tag('minecraft:standing_sings')
@@ -1319,15 +1319,6 @@ def four_rotations(model: str, rots: Tuple[Any, Any, Any, Any], suffix: str = ''
         '%sfacing=south%s' % (prefix, suffix): {'model': model, 'y': rots[2]},
         '%sfacing=west%s' % (prefix, suffix): {'model': model, 'y': rots[3]}
     }
-
-
-def block_state_property(block: str, properties: Dict[str, str]) -> Dict[str, Any]:
-    return {
-        'condition': 'minecraft:block_state_property',
-        'block': block,
-        'properties': dict((k, str(v)) for k, v in properties.items())
-    }
-
 
 def match_tag(tag: str) -> Dict[str, Any]:
     return {
