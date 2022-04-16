@@ -10,9 +10,10 @@ import java.awt.*;
 import java.util.List;
 import java.util.*;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Block;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
@@ -22,9 +23,11 @@ import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class RockLayerSettingsTests extends TestHelper
+@Disabled
+public class RockLayerSettingsVisualizations extends TestHelper
 {
     @Test
     public void testOldRockLayers()
@@ -32,10 +35,12 @@ public class RockLayerSettingsTests extends TestHelper
         final long seed = seed();
         final Random random = new Random(seed);
         final Map<ResourceLocation, RockSettings> map = new HashMap<>();
+        @SuppressWarnings("deprecation") final List<Block> blocks = Registry.BLOCK.stream().toList();
         for (int i = 0; i < 20; i++)
         {
             final ResourceLocation id = Helpers.identifier("rock_" + i);
-            map.put(id, new RockSettings(id, Blocks.STONE, Blocks.STONE, Blocks.STONE, Blocks.STONE, Blocks.STONE, Blocks.STONE, Optional.empty(), Optional.empty(), true, true, true));
+            final Block block = blocks.get(i);
+            map.put(id, new RockSettings(id, block, block, block, block, block, block, Optional.empty(), Optional.empty(), true, true, true));
         }
         final RockLayerSettings settings = new RockLayerSettings(map, 1);
         final List<RockSettings> rocks = settings.getRocks();
