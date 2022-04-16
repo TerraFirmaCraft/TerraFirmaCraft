@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:rock/oressure_plate/andesite"
+          "name": "tfc:rock/pressure_plate/andesite"
         }
       ],
       "conditions": [

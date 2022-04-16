@@ -50,7 +50,7 @@ def generate(rm: ResourceManager):
                 block = rm.block(('rock', 'pressure_plate', rock))
                 block.make_pressure_plate(pressure_plate_suffix='', texture='tfc:block/rock/raw/%s' % rock)
                 block.with_lang(lang('%s pressure plate', rock))
-                block.with_block_loot('tfc:rock/oressure_plate/%s' % rock)
+                block.with_block_loot('tfc:rock/pressure_plate/%s' % rock)
             elif block_type == 'button':
                 block = rm.block(('rock', 'button', rock))
                 block.make_button(button_suffix='', texture='tfc:block/rock/raw/%s' % rock)
