@@ -132,7 +132,6 @@ public final class ForgeEventHandler
         bus.addGenericListener(Level.class, ForgeEventHandler::attachWorldCapabilities);
         bus.addGenericListener(ItemStack.class, ForgeEventHandler::attachItemCapabilities);
         bus.addGenericListener(Entity.class, ForgeEventHandler::attachEntityCapabilities);
-        bus.addListener(ClientForgeEventHandler::renderFamiliarity);
         bus.addListener(ForgeEventHandler::onChunkWatch);
         bus.addListener(ForgeEventHandler::onChunkUnwatch);
         bus.addListener(ForgeEventHandler::onChunkLoad);

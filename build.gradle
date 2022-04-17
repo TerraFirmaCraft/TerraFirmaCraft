@@ -1,3 +1,6 @@
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
@@ -133,10 +136,24 @@ test {
 processResources {
     if (minifyResources) {
         doLast {
+            def jsonMinifyStart = System.currentTimeMillis()
+            def jsonMinified = 0
+            def jsonBytesBefore = 0, jsonBytesAfter = 0;
             fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
-                file.text = file.text
-                    .replace('"__comment__":"This file was automatically created by mcresources",', '')
+                jsonMinified++
+                def oldLength = file.length()
+                try {
+                    file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+                        .replace('"__comment__":"This file was automatically created by mcresources",', '')
+                }
+                catch(Exception e ){
+                    System.out.println("Parsing JSON error in " + file.path)
+                    throw e
+                }
+                jsonBytesBefore += oldLength;
+                jsonBytesAfter += file.length();
             }
+            println('Minified ' + jsonMinified + ' json files. Reduced ' + (int) (jsonBytesBefore / 1024) + ' kB to ' + (int) (jsonBytesAfter / 1024) + ' kB (' + (String.format('%.2f', 100f * jsonBytesAfter / jsonBytesBefore)) + '%). Took ' + (System.currentTimeMillis() - jsonMinifyStart) + 'ms.')
         }
     }
 }
