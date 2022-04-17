@@ -1,9 +1,6 @@
 package net.dries007.tfc.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -21,10 +18,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
@@ -35,6 +36,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -72,7 +74,8 @@ public final class SelfTests
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
-                validateOwnBlockLootTables()
+                validateOwnBlockLootTables(),
+                validateOwnBlockMineableTags()
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
         }
@@ -181,6 +184,24 @@ public final class SelfTests
             .collect(Collectors.toSet());
         return validateBlockLootTables(stream(ForgeRegistries.BLOCKS, MOD_ID)
             .filter(b -> !expectedNoLootTableBlocks.contains(b)), LOGGER);
+    }
+
+    private static boolean validateOwnBlockMineableTags()
+    {
+        final Set<Block> expectedNotMineableBlocks = Set.of(TFCBlocks.PLACED_ITEM.get(), TFCBlocks.PIT_KILN.get(), TFCBlocks.SCRAPING.get());
+        final Set<TagKey<Block>> mineableTags = Set.of(
+            BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_HOE, BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_SHOVEL,
+            TFCTags.Blocks.MINEABLE_WITH_PROPICK, TFCTags.Blocks.MINEABLE_WITH_HAMMER, TFCTags.Blocks.MINEABLE_WITH_KNIFE, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, TFCTags.Blocks.MINEABLE_WITH_CHISEL
+        );
+        // All non-fluid, non-exceptional, blocks with hardness > 0, < infinity, should define a tool
+        final List<Block> missingTag = stream(ForgeRegistries.BLOCKS, MOD_ID)
+            .filter(b -> !(b instanceof LiquidBlock)
+                && b.defaultDestroyTime() > 0
+                && !expectedNotMineableBlocks.contains(b)
+                && mineableTags.stream().noneMatch(t -> Helpers.isBlock(b, t)))
+            .toList();
+
+        return logRegistryErrors("{} non-fluid blocks have no mineable_with_<tool> tag.", missingTag, LOGGER);
     }
 
     /**
