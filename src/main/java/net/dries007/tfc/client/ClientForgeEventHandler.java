@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,6 +35,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.client.event.DrawSelectionEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -50,9 +57,11 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
@@ -163,6 +172,7 @@ public class ClientForgeEventHandler
             ItemSizeManager.addTooltipInfo(stack, text);
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+            stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
 
             // Metal content, inferred from a matching heat recipe.
             ItemStackInventory wrapper = new ItemStackInventory(stack);
@@ -358,6 +368,68 @@ public class ClientForgeEventHandler
             RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
             poseStack.popPose();
             event.setCanceled(true);
+        }
+    }
+
+    public static void renderFamiliarity(RenderLivingEvent.Post<?, ?> event)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        if (mc.player == null) return;
+        Player player = mc.player;
+
+        if (player.isShiftKeyDown() && mc.gui instanceof ForgeIngameGui gui && IngameOverlays.setup(gui, mc))
+        {
+            Entity entity = mc.crosshairPickEntity;
+            if (entity instanceof TFCAnimalProperties animal && animal.getAdultFamiliarityCap() > 0 && animal.equals(event.getEntity()))
+            {
+                if (player.closerThan(entity, 5.0F))
+                {
+                    PoseStack stack = event.getPoseStack();
+                    stack.pushPose();
+                    stack.translate(0F, entity.getBbHeight() + 1.2F, 0F); // manipulate this the position of the heart
+
+                    final float scale = 0.0266666688F;
+                    stack.scale(-scale, -scale, -scale);
+                    stack.translate(0F, 0.25F / scale, 0.0F);
+                    stack.scale(0.5F, 0.5F, 0.5F); // manipulate this to change the size of the heart
+                    stack.mulPose(mc.getEntityRenderDispatcher().cameraOrientation()); // rotates the heart to face the player
+
+                    float familiarity = Math.max(0.0F, Math.min(1.0F, animal.getFamiliarity()));
+                    int u;
+                    int fontColor;
+                    if (familiarity >= animal.getAdultFamiliarityCap() && animal.getAgeType() != TFCAnimalProperties.Age.CHILD)
+                    {
+                        u = 132; // Render a red-ish outline for adults that cannot be familiarized more
+                        fontColor = Color.RED.getRGB();
+                    }
+                    else if (familiarity >= 0.3F)
+                    {
+                        u = 112; // Render a white outline for the when the familiarity stopped decaying
+                        fontColor = Color.WHITE.getRGB();
+                    }
+                    else
+                    {
+                        u = 92;
+                        fontColor = Color.GRAY.getRGB();
+                    }
+
+                    if (TFCConfig.CLIENT.displayFamiliarityAsPercent.get())
+                    {
+                        String string = String.format("%.2f", familiarity * 100);
+                        stack.translate(0F, 40F, 0F);
+                        mc.font.draw(stack, string, 0, 0, fontColor);
+                    }
+                    else
+                    {
+                        gui.blit(stack, -8, 0, u, 40, 16, 16);
+
+                        stack.translate(0F, 0F,-0.001F);
+                        gui.blit(stack, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
+
+                        stack.popPose();
+                    }
+                }
+            }
         }
     }
 }

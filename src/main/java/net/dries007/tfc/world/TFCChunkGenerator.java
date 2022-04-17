@@ -310,6 +310,14 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
+    public Aquifer getOrCreateAquifer(ChunkAccess chunk)
+    {
+        final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
+        final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
+        return getOrCreateAquifer(chunk, settings, baseBlockSource);
+    }
+
+    @Override
     protected Codec<TFCChunkGenerator> codec()
     {
         return CODEC;
@@ -471,7 +479,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Unlock before surfaces are built, as they use locks directly
         sections.forEach(LevelChunkSection::release);
 
-        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.getLocalBiomes(), filler.getSlopeMap(), random, getSeaLevel(), settings.minY());
+        surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.getLocalBiomes(), filler.getLocalBiomeWeights(), filler.getSlopeMap(), random, getSeaLevel(), settings.minY());
 
         return CompletableFuture.completedFuture(chunk);
     }

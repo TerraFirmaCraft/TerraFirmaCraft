@@ -67,6 +67,32 @@
         "minCount": 2,
         "maxCount": 4
       }
+    ],
+    "creature": [
+      {
+        "type": "tfc:pig",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:cow",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:alpaca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:chicken",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      }
     ]
   },
   "player_spawn_friendly": false,

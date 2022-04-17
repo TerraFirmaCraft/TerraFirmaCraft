@@ -8,9 +8,9 @@ package net.dries007.tfc.client;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.util.ForgeSoundType;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -68,6 +68,11 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("wattle_dyed");
     public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("wattle_daubed");
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("wattle_woven");
+
+    public static final RegistryObject<SoundEvent> ALPACA_HURT = create("animal.alpaca.hurt");
+    public static final RegistryObject<SoundEvent> ALPACA_STEP = create("animal.alpaca.step");
+    public static final RegistryObject<SoundEvent> ALPACA_AMBIENT = create("animal.alpaca.ambient");
+    public static final RegistryObject<SoundEvent> ALPACA_DEATH = create("animal.alpaca.death");
 
     public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_HIT, CHARCOAL_PILE_FALL);
     public static final ForgeSoundType THATCH = new ForgeSoundType(1.0f, 1.0f, THATCH_BREAK, THATCH_STEP, THATCH_PLACE, THATCH_HIT, THATCH_FALL);

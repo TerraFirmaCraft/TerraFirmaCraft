@@ -542,10 +542,10 @@ NUTRIENTS = {
     'dairy': 'Creamy'
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis']
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
-BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter']
+BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box']
 TANNIN_WOOD_TYPES = ['oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia']
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
@@ -588,6 +588,13 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
     'turtle': spawner('tfc:turtle', min_count=2, max_count=5)
 }
 
+LAND_CREATURES: Dict[str, Dict[str, Any]] = {
+    'pig': spawner('tfc:pig', min_count=1, max_count=4),
+    'cow': spawner('tfc:cow', min_count=1, max_count=4),
+    'alpaca': spawner('tfc:alpaca', min_count=1, max_count=4),
+    'chicken': spawner('tfc:chicken', min_count=2, max_count=6)
+}
+
 DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
 
 # This is here because it's used all over, and it's easier to import with all constants
@@ -618,6 +625,11 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
     'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
+    # Sounds todo: subtitles for everything and standardize the format
+    'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
+    'tfc.animal.alpaca.hurt': 'Alpaca Yelps',
+    'tfc.animal.alpaca.death': 'Alpaca Dies',
+    'tfc.animal.alpaca.step': 'Alpaca Steps',
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -721,6 +733,16 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
     'tfc.tooltip.seal_barrel': 'Seal',
     'tfc.tooltip.unseal_barrel': 'Unseal',
+    'tfc.tooltip.fertilized': '§6Fertilized',
+    'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
+    'tfc.tooltip.egg_hatch_today': 'Will hatch today!',
+    'tfc.tooltip.animal.pregnant': 'This %s is pregnant!',
+    'tfc.tooltip.animal.male_milk': 'This %s is a male.',
+    'tfc.tooltip.animal.old': 'This %s is too old to produce.',
+    'tfc.tooltip.animal.young': 'This %s is too young to produce.',
+    'tfc.tooltip.animal.low_familiarity': 'This %s is not familiar enough to produce.',
+    'tfc.tooltip.animal.no_milk': 'This %s has no milk.',
+    'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
 
     # Commands
 
@@ -760,12 +782,25 @@ DEFAULT_LANG = {
     'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
     'entity.tfc.penguin': 'Penguin',
     'entity.tfc.turtle': 'Turtle',
+    'entity.tfc.pig': 'Pig',
+    'entity.tfc.pig.male': 'Pig',
+    'entity.tfc.pig.female': 'Sow',
+    'entity.tfc.cow': 'Cow',
+    'entity.tfc.cow.female': 'Cow',
+    'entity.tfc.cow.male': 'Bull',
+    'entity.tfc.alpaca': 'Alpaca',
+    'entity.tfc.alpaca.female': 'Female Alpaca',
+    'entity.tfc.alpaca.male': 'Male Alpaca',
     'entity.tfc.polar_bear': 'Polar Bear',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',
+    'entity.tfc.seat': 'Seat',
+    'entity.tfc.chicken': 'Chicken',
+    'entity.tfc.chicken.male': 'Rooster',
+    'entity.tfc.chicken.female': 'Chicken',
     **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums

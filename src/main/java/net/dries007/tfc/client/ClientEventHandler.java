@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.base.Stopwatch;
-import org.apache.logging.log4j.LogManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
@@ -26,6 +25,8 @@ import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
+import net.minecraft.client.model.ChickenModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.SquidModel;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
@@ -62,8 +63,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.model.*;
+import net.dries007.tfc.client.model.entity.*;
+import net.dries007.tfc.client.particle.BubbleParticle;
+import net.dries007.tfc.client.particle.SteamParticle;
+import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.particle.*;
-import net.dries007.tfc.client.render.*;
 import net.dries007.tfc.client.render.blockentity.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -119,6 +124,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
             MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
             MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
+            MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
             MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
             MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
@@ -275,6 +281,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
         event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), FishingHookRenderer::new);
         event.registerEntityRenderer(TFCEntities.GLOW_ARROW.get(), GlowArrowRenderer::new);
+        event.registerEntityRenderer(TFCEntities.SEAT.get(), NoopRenderer::new);
         for (Wood wood : Wood.VALUES)
         {
             event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));
@@ -296,6 +303,10 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), TFCPolarBearRenderer::new);
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
+        event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
+        event.registerEntityRenderer(TFCEntities.COW.get(), ctx -> new AnimalRenderer<>(ctx, new TFCCowModel(RenderHelpers.bakeSimple(ctx, "cow")), "cow"));
+        event.registerEntityRenderer(TFCEntities.ALPACA.get(), ctx -> new AnimalRenderer<>(ctx, new AlpacaModel(RenderHelpers.bakeSimple(ctx, "alpaca")), "alpaca"));
+        event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new OviparousRenderer<>(ctx, new ChickenModel<>(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken", "rooster", "chick"));
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -336,6 +347,10 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("polar_bear"), TFCPolarBearModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cow"), TFCCowModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("alpaca"), AlpacaModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("chicken"), ChickenModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

@@ -193,6 +193,10 @@ public final class TFCItems
     public static final RegistryObject<Item> POLAR_BEAR_EGG = registerSpawnEgg(TFCEntities.POLAR_BEAR, 15921906, 9803152);
     public static final RegistryObject<Item> SQUID_EGG = registerSpawnEgg(TFCEntities.SQUID, 2243405, 7375001);
     public static final RegistryObject<Item> OCTOPOTEUTHIS_EGG = registerSpawnEgg(TFCEntities.OCTOPOTEUTHIS, 611926, 8778172);
+    public static final RegistryObject<Item> PIG_EGG = registerSpawnEgg(TFCEntities.PIG, 15771042, 14377823);
+    public static final RegistryObject<Item> COW_EGG = registerSpawnEgg(TFCEntities.COW, 4470310, 10592673);
+    public static final RegistryObject<Item> ALPACA_EGG = registerSpawnEgg(TFCEntities.ALPACA, 0x00CC66, 0x006633);
+    public static final RegistryObject<Item> CHICKEN_EGG = registerSpawnEgg(TFCEntities.CHICKEN, 10592673, 16711680);
 
     // Pottery
 

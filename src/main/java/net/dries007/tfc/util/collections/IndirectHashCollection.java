@@ -10,11 +10,15 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.util.CacheInvalidationListener;
 
 /**
@@ -39,7 +43,31 @@ public class IndirectHashCollection<K, R>
 
     public static <C extends Container, K, R extends Recipe<C>> IndirectHashCollection<K, R> createForRecipe(Function<R, Iterable<? extends K>> keyExtractor, Supplier<RecipeType<R>> recipeType)
     {
-        return new IndirectHashCollection<>(keyExtractor, () -> ServerLifecycleHooks.getCurrentServer().getRecipeManager().getAllRecipesFor(recipeType.get()));
+        return new IndirectHashCollection<>(keyExtractor, () -> getTheRecipeManagerInTheMostHackyAwfulWay().getAllRecipesFor(recipeType.get()));
+    }
+
+    /**
+     * Cannot cache recipes on resource reload, when a level is available, as tags aren't present and can't be resolved. Recipes may be accessed through {@link CacheInvalidationListener} but holding references to them is awkward for client side caches.
+     * Resolving recipes needs access to a {@link RecipeManager} which needs to be obtained from a {@link Level} which is prohibitively difficult for use cases such as item stack capabilities, where a level is not readily available.
+     * This seems to work.
+     */
+    private static RecipeManager getTheRecipeManagerInTheMostHackyAwfulWay()
+    {
+        final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server != null)
+        {
+            return server.getRecipeManager();
+        }
+        try
+        {
+            final Level level = ClientHelpers.getLevel();
+            if (level != null)
+            {
+                return level.getRecipeManager();
+            }
+        }
+        catch (Throwable t) { /* super safe */ }
+        throw new IllegalStateException("For the love of god");
     }
 
     private final Map<K, Collection<R>> indirectResultMap;

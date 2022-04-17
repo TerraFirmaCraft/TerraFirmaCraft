@@ -48,7 +48,7 @@ public class SurfaceManager
         this.builders = collectSurfaceBuilders(seed);
     }
 
-    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, Biome[] accurateChunkBiomes, double[] slopeMap, RandomSource random, int seaLevel, int minY)
+    public void buildSurface(LevelAccessor world, ChunkAccess chunk, RockLayerSettings rockLayerSettings, ChunkData chunkData, Biome[] accurateChunkBiomes, double[] accurateChunkBiomeWeights, double[] slopeMap, RandomSource random, int seaLevel, int minY)
     {
         final boolean debugSlope = false;
 
@@ -69,11 +69,12 @@ public class SurfaceManager
                 final double slope = sampleSlope(slopeMap, x, z);
 
                 final Biome biome = accurateChunkBiomes[x + 16 * z];
+                final double weight = accurateChunkBiomeWeights[x + 16 * z];
                 final BiomeExtension extension = TFCBiomes.getExtensionOrThrow(world, biome);
                 final BiomeVariants variants = extension.variants();
                 final SurfaceBuilder builder = builders.get(variants);
 
-                context.buildSurface(biome, variants, builder, blockX + x, y, blockZ + z, slope);
+                context.buildSurface(biome, weight, variants.isSalty(), builder, blockX + x, y, blockZ + z, slope);
             }
         }
     }

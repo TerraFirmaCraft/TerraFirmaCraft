@@ -99,6 +99,7 @@ public class ChunkNoiseFiller
 
     private final int[] surfaceHeight; // 16x16, block pos resolution
     private final Biome[] localBiomes; // 16x16, block pos resolution
+    private final double[] localBiomeWeights; // 16x16, block pos resolution
 
     // Current local position / context
     private int blockX, blockZ; // Absolute x/z positions
@@ -146,6 +147,7 @@ public class ChunkNoiseFiller
 
         this.surfaceHeight = new int[16 * 16];
         this.localBiomes = new Biome[16 * 16];
+        this.localBiomeWeights = new double[16 * 16];
     }
 
     public TFCAquifer aquifer()
@@ -237,6 +239,11 @@ public class ChunkNoiseFiller
     public Biome[] getLocalBiomes()
     {
         return localBiomes;
+    }
+
+    public double[] getLocalBiomeWeights()
+    {
+        return localBiomeWeights;
     }
 
     /**
@@ -665,6 +672,7 @@ public class ChunkNoiseFiller
         if (updateArrays)
         {
             localBiomes[localX + 16 * localZ] = biomeAt;
+            localBiomeWeights[localX + 16 * localZ] = biomeWeights.getOrDefault(biomeAt, 0.5);
             surfaceHeight[localX + 16 * localZ] = (int) actualHeight;
         }
 

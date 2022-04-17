@@ -79,13 +79,11 @@
     "subtitle": "subtitles.block.tfc.wattle.woven"
   },
   "ceramic_break": {
-    "category": "ambient",
     "sounds": [
       "tfc:ceramic_break"
     ]
   },
   "firestarter": {
-    "category": "ambient",
     "sounds": [
       "tfc:firestarter1",
       "tfc:firestarter2",
@@ -100,32 +98,17 @@
     ]
   },
   "jug_blow": {
-    "category": "ambient",
     "sounds": [
       "tfc:jug_blow"
     ]
   },
-  "item.throw": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:itemthrow"
-    ]
-  },
-  "animal.rooster.cry": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:rooster1"
-    ]
-  },
   "quern_drag": {
-    "category": "block",
     "sounds": [
       "tfc:stonedrag1",
       "tfc:stonedrag2"
     ]
   },
   "tool_rack_place": {
-    "category": "block",
     "sounds": [
       {
         "name": "minecraft:entity/itemframe/add_item1",
@@ -147,7 +130,6 @@
     "subtitle": "subtitles.block.tfc.tool_rack.place_item"
   },
   "loom_weave": {
-    "category": "block",
     "sounds": [
       {
         "name": "minecraft:step/wood1",
@@ -177,7 +159,6 @@
     ]
   },
   "panning": {
-    "category": "player",
     "sounds": [
       "minecraft:dig/sand1",
       "minecraft:dig/sand2",
@@ -187,7 +168,6 @@
     "subtitle": "subtitles.item.tfc.pan.use"
   },
   "knap_stone": {
-    "category": "player",
     "sounds": [
       {
         "name": "tfc:knap_stone",
@@ -204,7 +184,6 @@
     ]
   },
   "knap_clay": {
-    "category": "player",
     "sounds": [
       {
         "name": "tfc:knap_clay",
@@ -221,7 +200,6 @@
     ]
   },
   "knap_leather": {
-    "category": "player",
     "sounds": [
       {
         "name": "tfc:knap_leather",
@@ -238,154 +216,63 @@
     ]
   },
   "bellows.blow.air": {
-    "category": "block",
     "sounds": [
       "tfc:bellows1"
     ]
   },
   "dirt_slide_short": {
-    "category": "block",
     "sounds": [
       "tfc:dirt_slide_short_1",
       "tfc:dirt_slide_short_2"
     ]
   },
   "rock_slide_long": {
-    "category": "block",
     "sounds": [
       "tfc:rock_slide_long_1",
       "tfc:rock_slide_long_2"
     ]
   },
   "rock_slide_short": {
-    "category": "block",
     "sounds": [
       "tfc:rock_slide_short_1",
       "tfc:rock_slide_short_2"
     ]
   },
-  "anvil.metalimpact": {
-    "category": "block",
+  "animal.alpaca.ambient": {
+    "subtitle": "tfc.animal.alpaca.ambient",
     "sounds": [
-      "tfc:metalimpact1",
-      "tfc:metalimpact2",
-      "tfc:metalimpact3",
-      "tfc:metalimpact4"
+      "tfc:alpaca1",
+      "tfc:alpaca2",
+      "tfc:alpaca3",
+      "tfc:alpacacry1",
+      "tfc:alpacacry2",
+      "tfc:alpacacry3"
     ]
   },
-  "animal.deer.say": {
-    "category": "ambient",
+  "animal.alpaca.hurt": {
+    "subtitle": "tfc.animal.alpaca.hurt",
     "sounds": [
-      "tfc:deer1",
-      "tfc:deer2",
-      "tfc:deer3",
-      "tfc:deer4",
-      "tfc:deer5",
-      "tfc:deer6",
-      "tfc:deer7"
+      "tfc:alpacahurt1",
+      "tfc:alpacahurt2"
     ]
   },
-  "animal.deer.cry": {
-    "category": "ambient",
+  "animal.alpaca.step": {
+    "subtitle": "tfc.animal.alpaca.step",
     "sounds": [
-      "tfc:deercry1",
-      "tfc:deercry2",
-      "tfc:deercry3",
-      "tfc:deercry4"
+      "minecraft:mob/sheep/step1",
+      "minecraft:mob/sheep/step2",
+      "minecraft:mob/sheep/step3",
+      "minecraft:mob/sheep/step4",
+      "minecraft:mob/sheep/step5"
     ]
   },
-  "animal.deer.hurt": {
-    "category": "ambient",
+  "animal.alpaca.death": {
+    "subtitle": "tfc.animal.alpaca.death",
     "sounds": [
-      "tfc:deerhurt1"
-    ]
-  },
-  "animal.deer.death": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:deerdeath1"
-    ]
-  },
-  "animal.bear.say": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:bear1",
-      "tfc:bear2",
-      "tfc:bear3",
-      "tfc:bear4",
-      "tfc:bear5",
-      "tfc:bear6"
-    ]
-  },
-  "animal.bear.cry": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:bearcry1",
-      "tfc:bearcry2",
-      "tfc:bearcry3",
-      "tfc:bearcry4"
-    ]
-  },
-  "animal.bear.cub.cry": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:bearcubcry1"
-    ]
-  },
-  "animal.bear.hurt": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:bearhurt1"
-    ]
-  },
-  "animal.bear.death": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:beardeath1"
-    ]
-  },
-  "animal.pheasant.say": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:pheasant1",
-      "tfc:pheasant2"
-    ]
-  },
-  "animal.pheasant.chick.say": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:pheasantchick1"
-    ]
-  },
-  "animal.pheasant.hurt": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:pheasanthurt1"
-    ]
-  },
-  "animal.pheasant.death": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:pheasantdeath1"
-    ]
-  },
-  "animal.cricket": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:cricket1",
-      "tfc:cricket2",
-      "tfc:cricket3",
-      "tfc:cricket4"
-    ]
-  },
-  "animal.frog": {
-    "category": "ambient",
-    "sounds": [
-      "tfc:frog1"
+      "tfc:alpacadeath1"
     ]
   },
   "charcoal_break": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:charcoaldig1",
@@ -402,7 +289,6 @@
     ]
   },
   "charcoal_fall": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:charcoaldig1",
@@ -419,7 +305,6 @@
     ]
   },
   "charcoal_hit": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:charcoalstep1",
@@ -436,7 +321,6 @@
     ]
   },
   "charcoal_place": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:charcoaldig1",
@@ -453,7 +337,6 @@
     ]
   },
   "charcoal_step": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:charcoalstep1",
@@ -470,7 +353,6 @@
     ]
   },
   "thatch_hit": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thatch_hit1",
@@ -491,7 +373,6 @@
     ]
   },
   "thatch_place": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thatch_place1",
@@ -508,7 +389,6 @@
     ]
   },
   "thatch_step": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thatch_step1",
@@ -525,7 +405,6 @@
     ]
   },
   "thatch_break": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thatch_break1",
@@ -546,7 +425,6 @@
     ]
   },
   "thatch_fall": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thatch_fall1",
@@ -555,7 +433,6 @@
     ]
   },
   "peat_break": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:peat_break1",
@@ -576,7 +453,6 @@
     ]
   },
   "peat_fall": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:peat_fall",
@@ -589,7 +465,6 @@
     ]
   },
   "peat_hit": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:peat_hit1",
@@ -606,7 +481,6 @@
     ]
   },
   "peat_place": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:peat_place1",
@@ -623,7 +497,6 @@
     ]
   },
   "peat_step": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:peat_step1",
@@ -640,7 +513,6 @@
     ]
   },
   "thin_hit": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thin_hit1",
@@ -657,7 +529,6 @@
     ]
   },
   "thin_break": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thin_break1",
@@ -670,7 +541,6 @@
     ]
   },
   "thin_fall": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thin_fall",
@@ -679,7 +549,6 @@
     ]
   },
   "thin_place": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thin_place1",
@@ -696,7 +565,6 @@
     ]
   },
   "thin_step": {
-    "category": "block",
     "sounds": [
       {
         "name": "tfc:thin_step1",

@@ -98,8 +98,9 @@ public class BadlandsSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        float heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
-        if (inverted ? startY + 5 < heightVariation : startY - 5 > heightVariation)
+        final float heightVariation = grassHeightVariationNoise.noise(context.pos().getX(), context.pos().getZ());
+        final float weightVariation = (float) (1f - context.weight()) * 23f;
+        if (inverted ? startY + 5 < heightVariation + weightVariation : startY - 5 > heightVariation - weightVariation)
         {
             NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
         }

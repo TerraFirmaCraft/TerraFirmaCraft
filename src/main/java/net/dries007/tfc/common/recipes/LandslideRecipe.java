@@ -40,7 +40,6 @@ import net.dries007.tfc.util.collections.IndirectHashCollection;
 public class LandslideRecipe extends SimpleBlockRecipe
 {
     public static final IndirectHashCollection<Block, LandslideRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.LANDSLIDE);
-    private static final Random RANDOM = new Random();
 
     @Nullable
     public static LandslideRecipe getRecipe(BlockState state)
@@ -58,27 +57,29 @@ public class LandslideRecipe extends SimpleBlockRecipe
     /**
      * Tries to cause a land slide from a given block
      *
+     * @param state {@code level.getBlockState(pos)}
      * @return true if a land slide actually occurred
      */
     @SuppressWarnings("UnusedReturnValue")
-    public static boolean tryLandslide(Level world, BlockPos pos, BlockState state)
+    public static boolean tryLandslide(Level level, BlockPos pos, BlockState state)
     {
-        if (!world.isClientSide() && TFCConfig.SERVER.enableBlockLandslides.get())
+        if (!level.isClientSide() && TFCConfig.SERVER.enableBlockLandslides.get())
         {
-            BlockPos fallPos = getLandSlidePos(world, pos);
+            final BlockPos fallPos = getLandslidePos(level, pos, state);
             if (fallPos != null)
             {
-                LandslideRecipe recipe = getRecipe(state);
+                final LandslideRecipe recipe = getRecipe(state);
                 if (recipe != null)
                 {
-                    BlockState fallingState = recipe.getBlockCraftingResult(state);
+                    final BlockState fallingState = recipe.getBlockCraftingResult(state);
                     if (!fallPos.equals(pos))
                     {
-                        world.removeBlock(pos, false);
+                        level.removeBlock(pos, false); // Remove the original position, which would be the falling block
+                        level.destroyBlock(fallPos, true); // Destroy the block that currently occupies the pos we are going to move sideways into
                     }
-                    world.setBlockAndUpdate(fallPos, fallingState);
-                    world.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.4f, 1.0f);
-                    world.addFreshEntity(new TFCFallingBlockEntity(world, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
+                    level.setBlockAndUpdate(fallPos, fallingState);
+                    level.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.4f, 1.0f);
+                    level.addFreshEntity(new TFCFallingBlockEntity(level, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
                 }
                 return true;
             }
@@ -87,26 +88,26 @@ public class LandslideRecipe extends SimpleBlockRecipe
     }
 
     @Nullable
-    public static BlockPos getLandSlidePos(Level world, BlockPos pos)
+    public static BlockPos getLandslidePos(Level level, BlockPos pos, BlockState fallingState)
     {
-        if (Support.isSupported(world, pos))
+        if (Support.isSupported(level, pos))
         {
             return null;
         }
-        else if (TFCFallingBlockEntity.canFallThrough(world, pos.below()))
+        else if (TFCFallingBlockEntity.canFallThrough(level, pos.below(), Direction.DOWN, fallingState))
         {
             return pos;
         }
         else
         {
             // Check if supported by at least two horizontals, or one on top
-            if (!isSupportedOnSide(world, pos, Direction.UP))
+            if (!isSupportedOnSide(level, pos, Direction.UP))
             {
                 int supportedDirections = 0;
                 List<BlockPos> possibleDirections = new ArrayList<>();
                 for (Direction side : Direction.Plane.HORIZONTAL)
                 {
-                    if (isSupportedOnSide(world, pos, side))
+                    if (isSupportedOnSide(level, pos, side))
                     {
                         supportedDirections++;
                         if (supportedDirections >= 2)
@@ -118,8 +119,9 @@ public class LandslideRecipe extends SimpleBlockRecipe
                     else
                     {
                         // In order to fall in a direction, we need both the block immediately next to, and the one below to be open
-                        BlockPos posSide = pos.relative(side);
-                        if (TFCFallingBlockEntity.canFallThrough(world, posSide) && TFCFallingBlockEntity.canFallThrough(world, posSide.below()))
+                        // The one adjacent needs to be breakable, wheras the one below just needs to be unstable
+                        final BlockPos posSide = pos.relative(side), posSideBelow = posSide.below();
+                        if (TFCFallingBlockEntity.canFallThrough(level, posSide, side, fallingState) && TFCFallingBlockEntity.canFallThrough(level, posSideBelow, Direction.DOWN))
                         {
                             possibleDirections.add(posSide);
                         }
@@ -128,7 +130,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
 
                 if (!possibleDirections.isEmpty())
                 {
-                    return possibleDirections.get(RANDOM.nextInt(possibleDirections.size()));
+                    return possibleDirections.get(level.getRandom().nextInt(possibleDirections.size()));
                 }
             }
         }

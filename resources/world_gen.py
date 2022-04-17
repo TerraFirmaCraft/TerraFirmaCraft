@@ -975,12 +975,12 @@ def forest_config(rm: ResourceManager, min_rain: float, max_rain: float, min_tem
     if tree != 'palm':
         cfg['groundcover'] += [{'block': 'tfc:wood/fallen_leaves/%s' % tree}]
     if tree not in ('acacia', 'willow'):
-        cfg.update({'fallen_log': 'tfc:wood/log/%s' % tree})
+        cfg['fallen_log'] = 'tfc:wood/log/%s' % tree
     else:
-        cfg.update({'fallen_tree_chance': 0})
+        cfg['fallen_tree_chance'] = 0
     if tree not in ('palm', 'rosewood', 'sycamore'):
         cfg['bush_log'] = utils.block_state('tfc:wood/wood/%s[natural=true,axis=y]' % tree)
-        cfg.update({'bush_leaves': 'tfc:wood/leaves/%s' % tree})
+        cfg['bush_leaves'] = 'tfc:wood/leaves/%s' % tree
     if old_growth:
         cfg['old_growth_tree'] = 'tfc:tree/%s_large' % tree
     rm.configured_feature('tree/%s_entry' % tree, 'tfc:forest_entry', cfg)
@@ -1227,8 +1227,6 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     if lake_features == 'default':  # Default = Lakes are on all non-ocean biomes. True/False to force either way
         lake_features = not ocean_features
 
-
-
     # Features
     features = [
         ['tfc:erosion'],  # erosion
@@ -1255,25 +1253,17 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
         if name == 'shore':
             features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in SHORE_DECORATORS]
-            spawners.update({
-                'creature': [entity for entity in SHORE_CREATURES.values()]
-            })
+            spawners['creature'] = [entity for entity in SHORE_CREATURES.values()]
         else:
             features[Decoration.SURFACE_DECORATION] += ['tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
             features[Decoration.SURFACE_DECORATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
 
-        spawners.update({
-            'water_ambient': [entity for entity in OCEAN_AMBIENT.values()],
-            'water_creature': [entity for entity in OCEAN_CREATURES.values()]
-        })
+        spawners['water_ambient'] = [entity for entity in OCEAN_AMBIENT.values()]
+        spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()]
     if category == 'river':
-        spawners.update({
-            'water_ambient': [entity for entity in LAKE_AMBIENT.values()]
-        })
+        spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
     if name.find('lake') != -1:
-        spawners.update({
-            'water_creature': [entity for entity in LAKE_CREATURES.values()]
-        })
+        spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
         features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
@@ -1286,6 +1276,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
         features[Decoration.SURFACE_DECORATION] += ['tfc:land_plants']
+        spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
 
     if volcano_features:
         features[Decoration.LARGE_FEATURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure']

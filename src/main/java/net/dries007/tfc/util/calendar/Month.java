@@ -63,15 +63,11 @@ public enum Month
 
     public String getTranslationKey(Style style)
     {
-        switch (style)
-        {
-            case LONG_MONTH:
-                return Helpers.getEnumTranslationKey(this);
-            case SEASON:
-                return Helpers.getEnumTranslationKey(this, "season");
-            default:
-                throw new IllegalArgumentException("Unknown text style? " + style);
-        }
+        return switch (style)
+            {
+                case LONG_MONTH -> Helpers.getEnumTranslationKey(this);
+                case SEASON -> Helpers.getEnumTranslationKey(this, "season");
+            };
     }
 
     public Season getSeason()
