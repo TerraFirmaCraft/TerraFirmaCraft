@@ -150,6 +150,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         return collapse(recipe.getInputFluid());
     }
 
+    @NotNull
     protected List<ItemStack> getItemInput(T recipe)
     {
         ItemStackIngredient input = recipe.getInputItem();
@@ -163,7 +164,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         if (!output.result().isEmpty() && output.result().stream().anyMatch(stack -> !stack.isEmpty())) return output;
 
         ItemStack result = recipe.getResultItem();
-        return new RecipeResult<>(!isSame(result, recipe.getInputItem().ingredient().getItems(), ItemStack::getItem), result.isEmpty() ? new ArrayList<>() : List.of(result));
+        return new RecipeResult<>(!isSame(result, recipe.getInputItem().ingredient().getItems(), ItemStack::getItem), result.isEmpty() ? List.of() : List.of(result));
     }
 
     @NotNull

@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Arrays;
+
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
@@ -32,6 +35,7 @@ public class HeatableIngredient extends DelegateIngredient
 
     private final int minTemp;
     private final int maxTemp;
+    private @Nullable ItemStack[] itemStacks;
 
     protected HeatableIngredient(@Nullable Ingredient delegate, int minTemp, int maxTemp)
     {
@@ -49,7 +53,7 @@ public class HeatableIngredient extends DelegateIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        if (super.test(stack) && stack != null)
+        if (super.test(stack) && stack != null && !stack.isEmpty())
         {
             return stack.getCapability(HeatCapability.CAPABILITY)
                 .map(IHeat::getTemperature)
@@ -57,6 +61,44 @@ public class HeatableIngredient extends DelegateIngredient
                 .orElse(false);
         }
         return false;
+    }
+
+    // Just in case, I guess
+    @Override
+    protected void invalidate()
+    {
+        itemStacks = null;
+        super.invalidate();
+    }
+
+    @Override
+    public ItemStack[] getItems()
+    {
+        dissolve();
+        return itemStacks;
+    }
+
+    private void dissolve()
+    {
+        if (itemStacks == null)
+        {
+            if (delegate != null)
+            {
+                // The items from the delegate that are heatable
+                itemStacks = Arrays.stream(delegate.getItems()).distinct().filter(i -> i.getCapability(HeatCapability.CAPABILITY).isPresent()).toArray(ItemStack[]::new);
+            }
+            else
+            {
+                // All heatable items
+                itemStacks = HeatCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(Item::getDefaultInstance).toArray(ItemStack[]::new);
+            }
+        }
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        return itemStacks == null || itemStacks.length == 0;
     }
 
     public enum Serializer implements IIngredientSerializer<HeatableIngredient>

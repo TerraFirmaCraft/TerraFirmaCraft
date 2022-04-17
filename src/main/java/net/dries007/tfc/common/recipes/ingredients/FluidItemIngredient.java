@@ -20,6 +20,8 @@ import org.jetbrains.annotations.Nullable;
 public class FluidItemIngredient extends DelegateIngredient
 {
     private final FluidStackIngredient fluid;
+    @Nullable
+    private ItemStack[] itemStacks;
 
     public FluidItemIngredient(@Nullable Ingredient delegate, FluidStackIngredient fluid)
     {
@@ -30,7 +32,7 @@ public class FluidItemIngredient extends DelegateIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        if (super.test(stack) && stack != null)
+        if (super.test(stack) && stack != null && !stack.isEmpty())
         {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
                 .map(cap -> cap.getFluidInTank(0))
@@ -38,6 +40,35 @@ public class FluidItemIngredient extends DelegateIngredient
                 .isPresent();
         }
         return false;
+    }
+
+    @Override
+    public ItemStack[] getItems()
+    {
+        dissolve();
+        return itemStacks;
+    }
+
+    @Override
+    protected void invalidate()
+    {
+        itemStacks = null;
+        super.invalidate();
+    }
+
+    private void dissolve()
+    {
+        if (this.itemStacks == null)
+        {
+            // how would you even handle the delegate here?
+            itemStacks = fluid.ingredient().getMatchingFluids().stream().map(fluid -> fluid.getBucket().getDefaultInstance()).toArray(ItemStack[]::new);
+        }
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        return itemStacks == null || itemStacks.length == 0;
     }
 
     @Override
