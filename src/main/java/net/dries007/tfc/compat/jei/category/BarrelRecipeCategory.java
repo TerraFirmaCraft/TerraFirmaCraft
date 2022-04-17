@@ -7,15 +7,13 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -24,11 +22,9 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
@@ -36,8 +32,8 @@ import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-// todo: make this nice and show extra cool info
 public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCategory<T>
 {
 
@@ -45,10 +41,10 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
     protected static final String ITEM_INPUT = "itemInput";
     protected static final String FLUID_OUTPUT = "fluidOutput";
     protected static final String ITEM_OUTPUT = "itemOutput";
-    protected IRecipeSlotBuilder inputFluidSlot;
-    protected IRecipeSlotBuilder inputItemSlot;
-    protected IRecipeSlotBuilder outputFluidSlot;
-    protected IRecipeSlotBuilder outputItemSlot;
+    protected @Nullable IRecipeSlotBuilder inputFluidSlot;
+    protected @Nullable IRecipeSlotBuilder inputItemSlot;
+    protected @Nullable IRecipeSlotBuilder outputFluidSlot;
+    protected @Nullable IRecipeSlotBuilder outputItemSlot;
 
     public BarrelRecipeCategory(RecipeType<T> type, IGuiHelper helper, int width, int height, Wood iconType)
     {
@@ -64,10 +60,9 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         outputItemSlot = null;
         int[] positions = slotPositions(recipe);
         List<FluidStack> inputFluid = getFluidInput(recipe);
-        Ingredient inputItem = getItemInput(recipe);
+        List<ItemStack> inputItem = getItemInput(recipe);
         RecipeResult<FluidStack> outputFluid = getFluidResult(recipe);
-        RecipeResult<Ingredient> outputItem = getItemResult(recipe);
-        TerraFirmaCraft.LOGGER.info("{} {} {} {} {} {}", recipe.getId(), inputFluid, inputItem, outputFluid, outputItem, recipe.getResultItem());
+        RecipeResult<List<ItemStack>> outputItem = getItemResult(recipe);
         if (!inputFluid.isEmpty())
         {
             inputFluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, inputItem.isEmpty() ? positions[1] : positions[0], 5).setSlotName(FLUID_INPUT);
@@ -77,7 +72,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         if (!inputItem.isEmpty())
         {
             inputItemSlot = builder.addSlot(RecipeIngredientRole.INPUT, positions[1], 5).setSlotName(ITEM_INPUT);
-            inputItemSlot.addIngredients(inputItem);
+            inputItemSlot.addItemStacks(inputItem);
         }
         if (!outputFluid.result().isEmpty())
         {
@@ -92,7 +87,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         if (!outputItem.result().isEmpty())
         {
             outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.result().isEmpty() ? positions[2] : positions[3], 5).setSlotName(ITEM_OUTPUT);
-            outputItemSlot.addIngredients(outputItem.result());
+            outputItemSlot.addItemStacks(outputItem.result());
             if (!inputItem.isEmpty() && !outputItem.transforms())
             {
                 builder.createFocusLink(inputItemSlot, outputItemSlot);
@@ -104,7 +99,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        int positions[] = slotPositions(recipe);
+        int[] positions = slotPositions(recipe);
         int arrowPosition = arrowPosition(recipe);
         slot.draw(stack, positions[1] - 1, 4);
         if (recipeSlots.findSlotByName(FLUID_INPUT).isPresent() && recipeSlots.findSlotByName(ITEM_INPUT).isPresent())
@@ -131,8 +126,9 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         return 48;
     }
 
-    protected static RecipeResult<Ingredient> itemStackProviderIngredient(ItemStackProvider output, ItemStackIngredient input)
+    protected static RecipeResult<List<ItemStack>> itemStackProviderIngredient(ItemStackProvider output, ItemStackIngredient input)
     {
+        // Leaving this because it may be true still
         // todo: this sucks and may not be properly sensitive to everything
         // todo: maybe we should just list the item stack modifiers
         ItemStack[] possibleItems = input.ingredient().getItems();
@@ -141,10 +137,11 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         for (ItemStack item : possibleItems)
         {
             ItemStack result = output.getStack(item);
+            result.setCount(input.count());
             items.add(result);
             if (!Helpers.isItem(result, item.getItem())) transforms = true;
         }
-        return new RecipeResult<>(transforms, Ingredient.of(items.stream()));
+        return new RecipeResult<>(transforms, items);
     }
 
     @NotNull
@@ -153,33 +150,26 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         return collapse(recipe.getInputFluid());
     }
 
-    @NotNull
-    protected Ingredient getItemInput(T recipe)
+    protected List<ItemStack> getItemInput(T recipe)
     {
-        return recipe.getInputItem().ingredient();
+        ItemStackIngredient input = recipe.getInputItem();
+        return Arrays.stream(input.ingredient().getItems()).peek(stack -> stack.setCount(input.count())).toList();
     }
 
     @NotNull
-    protected RecipeResult<Ingredient> getItemResult(T recipe)
+    protected RecipeResult<List<ItemStack>> getItemResult(T recipe)
     {
+        RecipeResult<List<ItemStack>> output = itemStackProviderIngredient(recipe.getOutputItem(), recipe.getInputItem());
+        if (!output.result().isEmpty() && output.result().stream().anyMatch(stack -> !stack.isEmpty())) return output;
+
         ItemStack result = recipe.getResultItem();
-        if (result.isEmpty())
-        {
-            return itemStackProviderIngredient(recipe.getOutputItem(), recipe.getInputItem());
-        }
-        return new RecipeResult<>(!isSame(recipe.getResultItem(), recipe.getInputItem().ingredient().getItems(), ItemStack::getItem), Ingredient.of(recipe.getResultItem()));
+        return new RecipeResult<>(!isSame(result, recipe.getInputItem().ingredient().getItems(), ItemStack::getItem), result.isEmpty() ? new ArrayList<>() : List.of(result));
     }
 
     @NotNull
     protected RecipeResult<FluidStack> getFluidResult(T recipe)
     {
         return new RecipeResult<>(!isSame(recipe.getOutputFluid().getFluid(), recipe.getInputFluid().ingredient().getMatchingFluids()), recipe.getOutputFluid());
-    }
-
-    @NotNull
-    protected <I> Optional<I> getFocusedIngredient(IIngredientType<I> type, RecipeIngredientRole role, IFocusGroup focuses, Predicate<I> filter)
-    {
-        return focuses.getFocuses(type, role).map(focus -> focus.getTypedValue().getIngredient()).filter(filter).findFirst();
     }
 
     protected static <I, C> boolean isSame(I result, I[] inputs, Function<I, C> mapper)
@@ -195,13 +185,6 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
     /**
      * @param transforms determines if the result is the same item as the input, if false a {@link IRecipeLayoutBuilder#createFocusLink(IRecipeSlotBuilder...) focus link} is created between the input and output
      */
-    protected record RecipeResult<I>(boolean transforms, I result)
-    {
-        @Override
-        public String toString()
-        {
-            return "RecipeResult[" + transforms + ", " + result + "]";
-        }
-    }
+    protected record RecipeResult<I>(boolean transforms, I result) {}
 
 }

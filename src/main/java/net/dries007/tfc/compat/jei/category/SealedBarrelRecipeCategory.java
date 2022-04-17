@@ -6,13 +6,14 @@
 
 package net.dries007.tfc.compat.jei.category;
 
+import java.util.List;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -25,6 +26,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import org.jetbrains.annotations.NotNull;
 
 public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarrelRecipe>
 {
@@ -37,11 +39,11 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     public void setRecipe(IRecipeLayoutBuilder builder, SealedBarrelRecipe recipe, IFocusGroup focuses)
     {
         super.setRecipe(builder, recipe, focuses);
-        if (recipe.isInfinite())
+        if (recipe.getOnSeal() != null)
         {
-            RecipeResult<Ingredient> intermediateItem = itemStackProviderIngredient(recipe.getOnSeal(), recipe.getInputItem());
-            IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5).setSlotName("intermediate");
-            intermediateSlot.addIngredients(intermediateItem.result());
+            RecipeResult<List<ItemStack>> intermediateItem = itemStackProviderIngredient(recipe.getOnSeal(), recipe.getInputItem());
+            IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5);
+            intermediateSlot.addItemStacks(intermediateItem.result());
             intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, new TranslatableComponent("tfc.jei.misc.barrel_sealed_full").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
             if (!intermediateItem.transforms())
             {
@@ -76,7 +78,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     @Override
     protected int[] slotPositions(SealedBarrelRecipe recipe)
     {
-        return recipe.getOnSeal() != null ? new int[] {6, 26, 125, 96} : new int[] {21, 41, 91, 0};
+        return recipe.getOnSeal() != null ? new int[] {6, 26, 125, 96} : new int[] {21, 41, 91, 111};
     }
 
     private static MutableComponent getHourText(int ticks)
@@ -90,15 +92,14 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     }
 
     @Override
-    protected RecipeResult<Ingredient> getItemResult(SealedBarrelRecipe recipe)
+    @NotNull
+    protected RecipeResult<List<ItemStack>> getItemResult(SealedBarrelRecipe recipe)
     {
         ItemStackProvider unsealProvider = recipe.getOnUnseal();
-        ItemStackProvider outputProvider = recipe.getOutputItem();
         if (unsealProvider != null)
         {
             return itemStackProviderIngredient(unsealProvider, recipe.getInputItem());
         }
-        RecipeResult<Ingredient> output = itemStackProviderIngredient(outputProvider, recipe.getInputItem());
-        return output.result().isEmpty() ? new RecipeResult<>(!isSame(recipe.getResultItem(), recipe.getInputItem().ingredient().getItems(), ItemStack::getItem), Ingredient.of(recipe.getResultItem())) : output;
+        return super.getItemResult(recipe);
     }
 }
