@@ -10,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -22,7 +21,7 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
 {
     public static BarrelContainer create(BarrelBlockEntity barrel, Inventory playerInv, int windowId)
     {
-        return new BarrelContainer(windowId, barrel).init(playerInv, 6);
+        return new BarrelContainer(windowId, barrel).init(playerInv, 12);
     }
 
     private BarrelContainer(int windowId, BarrelBlockEntity barrel)

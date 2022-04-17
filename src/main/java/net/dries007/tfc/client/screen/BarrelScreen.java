@@ -14,7 +14,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -41,14 +40,16 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     public BarrelScreen(BarrelContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        inventoryLabelY += 8;
+        inventoryLabelY += 12;
+        imageHeight += 12;
     }
 
     @Override
     public void init()
     {
         super.init();
-        addRenderableWidget(new BarrelSealButton(blockEntity, getGuiLeft(), getGuiTop(), new Button.OnTooltip() {
+        addRenderableWidget(new BarrelSealButton(blockEntity, getGuiLeft(), getGuiTop(), new Button.OnTooltip()
+        {
             @Override
             public void onTooltip(Button button, PoseStack poseStack, int x, int y)
             {
@@ -79,6 +80,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             BarrelRecipe recipe = blockEntity.getRecipe();
             if (recipe != null)
             {
+                //TODO improve this
                 String resultName = recipe.getTranslationComponent().getString();
                 int recipeWidth = font.width(resultName);
                 if (recipeWidth > 80)
@@ -88,7 +90,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 font.draw(poseStack, resultName, isLong ? recipeWidth / 2f - 42 : 70, isLong ? 73 : 61, 0x404040);
             }
             String date = ICalendar.getTimeAndDate(blockEntity.getSealedTick(), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
-            font.draw(poseStack, date, isLong ? 58 : font.width(date) / 2f + 4, isLong ? 19 : 73, 0x404040);
+            font.draw(poseStack, date, imageWidth / 2f - font.width(date) / 2f, 74, 0x404040);
         }
     }
 
@@ -107,10 +109,10 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             {
                 final TextureAtlasSprite sprite = getAndBindFluidSprite(fluidStack);
                 final int startY = 20;
-                final int endY = 69;
+                final int endY = 70;
                 final int fillHeight = (int) Math.ceil((float) (endY - startY) * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
 
-                fillAreaWithSprite(sprite, poseStack, 8, 23, endY, fillHeight);
+                fillAreaWithSprite(sprite, poseStack, 8, 24, endY, fillHeight);
 
                 resetToBackgroundSprite();
             }
