@@ -484,7 +484,7 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
     # Bloomery Recipes
-    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 4, 15000)
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', '4 minecraft:charcoal', 15000)
 
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
@@ -685,11 +685,11 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
         } for p in parts]
     })
 
-def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: str, metal: str, catalyst: str, count: int, time: int):
+def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: str, metal: str, catalyst: str, time: int):
     rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
         'result': utils.item_stack(result),
         'fluid': fluid_stack_ingredient(metal),
-        'catalyst': {'item': utils.ingredient(catalyst), 'count': count},
+        'catalyst': item_stack_ingredient(catalyst),
         'time': time
     })
 

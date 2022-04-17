@@ -9,7 +9,7 @@
     "amount": 100
   },
   "catalyst": {
-    "item": {
+    "ingredient": {
       "item": "minecraft:charcoal"
     },
     "count": 4
