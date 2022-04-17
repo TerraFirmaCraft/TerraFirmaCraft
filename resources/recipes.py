@@ -539,8 +539,8 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
-    barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 tfc:salt_water', output_fluid='10 tfc:brine')
-    barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 minecraft:milk', output_fluid='10 tfc:milk_vinegar')
+    barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 tfc:salt_water', output_fluid='10000 tfc:brine')
+    barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 minecraft:milk', output_fluid='10000 tfc:milk_vinegar')
     barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soup_bowls', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
 
     # Loom Recipes
