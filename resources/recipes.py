@@ -278,6 +278,10 @@ def generate(rm: ResourceManager):
             if item_data.type == 'all' or item_data.type in metal_data.types:
                 heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal))
 
+    metal_data = METALS['wrought_iron']
+    heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', metal_data.melt_temperature, None, '100 tfc:metal/cast_iron')
+    heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', metal_data.melt_temperature, None, '100 tfc:metal/wrought_iron')
+
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
         if tool_data.mold:
@@ -480,7 +484,7 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
     # Bloomery Recipes
-    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', 'tfc:metal/cast_iron', 100, 'minecraft:charcoal', 4, 15000)
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 4, 15000)
 
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
@@ -681,10 +685,10 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
         } for p in parts]
     })
 
-def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: str, metal: str, amount: int, catalyst: str, count: int, time: int):
+def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: str, metal: str, catalyst: str, count: int, time: int):
     rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
         'result': utils.item_stack(result),
-        'fluid': fluid_stack_ingredient(metal, amount),
+        'fluid': fluid_stack_ingredient(metal),
         'catalyst': {'item': utils.ingredient(catalyst), 'count': count},
         'time': time
     })

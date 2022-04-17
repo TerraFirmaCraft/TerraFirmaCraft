@@ -1258,8 +1258,8 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
             features[Decoration.SURFACE_DECORATION] += ['tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
             features[Decoration.SURFACE_DECORATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
 
-        spawners['water_ambient'] = [entity for entity in OCEAN_AMBIENT.values()],
-        spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()],
+        spawners['water_ambient'] = [entity for entity in OCEAN_AMBIENT.values()]
+        spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()]
     if category == 'river':
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
     if name.find('lake') != -1:

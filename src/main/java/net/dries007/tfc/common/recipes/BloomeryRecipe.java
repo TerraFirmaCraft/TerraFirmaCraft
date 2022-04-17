@@ -15,18 +15,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 
 import net.minecraftforge.fluids.FluidStack;
 
-import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.JsonHelpers;
 
-public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.BloomeryInventory>
+public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
 {
     private final ResourceLocation id;
     private final FluidStackIngredient fluidStackIngredient;
@@ -34,7 +31,6 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
     private final ItemStack result;
     private final int time;
 
-    //todo: make catalyst optional? unsure how
     public BloomeryRecipe(ResourceLocation id, FluidStackIngredient fluidStackIngredient, ItemStackIngredient itemStackIngredient, ItemStack result, int time)
     {
         this.id = id;
@@ -60,14 +56,12 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
     }
 
     @Override
-    public boolean matches(BloomeryBlockEntity.BloomeryInventory inv, Level level)
+    public boolean matches(ItemStackInventory inv, Level level)
     {
-        Fluid inputFluid = inv.getInputFluid();
-        if (inputFluid.isSame(Fluids.EMPTY))
-        {
-            return false;
-        }
-        return fluidStackIngredient.getMatchingFluids().contains(inputFluid);
+        ItemStack stack = inv.getStack();
+        HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
+        FluidStack fluid = heatingRecipe == null ? FluidStack.EMPTY : heatingRecipe.getOutputFluid(new ItemStackInventory(stack));
+        return fluidStackIngredient.test(fluid) && itemStackIngredient.test(stack);
     }
 
     @Override
@@ -76,9 +70,9 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         return result;
     }
 
-    public ItemStack getResult(FluidStack stack)
+    public ItemStack assembleOutputs(FluidStack fluid)
     {
-        return new ItemStack(this.result.getItem(),stack.getAmount() / this.fluidStackIngredient.getAmount());
+        return new ItemStack(this.result.getItem(),fluid.getAmount() / this.fluidStackIngredient.getAmount());
     }
 
     @Override
@@ -104,30 +98,18 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
         HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
         if (heatingRecipe != null)
         {
-            return this.fluidStackIngredient.getMatchingFluids().contains(heatingRecipe.getOutputFluid(new ItemStackInventory(stack)).getFluid());
-        }
-        return false;
-    }
-
-    public boolean isValidCatalyst(ItemStack stack)
-    {
-        for (ItemStack checkStack : this.itemStackIngredient.getItem().getItems())
-        {
-            if (checkStack.getItem() == stack.getItem())
-            {
-                return true;
-            }
+            return this.fluidStackIngredient.test(heatingRecipe.getOutputFluid(new ItemStackInventory(stack)));
         }
         return false;
     }
 
     public boolean isValidMixture(FluidStack fluidStack, ItemStack catalystStack)
     {
-        if (!fluidStackIngredient.getMatchingFluids().contains(fluidStack.getFluid()) || !isValidCatalyst(catalystStack))
+        if (!fluidStackIngredient.test(fluidStack) || !itemStackIngredient.test(catalystStack))
         {
             return false;
         }
-        return catalystStack.getCount() >= (fluidStack.getAmount() / fluidStackIngredient.getAmount() * itemStackIngredient.getCount());
+        return catalystStack.getCount() >= (fluidStack.getAmount() / fluidStackIngredient.getAmount() * itemStackIngredient.count());
     }
 
     public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>
@@ -149,17 +131,17 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryBlockEntity.Bloomer
             final FluidStackIngredient fluidStack = FluidStackIngredient.fromNetwork(buffer);
             final ItemStackIngredient catalystStack = ItemStackIngredient.fromNetwork(buffer);
             final ItemStack result = buffer.readItem();
-            final int time = buffer.readInt();
+            final int time = buffer.readVarInt();
             return new BloomeryRecipe(recipeId, fluidStack, catalystStack, result, time);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, BloomeryRecipe recipe)
         {
-            FluidStackIngredient.toNetwork(buffer, recipe.fluidStackIngredient);
+            recipe.fluidStackIngredient.toNetwork(buffer);
             recipe.itemStackIngredient.toNetwork(buffer);
             buffer.writeItem(recipe.result);
-            buffer.writeInt(recipe.time);
+            buffer.writeVarInt(recipe.time);
         }
     }
 }

@@ -5,7 +5,7 @@
     "item": "tfc:raw_iron_bloom"
   },
   "fluid": {
-    "fluid": "tfc:metal/cast_iron",
+    "ingredient": "tfc:metal/cast_iron",
     "amount": 100
   },
   "catalyst": {

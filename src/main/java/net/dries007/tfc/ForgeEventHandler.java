@@ -609,7 +609,7 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
         {
-            final BlockEntity entity = world.getBlockEntity(pos);
+            final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
             {
                 event.setCanceled(true);

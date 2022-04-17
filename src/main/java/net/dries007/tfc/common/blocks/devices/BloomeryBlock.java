@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -38,17 +37,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
 import org.jetbrains.annotations.Nullable;
 
-public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
+public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
@@ -107,7 +103,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
 
         // Bloomery center is the charcoal pile pos
         BLOOMERY_BASE = new MultiBlock[4];
-        BLOOMERY_BASE[0] = new MultiBlock() // north - i'm not sure you can still get a unique int for each direction?
+        BLOOMERY_BASE[Direction.NORTH.get2DDataValue()] = new MultiBlock()
             .match(origin, center)
             .match(origin.below(), stoneMatcher)
             .match(origin.north(), state -> state.is(TFCBlocks.BLOOMERY.get()))
@@ -115,7 +111,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             .matchEachDirection(origin.north(), stoneMatcher, EAST_WEST_DOWN, 1)
             .matchHorizontal(origin.above(), stoneMatcher, 1);
 
-        BLOOMERY_BASE[1] = new MultiBlock() //south
+        BLOOMERY_BASE[Direction.SOUTH.get2DDataValue()] = new MultiBlock() //south
             .match(origin, center)
             .match(origin.below(), stoneMatcher)
             .match(origin.south(), state -> state.is(TFCBlocks.BLOOMERY.get()))
@@ -123,7 +119,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             .matchEachDirection(origin.south(), stoneMatcher, EAST_WEST_DOWN, 1)
             .matchHorizontal(origin.above(), stoneMatcher, 1);
 
-        BLOOMERY_BASE[2] = new MultiBlock() //west
+        BLOOMERY_BASE[Direction.WEST.get2DDataValue()] = new MultiBlock() //west
             .match(origin, center)
             .match(origin.below(), stoneMatcher)
             .match(origin.west(), state -> state.is(TFCBlocks.BLOOMERY.get()))
@@ -131,7 +127,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
             .matchEachDirection(origin.west(), stoneMatcher, NORTH_SOUTH_DOWN, 1)
             .matchHorizontal(origin.above(), stoneMatcher, 1);
 
-        BLOOMERY_BASE[3] = new MultiBlock() //east
+        BLOOMERY_BASE[Direction.EAST.get2DDataValue()] = new MultiBlock() //east
             .match(origin, center)
             .match(origin.below(), stoneMatcher)
             .match(origin.east(), state -> state.is(TFCBlocks.BLOOMERY.get()))
@@ -183,34 +179,17 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     //if Directions don't have int indices any more, then...
     public static boolean isFormed(Level level, BlockPos centerPos, Direction facing)
     {
-        return switch (facing)
-            {
-                case NORTH -> BLOOMERY_BASE[0].test(level, centerPos);
-                case SOUTH -> BLOOMERY_BASE[1].test(level, centerPos);
-                case WEST -> BLOOMERY_BASE[2].test(level, centerPos);
-                case EAST -> BLOOMERY_BASE[3].test(level, centerPos);
-                default -> false;
-            };
+        if (facing.getAxis() == Direction.Axis.Y)
+        {
+            throw new IllegalArgumentException("Not horizontal");
+        }
+        return BLOOMERY_BASE[facing.get2DDataValue()].test(level, centerPos);
     }
 
     public BloomeryBlock(ExtendedProperties properties)
     {
         super(properties);
-        registerDefaultState(getStateDefinition().any()
-            .setValue(FACING, Direction.NORTH)
-            .setValue(LIT, false)
-            .setValue(OPEN, false));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean bool)
-    {
-        if (!newState.is(TFCBlocks.BLOOMERY.get()))
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(BloomeryBlockEntity::onRemove);
-        }
-        super.onRemove(state, level, pos, newState, bool);
+        registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(LIT, false).setValue(OPEN, false));
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -273,7 +252,7 @@ public class BloomeryBlock extends ExtendedBlock implements EntityBlockExtension
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(FACING).add(LIT).add(OPEN);
+        super.createBlockStateDefinition(builder.add(FACING).add(LIT).add(OPEN));
     }
 
     @Override
