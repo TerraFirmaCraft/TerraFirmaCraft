@@ -532,6 +532,7 @@
     "tfc:wattle/black",
     "tfc:wattle",
     "tfc:plant/banana_plant",
+    "tfc:plant/dead_banana_plant",
     "tfc:log_pile",
     "tfc:burning_log_pile",
     "tfc:composter"

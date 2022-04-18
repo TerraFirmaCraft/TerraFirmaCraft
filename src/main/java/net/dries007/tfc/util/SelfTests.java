@@ -52,6 +52,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
+    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
 
     public static void runClientSelfTests()
     {
@@ -166,8 +167,12 @@ public final class SelfTests
     public static void throwIfAny(boolean... errors)
     {
         for (boolean error : errors)
-            if (error)
+        {
+            if (error && THROW_ON_SELF_TEST_FAIL)
+            {
                 throw new AssertionError("Self Tests Failed! Fix the above errors!");
+            }
+        }
     }
 
     // Private TFC Self Tests

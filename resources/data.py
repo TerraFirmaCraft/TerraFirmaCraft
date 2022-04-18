@@ -407,6 +407,7 @@ def generate(rm: ResourceManager):
         *['tfc:wattle/%s' % color for color in COLORS],
         'tfc:wattle',
         'tfc:plant/banana_plant',
+        'tfc:plant/dead_banana_plant',
         'tfc:log_pile',
         'tfc:burning_log_pile',
         'tfc:composter'
