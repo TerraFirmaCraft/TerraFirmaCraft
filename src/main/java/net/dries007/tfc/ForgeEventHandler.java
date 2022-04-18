@@ -522,10 +522,9 @@ public final class ForgeEventHandler
             }
 
             Climate.onWorldLoad(level);
-            ItemSizeManager.applyItemStackSizeOverrides();
-
             if (level.dimension() == Level.OVERWORLD)
             {
+                ItemSizeManager.applyItemStackSizeOverrides();
                 SelfTests.runServerSelfTests();
             }
         }
