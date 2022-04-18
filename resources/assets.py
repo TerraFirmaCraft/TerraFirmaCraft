@@ -350,7 +350,9 @@ def generate(rm: ResourceManager):
         block.with_lang(lang('%s Clay Dirt', soil))
         block.with_item_model()
 
-        rm.block(('grass_path', soil)).with_lang(lang('%s path', soil))
+        block = rm.block(('grass_path', soil))
+        block.with_lang(lang('%s path', soil))
+        block.with_block_loot('tfc:dirt/%s' % soil)
 
     # Grass
     north_face = {'from': [0, 0, 0], 'to': [16, 16, 0], 'faces': {'north': {'texture': '#texture', 'cullface': 'north'}}}
@@ -825,7 +827,11 @@ def generate(rm: ResourceManager):
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
-    rm.lang('block.tfc.sea_pickle', lang('sea_pickle'))
+
+    rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
+        'name': '%d tfc:sea_pickle' % i,
+        'conditions': loot_tables.block_state_property('tfc:sea_pickle[pickles=%d]' % i)
+    } for i in (1, 2, 3, 4)])
 
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'liana'):
         rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
@@ -1070,6 +1076,9 @@ def generate(rm: ResourceManager):
         block.make_trapdoor()
         block.make_fence()
         block.make_fence_gate()
+
+        for block_type in ('bookshelf', 'button', 'door', 'fence', 'fence_gate', 'pressure_plate', 'slab', 'stairs', 'trapdoor'):
+            rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood

@@ -32,7 +32,7 @@
 			"rotation": {"angle": -45, "axis": "z", "origin": [12, 7, 8]},
 			"faces": {
 				"east": {"uv": [0, 11, 16, 16], "texture": "#0", "tintindex": 0},
-				"west": {"uv": [0, 11, 16, 16], "texture": "#0", "tintindex": 0
+				"west": {"uv": [0, 11, 16, 16], "texture": "#0", "tintindex": 0}
 			}
 		},
 		{
