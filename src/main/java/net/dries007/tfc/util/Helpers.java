@@ -61,7 +61,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -779,6 +778,15 @@ public final class Helpers
     /**
      * Detect if test sources are present, either if we're running in a ./gradlew test, or from a game test launch.
      */
+    public static boolean detectBootstrapEnvironment()
+    {
+        if (System.getProperty("forge.enabledGameTestNamespaces") != null)
+        {
+            return false;
+        }
+        return detectTestSourcesPresent();
+    }
+
     public static boolean detectTestSourcesPresent()
     {
         try

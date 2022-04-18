@@ -103,7 +103,7 @@ public class TFCLayers
 
     private static final BiomeVariants[] BIOME_LAYERS = new BiomeVariants[64];
     private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
-    private static final boolean ENABLE_DEBUG = Helpers.detectTestSourcesPresent();
+    private static final boolean ENABLE_DEBUG = Helpers.detectBootstrapEnvironment();
 
     static
     {
