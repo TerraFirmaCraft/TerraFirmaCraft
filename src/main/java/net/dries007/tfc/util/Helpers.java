@@ -781,6 +781,10 @@ public final class Helpers
      */
     public static boolean detectTestSourcesPresent()
     {
+        if (System.getProperty("forge.enabledGameTestNamespaces") != null)
+        {
+            return false;
+        }
         try
         {
             Class.forName("net.dries007.tfc.TestMarker");

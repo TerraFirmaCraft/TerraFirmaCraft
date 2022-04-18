@@ -91,6 +91,7 @@ public class ClientForgeEventHandler
     {
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
+        bus.addListener(ClientForgeEventHandler::renderFamiliarity);
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayText);
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayPost);
         bus.addListener(ClientForgeEventHandler::onItemTooltip);
