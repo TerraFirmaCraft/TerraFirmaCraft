@@ -2,7 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:nest_box",
     "tfc:wood/planks/acacia_loom",
     "tfc:wood/barrel/acacia",
     "tfc:wood/planks/ash_loom",
@@ -535,6 +534,7 @@
     "tfc:plant/dead_banana_plant",
     "tfc:log_pile",
     "tfc:burning_log_pile",
-    "tfc:composter"
+    "tfc:composter",
+    "tfc:nest_box"
   ]
 }
