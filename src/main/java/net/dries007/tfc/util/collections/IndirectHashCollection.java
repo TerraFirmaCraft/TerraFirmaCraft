@@ -73,7 +73,7 @@ public class IndirectHashCollection<K, R>
     private final Map<K, Collection<R>> indirectResultMap;
     private final Function<R, Iterable<? extends K>> keyExtractor;
     private final Supplier<Collection<R>> reloadableCollection;
-    private boolean valid;
+    private volatile boolean valid;
 
     private IndirectHashCollection(Function<R, Iterable<? extends K>> keyExtractor, Supplier<Collection<R>> reloadableCollection)
     {
@@ -85,32 +85,24 @@ public class IndirectHashCollection<K, R>
         CacheInvalidationListener.INSTANCE.doOnInvalidate(this::invalidate);
     }
 
-    /**
-     * This is implemented for convenience rather than add / clear methods.
-     */
-    public void reload(Collection<R> results)
-    {
-        indirectResultMap.clear();
-        results.forEach(result -> {
-            for (K directKey : keyExtractor.apply(result))
-            {
-                indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
-            }
-        });
-    }
-
     public Collection<R> getAll(K key)
     {
         if (!valid)
         {
-            valid = true;
-            indirectResultMap.clear();
-            reloadableCollection.get().forEach(result -> {
-                for (K directKey : keyExtractor.apply(result))
+            synchronized (this)
+            {
+                if (!valid)
                 {
-                    indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
+                    valid = true;
+                    indirectResultMap.clear();
+                    reloadableCollection.get().forEach(result -> {
+                        for (K directKey : keyExtractor.apply(result))
+                        {
+                            indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
+                        }
+                    });
                 }
-            });
+            }
         }
         return indirectResultMap.getOrDefault(key, Collections.emptyList());
     }

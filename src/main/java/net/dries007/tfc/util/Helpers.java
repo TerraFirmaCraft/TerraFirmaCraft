@@ -61,7 +61,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -104,26 +103,6 @@ public final class Helpers
     public static ResourceLocation identifier(String name)
     {
         return new ResourceLocation(MOD_ID, name);
-    }
-
-    /**
-     * Filter method for TFC namespaced resources
-     */
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamOurs(IForgeRegistry<T> registry)
-    {
-        return streamOurs(registry, MOD_ID);
-    }
-
-    /**
-     * Filter method for TFC namespaced resources
-     */
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamOurs(IForgeRegistry<T> registry, String modID)
-    {
-        return registry.getValues().stream()
-            .filter(e -> {
-                assert e.getRegistryName() != null;
-                return e.getRegistryName().getNamespace().equals(modID);
-            });
     }
 
     /**
@@ -779,6 +758,15 @@ public final class Helpers
     /**
      * Detect if test sources are present, either if we're running in a ./gradlew test, or from a game test launch.
      */
+    public static boolean detectBootstrapEnvironment()
+    {
+        if (System.getProperty("forge.enabledGameTestNamespaces") != null)
+        {
+            return false;
+        }
+        return detectTestSourcesPresent();
+    }
+
     public static boolean detectTestSourcesPresent()
     {
         try

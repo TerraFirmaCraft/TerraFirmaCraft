@@ -8,7 +8,7 @@ package net.dries007.tfc.mixin.client;
 
 import net.minecraft.client.Minecraft;
 
-import net.dries007.tfc.client.ClientEventHandler;
+import net.dries007.tfc.util.SelfTests;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,6 +22,6 @@ public abstract class MinecraftMixin
     @Inject(method = "*(Ljava/lang/String;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/loading/ClientModLoader;completeModLoading()Z", remap = false), remap = false)
     private void runSelfTests(String s, int i, CallbackInfo ci)
     {
-        ClientEventHandler.selfTest();
+        SelfTests.runClientSelfTests();
     }
 }
