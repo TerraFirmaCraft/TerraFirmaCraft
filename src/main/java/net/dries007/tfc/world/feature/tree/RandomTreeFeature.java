@@ -41,14 +41,15 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
         final ResourceLocation structureId = config.structureNames().get(random.nextInt(config.structureNames().size()));
         final StructureTemplate structure = manager.getOrCreate(structureId);
 
-        if (TreeHelpers.isValidLocation(level, pos, settings, config.placement()))
+        TreeHelpers.TrunkInfo trunkInfo = TreeHelpers.isValidLocation(level, pos, settings, config.placement());
+        if (trunkInfo.valid())
         {
             config.trunk().ifPresent(trunk -> {
                 final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
                 mutablePos.move(0, height, 0);
             });
 
-            TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
+            TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)), trunkInfo.dead());
             return true;
         }
         return false;

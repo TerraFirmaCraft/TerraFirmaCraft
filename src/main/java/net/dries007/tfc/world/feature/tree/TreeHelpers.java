@@ -38,10 +38,13 @@ public final class TreeHelpers
 {
     private static final Rotation[] ROTATION_VALUES = Rotation.values();
     private static final Mirror[] MIRROR_VALUES = Mirror.values();
+    private static final TrunkInfo INVALID = new TrunkInfo(false, false);
 
-    public static boolean isValidLocation(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
+    public record TrunkInfo(boolean valid, boolean dead) {}
+
+    public static TrunkInfo isValidLocation(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
     {
-        return isValidGround(level, pos, settings, config) && isValidTrunk(level, pos, settings, config);
+        return isValidGround(level, pos, settings, config) ? isValidTrunk(level, pos, settings, config) : INVALID;
     }
 
     /**
@@ -60,7 +63,8 @@ public final class TreeHelpers
                 mutablePos.move(pos);
 
                 final BlockState stateAt = level.getBlockState(mutablePos);
-                if (!(config.allowSubmerged() && FluidHelpers.isAirOrEmptyFluid(stateAt) && stateAt.getFluidState().getType() == Fluids.WATER)
+                boolean willBeSubmerged = config.allowSubmerged() && EnvironmentHelpers.isWorldgenReplaceable(stateAt) && stateAt.getFluidState().getType() == Fluids.WATER;
+                if (!willBeSubmerged
                     && !stateAt.isAir()
                     && !(stateAt.getBlock() instanceof SaplingBlock))
                 {
@@ -70,10 +74,15 @@ public final class TreeHelpers
                 mutablePos.move(0, -1, 0);
 
                 final BlockState stateBelow = level.getBlockState(mutablePos);
-                if (!Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON))
+                if (willBeSubmerged)
                 {
-                    return false;
+                    if (!Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON)) return false;
                 }
+                else
+                {
+                    if (!Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON)) return false;
+                }
+
             }
         }
         return true;
@@ -83,8 +92,9 @@ public final class TreeHelpers
      * Checks if there is enough free space above the tree, for a tree placement (at y > 0), for a given height and radius around the trunk
      * @return {@code true} if the tree is legal to grow here.
      */
-    public static boolean isValidTrunk(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
+    public static TrunkInfo isValidTrunk(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
     {
+        boolean dead = false;
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int x = (1 - config.width()) / 2; x <= config.width() / 2; x++)
         {
@@ -97,26 +107,47 @@ public final class TreeHelpers
                     mutablePos.move(pos);
 
                     final BlockState stateAt = level.getBlockState(mutablePos);
-                    if (!stateAt.isAir())
+                    final boolean currentlySubmerged = FluidHelpers.isAnEmptyFluid(stateAt);
+
+                    // if y == 1 we are on the SECOND block. if we want 1 depth only, then return false if there's water at y == 1.
+                    if (currentlySubmerged && y >= config.maxSubmergeDepth())
                     {
-                        return false;
+                        return INVALID;
+                    }
+                    if (currentlySubmerged && y >= config.killDepth())
+                    {
+                        dead = true;
+                    }
+
+                    if (!currentlySubmerged && !stateAt.isAir())
+                    {
+                        return INVALID;
                     }
                 }
             }
         }
-        return true;
+        return new TrunkInfo(true, dead);
+    }
+
+    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placement, LevelAccessor level, BlockPos pos)
+    {
+        placeTemplate(template, placement, level, pos, false);
     }
 
     /**
      * A variant of {@link StructureTemplate#placeInWorld(ServerLevelAccessor, BlockPos, BlockPos, StructurePlaceSettings, Random, int)} that is much simpler and faster for use in tree generation
      * Allows replacing leaves and air blocks
      */
-    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placementIn, LevelAccessor level, BlockPos pos)
+    public static void placeTemplate(StructureTemplate template, StructurePlaceSettings placement, LevelAccessor level, BlockPos pos, boolean noLeaves)
     {
-        final List<StructureTemplate.StructureBlockInfo> transformedBlockInfos = placementIn.getRandomPalette(((StructureTemplateAccessor) template).accessor$getPalettes(), pos).blocks();
-        BoundingBox boundingBox = placementIn.getBoundingBox();
-        for (StructureTemplate.StructureBlockInfo blockInfo : StructureTemplate.processBlockInfos(level, pos, pos, placementIn, transformedBlockInfos, template))
+        final List<StructureTemplate.StructureBlockInfo> transformedBlockInfos = placement.getRandomPalette(((StructureTemplateAccessor) template).accessor$getPalettes(), pos).blocks();
+        BoundingBox boundingBox = placement.getBoundingBox();
+        for (StructureTemplate.StructureBlockInfo blockInfo : StructureTemplate.processBlockInfos(level, pos, pos, placement, transformedBlockInfos, template))
         {
+            if (noLeaves && Helpers.isBlock(blockInfo.state, BlockTags.LEAVES))
+            {
+                continue;
+            }
             BlockPos posAt = blockInfo.pos;
             if (boundingBox == null || boundingBox.isInside(posAt))
             {
@@ -125,7 +156,7 @@ public final class TreeHelpers
                 {
                     // No world, can't rotate with world context
                     @SuppressWarnings("deprecation")
-                    BlockState stateReplace = blockInfo.state.mirror(placementIn.getMirror()).rotate(placementIn.getRotation());
+                    BlockState stateReplace = blockInfo.state.mirror(placement.getMirror()).rotate(placement.getRotation());
                     level.setBlock(posAt, stateReplace, 2);
                 }
             }

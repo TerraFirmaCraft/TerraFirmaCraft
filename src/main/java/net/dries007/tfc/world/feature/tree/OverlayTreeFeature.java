@@ -41,16 +41,20 @@ public class OverlayTreeFeature extends TreeFeature<OverlayTreeConfig>
         final StructureTemplate structureBase = manager.getOrCreate(config.base());
         final StructureTemplate structureOverlay = manager.getOrCreate(config.overlay());
 
-        if (TreeHelpers.isValidLocation(level, pos, settings, config.placement()))
+        final TreeHelpers.TrunkInfo trunkInfo = TreeHelpers.isValidLocation(level, pos, settings, config.placement());
+        if (trunkInfo.valid())
         {
             config.trunk().ifPresent(trunk -> {
                 final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
                 mutablePos.move(0, height, 0);
             });
 
-            TreeHelpers.placeTemplate(structureBase, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureBase.getSize(), settings)));
-            settings.addProcessor(new BlockRotProcessor(config.overlayIntegrity()));
-            TreeHelpers.placeTemplate(structureOverlay, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureOverlay.getSize(), settings)));
+            if (!trunkInfo.dead())
+            {
+                TreeHelpers.placeTemplate(structureBase, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureBase.getSize(), settings)));
+                settings.addProcessor(new BlockRotProcessor(config.overlayIntegrity()));
+                TreeHelpers.placeTemplate(structureOverlay, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structureOverlay.getSize(), settings)));
+            }
             return true;
         }
         return false;

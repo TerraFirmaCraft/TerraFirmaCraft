@@ -199,6 +199,16 @@ public final class FluidHelpers
         return state.isAir() || state.getBlock() == state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock();
     }
 
+    /**
+     * Any fluid block, given that it's an empty one.
+     */
+    public static boolean isAnEmptyFluid(BlockState state)
+    {
+        final FluidState fluid = state.getFluidState();
+        if (fluid.isEmpty()) return false;
+        return state.getBlock() == fluid.getType().defaultFluidState().createLegacyBlock().getBlock();
+    }
+
     public static Optional<FluidState> asEmptyFluid(BlockState state)
     {
         FluidState fluidState = state.getFluidState().getType().defaultFluidState();
