@@ -10,8 +10,10 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -20,8 +22,6 @@ import org.jetbrains.annotations.Nullable;
 public class FluidItemIngredient extends DelegateIngredient
 {
     private final FluidStackIngredient fluid;
-    @Nullable
-    private ItemStack[] itemStacks;
 
     public FluidItemIngredient(@Nullable Ingredient delegate, FluidStackIngredient fluid)
     {
@@ -43,38 +43,15 @@ public class FluidItemIngredient extends DelegateIngredient
     }
 
     @Override
-    public ItemStack[] getItems()
-    {
-        dissolve();
-        return itemStacks;
-    }
-
-    @Override
-    protected void invalidate()
-    {
-        itemStacks = null;
-        super.invalidate();
-    }
-
-    private void dissolve()
-    {
-        if (this.itemStacks == null)
-        {
-            // how would you even handle the delegate here?
-            itemStacks = fluid.ingredient().getMatchingFluids().stream().map(fluid -> fluid.getBucket().getDefaultInstance()).toArray(ItemStack[]::new);
-        }
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        return itemStacks == null || itemStacks.length == 0;
-    }
-
-    @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer()
+    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
+    }
+
+    @Override
+    protected ItemStack[] getDefaultItems()
+    {
+        return fluid.ingredient().getMatchingFluids().stream().map(Fluid::getBucket).map(ItemStack::new).toArray(ItemStack[]::new);
     }
 
     public enum Serializer implements IIngredientSerializer<FluidItemIngredient>

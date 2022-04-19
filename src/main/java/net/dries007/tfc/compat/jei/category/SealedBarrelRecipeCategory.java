@@ -26,6 +26,8 @@ import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import org.jetbrains.annotations.NotNull;
 
 public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarrelRecipe>
@@ -63,9 +65,9 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             arrowAnimated.draw(stack, 98, 5);
         }
 
-        MutableComponent text = getHourText(recipe.getDuration()).withStyle(ChatFormatting.BLACK);
-        Minecraft mc = Minecraft.getInstance();
-        Font font = mc.font;
+        MutableComponent text = ICalendar.getTimeDelta(recipe.getDuration(), Calendars.CLIENT.getCalendarDaysInMonth()).withStyle(ChatFormatting.BLACK);
+        final Minecraft mc = Minecraft.getInstance();
+        final Font font = mc.font;
         font.draw(stack, text, 74f - font.width(text) / 2.0f, 24f, 0xFFFFFF);
     }
 
@@ -79,16 +81,6 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     protected int[] slotPositions(SealedBarrelRecipe recipe)
     {
         return recipe.getOnSeal() != null ? new int[] {6, 26, 125, 96} : new int[] {21, 41, 91, 111};
-    }
-
-    private static MutableComponent getHourText(int ticks)
-    {
-        if (ticks < 0)
-        {
-            return new TranslatableComponent("tfc.jei.misc.barrel_sealed");
-        }
-        int hours = (int) Math.ceil((double) ticks / 1000);
-        return new TranslatableComponent("tfc.jei.misc.hours_" + (hours > 1 ? "multiple" : "single"), hours);
     }
 
     @Override

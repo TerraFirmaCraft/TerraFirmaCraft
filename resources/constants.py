@@ -878,8 +878,6 @@ DEFAULT_LANG = {
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
 
-    'tfc.jei.misc.hours_single': '%d Hour',
-    'tfc.jei.misc.hours_multiple': '%d Hours',
     'tfc.jei.misc.barrel_sealed': 'While sealed',
     'tfc.jei.misc.barrel_sealed_full': 'While the barrel is sealed and the required fluid is present'
 }

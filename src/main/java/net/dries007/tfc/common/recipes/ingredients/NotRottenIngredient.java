@@ -40,9 +40,15 @@ public class NotRottenIngredient extends DelegateIngredient
     }
 
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer()
+    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
+    }
+
+    @Override
+    protected ItemStack[] getDefaultItems()
+    {
+        return FoodCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(ItemStack::new).toArray(ItemStack[]::new);
     }
 
     public enum Serializer implements IIngredientSerializer<NotRottenIngredient>

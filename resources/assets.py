@@ -250,8 +250,8 @@ def generate(rm: ResourceManager):
 
     stages = ['empty', 'woven']
     wattle_variants = []
-    wattle_variants += [({'woven': stage=='woven'}, {'model': 'tfc:block/wattle/%s_wattle' % stage}) for stage in stages]
-    wattle_variants += [({side: True, 'woven': stage=='woven'}, {'model': 'tfc:block/wattle/%s%s' % ('empty_' if stage == 'empty' else '', side)}) for (stage, side) in itertools.product(stages, ('top', 'bottom', 'left', 'right'))]
+    wattle_variants += [({'woven': stage == 'woven'}, {'model': 'tfc:block/wattle/%s_wattle' % stage}) for stage in stages]
+    wattle_variants += [({side: True, 'woven': stage == 'woven'}, {'model': 'tfc:block/wattle/%s%s' % ('empty_' if stage == 'empty' else '', side)}) for (stage, side) in itertools.product(stages, ('top', 'bottom', 'left', 'right'))]
     rm.blockstate_multipart('wattle', *wattle_variants).with_lang(lang('wattle'))
     rm.block_loot('wattle',
         {'name': 'tfc:wattle'},
@@ -297,10 +297,10 @@ def generate(rm: ResourceManager):
         ).with_lang(lang('%s stained wattle', color)).with_block_loot(wattle)
         rm.block_loot(wattle,
             {'name': wattle},
-            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle+'[top=true]')]},
-            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle+'[bottom=true]')]},
-            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle+'[left=true]')]},
-            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle+'[right=true]')]}
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[top=true]')]},
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[bottom=true]')]},
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[left=true]')]},
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[right=true]')]}
         )
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
