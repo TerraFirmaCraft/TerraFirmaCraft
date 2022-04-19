@@ -97,11 +97,11 @@ public interface IHeat
             final float weldingTemperature = getWeldingTemperature(), forgingTemperature = getForgingTemperature();
             if (weldingTemperature > 0 && weldingTemperature <= temperature)
             {
-                tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.welding"));
+                tooltip.append(new TranslatableComponent("tfc.tooltip.welding"));
             }
             else if (forgingTemperature > 0 && forgingTemperature <= temperature)
             {
-                tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.forging"));
+                tooltip.append(new TranslatableComponent("tfc.tooltip.forging"));
             }
             text.add(tooltip);
         }

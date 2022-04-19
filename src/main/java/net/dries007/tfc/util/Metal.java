@@ -316,16 +316,6 @@ public final class Metal
             return this == TIER_0 ? TIER_0 : VALUES[this.ordinal() - 1];
         }
 
-        public boolean isAtLeast(Tier requiredInclusive)
-        {
-            return this.ordinal() >= requiredInclusive.ordinal();
-        }
-
-        public boolean isAtMost(Tier requiredInclusive)
-        {
-            return this.ordinal() <= requiredInclusive.ordinal();
-        }
-
         public Component getDisplayName()
         {
             return new TranslatableComponent(translationKey);

@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
@@ -26,7 +31,8 @@ public class ForgingHandler implements IForging
     private final ForgeSteps steps;
 
     private int work;
-    @Nullable private ResourceLocation recipe;
+    @Nullable private AnvilRecipe recipe;
+    @Nullable private ResourceLocation uninitializedRecipe;
 
     private boolean initialized;
 
@@ -60,13 +66,18 @@ public class ForgingHandler implements IForging
 
     @Nullable
     @Override
-    public ResourceLocation getRecipeName()
+    public AnvilRecipe getRecipe(Level level)
     {
+        if (uninitializedRecipe != null)
+        {
+            uninitializedRecipe = null;
+            recipe = Helpers.getRecipes(level, TFCRecipeTypes.ANVIL).get(uninitializedRecipe);
+        }
         return recipe;
     }
 
     @Override
-    public void setRecipe(@Nullable ResourceLocation recipe)
+    public void setRecipe(@Nullable AnvilRecipe recipe)
     {
         this.recipe = recipe;
         save();
@@ -124,7 +135,8 @@ public class ForgingHandler implements IForging
             {
                 work = tag.getInt("work");
                 steps.read(tag);
-                recipe = tag.contains("recipe") ? new ResourceLocation(tag.getString("recipe")) : null;
+                uninitializedRecipe = tag.contains("recipe") ? new ResourceLocation(tag.getString("recipe")) : null;
+                recipe = null;
             }
         }
     }
@@ -141,9 +153,10 @@ public class ForgingHandler implements IForging
             final CompoundTag tag = stack.getOrCreateTagElement("tfc:forging");
             tag.putInt("work", work);
             steps.write(tag);
+
             if (recipe != null)
             {
-                tag.putString("recipe", recipe.toString());
+                tag.putString("recipe", recipe.getId().toString());
             }
         }
     }

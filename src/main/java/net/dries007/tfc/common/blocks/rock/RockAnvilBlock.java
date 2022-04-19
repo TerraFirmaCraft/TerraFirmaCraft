@@ -18,9 +18,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.common.blocks.devices.Tiered;
+import net.dries007.tfc.util.Metal;
 
-public class RockAnvilBlock extends Block
+public class RockAnvilBlock extends Block implements Tiered
 {
     public static final VoxelShape SHAPE = box(0, 0, 0, 16, 14, 16);
 
@@ -44,5 +45,11 @@ public class RockAnvilBlock extends Block
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
     {
         return new ItemStack(raw.get());
+    }
+
+    @Override
+    public int getTier()
+    {
+        return Metal.Tier.TIER_0.ordinal();
     }
 }

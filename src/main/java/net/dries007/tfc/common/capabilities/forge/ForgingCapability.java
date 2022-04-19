@@ -7,14 +7,22 @@
 package net.dries007.tfc.common.capabilities.forge;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class ForgingCapability
 {
     public static final Capability<IForging> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("forging");
+
+    @Nullable
+    public static IForging get(ItemStack stack)
+    {
+        return stack.getCapability(CAPABILITY).resolve().orElse(null);
+    }
 }

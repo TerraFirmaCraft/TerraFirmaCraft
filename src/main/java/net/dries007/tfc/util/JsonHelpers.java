@@ -67,25 +67,26 @@ public final class JsonHelpers extends GsonHelper
         return TagKey.create(registry, res);
     }
 
-    public static <E extends Enum<E>> E getEnum(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
+    public static <E extends Enum<E>> E getEnum(JsonObject obj, String key, Class<E> enumClass, E defaultValue)
     {
-        final String enumName = GsonHelper.getAsString(obj, key, null);
-        if (enumName != null)
+        if (obj.has(key))
         {
-            try
-            {
-                return Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
-            }
-            catch (IllegalArgumentException e)
-            {
-                throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
-            }
+            return getEnum(obj.get(key), enumClass);
         }
-        if (defaultValue != null)
+        return defaultValue;
+    }
+
+    public static <E extends Enum<E>> E getEnum(JsonElement json, Class<E> enumClass)
+    {
+        final String enumName = JsonHelpers.convertToString(json, enumClass.getSimpleName());
+        try
         {
-            return defaultValue;
+            return Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
         }
-        throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
+        catch (IllegalArgumentException e)
+        {
+            throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
+        }
     }
 
     public static <T> T getFrom(JsonObject json, String key, DataManager<T> manager)

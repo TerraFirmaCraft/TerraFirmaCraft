@@ -50,6 +50,11 @@ public final class HeatCapability
         return null;
     }
 
+    public static float getTemperature(ItemStack stack)
+    {
+        return stack.getCapability(HeatCapability.CAPABILITY).map(IHeat::getTemperature).orElse(0f);
+    }
+
     public static float adjustTempTowards(float temp, float target)
     {
         return adjustTempTowards(temp, target, 1, 1);

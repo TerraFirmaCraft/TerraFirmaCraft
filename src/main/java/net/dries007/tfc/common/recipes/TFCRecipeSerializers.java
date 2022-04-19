@@ -46,6 +46,8 @@ public class TFCRecipeSerializers
     public static final RegistryObject<SealedBarrelRecipe.Serializer> SEALED_BARREL = register("barrel_sealed", SealedBarrelRecipe.Serializer::new);
     public static final RegistryObject<InstantBarrelRecipe.Serializer> INSTANT_BARREL = register("barrel_instant", InstantBarrelRecipe.Serializer::new);
     public static final RegistryObject<LoomRecipe.Serializer> LOOM = register("loom", LoomRecipe.Serializer::new);
+    public static final RegistryObject<AnvilRecipe.Serializer> ANVIL = register("anvil", AnvilRecipe.Serializer::new);
+    public static final RegistryObject<WeldingRecipe.Serializer> WELDING = register("welding", WeldingRecipe.Serializer::new);
 
     // Crafting
 

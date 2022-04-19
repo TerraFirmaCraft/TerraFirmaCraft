@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import net.minecraft.network.FriendlyByteBuf;
+
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.common.capabilities.forge.ForgeStep.*;
@@ -51,6 +53,12 @@ public enum ForgeRule
         return id >= 0 && id < VALUES.length ? VALUES[id] : null;
     }
 
+    public static ForgeRule fromNetwork(FriendlyByteBuf buffer)
+    {
+        final ForgeRule rule = valueOf(buffer.readByte());
+        return rule == null ? HIT_ANY : rule;
+    }
+
     private final Order order;
     private final ForgeStep type;
 
@@ -62,17 +70,22 @@ public enum ForgeRule
         assert type != HIT_MEDIUM && type != HIT_HARD;
     }
 
-    public int getU()
+    public void toNetwork(FriendlyByteBuf buffer)
     {
-        return type == HIT_LIGHT ? 218 : type.getU();
+        buffer.writeByte(ordinal());
     }
 
-    public int getV()
+    public int u()
     {
-        return type == HIT_LIGHT ? 18 : type.getV();
+        return type == HIT_LIGHT ? 218 : type.u();
     }
 
-    public int getW()
+    public int v()
+    {
+        return type == HIT_LIGHT ? 18 : type.v();
+    }
+
+    public int w()
     {
         return order.v;
     }

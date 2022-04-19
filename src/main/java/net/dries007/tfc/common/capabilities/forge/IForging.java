@@ -6,16 +6,18 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import net.dries007.tfc.common.recipes.AnvilRecipe;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 
 public interface IForging extends ICapabilityProvider
 {
+
     /**
      * Gets the current amount of work on the object
      */
@@ -26,29 +28,11 @@ public interface IForging extends ICapabilityProvider
      */
     void setWork(int work);
 
-    /**
-     * Gets the current saved recipe's registry name
-     * Returns null if no recipe name is currently saved
-     */
-    @Nullable
-    ResourceLocation getRecipeName();
+    ForgeSteps getSteps();
 
-    /** todo: requires anvil recipes
-     * Sets the recipe name from an {@link AnvilRecipe}. If null, sets the recipe name to null
-     */
-    /*
-    default void setRecipe(@Nullable AnvilRecipe recipe)
-    {
-        setRecipe(recipe != null ? recipe.getRegistryName() : null);
-    }
-    */
+    @Nullable AnvilRecipe getRecipe(Level level);
 
-    /**
-     * Sets the recipe name from an AnvilRecipe registry name.
-     *
-     * @param recipeName a registry name of an anvil recipe
-     */
-    void setRecipe(@Nullable ResourceLocation recipeName);
+    void setRecipe(@Nullable AnvilRecipe recipe);
 
     /**
      * Gets the step in the last n'th position of work.
@@ -63,6 +47,18 @@ public interface IForging extends ICapabilityProvider
      * @return {@code true} if the current instance matches the provided rule.
      */
     boolean matches(ForgeRule rule);
+
+    default boolean matches(ForgeRule[] rules)
+    {
+        for (ForgeRule rule : rules)
+        {
+            if (!matches(rule))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     /**
      * Adds (works) a step as the new most recent, updating the other three most recent steps.

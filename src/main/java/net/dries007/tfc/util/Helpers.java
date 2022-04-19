@@ -636,6 +636,26 @@ public final class Helpers
         HoeItemProtectedAccessor.TILLABLES_VIEW.put(block, Pair.of(condition, action));
     }
 
+    public static <E> void encodeArray(FriendlyByteBuf buffer, E[] array, BiConsumer<E, FriendlyByteBuf> encoder)
+    {
+        buffer.writeVarInt(array.length);
+        for (E e : array)
+        {
+            encoder.accept(e, buffer);
+        }
+    }
+
+    public static <E> E[] decodeArray(FriendlyByteBuf buffer, IntFunction<E[]> arrayCtor, Function<FriendlyByteBuf, E> decoder)
+    {
+        final int size = buffer.readVarInt();
+        final E[] array = arrayCtor.apply(size);
+        for (int i = 0; i < size; i++)
+        {
+            array[i] = decoder.apply(buffer);
+        }
+        return array;
+    }
+
     public static <E, C extends Collection<E>> C decodeAll(FriendlyByteBuf buffer, C collection, Function<FriendlyByteBuf, E> decoder)
     {
         final int size = buffer.readVarInt();
