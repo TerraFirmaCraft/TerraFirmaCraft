@@ -6,12 +6,10 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import java.util.Collections;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
@@ -50,10 +48,5 @@ public record FluidStackIngredient(FluidIngredient ingredient, int amount) imple
     public boolean test(FluidStack stack)
     {
         return stack.getAmount() >= amount && ingredient.test(stack.getFluid());
-    }
-
-    public int getAmount()
-    {
-        return amount;
     }
 }

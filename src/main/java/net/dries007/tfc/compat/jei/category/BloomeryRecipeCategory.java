@@ -37,8 +37,7 @@ public class BloomeryRecipeCategory extends BaseRecipeCategory<BloomeryRecipe>
         IRecipeSlotBuilder inputLiquid = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
-        // todo whatever I'm supposed to do to make this reflect the ratio properly
-        inputItem.addIngredients(recipe.getCatalyst().ingredient());
+        inputItem.addIngredients(recipe.getCatalyst());
         inputLiquid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getInputFluid()));
         inputLiquid.setFluidRenderer(1, false, 16, 16);
         outputItem.addItemStack(recipe.getResultItem());

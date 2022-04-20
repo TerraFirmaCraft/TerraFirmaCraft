@@ -12,6 +12,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -19,23 +20,24 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
-import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
+import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 
-public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
+public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
 {
     private final ResourceLocation id;
-    private final FluidStackIngredient fluidStackIngredient;
-    private final ItemStackIngredient itemStackIngredient;
-    private final ItemStack result;
+    private final FluidStackIngredient inputFluid;
+    private final Ingredient catalyst;
+    private final ItemStackProvider result;
     private final int time;
 
-    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient fluidStackIngredient, ItemStackIngredient itemStackIngredient, ItemStack result, int time)
+    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient inputFluid, Ingredient catalyst, ItemStackProvider result, int time)
     {
         this.id = id;
-        this.fluidStackIngredient = fluidStackIngredient;
-        this.itemStackIngredient = itemStackIngredient;
+        this.inputFluid = inputFluid;
+        this.catalyst = catalyst;
         this.result = result;
         this.time = time;
     }
@@ -45,34 +47,34 @@ public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
         return time;
     }
 
-    public ItemStackIngredient getCatalyst()
+    public Ingredient getCatalyst()
     {
-        return itemStackIngredient;
+        return catalyst;
     }
 
     public FluidStackIngredient getInputFluid()
     {
-        return fluidStackIngredient;
+        return inputFluid;
     }
 
     @Override
-    public boolean matches(ItemStackInventory inv, Level level)
+    public boolean matches(BloomeryInventory inv, Level level)
     {
-        ItemStack stack = inv.getStack();
-        HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
-        FluidStack fluid = heatingRecipe == null ? FluidStack.EMPTY : heatingRecipe.getOutputFluid(new ItemStackInventory(stack));
-        return fluidStackIngredient.test(fluid) && itemStackIngredient.test(stack);
+        return inputFluid.test(inv.getFluid()) && this.catalyst.test(inv.getCatalyst());
     }
 
     @Override
     public ItemStack getResultItem()
     {
-        return result;
+        return result.getStack(ItemStack.EMPTY);
     }
 
-    public ItemStack assembleOutputs(FluidStack fluid)
+    @Override
+    public ItemStack assemble(BloomeryInventory inventory)
     {
-        return new ItemStack(this.result.getItem(),fluid.getAmount() / this.fluidStackIngredient.getAmount());
+        ItemStack stack = result.getStack(inventory.getCatalyst());
+        stack.setCount(inventory.getFluid().getAmount() / inputFluid.amount());
+        return stack;
     }
 
     @Override
@@ -93,35 +95,16 @@ public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
         return TFCRecipeTypes.BLOOMERY.get();
     }
 
-    public boolean isValidInput(ItemStack stack)
-    {
-        HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
-        if (heatingRecipe != null)
-        {
-            return this.fluidStackIngredient.test(heatingRecipe.getOutputFluid(new ItemStackInventory(stack)));
-        }
-        return false;
-    }
-
-    public boolean isValidMixture(FluidStack fluidStack, ItemStack catalystStack)
-    {
-        if (!fluidStackIngredient.test(fluidStack) || !itemStackIngredient.test(catalystStack))
-        {
-            return false;
-        }
-        return catalystStack.getCount() >= (fluidStack.getAmount() / fluidStackIngredient.getAmount() * itemStackIngredient.count());
-    }
-
     public static class Serializer extends RecipeSerializerImpl<BloomeryRecipe>
     {
         @Override
         public BloomeryRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             final FluidStackIngredient fluidStack = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
-            final ItemStackIngredient catalystStack = ItemStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "catalyst"));
-            final ItemStack result = JsonHelpers.getItemStack(json, "result");
+            final Ingredient catalyst = Ingredient.fromJson(JsonHelpers.getAsJsonObject(json, "catalyst"));
+            final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
             final int time = JsonHelpers.getAsInt(json, "time");
-            return new BloomeryRecipe(recipeId, fluidStack, catalystStack, result, time);
+            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
         }
 
         @Nullable
@@ -129,18 +112,18 @@ public class BloomeryRecipe implements ISimpleRecipe<ItemStackInventory>
         public BloomeryRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
             final FluidStackIngredient fluidStack = FluidStackIngredient.fromNetwork(buffer);
-            final ItemStackIngredient catalystStack = ItemStackIngredient.fromNetwork(buffer);
-            final ItemStack result = buffer.readItem();
+            final Ingredient catalyst = Ingredient.fromNetwork(buffer);
+            final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
             final int time = buffer.readVarInt();
-            return new BloomeryRecipe(recipeId, fluidStack, catalystStack, result, time);
+            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buffer, BloomeryRecipe recipe)
         {
-            recipe.fluidStackIngredient.toNetwork(buffer);
-            recipe.itemStackIngredient.toNetwork(buffer);
-            buffer.writeItem(recipe.result);
+            recipe.inputFluid.toNetwork(buffer);
+            recipe.catalyst.toNetwork(buffer);
+            recipe.result.toNetwork(buffer);
             buffer.writeVarInt(recipe.time);
         }
     }

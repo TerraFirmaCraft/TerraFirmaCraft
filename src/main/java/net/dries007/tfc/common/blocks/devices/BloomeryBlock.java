@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.EnumMap;
 import java.util.Random;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -41,6 +42,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,7 +91,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
     public static final VoxelShape CLOSED_EAST_SHAPE = box(14D, 0D, 0D, 16D, 16D, 16D);
 
     private static final MultiBlock BLOOMERY_CHIMNEY; // Helper for determining how high the chimney is
-    private static final MultiBlock[] BLOOMERY_BASE; // If one of those is true, bloomery is formed and can operate (has at least one chimney)
+    private static final EnumMap<Direction, MultiBlock> BASE_MULTIBLOCKS; // If one of those is true, bloomery is formed and can operate (has at least one chimney)
     private static final MultiBlock GATE_Z, GATE_X; // Determines if the gate can stay in place
     private static final Direction[] NORTH_SOUTH_DOWN = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.DOWN};
     private static final Direction[] EAST_WEST_DOWN = new Direction[]{Direction.EAST, Direction.WEST, Direction.DOWN};
@@ -97,43 +99,24 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
     static
     {
         BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION) && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos);
-        Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.getMaterial().isReplaceable();
-        Predicate<BlockState> center = state -> state.is(TFCBlocks.MOLTEN.get()) || state.is(TFCBlocks.BLOOM.get()) || state.getMaterial().isReplaceable();
+        Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.isAir();
+        Predicate<BlockState> center = state -> state.is(TFCBlocks.MOLTEN.get()) || state.is(TFCBlocks.BLOOM.get()) || state.isAir();
         BlockPos origin = BlockPos.ZERO;
 
         // Bloomery center is the charcoal pile pos
-        BLOOMERY_BASE = new MultiBlock[4];
-        BLOOMERY_BASE[Direction.NORTH.get2DDataValue()] = new MultiBlock()
+        BASE_MULTIBLOCKS = new EnumMap<>(Direction.class);
+        final MultiBlock commonMultiblock = new MultiBlock()
             .match(origin, center)
             .match(origin.below(), stoneMatcher)
-            .match(origin.north(), state -> state.is(TFCBlocks.BLOOMERY.get()))
-            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.SOUTH, Direction.EAST, Direction.WEST}, 1)
-            .matchEachDirection(origin.north(), stoneMatcher, EAST_WEST_DOWN, 1)
-            .matchHorizontal(origin.above(), stoneMatcher, 1);
+            .match(origin.north(), state -> Helpers.isBlock(state, TFCBlocks.BLOOMERY.get()));
 
-        BLOOMERY_BASE[Direction.SOUTH.get2DDataValue()] = new MultiBlock() //south
-            .match(origin, center)
-            .match(origin.below(), stoneMatcher)
-            .match(origin.south(), state -> state.is(TFCBlocks.BLOOMERY.get()))
-            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.EAST, Direction.WEST}, 1)
-            .matchEachDirection(origin.south(), stoneMatcher, EAST_WEST_DOWN, 1)
-            .matchHorizontal(origin.above(), stoneMatcher, 1);
-
-        BLOOMERY_BASE[Direction.WEST.get2DDataValue()] = new MultiBlock() //west
-            .match(origin, center)
-            .match(origin.below(), stoneMatcher)
-            .match(origin.west(), state -> state.is(TFCBlocks.BLOOMERY.get()))
-            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.EAST, Direction.SOUTH}, 1)
-            .matchEachDirection(origin.west(), stoneMatcher, NORTH_SOUTH_DOWN, 1)
-            .matchHorizontal(origin.above(), stoneMatcher, 1);
-
-        BLOOMERY_BASE[Direction.EAST.get2DDataValue()] = new MultiBlock() //east
-            .match(origin, center)
-            .match(origin.below(), stoneMatcher)
-            .match(origin.east(), state -> state.is(TFCBlocks.BLOOMERY.get()))
-            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.WEST, Direction.SOUTH}, 1)
-            .matchEachDirection(origin.east(), stoneMatcher, NORTH_SOUTH_DOWN, 1)
-            .matchHorizontal(origin.above(), stoneMatcher, 1);
+        for (Direction d : Direction.Plane.HORIZONTAL)
+        {
+            BASE_MULTIBLOCKS.put(d, commonMultiblock.copy()
+                .matchEachDirection(origin, stoneMatcher, Direction.Plane.HORIZONTAL.stream().filter(direction -> direction != d).toArray(Direction[]::new), 1)
+                .matchEachDirection(origin.relative(d), stoneMatcher, d.getAxis() == Direction.Axis.Z ? EAST_WEST_DOWN : NORTH_SOUTH_DOWN, 1)
+                .matchHorizontal(origin.above(), stoneMatcher, 1));
+        }
 
         BLOOMERY_CHIMNEY = new MultiBlock()
             .match(origin, insideChimney)
@@ -149,7 +132,9 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
             .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN}, 1);
     }
 
-    //centerPos should be the internal block of the bloomery
+    /**
+     * @param centerPos should be the internal block of the bloomery
+     */
     public static int getChimneyLevels(Level level, BlockPos centerPos)
     {
         for (int i = 1; i < 4; i++)
@@ -176,14 +161,9 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
         }
     }
 
-    //if Directions don't have int indices any more, then...
     public static boolean isFormed(Level level, BlockPos centerPos, Direction facing)
     {
-        if (facing.getAxis() == Direction.Axis.Y)
-        {
-            throw new IllegalArgumentException("Not horizontal");
-        }
-        return BLOOMERY_BASE[facing.get2DDataValue()].test(level, centerPos);
+        return facing.getAxis() != Direction.Axis.Y && BASE_MULTIBLOCKS.get(facing).test(level, centerPos);
     }
 
     public BloomeryBlock(ExtendedProperties properties)
@@ -204,12 +184,12 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND && !state.getValue(LIT))
+        if (state.getValue(LIT))
         {
             state = state.cycle(OPEN);
             level.setBlockAndUpdate(pos, state);
-            level.playSound(null, pos, SoundEvents.FENCE_GATE_CLOSE, SoundSource.BLOCKS, 1.0f, 1.0f);
-            return InteractionResult.SUCCESS;
+            Helpers.playSound(level, pos, state.getValue(OPEN) ? SoundEvents.FENCE_GATE_OPEN : SoundEvents.FENCE_GATE_CLOSE);
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
     }
@@ -219,34 +199,20 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         Direction placeDirection = null;
-        Direction[] nearestDirections = context.getNearestLookingDirections();
-        if (canGateStayInPlace(context.getLevel(), context.getClickedPos(), Direction.Axis.X))
+        for (Direction d : context.getNearestLookingDirections())
         {
-            for (Direction d : nearestDirections)
+            if (d.getAxis() != Direction.Axis.Y && canGateStayInPlace(context.getLevel(), context.getClickedPos(), d.getAxis()))
             {
-                if (d == Direction.EAST || d == Direction.WEST)
-                {
-                    placeDirection = d;
-                    break;
-                }
+                placeDirection = d;
+                break;
             }
         }
-        else if (canGateStayInPlace(context.getLevel(), context.getClickedPos(), Direction.Axis.Z))
-        {
-            for (Direction d : nearestDirections)
-            {
-                if (d == Direction.NORTH || d == Direction.SOUTH)
-                {
-                    placeDirection = d;
-                    break;
-                }
-            }
-        }
-        else
+
+        if (placeDirection == null)
         {
             return Blocks.AIR.defaultBlockState();
         }
-        return this.defaultBlockState().setValue(FACING, placeDirection == null ? Direction.NORTH : placeDirection.getOpposite());
+        return this.defaultBlockState().setValue(FACING, placeDirection.getOpposite());
     }
 
     @Override

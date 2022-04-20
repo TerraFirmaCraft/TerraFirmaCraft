@@ -120,8 +120,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('#minecraft:logs')
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'tfc:straw', 'tfc:straw', 'minecraft:clay_ball', 'minecraft:clay_ball', 'minecraft:clay_ball', '#minecraft:dirt', '#minecraft:dirt', '#minecraft:dirt'), (6, 'tfc:daub'))
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
-    # todo: this allows the bloomery to be crafted from any combo of sheets, instead of all of the same type. do we need separate recipes for each bronze type?
-    rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#tfc:bronze_anvils')
+    rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
     damage_shapeless(rm, 'crafting/paper', ('tfc:food/sugarcane', 'tfc:food/sugarcane', 'tfc:food/sugarcane', '#tfc:knives'), (3, 'minecraft:paper')).with_advancement('tfc:food/sugarcane')
@@ -278,9 +277,9 @@ def generate(rm: ResourceManager):
             if item_data.type == 'all' or item_data.type in metal_data.types:
                 heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal))
 
-    metal_data = METALS['wrought_iron']
-    heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', metal_data.melt_temperature, None, '100 tfc:metal/cast_iron')
-    heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', metal_data.melt_temperature, None, '100 tfc:metal/wrought_iron')
+    wrought_iron = METALS['wrought_iron']
+    heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
+    heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
@@ -484,7 +483,7 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
     # Bloomery Recipes
-    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', '4 minecraft:charcoal', 15000)
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '25 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
 
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
@@ -685,11 +684,11 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
         } for p in parts]
     })
 
-def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: str, metal: str, catalyst: str, time: int):
+def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: Json, metal: Json, catalyst: Json, time: int):
     rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
-        'result': utils.item_stack(result),
+        'result': item_stack_provider(result, copy_heat=True),
         'fluid': fluid_stack_ingredient(metal),
-        'catalyst': item_stack_ingredient(catalyst),
+        'catalyst': utils.ingredient(catalyst),
         'time': time
     })
 

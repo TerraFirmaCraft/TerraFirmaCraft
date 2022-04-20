@@ -25,22 +25,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.MoltenBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackHandler>
+public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBlockEntity.Inventory>
 {
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.bloomery");
 
@@ -55,19 +57,17 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 {
                     bloomery.dumpItems();
                     state = state.setValue(BloomeryBlock.LIT, false);
-                    level.setBlockAndUpdate(bloomery.worldPosition, state);
+                    level.setBlockAndUpdate(pos, state);
                 }
             }
             if (state.getValue(BloomeryBlock.LIT) && bloomery.getRemainingTicks() <= 0)
             {
                 if (bloomery.cachedRecipe != null)
                 {
-                    ItemStack result = bloomery.cachedRecipe.assembleOutputs(bloomery.getTotalInput());
+                    ItemStack result = bloomery.cachedRecipe.assemble(bloomery.inventory);
                     level.setBlockAndUpdate(bloomery.getInternalBlockPos(), TFCBlocks.BLOOM.get().defaultBlockState().setValue(BloomBlock.LAYERS, Math.min(result.getCount(), 8)));
 
-                    level.getBlockEntity(bloomery.getInternalBlockPos(), TFCBlockEntities.BLOOM.get()).ifPresent(bloom -> {
-                        bloom.setBloom(bloomery.cachedRecipe.assembleOutputs(bloomery.getTotalInput()));
-                    });
+                    level.getBlockEntity(bloomery.getInternalBlockPos(), TFCBlockEntities.BLOOM.get()).ifPresent(bloom -> bloom.setBloom(result));
                 }
 
                 bloomery.inputStacks.clear();
@@ -96,7 +96,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
             }
             else
             {
-                int maxCatalyst = bloomery.getTotalInput().getAmount() / bloomery.cachedRecipe.getInputFluid().getAmount() * bloomery.cachedRecipe.getCatalyst().count();
+                final int maxCatalyst = bloomery.getTotalInput().getAmount() / bloomery.cachedRecipe.getInputFluid().amount();
                 bloomery.maxCatalyst = Math.min(maxCatalyst, 128);
             }
 
@@ -151,7 +151,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
     public BloomeryBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.BLOOMERY.get(), pos, state, defaultInventory(1), NAME);
+        super(TFCBlockEntities.BLOOMERY.get(), pos, state, Inventory::new, NAME);
     }
 
     @Override
@@ -217,7 +217,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
     public boolean light(BlockState state)
     {
         assert level != null;
-        if (level.getBlockState(getInternalBlockPos()).is(TFCBlocks.MOLTEN.get()) && cachedRecipe != null && cachedRecipe.isValidMixture(getTotalInput(), getTotalCatalyst()))
+        if (level.getBlockState(getInternalBlockPos()).is(TFCBlocks.MOLTEN.get()) && cachedRecipe != null && cachedRecipe.matches(inventory, level))
         {
             litTick = Calendars.SERVER.getTicks();
             state = state.setValue(BloomeryBlock.LIT, true).setValue(BloomeryBlock.OPEN, false);
@@ -262,10 +262,10 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         for (ItemEntity entity : level.getEntitiesOfClass(ItemEntity.class, new AABB(getInternalBlockPos(), getInternalBlockPos().offset(1, BloomeryBlock.getChimneyLevels(level, getInternalBlockPos()) + 1, 1)), EntitySelector.ENTITY_STILL_ALIVE))
         {
             ItemStack stack = entity.getItem();
-            BloomeryRecipe foundRecipe = getRecipe(stack);
+            BloomeryRecipe foundRecipe = getRecipe(new TemporaryInventory(stack, this));
             if ((cachedRecipe == null && foundRecipe != null) || (cachedRecipe != null && cachedRecipe == foundRecipe))
             {
-                if (foundRecipe.matches(new ItemStackInventory(stack), level))
+                if (foundRecipe.matches(inventory, level))
                 {
                     if (inputStacks.size() < maxInput)
                     {
@@ -350,11 +350,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
                 if (inputFluid != null)
                 {
                     FluidStack fluidStack = heatingRecipe.getOutputFluid(new ItemStackInventory(stack));
-                    if (inputFluid != fluidStack.getFluid())
-                    {
-                        throw new IllegalArgumentException("Bloomery had input items with different fluid types! That's not good!");
-                    }
-                    else
+                    if (inputFluid == fluidStack.getFluid())
                     {
                         totalInput += fluidStack.getAmount();
                     }
@@ -385,11 +381,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
         {
             if (stack.getItem() == catalystItem)
             {
-                catalystCount++;
-            }
-            else
-            {
-                throw new IllegalArgumentException("Bloomery had catalyst items of different types! That's not right!");
+                catalystCount += stack.getCount();
             }
         }
         return new ItemStack(catalystItem, catalystCount);
@@ -397,13 +389,66 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<ItemStackH
 
     private void updateCachedRecipe()
     {
-        cachedRecipe = getRecipe(inputStacks.get(0));
+        cachedRecipe = getRecipe();
     }
 
     @Nullable
-    private BloomeryRecipe getRecipe(ItemStack stack)
+    private BloomeryRecipe getRecipe()
+    {
+        return getRecipe(inventory);
+    }
+
+    @Nullable
+    private BloomeryRecipe getRecipe(BloomeryInventory inventory)
     {
         assert level != null;
-        return level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BLOOMERY.get(), new ItemStackInventory(stack), level).orElse(null);
+        return level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BLOOMERY.get(), inventory, level).orElse(null);
+    }
+
+    static class Inventory extends InventoryItemHandler implements BloomeryInventory
+    {
+        private final BloomeryBlockEntity bloomery;
+
+        public Inventory(ISlotCallback callback)
+        {
+            super(callback, 0);
+            bloomery = (BloomeryBlockEntity) callback;
+        }
+
+        @Override
+        public FluidStack getFluid()
+        {
+            return bloomery.getTotalInput();
+        }
+
+        @Override
+        public ItemStack getCatalyst()
+        {
+            return bloomery.inputStacks.isEmpty() ? ItemStack.EMPTY : bloomery.inputStacks.get(0);
+        }
+    }
+
+    static class TemporaryInventory extends InventoryItemHandler implements BloomeryInventory
+    {
+        private final ItemStack item;
+
+        public TemporaryInventory(ItemStack item, ISlotCallback callback)
+        {
+            super(callback, 0);
+            this.item = item;
+        }
+
+        @Override
+        public FluidStack getFluid()
+        {
+            final HeatingRecipe recipe = HeatingRecipe.getRecipe(item);
+            return recipe == null ? FluidStack.EMPTY : recipe.getOutputFluid(new ItemStackInventory(item));
+        }
+
+        @Override
+        public ItemStack getCatalyst()
+        {
+            return item;
+        }
     }
 }

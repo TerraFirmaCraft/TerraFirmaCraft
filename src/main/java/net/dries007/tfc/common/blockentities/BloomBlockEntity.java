@@ -43,11 +43,11 @@ public class BloomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         BlockPos dropPos = worldPosition;
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
-            mutable.set(worldPosition.getX(), worldPosition.getY(), worldPosition.getZ());
-            mutable.move(d);
+            mutable.setWithOffset(worldPosition, d);
             if (level.getBlockState(mutable).is(TFCBlocks.BLOOMERY.get()))
             {
                 dropPos = mutable.immutable();
+                break;
             }
         }
         //drop bloom at bloomery location, so it's easier to pick up
