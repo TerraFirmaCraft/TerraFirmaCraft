@@ -6,13 +6,10 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -20,8 +17,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import com.mojang.logging.LogUtils;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -80,48 +75,6 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<BerryBushBlockEntity>> BERRY_BUSH = register("berry_bush", BerryBushBlockEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values(), TFCBlocks.FRUIT_TREE_LEAVES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
     public static final RegistryObject<BlockEntityType<CropBlockEntity>> CROP = register("crop", CropBlockEntity::new, TFCBlocks.CROPS.values().stream());
     public static final RegistryObject<BlockEntityType<NestBoxBlockEntity>> NEST_BOX = register("nest_box", NestBoxBlockEntity::new, TFCBlocks.NEST_BOX);
-
-    private static final Logger LOGGER = LogUtils.getLogger();
-
-    public static boolean validateBlockEntities()
-    {
-        return validateBlockEntities(MOD_ID);
-    }
-
-    public static boolean validateBlockEntities(String modID)
-    {
-        final List<Block> fbeButNoEbe = new ArrayList<>(), ebeButNoFbe = new ArrayList<>(), ebButNoEbe = new ArrayList<>();
-        Helpers.streamOurs(ForgeRegistries.BLOCKS, modID)
-            .forEach(b -> {
-                if (b instanceof IForgeBlockExtension ex && ex.getExtendedProperties().hasBlockEntity() && !(b instanceof EntityBlockExtension))
-                {
-                    fbeButNoEbe.add(b);
-                }
-                if (b instanceof EntityBlockExtension && (!(b instanceof IForgeBlockExtension ex) || !ex.getExtendedProperties().hasBlockEntity()))
-                {
-                    ebeButNoFbe.add(b);
-                }
-                if (b instanceof EntityBlock && !(b instanceof EntityBlockExtension))
-                {
-                    ebButNoEbe.add(b);
-                }
-            });
-
-        return logValidationErrors("Blocks found that declare a block entity in IForgeBlockExtension but do not implement EntityBlockExtension", fbeButNoEbe)
-            | logValidationErrors("Blocks found that implement EntityBlockExtension but do not declare a block entity in IForgeBlockExtension", ebeButNoFbe)
-            | logValidationErrors("Blocks found that implement EntityBlock but do not implement EntityBlockExtension", ebButNoEbe);
-    }
-
-    private static boolean logValidationErrors(String error, List<Block> blocks)
-    {
-        if (!blocks.isEmpty())
-        {
-            LOGGER.error(error);
-            blocks.forEach(b -> LOGGER.error("{} of {}", b.getRegistryName(), b.getClass().getSimpleName()));
-            return true;
-        }
-        return false;
-    }
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)
