@@ -46,7 +46,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             RecipeResult<List<ItemStack>> intermediateItem = itemStackProviderIngredient(recipe.getOnSeal(), recipe.getInputItem());
             IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5);
             intermediateSlot.addItemStacks(intermediateItem.result());
-            intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, new TranslatableComponent("tfc.jei.misc.barrel_sealed_full").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
+            intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, new TranslatableComponent("tfc.tooltip.while_sealed_description").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
             if (!intermediateItem.transforms())
             {
                 builder.createFocusLink(intermediateSlot, inputItemSlot, outputItemSlot);
@@ -65,7 +65,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             arrowAnimated.draw(stack, 98, 5);
         }
 
-        MutableComponent text = ICalendar.getTimeDelta(recipe.getDuration(), Calendars.CLIENT.getCalendarDaysInMonth()).withStyle(ChatFormatting.BLACK);
+        MutableComponent text = getDurationText(recipe).withStyle(ChatFormatting.BLACK);
         final Minecraft mc = Minecraft.getInstance();
         final Font font = mc.font;
         font.draw(stack, text, 74f - font.width(text) / 2.0f, 24f, 0xFFFFFF);
@@ -94,4 +94,14 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
         }
         return super.getItemResult(recipe);
     }
+
+    protected static MutableComponent getDurationText(SealedBarrelRecipe recipe)
+    {
+        if (recipe.isInfinite())
+        {
+            return new TranslatableComponent("tfc.tooltip.while_sealed");
+        }
+        return ICalendar.getTimeDelta(recipe.getDuration(), Calendars.CLIENT.getCalendarDaysInMonth());
+    }
+
 }
