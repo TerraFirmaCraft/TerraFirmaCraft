@@ -21,6 +21,16 @@ import org.jetbrains.annotations.Nullable;
 
 public class HasTraitIngredient extends DelegateIngredient
 {
+    public static HasTraitIngredient of(@Nullable Ingredient delegate, FoodTrait trait)
+    {
+        return new HasTraitIngredient(delegate, trait);
+    }
+
+    public static HasTraitIngredient of(FoodTrait trait)
+    {
+        return new HasTraitIngredient(null, trait);
+    }
+
     private final FoodTrait trait;
 
     public HasTraitIngredient(@Nullable Ingredient delegate, FoodTrait trait)

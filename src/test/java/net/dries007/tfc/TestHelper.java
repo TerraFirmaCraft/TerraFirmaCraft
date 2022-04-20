@@ -11,16 +11,24 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 
+import io.netty.buffer.Unpooled;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -38,6 +46,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TestHelper
 {
+    public static final ResourceLocation TEST_RECIPE = Helpers.identifier("test");
     public static final Artist.Custom<MidpointFractal> MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
     public static final Artist.Custom<List<MidpointFractal>> MULTI_MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> fractal.forEach(f -> draw(f, g, 1)));
     public static final Artist.Custom<RiverFractal> RIVER_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
@@ -161,5 +170,29 @@ public class TestHelper
         assertEquals(expected.getCount(), actual.getCount());
         assertEquals(expected.getTag(), actual.getTag());
         assertEquals(expected.toString(), actual.toString());
+    }
+
+    public static void assertRecipeEquals(Recipe<?> expected, Recipe<?> actual)
+    {
+        assertEquals(expected.getClass(), actual.getClass());
+        assertEquals(expected.getSerializer(), actual.getSerializer());
+    }
+
+    public static <T> T encodeAndDecode(T t, BiConsumer<T, FriendlyByteBuf> encode, Function<FriendlyByteBuf, T> decode)
+    {
+        final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
+        encode.accept(t, buffer);
+        final T result = decode.apply(buffer);
+        assertEquals(buffer.readableBytes(), 0);
+        return result;
+    }
+
+    public static <R extends Recipe<?>, S extends RecipeSerializer<R>> R encodeAndDecode(R recipe, S serializer)
+    {
+        final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
+        serializer.toNetwork(buffer, recipe);
+        final R result = serializer.fromNetwork(TEST_RECIPE, buffer);
+        assertEquals(buffer.readableBytes(), 0);
+        return result;
     }
 }

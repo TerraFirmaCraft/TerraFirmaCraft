@@ -6,17 +6,12 @@
 
 package net.dries007.tfc.util;
 
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
 
-import io.netty.buffer.Unpooled;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.recipes.ingredients.*;
@@ -63,17 +58,17 @@ public class NetworkTests extends TestHelper
     }
 
     @Test
-    public void testHeatableIngredient()
+    public void testHasTraitIngredient()
     {
-        final Ingredient before = HeatableIngredient.of(Ingredient.of(Items.ACACIA_BOAT), 30, 50);
+        final Ingredient before = HasTraitIngredient.of(Ingredient.of(Items.EGG), FoodTraits.BRINED);
         final Ingredient after = encodeAndDecode(before, Ingredient::toNetwork, Ingredient::fromNetwork);
         assertIngredientEquals(before, after);
     }
 
     @Test
-    public void testHeatableNoDelegateIngredient()
+    public void testHeatableIngredient()
     {
-        final Ingredient before = HeatableIngredient.of(30, 50);
+        final Ingredient before = HeatableIngredient.of(Ingredient.of(Items.ACACIA_BOAT), 30, 50);
         final Ingredient after = encodeAndDecode(before, Ingredient::toNetwork, Ingredient::fromNetwork);
         assertIngredientEquals(before, after);
     }
@@ -159,14 +154,5 @@ public class NetworkTests extends TestHelper
         assertEquals(before.stack().getItem(), after.stack().getItem());
         assertEquals(before.stack().getCount(), after.stack().getCount());
         assertArrayEquals(before.modifiers(), after.modifiers());
-    }
-
-    private <T> T encodeAndDecode(T t, BiConsumer<T, FriendlyByteBuf> encode, Function<FriendlyByteBuf, T> decode)
-    {
-        final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        encode.accept(t, buffer);
-        final T result = decode.apply(buffer);
-        assertEquals(buffer.readableBytes(), 0);
-        return result;
     }
 }
