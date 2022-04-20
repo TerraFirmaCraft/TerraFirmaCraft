@@ -845,8 +845,9 @@ def generate(rm: ResourceManager):
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
 
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
-        'name': '%d tfc:sea_pickle' % i,
-        'conditions': loot_tables.block_state_property('tfc:sea_pickle[pickles=%d]' % i)
+        'name': 'tfc:sea_pickle',
+        'conditions': loot_tables.block_state_property('tfc:sea_pickle[pickles=%d]' % i),
+        'functions': [loot_tables.set_count(i)]
     } for i in (1, 2, 3, 4)])
 
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'liana'):
