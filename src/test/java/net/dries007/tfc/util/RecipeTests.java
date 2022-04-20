@@ -9,7 +9,6 @@ package net.dries007.tfc.util;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluids;
-
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.TestHelper;
@@ -25,7 +24,7 @@ public class RecipeTests extends TestHelper
     @Test
     public void testHeatingRecipe()
     {
-        final HeatingRecipe before = new HeatingRecipe(TEST_RECIPE, Ingredient.of(Items.CLAY), ItemStackProvider.copyInput(), new FluidStack(Fluids.WATER, 100), 1000);
+        final HeatingRecipe before = new HeatingRecipe(TEST_RECIPE.get(), Ingredient.of(Items.CLAY), ItemStackProvider.copyInput(), new FluidStack(Fluids.WATER, 100), 1000);
         final HeatingRecipe after = encodeAndDecode(before, new HeatingRecipe.Serializer());
         assertRecipeEquals(before, after);
     }

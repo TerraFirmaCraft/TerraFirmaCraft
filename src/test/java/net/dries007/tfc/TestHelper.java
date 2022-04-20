@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
@@ -46,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TestHelper
 {
-    public static final ResourceLocation TEST_RECIPE = Helpers.identifier("test");
+    public static final Supplier<ResourceLocation> TEST_RECIPE = () -> Helpers.identifier("test");
     public static final Artist.Custom<MidpointFractal> MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
     public static final Artist.Custom<List<MidpointFractal>> MULTI_MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> fractal.forEach(f -> draw(f, g, 1)));
     public static final Artist.Custom<RiverFractal> RIVER_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
@@ -175,7 +176,6 @@ public class TestHelper
     public static void assertRecipeEquals(Recipe<?> expected, Recipe<?> actual)
     {
         assertEquals(expected.getClass(), actual.getClass());
-        assertEquals(expected.getSerializer(), actual.getSerializer());
     }
 
     public static <T> T encodeAndDecode(T t, BiConsumer<T, FriendlyByteBuf> encode, Function<FriendlyByteBuf, T> decode)
@@ -191,7 +191,7 @@ public class TestHelper
     {
         final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
         serializer.toNetwork(buffer, recipe);
-        final R result = serializer.fromNetwork(TEST_RECIPE, buffer);
+        final R result = serializer.fromNetwork(TEST_RECIPE.get(), buffer);
         assertEquals(buffer.readableBytes(), 0);
         return result;
     }
