@@ -606,7 +606,7 @@ def generate(rm: ResourceManager):
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
-    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=1000)
+    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
     drinkable(rm, 'milk', '#tfc:milks', thirst=10)
 
     # Climate Ranges
