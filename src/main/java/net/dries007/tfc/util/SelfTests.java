@@ -141,8 +141,12 @@ public final class SelfTests
      */
     public static boolean validateBlockLootTables(Stream<Block> blocks, Logger logger)
     {
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED)
+            .map(Supplier::get)
+            .collect(Collectors.toSet());
         final Set<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer().getLootTables().getIds();
-        final List<Block> missingLootTables = blocks.filter(b -> !lootTables.contains(b.getLootTable()))
+        final List<Block> missingLootTables = blocks
+            .filter(b -> !expectedNoLootTableBlocks.contains(b) && !lootTables.contains(b.getLootTable()))
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);

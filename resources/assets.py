@@ -318,9 +318,10 @@ def generate(rm: ResourceManager):
         'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()]
     })
 
-    rm.block('thatch_bed').with_lang(lang('Thatch Bed'))
+    block = rm.block('thatch_bed')
+    block.with_lang(lang('thatch bed'))
 
-    rm.blockstate('nest_box', model='tfc:block/nest_box').with_block_loot('tfc:nest_box').with_lang(lang('nest box')).with_item_model().with_tag('minecraft:mineable/axe')
+    rm.blockstate('nest_box', model='tfc:block/nest_box').with_block_loot('tfc:nest_box').with_lang(lang('nest box')).with_item_model()
 
     rm.blockstate('firepit', variants={
         'lit=true': {'model': 'tfc:block/firepit_lit'},

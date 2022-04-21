@@ -47,7 +47,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         Direction direction = random.nextBoolean() ? Direction.UP : Direction.DOWN;
         BlockState wallState = level.getBlockState(pos.relative(direction.getOpposite()));
         RockSettings wallRock = rockSettings.getRock(wallState.getBlock());
-        if (wallRock != null && wallRock.raw() == wallState.getBlock())
+        if (wallRock != null && (Helpers.isBlock(wallState, wallRock.hardened()) || Helpers.isBlock(wallState, wallRock.raw())))
         {
             placeIfPresent(level, pos, direction, random, wallRock);
         }
