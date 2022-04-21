@@ -40,7 +40,7 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
      */
     public MultiBlock copy()
     {
-        return new MultiBlock(List.copyOf(conditions));
+        return new MultiBlock(new ArrayList<>(conditions));
     }
 
     public MultiBlock match(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition)

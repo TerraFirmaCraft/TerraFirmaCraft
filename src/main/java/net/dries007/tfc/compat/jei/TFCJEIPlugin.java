@@ -156,7 +156,7 @@ public class TFCJEIPlugin implements IModPlugin
         mapCatalyst(r, TFCItems.GLAZED_VESSELS, ALLOYING);
         woodCatalyst(r, Wood.BlockType.BARREL, SEALED_BARREL);
         woodCatalyst(r, Wood.BlockType.BARREL, INSTANT_BARREL);
-        r.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOM.get()), BLOOMERY);
+        r.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
     }
 
     public static void woodCatalyst(IRecipeCatalystRegistration r, Wood.BlockType wood, RecipeType<?> recipeType)

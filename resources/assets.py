@@ -330,12 +330,14 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('quern', 'tfc:block/quern').with_item_model().with_lang(lang('Quern')).with_block_loot('tfc:quern')
 
-    rm.blockstate('bloom', variants=dict((('layers=%d' % i), {'model': 'tfc:block/bloom/bloom_height%d' % (i * 2) if i != 8 else 'tfc:block/bloom/bloom_block'}) for i in range(1, 1 + 8))).with_lang(lang('Bloom')).with_item_model()
+    rm.blockstate('bloom', variants=dict((('layers=%d' % i), {'model': 'tfc:block/bloom/bloom_height%d' % (i * 2) if i != 8 else 'tfc:block/bloom/bloom_block'}) for i in range(1, 1 + 8))).with_lang(lang('Bloom'))
+    rm.item_model('bloom', parent='tfc:block/bloom/bloom_block', no_textures=True)
     rm.blockstate('molten', variants=dict(
         ('layers=%s,lit=%s' % (i, j), {'model': 'tfc:block/molten/molten%s%s' % (k, l)})
         for i, l in ((1, '_height4'), (2, '_height8'), (3, '_height12'), (4, '_block'))
         for j, k in (('true', '_lit'), ('false', ''))
-    )).with_lang(lang('Molten')).with_item_model()
+    )).with_lang(lang('Molten'))
+    rm.item_model('molten', parent='tfc:block/molten/molten_block', no_textures=True)
     rm.blockstate('bloomery', variants=dict(
         ('facing=%s,open=%s,lit=%s' % (d, b, l), {'model': m, 'y': r})
         for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))

@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.Random;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -18,6 +21,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+
+import net.dries007.tfc.util.Helpers;
 
 public class MoltenBlock extends ExtendedBlock
 {
@@ -33,7 +38,7 @@ public class MoltenBlock extends ExtendedBlock
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(LAYERS).add(LIT);
+        builder.add(LAYERS, LIT);
     }
 
     @Override
@@ -44,5 +49,21 @@ public class MoltenBlock extends ExtendedBlock
             entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
         }
         super.stepOn(level, pos, state, entity);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
+    {
+        if (state.getValue(LIT) && level.isEmptyBlock(pos.above()))
+        {
+            final double x = pos.getX() + 0.5D;
+            final double y = pos.getY() + 1.1D;
+            final double z = pos.getZ() + 0.5D;
+            level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x, y, z, Helpers.triangle(random) * 0.1D, 0.2D, Helpers.triangle(random) * 0.1D);
+            if (random.nextInt(10) == 0)
+            {
+                level.addParticle(ParticleTypes.LAVA, x, y, z, Helpers.triangle(random) * 0.1D, 0.5D, Helpers.triangle(random) * 0.1D);
+            }
+        }
     }
 }

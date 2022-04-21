@@ -77,7 +77,7 @@ public class CharcoalPileBlock extends Block
     {
         if (!level.isClientSide() && facing == Direction.DOWN)
         {
-            if (Helpers.isBlock(facingState, TFCBlocks.CHARCOAL_PILE.get()))
+            if (Helpers.isBlock(facingState, this))
             {
                 int layersAt = stateIn.getValue(LAYERS);
                 int layersUnder = facingState.getValue(LAYERS);

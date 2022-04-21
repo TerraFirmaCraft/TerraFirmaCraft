@@ -6,15 +6,16 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import javax.annotation.Nullable;
-
+import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -41,6 +42,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -70,41 +72,22 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
                 bloomery.completeRecipe();
                 state = state.setValue(BloomeryBlock.LIT, false);
             }
-
             // Update multiblock status
-            int newMaxItems = BloomeryBlock.getChimneyLevels(level, bloomery.getInternalBlockPos()) * 8;
             Direction direction = state.getValue(BloomeryBlock.FACING);
-
-            if (!BloomeryBlock.isFormed(level, bloomery.getInternalBlockPos(), direction))
-            {
-                newMaxItems = 0;
-            }
-
-            bloomery.maxInput = newMaxItems;
-            // since amount of catalyst no longer strictly equals number of iron ores/input, maxCatalyst is determined by amount needed to satisfy current amount of input in the bloomery (maxed at 128 just for sanity's sake)
-            if (bloomery.cachedRecipe == null)
-            {
-                bloomery.maxCatalyst = 0;
-            }
-            else
-            {
-                bloomery.maxCatalyst = bloomery.getMultiplier() * bloomery.cachedRecipe.getCatalystCount();
-            }
+            bloomery.updateMaxStackValues(bloomery.cachedRecipe);
 
             boolean turnOff = false;
             while (bloomery.maxInput < bloomery.inputStacks.size())
             {
                 turnOff = true;
                 // Structure lost one or more chimney levels
-                Helpers.spawnItem(level, bloomery.worldPosition, bloomery.inputStacks.get(0));
-                bloomery.inputStacks.remove(0);
+                Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.inputStacks.remove(0));
                 bloomery.markForSync();
             }
             while (bloomery.maxCatalyst < bloomery.catalystStacks.size())
             {
                 turnOff = true;
-                Helpers.spawnItem(level, bloomery.worldPosition, bloomery.catalystStacks.get(0));
-                bloomery.catalystStacks.remove(0);
+                Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.catalystStacks.remove(0));
                 bloomery.markForSync();
             }
             // Structure became compromised, unlit if needed
@@ -133,8 +116,8 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     }
 
     protected int maxCatalyst = 0, maxInput = 0; // Helper variables, not necessary to serialize
-    protected final NonNullList<ItemStack> inputStacks = NonNullList.create();
-    protected final NonNullList<ItemStack> catalystStacks = NonNullList.create();
+    protected NonNullList<ItemStack> inputStacks = NonNullList.create();
+    protected NonNullList<ItemStack> catalystStacks = NonNullList.create();
 
     private long lastPlayerTick;
     private long litTick;
@@ -149,8 +132,13 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     @Override
     public void loadAdditional(CompoundTag nbt)
     {
-        ContainerHelper.loadAllItems(nbt.getCompound("inputStacks"), inputStacks);
+        CompoundTag inputTag = nbt.getCompound("inputStacks");
+        CompoundTag catalystTag = nbt.getCompound("catalystStacks");
+        inputStacks = NonNullList.withSize(inputTag.getList("Items", Tag.TAG_COMPOUND).size(), ItemStack.EMPTY);
+        catalystStacks = NonNullList.withSize(catalystTag.getList("Items", Tag.TAG_COMPOUND).size(), ItemStack.EMPTY);
+        ContainerHelper.loadAllItems(inputTag, inputStacks);
         ContainerHelper.loadAllItems(nbt.getCompound("catalystStacks"), catalystStacks);
+
         litTick = nbt.getLong("litTick");
         lastPlayerTick = nbt.getLong("lastTick");
         updateCachedRecipe();
@@ -160,8 +148,8 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     @Override
     public void saveAdditional(CompoundTag nbt)
     {
-        ContainerHelper.saveAllItems(new CompoundTag(), inputStacks);
-        ContainerHelper.saveAllItems(new CompoundTag(), catalystStacks);
+        nbt.put("inputStacks", ContainerHelper.saveAllItems(new CompoundTag(), inputStacks));
+        nbt.put("catalystStacks", ContainerHelper.saveAllItems(new CompoundTag(), catalystStacks));
         nbt.putLong("litTick", litTick);
         nbt.putLong("lastTick", lastPlayerTick);
         super.saveAdditional(nbt);
@@ -202,8 +190,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         assert level != null;
         if (externalBlock == null)
         {
-            Direction direction = level.getBlockState(worldPosition).getValue(BloomeryBlock.FACING);
-            externalBlock = worldPosition.relative(direction);
+            if (getBlockState().hasProperty(BloomeryBlock.FACING))
+            {
+                Direction direction = getBlockState().getValue(BloomeryBlock.FACING);
+                externalBlock = worldPosition.relative(direction);
+            }
         }
         return externalBlock;
     }
@@ -257,23 +248,23 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         lastPlayerTick = tick;
     }
 
-    protected void dumpItems()
+    private void dumpItems()
     {
         assert level != null;
 
-        inputStacks.forEach(i -> Helpers.spawnItem(level, getExternalBlock(), i));
-        inputStacks.clear();
-
-        catalystStacks.forEach(i -> Helpers.spawnItem(level, getExternalBlock(), i));
-        catalystStacks.clear();
-
+        BlockPos pos = getExternalBlock();
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        inputStacks.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
+        catalystStacks.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
         cachedRecipe = null;
     }
 
-    protected void addItemsFromWorld()
+    private void addItemsFromWorld()
     {
         assert level != null;
-        if (cachedRecipe == null && !inputStacks.isEmpty())
+        if (cachedRecipe == null && !inputStacks.isEmpty() && !catalystStacks.isEmpty())
         {
             updateCachedRecipe();
             if (cachedRecipe == null)
@@ -281,44 +272,75 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
                 dumpItems();
             }
         }
-        for (ItemEntity entity : level.getEntitiesOfClass(ItemEntity.class, new AABB(getInternalBlockPos(), getInternalBlockPos().offset(1, BloomeryBlock.getChimneyLevels(level, getInternalBlockPos()) + 1, 1)), EntitySelector.ENTITY_STILL_ALIVE))
+        final BlockPos internalPos = getInternalBlockPos();
+        for (ItemEntity entity : level.getEntitiesOfClass(ItemEntity.class, new AABB(internalPos, internalPos.offset(1, BloomeryBlock.getChimneyLevels(level, internalPos) + 1, 1)), EntitySelector.ENTITY_STILL_ALIVE))
         {
+            boolean addOre = false;
+            boolean addCatalyst = false;
             ItemStack stack = entity.getItem();
-            BloomeryRecipe foundRecipe = getRecipe(new TemporaryInventory(stack, this));
-            if ((cachedRecipe == null && foundRecipe != null) || (cachedRecipe != null && cachedRecipe == foundRecipe))
+            BloomeryInventory temp = new FluidReaderInventory(stack, this);
+            // the case where we already have a contained recipe (an as such non-empty input/catalyst stacks)
+            if (cachedRecipe != null)
             {
-                if (foundRecipe.matches(inventory, level))
+                if (cachedRecipe.getCatalyst().test(stack)) // marginally less expensive to check catalyst first
                 {
-                    if (inputStacks.size() < maxInput)
+                    addCatalyst = true;
+                }
+                else if (cachedRecipe.getInputFluid().ingredient().test(temp.getFluid().getFluid()))
+                {
+                    addOre = true;
+                }
+            }
+            else
+            {
+                // we gave up on having a complete picture of the situation, checking for the possibility of usable ore only
+                // first check the inventory
+                BloomeryRecipe possibleRecipe = getRecipeForOre(inventory);
+                if (possibleRecipe == null)
+                {
+                    // we don't have any valid recipe internally, so let's add from the environment
+                    possibleRecipe = getRecipeForOre(temp);
+                }
+                if (possibleRecipe != null)
+                {
+                    updateMaxStackValues(possibleRecipe); // set our max stack values based on the recipe we want to use
+
+                    if (possibleRecipe.getCatalyst().test(stack))
                     {
-                        markForSync();
+                        addCatalyst = true;
                     }
-                    while (inputStacks.size() < maxInput)
+                    else if (possibleRecipe.getInputFluid().ingredient().test(temp.getFluid().getFluid()))
                     {
-                        inputStacks.add(stack.split(1));
-                        if (stack.getCount() <= 0)
-                        {
-                            entity.discard();
-                            break;
-                        }
+                        addOre = true;
                     }
                 }
-                else if (foundRecipe.getCatalyst().test(stack))
-                {
-                    if (catalystStacks.size() < maxCatalyst)
-                    {
-                        markForSync(); //markDirty
-                    }
-                    while (catalystStacks.size() < maxCatalyst)
-                    {
-                        catalystStacks.add(stack.split(1));
-                        if (stack.getCount() <= 0)
-                        {
-                            entity.discard();
-                            break;
-                        }
-                    }
-                }
+            }
+            if (addOre)
+            {
+                addWithIncrements(stack, inputStacks, maxInput, entity);
+            }
+            else if (addCatalyst)
+            {
+                // we can't really guarantee a max catalyst stack here without a complex heuristic
+                // this is OK because the items get dumped on the next server tick in this case.
+                addWithIncrements(stack, catalystStacks, Integer.MAX_VALUE, entity);
+            }
+        }
+    }
+
+    private void addWithIncrements(ItemStack toAdd, NonNullList<ItemStack> items, int max, ItemEntity entity)
+    {
+        if (items.size() < max)
+        {
+            markForSync();
+        }
+        while (items.size() < max)
+        {
+            items.add(toAdd.split(1));
+            if (toAdd.getCount() <= 0)
+            {
+                entity.discard();
+                break;
             }
         }
     }
@@ -326,28 +348,27 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     /**
      * Sets a molten block inside the bloomery structure. If there is nothing in the bloomery, attempts to delete any molten blocks left over.
      */
-    protected void updateMoltenBlock(boolean cooking)
+    private void updateMoltenBlock(boolean cooking)
     {
         assert level != null;
         final BlockPos internalPos = getInternalBlockPos();
-        final int catalystSlag = (int) Math.ceil(((float) catalystStacks.size() / maxCatalyst) * BloomeryBlock.getChimneyLevels(level, internalPos) * 8);
-        final int slag = inputStacks.size() + catalystSlag;
         //If there's at least one item, show one layer so player knows that it is holding stacks
-        int slagLayers = slag > 0 && slag < 4 ? 1 : slag / 4;
+        int slagLayers = Math.max(1, inputStacks.size() / 8) * 4;
         for (int i = 0; i < 4; i++)
         {
-            if (slagLayers > 0)
+            if (slagLayers > 0 && !inputStacks.isEmpty())
             {
+                int toPlace = 4;
                 if (slagLayers >= 4)
                 {
                     slagLayers -= 4;
-                    level.setBlockAndUpdate(internalPos.above(i), TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, 4));
                 }
                 else
                 {
-                    level.setBlockAndUpdate(internalPos.above(i), TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, slagLayers));
+                    toPlace = slagLayers;
                     slagLayers = 0;
                 }
+                level.setBlockAndUpdate(internalPos.above(i), TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, toPlace));
             }
             else
             {
@@ -358,6 +379,23 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
                 }
             }
         }
+    }
+
+    private void updateMaxStackValues(@Nullable BloomeryRecipe recipe)
+    {
+        assert level != null;
+        // Update multiblock status
+        final BlockPos pos = getInternalBlockPos();
+        int newMaxItems = BloomeryBlock.getChimneyLevels(level, pos) * 8;
+        Direction direction = level.getBlockState(worldPosition).getValue(BloomeryBlock.FACING);
+
+        if (!BloomeryBlock.isFormed(level, pos, direction))
+        {
+            newMaxItems = 0;
+        }
+
+        maxInput = newMaxItems;
+        maxCatalyst = recipe == null ? 0 : getMultiplier() * recipe.getCatalystCount();
     }
 
     /**
@@ -400,8 +438,9 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             {
                 result.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(metal.getMeltTemperature() - 1f));
             }
-            level.setBlockAndUpdate(getInternalBlockPos(), TFCBlocks.BLOOM.get().defaultBlockState().setValue(BloomBlock.LAYERS, BloomBlockEntity.TOTAL_LAYERS));
-            level.getBlockEntity(getInternalBlockPos(), TFCBlockEntities.BLOOM.get()).ifPresent(bloom -> bloom.setBloom(result, getMultiplier()));
+            final BlockPos pos = getInternalBlockPos();
+            level.setBlockAndUpdate(pos, TFCBlocks.BLOOM.get().defaultBlockState().setValue(BloomBlock.LAYERS, BloomBlockEntity.TOTAL_LAYERS));
+            level.getBlockEntity(pos, TFCBlockEntities.BLOOM.get()).ifPresent(bloom -> bloom.setBloom(result, getMultiplier()));
         }
         // void the internal stacks, if the ratio mismatched, too bad
         inputStacks.clear();
@@ -427,6 +466,16 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     {
         assert level != null;
         return level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BLOOMERY.get(), inventory, level).orElse(null);
+    }
+
+    /**
+     * @return a BloomeryRecipe possibly matching the inventory, but only checking the ore stack for the correct fluid.
+     */
+    @Nullable
+    private BloomeryRecipe getRecipeForOre(BloomeryInventory inventory)
+    {
+        assert level != null;
+        return level.getRecipeManager().getAllRecipesFor(TFCRecipeTypes.BLOOMERY.get()).stream().filter(recipe -> recipe.getInputFluid().test(inventory.getFluid())).findFirst().orElse(null);
     }
 
     static class Inventory extends InventoryItemHandler implements BloomeryInventory
@@ -472,27 +521,30 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         }
     }
 
-    static class TemporaryInventory extends InventoryItemHandler implements BloomeryInventory
+    static class FluidReaderInventory extends InventoryItemHandler implements BloomeryInventory
     {
-        private final ItemStack item;
+        private final ItemStack ore;
 
-        public TemporaryInventory(ItemStack item, ISlotCallback callback)
+        public FluidReaderInventory(ItemStack ore, ISlotCallback callback)
         {
             super(callback, 0);
-            this.item = item;
+            this.ore = ore;
         }
 
         @Override
         public FluidStack getFluid()
         {
-            final HeatingRecipe recipe = HeatingRecipe.getRecipe(item);
-            return recipe == null ? FluidStack.EMPTY : recipe.getOutputFluid(new ItemStackInventory(item));
+            final HeatingRecipe recipe = HeatingRecipe.getRecipe(ore.copy());
+            if (recipe == null) return FluidStack.EMPTY;
+            FluidStack fluid = recipe.getOutputFluid(new ItemStackInventory(ore));
+            fluid.setAmount(fluid.getAmount() * ore.getCount());
+            return fluid;
         }
 
         @Override
         public ItemStack getCatalyst()
         {
-            return item;
+            return ItemStack.EMPTY;
         }
     }
 }

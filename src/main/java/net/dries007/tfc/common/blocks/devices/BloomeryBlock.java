@@ -13,6 +13,7 @@ import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -38,7 +39,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -107,12 +107,12 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
         BASE_MULTIBLOCKS = new EnumMap<>(Direction.class);
         final MultiBlock commonMultiblock = new MultiBlock()
             .match(origin, center)
-            .match(origin.below(), stoneMatcher)
-            .match(origin.north(), state -> Helpers.isBlock(state, TFCBlocks.BLOOMERY.get()));
+            .match(origin.below(), stoneMatcher);
 
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             BASE_MULTIBLOCKS.put(d, commonMultiblock.copy()
+                .match(origin.relative(d), state -> Helpers.isBlock(state, TFCBlocks.BLOOMERY.get()))
                 .matchEachDirection(origin, stoneMatcher, Direction.Plane.HORIZONTAL.stream().filter(direction -> direction != d).toArray(Direction[]::new), 1)
                 .matchEachDirection(origin.relative(d), stoneMatcher, d.getAxis() == Direction.Axis.Z ? EAST_WEST_DOWN : NORTH_SOUTH_DOWN, 1)
                 .matchHorizontal(origin.above(), stoneMatcher, 1));
@@ -174,17 +174,21 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
 
     @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
     {
         if (!state.getValue(LIT)) return;
-        level.getBlockEntity(pos, TFCBlockEntities.BLOOMERY.get()).ifPresent(bloomery -> level.playLocalSound(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false));
+        final double x = pos.getX();
+        final double y = pos.getY();
+        final double z = pos.getZ();
+        level.playLocalSound(x, y, z, SoundEvents.BLASTFURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
+        level.addParticle(ParticleTypes.SMALL_FLAME, x + random.nextFloat(), y + random.nextFloat(), z + random.nextFloat(), 0, 0, 0);
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        if (state.getValue(LIT))
+        if (!state.getValue(LIT))
         {
             state = state.cycle(OPEN);
             level.setBlockAndUpdate(pos, state);

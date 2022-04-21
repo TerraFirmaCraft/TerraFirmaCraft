@@ -45,7 +45,7 @@ public class BloomBlockEntity extends TFCBlockEntity
     @Override
     protected void loadAdditional(CompoundTag tag)
     {
-        super.load(tag);
+        super.loadAdditional(tag);
         item = ItemStack.of(tag.getCompound("item"));
         count = tag.getInt("count");
         maxCount = tag.getInt("maxCount");
@@ -59,15 +59,13 @@ public class BloomBlockEntity extends TFCBlockEntity
             this.item = item;
             this.count = count;
             this.maxCount = count;
-            level.setBlockAndUpdate(worldPosition, TFCBlocks.BLOOM.get().defaultBlockState().setValue(BloomBlock.LAYERS, TOTAL_LAYERS));
+            level.setBlockAndUpdate(worldPosition, getState());
         }
     }
 
     public boolean dropBloom()
     {
         assert level != null;
-        int dropCount = count / maxCount * TOTAL_LAYERS; // we will drop an eighth of the max count each time
-        count -= dropCount;
 
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
         BlockPos dropPos = worldPosition;
@@ -81,15 +79,16 @@ public class BloomBlockEntity extends TFCBlockEntity
             }
         }
 
-        while (dropCount > 0)
-        {
-            final int willDrop = Math.min(dropCount, item.getMaxStackSize());
-            ItemStack item = this.item.copy();
-            item.setCount(willDrop);
-            Helpers.spawnItem(level, dropPos, item);
-            dropCount -= willDrop;
-        }
-        BlockState state = count <= 0 ? Blocks.AIR.defaultBlockState() : level.getBlockState(worldPosition).setValue(BloomBlock.LAYERS, Mth.clamp(count / maxCount, 1, 8));
-        return level.setBlock(worldPosition, state, level.isClientSide ? 11 : 3);
+        count -= 1;
+        ItemStack item = this.item.copy();
+        item.setCount(1);
+        Helpers.spawnItem(level, dropPos, item);
+        return level.setBlock(worldPosition, getState(), level.isClientSide ? 11 : 3);
+    }
+
+    public BlockState getState()
+    {
+        assert level != null;
+        return count <= 0 ? Blocks.AIR.defaultBlockState() : level.getBlockState(worldPosition).setValue(BloomBlock.LAYERS, Mth.clamp(count / maxCount * TOTAL_LAYERS, 1, 8));
     }
 }
