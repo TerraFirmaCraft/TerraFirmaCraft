@@ -9,6 +9,9 @@ package net.dries007.tfc.common.recipes.inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+/**
+ * Contract for a Bloomery inventory, for performing recipe matching.
+ */
 public interface BloomeryInventory extends EmptyInventory
 {
     FluidStack getFluid();

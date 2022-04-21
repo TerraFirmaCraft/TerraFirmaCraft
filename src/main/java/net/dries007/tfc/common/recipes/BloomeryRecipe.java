@@ -17,11 +17,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import net.minecraftforge.fluids.FluidStack;
-
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
-import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 
@@ -30,26 +27,33 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
     private final ResourceLocation id;
     private final FluidStackIngredient inputFluid;
     private final Ingredient catalyst;
+    private final int catalystCount;
     private final ItemStackProvider result;
-    private final int time;
+    private final int duration;
 
-    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient inputFluid, Ingredient catalyst, ItemStackProvider result, int time)
+    public BloomeryRecipe(ResourceLocation id, FluidStackIngredient inputFluid, Ingredient catalyst, int catalystCount, ItemStackProvider result, int duration)
     {
         this.id = id;
         this.inputFluid = inputFluid;
         this.catalyst = catalyst;
+        this.catalystCount = catalystCount;
         this.result = result;
-        this.time = time;
+        this.duration = duration;
     }
 
-    public int getTime()
+    public int getDuration()
     {
-        return time;
+        return duration;
     }
 
     public Ingredient getCatalyst()
     {
         return catalyst;
+    }
+
+    public int getCatalystCount()
+    {
+        return catalystCount;
     }
 
     public FluidStackIngredient getInputFluid()
@@ -102,9 +106,10 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
         {
             final FluidStackIngredient fluidStack = FluidStackIngredient.fromJson(JsonHelpers.getAsJsonObject(json, "fluid"));
             final Ingredient catalyst = Ingredient.fromJson(JsonHelpers.getAsJsonObject(json, "catalyst"));
+            final int count = JsonHelpers.getAsInt(json, "catalyst_count");
             final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final int time = JsonHelpers.getAsInt(json, "time");
-            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
+            final int time = JsonHelpers.getAsInt(json, "duration");
+            return new BloomeryRecipe(recipeId, fluidStack, catalyst, count, result, time);
         }
 
         @Nullable
@@ -113,9 +118,10 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
         {
             final FluidStackIngredient fluidStack = FluidStackIngredient.fromNetwork(buffer);
             final Ingredient catalyst = Ingredient.fromNetwork(buffer);
+            final int count = buffer.readVarInt();
             final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
             final int time = buffer.readVarInt();
-            return new BloomeryRecipe(recipeId, fluidStack, catalyst, result, time);
+            return new BloomeryRecipe(recipeId, fluidStack, catalyst, count, result, time);
         }
 
         @Override
@@ -123,8 +129,9 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
         {
             recipe.inputFluid.toNetwork(buffer);
             recipe.catalyst.toNetwork(buffer);
+            buffer.writeVarInt(recipe.catalystCount);
             recipe.result.toNetwork(buffer);
-            buffer.writeVarInt(recipe.time);
+            buffer.writeVarInt(recipe.duration);
         }
     }
 }

@@ -9,10 +9,8 @@
     "amount": 100
   },
   "catalyst": {
-    "ingredient": {
-      "item": "minecraft:charcoal"
-    },
-    "count": 4
+    "item": "minecraft:charcoal"
   },
-  "time": 15000
+  "catalyst_count": 4,
+  "duration": 15000
 }

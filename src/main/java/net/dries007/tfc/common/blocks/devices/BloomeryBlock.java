@@ -168,7 +168,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
 
     public BloomeryBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(LIT, false).setValue(OPEN, false));
     }
 

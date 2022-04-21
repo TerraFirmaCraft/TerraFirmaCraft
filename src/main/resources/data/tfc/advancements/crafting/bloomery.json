@@ -7,7 +7,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "tfc:bronze_anvils"
+            "tag": "forge:double_sheets/any_bronze"
           }
         ]
       }

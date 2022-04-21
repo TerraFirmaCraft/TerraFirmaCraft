@@ -38,11 +38,6 @@ public class DeviceBlock extends ExtendedBlock implements IForgeBlockExtension, 
 {
     private final InventoryRemoveBehavior removeBehavior;
 
-    public DeviceBlock(ExtendedProperties properties)
-    {
-        this(properties, InventoryRemoveBehavior.NOOP);
-    }
-
     public DeviceBlock(ExtendedProperties properties, InventoryRemoveBehavior removeBehavior)
     {
         super(properties);
