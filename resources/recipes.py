@@ -284,12 +284,16 @@ def generate(rm: ResourceManager):
 
     for pottery in SIMPLE_POTTERY:
         heat_recipe(rm, 'fired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_MELT, result_item='tfc:ceramic/' + pottery)
-
+    
+    heat_recipe(rm, 'fired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_MELT, result_item='tfc:ceramic/large_vessel') # adding it to SIMPLE_POTTERY messes with the item models
+    
     for color in COLORS:
         heat_recipe(rm, 'glazed_terracotta_%s' % color, 'minecraft:%s_terracotta' % color, POTTERY_MELT, result_item='minecraft:%s_glazed_terracotta' % color)
         heat_recipe(rm, 'glazed_ceramic_vessel_%s' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_MELT, 'tfc:ceramic/%s_glazed_vessel' % color)
+        heat_recipe(rm, 'glazed_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_MELT, 'tfc:ceramic/large_vessel/%s' % color)
 
         rm.crafting_shapeless('crafting/ceramic/%s_unfired_vessel' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_vessel'), 'tfc:ceramic/%s_unfired_vessel' % color).with_advancement('minecraft:%s_dye' % color)
+        rm.crafting_shapeless('crafting/ceramic/%s_unfired_large_vessel' % color, ('minecraft:%s_dye' % color, 'tfc:ceramic/unfired_large_vessel'), 'tfc:ceramic/unfired_large_vessel/%s' % color).with_advancement('minecraft:%s_dye' % color)
         if color != 'white':
             rm.crafting_shaped('crafting/vanilla/color/%s_bed' % color, ['ZZZ', 'XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber', 'Z': 'minecraft:%s_dye' % color}, 'minecraft:%s_bed' % color).with_advancement('#tfc:high_quality_cloth')
         rm.crafting_shapeless('crafting/vanilla/color/%s_concrete_powder' % color, ('minecraft:%s_dye' % color, '#forge:sand', '#forge:sand', '#forge:sand', '#forge:sand', '#forge:gravel', '#forge:gravel', '#forge:gravel', '#forge:gravel'), (8, 'minecraft:%s_concrete_powder' % color))
@@ -405,6 +409,7 @@ def generate(rm: ResourceManager):
     })
 
     clay_knapping(rm, 'vessel', [' XXX ', 'XXXXX', 'XXXXX', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_vessel')
+    clay_knapping(rm, 'large_vessel', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_large_vessel')
     clay_knapping(rm, 'jug', [' X   ', 'XXXX ', 'XXX X', 'XXXX ', 'XXX  '], 'tfc:ceramic/unfired_jug')
     clay_knapping(rm, 'pot', ['X   X', 'X   X', 'X   X', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_pot')
     clay_knapping(rm, 'bowl_2', ['X   X', ' XXX '], (2, 'tfc:ceramic/unfired_bowl'), False)
