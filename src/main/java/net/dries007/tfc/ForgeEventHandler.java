@@ -542,16 +542,17 @@ public final class ForgeEventHandler
 
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
-        Block originalBlock = event.getOriginalState().getBlock();
-        if (originalBlock == Blocks.STONE)
+        // Currently, getOriginalState gets the fluid block that's placing the block, not the block getting placed
+        BlockState state = event.getNewState();
+        if (Helpers.isBlock(state, Blocks.STONE))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.GABBRO).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
-        else if (originalBlock == Blocks.COBBLESTONE)
+        else if (Helpers.isBlock(state, Blocks.COBBLESTONE))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.RHYOLITE).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
-        else if (originalBlock == Blocks.BASALT)
+        else if (Helpers.isBlock(state, Blocks.BASALT))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }

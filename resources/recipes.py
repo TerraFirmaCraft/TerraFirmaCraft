@@ -118,7 +118,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/thatch', ['XX', 'XX'], {'X': 'tfc:straw'}, 'tfc:thatch').with_advancement('tfc:straw')
     damage_shapeless(rm, 'crafting/wool_yarn', ('tfc:spindle', 'tfc:wool'), (8, 'tfc:wool_yarn')).with_advancement('tfc:wool')
     rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('#minecraft:logs')
-    rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'tfc:straw', 'tfc:straw', 'minecraft:clay_ball', 'minecraft:clay_ball', 'minecraft:clay_ball', '#minecraft:dirt', '#minecraft:dirt', '#minecraft:dirt'), (6, 'tfc:daub'))
+    rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'minecraft:clay_ball', '#minecraft:dirt'), (2, 'tfc:daub'))
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
@@ -487,8 +487,8 @@ def generate(rm: ResourceManager):
 
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
-        barrel_sealed_recipe(rm, '%s_soaked_hide' % size, '%s Soaked Hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='%d tfc:%s_soaked_hide' % (output, size))
-        barrel_sealed_recipe(rm, '%s_prepared_hide' % size, '%s Prepared Hide' % size, 8000, 'tfc:%s_scraped_hide' % size, '%d minecraft:water' % amount, output_item='%d tfc:%s_prepared_hide' % (output, size))
+        barrel_sealed_recipe(rm, '%s_soaked_hide' % size, '%s Soaked Hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='tfc:%s_soaked_hide' % size)
+        barrel_sealed_recipe(rm, '%s_prepared_hide' % size, '%s Prepared Hide' % size, 8000, 'tfc:%s_scraped_hide' % size, '%d minecraft:water' % amount, output_item='tfc:%s_prepared_hide' % size)
         barrel_sealed_recipe(rm, '%s_leather' % size, 'Leather', 8000, 'tfc:%s_prepared_hide' % size, '%d tfc:tannin' % amount, output_item='%d minecraft:leather' % output)
 
     barrel_sealed_recipe(rm, 'tannin', 'Tannin', 8000, '#tfc:makes_tannin', '1000 minecraft:water', output_fluid='1000 tfc:tannin')
@@ -497,7 +497,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'glue', 'Glue', 8000, 'minecraft:bone_meal', '500 tfc:limewater',  output_item='tfc:glue')
 
     barrel_sealed_recipe(rm, 'beer', 'Fermenting Beer', 72000, 'tfc:food/barley_flour', '500 minecraft:water', output_fluid='500 tfc:beer')
-    barrel_sealed_recipe(rm, 'cider', 'Fermenting Cider', 72000, '#tfc:food/apples', '500 minecraft:water', output_fluid='500 tfc:cider')
+    barrel_sealed_recipe(rm, 'cider', 'Fermenting Cider', 72000, '#tfc:foods/apples', '500 minecraft:water', output_fluid='500 tfc:cider')
     barrel_sealed_recipe(rm, 'rum', 'Fermenting Rum', 72000, 'minecraft:sugar', '500 minecraft:water', output_fluid='500 tfc:rum')
     barrel_sealed_recipe(rm, 'sake', 'Fermenting Sake', 72000, 'tfc:food/rice_flour', '500 minecraft:water', output_fluid='500 tfc:sake')
     barrel_sealed_recipe(rm, 'vodka', 'Fermenting Vodka', 72000, 'tfc:food/potato', '500 minecraft:water', output_fluid='500 tfc:vodka')
@@ -546,17 +546,9 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
-    barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 tfc:salt_water', output_fluid='10 tfc:brine')
-    barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1 tfc:vinegar')}, '9 minecraft:milk', output_fluid='10 tfc:milk_vinegar')
+    barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 tfc:salt_water', output_fluid='10000 tfc:brine')
+    barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 minecraft:milk', output_fluid='10000 tfc:milk_vinegar')
     barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soup_bowls', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
-
-    for first, second, output in COLOR_COMBOS:
-        first_fluid = '1 tfc:%s_dye' % first
-        second_fluid = '1 tfc:%s_dye' % second
-        barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (first, second), {'ingredient': fluid_item_ingredient(first_fluid)}, second_fluid, output_fluid='2 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/mix_%s_with_%s' % (second, first), {'ingredient': fluid_item_ingredient(second_fluid)}, first_fluid, output_fluid='2 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (first, second), 'minecraft:%s_dye' % first, '1000 tfc:%s_dye' % second, output_fluid='1000 tfc:%s_dye' % output)
-        barrel_instant_recipe(rm, 'dye/add_%s_to_%s' % (second, first), 'minecraft:%s_dye' % second, '1000 tfc:%s_dye' % first, output_fluid='1000 tfc:%s_dye' % output)
 
     # Loom Recipes
     loom_recipe(rm, 'burlap_cloth', 'tfc:jute_fiber', 12, 'tfc:burlap_cloth', 12, 'tfc:block/burlap')
