@@ -76,7 +76,7 @@ public interface ClimateModel
      */
     default float getWaterFogginess(LevelReader level, BlockPos pos, long calendarTime)
     {
-        return 0f;
+        return 1f;
     }
 
     /**

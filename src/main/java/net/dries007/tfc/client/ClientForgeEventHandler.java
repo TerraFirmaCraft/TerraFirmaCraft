@@ -344,9 +344,10 @@ public class ClientForgeEventHandler
         if (mc.level != null && event.getMode() == FogRenderer.FogMode.FOG_TERRAIN)
         {
             FogType fluid = event.getCamera().getFluidInCamera();
+            BlockPos pos = event.getCamera().getBlockPosition();
             if (fluid == FogType.NONE)
             {
-                final float fog = Climate.getFogginess(mc.level, event.getCamera().getBlockPosition());
+                final float fog = Climate.getFogginess(mc.level, pos);
                 if (fog != 0)
                 {
                     final float renderDistance = mc.gameRenderer.getRenderDistance();
@@ -360,7 +361,11 @@ public class ClientForgeEventHandler
             }
             else if (fluid == FogType.WATER)
             {
-                event.scaleFarPlaneDistance(0.85f);
+                final float fog = Climate.getFogginess(mc.level, pos);
+                if (fog != 0)
+                {
+                    event.scaleFarPlaneDistance(fog);
+                }
             }
 
         }
