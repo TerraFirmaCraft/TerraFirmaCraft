@@ -439,9 +439,8 @@ public class ClientForgeEventHandler
 
                         stack.translate(0F, 0F,-0.001F);
                         gui.blit(stack, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
-
-                        stack.popPose();
                     }
+                    stack.popPose();
                 }
             }
         }
