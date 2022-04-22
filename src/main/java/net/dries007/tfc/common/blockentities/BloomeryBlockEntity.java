@@ -33,7 +33,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
@@ -68,12 +67,12 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
 
             // If we have to, dump items from the bloomery until we're back down at capacity.
             // Pop items off of the end of the list
-            final boolean modified = bloomery.inputStacks.size() >= capacity || bloomery.catalystStacks.size() >= capacity;
-            while (bloomery.inputStacks.size() >= capacity)
+            final boolean modified = bloomery.inputStacks.size() > capacity || bloomery.catalystStacks.size() > capacity;
+            while (bloomery.inputStacks.size() > capacity)
             {
                 Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.inputStacks.remove(bloomery.inputStacks.size() - 1));
             }
-            while (bloomery.catalystStacks.size() >= capacity)
+            while (bloomery.catalystStacks.size() > capacity)
             {
                 Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.catalystStacks.remove(bloomery.catalystStacks.size() - 1));
             }
@@ -163,7 +162,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     {
         assert level != null;
         final BlockState state = level.getBlockState(worldPosition);
-        return worldPosition.relative(state.getValue(BloomeryBlock.FACING).getOpposite());
+        if (state.hasProperty(BloomeryBlock.FACING))
+        {
+            return worldPosition.relative(state.getValue(BloomeryBlock.FACING).getOpposite());
+        }
+        return worldPosition;
     }
 
     /**
@@ -175,7 +178,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     {
         assert level != null;
         final BlockState state = level.getBlockState(worldPosition);
-        return worldPosition.relative(state.getValue(BloomeryBlock.FACING));
+        if (state.hasProperty(BloomeryBlock.FACING))
+        {
+            return worldPosition.relative(state.getValue(BloomeryBlock.FACING));
+        }
+        return worldPosition;
     }
 
     public boolean light(BlockState state)
@@ -196,7 +203,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     {
         super.ejectInventory();
         dumpItems();
-        updateMoltenBlock(false);
+        destroyMolten();
     }
 
     @Override
@@ -332,10 +339,12 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         assert level != null;
         final BlockPos internalPos = getInternalBlockPos();
         //If there's at least one item, show one layer so player knows that it is holding stacks
-        int slagLayers = Math.max(1, inputStacks.size() / 8) * 4;
+        float totalItems = (float) inputStacks.size() + catalystStacks.size();
+        int slagLayers = totalItems == 0 ? 0 : (int) Math.max(1, totalItems / 8f) * 4;
         for (int i = 0; i < 4; i++)
         {
-            if (slagLayers > 0 && !inputStacks.isEmpty())
+            BlockPos checkPos = internalPos.above(i);
+            if (slagLayers > 0)
             {
                 int toPlace = 4;
                 if (slagLayers >= 4)
@@ -347,14 +356,32 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
                     toPlace = slagLayers;
                     slagLayers = 0;
                 }
-                level.setBlockAndUpdate(internalPos.above(i), TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, toPlace));
+                level.setBlockAndUpdate(checkPos, TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, toPlace));
             }
             else
             {
                 //Remove any surplus slag(ie: after cooking/structure became compromised)
-                if (Helpers.isBlock(level.getBlockState(internalPos.above(i)), TFCBlocks.MOLTEN.get()))
+                if (Helpers.isBlock(level.getBlockState(checkPos), TFCBlocks.MOLTEN.get()))
                 {
-                    level.setBlockAndUpdate(internalPos.above(i), Blocks.AIR.defaultBlockState());
+                    level.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
+                }
+            }
+        }
+    }
+
+    private void destroyMolten()
+    {
+        assert level != null;
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (Direction d : Direction.Plane.HORIZONTAL)
+        {
+            mutable.setWithOffset(worldPosition, d);
+            for (int i = 0; i < 4; i++)
+            {
+                mutable.move(0, 1, 0);
+                if (Helpers.isBlock(level.getBlockState(mutable), TFCBlocks.MOLTEN.get()))
+                {
+                    level.destroyBlock(mutable, true);
                 }
             }
         }
@@ -404,7 +431,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         catalystStacks.clear();
         cachedRecipe = null;
         level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(BloomeryBlock.LIT, false));
-        updateMoltenBlock(false);
+        destroyMolten();
     }
 
     private void updateCachedRecipe()

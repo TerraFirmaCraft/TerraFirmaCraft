@@ -41,7 +41,7 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
             final FluidStack moltenFluid = heatRecipe.getOutputFluid(inventory);
             for (BloomeryRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLOOMERY).values())
             {
-                if (recipe.inputFluid.test(moltenFluid))
+                if (recipe.inputFluid.ingredient().test(moltenFluid.getFluid()))
                 {
                     return recipe;
                 }
@@ -99,7 +99,8 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
         if (heat != null)
         {
             final FluidStack fluid = heat.getOutputFluid(new ItemStackInventory(stack));
-            return inputFluid.test(fluid);
+            // small ores still need to be able to be added to the bloomery, so we cannot test the FluidStack's amount
+            return inputFluid.ingredient().test(fluid.getFluid());
         }
         return false;
     }

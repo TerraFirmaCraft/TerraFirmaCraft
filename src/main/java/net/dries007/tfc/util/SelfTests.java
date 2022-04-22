@@ -144,12 +144,9 @@ public final class SelfTests
      */
     public static boolean validateBlockLootTables(Stream<Block> blocks, Logger logger)
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED)
-            .map(Supplier::get)
-            .collect(Collectors.toSet());
         final Set<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer().getLootTables().getIds();
         final List<Block> missingLootTables = blocks
-            .filter(b -> !expectedNoLootTableBlocks.contains(b) && !lootTables.contains(b.getLootTable()))
+            .filter(b -> !lootTables.contains(b.getLootTable()))
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);
@@ -197,7 +194,7 @@ public final class SelfTests
 
     private static boolean validateOwnBlockLootTables()
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOMERY, TFCBlocks.MOLTEN)
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED)
             .map(Supplier::get)
             .collect(Collectors.toSet());
         final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class);
