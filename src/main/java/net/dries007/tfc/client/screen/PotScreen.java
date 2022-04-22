@@ -30,6 +30,16 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
     }
 
     @Override
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        super.renderLabels(poseStack, mouseX, mouseY);
+        if (blockEntity.shouldRenderAsBoiling())
+        {
+            drawDisabled(poseStack, PotBlockEntity.SLOT_EXTRA_INPUT_START, PotBlockEntity.SLOT_EXTRA_INPUT_END);
+        }
+    }
+
+    @Override
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);

@@ -52,7 +52,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
         return part == BedPart.FOOT ? direction : direction.getOpposite();
     }
 
-    private ExtendedProperties properties;
+    private final ExtendedProperties properties;
 
     public ThatchBedBlock(ExtendedProperties properties)
     {

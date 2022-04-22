@@ -12,6 +12,8 @@ import java.util.concurrent.Callable;
 import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,6 +21,8 @@ import com.google.common.collect.AbstractIterator;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.*;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -30,6 +34,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -44,6 +49,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -103,26 +110,6 @@ public final class Helpers
     public static ResourceLocation identifier(String name)
     {
         return new ResourceLocation(MOD_ID, name);
-    }
-
-    /**
-     * Filter method for TFC namespaced resources
-     */
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamOurs(IForgeRegistry<T> registry)
-    {
-        return streamOurs(registry, MOD_ID);
-    }
-
-    /**
-     * Filter method for TFC namespaced resources
-     */
-    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamOurs(IForgeRegistry<T> registry, String modID)
-    {
-        return registry.getValues().stream()
-            .filter(e -> {
-                assert e.getRegistryName() != null;
-                return e.getRegistryName().getNamespace().equals(modID);
-            });
     }
 
     /**
@@ -309,6 +296,12 @@ public final class Helpers
         return state.hasProperty(property) ? state.setValue(property, value) : state;
     }
 
+    @SuppressWarnings("unchecked")
+    public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(Level level, Supplier<RecipeType<R>> type)
+    {
+        return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) level.getRecipeManager()).invoke$byType(type.get());
+    }
+
     public static ItemStack damageCraftingItem(ItemStack stack, int amount)
     {
         Player player = ForgeHooks.getCraftingPlayer(); // Mods may not set this properly
@@ -386,6 +379,25 @@ public final class Helpers
         };
     }
 
+    public static ListTag writeItemStacksToNbt(List<ItemStack> stacks)
+    {
+        final ListTag list = new ListTag();
+        for (final ItemStack stack : stacks)
+        {
+            list.add(stack.save(new CompoundTag()));
+        }
+        return list;
+    }
+
+    public static void readItemStacksFromNbt(List<ItemStack> stacks, ListTag list)
+    {
+        stacks.clear();
+        for (int i = 0; i < list.size(); i++)
+        {
+            stacks.add(ItemStack.of(list.getCompound(i)));
+        }
+    }
+
     /**
      * Given a theoretical item stack, of count {@code totalCount}, splits it into optimally sized stacks, up to the stack size limit and feeds these new stacks to {@code consumer}
      */
@@ -398,6 +410,28 @@ public final class Helpers
             splitStack.setCount(splitCount);
             totalCount -= splitCount;
             consumer.accept(splitStack);
+        }
+    }
+
+    /**
+     * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
+     * Passes each item stack, with stack size = 1, to the provided consumer
+     */
+    public static void consumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Consumer<ItemStack> consumer)
+    {
+        int consumed = 0;
+        for (ItemEntity entity : entities)
+        {
+            final ItemStack stack = entity.getItem();
+            while (consumed < maximum && !stack.isEmpty())
+            {
+                consumer.accept(stack.split(1));
+                consumed++;
+                if (stack.isEmpty())
+                {
+                    entity.discard();
+                }
+            }
         }
     }
 

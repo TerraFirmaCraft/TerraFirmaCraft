@@ -6,16 +6,16 @@
       "type": "tfc:fluid_item",
       "fluid_ingredient": {
         "ingredient": "tfc:vinegar",
-        "amount": 1
+        "amount": 1000
       }
     }
   },
   "input_fluid": {
     "ingredient": "minecraft:milk",
-    "amount": 9
+    "amount": 9000
   },
   "output_fluid": {
     "fluid": "tfc:milk_vinegar",
-    "amount": 10
+    "amount": 10000
   }
 }

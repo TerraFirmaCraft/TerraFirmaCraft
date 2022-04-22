@@ -197,7 +197,7 @@ def generate(rm: ResourceManager):
     rm.configured_feature('cave_spike', 'tfc:cave_spike')
     rm.configured_feature('large_cave_spike', 'tfc:large_cave_spike')
 
-    rm.placed_feature('cave_spike', 'tfc:cave_spike', decorate_carving_mask(), decorate_chance(0.09))
+    rm.placed_feature('cave_spike', 'tfc:cave_spike', decorate_carving_mask(), decorate_chance(5))
     rm.placed_feature('large_cave_spike', 'tfc:large_cave_spike', decorate_carving_mask(utils.vertical_anchor(25, 'above_bottom')), decorate_chance(0.006))
 
     rm.configured_feature('calcite', 'tfc:thin_spike', {

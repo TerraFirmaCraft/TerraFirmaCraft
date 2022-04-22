@@ -81,15 +81,9 @@ public class LoomRecipe extends SimpleItemRecipe
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(ItemStackInventory p_44004_)
+    public NonNullList<ItemStack> getRemainingItems(ItemStackInventory inv)
     {
-        return super.getRemainingItems(p_44004_);
-    }
-
-    @Override
-    public NonNullList<Ingredient> getIngredients()
-    {
-        return super.getIngredients();
+        return super.getRemainingItems(inv);
     }
 
     @Override

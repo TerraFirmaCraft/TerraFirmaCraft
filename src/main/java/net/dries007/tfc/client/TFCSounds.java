@@ -8,9 +8,9 @@ package net.dries007.tfc.client;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.util.ForgeSoundType;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -64,6 +64,10 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> BELLOWS = create("bellows.blow.air");
 
     public static final RegistryObject<SoundEvent> PANNING = create("panning");
+
+    public static final RegistryObject<SoundEvent> WATTLE_DYED = create("wattle_dyed");
+    public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("wattle_daubed");
+    public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("wattle_woven");
 
     public static final RegistryObject<SoundEvent> ALPACA_HURT = create("animal.alpaca.hurt");
     public static final RegistryObject<SoundEvent> ALPACA_STEP = create("animal.alpaca.step");

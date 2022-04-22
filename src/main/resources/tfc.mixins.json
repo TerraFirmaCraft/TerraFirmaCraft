@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractContainerMenuMixin",
     "BiomeMixin",
+    "DedicatedServerPropertiesMixin",
     "FallingBlockMixin",
     "FlowingFluidMixin",
     "FriendlyByteBufMixin",
@@ -24,6 +25,7 @@
     "accessor.GameRulesTypeAccessor",
     "accessor.ItemAccessor",
     "accessor.PlayerAccessor",
+    "accessor.RecipeManagerAccessor",
     "accessor.StructureTemplateAccessor"
   ],
   "client": [

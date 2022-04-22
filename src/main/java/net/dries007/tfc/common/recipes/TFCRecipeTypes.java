@@ -35,6 +35,7 @@ public class TFCRecipeTypes
     public static final RegistryObject<RecipeType<LoomRecipe>> LOOM = register("loom");
     public static final RegistryObject<RecipeType<SealedBarrelRecipe>> BARREL_SEALED = register("barrel_sealed");
     public static final RegistryObject<RecipeType<InstantBarrelRecipe>> BARREL_INSTANT = register("barrel_instant");
+    public static final RegistryObject<RecipeType<BloomeryRecipe>> BLOOMERY = register("bloomery");
 
     public static void registerPotRecipeOutputTypes()
     {

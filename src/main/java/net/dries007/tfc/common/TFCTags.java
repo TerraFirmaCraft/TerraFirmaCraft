@@ -56,6 +56,7 @@ public class TFCTags
         public static final TagKey<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
         public static final TagKey<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
         public static final TagKey<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // i.e., crucibles. stuff that can be in a forge's chimney
+        public static final TagKey<Block> BLOOMERY_INSULATION = create("bloomery_insulation"); //valid blocks for bloomery structure
         public static final TagKey<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
         public static final TagKey<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
         public static final TagKey<Block> LOGS_THAT_LOG = create("logs_that_log"); // logs that are cut down in entire trees
@@ -126,7 +127,7 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
-        public static final TagKey<Item> GOES_ON_TOOL_RACK = create("goes_on_tool_rack");
+        public static final TagKey<Item> USABLE_ON_TOOL_RACK = create("usable_on_tool_rack");
         public static final TagKey<Item> SOUP_BOWL = create("soup_bowl");
         public static final TagKey<Item> PIG_FOOD = create("pig_food");
         public static final TagKey<Item> COW_FOOD = create("cow_food");

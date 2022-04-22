@@ -91,7 +91,6 @@ public class ClientForgeEventHandler
     {
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
-        bus.addListener(ClientForgeEventHandler::renderFamiliarity);
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayText);
         bus.addListener(ClientForgeEventHandler::onRenderGameOverlayPost);
         bus.addListener(ClientForgeEventHandler::onItemTooltip);
@@ -103,6 +102,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
         bus.addListener(ClientForgeEventHandler::onFogRender);
         bus.addListener(ClientForgeEventHandler::onHandRender);
+        bus.addListener(ClientForgeEventHandler::onRenderLivingPost);
     }
 
     public static void onRenderGameOverlayText(RenderGameOverlayEvent.Text event)
@@ -372,7 +372,7 @@ public class ClientForgeEventHandler
         }
     }
 
-    public static void renderFamiliarity(RenderLivingEvent.Post<?, ?> event)
+    public static void onRenderLivingPost(RenderLivingEvent.Post<?, ?> event)
     {
         final Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;

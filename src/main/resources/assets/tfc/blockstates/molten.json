@@ -1,0 +1,29 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "layers=1,lit=true": {
+      "model": "tfc:block/molten/molten_lit_height4"
+    },
+    "layers=1,lit=false": {
+      "model": "tfc:block/molten/molten_height4"
+    },
+    "layers=2,lit=true": {
+      "model": "tfc:block/molten/molten_lit_height8"
+    },
+    "layers=2,lit=false": {
+      "model": "tfc:block/molten/molten_height8"
+    },
+    "layers=3,lit=true": {
+      "model": "tfc:block/molten/molten_lit_height12"
+    },
+    "layers=3,lit=false": {
+      "model": "tfc:block/molten/molten_height12"
+    },
+    "layers=4,lit=true": {
+      "model": "tfc:block/molten/molten_lit_block"
+    },
+    "layers=4,lit=false": {
+      "model": "tfc:block/molten/molten_block"
+    }
+  }
+}

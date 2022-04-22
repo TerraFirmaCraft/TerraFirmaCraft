@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -23,12 +24,14 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.thatch_bed");
+
     private BlockState headState;
     private BlockState footState;
 
     public ThatchBedBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.THATCH_BED.get(), pos, state, defaultInventory(1), NAME);
+        headState = footState = Blocks.AIR.defaultBlockState();
     }
 
     public void setBed(BlockState head, BlockState foot, ItemStack top)
@@ -41,7 +44,6 @@ public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public void destroyBed()
     {
-        assert level != null;
         ejectInventory();
         invalidateCapabilities();
         if (level instanceof ServerLevel serverLevel)
@@ -50,7 +52,6 @@ public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             Helpers.dropWithContext(serverLevel, footState, worldPosition, ctx -> {}, true);
         }
     }
-
 
     @Override
     public void saveAdditional(CompoundTag tag)
@@ -67,5 +68,4 @@ public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         footState = NbtUtils.readBlockState(tag.getCompound("FootBlockState"));
         super.loadAdditional(tag);
     }
-
 }

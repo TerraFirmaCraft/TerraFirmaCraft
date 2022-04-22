@@ -425,7 +425,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public int getGenDepth()
     {
-        return SEA_LEVEL_Y;
+        return this.settings.value().noiseSettings().height();
     }
 
     @Override
@@ -509,10 +509,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     }
 
     @Override
-    public void addDebugScreenInfo(List<String> list, BlockPos pos)
-    {
-
-    }
+    public void addDebugScreenInfo(List<String> list, BlockPos pos) {}
 
     /**
      * Builds either a single flat layer of bedrock, or natural vanilla bedrock

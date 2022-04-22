@@ -5,6 +5,9 @@ from nbtlib import nbt
 from nbtlib.tag import String as StringTag, Int as IntTag
 
 Tree = NamedTuple('Tree', name=str, feature=Literal['random', 'overlay', 'stacked'], variant=str, count=Union[int, Tuple[int, ...]])
+
+DATA_VERSION = 2970
+
 NORMAL_TREES = [
     Tree('acacia', 'random', 'acacia', 35),
     Tree('ash', 'overlay', 'normal', 0),
@@ -106,7 +109,7 @@ def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
             print('Structure: %s has an invalid block state \'%s\'' % (template, block['Name']))
 
     # Hack the data version, to avoid needing to run DFU on anything
-    f['DataVersion'] = IntTag(2865)
+    f['DataVersion'] = IntTag(DATA_VERSION)
 
     result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
     os.makedirs(result_dir, exist_ok=True)
