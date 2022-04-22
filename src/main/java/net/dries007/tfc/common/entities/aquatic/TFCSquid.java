@@ -107,7 +107,7 @@ public class TFCSquid extends Squid implements AquaticMob
     {
         if (super.hurt(source, amount))
         {
-            if (!level.isClientSide && getLastHurtByMob() instanceof Player player && random.nextInt(3) == 0)
+            if (!level.isClientSide && getLastHurtByMob() instanceof Player player && random.nextInt(3) == 0 && player.distanceToSqr(this) < 64)
             {
                 player.addEffect(new MobEffectInstance(getInkEffect(), 100));
             }

@@ -667,8 +667,8 @@ def generate(rm: ResourceManager):
     for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
         mob_loot(rm, mob, 'tfc:food/%s' % mob)
     mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
-    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=3)
-    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=3)
+    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=10)
+    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=10)
     for mob in ('isopod', 'lobster', 'horseshoe_crab'):
         mob_loot(rm, mob, 'tfc:shell')
     for mob in ('orca', 'dolphin', 'manatee'):
