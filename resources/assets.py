@@ -280,6 +280,29 @@ def generate(rm: ResourceManager):
             ({'right': True}, {'model': 'tfc:block/wattle/right'})
         ).with_lang(lang('%s stained wattle', color)).with_block_loot(wattle)
 
+    rm.blockstate('tfc:ceramic/large_vessel', variants={
+        'sealed=true': {'model': 'tfc:block/ceramic/large_vessel_sealed'},
+        'sealed=false': {'model': 'tfc:block/ceramic/large_vessel_opened'}
+    }).with_lang(lang('large vessel'))
+    rm.block_model('tfc:ceramic/large_vessel_sealed', textures={'top': 'tfc:block/ceramic/large_vessel/top', 'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_sealed')
+    rm.block_model('tfc:ceramic/large_vessel_opened', textures={'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_opened')
+    rm.item_model('tfc:ceramic/large_vessel', no_textures=True, parent='tfc:block/ceramic/large_vessel_sealed')
+    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay','bottom':'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed')
+    rm.lang('item.tfc.ceramic.unfired_large_vessel', lang("unfired large vessel"))
+
+    for color in COLORS:
+        vessel = 'tfc:ceramic/large_vessel/%s' % color
+        rm.blockstate(vessel, variants={
+            'sealed=true': {'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color},
+            'sealed=false': {'model': 'tfc:block/ceramic/%s_large_vessel_opened' % color}
+        }).with_lang(lang('%s large vessel', color))
+        rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures={'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_sealed')
+        rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures={'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_opened')
+        rm.item_model('tfc:ceramic/large_vessel/%s' % color, no_textures=True, parent='tfc:block/ceramic/%s_large_vessel_sealed' % color)
+        rm.item_model('tfc:ceramic/unfired_large_vessel/%s' % color, {'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top_clay' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom_clay' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color}, parent='tfc:block/ceramic/large_vessel_sealed')
+        rm.lang('item.tfc.ceramic.unfired_large_vessel.%s' % color, lang("%s unfired large vessel", color))
+    
+
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
     rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
