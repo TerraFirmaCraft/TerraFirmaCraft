@@ -75,6 +75,7 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<AquaticCritter>> ISOPOD = register("isopod", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<AquaticCritter>> LOBSTER = register("lobster", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<FreshWaterCritter>> CRAYFISH = register("crayfish", EntityType.Builder.of(FreshWaterCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<AquaticCritter>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
 
     // Water Creatures
@@ -115,6 +116,7 @@ public class TFCEntities
         event.put(BLUEGILL.get(), AbstractFish.createAttributes().build());
         event.put(JELLYFISH.get(), AbstractFish.createAttributes().build());
         event.put(LOBSTER.get(), AbstractFish.createAttributes().build());
+        event.put(CRAYFISH.get(), AbstractFish.createAttributes().build());
         event.put(ISOPOD.get(), AbstractFish.createAttributes().build());
         event.put(HORSESHOE_CRAB.get(), AbstractFish.createAttributes().build());
         event.put(DOLPHIN.get(), Dolphin.createAttributes().build());

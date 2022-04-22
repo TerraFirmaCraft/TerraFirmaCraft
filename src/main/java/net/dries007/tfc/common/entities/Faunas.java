@@ -34,6 +34,7 @@ public class Faunas
     public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
     public static final FaunaType<TFCSalmon> SALMON = registerFish(TFCEntities.SALMON);
     public static final FaunaType<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
+    public static final FaunaType<FreshWaterCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
     public static final FaunaType<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
     public static final FaunaType<AquaticCritter> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
     public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
@@ -58,6 +59,7 @@ public class Faunas
         registerSpawnPlacement(PUFFERFISH);
         registerSpawnPlacement(SALMON);
         registerSpawnPlacement(LOBSTER);
+        registerSpawnPlacement(CRAYFISH);
         registerSpawnPlacement(ISOPOD);
         registerSpawnPlacement(HORSESHOE_CRAB);
         registerSpawnPlacement(DOLPHIN);
