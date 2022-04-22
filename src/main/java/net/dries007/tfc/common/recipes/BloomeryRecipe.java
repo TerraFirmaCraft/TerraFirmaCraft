@@ -17,13 +17,39 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
 {
+    /**
+     * Gets a recipe matching a primary input item stack.
+     */
+    @Nullable
+    public static BloomeryRecipe get(Level level, ItemStack stack)
+    {
+        final ItemStackInventory inventory = new ItemStackInventory(stack);
+        final HeatingRecipe heatRecipe = HeatingRecipe.getRecipe(stack);
+        if (heatRecipe != null)
+        {
+            final FluidStack moltenFluid = heatRecipe.getOutputFluid(inventory);
+            for (BloomeryRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLOOMERY).values())
+            {
+                if (recipe.inputFluid.test(moltenFluid))
+                {
+                    return recipe;
+                }
+            }
+        }
+        return null;
+    }
+
     private final ResourceLocation id;
     private final FluidStackIngredient inputFluid;
     private final Ingredient catalyst;
@@ -65,6 +91,22 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
     public boolean matches(BloomeryInventory inv, Level level)
     {
         return inputFluid.test(inv.getFluid()) && this.catalyst.test(inv.getCatalyst());
+    }
+
+    public boolean matchesInput(ItemStack stack)
+    {
+        final HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
+        if (heat != null)
+        {
+            final FluidStack fluid = heat.getOutputFluid(new ItemStackInventory(stack));
+            return inputFluid.test(fluid);
+        }
+        return false;
+    }
+
+    public boolean matchesCatalyst(ItemStack stack)
+    {
+        return catalyst.test(stack);
     }
 
     @Override
