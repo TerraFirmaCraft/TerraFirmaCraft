@@ -87,6 +87,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
+    item_heat(rm, 'blooms', '#tfc:blooms', 0.35)
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
@@ -165,6 +166,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
     rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
+    rm.item_tag('forge:double_sheets/any_bronze', *['#forge:double_sheets/%sbronze' % b for b in ('bismuth_', 'black_', '')])
+    rm.item_tag('tfc:bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
@@ -249,6 +252,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
+    rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
@@ -395,6 +399,8 @@ def generate(rm: ResourceManager):
         'tfc:fire_bricks',
         'tfc:quern',
         'tfc:crucible',
+        'tfc:bloomery',
+        'tfc:bloom',
         'tfc:pot',
         'tfc:grill',
         'tfc:firepit'
@@ -479,13 +485,13 @@ def generate(rm: ResourceManager):
     item_size(rm, 'foods', '#tfc:foods', Size.small, Weight.very_light)
     item_size(rm, 'plants', '#tfc:plants', Size.tiny, Weight.very_light)
     item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
+    item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
     item_size(rm, 'soups', '#tfc:soup_bowls', Size.very_small, Weight.very_heavy)
 
     # unimplemented
-    # item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
 
     # Food

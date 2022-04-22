@@ -43,7 +43,7 @@ public class ScrapingBlock extends DeviceBlock
 
     public ScrapingBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
     }
 
     @Override

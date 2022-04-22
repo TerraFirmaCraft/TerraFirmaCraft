@@ -10,8 +10,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.util.Helpers;
 
+import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME;
 import static net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity.SLOT_FUEL_INPUT;
 import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_END;
 import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_START;
@@ -35,8 +38,16 @@ public class PotContainer extends BlockEntityContainer<PotBlockEntity>
     {
         return switch (typeOf(slotIndex))
             {
-                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, SLOT_FUEL_INPUT, SLOT_FUEL_INPUT + 1, false) &&
-                    !moveItemStackTo(stack, SLOT_FUEL_INPUT + 1, SLOT_FUEL_INPUT + 6, false);
+                case MAIN_INVENTORY, HOTBAR -> {
+                    if (Helpers.isItem(stack, TFCTags.Items.FIREPIT_FUEL))
+                    {
+                        yield !moveItemStackTo(stack, SLOT_FUEL_CONSUME, SLOT_FUEL_INPUT + 1, false);
+                    }
+                    else
+                    {
+                        yield !moveItemStackTo(stack, SLOT_EXTRA_INPUT_START, SLOT_EXTRA_INPUT_END + 1, false);
+                    }
+                }
                 case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
             };
     }

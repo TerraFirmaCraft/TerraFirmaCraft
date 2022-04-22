@@ -15,9 +15,9 @@ import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateModels;
 
 /**
- * An event which is posted while a world is loading or selecting it's climate model
+ * An event which is posted while a world is loading or selecting its climate model
  * This provides access to the level, and is fired during world load.
- * It is only fired on server, and the climate model will by synced to client automatically.
+ * It is only fired on server, and the climate model will to synced to client automatically.
  */
 public final class SelectClimateModelEvent extends Event
 {

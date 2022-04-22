@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -46,6 +47,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import org.slf4j.Logger;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -191,11 +194,12 @@ public final class SelfTests
 
     private static boolean validateOwnBlockLootTables()
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED)
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED)
             .map(Supplier::get)
             .collect(Collectors.toSet());
+        final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class);
         return validateBlockLootTables(stream(ForgeRegistries.BLOCKS, MOD_ID)
-            .filter(b -> !expectedNoLootTableBlocks.contains(b)), LOGGER);
+            .filter(b -> !expectedNoLootTableBlocks.contains(b)).filter(b -> !expectedNoLootTableClasses.contains(b.getClass())), LOGGER);
     }
 
     private static boolean validateOwnBlockMineableTags()

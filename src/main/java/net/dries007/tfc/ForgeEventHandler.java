@@ -76,6 +76,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
+import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
@@ -606,6 +608,14 @@ public final class ForgeEventHandler
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
+            {
+                event.setCanceled(true);
+            }
+        }
+        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
+        {
+            final BlockEntity entity = level.getBlockEntity(pos);
+            if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
             {
                 event.setCanceled(true);
             }

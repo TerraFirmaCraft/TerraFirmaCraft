@@ -44,7 +44,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
 
     public LogPileBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
         registerDefaultState(getStateDefinition().any().setValue(AXIS, Direction.Axis.X));
     }
 

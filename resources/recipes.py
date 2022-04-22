@@ -120,10 +120,10 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('#minecraft:logs')
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'minecraft:clay_ball', '#minecraft:dirt'), (2, 'tfc:daub'))
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
     damage_shapeless(rm, 'crafting/paper', ('tfc:food/sugarcane', 'tfc:food/sugarcane', 'tfc:food/sugarcane', '#tfc:knives'), (3, 'minecraft:paper')).with_advancement('tfc:food/sugarcane')
-    # todo: bf, bloomery, nestbox, pkeg, salting, food combining
 
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
@@ -276,6 +276,10 @@ def generate(rm: ResourceManager):
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type == 'all' or item_data.type in metal_data.types:
                 heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal))
+
+    wrought_iron = METALS['wrought_iron']
+    heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
+    heat_recipe(rm, 'refined_bloom', 'tfc:refined_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
 
     # Mold, Ceramic Firing
     for tool, tool_data in METAL_ITEMS.items():
@@ -469,6 +473,9 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_blue_steel', 'weak_blue_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15))
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
+    # Bloomery Recipes
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 4, 15000)
+
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
         barrel_sealed_recipe(rm, '%s_soaked_hide' % size, '%s Soaked Hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='tfc:%s_soaked_hide' % size)
@@ -660,6 +667,14 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
         } for p in parts]
     })
 
+def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: Json, metal: Json, catalyst: Json, catalyst_count: int, time: int):
+    rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
+        'result': item_stack_provider(result),
+        'fluid': fluid_stack_ingredient(metal),
+        'catalyst': utils.ingredient(catalyst),
+        'catalyst_count': catalyst_count,
+        'duration': time
+    })
 
 def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, translation: str, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None, sound: Optional[str] = None):
     rm.recipe(('barrel', name_parts), 'tfc:barrel_sealed', {

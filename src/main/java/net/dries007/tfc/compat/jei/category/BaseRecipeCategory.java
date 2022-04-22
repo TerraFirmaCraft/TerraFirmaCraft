@@ -27,6 +27,8 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 {
@@ -52,6 +54,12 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         // Setting this to 1000 makes the liquid amount on the tooltip to display incorrectly
         // use IRecipeSlotBuilder.setFluidRenderer(1, false, 16, 16)} to make the liquid display in the whole slot
         return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).collect(Collectors.toList());
+    }
+
+    @NotNull
+    protected static List<ItemStack> collapse(ItemStackIngredient input)
+    {
+        return Arrays.stream(input.ingredient().getItems()).peek(stack -> stack.setCount(input.count())).toList();
     }
 
     protected final IDrawableStatic slot;

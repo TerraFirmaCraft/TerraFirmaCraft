@@ -85,6 +85,7 @@ public class TFCJEIPlugin implements IModPlugin
     public static final RecipeType<AlloyRecipe> ALLOYING = type("alloying", AlloyRecipe.class);
     public static final RecipeType<SealedBarrelRecipe> SEALED_BARREL = type("sealed_barrel", SealedBarrelRecipe.class);
     public static final RecipeType<InstantBarrelRecipe> INSTANT_BARREL = type("instant_barrel", InstantBarrelRecipe.class);
+    public static final RecipeType<BloomeryRecipe> BLOOMERY = type("bloomery", BloomeryRecipe.class);
 
 
     @Override
@@ -111,6 +112,7 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new AlloyRecipeCategory(ALLOYING, gui));
         r.addRecipeCategories(new SealedBarrelRecipeCategory(SEALED_BARREL, gui));
         r.addRecipeCategories(new InstantBarrelRecipeCategory(INSTANT_BARREL, gui));
+        r.addRecipeCategories(new BloomeryRecipeCategory(BLOOMERY, gui));
     }
 
     @Override
@@ -130,6 +132,7 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(ALLOYING, getRecipes(TFCRecipeTypes.ALLOY.get()));
         r.addRecipes(SEALED_BARREL, getRecipes(TFCRecipeTypes.BARREL_SEALED.get()));
         r.addRecipes(INSTANT_BARREL, getRecipes(TFCRecipeTypes.BARREL_INSTANT.get()));
+        r.addRecipes(BLOOMERY, getRecipes(TFCRecipeTypes.BLOOMERY.get()));
 
         //todo: ingredient info goes here
     }
@@ -153,18 +156,13 @@ public class TFCJEIPlugin implements IModPlugin
         mapCatalyst(r, TFCItems.GLAZED_VESSELS, ALLOYING);
         woodCatalyst(r, Wood.BlockType.BARREL, SEALED_BARREL);
         woodCatalyst(r, Wood.BlockType.BARREL, INSTANT_BARREL);
+        r.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
     }
 
     public static void woodCatalyst(IRecipeCatalystRegistration r, Wood.BlockType wood, RecipeType<?> recipeType)
     {
         TFCBlocks.WOODS.values().stream().map(map -> map.get(wood)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));
     }
-
-    /*public static <T, V> void doubleMapCatalyst(IRecipeCatalystRegistration r, Map<T, Map<V, RegistryObject<Item>>> map, T getter, RecipeType<?> recipeType)
-    {
-        map.values().stream().map(set -> set.get(getter)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));
-    }*/
-
     public static <T> void mapCatalyst(IRecipeCatalystRegistration r, Map<T, RegistryObject<Item>> map, RecipeType<?> recipeType)
     {
         map.values().forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));

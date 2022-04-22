@@ -60,6 +60,8 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<CrucibleBlockEntity>> CRUCIBLE = register("crucible", CrucibleBlockEntity::new, TFCBlocks.CRUCIBLE);
     public static final RegistryObject<BlockEntityType<BellowsBlockEntity>> BELLOWS = register("bellows", BellowsBlockEntity::new, TFCBlocks.BELLOWS);
     public static final RegistryObject<BlockEntityType<ComposterBlockEntity>> COMPOSTER = register("composter", ComposterBlockEntity::new, TFCBlocks.COMPOSTER);
+    public static final RegistryObject<BlockEntityType<BloomeryBlockEntity>> BLOOMERY = register("bloomery", BloomeryBlockEntity::new, TFCBlocks.BLOOMERY);
+    public static final RegistryObject<BlockEntityType<BloomBlockEntity>> BLOOM = register("bloom", BloomBlockEntity::new, TFCBlocks.BLOOM);
     public static final RegistryObject<BlockEntityType<TFCChestBlockEntity>> CHEST = register("chest", TFCChestBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.CHEST)));
     public static final RegistryObject<BlockEntityType<TFCTrappedChestBlockEntity>> TRAPPED_CHEST = register("trapped_chest", TFCTrappedChestBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.TRAPPED_CHEST)));
     public static final RegistryObject<BlockEntityType<BarrelBlockEntity>> BARREL = register("barrel", BarrelBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.BARREL)));

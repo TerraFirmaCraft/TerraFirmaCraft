@@ -163,12 +163,12 @@ public class BarrelBlock extends DeviceBlock implements IItemSize
     }
 
     @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
-        final ItemStack stack = super.getCloneItemStack(state, target, world, pos, player);
+        final ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
         if (state.getValue(SEALED))
         {
-            final BlockEntity entity = world.getBlockEntity(pos);
+            final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof InventoryBlockEntity<?> inv)
             {
                 inv.saveToItem(stack);

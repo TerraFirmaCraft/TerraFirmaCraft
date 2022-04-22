@@ -25,6 +25,7 @@
     "accessor.GameRulesTypeAccessor",
     "accessor.ItemAccessor",
     "accessor.PlayerAccessor",
+    "accessor.RecipeManagerAccessor",
     "accessor.StructureTemplateAccessor"
   ],
   "client": [

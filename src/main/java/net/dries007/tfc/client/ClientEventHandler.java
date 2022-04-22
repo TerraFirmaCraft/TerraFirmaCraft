@@ -241,6 +241,7 @@ public final class ClientEventHandler
 
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICE_PILE.get(), translucent);
 
         // Fluids
