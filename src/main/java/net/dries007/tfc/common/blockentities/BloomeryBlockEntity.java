@@ -378,11 +378,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             mutable.setWithOffset(worldPosition, d);
             for (int i = 0; i < 4; i++)
             {
-                mutable.move(0, 1, 0);
                 if (Helpers.isBlock(level.getBlockState(mutable), TFCBlocks.MOLTEN.get()))
                 {
                     level.destroyBlock(mutable, true);
                 }
+                mutable.move(0, 1, 0);
             }
         }
     }

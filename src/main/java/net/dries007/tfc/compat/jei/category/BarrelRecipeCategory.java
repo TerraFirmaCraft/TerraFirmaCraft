@@ -7,7 +7,6 @@
 package net.dries007.tfc.compat.jei.category;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -59,8 +58,8 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
         outputFluidSlot = null;
         outputItemSlot = null;
         int[] positions = slotPositions(recipe);
-        List<FluidStack> inputFluid = getFluidInput(recipe);
-        List<ItemStack> inputItem = getItemInput(recipe);
+        List<FluidStack> inputFluid = collapse(recipe.getInputFluid());
+        List<ItemStack> inputItem = collapse(recipe.getInputItem());
         RecipeResult<FluidStack> outputFluid = getFluidResult(recipe);
         RecipeResult<List<ItemStack>> outputItem = getItemResult(recipe);
         if (!inputFluid.isEmpty())
@@ -142,19 +141,6 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
             if (!Helpers.isItem(result, item.getItem())) transforms = true;
         }
         return new RecipeResult<>(transforms, items);
-    }
-
-    @NotNull
-    protected List<FluidStack> getFluidInput(T recipe)
-    {
-        return collapse(recipe.getInputFluid());
-    }
-
-    @NotNull
-    protected List<ItemStack> getItemInput(T recipe)
-    {
-        ItemStackIngredient input = recipe.getInputItem();
-        return Arrays.stream(input.ingredient().getItems()).peek(stack -> stack.setCount(input.count())).toList();
     }
 
     @NotNull

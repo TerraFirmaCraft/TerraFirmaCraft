@@ -19,6 +19,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
+import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 
 /**
  * Superficially similar to CastingRecipeCategory
@@ -37,7 +38,7 @@ public class BloomeryRecipeCategory extends BaseRecipeCategory<BloomeryRecipe>
         IRecipeSlotBuilder inputLiquid = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
-        inputItem.addIngredients(recipe.getCatalyst());
+        inputItem.addItemStacks(collapse(new ItemStackIngredient(recipe.getCatalyst(), recipe.getCatalystCount())));
         inputLiquid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getInputFluid()));
         inputLiquid.setFluidRenderer(1, false, 16, 16);
         outputItem.addItemStack(recipe.getResultItem());
