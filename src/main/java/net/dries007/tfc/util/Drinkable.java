@@ -46,6 +46,9 @@ public class Drinkable extends FluidDefinition
     public static final DataManager<Drinkable> MANAGER = new DataManager<>("drinkables", "drinkable", Drinkable::new);
     public static final IndirectHashCollection<Fluid, Drinkable> CACHE = IndirectHashCollection.create(Drinkable::getFluids, MANAGER::getValues);
 
+    /** Amount of mB drank when drinking by hand on a source block */
+    private static final int HAND_DRINK_MB = 25;
+
     @Nullable
     public static Drinkable get(Fluid fluid)
     {
@@ -94,7 +97,7 @@ public class Drinkable extends FluidDefinition
         playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
         level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
 
-        drinkable.onDrink(player);
+        drinkable.onDrink(player, HAND_DRINK_MB);
 
         if (drinkable.getConsumeChance() > 0 && drinkable.getConsumeChance() > level.getRandom().nextFloat())
         {
@@ -137,23 +140,31 @@ public class Drinkable extends FluidDefinition
         this.effects = builder.build();
     }
 
-    public void onDrink(Player player)
+    /**
+     *
+     * @param player The player doing the drinking
+     * @param mB The amount of fluid that is being drank, in mB. This will scale certain effects proportional to the volume. 25mB is a reference for amount drank when right clicking a fluid source with an open hand, which is also the amount that the drinkable JSON is defined as.
+     */
+    public void onDrink(Player player, int mB)
     {
+        final float multiplier = mB / 25f;
         final Random random = player.getRandom();
 
         if (thirst > 0 && player.getFoodData() instanceof TFCFoodData foodData)
         {
-            foodData.addThirst(thirst);
+            foodData.addThirst(thirst * multiplier);
         }
 
         if (intoxication > 0)
         {
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(p -> p.addIntoxicatedTicks(intoxication));
+            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(p -> p.addIntoxicatedTicks((long) (intoxication * multiplier)));
         }
 
         for (Drinkable.Effect effect : effects)
         {
-            if (effect.chance() > random.nextFloat())
+            // Multiplier affects the chance that a specific effect will be applied, but does not affect the effect itself.
+            // This is consistent with the probability of drinking N times P(at least one effect) = 1 - (1 - P(effect))^N
+            if (1 - Math.pow(1 - effect.chance(), multiplier) > random.nextFloat())
             {
                 player.addEffect(new MobEffectInstance(effect.type(), effect.duration(), effect.amplifier(), false, false, true));
             }

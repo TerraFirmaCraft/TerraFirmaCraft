@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -43,17 +44,16 @@ public class JugItem extends WoodenBucketItem
         final IFluidHandler handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).resolve().orElse(null);
         if (handler != null)
         {
+            final FluidStack drained = handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
             final Player player = entity instanceof Player ? (Player) entity : null;
             if (player != null)
             {
-                final Drinkable drinkable = Drinkable.get(handler.getFluidInTank(0).getFluid());
+                final Drinkable drinkable = Drinkable.get(drained.getFluid());
                 if (drinkable != null)
                 {
-                    drinkable.onDrink(player);
+                    drinkable.onDrink(player, drained.getAmount());
                 }
             }
-
-            handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
 
             if (entity.getRandom().nextFloat() < TFCConfig.SERVER.jugBreakChance.get())
             {

@@ -16,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -70,10 +69,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
         super.renderLabels(poseStack, mouseX, mouseY);
         if (isSealed())
         {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
-                // draw disabled texture over the slots
-                menu.slots.stream().filter(slot -> slot.index <= BarrelBlockEntity.SLOT_ITEM).forEach(slot -> fillGradient(poseStack, slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
-            });
+            drawDisabled(poseStack, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, BarrelBlockEntity.SLOT_ITEM);
 
             // Draw the text displaying both the seal date, and the recipe name
             boolean isLong = false;
@@ -98,11 +94,6 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
-        // todo: special jei button?
-        /*if (Helpers.isJEIEnabled())
-        {
-            drawTexturedModalRect(guiLeft + 92, guiTop + 21, 227, 0, 9, 14);
-        }*/
         blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(fluidHandler -> {
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty())

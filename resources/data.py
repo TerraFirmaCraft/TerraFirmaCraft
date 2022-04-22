@@ -412,6 +412,7 @@ def generate(rm: ResourceManager):
         *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
         *['tfc:wattle/%s' % color for color in COLORS],
         'tfc:wattle',
+        'tfc:wattle/unstained',
         'tfc:plant/banana_plant',
         'tfc:plant/dead_banana_plant',
         'tfc:log_pile',
@@ -612,7 +613,7 @@ def generate(rm: ResourceManager):
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
     drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
-    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=1000)
+    drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
     drinkable(rm, 'milk', '#tfc:milks', thirst=10)
 
     # Climate Ranges
