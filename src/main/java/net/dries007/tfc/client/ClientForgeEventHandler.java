@@ -34,6 +34,7 @@ import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.DrawSelectionEvent;
 import net.minecraftforge.client.event.InputEvent;
@@ -340,16 +341,28 @@ public class ClientForgeEventHandler
     public static void onFogRender(EntityViewRenderEvent.RenderFogEvent event)
     {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level != null && (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN))
+        if (mc.level != null && event.getMode() == FogRenderer.FogMode.FOG_TERRAIN)
         {
-            final float fog = Climate.getFogginess(mc.level, event.getCamera().getBlockPosition());
-            if (fog == 0) return;
-            final float renderDistance = mc.gameRenderer.getRenderDistance();
-            final float density = renderDistance * (1 - fog);
+            FogType fluid = event.getCamera().getFluidInCamera();
+            if (fluid == FogType.NONE)
+            {
+                final float fog = Climate.getFogginess(mc.level, event.getCamera().getBlockPosition());
+                if (fog != 0)
+                {
+                    final float renderDistance = mc.gameRenderer.getRenderDistance();
+                    final float density = renderDistance * (1 - fog);
 
-            // let's just do this the same way MC does because the FogDensityEvent is crap
-            RenderSystem.setShaderFogStart(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
-            RenderSystem.setShaderFogEnd(density);
+                    // let's just do this the same way MC does because the FogDensityEvent is crap
+                    event.setNearPlaneDistance(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
+                    event.setFarPlaneDistance(density);
+                    event.setCanceled(true);
+                }
+            }
+            else if (fluid == FogType.WATER)
+            {
+                event.scaleFarPlaneDistance(0.85f);
+            }
+
         }
     }
 

@@ -198,6 +198,12 @@ public class OverworldClimateModel implements WorldGenClimateModel
     }
 
     @Override
+    public float getWaterFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    {
+        return 0;
+    }
+
+    @Override
     public void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData)
     {
         final ChunkPos chunkPos = chunk.getPos();
