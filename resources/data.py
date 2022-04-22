@@ -406,6 +406,7 @@ def generate(rm: ResourceManager):
         *['tfc:plant/%s_growing_branch' % tree for tree in NORMAL_FRUIT_TREES],
         *['tfc:wattle/%s' % color for color in COLORS],
         'tfc:wattle',
+        'tfc:wattle/unstained',
         'tfc:plant/banana_plant',
         'tfc:plant/dead_banana_plant',
         'tfc:log_pile',

@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -64,5 +65,13 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
             fillHeight -= 16;
             yPos -= 16;
         }
+    }
+
+    public void drawDisabled(PoseStack poseStack, int start, int end)
+    {
+        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
+            // draw disabled texture over the slots
+            menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start).forEach(slot -> fillGradient(poseStack, slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
+        });
     }
 }

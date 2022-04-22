@@ -294,7 +294,7 @@ def generate(rm: ResourceManager):
             ({'bottom': True}, {'model': 'tfc:block/wattle/bottom'}),
             ({'left': True}, {'model': 'tfc:block/wattle/left'}),
             ({'right': True}, {'model': 'tfc:block/wattle/right'})
-        ).with_lang(lang('%s stained wattle', color)).with_block_loot(wattle)
+        ).with_lang(lang('%s stained wattle', color))
         rm.block_loot(wattle,
             {'name': wattle},
             {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[top=true]')]},
@@ -905,18 +905,18 @@ def generate(rm: ResourceManager):
         'stage=0': {'model': 'tfc:block/plant/dead_berry_bush_0'},
         'stage=1': {'model': 'tfc:block/plant/dead_berry_bush_1'},
         'stage=2': {'model': 'tfc:block/plant/dead_berry_bush_2'}
-    }).with_lang(lang('Dead Bush')).with_tag('any_spreading_bush')
+    }).with_lang(lang('Dead Bush')).with_tag('any_spreading_bush').with_block_loot('minecraft:stick')
     rm.blockstate('plant/dead_cane', variants={
         **four_rotations('tfc:block/plant/dead_berry_bush_side_0', (90, None, 180, 270), suffix=',stage=0'),
         **four_rotations('tfc:block/plant/dead_berry_bush_side_1', (90, None, 180, 270), suffix=',stage=1'),
         **four_rotations('tfc:block/plant/dead_berry_bush_side_2', (90, None, 180, 270), suffix=',stage=2')
-    }).with_lang(lang('Dead Cane')).with_tag('any_spreading_bush')
+    }).with_lang(lang('Dead Cane')).with_tag('any_spreading_bush').with_block_loot('minecraft:stick')
 
     for berry in ('blackberry', 'raspberry', 'blueberry', 'elderberry'):
         cane_dict = {}
         for lifecycle, stage in itertools.product(lifecycles, range(3)):
             cane_dict.update(four_rotations('tfc:block/plant/%s%s_bush_side_%d' % (lifecycle_to_model[lifecycle], berry, stage), (90, None, 180, 270), suffix=',stage=%d' % stage, prefix='lifecycle=%s,' % lifecycle))
-        rm.blockstate('plant/%s_bush_cane' % berry, variants=cane_dict).with_lang(lang('%s Cane', berry))
+        rm.blockstate('plant/%s_bush_cane' % berry, variants=cane_dict).with_lang(lang('%s Cane', berry)).with_block_loot('minecraft:stick')
         for lifecycle in lifecycle_to_model.values():
             bush_textures = {'cane': 'tfc:block/berry_bush/' + lifecycle + '%s_cane' % berry, 'bush': 'tfc:block/berry_bush/' + lifecycle + '%s_bush' % berry}
             for stage in range(0, 3):
@@ -942,15 +942,14 @@ def generate(rm: ResourceManager):
                 ).with_tag('fruit_tree_branch').with_item_model().with_lang(lang('%s Branch', fruit))
                 if prefix == '':
                     block.with_block_loot({
-                        'type': 'minecraft:item',
-                        'conditions': [{
-                            'condition': 'alternative',
-                            'terms': [
-                                loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ['west', 'east', 'north', 'south']
-                            ]
-                        }],
-                        'name': 'tfc:plant/%s_sapling' % fruit
+                        'name': 'tfc:plant/%s_sapling' % fruit,
+                        'conditions': [loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')]
+                    }, {
+                        'name': 'minecraft:stick',
+                        'functions': [loot_tables.set_count(1, 4)]
                     })
+                else:
+                    block.with_block_loot({'name': 'minecraft:stick', 'functions': [loot_tables.set_count(1, 4)]})
             for part in ('down', 'side', 'up', 'core'):
                 rm.block_model('tfc:plant/%s_branch_%s' % (fruit, part), parent='tfc:block/plant/branch_%s' % part, textures={'bark': 'tfc:block/fruit_tree/%s_branch' % fruit})
             rm.blockstate('plant/%s_leaves' % fruit, variants={

@@ -298,7 +298,7 @@ def generate(rm: ResourceManager):
         disable_recipe(rm, 'minecraft:' + name)
 
     # Quern
-    quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste')
+    quern_recipe(rm, 'olive', 'tfc:food/olive', 'tfc:olive_paste', count=2)
     quern_recipe(rm, 'borax', 'tfc:ore/borax', 'tfc:powder/flux', count=6)
     quern_recipe(rm, 'fluxstone', '#tfc:fluxstone', 'tfc:powder/flux', count=2)
     quern_recipe(rm, 'cinnabar', 'tfc:ore/cinnabar', 'minecraft:redstone', count=8)
@@ -339,29 +339,20 @@ def generate(rm: ResourceManager):
         scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size)
         damage_shapeless(rm, 'crafting/%s_sheepskin' % size, ('tfc:%s_sheepskin_hide' % size, '#tfc:knives'), (i + 1, 'tfc:wool')).with_advancement('tfc:%s_sheepskin_hide' % size)
 
-    # todo: actual pot recipes
-    rm.recipe(('pot', 'fresh_from_salt_water'), 'tfc:pot_fluid', {
-        'ingredients': [utils.ingredient('minecraft:gunpowder')],
-        'fluid_ingredient': fluid_stack_ingredient('1000 tfc:salt_water'),
-        'duration': 200,
-        'temperature': 300,
-        'fluid_output': fluid_stack('1000 minecraft:water')
-    })
-
     paste = utils.ingredient('tfc:olive_paste')
     rm.recipe(('pot', 'olive_oil_water'), 'tfc:pot_fluid', {
-        'ingredients': [paste, paste, paste, paste],
+        'ingredients': [paste, paste, paste, paste, paste],
         'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 4000,
+        'duration': 2000,
         'temperature': 300,
         'fluid_output': fluid_stack('1000 tfc:olive_oil_water')
     })
 
     blubber = utils.ingredient('tfc:blubber')
     rm.recipe(('pot', 'tallow'), 'tfc:pot_fluid', {
-        'ingredients': [blubber, blubber, blubber, blubber],
+        'ingredients': [blubber, blubber, blubber, blubber, blubber],
         'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 8000,
+        'duration': 2000,
         'temperature': 600,
         'fluid_output': fluid_stack('1000 tfc:tallow')
     })
@@ -370,7 +361,7 @@ def generate(rm: ResourceManager):
     rm.recipe(('pot', 'lye'), 'tfc:pot_fluid', {
         'ingredients': [ash, ash, ash, ash, ash],
         'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 4000,
+        'duration': 2000,
         'temperature': 600,
         'fluid_output': fluid_stack('1000 tfc:lye')
     })
@@ -379,7 +370,7 @@ def generate(rm: ResourceManager):
         rm.recipe(('pot', '%s_dye' % color), 'tfc:pot_fluid', {
             'ingredients': [utils.ingredient('minecraft:%s_dye' % color)],
             'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-            'duration': 1000,
+            'duration': 2000,
             'temperature': 600,
             'fluid_output': fluid_stack('1000 tfc:%s_dye' % color)
         })
