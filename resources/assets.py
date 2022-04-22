@@ -237,8 +237,8 @@ def generate(rm: ResourceManager):
     rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_lang(lang('Burnt Out Torch'))
     rm.blockstate('torch', 'minecraft:block/torch').with_block_loot('tfc:torch').with_lang(lang('Torch'))
     rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
-
-    for wattle in ('woven_wattle', 'filled_wattle'):
+    
+    for wattle in ('woven_wattle', 'unstained_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
             'all': 'tfc:block/wattle/%s' % wattle if wattle != 'wattle' else 'tfc:block/empty',
             'particle': 'tfc:block/wattle/wattle_sides',
@@ -247,21 +247,37 @@ def generate(rm: ResourceManager):
         }, parent='tfc:block/cube_column_overlay')
     for part in ('top', 'bottom', 'left', 'right'):
         rm.block_model('tfc:wattle/%s' % part, {'side': 'tfc:block/wattle/%s' % part, 'end': 'tfc:block/wattle/end'}, parent='minecraft:block/cube_column')
-    stages = ['empty', 'woven', 'filled']
+
+    stages = ['empty', 'woven']
     wattle_variants = []
-    wattle_variants += [({'type': stage}, {'model': 'tfc:block/wattle/%s_wattle' % stage}) for stage in stages]
-    wattle_variants += [({side: True, 'type': stage}, {'model': 'tfc:block/wattle/%s%s' % ('empty_' if stage == 'empty' else '', side)}) for (stage, side) in itertools.product(stages, ('top', 'bottom', 'left', 'right'))]
+    wattle_variants += [({'woven': stage == 'woven'}, {'model': 'tfc:block/wattle/%s_wattle' % stage}) for stage in stages]
+    wattle_variants += [({side: True, 'woven': stage == 'woven'}, {'model': 'tfc:block/wattle/%s%s' % ('empty_' if stage == 'empty' else '', side)}) for (stage, side) in itertools.product(stages, ('top', 'bottom', 'left', 'right'))]
     rm.blockstate_multipart('wattle', *wattle_variants).with_lang(lang('wattle'))
     rm.block_loot('wattle',
-      {'name': 'tfc:wattle'},
-      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [loot_tables.block_state_property('tfc:wattle[type=filled]')]},
-      {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [loot_tables.block_state_property('tfc:wattle[type=woven]')]},
-      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[top=true]')]},
-      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[bottom=true]')]},
-      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[left=true]')]},
-      {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[right=true]')]}
+        {'name': 'tfc:wattle'},
+        {'name': 'minecraft:stick', 'functions': [loot_tables.set_count(4)], 'conditions': [loot_tables.block_state_property('tfc:wattle[woven=true]')]},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[top=true]')]},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[bottom=true]')]},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[left=true]')]},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle[right=true]')]}
     )
     rm.item_model('wattle', parent='tfc:block/wattle/empty_wattle', no_textures=True)
+
+    rm.item_model('wattle/unstained', parent='tfc:block/wattle/unstained_wattle', no_textures=True)
+    rm.blockstate_multipart('wattle/unstained',
+        ({'model': 'tfc:block/wattle/unstained_wattle'}),
+        ({'top': True}, {'model': 'tfc:block/wattle/top'}),
+        ({'bottom': True}, {'model': 'tfc:block/wattle/bottom'}),
+        ({'left': True}, {'model': 'tfc:block/wattle/left'}),
+        ({'right': True}, {'model': 'tfc:block/wattle/right'})
+    ).with_lang(lang('Unstained Wattle'))
+    rm.block_loot('wattle/unstained',
+        {'name': 'tfc:wattle/unstained'},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle/unstained[top=true]')]},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle/unstained[bottom=true]')]},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle/unstained[left=true]')]},
+        {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property('tfc:wattle/unstained[right=true]')]}
+    )
 
     for color in COLORS:
         wattle = 'tfc:wattle/%s' % color
@@ -279,6 +295,13 @@ def generate(rm: ResourceManager):
             ({'left': True}, {'model': 'tfc:block/wattle/left'}),
             ({'right': True}, {'model': 'tfc:block/wattle/right'})
         ).with_lang(lang('%s stained wattle', color)).with_block_loot(wattle)
+        rm.block_loot(wattle,
+            {'name': wattle},
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[top=true]')]},
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[bottom=true]')]},
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[left=true]')]},
+            {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[right=true]')]}
+        )
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
@@ -830,8 +853,9 @@ def generate(rm: ResourceManager):
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
 
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
-        'name': '%d tfc:sea_pickle' % i,
-        'conditions': loot_tables.block_state_property('tfc:sea_pickle[pickles=%d]' % i)
+        'name': 'tfc:sea_pickle',
+        'conditions': loot_tables.block_state_property('tfc:sea_pickle[pickles=%d]' % i),
+        'functions': [loot_tables.set_count(i)]
     } for i in (1, 2, 3, 4)])
 
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'liana'):

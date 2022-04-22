@@ -484,7 +484,7 @@ COLOR_COMBOS = [
     ('green', 'white', 'lime'),
     ('green', 'blue', 'cyan'),
     ('red', 'blue', 'purple'),
-    ('yellow', 'green', 'blue')
+    ('yellow', 'blue', 'green')
 ]
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
@@ -621,6 +621,9 @@ DEFAULT_LANG = {
     'effect.tfc.glow_ink': 'Glowing Ink',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'subtitles.block.tfc.tool_rack.place_item': 'Item placed on Tool Rack',
+    'subtitles.block.tfc.wattle.dyed': 'Wattle stained',
+    'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
+    'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     # Sounds todo: subtitles for everything and standardize the format
     'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
@@ -730,6 +733,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
     'tfc.tooltip.seal_barrel': 'Seal',
     'tfc.tooltip.unseal_barrel': 'Unseal',
+    'tfc.tooltip.while_sealed': 'While sealed',
+    'tfc.tooltip.while_sealed_description': 'While the barrel is sealed and the required fluid is present',
     'tfc.tooltip.fertilized': '§6Fertilized',
     'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
     'tfc.tooltip.egg_hatch_today': 'Will hatch today!',

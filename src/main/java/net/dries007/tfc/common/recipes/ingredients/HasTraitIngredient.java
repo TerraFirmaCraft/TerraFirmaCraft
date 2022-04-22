@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -19,9 +17,20 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTrait;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
+import org.jetbrains.annotations.Nullable;
 
 public class HasTraitIngredient extends DelegateIngredient
 {
+    public static HasTraitIngredient of(@Nullable Ingredient delegate, FoodTrait trait)
+    {
+        return new HasTraitIngredient(delegate, trait);
+    }
+
+    public static HasTraitIngredient of(FoodTrait trait)
+    {
+        return new HasTraitIngredient(null, trait);
+    }
+
     private final FoodTrait trait;
 
     public HasTraitIngredient(@Nullable Ingredient delegate, FoodTrait trait)
@@ -37,9 +46,15 @@ public class HasTraitIngredient extends DelegateIngredient
     }
 
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer()
+    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
+    }
+
+    @Override
+    protected ItemStack[] getDefaultItems()
+    {
+        return FoodCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(ItemStack::new).toArray(ItemStack[]::new);
     }
 
     public enum Serializer implements IIngredientSerializer<HasTraitIngredient>

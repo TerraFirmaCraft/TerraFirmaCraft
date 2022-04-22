@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.entities;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.ITeleporter;
 
 import net.dries007.tfc.common.TFCEffects;
+import org.jetbrains.annotations.Nullable;
 
 public class GlowArrow extends AbstractArrow implements IGlow
 {
