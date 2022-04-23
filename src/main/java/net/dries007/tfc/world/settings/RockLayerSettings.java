@@ -110,9 +110,10 @@ public class RockLayerSettings
             .collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened));
     }
 
+    @Nullable
     public Block getHardened(Block raw)
     {
-        return rawToHardened.getOrDefault(raw, raw);
+        return rawToHardened.get(raw);
     }
 
     @Nullable
