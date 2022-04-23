@@ -59,13 +59,12 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
 
     public static class VesselInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory
     {
-        private final LargeVesselBlockEntity barrel;
+        private final LargeVesselBlockEntity vessel;
         private final InventoryItemHandler inventory;
-        private boolean mutable;
 
         VesselInventory(InventoryBlockEntity<?> entity)
         {
-            barrel = (LargeVesselBlockEntity) entity;
+            vessel = (LargeVesselBlockEntity) entity;
             inventory = new InventoryItemHandler(entity, SLOTS);
         }
 
@@ -109,7 +108,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
 
         private boolean canModify()
         {
-            return mutable || !barrel.getBlockState().getValue(LargeVesselBlock.SEALED);
+            return !vessel.getBlockState().getValue(LargeVesselBlock.SEALED);
         }
     }
 }
