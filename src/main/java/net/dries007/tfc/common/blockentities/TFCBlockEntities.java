@@ -73,6 +73,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<BerryBushBlockEntity>> BERRY_BUSH = register("berry_bush", BerryBushBlockEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values(), TFCBlocks.FRUIT_TREE_LEAVES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
     public static final RegistryObject<BlockEntityType<CropBlockEntity>> CROP = register("crop", CropBlockEntity::new, TFCBlocks.CROPS.values().stream());
     public static final RegistryObject<BlockEntityType<NestBoxBlockEntity>> NEST_BOX = register("nest_box", NestBoxBlockEntity::new, TFCBlocks.NEST_BOX);
+    public static final RegistryObject<BlockEntityType<LargeVesselBlockEntity>> LARGE_VESSEL = register("large_vessel", LargeVesselBlockEntity::new, Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)

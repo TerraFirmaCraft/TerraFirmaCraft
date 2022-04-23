@@ -113,6 +113,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
             MenuScreens.register(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
+            MenuScreens.register(TFCContainerTypes.LARGE_VESSEL.get(), LargeVesselScreen::new);
         });
 
         event.enqueueWork(() -> {
