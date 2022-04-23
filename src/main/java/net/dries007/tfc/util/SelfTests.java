@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -26,7 +29,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -62,7 +64,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
+    private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     public static void runClientSelfTests()
     {
