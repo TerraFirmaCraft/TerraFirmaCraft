@@ -141,13 +141,12 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkDataSave);
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
         bus.addListener(ForgeEventHandler::addReloadListeners);
-        bus.addListener(ForgeEventHandler::beforeServerStart);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
         bus.addListener(ForgeEventHandler::onNeighborUpdate);
-        bus.addListener(ForgeEventHandler::onWorldTick);
         bus.addListener(ForgeEventHandler::onExplosionDetonate);
+        bus.addListener(ForgeEventHandler::onWorldTick);
         bus.addListener(ForgeEventHandler::onWorldLoad);
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
@@ -414,11 +413,6 @@ public final class ForgeEventHandler
         event.addListener(CacheInvalidationListener.INSTANCE);
     }
 
-    public static void beforeServerStart(ServerAboutToStartEvent event)
-    {
-        CacheInvalidationListener.INSTANCE.invalidateServerCaches(event.getServer());
-    }
-
     public static void registerCommands(RegisterCommandsEvent event)
     {
         LOGGER.debug("Registering TFC Commands");
@@ -489,19 +483,19 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onWorldTick(TickEvent.WorldTickEvent event)
-    {
-        if (event.phase == TickEvent.Phase.START)
-        {
-            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
-        }
-    }
-
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
         if (!event.getWorld().isClientSide)
         {
             event.getWorld().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
+        }
+    }
+
+    public static void onWorldTick(TickEvent.WorldTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
         }
     }
 
@@ -523,6 +517,7 @@ public final class ForgeEventHandler
                 LOGGER.info("Updating TFC Relevant Game Rules for level {}.", level.dimension().location());
             }
 
+            CacheInvalidationListener.INSTANCE.reloadSync();
             Climate.onWorldLoad(level);
             if (level.dimension() == Level.OVERWORLD)
             {

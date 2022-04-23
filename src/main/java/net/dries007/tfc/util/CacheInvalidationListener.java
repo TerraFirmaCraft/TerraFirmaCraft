@@ -9,11 +9,7 @@ package net.dries007.tfc.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.server.ServerLifecycleHooks;
-
 import net.dries007.tfc.common.commands.LocateVeinCommand;
-import net.dries007.tfc.common.recipes.*;
 
 /**
  * This is a manager for various cache invalidations, either on resource reload or server start/stop
@@ -36,15 +32,6 @@ public enum CacheInvalidationListener implements SyncReloadListener
 
     @Override
     public void reloadSync()
-    {
-        final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        if (server != null)
-        {
-            invalidateServerCaches(server);
-        }
-    }
-    
-    public void invalidateServerCaches(MinecraftServer server)
     {
         LocateVeinCommand.clearCache();
         actions.forEach(Runnable::run);
