@@ -67,10 +67,16 @@ public class LogBlock extends RotatedPillarBlock
     @Override
     public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction action)
     {
-        if (stack.canPerformAction(action) && action == ToolActions.AXE_STRIP && stripped != null)
+        if (stack.canPerformAction(action) && action == ToolActions.AXE_STRIP)
         {
-            return Helpers.copyProperties(stripped.get().defaultBlockState(), state);
+            return getStrippedState(state);
         }
         return null;
+    }
+
+    @Nullable
+    public BlockState getStrippedState(BlockState state)
+    {
+        return stripped == null ? null : Helpers.copyProperties(stripped.get().defaultBlockState(), state);
     }
 }

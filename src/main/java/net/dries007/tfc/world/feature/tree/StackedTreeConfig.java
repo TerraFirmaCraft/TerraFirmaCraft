@@ -17,7 +17,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, int radius, TreePlacementConfig placement) implements FeatureConfiguration
+public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, int radius, TreePlacementConfig placement) implements FeatureConfiguration, ITreePlacementConfig
 {
     public static final Codec<StackedTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Layer.CODEC.listOf().fieldOf("layers").forGetter(c -> c.layers),
@@ -48,5 +48,11 @@ public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, int radiu
             }
             return minCount + random.nextInt(1 + maxCount - minCount);
         }
+    }
+
+    @Override
+    public TreePlacementConfig getPlacementConfig()
+    {
+        return placement;
     }
 }

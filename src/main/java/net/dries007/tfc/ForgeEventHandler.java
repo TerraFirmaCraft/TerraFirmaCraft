@@ -27,6 +27,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -67,16 +68,15 @@ import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 
-import net.dries007.tfc.client.ClientForgeEventHandler;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.common.blocks.wood.LogBlock;
 import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
@@ -698,7 +698,8 @@ public final class ForgeEventHandler
      */
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
-        if (event.getEntity() instanceof ItemEntity entity && !event.getWorld().isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
+        Level level = event.getWorld();
+        if (event.getEntity() instanceof ItemEntity entity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
         {
             final ItemStack item = entity.getItem();
             item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
@@ -707,6 +708,33 @@ public final class ForgeEventHandler
                     entity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
                 }
             });
+        }
+        if (event.getEntity() instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
+        {
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+            BlockPos pos = lightning.blockPosition();
+            for (int x = -5; x <= 5; x++)
+            {
+                for (int y = -5; y <= 5; y++)
+                {
+                    for (int z = -5; z <= 5; z++)
+                    {
+                        if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
+                        {
+                            mutable.setWithOffset(pos, x, y, z);
+                            BlockState state = level.getBlockState(mutable);
+                            if (state.getBlock() instanceof LogBlock log)
+                            {
+                                BlockState stripped = log.getStrippedState(state);
+                                if (stripped != null)
+                                {
+                                    level.setBlockAndUpdate(mutable, stripped);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

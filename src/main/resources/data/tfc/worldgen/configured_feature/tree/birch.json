@@ -24,9 +24,7 @@
     "placement": {
       "width": 1,
       "height": 5,
-      "allow_submerged": true,
-      "max_submerge_depth": 1,
-      "kill_depth": 1
+      "allow_submerged": false
     },
     "trunk": {
       "state": {

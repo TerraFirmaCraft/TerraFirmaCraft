@@ -1090,6 +1090,11 @@ public final class Helpers
         return Mth.map(noise.getValue(x, y, z), -1, 1, min, max);
     }
 
+    public static ResourceLocation animalTexture(String name)
+    {
+        return identifier("textures/entity/animal/" + name + ".png");
+    }
+
     /**
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes a symbolic determinant

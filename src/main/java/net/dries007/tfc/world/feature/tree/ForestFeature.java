@@ -7,6 +7,8 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.*;
+
+import net.dries007.tfc.common.blocks.wood.LogBlock;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -19,6 +21,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
@@ -107,6 +111,11 @@ public class ForestFeature extends Feature<ForestConfig>
                 {
                     feature = entry.getFeature();
                 }
+            }
+            final int deadChance = entry.deadChance();
+            if (deadChance > 0 && random.nextInt(deadChance) == 0 && feature.config() instanceof ITreePlacementConfig treeConfig)
+            {
+                return placeDeadTree(level, random, chunkBlockPos, mutablePos, entry, treeConfig.getPlacementConfig());
             }
             feature.place(level, generator, random, mutablePos);
         }
@@ -267,6 +276,63 @@ public class ForestFeature extends Feature<ForestConfig>
                 }
             }
         }
+    }
+
+    private boolean placeDeadTree(WorldGenLevel level, Random random, BlockPos chunkBlockPos, BlockPos.MutableBlockPos mutablePos, ForestConfig.Entry entry, TreePlacementConfig placement)
+    {
+        final int chunkX = chunkBlockPos.getX();
+        final int chunkZ = chunkBlockPos.getZ();
+
+        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
+        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
+
+        mutablePos.move(Direction.DOWN);
+        BlockState downState = level.getBlockState(mutablePos);
+        mutablePos.move(Direction.UP);
+
+        if (Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(downState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        {
+            return entry.fallenLog().map(log -> {
+                final int height = placement.height() - random.nextInt(placement.height() / 2);
+                if (height > 0)
+                {
+                    if (log.hasProperty(LogBlock.AXIS))
+                    {
+                        log = log.setValue(LogBlock.AXIS, Direction.Axis.Y);
+                    }
+                    for (int i = 0; i < height; i++)
+                    {
+                        if (!EnvironmentHelpers.isWorldgenReplaceable(level.getBlockState(mutablePos)))
+                        {
+                            return false;
+                        }
+                        mutablePos.move(0, 1, 0);
+                    }
+                    mutablePos.move(0, -height, 0);
+                    for (int i = 0; i < height; i++)
+                    {
+                        setBlock(level, mutablePos, log);
+                        if (random.nextInt(5) == 0)
+                        {
+                            Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
+                            mutablePos.move(direction);
+                            setBlock(level, mutablePos, log.setValue(LogBlock.AXIS, direction.getAxis()));
+                            mutablePos.move(direction.getOpposite());
+                            if (random.nextInt(4) == 0)
+                            {
+                                mutablePos.move(direction, 2);
+                                setBlock(level, mutablePos, log.setValue(LogBlock.AXIS, direction.getAxis()));
+                                mutablePos.move(direction, -2);
+                            }
+                        }
+                        mutablePos.move(0, 1, 0);
+                    }
+                    return true;
+                }
+                return false;
+            }).orElse(false);
+        }
+        return false;
     }
 
     @Nullable

@@ -9,13 +9,11 @@ package net.dries007.tfc.world.feature.tree;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public record TreePlacementConfig(int width, int height, boolean allowSubmerged, int maxSubmergeDepth, int killDepth)
+public record TreePlacementConfig(int width, int height, boolean allowSubmerged)
 {
     public static final Codec<TreePlacementConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Codec.INT.fieldOf("width").forGetter(c -> c.width),
         Codec.INT.fieldOf("height").forGetter(c -> c.height),
-        Codec.BOOL.optionalFieldOf("allow_submerged", false).forGetter(c -> c.allowSubmerged),
-        Codec.INT.optionalFieldOf("max_submerge_depth", 1).forGetter(c -> c.maxSubmergeDepth),
-        Codec.INT.optionalFieldOf("kill_depth", 2).forGetter(c -> c.killDepth)
+        Codec.BOOL.optionalFieldOf("allow_submerged", false).forGetter(c -> c.allowSubmerged)
     ).apply(instance, TreePlacementConfig::new));
 }
