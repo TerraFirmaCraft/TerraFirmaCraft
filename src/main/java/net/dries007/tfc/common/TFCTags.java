@@ -77,6 +77,7 @@ public class TFCTags
         public static final TagKey<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final TagKey<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
+        public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
 
         private static TagKey<Block> create(String id)
         {

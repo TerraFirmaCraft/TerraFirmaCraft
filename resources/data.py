@@ -156,6 +156,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
     rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -259,7 +260,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
-    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
+    rm.block_tag('powder_snow_replaceable', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', 'minecraft:snow')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():

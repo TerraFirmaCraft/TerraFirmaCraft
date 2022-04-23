@@ -227,7 +227,7 @@ public class ForestFeature extends Feature<ForestConfig>
                         for (; valid < length; valid++)
                         {
                             final BlockState replaceState = level.getBlockState(mutablePos);
-                            if (replaceState.getMaterial().isReplaceable() || replaceState.getBlock() instanceof ILeavesBlock)
+                            if (EnvironmentHelpers.isWorldgenReplaceable(replaceState) || replaceState.getBlock() instanceof ILeavesBlock)
                             {
                                 mutablePos.move(Direction.DOWN);
                                 moment[valid] = level.getBlockState(mutablePos).isFaceSturdy(level, mutablePos, Direction.UP);

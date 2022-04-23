@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
@@ -200,7 +201,11 @@ public class OverworldClimateModel implements WorldGenClimateModel
     @Override
     public float getWaterFogginess(LevelReader level, BlockPos pos, long calendarTime)
     {
-        return 0;
+        if (Helpers.isFluid(level.getFluidState(pos), Fluids.WATER))
+        {
+            return Mth.clampedMap(level.getRawBrightness(pos, 0), 0f, 15f, 0.6f, 1.0f);
+        }
+        return 1f;
     }
 
     @Override

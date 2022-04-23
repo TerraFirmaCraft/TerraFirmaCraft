@@ -48,7 +48,7 @@ public class PowderSnowFeature extends Feature<BlockStateConfiguration>
                     {
                         mutablePos.setWithOffset(pos, x, y, z);
                         final BlockState foundState = level.getBlockState(mutablePos);
-                        if (Helpers.isBlock(foundState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(foundState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+                        if (Helpers.isBlock(foundState, TFCTags.Blocks.POWDER_SNOW_REPLACEABLE))
                         {
                             setBlock(level, mutablePos, state);
                         }

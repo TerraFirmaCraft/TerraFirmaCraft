@@ -361,10 +361,11 @@ public class ClientForgeEventHandler
             }
             else if (fluid == FogType.WATER)
             {
-                final float fog = Climate.getFogginess(mc.level, pos);
-                if (fog != 0)
+                final float fog = Climate.getWaterFogginess(mc.level, pos);
+                if (fog != 1f)
                 {
                     event.scaleFarPlaneDistance(fog);
+                    event.setCanceled(true);
                 }
             }
 

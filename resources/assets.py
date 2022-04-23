@@ -909,7 +909,7 @@ def generate(rm: ResourceManager):
                 'lifecycle=%s,stage=%d' % (lifecycle, stage),
                 {'model': 'tfc:block/plant/%s%s_bush_%d' % (lifecycle_to_model[lifecycle], berry, stage)}
             ) for lifecycle, stage in itertools.product(lifecycles, range(0, 3))
-        )).with_lang(lang('%s Bush', berry)).with_block_loot('minecraft:stick')
+        )).with_lang(lang('%s Bush', berry))
 
         if data.type == 'stationary' or data.type == 'waterlogged':
             rm.item_model('plant/%s_bush' % berry, parent='tfc:block/plant/%s_bush_2' % berry, no_textures=True)
@@ -919,6 +919,7 @@ def generate(rm: ResourceManager):
         else:
             # Spreading uses a custom item model
             rm.item_model('plant/%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)
+            rm.block_loot('plant/%s_bush' % berry, 'minecraft:stick')
 
     rm.blockstate('plant/dead_berry_bush', variants={
         'stage=0': {'model': 'tfc:block/plant/dead_berry_bush_0'},
