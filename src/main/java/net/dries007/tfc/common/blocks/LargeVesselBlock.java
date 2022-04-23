@@ -43,7 +43,7 @@ public class LargeVesselBlock extends DeviceBlock
 
     public LargeVesselBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.SAVE);
 
         registerDefaultState(getStateDefinition().any().setValue(SEALED, false));
     }

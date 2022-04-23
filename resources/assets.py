@@ -303,22 +303,37 @@ def generate(rm: ResourceManager):
             {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[right=true]')]}
         )
 
-    rm.blockstate('tfc:ceramic/large_vessel', variants={
+    # Fired large undyed vessel
+    block = rm.blockstate('tfc:ceramic/large_vessel', variants={
         'sealed=true': {'model': 'tfc:block/ceramic/large_vessel_sealed'},
         'sealed=false': {'model': 'tfc:block/ceramic/large_vessel_opened'}
-    }).with_lang(lang('large vessel'))
+    })
+    block.with_lang(lang('large vessel'))
+    block.with_block_loot(({
+        'name': 'tfc:ceramic/large_vessel',
+        'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+        'conditions': [loot_tables.block_state_property('tfc:ceramic/large_vessel[sealed=true]')]
+    }, 'tfc:ceramic/large_vessel'))
     rm.block_model('tfc:ceramic/large_vessel_sealed', textures={'top': 'tfc:block/ceramic/large_vessel/top', 'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_sealed')
     rm.block_model('tfc:ceramic/large_vessel_opened', textures={'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_opened')
     rm.item_model('tfc:ceramic/large_vessel', no_textures=True, parent='tfc:block/ceramic/large_vessel_sealed')
+    
+    # Unfired large undyed vessel
     rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay','bottom':'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed')
     rm.lang('item.tfc.ceramic.unfired_large_vessel', lang("unfired large vessel"))
 
     for color in COLORS:
         vessel = 'tfc:ceramic/large_vessel/%s' % color
-        rm.blockstate(vessel, variants={
+        block = rm.blockstate(vessel, variants={
             'sealed=true': {'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color},
             'sealed=false': {'model': 'tfc:block/ceramic/%s_large_vessel_opened' % color}
-        }).with_lang(lang('%s large vessel', color))
+        })
+        block.with_lang(lang('%s large vessel', color))
+        block.with_block_loot(({
+            'name': vessel,
+            'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+            'conditions': [loot_tables.block_state_property(vessel + '[sealed=true]')]
+        }, vessel))
         rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures={'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_sealed')
         rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures={'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_opened')
         rm.item_model('tfc:ceramic/large_vessel/%s' % color, no_textures=True, parent='tfc:block/ceramic/%s_large_vessel_sealed' % color)
