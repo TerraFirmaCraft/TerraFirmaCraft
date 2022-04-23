@@ -76,6 +76,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
+import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
@@ -540,16 +542,17 @@ public final class ForgeEventHandler
 
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
-        Block originalBlock = event.getOriginalState().getBlock();
-        if (originalBlock == Blocks.STONE)
+        // Currently, getOriginalState gets the fluid block that's placing the block, not the block getting placed
+        BlockState state = event.getNewState();
+        if (Helpers.isBlock(state, Blocks.STONE))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.GABBRO).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
-        else if (originalBlock == Blocks.COBBLESTONE)
+        else if (Helpers.isBlock(state, Blocks.COBBLESTONE))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.RHYOLITE).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
-        else if (originalBlock == Blocks.BASALT)
+        else if (Helpers.isBlock(state, Blocks.BASALT))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
@@ -605,6 +608,14 @@ public final class ForgeEventHandler
         {
             final BlockEntity entity = level.getBlockEntity(pos);
             if (entity instanceof CharcoalForgeBlockEntity forge && forge.light(state))
+            {
+                event.setCanceled(true);
+            }
+        }
+        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
+        {
+            final BlockEntity entity = level.getBlockEntity(pos);
+            if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
             {
                 event.setCanceled(true);
             }
@@ -822,7 +833,7 @@ public final class ForgeEventHandler
     public static void onServerChat(ServerChatEvent event)
     {
         // Apply intoxication after six hours
-        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks() - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
+        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks(event.getPlayer().getLevel().isClientSide()) - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
         if (intoxicatedTicks > 0)
         {
             final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerData.MAX_INTOXICATED_TICKS, 0, 0.7f);

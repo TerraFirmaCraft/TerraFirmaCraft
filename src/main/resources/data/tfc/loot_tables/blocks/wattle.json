@@ -29,37 +29,7 @@
               "condition": "minecraft:block_state_property",
               "block": "tfc:wattle",
               "properties": {
-                "type": "filled"
-              }
-            }
-          ],
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 4
-            }
-          ]
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ]
-    },
-    {
-      "name": "loot_pool",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:stick",
-          "conditions": [
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "tfc:wattle",
-              "properties": {
-                "type": "woven"
+                "woven": "true"
               }
             }
           ],

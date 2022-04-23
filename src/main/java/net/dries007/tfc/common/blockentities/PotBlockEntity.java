@@ -222,13 +222,22 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
 
     public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>
     {
+        private final PotBlockEntity pot;
         private final ItemStackHandler inventory;
         private final FluidTank tank;
 
         public PotInventory(InventoryBlockEntity<PotInventory> entity)
         {
+            this.pot = (PotBlockEntity) entity;
             this.inventory = new InventoryItemHandler(entity, 9);
             this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT));
+        }
+
+        @NotNull
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate)
+        {
+            return pot.isBoiling() && slot >= SLOT_EXTRA_INPUT_START ? ItemStack.EMPTY : inventory.extractItem(slot, amount, simulate);
         }
 
         @Override

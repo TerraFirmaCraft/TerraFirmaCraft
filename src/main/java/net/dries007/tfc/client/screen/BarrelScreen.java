@@ -14,10 +14,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -41,14 +39,16 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     public BarrelScreen(BarrelContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        inventoryLabelY += 8;
+        inventoryLabelY += 12;
+        imageHeight += 12;
     }
 
     @Override
     public void init()
     {
         super.init();
-        addRenderableWidget(new BarrelSealButton(blockEntity, getGuiLeft(), getGuiTop(), new Button.OnTooltip() {
+        addRenderableWidget(new BarrelSealButton(blockEntity, getGuiLeft(), getGuiTop(), new Button.OnTooltip()
+        {
             @Override
             public void onTooltip(Button button, PoseStack poseStack, int x, int y)
             {
@@ -69,16 +69,14 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
         super.renderLabels(poseStack, mouseX, mouseY);
         if (isSealed())
         {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
-                // draw disabled texture over the slots
-                menu.slots.stream().filter(slot -> slot.index <= BarrelBlockEntity.SLOT_ITEM).forEach(slot -> fillGradient(poseStack, slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
-            });
+            drawDisabled(poseStack, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, BarrelBlockEntity.SLOT_ITEM);
 
             // Draw the text displaying both the seal date, and the recipe name
             boolean isLong = false;
             BarrelRecipe recipe = blockEntity.getRecipe();
             if (recipe != null)
             {
+                //TODO improve this
                 String resultName = recipe.getTranslationComponent().getString();
                 int recipeWidth = font.width(resultName);
                 if (recipeWidth > 80)
@@ -88,7 +86,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 font.draw(poseStack, resultName, isLong ? recipeWidth / 2f - 42 : 70, isLong ? 73 : 61, 0x404040);
             }
             String date = ICalendar.getTimeAndDate(blockEntity.getSealedTick(), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
-            font.draw(poseStack, date, isLong ? 58 : font.width(date) / 2f + 4, isLong ? 19 : 73, 0x404040);
+            font.draw(poseStack, date, imageWidth / 2f - font.width(date) / 2f, 74, 0x404040);
         }
     }
 
@@ -96,21 +94,16 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
-        // todo: special jei button?
-        /*if (Helpers.isJEIEnabled())
-        {
-            drawTexturedModalRect(guiLeft + 92, guiTop + 21, 227, 0, 9, 14);
-        }*/
         blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(fluidHandler -> {
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty())
             {
                 final TextureAtlasSprite sprite = getAndBindFluidSprite(fluidStack);
                 final int startY = 20;
-                final int endY = 69;
+                final int endY = 70;
                 final int fillHeight = (int) Math.ceil((float) (endY - startY) * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
 
-                fillAreaWithSprite(sprite, poseStack, 8, 23, endY, fillHeight);
+                fillAreaWithSprite(sprite, poseStack, 8, 24, endY, fillHeight);
 
                 resetToBackgroundSprite();
             }

@@ -172,6 +172,9 @@ public final class TFCItems
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
     public static final RegistryObject<Item> WROUGHT_IRON_GRILL = register("wrought_iron_grill", MISC);
+    public static final RegistryObject<Item> RAW_IRON_BLOOM = register("raw_iron_bloom", MISC);
+    public static final RegistryObject<Item> REFINED_IRON_BLOOM = register("refined_iron_bloom", MISC);
+
 
     public static final RegistryObject<Item> EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().tab(MISC).stacksTo(1)));

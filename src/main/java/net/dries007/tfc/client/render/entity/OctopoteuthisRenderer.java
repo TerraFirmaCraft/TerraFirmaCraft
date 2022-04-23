@@ -31,7 +31,13 @@ public class OctopoteuthisRenderer extends TFCSquidRenderer<Octopoteuthis>
     @Override
     protected int getBlockLightLevel(Octopoteuthis squid, BlockPos pos)
     {
-        int darkness = (int) Mth.clampedLerp(0.0F, 15.0F, 1.0F - (float)squid.getDarkTicksRemaining() / 10.0F);
-        return darkness == 15 ? 15 : Math.max(darkness, super.getBlockLightLevel(squid, pos));
+        if (squid.getDarkTicksRemaining() > 0)
+        {
+            return super.getBlockLightLevel(squid, pos);
+        }
+        else
+        {
+            return 15;
+        }
     }
 }

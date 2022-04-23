@@ -29,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -124,11 +125,14 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         else
         {
             // can only dye filled unstained wattle blocks
-            if (state.hasProperty(WattleBlock.TYPE) && state.getValue(WattleBlock.TYPE) != WattleBlock.Type.FILLED) return InteractionResult.PASS;
+            if (Helpers.isBlock(state, TFCBlocks.WATTLE.get()))
+                return InteractionResult.PASS;
 
             BlockState dyed = getPossibleDyedState(item, state);
             if (dyed != null)
             {
+                // TODO could add dye particles
+                Helpers.playSound(level, pos, TFCSounds.WATTLE_DYED.get());
                 dyed = dyed.setValue(BOTTOM, state.getValue(BOTTOM)).setValue(TOP, state.getValue(TOP)).setValue(LEFT, state.getValue(LEFT)).setValue(RIGHT, state.getValue(RIGHT));
                 return setState(level, pos, dyed, player, item, 1);
             }
@@ -150,7 +154,8 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         }
         else
         {
-            if (state.hasProperty(WattleBlock.TYPE) && state.getValue(WattleBlock.TYPE) != WattleBlock.Type.FILLED) return null;
+            if (Helpers.isBlock(state, TFCBlocks.WATTLE.get()))
+                return null;
             BlockState dyed = getPossibleDyedState(item, state);
             if (dyed != null)
             {
@@ -186,6 +191,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         BlockState placeState = getStateFor(state, hit.getDirection(), location.x - pos.getX(), location.y - pos.getY(), location.z - pos.getZ());
         if (placeState != null)
         {
+            Helpers.playSound(level, pos, TFCSounds.WATTLE_WOVEN.get());
             return setState(level, pos, placeState, player, item, 1);
         }
         return InteractionResult.FAIL; // avoid triggering the stick placing behavior
@@ -198,6 +204,7 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         if (placeState != null)
         {
             Helpers.spawnItem(level, pos, new ItemStack(Items.STICK));
+            Helpers.playSound(level, pos, TFCSounds.WATTLE_WOVEN.get());
             return setState(level, pos, placeState, player, item, 0);
         }
         return InteractionResult.PASS;

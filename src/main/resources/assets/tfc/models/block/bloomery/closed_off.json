@@ -1,0 +1,17 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "tfc:block/devices/bloomery/off",
+		"off": "tfc:block/devices/bloomery/off"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#off"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#off"}
+			}
+		}
+	]
+}
