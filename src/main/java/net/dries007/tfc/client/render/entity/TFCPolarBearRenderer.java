@@ -14,10 +14,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.TFCPolarBearModel;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCPolarBearRenderer extends MobRenderer<Predator, TFCPolarBearModel>
 {
-    private static final ResourceLocation POLAR_BEAR_LOCATION = RenderHelpers.animalTexture("polar_bear");
+    private static final ResourceLocation POLAR_BEAR_LOCATION = Helpers.animalTexture("polar_bear");
 
     public TFCPolarBearRenderer(EntityRendererProvider.Context ctx)
     {

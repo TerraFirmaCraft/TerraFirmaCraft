@@ -810,7 +810,8 @@ public final class Helpers
     }
 
     /**
-     * Detect if test sources are present, either if we're running in a ./gradlew test, or from a game test launch.
+     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
+     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
      */
     public static boolean detectBootstrapEnvironment()
     {
@@ -821,6 +822,10 @@ public final class Helpers
         return detectTestSourcesPresent();
     }
 
+    /**
+     * Detect if test sources are present, if we're running from a environment which includes TFC's test sources
+     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
+     */
     public static boolean detectTestSourcesPresent()
     {
         try
@@ -1083,6 +1088,11 @@ public final class Helpers
     public static double sampleNoiseAndMapToRange(NormalNoise noise, double x, double y, double z, double min, double max)
     {
         return Mth.map(noise.getValue(x, y, z), -1, 1, min, max);
+    }
+
+    public static ResourceLocation animalTexture(String name)
+    {
+        return identifier("textures/entity/animal/" + name + ".png");
     }
 
     /**

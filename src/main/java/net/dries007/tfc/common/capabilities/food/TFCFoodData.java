@@ -14,12 +14,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PacketDistributor;
 
 import net.dries007.tfc.common.TFCDamageSources;
@@ -30,6 +29,7 @@ import net.dries007.tfc.network.FoodDataReplacePacket;
 import net.dries007.tfc.network.FoodDataUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.calendar.ICalendar;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A note on the reason why {@link TFCFoodData} serializes to an external capability (player data):
@@ -100,7 +100,7 @@ public class TFCFoodData extends FoodData
     }
 
     @Override
-    public void eat(Item maybeFood, ItemStack stack)
+    public void eat(Item maybeFood, ItemStack stack, @Nullable LivingEntity entity)
     {
         stack.getCapability(FoodCapability.CAPABILITY).ifPresent(this::eat);
     }
@@ -249,7 +249,6 @@ public class TFCFoodData extends FoodData
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void setSaturation(float saturation)
     {
         delegate.setSaturation(saturation);

@@ -175,11 +175,6 @@ public class RenderHelpers
         return modelIdentifier(name, "main");
     }
 
-    public static ResourceLocation animalTexture(String name)
-    {
-        return Helpers.identifier("textures/entity/animal/" + name + ".png");
-    }
-
     public static ModelPart bakeSimple(EntityRendererProvider.Context ctx, String layerName)
     {
         return ctx.bakeLayer(modelIdentifier(layerName));
