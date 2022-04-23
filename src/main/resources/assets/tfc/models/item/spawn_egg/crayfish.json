@@ -1,1 +1,4 @@
-{"parent":"item/template_spawn_egg"}
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "item/template_spawn_egg"
+}

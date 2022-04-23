@@ -631,7 +631,7 @@ def generate(rm: ResourceManager):
 
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))
-    rm.data(('tfc', 'fauna', 'lobster'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=21)))
+    rm.data(('tfc', 'fauna', 'lobster'), fauna(distance_below_sea_level=1, climate=climate_config(max_temp=21)))
     rm.data(('tfc', 'fauna', 'horseshoe_crab'), fauna(distance_below_sea_level=10, climate=climate_config(min_temp=10, max_temp=21, max_rain=400)))
     rm.data(('tfc', 'fauna', 'cod'), fauna(climate=climate_config(max_temp=18), distance_below_sea_level=5))
     rm.data(('tfc', 'fauna', 'pufferfish'), fauna(climate=climate_config(min_temp=10), distance_below_sea_level=3))
@@ -662,7 +662,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
     mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=3)
     mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=3)
-    for mob in ('isopod', 'lobster', 'horseshoe_crab'):
+    for mob in ('isopod', 'lobster', 'horseshoe_crab', 'crayfish'):
         mob_loot(rm, mob, 'tfc:shell')
     for mob in ('orca', 'dolphin', 'manatee'):
         mob_loot(rm, mob, 'tfc:blubber', min_amount=0, max_amount=2, bones=4)
