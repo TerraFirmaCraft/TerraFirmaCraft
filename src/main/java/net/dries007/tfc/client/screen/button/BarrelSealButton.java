@@ -48,5 +48,21 @@ public class BarrelSealButton extends Button
 
         final int v = barrel.getBlockState().getValue(BarrelBlock.SEALED) ? 0 : 20;
         blit(poseStack, x, y, 236, v, 20, 20, 256, 256);
+
+        if (isHoveredOrFocused())
+        {
+            renderTooltipPost(poseStack, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        // Rendering the tooltip here makes it get blocked by the button overlay
+    }
+
+    public void renderTooltipPost(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        this.onTooltip.onTooltip(this, poseStack, mouseX, mouseY);
     }
 }
