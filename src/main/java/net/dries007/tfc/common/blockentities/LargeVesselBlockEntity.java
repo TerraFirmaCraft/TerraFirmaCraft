@@ -21,6 +21,8 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +57,22 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
     public AbstractContainerMenu createMenu(int windowID, Inventory inv, Player player)
     {
         return LargeVesselContainer.create(this, inv, windowID);
+    }
+
+    public void onUnseal()
+    {
+        for (int i = 0; i < SLOTS; i++)
+        {
+            inventory.setStackInSlot(i, FoodCapability.removeTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
+        }
+    }
+
+    public void onSeal()
+    {
+        for (int i = 0; i < SLOTS; i++)
+        {
+            inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
+        }
     }
 
     public static class VesselInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory

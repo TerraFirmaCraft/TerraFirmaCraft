@@ -6,13 +6,17 @@
 
 package net.dries007.tfc.common.container;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
+import net.dries007.tfc.common.blocks.LargeVesselBlock;
+import org.jetbrains.annotations.Nullable;
 
-public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockEntity>
+public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockEntity> implements ButtonHandlerContainer
 {
     public static LargeVesselContainer create(LargeVesselBlockEntity vessel, Inventory playerInventory, int windowId)
     {
@@ -22,6 +26,16 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
     public LargeVesselContainer(LargeVesselBlockEntity vessel, Inventory playerInventory, int windowId)
     {
         super(TFCContainerTypes.LARGE_VESSEL.get(), windowId, vessel);
+    }
+
+    @Override
+    public void onButtonPress(int buttonID, @Nullable CompoundTag extraNBT)
+    {
+        Level level = blockEntity.getLevel();
+        if (level != null)
+        {
+            LargeVesselBlock.toggleSeal(level, blockEntity.getBlockPos(), blockEntity.getBlockState());
+        }
     }
 
     @Override

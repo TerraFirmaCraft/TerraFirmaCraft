@@ -9,24 +9,31 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.network.NetworkHooks;
 
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 
@@ -40,6 +47,22 @@ public class LargeVesselBlock extends DeviceBlock
         box(2.5D, 9.5D, 2.5D, 13.5D, 11D, 13.5D),
         box(7D, 11D, 7D, 9D, 12D, 9D)
     );
+
+    public static void toggleSeal(Level level, BlockPos pos, BlockState state)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
+            final boolean previousSealed = state.getValue(SEALED);
+            level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
+            if (previousSealed)
+            {
+                barrel.onUnseal();
+            }
+            else
+            {
+                barrel.onSeal();
+            }
+        });
+    }
 
     public LargeVesselBlock(ExtendedProperties properties)
     {
@@ -68,9 +91,17 @@ public class LargeVesselBlock extends DeviceBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return !world.getBlockState(pos.below()).isAir() && super.canSurvive(state, world, pos);
+        BlockPos belowPos = pos.below();
+        BlockState belowState = level.getBlockState(belowPos);
+        return !belowState.isAir() && belowState.isFaceSturdy(level, belowPos, Direction.UP) && super.canSurvive(state, level, pos);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState();
     }
 
     @Override
@@ -79,7 +110,8 @@ public class LargeVesselBlock extends DeviceBlock
     {
         if (player.isShiftKeyDown())
         {
-            level.setBlockAndUpdate(pos, state.setValue(SEALED, !state.getValue(SEALED)));
+            toggleSeal(level, pos, state);
+            level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
         }
         else
         {
@@ -91,5 +123,30 @@ public class LargeVesselBlock extends DeviceBlock
             });
         }
         return InteractionResult.SUCCESS;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    {
+        final ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
+        if (state.getValue(SEALED))
+        {
+            final BlockEntity entity = level.getBlockEntity(pos);
+            if (entity instanceof InventoryBlockEntity<?> inv)
+            {
+                inv.saveToItem(stack);
+            }
+        }
+        return stack;
+    }
+
+    @Override
+    protected void beforeRemove(InventoryBlockEntity<?> entity)
+    {
+        if (!entity.getBlockState().getValue(SEALED))
+        {
+            entity.ejectInventory();
+        }
+        entity.invalidateCapabilities();
     }
 }
