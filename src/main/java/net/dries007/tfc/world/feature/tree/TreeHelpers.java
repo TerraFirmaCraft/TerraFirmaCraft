@@ -60,7 +60,8 @@ public final class TreeHelpers
                 mutablePos.move(pos);
 
                 final BlockState stateAt = level.getBlockState(mutablePos);
-                if (!(config.allowSubmerged() && FluidHelpers.isAirOrEmptyFluid(stateAt) && stateAt.getFluidState().getType() == Fluids.WATER)
+                final boolean isInWater = stateAt.getFluidState().getType() == Fluids.WATER;
+                if (!(config.allowSubmerged() && FluidHelpers.isAirOrEmptyFluid(stateAt) && isInWater)
                     && !stateAt.isAir()
                     && !(stateAt.getBlock() instanceof SaplingBlock))
                 {
@@ -70,12 +71,12 @@ public final class TreeHelpers
                 mutablePos.move(0, -1, 0);
 
                 final BlockState stateBelow = level.getBlockState(mutablePos);
-                final boolean treeGrowsOn = !Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
-                if (config.allowSubmerged() && (!Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || treeGrowsOn))
+                final boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
+                if (isInWater && config.allowSubmerged() && !Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
                 {
                     return false;
                 }
-                else if (treeGrowsOn)
+                else if (!treeGrowsOn)
                 {
                     return false;
                 }

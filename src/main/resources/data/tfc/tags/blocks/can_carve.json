@@ -103,6 +103,7 @@
     "tfc:dirt/sandy_loam",
     "tfc:grass/sandy_loam",
     "tfc:dirt/silty_loam",
-    "tfc:grass/silty_loam"
+    "tfc:grass/silty_loam",
+    "minecraft:powder_snow"
   ]
 }

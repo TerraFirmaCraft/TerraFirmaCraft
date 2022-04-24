@@ -371,6 +371,7 @@ PLANTS: Dict[str, Plant] = {
     'scutch_grass': Plant(False, 0, 40, 150, 500, 'short_grass'),
     'star_grass': Plant(False, 2, 40, 50, 260, 'grass_water'),
     'timothy_grass': Plant(False, -22, 16, 289, 500, 'short_grass'),
+    'raddia_grass': Plant(False, 18, 40, 330, 500, 'short_grass'),
 
     'allium': Plant(False, -10, -2, 150, 400, 'standard'),
     'anthurium': Plant(False, 12, 40, 290, 500, 'standard'),
@@ -501,6 +502,7 @@ SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'tree_fern', 'arundo')
+SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
 
 BERRIES: Dict[str, Berry] = {

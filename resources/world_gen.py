@@ -601,6 +601,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'liana'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(30, 100), decorate_chance(0.003), decorate_climate(16, 32, 150, 470, True, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'tree_fern'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), decorate_square(), decorate_climate(19, 50, 300, 500), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'arundo'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), decorate_square(), decorate_climate(5, 22, 100, 500), ('tfc:near_water', {'radius': 6}), decorate_air_or_empty_fluid())
+
     configured_placed_feature(rm, ('plant', 'winged_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-15, 15, 0, 450, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'leafy_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-20, 20, 0, 500, fuzzy=True), decorate_air_or_empty_fluid())
 
@@ -735,9 +736,12 @@ def generate(rm: ResourceManager):
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(6, 30), decorate_biome())
 
     # Global Worldgen Tagged Features
-    rm.tag('land_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES], 'tfc:plant/wild_crops', '#tfc:forest_patch_features', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay], 'tfc:berry_bushes', 'tfc:fruit_trees')
+    rm.tag('land_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES], 'tfc:plant/wild_crops', '#tfc:forest_patch_features', 'tfc:surface_grasses', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay and data.type != 'short_grass'], 'tfc:berry_bushes', 'tfc:fruit_trees')
     rm.tag('forest_patch_features', 'worldgen/placed_feature', *['tfc:%s_patch' % d for d in FOREST_DECORATORS])
     configured_placed_feature(rm, 'land_plants', 'tfc:multiple', {'features': '#tfc:land_plant_features', 'biome_check': False})
+
+    rm.tag('surface_grass_features', 'worldgen/placed_feature', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
+    configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:surface_grass_features', 'biome_check': False})
 
     rm.tag('ocean_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
     configured_placed_feature(rm, 'ocean_plants', 'tfc:multiple', {'features': '#tfc:ocean_plant_features', 'biome_check': False})

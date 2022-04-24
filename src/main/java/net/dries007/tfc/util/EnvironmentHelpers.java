@@ -64,7 +64,7 @@ public final class EnvironmentHelpers
 
     public static boolean isSnow(BlockState state)
     {
-        return Helpers.isBlock(state, Blocks.SNOW) || Helpers.isBlock(state, TFCBlocks.SNOW_PILE.get());
+        return Helpers.isBlock(state, Blocks.SNOW) || Helpers.isBlock(state, TFCBlocks.SNOW_PILE.get()) || Helpers.isBlock(state, Blocks.POWDER_SNOW);
     }
 
     public static boolean isIce(BlockState state)

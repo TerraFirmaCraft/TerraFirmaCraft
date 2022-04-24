@@ -332,7 +332,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('can_carve', 'tfc:sand/%s' % sand, 'tfc:raw_sandstone/%s' % sand)
     for soil in SOIL_BLOCK_VARIANTS:
         rm.block_tag('can_carve', 'tfc:dirt/%s' % soil, 'tfc:grass/%s' % soil)
-    rm.block_tag('can_cave', 'minecraft:powder_snow')
+    rm.block_tag('can_carve', 'minecraft:powder_snow')
 
     # Soil / Standard blocks are toughness 0 - dirt destroys charcoal
     rm.block_tag('toughness_1', 'tfc:charcoal_pile', 'tfc:charcoal_forge')  # Charcoal is toughness 1 - resistant against destruction from soil

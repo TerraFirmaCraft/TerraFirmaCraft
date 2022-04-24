@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.*;
 
+import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.common.blocks.wood.LogBlock;
 import org.jetbrains.annotations.Nullable;
 
@@ -302,7 +303,8 @@ public class ForestFeature extends Feature<ForestConfig>
                     }
                     for (int i = 0; i < height; i++)
                     {
-                        if (!EnvironmentHelpers.isWorldgenReplaceable(level.getBlockState(mutablePos)))
+                        BlockState stateAt = level.getBlockState(mutablePos);
+                        if (!EnvironmentHelpers.isWorldgenReplaceable(stateAt) || stateAt.hasProperty(RiverWaterBlock.FLOW))
                         {
                             return false;
                         }
