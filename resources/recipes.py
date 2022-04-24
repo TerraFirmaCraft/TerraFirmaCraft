@@ -533,6 +533,7 @@ def generate(rm: ResourceManager):
 
         barrel_sealed_recipe(rm, 'dye/%s_shulker' % color, 'Dyeing Shulker %s' % color, 1000, 'minecraft:shulker_box', fluid, 'minecraft:%s_shulker_box' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_vessel' % color, 'Dyeing Unfired Vessel %s' % color, 1000, 'tfc:ceramic/unfired_vessel', fluid, 'tfc:ceramic/%s_unfired_vessel' % color)
+        barrel_sealed_recipe(rm, 'dye/%s_glazed_large_vessel' % color, 'Dyeing Unfired Large Vessel %s' % color, 1000, 'tfc:ceramic/unfired_large_vessel', fluid, 'tfc:ceramic/unfired_large_vessel/%s' % color)
         barrel_sealed_recipe(rm, 'dye/%s_concrete_powder' % color, 'Dyeing Aggregate %s' % color, 1000, 'tfc:aggregate', fluid, 'minecraft:%s_concrete_powder' % color)
 
     # Instant Barrel Recipes
