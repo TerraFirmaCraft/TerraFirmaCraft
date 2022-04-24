@@ -16,10 +16,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
-import net.dries007.tfc.common.capabilities.DelegateItemHandler;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
@@ -75,53 +73,34 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         }
     }
 
-    public static class VesselInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory
+    public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>, EmptyInventory
     {
         private final LargeVesselBlockEntity vessel;
-        private final InventoryItemHandler inventory;
 
         VesselInventory(InventoryBlockEntity<?> entity)
         {
+            super(entity, SLOTS);
             vessel = (LargeVesselBlockEntity) entity;
-            inventory = new InventoryItemHandler(entity, SLOTS);
-        }
-
-        @Override
-        public IItemHandlerModifiable getItemHandler()
-        {
-            return inventory;
         }
 
         @NotNull
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
-            return canModify() ? inventory.insertItem(slot, stack, simulate) : stack;
+            return canModify() ? super.insertItem(slot, stack, simulate) : stack;
         }
 
         @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
-            return canModify() ? inventory.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+            return canModify() ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack)
         {
-            return canModify() && DelegateItemHandler.super.isItemValid(slot, stack);
-        }
-
-        @Override
-        public CompoundTag serializeNBT()
-        {
-            return inventory.serializeNBT();
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag nbt)
-        {
-            inventory.deserializeNBT(nbt);
+            return canModify() && super.isItemValid(slot, stack);
         }
 
         private boolean canModify()
