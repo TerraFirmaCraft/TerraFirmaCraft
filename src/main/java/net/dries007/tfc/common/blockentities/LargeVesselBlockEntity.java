@@ -21,6 +21,8 @@ import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import org.jetbrains.annotations.NotNull;
@@ -100,7 +102,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         @Override
         public boolean isItemValid(int slot, ItemStack stack)
         {
-            return canModify() && super.isItemValid(slot, stack);
+            return canModify() && ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.LARGE) && super.isItemValid(slot, stack);
         }
 
         private boolean canModify()

@@ -36,8 +36,11 @@ import net.minecraftforge.network.NetworkHooks;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
+import net.dries007.tfc.common.capabilities.size.IItemSize;
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.capabilities.size.Weight;
 
-public class LargeVesselBlock extends DeviceBlock
+public class LargeVesselBlock extends DeviceBlock implements IItemSize
 {
     public static final BooleanProperty SEALED = TFCBlockStateProperties.SEALED;
 
@@ -138,6 +141,18 @@ public class LargeVesselBlock extends DeviceBlock
             }
         }
         return stack;
+    }
+
+    @Override
+    public Size getSize(ItemStack stack)
+    {
+        return stack.getTag() == null ? Size.VERY_LARGE : Size.HUGE;
+    }
+
+    @Override
+    public Weight getWeight(ItemStack stack)
+    {
+        return Weight.VERY_HEAVY;
     }
 
     @Override
