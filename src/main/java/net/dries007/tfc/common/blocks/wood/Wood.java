@@ -156,7 +156,8 @@ public enum Wood implements StringRepresentable
         SLUICE(wood -> new SluiceBlock(ExtendedProperties.of(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false),
         SIGN(wood -> new TFCStandingSignBlock(ExtendedProperties.of(properties(wood).noCollission().strength(1F)).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
         WALL_SIGN(wood -> new TFCWallSignBlock(ExtendedProperties.of(properties(wood).noCollission().strength(1F).lootFrom(getBlock(SIGN, wood))).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
-        BARREL((self, wood) -> new BarrelBlock(ExtendedProperties.of(properties(wood).strength(2.5f)).flammable(60, 30).blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false);
+        BARREL((self, wood) -> new BarrelBlock(ExtendedProperties.of(properties(wood).strength(2.5f)).flammable(60, 30).blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false),
+        LECTERN(wood -> new TFCLecternBlock(ExtendedProperties.of(properties(wood).noCollission().strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.LECTERN)), false);
 
         public static final BlockType[] VALUES = values();
 

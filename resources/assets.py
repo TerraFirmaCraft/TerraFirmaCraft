@@ -1255,6 +1255,14 @@ def generate(rm: ResourceManager):
             'conditions': [loot_tables.block_state_property('tfc:wood/barrel/%s[sealed=true]' % wood)]
         }, 'tfc:wood/barrel/%s' % wood))
 
+        # Lecterns
+        block = rm.blockstate('tfc:wood/lectern/%s' % wood, model='tfc:block/wood/lectern/%s' % wood, variants=four_rotations('tfc:block/wood/lectern/%s' % wood, (90, None, 180, 270)))
+        block.with_block_model(textures={'bottom': 'tfc:block/wood/planks/%s' % wood, 'base': 'tfc:block/wood/lectern/%s/base' % wood, 'front': 'tfc:block/wood/lectern/%s/front' % wood, 'sides': 'tfc:block/wood/lectern/%s/sides' % wood, 'top': 'tfc:block/wood/lectern/%s/top' % wood, 'particle': 'tfc:block/wood/lectern/%s/sides' % wood}, parent='minecraft:block/lectern')
+        block.with_item_model()
+        block.with_lang(lang("%s lectern" % wood))
+        block.with_block_loot('tfc:wood/lectern/%s' % wood)
+        block.with_tag('minecraft:mineable/axe')
+
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
             rm.block_tag('minecraft:wooden_fences', fence_namespace)

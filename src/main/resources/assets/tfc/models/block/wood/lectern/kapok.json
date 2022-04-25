@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/kapok",
+    "base": "tfc:block/wood/lectern/kapok/base",
+    "front": "tfc:block/wood/lectern/kapok/front",
+    "sides": "tfc:block/wood/lectern/kapok/sides",
+    "top": "tfc:block/wood/lectern/kapok/top",
+    "particle": "tfc:block/wood/lectern/kapok/sides"
+  }
+}
