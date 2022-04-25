@@ -188,6 +188,11 @@ public class SurfaceBuilderContext
         return seaLevel;
     }
 
+    public double getSlope()
+    {
+        return slope;
+    }
+
     public boolean isDefaultBlock(BlockState state)
     {
         return defaultBlockStates.contains(state);

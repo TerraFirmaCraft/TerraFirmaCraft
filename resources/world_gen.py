@@ -1043,13 +1043,11 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
     }
 
 
-def tree_placement_config(width: int, height: int, allow_submerged: bool = False, submerge_depth: int = None, kill_depth: int = None):
+def tree_placement_config(width: int, height: int, allow_submerged: bool = False):
     return {
         'width': width,
         'height': height,
-        'allow_submerged': allow_submerged,
-        'max_submerge_depth': submerge_depth,
-        'kill_depth': kill_depth
+        'allow_submerged': allow_submerged
     }
 
 
