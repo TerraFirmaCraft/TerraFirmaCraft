@@ -12,6 +12,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.container.TFCContainerProviders;
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 
 public class SwitchInventoryTabPacket
 {
@@ -39,25 +40,13 @@ public class SwitchInventoryTabPacket
             if (player != null)
             {
                 player.doCloseContainer();
-                if (type == Type.INVENTORY)
+                switch (type)
                 {
-                    player.containerMenu = player.inventoryMenu;
-                }
-                else if (type == Type.CALENDAR)
-                {
-                    NetworkHooks.openGui(player, TFCContainerProviders.CALENDAR);
-                }
-                else if (type == Type.NUTRITION)
-                {
-                    NetworkHooks.openGui(player, TFCContainerProviders.NUTRITION);
-                }
-                else if (type == Type.CLIMATE)
-                {
-                    NetworkHooks.openGui(player, TFCContainerProviders.CLIMATE);
-                }
-                else
-                {
-                    throw new IllegalStateException("Unknown type?");
+                    case INVENTORY -> player.containerMenu = player.inventoryMenu;
+                    case CALENDAR -> NetworkHooks.openGui(player, TFCContainerProviders.CALENDAR);
+                    case NUTRITION -> NetworkHooks.openGui(player, TFCContainerProviders.NUTRITION);
+                    case CLIMATE -> NetworkHooks.openGui(player, TFCContainerProviders.CLIMATE);
+                    case BOOK -> PatchouliIntegration.openGui(player);
                 }
             }
         });
@@ -65,7 +54,7 @@ public class SwitchInventoryTabPacket
 
     public enum Type
     {
-        INVENTORY, CALENDAR, NUTRITION, CLIMATE;
+        INVENTORY, CALENDAR, NUTRITION, CLIMATE, BOOK;
 
         private static final Type[] VALUES = values();
     }

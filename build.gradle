@@ -1,5 +1,5 @@
-import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
@@ -72,6 +72,10 @@ repositories {
         // Cyanide
         url = 'https://alcatrazescapee.jfrog.io/artifactory/mods'
     }
+    maven {
+        // Patchouli
+        url 'https://maven.blamejared.com'
+    }
     flatDir {
         dirs 'libs'
     }
@@ -88,8 +92,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-ea'
             property 'forge.enabledGameTestNamespaces', mod_id
+            jvmArg '-ea'
 
             mods {
                 tfc {
@@ -105,8 +109,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-ea'
             property 'forge.enabledGameTestNamespaces', mod_id
+            jvmArg '-ea'
 
             mods {
                 tfc {
@@ -124,6 +128,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.enabledGameTestNamespaces', mod_id
+            jvmArg '-ea'
 
             forceExit false
 
@@ -148,6 +153,10 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
+    // Patchouli
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     }
@@ -165,6 +174,11 @@ test {
 }
 
 processResources {
+
+    filesMatching("field_guide.json") {
+        expand "TFC_VERSION": project.version
+    }
+
     if (minifyResources) {
         doLast {
             def jsonMinifyStart = System.currentTimeMillis()
@@ -175,9 +189,9 @@ processResources {
                 def oldLength = file.length()
                 try {
                     file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-                        .replace('"__comment__":"This file was automatically created by mcresources",', '')
+                            .replace('"__comment__":"This file was automatically created by mcresources",', '')
                 }
-                catch(Exception e ){
+                catch (Exception e) {
                     System.out.println("Parsing JSON error in " + file.path)
                     throw e
                 }
