@@ -22,7 +22,6 @@ def main():
         Warnings.enabled = show_warnings
         rm = ResourceManager('tfc', resource_dir=target)
         make_book(rm)
-        rm.flush()
     print('Done')
 
 
@@ -45,7 +44,7 @@ def make_book(rm: ResourceManager):
     All the documentation on entry(), category(), all the book page functions, are copied from the Patchouli documentation, found here:
     https://vazkiimods.github.io/Patchouli/docs/reference/overview
     """
-    book = Book(rm, 'field_guide', 'TerraFirmaCraft Field Guide', 'Welcome traveller! This book will be the source of all you need to know as you explore the world of TerraFirmaCraft (TFC).')
+    book = Book(rm, 'field_guide')
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('a_first_look', 'A First Look', 'tfc:grass/loam', pages=(
@@ -75,14 +74,11 @@ class BookEntry(NamedTuple):
 
 class Book:
 
-    def __init__(self, rm: ResourceManager, root_name: str, name: str, landing_text: str):
+    def __init__(self, rm: ResourceManager, root_name: str):
         self.rm: ResourceManager = rm
         self.root_name = root_name
-
         self.category_count = 0
 
-        rm.lang('tfc.field_guide.book_name', name)
-        rm.lang('tfc.field_guide.book_landing_text', landing_text)
         rm.data(('patchouli_books', self.root_name, 'book'), {
             'name': 'tfc.field_guide.book_name',
             'landing_text': 'tfc.field_guide.book_landing_text',
