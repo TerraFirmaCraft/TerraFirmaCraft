@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import net.minecraft.ChatFormatting;
@@ -36,6 +37,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
