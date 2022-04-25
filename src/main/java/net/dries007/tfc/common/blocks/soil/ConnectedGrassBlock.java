@@ -9,15 +9,13 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -34,6 +32,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class ConnectedGrassBlock extends Block implements IGrassBlock
 {
@@ -170,9 +169,9 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction action)
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate)
     {
-        if (stack.canPerformAction(action) && action == ToolActions.SHOVEL_FLATTEN && TFCConfig.SERVER.enableGrassPathCreation.get() && path != null)
+        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.SHOVEL_FLATTEN && TFCConfig.SERVER.enableGrassPathCreation.get() && path != null)
         {
             return path.get().defaultBlockState();
         }

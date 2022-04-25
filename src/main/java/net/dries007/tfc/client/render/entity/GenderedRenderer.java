@@ -13,6 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.land.TFCAnimal;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class GenderedRenderer<T extends TFCAnimal, M extends EntityModel<T>> extends AnimalRenderer<T, M>
@@ -37,9 +38,9 @@ public class GenderedRenderer<T extends TFCAnimal, M extends EntityModel<T>> ext
     public GenderedRenderer(EntityRendererProvider.Context ctx, M model, String name, @Nullable String maleName, @Nullable String babyName)
     {
         super(ctx, model, name);
-        maleYoung = maleName == null ? null : RenderHelpers.animalTexture(maleName + "_young");
-        maleOld = maleName == null ? null : RenderHelpers.animalTexture(maleName + "_old");
-        baby = babyName == null ? null : RenderHelpers.animalTexture(babyName);
+        maleYoung = maleName == null ? null : Helpers.animalTexture(maleName + "_young");
+        maleOld = maleName == null ? null : Helpers.animalTexture(maleName + "_old");
+        baby = babyName == null ? null : Helpers.animalTexture(babyName);
     }
 
     @Override

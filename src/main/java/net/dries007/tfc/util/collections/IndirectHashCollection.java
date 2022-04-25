@@ -43,7 +43,9 @@ public class IndirectHashCollection<K, R>
 
     public static <C extends Container, K, R extends Recipe<C>> IndirectHashCollection<K, R> createForRecipe(Function<R, Iterable<? extends K>> keyExtractor, Supplier<RecipeType<R>> recipeType)
     {
-        return new IndirectHashCollection<>(keyExtractor, () -> getTheRecipeManagerInTheMostHackyAwfulWay().getAllRecipesFor(recipeType.get()));
+        return new IndirectHashCollection<>(keyExtractor, () -> getTheRecipeManagerInTheMostHackyAwfulWay()
+            .map(r -> r.getAllRecipesFor(recipeType.get()))
+            .orElse(Collections.emptyList()));
     }
 
     /**
@@ -51,23 +53,23 @@ public class IndirectHashCollection<K, R>
      * Resolving recipes needs access to a {@link RecipeManager} which needs to be obtained from a {@link Level} which is prohibitively difficult for use cases such as item stack capabilities, where a level is not readily available.
      * This seems to work.
      */
-    private static RecipeManager getTheRecipeManagerInTheMostHackyAwfulWay()
+    private static Optional<RecipeManager> getTheRecipeManagerInTheMostHackyAwfulWay()
     {
         final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server != null)
         {
-            return server.getRecipeManager();
+            return Optional.of(server.getRecipeManager());
         }
         try
         {
             final Level level = ClientHelpers.getLevel();
             if (level != null)
             {
-                return level.getRecipeManager();
+                return Optional.of(level.getRecipeManager());
             }
         }
         catch (Throwable t) { /* super safe */ }
-        throw new IllegalStateException("For the love of god");
+        return Optional.empty();
     }
 
     private final Map<K, Collection<R>> indirectResultMap;
@@ -93,14 +95,18 @@ public class IndirectHashCollection<K, R>
             {
                 if (!valid)
                 {
-                    valid = true;
-                    indirectResultMap.clear();
-                    reloadableCollection.get().forEach(result -> {
-                        for (K directKey : keyExtractor.apply(result))
-                        {
-                            indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
-                        }
-                    });
+                    final Collection<R> entries = reloadableCollection.get();
+                    if (!entries.isEmpty())
+                    {
+                        indirectResultMap.clear();
+                        entries.forEach(result -> {
+                            for (K directKey : keyExtractor.apply(result))
+                            {
+                                indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
+                            }
+                        });
+                        valid = true;
+                    }
                 }
             }
         }

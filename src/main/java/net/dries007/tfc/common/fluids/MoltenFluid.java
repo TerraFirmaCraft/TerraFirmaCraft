@@ -20,11 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-
-import net.minecraftforge.fluids.ForgeFlowingFluid.Properties;
 
 public abstract class MoltenFluid extends ForgeFlowingFluid
 {
@@ -37,7 +33,6 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     protected void animateTick(Level worldIn, BlockPos pos, FluidState state, Random random)
     {
         lava.animateTick(worldIn, pos, state, random);
@@ -49,7 +44,6 @@ public abstract class MoltenFluid extends ForgeFlowingFluid
         lava.randomTick(worldIn, pos, state, random);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Nullable
     @Override
     protected ParticleOptions getDripParticle()

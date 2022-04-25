@@ -31,7 +31,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
 
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -44,11 +43,11 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Jellyfish.class, EntityDataSerializers.INT);
 
     private static final ResourceLocation[] LOCATIONS = {
-        RenderHelpers.animalTexture("jellyfish_blue"),
-        RenderHelpers.animalTexture("jellyfish_red"),
-        RenderHelpers.animalTexture("jellyfish_yellow"),
-        RenderHelpers.animalTexture("jellyfish_purple"),
-        RenderHelpers.animalTexture("jellyfish_orange"),
+        Helpers.animalTexture("jellyfish_blue"),
+        Helpers.animalTexture("jellyfish_red"),
+        Helpers.animalTexture("jellyfish_yellow"),
+        Helpers.animalTexture("jellyfish_purple"),
+        Helpers.animalTexture("jellyfish_orange"),
     };
 
     public Jellyfish(EntityType<? extends AbstractSchoolingFish> type, Level level)

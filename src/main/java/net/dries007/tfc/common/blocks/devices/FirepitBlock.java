@@ -36,8 +36,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
@@ -92,7 +90,6 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
         registerDefaultState(getStateDefinition().any().setValue(LIT, false));
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
     {
