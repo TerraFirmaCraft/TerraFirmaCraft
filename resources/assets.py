@@ -4,6 +4,7 @@
 import itertools
 
 from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables
+
 from constants import *
 
 
@@ -565,6 +566,20 @@ def generate(rm: ResourceManager):
                     rm.item_model(('metal', 'chain', metal), 'tfc:item/metal/chain/%s' % metal)
                 elif metal_block == 'trapdoor':
                     rm.block(('metal', metal_block, metal)).make_trapdoor(trapdoor_suffix='', texture=metal_dir % (metal_block, metal)).with_lang(lang('%s trapdoor', metal)).with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
+                elif metal_block == 'anvil':
+                    block = rm.blockstate(('metal', '%s' % metal_block, metal), variants={
+                        'facing=north': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 90},
+                        'facing=east': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 180},
+                        'facing=south': {'model': 'tfc:block/metal/anvil/%s' % metal, 'y': 270},
+                        'facing=west': {'model': 'tfc:block/metal/anvil/%s' % metal}
+                    })
+                    block.with_block_model({
+                        'all': metal_tex,
+                        'particle': metal_tex
+                    }, parent=metal_block_data.parent_model)
+                    block.with_block_loot('tfc:metal/%s/%s' % (metal_block, metal))
+                    block.with_lang(lang('%s %s' % (metal, metal_block)))
+                    block.with_item_model()
                 else:
                     block = rm.blockstate(('metal', '%s' % metal_block, metal))
                     block.with_block_model({

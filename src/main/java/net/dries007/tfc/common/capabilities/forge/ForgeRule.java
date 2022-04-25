@@ -77,17 +77,17 @@ public enum ForgeRule
 
     public int u()
     {
-        return type == HIT_LIGHT ? 218 : type.u();
+        return type == HIT_LIGHT ? 218 : type.iconX();
     }
 
     public int v()
     {
-        return type == HIT_LIGHT ? 18 : type.v();
+        return type == HIT_LIGHT ? 18 : type.iconY();
     }
 
     public int w()
     {
-        return order.v;
+        return order.w;
     }
 
     public boolean matches(ForgeSteps steps)
@@ -119,11 +119,11 @@ public enum ForgeRule
         SECOND_LAST(22),
         THIRD_LAST(44);
 
-        private final int v;
+        private final int w;
 
-        Order(int v)
+        Order(int w)
         {
-            this.v = v;
+            this.w = w;
         }
     }
 }

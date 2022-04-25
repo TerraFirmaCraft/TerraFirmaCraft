@@ -6,42 +6,56 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.Collection;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.forge.ForgeStep;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.container.AnvilContainer;
+import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
+import org.jetbrains.annotations.Nullable;
 
-public class AnvilBlockEntity extends TickableInventoryBlockEntity<AnvilBlockEntity.AnvilInventory> implements ISlotCallback
+public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.AnvilInventory> implements ISlotCallback
 {
     public static final int SLOT_INPUT_MAIN = 0;
     public static final int SLOT_INPUT_SECOND = 1;
     public static final int SLOT_HAMMER = 2;
     public static final int SLOT_CATALYST = 3;
 
-    public static final int DATA_SLOT_TARGET = 0;
+    public static final int[] SLOTS_BY_HAND_EXTRACT = new int[] {SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
+    public static final int[] SLOTS_BY_HAND_INSERT = new int[] {SLOT_INPUT_MAIN, SLOT_INPUT_SECOND, SLOT_CATALYST};
 
-    private static final Component NAME = new TranslatableComponent("tfc.block_entity.crucible");
+    private static final Component NAME = new TranslatableComponent("tfc.block_entity.anvil");
 
     private final ContainerData syncableData;
     private int workTarget; // The target to work, only for client purposes
     private int workValue; // The current work progress of the item, only for client display purposes
+    @Nullable private AnvilRecipe cachedRecipe;
 
     public AnvilBlockEntity(BlockPos pos, BlockState state)
     {
@@ -52,21 +66,66 @@ public class AnvilBlockEntity extends TickableInventoryBlockEntity<AnvilBlockEnt
             .add(() -> workValue, value -> workValue = value);
     }
 
+    public int getWorkTarget()
+    {
+        return workTarget;
+    }
+
+    public int getWorkValue()
+    {
+        return workValue;
+    }
+
+    @Nullable
+    public AnvilRecipe getRecipe()
+    {
+        return cachedRecipe;
+    }
+
     public ContainerData getSyncableData()
     {
         return syncableData;
     }
 
+    /**
+     * @return the provider for opening the anvil plan screen
+     */
+    public MenuProvider planProvider()
+    {
+        return new SimpleMenuProvider(this::createPlanContainer, getDisplayName());
+    }
+
+    /**
+     * @return the provider for opening the main anvil working screen
+     */
+    public MenuProvider anvilProvider()
+    {
+        return this;
+    }
+
+    @Nullable
+    @Override
+    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
+    {
+        return AnvilContainer.create(this, player.getInventory(), containerId);
+    }
+
+    @Nullable
+    public AbstractContainerMenu createPlanContainer(int containerId, Inventory inventory, Player player)
+    {
+        return AnvilPlanContainer.create(this, player.getInventory(), containerId);
+    }
+
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        // todo: valid item checks
-        return switch (slot) {
-            case SLOT_INPUT_MAIN, SLOT_INPUT_SECOND -> true;
-            case SLOT_HAMMER -> true;
-            case SLOT_CATALYST -> true;
-            default -> false;
-        };
+        return switch (slot)
+            {
+                case SLOT_INPUT_MAIN, SLOT_INPUT_SECOND -> true;
+                case SLOT_HAMMER -> Helpers.isItem(stack, TFCTags.Items.HAMMERS);
+                case SLOT_CATALYST -> Helpers.isItem(stack, TFCTags.Items.FLUX);
+                default -> false;
+            };
     }
 
     @Override
@@ -78,7 +137,49 @@ public class AnvilBlockEntity extends TickableInventoryBlockEntity<AnvilBlockEnt
     @Override
     public void setAndUpdateSlots(int slot)
     {
-        super.setAndUpdateSlots(slot);
+        assert level != null;
+
+        final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
+        if (!stack.isEmpty())
+        {
+            final IForging forge = ForgingCapability.get(stack);
+            if (forge != null)
+            {
+                AnvilRecipe recipe = forge.getRecipe(level);
+                if (recipe == null)
+                {
+                    // Select a default recipe if we only find a single recipe for this item
+                    final Collection<AnvilRecipe> all = AnvilRecipe.getAll(level, stack, getTier());
+                    if (all.size() == 1)
+                    {
+                        // Update the recipe held by the forging item
+                        recipe = all.iterator().next();
+                        forge.setRecipe(recipe);
+                    }
+                }
+
+                // Update cached fields
+                cachedRecipe = recipe;
+                workTarget = recipe != null ? recipe.computeTarget(inventory) : 0;
+                workValue = forge.getWork();
+            }
+        }
+
+        setChanged();
+    }
+
+    public void chooseRecipe(@Nullable AnvilRecipe recipe)
+    {
+        assert level != null;
+
+        final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
+        final IForging forge = ForgingCapability.get(stack);
+        if (!stack.isEmpty() && forge != null)
+        {
+            // Set the recipe on the stack, and also update the recipe stored here and other recipe properties
+            forge.setRecipe(recipe);
+
+        }
     }
 
     public void work(ServerPlayer player, ForgeStep step)
@@ -92,6 +193,7 @@ public class AnvilBlockEntity extends TickableInventoryBlockEntity<AnvilBlockEnt
             // Prevent the player from immediately destroying the item by overworking
             if (!forge.getSteps().any() && forge.getWork() == 0 && step.step() < 0)
             {
+                // todo: feedback
                 return;
             }
 
@@ -102,7 +204,7 @@ public class AnvilBlockEntity extends TickableInventoryBlockEntity<AnvilBlockEnt
 
                 // Proceed with working
                 forge.addStep(step);
-                if (forge.overworked())
+                if (forge.getWork() < 0 || forge.getWork() > ForgeStep.LIMIT)
                 {
 
                     return;
@@ -122,16 +224,17 @@ public class AnvilBlockEntity extends TickableInventoryBlockEntity<AnvilBlockEnt
         }
     }
 
-    public boolean weld(ServerPlayer player)
+    public InteractionResult weld(Player player)
     {
         final ItemStack left = inventory.getLeft(), right = inventory.getRight();
         if (left.isEmpty() && right.isEmpty())
         {
-            return false;
+            return InteractionResult.PASS;
         }
 
         assert level != null;
 
+        // todo: better checks on if a recipe exists vs. is valid
         final WeldingRecipe recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.WELDING.get(), inventory, level).orElse(null);
         if (recipe != null)
         {
@@ -148,9 +251,9 @@ public class AnvilBlockEntity extends TickableInventoryBlockEntity<AnvilBlockEnt
             )));
 
             markForSync();
-            return true;
+            return InteractionResult.SUCCESS;
         }
-        return false;
+        return InteractionResult.PASS;
     }
 
     public int getTier()

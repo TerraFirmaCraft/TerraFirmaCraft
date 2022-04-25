@@ -6,7 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -23,7 +23,6 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.dries007.tfc.common.capabilities.forge.ForgeRule;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.IForging;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
@@ -43,15 +42,15 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
         return Helpers.getRecipes(level, TFCRecipeTypes.ANVIL)
             .values()
             .stream()
-            .anyMatch(r -> r.input.test(stack) && tier >= r.minTier);
+            .anyMatch(r -> r.input.test(stack) && tier >= r.minTier); // anyMatch() should be faster than calling toList().isEmpty()
     }
 
-    public static Collection<AnvilRecipe> getAll(Level level, Inventory inventory)
+    public static List<AnvilRecipe> getAll(Level level, Inventory inventory)
     {
         return getAll(level, inventory.getItem(), inventory.getTier());
     }
 
-    public static Collection<AnvilRecipe> getAll(Level level, ItemStack stack, int tier)
+    public static List<AnvilRecipe> getAll(Level level, ItemStack stack, int tier)
     {
         return Helpers.getRecipes(level, TFCRecipeTypes.ANVIL)
             .values()

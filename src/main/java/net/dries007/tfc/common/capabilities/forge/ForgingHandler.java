@@ -6,13 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import net.dries007.tfc.common.recipes.AnvilRecipe;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
-import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
-import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +15,11 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.common.items.VesselItem;
+import net.dries007.tfc.common.recipes.AnvilRecipe;
+import net.dries007.tfc.common.recipes.TFCRecipeTypes;
+import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ForgingHandler implements IForging
 {
@@ -83,11 +81,10 @@ public class ForgingHandler implements IForging
         save();
     }
 
-    @Nullable
     @Override
-    public ForgeStep getStep(int step)
+    public ForgeSteps getSteps()
     {
-        return steps.getStep(step);
+        return steps;
     }
 
     @Override

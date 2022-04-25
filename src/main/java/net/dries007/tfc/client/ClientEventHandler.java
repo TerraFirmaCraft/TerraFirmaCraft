@@ -20,8 +20,8 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.SquidModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -35,7 +35,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.FishingRodItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
@@ -45,14 +46,11 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.dries007.tfc.client.model.*;
+import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.entity.*;
-import net.dries007.tfc.client.particle.BubbleParticle;
-import net.dries007.tfc.client.particle.SteamParticle;
-import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.blockentity.*;
+import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.OreDeposit;
@@ -68,7 +66,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import org.slf4j.Logger;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -100,6 +97,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
             MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
             MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
+
             MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
             MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
             MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
@@ -108,6 +106,9 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
             MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
             MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
+            MenuScreens.register(TFCContainerTypes.ANVIL.get(), AnvilScreen::new);
+            MenuScreens.register(TFCContainerTypes.ANVIL_PLAN.get(), AnvilPlanScreen::new);
+
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);

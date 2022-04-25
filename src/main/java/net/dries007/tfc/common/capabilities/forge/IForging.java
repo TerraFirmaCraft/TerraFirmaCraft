@@ -6,26 +6,18 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import net.dries007.tfc.common.recipes.AnvilRecipe;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.recipes.AnvilRecipe;
+import org.jetbrains.annotations.Nullable;
 
 public interface IForging extends ICapabilityProvider
 {
-
-    /**
-     * Gets the current amount of work on the object
-     */
     int getWork();
 
-    /**
-     * Sets the current amount of work on the object
-     */
     void setWork(int work);
 
     ForgeSteps getSteps();
@@ -33,14 +25,6 @@ public interface IForging extends ICapabilityProvider
     @Nullable AnvilRecipe getRecipe(Level level);
 
     void setRecipe(@Nullable AnvilRecipe recipe);
-
-    /**
-     * Gets the step in the last n'th position of work.
-     *
-     * @param index must be 0, 1, or 2, for the most recent, second, and third most recent step respectively.
-     */
-    @Nullable
-    ForgeStep getStep(int index);
 
     /**
      * @param rule The rule to match

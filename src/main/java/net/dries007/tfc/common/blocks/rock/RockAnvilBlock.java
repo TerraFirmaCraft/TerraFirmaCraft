@@ -8,30 +8,47 @@ package net.dries007.tfc.common.blocks.rock;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.level.BlockGetter;
 
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.util.Metal;
 
-public class RockAnvilBlock extends Block implements Tiered
+public class RockAnvilBlock extends Block implements IForgeBlockExtension, EntityBlockExtension, Tiered
 {
     public static final VoxelShape SHAPE = box(0, 0, 0, 16, 14, 16);
 
+    private final ExtendedProperties extendedProperties;
     private final Supplier<? extends Block> raw;
 
-    public RockAnvilBlock(Properties properties, Supplier<? extends Block> raw)
+    public RockAnvilBlock(ExtendedProperties properties, Supplier<? extends Block> raw)
     {
-        super(properties);
+        super(properties.properties());
 
+        this.extendedProperties = properties;
         this.raw = raw;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    {
+        return AnvilBlock.interactWithAnvil(level, pos, player, hand);
     }
 
     @Override
@@ -51,5 +68,11 @@ public class RockAnvilBlock extends Block implements Tiered
     public int getTier()
     {
         return Metal.Tier.TIER_0.ordinal();
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return extendedProperties;
     }
 }

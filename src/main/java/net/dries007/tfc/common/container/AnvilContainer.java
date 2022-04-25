@@ -1,0 +1,81 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
+package net.dries007.tfc.common.container;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkHooks;
+
+import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
+import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.recipes.AnvilRecipe;
+import org.jetbrains.annotations.Nullable;
+
+public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> implements ButtonHandlerContainer
+{
+    // IDs [0, 7] indicate step buttons
+    public static final int PLAN_ID = 8;
+
+    public static AnvilContainer create(AnvilBlockEntity anvil, Inventory playerInv, int windowId)
+    {
+        return new AnvilContainer(windowId, anvil).init(playerInv, 41);
+    }
+
+    protected AnvilContainer(int windowId, AnvilBlockEntity anvil)
+    {
+        super(TFCContainerTypes.ANVIL.get(), windowId, anvil);
+
+        addDataSlots(anvil.getSyncableData());
+    }
+
+    @Override
+    public void onButtonPress(int buttonID, @Nullable CompoundTag extraNBT)
+    {
+        if (buttonID == PLAN_ID)
+        {
+            final Level level = blockEntity.getLevel();
+            if (level != null)
+            {
+                final ItemStack stack = getSlot(AnvilBlockEntity.SLOT_INPUT_MAIN).getItem();
+                if (AnvilRecipe.hasAny(level, stack, blockEntity.getTier()) && player instanceof ServerPlayer serverPlayer)
+                {
+                    NetworkHooks.openGui(serverPlayer, blockEntity.planProvider(), blockEntity.getBlockPos());
+                }
+            }
+        }
+        else
+        {
+            final ForgeStep step = ForgeStep.valueOf(buttonID);
+            if (player instanceof ServerPlayer serverPlayer && step != null)
+            {
+                blockEntity.work(serverPlayer, step);
+            }
+        }
+    }
+
+    @Override
+    protected void addContainerSlots()
+    {
+        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_INPUT_MAIN, 31, 68));
+            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_INPUT_SECOND, 13, 68));
+            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_HAMMER, 129, 68));
+            addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_CATALYST, 147, 68));
+        });
+    }
+
+    @Override
+    protected boolean moveStack(ItemStack stack, int slotIndex)
+    {
+        // todo: shift click behavior
+        return super.moveStack(stack, slotIndex);
+    }
+}

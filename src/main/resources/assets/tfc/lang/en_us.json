@@ -4692,6 +4692,7 @@
   "tfc.block_entity.nest_box": "Nest Box",
   "tfc.block_entity.bloomery": "Bloomery",
   "tfc.block_entity.bloom": "Bloom",
+  "tfc.block_entity.anvil": "Anvil",
   "block.tfc.ore.normal_native_copper.granite.prospected": "Native Copper",
   "block.tfc.ore.poor_native_copper.granite.prospected": "Native Copper",
   "block.tfc.ore.rich_native_copper.granite.prospected": "Native Copper",

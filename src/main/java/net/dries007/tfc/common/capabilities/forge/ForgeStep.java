@@ -9,19 +9,21 @@ package net.dries007.tfc.common.capabilities.forge;
 import java.util.Arrays;
 
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import it.unimi.dsi.fastutil.ints.IntPriorityQueue;
 import org.jetbrains.annotations.Nullable;
 
 public enum ForgeStep
 {
-    HIT_LIGHT(-3, 53, 50, 128, 192),
-    HIT_MEDIUM(-6, 71, 50, 160, 192),
-    HIT_HARD(-9, 53, 68, 192, 192),
-    DRAW(-15, 71, 68, 224, 192),
-    PUNCH(2, 89, 50, 128, 224),
-    BEND(7, 107, 50, 160, 224),
-    UPSET(13, 89, 68, 192, 224),
-    SHRINK(16, 107, 68, 224, 224);
+    HIT_LIGHT(-3, 53, 50, 128, 224),
+    HIT_MEDIUM(-6, 71, 50, 160, 224),
+    HIT_HARD(-9, 53, 68, 192, 224),
+    DRAW(-15, 71, 68, 224, 224),
+    PUNCH(2, 89, 50, 0, 224),
+    BEND(7, 107, 50, 32, 224),
+    UPSET(13, 89, 68, 64, 224),
+    SHRINK(16, 107, 68, 96, 224);
 
     public static final int LIMIT = 150;
 
@@ -35,20 +37,28 @@ public enum ForgeStep
         PATHS[0] = 0;
 
         final IntPriorityQueue queue = new IntArrayFIFOQueue();
+        final IntList buffer = new IntArrayList(8);
+
         int reached = 1;
         queue.enqueue(0);
         for (int steps = 1; reached < LIMIT; steps++)
         {
-            final int value = queue.dequeueInt();
-            for (ForgeStep step : VALUES)
+            while (!queue.isEmpty())
             {
-                final int nextValue = value + step.step;
-                if (nextValue >= 0 && nextValue < LIMIT && PATHS[nextValue] == -1)
+                final int value = queue.dequeueInt();
+                for (ForgeStep step : VALUES)
                 {
-                    PATHS[nextValue] = steps;
-                    reached++;
+                    final int nextValue = value + step.step;
+                    if (nextValue >= 0 && nextValue < LIMIT && PATHS[nextValue] == -1)
+                    {
+                        PATHS[nextValue] = steps;
+                        buffer.add(nextValue);
+                        reached++;
+                    }
                 }
             }
+            buffer.forEach(queue::enqueue);
+            buffer.clear();
         }
     }
 
@@ -64,15 +74,15 @@ public enum ForgeStep
     }
 
     private final int step;
-    private final int x, y, u, v;
+    private final int buttonX, buttonY, iconX, iconY;
 
-    ForgeStep(int step, int x, int y, int u, int v)
+    ForgeStep(int step, int buttonX, int buttonY, int iconX, int iconY)
     {
         this.step = step;
-        this.x = x;
-        this.y = y;
-        this.u = u;
-        this.v = v;
+        this.buttonX = buttonX;
+        this.buttonY = buttonY;
+        this.iconX = iconX;
+        this.iconY = iconY;
     }
 
     public int step()
@@ -80,23 +90,23 @@ public enum ForgeStep
         return step;
     }
 
-    public int x()
+    public int buttonX()
     {
-        return x;
+        return buttonX;
     }
 
-    public int y()
+    public int buttonY()
     {
-        return y;
+        return buttonY;
     }
 
-    public int u()
+    public int iconX()
     {
-        return u;
+        return iconX;
     }
 
-    public int v()
+    public int iconY()
     {
-        return v;
+        return iconY;
     }
 }

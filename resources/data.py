@@ -4,8 +4,9 @@
 from enum import Enum, auto
 
 from mcresources import ResourceManager, utils, loot_tables
-from recipes import fluid_ingredient
+
 from constants import *
+from recipes import fluid_ingredient
 
 
 class Size(Enum):
@@ -340,12 +341,23 @@ def generate(rm: ResourceManager):
     rm.block_tag('toughness_3', 'minecraft:bedrock')  # Used as a top level 'everything goes'
 
     # Harvest Tool + Level Tags
+    # Note: since we sort our tools *above* the vanilla equivalents (since there's no way we can make them 'exactly equal' because Forge's tool BS doesn't support that ENTIRELY REASONABLE feature, our tools need to effectively define empty tags for blocks that are exclusive to that tool only.
 
-    rm.block_tag('needs_stone_tool', '#forge:needs_wood_tool')
-    rm.block_tag('needs_copper_tool', '#minecraft:needs_stone_tool')
-    rm.block_tag('needs_wrought_iron_tool', '#minecraft:needs_iron_tool')
-    rm.block_tag('needs_steel_tool', '#minecraft:needs_diamond_tool')
-    rm.block_tag('needs_colored_steel_tool', '#forge:needs_netherite_tool')
+    rm.block_tag('needs_stone_tool')
+    rm.block_tag('needs_copper_tool')
+    rm.block_tag('needs_wrought_iron_tool')
+    rm.block_tag('needs_steel_tool')
+    rm.block_tag('needs_colored_steel_tool')
+
+    def needs_tool(_tool: str) -> str:
+        return {
+            'wood': 'forge:needs_wood_tool', 'stone': 'forge:needs_wood_tool',
+            'copper': 'minecraft:needs_stone_tool',
+            'iron': 'minecraft:needs_iron_tool', 'wrought_iron': 'minecraft:needs_iron_tool',
+            'diamond': 'minecraft:needs_diamond_tool', 'steel': 'minecraft:needs_diamond_tool',
+            'netherite': 'forge:needs_netherite_tool', 'black_steel': 'forge:needs_netherite_tool',
+            'colored_steel': 'tfc:needs_colored_steel_tool'
+        }[_tool]
 
     rm.block_tag('minecraft:mineable/hoe', '#tfc:mineable_with_sharp_tool')
     rm.block_tag('tfc:mineable_with_knife', '#tfc:mineable_with_sharp_tool')
@@ -359,9 +371,9 @@ def generate(rm: ResourceManager):
     for ore, data in ORES.items():
         for rock in ROCKS.keys():
             if data.graded:
-                rm.block_tag('needs_%s_tool' % data.required_tool, 'tfc:ore/poor_%s/%s' % (ore, rock), 'tfc:ore/normal_%s/%s' % (ore, rock), 'tfc:ore/rich_%s/%s' % (ore, rock))
+                rm.block_tag(needs_tool(data.required_tool), 'tfc:ore/poor_%s/%s' % (ore, rock), 'tfc:ore/normal_%s/%s' % (ore, rock), 'tfc:ore/rich_%s/%s' % (ore, rock))
             else:
-                rm.block_tag('needs_%s_tool' % data.required_tool, 'tfc:ore/%s/%s' % (ore, rock))
+                rm.block_tag(needs_tool(data.required_tool), 'tfc:ore/%s/%s' % (ore, rock))
 
     rm.block_tag('minecraft:mineable/shovel', *[
         *['tfc:%s/%s' % (soil, variant) for soil in SOIL_BLOCK_TYPES for variant in SOIL_BLOCK_VARIANTS],
