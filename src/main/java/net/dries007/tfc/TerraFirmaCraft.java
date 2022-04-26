@@ -66,8 +66,8 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
 import org.slf4j.Logger;
@@ -149,6 +149,7 @@ public final class TerraFirmaCraft
             // Vanilla Registries (not thread safe)
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
+            TFCCommands.registerArgumentTypes();
             FoodTraits.registerFoodTraits();
             ClimateModels.registerAll();
 
