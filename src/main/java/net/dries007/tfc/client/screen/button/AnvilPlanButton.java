@@ -37,8 +37,6 @@ public class AnvilPlanButton extends Button
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        super.renderButton(poseStack, mouseX, mouseY, partialTick);
-
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, AnvilScreen.BACKGROUND);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
@@ -53,6 +51,11 @@ public class AnvilPlanButton extends Button
         else
         {
             Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), x + 1, y + 1);
+        }
+
+        if (isHoveredOrFocused())
+        {
+            renderToolTip(poseStack, mouseX, mouseY);
         }
     }
 }

@@ -37,7 +37,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         addRenderableWidget(new AnvilPlanButton(blockEntity, getGuiLeft(), getGuiTop()));
         for (ForgeStep step : ForgeStep.values())
         {
-            addRenderableWidget(new AnvilStepButton(step));
+            addRenderableWidget(new AnvilStepButton(step, getGuiLeft(), getGuiTop()));
         }
     }
 }

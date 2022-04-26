@@ -22,9 +22,9 @@ public class AnvilStepButton extends Button
 {
     private final ForgeStep step;
 
-    public AnvilStepButton(ForgeStep step)
+    public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop)
     {
-        super(step.buttonX(), step.buttonY(), 16, 16, Helpers.translateEnum(step), button -> {
+        super(guiLeft + step.buttonX(), guiTop + step.buttonY(), 16, 16, Helpers.translateEnum(step), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(step.ordinal(), null));
         });
 
@@ -34,12 +34,15 @@ public class AnvilStepButton extends Button
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        super.renderButton(poseStack, mouseX, mouseY, partialTick);
-
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, AnvilScreen.BACKGROUND);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
         blit(poseStack, step.buttonX(), step.buttonY(), 16, 16, step.iconX(), step.iconY(), 32, 32, 256, 256);
+
+        if (isHoveredOrFocused())
+        {
+            renderToolTip(poseStack, mouseX, mouseY);
+        }
     }
 }
