@@ -314,6 +314,7 @@ def generate(rm: ResourceManager):
         'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
         'conditions': [loot_tables.block_state_property('tfc:ceramic/large_vessel[sealed=true]')]
     }, 'tfc:ceramic/large_vessel'))
+    block.with_tag('minecraft:mineable/pickaxe')
     rm.block_model('tfc:ceramic/large_vessel_sealed', textures={'top': 'tfc:block/ceramic/large_vessel/top', 'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_sealed')
     rm.block_model('tfc:ceramic/large_vessel_opened', textures={'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_opened')
     item_model_property(rm, 'tfc:ceramic/large_vessel', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/large_vessel_sealed'}], {'parent': 'tfc:block/ceramic/large_vessel_opened'})
@@ -334,6 +335,7 @@ def generate(rm: ResourceManager):
             'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
             'conditions': [loot_tables.block_state_property(vessel + '[sealed=true]')]
         }, vessel))
+        block.with_tag('minecraft:mineable/pickaxe')
         rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures={'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_sealed')
         rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures={'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_opened')
         item_model_property(rm, 'tfc:ceramic/large_vessel/%s' % color, [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color}], {'parent': 'tfc:block/ceramic/%s_large_vessel_opened' % color})
