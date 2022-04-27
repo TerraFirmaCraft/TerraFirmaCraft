@@ -40,8 +40,6 @@ public class BarrelSealButton extends Button
     @Override
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTicks)
     {
-        super.renderButton(poseStack, mouseX, mouseY, partialTicks);
-
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, BarrelScreen.BACKGROUND);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
@@ -51,18 +49,7 @@ public class BarrelSealButton extends Button
 
         if (isHoveredOrFocused())
         {
-            renderTooltipPost(poseStack, mouseX, mouseY);
+            renderToolTip(poseStack, mouseX, mouseY);
         }
-    }
-
-    @Override
-    public void renderToolTip(PoseStack poseStack, int mouseX, int mouseY)
-    {
-        // Rendering the tooltip here makes it get blocked by the button overlay
-    }
-
-    public void renderTooltipPost(PoseStack poseStack, int mouseX, int mouseY)
-    {
-        this.onTooltip.onTooltip(this, poseStack, mouseX, mouseY);
     }
 }
