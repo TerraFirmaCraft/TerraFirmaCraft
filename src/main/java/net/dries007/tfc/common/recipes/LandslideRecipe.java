@@ -8,8 +8,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,6 +28,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Support;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This handles all logic for land slides (sideways gravity affected blocks)
@@ -77,7 +76,7 @@ public class LandslideRecipe extends SimpleBlockRecipe
                         level.removeBlock(pos, false); // Remove the original position, which would be the falling block
                         level.destroyBlock(fallPos, true); // Destroy the block that currently occupies the pos we are going to move sideways into
                     }
-                    level.setBlockAndUpdate(fallPos, fallingState);
+                    level.setBlock(fallPos, fallingState, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
                     level.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.4f, 1.0f);
                     level.addFreshEntity(new TFCFallingBlockEntity(level, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
                 }
