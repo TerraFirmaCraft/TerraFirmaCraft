@@ -76,7 +76,17 @@ public class LandslideRecipe extends SimpleBlockRecipe
                         level.removeBlock(pos, false); // Remove the original position, which would be the falling block
                         level.destroyBlock(fallPos, true); // Destroy the block that currently occupies the pos we are going to move sideways into
                     }
-                    level.setBlock(fallPos, fallingState, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+                    if (TFCConfig.SERVER.farmlandMakesTheBestRaceTracks.get())
+                    {
+                        // This is funny, but technically a bug. So it's left here as a disabled-by-default easter egg.
+                        // By setting the block and updating, farmland below will turn into a solid block, and then this falling block will attempt falling again, proceeding in a cycle.
+                        // We avoid that by not causing a block update.
+                        level.setBlockAndUpdate(fallPos, fallingState);
+                    }
+                    else
+                    {
+                        level.setBlock(fallPos, fallingState, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+                    }
                     level.playSound(null, pos, TFCSounds.DIRT_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.4f, 1.0f);
                     level.addFreshEntity(new TFCFallingBlockEntity(level, fallPos.getX() + 0.5, fallPos.getY(), fallPos.getZ() + 0.5, fallingState));
                 }

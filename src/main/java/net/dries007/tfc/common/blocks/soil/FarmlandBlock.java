@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.soil;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
 
@@ -21,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -34,7 +32,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -43,7 +40,6 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.CropHelpers;
-import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
@@ -53,20 +49,6 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock, IForgeBlockExtension, EntityBlockExtension
 {
     public static final VoxelShape SHAPE = Block.box(0, 0, 0, 16, 15, 16);
-
-    public static void registerTillables()
-    {
-        for (SoilBlockType type : new SoilBlockType[] {SoilBlockType.DIRT, SoilBlockType.GRASS})
-        {
-            for (Map.Entry<SoilBlockType.Variant, RegistryObject<Block>> entry : TFCBlocks.SOIL.get(type).entrySet())
-            {
-                final Block target = entry.getValue().get();
-                final Block farmland = TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(entry.getKey()).get();
-
-                Helpers.addTillable(target, context -> HoeItem.onlyIfAirAbove(context) && TFCConfig.SERVER.enableFarmlandCreation.get(), HoeItem.changeIntoState(farmland.defaultBlockState()));
-            }
-        }
-    }
 
     public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {

@@ -16,10 +16,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.size.ItemSizeDefinition;
-import net.dries007.tfc.util.DataManager;
-import net.dries007.tfc.util.Fertilizer;
-import net.dries007.tfc.util.Fuel;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class DataManagerSyncPacket<T>
 {
@@ -78,5 +76,7 @@ public abstract class DataManagerSyncPacket<T>
     public static class THeatDefinition extends DataManagerSyncPacket<HeatDefinition> {}
 
     public static class TItemSizeDefinition extends DataManagerSyncPacket<ItemSizeDefinition> {}
-    
+
+    public static class TClimateRange extends DataManagerSyncPacket<RegisteredDataManager.Entry<ClimateRange>> {}
+
 }

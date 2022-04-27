@@ -22,6 +22,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class PacketHandler
 {
@@ -53,6 +54,7 @@ public final class PacketHandler
         registerDataManager(DataManagerSyncPacket.TFoodDefinition.class, FoodCapability.MANAGER);
         registerDataManager(DataManagerSyncPacket.THeatDefinition.class, HeatCapability.MANAGER);
         registerDataManager(DataManagerSyncPacket.TItemSizeDefinition.class, ItemSizeManager.MANAGER);
+        registerDataManager(DataManagerSyncPacket.TClimateRange.class, ClimateRange.MANAGER);
 
         // Client -> Server
         register(SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
