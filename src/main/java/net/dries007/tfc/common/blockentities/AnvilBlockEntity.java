@@ -290,12 +290,6 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         }
 
         @Override
-        public ItemStack getCatalyst()
-        {
-            return getStackInSlot(SLOT_CATALYST);
-        }
-
-        @Override
         public int getTier()
         {
             return anvil.getTier();
