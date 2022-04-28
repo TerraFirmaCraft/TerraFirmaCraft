@@ -1,9 +1,45 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
+from enum import Enum
+
 from mcresources import ResourceManager, RecipeContext, utils
 from mcresources.type_definitions import Json
+
 from constants import *
+
+
+class Rules(Enum):
+    hit_any = 'hit_any'
+    hit_not_last = 'hit_not_last'
+    hit_last = 'hit_last'
+    hit_second_last = 'hit_second_last'
+    hit_third_last = 'hit_third_last'
+    draw_any = 'draw_any'
+    draw_last = 'draw_last'
+    draw_not_last = 'draw_not_last'
+    draw_second_last = 'draw_second_last'
+    draw_third_last = 'draw_third_last'
+    punch_any = 'punch_any'
+    punch_last = 'punch_last'
+    punch_not_last = 'punch_not_last'
+    punch_second_last = 'punch_second_last'
+    punch_third_last = 'punch_third_last'
+    bend_any = 'bend_any'
+    bend_last = 'bend_last'
+    bend_not_last = 'bend_not_last'
+    bend_second_last = 'bend_second_last'
+    bend_third_last = 'bend_third_last'
+    upset_any = 'upset_any'
+    upset_last = 'upset_last'
+    upset_not_last = 'upset_not_last'
+    upset_second_last = 'upset_second_last'
+    upset_third_last = 'upset_third_last'
+    shrink_any = 'shrink_any'
+    shrink_last = 'shrink_last'
+    shrink_not_last = 'shrink_not_last'
+    shrink_second_last = 'shrink_second_last'
+    shrink_third_last = 'shrink_third_last'
 
 
 def generate(rm: ResourceManager):
@@ -546,10 +582,69 @@ def generate(rm: ResourceManager):
     loom_recipe(rm, 'wool_cloth', 'tfc:wool_yarn', 16, 'tfc:wool_cloth', 16, 'minecraft:block/white_wool')
     loom_recipe(rm, 'silk_cloth', 'minecraft:string', 24, 'tfc:silk_cloth', 24, 'minecraft:block/white_wool')
     loom_recipe(rm, 'wool_block', 'tfc:wool_cloth', 4, (8, 'minecraft:white_wool'), 4, 'minecraft:block/white_wool')
-    
-    
+
+    # Anvil Working Recipes
+
+    for metal, metal_data in METALS.items():
+        # Misc
+        if 'part' in metal_data.types:
+            anvil_recipe(rm, '%s_double_ingot' % metal, 'tfc:metal/double_ingot/%s' % metal, 'tfc:metal/sheet/%s' % metal, metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/lamp/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_sheet' % metal, 'tfc:metal/sheet/%s' % metal, 'tfc:metal/trapdoor/%s' % metal, metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_rod' % metal, 'tfc:metal/ingot/%s' % metal, '2 tfc:metal/rod/%s' % metal, metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
+
+        # Tools
+        if 'tool' in metal_data.types:
+            anvil_recipe(rm, '%s_double_sheet' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/pick_head/%s' % metal, metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/shovel_head/%s' % metal, metal_data.tier, Rules.punch_last, Rules.hit_not_last)
+
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/axe_head/%s' % metal, metal_data.tier, Rules.punch_last, Rules.hit_second_last, Rules.upset_third_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/hoe_head/%s' % metal, metal_data.tier, Rules.punch_last, Rules.hit_not_last, Rules.bend_not_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/hammer_head/%s' % metal, metal_data.tier, Rules.punch_last, Rules.shrink_not_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/propick_head/%s' % metal, metal_data.tier, Rules.punch_last, Rules.draw_not_last, Rules.bend_not_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/saw_blade/%s' % metal, metal_data.tier, Rules.hit_last, Rules.hit_second_last)
+            anvil_recipe(rm, '%s_double_ingot' % metal, 'tfc:metal/double_ingot/%s' % metal, 'tfc:metal/sword_blade/%s' % metal, metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_double_ingot' % metal, 'tfc:metal/double_ingot/%s' % metal, 'tfc:metal/mace_head/%s' % metal, metal_data.tier, Rules.hit_last, Rules.shrink_not_last, Rules.bend_not_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/scythe_blade/%s' % metal, metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/knife_blade/%s' % metal, metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/javelin_head/%s' % metal, metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_ingot' % metal, 'tfc:metal/ingot/%s' % metal, 'tfc:metal/chisel_head/%s' % metal, metal_data.tier, Rules.hit_last, Rules.hit_not_last, Rules.draw_not_last)
+
+            anvil_recipe(rm, '%s_double_sheet' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/shield/%s' % metal, metal_data.tier, Rules.upset_last, Rules.bend_second_last, Rules.bend_third_last)
+
+        if 'armor' in metal_data.types:
+            anvil_recipe(rm, '%s_double_sheet' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/unfinished_helmet/%s' % metal, metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_double_sheet' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/unfinished_chestplate/%s' % metal, metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.upset_third_last)
+            anvil_recipe(rm, '%s_double_sheet' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/unfinished_greaves/%s' % metal, metal_data.tier, Rules.bend_any, Rules.draw_any, Rules.hit_any)
+            anvil_recipe(rm, '%s_sheet' % metal, 'tfc:metal/sheet/%s' % metal, 'tfc:metal/unfinished_boots/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.shrink_third_last)
+
+    hit_x3 = Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last
+
+    anvil_recipe(rm, 'refined_iron_bloom', 'tfc:raw_iron_bloom', 'tfc:refined_iron_bloom', 2, *hit_x3)
+    anvil_recipe(rm, 'refined_iron_bloom', 'tfc:refined_iron_bloom', 'tfc:metal/ingot/wrought_iron', 2, *hit_x3)
+
+    for metal_in, metal_out in (
+        ('pig_iron', 'high_carbon_steel'),
+        ('high_carbon_steel', 'steel'),
+        ('high_carbon_black_steel', 'black_steel'),
+        ('high_carbon_blue_steel', 'blue_steel'),
+        ('high_carbon_red_steel', 'red_steel')
+    ):
+        anvil_recipe(rm, '%s_ingot' % metal_out, 'tfc:metal/ingot/%s' % metal_in, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_out].tier, *hit_x3)
+
+    anvil_recipe(rm, 'iron_bars', 'tfc:metal/sheet/wrought_iron', '8 minecraft:iron_bars', 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
+    anvil_recipe(rm, 'iron_bars_double', 'tfc:metal/double_sheet/wrought_iron', '16 iron_bars', 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
+    anvil_recipe(rm, 'iron_door', 'tfc:metal/sheet/wrought_iron', 'minecraft:iron_door', 3, Rules.hit_last, Rules.draw_not_last, Rules.punch_not_last)
+    anvil_recipe(rm, 'red_steel_bucket', 'tfc:metal/sheet/red_steel', 'tfc:red_steel_bucket', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
+    anvil_recipe(rm, 'blue_steel_bucket', 'tfc:metal/sheet/blue_steel', 'tfc:blue_steel_bucket', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
+    anvil_recipe(rm, 'wrought_iron_grill', 'tfc:metal/double_sheet/wrought_iron', 'tfc:wrought_iron_grill', 3, Rules.draw_any, Rules.punch_last, Rules.punch_not_last)
+    anvil_recipe(rm, 'brass_mechanisms', 'tfc:metal/ingot/brass', '2 tfc:brass_mechanisms', 1, Rules.punch_last, Rules.hit_second_last, Rules.punch_third_last)
+
+
 def disable_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier):
     rm.recipe(name_parts, 'forge:conditional', {'recipes': []})
+
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
     assert result is not None or copy_input
@@ -700,7 +795,8 @@ def barrel_instant_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentif
         'sound': sound
     })
 
-def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: str, input_count: int, result: utils.Json, steps: int, in_progress_texture: str):
+
+def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient: Json, input_count: int, result: Json, steps: int, in_progress_texture: str):
     return rm.recipe(('loom', name), 'tfc:loom', {
         'ingredient': utils.ingredient(ingredient),
         'input_count': input_count,
@@ -708,6 +804,22 @@ def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient:
         'steps_required': steps,
         'in_progress_texture': in_progress_texture
     })
+
+
+def anvil_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: Json, result: Json, tier: int, *rules: Rules):
+    rm.recipe(('anvil', name_parts), 'tfc:anvil', {
+        'input': utils.ingredient(ingredient),
+        'result': utils.item_stack(result),
+        'tier': tier,
+        'rules': [r.name for r in rules]
+    })
+
+
+def welding_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier):
+    rm.recipe(('welding', name_parts), 'tfc:welding', {
+
+    })
+
 
 def fluid_stack(data_in: Json) -> Json:
     if isinstance(data_in, dict):

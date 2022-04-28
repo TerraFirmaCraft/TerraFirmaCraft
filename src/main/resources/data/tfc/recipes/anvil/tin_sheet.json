@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/sheet/tin"
+  },
+  "result": {
+    "item": "tfc:metal/trapdoor/tin"
+  },
+  "tier": 1,
+  "rules": [
+    "bend_last",
+    "draw_second_last",
+    "draw_third_last"
+  ]
+}

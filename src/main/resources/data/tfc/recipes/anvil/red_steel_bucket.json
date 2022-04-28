@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/sheet/red_steel"
+  },
+  "result": {
+    "item": "tfc:red_steel_bucket"
+  },
+  "tier": 6,
+  "rules": [
+    "bend_last",
+    "bend_second_last",
+    "bend_third_last"
+  ]
+}

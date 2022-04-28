@@ -341,7 +341,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('toughness_3', 'minecraft:bedrock')  # Used as a top level 'everything goes'
 
     # Harvest Tool + Level Tags
-    # Note: since we sort our tools *above* the vanilla equivalents (since there's no way we can make them 'exactly equal' because Forge's tool BS doesn't support that ENTIRELY REASONABLE feature, our tools need to effectively define empty tags for blocks that are exclusive to that tool only.
+    # Note: since we sort our tools *above* the vanilla equivalents (since there's no way we can make them 'exactly equal' because Forge's tool BS doesn't support that ENTIRELY REASONABLE feature), our tools need to effectively define empty tags for blocks that are exclusive to that tool only.
+    # In other words, our tools are strictly better than vanilla tools, so our blocks need to not require them
 
     rm.block_tag('needs_stone_tool')
     rm.block_tag('needs_copper_tool')
@@ -353,6 +354,7 @@ def generate(rm: ResourceManager):
         return {
             'wood': 'forge:needs_wood_tool', 'stone': 'forge:needs_wood_tool',
             'copper': 'minecraft:needs_stone_tool',
+            'bronze': 'minecraft:needs_iron_tool',
             'iron': 'minecraft:needs_iron_tool', 'wrought_iron': 'minecraft:needs_iron_tool',
             'diamond': 'minecraft:needs_diamond_tool', 'steel': 'minecraft:needs_diamond_tool',
             'netherite': 'forge:needs_netherite_tool', 'black_steel': 'forge:needs_netherite_tool',
