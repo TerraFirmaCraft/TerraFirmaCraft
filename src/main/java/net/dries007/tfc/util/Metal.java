@@ -90,7 +90,7 @@ public final class Metal
         }
     }
 
-    private final Tier tier;
+    private final int tier;
     private final Fluid fluid;
     private final float meltTemperature;
     private final float heatCapacity;
@@ -101,7 +101,7 @@ public final class Metal
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.tier = Tier.valueOf(GsonHelper.getAsInt(json, "tier"));
+        this.tier = GsonHelper.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
         this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
         this.heatCapacity = JsonHelpers.getAsFloat(json, "heat_capacity");
@@ -111,7 +111,7 @@ public final class Metal
     public Metal(ResourceLocation id, FriendlyByteBuf buffer)
     {
         this.id = id;
-        this.tier = Tier.valueOf(buffer.readByte());
+        this.tier = buffer.readVarInt();
         this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
         this.meltTemperature = buffer.readFloat();
         this.heatCapacity = buffer.readFloat();
@@ -120,7 +120,7 @@ public final class Metal
 
     public void encode(FriendlyByteBuf buffer)
     {
-        buffer.writeByte(tier.ordinal());
+        buffer.writeVarInt(tier);
         buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
         buffer.writeFloat(meltTemperature);
         buffer.writeFloat(heatCapacity);
@@ -132,7 +132,7 @@ public final class Metal
         return id;
     }
 
-    public Tier getTier()
+    public int getTier()
     {
         return tier;
     }
