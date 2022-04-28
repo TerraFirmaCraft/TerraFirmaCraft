@@ -76,7 +76,7 @@ public final class PacketHandler
             },
             (packet, context) -> {
                 context.get().setPacketHandled(true);
-                context.get().enqueueWork(() -> packet.handle(manager));
+                context.get().enqueueWork(() -> packet.handle(context.get(), manager));
             });
     }
 

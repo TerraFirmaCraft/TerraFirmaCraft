@@ -28,6 +28,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.network.NetworkEvent;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -67,7 +68,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     @Nullable protected final Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory;
 
     private final BiFunction<ResourceLocation, JsonObject, T> factory;
-    private int generation;
 
     public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
     {
@@ -134,7 +134,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     public DataManagerSyncPacket<T> createSyncPacket()
     {
-        return createEmptyPacket().with(types, generation);
+        return createEmptyPacket().with(types);
     }
 
     public DataManagerSyncPacket<T> createEmptyPacket()
@@ -160,24 +160,22 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return networkFactory.apply(id, buffer);
     }
 
-    public void onSync(Map<ResourceLocation, T> elements, int generation)
+    public void onSync(NetworkEvent.Context context, Map<ResourceLocation, T> elements)
     {
-        if (this.generation != generation)
+        if (context.getNetworkManager().isMemoryConnection())
         {
-            // Only update if the incoming generation is not the same as the existing generation
-            // This prevents a sync form local server -> local client.
+            LOGGER.info("Ignored {}(s) sync from logical server", typeName);
+        }
+        else
+        {
+            // Sync received from physical server
             types.clear();
             types.putAll(elements);
-            this.generation++;
             if (postReloadCallback != null)
             {
                 postReloadCallback.run();
             }
-            LOGGER.info("Received {} {}(s) from server", types.size(), typeName);
-        }
-        else
-        {
-            LOGGER.info("Ignored {}(s) sync with generation {}", typeName, generation);
+            LOGGER.info("Received {} {}(s) from physical server", types.size(), typeName);
         }
     }
 
@@ -185,7 +183,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         types.clear();
-        generation++;
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             ResourceLocation name = entry.getKey();

@@ -193,9 +193,9 @@ public final class Helpers
         {
             return level; // Most obvious case, if we can directly cast up to level.
         }
-        if (maybeLevel instanceof WorldGenRegion)
+        if (maybeLevel instanceof WorldGenRegion level)
         {
-            return ((WorldGenRegion) maybeLevel).getLevel(); // Special case for world gen, when we can access the level unsafely
+            return level.getLevel(); // Special case for world gen, when we can access the level unsafely
         }
         return null; // A modder has done a strange ass thing
     }
