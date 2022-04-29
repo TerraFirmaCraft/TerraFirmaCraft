@@ -17,26 +17,11 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
 
 public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
 {
-    @Nullable
-    public static WeldingRecipe getFirstMatching(Level level, ItemStack stack)
-    {
-        for (WeldingRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.WELDING)
-            .values())
-        {
-            if (recipe.firstInput.test(stack) || recipe.secondInput.test(stack))
-            {
-                return recipe;
-            }
-        }
-        return null;
-    }
-
     private final ResourceLocation id;
     private final Ingredient firstInput, secondInput;
     private final int tier;
@@ -51,6 +36,11 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         this.output = output;
     }
 
+    public int getTier()
+    {
+        return tier;
+    }
+
     /**
      * This is used when querying the matching recipe for a stack.
      * As such it doesn't check if the recipe is complete, but only if the recipe could be completed.
@@ -59,7 +49,7 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     public boolean matches(Inventory inventory, Level level)
     {
         final ItemStack left = inventory.getLeft(), right = inventory.getRight();
-        return inventory.getTier() >= tier && ((firstInput.test(left) && secondInput.test(right)) || (firstInput.test(right) && secondInput.test(left)));
+        return (firstInput.test(left) && secondInput.test(right)) || (firstInput.test(right) && secondInput.test(left));
     }
 
     @Override

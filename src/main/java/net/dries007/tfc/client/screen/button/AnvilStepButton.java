@@ -38,7 +38,7 @@ public class AnvilStepButton extends Button
         RenderSystem.setShaderTexture(0, AnvilScreen.BACKGROUND);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        blit(poseStack, step.buttonX(), step.buttonY(), 16, 16, step.iconX(), step.iconY(), 32, 32, 256, 256);
+        blit(poseStack, x, y, 16, 16, step.iconX(), step.iconY(), 32, 32, 256, 256);
 
         if (isHoveredOrFocused())
         {

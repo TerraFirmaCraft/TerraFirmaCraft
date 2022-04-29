@@ -47,6 +47,11 @@ public enum ForgeRule
 
     private static final ForgeRule[] VALUES = values();
 
+    static
+    {
+        assert VALUES.length < Byte.MAX_VALUE; // ForgeRule is serialized to a single byte
+    }
+
     @Nullable
     public static ForgeRule valueOf(int id)
     {
@@ -75,19 +80,19 @@ public enum ForgeRule
         buffer.writeByte(ordinal());
     }
 
-    public int u()
+    public int iconX()
     {
         return type == HIT_LIGHT ? 218 : type.iconX();
     }
 
-    public int v()
+    public int iconY()
     {
         return type == HIT_LIGHT ? 18 : type.iconY();
     }
 
-    public int w()
+    public int overlayY()
     {
-        return order.w;
+        return order.y;
     }
 
     public boolean matches(ForgeSteps steps)
@@ -119,11 +124,11 @@ public enum ForgeRule
         SECOND_LAST(22),
         THIRD_LAST(44);
 
-        private final int w;
+        private final int y;
 
-        Order(int w)
+        Order(int y)
         {
-            this.w = w;
+            this.y = y;
         }
     }
 }

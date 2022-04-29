@@ -2,15 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/sheet/zinc"
+    "item": "tfc:metal/double_ingot/zinc"
   },
   "result": {
-    "item": "tfc:metal/trapdoor/zinc"
+    "item": "tfc:metal/sheet/zinc"
   },
   "tier": 1,
   "rules": [
-    "bend_last",
-    "draw_second_last",
-    "draw_third_last"
+    "hit_last",
+    "hit_second_last",
+    "hit_third_last"
   ]
 }

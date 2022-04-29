@@ -42,9 +42,9 @@ public interface DelegateHeatHandler extends IHeat
     }
 
     @Override
-    default float getForgingTemperature()
+    default float getWorkingTemperature()
     {
-        return getHeatHandler().getForgingTemperature();
+        return getHeatHandler().getWorkingTemperature();
     }
 
     @Override

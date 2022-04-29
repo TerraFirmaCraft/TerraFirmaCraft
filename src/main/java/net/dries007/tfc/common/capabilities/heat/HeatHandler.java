@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
@@ -18,6 +15,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.dries007.tfc.common.capabilities.sync.ISyncable;
 import net.dries007.tfc.common.capabilities.sync.SyncableCapability;
 import net.dries007.tfc.util.calendar.Calendars;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat, ISyncable.Serializable
 {
@@ -83,7 +82,7 @@ public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat,
     }
 
     @Override
-    public float getForgingTemperature()
+    public float getWorkingTemperature()
     {
         return forgingTemp;
     }

@@ -60,7 +60,7 @@ public interface IForging extends ICapabilityProvider
      */
     default boolean canWork(ItemStack stack)
     {
-        return stack.getCapability(HeatCapability.CAPABILITY).map(heat -> heat.getTemperature() > heat.getForgingTemperature()).orElse(true);
+        return stack.getCapability(HeatCapability.CAPABILITY).map(heat -> heat.getTemperature() > heat.getWorkingTemperature()).orElse(true);
     }
 
     /**

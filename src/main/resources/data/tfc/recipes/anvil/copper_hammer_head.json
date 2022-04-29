@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/ingot/copper"
+  },
+  "result": {
+    "item": "tfc:metal/hammer_head/copper"
+  },
+  "tier": 1,
+  "rules": [
+    "punch_last",
+    "shrink_not_last"
+  ]
+}

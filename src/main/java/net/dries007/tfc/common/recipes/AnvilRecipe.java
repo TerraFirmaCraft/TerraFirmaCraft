@@ -84,25 +84,15 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
         return input.test(inventory.getItem()) && inventory.getTier() >= minTier;
     }
 
-    public Result checkComplete(Inventory inventory)
+    public boolean checkComplete(Inventory inventory)
     {
-        if (matches(inventory, null))
-        {
-            final IForging forging = ForgingCapability.get(inventory.getItem());
-            if (forging != null)
-            {
-                if (!forging.matches(rules))
-                {
-                    return Result.RULES_NOT_MATCHED;
-                }
-                if (isWorkMatched(forging.getWork(), computeTarget(inventory)))
-                {
-                    return Result.WORK_NOT_MATCHED;
-                }
-                return Result.SUCCESS;
-            }
-        }
-        return Result.FAIL;
+        final IForging forging = ForgingCapability.get(inventory.getItem());
+        return forging != null && forging.matches(rules) && isWorkMatched(forging.getWork(), computeTarget(inventory));
+    }
+
+    public ForgeRule[] getRules()
+    {
+        return rules;
     }
 
     @Override
@@ -147,15 +137,6 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     {
         final int leeway = TFCConfig.SERVER.anvilAcceptableWorkRange.get();
         return work >= target - leeway && work <= target + leeway;
-    }
-
-    public enum Result
-    {
-        SUCCESS, // Success / Recipe complete
-        FAIL, // Unspecified failure
-        TEMPERATURE_INVALID,
-        RULES_NOT_MATCHED,
-        WORK_NOT_MATCHED
     }
 
     public interface Inventory extends EmptyInventory

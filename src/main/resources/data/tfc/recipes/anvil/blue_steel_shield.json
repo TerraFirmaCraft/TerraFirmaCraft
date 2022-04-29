@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/double_sheet/blue_steel"
+  },
+  "result": {
+    "item": "tfc:metal/shield/blue_steel"
+  },
+  "tier": 6,
+  "rules": [
+    "upset_last",
+    "bend_second_last",
+    "bend_third_last"
+  ]
+}

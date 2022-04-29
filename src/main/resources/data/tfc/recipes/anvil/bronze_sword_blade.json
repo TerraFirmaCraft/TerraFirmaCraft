@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/double_ingot/bronze"
+  },
+  "result": {
+    "item": "tfc:metal/sword_blade/bronze"
+  },
+  "tier": 2,
+  "rules": [
+    "hit_last",
+    "bend_second_last",
+    "bend_third_last"
+  ]
+}

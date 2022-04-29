@@ -593,36 +593,39 @@ def generate(rm: ResourceManager):
 
         # Misc
         if 'part' in metal_data.types:
-            anvil_recipe(rm, '%s_double_ingot' % metal, item('double_ingot'), item('sheet'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
-            anvil_recipe(rm, '%s_sheet' % metal, item('sheet'), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_sheet' % metal, item('double_ingot'), item('sheet'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last)
+            anvil_recipe(rm, '%s_lamp' % metal, item('ingot'), item('lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
             anvil_recipe(rm, '%s_rod' % metal, item('ingot'), '2 tfc:metal/rod/%s' % metal, metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
 
         # Tools
         if 'tool' in metal_data.types:
-            anvil_recipe(rm, '%s_double_sheet' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('pick_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('shovel_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last)
+            anvil_recipe(rm, '%s_tuyere' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
+            anvil_recipe(rm, '%s_pick_head' % metal, item('ingot'), item('pick_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last)
+            anvil_recipe(rm, '%s_shovel_head' % metal, item('ingot'), item('shovel_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last)
 
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('axe_head'), metal_data.tier, Rules.punch_last, Rules.hit_second_last, Rules.upset_third_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('hoe_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, Rules.bend_not_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('hammer_head'), metal_data.tier, Rules.punch_last, Rules.shrink_not_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('propick_head'), metal_data.tier, Rules.punch_last, Rules.draw_not_last, Rules.bend_not_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('saw_blade'), metal_data.tier, Rules.hit_last, Rules.hit_second_last)
-            anvil_recipe(rm, '%s_double_ingot' % metal, item('double_ingot'), item('sword_blade'), metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last)
-            anvil_recipe(rm, '%s_double_ingot' % metal, item('double_ingot'), item('mace_head'), metal_data.tier, Rules.hit_last, Rules.shrink_not_last, Rules.bend_not_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('scythe_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.bend_third_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('knife_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.draw_third_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('javelin_head'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.draw_third_last)
-            anvil_recipe(rm, '%s_ingot' % metal, item('ingot'), item('chisel_head'), metal_data.tier, Rules.hit_last, Rules.hit_not_last, Rules.draw_not_last)
+            anvil_recipe(rm, '%s_axe_head' % metal, item('ingot'), item('axe_head'), metal_data.tier, Rules.punch_last, Rules.hit_second_last, Rules.upset_third_last)
+            anvil_recipe(rm, '%s_hoe_head' % metal, item('ingot'), item('hoe_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, Rules.bend_not_last)
+            anvil_recipe(rm, '%s_hammer_head' % metal, item('ingot'), item('hammer_head'), metal_data.tier, Rules.punch_last, Rules.shrink_not_last)
+            anvil_recipe(rm, '%s_propick_head' % metal, item('ingot'), item('propick_head'), metal_data.tier, Rules.punch_last, Rules.draw_not_last, Rules.bend_not_last)
+            anvil_recipe(rm, '%s_saw_blade' % metal, item('ingot'), item('saw_blade'), metal_data.tier, Rules.hit_last, Rules.hit_second_last)
+            anvil_recipe(rm, '%s_sword_blade' % metal, item('double_ingot'), item('sword_blade'), metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_mace_head' % metal, item('double_ingot'), item('mace_head'), metal_data.tier, Rules.hit_last, Rules.shrink_not_last, Rules.bend_not_last)
+            anvil_recipe(rm, '%s_scythe_blade' % metal, item('ingot'), item('scythe_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_knife_blade' % metal, item('ingot'), item('knife_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_javelin_head' % metal, item('ingot'), item('javelin_head'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_chisel_head' % metal, item('ingot'), item('chisel_head'), metal_data.tier, Rules.hit_last, Rules.hit_not_last, Rules.draw_not_last)
 
-            anvil_recipe(rm, '%s_double_sheet' % metal, item('double_sheet'), item('shield'), metal_data.tier, Rules.upset_last, Rules.bend_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_shield' % metal, item('double_sheet'), item('shield'), metal_data.tier, Rules.upset_last, Rules.bend_second_last, Rules.bend_third_last)
 
+        # Armor
         if 'armor' in metal_data.types:
-            anvil_recipe(rm, '%s_double_sheet' % metal, item('double_sheet'), item('unfinished_helmet'), metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last)
-            anvil_recipe(rm, '%s_double_sheet' % metal, item('double_sheet'), item('unfinished_chestplate'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.upset_third_last)
-            anvil_recipe(rm, '%s_double_sheet' % metal, item('double_sheet'), item('unfinished_greaves'), metal_data.tier, Rules.bend_any, Rules.draw_any, Rules.hit_any)
-            anvil_recipe(rm, '%s_sheet' % metal, item('sheet'), item('unfinished_boots'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.shrink_third_last)
+            anvil_recipe(rm, '%s_unfinished_helmet' % metal, item('double_sheet'), item('unfinished_helmet'), metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_unfinished_chestplate' % metal, item('double_sheet'), item('unfinished_chestplate'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.upset_third_last)
+            anvil_recipe(rm, '%s_unfinished_greaves' % metal, item('double_sheet'), item('unfinished_greaves'), metal_data.tier, Rules.bend_any, Rules.draw_any, Rules.hit_any)
+            anvil_recipe(rm, '%s_unfinished_boots' % metal, item('sheet'), item('unfinished_boots'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.shrink_third_last)
+
+        if 'utility' in metal_data.types:
+            anvil_recipe(rm, '%s_trapdoor' % metal, item('sheet'), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
 
     hit_x3 = Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last
 

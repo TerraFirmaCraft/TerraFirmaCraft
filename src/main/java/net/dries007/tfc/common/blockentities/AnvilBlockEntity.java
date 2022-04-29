@@ -22,6 +22,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
@@ -30,6 +31,7 @@ import net.dries007.tfc.common.capabilities.forge.ForgeStep;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.container.ISlotCallback;
@@ -53,6 +55,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     private static final Component NAME = new TranslatableComponent("tfc.block_entity.anvil");
 
     private final ContainerData syncableData;
+
     private int workTarget; // The target to work, only for client purposes
     private int workValue; // The current work progress of the item, only for client display purposes
     @Nullable private AnvilRecipe cachedRecipe;
@@ -182,7 +185,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         }
     }
 
-    public void work(ServerPlayer player, ForgeStep step)
+    public InteractionResult work(ServerPlayer player, ForgeStep step)
     {
         assert level != null;
 
@@ -193,35 +196,42 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             // Prevent the player from immediately destroying the item by overworking
             if (!forge.getSteps().any() && forge.getWork() == 0 && step.step() < 0)
             {
-                // todo: feedback
-                return;
+                return InteractionResult.FAIL;
             }
 
             final AnvilRecipe recipe = forge.getRecipe(level);
             if (recipe != null)
             {
-                // todo: temp check
+                final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
+                if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature(false)).orElse(false))
+                {
+                    player.displayClientMessage(new TranslatableComponent("tfc.tooltip.not_hot_enough_to_work"), true);
+                    return InteractionResult.FAIL;
+                }
 
                 // Proceed with working
                 forge.addStep(step);
                 if (forge.getWork() < 0 || forge.getWork() > ForgeStep.LIMIT)
                 {
-
-                    return;
+                    // todo: sound or other indicator of breaking?
+                    return InteractionResult.FAIL;
                 }
 
                 // Re-check anvil recipe completion
-                final AnvilRecipe.Result post = recipe.checkComplete(inventory);
-                if (post == AnvilRecipe.Result.SUCCESS)
+                if (recipe.checkComplete(inventory))
                 {
                     // Recipe completed, so consume inputs and add outputs
                     // Always preserve heat
                     final ItemStack outputStack = recipe.assemble(inventory);
 
+                    outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->
+                        outputHeat.setTemperatureIfWarmer(heat.map(h -> h.getTemperature(false)).orElse(0f)));
+
                     inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
                 }
             }
         }
+        return InteractionResult.PASS;
     }
 
     public InteractionResult weld(Player player)
@@ -234,10 +244,30 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
         assert level != null;
 
-        // todo: better checks on if a recipe exists vs. is valid
         final WeldingRecipe recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.WELDING.get(), inventory, level).orElse(null);
         if (recipe != null)
         {
+            if (recipe.getTier() < getTier())
+            {
+                player.displayClientMessage(new TranslatableComponent("tfc.tooltip.anvil_is_too_low_tier_to_weld"), true);
+                return InteractionResult.FAIL;
+            }
+
+            final LazyOptional<IHeat> leftHeat = left.getCapability(HeatCapability.CAPABILITY);
+            final LazyOptional<IHeat> rightHeat = right.getCapability(HeatCapability.CAPABILITY);
+
+            if (leftHeat.map(h -> h.getWeldingTemperature() <= h.getTemperature(false)).orElse(false) || rightHeat.map(h -> h.getWeldingTemperature() <= h.getTemperature(false)).orElse(false))
+            {
+                player.displayClientMessage(new TranslatableComponent("tfc.tooltip.not_hot_enough_to_weld"), true);
+                return InteractionResult.FAIL;
+            }
+
+            if (inventory.getStackInSlot(SLOT_CATALYST).isEmpty())
+            {
+                player.displayClientMessage(new TranslatableComponent("tfc.tooltip.no_flux_to_weld"), true);
+                return InteractionResult.FAIL;
+            }
+
             final ItemStack result = recipe.assemble(inventory);
 
             inventory.setStackInSlot(SLOT_INPUT_MAIN, result);
@@ -246,8 +276,8 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
             // Always copy heat from inputs since we have two
             result.getCapability(HeatCapability.CAPABILITY).ifPresent(resultHeat -> resultHeat.setTemperatureIfWarmer(Math.max(
-                HeatCapability.getTemperature(left),
-                HeatCapability.getTemperature(right)
+                leftHeat.map(IHeat::getTemperature).orElse(0f),
+                rightHeat.map(IHeat::getTemperature).orElse(0f)
             )));
 
             markForSync();

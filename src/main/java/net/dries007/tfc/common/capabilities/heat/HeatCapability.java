@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +19,7 @@ import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -48,11 +47,6 @@ public final class HeatCapability
             }
         }
         return null;
-    }
-
-    public static float getTemperature(ItemStack stack)
-    {
-        return stack.getCapability(HeatCapability.CAPABILITY).map(IHeat::getTemperature).orElse(0f);
     }
 
     public static float adjustTempTowards(float temp, float target)

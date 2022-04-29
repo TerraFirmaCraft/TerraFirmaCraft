@@ -15,8 +15,6 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.config.TFCConfig;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 /**
  * This is the capability interface for an instance of a heat applied to an item stack
  */
@@ -66,7 +64,7 @@ public interface IHeat
      *
      * @return temperature at which this item is able to be worked
      */
-    default float getForgingTemperature()
+    default float getWorkingTemperature()
     {
         return 0;
     }
@@ -94,7 +92,7 @@ public interface IHeat
         if (tooltip != null)
         {
             // Only add " - can work" and " - can weld" if both temperatures are set
-            final float weldingTemperature = getWeldingTemperature(), forgingTemperature = getForgingTemperature();
+            final float weldingTemperature = getWeldingTemperature(), forgingTemperature = getWorkingTemperature();
             if (weldingTemperature > 0 && weldingTemperature <= temperature)
             {
                 tooltip.append(new TranslatableComponent("tfc.tooltip.welding"));

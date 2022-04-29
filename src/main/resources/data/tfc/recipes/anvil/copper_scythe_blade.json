@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/ingot/copper"
+  },
+  "result": {
+    "item": "tfc:metal/scythe_blade/copper"
+  },
+  "tier": 1,
+  "rules": [
+    "hit_last",
+    "draw_second_last",
+    "bend_third_last"
+  ]
+}
