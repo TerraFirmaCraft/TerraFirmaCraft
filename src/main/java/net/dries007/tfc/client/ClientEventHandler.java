@@ -283,6 +283,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.TURTLE.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCTurtleModel(RenderHelpers.bakeSimple(ctx, "turtle")), "turtle"));
         event.registerEntityRenderer(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
         event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), TFCPolarBearRenderer::new);
+        event.registerEntityRenderer(TFCEntities.COUGAR.get(), CougarRenderer::new);
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
@@ -328,6 +329,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("turtle"), TFCTurtleModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("penguin"), PenguinModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("polar_bear"), TFCPolarBearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cougar"), CougarModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));

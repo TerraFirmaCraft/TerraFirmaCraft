@@ -542,7 +542,7 @@ NUTRIENTS = {
     'dairy': 'Creamy'
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken']
+SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'cougar', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
 BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box']
@@ -791,6 +791,7 @@ DEFAULT_LANG = {
     'entity.tfc.alpaca.female': 'Female Alpaca',
     'entity.tfc.alpaca.male': 'Male Alpaca',
     'entity.tfc.polar_bear': 'Polar Bear',
+    'entity.tfc.cougar': 'Cougar',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.squid': 'Squid',

@@ -44,7 +44,7 @@ public class Predator extends PathfinderMob
 
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
-    private static final int ATTACK_ANIMATION_LENGTH = 20;
+    private static int ATTACK_ANIMATION_LENGTH;
 
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
@@ -56,7 +56,13 @@ public class Predator extends PathfinderMob
 
     public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal)
     {
+        this(type, level, diurnal, 20);
+    }
+
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength)
+    {
         super(type, level);
+        ATTACK_ANIMATION_LENGTH = attackLength;
         this.diurnal = diurnal;
         getNavigation().setCanFloat(true);
     }

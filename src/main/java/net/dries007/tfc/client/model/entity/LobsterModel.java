@@ -112,7 +112,9 @@ public class LobsterModel extends EntityModel<AquaticCritter>
         this.clawTopLeft = armLeft.getChild("clawLeft").getChild("clawTopLeft");
         this.clawTopRight = armRight.getChild("clawRight").getChild("clawTopRight");
 
-        parts = new ImmutableMap.Builder<String, ModelPart>().put("body", body).put("tail1", tail1).put("tail2", tail2).put("tail3", tail3).put("leftAntenna", leftAntenna).put("rightAntenna", rightAntenna).put("armLeft", armLeft).put("armRight", armRight).put("clawTopLeft", clawTopLeft).put("clawTopRight", clawTopRight).build();
+        parts = new ImmutableMap.Builder<String, ModelPart>().put("body", body).put("tail1", tail1).put("tail2", tail2)
+            .put("tail3", tail3).put("leftAntenna", leftAntenna).put("rightAntenna", rightAntenna).put("armLeft", armLeft)
+            .put("armRight", armRight).put("clawTopLeft", clawTopLeft).put("clawTopRight", clawTopRight).build();
         defaults = Animation.initDefaults(parts);
     }
 

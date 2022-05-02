@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities;
 
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.entities.predator.BigCat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -43,6 +44,7 @@ public class Faunas
     public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
     public static final FaunaType<AmphibiousAnimal> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
+    public static final FaunaType<BigCat> COUGAR = registerAnimal(TFCEntities.COUGAR);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
@@ -68,6 +70,7 @@ public class Faunas
         registerSpawnPlacement(TURTLE);
         registerSpawnPlacement(PENGUIN);
         registerSpawnPlacement(POLAR_BEAR);
+        registerSpawnPlacement(COUGAR);
         registerSpawnPlacement(SQUID);
         registerSpawnPlacement(OCTOPOTEUTHIS);
         registerSpawnPlacement(PIG);
