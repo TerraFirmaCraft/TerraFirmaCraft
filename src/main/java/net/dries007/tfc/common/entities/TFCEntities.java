@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import net.dries007.tfc.common.entities.predator.BigCat;
+import net.dries007.tfc.common.entities.predator.Cougar;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -91,7 +92,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<AmphibiousAnimal>> TURTLE = register("turtle", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<AmphibiousAnimal>> PENGUIN = register("penguin", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::createDiurnal, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<BigCat>> COUGAR = register("cougar", EntityType.Builder.of(BigCat::createDiurnalCat, MobCategory.CREATURE).sized(1.2F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Cougar>> COUGAR = register("cougar", EntityType.Builder.of(Cougar::new, MobCategory.CREATURE).sized(1.2F, 1.2F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<Mammal>> PIG = register("pig", EntityType.Builder.of(TFCEntities::makePig, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<DairyAnimal>> COW = register("cow", EntityType.Builder.of(TFCEntities::makeCow, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
@@ -127,7 +128,7 @@ public class TFCEntities
         event.put(TURTLE.get(), AmphibiousAnimal.createAttributes().build());
         event.put(PENGUIN.get(), AmphibiousAnimal.createAttributes().build());
         event.put(POLAR_BEAR.get(), Predator.createAttributes().build());
-        event.put(COUGAR.get(), BigCat.createAttributes().build());
+        event.put(COUGAR.get(), Cougar.createAttributes().build());
         event.put(SQUID.get(), Squid.createAttributes().build());
         event.put(OCTOPOTEUTHIS.get(), GlowSquid.createAttributes().build());
         event.put(PIG.get(), Pig.createAttributes().build());

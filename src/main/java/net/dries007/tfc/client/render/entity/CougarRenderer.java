@@ -10,12 +10,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 
 import net.dries007.tfc.client.model.entity.CougarModel;
-import net.dries007.tfc.common.entities.predator.BigCat;
+import net.dries007.tfc.common.entities.aquatic.Jellyfish;
+import net.dries007.tfc.common.entities.predator.Cougar;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class CougarRenderer extends MobRenderer<BigCat, CougarModel>
+public class CougarRenderer extends MobRenderer<Cougar, CougarModel>
 {
     private static final ResourceLocation COUGAR_LOCATION = RenderHelpers.animalTexture("cougar");
 
@@ -25,17 +26,16 @@ public class CougarRenderer extends MobRenderer<BigCat, CougarModel>
     }
 
     @Override
-    protected void scale(BigCat bigCat, PoseStack poseStack, float ticks)
+    protected void scale(Cougar cougar, PoseStack poseStack, float ticks)
     {
         poseStack.scale(1.2F, 1.2F, 1.2F);
-        super.scale(bigCat, poseStack, ticks);
+        super.scale(cougar, poseStack, ticks);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(BigCat bigCat)
+    public ResourceLocation getTextureLocation(Cougar cougar)
     {
-        return COUGAR_LOCATION;
+        return cougar.getTextureLocation();
     }
-
 
 }

@@ -12,6 +12,7 @@ package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
 import net.dries007.tfc.common.entities.predator.BigCat;
+import net.dries007.tfc.common.entities.predator.Cougar;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -30,7 +31,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import java.util.Map;
 
 
-public class CougarModel extends EntityModel<BigCat> {
+public class CougarModel extends EntityModel<Cougar> {
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -185,7 +186,7 @@ public class CougarModel extends EntityModel<BigCat> {
     }
 
     @Override
-    public void setupAnim(BigCat bigCat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(Cougar bigCat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         defaults.forEach(ModelPart::loadPose);
 
         if (bigCat.isSleeping())
