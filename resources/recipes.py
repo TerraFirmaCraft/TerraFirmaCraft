@@ -318,6 +318,19 @@ def generate(rm: ResourceManager):
     for grain in GRAINS:
         heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)
         quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, 'tfc:food/%s_flour' % grain)
+        res = utils.resource_location(rm.domain, grain + '_cutting')
+        rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
+            'type': 'tfc:extra_products_shapeless_crafting',
+            'extra_products': utils.item_stack_list('tfc:straw'),
+            'recipe': {
+                'type': 'tfc:damage_inputs_shapeless_crafting',
+                'recipe': {
+                    'type': 'minecraft:crafting_shapeless',
+                    'ingredients': utils.item_stack_list(('tfc:food/%s' % grain, '#tfc:knives')),
+                    'result': utils.item_stack('tfc:food/%s_grain' % grain)
+                }
+            }
+        })
 
     for meat in MEATS:
         heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item='tfc:food/cooked_%s' % meat)
@@ -589,8 +602,7 @@ def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, 
     })
     return RecipeContext(rm, res)
 
-
-# todo: damage inputs shaped, if we need it
+    # todo: damage inputs shaped, if we need it
 
 
 def quern_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:

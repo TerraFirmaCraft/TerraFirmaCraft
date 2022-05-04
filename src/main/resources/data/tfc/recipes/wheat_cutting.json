@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:extra_products_shapeless_crafting",
+  "extra_products": [
+    {
+      "item": "tfc:straw"
+    }
+  ],
+  "recipe": {
+    "type": "tfc:damage_inputs_shapeless_crafting",
+    "recipe": {
+      "type": "minecraft:crafting_shapeless",
+      "ingredients": [
+        {
+          "item": "tfc:food/wheat"
+        },
+        {
+          "tag": "tfc:knives"
+        }
+      ],
+      "result": {
+        "item": "tfc:food/wheat_grain"
+      }
+    }
+  }
+}

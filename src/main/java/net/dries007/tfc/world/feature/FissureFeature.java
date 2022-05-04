@@ -31,6 +31,8 @@ public class FissureFeature extends Feature<FissureConfig>
         final int pieces = minPieces + random.nextInt(maxPieces - minPieces);
 
         BlockPos topPos = startPos.immutable();
+        mutablePos.setWithOffset(topPos, 0, 1, 0);
+        level.scheduleTick(mutablePos, level.getBlockState(mutablePos).getBlock(), 1);
         for (int i = 0; i < pieces; i++)
         {
             // Tube

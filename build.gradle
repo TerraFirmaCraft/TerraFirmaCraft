@@ -88,7 +88,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-ea'
+            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
             property 'forge.enabledGameTestNamespaces', mod_id
 
             mods {
@@ -105,7 +105,7 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-ea'
+            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
             property 'forge.enabledGameTestNamespaces', mod_id
 
             mods {

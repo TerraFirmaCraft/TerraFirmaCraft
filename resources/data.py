@@ -159,7 +159,7 @@ def generate(rm: ResourceManager):
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
-    rm.item_tag('chicken_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables') # todo : seeds
+    rm.item_tag('chicken_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds')
     rm.item_tag('alpaca_food', '#tfc:foods/grains', '#tfc:foods/fruits')
 
     rm.item_tag('tfc:foods/grains', *['tfc:food/%s_grain' % grain for grain in GRAINS])
