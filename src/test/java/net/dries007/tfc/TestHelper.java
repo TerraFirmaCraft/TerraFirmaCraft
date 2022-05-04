@@ -8,6 +8,7 @@ package net.dries007.tfc;
 
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -151,18 +152,34 @@ public class TestHelper
         }
     }
 
+    public static <T> void assertCustomArrayEquals(T[] expected, T[] actual, BiConsumer<T, T> assertion)
+    {
+        assertCustomListEquals(Arrays.asList(expected), Arrays.asList(actual), assertion);
+    }
+
+    public static <T> void assertCustomListEquals(List<? extends T> expected, List<? extends T> actual, BiConsumer<T, T> assertion)
+    {
+        for (int i = 0; i < Math.min(expected.size(), actual.size()); i++)
+        {
+            assertion.accept(expected.get(i), actual.get(i));
+        }
+        if (expected.size() > actual.size())
+        {
+            fail("List is missing " + (expected.size() - actual.size()) + " expected elements");
+        }
+        if (actual.size() > expected.size())
+        {
+            fail("List contains " + (actual.size() - expected.size()) + " unexpected elements");
+        }
+    }
+
     public static void assertIngredientEquals(Ingredient expected, Ingredient actual)
     {
         assertEquals(expected.getClass(), actual.getClass());
         assertEquals(expected.getSerializer(), actual.getSerializer());
         assertEquals(expected.toJson(), actual.toJson());
 
-        final ItemStack[] expectedItems = expected.getItems(), actualItems = actual.getItems();
-        assertEquals(expectedItems.length, actualItems.length);
-        for (int i = 0; i < Math.min(expectedItems.length, actualItems.length); i++)
-        {
-            assertItemStackEquals(expectedItems[i], actualItems[i]);
-        }
+        assertCustomArrayEquals(expected.getItems(), actual.getItems(), TestHelper::assertItemStackEquals);
     }
 
     public static void assertItemStackEquals(ItemStack expected, ItemStack actual)
@@ -176,6 +193,10 @@ public class TestHelper
     public static void assertRecipeEquals(Recipe<?> expected, Recipe<?> actual)
     {
         assertEquals(expected.getClass(), actual.getClass());
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getGroup(), actual.getGroup());
+        assertItemStackEquals(expected.getResultItem(), actual.getResultItem());
+        assertCustomListEquals(expected.getIngredients(), actual.getIngredients(), TestHelper::assertIngredientEquals);
     }
 
     public static <T> T encodeAndDecode(T t, BiConsumer<T, FriendlyByteBuf> encode, Function<FriendlyByteBuf, T> decode)

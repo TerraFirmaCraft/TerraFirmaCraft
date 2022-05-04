@@ -28,8 +28,9 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.AnvilContainer;
@@ -145,7 +146,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
         if (!stack.isEmpty())
         {
-            final IForging forge = ForgingCapability.get(stack);
+            final Forging forge = ForgingCapability.get(stack);
             if (forge != null)
             {
                 AnvilRecipe recipe = forge.getRecipe(level);
@@ -176,12 +177,15 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         assert level != null;
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
-        final IForging forge = ForgingCapability.get(stack);
+        final Forging forge = ForgingCapability.get(stack);
         if (!stack.isEmpty() && forge != null)
         {
             // Set the recipe on the stack, and also update the recipe stored here and other recipe properties
             forge.setRecipe(recipe);
 
+            cachedRecipe = recipe;
+            workTarget = recipe != null ? recipe.computeTarget(inventory) : 0;
+            workValue = forge.getWork();
         }
     }
 
@@ -190,7 +194,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         assert level != null;
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
-        final IForging forge = ForgingCapability.get(stack);
+        final Forging forge = ForgingCapability.get(stack);
         if (forge != null)
         {
             // Prevent the player from immediately destroying the item by overworking
@@ -221,11 +225,19 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 if (recipe.checkComplete(inventory))
                 {
                     // Recipe completed, so consume inputs and add outputs
-                    // Always preserve heat
                     final ItemStack outputStack = recipe.assemble(inventory);
 
+                    // Always preserve heat of the input
                     outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->
                         outputHeat.setTemperatureIfWarmer(heat.map(h -> h.getTemperature(false)).orElse(0f)));
+
+                    // And apply the forging bonus, if the recipe says to do so
+                    if (recipe.shouldApplyForgingBonus())
+                    {
+                        final float ratio = (float) forge.getSteps().getTotal() / ForgeStep.getOptimalStepsToTarget(recipe.computeTarget(inventory));
+                        final ForgingBonus bonus = ForgingBonus.byRatio(ratio);
+                        ForgingBonus.set(outputStack, bonus);
+                    }
 
                     inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
                 }

@@ -6,9 +6,9 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.nbt.CompoundTag;
+
+import org.jetbrains.annotations.Nullable;
 
 public final class ForgeSteps
 {
@@ -51,10 +51,15 @@ public final class ForgeSteps
             };
     }
 
+    public int getTotal()
+    {
+        return total;
+    }
+
     @Override
     public String toString()
     {
-        return "[" + first + ", " + second + ", " + third + "]";
+        return "[" + first + ", " + second + ", " + third + ", ...]";
     }
 
     /**

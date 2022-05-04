@@ -17,11 +17,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class ForgingCapability
 {
-    public static final Capability<IForging> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<Forging> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("forging");
 
     @Nullable
-    public static IForging get(ItemStack stack)
+    public static Forging get(ItemStack stack)
     {
         return stack.getCapability(CAPABILITY).resolve().orElse(null);
     }

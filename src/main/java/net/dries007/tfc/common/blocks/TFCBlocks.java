@@ -159,7 +159,7 @@ public final class TFCBlocks
     // Metals
 
     public static final Map<Metal.Default, Map<Metal.BlockType, RegistryObject<Block>>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        Helpers.mapOfKeys(Metal.BlockType.class, type -> type.hasMetal(metal), type ->
+        Helpers.mapOfKeys(Metal.BlockType.class, type -> type.has(metal), type ->
             register(("metal/" + type.name() + "/" + metal.name()), type.create(metal), type.createBlockItem(new Item.Properties().tab(METAL)))
         )
     );

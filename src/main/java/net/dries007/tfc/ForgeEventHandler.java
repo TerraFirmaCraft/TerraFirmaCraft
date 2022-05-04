@@ -61,27 +61,19 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
 
-import net.dries007.tfc.client.ClientForgeEventHandler;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
-import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
-import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
-import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
-import net.dries007.tfc.common.blocks.devices.LampBlock;
-import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
@@ -89,8 +81,8 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
@@ -101,10 +93,15 @@ import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
-import net.dries007.tfc.network.*;
+import net.dries007.tfc.network.ChunkUnwatchPacket;
+import net.dries007.tfc.network.EffectExpirePacket;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
-import net.dries007.tfc.util.climate.*;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
@@ -287,7 +284,7 @@ public final class ForgeEventHandler
         if (!stack.isEmpty())
         {
             // Attach mandatory capabilities
-            event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
+            event.addCapability(ForgingCapability.KEY, new Forging(stack));
 
             // Optional capabilities
             HeatDefinition def = HeatCapability.get(stack);

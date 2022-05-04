@@ -325,37 +325,23 @@ public final class Metal
     {
         ANVIL(Type.UTILITY, metal -> new AnvilBlock(ExtendedProperties.of(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.METAL).strength(10, 10).requiresCorrectToolForDrops()).blockEntity(TFCBlockEntities.ANVIL), metal.getMetalTier())),
         CHAIN(Type.UTILITY, metal -> new TFCChainBlock(Block.Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5, 6).sound(SoundType.CHAIN))),
-        LAMP(null, Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0)).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties)),
+        LAMP(Type.UTILITY, metal -> new LampBlock(ExtendedProperties.of(Block.Properties.of(Material.METAL).noOcclusion().sound(SoundType.LANTERN).strength(4, 10).randomTicks().lightLevel(state -> state.getValue(LampBlock.LIT) ? 15 : 0)).blockEntity(TFCBlockEntities.LAMP)), (block, properties) -> new LampBlockItem(block, properties)),
         TRAPDOOR(Type.UTILITY, metal -> new TrapDoorBlock(Block.Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(5.0F).sound(SoundType.METAL).noOcclusion().isValidSpawn(TFCBlocks::never)));
-
-        public static final Metal.BlockType[] VALUES = values();
-
-        public static Metal.BlockType valueOf(int i)
-        {
-            return i >= 0 && i < VALUES.length ? VALUES[i] : ANVIL;
-        }
 
         private final NonNullFunction<Metal.Default, Block> blockFactory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
         private final Type type;
-        @Nullable private final String tag;
 
-        BlockType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Block> blockFactory, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
+        BlockType(Type type, NonNullFunction<Metal.Default, Block> blockFactory, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
         {
             this.type = type;
             this.blockFactory = blockFactory;
-            this.tag = tag;
             this.blockItemFactory = blockItemFactory;
-        }
-
-        BlockType(@Nullable String tag, Type type, NonNullFunction<Metal.Default, Block> blockFactory)
-        {
-            this(tag, type, blockFactory, BlockItem::new);
         }
 
         BlockType(Type type, NonNullFunction<Metal.Default, Block> blockFactory)
         {
-            this(null, type, blockFactory);
+            this(type, blockFactory, BlockItem::new);
         }
 
         public Supplier<Block> create(Metal.Default metal)
@@ -368,15 +354,9 @@ public final class Metal
             return block -> blockItemFactory.apply(block, properties);
         }
 
-        public boolean hasMetal(Default metal)
+        public boolean has(Default metal)
         {
             return type.hasType(metal);
-        }
-
-        @Nullable
-        public String getTag()
-        {
-            return tag;
         }
     }
 
@@ -432,13 +412,6 @@ public final class Metal
         BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.getArmorTier(), EquipmentSlot.FEET, new Item.Properties().tab(TFCItemGroup.METAL))),
 
         SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.getToolTier(), new Item.Properties().tab(TFCItemGroup.TAB_COMBAT)));
-
-        public static final Metal.ItemType[] VALUES = values();
-
-        public static Metal.ItemType valueOf(int i)
-        {
-            return i >= 0 && i < VALUES.length ? VALUES[i] : INGOT;
-        }
 
         private final NonNullFunction<Metal.Default, Item> itemFactory;
         private final Type type;

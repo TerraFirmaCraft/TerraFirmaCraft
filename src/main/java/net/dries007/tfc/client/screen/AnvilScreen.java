@@ -64,7 +64,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         blit(poseStack, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
 
         // Draw rule icons
-        final IForging forging = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+        final Forging forging = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
             .map(cap -> cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN))
             .flatMap(item -> item.getCapability(ForgingCapability.CAPABILITY).resolve())
             .orElse(null);

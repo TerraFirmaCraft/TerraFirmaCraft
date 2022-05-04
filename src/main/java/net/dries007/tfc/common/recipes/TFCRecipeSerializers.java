@@ -10,9 +10,9 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -55,6 +55,7 @@ public class TFCRecipeSerializers
     public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
 
     public static final RegistryObject<CastingCraftingRecipe.Serializer> CASTING_CRAFTING = register("casting_crafting", CastingCraftingRecipe.Serializer::new);
+    public static final RegistryObject<AdvancedShapedRecipe.Serializer> ADVANCED_SHAPED = register("advanced_shaped_crafting", AdvancedShapedRecipe.Serializer::new);
 
     private static <S extends RecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
     {

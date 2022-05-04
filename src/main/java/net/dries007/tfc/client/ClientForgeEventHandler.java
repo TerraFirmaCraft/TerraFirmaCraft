@@ -54,6 +54,8 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
@@ -165,36 +167,18 @@ public class ClientForgeEventHandler
         final List<Component> text = event.getToolTip();
         if (!stack.isEmpty())
         {
+            // These are ordered in a predictable fashion
+            // 1. Common information, that is important to know about the item stack itself (such as size, food, heat, etc.). Static (unchanging) information is ordered before dynamic (changing) information.
+            // 2. Extra information, that is useful QoL info, but not necessary (such as possible recipes, melting into, etc.)
+            // 3. Debug information, that is only available in debug mode.
+
             ItemSizeManager.addTooltipInfo(stack, text);
+            ForgingBonus.addTooltipInfo(stack, text);
+            Forging.addTooltipInfo(stack, text);
+
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
-
-            // Metal content, inferred from a matching heat recipe.
-            ItemStackInventory wrapper = new ItemStackInventory(stack);
-            HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
-            if (recipe != null)
-            {
-                // Check what we would get if melted
-                final FluidStack fluid = recipe.getOutputFluid(wrapper);
-                if (!fluid.isEmpty())
-                {
-                    final Metal metal = Metal.get(fluid.getFluid());
-                    if (metal != null)
-                    {
-                        final MutableComponent line = new TranslatableComponent("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
-                            .append(new TranslatableComponent(metal.getTranslationKey()));
-                        final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
-                        if (heat != null)
-                        {
-                            line.append(new TranslatableComponent("tfc.tooltip.item_melts_into_open"))
-                                .append(heat)
-                                .append(new TranslatableComponent("tfc.tooltip.item_melts_into_close"));
-                        }
-                        text.add(line);
-                    }
-                }
-            }
 
             // Fuel information
             final Fuel fuel = Fuel.get(stack);
@@ -220,6 +204,32 @@ public class ClientForgeEventHandler
                     text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
                 if (k != 0)
                     text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+            }
+
+            // Metal content, inferred from a matching heat recipe.
+            ItemStackInventory wrapper = new ItemStackInventory(stack);
+            HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
+            if (recipe != null)
+            {
+                // Check what we would get if melted
+                final FluidStack fluid = recipe.getOutputFluid(wrapper);
+                if (!fluid.isEmpty())
+                {
+                    final Metal metal = Metal.get(fluid.getFluid());
+                    if (metal != null)
+                    {
+                        final MutableComponent line = new TranslatableComponent("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
+                            .append(new TranslatableComponent(metal.getTranslationKey()));
+                        final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
+                        if (heat != null)
+                        {
+                            line.append(new TranslatableComponent("tfc.tooltip.item_melts_into_open"))
+                                .append(heat)
+                                .append(new TranslatableComponent("tfc.tooltip.item_melts_into_close"));
+                        }
+                        text.add(line);
+                    }
+                }
             }
 
             if (TFCConfig.CLIENT.enableDebug.get())

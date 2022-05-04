@@ -26,8 +26,6 @@ public class ForgeStepTests
 
             assertTrue(ForgeStep.getOptimalStepsToTarget(i) >= minStepHeuristic);
             assertTrue(ForgeStep.getOptimalStepsToTarget(i) <= maxStepHeuristic);
-
-            System.out.println(i + "\t" + ForgeStep.getOptimalStepsToTarget(i) + "\t" + minStepHeuristic + "\t" + maxStepHeuristic);
         }
 
         assertEquals(0, ForgeStep.getOptimalStepsToTarget(0));

@@ -21,8 +21,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.common.capabilities.forge.ForgeRule;
+import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.capabilities.forge.IForging;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
@@ -63,14 +63,16 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     private final Ingredient input;
     private final int minTier;
     private final ForgeRule[] rules;
+    private final boolean applyForgingBonus;
     private final ItemStackProvider output;
 
-    public AnvilRecipe(ResourceLocation id, Ingredient input, int minTier, ForgeRule[] rules, ItemStackProvider output)
+    public AnvilRecipe(ResourceLocation id, Ingredient input, int minTier, ForgeRule[] rules, boolean applyForgingBonus, ItemStackProvider output)
     {
         this.id = id;
         this.input = input;
         this.minTier = minTier;
         this.rules = rules;
+        this.applyForgingBonus = applyForgingBonus;
         this.output = output;
     }
 
@@ -86,13 +88,18 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
 
     public boolean checkComplete(Inventory inventory)
     {
-        final IForging forging = ForgingCapability.get(inventory.getItem());
+        final Forging forging = ForgingCapability.get(inventory.getItem());
         return forging != null && forging.matches(rules) && isWorkMatched(forging.getWork(), computeTarget(inventory));
     }
 
     public ForgeRule[] getRules()
     {
         return rules;
+    }
+
+    public boolean shouldApplyForgingBonus()
+    {
+        return applyForgingBonus;
     }
 
     @Override
@@ -165,8 +172,9 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
             {
                 rules[i] = JsonHelpers.getEnum(rulesJson.get(i), ForgeRule.class);
             }
+            final boolean applyForgingBonus = JsonHelpers.getAsBoolean(json, "apply_forging_bonus", false);
             final ItemStackProvider output = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            return new AnvilRecipe(recipeId, ingredient, tier, rules, output);
+            return new AnvilRecipe(recipeId, ingredient, tier, rules, applyForgingBonus, output);
         }
 
         @Nullable
@@ -176,8 +184,9 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
             final Ingredient input = Ingredient.fromNetwork(buffer);
             final int tier = buffer.readVarInt();
             final ForgeRule[] rules = Helpers.decodeArray(buffer, ForgeRule[]::new, ForgeRule::fromNetwork);
+            final boolean applyForgingBonus = buffer.readBoolean();
             final ItemStackProvider output = ItemStackProvider.fromNetwork(buffer);
-            return new AnvilRecipe(recipeId, input, tier, rules, output);
+            return new AnvilRecipe(recipeId, input, tier, rules, applyForgingBonus, output);
         }
 
         @Override
@@ -186,6 +195,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
             recipe.input.toNetwork(buffer);
             buffer.writeVarInt(recipe.minTier);
             Helpers.encodeArray(buffer, recipe.rules, ForgeRule::toNetwork);
+            buffer.writeBoolean(recipe.applyForgingBonus);
             recipe.output.toNetwork(buffer);
         }
     }

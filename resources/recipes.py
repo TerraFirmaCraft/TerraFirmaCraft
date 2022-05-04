@@ -4,7 +4,7 @@
 from enum import Enum
 
 from mcresources import ResourceManager, RecipeContext, utils
-from mcresources.type_definitions import Json
+from mcresources.type_definitions import ResourceIdentifier, Json
 
 from constants import *
 
@@ -92,7 +92,7 @@ def generate(rm: ResourceManager):
         if 'tool' in metal_data.types:
             for tool in METAL_TOOL_HEADS:
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
-                rm.crafting_shaped('crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': '#forge:rods/wooden'}, 'tfc:metal/%s/%s' % (tool, metal)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
+                advanced_shaped(rm, 'crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': '#forge:rods/wooden'}, item_stack_provider('tfc:metal/%s/%s' % (tool, metal), copy_forging=True), (0, 0)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
 
     rm.crafting_shaped('crafting/wood/stick_from_twigs', ['X', 'X'], {'X': '#tfc:twigs'}, 'minecraft:stick')  # todo: advancement?
 
@@ -701,7 +701,7 @@ def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ite
     })
 
 
-def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: utils.Json, result: utils.Json, group: str = None, conditions: utils.Json = None) -> RecipeContext:
+def damage_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: Json, group: str = None, conditions: utils.Json = None) -> RecipeContext:
     res = utils.resource_location(rm.domain, name_parts)
     rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
         'type': 'tfc:damage_inputs_shapeless_crafting',
@@ -716,24 +716,39 @@ def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, 
     return RecipeContext(rm, res)
 
 
+def advanced_shaped(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: Sequence[str], ingredients: Json, result: Json, input_xy: Tuple[int, int], group: str = None, conditions: Optional[Json] = None) -> RecipeContext:
+    res = utils.resource_location(rm.domain, name_parts)
+    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
+        'type': 'tfc:advanced_shaped_crafting',
+        'group': group,
+        'pattern': pattern,
+        'key': utils.item_stack_dict(ingredients, ''.join(pattern)[0]),
+        'result': item_stack_provider(result),
+        'input_row': input_xy[1],
+        'input_col': input_xy[0],
+        'conditions': utils.recipe_condition(conditions)
+    })
+    return RecipeContext(rm, res)
+
+
 # todo: damage inputs shaped, if we need it
 
 
-def quern_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
+def quern_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('quern', name), 'tfc:quern', {
         'ingredient': utils.ingredient(item),
         'result': utils.item_stack((count, result))
     })
 
 
-def scraping_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
+def scraping_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('scraping', name), 'tfc:scraping', {
         'ingredient': utils.ingredient(item),
         'result': utils.item_stack((count, result))
     })
 
 
-def clay_knapping(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pattern: List[str], result: utils.Json, outside_slot_required: bool = None):
+def clay_knapping(rm: ResourceManager, name_parts: ResourceIdentifier, pattern: List[str], result: Json, outside_slot_required: bool = None):
     knapping_recipe(rm, 'clay_knapping', name_parts, pattern, result, outside_slot_required)
 
 
@@ -917,7 +932,8 @@ def fluid_item_ingredient(fluid: Json, delegate: Json = None):
         'fluid_ingredient': fluid_stack_ingredient(fluid)
     }
 
-def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None, empty_bowl: bool = False) -> Json:
+
+def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None, empty_bowl: bool = False, copy_forging: bool = False) -> Json:
     if isinstance(data_in, dict):
         return data_in
     stack = utils.item_stack(data_in) if data_in is not None else None
@@ -927,6 +943,7 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
         ('tfc:copy_food', copy_food),
         ('tfc:reset_food', reset_food),
         ('tfc:empty_bowl', empty_bowl),
+        ('tfc:copy_forging_bonus', copy_forging),
         ({'type': 'tfc:add_heat', 'temperature': add_heat}, add_heat is not None),
         ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None),
         ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None)

@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shaped",
+  "type": "tfc:advanced_shaped_crafting",
   "pattern": [
     "X",
     "Y"
@@ -14,6 +14,13 @@
     }
   },
   "result": {
-    "item": "tfc:metal/saw/steel"
-  }
+    "stack": {
+      "item": "tfc:metal/saw/steel"
+    },
+    "modifiers": [
+      "tfc:copy_forging_bonus"
+    ]
+  },
+  "input_row": 0,
+  "input_col": 0
 }
