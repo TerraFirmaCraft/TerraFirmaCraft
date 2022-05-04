@@ -39,7 +39,7 @@ public class AnvilBlockEntityRenderer implements BlockEntityRenderer<AnvilBlockE
             poseStack.translate(0.5, 0.003125D + yOffset, 0.5);
             poseStack.scale(0.3f, 0.3f, 0.3f);
             poseStack.mulPose(Vector3f.XP.rotationDegrees(90f));
-            poseStack.mulPose(Vector3f.ZP.rotationDegrees(90f * rotation + 180f));
+            poseStack.mulPose(Vector3f.ZP.rotationDegrees(90f * rotation + 270f));
             poseStack.translate(1.2f, 0, 0);
 
             final ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();

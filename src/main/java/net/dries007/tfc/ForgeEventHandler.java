@@ -75,6 +75,7 @@ import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -884,6 +885,16 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
                 event.setCancellationResult(result);
             }
+        }
+
+        // Some blocks have interactions that respect sneaking, both with items in hand and not
+        // These need to be able to interact, regardless of if an item has sneakBypassesUse set
+        // So, we have to explicitly allow the Block.use() interaction for these blocks.
+        final Level level = event.getWorld();
+        final BlockState state = level.getBlockState(event.getPos());
+        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
+        {
+            event.setUseBlock(Event.Result.ALLOW);
         }
     }
 

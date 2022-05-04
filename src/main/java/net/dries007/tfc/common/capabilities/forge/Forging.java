@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -49,7 +50,7 @@ public final class Forging implements ICapabilityProvider
 
     private final ForgeSteps steps;
 
-    private int work;
+    private int work, target;
     @Nullable private AnvilRecipe recipe;
     @Nullable private ResourceLocation uninitializedRecipe;
 
@@ -70,6 +71,11 @@ public final class Forging implements ICapabilityProvider
         return work;
     }
 
+    public int getWorkTarget()
+    {
+        return target == -1 ? 0 : target;
+    }
+
     public void setWork(int work)
     {
         this.work = work;
@@ -81,15 +87,16 @@ public final class Forging implements ICapabilityProvider
     {
         if (uninitializedRecipe != null)
         {
-            uninitializedRecipe = null;
             recipe = Helpers.getRecipes(level, TFCRecipeTypes.ANVIL).get(uninitializedRecipe);
+            uninitializedRecipe = null;
         }
         return recipe;
     }
 
-    public void setRecipe(@Nullable AnvilRecipe recipe)
+    public void setRecipe(@Nullable AnvilRecipe recipe, AnvilRecipe.Inventory inventory)
     {
         this.recipe = recipe;
+        this.target = recipe == null ? -1 : recipe.computeTarget(inventory);
         save();
     }
 
@@ -118,11 +125,25 @@ public final class Forging implements ICapabilityProvider
     public void addStep(@Nullable ForgeStep step)
     {
         steps.addStep(step);
+        if (step != null)
+        {
+            work += step.step();
+        }
         save();
     }
 
-    public void reset()
+    /**
+     * This will clear the current recipe, if the item has not been additionally worked.
+     * Used when removing an item from an anvil, as it makes the item stackable again - despite the fact we <strong>must</strong> persist the recipe on the item stack, even if it has not been worked.
+     * todo: actually call this from removing item from an anvil
+     */
+    public void clearRecipeIfNotWorked()
     {
+        if (!steps.any())
+        {
+            recipe = null;
+            uninitializedRecipe = null;
+        }
         save();
     }
 
@@ -150,8 +171,11 @@ public final class Forging implements ICapabilityProvider
             if (tag != null)
             {
                 work = tag.getInt("work");
+                target = tag.getInt("target");
+
                 steps.read(tag);
-                uninitializedRecipe = tag.contains("recipe") ? new ResourceLocation(tag.getString("recipe")) : null;
+
+                uninitializedRecipe = tag.contains("recipe", Tag.TAG_STRING) ? new ResourceLocation(tag.getString("recipe")) : null;
                 recipe = null;
             }
         }
@@ -159,7 +183,7 @@ public final class Forging implements ICapabilityProvider
 
     private void save()
     {
-        if (!steps.any())
+        if (!steps.any() && recipe == null && uninitializedRecipe == null)
         {
             // No defining data, so don't save anything
             stack.removeTagKey(KEY);
@@ -167,7 +191,10 @@ public final class Forging implements ICapabilityProvider
         else
         {
             final CompoundTag tag = stack.getOrCreateTagElement(KEY);
+
             tag.putInt("work", work);
+            tag.putInt("target", target);
+
             steps.write(tag);
 
             if (recipe != null)

@@ -10,14 +10,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.button.AnvilPlanButton;
 import net.dries007.tfc.client.screen.button.AnvilStepButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
-import net.dries007.tfc.common.capabilities.forge.*;
+import net.dries007.tfc.common.capabilities.forge.ForgeRule;
+import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.capabilities.forge.ForgeSteps;
+import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -56,20 +58,17 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
 
         assert level != null;
 
-        // Draw the progress indicators
-        final int progress = blockEntity.getWorkValue();
-        blit(poseStack, guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
-
-        final int target = blockEntity.getWorkTarget();
-        blit(poseStack, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
-
         // Draw rule icons
-        final Forging forging = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-            .map(cap -> cap.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN))
-            .flatMap(item -> item.getCapability(ForgingCapability.CAPABILITY).resolve())
-            .orElse(null);
+        final Forging forging = blockEntity.getMainInputForging();
         if (forging != null)
         {
+            // Draw the progress indicators
+            final int progress = forging.getWork();
+            blit(poseStack, guiLeft + 13 + progress, guiTop + 100, 176, 0, 5, 5);
+
+            final int target = forging.getWorkTarget();
+            blit(poseStack, guiLeft + 13 + target, guiTop + 94, 181, 0, 5, 5);
+
             final ForgeSteps steps = forging.getSteps();
             final AnvilRecipe recipe = forging.getRecipe(level);
             if (recipe != null)
@@ -83,7 +82,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                         final int xOffset = i * 19;
 
                         // The rule icon
-                        blit(poseStack, guiLeft + 64 + xOffset, guiTop + 10, rule.iconX(), rule.iconY(), 32, 32, 10, 10, 256, 256);
+                        blit(poseStack, guiLeft + 64 + xOffset, guiTop + 10, 10, 10, rule.iconX(), rule.iconY(), 32, 32, 256, 256);
 
                         // The overlay
                         if (rule.matches(steps))
@@ -109,7 +108,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                 {
                     // Reverses the placement of the steps to line up better with the rules
                     final int xOffset = (2 - i) * 19;
-                    blit(poseStack, guiLeft + 64 + xOffset, guiTop + 31, step.buttonX(), step.buttonY(), 32, 32, 10, 10, 256, 256);
+                    blit(poseStack, guiLeft + 64 + xOffset, guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
                 }
             }
         }

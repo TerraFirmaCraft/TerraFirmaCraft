@@ -83,6 +83,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -91,6 +92,7 @@ import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -102,7 +104,7 @@ public final class Helpers
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
 
-    private static final Random RANDOM = new Random();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
 
@@ -325,7 +327,7 @@ public final class Helpers
     {
         // There's no player here, so we can't safely do anything.
         //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
-        if (stack.hurt(amount, RANDOM, null))
+        if (stack.hurt(amount, new Random(), null))
         {
             stack.shrink(1);
             stack.setDamageValue(0);
@@ -821,6 +823,17 @@ public final class Helpers
         catch (Exception e)
         {
             return throwAsUnchecked(e);
+        }
+    }
+
+    /**
+     * Logs a warning and a stacktrace when called from the client thread, heuristically. Used for debugging, and indicates a programming error.
+     */
+    public static void warnWhenCalledFromClientThread()
+    {
+        if (Helpers.detectAssertionsEnabled() && Thread.currentThread().getName().equalsIgnoreCase("render thread"))
+        {
+            LOGGER.warn("This method should not be called from client thread, this is a bug!", new RuntimeException("Stacktrace"));
         }
     }
 

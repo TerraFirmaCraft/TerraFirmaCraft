@@ -54,14 +54,17 @@ public class AnvilPlanSelectButton extends Button
     {
         if (this.visible)
         {
-            super.renderButton(poseStack, mouseX, mouseY, partialTick);
-
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, AnvilPlanScreen.BACKGROUND);
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
             blit(poseStack, x, y, 176, 0, width, height, 256, 256);
             Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(result, x + 1, y + 1);
+
+            if (isHoveredOrFocused())
+            {
+                renderToolTip(poseStack, mouseX, mouseY);
+            }
         }
     }
 }

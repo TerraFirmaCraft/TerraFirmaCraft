@@ -12,5 +12,6 @@
     "hit_last",
     "bend_second_last",
     "bend_third_last"
-  ]
+  ],
+  "apply_forging_bonus": true
 }

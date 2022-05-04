@@ -23,13 +23,14 @@ import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPlanContainer>
 {
     public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/anvil_plan.png");
 
-    private Button leftButton, rightButton;
-    private List<AnvilPlanSelectButton> recipeButtons;
+    @Nullable private Button leftButton, rightButton;
+    @Nullable private List<AnvilPlanSelectButton> recipeButtons;
     private int maxPageInclusive;
     private int currentPage;
 
@@ -67,6 +68,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
 
             button.setCurrentPage(0);
             recipeButtons.add(button);
+            addRenderableWidget(button);
         }
 
         maxPageInclusive = (recipes.size() - 1) % recipesPerPage;
@@ -97,6 +99,8 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
 
     private void updateCurrentPage()
     {
+        assert recipeButtons != null && leftButton != null && rightButton != null;
+
         for (AnvilPlanSelectButton button : recipeButtons)
         {
             button.setCurrentPage(currentPage);

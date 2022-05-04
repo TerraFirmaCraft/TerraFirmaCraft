@@ -600,22 +600,22 @@ def generate(rm: ResourceManager):
         # Tools
         if 'tool' in metal_data.types:
             anvil_recipe(rm, '%s_tuyere' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
-            anvil_recipe(rm, '%s_pick_head' % metal, item('ingot'), item('pick_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last)
-            anvil_recipe(rm, '%s_shovel_head' % metal, item('ingot'), item('shovel_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last)
+            anvil_recipe(rm, '%s_pick_head' % metal, item('ingot'), item('pick_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last, bonus=True)
+            anvil_recipe(rm, '%s_shovel_head' % metal, item('ingot'), item('shovel_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, bonus=True)
 
-            anvil_recipe(rm, '%s_axe_head' % metal, item('ingot'), item('axe_head'), metal_data.tier, Rules.punch_last, Rules.hit_second_last, Rules.upset_third_last)
-            anvil_recipe(rm, '%s_hoe_head' % metal, item('ingot'), item('hoe_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, Rules.bend_not_last)
-            anvil_recipe(rm, '%s_hammer_head' % metal, item('ingot'), item('hammer_head'), metal_data.tier, Rules.punch_last, Rules.shrink_not_last)
-            anvil_recipe(rm, '%s_propick_head' % metal, item('ingot'), item('propick_head'), metal_data.tier, Rules.punch_last, Rules.draw_not_last, Rules.bend_not_last)
-            anvil_recipe(rm, '%s_saw_blade' % metal, item('ingot'), item('saw_blade'), metal_data.tier, Rules.hit_last, Rules.hit_second_last)
-            anvil_recipe(rm, '%s_sword_blade' % metal, item('double_ingot'), item('sword_blade'), metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last)
-            anvil_recipe(rm, '%s_mace_head' % metal, item('double_ingot'), item('mace_head'), metal_data.tier, Rules.hit_last, Rules.shrink_not_last, Rules.bend_not_last)
-            anvil_recipe(rm, '%s_scythe_blade' % metal, item('ingot'), item('scythe_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.bend_third_last)
-            anvil_recipe(rm, '%s_knife_blade' % metal, item('ingot'), item('knife_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.draw_third_last)
-            anvil_recipe(rm, '%s_javelin_head' % metal, item('ingot'), item('javelin_head'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.draw_third_last)
-            anvil_recipe(rm, '%s_chisel_head' % metal, item('ingot'), item('chisel_head'), metal_data.tier, Rules.hit_last, Rules.hit_not_last, Rules.draw_not_last)
+            anvil_recipe(rm, '%s_axe_head' % metal, item('ingot'), item('axe_head'), metal_data.tier, Rules.punch_last, Rules.hit_second_last, Rules.upset_third_last, bonus=True)
+            anvil_recipe(rm, '%s_hoe_head' % metal, item('ingot'), item('hoe_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, Rules.bend_not_last, bonus=True)
+            anvil_recipe(rm, '%s_hammer_head' % metal, item('ingot'), item('hammer_head'), metal_data.tier, Rules.punch_last, Rules.shrink_not_last, bonus=True)
+            anvil_recipe(rm, '%s_propick_head' % metal, item('ingot'), item('propick_head'), metal_data.tier, Rules.punch_last, Rules.draw_not_last, Rules.bend_not_last, bonus=True)
+            anvil_recipe(rm, '%s_saw_blade' % metal, item('ingot'), item('saw_blade'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, bonus=True)
+            anvil_recipe(rm, '%s_sword_blade' % metal, item('double_ingot'), item('sword_blade'), metal_data.tier, Rules.hit_last, Rules.bend_second_last, Rules.bend_third_last, bonus=True)
+            anvil_recipe(rm, '%s_mace_head' % metal, item('double_ingot'), item('mace_head'), metal_data.tier, Rules.hit_last, Rules.shrink_not_last, Rules.bend_not_last, bonus=True)
+            anvil_recipe(rm, '%s_scythe_blade' % metal, item('ingot'), item('scythe_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.bend_third_last, bonus=True)
+            anvil_recipe(rm, '%s_knife_blade' % metal, item('ingot'), item('knife_blade'), metal_data.tier, Rules.hit_last, Rules.draw_second_last, Rules.draw_third_last, bonus=True)
+            anvil_recipe(rm, '%s_javelin_head' % metal, item('ingot'), item('javelin_head'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.draw_third_last, bonus=True)
+            anvil_recipe(rm, '%s_chisel_head' % metal, item('ingot'), item('chisel_head'), metal_data.tier, Rules.hit_last, Rules.hit_not_last, Rules.draw_not_last, bonus=True)
 
-            anvil_recipe(rm, '%s_shield' % metal, item('double_sheet'), item('shield'), metal_data.tier, Rules.upset_last, Rules.bend_second_last, Rules.bend_third_last)
+            anvil_recipe(rm, '%s_shield' % metal, item('double_sheet'), item('shield'), metal_data.tier, Rules.upset_last, Rules.bend_second_last, Rules.bend_third_last, bonus=True)
 
         # Armor
         if 'armor' in metal_data.types:
@@ -725,7 +725,7 @@ def advanced_shaped(rm: ResourceManager, name_parts: ResourceIdentifier, pattern
         'key': utils.item_stack_dict(ingredients, ''.join(pattern)[0]),
         'result': item_stack_provider(result),
         'input_row': input_xy[1],
-        'input_col': input_xy[0],
+        'input_column': input_xy[0],
         'conditions': utils.recipe_condition(conditions)
     })
     return RecipeContext(rm, res)
@@ -852,12 +852,13 @@ def loom_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, ingredient:
     })
 
 
-def anvil_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: Json, result: Json, tier: int, *rules: Rules):
+def anvil_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: Json, result: Json, tier: int, *rules: Rules, bonus: bool = None):
     rm.recipe(('anvil', name_parts), 'tfc:anvil', {
         'input': utils.ingredient(ingredient),
         'result': item_stack_provider(result),
         'tier': tier,
-        'rules': [r.name for r in rules]
+        'rules': [r.name for r in rules],
+        'apply_forging_bonus': bonus
     })
 
 

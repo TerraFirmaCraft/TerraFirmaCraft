@@ -32,8 +32,6 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
     protected AnvilContainer(int windowId, AnvilBlockEntity anvil)
     {
         super(TFCContainerTypes.ANVIL.get(), windowId, anvil);
-
-        addDataSlots(anvil.getSyncableData());
     }
 
     @Override

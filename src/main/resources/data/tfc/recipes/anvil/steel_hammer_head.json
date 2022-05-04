@@ -11,5 +11,6 @@
   "rules": [
     "punch_last",
     "shrink_not_last"
-  ]
+  ],
+  "apply_forging_bonus": true
 }

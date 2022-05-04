@@ -10,12 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.screen.AnvilScreen;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
+import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.PacketHandler;
@@ -43,14 +45,19 @@ public class AnvilPlanButton extends Button
 
         blit(poseStack, x, y, 218, 0, width, height, 256, 256);
 
-        final AnvilRecipe recipe = anvil.getRecipe();
-        if (recipe == null)
+        final Level level = anvil.getLevel();
+        final Forging forging = anvil.getMainInputForging();
+        if (level != null && forging != null)
         {
-            blit(poseStack, x + 1, y + 1, 236, 0, 16, 16, 256, 256);
-        }
-        else
-        {
-            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), x + 1, y + 1);
+            final AnvilRecipe recipe = forging.getRecipe(level);
+            if (recipe == null)
+            {
+                blit(poseStack, x + 1, y + 1, 236, 0, 16, 16, 256, 256);
+            }
+            else
+            {
+                Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), x + 1, y + 1);
+            }
         }
 
         if (isHoveredOrFocused())

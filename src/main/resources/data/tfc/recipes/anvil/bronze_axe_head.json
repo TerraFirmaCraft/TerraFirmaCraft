@@ -12,5 +12,6 @@
     "punch_last",
     "hit_second_last",
     "upset_third_last"
-  ]
+  ],
+  "apply_forging_bonus": true
 }

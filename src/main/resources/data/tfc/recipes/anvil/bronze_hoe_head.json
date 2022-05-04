@@ -12,5 +12,6 @@
     "punch_last",
     "hit_not_last",
     "bend_not_last"
-  ]
+  ],
+  "apply_forging_bonus": true
 }

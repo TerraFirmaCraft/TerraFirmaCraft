@@ -13,13 +13,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.LazyOptional;
@@ -40,7 +42,6 @@ import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
 import org.jetbrains.annotations.Nullable;
 
 public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.AnvilInventory> implements ISlotCallback
@@ -55,40 +56,18 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
     private static final Component NAME = new TranslatableComponent("tfc.block_entity.anvil");
 
-    private final ContainerData syncableData;
-
-    private int workTarget; // The target to work, only for client purposes
-    private int workValue; // The current work progress of the item, only for client display purposes
-    @Nullable private AnvilRecipe cachedRecipe;
-
     public AnvilBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.ANVIL.get(), pos, state, AnvilInventory::new, NAME);
-
-        syncableData = new IntArrayBuilder()
-            .add(() -> workTarget, value -> workTarget = value)
-            .add(() -> workValue, value -> workValue = value);
-    }
-
-    public int getWorkTarget()
-    {
-        return workTarget;
-    }
-
-    public int getWorkValue()
-    {
-        return workValue;
     }
 
     @Nullable
-    public AnvilRecipe getRecipe()
+    public Forging getMainInputForging()
     {
-        return cachedRecipe;
-    }
-
-    public ContainerData getSyncableData()
-    {
-        return syncableData;
+        return inventory.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN)
+            .getCapability(ForgingCapability.CAPABILITY)
+            .resolve()
+            .orElse(null);
     }
 
     /**
@@ -158,17 +137,11 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     {
                         // Update the recipe held by the forging item
                         recipe = all.iterator().next();
-                        forge.setRecipe(recipe);
+                        forge.setRecipe(recipe, inventory);
                     }
                 }
-
-                // Update cached fields
-                cachedRecipe = recipe;
-                workTarget = recipe != null ? recipe.computeTarget(inventory) : 0;
-                workValue = forge.getWork();
             }
         }
-
         setChanged();
     }
 
@@ -177,15 +150,13 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         assert level != null;
 
         final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
-        final Forging forge = ForgingCapability.get(stack);
-        if (!stack.isEmpty() && forge != null)
+        if (!stack.isEmpty())
         {
-            // Set the recipe on the stack, and also update the recipe stored here and other recipe properties
-            forge.setRecipe(recipe);
-
-            cachedRecipe = recipe;
-            workTarget = recipe != null ? recipe.computeTarget(inventory) : 0;
-            workValue = forge.getWork();
+            final Forging forge = ForgingCapability.get(stack);
+            if (forge != null)
+            {
+                forge.setRecipe(recipe, inventory);
+            }
         }
     }
 
@@ -197,6 +168,25 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         final Forging forge = ForgingCapability.get(stack);
         if (forge != null)
         {
+            // Check that we have a hammer, either in the anvil or in the player inventory
+            ItemStack hammer = inventory.getStackInSlot(SLOT_HAMMER);
+            @Nullable InteractionHand hammerSlot = null;
+            if (hammer.isEmpty())
+            {
+                hammer = player.getMainHandItem();
+                hammerSlot = InteractionHand.MAIN_HAND;
+            }
+            if (hammer.isEmpty())
+            {
+                hammer = player.getOffhandItem();
+                hammerSlot = InteractionHand.OFF_HAND;
+            }
+            if (hammer.isEmpty())
+            {
+                player.displayClientMessage(new TranslatableComponent("tfc.tooltip.hammer_required_to_work"), false);
+                return InteractionResult.FAIL;
+            }
+
             // Prevent the player from immediately destroying the item by overworking
             if (!forge.getSteps().any() && forge.getWork() == 0 && step.step() < 0)
             {
@@ -209,15 +199,27 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
                 if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature(false)).orElse(false))
                 {
-                    player.displayClientMessage(new TranslatableComponent("tfc.tooltip.not_hot_enough_to_work"), true);
+                    player.displayClientMessage(new TranslatableComponent("tfc.tooltip.not_hot_enough_to_work"), false);
                     return InteractionResult.FAIL;
                 }
 
                 // Proceed with working
                 forge.addStep(step);
+
+                // Damage the hammer
+                final InteractionHand breakingHand = hammerSlot;
+                hammer.hurtAndBreak(1, player, e -> {
+                    if (breakingHand != null)
+                    {
+                        e.broadcastBreakEvent(breakingHand);
+                    }
+                });
+
                 if (forge.getWork() < 0 || forge.getWork() > ForgeStep.LIMIT)
                 {
-                    // todo: sound or other indicator of breaking?
+                    // Destroy the input
+                    inventory.setStackInSlot(SLOT_INPUT_MAIN, ItemStack.EMPTY);
+                    level.playSound(null, worldPosition, SoundEvents.ANVIL_DESTROY, SoundSource.PLAYERS, 0.4f, 1.0f);
                     return InteractionResult.FAIL;
                 }
 
@@ -242,6 +244,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
                 }
             }
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
@@ -340,6 +343,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         @Override
         public long getSeed()
         {
+            Helpers.warnWhenCalledFromClientThread();
             return anvil.getLevel() instanceof ServerLevel level ? level.getSeed() : 0;
         }
     }
