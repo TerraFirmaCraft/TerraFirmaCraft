@@ -42,7 +42,7 @@ public class BigCat extends Predator {
 
     public static BigCat createDiurnalCat(EntityType<? extends BigCat> type, Level level)
     {
-        return new BigCat(type, level, true);
+        return new BigCat(type, level, false);
     }
 
     public BigCat(EntityType<? extends Predator> type, Level level, boolean diurnal) {
