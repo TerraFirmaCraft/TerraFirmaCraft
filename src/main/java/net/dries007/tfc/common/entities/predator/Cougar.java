@@ -1,9 +1,7 @@
 package net.dries007.tfc.common.entities.predator;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
-public class Cougar extends BigCat {
+public class Cougar extends FelinePredator {
 
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Cougar.class, EntityDataSerializers.INT);
 

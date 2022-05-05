@@ -9,7 +9,6 @@ package net.dries007.tfc.common.entities;
 import java.util.Locale;
 import java.util.Map;
 
-import net.dries007.tfc.common.entities.predator.BigCat;
 import net.dries007.tfc.common.entities.predator.Cougar;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;

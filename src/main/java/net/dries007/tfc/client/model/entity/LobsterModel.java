@@ -73,8 +73,6 @@ public class LobsterModel extends EntityModel<AquaticCritter>
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    //Animation transubstantiated by Troggacompany
-
     public static final Animation SWIM = new Animation.Builder(0.45F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -170F, 0F, -180F).rotation(0.125F, -180F, 0F, -180F).rotation(0.45F, -170F, 0F, -180F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30F, 0F, 0F).rotation(0.0417F, -60F, 0F, 0F).rotation(0.125F, -60F, 0F, 0F).rotation(0.45F, -30F, 0F, 0F).build())
@@ -126,7 +124,9 @@ public class LobsterModel extends EntityModel<AquaticCritter>
         {
             final float adjustedAgeInTicks = ageInTicks + limbSwingAmount * 2F;
             SWIM.tick(parts, adjustedAgeInTicks);
-        } else {
+        }
+        else 
+        {
             float oscillation = 0.2F * Mth.cos(0.2F * ageInTicks);
             armLeft.xRot = oscillation;
             armRight.xRot = -1 * oscillation;

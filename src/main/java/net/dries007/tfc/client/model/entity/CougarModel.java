@@ -11,10 +11,8 @@
 package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
-import net.dries007.tfc.common.entities.predator.BigCat;
 import net.dries007.tfc.common.entities.predator.Cougar;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -23,10 +21,8 @@ import net.minecraft.util.Mth;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.model.Animation;
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.Easing;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 
 import java.util.Map;
 
@@ -76,9 +72,6 @@ public class CougarModel extends EntityModel<Cougar> {
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
-
-    //Animation transubstantiated by Troggacompany
-
     public static final Animation WALK = new Animation.Builder(1.0F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, -1F).rotation(0.5F, 0F, 0F, 1F).rotation(1.0F, 0F, 0F, -1F).build())
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -45F, 0F, 0F).rotation(0.25F, -44.43855F, 7.05302F, -7.10708F).rotation(0.75F, -44.47002F, -6.45856F, 6.51352F).rotation(1.0F, -45F, 0F, 0F).build())
@@ -89,8 +82,6 @@ public class CougarModel extends EntityModel<Cougar> {
         .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
         .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
         .build();
-
-    //Animation transubstantiated by Troggacompany
 
     public static final Animation RUN = new Animation.Builder(0.5F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -7.5F, 0F, 0F).noRotation(0.3333F).rotation(0.4167F, 4.69F, 0F, 0F).noRotation(0.5F).build())
@@ -118,8 +109,6 @@ public class CougarModel extends EntityModel<Cougar> {
         .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
         .build();
 
-    //Animation transubstantiated by Troggacompany
-
     public static final Animation SLEEP = new Animation.Builder(2.0F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 5F, 0F, 72.5F).rotation(0.5F, 5F, 0F, 72.5F).rotation(2.0F, 5F, 0F, 72.5F).build()) //.translation(0.0F,-7F,0F,2F).translation(1.0F,-7F,0F,2F)
         .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 90F, 0F, 0F).rotation(2.0F, 90F, 0F, 0F).build()) //.translation(0.0F,0F,-2F,0F).translation(1.0F,0F,-2F,0F)
@@ -130,8 +119,6 @@ public class CougarModel extends EntityModel<Cougar> {
         .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 12.5F, 0F, 12.5F).rotation(0.5F, 12.5F, 0F, 12.5F).rotation(2.0F, 12.5F, 0F, 12.5F).build())
         .bone("rear", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -45F, 0F, 0F).rotation(0.5F, -45F, 0F, 0F).rotation(2.0F, -45F, 0F, 0F).build())
         .build();
-
-    //Animation transubstantiated by Troggacompany
 
     public static final Animation CROUCH = new Animation.Builder(1.0F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 20F, 0F, -1F).rotation(0.5F, 18F, 0F, 1F).rotation(1.0F, 20F, 0F, -1F).build())
