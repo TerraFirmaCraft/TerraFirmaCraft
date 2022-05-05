@@ -27,6 +27,11 @@ public class FelinePredator extends Predator {
     public final double sprintSpeedMod;
     public final double attackDistanceSquared;
 
+    public static FelinePredator createNocturnal(EntityType<? extends Predator> type, Level level)
+    {
+        return new FelinePredator(type, level, false);
+    }
+
     public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal) {
         this(type, level, diurnal, 8, 36, 0.8, 1.5);
     }

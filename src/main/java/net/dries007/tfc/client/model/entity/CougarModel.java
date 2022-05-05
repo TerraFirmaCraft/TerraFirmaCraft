@@ -11,7 +11,7 @@
 package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
-import net.dries007.tfc.common.entities.predator.Cougar;
+import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -27,7 +27,7 @@ import net.minecraft.world.entity.Pose;
 import java.util.Map;
 
 
-public class CougarModel extends EntityModel<Cougar> {
+public class CougarModel extends EntityModel<FelinePredator> {
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
@@ -173,10 +173,10 @@ public class CougarModel extends EntityModel<Cougar> {
     }
 
     @Override
-    public void setupAnim(Cougar bigCat, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(FelinePredator felinePredator, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         defaults.forEach(ModelPart::loadPose);
 
-        if (bigCat.isSleeping())
+        if (felinePredator.isSleeping())
         {
             body.x = -8f;
             body.z = -2f;
@@ -184,17 +184,17 @@ public class CougarModel extends EntityModel<Cougar> {
         }
         else
         {
-            if (bigCat.getAttackTicks() > 0)
+            if (felinePredator.getAttackTicks() > 0)
             {
                 ATTACK.tick(parts, ageInTicks);
-            } else if (bigCat.getPose() == Pose.CROUCHING) {
+            } else if (felinePredator.getPose() == Pose.CROUCHING) {
                 body.y = 28f;
-                CROUCH.tick(parts, bigCat.walkProgress);
-            } else if (bigCat.isMoving()) {
-                if (bigCat.isSprinting()) {
+                CROUCH.tick(parts, felinePredator.walkProgress);
+            } else if (felinePredator.isMoving()) {
+                if (felinePredator.isSprinting()) {
                     RUN.tick(parts, ageInTicks);
                 } else {
-                    WALK.tick(parts, bigCat.walkProgress);
+                    WALK.tick(parts, felinePredator.walkProgress);
                 }
             }
 
