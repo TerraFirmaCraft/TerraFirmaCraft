@@ -65,6 +65,7 @@ public final class TFCSounds
 
     public static final RegistryObject<SoundEvent> PANNING = create("panning");
 
+    public static final RegistryObject<SoundEvent> SCRIBING_TABLE = create("scribing_table");
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("wattle_dyed");
     public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("wattle_daubed");
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("wattle_woven");

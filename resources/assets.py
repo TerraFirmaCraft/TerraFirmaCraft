@@ -1265,6 +1265,14 @@ def generate(rm: ResourceManager):
         block.with_block_loot('tfc:wood/lectern/%s' % wood)
         block.with_tag('minecraft:mineable/axe')
 
+        # Scribing Table
+        block = rm.blockstate('tfc:wood/scribing_table/%s' % wood, model='tfc:block/wood/scribing_table/%s' % wood, variants=four_rotations('tfc:block/wood/scribing_table/%s' % wood, (90, None, 180, 270)))
+        block.with_block_model(textures={'top': 'tfc:block/wood/scribing_table/%s' % wood, 'leg' : 'tfc:block/wood/log/%s' % wood, 'side' : 'tfc:block/wood/planks/%s' % wood, 'misc': 'tfc:block/wood/scribing_table/scribing_paraphernalia', 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/scribing_table')
+        block.with_item_model()
+        block.with_lang(lang("%s scribing table" % wood))
+        block.with_block_loot('tfc:wood/lectern/%s' % wood)
+        block.with_tag('minecraft:mineable/axe')
+
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
             rm.block_tag('minecraft:wooden_fences', fence_namespace)

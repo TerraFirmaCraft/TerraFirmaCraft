@@ -1,4 +1,21 @@
 {
+  "scribing_table": {
+    "sounds": [
+      {
+        "name": "ui/cartography_table/drawmap1",
+        "pitch": 0.8
+      },
+      {
+        "name": "ui/cartography_table/drawmap2",
+        "pitch": 0.8
+      },
+      {
+        "name": "ui/cartography_table/drawmap3",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.scribing_table.rename_item"
+  },
   "wattle_dyed": {
     "sounds": [
       {

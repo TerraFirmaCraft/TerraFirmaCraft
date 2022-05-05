@@ -173,6 +173,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
     rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
     rm.item_tag('soup_bowl', 'tfc:ceramic/bowl')
+    rm.item_tag('scribing_ink', 'minecraft:black_dye')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -456,6 +457,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
     rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
+    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
 
     # Item Sizes
 

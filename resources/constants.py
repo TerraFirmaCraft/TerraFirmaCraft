@@ -625,6 +625,7 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
     'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
+    'subtitles.block.tfc.scribing_table.rename_item': 'Player scribbling',
     # Sounds todo: subtitles for everything and standardize the format
     'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
     'tfc.animal.alpaca.hurt': 'Alpaca Yelps',
@@ -649,6 +650,7 @@ DEFAULT_LANG = {
     'tfc.screen.clay_knapping': 'Clay Knapping',
     'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
     'tfc.screen.leather_knapping': 'Leather Knapping',
+    'tfc.screen.scribing_table': 'Rename Items',
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
@@ -745,6 +747,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.low_familiarity': 'This %s is not familiar enough to produce.',
     'tfc.tooltip.animal.no_milk': 'This %s has no milk.',
     'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
+    'tfc.tooltip.scribing_table.missingink': 'Ink is missing!',
+    'tfc.tooltip.scribing_table.invalidink': 'Item isn\'t ink!',
 
     # Commands
 

@@ -34,6 +34,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<Container>> NUTRITION = register("nutrition", (windowId, inv, data) -> Container.create(TFCContainerTypes.NUTRITION.get(), windowId, inv));
     public static final RegistryObject<MenuType<Container>> CLIMATE = register("climate", (windowId, inv, data) -> Container.create(TFCContainerTypes.CLIMATE.get(), windowId, inv));
     public static final RegistryObject<MenuType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv));
+    public static final RegistryObject<MenuType<ScribingTableContainer>> SCRIBING_TABLE = register("scribing_table", ((windowId, inv, data) -> new ScribingTableContainer(inv, windowId)));
 
     public static final RegistryObject<MenuType<FirepitContainer>> FIREPIT = TFCContainerTypes.<FirepitBlockEntity, FirepitContainer>registerBlock("firepit", TFCBlockEntities.FIREPIT, FirepitContainer::create);
     public static final RegistryObject<MenuType<GrillContainer>> GRILL = TFCContainerTypes.<GrillBlockEntity, GrillContainer>registerBlock("grill", TFCBlockEntities.GRILL, GrillContainer::create);
