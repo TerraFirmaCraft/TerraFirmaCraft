@@ -71,6 +71,10 @@ def generate(rm: ResourceManager):
     rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
     rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'minecraft:polar_bear')
     rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
+    for entity in OCEAN_CREATURES.keys():
+        rm.entity_tag('bubble_column_immune', 'tfc:%s' % entity)
+    for entity in OCEAN_AMBIENT.keys():
+        rm.entity_tag('bubble_column_immune', 'tfc:%s' % entity)
 
     # Item Heats
 
@@ -260,6 +264,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
+    rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():
@@ -301,6 +306,8 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'forge:smooth_stone_slab', 'tfc:rock/smooth/%s_slab' % rock)
         rm.item_tag('tfc:rock_knapping', block('loose'))
         rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
+        if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
+            rm.block_tag('creates_upward_bubbles', block('magma'))
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
@@ -389,6 +396,7 @@ def generate(rm: ResourceManager):
         *['tfc:rock/%s/%s' % (variant, rock) for variant in ('raw', 'hardened', 'smooth', 'cobble', 'bricks', 'spike', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble', 'chiseled', 'loose', 'pressure_plate', 'button') for rock in ROCKS.keys()],
         *['tfc:rock/%s/%s_%s' % (variant, rock, suffix) for variant in ('raw', 'smooth', 'cobble', 'bricks', 'cracked_bricks', 'mossy_bricks', 'mossy_cobble') for rock in ROCKS.keys() for suffix in ('slab', 'stairs', 'wall')],
         *['tfc:rock/anvil/%s' % rock for rock, rock_data in ROCKS.items() if rock_data.category == 'igneous_intrusive' or rock_data.category == 'igneous_extrusive'],
+        *['tfc:rock/magma/%s' % rock for rock, rock_data in ROCKS.items() if rock_data.category == 'igneous_intrusive' or rock_data.category == 'igneous_extrusive'],
         *['tfc:metal/%s/%s' % (variant, metal) for variant, variant_data in METAL_BLOCKS.items() for metal, metal_data in METALS.items() if variant_data.type in metal_data.types],
         *['tfc:coral/%s_%s' % (color, variant) for color in CORALS for variant in CORAL_BLOCKS],
         'tfc:alabaster/raw/alabaster',
@@ -667,8 +675,8 @@ def generate(rm: ResourceManager):
     for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
         mob_loot(rm, mob, 'tfc:food/%s' % mob)
     mob_loot(rm, 'pufferfish', 'minecraft:pufferfish')
-    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=10)
-    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=10)
+    mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'})
+    mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'})
     for mob in ('isopod', 'lobster', 'horseshoe_crab'):
         mob_loot(rm, mob, 'tfc:shell')
     for mob in ('orca', 'dolphin', 'manatee'):

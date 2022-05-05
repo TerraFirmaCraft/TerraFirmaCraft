@@ -22,6 +22,7 @@
     "tfc:food/salmon",
     "tfc:food/tropical_fish",
     "tfc:food/turtle",
+    "tfc:food/calamari",
     "tfc:food/cooked_beef",
     "tfc:food/cooked_pork",
     "tfc:food/cooked_chicken",
@@ -42,6 +43,7 @@
     "tfc:food/cooked_salmon",
     "tfc:food/cooked_tropical_fish",
     "tfc:food/cooked_turtle",
+    "tfc:food/cooked_calamari",
     "minecraft:bone"
   ]
 }

@@ -33,7 +33,8 @@
       "tfc:underground_features"
     ],
     [
-      "tfc:geode"
+      "tfc:geode",
+      "tfc:lava_hot_spring"
     ],
     [
       "tfc:surface_loose_rocks",

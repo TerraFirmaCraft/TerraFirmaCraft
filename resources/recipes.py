@@ -214,7 +214,7 @@ def generate(rm: ResourceManager):
 
         for deposit in ORE_DEPOSITS:
             rm.block_tag('can_landslide', 'tfc:deposit/%s/%s' % (deposit, rock))
-            landslide_recipe(rm, '%s_%s_deposit' % (deposit, rock), 'tfc:deposit/%s/%s' % (deposit, rock), gravel)
+            landslide_recipe(rm, '%s_%s_deposit' % (deposit, rock), 'tfc:deposit/%s/%s' % (deposit, rock), 'tfc:deposit/%s/%s' % (deposit, rock))
 
     # Soil Blocks
     for variant in SOIL_BLOCK_VARIANTS:

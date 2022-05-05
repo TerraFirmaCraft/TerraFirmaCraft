@@ -239,7 +239,7 @@ def generate(rm: ResourceManager):
         })
         rm.placed_feature(boulder_cfg[0], 'tfc:%s' % boulder_cfg[0], decorate_chance(12), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_flat_enough(flatness=0.4))
 
-    rm.configured_feature('volcano_rivulet', 'tfc:rivulet', {'state': 'minecraft:magma_block'})
+    rm.configured_feature('volcano_rivulet', 'tfc:rivulet', {'state': 'tfc:rock/magma/basalt'})
     rm.configured_feature('volcano_caldera', 'tfc:flood_fill_lake', {
         'overfill': True,
         'replace_fluids': ['minecraft:water'],
@@ -293,6 +293,20 @@ def generate(rm: ResourceManager):
                     'rarity': 3
                 } if ore != '' else None
             })
+
+    igneous_rocks = expand_rocks(['igneous_extrusive', 'igneous_intrusive'])
+    configured_placed_feature(rm, 'lava_hot_spring', 'tfc:hot_spring', {
+        'fluid_state': 'minecraft:lava',
+        'radius': 10,
+        'allow_underwater': True,
+        'replaces_on_fluid_contact': [{
+            'replace': ['tfc:rock/raw/%s' % rock],
+            'with': [
+                {'block': 'tfc:rock/magma/%s' % rock, 'weight': 1},
+                {'block': 'tfc:rock/hardened/%s' % rock, 'weight': 2}
+            ]
+        } for rock in igneous_rocks]
+    }, decorate_chance(20), decorate_square())
 
     rm.configured_feature('random_empty_hot_spring', 'minecraft:simple_random_selector', {
         'features': count_weighted_list(
@@ -1262,9 +1276,11 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()]
     if category == 'river':
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
+        features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
+    if name == 'deep_ocean_trench':
+        features[Decoration.LARGE_FEATURES].append('tfc:lava_hot_spring')
     if name.find('lake') != -1:
         spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
-        features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
 
     if reef_features and temp.id in ('lukewarm', 'warm'):
         features[Decoration.LARGE_FEATURES].append('tfc:coral_reef')

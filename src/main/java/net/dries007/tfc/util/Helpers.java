@@ -140,6 +140,12 @@ public final class Helpers
         return Arrays.stream(enumClass.getEnumConstants()).filter(keyPredicate).collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> v, () -> new EnumMap<>(enumClass)));
     }
 
+    public static <K, V> V getRandomValue(Map<K, V> map, Random random)
+    {
+        final List<K> list = map.keySet().stream().toList();
+        return map.get(list.get(random.nextInt(list.size())));
+    }
+
     /**
      * Flattens a homogeneous stream of {@code Collection<T>}, {@code Stream<T>} and {@code T}s together into a {@code Stream<T>}
      * Usage: {@code stream.flatMap(Helpers::flatten)}

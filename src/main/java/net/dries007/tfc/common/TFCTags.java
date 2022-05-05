@@ -77,6 +77,8 @@ public class TFCTags
         public static final TagKey<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final TagKey<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
+        public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
+        public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
 
         private static TagKey<Block> create(String id)
         {
@@ -145,6 +147,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
         public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
         public static final TagKey<EntityType<?>> DESTROYS_FLOATING_PLANTS = create("destroys_floating_plants");
+        public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = create("bubble_column_immune");
 
         private static TagKey<EntityType<?>> create(String id)
         {
