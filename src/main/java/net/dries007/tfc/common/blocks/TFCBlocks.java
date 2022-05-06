@@ -294,7 +294,9 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noDrops().noOcclusion().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()), MISC);
     public static final RegistryObject<Block> FRESHWATER_BUBBLE_COLUMN = register("freshwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.of(Material.BUBBLE_COLUMN).noCollission().noDrops(), () -> Fluids.WATER));
-    public static final RegistryObject<Block> SALTWATER_BUBBLE_COLUMN = register("saltwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.of(Material.BUBBLE_COLUMN).noCollission().noDrops(), () -> TFCFluids.SALT_WATER.getSource()));
+    public static final RegistryObject<Block> SALTWATER_BUBBLE_COLUMN = register("saltwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.of(Material.BUBBLE_COLUMN).noCollission().noDrops(), TFCFluids.SALT_WATER::getSource));
+
+    public static final RegistryObject<Block> SHEET_PILE = register("sheet_pile", () -> new SheetPileBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(4, 60).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.SHEET_PILE)));
 
     // Fluids
 

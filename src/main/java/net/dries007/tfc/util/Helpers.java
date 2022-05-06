@@ -88,7 +88,6 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -114,18 +113,6 @@ public final class Helpers
     public static ResourceLocation identifier(String name)
     {
         return new ResourceLocation(MOD_ID, name);
-    }
-
-    /**
-     * Avoids IDE warnings by returning null for fields that are injected in by forge.
-     *
-     * @return Not null!
-     */
-    @NotNull
-    @SuppressWarnings("ConstantConditions")
-    public static <T> T notNull()
-    {
-        return null;
     }
 
     /**
@@ -777,6 +764,16 @@ public final class Helpers
         {
             list.add(index, element); // Insert at the target location, shifts the target forwards
         }
+    }
+
+    public static <T> List<T> listOf(@Nullable T element, int size)
+    {
+        final List<T> list = new ArrayList<>(size);
+        for (int i = 0; i < size; i++)
+        {
+            list.add(element);
+        }
+        return list;
     }
 
     public static <T extends IForgeRegistryEntry<T>> Collection<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)

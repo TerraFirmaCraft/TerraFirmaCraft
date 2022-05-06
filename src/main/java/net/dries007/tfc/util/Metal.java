@@ -95,11 +95,14 @@ public final class Metal
     private final float heatCapacity;
 
     private final ResourceLocation id;
+    private final ResourceLocation textureId;
     private final String translationKey;
 
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full" + id.getPath());
+
         this.tier = GsonHelper.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
         this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
@@ -110,6 +113,8 @@ public final class Metal
     public Metal(ResourceLocation id, FriendlyByteBuf buffer)
     {
         this.id = id;
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+
         this.tier = buffer.readVarInt();
         this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
         this.meltTemperature = buffer.readFloat();
@@ -129,6 +134,11 @@ public final class Metal
     public ResourceLocation getId()
     {
         return id;
+    }
+
+    public ResourceLocation getTextureId()
+    {
+        return textureId;
     }
 
     public int getTier()

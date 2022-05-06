@@ -77,6 +77,7 @@ public final class TFCBlockEntities
         TFCBlocks.ROCK_ANVILS.values().stream(),
         TFCBlocks.METALS.values().stream().map(m -> m.get(Metal.BlockType.ANVIL)).filter(Objects::nonNull)
     ));
+    public static final RegistryObject<BlockEntityType<SheetPileBlockEntity>> SHEET_PILE = register("sheet_pile", SheetPileBlockEntity::new, TFCBlocks.SHEET_PILE);
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)

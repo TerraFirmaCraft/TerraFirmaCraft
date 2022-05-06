@@ -28,7 +28,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -55,9 +56,17 @@ public class RenderHelpers
         RenderSystem.setShaderColor(r, g, b, a);
     }
 
-    // Use this to get vertices for a box from Min - Max point in 3D
-    // Pass the string of the axies you want the box to render on ('xz') for no top / bottom, etc.
-    // Pass 'xyz' for all vertices
+    public static float[][] getVerticesByShape(VoxelShape shape, String axes)
+    {
+        final AABB bounds = shape.bounds();
+        return getVerticesBySide((float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ, axes);
+    }
+
+    /**
+     * Use this to get vertices for a box from Min - Max point in 3D
+     * Pass the string of the axies you want the box to render on ('xz') for no top / bottom, etc.
+     * Pass "xyz" for all verticies.
+     */
     public static float[][] getVerticesBySide(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, String axes)
     {
         float[][] ret = new float[][] {};
@@ -74,7 +83,6 @@ public class RenderHelpers
             ret = append(ret, getZVertices(minX, minY, minZ, maxX, maxY, maxZ));
         }
         return ret;
-
     }
 
     public static float[][] getXVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
