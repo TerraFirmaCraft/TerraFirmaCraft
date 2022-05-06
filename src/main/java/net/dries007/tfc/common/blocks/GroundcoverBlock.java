@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blocks;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -117,7 +118,7 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
     {
-        level.removeBlock(pos, false);
+        Helpers.removeBlock(level, pos, Block.UPDATE_ALL_IMMEDIATE);
         if (!player.isCreative() && level instanceof ServerLevel)
         {
             BlockEntity tileEntity = state.hasBlockEntity() ? level.getBlockEntity(pos) : null;

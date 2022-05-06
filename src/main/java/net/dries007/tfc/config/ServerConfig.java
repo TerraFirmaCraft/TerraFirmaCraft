@@ -151,6 +151,9 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue chickenMinEggFamiliarity;
     public final ForgeConfigSpec.IntValue chickenHatchDays;
 
+    // Below Everything
+    public final ForgeConfigSpec.BooleanValue farmlandMakesTheBestRaceTracks;
+
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.server." + name);
@@ -346,8 +349,8 @@ public class ServerConfig
         chickenMinEggFamiliarity = builder.apply("chickenMinEggFamiliarity").comment("Minimum familiarity [0-1] needed to lay eggs. Set above 1 to disable egg laying.").defineInRange("chickenMinEggFamiliarity", 0.15d, 0, Float.MAX_VALUE);
         chickenHatchDays = builder.apply("chickenHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("chickenHatchDays", 8, 0, Integer.MAX_VALUE);
 
-        innerBuilder.pop();
+        innerBuilder.pop(3);
 
-        innerBuilder.pop().pop();
+        farmlandMakesTheBestRaceTracks = builder.apply("farmlandMakesTheBestRaceTracks").define("farmlandMakesTheBestRaceTracks", false);
     }
 }

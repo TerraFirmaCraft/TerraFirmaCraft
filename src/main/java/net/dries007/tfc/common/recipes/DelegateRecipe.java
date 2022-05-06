@@ -20,6 +20,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.resources.ResourceLocation;
 
 import net.minecraftforge.common.crafting.IShapedRecipe;
+import net.minecraftforge.common.crafting.conditions.ICondition;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -88,10 +89,16 @@ public abstract class DelegateRecipe<R extends Recipe<C>, C extends Container> i
 
         @Override
         @SuppressWarnings("unchecked")
+        public DelegateRecipe<?, C> fromJson(ResourceLocation recipeId, JsonObject json, ICondition.IContext context)
+        {
+            Recipe<C> internal = (Recipe<C>) RecipeManager.fromJson(DELEGATE, GsonHelper.getAsJsonObject(json, "recipe"), context);
+            return factory.apply(recipeId, internal);
+        }
+
+        @Override
         public DelegateRecipe<?, C> fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            Recipe<C> internal = (Recipe<C>) RecipeManager.fromJson(DELEGATE, GsonHelper.getAsJsonObject(json, "recipe"));
-            return factory.apply(recipeId, internal);
+            return fromJson(recipeId, json, ICondition.IContext.EMPTY);
         }
 
         @Nullable

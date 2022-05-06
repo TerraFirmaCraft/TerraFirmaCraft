@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -83,7 +84,7 @@ public final class TFCBlocks
     );
 
     public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).strength(0.6F).sound(TFCSounds.PEAT)), EARTH);
-    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(TFCSounds.PEAT), PEAT, null), EARTH);
+    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(TFCSounds.PEAT), PEAT, null, null), EARTH);
 
     public static final Map<SandBlockType, RegistryObject<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
         register(("sand/" + type.name()), type::create, EARTH)
@@ -154,6 +155,10 @@ public final class TFCBlocks
 
     public static final Map<Rock, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
         register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(ExtendedProperties.of(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops()).blockEntity(TFCBlockEntities.ANVIL), TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)), ROCK_STUFFS)
+    );
+
+    public static final Map<Rock, RegistryObject<Block>> MAGMA_BLOCKS = Helpers.mapOfKeys(Rock.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+        register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(Properties.of(Material.STONE, MaterialColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)), ROCK_STUFFS)
     );
 
     // Metals
@@ -286,6 +291,8 @@ public final class TFCBlocks
     public static final RegistryObject<Block> NEST_BOX = register("nest_box", () -> new NestBoxBlock(ExtendedProperties.of(Properties.of(Material.WOOD).strength(3f).noOcclusion().sound(TFCSounds.THATCH)).blockEntity(TFCBlockEntities.NEST_BOX).serverTicks(NestBoxBlockEntity::serverTick)), DECORATIONS);
 
     public static final RegistryObject<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noDrops().noOcclusion().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()), MISC);
+    public static final RegistryObject<Block> FRESHWATER_BUBBLE_COLUMN = register("freshwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.of(Material.BUBBLE_COLUMN).noCollission().noDrops(), () -> Fluids.WATER));
+    public static final RegistryObject<Block> SALTWATER_BUBBLE_COLUMN = register("saltwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.of(Material.BUBBLE_COLUMN).noCollission().noDrops(), () -> TFCFluids.SALT_WATER.getSource()));
 
     // Fluids
 

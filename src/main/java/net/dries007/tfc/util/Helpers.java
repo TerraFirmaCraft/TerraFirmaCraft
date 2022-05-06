@@ -47,7 +47,6 @@ import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.*;
@@ -82,7 +81,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -144,6 +142,12 @@ public final class Helpers
         return Arrays.stream(enumClass.getEnumConstants()).filter(keyPredicate).collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> v, () -> new EnumMap<>(enumClass)));
     }
 
+    public static <K, V> V getRandomValue(Map<K, V> map, Random random)
+    {
+        final List<K> list = map.keySet().stream().toList();
+        return map.get(list.get(random.nextInt(list.size())));
+    }
+
     /**
      * Flattens a homogeneous stream of {@code Collection<T>}, {@code Stream<T>} and {@code T}s together into a {@code Stream<T>}
      * Usage: {@code stream.flatMap(Helpers::flatten)}
@@ -197,9 +201,9 @@ public final class Helpers
         {
             return level; // Most obvious case, if we can directly cast up to level.
         }
-        if (maybeLevel instanceof WorldGenRegion)
+        if (maybeLevel instanceof WorldGenRegion level)
         {
-            return ((WorldGenRegion) maybeLevel).getLevel(); // Special case for world gen, when we can access the level unsafely
+            return level.getLevel(); // Special case for world gen, when we can access the level unsafely
         }
         return null; // A modder has done a strange ass thing
     }
@@ -633,11 +637,6 @@ public final class Helpers
             }).orElse(FluidStack.EMPTY);
         }
         return FluidStack.EMPTY;
-    }
-
-    public static void addTillable(Block block, Predicate<UseOnContext> condition, Consumer<UseOnContext> action)
-    {
-        HoeItemProtectedAccessor.TILLABLES_VIEW.put(block, Pair.of(condition, action));
     }
 
     public static <E> void encodeArray(FriendlyByteBuf buffer, E[] array, BiConsumer<E, FriendlyByteBuf> encoder)
@@ -1196,14 +1195,6 @@ public final class Helpers
 
         @SuppressWarnings("ConstantConditions")
         private ItemProtectedAccessor() { super(null); } // Never called
-    }
-
-    static abstract class HoeItemProtectedAccessor extends HoeItem
-    {
-        static final Map<Block, Pair<Predicate<UseOnContext>, Consumer<UseOnContext>>> TILLABLES_VIEW = TILLABLES;
-
-        @SuppressWarnings("ConstantConditions")
-        private HoeItemProtectedAccessor() { super(null, 0, 0, null); }  // Never called
     }
 
     interface ThrowingRunnable

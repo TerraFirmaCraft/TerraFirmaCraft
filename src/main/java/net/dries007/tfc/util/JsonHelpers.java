@@ -7,7 +7,6 @@
 package net.dries007.tfc.util;
 
 import java.util.Locale;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -16,13 +15,13 @@ import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -32,6 +31,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
+import org.jetbrains.annotations.Nullable;
 
 public final class JsonHelpers extends GsonHelper
 {
@@ -116,7 +116,7 @@ public final class JsonHelpers extends GsonHelper
 
     public static FluidStack getFluidStack(JsonObject json)
     {
-        final int amount = GsonHelper.getAsInt(json, "amount", -1);
+        final int amount = GsonHelper.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
         final Fluid fluid = getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
         return new FluidStack(fluid, amount);
     }

@@ -53,7 +53,7 @@ public class SoupItem extends DecayingItem
         }
     }
 
-    public static class SoupHandler extends FoodHandler
+    public static class SoupHandler extends FoodHandler.Dynamic
     {
         private ItemStack bowl;
 
@@ -61,11 +61,6 @@ public class SoupItem extends DecayingItem
         {
             super(data);
             this.bowl = ItemStack.EMPTY;
-        }
-
-        public void setFood(FoodRecord data)
-        {
-            this.data = data;
         }
 
         public void setBowl(ItemStack bowl)
@@ -88,12 +83,6 @@ public class SoupItem extends DecayingItem
         {
             super.deserializeNBT(nbt);
             bowl = ItemStack.of(nbt.getCompound("bowl"));
-        }
-
-        @Override
-        protected boolean isDynamic()
-        {
-            return true;
         }
 
         public ItemStack getBowl()

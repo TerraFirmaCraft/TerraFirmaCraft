@@ -122,6 +122,7 @@ def generate(rm: ResourceManager):
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()
             rm.block_model('tfc:rock/anvil/%s' % rock, parent='tfc:block/rock/anvil', textures={'texture': 'tfc:block/rock/raw/%s' % rock})
+            rm.blockstate('tfc:rock/magma/%s' % rock, model='tfc:block/rock/magma/%s' % rock).with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/rock/magma/%s' % rock}).with_lang(lang('%s magma block', rock)).with_item_model().with_block_loot('tfc:rock/magma/%s' % rock)
 
         # Ores
         for ore, ore_data in ORES.items():
@@ -209,12 +210,17 @@ def generate(rm: ResourceManager):
 
         if misc in {'stick', 'flint', 'feather', 'rotten_flesh', 'bone'}:  # Vanilla ground cover
             block.with_block_loot('minecraft:%s' % misc)
+        elif misc == 'salt_lick':
+            block.with_block_loot('tfc:powder/salt')
         else:
             block.with_block_loot('tfc:groundcover/%s' % misc)
             rm.item_model(('groundcover', misc), 'tfc:item/groundcover/%s' % misc)
 
     for block in SIMPLE_BLOCKS:
         rm.blockstate(block).with_block_model().with_item_model().with_block_loot('tfc:%s' % block).with_lang(lang(block))
+
+    rm.blockstate('freshwater_bubble_column', model='minecraft:block/water').with_lang(lang('bubble column'))
+    rm.blockstate('saltwater_bubble_column', model='tfc:block/fluid/salt_water').with_lang(lang('bubble column'))
 
     rm.blockstate(('alabaster', 'raw', 'alabaster')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster').with_lang(lang('Alabaster'))
     rm.blockstate(('alabaster', 'raw', 'alabaster_bricks')).with_block_model().with_item_model().with_block_loot('tfc:alabaster/raw/alabaster_bricks').with_lang(lang('Alabaster Bricks'))
@@ -820,7 +826,7 @@ def generate(rm: ResourceManager):
                 'name': 'tfc:seeds/%s' % crop
             })
 
-        rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop))
+        rm.item_model(('seeds', crop)).with_lang(lang('%s seeds', crop)).with_tag('seeds')
         if crop_data.type == 'double' or crop_data.type == 'double_stick':
             block = rm.blockstate(('wild_crop', crop), variants={
                 'part=top': {'model': 'tfc:block/wild_crop/%s_top' % crop},
@@ -913,6 +919,8 @@ def generate(rm: ResourceManager):
         rm.item_model(('food', veg)).with_lang(lang(veg))
     for nut, name in NUTRIENTS.items():
         rm.item_model(('food', '%s_soup' % nut)).with_lang(lang('%s Soup', name)).with_tag('soup_bowls')
+    for grain in GRAINS: # todo: no rice sandwich if we remove the bread
+        rm.item_model(('food', '%s_bread_sandwich' % grain)).with_lang(lang('%s Bread Sandwich', grain)).with_tag('sandwiches').with_tag('foods')
 
     # Berry Bushes
     lifecycle_to_model = {'healthy': '', 'dormant': 'dry_', 'fruiting': 'fruiting_', 'flowering': 'flowering_'}
@@ -924,7 +932,7 @@ def generate(rm: ResourceManager):
                 'lifecycle=%s,stage=%d' % (lifecycle, stage),
                 {'model': 'tfc:block/plant/%s%s_bush_%d' % (lifecycle_to_model[lifecycle], berry, stage)}
             ) for lifecycle, stage in itertools.product(lifecycles, range(0, 3))
-        )).with_lang(lang('%s Bush', berry)).with_block_loot('minecraft:stick')
+        )).with_lang(lang('%s Bush', berry))
 
         if data.type == 'stationary' or data.type == 'waterlogged':
             rm.item_model('plant/%s_bush' % berry, parent='tfc:block/plant/%s_bush_2' % berry, no_textures=True)
@@ -934,6 +942,7 @@ def generate(rm: ResourceManager):
         else:
             # Spreading uses a custom item model
             rm.item_model('plant/%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)
+            rm.block_loot('plant/%s_bush' % berry, 'minecraft:stick')
 
     rm.blockstate('plant/dead_berry_bush', variants={
         'stage=0': {'model': 'tfc:block/plant/dead_berry_bush_0'},
@@ -1105,11 +1114,11 @@ def generate(rm: ResourceManager):
             'conditions': ['minecraft:survives_explosion', condition_chance(TREE_SAPLING_DROP_CHANCES[wood])]
         }), ({
             'name': 'minecraft:stick',
-            'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.1)],
+            'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.2)],
             'functions': [loot_tables.set_count(1, 2)]
         }, {
             'name': 'minecraft:stick',
-            'conditions': [condition_chance(0.02)],
+            'conditions': [condition_chance(0.05)],
             'functions': [loot_tables.set_count(1, 2)]
         }))
 
@@ -1135,7 +1144,7 @@ def generate(rm: ResourceManager):
         block.make_fence()
         block.make_fence_gate()
 
-        for block_type in ('bookshelf', 'button', 'door', 'fence', 'fence_gate', 'pressure_plate', 'slab', 'stairs', 'trapdoor'):
+        for block_type in ('bookshelf', 'button', 'fence', 'fence_gate', 'pressure_plate', 'slab', 'stairs', 'trapdoor'):
             rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
 
         # Tool Rack
@@ -1166,6 +1175,7 @@ def generate(rm: ResourceManager):
 
         # Doors
         rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
+        rm.block_loot('wood/planks/%s_door' % wood, {'name': 'tfc:wood/planks/%s_door' % wood, 'conditions': [loot_tables.block_state_property('tfc:wood/planks/%s_door[half=lower]' % wood)]})
 
         # Log Fences
         log_fence_namespace = 'tfc:wood/planks/' + wood + '_log_fence'

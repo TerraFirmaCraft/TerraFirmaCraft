@@ -12,6 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -21,7 +22,10 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
@@ -38,7 +42,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
     @Override
     public boolean place(FeaturePlaceContext<HotSpringConfig> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random random = context.random();
         final HotSpringConfig config = context.config();
@@ -48,13 +52,18 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(context.level(), pos);
         final RockSettings rock = data.getRockData().getRock(pos.getX(), 0, pos.getZ());
-        final BlockState rockState = rock.raw().defaultBlockState();
+        final Block rawBlock = rock.raw();
+        final BlockState rockState = rawBlock.defaultBlockState();
         final BlockState gravelState = rock.gravel().defaultBlockState();
         final Fluid fluid = config.fluidState().getFluidState().getType();
 
         final boolean useFilledEmptyCheck = config.fluidState().isAir();
         final Set<BlockPos> filledEmptyPositions = new HashSet<>(); // Only used if the fill state is air - prevents positions from being 'filled' with air and affecting the shape of the spring
         final List<BlockPos> fissureStartPositions = new ArrayList<>();
+        final Optional<Map<Block, IWeighted<BlockState>>> replacers = config.replacesOnFluidContact();
+        final IWeighted<BlockState> magma = replacers.map(map -> map.getOrDefault(rawBlock, Helpers.getRandomValue(map, random))).orElse(null);
+
+        boolean touchedWater = false;
 
         for (int x = -config.radius(); x <= config.radius(); x++)
         {
@@ -62,21 +71,21 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
             {
                 final int localX = pos.getX() + x;
                 final int localZ = pos.getZ() + z;
-                final int y = world.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, localX, localZ) - 1;
+                final int y = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, localX, localZ) - 1;
 
                 // Disallow underwater locations
-                if (y <= TFCChunkGenerator.SEA_LEVEL_Y || !noise.inside(x, z))
+                if ((!config.allowUnderwater() && y <= TFCChunkGenerator.SEA_LEVEL_Y) || !noise.inside(x, z))
                 {
                     continue;
                 }
 
                 mutablePos.set(localX, y + 1, localZ);
-                final BlockState stateAbove = world.getBlockState(mutablePos);
-                if (!stateAbove.isAir())
+                final BlockState stateAbove = level.getBlockState(mutablePos);
+                if (!isEmptyBlock(config, stateAbove))
                 {
                     if (stateAbove.getMaterial().isReplaceable())
                     {
-                        setBlock(world, mutablePos, Blocks.AIR.defaultBlockState());
+                        setBlock(level, mutablePos, stateAbove.getFluidState().createLegacyBlock());
                     }
                     else
                     {
@@ -88,7 +97,12 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                 for (Direction direction : Direction.Plane.HORIZONTAL)
                 {
                     mutablePos.set(localX, y, localZ).move(direction);
-                    if (world.isEmptyBlock(mutablePos) && (!useFilledEmptyCheck || !filledEmptyPositions.contains(mutablePos)))
+                    final BlockState stateAt = level.getBlockState(mutablePos);
+                    if (stateAt.getMaterial().isLiquid())
+                    {
+                        touchedWater = true;
+                    }
+                    if (isEmptyBlock(config, stateAt) && (!useFilledEmptyCheck || !filledEmptyPositions.contains(mutablePos)))
                     {
                         edge = true;
                         break;
@@ -105,7 +119,7 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     if (startY == -1)
                     {
                         mutablePos.set(localX, y, localZ);
-                        setBlock(world, mutablePos, Blocks.AIR.defaultBlockState());
+                        setBlock(level, mutablePos, Blocks.AIR.defaultBlockState());
                     }
                 }
                 else
@@ -114,10 +128,16 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     final BlockPos posAt = mutablePos.immutable();
                     fissureStartPositions.add(posAt);
 
-                    setBlock(world, mutablePos, config.fluidState());
+                    // if we are touching water and allow water, use magma, else place the fluid
+                    final BlockState toPlace = touchedWater && config.allowUnderwater() && magma != null ? magma.get(random) : config.fluidState();
+                    setBlock(level, mutablePos, toPlace);
                     if (fluid != Fluids.EMPTY)
                     {
-                        world.scheduleTick(mutablePos, fluid, 0);
+                        level.scheduleTick(mutablePos, fluid, 0);
+                    }
+                    if (touchedWater)
+                    {
+                        level.scheduleTick(mutablePos, toPlace.getBlock(), 20); // activates magma blocks, fixes floating lava
                     }
                     if (useFilledEmptyCheck)
                     {
@@ -125,13 +145,13 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     }
 
                     mutablePos.set(localX, y - 1, localZ);
-                    setFissureBaseBlock(world, mutablePos, gravelState);
+                    setFissureBaseBlock(config, level, mutablePos, gravelState);
                 }
 
                 for (int dy = edge ? 0 : -2; dy >= -surfaceDepth; dy--)
                 {
                     mutablePos.set(localX, y + dy, localZ);
-                    if (!setFissureBaseBlock(world, mutablePos, rockState))
+                    if (!setFissureBaseBlock(config, level, mutablePos, rockState))
                     {
                         break;
                     }
@@ -148,20 +168,25 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
         final List<BlockPos> selected = Helpers.uniqueRandomSample(fissureStartPositions, fissureStarts, random);
         for (BlockPos start : selected)
         {
-            FissureFeature.placeFissure(world, start, pos, mutablePos, random, config.fluidState(), rockState, 10, 22, 6, 16, 12, config.decoration().orElse(null));
+            FissureFeature.placeFissure(level, start, pos, mutablePos, random, config.fluidState(), rockState, 10, 22, 6, 16, 12, config.decoration().orElse(null));
         }
 
         return true;
     }
 
-    private boolean setFissureBaseBlock(WorldGenLevel world, BlockPos pos, BlockState state)
+    private boolean setFissureBaseBlock(HotSpringConfig config, WorldGenLevel level, BlockPos pos, BlockState state)
     {
-        final BlockState stateAt = world.getBlockState(pos);
-        if (stateAt.isAir())
+        final BlockState stateAt = level.getBlockState(pos);
+        if (isEmptyBlock(config, stateAt))
         {
             return false;
         }
-        world.setBlock(pos, state, 2);
+        level.setBlock(pos, state, 2);
         return true;
+    }
+
+    private static boolean isEmptyBlock(HotSpringConfig config, BlockState state)
+    {
+        return config.allowUnderwater() ? FluidHelpers.isAirOrEmptyFluid(state) : state.isAir();
     }
 }

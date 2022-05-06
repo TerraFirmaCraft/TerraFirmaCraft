@@ -9,7 +9,6 @@ package net.dries007.tfc.world.biome;
 import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -36,6 +35,7 @@ import net.dries007.tfc.world.river.MidpointFractal;
 import net.dries007.tfc.world.river.Watershed;
 import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -158,22 +158,8 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     @Override
     public Holder<Biome> getNoiseBiome(int quartX, int quartZ)
     {
-        final boolean debugNoiseBiomeQueriesWithInvalidClimate = false;
-
-        final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
-        final ChunkData data = chunkDataProvider.get(chunkPos);
         final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
-
-        // noinspection ConstantConditions
-        if (debugNoiseBiomeQueriesWithInvalidClimate && data == ChunkData.EMPTY)
-        {
-            System.out.println("getNoiseBiome() called but no climate data could be found at " + quartX + ", " + quartZ);
-            new Exception("Stacktrace").printStackTrace();
-        }
-
-        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
-        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
-        final BiomeExtension extension = variants.get(temperature, rainfall);
+        final BiomeExtension extension = getBiomeExtension(variants, quartX, quartZ);
         return biomeRegistry.getHolderOrThrow(extension.key());
     }
 
@@ -189,6 +175,13 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     public BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ)
     {
         return biomeLayer.get(quartX, quartZ);
+    }
+
+    @Override
+    public Holder<Biome> getClimateForBiome(BiomeVariants variants, int quartX, int quartZ)
+    {
+        final BiomeExtension extension = getBiomeExtension(variants, quartX, quartZ);
+        return biomeRegistry.getHolderOrThrow(extension.key());
     }
 
     @Override
@@ -249,6 +242,25 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
             }
         }
         return pair;
+    }
+
+    private BiomeExtension getBiomeExtension(BiomeVariants variants, int quartX, int quartZ)
+    {
+        final boolean debugNoiseBiomeQueriesWithInvalidClimate = false;
+
+        final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
+        final ChunkData data = chunkDataProvider.get(chunkPos);
+
+        // noinspection ConstantConditions
+        if (debugNoiseBiomeQueriesWithInvalidClimate && data == ChunkData.EMPTY)
+        {
+            System.out.println("getNoiseBiome() called but no climate data could be found at " + quartX + ", " + quartZ);
+            new Exception("Stacktrace").printStackTrace();
+        }
+
+        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
+        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
+        return variants.get(temperature, rainfall);
     }
 
     private BiomeRainfall calculateRainfall(float rainfall)

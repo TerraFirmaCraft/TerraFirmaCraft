@@ -8,7 +8,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/planks/acacia_door"
+          "name": "tfc:wood/planks/acacia_door",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/planks/acacia_door",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

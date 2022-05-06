@@ -80,7 +80,7 @@
                 },
                 {
                   "condition": "minecraft:random_chance",
-                  "chance": 0.1
+                  "chance": 0.2
                 }
               ],
               "functions": [
@@ -100,7 +100,7 @@
               "conditions": [
                 {
                   "condition": "minecraft:random_chance",
-                  "chance": 0.02
+                  "chance": 0.05
                 }
               ],
               "functions": [

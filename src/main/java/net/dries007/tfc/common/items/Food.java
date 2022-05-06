@@ -104,8 +104,10 @@ public enum Food
     BLUEGILL(true, false),
     TROPICAL_FISH(true, false),
     TURTLE(true, false),
+    CALAMARI(true, false),
     // Cooked Meats
     COOKED_BEEF(true, false),
+    COOKED_CALAMARI(true, false),
     COOKED_PORK(true, false),
     COOKED_CHICKEN(true, false),
     COOKED_MUTTON(true, false),

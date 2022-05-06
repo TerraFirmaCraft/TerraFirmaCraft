@@ -7,46 +7,59 @@
 package net.dries007.tfc.util;
 
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import com.mojang.logging.LogUtils;
-import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import com.mojang.logging.LogUtils;
+import net.dries007.tfc.network.DataManagerSyncPacket;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 /**
  * An implementation of a json reload listener, which has an internal backing registry which is then populated via json.
  * Elements can be registered to this manager, and then the manager will error if those elements are not populated by json entries.
  */
-public class RegisteredDataManager<T> extends SimpleJsonResourceReloadListener
+public class RegisteredDataManager<T> extends DataManager<RegisteredDataManager.Entry<T>>
 {
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    protected final BiMap<ResourceLocation, Entry<T>> types;
+    @Nullable
+    private static <T> BiFunction<ResourceLocation, FriendlyByteBuf, Entry<T>> fixNetworkFactory(@Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory)
+    {
+        return networkFactory != null ? networkFactory.andThen(Entry::of) : null;
+    }
+
+    @Nullable
+    private static <T> BiConsumer<Entry<T>, FriendlyByteBuf> fixNetworkEncoder(@Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder)
+    {
+        return networkEncoder != null ? (e, buf) -> networkEncoder.accept(e.value, buf) : null;
+    }
+
+
     protected final BiFunction<ResourceLocation, JsonObject, T> factory;
     protected final Function<ResourceLocation, T> fallbackFactory;
     protected final String typeName;
 
     public RegisteredDataManager(BiFunction<ResourceLocation, JsonObject, T> factory, Function<ResourceLocation, T> fallbackFactory, String domain, String typeName)
     {
-        super(new Gson(), TerraFirmaCraft.MOD_ID + "/" + domain);
+        this(factory, fallbackFactory, domain, typeName, null, null, null);
+    }
 
-        this.types = HashBiMap.create();
+    public RegisteredDataManager(BiFunction<ResourceLocation, JsonObject, T> factory, Function<ResourceLocation, T> fallbackFactory, String domain, String typeName, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<Entry<T>>> networkPacketFactory)
+    {
+        super(domain, typeName, (res, id) -> null, fixNetworkFactory(networkFactory), fixNetworkEncoder(networkEncoder), networkPacketFactory);
+
         this.factory = factory;
         this.fallbackFactory = fallbackFactory;
         this.typeName = typeName;
@@ -102,6 +115,13 @@ public class RegisteredDataManager<T> extends SimpleJsonResourceReloadListener
 
     public static class Entry<T> implements Supplier<T>
     {
+        private static <T> Entry<T> of(T value)
+        {
+            final Entry<T> entry = new Entry<>();
+            entry.value = value;
+            return entry;
+        }
+
         @Nullable private T value = null;
 
         @Override

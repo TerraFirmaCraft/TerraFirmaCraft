@@ -37,7 +37,8 @@
       "tfc:iceberg_packed",
       "tfc:iceberg_blue",
       "tfc:iceberg_packed_rare",
-      "tfc:iceberg_blue_rare"
+      "tfc:iceberg_blue_rare",
+      "tfc:lava_hot_spring"
     ],
     [
       "tfc:surface_loose_rocks",

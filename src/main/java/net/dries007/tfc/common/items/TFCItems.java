@@ -105,6 +105,8 @@ public final class TFCItems
     public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food -> register("food/" + food.name(), () -> new DecayingItem(new Item.Properties().food(food.getFoodProperties()).tab(TFCItemGroup.FOOD))));
 
     public static final Map<Nutrient, RegistryObject<SoupItem>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient -> register("food/" + nutrient.name() + "_soup", () -> new SoupItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
+    public static final Map<Grain, RegistryObject<Item>> SANDWICHES = Helpers.mapOfKeys(Grain.class, grain -> register("food/" + grain.name() + "_bread_sandwich", () -> new SandwichItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
+
 
     // Flora
 
