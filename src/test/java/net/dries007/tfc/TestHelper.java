@@ -14,12 +14,10 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -30,7 +28,6 @@ import io.netty.buffer.Unpooled;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -48,7 +45,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TestHelper
 {
-    public static final Supplier<ResourceLocation> TEST_RECIPE = () -> Helpers.identifier("test");
     public static final Artist.Custom<MidpointFractal> MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
     public static final Artist.Custom<List<MidpointFractal>> MULTI_MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> fractal.forEach(f -> draw(f, g, 1)));
     public static final Artist.Custom<RiverFractal> RIVER_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
@@ -204,16 +200,12 @@ public class TestHelper
         final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
         encode.accept(t, buffer);
         final T result = decode.apply(buffer);
-        assertEquals(buffer.readableBytes(), 0);
+        assertEquals(0, buffer.readableBytes(), "Buffer has " + buffer.readableBytes() + " remaining bytes");
         return result;
     }
 
     public static <R extends Recipe<?>, S extends RecipeSerializer<R>> R encodeAndDecode(R recipe, S serializer)
     {
-        final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        serializer.toNetwork(buffer, recipe);
-        final R result = serializer.fromNetwork(TEST_RECIPE.get(), buffer);
-        assertEquals(buffer.readableBytes(), 0);
-        return result;
+        return encodeAndDecode(recipe, (r, buf) -> serializer.toNetwork(buf, r), buf -> serializer.fromNetwork(recipe.getId(), buf));
     }
 }

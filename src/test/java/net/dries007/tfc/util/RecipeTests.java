@@ -16,15 +16,12 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import org.junit.jupiter.api.Test;
 
-/**
- * WIP recipe validation. Currently, doesn't check much of anything interesting
- */
 public class RecipeTests extends TestHelper
 {
     @Test
     public void testHeatingRecipe()
     {
-        final HeatingRecipe before = new HeatingRecipe(TEST_RECIPE.get(), Ingredient.of(Items.CLAY), ItemStackProvider.copyInput(), new FluidStack(Fluids.WATER, 100), 1000);
+        final HeatingRecipe before = new HeatingRecipe(Helpers.identifier("heating"), Ingredient.of(Items.CLAY), ItemStackProvider.copyInput(), new FluidStack(Fluids.WATER, 100), 1000);
         final HeatingRecipe after = encodeAndDecode(before, new HeatingRecipe.Serializer());
         assertRecipeEquals(before, after);
     }
