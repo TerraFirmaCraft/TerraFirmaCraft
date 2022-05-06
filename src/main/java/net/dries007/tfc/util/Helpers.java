@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.Iterators;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -27,15 +27,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -43,7 +40,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -144,8 +140,7 @@ public final class Helpers
 
     public static <K, V> V getRandomValue(Map<K, V> map, Random random)
     {
-        final List<K> list = map.keySet().stream().toList();
-        return map.get(list.get(random.nextInt(list.size())));
+        return Iterators.get(map.values().iterator(), random.nextInt(map.size()));
     }
 
     /**
@@ -218,22 +213,6 @@ public final class Helpers
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
     }
 
-    /**
-     * @deprecated Use {@link BlockGetter#getBlockEntity(BlockPos, BlockEntityType)} instead as it's safer
-     */
-    @Nullable
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    public static <T extends BlockEntity> T getBlockEntity(BlockGetter world, BlockPos pos, Class<T> tileEntityClass)
-    {
-        BlockEntity te = world.getBlockEntity(pos);
-        if (tileEntityClass.isInstance(te))
-        {
-            return (T) te;
-        }
-        return null;
-    }
-
     public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
     {
         return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
@@ -254,35 +233,6 @@ public final class Helpers
     {
         selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal<?>);
         selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
-    }
-
-    /**
-     * Fluid Sensitive version of Bucketable#bucketMobPickup
-     */
-    public static <T extends LivingEntity & Bucketable> Optional<InteractionResult> bucketMobPickup(Player player, InteractionHand hand, T entity)
-    {
-        ItemStack held = player.getItemInHand(hand);
-        ItemStack bucketItem = entity.getBucketItemStack();
-        if (bucketItem.getItem() instanceof MobBucketItem mobBucket && held.getItem() instanceof BucketItem heldBucket)
-        {
-            // Verify that the one you're holding and the corresponding mob bucket contain the same fluid
-            if (mobBucket.getFluid().isSame(heldBucket.getFluid()) && entity.isAlive())
-            {
-                entity.playSound(entity.getPickupSound(), 1.0F, 1.0F);
-                entity.saveToBucketTag(bucketItem);
-                ItemStack itemstack2 = ItemUtils.createFilledResult(held, player, bucketItem, false);
-                player.setItemInHand(hand, itemstack2);
-                Level level = entity.level;
-                if (!level.isClientSide)
-                {
-                    CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, bucketItem);
-                }
-
-                entity.discard();
-                return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
-            }
-        }
-        return Optional.empty();
     }
 
     public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)

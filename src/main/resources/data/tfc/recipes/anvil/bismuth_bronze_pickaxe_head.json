@@ -5,7 +5,7 @@
     "item": "tfc:metal/ingot/bismuth_bronze"
   },
   "result": {
-    "item": "tfc:metal/pick_head/bismuth_bronze"
+    "item": "tfc:metal/pickaxe_head/bismuth_bronze"
   },
   "tier": 2,
   "rules": [

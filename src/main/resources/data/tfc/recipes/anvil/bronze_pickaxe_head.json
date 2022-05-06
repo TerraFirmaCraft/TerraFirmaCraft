@@ -2,12 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/ingot/blue_steel"
+    "item": "tfc:metal/ingot/bronze"
   },
   "result": {
-    "item": "tfc:metal/pick_head/blue_steel"
+    "item": "tfc:metal/pickaxe_head/bronze"
   },
-  "tier": 6,
+  "tier": 2,
   "rules": [
     "punch_last",
     "bend_not_last",

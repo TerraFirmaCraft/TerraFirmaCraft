@@ -355,7 +355,7 @@ def generate(rm: ResourceManager):
         heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item='tfc:food/%s_bread' % grain)
         quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, 'tfc:food/%s_flour' % grain)
         res = utils.resource_location(rm.domain, grain + '_cutting')
-        rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
+        rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', 'crafting', res.path), {
             'type': 'tfc:extra_products_shapeless_crafting',
             'extra_products': utils.item_stack_list('tfc:straw'),
             'recipe': {
@@ -524,7 +524,7 @@ def generate(rm: ResourceManager):
     alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
 
     # Bloomery Recipes
-    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 4, 15000)
+    bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
 
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
@@ -608,13 +608,12 @@ def generate(rm: ResourceManager):
         # Misc
         if 'part' in metal_data.types:
             anvil_recipe(rm, '%s_sheet' % metal, item('double_ingot'), item('sheet'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last)
-            anvil_recipe(rm, '%s_lamp' % metal, item('ingot'), item('lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
             anvil_recipe(rm, '%s_rod' % metal, item('ingot'), '2 tfc:metal/rod/%s' % metal, metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
 
         # Tools
         if 'tool' in metal_data.types:
             anvil_recipe(rm, '%s_tuyere' % metal, 'tfc:metal/double_sheet/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
-            anvil_recipe(rm, '%s_pick_head' % metal, item('ingot'), item('pick_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last, bonus=True)
+            anvil_recipe(rm, '%s_pickaxe_head' % metal, item('ingot'), item('pickaxe_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last, bonus=True)
             anvil_recipe(rm, '%s_shovel_head' % metal, item('ingot'), item('shovel_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, bonus=True)
 
             anvil_recipe(rm, '%s_axe_head' % metal, item('ingot'), item('axe_head'), metal_data.tier, Rules.punch_last, Rules.hit_second_last, Rules.upset_third_last, bonus=True)
@@ -640,6 +639,7 @@ def generate(rm: ResourceManager):
 
         if 'utility' in metal_data.types:
             anvil_recipe(rm, '%s_trapdoor' % metal, item('sheet'), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_lamp' % metal, item('ingot'), item('lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
 
     hit_x3 = Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last
 
@@ -658,8 +658,8 @@ def generate(rm: ResourceManager):
     anvil_recipe(rm, 'iron_bars', 'tfc:metal/sheet/wrought_iron', '8 minecraft:iron_bars', 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
     anvil_recipe(rm, 'iron_bars_double', 'tfc:metal/double_sheet/wrought_iron', '16 iron_bars', 3, Rules.upset_last, Rules.punch_second_last, Rules.punch_third_last)
     anvil_recipe(rm, 'iron_door', 'tfc:metal/sheet/wrought_iron', 'minecraft:iron_door', 3, Rules.hit_last, Rules.draw_not_last, Rules.punch_not_last)
-    anvil_recipe(rm, 'red_steel_bucket', 'tfc:metal/sheet/red_steel', 'tfc:red_steel_bucket', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
-    anvil_recipe(rm, 'blue_steel_bucket', 'tfc:metal/sheet/blue_steel', 'tfc:blue_steel_bucket', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
+    # anvil_recipe(rm, 'red_steel_bucket', 'tfc:metal/sheet/red_steel', 'tfc:red_steel_bucket', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
+    # anvil_recipe(rm, 'blue_steel_bucket', 'tfc:metal/sheet/blue_steel', 'tfc:blue_steel_bucket', 6, Rules.bend_last, Rules.bend_second_last, Rules.bend_third_last)
     anvil_recipe(rm, 'wrought_iron_grill', 'tfc:metal/double_sheet/wrought_iron', 'tfc:wrought_iron_grill', 3, Rules.draw_any, Rules.punch_last, Rules.punch_not_last)
     anvil_recipe(rm, 'brass_mechanisms', 'tfc:metal/ingot/brass', '2 tfc:brass_mechanisms', 1, Rules.punch_last, Rules.hit_second_last, Rules.punch_third_last)
 
@@ -833,12 +833,12 @@ def alloy_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, meta
         } for p in parts]
     })
 
-def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: Json, metal: Json, catalyst: Json, catalyst_count: int, time: int):
+
+def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, result: Json, metal: Json, catalyst: Json, time: int):
     rm.recipe(('bloomery', name_parts), 'tfc:bloomery', {
         'result': item_stack_provider(result),
         'fluid': fluid_stack_ingredient(metal),
         'catalyst': utils.ingredient(catalyst),
-        'catalyst_count': catalyst_count,
         'duration': time
     })
 

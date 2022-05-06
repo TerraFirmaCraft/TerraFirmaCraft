@@ -91,14 +91,14 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     }
 
     @Override
-    @SuppressWarnings("remove")
+    @SuppressWarnings("removal")
     public Class<? extends T> getRecipeClass()
     {
         return type.getRecipeClass();
     }
 
     @Override
-    @SuppressWarnings("remove")
+    @SuppressWarnings("removal")
     public ResourceLocation getUid()
     {
         return type.getUid();

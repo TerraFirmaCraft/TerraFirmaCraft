@@ -2,12 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/ingot/steel"
+    "item": "tfc:metal/ingot/wrought_iron"
   },
   "result": {
-    "item": "tfc:metal/pick_head/steel"
+    "item": "tfc:metal/pickaxe_head/wrought_iron"
   },
-  "tier": 4,
+  "tier": 3,
   "rules": [
     "punch_last",
     "bend_not_last",
