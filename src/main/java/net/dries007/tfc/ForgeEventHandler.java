@@ -83,6 +83,7 @@ import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
@@ -142,6 +143,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
+        bus.addListener(ForgeEventHandler::onBreakSpeed);
         bus.addListener(ForgeEventHandler::onNeighborUpdate);
         bus.addListener(ForgeEventHandler::onExplosionDetonate);
         bus.addListener(ForgeEventHandler::onWorldTick);
@@ -455,6 +457,24 @@ public final class ForgeEventHandler
             {
                 world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addIsolatedPos(pos));
             }
+        }
+    }
+
+    public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
+    {
+        // Apply global modifiers when not using the correct tool
+        // This makes the difference between bare fists and tools more pronounced, without having to massively buff either our tools or make our blocks way higher than the standard hardness.
+        final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
+        if (defaultDestroySpeed <= 1.0f)
+        {
+            event.setNewSpeed(event.getNewSpeed() * 0.4f);
+        }
+
+        // Apply mining speed modifiers from forging bonuses
+        final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
+        if (bonus != ForgingBonus.NONE)
+        {
+            event.setNewSpeed(event.getNewSpeed() * bonus.efficiency());
         }
     }
 

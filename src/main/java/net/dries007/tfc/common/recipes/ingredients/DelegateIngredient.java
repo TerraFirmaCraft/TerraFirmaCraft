@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
@@ -108,5 +110,21 @@ public abstract class DelegateIngredient extends Ingredient
     @Override
     public abstract IIngredientSerializer<? extends DelegateIngredient> getSerializer();
 
-    protected abstract ItemStack[] getDefaultItems();
+    protected ItemStack[] getDefaultItems()
+    {
+        return ForgeRegistries.ITEMS.getValues()
+            .stream()
+            .map(item -> {
+                final ItemStack stack = new ItemStack(item);
+                return testDefaultItem(stack);
+            })
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
+    }
+
+    @Nullable
+    protected ItemStack testDefaultItem(ItemStack stack)
+    {
+        return stack;
+    }
 }

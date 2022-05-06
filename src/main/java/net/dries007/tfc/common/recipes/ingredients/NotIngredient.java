@@ -11,7 +11,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -46,12 +45,6 @@ public class NotIngredient extends DelegateIngredient
     public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
-    }
-
-    @Override
-    protected ItemStack[] getDefaultItems()
-    {
-        return ForgeRegistries.ITEMS.getValues().stream().map(ItemStack::new).toArray(ItemStack[]::new);
     }
 
     public enum Serializer implements IIngredientSerializer<NotIngredient>

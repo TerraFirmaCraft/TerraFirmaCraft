@@ -16,6 +16,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,7 +75,35 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        // todo: shift click behavior
-        return super.moveStack(stack, slotIndex);
+        return switch (typeOf(slotIndex))
+            {
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, AnvilBlockEntity.SLOT_HAMMER, AnvilBlockEntity.SLOT_CATALYST + 1, false)
+                    && !moveItemStackTo(stack, AnvilBlockEntity.SLOT_INPUT_MAIN, AnvilBlockEntity.SLOT_INPUT_SECOND + 1, false);
+                case CONTAINER -> {
+                    final Level level = blockEntity.getLevel();
+                    final Forging forge = ForgingCapability.get(stack);
+
+                    // Shift clicking needs to attempt to clear the recipe on the stack, then restore it if we fail to transfer out
+                    AnvilRecipe recipe = null;
+                    int target = -1;
+
+                    if (forge != null && level != null)
+                    {
+                        recipe = forge.getRecipe(level);
+                        target = forge.getWorkTarget();
+                        forge.clearRecipeIfNotWorked();
+                    }
+
+                    // Do the stack movement
+                    final boolean result = !moveItemStackTo(stack, containerSlots, slots.size(), false);
+
+                    // And then restore the stack
+                    if (!stack.isEmpty() && recipe != null)
+                    {
+                        forge.setRecipe(recipe, target);
+                    }
+                    yield result;
+                }
+            };
     }
 }

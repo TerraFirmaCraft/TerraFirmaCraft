@@ -22,25 +22,22 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
+import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.util.Metal;
 
-public class RockAnvilBlock extends Block implements IForgeBlockExtension, EntityBlockExtension, Tiered
+public class RockAnvilBlock extends DeviceBlock implements Tiered
 {
     public static final VoxelShape SHAPE = box(0, 0, 0, 16, 14, 16);
 
-    private final ExtendedProperties extendedProperties;
     private final Supplier<? extends Block> raw;
 
     public RockAnvilBlock(ExtendedProperties properties, Supplier<? extends Block> raw)
     {
-        super(properties.properties());
+        super(properties, InventoryRemoveBehavior.DROP);
 
-        this.extendedProperties = properties;
         this.raw = raw;
     }
 
@@ -68,11 +65,5 @@ public class RockAnvilBlock extends Block implements IForgeBlockExtension, Entit
     public int getTier()
     {
         return Metal.Tier.TIER_0.ordinal();
-    }
-
-    @Override
-    public ExtendedProperties getExtendedProperties()
-    {
-        return extendedProperties;
     }
 }

@@ -10,10 +10,8 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -51,7 +49,11 @@ public class FluidItemIngredient extends DelegateIngredient
     @Override
     protected ItemStack[] getDefaultItems()
     {
-        return fluid.ingredient().getMatchingFluids().stream().map(Fluid::getBucket).map(ItemStack::new).toArray(ItemStack[]::new);
+        return fluid.ingredient()
+            .getMatchingFluids()
+            .stream()
+            .map(fluid -> new ItemStack(fluid.getBucket()))
+            .toArray(ItemStack[]::new);
     }
 
     public enum Serializer implements IIngredientSerializer<FluidItemIngredient>

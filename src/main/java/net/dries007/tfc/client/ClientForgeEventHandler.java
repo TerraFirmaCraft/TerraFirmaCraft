@@ -237,16 +237,16 @@ public class ClientForgeEventHandler
                 final CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new TextComponent(GRAY + "[Debug] NBT: " + DARK_GRAY + stackTag));
+                    text.add(new TextComponent(DARK_GRAY + "[Debug] NBT: " + stackTag));
                 }
 
                 final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
                 if (capTag != null)
                 {
-                    text.add(new TextComponent(GRAY + "[Debug] Cap NBT: " + DARK_GRAY + capTag));
+                    text.add(new TextComponent(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
                 }
 
-                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                text.add(new TextComponent(DARK_GRAY + "[Debug] Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
             }
         }
     }

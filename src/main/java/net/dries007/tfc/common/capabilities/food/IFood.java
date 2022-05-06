@@ -218,7 +218,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
 
         if (TFCConfig.CLIENT.enableDebug.get())
         {
-            text.add(new TextComponent(ChatFormatting.GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
+            text.add(new TextComponent(ChatFormatting.DARK_GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
         }
     }
 }

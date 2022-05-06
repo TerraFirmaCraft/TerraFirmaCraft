@@ -57,6 +57,17 @@ public class HasTraitIngredient extends DelegateIngredient
         return FoodCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(ItemStack::new).toArray(ItemStack[]::new);
     }
 
+    @Nullable
+    @Override
+    protected ItemStack testDefaultItem(ItemStack stack)
+    {
+        return stack.getCapability(FoodCapability.CAPABILITY).map(food -> {
+            food.setNonDecaying();
+            food.getTraits().add(trait);
+            return stack;
+        }).orElse(null);
+    }
+
     public enum Serializer implements IIngredientSerializer<HasTraitIngredient>
     {
         INSTANCE;

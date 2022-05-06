@@ -66,22 +66,26 @@ public final class Forging implements ICapabilityProvider
         this.steps = new ForgeSteps();
     }
 
+    /**
+     * @return the current work value, in the range [0, {@link ForgeStep#LIMIT}]
+     */
     public int getWork()
     {
         return work;
     }
 
+    /**
+     * @return the work target for the current selected recipe, if present, or -1 if there is no recipe.
+     */
     public int getWorkTarget()
     {
         return target == -1 ? 0 : target;
     }
 
-    public void setWork(int work)
-    {
-        this.work = work;
-        save();
-    }
-
+    /**
+     * Gets the current recipe.
+     * This requires a level as it possibly makes a recipe query, in the first load from saved data.
+     */
     @Nullable
     public AnvilRecipe getRecipe(Level level)
     {
@@ -93,10 +97,22 @@ public final class Forging implements ICapabilityProvider
         return recipe;
     }
 
+    /**
+     * Sets the current recipe and work target based on the provided anvil recipe and anvil inventory.
+     * <strong>Important:</strong> should generally only be called on server, where the inventory seed is known.
+     */
     public void setRecipe(@Nullable AnvilRecipe recipe, AnvilRecipe.Inventory inventory)
     {
+        setRecipe(recipe, recipe == null ? -1 : recipe.computeTarget(inventory));
+    }
+
+    /**
+     * Sets the current recipe and work target directly.
+     */
+    public void setRecipe(@Nullable AnvilRecipe recipe, int target)
+    {
         this.recipe = recipe;
-        this.target = recipe == null ? -1 : recipe.computeTarget(inventory);
+        this.target = target;
         save();
     }
 
@@ -135,7 +151,6 @@ public final class Forging implements ICapabilityProvider
     /**
      * This will clear the current recipe, if the item has not been additionally worked.
      * Used when removing an item from an anvil, as it makes the item stackable again - despite the fact we <strong>must</strong> persist the recipe on the item stack, even if it has not been worked.
-     * todo: actually call this from removing item from an anvil
      */
     public void clearRecipeIfNotWorked()
     {

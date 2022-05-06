@@ -46,11 +46,6 @@ public class HeatHandler implements ICapabilitySerializable<CompoundTag>, IHeat,
         this.weldingTemp = weldingTemp;
     }
 
-    public HeatHandler()
-    {
-        this(1, 0, 0);
-    }
-
     /**
      * This gets the outwards facing temperature. It will differ from the internal temperature value or the value saved to NBT
      * Note: if checking the temperature internally, DO NOT use temperature, use this instead, as temperature does not represent the current temperature

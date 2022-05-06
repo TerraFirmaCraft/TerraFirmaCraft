@@ -9,6 +9,8 @@ package net.dries007.tfc.common.blocks.devices;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -31,13 +33,11 @@ import net.minecraftforge.network.NetworkHooks;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
-public class AnvilBlock extends Block implements IForgeBlockExtension, EntityBlockExtension, Tiered
+public class AnvilBlock extends DeviceBlock implements Tiered
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -79,13 +79,15 @@ public class AnvilBlock extends Block implements IForgeBlockExtension, EntityBlo
                 if (weldResult == InteractionResult.SUCCESS)
                 {
                     // Welding occurred
-                    // todo: sounds and spark particles?
+                    // todo: spark particles?
+                    level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 0.6f, 1.0f);
                     return InteractionResult.SUCCESS;
                 }
                 else if (weldResult == InteractionResult.FAIL)
                 {
-                    // Welding was attempted, but failed for some reason - player was alerted and action was consumed
-                    return InteractionResult.FAIL;
+                    // Welding was attempted, but failed for some reason - player was alerted and action was consumed.
+                    // Returning fail here causes the off hand to still attempt to be used?
+                    return InteractionResult.SUCCESS;
                 }
             }
             else
@@ -116,7 +118,6 @@ public class AnvilBlock extends Block implements IForgeBlockExtension, EntityBlo
         return InteractionResult.PASS;
     }
 
-    private final ExtendedProperties extendedProperties;
     private final int tier;
 
     public AnvilBlock(ExtendedProperties properties, Metal.Tier tier)
@@ -126,8 +127,7 @@ public class AnvilBlock extends Block implements IForgeBlockExtension, EntityBlo
 
     public AnvilBlock(ExtendedProperties properties, int tier)
     {
-        super(properties.properties());
-        this.extendedProperties = properties;
+        super(properties, InventoryRemoveBehavior.DROP);
         this.tier = tier;
     }
 
@@ -136,12 +136,6 @@ public class AnvilBlock extends Block implements IForgeBlockExtension, EntityBlo
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         return AnvilBlock.interactWithAnvil(level, pos, player, hand);
-    }
-
-    @Override
-    public ExtendedProperties getExtendedProperties()
-    {
-        return extendedProperties;
     }
 
     @Override

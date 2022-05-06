@@ -148,10 +148,19 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
 
     public interface Inventory extends EmptyInventory
     {
+        /**
+         * @return the primary input to the anvil recipe
+         */
         ItemStack getItem();
 
+        /**
+         * @return The tier ({@link net.dries007.tfc.util.Metal.Tier} of the anvil)
+         */
         int getTier();
 
+        /**
+         * @return The seed for the anvil recipe work target. By default this returns the world seed. Only called on server, free to return zero elsewhere.
+         */
         long getSeed();
     }
 

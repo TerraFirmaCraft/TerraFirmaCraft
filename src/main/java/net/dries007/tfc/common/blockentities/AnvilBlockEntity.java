@@ -42,6 +42,7 @@ import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.WeldingRecipe;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.AnvilInventory> implements ISlotCallback
@@ -52,7 +53,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     public static final int SLOT_CATALYST = 3;
 
     public static final int[] SLOTS_BY_HAND_EXTRACT = new int[] {SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
-    public static final int[] SLOTS_BY_HAND_INSERT = new int[] {SLOT_INPUT_MAIN, SLOT_INPUT_SECOND, SLOT_CATALYST};
+    public static final int[] SLOTS_BY_HAND_INSERT = new int[] {SLOT_CATALYST, SLOT_INPUT_MAIN, SLOT_INPUT_SECOND};
 
     private static final Component NAME = new TranslatableComponent("tfc.block_entity.anvil");
 
@@ -118,6 +119,15 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     }
 
     @Override
+    public void onSlotTake(Player player, int slot, ItemStack stack)
+    {
+        if (slot == SLOT_INPUT_MAIN)
+        {
+            stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(Forging::clearRecipeIfNotWorked);
+        }
+    }
+
+    @Override
     public void setAndUpdateSlots(int slot)
     {
         assert level != null;
@@ -145,6 +155,17 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         setChanged();
     }
 
+    @Override
+    public void ejectInventory()
+    {
+        final ItemStack stack = inventory.getStackInSlot(SLOT_INPUT_MAIN);
+        if (!stack.isEmpty())
+        {
+            stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(Forging::clearRecipeIfNotWorked);
+        }
+        super.ejectInventory();
+    }
+
     public void chooseRecipe(@Nullable AnvilRecipe recipe)
     {
         assert level != null;
@@ -160,6 +181,9 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         }
     }
 
+    /**
+     * Sends feedback to the chat, as the action bar is obscured by the anvil gui
+     */
     public InteractionResult work(ServerPlayer player, ForgeStep step)
     {
         assert level != null;
@@ -196,6 +220,12 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             final AnvilRecipe recipe = forge.getRecipe(level);
             if (recipe != null)
             {
+                if (!recipe.matches(inventory, level))
+                {
+                    player.displayClientMessage(new TranslatableComponent("tfc.tooltip.anvil_is_too_low_tier_to_work"), false);
+                    return InteractionResult.FAIL;
+                }
+
                 final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
                 if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature(false)).orElse(false))
                 {
@@ -243,12 +273,17 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
                     inventory.setStackInSlot(SLOT_INPUT_MAIN, outputStack);
                 }
+
+                markForSync();
             }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
 
+    /**
+     * Sends feedback to the action bar, as the anvil gui will be closed
+     */
     public InteractionResult weld(Player player)
     {
         final ItemStack left = inventory.getLeft(), right = inventory.getRight();
@@ -262,7 +297,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         final WeldingRecipe recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.WELDING.get(), inventory, level).orElse(null);
         if (recipe != null)
         {
-            if (recipe.getTier() < getTier())
+            if (getTier() < recipe.getTier())
             {
                 player.displayClientMessage(new TranslatableComponent("tfc.tooltip.anvil_is_too_low_tier_to_weld"), true);
                 return InteractionResult.FAIL;
@@ -271,7 +306,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             final LazyOptional<IHeat> leftHeat = left.getCapability(HeatCapability.CAPABILITY);
             final LazyOptional<IHeat> rightHeat = right.getCapability(HeatCapability.CAPABILITY);
 
-            if (leftHeat.map(h -> h.getWeldingTemperature() <= h.getTemperature(false)).orElse(false) || rightHeat.map(h -> h.getWeldingTemperature() <= h.getTemperature(false)).orElse(false))
+            if (leftHeat.map(h -> h.getWeldingTemperature() > h.getTemperature(false)).orElse(false) || rightHeat.map(h -> h.getWeldingTemperature() > h.getTemperature(false)).orElse(false))
             {
                 player.displayClientMessage(new TranslatableComponent("tfc.tooltip.not_hot_enough_to_weld"), true);
                 return InteractionResult.FAIL;
@@ -345,6 +380,15 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
         {
             Helpers.warnWhenCalledFromClientThread();
             return anvil.getLevel() instanceof ServerLevel level ? level.getSeed() : 0;
+        }
+
+        @NotNull
+        @Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate)
+        {
+            final ItemStack stack = super.extractItem(slot, amount, simulate);
+            stack.getCapability(ForgingCapability.CAPABILITY).ifPresent(Forging::clearRecipeIfNotWorked);
+            return stack;
         }
     }
 }

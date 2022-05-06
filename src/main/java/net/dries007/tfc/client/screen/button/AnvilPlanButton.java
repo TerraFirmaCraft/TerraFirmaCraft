@@ -22,6 +22,7 @@ import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
+import org.jetbrains.annotations.Nullable;
 
 public class AnvilPlanButton extends Button
 {
@@ -45,24 +46,31 @@ public class AnvilPlanButton extends Button
 
         blit(poseStack, x, y, 218, 0, width, height, 256, 256);
 
-        final Level level = anvil.getLevel();
-        final Forging forging = anvil.getMainInputForging();
-        if (level != null && forging != null)
+        final AnvilRecipe recipe = getRecipe();
+        if (recipe != null)
         {
-            final AnvilRecipe recipe = forging.getRecipe(level);
-            if (recipe == null)
-            {
-                blit(poseStack, x + 1, y + 1, 236, 0, 16, 16, 256, 256);
-            }
-            else
-            {
-                Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), x + 1, y + 1);
-            }
+            Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(recipe.getResultItem(), x + 1, y + 1);
+        }
+        else
+        {
+            blit(poseStack, x + 1, y + 1, 236, 0, 16, 16, 256, 256);
         }
 
         if (isHoveredOrFocused())
         {
             renderToolTip(poseStack, mouseX, mouseY);
         }
+    }
+
+    @Nullable
+    private AnvilRecipe getRecipe()
+    {
+        final Level level = anvil.getLevel();
+        final Forging forging = anvil.getMainInputForging();
+        if (level != null && forging != null)
+        {
+            return forging.getRecipe(level);
+        }
+        return null;
     }
 }
