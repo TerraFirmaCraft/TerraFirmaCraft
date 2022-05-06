@@ -331,6 +331,7 @@ def generate(rm: ResourceManager):
                 }
             }
         })
+        damage_shaped(rm, 'crafting/%s_sandwich' % grain, ['ZX ', 'YYY', ' X '], {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}, 'tfc:food/%s_bread_sandwich' % grain, recipe_type='tfc:sandwich_crafting').with_advancement('tfc:food/%s_bread' % grain)
 
     for meat in MEATS:
         heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item='tfc:food/cooked_%s' % meat)
@@ -602,7 +603,20 @@ def damage_shapeless(rm: ResourceManager, name_parts: utils.ResourceIdentifier, 
     })
     return RecipeContext(rm, res)
 
-    # todo: damage inputs shaped, if we need it
+def damage_shaped(rm: ResourceManager, name_parts: utils.ResourceIdentifier, pattern: Sequence[str], ingredients: Json, result: Json, group: str = None, conditions: Optional[Json] = None, recipe_type: str = 'tfc:damage_inputs_shaped_crafting') -> RecipeContext:
+    res = utils.resource_location(rm.domain, name_parts)
+    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
+        'type': recipe_type,
+        'recipe': {
+            'type': 'minecraft:crafting_shaped',
+            'group': group,
+            'pattern': pattern,
+            'key': utils.item_stack_dict(ingredients, ''.join(pattern)[0]),
+            'result': utils.item_stack(result),
+            'conditions': utils.recipe_condition(conditions)
+        }
+    })
+    return RecipeContext(rm, res)
 
 
 def quern_recipe(rm: ResourceManager, name: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:

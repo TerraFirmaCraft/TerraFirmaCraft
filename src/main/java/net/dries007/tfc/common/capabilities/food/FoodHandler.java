@@ -208,4 +208,26 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood,
         }
         return creationDateIn + (long) (decayMod * DEFAULT_DECAY_TICKS);
     }
+
+    /**
+     * Convenience class for dynamic food handlers
+     */
+    public static class Dynamic extends FoodHandler
+    {
+        public Dynamic(FoodRecord data)
+        {
+            super(data);
+        }
+
+        public void setFood(FoodRecord data)
+        {
+            this.data = data;
+        }
+
+        @Override
+        public boolean isDynamic()
+        {
+            return true;
+        }
+    }
 }

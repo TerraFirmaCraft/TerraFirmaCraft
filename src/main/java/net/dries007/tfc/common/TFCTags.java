@@ -135,6 +135,7 @@ public class TFCTags
         public static final TagKey<Item> COW_FOOD = create("cow_food");
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
+        public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
 
         private static TagKey<Item> create(String id)
         {

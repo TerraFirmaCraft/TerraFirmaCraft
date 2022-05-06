@@ -176,6 +176,8 @@ def generate(rm: ResourceManager):
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
     rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
+    rm.item_tag('sandwich_bread', *['tfc:food/%s_bread' % grain for grain in GRAINS])
+    rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
     rm.item_tag('soup_bowl', 'tfc:ceramic/bowl')
 
     for color in COLORS:
@@ -585,7 +587,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'salmon', 'tfc:food/salmon', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'tropical_fish', 'tfc:food/tropical_fish', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'bear', 'tfc:food/bear', Category.meat, 4, 0, 0, 2, protein=1.5)
-    # food_item(rm, 'calamari', 'tfc:food/calamari', Category.meat, 4, 0, 0, 3, protein=0.5)
+    food_item(rm, 'calamari', 'tfc:food/calamari', Category.meat, 4, 0, 0, 3, protein=0.5)
     food_item(rm, 'horse_meat', 'tfc:food/horse_meat', Category.meat, 4, 0, 0, 2, protein=1.5)
     food_item(rm, 'pheasant', 'tfc:food/pheasant', Category.meat, 4, 0, 0, 3, protein=1.5)
     food_item(rm, 'venison', 'tfc:food/venison', Category.meat, 4, 0, 0, 2, protein=1)
@@ -605,7 +607,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_salmon', 'tfc:food/cooked_salmon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_bluegill', 'tfc:food/cooked_bluegill', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_bear', 'tfc:food/cooked_bear', Category.cooked_meat, 4, 1, 0, 1.5, protein=2.5)
-    # food_item(rm, 'cooked_calamari', 'tfc:food/cooked_calamari', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
+    food_item(rm, 'cooked_calamari', 'tfc:food/cooked_calamari', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_horse_meat', 'tfc:food/cooked_horse_meat', Category.cooked_meat, 4, 2, 0, 1.5, protein=2.5)
     food_item(rm, 'cooked_pheasant', 'tfc:food/cooked_pheasant', Category.cooked_meat, 4, 1, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_venison', 'tfc:food/cooked_venison', Category.cooked_meat, 4, 1, 0, 1.5, protein=2)
@@ -757,6 +759,10 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         rm.item_tag('foods/%ss' % category.name.lower(), ingredient)
     if category in (Category.meat, Category.cooked_meat):
         rm.item_tag('foods/meats', ingredient)
+    if category == Category.cooked_meat:
+        rm.item_tag('foods/cooked_meats', ingredient)
+    if category == Category.dairy:
+        rm.item_tag('foods/dairy', ingredient)
 
 
 def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):
