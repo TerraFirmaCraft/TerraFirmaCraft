@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -70,7 +69,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
         }
         if (scheduleFluidTicks)
         {
-            FluidHelpers.tickFluid(level, currentPos, state, this);
+            FluidHelpers.tickFluid(level, currentPos, state);
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }

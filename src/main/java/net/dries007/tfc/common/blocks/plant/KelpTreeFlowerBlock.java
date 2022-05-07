@@ -88,7 +88,7 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        FluidHelpers.tickFluid(level, currentPos, state, this);
+        FluidHelpers.tickFluid(level, currentPos, state);
         if (facing != Direction.UP && !state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);

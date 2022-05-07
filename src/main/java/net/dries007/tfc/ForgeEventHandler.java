@@ -34,7 +34,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -118,7 +117,6 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 public final class ForgeEventHandler
@@ -965,9 +963,7 @@ public final class ForgeEventHandler
      */
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
-        @Nullable final RecipeManager recipeManager = Helpers.getRecipeManagerInTheMostHackyAwfulWay().orElse(null);
-        if (recipeManager != null)
-        {
+        Helpers.getRecipeManagerInTheMostHackyAwfulWay().ifPresent(manager -> {
             // First, reload all caches
             IndirectHashCollection.reloadAllCaches();
 
@@ -975,7 +971,7 @@ public final class ForgeEventHandler
             Support.updateMaximumSupportRange();
             Metal.updateMetalFluidMap();
             ItemSizeManager.applyItemStackSizeOverrides();
-        }
+        });
     }
 
     /**

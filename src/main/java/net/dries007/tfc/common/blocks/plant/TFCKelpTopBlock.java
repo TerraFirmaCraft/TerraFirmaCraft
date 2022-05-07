@@ -92,7 +92,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
         if (facing != growthDirection || !Helpers.isBlock(facingState, this) && !Helpers.isBlock(facingState, getBodyBlock()))
         {
             //Not sure if this is necessary
-            FluidHelpers.tickFluid(level, currentPos, state, this);
+            FluidHelpers.tickFluid(level, currentPos, state);
             return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
         else// this is where it converts the top block to a body block when it gets placed on top of another top block
