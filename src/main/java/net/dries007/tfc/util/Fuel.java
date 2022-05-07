@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -18,10 +16,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 public final class Fuel extends ItemDefinition
 {
-    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::new, Fuel::encode, DataManagerSyncPacket.TFuel::new);
+    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::new, Fuel::encode, Packet::new);
     public static final IndirectHashCollection<Item, Fuel> CACHE = IndirectHashCollection.create(Fuel::getValidItems, MANAGER::getValues);
 
     @Nullable
@@ -73,4 +72,6 @@ public final class Fuel extends ItemDefinition
     {
         return temperature;
     }
+
+    public static class Packet extends DataManagerSyncPacket<Fuel> {}
 }

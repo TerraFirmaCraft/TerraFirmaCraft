@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import net.dries007.tfc.util.Helpers;
@@ -51,10 +52,10 @@ public class IndirectHashCollection<K, R>
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void reloadAllCaches()
+    public static void reloadAllCaches(RecipeManager manager)
     {
         DIRECT_CACHES.forEach((cache, values) -> reloadDirectCache((IndirectHashCollection) cache, (Supplier) values));
-        RECIPE_CACHES.forEach((cache, type) -> reloadRecipeCache((IndirectHashCollection) cache, (Supplier) type));
+        RECIPE_CACHES.forEach((cache, type) -> reloadRecipeCache((IndirectHashCollection) cache, manager, (Supplier) type));
     }
 
     private static <K, R> void reloadDirectCache(IndirectHashCollection<K, R> cache, Supplier<Collection<R>> values)
@@ -62,9 +63,9 @@ public class IndirectHashCollection<K, R>
         cache.reload(values.get());
     }
 
-    private static <C extends Container, K, R extends Recipe<C>> void reloadRecipeCache(IndirectHashCollection<K, R> cache, Supplier<RecipeType<R>> recipe)
+    private static <C extends Container, K, R extends Recipe<C>> void reloadRecipeCache(IndirectHashCollection<K, R> cache, RecipeManager manager, Supplier<RecipeType<R>> recipe)
     {
-        cache.reload(Helpers.getRecipes(recipe).values());
+        cache.reload(Helpers.getRecipes(manager, recipe).values());
     }
 
     private final Map<K, Collection<R>> indirectResultMap;

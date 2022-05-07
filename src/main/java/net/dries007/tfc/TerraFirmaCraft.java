@@ -24,7 +24,6 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
@@ -121,7 +120,6 @@ public final class TerraFirmaCraft
         PacketHandler.init();
         CalendarEventHandler.init();
         ForgeEventHandler.init();
-        EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
 
         if (FMLEnvironment.dist == Dist.CLIENT)
         {
@@ -145,17 +143,15 @@ public final class TerraFirmaCraft
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {
-            // Vanilla Registries (not thread safe)
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
             TFCCommands.registerArgumentTypes();
             FoodTraits.registerFoodTraits();
-            ClimateModels.registerAll();
-
+            ClimateModels.registerClimateModels();
+            EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
             ItemSizeManager.setupItemStackSizeOverrides();
-            DispenserBehaviors.registerAll();
+            DispenserBehaviors.registerDispenserBehaviors();
             Faunas.registerSpawnPlacements();
-            OreDeposit.computeCache();
         });
     }
 

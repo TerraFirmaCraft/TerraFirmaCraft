@@ -33,7 +33,7 @@ public final class HeatCapability
     public static final Capability<IHeatBlock> BLOCK_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>("item_heats", "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, DataManagerSyncPacket.THeatDefinition::new);
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>("item_heats", "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(HeatDefinition::getValidItems, MANAGER::getValues);
 
     @Nullable
@@ -205,4 +205,6 @@ public final class HeatCapability
     }
 
     public record Remainder(int burnTicks, float burnTemperature, long ticks) {}
+
+    public static class Packet extends DataManagerSyncPacket<HeatDefinition> {}
 }

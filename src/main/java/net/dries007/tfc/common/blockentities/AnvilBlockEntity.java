@@ -227,7 +227,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                 }
 
                 final LazyOptional<IHeat> heat = stack.getCapability(HeatCapability.CAPABILITY);
-                if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature(false)).orElse(false))
+                if (heat.map(h -> h.getWorkingTemperature() > h.getTemperature()).orElse(false))
                 {
                     player.displayClientMessage(new TranslatableComponent("tfc.tooltip.not_hot_enough_to_work"), false);
                     return InteractionResult.FAIL;
@@ -261,7 +261,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
 
                     // Always preserve heat of the input
                     outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(outputHeat ->
-                        outputHeat.setTemperatureIfWarmer(heat.map(h -> h.getTemperature(false)).orElse(0f)));
+                        outputHeat.setTemperatureIfWarmer(heat.map(IHeat::getTemperature).orElse(0f)));
 
                     // And apply the forging bonus, if the recipe says to do so
                     if (recipe.shouldApplyForgingBonus())
@@ -306,7 +306,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
             final LazyOptional<IHeat> leftHeat = left.getCapability(HeatCapability.CAPABILITY);
             final LazyOptional<IHeat> rightHeat = right.getCapability(HeatCapability.CAPABILITY);
 
-            if (leftHeat.map(h -> h.getWeldingTemperature() > h.getTemperature(false)).orElse(false) || rightHeat.map(h -> h.getWeldingTemperature() > h.getTemperature(false)).orElse(false))
+            if (leftHeat.map(h -> h.getWeldingTemperature() > h.getTemperature()).orElse(false) || rightHeat.map(h -> h.getWeldingTemperature() > h.getTemperature()).orElse(false))
             {
                 player.displayClientMessage(new TranslatableComponent("tfc.tooltip.not_hot_enough_to_weld"), true);
                 return InteractionResult.FAIL;

@@ -25,12 +25,7 @@ public interface IHeat
      *
      * @return the temperature.
      */
-    default float getTemperature()
-    {
-        return getTemperature(false);
-    }
-
-    float getTemperature(boolean isClientSide);
+    float getTemperature();
 
     /**
      * Sets the temperature. Used for anything that modifies the temperature.
@@ -87,7 +82,7 @@ public interface IHeat
      */
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
-        final float temperature = getTemperature(true);
+        final float temperature = getTemperature();
         final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
         if (tooltip != null)
         {

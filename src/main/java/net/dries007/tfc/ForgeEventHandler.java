@@ -7,6 +7,7 @@
 package net.dries007.tfc;
 
 import java.util.Random;
+import java.util.concurrent.Executor;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.WorldStem;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
@@ -34,6 +36,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -61,6 +64,7 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -90,6 +94,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.commands.LocateVeinCommand;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
@@ -140,7 +145,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkUnload);
         bus.addListener(ForgeEventHandler::onChunkDataSave);
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
-        bus.addListener(ForgeEventHandler::addReloadListeners);
+        bus.addListener(ForgeEventHandler::onServerStart);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -165,6 +170,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
+        bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
@@ -392,27 +398,9 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void addReloadListeners(AddReloadListenerEvent event)
+    public static void onServerStart(ServerStartingEvent event)
     {
-        // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
-        // So, we hack internal resource lists in order to stick metals before recipes.
-        // see ReloadableServerResourcesMixin
-
-        // All other resource reload listeners can be inserted after recipes.
-        event.addListener(Fuel.MANAGER);
-        event.addListener(Drinkable.MANAGER);
-        event.addListener(Support.MANAGER);
-        event.addListener(LampFuel.MANAGER);
-        event.addListener(Fertilizer.MANAGER);
-        event.addListener(ItemSizeManager.MANAGER);
-        event.addListener(ClimateRange.MANAGER);
-        event.addListener(Fauna.MANAGER);
-
-        event.addListener(HeatCapability.MANAGER);
-        event.addListener(FoodCapability.MANAGER);
-
-        // Last
-        event.addListener(CacheInvalidationListener.INSTANCE);
+        LocateVeinCommand.reloadVeinsCache(event.getServer());
     }
 
     public static void registerCommands(RegisterCommandsEvent event)
@@ -464,13 +452,14 @@ public final class ForgeEventHandler
 
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
+        // todo: this needs to be re-evaluated, it was way too harsh and applied on way too many blocks. Maybe apply only if the tool cannot harvest the block?
         // Apply global modifiers when not using the correct tool
         // This makes the difference between bare fists and tools more pronounced, without having to massively buff either our tools or make our blocks way higher than the standard hardness.
-        final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
+        /*final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
         if (defaultDestroySpeed <= 1.0f)
         {
             event.setNewSpeed(event.getNewSpeed() * 0.4f);
-        }
+        }*/
 
         // Apply mining speed modifiers from forging bonuses
         final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
@@ -537,7 +526,6 @@ public final class ForgeEventHandler
                 LOGGER.info("Updating TFC Relevant Game Rules for level {}.", level.dimension().location());
             }
 
-            CacheInvalidationListener.INSTANCE.reloadSync();
             Climate.onWorldLoad(level);
             if (level.dimension() == Level.OVERWORLD)
             {
@@ -942,6 +930,28 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void addReloadListeners(AddReloadListenerEvent event)
+    {
+        // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
+        // So, we hack internal resource lists in order to stick metals before recipes.
+        // see ReloadableServerResourcesMixin
+
+        // All other resource reload listeners can be inserted after recipes.
+        event.addListener(Fuel.MANAGER);
+        event.addListener(Drinkable.MANAGER);
+        event.addListener(Support.MANAGER);
+        event.addListener(LampFuel.MANAGER);
+        event.addListener(Fertilizer.MANAGER);
+        event.addListener(ItemSizeManager.MANAGER);
+        event.addListener(ClimateRange.MANAGER);
+        event.addListener(Fauna.MANAGER);
+        event.addListener(HeatCapability.MANAGER);
+        event.addListener(FoodCapability.MANAGER);
+
+        // In addition, we capture the recipe manager here
+        Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());
+    }
+
     public static void onDataPackSync(OnDatapackSyncEvent event)
     {
         // Sync managers
@@ -955,23 +965,28 @@ public final class ForgeEventHandler
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
     }
 
     /**
      * This is when tags are safe to be loaded, so we can do post reload actions that involve querying ingredients.
-     * It is fired on both logical server and client after resources are reloaded (or, sent from server)
+     * It is fired on both logical server and client after resources are reloaded (or, sent from server).
+     * In addition, during the first load on a server in {@link net.minecraft.server.Main}, where {@link net.minecraft.server.WorldStem#load(WorldStem.InitConfig, WorldStem.DataPackConfigSupplier, WorldStem.WorldDataSupplier, Executor, Executor)} is invoked, the server won't exist yet at all.
+     * In that case, we need to rely on the fact that {@link AddReloadListenerEvent} will be fired before that point, and we can capture the server's recipe manager there.
      */
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
-        Helpers.getRecipeManagerInTheMostHackyAwfulWay().ifPresent(manager -> {
-            // First, reload all caches
-            IndirectHashCollection.reloadAllCaches();
+        // First, reload all caches
+        final RecipeManager manager = Helpers.getUnsafeRecipeManager();
+        if (manager != null)
+        {
+            IndirectHashCollection.reloadAllCaches(manager);
+        }
 
-            // Then apply post reload actions which may query the cache
-            Support.updateMaximumSupportRange();
-            Metal.updateMetalFluidMap();
-            ItemSizeManager.applyItemStackSizeOverrides();
-        });
+        // Then apply post reload actions which may query the cache
+        Support.updateMaximumSupportRange();
+        Metal.updateMetalFluidMap();
+        ItemSizeManager.applyItemStackSizeOverrides();
     }
 
     /**

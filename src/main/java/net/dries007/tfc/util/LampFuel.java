@@ -58,9 +58,12 @@ public final class LampFuel
         return id;
     }
 
+    /**
+     * @return The burn rate of this lamp, in ticks per mB.
+     */
     public int getBurnRate()
     {
-        return burnRate; // ticks / mB
+        return burnRate;
     }
 
     public FluidIngredient getFluidIngredient()

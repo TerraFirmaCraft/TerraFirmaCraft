@@ -17,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ClimateRange
 {
-    public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, "climate_ranges", "climate range", ClimateRange::new, ClimateRange::encode, DataManagerSyncPacket.TClimateRange::new);
+    public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, "climate_ranges", "climate range", ClimateRange::new, ClimateRange::encode, Packet::new);
 
     private final ResourceLocation id;
     private final int minHydration, maxHydration, hydrationWiggleRange; // Hydration = a hybrid of nearby water and rainfall
@@ -134,4 +134,6 @@ public class ClimateRange
     {
         LOW, VALID, HIGH
     }
+
+    public static class Packet extends DataManagerSyncPacket<RegisteredDataManager.Entry<ClimateRange>> {}
 }

@@ -14,11 +14,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkEvent;
 
-import net.dries007.tfc.common.capabilities.food.FoodDefinition;
-import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
-import net.dries007.tfc.common.capabilities.size.ItemSizeDefinition;
-import net.dries007.tfc.util.*;
-import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.DataManager;
 
 public abstract class DataManagerSyncPacket<T>
 {
@@ -61,19 +57,4 @@ public abstract class DataManagerSyncPacket<T>
     {
         manager.onSync(context, elements);
     }
-
-    public static class TMetal extends DataManagerSyncPacket<Metal> {}
-
-    public static class TFuel extends DataManagerSyncPacket<Fuel> {}
-
-    public static class TFertilizer extends DataManagerSyncPacket<Fertilizer> {}
-
-    public static class TFoodDefinition extends DataManagerSyncPacket<FoodDefinition> {}
-
-    public static class THeatDefinition extends DataManagerSyncPacket<HeatDefinition> {}
-
-    public static class TItemSizeDefinition extends DataManagerSyncPacket<ItemSizeDefinition> {}
-
-    public static class TClimateRange extends DataManagerSyncPacket<RegisteredDataManager.Entry<ClimateRange>> {}
-
 }

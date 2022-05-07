@@ -133,9 +133,11 @@ public final class TFCBlocks
     public static final Map<Ore, RegistryObject<Block>> SMALL_ORES = Helpers.mapOfKeys(Ore.class, Ore::isGraded, type ->
         register(("ore/small_" + type.name()), () -> GroundcoverBlock.looseOre(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_ORE).noCollission()), TFCItemGroup.ORES)
     );
-    public static final Map<Rock, Map<OreDeposit, RegistryObject<Block>>> ORE_DEPOSITS = Helpers.mapOfKeys(Rock.class, rock -> Helpers.mapOfKeys(OreDeposit.class, ore ->
-            register("deposit/" + ore.name() + "/" + rock.name(), () -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f)), TFCItemGroup.ORES)
-    ));
+    public static final Map<Rock, Map<OreDeposit, RegistryObject<Block>>> ORE_DEPOSITS = Helpers.mapOfKeys(Rock.class, rock ->
+        Helpers.mapOfKeys(OreDeposit.class, ore ->
+            register("deposit/" + ore.name() + "/" + rock.name(), () -> new OreDepositBlock(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f), rock, ore), TFCItemGroup.ORES)
+        )
+    );
 
     // Rock Stuff
 

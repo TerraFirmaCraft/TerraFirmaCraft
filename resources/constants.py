@@ -693,6 +693,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pan.water': 'You need to stand in water to be able to pan.',
     'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
     'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
+    'tfc.tooltip.small_vessel.alloy_molten': 'Contents are still liquid!',
     'tfc.tooltip.small_vessel.contents': 'Contents:',
     'tfc.tooltip.small_vessel.solid': '- Solid.',
     'tfc.tooltip.small_vessel.molten': '- Molten!',

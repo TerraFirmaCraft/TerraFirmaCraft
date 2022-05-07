@@ -53,6 +53,7 @@ import net.dries007.tfc.client.render.blockentity.*;
 import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.ItemPropertyProviderBlock;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -148,14 +149,14 @@ public final class ClientEventHandler
                         return 1F;
                     });
 
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("rock"), (stack, level, entity, unused) -> {
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ROCK_PROPERTY.id(), (stack, level, entity, unused) -> {
                         final BlockState state = PanItem.readState(stack);
-                        return state != null ? OreDeposit.rockValue(state) : 0F;
+                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ROCK_PROPERTY) : 0f;
                     });
 
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("ore"), (stack, level, entity, unused) -> {
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ORE_PROPERTY.id(), (stack, level, entity, unused) -> {
                         final BlockState state = PanItem.readState(stack);
-                        return state != null ? OreDeposit.oreValue(state) : 0F;
+                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ORE_PROPERTY) : 0F;
                     });
 
                     ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);

@@ -106,6 +106,8 @@ public final class Helpers
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
 
+    @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
+
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace
      */
@@ -263,39 +265,47 @@ public final class Helpers
         return getRecipes(level.getRecipeManager(), type);
     }
 
-    public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(Supplier<RecipeType<R>> type)
-    {
-        return getRecipeManagerInTheMostHackyAwfulWay().map(m -> getRecipes(m, type)).orElse(Collections.emptyMap());
-    }
-
     @SuppressWarnings("unchecked")
     public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(RecipeManager recipeManager, Supplier<RecipeType<R>> type)
     {
         return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) recipeManager).invoke$byType(type.get());
     }
 
-    /**
-     * Cannot cache recipes on resource reload, when a level is available, as tags aren't present and can't be resolved. Recipes may be accessed through {@link CacheInvalidationListener} but holding references to them is awkward for client side caches.
-     * Resolving recipes needs access to a {@link RecipeManager} which needs to be obtained from a {@link Level} which is prohibitively difficult for use cases such as item stack capabilities, where a level is not readily available.
-     * This seems to work.
-     */
-    public static Optional<RecipeManager> getRecipeManagerInTheMostHackyAwfulWay()
+    @Nullable
+    public static RecipeManager getUnsafeRecipeManager()
     {
         final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server != null)
         {
-            return Optional.of(server.getRecipeManager());
+            return server.getRecipeManager();
         }
+
         try
         {
             final Level level = ClientHelpers.getLevel();
             if (level != null)
             {
-                return Optional.of(level.getRecipeManager());
+                return level.getRecipeManager();
             }
         }
-        catch (Throwable t) { /* super safe */ }
-        return Optional.empty();
+        catch (Throwable t)
+        {
+            LOGGER.info("^ This is fine - No client or server recipe manager present upon initial resource reload on physical server");
+        }
+
+        if (CACHED_RECIPE_MANAGER != null)
+        {
+            LOGGER.info("Successfully captured server recipe manager");
+            return CACHED_RECIPE_MANAGER;
+        }
+
+        LOGGER.error("No recipe manager was present - tried server, client, and captured value. This will cause problems!", new RuntimeException("Stacktrace"));
+        return null;
+    }
+
+    public static void setCachedRecipeManager(RecipeManager manager)
+    {
+        CACHED_RECIPE_MANAGER = manager;
     }
 
     public static ItemStack damageCraftingItem(ItemStack stack, int amount)
