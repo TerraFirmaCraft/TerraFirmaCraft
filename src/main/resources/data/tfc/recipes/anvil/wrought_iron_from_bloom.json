@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:raw_iron_bloom"
+    "item": "tfc:refined_iron_bloom"
   },
   "result": {
-    "item": "tfc:refined_iron_bloom"
+    "item": "tfc:metal/ingot/wrought_iron"
   },
   "tier": 2,
   "rules": [

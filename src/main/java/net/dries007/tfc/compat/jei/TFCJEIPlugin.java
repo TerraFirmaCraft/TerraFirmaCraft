@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,6 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -58,6 +61,11 @@ public class TFCJEIPlugin implements IModPlugin
     private static void addCatalystTag(IRecipeCatalystRegistration r, TagKey<Item> tag, RecipeType<?> recipeType)
     {
         Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS).forEach(item -> r.addRecipeCatalyst(new ItemStack(item), recipeType));
+    }
+
+    private static List<ItemStack> tagToItemList(TagKey<Item> tag)
+    {
+        return Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS).stream().map(Item::getDefaultInstance).collect(Collectors.toList());
     }
 
     private static <T> RecipeType<T> type(String name, Class<T> tClass)
@@ -134,7 +142,7 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(INSTANT_BARREL, getRecipes(TFCRecipeTypes.BARREL_INSTANT.get()));
         r.addRecipes(BLOOMERY, getRecipes(TFCRecipeTypes.BLOOMERY.get()));
 
-        //todo: ingredient info goes here
+        addIngredientInfo(r);
     }
 
     @Override
@@ -157,6 +165,17 @@ public class TFCJEIPlugin implements IModPlugin
         woodCatalyst(r, Wood.BlockType.BARREL, SEALED_BARREL);
         woodCatalyst(r, Wood.BlockType.BARREL, INSTANT_BARREL);
         r.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
+    }
+
+    private void addIngredientInfo(IRecipeRegistration r)
+    {
+        //todo: 1.12 parity
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_GREENS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_greens"));
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_BROWNS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_browns"));
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_POISONS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_poisons"));
+        r.addIngredientInfo(new ItemStack(TFCItems.COMPOST.get()), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost"));
+        r.addIngredientInfo(new ItemStack(TFCItems.ROTTEN_COMPOST.get()), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.rotten_compost"));
+
     }
 
     public static void woodCatalyst(IRecipeCatalystRegistration r, Wood.BlockType wood, RecipeType<?> recipeType)

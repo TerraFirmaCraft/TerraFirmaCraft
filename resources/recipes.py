@@ -645,7 +645,7 @@ def generate(rm: ResourceManager):
     hit_x3 = Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last
 
     anvil_recipe(rm, 'refined_iron_bloom', 'tfc:raw_iron_bloom', 'tfc:refined_iron_bloom', 2, *hit_x3)
-    anvil_recipe(rm, 'refined_iron_bloom', 'tfc:refined_iron_bloom', 'tfc:metal/ingot/wrought_iron', 2, *hit_x3)
+    anvil_recipe(rm, 'wrought_iron_from_bloom', 'tfc:refined_iron_bloom', 'tfc:metal/ingot/wrought_iron', 2, *hit_x3)
 
     for metal_in, metal_out in (
         ('pig_iron', 'high_carbon_steel'),

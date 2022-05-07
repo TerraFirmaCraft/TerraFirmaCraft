@@ -832,6 +832,7 @@ def generate(rm: ResourceManager):
                 'part=top': {'model': 'tfc:block/wild_crop/%s_top' % crop},
                 'part=bottom': {'model': 'tfc:block/wild_crop/%s_bottom' % crop}
             })
+            rm.item_model(('wild_crop', crop), parent='tfc:block/wild_crop/%s_top' % crop, no_textures=True)
             block.with_lang(lang('wild %s', crop))
             rm.block_model(('wild_crop', '%s_top' % crop), {'crop': 'tfc:block/crop/%s_wild_top' % crop}, parent='block/crop')
             rm.block_model(('wild_crop', '%s_bottom' % crop), {'crop': 'tfc:block/crop/%s_wild_bottom' % crop}, parent='tfc:block/wild_crop/crop')

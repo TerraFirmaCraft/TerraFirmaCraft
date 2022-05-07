@@ -23,6 +23,7 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -47,26 +48,21 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
         if (Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
             mutablePos.move(0, 1, 0);
-            boolean blocked = false;
             for (int j = 1; j <= 10; j++)
             {
-                mutablePos.move(0, 1, 0);
-                if (!level.isEmptyBlock(mutablePos))
+                if (!EnvironmentHelpers.isWorldgenReplaceable(level, mutablePos))
                 {
-                    blocked = true;
-                    break;
+                    return false;
                 }
+                mutablePos.move(0, 1, 0);
             }
-            if (!blocked)
-            {
-                mutablePos.move(Direction.DOWN, 9);
-                int saplings = Mth.nextInt(rand, 2, 4);
-                BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
-                setBlock(level, mutablePos, branch);
-                level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
-                level.scheduleTick(mutablePos, branch.getBlock(), 1);
-                return true;
-            }
+            mutablePos.set(pos);
+            int saplings = Mth.nextInt(rand, 2, 4);
+            BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
+            setBlock(level, mutablePos, branch);
+            level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
+            level.scheduleTick(mutablePos, branch.getBlock(), 1);
+            return true;
         }
         return false;
     }
