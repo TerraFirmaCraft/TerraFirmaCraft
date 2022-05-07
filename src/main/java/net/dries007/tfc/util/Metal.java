@@ -51,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 public final class Metal
 {
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
-    public static final DataManager<Metal> MANAGER = new DataManager<>("metals", "metal", Metal::new, Metal::reload, Metal::new, Metal::encode, DataManagerSyncPacket.TMetal::new);
+    public static final DataManager<Metal> MANAGER = new DataManager<>("metals", "metal", Metal::new, Metal::new, Metal::encode, DataManagerSyncPacket.TMetal::new);
 
     private static final Map<Fluid, Metal> METAL_FLUIDS = new HashMap<>();
 
@@ -76,7 +76,7 @@ public final class Metal
         return MANAGER.getOrThrow(UNKNOWN_ID);
     }
 
-    private static void reload()
+    public static void updateMetalFluidMap()
     {
         // Ensure 'unknown' metal exists
         unknown();

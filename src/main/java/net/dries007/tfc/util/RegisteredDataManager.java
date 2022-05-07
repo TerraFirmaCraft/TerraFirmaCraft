@@ -7,11 +7,13 @@
 package net.dries007.tfc.util;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -20,6 +22,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraftforge.network.NetworkEvent;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.network.DataManagerSyncPacket;
@@ -45,7 +48,6 @@ public class RegisteredDataManager<T> extends DataManager<RegisteredDataManager.
     {
         return networkEncoder != null ? (e, buf) -> networkEncoder.accept(e.value, buf) : null;
     }
-
 
     protected final BiFunction<ResourceLocation, JsonObject, T> factory;
     protected final Function<ResourceLocation, T> fallbackFactory;
@@ -113,6 +115,42 @@ public class RegisteredDataManager<T> extends DataManager<RegisteredDataManager.
         }
     }
 
+    @Override
+    public void onSync(NetworkEvent.Context context, Map<ResourceLocation, Entry<T>> elements)
+    {
+        if (context.getNetworkManager().isMemoryConnection())
+        {
+            LOGGER.info("Ignored {}(s) sync from logical server", typeName);
+        }
+        else
+        {
+            // Sync received from physical server
+            // Unlike the standard data manager, we need to maintain references to entries
+            // So we have to do a per-entry copy here, rather than just resetting the types map
+            for (ResourceLocation id : Sets.union(types.keySet(), elements.keySet()))
+            {
+                @Nullable final Entry<T> type = types.get(id), receivedType = elements.get(id);
+                if (type == null)
+                {
+                    // Types does not contain the required value - this is somehow extra data that got sent from server
+                    LOGGER.warn("Received an unknown {} from server with id {}", typeName, id);
+                }
+                else if (receivedType == null)
+                {
+                    // Elements does not contain the required value - we need to use a default and mark this as unknown
+                    LOGGER.warn("Missing {} value in sync from server with id {}, using fallback factory", typeName, id);
+                    types.get(id).value = fallbackFactory.apply(id);
+                }
+                else
+                {
+                    // Copy value directly, since it exists in both maps
+                    type.value = receivedType.value;
+                }
+            }
+            LOGGER.info("Received {} {}(s) from physical server", types.size(), typeName);
+        }
+    }
+
     public static class Entry<T> implements Supplier<T>
     {
         private static <T> Entry<T> of(T value)
@@ -127,11 +165,7 @@ public class RegisteredDataManager<T> extends DataManager<RegisteredDataManager.
         @Override
         public T get()
         {
-            if (value == null)
-            {
-                throw new IllegalStateException("Value requested before data has been loaded");
-            }
-            return value;
+            return Objects.requireNonNull(value, "Value requested before data has been loaded");
         }
     }
 }

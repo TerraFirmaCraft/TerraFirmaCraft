@@ -34,6 +34,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -104,6 +105,7 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
@@ -116,6 +118,7 @@ import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.settings.RockLayerSettings;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 public final class ForgeEventHandler
@@ -165,6 +168,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
         bus.addListener(ForgeEventHandler::onDataPackSync);
+        bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onLivingJump);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
@@ -953,6 +957,25 @@ public final class ForgeEventHandler
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
+    }
+
+    /**
+     * This is when tags are safe to be loaded, so we can do post reload actions that involve querying ingredients.
+     * It is fired on both logical server and client after resources are reloaded (or, sent from server)
+     */
+    public static void onTagsUpdated(TagsUpdatedEvent event)
+    {
+        @Nullable final RecipeManager recipeManager = Helpers.getRecipeManagerInTheMostHackyAwfulWay().orElse(null);
+        if (recipeManager != null)
+        {
+            // First, reload all caches
+            IndirectHashCollection.reloadAllCaches();
+
+            // Then apply post reload actions which may query the cache
+            Support.updateMaximumSupportRange();
+            Metal.updateMetalFluidMap();
+            ItemSizeManager.applyItemStackSizeOverrides();
+        }
     }
 
     /**

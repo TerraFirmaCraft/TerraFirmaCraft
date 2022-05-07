@@ -26,6 +26,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
@@ -44,6 +45,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -75,9 +77,11 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -254,10 +258,44 @@ public final class Helpers
         return state.hasProperty(property) ? state.setValue(property, value) : state;
     }
 
-    @SuppressWarnings("unchecked")
     public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(Level level, Supplier<RecipeType<R>> type)
     {
-        return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) level.getRecipeManager()).invoke$byType(type.get());
+        return getRecipes(level.getRecipeManager(), type);
+    }
+
+    public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(Supplier<RecipeType<R>> type)
+    {
+        return getRecipeManagerInTheMostHackyAwfulWay().map(m -> getRecipes(m, type)).orElse(Collections.emptyMap());
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(RecipeManager recipeManager, Supplier<RecipeType<R>> type)
+    {
+        return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) recipeManager).invoke$byType(type.get());
+    }
+
+    /**
+     * Cannot cache recipes on resource reload, when a level is available, as tags aren't present and can't be resolved. Recipes may be accessed through {@link CacheInvalidationListener} but holding references to them is awkward for client side caches.
+     * Resolving recipes needs access to a {@link RecipeManager} which needs to be obtained from a {@link Level} which is prohibitively difficult for use cases such as item stack capabilities, where a level is not readily available.
+     * This seems to work.
+     */
+    public static Optional<RecipeManager> getRecipeManagerInTheMostHackyAwfulWay()
+    {
+        final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server != null)
+        {
+            return Optional.of(server.getRecipeManager());
+        }
+        try
+        {
+            final Level level = ClientHelpers.getLevel();
+            if (level != null)
+            {
+                return Optional.of(level.getRecipeManager());
+            }
+        }
+        catch (Throwable t) { /* super safe */ }
+        return Optional.empty();
     }
 
     public static ItemStack damageCraftingItem(ItemStack stack, int amount)
