@@ -81,9 +81,9 @@ public abstract class EpiphytePlantBlock extends PlantBlock
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState attachedState = world.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
+        BlockState attachedState = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
         return Helpers.isBlock(attachedState, BlockTags.LOGS);
     }
 

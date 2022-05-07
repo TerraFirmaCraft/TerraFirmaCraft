@@ -26,7 +26,8 @@
       }
     },
     "result": {
-      "item": "tfc:food/rice_bread_sandwich"
+      "item": "tfc:food/rice_bread_sandwich",
+      "count": 2
     }
   }
 }

@@ -33,6 +33,6 @@ public class WildCropBlock extends TFCBushBlock
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.WILD_CROP_GROWS_ON);
+        return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.WILD_CROP_GROWS_ON);
     }
 }

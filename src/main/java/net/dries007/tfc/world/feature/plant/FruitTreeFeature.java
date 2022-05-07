@@ -42,14 +42,15 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
         final BlockStateConfiguration config = context.config();
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        mutablePos.set(pos);
+        mutablePos.set(pos).move(0, -1, 0);
 
-        if (Helpers.isBlock(level.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON))
+        if (Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.BUSH_PLANTABLE_ON))
         {
+            mutablePos.move(0, 1, 0);
             boolean blocked = false;
             for (int j = 1; j <= 10; j++)
             {
-                mutablePos.move(Direction.UP);
+                mutablePos.move(0, 1, 0);
                 if (!level.isEmptyBlock(mutablePos))
                 {
                     blocked = true;
@@ -59,7 +60,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
             if (!blocked)
             {
                 mutablePos.move(Direction.DOWN, 9);
-                int saplings = Mth.clamp(rand.nextInt(5) + 1, 2, 4);
+                int saplings = Mth.nextInt(rand, 2, 4);
                 BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
                 setBlock(level, mutablePos, branch);
                 level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
