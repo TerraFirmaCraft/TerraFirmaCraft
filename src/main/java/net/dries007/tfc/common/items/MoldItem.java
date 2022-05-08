@@ -110,9 +110,7 @@ public class MoldItem extends Item
 
                         // Draining directly from the mold is denied, as the mold is not molten
                         // So, we need to clear the mold specially
-                        //mold.drainIgnoringTemperature();
-                        ((DelegateFluidHandler) mold).getFluidHandler().drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-                        mold.setTemperature(mold.getTemperature()); // triggers save()
+                        mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
 
                         // Give them the result of the casting
                         ItemHandlerHelper.giveItemToPlayer(player, result);
