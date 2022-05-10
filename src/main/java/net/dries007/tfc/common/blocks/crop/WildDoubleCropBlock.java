@@ -7,10 +7,17 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -20,9 +27,48 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class WildDoubleCropBlock extends WildCropBlock
 {
+    public static void onPlayerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
+    {
+        if (!level.isClientSide)
+        {
+            if (player.isCreative())
+            {
+                if (state.getValue(PART) == DoubleCropBlock.Part.TOP)
+                {
+                    BlockPos blockpos = pos.below();
+                    BlockState blockstate = level.getBlockState(blockpos);
+                    if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == DoubleCropBlock.Part.TOP)
+                    {
+                        level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
+                        level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
+                    }
+                }
+            }
+            else
+            {
+                dropResources(state, level, pos, null, player, player.getMainHandItem());
+            }
+        }
+    }
+
+    public static boolean doubleBlockSurvives(BlockState state, LevelReader level, BlockPos pos)
+    {
+        final DoubleCropBlock.Part part = state.getValue(PART);
+        final BlockState belowState = level.getBlockState(pos.below());
+        if (part == DoubleCropBlock.Part.BOTTOM)
+        {
+            return Helpers.isBlock(belowState.getBlock(), TFCTags.Blocks.WILD_CROP_GROWS_ON);
+        }
+        else
+        {
+            return Helpers.isBlock(belowState, state.getBlock()) && belowState.getValue(PART) == DoubleCropBlock.Part.BOTTOM;
+        }
+    }
+
     public static final EnumProperty<DoubleCropBlock.Part> PART = TFCBlockStateProperties.DOUBLE_CROP_PART;
 
     public WildDoubleCropBlock(Properties properties)
@@ -46,16 +92,36 @@ public class WildDoubleCropBlock extends WildCropBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        final DoubleCropBlock.Part part = state.getValue(PART);
-        final BlockState belowState = level.getBlockState(pos.below());
-        if (part == DoubleCropBlock.Part.BOTTOM)
+        return doubleBlockSurvives(state, level, pos);
+    }
+
+    @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        BlockPos pos = context.getClickedPos();
+        return pos.getY() < context.getLevel().getMaxBuildHeight() - 1 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    {
+        if (placer instanceof Player)
         {
-            return Helpers.isBlock(belowState.getBlock(), TFCTags.Blocks.WILD_CROP_GROWS_ON);
+            level.setBlockAndUpdate(pos.above(), defaultBlockState().setValue(PART, DoubleCropBlock.Part.TOP));
         }
-        else
-        {
-            return Helpers.isBlock(belowState, this) && belowState.getValue(PART) == DoubleCropBlock.Part.BOTTOM;
-        }
+    }
+
+    @Override
+    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
+    {
+        onPlayerWillDestroy(level, pos, state, player);
+    }
+
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tile, ItemStack stack)
+    {
+        super.playerDestroy(level, player, pos, Blocks.AIR.defaultBlockState(), tile, stack);
     }
 
     public void placeTwoHalves(LevelAccessor level, BlockPos pos, int flags)

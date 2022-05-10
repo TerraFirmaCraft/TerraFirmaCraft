@@ -10,15 +10,18 @@ package net.dries007.tfc.common.blocks.crop;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import net.dries007.tfc.util.Helpers;
 
 public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggable
 {
@@ -40,6 +43,12 @@ public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggabl
     public FluidProperty getFluidProperty()
     {
         return FLUID;
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) || super.canSurvive(state, level, pos);
     }
 
     @Override

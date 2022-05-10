@@ -175,6 +175,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onLivingJump);
+        bus.addListener(ForgeEventHandler::onItemCrafted);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
     }
 
@@ -1000,6 +1001,11 @@ public final class ForgeEventHandler
             event.setResult(Event.Result.DENY);
             event.setCanceled(true);
         }
+    }
+
+    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event)
+    {
+        Helpers.resetCreationDate(event.getCrafting());
     }
 
     public static void onSelectClimateModel(SelectClimateModelEvent event)

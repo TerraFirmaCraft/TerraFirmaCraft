@@ -89,14 +89,14 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos)
+    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
     }
@@ -110,29 +110,29 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        int distance = updateDistance(worldIn, pos);
+        int distance = updateDistance(level, pos);
         if (distance > maxDecayDistance)
         {
             if (!state.getValue(PERSISTENT))
             {
-                worldIn.removeBlock(pos, false);
+                level.removeBlock(pos, false);
             }
             else
             {
-                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
+                level.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
             }
         }
         else
         {
-            worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+            level.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
         }
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
     {
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
@@ -163,14 +163,14 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
      */
     protected abstract IntegerProperty getDistanceProperty();
 
-    private int updateDistance(LevelAccessor worldIn, BlockPos pos)
+    private int updateDistance(LevelAccessor level, BlockPos pos)
     {
         int distance = 1 + maxDecayDistance;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : Direction.values())
         {
             mutablePos.set(pos).move(direction);
-            distance = Math.min(distance, getDistance(worldIn.getBlockState(mutablePos)) + 1);
+            distance = Math.min(distance, getDistance(level.getBlockState(mutablePos)) + 1);
             if (distance == 1)
             {
                 break;

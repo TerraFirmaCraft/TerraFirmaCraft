@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
-import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.BushBlock;

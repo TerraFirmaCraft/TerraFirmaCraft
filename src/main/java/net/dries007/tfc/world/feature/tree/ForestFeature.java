@@ -108,7 +108,7 @@ public class ForestFeature extends Feature<ForestConfig>
                     feature = entry.getFeature();
                 }
             }
-            feature.place(level, generator, random, mutablePos);
+            return feature.place(level, generator, random, mutablePos);
         }
         return false;
     }

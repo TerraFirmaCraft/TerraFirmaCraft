@@ -243,7 +243,7 @@ def generate(rm: ResourceManager):
     rm.blockstate('wall_torch', variants=four_rotations('minecraft:block/wall_torch', (None, 270, 90, 180))).with_lang(lang('Torch'))
     rm.blockstate('dead_wall_torch', variants=four_rotations('tfc:block/dead_wall_torch', (None, 270, 90, 180))).with_lang(lang('Burnt Out Torch'))
     rm.blockstate('torch', 'minecraft:block/torch').with_block_loot('tfc:torch').with_lang(lang('Torch'))
-    rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot('minecraft:stick').with_lang(lang('Burnt Out Torch'))
+    rm.blockstate('dead_torch', 'tfc:block/dead_torch').with_block_loot({'name': 'minecraft:stick', 'conditions': [loot_tables.random_chance(0.5)]}).with_lang(lang('Burnt Out Torch'))
     
     for wattle in ('woven_wattle', 'unstained_wattle'):
         rm.block_model('tfc:wattle/%s' % wattle, {
@@ -724,7 +724,7 @@ def generate(rm: ResourceManager):
                 'conditions': loot_tables.block_state_property('tfc:dead_crop/%s[mature=false]' % crop)
             }))
 
-            block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop)).with_item_model()
+            block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop)).with_item_model().with_tag('can_be_snow_piled')
             block.with_block_model(textures={'crop': 'tfc:block/crop/%s_wild' % crop}, parent='tfc:block/wild_crop/crop')
             block.with_block_loot({
                 'name': name,
@@ -832,7 +832,7 @@ def generate(rm: ResourceManager):
                 'part=top': {'model': 'tfc:block/wild_crop/%s_top' % crop},
                 'part=bottom': {'model': 'tfc:block/wild_crop/%s_bottom' % crop}
             })
-            rm.item_model(('wild_crop', crop), parent='tfc:block/wild_crop/%s_top' % crop, no_textures=True)
+            rm.item_model(('wild_crop', crop), parent='tfc:block/wild_crop/%s_bottom' % crop, no_textures=True)
             block.with_lang(lang('wild %s', crop))
             rm.block_model(('wild_crop', '%s_top' % crop), {'crop': 'tfc:block/crop/%s_wild_top' % crop}, parent='block/crop')
             rm.block_model(('wild_crop', '%s_bottom' % crop), {'crop': 'tfc:block/crop/%s_wild_bottom' % crop}, parent='tfc:block/wild_crop/crop')
@@ -987,7 +987,7 @@ def generate(rm: ResourceManager):
                 if prefix == '':
                     block.with_block_loot({
                         'name': 'tfc:plant/%s_sapling' % fruit,
-                        'conditions': [loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')]
+                        'conditions': [*[loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')], loot_tables.match_tag('tfc:axes')]
                     }, {
                         'name': 'minecraft:stick',
                         'functions': [loot_tables.set_count(1, 4)]

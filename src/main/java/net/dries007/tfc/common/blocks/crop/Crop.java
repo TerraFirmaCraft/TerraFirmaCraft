@@ -47,7 +47,7 @@ public enum Crop implements StringRepresentable
 
     private static ExtendedProperties crop()
     {
-        return ExtendedProperties.of(dead()).blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTick);
+        return ExtendedProperties.of(dead()).blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTick).flammable(60, 30);
     }
 
     private static BlockBehaviour.Properties dead()

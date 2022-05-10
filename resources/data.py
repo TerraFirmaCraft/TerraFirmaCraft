@@ -174,7 +174,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
     rm.item_tag('forge:double_sheets/any_bronze', *['#forge:double_sheets/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('tfc:bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
-    rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam')
+    rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
     rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
@@ -707,6 +707,9 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 1, 4, 'medium', bones=4, extra_pool={'name': 'tfc:wool'})
     mob_loot(rm, 'chicken', 'tfc:food/chicken', extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
 
+    global_loot_modifiers(rm, 'tfc:reset_decay')
+    global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})
+
 def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
     pools = [{'name': drop, 'functions': func}]
@@ -718,6 +721,19 @@ def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max
     if extra_pool is not None:
         pools.append(extra_pool)
     rm.entity_loot(name, *pools)
+
+def global_loot_modifier(rm: ResourceManager, name: str, mod_type: str, *conditions: utils.Json):
+    rm.write((*rm.resource_dir, 'data', rm.domain, 'loot_modifiers', name), {
+        'type': mod_type,
+        'conditions': [c for c in conditions]
+    })
+
+# note for the mcresources dev: these work exactly the same as tags so if you implement this, do it like that
+def global_loot_modifiers(rm: ResourceManager, *modifiers: str):
+    rm.write((*rm.resource_dir, 'data', 'forge', 'loot_modifiers', 'global_loot_modifiers'), {
+        'replace': False,
+        'entries': [m for m in modifiers]
+    })
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {

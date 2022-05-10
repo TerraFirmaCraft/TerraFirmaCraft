@@ -72,7 +72,7 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FARMLAND);
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override

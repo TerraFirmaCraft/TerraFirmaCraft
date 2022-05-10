@@ -1,4 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:block/wild_crop/jute_bottom"
+  "replace": false,
+  "entries": [
+    "tfc:reset_decay"
+  ]
 }
