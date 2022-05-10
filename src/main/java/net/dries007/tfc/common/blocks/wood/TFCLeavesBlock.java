@@ -27,15 +27,17 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
+public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension
 {
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
-    public static TFCLeavesBlock create(Properties properties, int maxDecayDistance)
+    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance)
     {
         final IntegerProperty distanceProperty = getDistanceProperty(maxDecayDistance);
         return new TFCLeavesBlock(properties, maxDecayDistance)
@@ -59,14 +61,22 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
+    private final ExtendedProperties properties;
 
-    protected TFCLeavesBlock(Properties properties, int maxDecayDistance)
+    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance)
     {
-        super(properties);
+        super(properties.properties());
         this.maxDecayDistance = maxDecayDistance;
+        this.properties = properties;
 
         // Distance is dependent on tree species
         registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 
     /**

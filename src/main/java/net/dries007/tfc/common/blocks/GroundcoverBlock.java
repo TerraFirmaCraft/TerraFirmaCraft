@@ -24,6 +24,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
@@ -51,31 +52,33 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     public static final VoxelShape PIXEL_HIGH = box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
     public static final VoxelShape TWIG = box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
 
-    public static GroundcoverBlock twig(Properties properties)
+    public static GroundcoverBlock twig(ExtendedProperties properties)
     {
-        return new GroundcoverBlock(properties, TWIG, null);
+        return new GroundcoverBlock(properties.flammable(60, 30), TWIG, null);
     }
 
-    public static GroundcoverBlock looseOre(Properties properties)
+    public static GroundcoverBlock looseOre(BlockBehaviour.Properties properties)
     {
-        return new GroundcoverBlock(properties, SMALL, null);
+        return new GroundcoverBlock(ExtendedProperties.of(properties), SMALL, null);
     }
 
     private final VoxelShape shape;
     @Nullable
     private final Supplier<? extends Item> pickBlock;
+    private final ExtendedProperties properties;
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
-        this(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noCollission(), cover.getShape(), cover.getVanillaItem());
+        this(ExtendedProperties.of(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noCollission()), cover.getShape(), cover.getVanillaItem());
     }
 
-    public GroundcoverBlock(Properties properties, VoxelShape shape, @Nullable Supplier<? extends Item> pickBlock)
+    public GroundcoverBlock(ExtendedProperties properties, VoxelShape shape, @Nullable Supplier<? extends Item> pickBlock)
     {
-        super(properties);
+        super(properties.properties());
 
         this.shape = shape;
         this.pickBlock = pickBlock;
+        this.properties = properties;
 
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
