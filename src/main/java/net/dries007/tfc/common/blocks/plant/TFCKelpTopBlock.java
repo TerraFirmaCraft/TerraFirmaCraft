@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -35,9 +36,9 @@ import net.dries007.tfc.util.Helpers;
 
 public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLoggable
 {
-    public static TFCKelpTopBlock create(BlockBehaviour.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
+    public static TFCKelpTopBlock create(Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
-        return new TFCKelpTopBlock(properties, bodyBlock, direction, shape)
+        return new TFCKelpTopBlock(ExtendedProperties.of(properties), bodyBlock, direction, shape)
         {
             @Override
             public FluidProperty getFluidProperty()
@@ -49,7 +50,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
 
     private final Supplier<? extends Block> bodyBlock;
 
-    protected TFCKelpTopBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
+    protected TFCKelpTopBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
     {
         super(properties, bodyBlock, direction, shape);
         this.bodyBlock = bodyBlock;

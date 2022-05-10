@@ -47,12 +47,12 @@ public enum Crop implements StringRepresentable
 
     private static ExtendedProperties crop()
     {
-        return ExtendedProperties.of(dead()).blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTick).flammable(60, 30);
+        return dead().blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTick);
     }
 
-    private static BlockBehaviour.Properties dead()
+    private static ExtendedProperties dead()
     {
-        return BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0.4F).sound(SoundType.CROP);
+        return ExtendedProperties.of(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0.4F).sound(SoundType.CROP)).flammable(60, 30);
     }
 
     private final String serializedName;

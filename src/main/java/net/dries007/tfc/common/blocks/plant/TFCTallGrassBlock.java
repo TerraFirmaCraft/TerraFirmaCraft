@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,7 +37,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     protected static final VoxelShape PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
     protected static final VoxelShape SHORTER_PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
 
-    public static TFCTallGrassBlock create(IPlant plant, Properties properties)
+    public static TFCTallGrassBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new TFCTallGrassBlock(properties)
         {
@@ -48,7 +49,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         };
     }
 
-    protected TFCTallGrassBlock(Properties properties)
+    protected TFCTallGrassBlock(ExtendedProperties properties)
     {
         super(properties);
 

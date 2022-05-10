@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -27,7 +28,7 @@ public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggabl
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
 
-    public FloodedDeadCropBlock(Properties properties, Crop crop)
+    public FloodedDeadCropBlock(ExtendedProperties properties, Crop crop)
     {
         super(properties, crop);
     }

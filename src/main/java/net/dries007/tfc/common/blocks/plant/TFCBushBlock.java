@@ -13,13 +13,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCBushBlock extends BushBlock
+public class TFCBushBlock extends BushBlock implements IForgeBlockExtension
 {
-    public TFCBushBlock(Properties properties)
+    private final ExtendedProperties properties;
+
+    public TFCBushBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties.properties());
+        this.properties = properties;
     }
 
     @Override
@@ -27,6 +32,12 @@ public class TFCBushBlock extends BushBlock
     {
         BlockPos blockpos = pos.below();
         return mayPlaceOn(level.getBlockState(blockpos), level, blockpos);
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 
     @Override

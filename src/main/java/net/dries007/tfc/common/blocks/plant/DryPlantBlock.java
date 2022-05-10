@@ -13,11 +13,12 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
 public abstract class DryPlantBlock extends PlantBlock
 {
-    public static DryPlantBlock create(IPlant plant, Properties properties)
+    public static DryPlantBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new DryPlantBlock(properties)
         {
@@ -30,7 +31,7 @@ public abstract class DryPlantBlock extends PlantBlock
         };
     }
 
-    protected DryPlantBlock(Properties properties)
+    protected DryPlantBlock(ExtendedProperties properties)
     {
         super(properties);
 

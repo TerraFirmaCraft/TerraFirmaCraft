@@ -13,12 +13,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.plant.TFCBushBlock;
 import net.dries007.tfc.util.Helpers;
 
 public class WildCropBlock extends TFCBushBlock
 {
-    public WildCropBlock(Properties properties)
+    public WildCropBlock(ExtendedProperties properties)
     {
         super(properties);
     }

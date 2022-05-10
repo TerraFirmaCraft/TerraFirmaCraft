@@ -18,6 +18,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -28,7 +29,7 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
 {
     public static WaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
     {
-        return new WaterPlantBlock(properties)
+        return new WaterPlantBlock(ExtendedProperties.of(properties))
         {
             @Override
             public IPlant getPlant()
@@ -44,7 +45,7 @@ public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggab
         };
     }
 
-    protected WaterPlantBlock(Properties properties)
+    protected WaterPlantBlock(ExtendedProperties properties)
     {
         super(properties);
 

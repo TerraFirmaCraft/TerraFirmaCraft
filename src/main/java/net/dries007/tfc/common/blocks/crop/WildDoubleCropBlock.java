@@ -25,6 +25,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
@@ -71,7 +72,7 @@ public class WildDoubleCropBlock extends WildCropBlock
 
     public static final EnumProperty<DoubleCropBlock.Part> PART = TFCBlockStateProperties.DOUBLE_CROP_PART;
 
-    public WildDoubleCropBlock(Properties properties)
+    public WildDoubleCropBlock(ExtendedProperties properties)
     {
         super(properties);
         registerDefaultState(getStateDefinition().any().setValue(PART, DoubleCropBlock.Part.BOTTOM));

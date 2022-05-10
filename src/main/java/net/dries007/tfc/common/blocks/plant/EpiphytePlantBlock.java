@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Map;
+
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
@@ -40,7 +42,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
 
     protected static final Map<Direction, VoxelShape> SHAPES = ImmutableMap.of(Direction.NORTH, NORTH_SHAPE, Direction.SOUTH, SOUTH_SHAPE, Direction.WEST, WEST_SHAPE, Direction.EAST, EAST_SHAPE);
 
-    public static EpiphytePlantBlock create(IPlant plant, Properties properties)
+    public static EpiphytePlantBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new EpiphytePlantBlock(properties)
         {
@@ -52,7 +54,7 @@ public abstract class EpiphytePlantBlock extends PlantBlock
         };
     }
 
-    protected EpiphytePlantBlock(Properties properties)
+    protected EpiphytePlantBlock(ExtendedProperties properties)
     {
         super(properties);
 

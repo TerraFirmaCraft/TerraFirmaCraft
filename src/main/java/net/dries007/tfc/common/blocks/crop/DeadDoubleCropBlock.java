@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.ITallPlant;
 import net.dries007.tfc.util.Helpers;
@@ -37,7 +38,7 @@ public class DeadDoubleCropBlock extends DeadCropBlock
 {
     public static final EnumProperty<DoubleCropBlock.Part> PART = TFCBlockStateProperties.DOUBLE_CROP_PART;
 
-    public DeadDoubleCropBlock(Properties properties, Crop crop)
+    public DeadDoubleCropBlock(ExtendedProperties properties, Crop crop)
     {
         super(properties, crop);
         registerDefaultState(getStateDefinition().any().setValue(PART, DoubleCropBlock.Part.BOTTOM).setValue(MATURE, false));

@@ -13,6 +13,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidProperty;
 
 public abstract class TFCSeagrassBlock extends WaterPlantBlock
@@ -24,7 +25,7 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
 
     public static TFCSeagrassBlock create(IPlant plant, FluidProperty fluid, BlockBehaviour.Properties properties)
     {
-        return new TFCSeagrassBlock(properties)
+        return new TFCSeagrassBlock(ExtendedProperties.of(properties))
         {
             @Override
             public IPlant getPlant()
@@ -40,7 +41,7 @@ public abstract class TFCSeagrassBlock extends WaterPlantBlock
         };
     }
 
-    protected TFCSeagrassBlock(BlockBehaviour.Properties properties)
+    protected TFCSeagrassBlock(ExtendedProperties properties)
     {
         super(properties);
     }

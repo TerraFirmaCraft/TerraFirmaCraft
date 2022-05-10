@@ -22,6 +22,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -35,7 +36,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
 
     public static TallWaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
     {
-        return new TallWaterPlantBlock(properties)
+        return new TallWaterPlantBlock(ExtendedProperties.of(properties))
         {
             @Override
             public IPlant getPlant()
@@ -51,7 +52,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
         };
     }
 
-    protected TallWaterPlantBlock(Properties properties)
+    protected TallWaterPlantBlock(ExtendedProperties properties)
     {
         super(properties);
 
