@@ -45,6 +45,9 @@ public class Faunas
     public static final FaunaType<AmphibiousAnimal> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
     public static final FaunaType<FelinePredator> COUGAR = registerAnimal(TFCEntities.COUGAR);
+    public static final FaunaType<FelinePredator> PANTHER = registerAnimal(TFCEntities.PANTHER);
+    public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
+    public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
@@ -71,6 +74,9 @@ public class Faunas
         registerSpawnPlacement(PENGUIN);
         registerSpawnPlacement(POLAR_BEAR);
         registerSpawnPlacement(COUGAR);
+        registerSpawnPlacement(PANTHER);
+        registerSpawnPlacement(LION);
+        registerSpawnPlacement(SABERTOOTH);
         registerSpawnPlacement(SQUID);
         registerSpawnPlacement(OCTOPOTEUTHIS);
         registerSpawnPlacement(PIG);

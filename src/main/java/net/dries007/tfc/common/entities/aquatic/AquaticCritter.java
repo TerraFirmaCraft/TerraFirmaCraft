@@ -60,38 +60,50 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
         return new WaterBoundPathNavigation(this, pLevel);
     }
 
-    static class CritterEscapeGoal extends AvoidEntityGoal {
+    static class CritterEscapeGoal extends AvoidEntityGoal<LivingEntity>
+    {
 
         public CritterEscapeGoal(PathfinderMob mob, Class avoidClass, float maxDist, double walkSpeedModifier, double sprintSpeedModifier) {
             super(mob, avoidClass, maxDist, walkSpeedModifier, sprintSpeedModifier);
         }
 
-        public boolean shouldEscape() {
+        public boolean shouldEscape()
+        {
             return this.mob.getLastHurtByMob() != null;
         }
 
         @Override
-        public boolean canUse() {
-            if (shouldEscape()) {
-                this.toAvoid = this.mob.getLastHurtByMob();
+        public boolean canUse()
+        {
+            if (shouldEscape())
+            {
+                toAvoid = this.mob.getLastHurtByMob();
 
                 Vec3 vec3 = DefaultRandomPos.getPosAway(this.mob, 16, 7, this.toAvoid.position());
-                if (vec3 == null) {
+                if (vec3 == null)
+                {
                     return false;
-                } else if (this.toAvoid.distanceToSqr(vec3.x, vec3.y, vec3.z) < this.toAvoid.distanceToSqr(this.mob)) {
+                }
+                else if (toAvoid.distanceToSqr(vec3.x, vec3.y, vec3.z) < toAvoid.distanceToSqr(this.mob))
+                {
                     return false;
-                } else {
+                }
+                else
+                {
                     this.path = this.pathNav.createPath(vec3.x, vec3.y, vec3.z, 0);
                     return this.path != null;
                 }
-            } else {
+            }
+            else
+            {
                 return false;
             }
         }
 
         @Override
-        public boolean canContinueToUse() {
-            return (!this.pathNav.isDone() || this.mob.distanceToSqr(this.toAvoid) > 49.0D);
+        public boolean canContinueToUse()
+        {
+            return (!this.pathNav.isDone() || this.mob.distanceToSqr(toAvoid) > 49.0D);
         }
 
     }

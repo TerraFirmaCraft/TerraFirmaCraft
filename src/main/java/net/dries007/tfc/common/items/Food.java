@@ -82,6 +82,7 @@ public enum Food
     COOKED_EGG,
     DRIED_SEAWEED,
     CATTAIL_ROOT,
+    TARO_ROOT,
     DRIED_KELP,
     // Meats
     BEEF(true, false),

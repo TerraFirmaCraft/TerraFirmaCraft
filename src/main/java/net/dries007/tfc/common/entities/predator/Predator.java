@@ -33,6 +33,7 @@ import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class Predator extends PathfinderMob
@@ -45,24 +46,37 @@ public class Predator extends PathfinderMob
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
     private static int ATTACK_ANIMATION_LENGTH;
+    @Nullable
+    public Vec3 location;
+    @Nullable
+    public Vec3 prevLocation;
+    public float walkProgress = 0f;
+    public static int WALK_ANIMATION_LENGTH;
 
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
+    public final boolean isMale= random.nextBoolean();
 
     public static Predator createDiurnal(EntityType<? extends Predator> type, Level level)
     {
         return new Predator(type, level, true);
     }
 
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal)
+    public static Predator createBear(EntityType<? extends Predator> type, Level level)
     {
-        this(type, level, diurnal, 20);
+        return new Predator(type, level, true, 20, 14);
     }
 
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength)
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal)
+    {
+        this(type, level, diurnal, 20, 20);
+    }
+
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength)
     {
         super(type, level);
         ATTACK_ANIMATION_LENGTH = attackLength;
+        WALK_ANIMATION_LENGTH = walkLength;
         this.diurnal = diurnal;
         getNavigation().setCanFloat(true);
     }
@@ -101,7 +115,25 @@ public class Predator extends PathfinderMob
         {
             level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.04, 0.2, 0.04);
         }
+
+        //Variable for smooth walk animation
+        prevLocation = location;
+        location = this.position();
+        if (walkProgress >= (float) WALK_ANIMATION_LENGTH)
+        {
+            walkProgress = 0f;
+        }
+        if (this.isMoving() || walkProgress > 0f)
+        {
+            walkProgress++;
+        }
     }
+
+    public boolean isMoving()
+    {
+        return !(location == prevLocation);
+    }
+
 
     @Override
     public boolean hurt(DamageSource source, float amount)

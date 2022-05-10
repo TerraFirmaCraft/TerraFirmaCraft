@@ -27,9 +27,11 @@ import net.minecraft.world.entity.Pose;
 import java.util.Map;
 
 
-public class CougarModel extends EntityModel<FelinePredator> {
+public class CougarModel extends EntityModel<FelinePredator>
+{
 
-    public static LayerDefinition createBodyLayer() {
+    public static LayerDefinition createBodyLayer()
+    {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -72,10 +74,11 @@ public class CougarModel extends EntityModel<FelinePredator> {
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
+
     public static final Animation WALK = new Animation.Builder(1.0F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, -1F).rotation(0.5F, 0F, 0F, 1F).rotation(1.0F, 0F, 0F, -1F).build())
-        .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -45F, 0F, 0F).rotation(0.25F, -44.43855F, 7.05302F, -7.10708F).rotation(0.75F, -44.47002F, -6.45856F, 6.51352F).rotation(1.0F, -45F, 0F, 0F).build())
-        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 60F, 0F, 0F).rotation(0.375F, 61.16156F, 8.64738F, 15.27269F).rotation(0.875F, 42F, -4.47045F, -7.80797F).rotation(1.0F, 60F, 0F, 0F).build())
+        .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30.0F, 0F, 0F).rotation(0.25F, -30.43855F, 7.05302F, -7.10708F).rotation(0.75F, -30.47002F, -6.45856F, 6.51352F).rotation(1.0F, -30.0F, 0F, 0F).build())
+        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 50.0F, 0F, 0F).rotation(0.375F, 51.16156F, 8.64738F, 15.27269F).rotation(0.875F, 67.99327F, -4.47045F, -7.80797F).rotation(1.0F, 50.0F, 0F, 0F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, 1F).rotation(0.5F, 0F, 0F, -1F).rotation(1.0F, 0F, 0F, 1F).build())
         .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
         .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
@@ -94,7 +97,6 @@ public class CougarModel extends EntityModel<FelinePredator> {
         .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
         .build();
 
-    //Animation transubstantiated by Troggacompany
     //TODO: Add translations to body
     public static final Animation ATTACK = new Animation.Builder(0.4F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -15F, 0F, 0F).noRotation(0.4F).build())
@@ -150,7 +152,8 @@ public class CougarModel extends EntityModel<FelinePredator> {
     private final ModelPart nose;
     private final ModelPart rear;
 
-    public CougarModel(ModelPart root) {
+    public CougarModel(ModelPart root)
+    {
         this.body = root.getChild("body");
         this.neck = body.getChild("neck");
         this.rear = body.getChild("rear");
@@ -173,7 +176,8 @@ public class CougarModel extends EntityModel<FelinePredator> {
     }
 
     @Override
-    public void setupAnim(FelinePredator felinePredator, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void setupAnim(FelinePredator felinePredator, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    {
         defaults.forEach(ModelPart::loadPose);
 
         if (felinePredator.isSleeping())
@@ -187,29 +191,35 @@ public class CougarModel extends EntityModel<FelinePredator> {
             if (felinePredator.getAttackTicks() > 0)
             {
                 ATTACK.tick(parts, ageInTicks);
-            } else if (felinePredator.getPose() == Pose.CROUCHING) {
+            }
+            else if (felinePredator.getPose() == Pose.CROUCHING)
+            {
                 body.y = 28f;
                 CROUCH.tick(parts, felinePredator.walkProgress);
-            } else if (felinePredator.isMoving()) {
-                if (felinePredator.isSprinting()) {
+            }
+            else if (felinePredator.walkProgress > 0)
+            {
+                if (felinePredator.isAggressive())
+                {
                     RUN.tick(parts, ageInTicks);
-                } else {
+                }
+                else
+                {
                     WALK.tick(parts, felinePredator.walkProgress);
                 }
             }
 
-
-
-                head.xRot = netHeadYaw * Mth.PI / 720F;
-                neck.xRot = netHeadYaw * Mth.PI / 720F;
-                head.yRot = headPitch * Mth.PI / 360F;
-                neck.yRot = headPitch * Mth.PI / 360F;
+            head.xRot = netHeadYaw * Mth.PI / 720F;
+            neck.xRot = netHeadYaw * Mth.PI / 720F;
+            head.yRot = headPitch * Mth.PI / 360F;
+            neck.yRot = headPitch * Mth.PI / 360F;
         }
     }
 
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    {
         body.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }

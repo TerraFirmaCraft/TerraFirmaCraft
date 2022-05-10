@@ -12,16 +12,16 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.client.model.entity.TFCPolarBearModel;
+import net.dries007.tfc.client.model.entity.BearModel;
 import net.dries007.tfc.common.entities.predator.Predator;
 
-public class TFCPolarBearRenderer extends MobRenderer<Predator, TFCPolarBearModel>
+public class TFCPolarBearRenderer extends MobRenderer<Predator, BearModel>
 {
     private static final ResourceLocation POLAR_BEAR_LOCATION = RenderHelpers.animalTexture("polar_bear");
 
     public TFCPolarBearRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new TFCPolarBearModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("polar_bear"))), 0.9F);
+        super(ctx, new BearModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("polar_bear"))), 0.9F);
     }
 
     @Override
