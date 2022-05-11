@@ -7,12 +7,14 @@
 package net.dries007.tfc.client.screen;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.Level;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.AnvilPlanButton;
 import net.dries007.tfc.client.screen.button.AnvilStepButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
@@ -41,10 +43,10 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
     {
         super.init();
 
-        addRenderableWidget(new AnvilPlanButton(blockEntity, getGuiLeft(), getGuiTop()));
+        addRenderableWidget(new AnvilPlanButton(blockEntity, getGuiLeft(), getGuiTop(), RenderHelpers.makeButtonTooltip(this, new TranslatableComponent("tfc.tooltip.anvil_plan"))));
         for (ForgeStep step : ForgeStep.values())
         {
-            addRenderableWidget(new AnvilStepButton(step, getGuiLeft(), getGuiTop()));
+            addRenderableWidget(new AnvilStepButton(step, getGuiLeft(), getGuiTop(), RenderHelpers.makeButtonTooltip(this, step.getDescriptionId())));
         }
     }
 
@@ -109,6 +111,37 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
                     // Reverses the placement of the steps to line up better with the rules
                     final int xOffset = (2 - i) * 19;
                     blit(poseStack, guiLeft + 64 + xOffset, guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        super.renderTooltip(poseStack, mouseX, mouseY);
+
+        final Level level = blockEntity.getLevel();
+        final Forging forging = blockEntity.getMainInputForging();
+        if (forging != null && level != null)
+        {
+            final AnvilRecipe recipe = forging.getRecipe(level);
+            if (recipe != null)
+            {
+                final ForgeRule[] rules = recipe.getRules();
+                for (int i = 0; i < rules.length; i++)
+                {
+                    final ForgeRule rule = rules[i];
+                    if (rule != null)
+                    {
+                        final int xOffset = i * 19;
+                        final int x = getGuiLeft() + 64 + xOffset;
+                        final int y = getGuiTop() + 10;
+                        if (mouseX > x && mouseX < x + 10 && mouseY > y && mouseY < y + 10)
+                        {
+                            renderTooltip(poseStack, rule.getDescriptionId(), mouseX, mouseY);
+                        }
+                    }
                 }
             }
         }

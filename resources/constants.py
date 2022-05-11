@@ -570,7 +570,10 @@ OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
 OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
     'orca': spawner('tfc:orca', min_count=1, max_count=3),
     'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3),
-    'squid': spawner('tfc:squid', min_count=1, max_count=3),
+    'squid': spawner('tfc:squid', min_count=1, max_count=3)
+}
+
+UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
     'octopoteuthis': spawner('tfc:octopoteuthis', min_count=1, max_count=2)
 }
 
@@ -595,7 +598,7 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'chicken': spawner('tfc:chicken', min_count=2, max_count=6)
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -652,6 +655,8 @@ DEFAULT_LANG = {
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
+    'tfc.tooltip.danger': '§f - Danger!!',
+    'tfc.tooltip.anvil_plan': 'Plans',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',
@@ -869,6 +874,19 @@ DEFAULT_LANG = {
     'tfc.enum.forgingbonus.well_forged': 'Well Forged',
     'tfc.enum.forgingbonus.expertly_forged': 'Expertly Forged',
     'tfc.enum.forgingbonus.perfectly_forged': 'Perfectly Forged!',
+    'tfc.enum.forge_step.hit_light': 'Light Hit',
+    'tfc.enum.forge_step.hit_medium': 'Medium Hit',
+    'tfc.enum.forge_step.hit_hard': 'Hard Hit',
+    'tfc.enum.forge_step.draw': 'Draw',
+    'tfc.enum.forge_step.punch': 'Punch',
+    'tfc.enum.forge_step.bend': 'Bend',
+    'tfc.enum.forge_step.upset': 'Upset',
+    'tfc.enum.forge_step.shrink': 'Shrink',
+    'tfc.enum.order.any': 'Any',
+    'tfc.enum.order.last': 'Last',
+    'tfc.enum.order.not_last': 'Not Last',
+    'tfc.enum.order.second_last': 'Second Last',
+    'tfc.enum.order.third_last': 'Third Last',
 
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',

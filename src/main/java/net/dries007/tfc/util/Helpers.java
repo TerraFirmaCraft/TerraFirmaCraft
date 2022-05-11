@@ -219,11 +219,6 @@ public final class Helpers
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
     }
 
-    public static void resetCreationDate(ItemStack stack)
-    {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.setCreationDate(FoodCapability.getRoundedCreationDate()));
-    }
-
     public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
     {
         return provider == null ? LazyOptional.empty() : provider.getCapability(capability);

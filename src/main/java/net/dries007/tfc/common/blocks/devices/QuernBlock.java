@@ -117,7 +117,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                             if (quern.startGrinding())
                             {
                                 level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                                yield InteractionResult.SUCCESS;
+                                yield InteractionResult.sidedSuccess(level.isClientSide);
                             }
                             yield InteractionResult.FAIL;
                         }

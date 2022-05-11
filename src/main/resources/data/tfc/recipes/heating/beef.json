@@ -5,7 +5,12 @@
     "item": "tfc:food/beef"
   },
   "result_item": {
-    "item": "tfc:food/cooked_beef"
+    "stack": {
+      "item": "tfc:food/cooked_beef"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

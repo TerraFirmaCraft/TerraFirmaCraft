@@ -842,7 +842,8 @@ def generate(rm: ResourceManager):
                 'conditions': loot_tables.block_state_property('tfc:wild_crop/%s[part=bottom]' % crop),
                 'functions': loot_tables.set_count(1, 3)
             }, {
-                'name': 'tfc:seeds/%s' % crop
+                'name': 'tfc:seeds/%s' % crop,
+                'conditions': loot_tables.block_state_property('tfc:wild_crop/%s[part=bottom]' % crop)
             })
 
     rm.block_model(('crop', 'stick'), {'crop': 'tfc:block/crop/stick_top'}, parent='block/crop')

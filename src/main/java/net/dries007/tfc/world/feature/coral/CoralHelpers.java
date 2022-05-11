@@ -61,7 +61,7 @@ public final class CoralHelpers
                             BlockState wallCoralState = block.defaultBlockState();
                             if (wallCoralState.hasProperty(CoralWallFanBlock.FACING))
                             {
-                                level.setBlock(relativePos, wallCoralState.setValue(CoralWallFanBlock.FACING, direction), 2);
+                                level.setBlock(relativePos, salty(wallCoralState.setValue(CoralWallFanBlock.FACING, direction)), 2);
                             }
                         });
                     }

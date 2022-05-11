@@ -5,7 +5,12 @@
     "item": "tfc:plant/giant_kelp_flower"
   },
   "result_item": {
-    "item": "tfc:food/dried_kelp"
+    "stack": {
+      "item": "tfc:food/dried_kelp"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

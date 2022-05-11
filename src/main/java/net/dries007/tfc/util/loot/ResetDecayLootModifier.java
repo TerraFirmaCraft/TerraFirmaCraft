@@ -16,12 +16,12 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.common.loot.LootModifier;
 
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import org.jetbrains.annotations.NotNull;
 
-public class ResetDecayModifier extends LootModifier
+public class ResetDecayLootModifier extends LootModifier
 {
-    protected ResetDecayModifier(LootItemCondition[] conditionsIn)
+    protected ResetDecayLootModifier(LootItemCondition[] conditionsIn)
     {
         super(conditionsIn);
     }
@@ -30,20 +30,20 @@ public class ResetDecayModifier extends LootModifier
     @Override
     protected List<ItemStack> doApply(List<ItemStack> loot, LootContext context)
     {
-        loot.forEach(Helpers::resetCreationDate);
+        loot.forEach(FoodCapability::updateFoodDecayOnCreate);
         return loot;
     }
 
-    public static class Serializer extends GlobalLootModifierSerializer<ResetDecayModifier>
+    public static class Serializer extends GlobalLootModifierSerializer<ResetDecayLootModifier>
     {
         @Override
-        public ResetDecayModifier read(ResourceLocation location, JsonObject object, LootItemCondition[] conditions)
+        public ResetDecayLootModifier read(ResourceLocation location, JsonObject object, LootItemCondition[] conditions)
         {
-            return new ResetDecayModifier(conditions);
+            return new ResetDecayLootModifier(conditions);
         }
 
         @Override
-        public JsonObject write(ResetDecayModifier instance)
+        public JsonObject write(ResetDecayLootModifier instance)
         {
             return makeConditions(instance.conditions);
         }

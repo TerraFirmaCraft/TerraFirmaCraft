@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,17 +39,28 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         if (quern.rotationTimer > 0)
         {
+            ServerLevel serverLevel = (ServerLevel) level;
+            final ItemStack inputStack = quern.inventory.getStackInSlot(SLOT_INPUT);
+            if (!inputStack.isEmpty())
+            {
+                sendParticle(serverLevel, pos, inputStack, 1);
+            }
+
             quern.rotationTimer--;
             if (quern.rotationTimer == 0)
             {
                 quern.finishGrinding();
                 Helpers.playSound(level, pos, SoundEvents.ARMOR_STAND_FALL);
-                Helpers.damageItem(quern.inventory.getStackInSlot(SLOT_HANDSTONE), 1);
+
+                ItemStack handstone = quern.inventory.getStackInSlot(SLOT_HANDSTONE);
+                ItemStack undamagedHandstoneStack = handstone.copy();
+                Helpers.damageItem(handstone, 1);
 
                 if (!quern.hasHandstone())
                 {
                     Helpers.playSound(level, pos, SoundEvents.STONE_BREAK);
                     Helpers.playSound(level, pos, SoundEvents.ITEM_BREAK);
+                    sendParticle(serverLevel, pos, undamagedHandstoneStack, 15);
                 }
                 quern.setAndUpdateSlots(SLOT_HANDSTONE);
             }
@@ -59,36 +71,13 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         if (quern.rotationTimer > 0)
         {
-            final ItemStack inputStack = quern.inventory.getStackInSlot(SLOT_INPUT);
-            if (!inputStack.isEmpty())
-            {
-                addParticle(level, pos, inputStack);
-            }
-
             quern.rotationTimer--;
-            if (quern.rotationTimer == 0)
-            {
-                // Simulate the damage on client side, to see if it would break. If it does, we create particle shower to indicate the handstone breaking.
-                final ItemStack undamagedHandstoneStack = quern.inventory.getStackInSlot(SLOT_HANDSTONE);
-                if (!undamagedHandstoneStack.isEmpty())
-                {
-                    final ItemStack handstoneStack = undamagedHandstoneStack.copy();
-                    Helpers.damageItem(handstoneStack, 1);
-                    if (handstoneStack.isEmpty())
-                    {
-                        for (int i = 0; i < 15; i++)
-                        {
-                            addParticle(level, pos, undamagedHandstoneStack);
-                        }
-                    }
-                }
-            }
         }
     }
 
-    private static void addParticle(Level level, BlockPos pos, ItemStack item)
+    private static void sendParticle(ServerLevel level, BlockPos pos, ItemStack item, int count)
     {
-        level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), pos.getX() + 0.5D, pos.getY() + 0.875D, pos.getZ() + 0.5D, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D);
+        level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, item), pos.getX() + 0.5D, pos.getY() + 0.875D, pos.getZ() + 0.5D, count, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D, 0.15f);
     }
 
     private int rotationTimer;
@@ -152,20 +141,17 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public boolean startGrinding()
     {
         assert level != null;
-        if (!level.isClientSide)
-        {
-            final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
+        final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
 
-            if (!inputStack.isEmpty())
+        if (!inputStack.isEmpty())
+        {
+            final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
+            final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
+            if (recipe != null && recipe.matches(wrapper, level))
             {
-                final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
-                final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
-                if (recipe != null && recipe.matches(wrapper, level))
-                {
-                    rotationTimer = 90;
-                    markForSync();
-                    return true;
-                }
+                rotationTimer = 90;
+                markForSync();
+                return true;
             }
         }
         return false;
@@ -174,25 +160,22 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     private void finishGrinding()
     {
         assert level != null;
-        if (!level.isClientSide)
+        final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
+        if (!inputStack.isEmpty())
         {
-            final ItemStack inputStack = inventory.getStackInSlot(SLOT_INPUT);
-            if (!inputStack.isEmpty())
+            final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
+            final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
+            if (recipe != null && recipe.matches(wrapper, level))
             {
-                final ItemStackInventory wrapper = new ItemStackInventory(inputStack);
-                final QuernRecipe recipe = QuernRecipe.getRecipe(level, wrapper);
-                if (recipe != null && recipe.matches(wrapper, level))
-                {
-                    inputStack.shrink(1);
+                inputStack.shrink(1);
 
-                    ItemStack outputStack = recipe.assemble(wrapper);
-                    outputStack = Helpers.mergeInsertStack(inventory, SLOT_OUTPUT, outputStack);
-                    if (!outputStack.isEmpty())
-                    {
-                        Helpers.spawnItem(level, worldPosition, outputStack);
-                    }
-                    markForSync();
+                ItemStack outputStack = recipe.assemble(wrapper);
+                outputStack = Helpers.mergeInsertStack(inventory, SLOT_OUTPUT, outputStack);
+                if (!outputStack.isEmpty() && !level.isClientSide)
+                {
+                    Helpers.spawnItem(level, worldPosition, outputStack);
                 }
+                markForSync();
             }
         }
     }

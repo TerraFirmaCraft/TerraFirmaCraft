@@ -5,7 +5,12 @@
     "item": "tfc:food/chicken"
   },
   "result_item": {
-    "item": "tfc:food/cooked_chicken"
+    "stack": {
+      "item": "tfc:food/cooked_chicken"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

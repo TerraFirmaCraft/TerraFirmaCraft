@@ -5,7 +5,12 @@
     "item": "tfc:food/barley_dough"
   },
   "result_item": {
-    "item": "tfc:food/barley_bread"
+    "stack": {
+      "item": "tfc:food/barley_bread"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

@@ -42,6 +42,7 @@
     "client.accessor.BiomeColorsAccessor",
     "client.accessor.ClientLevelAccessor",
     "client.accessor.LevelRendererAccessor",
+    "client.accessor.LocalPlayerAccessor",
     "client.accessor.SuspendedTownParticleAccessor"
   ],
   "injectors": {

@@ -5,7 +5,12 @@
     "item": "tfc:food/cod"
   },
   "result_item": {
-    "item": "tfc:food/cooked_cod"
+    "stack": {
+      "item": "tfc:food/cooked_cod"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

@@ -6,7 +6,11 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import java.util.Locale;
+
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -107,6 +111,11 @@ public enum ForgeRule
             };
     }
 
+    public Component getDescriptionId()
+    {
+        return type.getDescriptionId().append(", ").append(order.getDescriptionId());
+    }
+
     private boolean matches(@Nullable ForgeStep step)
     {
         if (this.type == HIT_LIGHT)
@@ -129,6 +138,11 @@ public enum ForgeRule
         Order(int y)
         {
             this.y = y;
+        }
+
+        public TranslatableComponent getDescriptionId()
+        {
+            return new TranslatableComponent("tfc.enum.order." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

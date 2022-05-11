@@ -5,7 +5,12 @@
     "item": "tfc:food/bear"
   },
   "result_item": {
-    "item": "tfc:food/cooked_bear"
+    "stack": {
+      "item": "tfc:food/cooked_bear"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

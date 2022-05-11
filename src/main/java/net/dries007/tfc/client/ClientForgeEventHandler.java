@@ -16,8 +16,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.client.resources.sounds.AmbientSoundHandler;
+import net.minecraft.client.resources.sounds.BubbleColumnAmbientSoundHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -65,6 +68,7 @@ import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
+import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.PlaceBlockSpecialPacket;
 import net.dries007.tfc.network.RequestClimateModelPacket;
@@ -215,6 +219,13 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.getOutputFluid(wrapper);
                 if (!fluid.isEmpty())
                 {
+                    stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
+                        if (cap.getTemperature() > 0.9 * recipe.getTemperature())
+                        {
+                            text.add(new TranslatableComponent("tfc.tooltip.danger"));
+                        }
+                    });
+
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
@@ -284,6 +295,16 @@ public class ClientForgeEventHandler
         // We can't send this on client world load, it's too early, as the connection is not setup yet
         // This is the closest point after that which will work
         PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestClimateModelPacket());
+
+        LocalPlayer player = event.getPlayer();
+        if (player != null)
+        {
+            List<AmbientSoundHandler> handlers = ((LocalPlayerAccessor) player).accessor$getAmbientSoundHandlers();
+            if (handlers.stream().noneMatch(handler -> handler instanceof TFCBubbleColumnAmbientSoundHandler))
+            {
+                handlers.add(new TFCBubbleColumnAmbientSoundHandler(player));
+            }
+        }
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event)

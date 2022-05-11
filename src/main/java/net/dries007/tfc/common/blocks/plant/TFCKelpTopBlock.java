@@ -59,12 +59,15 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        Level world = context.getLevel();
-        BlockState state = defaultBlockState().setValue(AGE, world.getRandom().nextInt(25));
-        FluidState fluidState = world.getFluidState(context.getClickedPos());
-        if (!fluidState.isEmpty() && getFluidProperty().canContain(fluidState.getType()))
+        Level level = context.getLevel();
+        BlockState state = super.getStateForPlacement(context);
+        if (state != null)
         {
-            return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            FluidState fluidState = level.getFluidState(context.getClickedPos());
+            if (!fluidState.isEmpty() && getFluidProperty().canContain(fluidState.getType()))
+            {
+                return state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
+            }
         }
         return null;
     }
@@ -135,7 +138,7 @@ public abstract class TFCKelpTopBlock extends TopPlantBlock implements IFluidLog
     }
 
     @Override
-    public ItemStack pickupBlock(LevelAccessor worldIn, BlockPos pos, BlockState state)
+    public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
     {
         // Don't allow taking the fluid
         return ItemStack.EMPTY;

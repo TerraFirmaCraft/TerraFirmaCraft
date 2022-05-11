@@ -27,7 +27,7 @@ public class AnvilPlanSelectButton extends Button
     private final int page; // The page this button is on
     private int currentPage; // The page selected by the root gui
 
-    public AnvilPlanSelectButton(int x, int y, int page, final AnvilRecipe recipe)
+    public AnvilPlanSelectButton(int x, int y, int page, final AnvilRecipe recipe, OnTooltip tooltip)
     {
         super(x, y, 18, 18, TextComponent.EMPTY, button -> {
             if (button.active)
@@ -36,7 +36,7 @@ public class AnvilPlanSelectButton extends Button
                 tag.putString("recipe", recipe.getId().toString());
                 PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(0, tag));
             }
-        });
+        }, tooltip);
 
         this.result = recipe.getResultItem();
         this.page = page;

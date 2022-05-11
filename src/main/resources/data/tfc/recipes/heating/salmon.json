@@ -5,7 +5,12 @@
     "item": "tfc:food/salmon"
   },
   "result_item": {
-    "item": "tfc:food/cooked_salmon"
+    "stack": {
+      "item": "tfc:food/cooked_salmon"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

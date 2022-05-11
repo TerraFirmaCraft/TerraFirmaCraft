@@ -5,7 +5,12 @@
     "item": "tfc:food/wolf"
   },
   "result_item": {
-    "item": "tfc:food/cooked_wolf"
+    "stack": {
+      "item": "tfc:food/cooked_wolf"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

@@ -1005,7 +1005,7 @@ public final class ForgeEventHandler
 
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event)
     {
-        Helpers.resetCreationDate(event.getCrafting());
+        FoodCapability.updateFoodDecayOnCreate(event.getCrafting());
     }
 
     public static void onSelectClimateModel(SelectClimateModelEvent event)

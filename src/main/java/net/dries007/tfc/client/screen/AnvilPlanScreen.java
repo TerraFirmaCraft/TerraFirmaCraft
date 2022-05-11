@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.AnvilPlanSelectButton;
 import net.dries007.tfc.client.screen.button.NextPageButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
@@ -64,7 +65,8 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             final int posX = 7 + (index % 9) * 18;
             final int posY = 25 + ((index % 18) / 9) * 18;
 
-            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipes.get(i));
+            final AnvilRecipe recipe = recipes.get(i);
+            final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, RenderHelpers.makeButtonTooltip(this, recipe.getResultItem().getDisplayName()));
 
             button.setCurrentPage(0);
             recipeButtons.add(button);

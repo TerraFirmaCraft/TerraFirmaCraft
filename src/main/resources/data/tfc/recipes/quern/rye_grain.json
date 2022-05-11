@@ -5,7 +5,11 @@
     "item": "tfc:food/rye_grain"
   },
   "result": {
-    "item": "tfc:food/rye_flour",
-    "count": 1
+    "stack": {
+      "item": "tfc:food/rye_flour"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   }
 }

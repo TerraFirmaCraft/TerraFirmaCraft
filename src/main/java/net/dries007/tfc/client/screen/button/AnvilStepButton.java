@@ -20,13 +20,14 @@ import net.dries007.tfc.util.Helpers;
 
 public class AnvilStepButton extends Button
 {
+
     private final ForgeStep step;
 
-    public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop)
+    public AnvilStepButton(ForgeStep step, int guiLeft, int guiTop, OnTooltip tooltip)
     {
         super(guiLeft + step.buttonX(), guiTop + step.buttonY(), 16, 16, Helpers.translateEnum(step), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(step.ordinal(), null));
-        });
+        }, tooltip);
 
         this.step = step;
     }

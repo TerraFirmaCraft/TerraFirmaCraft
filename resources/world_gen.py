@@ -1274,6 +1274,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
         spawners['water_ambient'] = [entity for entity in OCEAN_AMBIENT.values()]
         spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()]
+        spawners['underground_water_creature'] = [entity for entity in UNDERGROUND_WATER_CREATURES.values()]
     if category == 'river':
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
         features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']

@@ -70,12 +70,9 @@ def generate(rm: ResourceManager):
             item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, int(metal_data.melt_temperature))
 
     rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
-    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'minecraft:polar_bear')
+    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
     rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
-    for entity in OCEAN_CREATURES.keys():
-        rm.entity_tag('bubble_column_immune', 'tfc:%s' % entity)
-    for entity in OCEAN_AMBIENT.keys():
-        rm.entity_tag('bubble_column_immune', 'tfc:%s' % entity)
+    rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
 
     # Item Heats
 
