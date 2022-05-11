@@ -408,6 +408,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
+        particleEngine.register(TFCParticles.LEAF.get(), LeafParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

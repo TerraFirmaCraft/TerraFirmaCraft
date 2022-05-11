@@ -27,6 +27,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -35,6 +36,11 @@ import net.dries007.tfc.util.Helpers;
 
 public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension
 {
+    public static void doParticles(ServerLevel level, double x, double y, double z, int count)
+    {
+        level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, Helpers.triangle(level.random), Helpers.triangle(level.random), Helpers.triangle(level.random), 0.3f);
+    }
+
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
     public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance)
@@ -127,7 +133,8 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             if (!state.getValue(PERSISTENT))
             {
-                level.removeBlock(pos, false);
+                level.removeBlock(pos, true);
+                doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
             }
             else
             {
@@ -142,11 +149,15 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
-            Helpers.slowEntityInBlock(entityIn, 0.3f, 5);
+            Helpers.slowEntityInBlock(entity, 0.3f, 5);
+        }
+        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
+        {
+            doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
         }
     }
 

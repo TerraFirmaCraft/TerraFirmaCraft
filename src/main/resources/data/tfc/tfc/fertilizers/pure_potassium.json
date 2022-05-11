@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "minecraft:bone_meal"
+    "item": "tfc:pure_potassium"
   },
-  "phosphorus": 0.1
+  "potassium": 0.1
 }

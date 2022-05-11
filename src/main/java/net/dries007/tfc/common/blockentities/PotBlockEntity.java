@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.common.items.TFCItems;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -218,6 +219,14 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
         return PotContainer.create(this, playerInv, windowID);
+    }
+
+    @Override
+    public void ejectInventory()
+    {
+        super.ejectInventory();
+        assert level != null;
+        Helpers.spawnItem(level, worldPosition, new ItemStack(TFCItems.POT.get()));
     }
 
     public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>

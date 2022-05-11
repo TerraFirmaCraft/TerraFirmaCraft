@@ -197,7 +197,12 @@ public class RenderHelpers
 
     public static int getFluidColor(FluidStack fluid)
     {
-        return fluid.getFluid().getAttributes().getColor();
+        return getFluidColor(fluid.getFluid());
+    }
+
+    public static int getFluidColor(Fluid fluid)
+    {
+        return fluid.getAttributes().getColor();
     }
 
     public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)

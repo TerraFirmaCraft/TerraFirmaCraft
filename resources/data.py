@@ -479,6 +479,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
     rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
+    rm.fluid_tag('usable_in_sluice', '#minecraft:water')
 
     # Item Sizes
 
@@ -658,6 +659,9 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fertilizers', 'saltpeter'), fertilizer('tfc:powder/saltpeter', n=0.1, k=0.4))
     rm.data(('tfc', 'fertilizers', 'bone_meal'), fertilizer('minecraft:bone_meal', p=0.1))
     rm.data(('tfc', 'fertilizers', 'compost'), fertilizer('tfc:compost', n=0.4, p=0.2, k=0.4))
+    rm.data(('tfc', 'fertilizers', 'pure_nitrogen'), fertilizer('tfc:pure_nitrogen', n=0.1))
+    rm.data(('tfc', 'fertilizers', 'pure_phosphorus'), fertilizer('tfc:pure_phosphorus', p=0.1))
+    rm.data(('tfc', 'fertilizers', 'pure_potassium'), fertilizer('tfc:pure_potassium', k=0.1))
 
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))
@@ -686,6 +690,11 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
     rm.data(('tfc', 'lamp_fuels', 'tallow'), lamp_fuel('tfc:tallow', 1800))
     rm.data(('tfc', 'lamp_fuels', 'lava'), lamp_fuel('minecraft:lava', -1, 'tfc:metal/lamp/blue_steel'))
+
+    # Misc Block Loot
+    rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
+
+    # Entity Loot
 
     for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
         mob_loot(rm, mob, 'tfc:food/%s' % mob)
@@ -719,6 +728,12 @@ def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max
         pools.append(extra_pool)
     rm.entity_loot(name, *pools)
 
+def loot_invert(condition: utils.JsonObject):
+    return {
+        'condition': 'minecraft:inverted',
+        'term': condition
+    }
+
 def global_loot_modifier(rm: ResourceManager, name: str, mod_type: str, *conditions: utils.Json):
     rm.write((*rm.resource_dir, 'data', rm.domain, 'loot_modifiers', name), {
         'type': mod_type,
@@ -743,8 +758,8 @@ def fertilizer(ingredient: str, n: float = None, p: float = None, k: float = Non
     return {
         'ingredient': utils.ingredient(ingredient),
         'nitrogen': n,
-        'potassium': p,
-        'phosphorus': k
+        'potassium': k,
+        'phosphorus': p
     }
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:

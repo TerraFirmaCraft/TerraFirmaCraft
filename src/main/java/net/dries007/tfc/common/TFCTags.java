@@ -93,6 +93,7 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_JUG = create("usable_in_jug");
         public static final TagKey<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
+        public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
 
         private static TagKey<Fluid> create(String id)
         {

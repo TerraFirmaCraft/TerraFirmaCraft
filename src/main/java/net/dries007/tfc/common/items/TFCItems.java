@@ -162,6 +162,9 @@ public final class TFCItems
     public static final RegistryObject<Item> HANDSTONE = register("handstone", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(250)));
     public static final RegistryObject<Item> MORTAR = register("mortar", MISC);
     public static final RegistryObject<Item> OLIVE_PASTE = register("olive_paste", MISC);
+    public static final RegistryObject<Item> PURE_NITROGEN = register("pure_nitrogen", MISC);
+    public static final RegistryObject<Item> PURE_PHOSPHORUS = register("pure_phosphorus", MISC);
+    public static final RegistryObject<Item> PURE_POTASSIUM = register("pure_potassium", MISC);
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> SHELL = register("shell", MISC);
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);

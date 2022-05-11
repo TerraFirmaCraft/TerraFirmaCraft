@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "minecraft:bone_meal"
+    "item": "tfc:pure_nitrogen"
   },
-  "phosphorus": 0.1
+  "nitrogen": 0.1
 }
