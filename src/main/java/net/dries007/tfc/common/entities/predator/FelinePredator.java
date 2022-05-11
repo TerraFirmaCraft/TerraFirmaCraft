@@ -32,6 +32,7 @@ public class FelinePredator extends Predator
     {
         this(type, level, diurnal, 8, 20, 36, 0.8, 1.5);
     }
+
     public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackAnimLength, int walkAnimationLength, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod)
     {
         super(type, level, diurnal, attackAnimLength, walkAnimationLength);

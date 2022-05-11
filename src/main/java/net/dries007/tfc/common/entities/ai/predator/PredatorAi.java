@@ -63,7 +63,8 @@ public class PredatorAi
             {
                 brain.getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(entity -> brain.setActiveActivityIfPossible(Activity.FIGHT));
             }
-            else if (active == Activity.FIGHT) {
+            else if (active == Activity.FIGHT)
+            {
                 predator.setAggressive(true);
                 if (brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty())
                 {

@@ -27,7 +27,8 @@ import net.dries007.tfc.common.entities.predator.Predator;
 
 public class BearModel extends EntityModel<Predator>
 {
-    public static LayerDefinition createBodyLayer() {
+    public static LayerDefinition createBodyLayer()
+    {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -179,7 +180,8 @@ public class BearModel extends EntityModel<Predator>
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    {
         body.render(poseStack, buffer, packedLight, packedOverlay);
     }
 

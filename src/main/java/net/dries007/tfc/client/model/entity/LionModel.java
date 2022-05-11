@@ -12,9 +12,11 @@
 package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.dries007.tfc.common.capabilities.VesselLike;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -25,6 +27,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.model.Animation;
 import net.dries007.tfc.client.model.Easing;
+
 import net.minecraft.world.entity.Pose;
 
 import java.util.Map;
@@ -32,7 +35,8 @@ import java.util.Map;
 public class LionModel extends EntityModel<FelinePredator>
 {
 
-    public static LayerDefinition createBodyLayer() {
+    public static LayerDefinition createBodyLayer()
+    {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
@@ -218,8 +222,9 @@ public class LionModel extends EntityModel<FelinePredator>
         }
     }
 
-	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-		body.render(poseStack, buffer, packedLight, packedOverlay);
-	}
+    @Override
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    {
+        body.render(poseStack, buffer, packedLight, packedOverlay);
+    }
 }

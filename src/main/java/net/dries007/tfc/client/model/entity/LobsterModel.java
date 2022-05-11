@@ -7,8 +7,10 @@
 package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.dries007.tfc.common.capabilities.VesselLike;
 import net.dries007.tfc.common.entities.aquatic.FreshWaterCritter;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -125,7 +127,7 @@ public class LobsterModel extends EntityModel<AquaticCritter>
             final float adjustedAgeInTicks = ageInTicks + limbSwingAmount * 2F;
             SWIM.tick(parts, adjustedAgeInTicks);
         }
-        else 
+        else
         {
             float oscillation = 0.2F * Mth.cos(0.2F * ageInTicks);
             armLeft.xRot = oscillation;
@@ -137,7 +139,6 @@ public class LobsterModel extends EntityModel<AquaticCritter>
             clawTopRight.xRot = oscillation * -0.1F;
         }
     }
-
 
 
     @Override

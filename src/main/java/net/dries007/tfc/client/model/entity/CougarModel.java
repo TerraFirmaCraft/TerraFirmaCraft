@@ -11,7 +11,9 @@
 package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
+
 import net.dries007.tfc.common.entities.predator.FelinePredator;
+
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -22,6 +24,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.model.Animation;
 import net.dries007.tfc.client.model.Easing;
+
 import net.minecraft.world.entity.Pose;
 
 import java.util.Map;

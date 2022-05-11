@@ -25,6 +25,7 @@ import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.fluids.TFCFluids;
+
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -63,7 +64,8 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
     static class CritterEscapeGoal extends AvoidEntityGoal<LivingEntity>
     {
 
-        public CritterEscapeGoal(PathfinderMob mob, Class avoidClass, float maxDist, double walkSpeedModifier, double sprintSpeedModifier) {
+        public CritterEscapeGoal(PathfinderMob mob, Class avoidClass, float maxDist, double walkSpeedModifier, double sprintSpeedModifier)
+        {
             super(mob, avoidClass, maxDist, walkSpeedModifier, sprintSpeedModifier);
         }
 

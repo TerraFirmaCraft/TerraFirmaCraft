@@ -33,7 +33,9 @@ import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
+
 import net.minecraft.world.phys.Vec3;
+
 import org.jetbrains.annotations.Nullable;
 
 public class Predator extends PathfinderMob
@@ -55,7 +57,7 @@ public class Predator extends PathfinderMob
 
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
-    public final boolean isMale= random.nextBoolean();
+    public final boolean isMale = random.nextBoolean();
 
     public static Predator createDiurnal(EntityType<? extends Predator> type, Level level)
     {
