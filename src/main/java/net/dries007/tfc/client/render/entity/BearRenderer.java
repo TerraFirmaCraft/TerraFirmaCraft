@@ -15,25 +15,28 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.BearModel;
 import net.dries007.tfc.common.entities.predator.Predator;
 
-public class TFCPolarBearRenderer extends MobRenderer<Predator, BearModel>
+public class BearRenderer extends MobRenderer<Predator, BearModel>
 {
-    private static final ResourceLocation POLAR_BEAR_LOCATION = RenderHelpers.animalTexture("polar_bear");
+    private static float SCALE;
+    private final ResourceLocation texture;
 
-    public TFCPolarBearRenderer(EntityRendererProvider.Context ctx)
+    public BearRenderer(EntityRendererProvider.Context ctx, float scale, String name)
     {
         super(ctx, new BearModel(ctx.bakeLayer(RenderHelpers.modelIdentifier("polar_bear"))), 0.9F);
+        SCALE = scale;
+        texture = RenderHelpers.animalTexture(name);
     }
 
     @Override
     protected void scale(Predator predator, PoseStack poseStack, float ticks)
     {
-        poseStack.scale(1.2F, 1.2F, 1.2F);
+        poseStack.scale(SCALE, SCALE, SCALE);
         super.scale(predator, poseStack, ticks);
     }
 
     @Override
     public ResourceLocation getTextureLocation(Predator predator)
     {
-        return POLAR_BEAR_LOCATION;
+        return texture;
     }
 }

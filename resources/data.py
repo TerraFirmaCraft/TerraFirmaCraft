@@ -646,9 +646,11 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'penguin'), fauna(climate=climate_config(max_temp=-14, min_rain=75)))
     rm.data(('tfc', 'fauna', 'turtle'), fauna(climate=climate_config(min_temp=21, min_rain=250)))
     rm.data(('tfc', 'fauna', 'polar_bear'), fauna(climate=climate_config(max_temp=-10, min_rain=100)))
+    rm.data(('tfc', 'fauna', 'grizzly_bear'), fauna(climate=climate_config(min_forest='edge', max_temp=15, min_temp=-15, min_rain=200)))
+    rm.data(('tfc', 'fauna', 'black_bear'), fauna(climate=climate_config(min_forest='edge', max_temp=20, min_temp=5, min_rain=250)))
     rm.data(('tfc', 'fauna', 'cougar'), fauna(climate=climate_config(min_temp=-10, max_temp=21, min_rain=150)))
     rm.data(('tfc', 'fauna', 'panther'), fauna(climate=climate_config(min_temp=-10, max_temp=21, min_rain=150)))
-    rm.data(('tfc', 'fauna', 'lion'), fauna(climate=climate_config(min_temp=16, max_temp=40, min_rain=80, max_rain=300)))
+    rm.data(('tfc', 'fauna', 'lion'), fauna(climate=climate_config(max_forest='edge', min_temp=16, min_rain=50, max_rain=300)))
     rm.data(('tfc', 'fauna', 'sabertooth'), fauna(climate=climate_config(max_temp=0, min_rain=250)))
     rm.data(('tfc', 'fauna', 'squid'), fauna(distance_below_sea_level=15))
     rm.data(('tfc', 'fauna', 'octopoteuthis'), fauna(max_brightness=0, distance_below_sea_level=33))
@@ -674,6 +676,8 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)
     mob_loot(rm, 'turtle', 'minecraft:scute')
     mob_loot(rm, 'polar_bear', 'tfc:large_raw_hide', bones=6)
+    mob_loot(rm, 'grizzly_bear', 'tfc:large_raw_hide', bones=6)
+    mob_loot(rm, 'black_bear', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'cougar', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'panther', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'lion', 'tfc:large_raw_hide', bones=6)
@@ -710,13 +714,14 @@ def fertilizer(ingredient: str, n: float = None, p: float = None, k: float = Non
         'phosphorus': k
     }
 
-def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None) -> Dict[str, Any]:
+def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Dict[str, Any]:
     return {
         'min_temperature': min_temp,
         'max_temperature': max_temp,
         'min_rainfall': min_rain,
         'max_rainfall': max_rain,
-        'max_forest': 'normal' if needs_forest else None,
+        'min_forest': 'normal' if needs_forest else min_forest,
+        'max_forest': max_forest,
         'fuzzy': fuzzy
     }
 

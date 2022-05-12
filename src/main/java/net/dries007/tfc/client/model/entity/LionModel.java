@@ -13,8 +13,6 @@ package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.dries007.tfc.common.capabilities.VesselLike;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
 import net.minecraft.client.model.EntityModel;
@@ -27,8 +25,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.client.model.Animation;
 import net.dries007.tfc.client.model.Easing;
-
-import net.minecraft.world.entity.Pose;
 
 import java.util.Map;
 
@@ -178,8 +174,7 @@ public class LionModel extends EntityModel<FelinePredator>
     public void setupAnim(FelinePredator felinePredator, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         defaults.forEach(ModelPart::loadPose);
-        // TODO: Give predators gender
-        maneHeadBone.visible = maneBone.visible = felinePredator.isMale;
+        maneHeadBone.visible = maneBone.visible = felinePredator.isMale();
 
         if (felinePredator.isSleeping())
         {

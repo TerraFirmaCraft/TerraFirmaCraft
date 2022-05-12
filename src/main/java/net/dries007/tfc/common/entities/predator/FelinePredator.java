@@ -1,27 +1,16 @@
 package net.dries007.tfc.common.entities.predator;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
-import net.minecraft.world.entity.ai.goal.OcelotAttackGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.animal.Pig;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
 
 public class FelinePredator extends Predator
 {
-    public final double CROUCH_SPEED_MOD;
-    public final double SPRINT_SPEED_MOD;
-    public final double ATTACK_DISTANCE_SQUARED;
+    public final double crouchSpeedMod;
+    public final double sprintSpeedMod;
+    public final double attackDistanceSquared;
 
     public static FelinePredator createNocturnal(EntityType<? extends Predator> type, Level level)
     {
@@ -36,9 +25,9 @@ public class FelinePredator extends Predator
     public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackAnimLength, int walkAnimationLength, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod)
     {
         super(type, level, diurnal, attackAnimLength, walkAnimationLength);
-        CROUCH_SPEED_MOD = crouchSpeedMod;
-        SPRINT_SPEED_MOD = sprintSpeedMod;
-        ATTACK_DISTANCE_SQUARED = attackDistanceSquared;
+        this.crouchSpeedMod = crouchSpeedMod;
+        this.sprintSpeedMod = sprintSpeedMod;
+        this.attackDistanceSquared = attackDistanceSquared;
     }
 
     public static AttributeSupplier.Builder createAttributes()

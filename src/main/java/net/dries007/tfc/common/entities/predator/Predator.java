@@ -46,6 +46,7 @@ public class Predator extends PathfinderMob
     }
 
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> DATA_IS_MALE = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
     private static int ATTACK_ANIMATION_LENGTH;
     @Nullable
@@ -57,7 +58,6 @@ public class Predator extends PathfinderMob
 
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
-    public final boolean isMale = random.nextBoolean();
 
     public static Predator createDiurnal(EntityType<? extends Predator> type, Level level)
     {
@@ -80,6 +80,8 @@ public class Predator extends PathfinderMob
         ATTACK_ANIMATION_LENGTH = attackLength;
         WALK_ANIMATION_LENGTH = walkLength;
         this.diurnal = diurnal;
+        this.entityData.define(DATA_IS_MALE, random.nextBoolean());
+        this.setPersistenceRequired();
         getNavigation().setCanFloat(true);
     }
 
@@ -205,6 +207,11 @@ public class Predator extends PathfinderMob
     public boolean isSleeping()
     {
         return entityData.get(DATA_SLEEPING);
+    }
+
+    public boolean isMale()
+    {
+        return entityData.get(DATA_IS_MALE);
     }
 
     public void setSleeping(boolean asleep)

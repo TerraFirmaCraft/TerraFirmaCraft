@@ -91,10 +91,12 @@ public class TFCEntities
     public static final RegistryObject<EntityType<AmphibiousAnimal>> TURTLE = register("turtle", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<AmphibiousAnimal>> PENGUIN = register("penguin", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<FelinePredator>> COUGAR = register("cougar", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.2F, 1.2F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<FelinePredator>> PANTHER = register("panther", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.2F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Predator>> GRIZZLY_BEAR = register("grizzly_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Predator>> BLACK_BEAR = register("black_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<FelinePredator>> COUGAR = register("cougar", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.1F, 1.1F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<FelinePredator>> PANTHER = register("panther", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.1F, 1.1F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<FelinePredator>> LION = register("lion", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.2F, 1.2F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<FelinePredator>> SABERTOOTH = register("sabertooth", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.2F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<FelinePredator>> SABERTOOTH = register("sabertooth", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.3F, 1.3F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<Mammal>> PIG = register("pig", EntityType.Builder.of(TFCEntities::makePig, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<DairyAnimal>> COW = register("cow", EntityType.Builder.of(TFCEntities::makeCow, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
@@ -130,6 +132,8 @@ public class TFCEntities
         event.put(TURTLE.get(), AmphibiousAnimal.createAttributes().build());
         event.put(PENGUIN.get(), AmphibiousAnimal.createAttributes().build());
         event.put(POLAR_BEAR.get(), Predator.createAttributes().build());
+        event.put(GRIZZLY_BEAR.get(), Predator.createAttributes().build());
+        event.put(BLACK_BEAR.get(), Predator.createAttributes().build());
         event.put(COUGAR.get(), FelinePredator.createAttributes().build());
         event.put(PANTHER.get(), FelinePredator.createAttributes().build());
         event.put(LION.get(), FelinePredator.createAttributes().build());
