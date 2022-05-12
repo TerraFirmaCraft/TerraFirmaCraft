@@ -95,6 +95,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
     public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
+    public final ForgeConfigSpec.BooleanValue enableChiselsStartCollapses;
     public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
     public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
@@ -278,6 +279,7 @@ public class ServerConfig
         enableBlockCollapsing = builder.apply("enableBlockCollapsing").comment("Enable rock collapsing when mining raw stone blocks").define("enableBlockCollapsing", true);
         enableExplosionCollapsing = builder.apply("enableExplosionCollapsing").comment("Enable explosions causing immediate collapses.").define("enableExplosionCollapsing", true);
         enableBlockLandslides = builder.apply("enableBlockLandslides").comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").define("enableBlockLandslides", true);
+        enableChiselsStartCollapses = builder.apply("enableChiselsStartCollapses").comment("Enable chisels starting collapses").define("enableChiselsStartCollapses", true);
 
         collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
         collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);

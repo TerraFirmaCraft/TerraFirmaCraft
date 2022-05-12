@@ -288,6 +288,30 @@ def generate(rm: ResourceManager):
         collapse_recipe(rm, 'vanilla_%s' % rock, block, block if rock != 'stone' else 'minecraft:cobblestone')
 
     # ============
+    # Chisel Recipes
+    # ============
+
+    for rock in ROCKS.keys():
+        for block_type in CUTTABLE_ROCKS:
+            chisel_recipe(rm, '%s_%s_stairs' % (block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock), 'tfc:rock/%s/%s_stairs' % (block_type, rock), 'stair')
+            chisel_recipe(rm, '%s_%s_slab' % (block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock), 'tfc:rock/%s/%s_slab' % (block_type, rock), 'slab')
+        chisel_recipe(rm, '%s_chiseled' % rock, 'tfc:rock/raw/%s' % rock, 'tfc:rock/chiseled/%s' % rock, 'smooth')
+    for sand in SAND_BLOCK_TYPES:
+        for variant in ('raw', 'cut', 'smooth'):
+            chisel_recipe(rm, '%s_%s_stairs' % (variant, sand), 'tfc:%s_sandstone/%s' % (variant, sand), 'tfc:%s_sandstone/%s_stairs' % (variant, sand), 'stair')
+            chisel_recipe(rm, '%s_%s_slab' % (variant, sand), 'tfc:%s_sandstone/%s' % (variant, sand), 'tfc:%s_sandstone/%s_slab' % (variant, sand), 'slab')
+        chisel_recipe(rm, '%s_cut' % sand, 'tfc:raw_sandstone/%s' % sand, 'tfc:cut_sandstone/%s' % sand, 'smooth')
+    for color in COLORS:
+        chisel_recipe(rm, '%s_alabaster_bricks_stairs' % color, 'tfc:alabaster/stained/%s_alabaster_bricks' % color, 'tfc:alabaster/stained/%s_alabaster_bricks_stairs' % color, 'stair')
+        chisel_recipe(rm, '%s_alabaster_bricks_slab' % color, 'tfc:alabaster/stained/%s_alabaster_bricks' % color, 'tfc:alabaster/stained/%s_alabaster_bricks_slab' % color, 'slab')
+        chisel_recipe(rm, '%s_polished_alabaster_stairs' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster_stairs' % color, 'stair')
+        chisel_recipe(rm, '%s_polished_alabaster_slab' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster_slab' % color, 'slab')
+        chisel_recipe(rm, '%s_alabaster_bricks_polished' % color, 'tfc:alabaster/stained/%s_raw_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color, 'smooth')
+    for wood in WOODS.keys():
+        chisel_recipe(rm, '%s_wood_stairs' % wood, 'tfc:wood/planks/%s' % wood, 'tfc:wood/planks/%s_stairs' % wood, 'stair')
+        chisel_recipe(rm, '%s_wood_slab' % wood, 'tfc:wood/planks/%s' % wood, 'tfc:wood/planks/%s_slab' % wood, 'slab')
+
+    # ============
     # Heat Recipes
     # ============
 
@@ -709,6 +733,13 @@ def landslide_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, 
         'result': result
     })
 
+def chisel_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, result: str, mode: str):
+    rm.recipe(('chisel', mode, name_parts), 'tfc:chisel', {
+        'ingredient': ingredient,
+        'result': result,
+        'mode': mode,
+        'extra_drop': item_stack_provider(result) if mode == 'slab' else None
+    })
 
 def stone_cutting(rm: ResourceManager, name_parts: utils.ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     return rm.recipe(('stonecutting', name_parts), 'minecraft:stonecutting', {

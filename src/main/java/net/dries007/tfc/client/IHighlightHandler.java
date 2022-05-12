@@ -18,7 +18,6 @@ import net.minecraft.world.phys.Vec3;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.mixin.client.accessor.LevelRendererAccessor;
 
-// todo: literally everything
 public interface IHighlightHandler
 {
     /**

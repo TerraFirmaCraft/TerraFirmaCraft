@@ -121,6 +121,7 @@ public class TFCTags
         public static final TagKey<Item> KNIVES = create("knives");
         public static final TagKey<Item> HOES = create("hoes");
         public static final TagKey<Item> HAMMERS = create("hammers");
+        public static final TagKey<Item> CHISELS = create("chisels");
         public static final TagKey<Item> FLUX = create("flux");
         public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
         public static final TagKey<Item> CLAY_KNAPPING = create("clay_knapping");

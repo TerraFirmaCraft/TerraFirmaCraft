@@ -177,6 +177,7 @@ public final class ClientEventHandler
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
+        ClientRegistry.registerKeyBinding(TFCKeyBindings.CYCLE_CHISEL_MODE);
 
         // Render Types
         final RenderType solid = RenderType.solid();

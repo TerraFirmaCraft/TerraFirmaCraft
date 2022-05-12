@@ -18,7 +18,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 public final class ItemStackProvider
 {
     private static final ItemStackModifier[] NONE = new ItemStackModifier[0];
-    private static final ItemStackProvider EMPTY = new ItemStackProvider(ItemStack.EMPTY, NONE);
+    public static final ItemStackProvider EMPTY = new ItemStackProvider(ItemStack.EMPTY, NONE);
     private static final ItemStackProvider COPY_INPUT = new ItemStackProvider(ItemStack.EMPTY, new ItemStackModifier[] { CopyInputModifier.INSTANCE });
 
     public static ItemStackProvider empty()

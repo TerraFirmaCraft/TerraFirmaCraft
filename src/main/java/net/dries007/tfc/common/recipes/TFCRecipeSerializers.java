@@ -25,6 +25,7 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<SimpleBlockRecipe.Serializer<CollapseRecipe>> COLLAPSE = register("collapse", () -> new SimpleBlockRecipe.Serializer<>(CollapseRecipe::new));
     public static final RegistryObject<SimpleBlockRecipe.Serializer<LandslideRecipe>> LANDSLIDE = register("landslide", () -> new SimpleBlockRecipe.Serializer<>(LandslideRecipe::new));
+    public static final RegistryObject<ChiselRecipe.Serializer> CHISEL = register("chisel", ChiselRecipe.Serializer::new);
 
     // Item Recipes
 

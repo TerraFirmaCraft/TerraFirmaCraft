@@ -20,7 +20,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.client.resources.sounds.AmbientSoundHandler;
-import net.minecraft.client.resources.sounds.BubbleColumnAmbientSoundHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -60,19 +59,18 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
+import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
-import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.network.PlaceBlockSpecialPacket;
-import net.dries007.tfc.network.RequestClimateModelPacket;
-import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
@@ -323,6 +321,10 @@ public class ClientForgeEventHandler
         {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlaceBlockSpecialPacket());
         }
+        else if (TFCKeyBindings.CYCLE_CHISEL_MODE.isDown())
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new CycleChiselModePacket());
+        }
     }
 
     /**
@@ -344,8 +346,14 @@ public class ClientForgeEventHandler
         {
             BlockState stateAt = level.getBlockState(lookingAt);
             Block blockAt = stateAt.getBlock();
-            //todo: chisel
-            if (blockAt instanceof IHighlightHandler handler)
+
+            BlockState chiseled = ChiselRecipe.computeResultWithEvent(player, stateAt, hit);
+            if (chiseled != null)
+            {
+                IHighlightHandler.drawBox(poseStack, chiseled.getShape(level, pos), event.getMultiBufferSource(), pos, camera.getPosition(), 1f, 0f, 0f, 0.4f);
+                event.setCanceled(true);
+            }
+            else if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
                 if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))
@@ -354,7 +362,7 @@ public class ClientForgeEventHandler
                     event.setCanceled(true);
                 }
             }
-            if (blockAt instanceof IGhostBlockHandler handler)
+            else if (blockAt instanceof IGhostBlockHandler handler)
             {
                 if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
                 {
