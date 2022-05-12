@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities;
 import java.util.Locale;
 import java.util.Map;
 
+import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -75,6 +76,7 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<AquaticCritter>> ISOPOD = register("isopod", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<AquaticCritter>> LOBSTER = register("lobster", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<FreshWaterCritter>> CRAYFISH = register("crayfish", EntityType.Builder.of(FreshWaterCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<AquaticCritter>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
 
     // Water Creatures
@@ -88,7 +90,13 @@ public class TFCEntities
     // Creatures
     public static final RegistryObject<EntityType<AmphibiousAnimal>> TURTLE = register("turtle", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<AmphibiousAnimal>> PENGUIN = register("penguin", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::createDiurnal, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Predator>> GRIZZLY_BEAR = register("grizzly_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Predator>> BLACK_BEAR = register("black_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<FelinePredator>> COUGAR = register("cougar", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.1F, 1.1F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<FelinePredator>> PANTHER = register("panther", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.1F, 1.1F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<FelinePredator>> LION = register("lion", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.2F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<FelinePredator>> SABERTOOTH = register("sabertooth", EntityType.Builder.of(FelinePredator::createNocturnal, MobCategory.CREATURE).sized(1.3F, 1.3F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<Mammal>> PIG = register("pig", EntityType.Builder.of(TFCEntities::makePig, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<DairyAnimal>> COW = register("cow", EntityType.Builder.of(TFCEntities::makeCow, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
@@ -115,6 +123,7 @@ public class TFCEntities
         event.put(BLUEGILL.get(), AbstractFish.createAttributes().build());
         event.put(JELLYFISH.get(), AbstractFish.createAttributes().build());
         event.put(LOBSTER.get(), AbstractFish.createAttributes().build());
+        event.put(CRAYFISH.get(), AbstractFish.createAttributes().build());
         event.put(ISOPOD.get(), AbstractFish.createAttributes().build());
         event.put(HORSESHOE_CRAB.get(), AbstractFish.createAttributes().build());
         event.put(DOLPHIN.get(), Dolphin.createAttributes().build());
@@ -123,6 +132,12 @@ public class TFCEntities
         event.put(TURTLE.get(), AmphibiousAnimal.createAttributes().build());
         event.put(PENGUIN.get(), AmphibiousAnimal.createAttributes().build());
         event.put(POLAR_BEAR.get(), Predator.createAttributes().build());
+        event.put(GRIZZLY_BEAR.get(), Predator.createAttributes().build());
+        event.put(BLACK_BEAR.get(), Predator.createAttributes().build());
+        event.put(COUGAR.get(), FelinePredator.createAttributes().build());
+        event.put(PANTHER.get(), FelinePredator.createAttributes().build());
+        event.put(LION.get(), FelinePredator.createAttributes().build());
+        event.put(SABERTOOTH.get(), FelinePredator.createAttributes().build());
         event.put(SQUID.get(), Squid.createAttributes().build());
         event.put(OCTOPOTEUTHIS.get(), GlowSquid.createAttributes().build());
         event.put(PIG.get(), Pig.createAttributes().build());

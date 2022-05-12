@@ -880,6 +880,11 @@ def generate(rm: ResourceManager):
                     {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3), lower_only]},
                     {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
                 ))
+            elif plant == 'water_taro':
+                rm.block_loot(p, (
+                    {'name': 'tfc:food/taro_root', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3), lower_only]},
+                    {'name': p, 'conditions': [match_tag('forge:shears'), lower_only]}
+                ))
             else:
                 rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools'), lower_only]})
         elif plant_data.type == 'cactus':
