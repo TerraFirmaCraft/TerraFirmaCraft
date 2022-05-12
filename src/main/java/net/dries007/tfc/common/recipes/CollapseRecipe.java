@@ -64,10 +64,10 @@ public class CollapseRecipe extends SimpleBlockRecipe
      * @return true if a collapse occurred.
      */
     @SuppressWarnings("deprecation") // Level.isAreaLoaded
-    public static boolean tryTriggerCollapse(Level world, BlockPos pos)
+    public static boolean tryTriggerCollapse(Level level, BlockPos pos)
     {
-        final Random random = world.getRandom();
-        if (!world.isClientSide() && world.isAreaLoaded(pos, 32))
+        final Random random = level.getRandom();
+        if (!level.isClientSide() && level.isAreaLoaded(pos, 32))
         {
             if (random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
             {
@@ -75,12 +75,12 @@ public class CollapseRecipe extends SimpleBlockRecipe
                 int radX = (random.nextInt(5) + 4) / 2;
                 int radY = (random.nextInt(3) + 2) / 2;
                 int radZ = (random.nextInt(5) + 4) / 2;
-                for (BlockPos checking : Support.findUnsupportedPositions(world, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
+                for (BlockPos checking : Support.findUnsupportedPositions(level, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
                 {
-                    if (canStartCollapse(world, checking))
+                    if (canStartCollapse(level, checking))
                     {
-                        startCollapse(world, checking);
-                        world.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
+                        startCollapse(level, checking);
+                        level.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
                         return true; // Don't need to check other blocks
                     }
                 }

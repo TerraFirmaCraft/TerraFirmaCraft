@@ -132,6 +132,11 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
         return TFCRecipeTypes.ANVIL.get();
     }
 
+    public Ingredient getInput()
+    {
+        return input;
+    }
+
     public int computeTarget(Inventory inventory)
     {
         return 40 + new XoroshiroRandomSource(inventory.getSeed())

@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:chisel",
-  "ingredient": "tfc:rock/raw/quartzite",
+  "ingredient": "tfc:rock/bricks/quartzite",
   "result": "tfc:rock/chiseled/quartzite",
   "mode": "smooth"
 }

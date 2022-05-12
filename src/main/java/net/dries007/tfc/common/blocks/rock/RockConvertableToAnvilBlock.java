@@ -43,7 +43,7 @@ public class RockConvertableToAnvilBlock extends Block
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        if (Helpers.isItem(stack, TFCTags.Items.HAMMERS) && hit.getDirection() == Direction.UP && level.getBlockState(pos.above()).isAir())
+        if (Helpers.isItem(stack, TFCTags.Items.HAMMERS) && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS) && hit.getDirection() == Direction.UP && level.getBlockState(pos.above()).isAir())
         {
             level.setBlockAndUpdate(pos, anvil.get().defaultBlockState());
             return InteractionResult.SUCCESS;

@@ -164,9 +164,9 @@ public class ChiselRecipe extends SimpleBlockRecipe
         {
             BlockIngredient ingredient = BlockIngredients.fromJson(JsonHelpers.get(json, "ingredient"));
             BlockState state = JsonHelpers.getBlockState(GsonHelper.getAsString(json, "result"));
-            Mode mode = Mode.valueOf(JsonHelpers.getAsString(json, "mode").toUpperCase(Locale.ROOT));
+            Mode mode = JsonHelpers.getEnum(json, "mode", Mode.class, Mode.SMOOTH);
             Ingredient itemIngredient = json.has("item_ingredient") ? Ingredient.fromJson(json.get("item_ingredient")) : null;
-            ItemStackProvider drop = json.has("extra_drop") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "extra_drop")) : ItemStackProvider.EMPTY;
+            ItemStackProvider drop = json.has("extra_drop") ? ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "extra_drop")) : ItemStackProvider.empty();
             return new ChiselRecipe(recipeId, ingredient, state, mode, itemIngredient, drop);
         }
 

@@ -52,7 +52,7 @@ public class ChiselItem extends ToolItem
                 {
                     if (TFCConfig.SERVER.enableChiselsStartCollapses.get())
                     {
-                        CollapseRecipe.startCollapse(level, pos);
+                        CollapseRecipe.tryTriggerCollapse(level, pos);
                     }
 
                     player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> {

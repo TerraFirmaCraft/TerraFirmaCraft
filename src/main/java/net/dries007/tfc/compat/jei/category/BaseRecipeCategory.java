@@ -16,6 +16,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fluids.FluidStack;
 
 import mezz.jei.api.constants.VanillaTypes;
@@ -26,6 +27,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import org.jetbrains.annotations.NotNull;
@@ -54,6 +56,11 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         // Setting this to 1000 makes the liquid amount on the tooltip to display incorrectly
         // use IRecipeSlotBuilder.setFluidRenderer(1, false, 16, 16)} to make the liquid display in the whole slot
         return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).collect(Collectors.toList());
+    }
+
+    protected static Ingredient collapse(BlockIngredient ingredient)
+    {
+        return Ingredient.of(ingredient.getValidBlocks().stream().map(ItemStack::new).filter(item -> !item.isEmpty()));
     }
 
     @NotNull

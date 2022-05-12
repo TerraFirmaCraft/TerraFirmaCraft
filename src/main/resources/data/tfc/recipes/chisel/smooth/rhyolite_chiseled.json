@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:chisel",
-  "ingredient": "tfc:rock/raw/rhyolite",
+  "ingredient": "tfc:rock/bricks/rhyolite",
   "result": "tfc:rock/chiseled/rhyolite",
   "mode": "smooth"
 }

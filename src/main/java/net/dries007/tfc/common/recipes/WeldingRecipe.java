@@ -82,6 +82,16 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
         return TFCRecipeTypes.WELDING.get();
     }
 
+    public Ingredient getFirstInput()
+    {
+        return firstInput;
+    }
+
+    public Ingredient getSecondInput()
+    {
+        return secondInput;
+    }
+
     public interface Inventory extends EmptyInventory
     {
         ItemStack getLeft();

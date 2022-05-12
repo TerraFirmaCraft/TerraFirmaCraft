@@ -94,6 +94,9 @@ public class TFCJEIPlugin implements IModPlugin
     public static final RecipeType<SealedBarrelRecipe> SEALED_BARREL = type("sealed_barrel", SealedBarrelRecipe.class);
     public static final RecipeType<InstantBarrelRecipe> INSTANT_BARREL = type("instant_barrel", InstantBarrelRecipe.class);
     public static final RecipeType<BloomeryRecipe> BLOOMERY = type("bloomery", BloomeryRecipe.class);
+    public static final RecipeType<WeldingRecipe> WELDING = type("welding", WeldingRecipe.class);
+    public static final RecipeType<AnvilRecipe> ANVIL = type("anvil", AnvilRecipe.class);
+    public static final RecipeType<ChiselRecipe> CHISEL = type("chisel", ChiselRecipe.class);
 
 
     @Override
@@ -121,6 +124,9 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new SealedBarrelRecipeCategory(SEALED_BARREL, gui));
         r.addRecipeCategories(new InstantBarrelRecipeCategory(INSTANT_BARREL, gui));
         r.addRecipeCategories(new BloomeryRecipeCategory(BLOOMERY, gui));
+        r.addRecipeCategories(new WeldingRecipeCategory(WELDING, gui));
+        r.addRecipeCategories(new AnvilRecipeCategory(ANVIL, gui));
+        r.addRecipeCategories(new ChiselRecipeCategory(CHISEL, gui));
     }
 
     @Override
@@ -141,6 +147,9 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(SEALED_BARREL, getRecipes(TFCRecipeTypes.BARREL_SEALED.get()));
         r.addRecipes(INSTANT_BARREL, getRecipes(TFCRecipeTypes.BARREL_INSTANT.get()));
         r.addRecipes(BLOOMERY, getRecipes(TFCRecipeTypes.BLOOMERY.get()));
+        r.addRecipes(WELDING, getRecipes(TFCRecipeTypes.WELDING.get()));
+        r.addRecipes(ANVIL, getRecipes(TFCRecipeTypes.ANVIL.get()));
+        r.addRecipes(CHISEL, getRecipes(TFCRecipeTypes.CHISEL.get()));
 
         addIngredientInfo(r);
     }
@@ -165,6 +174,8 @@ public class TFCJEIPlugin implements IModPlugin
         woodCatalyst(r, Wood.BlockType.BARREL, SEALED_BARREL);
         woodCatalyst(r, Wood.BlockType.BARREL, INSTANT_BARREL);
         r.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
+        addCatalystTag(r, TFCTags.Items.ANVILS, WELDING);
+        addCatalystTag(r, TFCTags.Items.ANVILS, ANVIL);
     }
 
     private void addIngredientInfo(IRecipeRegistration r)

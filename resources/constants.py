@@ -598,7 +598,10 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'chicken': spawner('tfc:chicken', min_count=2, max_count=6)
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli')
+ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
+VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
+VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -913,6 +916,9 @@ DEFAULT_LANG = {
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
     'tfc.jei.bloomery': 'Bloomery',
+    'tfc.jei.welding': 'Welding',
+    'tfc.jei.anvil': 'Anvil',
+    'tfc.jei.chisel': 'Chisel',
 
     # jei tooltips
     'tfc.jei.compost_greens': 'This item can be added to the Composter as a green item. Composters need four green and four brown items to work.',
