@@ -48,13 +48,13 @@ public class Predator extends PathfinderMob
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> DATA_IS_MALE = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
-    private static int ATTACK_ANIMATION_LENGTH;
+    private final int attackAnimationLength;
     @Nullable
     public Vec3 location;
     @Nullable
     public Vec3 prevLocation;
     public float walkProgress = 0f;
-    public static int WALK_ANIMATION_LENGTH;
+    public final int walkAnimationLength;
 
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
@@ -77,8 +77,8 @@ public class Predator extends PathfinderMob
     public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength)
     {
         super(type, level);
-        ATTACK_ANIMATION_LENGTH = attackLength;
-        WALK_ANIMATION_LENGTH = walkLength;
+        attackAnimationLength = attackLength;
+        walkAnimationLength = walkLength;
         this.diurnal = diurnal;
         this.entityData.define(DATA_IS_MALE, random.nextBoolean());
         this.setPersistenceRequired();
@@ -123,7 +123,7 @@ public class Predator extends PathfinderMob
         //Variable for smooth walk animation
         prevLocation = location;
         location = this.position();
-        if (walkProgress >= (float) WALK_ANIMATION_LENGTH)
+        if (walkProgress >= (float) walkAnimationLength)
         {
             walkProgress = 0f;
         }
@@ -156,7 +156,7 @@ public class Predator extends PathfinderMob
     public boolean doHurtTarget(Entity target)
     {
         boolean hurt = super.doHurtTarget(target);
-        attackAnimationRemainingTicks = ATTACK_ANIMATION_LENGTH;
+        attackAnimationRemainingTicks = attackAnimationLength;
         level.broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
 
@@ -166,6 +166,22 @@ public class Predator extends PathfinderMob
         }
 
         return hurt;
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag)
+    {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("sleeping", isSleeping());
+        tag.putBoolean("male", isMale());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag)
+    {
+        super.readAdditionalSaveData(tag);
+        setIsMale(tag.getBoolean("male"));
+        setSleeping(tag.getBoolean("sleeping"));
     }
 
     @Override
@@ -214,6 +230,11 @@ public class Predator extends PathfinderMob
         return entityData.get(DATA_IS_MALE);
     }
 
+    public void setIsMale(boolean male)
+    {
+        entityData.set(DATA_IS_MALE, male);
+    }
+
     public void setSleeping(boolean asleep)
     {
         entityData.set(DATA_SLEEPING, asleep);
@@ -221,7 +242,7 @@ public class Predator extends PathfinderMob
 
     public int getAttackTicks()
     {
-        return attackAnimationRemainingTicks <= 0 ? 0 : ATTACK_ANIMATION_LENGTH - attackAnimationRemainingTicks;
+        return attackAnimationRemainingTicks <= 0 ? 0 : attackAnimationLength - attackAnimationRemainingTicks;
     }
 
     public SoundEvent getAttackSound()
