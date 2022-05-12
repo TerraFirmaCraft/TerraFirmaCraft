@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.player;
 
+import net.dries007.tfc.common.recipes.ChiselRecipe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,6 +36,8 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
 
     private long lastDrinkTick;
     private long intoxicationTick;
+    // todo: this desyncs when the player joins for the first time, until they press M
+    private ChiselRecipe.Mode chiselMode = ChiselRecipe.Mode.SMOOTH;
 
     public PlayerData(Player player)
     {
@@ -45,9 +48,9 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
     /**
      * @return The number of remaining ticks the player is intoxicated for
      */
-    public long getIntoxicatedTicks()
+    public long getIntoxicatedTicks(boolean isClientSide)
     {
-        return Math.max(0, Calendars.SERVER.getTicks() - intoxicationTick);
+        return Math.max(0, intoxicationTick - Calendars.get(isClientSide).getTicks());
     }
 
     /**
@@ -79,18 +82,30 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
         sync();
     }
 
+    public ChiselRecipe.Mode getChiselMode()
+    {
+        return chiselMode;
+    }
+
+    public void setChiselMode(ChiselRecipe.Mode mode)
+    {
+        chiselMode = mode;
+        sync();
+    }
+
     public void sync()
     {
         if (player instanceof final ServerPlayer serverPlayer)
         {
-            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerDataUpdatePacket(lastDrinkTick, intoxicationTick));
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new PlayerDataUpdatePacket(lastDrinkTick, intoxicationTick, chiselMode));
         }
     }
 
-    public void updateFromPacket(long lastDrinkTick, long intoxicationTick)
+    public void updateFromPacket(long lastDrinkTick, long intoxicationTick, ChiselRecipe.Mode mode)
     {
         this.lastDrinkTick = lastDrinkTick;
         this.intoxicationTick = intoxicationTick;
+        this.chiselMode = mode;
     }
 
     @NotNull
@@ -104,11 +119,13 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
     public CompoundTag serializeNBT()
     {
         final CompoundTag nbt = new CompoundTag();
-        if (player.getFoodData() instanceof TFCFoodData)
+        if (player.getFoodData() instanceof TFCFoodData data)
         {
-            nbt.put("food", ((TFCFoodData) player.getFoodData()).serializeToPlayerData());
+            nbt.put("food", data.serializeToPlayerData());
         }
         nbt.putLong("lastDrinkTick", lastDrinkTick);
+        nbt.putLong("intoxicationTick", intoxicationTick);
+        nbt.putInt("chiselMode", chiselMode.ordinal());
         return nbt;
     }
 
@@ -116,11 +133,13 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
     public void deserializeNBT(CompoundTag nbt)
     {
         delayedFoodNbt = nbt.contains("food", Tag.TAG_COMPOUND) ? nbt.getCompound("food") : null;
-        if (player.getFoodData() instanceof TFCFoodData)
+        if (player.getFoodData() instanceof TFCFoodData data)
         {
-            writeTo((TFCFoodData) player.getFoodData());
+            writeTo(data);
         }
         lastDrinkTick = nbt.getLong("lastDrinkTick");
+        intoxicationTick = nbt.getLong("intoxicationTick");
+        chiselMode = ChiselRecipe.Mode.valueOf(nbt.getInt("chiselMode"));
     }
 
     public void writeTo(TFCFoodData stats)

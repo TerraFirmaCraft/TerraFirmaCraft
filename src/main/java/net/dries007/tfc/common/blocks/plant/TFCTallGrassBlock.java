@@ -7,31 +7,29 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
-import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.core.Direction;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITallPlant
 {
@@ -39,7 +37,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     protected static final VoxelShape PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
     protected static final VoxelShape SHORTER_PLANT_SHAPE = Block.box(2.0, 0.0, 2.0, 14.0, 8.0, 14.0);
 
-    public static TFCTallGrassBlock create(IPlant plant, Properties properties)
+    public static TFCTallGrassBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new TFCTallGrassBlock(properties)
         {
@@ -51,7 +49,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
         };
     }
 
-    protected TFCTallGrassBlock(Properties properties)
+    protected TFCTallGrassBlock(ExtendedProperties properties)
     {
         super(properties);
 
@@ -95,7 +93,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockPos pos = context.getClickedPos();
-        return pos.getY() < 255 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
+        return pos.getY() < context.getLevel().getMaxBuildHeight() - 1 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? super.getStateForPlacement(context) : null;
     }
 
     @Override
@@ -136,7 +134,7 @@ public abstract class TFCTallGrassBlock extends ShortGrassBlock implements ITall
     }
 
     /**
-     * See {@link net.minecraft.block.DoublePlantBlock}. We handle drops in playerWillDestroy so we must not drop things here.
+     * See {@link net.minecraft.world.level.block.DoublePlantBlock}. We handle drops in playerWillDestroy so we must not drop things here.
      */
     @Override
     public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tile, ItemStack stack)

@@ -42,7 +42,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:seeds/maize"
+          "name": "tfc:seeds/maize",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wild_crop/maize",
+              "properties": {
+                "part": "bottom"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

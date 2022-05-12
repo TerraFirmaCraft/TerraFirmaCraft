@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +44,7 @@ public class ScrapingBlock extends DeviceBlock
 
     public ScrapingBlock(ExtendedProperties properties)
     {
-        super(properties);
+        super(properties, InventoryRemoveBehavior.DROP);
     }
 
     @Override
@@ -61,28 +62,23 @@ public class ScrapingBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        ScrapingBlockEntity te = level.getBlockEntity(pos, TFCBlockEntities.SCRAPING.get()).orElse(null);
-        if (te != null)
-        {
+        return level.getBlockEntity(pos, TFCBlockEntities.SCRAPING.get()).map(scraping -> {
             ItemStack stack = player.getItemInHand(hand);
             if (Helpers.isItem(stack.getItem(), TFCTags.Items.KNIVES))
             {
                 Vec3 point = calculatePoint(player.getLookAngle(), hit.getLocation().subtract(new Vec3(pos.getX(), pos.getY(), pos.getZ())));
-                te.onClicked((float) point.x, (float) point.z);
-                if (!level.isClientSide)
+                scraping.onClicked((float) point.x, (float) point.z);
+                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
+                if (level instanceof ServerLevel server)
                 {
-                    stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
-                }
-                else
-                {
-                    te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                        level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, cap.getStackInSlot(0)), pos.getX() + point.x, pos.getY() + 0.0625, pos.getZ() + point.z, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D);
+                    scraping.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                        server.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, cap.getStackInSlot(0)), pos.getX() + point.x, pos.getY() + 0.0625, pos.getZ() + point.z, 2, Helpers.triangle(level.random) / 2.0D, level.random.nextDouble() / 4.0D, Helpers.triangle(level.random) / 2.0D, 0.15f);
                     });
                 }
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
-        }
-        return InteractionResult.PASS;
+            return InteractionResult.PASS;
+        }).orElse(InteractionResult.PASS);
     }
 
     @Override

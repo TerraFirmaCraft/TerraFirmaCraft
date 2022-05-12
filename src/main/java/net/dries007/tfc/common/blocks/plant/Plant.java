@@ -11,6 +11,9 @@ import java.util.EnumSet;
 import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
+
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
@@ -19,7 +22,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.WaterLilyBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
@@ -246,26 +248,26 @@ public enum Plant implements IPlant
 
     public enum BlockType
     {
-        STANDARD((plant, type) -> PlantBlock.create(plant, nonSolid(plant))),
-        CACTUS((plant, type) -> TFCCactusBlock.create(plant, solid().strength(0.25F).sound(SoundType.WOOL))),
-        DRY((plant, type) -> DryPlantBlock.create(plant, nonSolid(plant))),
-        CREEPING((plant, type) -> CreepingPlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))), // Post process ensures shape is updated after world gen
-        HANGING((plant, type) -> HangingPlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
-        EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, nonSolid(plant).hasPostProcess(TFCBlocks::always))),
-        SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, nonSolid(plant))),
-        TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, nonSolid(plant))),
-        VINE((plant, type) -> new VineBlock(nonSolid(plant))),
-        WEEPING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.DOWN)),
-        WEEPING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.DOWN, getWeepingShape())),
-        TWISTING((plant, type) -> new BodyPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),
-        TWISTING_TOP((plant, type) -> new TopPlantBlock(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingShape())),
-        TWISTING_SOLID((plant, type) -> new BodyPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), getBodyShape(), Direction.UP)),
-        TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(solidTallPlant(), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingShape())),
+        STANDARD((plant, type) -> PlantBlock.create(plant, fire(nonSolid(plant)))),
+        CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)))),
+        DRY((plant, type) -> DryPlantBlock.create(plant, fire(nonSolid(plant)))),
+        CREEPING((plant, type) -> CreepingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))), // Post process ensures shape is updated after world gen
+        HANGING((plant, type) -> HangingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),
+        EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),
+        SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, fire(nonSolid(plant)))),
+        TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, fire(nonSolid(plant)))),
+        VINE((plant, type) -> new TFCVineBlock(fire(nonSolid(plant)))),
+        WEEPING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), getBodyShape(), Direction.DOWN)),
+        WEEPING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), Direction.DOWN, getWeepingShape())),
+        TWISTING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), getBodyShape(), Direction.UP)),
+        TWISTING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), Direction.UP, getTwistingShape())),
+        TWISTING_SOLID((plant, type) -> new BodyPlantBlock(fire(solidTallPlant()), transform(plant), getBodyShape(), Direction.UP)),
+        TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(fire(solidTallPlant()), transform(plant), Direction.UP, getTwistingShape())),
         //Water
-        KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getThinBodyShape(), TFCBlockStateProperties.SALT_WATER)),
-        KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), TFCBlocks.PLANTS.get(plant.transform()), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALT_WATER))),
+        KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant).lootFrom(transform(plant)), transform(plant), Direction.UP, getThinBodyShape(), TFCBlockStateProperties.SALT_WATER)),
+        KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), transform(plant), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALT_WATER))),
         KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALT_WATER)),
-        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), TFCBlocks.PLANTS.get(plant.transform()))),
+        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), transform(plant))),
         FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.getSecond(), nonSolid(plant)), WaterLilyBlockItem::new),
         FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, nonSolid(plant)), WaterLilyBlockItem::new),
         TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
@@ -274,6 +276,11 @@ public enum Plant implements IPlant
         WATER_FRESH((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant)));
+
+        private static Supplier<? extends Block> transform(Plant plant)
+        {
+            return TFCBlocks.PLANTS.get(plant.transform());
+        }
 
         /**
          * Default properties to avoid rewriting them out every time
@@ -301,6 +308,11 @@ public enum Plant implements IPlant
         private static BlockBehaviour.Properties kelp(Plant plant)
         {
             return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.PLANT).noCollission().randomTicks().speedFactor(plant.speedFactor).strength(1.0f).sound(SoundType.WET_GRASS);
+        }
+
+        private static ExtendedProperties fire(BlockBehaviour.Properties properties)
+        {
+            return ExtendedProperties.of(properties).flammable(60, 30);
         }
 
         private static VoxelShape getBodyShape()

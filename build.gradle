@@ -1,5 +1,5 @@
-import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 
 buildscript {
     repositories {
@@ -88,8 +88,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-ea'
             property 'forge.enabledGameTestNamespaces', mod_id
+            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
 
             mods {
                 tfc {
@@ -105,8 +105,8 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            jvmArg '-ea'
             property 'forge.enabledGameTestNamespaces', mod_id
+            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
 
             mods {
                 tfc {
@@ -124,6 +124,7 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.enabledGameTestNamespaces', mod_id
+            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
 
             forceExit false
 

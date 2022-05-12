@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,12 +21,13 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 public final class FoodCapability
 {
     public static final Capability<IFood> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("food");
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>("food_items", "food", FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, DataManagerSyncPacket.TFoodDefinition::new);
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>("food_items", "food", FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(FoodDefinition::getValidItems, MANAGER::getValues);
 
     @Nullable
@@ -222,4 +221,6 @@ public final class FoodCapability
         // Cf = (1 - p) * T + p * Ci
         return (long) ((1 - p) * Calendars.SERVER.getTicks() + p * ci);
     }
+
+    public static class Packet extends DataManagerSyncPacket<FoodDefinition> {}
 }

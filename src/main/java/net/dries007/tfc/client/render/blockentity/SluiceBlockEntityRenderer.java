@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -93,8 +94,8 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
             }
         });
 
-        final Fluid fluid = sluice.getLevel().getFluidState(sluice.getWaterInputPos()).getType();
-        if (fluid.isSame(Fluids.EMPTY))
+        final Fluid fluid = sluice.getFlow();
+        if (fluid == null)
         {
             poseStack.popPose();
             return;
@@ -103,7 +104,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         FluidAttributes attributes = fluid.getAttributes();
         ResourceLocation texture = attributes.getStillTexture();
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
-        int color = attributes.getColor();
+        final int color = RenderHelpers.getFluidColor(fluid);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
         Matrix4f matrix4f = poseStack.last().pose();

@@ -24,12 +24,6 @@ public interface DelegateHeatHandler extends IHeat
     }
 
     @Override
-    default float getTemperature(boolean isClientSide)
-    {
-        return getHeatHandler().getTemperature(isClientSide);
-    }
-
-    @Override
     default void setTemperature(float temperature)
     {
         getHeatHandler().setTemperature(temperature);
@@ -42,9 +36,9 @@ public interface DelegateHeatHandler extends IHeat
     }
 
     @Override
-    default float getForgingTemperature()
+    default float getWorkingTemperature()
     {
-        return getHeatHandler().getForgingTemperature();
+        return getHeatHandler().getWorkingTemperature();
     }
 
     @Override

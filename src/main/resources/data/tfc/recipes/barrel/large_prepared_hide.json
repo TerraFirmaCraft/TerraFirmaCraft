@@ -11,8 +11,7 @@
     "amount": 500
   },
   "output_item": {
-    "item": "tfc:large_prepared_hide",
-    "count": 3
+    "item": "tfc:large_prepared_hide"
   },
   "duration": 8000
 }

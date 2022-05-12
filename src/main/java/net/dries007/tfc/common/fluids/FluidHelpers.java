@@ -6,10 +6,6 @@
 
 package net.dries007.tfc.common.fluids;
 
-import java.util.Optional;
-
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -43,26 +39,10 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public final class FluidHelpers
 {
-    /**
-     * Transfer an amount up to and inclusive of {@code amount} between two fluid handlers.
-     */
-    public static boolean transferUpTo(IFluidHandler from, IFluidHandler to, int amount)
-    {
-        final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
-        if (!drained.isEmpty())
-        {
-            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
-            if (filled > 0)
-            {
-                return transferExact(from, to, filled);
-            }
-        }
-        return false;
-    }
-
     /**
      * Simpler version of FluidUtil#interactWithFluidHandler. Returns true if we think a transfer occurred.
      *
@@ -111,6 +91,23 @@ public final class FluidHelpers
                 to.fill(from.drain(amount, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                 if (!player.isCreative()) player.setItemInHand(player.getUsedItemHand(), from.getContainer());
                 return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Transfer an amount up to and inclusive of {@code amount} between two fluid handlers.
+     */
+    public static boolean transferUpTo(IFluidHandler from, IFluidHandler to, int amount)
+    {
+        final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
+        if (!drained.isEmpty())
+        {
+            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
+            if (filled > 0)
+            {
+                return transferExact(from, to, filled);
             }
         }
         return false;
@@ -197,16 +194,6 @@ public final class FluidHelpers
     public static boolean isAirOrEmptyFluid(BlockState state)
     {
         return state.isAir() || state.getBlock() == state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock();
-    }
-
-    public static Optional<FluidState> asEmptyFluid(BlockState state)
-    {
-        FluidState fluidState = state.getFluidState().getType().defaultFluidState();
-        if (state.getBlock() == fluidState.createLegacyBlock().getBlock())
-        {
-            return Optional.of(fluidState);
-        }
-        return Optional.empty();
     }
 
     /**
@@ -388,10 +375,19 @@ public final class FluidHelpers
         }
     }
 
-    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state, IFluidLoggable loggable)
+    /**
+     * Intended to be called from {@link Block#updateShape(BlockState, Direction, BlockState, LevelAccessor, BlockPos, BlockPos)} by blocks which support a fluid state.
+     * This is responsible for causing fluid-logged blocks to spread fluid when they are updated.
+     * <p>
+     * Example implementation in vanilla is seen in {@link net.minecraft.world.level.block.SlabBlock#updateShape(BlockState, Direction, BlockState, LevelAccessor, BlockPos, BlockPos)}
+     */
+    @SuppressWarnings("deprecation")
+    public static void tickFluid(LevelAccessor level, BlockPos pos, BlockState state)
     {
-        final Fluid contained = state.getValue(loggable.getFluidProperty()).getFluid();
-        if (contained.isSame(Fluids.EMPTY)) return;
-        level.scheduleTick(pos, contained, contained.getTickDelay(level));
+        if (!state.getFluidState().isEmpty())
+        {
+            final Fluid fluid = state.getFluidState().getType();
+            level.scheduleTick(pos, fluid, fluid.getTickDelay(level));
+        }
     }
 }

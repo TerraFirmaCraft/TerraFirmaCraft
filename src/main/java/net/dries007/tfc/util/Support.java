@@ -8,7 +8,6 @@ package net.dries007.tfc.util;
 
 import java.util.HashSet;
 import java.util.Set;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -22,10 +21,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 public final class Support
 {
-    public static final DataManager<Support> MANAGER = new DataManager<>("supports", "support", Support::new, Support::reload);
+    public static final DataManager<Support> MANAGER = new DataManager<>("supports", "support", Support::new);
     public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.getValidBlocks(), MANAGER::getValues);
 
     /**
@@ -101,7 +101,7 @@ public final class Support
         return null;
     }
 
-    private static void reload()
+    public static void updateMaximumSupportRange()
     {
         // Re-calculate maximum support range
         int up = 0, down = 0, horizontal = 0;

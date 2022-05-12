@@ -5,7 +5,12 @@
     "item": "tfc:food/venison"
   },
   "result_item": {
-    "item": "tfc:food/cooked_venison"
+    "stack": {
+      "item": "tfc:food/cooked_venison"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

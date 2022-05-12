@@ -5,7 +5,11 @@
     "item": "tfc:food/maize_grain"
   },
   "result": {
-    "item": "tfc:food/maize_flour",
-    "count": 1
+    "stack": {
+      "item": "tfc:food/maize_flour"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   }
 }

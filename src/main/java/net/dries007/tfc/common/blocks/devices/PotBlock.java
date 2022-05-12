@@ -23,8 +23,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -68,7 +66,6 @@ public class PotBlock extends FirepitBlock
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
     public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
         super.animateTick(state, level, pos, rand);
@@ -89,9 +86,9 @@ public class PotBlock extends FirepitBlock
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        return level.getBlockEntity(pos, TFCBlockEntities.POT.get()).filter(pot -> !pot.isBoiling()).map(pot -> {
+        return level.getBlockEntity(pos, TFCBlockEntities.POT.get()).map(pot -> {
             final ItemStack stack = player.getItemInHand(hand);
-            if (stack.isEmpty() && player.isShiftKeyDown())
+            if (!pot.isBoiling() && stack.isEmpty() && player.isShiftKeyDown())
             {
                 if (state.getValue(LIT))
                 {
@@ -109,17 +106,20 @@ public class PotBlock extends FirepitBlock
                 pot.extinguish(state);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if (FluidUtil.interactWithFluidHandler(player, hand, level, pos, null))
+            else if (!pot.isBoiling() && FluidUtil.interactWithFluidHandler(player, hand, level, pos, null))
             {
                 pot.markForSync();
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else
             {
-                final InteractionResult interactResult = pot.interactWithOutput(player, stack);
-                if (interactResult != InteractionResult.PASS)
+                if (!pot.isBoiling())
                 {
-                    return interactResult;
+                    final InteractionResult interactResult = pot.interactWithOutput(player, stack);
+                    if (interactResult != InteractionResult.PASS)
+                    {
+                        return interactResult;
+                    }
                 }
 
                 if (player instanceof ServerPlayer serverPlayer)

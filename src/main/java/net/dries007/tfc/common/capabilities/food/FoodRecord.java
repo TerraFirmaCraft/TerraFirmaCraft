@@ -13,6 +13,8 @@ import net.minecraft.nbt.CompoundTag;
 @Immutable
 public class FoodRecord
 {
+    public static final FoodRecord EMPTY = new FoodRecord(0, 0, 0, new float[Nutrient.TOTAL], 0);
+
     private final float[] nutrients; // Nutritional values
     private final int hunger; // Hunger. In TFC (for now) this is almost always 4
     private final float saturation; // Saturation, only provided by some basic foods and meal bonuses
@@ -39,7 +41,7 @@ public class FoodRecord
         saturation = nbt.getFloat("sat");
         water = nbt.getFloat("water");
         decayModifier = nbt.getFloat("decay");
-        nutrients = new float[5];
+        nutrients = new float[Nutrient.TOTAL];
         nutrients[Nutrient.GRAIN.ordinal()] = nbt.getFloat("grain");
         nutrients[Nutrient.VEGETABLES.ordinal()] = nbt.getFloat("veg");
         nutrients[Nutrient.FRUIT.ordinal()] = nbt.getFloat("fruit");
@@ -90,5 +92,10 @@ public class FoodRecord
     float getNutrient(int i)
     {
         return nutrients[i];
+    }
+
+    public float[] getNutrients()
+    {
+        return nutrients;
     }
 }

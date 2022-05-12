@@ -156,8 +156,13 @@ public class ServerCalendar extends Calendar
         GameRules rules = server.overworld().getGameRules();
         DO_DAYLIGHT_CYCLE.runBlocking(() -> rules.getRule(GameRules.RULE_DAYLIGHT).set(false, server));
 
-        reset(CalendarWorldData.get(server.overworld()).getCalendar());
+        resetTo(CalendarWorldData.get(server.overworld()).getCalendar());
         sendUpdatePacket();
+    }
+
+    void onServerStop()
+    {
+        resetToDefault();
     }
 
     /**

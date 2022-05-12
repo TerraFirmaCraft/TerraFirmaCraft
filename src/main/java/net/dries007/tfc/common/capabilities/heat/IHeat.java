@@ -15,8 +15,6 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.config.TFCConfig;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 /**
  * This is the capability interface for an instance of a heat applied to an item stack
  */
@@ -27,12 +25,7 @@ public interface IHeat
      *
      * @return the temperature.
      */
-    default float getTemperature()
-    {
-        return getTemperature(false);
-    }
-
-    float getTemperature(boolean isClientSide);
+    float getTemperature();
 
     /**
      * Sets the temperature. Used for anything that modifies the temperature.
@@ -66,7 +59,7 @@ public interface IHeat
      *
      * @return temperature at which this item is able to be worked
      */
-    default float getForgingTemperature()
+    default float getWorkingTemperature()
     {
         return 0;
     }
@@ -89,19 +82,19 @@ public interface IHeat
      */
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
-        final float temperature = getTemperature(true);
+        final float temperature = getTemperature();
         final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
         if (tooltip != null)
         {
             // Only add " - can work" and " - can weld" if both temperatures are set
-            final float weldingTemperature = getWeldingTemperature(), forgingTemperature = getForgingTemperature();
+            final float weldingTemperature = getWeldingTemperature(), forgingTemperature = getWorkingTemperature();
             if (weldingTemperature > 0 && weldingTemperature <= temperature)
             {
-                tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.welding"));
+                tooltip.append(new TranslatableComponent("tfc.tooltip.welding"));
             }
             else if (forgingTemperature > 0 && forgingTemperature <= temperature)
             {
-                tooltip.append(new TranslatableComponent(MOD_ID + ".tooltip.forging"));
+                tooltip.append(new TranslatableComponent("tfc.tooltip.forging"));
             }
             text.add(tooltip);
         }

@@ -60,7 +60,7 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
     @Override
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
-        FluidHelpers.tickFluid(level, pos, state, this);
+        FluidHelpers.tickFluid(level, pos, state);
     }
 
     @Override
@@ -95,12 +95,12 @@ public abstract class KelpTreeBlock extends PipeBlock implements IFluidLoggable
         if (!state.canSurvive(level, currentPos))
         {
             level.scheduleTick(currentPos, this, 1);
-            FluidHelpers.tickFluid(level, currentPos, state, this);
+            FluidHelpers.tickFluid(level, currentPos, state);
             return state;
         }
         else
         {
-            FluidHelpers.tickFluid(level, currentPos, state, this);
+            FluidHelpers.tickFluid(level, currentPos, state);
             boolean flag = Helpers.isBlock(facingState, TFCTags.Blocks.KELP_TREE) || (facing == Direction.DOWN && Helpers.isBlock(facingState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON));
             return state.setValue(PROPERTY_BY_DIRECTION.get(facing), flag);
         }

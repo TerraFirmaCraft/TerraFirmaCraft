@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,6 +28,7 @@ import net.minecraftforge.common.util.ITeleporter;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.IGlow;
+import org.jetbrains.annotations.Nullable;
 
 public class Octopoteuthis extends TFCSquid implements IGlow
 {

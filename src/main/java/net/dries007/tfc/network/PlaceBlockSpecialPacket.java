@@ -11,7 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkEvent;
@@ -29,7 +31,7 @@ public class PlaceBlockSpecialPacket
             ServerPlayer player = context.getSender();
             if (player != null)
             {
-                final Level world = player.getLevel();
+                final Level level = player.getLevel();
                 final HitResult rayTrace = player.pick(5.0F, 1.0F, false);
                 if (rayTrace instanceof final BlockHitResult blockResult)
                 {
@@ -38,19 +40,25 @@ public class PlaceBlockSpecialPacket
                     {
                         final BlockPos pos = blockResult.getBlockPos();
                         final BlockPos above = pos.above();
-                        final BlockState state = world.getBlockState(pos);
+                        final BlockState state = level.getBlockState(pos);
                         final ItemStack stack = player.getMainHandItem();
-                        if (Helpers.isBlock(state, TFCBlocks.PLACED_ITEM.get()))
+                        final Block placedItem = TFCBlocks.PLACED_ITEM.get();
+
+                        if (Helpers.isBlock(state, placedItem))
                         {
-                            world.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.onRightClick(player, stack, blockResult));
+                            level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.onRightClick(player, stack, blockResult));
                         }
-                        else if (!stack.isEmpty() && world.isEmptyBlock(above))
+                        else if (!stack.isEmpty() && level.isEmptyBlock(above))
                         {
                             double y = blockResult.getLocation().y - pos.getY();
-                            if (y == 0 || y == 1)
+                            if (y == 0 || y == 1) // if we are on the top or bottom face
                             {
-                                world.setBlockAndUpdate(above, PlacedItemBlock.updateStateValues(world, pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState()));
-                                world.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, blockResult));
+                                final BlockState toPlace = PlacedItemBlock.updateStateValues(level, pos, placedItem.defaultBlockState());
+                                if (!PlacedItemBlock.isEmpty(toPlace))
+                                {
+                                    level.setBlockAndUpdate(above, toPlace);
+                                    level.getBlockEntity(above, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(e -> e.insertItem(player, stack, blockResult));
+                                }
                             }
                         }
                     }

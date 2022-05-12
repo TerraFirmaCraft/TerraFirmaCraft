@@ -17,14 +17,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -37,18 +36,17 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     private int progress = 0;
 
-    private LoomRecipe recipe = null;
+    @Nullable private LoomRecipe recipe = null;
     private long lastPushed = 0L;
     private boolean needsProgressUpdate = false;
     private boolean needsRecipeUpdate = false;
-    private ResourceLocation recipeId;
+    @Nullable private ResourceLocation recipeId;
 
     public LoomBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.LOOM.get(), pos, state, defaultInventory(2), NAME);
     }
 
-    @OnlyIn(Dist.CLIENT)
     public boolean currentBoolean()
     {
         return progress % 2 == 0;
@@ -140,7 +138,6 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 
     public static void tick(Level level, BlockPos pos, BlockState state, LoomBlockEntity loom)
     {
-        assert level != null;
         // No access to the level when loading NBT, so it has to happen on the first tick
         if (loom.needsRecipeUpdate)
         {
@@ -208,7 +205,6 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public double getAnimPos()
     {
         assert level != null;

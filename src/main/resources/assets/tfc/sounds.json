@@ -1,4 +1,83 @@
 {
+  "wattle_dyed": {
+    "sounds": [
+      {
+        "name": "minecraft:block/honeyblock/break1",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break2",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break3",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break4",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break5",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.wattle.dyed"
+  },
+  "wattle_daubed": {
+    "sounds": [
+      {
+        "name": "dig/gravel1",
+        "pitch": 0.5
+      },
+      {
+        "name": "dig/gravel2",
+        "pitch": 0.5
+      },
+      {
+        "name": "dig/gravel3",
+        "pitch": 0.5
+      },
+      {
+        "name": "dig/gravel4",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.wattle.daubed"
+  },
+  "wattle_woven": {
+    "sounds": [
+      {
+        "name": "step/scaffold1",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold2",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold3",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold4",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold5",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold6",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold7",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.wattle.woven"
+  },
   "ceramic_break": {
     "sounds": [
       "tfc:ceramic_break"

@@ -7,26 +7,28 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Random;
-import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements IFluidLoggable
 {
@@ -34,7 +36,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
 
     public static TallWaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
     {
-        return new TallWaterPlantBlock(properties)
+        return new TallWaterPlantBlock(ExtendedProperties.of(properties))
         {
             @Override
             public IPlant getPlant()
@@ -50,11 +52,18 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
         };
     }
 
-    protected TallWaterPlantBlock(Properties properties)
+    protected TallWaterPlantBlock(ExtendedProperties properties)
     {
         super(properties);
 
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(PART, Part.LOWER));
+    }
+
+    @Override
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    {
+        FluidHelpers.tickFluid(level, currentPos, state);
+        return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -88,7 +97,7 @@ public abstract class TallWaterPlantBlock extends TFCTallGrassBlock implements I
             state = state.setValue(getFluidProperty(), getFluidProperty().keyFor(fluidState.getType()));
         }
 
-        return pos.getY() < 255 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? state : null;
+        return pos.getY() < context.getLevel().getMaxBuildHeight() - 1 && context.getLevel().getBlockState(pos.above()).canBeReplaced(context) ? state : null;
     }
 
     @Override

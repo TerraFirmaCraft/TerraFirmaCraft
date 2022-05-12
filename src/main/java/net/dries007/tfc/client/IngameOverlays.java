@@ -13,6 +13,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +24,9 @@ import net.minecraftforge.client.gui.OverlayRegistry;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -45,6 +48,8 @@ public class IngameOverlays
 
     public static final IIngameOverlay INK = OverlayRegistry.registerOverlayTop(MOD_NAME + " Ink", IngameOverlays::renderInk);
 
+    public static final IIngameOverlay CHISEL = OverlayRegistry.registerOverlayTop(MOD_NAME + " Chisel Mode", IngameOverlays::renderChiselMode);
+
     public static void reloadOverlays()
     {
         // Player and mount health, to use TFC variants or not
@@ -61,6 +66,7 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(FOOD, enableFood);
         OverlayRegistry.enableOverlay(THIRST, enableThirst);
         OverlayRegistry.enableOverlay(INK, TFCConfig.CLIENT.enableInkSplatter.get());
+        OverlayRegistry.enableOverlay(CHISEL, true);
     }
 
     public static void renderHealth(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
@@ -131,6 +137,26 @@ public class IngameOverlays
             stack.popPose();
 
             gui.right_height += 6;
+        }
+    }
+
+    private static void renderChiselMode(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        if (setup(gui, mc))
+        {
+            final Player player = ClientHelpers.getPlayer();
+            if (player != null && Helpers.isItem(player.getItemInHand(InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS))
+            {
+                int u = 60;
+                if (Helpers.isItem(player.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.HAMMERS))
+                {
+                    u = player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> cap.getChiselMode().ordinal() * 20).orElse(0);
+                }
+                stack.pushPose();
+                gui.blit(stack, width / 2 + 100, height - 21, u, 58, 20, 20);
+                stack.popPose();
+            }
         }
     }
 

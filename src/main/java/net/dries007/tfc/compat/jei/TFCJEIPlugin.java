@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,6 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -60,6 +63,11 @@ public class TFCJEIPlugin implements IModPlugin
         Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS).forEach(item -> r.addRecipeCatalyst(new ItemStack(item), recipeType));
     }
 
+    private static List<ItemStack> tagToItemList(TagKey<Item> tag)
+    {
+        return Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS).stream().map(Item::getDefaultInstance).collect(Collectors.toList());
+    }
+
     private static <T> RecipeType<T> type(String name, Class<T> tClass)
     {
         return RecipeType.create(TerraFirmaCraft.MOD_ID, name, tClass);
@@ -85,6 +93,10 @@ public class TFCJEIPlugin implements IModPlugin
     public static final RecipeType<AlloyRecipe> ALLOYING = type("alloying", AlloyRecipe.class);
     public static final RecipeType<SealedBarrelRecipe> SEALED_BARREL = type("sealed_barrel", SealedBarrelRecipe.class);
     public static final RecipeType<InstantBarrelRecipe> INSTANT_BARREL = type("instant_barrel", InstantBarrelRecipe.class);
+    public static final RecipeType<BloomeryRecipe> BLOOMERY = type("bloomery", BloomeryRecipe.class);
+    public static final RecipeType<WeldingRecipe> WELDING = type("welding", WeldingRecipe.class);
+    public static final RecipeType<AnvilRecipe> ANVIL = type("anvil", AnvilRecipe.class);
+    public static final RecipeType<ChiselRecipe> CHISEL = type("chisel", ChiselRecipe.class);
 
 
     @Override
@@ -111,6 +123,10 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new AlloyRecipeCategory(ALLOYING, gui));
         r.addRecipeCategories(new SealedBarrelRecipeCategory(SEALED_BARREL, gui));
         r.addRecipeCategories(new InstantBarrelRecipeCategory(INSTANT_BARREL, gui));
+        r.addRecipeCategories(new BloomeryRecipeCategory(BLOOMERY, gui));
+        r.addRecipeCategories(new WeldingRecipeCategory(WELDING, gui));
+        r.addRecipeCategories(new AnvilRecipeCategory(ANVIL, gui));
+        r.addRecipeCategories(new ChiselRecipeCategory(CHISEL, gui));
     }
 
     @Override
@@ -130,8 +146,12 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(ALLOYING, getRecipes(TFCRecipeTypes.ALLOY.get()));
         r.addRecipes(SEALED_BARREL, getRecipes(TFCRecipeTypes.BARREL_SEALED.get()));
         r.addRecipes(INSTANT_BARREL, getRecipes(TFCRecipeTypes.BARREL_INSTANT.get()));
+        r.addRecipes(BLOOMERY, getRecipes(TFCRecipeTypes.BLOOMERY.get()));
+        r.addRecipes(WELDING, getRecipes(TFCRecipeTypes.WELDING.get()));
+        r.addRecipes(ANVIL, getRecipes(TFCRecipeTypes.ANVIL.get()));
+        r.addRecipes(CHISEL, getRecipes(TFCRecipeTypes.CHISEL.get()));
 
-        //todo: ingredient info goes here
+        addIngredientInfo(r);
     }
 
     @Override
@@ -153,18 +173,26 @@ public class TFCJEIPlugin implements IModPlugin
         mapCatalyst(r, TFCItems.GLAZED_VESSELS, ALLOYING);
         woodCatalyst(r, Wood.BlockType.BARREL, SEALED_BARREL);
         woodCatalyst(r, Wood.BlockType.BARREL, INSTANT_BARREL);
+        r.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
+        addCatalystTag(r, TFCTags.Items.ANVILS, WELDING);
+        addCatalystTag(r, TFCTags.Items.ANVILS, ANVIL);
+    }
+
+    private void addIngredientInfo(IRecipeRegistration r)
+    {
+        //todo: 1.12 parity
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_GREENS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_greens"));
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_BROWNS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_browns"));
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_POISONS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_poisons"));
+        r.addIngredientInfo(new ItemStack(TFCItems.COMPOST.get()), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost"));
+        r.addIngredientInfo(new ItemStack(TFCItems.ROTTEN_COMPOST.get()), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.rotten_compost"));
+
     }
 
     public static void woodCatalyst(IRecipeCatalystRegistration r, Wood.BlockType wood, RecipeType<?> recipeType)
     {
         TFCBlocks.WOODS.values().stream().map(map -> map.get(wood)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));
     }
-
-    /*public static <T, V> void doubleMapCatalyst(IRecipeCatalystRegistration r, Map<T, Map<V, RegistryObject<Item>>> map, T getter, RecipeType<?> recipeType)
-    {
-        map.values().stream().map(set -> set.get(getter)).forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));
-    }*/
-
     public static <T> void mapCatalyst(IRecipeCatalystRegistration r, Map<T, RegistryObject<Item>> map, RecipeType<?> recipeType)
     {
         map.values().forEach(i -> r.addRecipeCatalyst(new ItemStack(i.get()), recipeType));

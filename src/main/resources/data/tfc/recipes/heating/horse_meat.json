@@ -5,7 +5,12 @@
     "item": "tfc:food/horse_meat"
   },
   "result_item": {
-    "item": "tfc:food/cooked_horse_meat"
+    "stack": {
+      "item": "tfc:food/cooked_horse_meat"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

@@ -8,8 +8,6 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.IntSupplier;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -31,8 +29,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
@@ -46,6 +44,8 @@ import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Metal;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MoldItem extends Item
 {
@@ -90,41 +90,56 @@ public class MoldItem extends Item
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
+        final MoldLike mold = MoldLike.get(stack);
+        if (mold != null)
         {
-            final MoldLike mold = MoldLike.get(stack);
-            if (mold != null)
+            if (player.isShiftKeyDown())
             {
-                if (player.isShiftKeyDown())
-                {
-                    // Try and un-mold
-                    final CastingRecipe recipe = CastingRecipe.get(mold);
-                    if (recipe != null)
-                    {
-                        final ItemStack result = recipe.assemble(mold);
-                        mold.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE); // Clear mold contents
-                        ItemHandlerHelper.giveItemToPlayer(player, result); // Give them the result of the casting
-                        if (player.getRandom().nextFloat() < recipe.getBreakChance())
-                        {
-                            stack.shrink(1);
-                            level.playSound(player, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
-                        }
-                    }
-                }
-                else
+                // Try and un-mold
+                final CastingRecipe recipe = CastingRecipe.get(mold);
+                if (recipe != null)
                 {
                     if (mold.isMolten())
                     {
-                        NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                        player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_molten"), true);
+                        return InteractionResultHolder.consume(stack);
                     }
-                    else if (!mold.getFluidInTank(0).isEmpty())
+                    else
                     {
-                        player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_solid"), true);
+                        final ItemStack result = recipe.assemble(mold);
+
+                        // Draining directly from the mold is denied, as the mold is not molten
+                        // So, we need to clear the mold specially
+                        mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+
+                        // Give them the result of the casting
+                        ItemHandlerHelper.giveItemToPlayer(player, result);
+                        if (player.getRandom().nextFloat() < recipe.getBreakChance())
+                        {
+                            stack.shrink(1);
+                            level.playSound(null, player.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+                        }
+                        return InteractionResultHolder.pass(stack);
                     }
                 }
             }
+            else
+            {
+                if (mold.isMolten())
+                {
+                    if (player instanceof ServerPlayer serverPlayer)
+                    {
+                        NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                    }
+                }
+                else if (!mold.getFluidInTank(0).isEmpty())
+                {
+                    player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_solid"), true);
+                }
+                return InteractionResultHolder.success(stack);
+            }
         }
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+        return InteractionResultHolder.pass(stack);
     }
 
     @Nullable
@@ -233,17 +248,19 @@ public class MoldItem extends Item
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {
-            if (isMolten())
+            return isMolten() ? drainIgnoringTemperature(maxDrain, action) : FluidStack.EMPTY;
+        }
+
+        @Override
+        public FluidStack drainIgnoringTemperature(int maxDrain, FluidAction action)
+        {
+            final FluidStack result = tank.drain(maxDrain, action);
+            if (!result.isEmpty())
             {
-                final FluidStack result = tank.drain(maxDrain, action);
-                if (!result.isEmpty())
-                {
-                    updateHeatCapacity();
-                    save();
-                }
-                return result;
+                updateHeatCapacity();
+                save();
             }
-            return FluidStack.EMPTY;
+            return result;
         }
 
         @Override
@@ -280,9 +297,12 @@ public class MoldItem extends Item
 
                 final CompoundTag tag = stack.getOrCreateTag();
                 tank.readFromNBT(tag.getCompound("tank"));
-                heat.deserializeNBT(tag.getCompound("heat"));
 
-                updateHeatCapacity();
+                // Deserialize heat capacity before we deserialize heat
+                // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
+                // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
+                heat.setHeatCapacity(tag.getFloat("heat_capacity"));
+                heat.deserializeNBT(tag.getCompound("heat"));
             }
         }
 
@@ -291,6 +311,7 @@ public class MoldItem extends Item
             final CompoundTag tag = stack.getOrCreateTag();
             tag.put("tank", tank.writeToNBT(new CompoundTag()));
             tag.put("heat", heat.serializeNBT());
+            tag.putFloat("heat_capacity", heat.getHeatCapacity());
         }
 
         @Nullable
@@ -303,6 +324,7 @@ public class MoldItem extends Item
         {
             final Metal metal = getContainedMetal();
             heat.setHeatCapacity(metal != null ? metal.getHeatCapacity() : 1); // If fluid is not empty, should not be null, but we don't check for that case here
+            save();
         }
     }
 }

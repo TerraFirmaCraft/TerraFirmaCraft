@@ -15,10 +15,11 @@ import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.PenguinModel;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
+import net.dries007.tfc.util.Helpers;
 
 public class PenguinRenderer extends MobRenderer<AmphibiousAnimal, PenguinModel>
 {
-    private static final ResourceLocation LOCATION = RenderHelpers.animalTexture("penguin");
+    private static final ResourceLocation LOCATION = Helpers.animalTexture("penguin");
 
     public PenguinRenderer(EntityRendererProvider.Context ctx)
     {

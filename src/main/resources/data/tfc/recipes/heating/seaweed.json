@@ -5,7 +5,12 @@
     "item": "tfc:groundcover/seaweed"
   },
   "result_item": {
-    "item": "tfc:food/dried_seaweed"
+    "stack": {
+      "item": "tfc:food/dried_seaweed"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

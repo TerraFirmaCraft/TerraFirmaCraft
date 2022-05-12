@@ -8,12 +8,14 @@ package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.container.MoldLikeAlloyContainer;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Metal;
 
 public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContainer>
@@ -38,6 +40,13 @@ public class MoldLikeAlloyScreen extends TFCContainerScreen<MoldLikeAlloyContain
             {
                 drawCenteredLine(stack, I18n.get(metal.getTranslationKey()), 14);
                 drawCenteredLine(stack, I18n.get("tfc.tooltip.fluid_units", fluid.getAmount()), 23);
+
+                final float temperature = mold.getTemperature();
+                final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().format(temperature);
+                if (tooltip != null)
+                {
+                    drawCenteredLine(stack, tooltip.getString(), 56);
+                }
             }
         }
     }

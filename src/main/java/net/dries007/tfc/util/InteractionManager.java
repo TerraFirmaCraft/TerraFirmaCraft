@@ -32,6 +32,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
@@ -178,9 +179,12 @@ public final class InteractionManager
                 final Level level = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
                 final BlockState stateAt = level.getBlockState(pos);
-                if (player != null && (player.blockPosition().equals(pos) || player.blockPosition().equals(pos.above())))
+                final Block pile = TFCBlocks.CHARCOAL_PILE.get();
+                if (player != null && (player.blockPosition().equals(pos) || (player.blockPosition().equals(pos.above()) && Helpers.isBlock(stateAt, pile) && stateAt.getValue(CharcoalPileBlock.LAYERS) == 8)))
+                {
                     return InteractionResult.FAIL;
-                if (Helpers.isBlock(stateAt, TFCBlocks.CHARCOAL_PILE.get()))
+                }
+                if (Helpers.isBlock(stateAt, pile))
                 {
                     int layers = stateAt.getValue(CharcoalPileBlock.LAYERS);
                     if (layers != 8)
@@ -194,7 +198,7 @@ public final class InteractionManager
                 if (level.isEmptyBlock(pos.above()) && stateAt.isFaceSturdy(level, pos, Direction.UP))
                 {
                     stack.shrink(1);
-                    level.setBlockAndUpdate(pos.above(), TFCBlocks.CHARCOAL_PILE.get().defaultBlockState());
+                    level.setBlockAndUpdate(pos.above(), pile.defaultBlockState());
                     Helpers.playSound(level, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
                     return InteractionResult.SUCCESS;
                 }

@@ -16,8 +16,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintCache;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.client.resources.sounds.AmbientSoundHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -35,13 +37,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.client.event.DrawSelectionEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.ScreenEvent;
-import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -59,19 +56,21 @@ import net.dries007.tfc.client.screen.button.PlayerInventoryTabButton;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
+import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
-import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.network.PlaceBlockSpecialPacket;
-import net.dries007.tfc.network.RequestClimateModelPacket;
-import net.dries007.tfc.network.SwitchInventoryTabPacket;
+import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
+import net.dries007.tfc.network.*;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
@@ -170,10 +169,44 @@ public class ClientForgeEventHandler
         final List<Component> text = event.getToolTip();
         if (!stack.isEmpty())
         {
+            // These are ordered in a predictable fashion
+            // 1. Common information, that is important to know about the item stack itself (such as size, food, heat, etc.). Static (unchanging) information is ordered before dynamic (changing) information.
+            // 2. Extra information, that is useful QoL info, but not necessary (such as possible recipes, melting into, etc.)
+            // 3. Debug information, that is only available in debug mode.
+
             ItemSizeManager.addTooltipInfo(stack, text);
+            ForgingBonus.addTooltipInfo(stack, text);
+            Forging.addTooltipInfo(stack, text);
+
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
+
+            // Fuel information
+            final Fuel fuel = Fuel.get(stack);
+            if (fuel != null)
+            {
+                final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
+                if (heat != null)
+                {
+                    text.add(new TranslatableComponent("tfc.tooltip.fuel_burns_at")
+                        .append(heat)
+                        .append(new TranslatableComponent("tfc.tooltip.fuel_burns_at_duration"))
+                        .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                }
+            }
+
+            final Fertilizer fertilizer = Fertilizer.get(stack);
+            if (fertilizer != null)
+            {
+                final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
+                if (n != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                if (p != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                if (k != 0)
+                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+            }
 
             // Metal content, inferred from a matching heat recipe.
             ItemStackInventory wrapper = new ItemStackInventory(stack);
@@ -184,6 +217,13 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.getOutputFluid(wrapper);
                 if (!fluid.isEmpty())
                 {
+                    stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
+                        if (cap.getTemperature() > 0.9 * recipe.getTemperature())
+                        {
+                            text.add(new TranslatableComponent("tfc.tooltip.danger"));
+                        }
+                    });
+
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
@@ -201,46 +241,21 @@ public class ClientForgeEventHandler
                 }
             }
 
-            // Fuel information
-            final Fuel fuel = Fuel.get(stack);
-            if (fuel != null)
-            {
-                final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
-                if (heat != null)
-                {
-                    text.add(new TranslatableComponent("tfc.tooltip.fuel_burns_at")
-                        .append(heat)
-                        .append(new TranslatableComponent("tfc.tooltip.fuel_burns_at_duration"))
-                        .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
-                }
-            }
-            final Fertilizer fertilizer = Fertilizer.get(stack);
-            if (fertilizer != null)
-            {
-                final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
-                if (n != 0)
-                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
-                if (p != 0)
-                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
-                if (k != 0)
-                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
-            }
-
             if (TFCConfig.CLIENT.enableDebug.get())
             {
                 final CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new TextComponent(GRAY + "[Debug] NBT: " + DARK_GRAY + stackTag));
+                    text.add(new TextComponent(DARK_GRAY + "[Debug] NBT: " + stackTag));
                 }
 
                 final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
                 if (capTag != null)
                 {
-                    text.add(new TextComponent(GRAY + "[Debug] Cap NBT: " + DARK_GRAY + capTag));
+                    text.add(new TextComponent(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
                 }
 
-                text.add(new TextComponent(GRAY + "[Debug] Tags: " + DARK_GRAY + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                text.add(new TextComponent(DARK_GRAY + "[Debug] Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
             }
         }
     }
@@ -278,6 +293,16 @@ public class ClientForgeEventHandler
         // We can't send this on client world load, it's too early, as the connection is not setup yet
         // This is the closest point after that which will work
         PacketHandler.send(PacketDistributor.SERVER.noArg(), new RequestClimateModelPacket());
+
+        LocalPlayer player = event.getPlayer();
+        if (player != null)
+        {
+            List<AmbientSoundHandler> handlers = ((LocalPlayerAccessor) player).accessor$getAmbientSoundHandlers();
+            if (handlers.stream().noneMatch(handler -> handler instanceof TFCBubbleColumnAmbientSoundHandler))
+            {
+                handlers.add(new TFCBubbleColumnAmbientSoundHandler(player));
+            }
+        }
     }
 
     public static void onClientTick(TickEvent.ClientTickEvent event)
@@ -295,6 +320,10 @@ public class ClientForgeEventHandler
         if (TFCKeyBindings.PLACE_BLOCK.isDown())
         {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new PlaceBlockSpecialPacket());
+        }
+        else if (TFCKeyBindings.CYCLE_CHISEL_MODE.isDown())
+        {
+            PacketHandler.send(PacketDistributor.SERVER.noArg(), new CycleChiselModePacket());
         }
     }
 
@@ -317,8 +346,14 @@ public class ClientForgeEventHandler
         {
             BlockState stateAt = level.getBlockState(lookingAt);
             Block blockAt = stateAt.getBlock();
-            //todo: chisel
-            if (blockAt instanceof IHighlightHandler handler)
+
+            BlockState chiseled = ChiselRecipe.computeResultWithEvent(player, stateAt, hit);
+            if (chiseled != null)
+            {
+                IHighlightHandler.drawBox(poseStack, chiseled.getShape(level, pos), event.getMultiBufferSource(), pos, camera.getPosition(), 1f, 0f, 0f, 0.4f);
+                event.setCanceled(true);
+            }
+            else if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
                 if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))
@@ -327,7 +362,7 @@ public class ClientForgeEventHandler
                     event.setCanceled(true);
                 }
             }
-            if (blockAt instanceof IGhostBlockHandler handler)
+            else if (blockAt instanceof IGhostBlockHandler handler)
             {
                 if (handler.draw(level, player, stateAt, pos, hit.getLocation(), hit.getDirection(), event.getPoseStack(), event.getMultiBufferSource(), player.getMainHandItem()))
                 {
@@ -426,9 +461,8 @@ public class ClientForgeEventHandler
 
                         stack.translate(0F, 0F,-0.001F);
                         gui.blit(stack, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
-
-                        stack.popPose();
                     }
+                    stack.popPose();
                 }
             }
         }

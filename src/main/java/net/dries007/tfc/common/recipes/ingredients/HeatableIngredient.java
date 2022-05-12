@@ -6,11 +6,15 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+
+import java.util.Objects;
+
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
@@ -41,15 +45,33 @@ public class HeatableIngredient extends DelegateIngredient
     }
 
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer()
+    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
     }
 
     @Override
+    protected ItemStack[] getDefaultItems()
+    {
+        return ForgeRegistries.ITEMS.getValues()
+            .stream()
+            .map(item -> {
+                final ItemStack stack = new ItemStack(item);
+                return stack.getCapability(HeatCapability.CAPABILITY)
+                    .map(h -> {
+                        h.setTemperature(minTemp);
+                        return stack;
+                    })
+                    .orElse(null);
+            })
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
+    }
+
+    @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        if (super.test(stack) && stack != null)
+        if (super.test(stack) && stack != null && !stack.isEmpty())
         {
             return stack.getCapability(HeatCapability.CAPABILITY)
                 .map(IHeat::getTemperature)

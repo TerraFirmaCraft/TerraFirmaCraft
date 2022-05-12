@@ -48,7 +48,7 @@ public abstract class AbstractSignBlock extends SignBlock implements IFluidLogga
     @Override
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        FluidHelpers.tickFluid(level, currentPos, state, this);
+        FluidHelpers.tickFluid(level, currentPos, state);
         return state;
     }
 

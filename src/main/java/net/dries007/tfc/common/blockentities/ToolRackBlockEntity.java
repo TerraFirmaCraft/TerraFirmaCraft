@@ -77,7 +77,7 @@ public class ToolRackBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     @Override
     public boolean isItemValid(int i, ItemStack stack)
     {
-        return Helpers.isItem(stack, TFCTags.Items.GOES_ON_TOOL_RACK);
+        return Helpers.isItem(stack, TFCTags.Items.USABLE_ON_TOOL_RACK);
     }
 
     @Override

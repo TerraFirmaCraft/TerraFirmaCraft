@@ -5,7 +5,12 @@
     "item": "tfc:food/turtle"
   },
   "result_item": {
-    "item": "tfc:food/cooked_turtle"
+    "stack": {
+      "item": "tfc:food/cooked_turtle"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

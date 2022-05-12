@@ -42,6 +42,7 @@ public class DeadBananaPlantBlock extends BananaPlantBlock
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         if (random.nextInt(5) == 0)

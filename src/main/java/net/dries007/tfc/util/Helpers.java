@@ -12,26 +12,28 @@ import java.util.concurrent.Callable;
 import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.AbstractIterator;
+import com.google.common.collect.Iterators;
 import net.minecraft.ChatFormatting;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -39,11 +41,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
-import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -74,14 +77,20 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.datafixers.util.Either;
-import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
+import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -93,9 +102,11 @@ public final class Helpers
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
 
-    private static final Random RANDOM = new Random();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final int PRIME_X = 501125321;
     private static final int PRIME_Y = 1136930381;
+
+    @Nullable private static RecipeManager CACHED_RECIPE_MANAGER = null;
 
     /**
      * Default {@link ResourceLocation}, except with a TFC namespace
@@ -131,6 +142,11 @@ public final class Helpers
     public static <E extends Enum<E>, V> EnumMap<E, V> mapOfKeys(Class<E> enumClass, Predicate<E> keyPredicate, Function<E, V> valueMapper)
     {
         return Arrays.stream(enumClass.getEnumConstants()).filter(keyPredicate).collect(Collectors.toMap(Function.identity(), valueMapper, (v, v2) -> v, () -> new EnumMap<>(enumClass)));
+    }
+
+    public static <K, V> V getRandomValue(Map<K, V> map, Random random)
+    {
+        return Iterators.get(map.values().iterator(), random.nextInt(map.size()));
     }
 
     /**
@@ -186,9 +202,9 @@ public final class Helpers
         {
             return level; // Most obvious case, if we can directly cast up to level.
         }
-        if (maybeLevel instanceof WorldGenRegion)
+        if (maybeLevel instanceof WorldGenRegion level)
         {
-            return ((WorldGenRegion) maybeLevel).getLevel(); // Special case for world gen, when we can access the level unsafely
+            return level.getLevel(); // Special case for world gen, when we can access the level unsafely
         }
         return null; // A modder has done a strange ass thing
     }
@@ -201,22 +217,6 @@ public final class Helpers
     public static void resetCounter(Level level, BlockPos pos)
     {
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
-    }
-
-    /**
-     * @deprecated Use {@link BlockGetter#getBlockEntity(BlockPos, BlockEntityType)} instead as it's safer
-     */
-    @Nullable
-    @SuppressWarnings("unchecked")
-    @Deprecated
-    public static <T extends BlockEntity> T getBlockEntity(BlockGetter world, BlockPos pos, Class<T> tileEntityClass)
-    {
-        BlockEntity te = world.getBlockEntity(pos);
-        if (tileEntityClass.isInstance(te))
-        {
-            return (T) te;
-        }
-        return null;
     }
 
     public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
@@ -241,35 +241,6 @@ public final class Helpers
         selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
     }
 
-    /**
-     * Fluid Sensitive version of Bucketable#bucketMobPickup
-     */
-    public static <T extends LivingEntity & Bucketable> Optional<InteractionResult> bucketMobPickup(Player player, InteractionHand hand, T entity)
-    {
-        ItemStack held = player.getItemInHand(hand);
-        ItemStack bucketItem = entity.getBucketItemStack();
-        if (bucketItem.getItem() instanceof MobBucketItem mobBucket && held.getItem() instanceof BucketItem heldBucket)
-        {
-            // Verify that the one you're holding and the corresponding mob bucket contain the same fluid
-            if (mobBucket.getFluid().isSame(heldBucket.getFluid()) && entity.isAlive())
-            {
-                entity.playSound(entity.getPickupSound(), 1.0F, 1.0F);
-                entity.saveToBucketTag(bucketItem);
-                ItemStack itemstack2 = ItemUtils.createFilledResult(held, player, bucketItem, false);
-                player.setItemInHand(hand, itemstack2);
-                Level level = entity.level;
-                if (!level.isClientSide)
-                {
-                    CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayer) player, bucketItem);
-                }
-
-                entity.discard();
-                return Optional.of(InteractionResult.sidedSuccess(level.isClientSide));
-            }
-        }
-        return Optional.empty();
-    }
-
     public static BlockState copyProperties(BlockState copyTo, BlockState copyFrom)
     {
         for (Property<?> property : copyFrom.getProperties())
@@ -287,6 +258,54 @@ public final class Helpers
     public static <T extends Comparable<T>> BlockState setProperty(BlockState state, Property<T> property, T value)
     {
         return state.hasProperty(property) ? state.setValue(property, value) : state;
+    }
+
+    public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(Level level, Supplier<RecipeType<R>> type)
+    {
+        return getRecipes(level.getRecipeManager(), type);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <C extends Container, R extends Recipe<C>> Map<ResourceLocation, R> getRecipes(RecipeManager recipeManager, Supplier<RecipeType<R>> type)
+    {
+        return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) recipeManager).invoke$byType(type.get());
+    }
+
+    @Nullable
+    public static RecipeManager getUnsafeRecipeManager()
+    {
+        final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server != null)
+        {
+            return server.getRecipeManager();
+        }
+
+        try
+        {
+            final Level level = ClientHelpers.getLevel();
+            if (level != null)
+            {
+                return level.getRecipeManager();
+            }
+        }
+        catch (Throwable t)
+        {
+            LOGGER.info("^ This is fine - No client or server recipe manager present upon initial resource reload on physical server");
+        }
+
+        if (CACHED_RECIPE_MANAGER != null)
+        {
+            LOGGER.info("Successfully captured server recipe manager");
+            return CACHED_RECIPE_MANAGER;
+        }
+
+        LOGGER.error("No recipe manager was present - tried server, client, and captured value. This will cause problems!", new RuntimeException("Stacktrace"));
+        return null;
+    }
+
+    public static void setCachedRecipeManager(RecipeManager manager)
+    {
+        CACHED_RECIPE_MANAGER = manager;
     }
 
     public static ItemStack damageCraftingItem(ItemStack stack, int amount)
@@ -310,7 +329,7 @@ public final class Helpers
     {
         // There's no player here, so we can't safely do anything.
         //amount = stack.getItem().damageItem(stack, amount, null, e -> {});
-        if (stack.hurt(amount, RANDOM, null))
+        if (stack.hurt(amount, new Random(), null))
         {
             stack.shrink(1);
             stack.setDamageValue(0);
@@ -366,6 +385,25 @@ public final class Helpers
         };
     }
 
+    public static ListTag writeItemStacksToNbt(List<ItemStack> stacks)
+    {
+        final ListTag list = new ListTag();
+        for (final ItemStack stack : stacks)
+        {
+            list.add(stack.save(new CompoundTag()));
+        }
+        return list;
+    }
+
+    public static void readItemStacksFromNbt(List<ItemStack> stacks, ListTag list)
+    {
+        stacks.clear();
+        for (int i = 0; i < list.size(); i++)
+        {
+            stacks.add(ItemStack.of(list.getCompound(i)));
+        }
+    }
+
     /**
      * Given a theoretical item stack, of count {@code totalCount}, splits it into optimally sized stacks, up to the stack size limit and feeds these new stacks to {@code consumer}
      */
@@ -378,6 +416,28 @@ public final class Helpers
             splitStack.setCount(splitCount);
             totalCount -= splitCount;
             consumer.accept(splitStack);
+        }
+    }
+
+    /**
+     * Removes / Consumes item entities from a list up to a maximum number of items (taking into account the count of each item)
+     * Passes each item stack, with stack size = 1, to the provided consumer
+     */
+    public static void consumeItemsFromEntitiesIndividually(Collection<ItemEntity> entities, int maximum, Consumer<ItemStack> consumer)
+    {
+        int consumed = 0;
+        for (ItemEntity entity : entities)
+        {
+            final ItemStack stack = entity.getItem();
+            while (consumed < maximum && !stack.isEmpty())
+            {
+                consumer.accept(stack.split(1));
+                consumed++;
+                if (stack.isEmpty())
+                {
+                    entity.discard();
+                }
+            }
         }
     }
 
@@ -577,9 +637,24 @@ public final class Helpers
         return FluidStack.EMPTY;
     }
 
-    public static void addTillable(Block block, Predicate<UseOnContext> condition, Consumer<UseOnContext> action)
+    public static <E> void encodeArray(FriendlyByteBuf buffer, E[] array, BiConsumer<E, FriendlyByteBuf> encoder)
     {
-        HoeItemProtectedAccessor.TILLABLES_VIEW.put(block, Pair.of(condition, action));
+        buffer.writeVarInt(array.length);
+        for (E e : array)
+        {
+            encoder.accept(e, buffer);
+        }
+    }
+
+    public static <E> E[] decodeArray(FriendlyByteBuf buffer, IntFunction<E[]> arrayCtor, Function<FriendlyByteBuf, E> decoder)
+    {
+        final int size = buffer.readVarInt();
+        final E[] array = arrayCtor.apply(size);
+        for (int i = 0; i < size; i++)
+        {
+            array[i] = decoder.apply(buffer);
+        }
+        return array;
     }
 
     public static <E, C extends Collection<E>> C decodeAll(FriendlyByteBuf buffer, C collection, Function<FriendlyByteBuf, E> decoder)
@@ -734,6 +809,7 @@ public final class Helpers
     /**
      * For when you want to ignore every possible safety measure in front of you
      */
+    @Nullable
     @SuppressWarnings("unchecked")
     public static <T> T uncheck(Callable<?> action)
     {
@@ -747,6 +823,17 @@ public final class Helpers
         }
     }
 
+    /**
+     * Logs a warning and a stacktrace when called from the client thread, heuristically. Used for debugging, and indicates a programming error.
+     */
+    public static void warnWhenCalledFromClientThread()
+    {
+        if (Helpers.detectAssertionsEnabled() && Thread.currentThread().getName().equalsIgnoreCase("render thread"))
+        {
+            LOGGER.warn("This method should not be called from client thread, this is a bug!", new RuntimeException("Stacktrace"));
+        }
+    }
+
     @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
     public static boolean detectAssertionsEnabled()
     {
@@ -756,7 +843,8 @@ public final class Helpers
     }
 
     /**
-     * Detect if test sources are present, either if we're running in a ./gradlew test, or from a game test launch.
+     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
+     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
      */
     public static boolean detectBootstrapEnvironment()
     {
@@ -767,6 +855,10 @@ public final class Helpers
         return detectTestSourcesPresent();
     }
 
+    /**
+     * Detect if test sources are present, if we're running from a environment which includes TFC's test sources
+     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
+     */
     public static boolean detectTestSourcesPresent()
     {
         try
@@ -1031,6 +1123,11 @@ public final class Helpers
         return Mth.map(noise.getValue(x, y, z), -1, 1, min, max);
     }
 
+    public static ResourceLocation animalTexture(String name)
+    {
+        return identifier("textures/entity/animal/" + name + ".png");
+    }
+
     /**
      * Used by {@link Helpers#perfectMatchExists(List, List)}
      * Computes a symbolic determinant
@@ -1096,14 +1193,6 @@ public final class Helpers
 
         @SuppressWarnings("ConstantConditions")
         private ItemProtectedAccessor() { super(null); } // Never called
-    }
-
-    static abstract class HoeItemProtectedAccessor extends HoeItem
-    {
-        static final Map<Block, Pair<Predicate<UseOnContext>, Consumer<UseOnContext>>> TILLABLES_VIEW = TILLABLES;
-
-        @SuppressWarnings("ConstantConditions")
-        private HoeItemProtectedAccessor() { super(null, 0, 0, null); }  // Never called
     }
 
     interface ThrowingRunnable

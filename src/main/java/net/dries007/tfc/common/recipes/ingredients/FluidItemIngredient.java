@@ -30,7 +30,7 @@ public class FluidItemIngredient extends DelegateIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        if (super.test(stack) && stack != null)
+        if (super.test(stack) && stack != null && !stack.isEmpty())
         {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
                 .map(cap -> cap.getFluidInTank(0))
@@ -41,9 +41,19 @@ public class FluidItemIngredient extends DelegateIngredient
     }
 
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer()
+    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
+    }
+
+    @Override
+    protected ItemStack[] getDefaultItems()
+    {
+        return fluid.ingredient()
+            .getMatchingFluids()
+            .stream()
+            .map(fluid -> new ItemStack(fluid.getBucket()))
+            .toArray(ItemStack[]::new);
     }
 
     public enum Serializer implements IIngredientSerializer<FluidItemIngredient>

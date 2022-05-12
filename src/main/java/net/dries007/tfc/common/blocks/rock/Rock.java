@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.rock;
 import java.util.Locale;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.*;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCMaterials;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Default rocks that are used for block registration calls. Not extensible.
@@ -80,8 +80,8 @@ public enum Rock implements StringRepresentable
 
     public enum BlockType implements StringRepresentable
     {
-        RAW((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2 + rock.getCategory().getHardness(), 10).requiresCorrectToolForDrops()), true),
-        HARDENED((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.25f + rock.getCategory().getHardness(), 10).requiresCorrectToolForDrops()), false),
+        RAW((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2 + rock.getCategory().getHardness(), 10).requiresCorrectToolForDrops(), rock), true),
+        HARDENED((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.25f + rock.getCategory().getHardness(), 10).requiresCorrectToolForDrops(), rock), false),
         SMOOTH((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops()), true),
         COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops(), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
         BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.0f, 10).requiresCorrectToolForDrops(), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),

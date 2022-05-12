@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/ingot/black_bronze"
+  },
+  "result": {
+    "item": "tfc:metal/chain/black_bronze",
+    "count": 16
+  },
+  "tier": 2,
+  "rules": [
+    "hit_any",
+    "hit_any",
+    "draw_last"
+  ]
+}

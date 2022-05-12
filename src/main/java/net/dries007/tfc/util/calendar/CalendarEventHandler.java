@@ -18,6 +18,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
 import com.mojang.logging.LogUtils;
@@ -39,6 +40,7 @@ public class CalendarEventHandler
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
         bus.addListener(CalendarEventHandler::onServerStart);
+        bus.addListener(CalendarEventHandler::onServerStop);
         bus.addListener(CalendarEventHandler::onServerTick);
         bus.addListener(CalendarEventHandler::onOverworldTick);
         bus.addListener(CalendarEventHandler::onPlayerWakeUp);
@@ -49,6 +51,11 @@ public class CalendarEventHandler
     public static void onServerStart(ServerStartingEvent event)
     {
         Calendars.SERVER.onServerStart(event.getServer());
+    }
+
+    public static void onServerStop(ServerStoppedEvent event)
+    {
+        Calendars.SERVER.onServerStop();
     }
 
     /**

@@ -34,6 +34,6 @@ public class CalendarUpdatePacket
 
     void handle(NetworkEvent.Context context)
     {
-        context.enqueueWork(() -> Calendars.CLIENT.reset(instance));
+        context.enqueueWork(() -> Calendars.CLIENT.resetTo(instance));
     }
 }

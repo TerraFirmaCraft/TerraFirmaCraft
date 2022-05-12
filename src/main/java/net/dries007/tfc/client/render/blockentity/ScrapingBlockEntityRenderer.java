@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.model.data.EmptyModelData;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -34,8 +35,8 @@ public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<Scraping
             {
                 ItemModelShaper shaper = Minecraft.getInstance().getItemRenderer().getItemModelShaper();
                 // todo: is this the right thing to be doing here?
-                final ResourceLocation base = shaper.getItemModel(baseStack).getParticleIcon().getName();
-                final ResourceLocation scraped = shaper.getItemModel(scrapeStack).getParticleIcon().getName();
+                final ResourceLocation base = shaper.getItemModel(baseStack).getParticleIcon(EmptyModelData.INSTANCE).getName();
+                final ResourceLocation scraped = shaper.getItemModel(scrapeStack).getParticleIcon(EmptyModelData.INSTANCE).getName();
                 final short positions = scraping.getScrapedPositions();
                 drawTiles(buffer, poseStack, base, positions, 0, combinedLight, combinedOverlay);
                 drawTiles(buffer, poseStack, scraped, positions, 1, combinedLight, combinedOverlay);

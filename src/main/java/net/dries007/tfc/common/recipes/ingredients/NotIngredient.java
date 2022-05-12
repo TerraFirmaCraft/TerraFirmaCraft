@@ -42,7 +42,7 @@ public class NotIngredient extends DelegateIngredient
     }
 
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer()
+    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
     }

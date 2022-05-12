@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=north,open=true,lit=false": {
+      "model": "tfc:block/bloomery/open_off"
+    },
+    "facing=north,open=false,lit=false": {
+      "model": "tfc:block/bloomery/closed_off"
+    },
+    "facing=north,open=false,lit=true": {
+      "model": "tfc:block/bloomery/closed_on"
+    },
+    "facing=north,open=true,lit=true": {
+      "model": "tfc:block/bloomery/open_on"
+    },
+    "facing=east,open=true,lit=false": {
+      "model": "tfc:block/bloomery/open_off",
+      "y": 90
+    },
+    "facing=east,open=false,lit=false": {
+      "model": "tfc:block/bloomery/closed_off",
+      "y": 90
+    },
+    "facing=east,open=false,lit=true": {
+      "model": "tfc:block/bloomery/closed_on",
+      "y": 90
+    },
+    "facing=east,open=true,lit=true": {
+      "model": "tfc:block/bloomery/open_on",
+      "y": 90
+    },
+    "facing=south,open=true,lit=false": {
+      "model": "tfc:block/bloomery/open_off",
+      "y": 180
+    },
+    "facing=south,open=false,lit=false": {
+      "model": "tfc:block/bloomery/closed_off",
+      "y": 180
+    },
+    "facing=south,open=false,lit=true": {
+      "model": "tfc:block/bloomery/closed_on",
+      "y": 180
+    },
+    "facing=south,open=true,lit=true": {
+      "model": "tfc:block/bloomery/open_on",
+      "y": 180
+    },
+    "facing=west,open=true,lit=false": {
+      "model": "tfc:block/bloomery/open_off",
+      "y": 270
+    },
+    "facing=west,open=false,lit=false": {
+      "model": "tfc:block/bloomery/closed_off",
+      "y": 270
+    },
+    "facing=west,open=false,lit=true": {
+      "model": "tfc:block/bloomery/closed_on",
+      "y": 270
+    },
+    "facing=west,open=true,lit=true": {
+      "model": "tfc:block/bloomery/open_on",
+      "y": 270
+    }
+  }
+}

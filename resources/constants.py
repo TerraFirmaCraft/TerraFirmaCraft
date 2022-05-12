@@ -484,12 +484,12 @@ COLOR_COMBOS = [
     ('green', 'white', 'lime'),
     ('green', 'blue', 'cyan'),
     ('red', 'blue', 'purple'),
-    ('yellow', 'green', 'blue')
+    ('yellow', 'blue', 'green')
 ]
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
-                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'rotten_compost', 'shell', 'silk_cloth', 'spindle',
+                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'shell', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
@@ -532,8 +532,8 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
-MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane')
+MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari')
 NUTRIENTS = {
     'grain': 'Wholesome',
     'fruit': 'Tasty',
@@ -545,7 +545,7 @@ NUTRIENTS = {
 SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken']
 BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
 
-BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box']
+BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil']
 TANNIN_WOOD_TYPES = ['oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia']
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
@@ -570,7 +570,10 @@ OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
 OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
     'orca': spawner('tfc:orca', min_count=1, max_count=3),
     'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3),
-    'squid': spawner('tfc:squid', min_count=1, max_count=3),
+    'squid': spawner('tfc:squid', min_count=1, max_count=3)
+}
+
+UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
     'octopoteuthis': spawner('tfc:octopoteuthis', min_count=1, max_count=2)
 }
 
@@ -596,7 +599,10 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'chicken': spawner('tfc:chicken', min_count=2, max_count=6)
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli')
+ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
+VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
+VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -622,7 +628,12 @@ DEFAULT_LANG = {
     'effect.tfc.glow_ink': 'Glowing Ink',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'subtitles.block.tfc.tool_rack.place_item': 'Item placed on Tool Rack',
+    'subtitles.block.tfc.wattle.dyed': 'Wattle stained',
+    'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
+    'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
+    'tfc.key.place_block': 'Place Block',
+    'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     # Sounds todo: subtitles for everything and standardize the format
     'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
     'tfc.animal.alpaca.hurt': 'Alpaca Yelps',
@@ -650,6 +661,8 @@ DEFAULT_LANG = {
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
+    'tfc.tooltip.danger': '§f - Danger!!',
+    'tfc.tooltip.anvil_plan': 'Plans',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',
@@ -691,6 +704,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pan.water': 'You need to stand in water to be able to pan.',
     'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
     'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
+    'tfc.tooltip.small_vessel.alloy_molten': 'Contents are still liquid!',
     'tfc.tooltip.small_vessel.contents': 'Contents:',
     'tfc.tooltip.small_vessel.solid': '- Solid.',
     'tfc.tooltip.small_vessel.molten': '- Molten!',
@@ -731,6 +745,15 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
     'tfc.tooltip.seal_barrel': 'Seal',
     'tfc.tooltip.unseal_barrel': 'Unseal',
+    'tfc.tooltip.while_sealed': 'While sealed',
+    'tfc.tooltip.while_sealed_description': 'While the barrel is sealed and the required fluid is present',
+    'tfc.tooltip.anvil_is_too_low_tier_to_weld': 'The Anvil is not a high enough tier to weld that!',
+    'tfc.tooltip.anvil_is_too_low_tier_to_work': 'The Anvil is not a high enough tier to work that!',
+    'tfc.tooltip.not_hot_enough_to_weld': 'Not hot enough to weld!',
+    'tfc.tooltip.not_hot_enough_to_work': 'Not hot enough to work!',
+    'tfc.tooltip.no_flux_to_weld': 'There is no flux in the anvil!',
+    'tfc.tooltip.hammer_required_to_work': 'A hammer is required to work in the anvil!',
+    'tfc.tooltip.anvil_has_been_worked': 'Worked',
     'tfc.tooltip.fertilized': '§6Fertilized',
     'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
     'tfc.tooltip.egg_hatch_today': 'Will hatch today!',
@@ -859,6 +882,24 @@ DEFAULT_LANG = {
     'tfc.enum.nutrient.vegetables': 'Vegetables',
     'tfc.enum.nutrient.protein': 'Protein',
     'tfc.enum.nutrient.dairy': 'Dairy',
+    'tfc.enum.forgingbonus.none': 'No Forging Bonus',
+    'tfc.enum.forgingbonus.poorly_forged': 'Poorly Forged',
+    'tfc.enum.forgingbonus.well_forged': 'Well Forged',
+    'tfc.enum.forgingbonus.expertly_forged': 'Expertly Forged',
+    'tfc.enum.forgingbonus.perfectly_forged': 'Perfectly Forged!',
+    'tfc.enum.forge_step.hit_light': 'Light Hit',
+    'tfc.enum.forge_step.hit_medium': 'Medium Hit',
+    'tfc.enum.forge_step.hit_hard': 'Hard Hit',
+    'tfc.enum.forge_step.draw': 'Draw',
+    'tfc.enum.forge_step.punch': 'Punch',
+    'tfc.enum.forge_step.bend': 'Bend',
+    'tfc.enum.forge_step.upset': 'Upset',
+    'tfc.enum.forge_step.shrink': 'Shrink',
+    'tfc.enum.order.any': 'Any',
+    'tfc.enum.order.last': 'Last',
+    'tfc.enum.order.not_last': 'Not Last',
+    'tfc.enum.order.second_last': 'Second Last',
+    'tfc.enum.order.third_last': 'Third Last',
 
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
@@ -879,9 +920,22 @@ DEFAULT_LANG = {
     'tfc.jei.fluid_pot': 'Fluid Pot',
     'tfc.jei.casting': 'Casting',
     'tfc.jei.alloying': 'Alloying',
-    'tfc.jei.loom' : 'Loom',
+    'tfc.jei.loom': 'Loom',
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
-    'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe'
+    'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
+    'tfc.jei.bloomery': 'Bloomery',
+    'tfc.jei.welding': 'Welding',
+    'tfc.jei.anvil': 'Anvil',
+    'tfc.jei.chisel': 'Chisel',
+
+    # jei tooltips
+    'tfc.jei.compost_greens': 'This item can be added to the Composter as a green item. Composters need four green and four brown items to work.',
+    'tfc.jei.compost_browns': 'This item can be added to the Composter as a brown item. Composters need four green and four brown items to work.',
+    'tfc.jei.compost_poisons': 'This item poisons compost in the Composter. This causes it to produce rotten compost.',
+    'tfc.jei.compost': 'This fertilizer is made by adding four green items and four brown items to the Composter, and waiting for a while.',
+    'tfc.jei.rotten_compost': 'This kills plants. It is made by adding compost poisons to the Composter.',
+
+
 }
 
 # Automatically Generated by generate_trees.py

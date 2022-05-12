@@ -8,7 +8,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/planks/chestnut_door"
+          "name": "tfc:wood/planks/chestnut_door",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wood/planks/chestnut_door",
+              "properties": {
+                "half": "lower"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

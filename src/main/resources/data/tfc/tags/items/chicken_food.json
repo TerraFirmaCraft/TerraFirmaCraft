@@ -4,6 +4,7 @@
   "values": [
     "#tfc:foods/grains",
     "#tfc:foods/fruits",
-    "#tfc:foods/vegetables"
+    "#tfc:foods/vegetables",
+    "#tfc:seeds"
   ]
 }

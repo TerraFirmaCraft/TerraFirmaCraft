@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -14,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -25,7 +29,6 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +49,9 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
+import net.dries007.tfc.common.blocks.plant.Plant;
+import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
 import org.slf4j.Logger;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -58,7 +64,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class SelfTests
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final boolean THROW_ON_SELF_TEST_FAIL = false;
+    private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     public static void runClientSelfTests()
     {
@@ -141,12 +147,9 @@ public final class SelfTests
      */
     public static boolean validateBlockLootTables(Stream<Block> blocks, Logger logger)
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED)
-            .map(Supplier::get)
-            .collect(Collectors.toSet());
         final Set<ResourceLocation> lootTables = ServerLifecycleHooks.getCurrentServer().getLootTables().getIds();
         final List<Block> missingLootTables = blocks
-            .filter(b -> !expectedNoLootTableBlocks.contains(b) && !lootTables.contains(b.getLootTable()))
+            .filter(b -> !lootTables.contains(b.getLootTable()))
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);
@@ -194,11 +197,12 @@ public final class SelfTests
 
     private static boolean validateOwnBlockLootTables()
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE)
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT))
             .map(Supplier::get)
             .collect(Collectors.toSet());
+        final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class);
         return validateBlockLootTables(stream(ForgeRegistries.BLOCKS, MOD_ID)
-            .filter(b -> !expectedNoLootTableBlocks.contains(b)), LOGGER);
+            .filter(b -> !expectedNoLootTableBlocks.contains(b)).filter(b -> !expectedNoLootTableClasses.contains(b.getClass())), LOGGER);
     }
 
     private static boolean validateOwnBlockMineableTags()

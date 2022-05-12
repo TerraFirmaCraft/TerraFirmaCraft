@@ -13,10 +13,6 @@ import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class DeadWallTorchBlock extends WallTorchBlock
 {
@@ -25,9 +21,5 @@ public class DeadWallTorchBlock extends WallTorchBlock
         super(properties, particle);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
-    {
-
-    }
+    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand) {}
 }

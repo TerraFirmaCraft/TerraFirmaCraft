@@ -98,6 +98,14 @@
         "maxCount": 2
       }
     ],
+    "underground_water_creature": [
+      {
+        "type": "tfc:octopoteuthis",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
     "creature": [
       {
         "type": "tfc:pig",

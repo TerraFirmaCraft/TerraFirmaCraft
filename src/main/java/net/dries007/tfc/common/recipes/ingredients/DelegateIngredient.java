@@ -6,37 +6,57 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
-import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
-
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import net.minecraft.network.FriendlyByteBuf;
+import com.google.gson.JsonNull;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntComparators;
 import it.unimi.dsi.fastutil.ints.IntList;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class DelegateIngredient extends Ingredient
 {
-    @Nullable
-    protected final Ingredient delegate;
+    @Nullable protected final Ingredient delegate;
+
+    private ItemStack @Nullable [] cachedItemStacks;
+    @Nullable private IntList stackingIds;
 
     public DelegateIngredient(@Nullable Ingredient delegate)
     {
         super(Stream.empty());
         this.delegate = delegate;
+        this.cachedItemStacks = null;
+        this.stackingIds = null;
     }
 
     @Override
-    public ItemStack[] getItems()
+    public final ItemStack[] getItems()
     {
-        return delegate != null ? delegate.getItems() : new ItemStack[] {};
+        if (cachedItemStacks == null || checkInvalidation())
+        {
+            if (delegate != null)
+            {
+                cachedItemStacks = delegate.getItems();
+            }
+            else
+            {
+                cachedItemStacks = getDefaultItems();
+            }
+        }
+        return cachedItemStacks;
     }
 
+    /**
+     * Implementors should override this <strong>and</strong> call {@code super.test(stack)} in their implementation.
+     */
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
@@ -44,38 +64,67 @@ public abstract class DelegateIngredient extends Ingredient
     }
 
     @Override
-    public IntList getStackingIds()
+    public final IntList getStackingIds()
     {
-        return delegate != null ? delegate.getStackingIds() : IntList.of();
+        if (stackingIds == null || checkInvalidation())
+        {
+            final ItemStack[] itemStacks = getItems();
+            stackingIds = new IntArrayList(itemStacks.length);
+            for (ItemStack stack : itemStacks)
+            {
+                stackingIds.add(StackedContents.getStackingIndex(stack));
+            }
+            stackingIds.sort(IntComparators.NATURAL_COMPARATOR);
+        }
+        return stackingIds;
     }
 
+    /**
+     * Only used for data generation purposes.
+     */
     @Override
     public JsonElement toJson()
     {
-        return delegate != null ? delegate.toJson() : new JsonArray();
+        return delegate != null ? delegate.toJson() : JsonNull.INSTANCE;
     }
 
     @Override
     public boolean isEmpty()
     {
-        return delegate == null || delegate.isEmpty();
+        return delegate != null && delegate.isEmpty();
     }
 
     @Override
     protected void invalidate()
     {
-        // todo: mixin
-        // this is forge added so we can't AT it.
-        // even though forge *literally doesn't use it* though *technically it could cause a bug* but do I care? nah.
-        // delegate.invalidate(); // ((IngredientAccessor) delegate).invoke$invalidate();
+        cachedItemStacks = null;
+        stackingIds = null;
     }
 
     @Override
     public boolean isSimple()
     {
-        return delegate == null || delegate.isSimple();
+        return delegate != null && delegate.isSimple();
     }
 
     @Override
-    public abstract IIngredientSerializer<? extends Ingredient> getSerializer();
+    public abstract IIngredientSerializer<? extends DelegateIngredient> getSerializer();
+
+    protected ItemStack[] getDefaultItems()
+    {
+        return ForgeRegistries.ITEMS.getValues()
+            .stream()
+            .map(item -> {
+                final ItemStack stack = new ItemStack(item);
+                return testDefaultItem(stack);
+            })
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
+    }
+
+    @Nullable
+    protected ItemStack testDefaultItem(ItemStack stack)
+    {
+        return stack;
+    }
 }

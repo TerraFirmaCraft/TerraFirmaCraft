@@ -7,14 +7,12 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,19 +22,24 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
-public class LogBlock extends RotatedPillarBlock
+public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
 {
     public static final BooleanProperty NATURAL = TFCBlockStateProperties.NATURAL;
 
     @Nullable private final Supplier<? extends Block> stripped;
+    private final ExtendedProperties properties;
 
-    public LogBlock(Properties properties, @Nullable Supplier<? extends Block> stripped)
+    public LogBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> stripped)
     {
-        super(properties);
+        super(properties.properties());
         this.stripped = stripped;
+        this.properties = properties;
 
         registerDefaultState(defaultBlockState().setValue(NATURAL, false));
     }
@@ -58,6 +61,12 @@ public class LogBlock extends RotatedPillarBlock
     }
 
     @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder.add(NATURAL));
@@ -65,9 +74,9 @@ public class LogBlock extends RotatedPillarBlock
 
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction action)
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate)
     {
-        if (stack.canPerformAction(action) && action == ToolActions.AXE_STRIP && stripped != null)
+        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.AXE_STRIP && stripped != null)
         {
             return Helpers.copyProperties(stripped.get().defaultBlockState(), state);
         }

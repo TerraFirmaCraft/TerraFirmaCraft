@@ -54,17 +54,17 @@ public enum RockCategory implements StringRepresentable
 
     public enum ItemType
     {
-        AXE(rock -> new AxeItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.getTier()), -3.2F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        AXE(rock -> new AxeItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.getTier()), -3.2F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         AXE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HAMMER(rock -> new ToolItem(rock.getTier(), 1.0F, -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        HAMMER(rock -> new ToolItem(rock.getTier(), 1.0F, -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         HAMMER_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HOE(rock -> new HoeItem(rock.getTier(), -1, -3.0f, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        HOE(rock -> new HoeItem(rock.getTier(), -1, -3.0f, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         HOE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        JAVELIN(rock -> new JavelinItem(rock.getTier(), 0.7F, -1.8F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        JAVELIN(rock -> new JavelinItem(rock.getTier(), 0.7F, -1.8F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         JAVELIN_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        KNIFE(rock -> new ToolItem(rock.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        KNIFE(rock -> new ToolItem(rock.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         KNIFE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        SHOVEL(rock -> new ShovelItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.getTier()), -3.0F, new Item.Properties().tab(CreativeModeTab.TAB_TOOLS))),
+        SHOVEL(rock -> new ShovelItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.getTier()), -3.0F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         SHOVEL_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS)));
 
         private final NonNullFunction<RockCategory, Item> itemFactory;

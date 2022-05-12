@@ -5,7 +5,12 @@
     "item": "tfc:food/bluegill"
   },
   "result_item": {
-    "item": "tfc:food/cooked_bluegill"
+    "stack": {
+      "item": "tfc:food/cooked_bluegill"
+    },
+    "modifiers": [
+      "tfc:reset_decay"
+    ]
   },
   "temperature": 200
 }

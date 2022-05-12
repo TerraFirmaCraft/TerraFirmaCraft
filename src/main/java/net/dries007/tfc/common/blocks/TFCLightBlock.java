@@ -129,7 +129,7 @@ public class TFCLightBlock extends Block implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState faceState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        FluidHelpers.tickFluid(level, currentPos, state, this);
+        FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, facing, faceState, level, currentPos, facingPos);
     }
 

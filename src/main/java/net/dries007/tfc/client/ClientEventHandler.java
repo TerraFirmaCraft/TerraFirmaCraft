@@ -20,8 +20,8 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.SquidModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -35,7 +35,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.FishingRodItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
@@ -45,16 +46,14 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.dries007.tfc.client.model.*;
+import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.entity.*;
-import net.dries007.tfc.client.particle.BubbleParticle;
-import net.dries007.tfc.client.particle.SteamParticle;
-import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.blockentity.*;
+import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.ItemPropertyProviderBlock;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
@@ -99,6 +98,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
             MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
             MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
+
             MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
             MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
             MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
@@ -107,6 +107,9 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
             MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
             MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
+            MenuScreens.register(TFCContainerTypes.ANVIL.get(), AnvilScreen::new);
+            MenuScreens.register(TFCContainerTypes.ANVIL_PLAN.get(), AnvilPlanScreen::new);
+
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
@@ -146,14 +149,14 @@ public final class ClientEventHandler
                         return 1F;
                     });
 
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("rock"), (stack, level, entity, unused) -> {
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ROCK_PROPERTY.id(), (stack, level, entity, unused) -> {
                         final BlockState state = PanItem.readState(stack);
-                        return state != null ? OreDeposit.rockValue(state) : 0F;
+                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ROCK_PROPERTY) : 0f;
                     });
 
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("ore"), (stack, level, entity, unused) -> {
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ORE_PROPERTY.id(), (stack, level, entity, unused) -> {
                         final BlockState state = PanItem.readState(stack);
-                        return state != null ? OreDeposit.oreValue(state) : 0F;
+                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ORE_PROPERTY) : 0F;
                     });
 
                     ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
@@ -174,6 +177,7 @@ public final class ClientEventHandler
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
+        ClientRegistry.registerKeyBinding(TFCKeyBindings.CYCLE_CHISEL_MODE);
 
         // Render Types
         final RenderType solid = RenderType.solid();
@@ -236,10 +240,11 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.DEAD_WALL_TORCH.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), cutout);
         TFCBlocks.STAINED_WATTLE.values().forEach(wattle -> ItemBlockRenderTypes.setRenderLayer(wattle.get(), cutout));
-        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.UNSTAINED_WATTLE.get(), cutout);
 
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICE_PILE.get(), translucent);
 
         // Fluids
@@ -311,6 +316,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.SIGN.get(), TFCSignBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.BARREL.get(), ctx -> new BarrelBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CRUCIBLE.get(), ctx -> new CrucibleBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.ANVIL.get(), ctx -> new AnvilBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -417,6 +423,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
+        particleEngine.register(TFCParticles.LEAF.get(), LeafParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

@@ -105,6 +105,8 @@ public final class TFCItems
     public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food -> register("food/" + food.name(), () -> new DecayingItem(new Item.Properties().food(food.getFoodProperties()).tab(TFCItemGroup.FOOD))));
 
     public static final Map<Nutrient, RegistryObject<SoupItem>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient -> register("food/" + nutrient.name() + "_soup", () -> new SoupItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
+    public static final Map<Grain, RegistryObject<Item>> SANDWICHES = Helpers.mapOfKeys(Grain.class, grain -> register("food/" + grain.name() + "_bread_sandwich", () -> new SandwichItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
+
 
     // Flora
 
@@ -160,6 +162,9 @@ public final class TFCItems
     public static final RegistryObject<Item> HANDSTONE = register("handstone", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(250)));
     public static final RegistryObject<Item> MORTAR = register("mortar", MISC);
     public static final RegistryObject<Item> OLIVE_PASTE = register("olive_paste", MISC);
+    public static final RegistryObject<Item> PURE_NITROGEN = register("pure_nitrogen", MISC);
+    public static final RegistryObject<Item> PURE_PHOSPHORUS = register("pure_phosphorus", MISC);
+    public static final RegistryObject<Item> PURE_POTASSIUM = register("pure_potassium", MISC);
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> SHELL = register("shell", MISC);
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);
@@ -172,6 +177,9 @@ public final class TFCItems
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
     public static final RegistryObject<Item> WROUGHT_IRON_GRILL = register("wrought_iron_grill", MISC);
+    public static final RegistryObject<Item> RAW_IRON_BLOOM = register("raw_iron_bloom", MISC);
+    public static final RegistryObject<Item> REFINED_IRON_BLOOM = register("refined_iron_bloom", MISC);
+
 
     public static final RegistryObject<Item> EMPTY_PAN = register("pan/empty", () -> new EmptyPanItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> FILLED_PAN = register("pan/filled", () -> new PanItem(new Item.Properties().tab(MISC).stacksTo(1)));

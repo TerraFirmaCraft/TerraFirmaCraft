@@ -27,6 +27,8 @@
       "tfc:flood_fill_lake"
     ],
     [
+      "tfc:surface_ore_deposits",
+      "tfc:deep_ore_deposits",
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc"
