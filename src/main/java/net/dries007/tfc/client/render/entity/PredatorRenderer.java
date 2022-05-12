@@ -15,6 +15,7 @@ import net.dries007.tfc.client.model.entity.CougarModel;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -33,7 +34,7 @@ public class PredatorRenderer<T extends Mob, M extends EntityModel<T>> extends M
     public PredatorRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow)
     {
         super(ctx, model, shadow);
-        texture = RenderHelpers.animalTexture(name);
+        texture = Helpers.animalTexture(name);
     }
 
     @Override
