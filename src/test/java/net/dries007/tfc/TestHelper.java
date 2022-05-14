@@ -156,6 +156,7 @@ public class TestHelper
         assertEquals(expected.getClass(), actual.getClass());
         assertEquals(expected.getSerializer(), actual.getSerializer());
         assertEquals(expected.toJson(), actual.toJson());
+        fail("oops");
 
         final ItemStack[] expectedItems = expected.getItems(), actualItems = actual.getItems();
         assertEquals(expectedItems.length, actualItems.length);

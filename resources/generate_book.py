@@ -16,8 +16,9 @@ class Warnings:
 
 def main():
     for target, show_warnings in (
-        ('../src/main/resources', True),
-        ('../out/production/resources', False)
+        # ('../src/main/resources', True),
+        ('../book_datapack/', True),
+        # ('../out/production/resources', False)
     ):
         Warnings.enabled = show_warnings
         rm = ResourceManager('tfc', resource_dir=target)
@@ -44,16 +45,69 @@ def make_book(rm: ResourceManager):
     All the documentation on entry(), category(), all the book page functions, are copied from the Patchouli documentation, found here:
     https://vazkiimods.github.io/Patchouli/docs/reference/overview
     """
-    book = Book(rm, 'field_guide')
+    book = Book(rm, 'book')
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('a_first_look', 'A First Look', 'tfc:grass/loam', pages=(
-            text('At first glance, the world of TerraFirmaCraft might seem like vanilla Minecraft, but don\'t let that fool you, nearly everything has changed, from the blocks on the ground. On the surface, you might find one of many different biomes, find yourself in one of many different climates, each with their own flora, fauna, and other decoration. Everything from the grass under your feet to the leaves on the trees to the ores in the ground has changed.'),
+            text('At first glance, the world of TerraFirmaCraft might seem like vanilla Minecraft, but don\'t let that fool you, nearly everything has changed. On the surface, you might find one of many different biomes, find yourself in one of many different climates, each with their own flora, fauna, and other decoration. Everything from the grass under your feet to the leaves on the trees to the ores in the ground has changed.'),
             text('First, the dirt and grass under your feet might be one of a few different types of soil. Sand, loam, silt, or some in-between shades might appear based on the climate or biome of the region. In addition to normal dirt and grass, clay dirt and clay grass will also be scattered around the world, in addition to peat soil and peat grass in specific $(thing)climates$().'),
             text('Most of the blocks under your feet are also affected by some form of $(thing)gravity$(). Dirt, gravel, sand, and other loose soils will not only fall downwards, but they will fall down slopes if they are stacked too tall without support. Harder materials such as raw stone does not collapse immediately, but be wary of mining in unsupported areas, as raw stone can collapse with destructive force, putting any careless miner\'s life in danger'),
             text('On top of the dirt and grass, you can find over one hundred different plants, from the $(thing)athyrium fern$() to the $(thing)yucca$(). Some of these plants serve as special indicators of different resources, and can indicate the presence of clay, or fresh water nearby. Others can be used for decoration, or dyes. And almost all plants can be harvested for straw, which has many uses.'),
             text('Perhaps most importantly in TerraFirmaCraft, is to look up to the sky. The natural world has a climate, and a yearly calendar. New worlds are created in June, but as the winter months approach, the temperature will gradually drop, the weather will get colder and snowier, and plants will die or retreat until next spring, when they will start flowering again. However, in addition to the seasons passing, different regions have different climates based on their latitude and longitude. This affects the average $(thing)temperature$() and $(thing)rainfall$() of an area, which will affect what flora and fauna is found there.')
         )),
+        entry('biomes', 'Biomes', '', pages=(
+            # Overview of biomes and what they are, and what they affect
+            # Rough overview of how biomes spawn in terms of where to find them
+            # Previews of most/all biomes in a showcase mode
+            text('The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found.'),
+            text('The next few pages show a few (but not all) of the biomes that you might find in the world.'),
+            text('Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or ', title='Plains'),
+            text('Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween', title='Badlands'),
+            image('textures/gui/book/biomes/badlands.png', text_contents='A badlands')
+        )),
+        entry('waterways', 'Where the River Flows', '', pages=(
+            # Overview of rivers, oceans, and lakes
+            # Minor mention of underground rivers and lakes
+            # Resources found in rivers + lakes: ore deposits and other gem ores
+        )),
+        entry('geology', 'Geology', '', pages=(
+            # Minor intro to plate tectonics
+            # Explanation of volcanoes with pictures and how to find them, and what resources they hold in fissures
+            # Hot springs, empty hot springs, and what resources they hold
+        )),
+        entry('the_underground', 'The Underground', '', pages=(
+            # Overview of rock layers, including what rock layers appear at what altitudes
+            # Brief introduction to the fact ores are rock layer specific
+            # Some info about caves, possible things to find in caves
+        )),
+        entry('ores_and_minerals', 'Ores and Minerals', '', pages=(
+            # Overview of all underground ores
+            # General spawning patterns of ores (deeper = richer)
+            # Indicators
+            # A decent list / showcase of most/all ores and their spawning conditions
+        )),
+        entry('climate', 'Climate', '', pages=(
+            # Overview of both temperature and rainfall and where they spawn on X/Z
+            # How to check current temperature, rainfall, and climate
+            # What affects current temperature
+            # What temperature can affect - mainly direct stuff like snow, ice, icicles, etc.
+        )),
+        entry('flora', 'Flora', '', pages=(
+            # Overview of various plants
+            # Mention some usages (dyes)
+        )),
+        entry('wild_crops', 'Wild Crops', '', pages=(
+            # Wild crops - how to find them, why you'd want to, what they drop
+        )),
+        entry('berry_bushes', 'Berry Bushes', '', pages=(
+            # Berry bushes - how to find them, how to harvest and move them
+        )),
+        entry('fruit_trees', 'Fruit Trees', '', pages=(
+            # Fruit trees - how to find them, how to harvest and move them
+        )),
+        entry('wild_animals', 'Wild Animals', '', pages=(
+            # Wild animals - address both hostile and passive important animals
+        ))
     ))
 
 
@@ -112,7 +166,7 @@ class Book:
         for i, e in enumerate(entries):
             self.rm.data(('patchouli_books', self.root_name, 'en_us', 'entries', e.entry_id), {
                 'name': e.name,
-                'category': category_id,
+                'category': category_id.replace('tfc:', 'patchouli:'),
                 'icon': e.icon,
                 'pages': [{
                     'type': page.type,

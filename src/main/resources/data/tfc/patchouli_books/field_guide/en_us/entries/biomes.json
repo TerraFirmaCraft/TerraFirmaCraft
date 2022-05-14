@@ -1,0 +1,26 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Biomes",
+  "category": "tfc:the_world",
+  "icon": "",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Biomes appear in specific patterns based on the underlying plate tectonics which shape the world. The world is divided up into two main regions: continental, and oceanic. In continental regions, many biomes may appear depending on the elevation, and the type of continental area. In an oceanic region, oceans of varying depth appear but also volcanic islands or mountain chains. Areas near plate tectonic boundaries are generally more volcanic, and contain different biomes. At any time, open the inventory and click on the climate tab to see the current region you are in.",
+      "title": "Locating Biomes"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "textures/gui/book/biomes/badlands.png"
+      ],
+      "text": "Badlands: Mid elevation with sand and sandstone layers through it.",
+      "border": true
+    }
+  ],
+  "sortnum": 1
+}

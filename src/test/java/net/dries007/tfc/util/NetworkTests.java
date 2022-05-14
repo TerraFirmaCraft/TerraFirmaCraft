@@ -18,7 +18,8 @@ import net.dries007.tfc.common.recipes.ingredients.*;
 import net.dries007.tfc.common.recipes.outputs.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for various network round-trip encoding and decoding cycles
@@ -151,8 +152,7 @@ public class NetworkTests extends TestHelper
         final ItemStackProvider before = ItemStackProvider.of(new ItemStack(Items.GREEN_BANNER, 3), EmptyBowlModifier.INSTANCE, CopyHeatModifier.INSTANCE, new AddHeatModifier(32));
         final ItemStackProvider after = encodeAndDecode(before, ItemStackProvider::toNetwork, ItemStackProvider::fromNetwork);
 
-        assertEquals(before.stack().getItem(), after.stack().getItem());
-        assertEquals(before.stack().getCount(), after.stack().getCount());
+        assertItemStackEquals(before.stack(), after.stack());
         assertArrayEquals(before.modifiers(), after.modifiers());
     }
 }

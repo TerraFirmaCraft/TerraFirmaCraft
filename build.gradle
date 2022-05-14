@@ -225,7 +225,7 @@ jar {
     manifest {
         attributes ([
                 "Implementation-Version": "${project.version}",
-                "MixinConfigs": "${mod_id}.mixins.json"
+                "MixinConfigs"          : "${mod_id}.mixins.json"
         ])
     }
 }
@@ -233,4 +233,12 @@ jar {
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
     add sourceSets.test, "${mod_id}.refmap.json"
+}
+
+task makeTestDataPack(type: Exec) {
+    workingDir "${projectDir}/book_datapack"
+    commandLine 'jar', '-cMf', '../book_assets.zip', 'pack.mcmeta', 'assets'
+    doLast {
+        println "Executed!"
+    }
 }
