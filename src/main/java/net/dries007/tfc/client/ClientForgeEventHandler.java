@@ -59,7 +59,6 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
@@ -84,7 +83,11 @@ import static net.minecraft.ChatFormatting.*;
 
 public class ClientForgeEventHandler
 {
-    private static final Field CAP_NBT_FIELD = Helpers.findUnobfField(ItemStack.class, "capNBT");
+    private static final Field CAP_NBT_FIELD = Helpers.uncheck(() -> {
+        final Field field = ItemStack.class.getDeclaredField("capNBT");
+        field.setAccessible(true);
+        return field;
+    });
 
     public static void init()
     {
@@ -163,6 +166,7 @@ public class ClientForgeEventHandler
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         final ItemStack stack = event.getItemStack();

@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.function.*;
@@ -79,7 +78,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -342,25 +340,6 @@ public final class Helpers
     public static void removeBlock(LevelAccessor level, BlockPos pos, int flags)
     {
         level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
-    }
-
-    /**
-     * Set a {@code stack}'s count to {@code count}, after respecting both the slot stack limit, and the stack's max stack size.
-     * Returns the difference between the count that was attempted to set, and the actual count set.
-     */
-    public static int setCountSafely(ItemStack stack, int count, int slotStackLimit)
-    {
-        final int initialCount = count;
-        if (count > slotStackLimit)
-        {
-            count = slotStackLimit;
-        }
-        if (count > stack.getMaxStackSize())
-        {
-            count = stack.getMaxStackSize();
-        }
-        stack.setCount(count);
-        return initialCount - count;
     }
 
     /**
@@ -709,14 +688,6 @@ public final class Helpers
     }
 
     /**
-     * You know this will work, and I know this will work, but this compiler looks pretty stupid.
-     */
-    public static <E> E resolveEither(Either<E, E> either)
-    {
-        return either.map(e -> e, e -> e);
-    }
-
-    /**
      * @see net.minecraft.core.QuartPos#toBlock(int)
      */
     public static BlockPos quartToBlock(int x, int y, int z)
@@ -784,32 +755,9 @@ public final class Helpers
         return Objects.requireNonNull(registry.tags()).getTag(tag).stream().toList();
     }
 
-    public static Field findUnobfField(Class<?> clazz, String fieldName)
-    {
-        try
-        {
-            final Field field = clazz.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return field;
-        }
-        catch (NoSuchFieldException e)
-        {
-            throw new RuntimeException("Missing field: " + clazz.getSimpleName() + "." + fieldName, e);
-        }
-    }
-
-    public static void uncheck(ThrowingRunnable action)
-    {
-        uncheck(() -> {
-            action.run();
-            return null;
-        });
-    }
-
     /**
      * For when you want to ignore every possible safety measure in front of you
      */
-    @Nullable
     @SuppressWarnings("unchecked")
     public static <T> T uncheck(Callable<?> action)
     {
@@ -1193,10 +1141,5 @@ public final class Helpers
 
         @SuppressWarnings("ConstantConditions")
         private ItemProtectedAccessor() { super(null); } // Never called
-    }
-
-    interface ThrowingRunnable
-    {
-        void run() throws Exception;
     }
 }
