@@ -812,9 +812,10 @@ public final class ForgeEventHandler
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
+        if (event.getPlayer() instanceof ServerPlayer player)
         {
             TFCFoodData.replaceFoodStats(event.getPlayer());
+            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
         }
     }
 
@@ -1005,6 +1006,7 @@ public final class ForgeEventHandler
 
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event)
     {
+        // todo: this does not work on SMP
         FoodCapability.updateFoodDecayOnCreate(event.getCrafting());
     }
 

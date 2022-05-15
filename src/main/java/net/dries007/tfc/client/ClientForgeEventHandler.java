@@ -59,7 +59,6 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
@@ -347,13 +346,11 @@ public class ClientForgeEventHandler
             BlockState stateAt = level.getBlockState(lookingAt);
             Block blockAt = stateAt.getBlock();
 
-            BlockState chiseled = ChiselRecipe.computeResultWithEvent(player, stateAt, hit);
-            if (chiseled != null)
-            {
+            ChiselRecipe.computeResult(player, stateAt, hit, false).ifLeft(chiseled -> {
                 IHighlightHandler.drawBox(poseStack, chiseled.getShape(level, pos), event.getMultiBufferSource(), pos, camera.getPosition(), 1f, 0f, 0f, 0.4f);
                 event.setCanceled(true);
-            }
-            else if (blockAt instanceof IHighlightHandler handler)
+            });
+            if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
                 if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))

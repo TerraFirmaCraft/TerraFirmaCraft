@@ -906,6 +906,9 @@ DEFAULT_LANG = {
     'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
     'tfc.composter.too_many_greens': 'This composter has enough green items',
     'tfc.composter.too_many_browns': 'This composter has enough brown items',
+    'tfc.chisel.cannot_place': 'The chiseled version of this block cannot exist here',
+    'tfc.chisel.no_recipe': 'This block cannot be chiseled',
+    'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',
 
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 
