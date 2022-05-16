@@ -272,6 +272,104 @@
       "tfc:alpacadeath1"
     ]
   },
+  "animal.predator.sleep": {
+    "subtitle": "tfc.animal.predator.sleep",
+    "sounds": [
+      {
+        "name": "minecraft:mob/fox/sleep1",
+        "pitch": 0.5
+      }
+    ]
+  },
+  "animal.cougar.death": {
+    "subtitle": "tfc.animal.cougar.death",
+    "sounds": [
+      "tfc:cougardeath1"
+    ]
+  },
+  "animal.cougar.attack": {
+    "subtitle": "tfc.animal.cougar.attack",
+    "sounds": [
+      "tfc:cougarattack1"
+    ]
+  },
+  "animal.cougar.hurt": {
+    "subtitle": "tfc.animal.cougar.hurt",
+    "sounds": [
+      "tfc:cougarhurt1",
+      "tfc:cougarhurt2",
+      "tfc:cougarcry1"
+    ]
+  },
+  "animal.cougar.ambient": {
+    "subtitle": "tfc.animal.cougar.ambient",
+    "sounds": [
+      "tfc:cougarsay1",
+      "tfc:cougarsay2",
+      "tfc:cougarsay3"
+    ]
+  },
+  "animal.lion.ambient": {
+    "subtitle": "tfc.animal.lion.ambient",
+    "sounds": [
+      {
+        "name": "tfc:lionambient",
+        "weight": 9
+      },
+      {
+        "name": "tfc:lionroarlong",
+        "weight": 1
+      }
+    ]
+  },
+  "animal.lion.attack": {
+    "subtitle": "tfc.animal.lion.attack",
+    "sounds": [
+      "tfc:lionroarshort"
+    ]
+  },
+  "animal.lion.death": {
+    "subtitle": "tfc.animal.lion.death",
+    "sounds": [
+      "tfc:liondeath"
+    ]
+  },
+  "animal.lion.hurt": {
+    "subtitle": "tfc.animal.lion.hurt",
+    "sounds": [
+      "tfc:lionhurt1",
+      "tfc:lionhurt2"
+    ]
+  },
+  "animal.sabertooth.ambient": {
+    "subtitle": "tfc.animal.sabertooth.ambient",
+    "sounds": [
+      "tfc:sabertooth1",
+      "tfc:sabertooth2",
+      "tfc:sabertooth3"
+    ]
+  },
+  "animal.sabertooth.attack": {
+    "subtitle": "tfc.animal.sabertooth.attack",
+    "sounds": [
+      "tfc:sabertoothcry1",
+      "tfc:sabertoothcry2"
+    ]
+  },
+  "animal.sabertooth.death": {
+    "subtitle": "tfc.animal.sabertooth.death",
+    "sounds": [
+      "tfc:sabertoothdeath1"
+    ]
+  },
+  "animal.sabertooth.hurt": {
+    "subtitle": "tfc.animal.sabertooth.hurt",
+    "sounds": [
+      "tfc:sabertoothhurt1",
+      "tfc:sabertoothhurt2"
+    ]
+  },
+
   "charcoal_break": {
     "sounds": [
       {
