@@ -317,6 +317,15 @@ public class VesselItem extends Item
             return result;
         }
 
+        @Override
+        public CompoundTag serializeNBT()
+        {
+            return new CompoundTag(); // Unused since we serialize directly to stack tag
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag nbt) {}
+
         /**
          * Updates the heat capacity.
          * When in inventory mode, the heat capacity will be the weighted average of the contents, based on stack size.
@@ -375,9 +384,9 @@ public class VesselItem extends Item
                         if (!outputStack.isEmpty())
                         {
                             // Multiply the contents by the inventory count, since heat recipes only apply to single stack sizes
-                            stack.setCount(Math.min(
+                            outputStack.setCount(Math.min(
                                 outputStack.getCount() * stack.getCount(),
-                                Math.min(stack.getMaxStackSize(), getSlotStackLimit(i))
+                                Math.min(outputStack.getMaxStackSize(), getSlotStackLimit(i))
                             ));
                         }
 

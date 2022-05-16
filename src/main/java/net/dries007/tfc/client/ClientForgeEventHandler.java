@@ -221,13 +221,6 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.getOutputFluid(wrapper);
                 if (!fluid.isEmpty())
                 {
-                    stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-                        if (cap.getTemperature() > 0.9 * recipe.getTemperature())
-                        {
-                            text.add(new TranslatableComponent("tfc.tooltip.danger"));
-                        }
-                    });
-
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {

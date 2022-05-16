@@ -5,12 +5,7 @@
     "item": "tfc:food/pheasant"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_pheasant"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_pheasant"
   },
   "temperature": 200
 }

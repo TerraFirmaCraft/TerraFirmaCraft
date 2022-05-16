@@ -5,12 +5,7 @@
     "item": "tfc:food/chevon"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_chevon"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_chevon"
   },
   "temperature": 200
 }

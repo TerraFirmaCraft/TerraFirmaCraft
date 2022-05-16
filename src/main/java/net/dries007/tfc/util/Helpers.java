@@ -269,7 +269,6 @@ public final class Helpers
         return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) recipeManager).invoke$byType(type.get());
     }
 
-    @Nullable
     public static RecipeManager getUnsafeRecipeManager()
     {
         final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
@@ -297,8 +296,7 @@ public final class Helpers
             return CACHED_RECIPE_MANAGER;
         }
 
-        LOGGER.error("No recipe manager was present - tried server, client, and captured value. This will cause problems!", new RuntimeException("Stacktrace"));
-        return null;
+        throw new IllegalStateException("No recipe manager was present - tried server, client, and captured value. This will cause problems!");
     }
 
     public static void setCachedRecipeManager(RecipeManager manager)

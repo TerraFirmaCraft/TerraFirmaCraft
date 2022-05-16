@@ -286,6 +286,15 @@ public class MoldItem extends Item
             return false;
         }
 
+        @Override
+        public CompoundTag serializeNBT()
+        {
+            return new CompoundTag(); // Unused since we serialize directly to stack tag
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag nbt) {}
+
         /**
          * @see VesselItem.VesselCapability#load()
          */

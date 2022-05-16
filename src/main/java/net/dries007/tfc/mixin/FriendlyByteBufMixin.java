@@ -9,7 +9,7 @@ package net.dries007.tfc.mixin;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.capabilities.sync.SyncableCapability;
+import net.dries007.tfc.common.capabilities.ItemStackCapabilitySync;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * Implement syncable item stack capabilities and fix issues with the creative menu
  *
- * @see net.dries007.tfc.common.capabilities.sync.ISyncable
+ * @see ItemStackCapabilitySync
  */
 @Mixin(FriendlyByteBuf.class)
 public abstract class FriendlyByteBufMixin
@@ -28,7 +28,7 @@ public abstract class FriendlyByteBufMixin
     {
         if (!stack.isEmpty())
         {
-            SyncableCapability.writeNetworkTag(stack, (FriendlyByteBuf) (Object) this);
+            ItemStackCapabilitySync.writeToNetwork(stack, (FriendlyByteBuf) (Object) this);
         }
     }
 
@@ -38,7 +38,7 @@ public abstract class FriendlyByteBufMixin
         final ItemStack stack = cir.getReturnValue();
         if (!stack.isEmpty())
         {
-            SyncableCapability.readNetworkTag(stack, (FriendlyByteBuf) (Object) this);
+            ItemStackCapabilitySync.readFromNetwork(stack, (FriendlyByteBuf) (Object) this);
         }
     }
 }

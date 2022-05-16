@@ -5,12 +5,7 @@
     "item": "tfc:food/wheat_dough"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/wheat_bread"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/wheat_bread"
   },
   "temperature": 200
 }

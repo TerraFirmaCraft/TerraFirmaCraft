@@ -5,12 +5,7 @@
     "item": "tfc:food/rice_dough"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/rice_bread"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/rice_bread"
   },
   "temperature": 200
 }

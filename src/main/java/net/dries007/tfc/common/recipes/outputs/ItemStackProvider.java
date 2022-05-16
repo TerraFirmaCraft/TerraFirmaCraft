@@ -12,6 +12,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.VisibleForTesting;
 
@@ -91,6 +92,8 @@ public final class ItemStackProvider
     {
         this.stack = stack;
         this.modifiers = modifiers;
+
+        FoodCapability.setStackNonDecaying(stack);
     }
 
     public ItemStack getStack(ItemStack input)

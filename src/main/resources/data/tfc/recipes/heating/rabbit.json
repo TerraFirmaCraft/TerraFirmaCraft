@@ -5,12 +5,7 @@
     "item": "tfc:food/rabbit"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_rabbit"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_rabbit"
   },
   "temperature": 200
 }

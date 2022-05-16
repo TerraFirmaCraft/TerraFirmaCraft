@@ -5,12 +5,7 @@
     "item": "tfc:food/maize_dough"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/maize_bread"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/maize_bread"
   },
   "temperature": 200
 }

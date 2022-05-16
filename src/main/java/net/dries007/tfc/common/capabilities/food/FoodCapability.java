@@ -7,8 +7,10 @@
 package net.dries007.tfc.common.capabilities.food;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -18,6 +20,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.SyncReloadListener;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -124,8 +127,16 @@ public final class FoodCapability
     @SuppressWarnings("unused")
     public static ItemStack updateFoodDecayOnCreate(ItemStack stack)
     {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(Calendars.SERVER.getTicks()));
+        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(Calendars.get().getTicks()));
         return stack;
+    }
+
+    public static void setCreativeTabsNonDecaying()
+    {
+        for (CreativeModeTab tab : CreativeModeTab.TABS)
+        {
+            setStackNonDecaying(tab.getIconItem());
+        }
     }
 
     public static ItemStack setStackNonDecaying(ItemStack stack)
@@ -179,7 +190,7 @@ public final class FoodCapability
         // This is a nice way of checking if two stacks are stackable, ignoring the creation date: copy both stacks, give them the same creation date, then check compatibility
         // This will also not stack stacks which have different traits, which is intended
         final ItemStack stack1Copy = stack1.copy(), stack2Copy = stack2.copy();
-        final long date = Calendars.SERVER.getTicks();
+        final long date = Calendars.get().getTicks();
         stack1Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(date));
         stack2Copy.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(date));
         return ItemHandlerHelper.canItemStacksStack(stack1Copy, stack2Copy);
@@ -191,7 +202,7 @@ public final class FoodCapability
     public static long getRoundedCreationDate()
     {
         final int window = TFCConfig.SERVER.foodDecayStackWindow.get();
-        return (Calendars.SERVER.getTotalHours() / window) * ICalendar.TICKS_IN_HOUR * window;
+        return (Calendars.get().getTotalHours() / window) * ICalendar.TICKS_IN_HOUR * window;
     }
 
     /**
@@ -219,8 +230,22 @@ public final class FoodCapability
     private static long calculateNewCreationDate(long ci, float p)
     {
         // Cf = (1 - p) * T + p * Ci
-        return (long) ((1 - p) * Calendars.SERVER.getTicks() + p * ci);
+        return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);
     }
 
     public static class Packet extends DataManagerSyncPacket<FoodDefinition> {}
+
+    public enum DecayingItemStackFixer implements SyncReloadListener
+    {
+        INSTANCE;
+
+        @Override
+        public void reloadSync()
+        {
+            for (Recipe<?> recipe : Helpers.getUnsafeRecipeManager().getRecipes())
+            {
+                FoodCapability.setStackNonDecaying(recipe.getResultItem());
+            }
+        }
+    }
 }

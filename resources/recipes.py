@@ -388,8 +388,8 @@ def generate(rm: ResourceManager):
     quern_recipe(rm, 'sylvite', 'tfc:ore/sylvite', 'tfc:powder/sylvite', count=4)
 
     for grain in GRAINS:
-        heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item=item_stack_provider('tfc:food/%s_bread' % grain, reset_decay=True))
-        quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, item_stack_provider('tfc:food/%s_flour' % grain, reset_decay=True))
+        heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item=item_stack_provider('tfc:food/%s_bread' % grain))
+        quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, item_stack_provider('tfc:food/%s_flour' % grain))
         res = utils.resource_location(rm.domain, grain + '_cutting')
         rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', 'crafting', res.path), {
             'type': 'tfc:extra_products_shapeless_crafting',
@@ -407,10 +407,10 @@ def generate(rm: ResourceManager):
         damage_shaped(rm, 'crafting/%s_sandwich' % grain, ['ZX ', 'YYY', ' X '], {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}, (2, 'tfc:food/%s_bread_sandwich' % grain), recipe_type='tfc:sandwich_crafting').with_advancement('tfc:food/%s_bread' % grain)
 
     for meat in MEATS:
-        heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item=item_stack_provider('tfc:food/cooked_%s' % meat, reset_decay=True))
+        heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item=item_stack_provider('tfc:food/cooked_%s' % meat))
 
-    heat_recipe(rm, 'seaweed', 'tfc:groundcover/seaweed', 200, item_stack_provider('tfc:food/dried_seaweed', reset_decay=True))
-    heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, item_stack_provider('tfc:food/dried_kelp', reset_decay=True))
+    heat_recipe(rm, 'seaweed', 'tfc:groundcover/seaweed', 200, item_stack_provider('tfc:food/dried_seaweed'))
+    heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, item_stack_provider('tfc:food/dried_kelp'))
 
     for ore in ['hematite', 'limonite', 'malachite']:
         for grade, data in ORE_GRADES.items():
@@ -591,7 +591,7 @@ def generate(rm: ResourceManager):
 
     barrel_sealed_recipe(rm, 'mortar', 'Mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
     barrel_sealed_recipe(rm, 'curdling', 'Curdling Milk', 8000, input_fluid='1 tfc:milk_vinegar', output_fluid='1 tfc:curdled_milk')
-    barrel_sealed_recipe(rm, 'cheese', 'Cheese', 8000, input_fluid='625 tfc:curdled_milk', output_item=item_stack_provider('2 tfc:food/cheese', reset_decay=True))
+    barrel_sealed_recipe(rm, 'cheese', 'Cheese', 8000, input_fluid='625 tfc:curdled_milk', output_item=item_stack_provider('2 tfc:food/cheese'))
     barrel_sealed_recipe(rm, 'raw_alabaster', 'Raw Alabaster', 1000, 'tfc:ore/gypsum', '100 tfc:limewater', output_item='tfc:alabaster/raw/alabaster')
     barrel_sealed_recipe(rm, 'clean_jute_net', 'Cleaning Jute Net', 1000, 'tfc:dirty_jute_net', '125 minecraft:water', output_item='tfc:jute_net')
 
@@ -1005,7 +1005,7 @@ def fluid_item_ingredient(fluid: Json, delegate: Json = None):
     }
 
 
-def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_decay: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None, empty_bowl: bool = False, copy_forging: bool = False) -> Json:
+def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None, empty_bowl: bool = False, copy_forging: bool = False) -> Json:
     if isinstance(data_in, dict):
         return data_in
     stack = utils.item_stack(data_in) if data_in is not None else None
@@ -1013,7 +1013,6 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
         ('tfc:copy_input', copy_input),
         ('tfc:copy_heat', copy_heat),
         ('tfc:copy_food', copy_food),
-        ('tfc:reset_decay', reset_decay),
         ('tfc:reset_food', reset_food),
         ('tfc:empty_bowl', empty_bowl),
         ('tfc:copy_forging_bonus', copy_forging),

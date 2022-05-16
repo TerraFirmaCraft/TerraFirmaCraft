@@ -5,12 +5,7 @@
     "item": "tfc:food/duck"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_duck"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_duck"
   },
   "temperature": 200
 }

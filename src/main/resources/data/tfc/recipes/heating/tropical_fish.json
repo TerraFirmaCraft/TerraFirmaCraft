@@ -5,12 +5,7 @@
     "item": "tfc:food/tropical_fish"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_tropical_fish"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_tropical_fish"
   },
   "temperature": 200
 }

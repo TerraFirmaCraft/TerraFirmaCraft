@@ -5,11 +5,6 @@
     "item": "tfc:food/oat_grain"
   },
   "result": {
-    "stack": {
-      "item": "tfc:food/oat_flour"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/oat_flour"
   }
 }

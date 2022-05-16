@@ -5,11 +5,6 @@
     "item": "tfc:food/wheat_grain"
   },
   "result": {
-    "stack": {
-      "item": "tfc:food/wheat_flour"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/wheat_flour"
   }
 }

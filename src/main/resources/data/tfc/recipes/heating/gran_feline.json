@@ -5,12 +5,7 @@
     "item": "tfc:food/gran_feline"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_gran_feline"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_gran_feline"
   },
   "temperature": 200
 }

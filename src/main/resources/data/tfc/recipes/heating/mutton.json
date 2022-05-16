@@ -5,12 +5,7 @@
     "item": "tfc:food/mutton"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_mutton"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_mutton"
   },
   "temperature": 200
 }

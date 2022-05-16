@@ -60,11 +60,6 @@ public class AnvilPlanSelectButton extends Button
 
             blit(poseStack, x, y, 176, 0, width, height, 256, 256);
             Minecraft.getInstance().getItemRenderer().renderAndDecorateItem(result, x + 1, y + 1);
-
-            if (isHoveredOrFocused())
-            {
-                renderToolTip(poseStack, mouseX, mouseY);
-            }
         }
     }
 }

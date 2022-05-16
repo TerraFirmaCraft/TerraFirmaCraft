@@ -5,12 +5,7 @@
     "item": "tfc:food/rye_dough"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/rye_bread"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/rye_bread"
   },
   "temperature": 200
 }

@@ -5,12 +5,7 @@
     "item": "tfc:food/hyena"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_hyena"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_hyena"
   },
   "temperature": 200
 }

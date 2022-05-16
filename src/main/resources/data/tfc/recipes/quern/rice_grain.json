@@ -5,11 +5,6 @@
     "item": "tfc:food/rice_grain"
   },
   "result": {
-    "stack": {
-      "item": "tfc:food/rice_flour"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/rice_flour"
   }
 }

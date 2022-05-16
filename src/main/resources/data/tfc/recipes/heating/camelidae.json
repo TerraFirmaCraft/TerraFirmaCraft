@@ -5,12 +5,7 @@
     "item": "tfc:food/camelidae"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_camelidae"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_camelidae"
   },
   "temperature": 200
 }

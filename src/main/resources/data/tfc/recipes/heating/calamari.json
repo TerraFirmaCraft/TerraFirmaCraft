@@ -5,12 +5,7 @@
     "item": "tfc:food/calamari"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_calamari"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_calamari"
   },
   "temperature": 200
 }

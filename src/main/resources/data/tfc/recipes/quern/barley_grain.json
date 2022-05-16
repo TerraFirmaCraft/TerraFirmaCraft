@@ -5,11 +5,6 @@
     "item": "tfc:food/barley_grain"
   },
   "result": {
-    "stack": {
-      "item": "tfc:food/barley_flour"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/barley_flour"
   }
 }

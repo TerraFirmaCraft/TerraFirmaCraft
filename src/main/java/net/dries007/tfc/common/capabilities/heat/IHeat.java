@@ -8,17 +8,21 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.List;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.util.INBTSerializable;
 
+import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 
 /**
  * This is the capability interface for an instance of a heat applied to an item stack
  */
-public interface IHeat
+public interface IHeat extends INBTSerializable<CompoundTag>
 {
     /**
      * Gets the current temperature. Should call {@link HeatCapability#adjustTemp(float, float, long)} internally
@@ -96,6 +100,15 @@ public interface IHeat
             {
                 tooltip.append(new TranslatableComponent("tfc.tooltip.forging"));
             }
+
+            final ItemStackInventory wrapper = new ItemStackInventory(stack);
+            final HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
+
+            if (recipe != null && temperature > 0.9 * recipe.getTemperature())
+            {
+                tooltip.append(new TranslatableComponent("tfc.tooltip.danger"));
+            }
+
             text.add(tooltip);
         }
     }

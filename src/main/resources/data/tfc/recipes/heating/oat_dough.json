@@ -5,12 +5,7 @@
     "item": "tfc:food/oat_dough"
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/oat_bread"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/oat_bread"
   },
   "temperature": 200
 }
