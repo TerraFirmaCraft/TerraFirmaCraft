@@ -2,7 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/turtle"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/turtle"
+    }
   },
   "result_item": {
     "stack": {

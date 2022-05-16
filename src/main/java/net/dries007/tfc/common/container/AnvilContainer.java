@@ -33,7 +33,7 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
 
     protected AnvilContainer(int windowId, AnvilBlockEntity anvil)
     {
-        super(TFCContainerTypes.ANVIL.get(), windowId, anvil);
+        super(TFCMenuTypes.ANVIL.get(), windowId, anvil);
     }
 
     @Override

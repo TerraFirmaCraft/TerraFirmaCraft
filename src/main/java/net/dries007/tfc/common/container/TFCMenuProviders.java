@@ -13,11 +13,11 @@ import net.minecraft.world.SimpleMenuProvider;
 /**
  * {@link MenuProvider} for static screen / container pairs that are not attached to a TE or other object which makes sense to implement this on.
  */
-public class TFCContainerProviders
+public class TFCMenuProviders
 {
-    public static final MenuProvider CALENDAR = new SimpleMenuProvider((windowId, inv, player) -> Container.create(TFCContainerTypes.CALENDAR.get(), windowId, player.getInventory()), new TranslatableComponent("tfc.screen.calendar"));
-    public static final MenuProvider NUTRITION = new SimpleMenuProvider((windowId, inv, player) -> Container.create(TFCContainerTypes.NUTRITION.get(), windowId, player.getInventory()), new TranslatableComponent("tfc.screen.nutrition"));
-    public static final MenuProvider CLIMATE = new SimpleMenuProvider((windowId, inv, player) -> Container.create(TFCContainerTypes.CLIMATE.get(), windowId, player.getInventory()), new TranslatableComponent("tfc.screen.climate"));
+    public static final MenuProvider CALENDAR = new SimpleMenuProvider((windowId, inv, player) -> Container.create(TFCMenuTypes.CALENDAR.get(), windowId, player.getInventory()), new TranslatableComponent("tfc.screen.calendar"));
+    public static final MenuProvider NUTRITION = new SimpleMenuProvider((windowId, inv, player) -> Container.create(TFCMenuTypes.NUTRITION.get(), windowId, player.getInventory()), new TranslatableComponent("tfc.screen.nutrition"));
+    public static final MenuProvider CLIMATE = new SimpleMenuProvider((windowId, inv, player) -> Container.create(TFCMenuTypes.CLIMATE.get(), windowId, player.getInventory()), new TranslatableComponent("tfc.screen.climate"));
 
     public static final ItemStackContainerProvider CLAY_KNAPPING = new ItemStackContainerProvider(KnappingContainer::createClay, new TranslatableComponent("tfc.screen.clay_knapping"));
     public static final ItemStackContainerProvider FIRE_CLAY_KNAPPING = new ItemStackContainerProvider(KnappingContainer::createFireClay, new TranslatableComponent("tfc.screen.fire_clay_knapping"));

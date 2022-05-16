@@ -40,7 +40,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatHandler;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
-import net.dries007.tfc.common.container.TFCContainerProviders;
+import net.dries007.tfc.common.container.TFCMenuProviders;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Metal;
@@ -129,7 +129,7 @@ public class MoldItem extends Item
                 {
                     if (player instanceof ServerPlayer serverPlayer)
                     {
-                        NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                        NetworkHooks.openGui(serverPlayer, TFCMenuProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
                     }
                 }
                 else if (!mold.getFluidInTank(0).isEmpty())

@@ -18,10 +18,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 
+import net.dries007.tfc.common.capabilities.sync.ISyncable;
+import net.dries007.tfc.common.capabilities.sync.SyncableCapability;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>
+public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>, ISyncable.Serializable
 {
     private final LazyOptional<IEgg> capability;
     private boolean fertilized;
@@ -68,7 +70,7 @@ public class EggHandler implements IEgg, ICapabilitySerializable<CompoundTag>
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == EggCapability.CAPABILITY)
+        if (cap == EggCapability.CAPABILITY || cap == SyncableCapability.CAPABILITY)
         {
             return capability.cast();
         }

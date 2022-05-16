@@ -25,7 +25,7 @@ public class GrillContainer extends BlockEntityContainer<GrillBlockEntity>
 
     private GrillContainer(GrillBlockEntity grill, int windowId)
     {
-        super(TFCContainerTypes.GRILL.get(), windowId, grill);
+        super(TFCMenuTypes.GRILL.get(), windowId, grill);
 
         addDataSlots(grill.getSyncableData());
     }

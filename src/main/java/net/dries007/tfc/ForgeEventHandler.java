@@ -1006,7 +1006,6 @@ public final class ForgeEventHandler
 
     public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event)
     {
-        // todo: this does not work on SMP
         FoodCapability.updateFoodDecayOnCreate(event.getCrafting());
     }
 

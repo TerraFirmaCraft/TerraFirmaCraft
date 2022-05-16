@@ -158,7 +158,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
-    damage_shapeless(rm, 'crafting/paper', ('tfc:food/sugarcane', 'tfc:food/sugarcane', 'tfc:food/sugarcane', '#tfc:knives'), (3, 'minecraft:paper')).with_advancement('tfc:food/sugarcane')
+    damage_shapeless(rm, 'crafting/paper', (not_rotten('tfc:food/sugarcane'), not_rotten('tfc:food/sugarcane'), not_rotten('tfc:food/sugarcane'), '#tfc:knives'), (3, 'minecraft:paper')).with_advancement('tfc:food/sugarcane')
     rm.crafting_shaped('crafting/nest_box', ['Y Y', 'XYX', 'XXX'], {'Y': 'tfc:straw', 'X': '#tfc:lumber'}, 'tfc:nest_box').with_advancement('#tfc:lumber')
 
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
@@ -263,7 +263,7 @@ def generate(rm: ResourceManager):
 
         # Blocks that create normal dirt
         landslide_recipe(rm, '%s_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('dirt', 'grass', 'grass_path', 'farmland', 'rooted_dirt')], 'tfc:dirt/%s' % variant)
-        landslide_recipe(rm, '%s_clay_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('clay', 'clay_grass')], 'tfc:clay/%s' % variant)
+        landslide_recipe(rm, '%s_clay_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('clay', 'clay_grass')], 'tfc:dirt/%s' % variant)
 
     # Sand
     for variant in SAND_BLOCK_TYPES:
@@ -388,8 +388,8 @@ def generate(rm: ResourceManager):
     quern_recipe(rm, 'sylvite', 'tfc:ore/sylvite', 'tfc:powder/sylvite', count=4)
 
     for grain in GRAINS:
-        heat_recipe(rm, grain + '_dough', 'tfc:food/%s_dough' % grain, 200, result_item=item_stack_provider('tfc:food/%s_bread' % grain, reset_decay=True))
-        quern_recipe(rm, grain + '_grain', 'tfc:food/%s_grain' % grain, item_stack_provider('tfc:food/%s_flour' % grain, reset_decay=True))
+        heat_recipe(rm, grain + '_dough', not_rotten('tfc:food/%s_dough' % grain), 200, result_item=item_stack_provider('tfc:food/%s_bread' % grain, reset_decay=True))
+        quern_recipe(rm, grain + '_grain', not_rotten('tfc:food/%s_grain' % grain), item_stack_provider('tfc:food/%s_flour' % grain, reset_decay=True))
         res = utils.resource_location(rm.domain, grain + '_cutting')
         rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', 'crafting', res.path), {
             'type': 'tfc:extra_products_shapeless_crafting',
@@ -398,16 +398,16 @@ def generate(rm: ResourceManager):
                 'type': 'tfc:damage_inputs_shapeless_crafting',
                 'recipe': {
                     'type': 'minecraft:crafting_shapeless',
-                    'ingredients': utils.item_stack_list(('tfc:food/%s' % grain, '#tfc:knives')),
+                    'ingredients': utils.item_stack_list((not_rotten('tfc:food/%s' % grain), '#tfc:knives')),
                     'result': utils.item_stack('tfc:food/%s_grain' % grain)
                 }
             }
         })
-        rm.crafting_shapeless('crafting/%s_dough' % grain, ('tfc:food/%s_flour' % grain, fluid_item_ingredient('100 minecraft:water')), (2, 'tfc:food/%s_dough' % grain)).with_advancement('tfc:food/%s_grain' % grain)
+        rm.crafting_shapeless('crafting/%s_dough' % grain, (not_rotten('tfc:food/%s_flour' % grain), fluid_item_ingredient('100 minecraft:water')), (2, 'tfc:food/%s_dough' % grain)).with_advancement('tfc:food/%s_grain' % grain)
         damage_shaped(rm, 'crafting/%s_sandwich' % grain, ['ZX ', 'YYY', ' X '], {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}, (2, 'tfc:food/%s_bread_sandwich' % grain), recipe_type='tfc:sandwich_crafting').with_advancement('tfc:food/%s_bread' % grain)
 
     for meat in MEATS:
-        heat_recipe(rm, meat, 'tfc:food/%s' % meat, 200, result_item=item_stack_provider('tfc:food/cooked_%s' % meat, reset_decay=True))
+        heat_recipe(rm, meat, not_rotten('tfc:food/%s' % meat), 200, result_item=item_stack_provider('tfc:food/cooked_%s' % meat, reset_decay=True))
 
     heat_recipe(rm, 'seaweed', 'tfc:groundcover/seaweed', 200, item_stack_provider('tfc:food/dried_seaweed', reset_decay=True))
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, item_stack_provider('tfc:food/dried_kelp', reset_decay=True))
@@ -496,7 +496,7 @@ def generate(rm: ResourceManager):
     clay_knapping(rm, 'spindle_head', ['  X  ', 'XXXXX', '  X  '], 'tfc:ceramic/unfired_spindle_head', False)
     clay_knapping(rm, 'pan', ['X   X', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_pan', False)
 
-    clay_knapping(rm, 'ingot_mold', ['XXXX', 'X  X', 'X  X', 'X  X', 'XXXX'], 'tfc:ceramic/unfired_ingot_mold')
+    clay_knapping(rm, 'ingot_mold', ['XXXX', 'X  X', 'X  X', 'X  X', 'XXXX'], (2, 'tfc:ceramic/unfired_ingot_mold'))
     clay_knapping(rm, 'axe_head_mold', ['X XXX', '    X', '     ', '    X', 'X XXX'], 'tfc:ceramic/unfired_axe_head_mold', True)
     clay_knapping(rm, 'chisel_head_mold', ['XX XX', 'XX XX', 'XX XX', 'XX XX', 'XX XX'], 'tfc:ceramic/unfired_chisel_head_mold', True)
     clay_knapping(rm, 'hammer_head_mold', ['XXXXX', '     ', '     ', 'XX XX', 'XXXXX'], 'tfc:ceramic/unfired_hammer_head_mold', True)
