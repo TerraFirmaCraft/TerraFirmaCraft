@@ -311,7 +311,7 @@ public final class ForgeEventHandler
 
             if (stack.getItem() == Items.EGG)
             {
-                event.addCapability(EggCapability.KEY, new EggHandler());
+                event.addCapability(EggCapability.KEY, new EggHandler(stack));
             }
         }
     }
