@@ -22,12 +22,14 @@ import net.dries007.tfc.common.recipes.AdvancedShapedRecipe;
 import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.mock.MockCraftingContainer;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 public class AdvancedShapedRecipeTest extends TestHelper
 {
     /**
