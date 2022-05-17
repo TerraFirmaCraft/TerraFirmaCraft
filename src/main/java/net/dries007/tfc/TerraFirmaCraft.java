@@ -80,8 +80,7 @@ public final class TerraFirmaCraft
     public TerraFirmaCraft()
     {
         LOGGER.info("Initializing TerraFirmaCraft");
-        LOGGER.debug("Debug Logging Enabled");
-        if (Helpers.detectAssertionsEnabled()) LOGGER.debug("Assertions Enabled");
+        LOGGER.info("Options: Assertions Enabled = {}, Boostrap = {}, Test = {}, Debug Logging = {}", Helpers.ASSERTIONS_ENABLED, Helpers.BOOTSTRAP_ENVIRONMENT, Helpers.TEST_ENVIRONMENT, LOGGER.isDebugEnabled());
 
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 

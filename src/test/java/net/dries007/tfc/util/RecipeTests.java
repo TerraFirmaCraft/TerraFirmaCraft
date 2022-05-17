@@ -14,13 +14,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class RecipeTests extends TestHelper
 {
     @Test
-    @Disabled
     public void testHeatingRecipe()
     {
         final HeatingRecipe before = new HeatingRecipe(Helpers.identifier("heating"), Ingredient.of(Items.CLAY), ItemStackProvider.copyInput(), new FluidStack(Fluids.WATER, 100), 1000);

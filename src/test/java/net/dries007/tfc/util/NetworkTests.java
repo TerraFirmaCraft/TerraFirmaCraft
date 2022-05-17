@@ -16,10 +16,10 @@ import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.recipes.ingredients.*;
 import net.dries007.tfc.common.recipes.outputs.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for various network round-trip encoding and decoding cycles
@@ -146,7 +146,6 @@ public class NetworkTests extends TestHelper
         assertEquals(before, after);
     }
 
-    @Disabled // todo: ItemStackProvider constructor loads stuff too early
     @Test
     public void testItemStackProvider()
     {

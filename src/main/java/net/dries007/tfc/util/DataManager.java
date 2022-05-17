@@ -48,7 +48,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     private static <T> void assertUniquePacketTypes(DataManager<?> instance, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
     {
-        if (Helpers.detectAssertionsEnabled() && networkPacketFactory != null)
+        if (Helpers.ASSERTIONS_ENABLED && networkPacketFactory != null)
         {
             final Class<?> packetType = networkPacketFactory.get().getClass();
             final DataManager<?> old = NETWORK_TYPES.put(packetType, instance);

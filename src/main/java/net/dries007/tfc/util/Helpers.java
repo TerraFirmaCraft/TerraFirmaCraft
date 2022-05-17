@@ -97,6 +97,21 @@ public final class Helpers
     public static final Direction[] DIRECTIONS = Direction.values();
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
+    /**
+     * If assertions (-ea) are enabled. Used to selectively enable various self-test mechanisms
+     */
+    public static final boolean ASSERTIONS_ENABLED = detectAssertionsEnabled();
+
+    /**
+     * If the current environment is a bootstrapped one, i.e. one outside the transforming class loader, such as /gradlew test launch
+     */
+    public static final boolean BOOTSTRAP_ENVIRONMENT = detectBootstrapEnvironment();
+
+    /**
+     * If the current one includes test source sets, i.e. gametest, indev, or ./gradlew test
+     */
+    public static final boolean TEST_ENVIRONMENT = detectTestSourcesPresent();
+
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
 
@@ -774,46 +789,10 @@ public final class Helpers
      */
     public static void warnWhenCalledFromClientThread()
     {
-        if (Helpers.detectAssertionsEnabled() && Thread.currentThread().getName().equalsIgnoreCase("render thread"))
+        if (ASSERTIONS_ENABLED && Thread.currentThread().getName().equalsIgnoreCase("render thread"))
         {
             LOGGER.warn("This method should not be called from client thread, this is a bug!", new RuntimeException("Stacktrace"));
         }
-    }
-
-    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
-    public static boolean detectAssertionsEnabled()
-    {
-        boolean enabled = false;
-        assert enabled = true;
-        return enabled;
-    }
-
-    /**
-     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
-     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
-     */
-    public static boolean detectBootstrapEnvironment()
-    {
-        if (System.getProperty("forge.enabledGameTestNamespaces") != null)
-        {
-            return false;
-        }
-        return detectTestSourcesPresent();
-    }
-
-    /**
-     * Detect if test sources are present, if we're running from a environment which includes TFC's test sources
-     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
-     */
-    public static boolean detectTestSourcesPresent()
-    {
-        try
-        {
-            Class.forName("net.dries007.tfc.TestMarker");
-            return true;
-        }
-        catch (ClassNotFoundException e) { /* Guess not */ }
-        return false;
     }
 
     // Math Functions
@@ -1128,6 +1107,38 @@ public final class Helpers
     private static <E extends Throwable, T> T throwAsUnchecked(Exception exception) throws E
     {
         throw (E) exception;
+    }
+
+    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
+    private static boolean detectAssertionsEnabled()
+    {
+        boolean enabled = false;
+        assert enabled = true;
+        return enabled;
+    }
+
+    /**
+     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
+     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
+     */
+    private static boolean detectBootstrapEnvironment()
+    {
+        return System.getProperty("forge.enabledGameTestNamespaces") == null && detectTestSourcesPresent();
+    }
+
+    /**
+     * Detect if test sources are present, if we're running from a environment which includes TFC's test sources
+     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
+     */
+    private static boolean detectTestSourcesPresent()
+    {
+        try
+        {
+            Class.forName("net.dries007.tfc.TestMarker");
+            return true;
+        }
+        catch (ClassNotFoundException e) { /* Guess not */ }
+        return false;
     }
 
     static abstract class ItemProtectedAccessor extends Item
