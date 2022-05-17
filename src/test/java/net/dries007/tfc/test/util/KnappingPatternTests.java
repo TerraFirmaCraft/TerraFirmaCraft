@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.test.util;
 
 import java.util.Random;
 import java.util.stream.IntStream;
@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 import net.minecraft.network.FriendlyByteBuf;
 
 import io.netty.buffer.Unpooled;
+import net.dries007.tfc.util.KnappingPattern;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;

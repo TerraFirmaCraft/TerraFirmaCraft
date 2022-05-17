@@ -4,13 +4,15 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.river;
+package net.dries007.tfc.test.world;
 
 import java.util.stream.IntStream;
 
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.TestHelper;
+import net.dries007.tfc.world.river.Flow;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.world.river.Flow.*;
@@ -22,7 +24,7 @@ public class FlowTests extends TestHelper
     @Test
     public void testFromAngle()
     {
-        assertEquals(NNN, Flow.fromAngle(Mth.PI / 2f));
+        Assertions.assertEquals(NNN, Flow.fromAngle(Mth.PI / 2f));
         assertEquals(SSS, Flow.fromAngle(-Mth.PI / 2f));
         assertEquals(EEE, Flow.fromAngle(0));
         assertEquals(WWW, Flow.fromAngle(Mth.PI));

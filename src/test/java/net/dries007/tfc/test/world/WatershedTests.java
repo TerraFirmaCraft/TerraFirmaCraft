@@ -4,12 +4,14 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.river;
+package net.dries007.tfc.test.world;
 
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.TypedArea;
+import net.dries007.tfc.world.river.RiverHelpers;
+import net.dries007.tfc.world.river.Watershed;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 

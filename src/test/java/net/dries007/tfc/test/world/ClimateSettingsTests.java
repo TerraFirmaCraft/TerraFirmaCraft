@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.settings;
+package net.dries007.tfc.test.world;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,6 +12,7 @@ import com.google.gson.JsonPrimitive;
 
 import com.mojang.serialization.JsonOps;
 import net.dries007.tfc.TestHelper;
+import net.dries007.tfc.world.settings.ClimateSettings;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

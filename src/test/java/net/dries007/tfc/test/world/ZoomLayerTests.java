@@ -4,11 +4,13 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.layer;
+package net.dries007.tfc.test.world;
 
 import java.util.Random;
 
 import net.dries007.tfc.TestHelper;
+import net.dries007.tfc.world.layer.TypedZoomLayer;
+import net.dries007.tfc.world.layer.ZoomLayer;
 import net.dries007.tfc.world.layer.framework.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

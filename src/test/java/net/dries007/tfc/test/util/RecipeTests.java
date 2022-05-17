@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util;
+package net.dries007.tfc.test.util;
 
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -14,6 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
 import org.junit.jupiter.api.Test;
 
 public class RecipeTests extends TestHelper

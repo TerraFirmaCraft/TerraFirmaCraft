@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.settings;
+package net.dries007.tfc.visualizations;
 
 import java.awt.*;
 import java.util.List;
@@ -23,6 +23,9 @@ import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
 import net.dries007.tfc.world.layer.framework.ConcurrentArea;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
+import net.dries007.tfc.world.settings.RockLayer;
+import net.dries007.tfc.world.settings.RockLayerSettings;
+import net.dries007.tfc.world.settings.RockSettings;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

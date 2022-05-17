@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.river;
+package net.dries007.tfc.visualizations;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -24,6 +24,10 @@ import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
+import net.dries007.tfc.world.river.MidpointFractal;
+import net.dries007.tfc.world.river.RiverFractal;
+import net.dries007.tfc.world.river.RiverHelpers;
+import net.dries007.tfc.world.river.Watershed;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -121,7 +125,7 @@ public class RiverVisualizations extends TestHelper
 
         final List<RiverFractal> rivers = sheds.stream()
             .flatMap(s -> s.getRivers().stream())
-            .collect(Collectors.toList());
+            .toList();
 
         final float s = 1000 / 40f;
         PLATES.color(TestHelper::plateColor).dimensions(40);
@@ -148,7 +152,7 @@ public class RiverVisualizations extends TestHelper
         final RandomSource random = new XoroshiroRandomSource(seed);
         final List<MidpointFractal> fractals = rivers.stream()
             .flatMap(r -> r.getEdges().stream().map(e -> e.fractal(random, 4)))
-            .collect(Collectors.toList());
+            .toList();
 
         Artist.custom((t, g) -> {
             PLATES.draw(plates, g);

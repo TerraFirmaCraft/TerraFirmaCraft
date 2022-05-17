@@ -4,10 +4,11 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.biome;
+package net.dries007.tfc.visualizations;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
+import net.dries007.tfc.world.biome.BiomeNoise;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import org.junit.jupiter.api.Disabled;

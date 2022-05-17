@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.layer.framework;
+package net.dries007.tfc.test.world;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import net.dries007.tfc.TestHelper;
+import net.dries007.tfc.world.layer.framework.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

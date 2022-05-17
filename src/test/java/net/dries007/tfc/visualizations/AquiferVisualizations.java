@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world;
+package net.dries007.tfc.visualizations;
 
 import java.awt.*;
 import java.util.function.IntFunction;
@@ -12,7 +12,6 @@ import java.util.function.IntFunction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
-
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;

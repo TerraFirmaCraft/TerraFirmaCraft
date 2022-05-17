@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.river;
+package net.dries007.tfc.test.world;
 
 import java.awt.*;
 import java.util.List;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
+import net.dries007.tfc.world.river.MidpointFractal;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;

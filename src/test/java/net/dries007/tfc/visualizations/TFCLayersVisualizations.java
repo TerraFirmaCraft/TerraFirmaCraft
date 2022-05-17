@@ -4,18 +4,20 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.world.layer;
+package net.dries007.tfc.visualizations;
 
 import java.awt.*;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.Artist;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.IArtist;
+import net.dries007.tfc.world.layer.Plate;
+import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
