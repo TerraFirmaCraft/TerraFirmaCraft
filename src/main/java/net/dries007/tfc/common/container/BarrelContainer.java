@@ -26,7 +26,7 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
 
     private BarrelContainer(int windowId, BarrelBlockEntity barrel)
     {
-        super(TFCContainerTypes.BARREL.get(), windowId, barrel);
+        super(TFCMenuTypes.BARREL.get(), windowId, barrel);
     }
 
     @Override

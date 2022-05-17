@@ -29,7 +29,7 @@ public class SmallVesselInventoryContainer extends ItemStackContainer
 
     private SmallVesselInventoryContainer(ItemStack stack, InteractionHand hand, Inventory playerInv, int windowId)
     {
-        super(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), windowId, playerInv, stack, hand);
+        super(TFCMenuTypes.SMALL_VESSEL_INVENTORY.get(), windowId, playerInv, stack, hand);
 
         vessel = VesselLike.get(stack);
     }

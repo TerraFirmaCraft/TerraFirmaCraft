@@ -27,7 +27,7 @@ public class AnvilPlanContainer extends BlockEntityContainer<AnvilBlockEntity> i
 
     protected AnvilPlanContainer(int windowId, AnvilBlockEntity anvil)
     {
-        super(TFCContainerTypes.ANVIL_PLAN.get(), windowId, anvil);
+        super(TFCMenuTypes.ANVIL_PLAN.get(), windowId, anvil);
     }
 
     @Override

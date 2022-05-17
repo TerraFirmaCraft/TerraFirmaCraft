@@ -2,7 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:quern",
   "ingredient": {
-    "item": "tfc:food/rice_grain"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/rice_grain"
+    }
   },
   "result": {
     "item": "tfc:food/rice_flour"

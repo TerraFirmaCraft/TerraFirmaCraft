@@ -2,7 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:quern",
   "ingredient": {
-    "item": "tfc:food/barley_grain"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/barley_grain"
+    }
   },
   "result": {
     "item": "tfc:food/barley_flour"

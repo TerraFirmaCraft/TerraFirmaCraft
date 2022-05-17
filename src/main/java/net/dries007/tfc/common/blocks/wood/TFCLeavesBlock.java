@@ -133,7 +133,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             if (!state.getValue(PERSISTENT))
             {
-                level.removeBlock(pos, true);
+                level.removeBlock(pos, false);
                 doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
             }
             else

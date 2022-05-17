@@ -48,6 +48,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  * - Entity attributes, set in this class below
  * - In datagen, a json entry for fauna
  * - In datagen, an entry in biome spawners
+ *
+ * When making an entity, some rules:
+ * - Each synced data parameter and any variable that needs to persist should be serialized
+ * - Use Brain or Goals when appropriate, and do not mix the two
+ * - Avoid creating unnecessary classes. See the anonymous constructors at the bottom of this class.
  */
 @SuppressWarnings("unused")
 public class TFCEntities

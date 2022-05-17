@@ -21,7 +21,7 @@ public class CharcoalForgeContainer extends BlockEntityContainer<CharcoalForgeBl
 
     private CharcoalForgeContainer(CharcoalForgeBlockEntity tile, int windowId)
     {
-        super(TFCContainerTypes.CHARCOAL_FORGE.get(), windowId, tile);
+        super(TFCMenuTypes.CHARCOAL_FORGE.get(), windowId, tile);
 
         addDataSlots(tile.getSyncableData());
     }

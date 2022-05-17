@@ -98,9 +98,9 @@ public abstract class Mammal extends TFCAnimal
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide)
+        if (!level.isClientSide && level.getGameTime() % 20 == 0)
         {
-            if (isFertilized() && Calendars.SERVER.getTotalDays() >= getPregnantTime() + getGestationDays())
+            if (Calendars.SERVER.getTotalDays() >= getPregnantTime() + getGestationDays() && isFertilized())
             {
                 birthChildren();
                 setFertilized(false);

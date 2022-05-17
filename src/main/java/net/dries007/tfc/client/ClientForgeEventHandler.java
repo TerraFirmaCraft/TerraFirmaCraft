@@ -344,13 +344,11 @@ public class ClientForgeEventHandler
             BlockState stateAt = level.getBlockState(lookingAt);
             Block blockAt = stateAt.getBlock();
 
-            BlockState chiseled = ChiselRecipe.computeResultWithEvent(player, stateAt, hit);
-            if (chiseled != null)
-            {
+            ChiselRecipe.computeResult(player, stateAt, hit, false).ifLeft(chiseled -> {
                 IHighlightHandler.drawBox(poseStack, chiseled.getShape(level, pos), event.getMultiBufferSource(), pos, camera.getPosition(), 1f, 0f, 0f, 0.4f);
                 event.setCanceled(true);
-            }
-            else if (blockAt instanceof IHighlightHandler handler)
+            });
+            if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
                 if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))

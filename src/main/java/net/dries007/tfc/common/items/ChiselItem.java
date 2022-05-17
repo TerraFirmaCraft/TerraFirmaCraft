@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.items;
 
+import java.util.function.Function;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -24,7 +26,6 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 
 public class ChiselItem extends ToolItem
 {
@@ -42,10 +43,9 @@ public class ChiselItem extends ToolItem
             final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
             final BlockState state = level.getBlockState(pos);
-            final BlockState result = ChiselRecipe.computeResultWithEvent(player, state, new BlockHitResult(context.getClickLocation(), context.getClickedFace(), pos, context.isInside()));
-            if (result != null)
-            {
-                player.playSound(result.getSoundType().getHitSound(), 1f, 1f);
+            var result = ChiselRecipe.computeResult(player, state, new BlockHitResult(context.getClickLocation(), context.getClickedFace(), pos, context.isInside()), true);
+            return result.map(resultState -> {
+                player.playSound(resultState.getSoundType().getHitSound(), 1f, 1f);
 
                 ItemStack held = player.getMainHandItem();
                 if (!level.isClientSide)
@@ -67,12 +67,12 @@ public class ChiselItem extends ToolItem
                         }
                     });
                 }
-                level.setBlockAndUpdate(pos, result);
+                level.setBlockAndUpdate(pos, resultState);
 
                 held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
                 player.getCooldowns().addCooldown(this, 10);
                 return InteractionResult.sidedSuccess(level.isClientSide);
-            }
+            }, Function.identity()); // returns the interaction result if we are given one
         }
         return InteractionResult.PASS;
     }
