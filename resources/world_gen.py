@@ -748,8 +748,17 @@ def generate(rm: ResourceManager):
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(6, 30), decorate_biome())
 
     # Global Worldgen Tagged Features
-    rm.tag('land_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES], 'tfc:plant/wild_crops', '#tfc:forest_patch_features', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay], 'tfc:berry_bushes', 'tfc:fruit_trees')
-    rm.tag('forest_patch_features', 'worldgen/placed_feature', *['tfc:%s_patch' % d for d in FOREST_DECORATORS])
+    rm.tag('land_plant_features', 'worldgen/placed_feature', *[
+        *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES],
+        'tfc:plant/wild_crops',
+        '#tfc:forest_patch_features',
+        *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay],
+        'tfc:berry_bushes',
+        'tfc:fruit_trees'
+    ])
+    rm.tag('forest_patch_features', 'worldgen/placed_feature', *[
+        'tfc:%s_patch' % d for d in FOREST_DECORATORS
+    ])
     configured_placed_feature(rm, 'land_plants', 'tfc:multiple', {'features': '#tfc:land_plant_features', 'biome_check': False})
 
     rm.tag('ocean_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
