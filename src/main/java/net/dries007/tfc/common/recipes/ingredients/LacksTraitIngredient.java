@@ -34,7 +34,7 @@ public class LacksTraitIngredient extends TraitIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(f -> !f.getTraits().contains(getTrait())).orElse(false);
+        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(f -> !f.getTraits().contains(trait)).orElse(false);
     }
 
     @Override
@@ -43,19 +43,13 @@ public class LacksTraitIngredient extends TraitIngredient
         return TraitIngredient.TraitSerializer.LACKS_TRAIT;
     }
 
-    @Override
-    protected ItemStack[] getDefaultItems()
-    {
-        return FoodCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(ItemStack::new).toArray(ItemStack[]::new);
-    }
-
     @Nullable
     @Override
     protected ItemStack testDefaultItem(ItemStack stack)
     {
         return stack.getCapability(FoodCapability.CAPABILITY).resolve().map(food -> {
             food.setNonDecaying();
-            if (food.getTraits().remove(getTrait()))
+            if (food.getTraits().remove(trait))
             {
                 return null;
             }

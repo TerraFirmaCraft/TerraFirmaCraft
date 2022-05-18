@@ -34,7 +34,7 @@ public class HasTraitIngredient extends TraitIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(f -> f.getTraits().contains(getTrait())).orElse(false);
+        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(f -> f.getTraits().contains(trait)).orElse(false);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class HasTraitIngredient extends TraitIngredient
     {
         return stack.getCapability(FoodCapability.CAPABILITY).map(food -> {
             food.setNonDecaying();
-            food.getTraits().add(getTrait());
+            food.getTraits().add(trait);
             return stack;
         }).orElse(null);
     }

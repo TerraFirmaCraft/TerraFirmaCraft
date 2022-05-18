@@ -8,15 +8,12 @@ package net.dries007.tfc.common.recipes;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.google.gson.JsonObject;
-import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.core.NonNullList;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
@@ -25,13 +22,11 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
 
-public class CastingCraftingRecipe implements CraftingRecipe, ISimpleRecipe<CraftingContainer>
+public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe<CraftingContainer>
 {
-    private final ResourceLocation id;
-
     public CastingCraftingRecipe(ResourceLocation id)
     {
-        this.id = id;
+        super(id);
     }
 
     @Override
@@ -83,18 +78,6 @@ public class CastingCraftingRecipe implements CraftingRecipe, ISimpleRecipe<Craf
     }
 
     @Override
-    public ItemStack getResultItem()
-    {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.CASTING_CRAFTING.get();
@@ -127,24 +110,5 @@ public class CastingCraftingRecipe implements CraftingRecipe, ISimpleRecipe<Craf
             }
         }
         return mold;
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<CastingCraftingRecipe>
-    {
-        @Override
-        public CastingCraftingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            return new CastingCraftingRecipe(recipeId);
-        }
-
-        @Nullable
-        @Override
-        public CastingCraftingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            return new CastingCraftingRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, CastingCraftingRecipe recipe) {}
     }
 }

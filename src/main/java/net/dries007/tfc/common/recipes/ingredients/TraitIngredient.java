@@ -11,12 +11,10 @@ import java.util.function.BiFunction;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTrait;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -24,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class TraitIngredient extends DelegateIngredient
 {
-    private final FoodTrait trait;
+    protected final FoodTrait trait;
 
     public TraitIngredient(@Nullable Ingredient delegate, FoodTrait trait)
     {
@@ -35,12 +33,6 @@ public abstract class TraitIngredient extends DelegateIngredient
     public FoodTrait getTrait()
     {
         return trait;
-    }
-
-    @Override
-    protected ItemStack[] getDefaultItems()
-    {
-        return FoodCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(ItemStack::new).toArray(ItemStack[]::new);
     }
 
     public static class TraitSerializer<T extends TraitIngredient> implements IIngredientSerializer<T>

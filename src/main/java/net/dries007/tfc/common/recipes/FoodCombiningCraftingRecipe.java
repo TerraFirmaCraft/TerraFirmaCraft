@@ -6,26 +6,21 @@
 
 package net.dries007.tfc.common.recipes;
 
-import com.google.gson.JsonObject;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
-import org.jetbrains.annotations.Nullable;
 
-public class FoodCombiningCraftingRecipe implements CraftingRecipe, ISimpleRecipe<CraftingContainer>
+public class FoodCombiningCraftingRecipe extends CustomRecipe implements ISimpleRecipe<CraftingContainer>
 {
-    private final ResourceLocation id;
-
     public FoodCombiningCraftingRecipe(ResourceLocation id)
     {
-        this.id = id;
+        super(id);
     }
 
     @Override
@@ -102,39 +97,8 @@ public class FoodCombiningCraftingRecipe implements CraftingRecipe, ISimpleRecip
     }
 
     @Override
-    public ItemStack getResultItem()
-    {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public ResourceLocation getId()
-    {
-        return id;
-    }
-
-    @Override
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.FOOD_COMBINING_CRAFTING.get();
-    }
-
-    public static class Serializer extends RecipeSerializerImpl<FoodCombiningCraftingRecipe>
-    {
-        @Override
-        public FoodCombiningCraftingRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
-            return new FoodCombiningCraftingRecipe(recipeId);
-        }
-
-        @Nullable
-        @Override
-        public FoodCombiningCraftingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
-            return new FoodCombiningCraftingRecipe(recipeId);
-        }
-
-        @Override
-        public void toNetwork(FriendlyByteBuf buffer, FoodCombiningCraftingRecipe recipe) {}
     }
 }
