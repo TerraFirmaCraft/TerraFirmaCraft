@@ -1,13 +1,12 @@
 # Handles generation of all world gen objects
 
-import hashlib
 import typing
-
 from enum import IntEnum
 from typing import Union
 
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import ResourceIdentifier, JsonObject, Json, VerticalAnchor
+
 from constants import *
 
 
@@ -868,7 +867,7 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         else:
             singular_decorators.append(decorate_air_or_empty_fluid())
     else:
-        singular_decorators.append(decorate_matching_blocks('minecraft:air'))
+        singular_decorators.append(decorate_replaceable())
 
     if patch.custom_feature is not None:
         feature = patch.custom_feature
@@ -882,7 +881,6 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         singular_decorators.append(decorate_would_survive_with_fluid(patch.block))
     else:
         singular_decorators.append(decorate_would_survive(patch.block))
-        singular_decorators.append(decorate_replaceable())
 
     if extra_singular_decorators is not None:
         singular_decorators += extra_singular_decorators
