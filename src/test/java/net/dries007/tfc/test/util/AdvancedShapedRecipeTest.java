@@ -27,6 +27,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AdvancedShapedRecipeTest extends TestHelper
 {
@@ -60,6 +61,19 @@ public class AdvancedShapedRecipeTest extends TestHelper
                 }))
             )
             .flatMap(Function.identity());
+    }
+
+    @Test
+    @SuppressWarnings("ConstantConditions")
+    public void testStackedInputsProduceCorrectAmounts()
+    {
+        final AdvancedShapedRecipe recipe = exampleRecipe();
+        final CraftingContainer inventory = new MockCraftingContainer(3, 3);
+        inventory.setItem(0, new ItemStack(Items.APPLE, 16));
+        inventory.setItem(1, new ItemStack(Items.GOLD_INGOT, 16));
+
+        assertTrue(recipe.matches(inventory, null));
+        assertItemStackEquals(recipe.assemble(inventory), new ItemStack(Items.APPLE));
     }
 
     @Test
