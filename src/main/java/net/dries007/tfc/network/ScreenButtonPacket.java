@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.network;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
 import net.dries007.tfc.common.container.ButtonHandlerContainer;
+import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class ScreenButtonPacket
 {
@@ -29,24 +29,13 @@ public class ScreenButtonPacket
     ScreenButtonPacket(FriendlyByteBuf buffer)
     {
         buttonID = buffer.readVarInt();
-        if (buffer.readBoolean())
-        {
-            extraNBT = buffer.readNbt();
-        }
-        else
-        {
-            extraNBT = null;
-        }
+        extraNBT = Helpers.decodeNullable(buffer, FriendlyByteBuf::readNbt);
     }
 
     void encode(FriendlyByteBuf buffer)
     {
         buffer.writeVarInt(buttonID);
-        buffer.writeBoolean(extraNBT != null);
-        if (extraNBT != null)
-        {
-            buffer.writeNbt(extraNBT);
-        }
+        Helpers.encodeNullable(extraNBT, buffer, (nbt, buf) -> buf.writeNbt(nbt));
     }
 
     void handle(NetworkEvent.Context context)

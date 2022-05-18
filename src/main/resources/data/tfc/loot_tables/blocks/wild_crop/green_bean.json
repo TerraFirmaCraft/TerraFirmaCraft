@@ -42,7 +42,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:seeds/green_bean"
+          "name": "tfc:seeds/green_bean",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wild_crop/green_bean",
+              "properties": {
+                "part": "bottom"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

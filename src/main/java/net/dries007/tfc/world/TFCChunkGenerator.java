@@ -19,7 +19,10 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.*;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.BiomeManager;
+import net.minecraft.world.level.biome.BiomeSource;
+import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -39,14 +42,16 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
-import net.dries007.tfc.world.biome.*;
+import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.TFCBiomeSource;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.chunkdata.RockData;
+import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 import net.dries007.tfc.world.noise.Kernel;
 import net.dries007.tfc.world.noise.NoiseSampler;
-import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 import net.dries007.tfc.world.surface.SurfaceManager;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -134,11 +139,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return new TFCChunkGenerator(structures, parameters, TFCBiomeSource.defaultBiomeSource(seed, biomeRegistry), noiseGeneratorSettings, false, seed);
     }
 
-    public static void sampleBiomesCornerContribution(Object2DoubleMap<Biome> accumulator, Object2DoubleMap<Biome> corner, double t)
+    public static <T> void sampleBiomesCornerContribution(Object2DoubleMap<T> accumulator, Object2DoubleMap<T> corner, double t)
     {
         if (t > 0)
         {
-            for (Object2DoubleMap.Entry<Biome> entry : corner.object2DoubleEntrySet())
+            for (Object2DoubleMap.Entry<T> entry : corner.object2DoubleEntrySet())
             {
                 accumulator.mergeDouble(entry.getKey(), entry.getDoubleValue() * t, Double::sum);
             }
@@ -166,26 +171,26 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
      * @param groupFunction A function to access a {@link BiomeVariants.Group} from a {@link Biome}.
      * @return A 7x7 array of sampled biome weights, at quart pos resolution, where the (0, 0) index aligns to the (-1, -1) quart position relative to the target chunk.
      */
-    private static Object2DoubleMap<Biome>[] sampleBiomes(ChunkPos pos, Sampler<Biome> biomeSampler, Function<Biome, BiomeVariants.Group> groupFunction)
+    private static <T> Object2DoubleMap<T>[] sampleBiomes(ChunkPos pos, Sampler<T> biomeSampler, Function<T, BiomeVariants.Group> groupFunction)
     {
         // First, sample biomes at chunk distance, in a 4x4 grid centered on the target chunk.
         // These are used to build the large-scale biome blending radius
-        final Object2DoubleMap<Biome>[] chunkBiomeWeightArray = newWeightArray(4 * 4);
+        final Object2DoubleMap<T>[] chunkBiomeWeightArray = newWeightArray(4 * 4);
         final int chunkX = pos.getMinBlockX(), chunkZ = pos.getMinBlockZ(); // Block coordinates
         for (int x = 0; x < 4; x++)
         {
             for (int z = 0; z < 4; z++)
             {
                 // x, z = 0, 0 is the -1, -1 chunk relative to chunkX, chunkZ
-                final Object2DoubleMap<Biome> chunkBiomeWeight = new Object2DoubleOpenHashMap<>();
+                final Object2DoubleMap<T> chunkBiomeWeight = new Object2DoubleOpenHashMap<>();
                 chunkBiomeWeightArray[x | (z << 2)] = chunkBiomeWeight;
                 sampleBiomesAtPositionWithKernel(chunkBiomeWeight, biomeSampler, KERNEL_9x9, 4, chunkX, chunkZ, x - 1, z - 1);
             }
         }
 
         // A 7x7 grid, in quart positions relative to the target chunk, where (1, 1) is the target chunk origin.
-        final Object2DoubleMap<Biome>[] quartBiomeWeightArray = newWeightArray(7 * 7);
-        final Object2DoubleMap<Biome> chunkBiomeWeight = new Object2DoubleOpenHashMap<>(), wideQuartBiomeWeight = new Object2DoubleOpenHashMap<>();
+        final Object2DoubleMap<T>[] quartBiomeWeightArray = newWeightArray(7 * 7);
+        final Object2DoubleMap<T> chunkBiomeWeight = new Object2DoubleOpenHashMap<>(), wideQuartBiomeWeight = new Object2DoubleOpenHashMap<>();
 
         for (int x = 0; x < 7; x++)
         {
@@ -222,7 +227,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 }, BiomeVariants.Group.SIZE);
 
                 // Same as wideQuartBiomeWeight, but only with a sample radius of 2, rather than 4
-                final Object2DoubleMap<Biome> quartBiomeWeight = new Object2DoubleOpenHashMap<>();
+                final Object2DoubleMap<T> quartBiomeWeight = new Object2DoubleOpenHashMap<>();
                 sampleBiomesAtPositionWithKernel(quartBiomeWeight, biomeSampler, KERNEL_5x5, 2, chunkX, chunkZ, x - 1, z - 1);
 
                 composeSampleWeights(quartBiomeWeight, wideQuartBiomeWeight, biome -> {
@@ -236,7 +241,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return quartBiomeWeightArray;
     }
 
-    private static void sampleBiomesAtPositionWithKernel(Object2DoubleMap<Biome> weights, Sampler<Biome> biomeSampler, Kernel kernel, int kernelBits, int chunkX, int chunkZ, int xOffsetInKernelBits, int zOffsetInKernelBits)
+    private static <T> void sampleBiomesAtPositionWithKernel(Object2DoubleMap<T> weights, Sampler<T> biomeSampler, Kernel kernel, int kernelBits, int chunkX, int chunkZ, int xOffsetInKernelBits, int zOffsetInKernelBits)
     {
         final int kernelRadius = kernel.radius();
         final int kernelWidth = kernel.width();
@@ -247,7 +252,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 final double weight = kernel.values()[(dx + kernelRadius) + (dz + kernelRadius) * kernelWidth];
                 final int blockX = chunkX + ((xOffsetInKernelBits + dx) << kernelBits); // Block positions
                 final int blockZ = chunkZ + ((zOffsetInKernelBits + dz) << kernelBits);
-                final Biome biome = biomeSampler.get(blockX, blockZ);
+                final T biome = biomeSampler.get(blockX, blockZ);
                 weights.mergeDouble(biome, weight, Double::sum);
             }
         }
@@ -465,11 +470,11 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
             sections.add(section);
         }
 
-        final Object2DoubleMap<Biome>[] biomeWeights = sampleBiomes(chunkPos, this::sampleBiomeIgnoreClimate, biome -> TFCBiomes.getExtensionOrThrow(actualLevel, biome).variants().getGroup());
+        final Object2DoubleMap<BiomeVariants>[] biomeWeights = sampleBiomes(chunkPos, this::sampleBiomeVariants, BiomeVariants::getGroup);
         final ChunkBaseBlockSource baseBlockSource = createBaseBlockSourceForChunk(chunk);
-        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), noiseSampler, baseBlockSource, settings, getSeaLevel());
+        final ChunkNoiseFiller filler = new ChunkNoiseFiller(actualLevel, (ProtoChunk) chunk, biomeWeights, customBiomeSource, createBiomeSamplersForChunk(), customBiomeSource::getClimateForBiome, noiseSampler, baseBlockSource, settings, getSeaLevel());
 
-        filler.setupAquiferSurfaceHeight(this::sampleBiomeIgnoreClimate);
+        filler.setupAquiferSurfaceHeight(this::sampleBiomeVariants);
         chunkData.setAquiferSurfaceHeight(filler.aquifer().getSurfaceHeights()); // Record this in the chunk data so caves can query it accurately
         rockData.setSurfaceHeight(filler.getSurfaceHeight()); // Need to set this in the rock data before we can fill the chunk proper
         filler.fillFromNoise();
@@ -544,16 +549,16 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         }
     }
 
-    private Biome sampleBiomeIgnoreClimate(int blockX, int blockZ)
+    private BiomeVariants sampleBiomeVariants(int blockX, int blockZ)
     {
-        return customBiomeSource.getNoiseBiomeIgnoreClimate(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ)).value();
+        return customBiomeSource.getNoiseBiomeVariants(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ));
     }
 
     private ChunkBaseBlockSource createBaseBlockSourceForChunk(ChunkAccess chunk)
     {
         final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final RockData rockData = chunkDataProvider.get(chunk).getRockData();
-        return new ChunkBaseBlockSource(actualLevel, rockData, this::sampleBiomeIgnoreClimate);
+        return new ChunkBaseBlockSource(actualLevel, rockData, this::sampleBiomeVariants);
     }
 
     private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkAccess chunk)

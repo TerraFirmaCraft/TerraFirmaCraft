@@ -60,6 +60,9 @@
     },
     {
       "item": "tfc:food/turtle"
+    },
+    {
+      "item": "tfc:food/calamari"
     }
   ],
   "heat_capacity": 1

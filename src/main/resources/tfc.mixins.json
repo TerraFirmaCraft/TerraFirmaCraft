@@ -10,6 +10,7 @@
     "FallingBlockMixin",
     "FlowingFluidMixin",
     "FriendlyByteBufMixin",
+    "ItemStackMixin",
     "LevelMixin",
     "PrimaryLevelDataMixin",
     "ReloadableServerResourcesMixin",
@@ -41,6 +42,7 @@
     "client.accessor.BiomeColorsAccessor",
     "client.accessor.ClientLevelAccessor",
     "client.accessor.LevelRendererAccessor",
+    "client.accessor.LocalPlayerAccessor",
     "client.accessor.SuspendedTownParticleAccessor"
   ],
   "injectors": {

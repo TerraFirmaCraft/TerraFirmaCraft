@@ -6,7 +6,11 @@
 
 package net.dries007.tfc.client;
 
+import java.util.function.Consumer;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -18,6 +22,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
@@ -192,7 +197,12 @@ public class RenderHelpers
 
     public static int getFluidColor(FluidStack fluid)
     {
-        return fluid.getFluid().getAttributes().getColor();
+        return getFluidColor(fluid.getFluid());
+    }
+
+    public static int getFluidColor(Fluid fluid)
+    {
+        return fluid.getAttributes().getColor();
     }
 
     public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
@@ -220,6 +230,23 @@ public class RenderHelpers
     public static ResourceLocation getTextureForAge(TFCAnimal animal, ResourceLocation young, ResourceLocation old)
     {
         return animal.getAgeType() == TFCAnimalProperties.Age.OLD ? old : young;
+    }
+
+    public static Button.OnTooltip makeButtonTooltip(Screen screen, Component component)
+    {
+        return new Button.OnTooltip() {
+            @Override
+            public void onTooltip(Button button, PoseStack poseStack, int mouseX, int mouseY)
+            {
+                screen.renderTooltip(poseStack, component, mouseX, mouseY);
+            }
+
+            @Override
+            public void narrateTooltip(Consumer<Component> consumer)
+            {
+                consumer.accept(component);
+            }
+        };
     }
 
     private static float calculateTilt(float pitch)

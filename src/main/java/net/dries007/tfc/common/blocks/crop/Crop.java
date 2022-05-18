@@ -35,25 +35,24 @@ public enum Crop implements StringRepresentable
     CABBAGE(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 6, self), self -> new DeadCropBlock(dead(), self)), // Default, 6
     CARROT(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 5, self), self -> new DeadCropBlock(dead(), self)), // Default, 5
     GARLIC(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 5, self), self -> new DeadCropBlock(dead(), self)), // Default, 5
-    GREEN_BEAN(FarmlandBlockEntity.NutrientType.NITROGEN, self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DeadClimbingCropBlock(dead(), self), true), // Double, Pickable, Stick, 4 -> 4
+    GREEN_BEAN(FarmlandBlockEntity.NutrientType.NITROGEN, self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DeadClimbingCropBlock(dead(), self), true), // Double, Stick, 4 -> 4
     POTATO(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, 7
     ONION(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, 7
     SOYBEAN(FarmlandBlockEntity.NutrientType.NITROGEN, self -> DefaultCropBlock.create(crop(), 7, self), self -> new DeadCropBlock(dead(), self)), // Default, 7
     SQUASH(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DefaultCropBlock.create(crop(), 8, self), self -> new DeadCropBlock(dead(), self)), // Default , 8
     SUGARCANE(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DoubleCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DeadDoubleCropBlock(dead(), self), true), // Double, 4 -> 4
-    TOMATO(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DeadClimbingCropBlock(dead(), self), true), // Double, Stick, Pickable, 4 -> 4
-    // todo: figure out what to do with bell peppers
-    //BELL_PEPPER(), // Default, Pickable, Multiple Grown Stages, ???
+    TOMATO(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 4, 4, self), self -> new DeadClimbingCropBlock(dead(), self), true), // Double, Stick, 4 -> 4
     JUTE(FarmlandBlockEntity.NutrientType.POTASSIUM, self -> DoubleCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), 2, 4, self), self -> new DeadDoubleCropBlock(dead(), self), true); // Double, 2 -> 4
+    // todo: pickable crops + spreading crops
 
     private static ExtendedProperties crop()
     {
-        return ExtendedProperties.of(dead()).blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTick);
+        return dead().blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTick);
     }
 
-    private static BlockBehaviour.Properties dead()
+    private static ExtendedProperties dead()
     {
-        return BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0.4F).sound(SoundType.CROP);
+        return ExtendedProperties.of(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0.4F).sound(SoundType.CROP)).flammable(60, 30);
     }
 
     private final String serializedName;

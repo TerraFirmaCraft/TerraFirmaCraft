@@ -51,7 +51,6 @@ public class TFCTags
         public static final TagKey<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles
         public static final TagKey<Block> CAN_BE_ICE_PILED = create("can_be_ice_piled"); // Blocks that need to be replaced with ice piles, either from ice freezing below it, or ice freezing inside the block itself.
         public static final TagKey<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
-        public static final TagKey<Block> SMALL_SPIKE = create("small_spike");
         public static final TagKey<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
         public static final TagKey<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
         public static final TagKey<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
@@ -78,6 +77,8 @@ public class TFCTags
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final TagKey<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
         public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
+        public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
+        public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
 
         private static TagKey<Block> create(String id)
         {
@@ -93,6 +94,7 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_JUG = create("usable_in_jug");
         public static final TagKey<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
+        public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
 
         private static TagKey<Fluid> create(String id)
         {
@@ -119,6 +121,10 @@ public class TFCTags
         public static final TagKey<Item> SCRAPABLE = create("scrapable");
         public static final TagKey<Item> KNIVES = create("knives");
         public static final TagKey<Item> HOES = create("hoes");
+        public static final TagKey<Item> HAMMERS = create("hammers");
+        public static final TagKey<Item> CHISELS = create("chisels");
+        public static final TagKey<Item> FLUX = create("flux");
+        public static final TagKey<Item> ANVILS = create("anvils");
         public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
         public static final TagKey<Item> CLAY_KNAPPING = create("clay_knapping");
         public static final TagKey<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
@@ -134,6 +140,7 @@ public class TFCTags
         public static final TagKey<Item> COW_FOOD = create("cow_food");
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
+        public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
 
         private static TagKey<Item> create(String id)
         {
@@ -146,6 +153,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
         public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
         public static final TagKey<EntityType<?>> DESTROYS_FLOATING_PLANTS = create("destroys_floating_plants");
+        public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = create("bubble_column_immune");
 
         private static TagKey<EntityType<?>> create(String id)
         {

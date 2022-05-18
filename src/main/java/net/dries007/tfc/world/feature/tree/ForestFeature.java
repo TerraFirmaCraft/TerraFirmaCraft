@@ -118,7 +118,7 @@ public class ForestFeature extends Feature<ForestConfig>
             {
                 return placeDeadTree(level, random, chunkBlockPos, mutablePos, entry, treeConfig.getPlacementConfig());
             }
-            feature.place(level, generator, random, mutablePos);
+            return feature.place(level, generator, random, mutablePos);
         }
         return false;
     }

@@ -11,8 +11,9 @@ import java.util.function.Supplier;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.synchronization.ArgumentTypes;
+import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.commands.synchronization.SuggestionProviders;
-
 import net.minecraftforge.common.util.Lazy;
 
 import com.mojang.brigadier.CommandDispatcher;
@@ -27,6 +28,11 @@ public final class TFCCommands
     public static void registerSuggestionProviders()
     {
         TFC_BIOMES.get();
+    }
+
+    public static void registerArgumentTypes()
+    {
+        ArgumentTypes.register("tfc:vein", VeinArgumentType.class, new EmptyArgumentSerializer<>(VeinArgumentType::new));
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher)

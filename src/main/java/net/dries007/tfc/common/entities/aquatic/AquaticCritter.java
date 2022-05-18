@@ -7,15 +7,20 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.fluids.TFCFluids;
+
 
 public class AquaticCritter extends WaterAnimal implements AquaticMob
 {
@@ -24,10 +29,13 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
         super(type, level);
     }
 
+
     @Override
     public void registerGoals()
     {
         super.registerGoals();
+        //Will avoid the player if attacked
+        goalSelector.addGoal(1, new CritterEscapeGoal<>(this, Player.class, 8.0F, 2.0D, 2.0D));
         // don't have the ability to swim, but will path randomly anyway, resulting in them walking around the seafloor.
         goalSelector.addGoal(5, new RandomSwimmingGoal(this, 1.0F, 30));
     }
@@ -43,4 +51,31 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
     {
         return new WaterBoundPathNavigation(this, pLevel);
     }
+
+    static class CritterEscapeGoal<T extends LivingEntity> extends AvoidEntityGoal<T>
+    {
+        public CritterEscapeGoal(PathfinderMob mob, Class<T> avoidClass, float maxDist, double walkSpeedModifier, double sprintSpeedModifier)
+        {
+            super(mob, avoidClass, maxDist, walkSpeedModifier, sprintSpeedModifier);
+        }
+
+        public boolean shouldEscape()
+        {
+            return mob.getLastHurtByMob() != null;
+        }
+
+        @Override
+        public boolean canUse()
+        {
+            return shouldEscape() && super.canUse();
+        }
+
+        @Override
+        public boolean canContinueToUse()
+        {
+            return toAvoid != null && (!pathNav.isDone() || mob.distanceToSqr(toAvoid) > 49.0D);
+        }
+
+    }
+
 }

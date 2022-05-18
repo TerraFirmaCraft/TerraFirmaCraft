@@ -22,6 +22,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public final class PacketHandler
 {
@@ -47,19 +48,23 @@ public final class PacketHandler
         register(EffectExpirePacket.class, EffectExpirePacket::encode, EffectExpirePacket::new, EffectExpirePacket::handle);
         register(UpdateClimateModelPacket.class, UpdateClimateModelPacket::encode, UpdateClimateModelPacket::decode, UpdateClimateModelPacket::handle);
 
-        registerDataManager(DataManagerSyncPacket.TMetal.class, Metal.MANAGER);
-        registerDataManager(DataManagerSyncPacket.TFuel.class, Fuel.MANAGER);
-        registerDataManager(DataManagerSyncPacket.TFertilizer.class, Fertilizer.MANAGER);
-        registerDataManager(DataManagerSyncPacket.TFoodDefinition.class, FoodCapability.MANAGER);
-        registerDataManager(DataManagerSyncPacket.THeatDefinition.class, HeatCapability.MANAGER);
-        registerDataManager(DataManagerSyncPacket.TItemSizeDefinition.class, ItemSizeManager.MANAGER);
+        registerDataManager(Metal.Packet.class, Metal.MANAGER);
+        registerDataManager(Fuel.Packet.class, Fuel.MANAGER);
+        registerDataManager(Fertilizer.Packet.class, Fertilizer.MANAGER);
+        registerDataManager(FoodCapability.Packet.class, FoodCapability.MANAGER);
+        registerDataManager(HeatCapability.Packet.class, HeatCapability.MANAGER);
+        registerDataManager(ItemSizeManager.Packet.class, ItemSizeManager.MANAGER);
+        registerDataManager(ClimateRange.Packet.class, ClimateRange.MANAGER);
+        registerDataManager(Drinkable.Packet.class, Drinkable.MANAGER);
 
         // Client -> Server
         register(SwitchInventoryTabPacket.class, SwitchInventoryTabPacket::encode, SwitchInventoryTabPacket::new, SwitchInventoryTabPacket::handle);
         register(PlaceBlockSpecialPacket.class, PlaceBlockSpecialPacket::new, PlaceBlockSpecialPacket::handle);
+        register(CycleChiselModePacket.class, CycleChiselModePacket::new, CycleChiselModePacket::handle);
         register(ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
         register(PlayerDrinkPacket.class, PlayerDrinkPacket::new, PlayerDrinkPacket::handle);
         register(RequestClimateModelPacket.class, RequestClimateModelPacket::new, RequestClimateModelPacket::handle);
+        register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
     }
 
     @SuppressWarnings("unchecked")
@@ -74,7 +79,7 @@ public final class PacketHandler
             },
             (packet, context) -> {
                 context.get().setPacketHandled(true);
-                context.get().enqueueWork(() -> packet.handle(manager));
+                context.get().enqueueWork(() -> packet.handle(context.get(), manager));
             });
     }
 

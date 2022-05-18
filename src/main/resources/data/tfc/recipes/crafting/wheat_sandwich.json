@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:sandwich_crafting",
+  "recipe": {
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+      "ZX ",
+      "YYY",
+      " X "
+    ],
+    "key": {
+      "X": {
+        "type": "tfc:not_rotten",
+        "ingredient": {
+          "item": "tfc:food/wheat_bread"
+        }
+      },
+      "Y": {
+        "type": "tfc:not_rotten",
+        "ingredient": {
+          "tag": "tfc:foods/usable_in_sandwich"
+        }
+      },
+      "Z": {
+        "tag": "tfc:knives"
+      }
+    },
+    "result": {
+      "item": "tfc:food/wheat_bread_sandwich",
+      "count": 2
+    }
+  }
+}

@@ -7,17 +7,21 @@
 package net.dries007.tfc.common.items;
 
 
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SoupItem extends DecayingItem
@@ -33,7 +37,7 @@ public class SoupItem extends DecayingItem
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new SoupHandler(SOUP_STATS);
+        return new SoupHandler(stack, SOUP_STATS);
     }
 
     @Override
@@ -53,19 +57,17 @@ public class SoupItem extends DecayingItem
         }
     }
 
-    public static class SoupHandler extends FoodHandler
+    public static class SoupHandler extends FoodHandler.Dynamic
     {
+        private final ItemStack stack;
         private ItemStack bowl;
+        private boolean initialized;
 
-        public SoupHandler(FoodRecord data)
+        public SoupHandler(ItemStack stack, FoodRecord data)
         {
             super(data);
+            this.stack = stack;
             this.bowl = ItemStack.EMPTY;
-        }
-
-        public void setFood(FoodRecord data)
-        {
-            this.data = data;
         }
 
         public void setBowl(ItemStack bowl)
@@ -73,27 +75,37 @@ public class SoupItem extends DecayingItem
             ItemStack copy = bowl.copy();
             copy.setCount(1);
             this.bowl = copy;
+            save();
         }
 
+        @NotNull
         @Override
-        public CompoundTag serializeNBT()
+        public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
         {
-            CompoundTag tag = super.serializeNBT();
-            tag.put("bowl", bowl.save(new CompoundTag()));
-            return tag;
+            if (cap == FoodCapability.CAPABILITY)
+            {
+                load();
+            }
+            return super.getCapability(cap, side);
         }
 
-        @Override
-        public void deserializeNBT(CompoundTag nbt)
+        private void save()
         {
-            super.deserializeNBT(nbt);
-            bowl = ItemStack.of(nbt.getCompound("bowl"));
+            final CompoundTag tag = stack.getOrCreateTag();
+            if (!bowl.isEmpty())
+            {
+                tag.put("bowl", bowl.save(new CompoundTag()));
+            }
         }
 
-        @Override
-        protected boolean isDynamic()
+        private void load()
         {
-            return true;
+            if (!initialized)
+            {
+                initialized = true;
+                final CompoundTag tag = stack.getOrCreateTag();
+                bowl = tag.contains("bowl") ? ItemStack.of(tag.getCompound("bowl")) : ItemStack.EMPTY;
+            }
         }
 
         public ItemStack getBowl()

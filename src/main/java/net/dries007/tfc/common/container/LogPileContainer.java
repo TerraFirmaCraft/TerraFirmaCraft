@@ -22,7 +22,7 @@ public class LogPileContainer extends BlockEntityContainer<LogPileBlockEntity>
 
     public LogPileContainer(LogPileBlockEntity logPile, Inventory playerInventory, int windowId)
     {
-        super(TFCContainerTypes.LOG_PILE.get(), windowId, logPile);
+        super(TFCMenuTypes.LOG_PILE.get(), windowId, logPile);
         logPile.onOpen(playerInventory.player);
     }
 

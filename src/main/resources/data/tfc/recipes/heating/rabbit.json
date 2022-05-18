@@ -2,7 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/rabbit"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/rabbit"
+    }
   },
   "result_item": {
     "item": "tfc:food/cooked_rabbit"

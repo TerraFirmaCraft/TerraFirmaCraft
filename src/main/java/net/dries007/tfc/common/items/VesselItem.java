@@ -7,8 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -27,10 +25,10 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -40,13 +38,15 @@ import net.dries007.tfc.common.capabilities.heat.HeatHandler;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
-import net.dries007.tfc.common.container.TFCContainerProviders;
+import net.dries007.tfc.common.container.TFCMenuProviders;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class VesselItem extends Item
 {
@@ -74,12 +74,12 @@ public class VesselItem extends Item
                     }
                     else
                     {
-                        NetworkHooks.openGui(serverPlayer, TFCContainerProviders.SMALL_VESSEL.of(stack, hand), ItemStackContainerProvider.write(hand));
+                        NetworkHooks.openGui(serverPlayer, TFCMenuProviders.SMALL_VESSEL.of(stack, hand), ItemStackContainerProvider.write(hand));
                     }
                 }
                 else if (vessel.mode() == VesselLike.Mode.MOLTEN_ALLOY)
                 {
-                    NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                    NetworkHooks.openGui(serverPlayer, TFCMenuProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
                 }
                 else
                 {
@@ -188,7 +188,9 @@ public class VesselItem extends Item
             if (!Helpers.isEmpty(inventory) || !alloy.isEmpty()) // Only show the 'contents' label if we actually have contents
             {
                 text.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-                switch (mode())
+
+                final Mode mode = mode();
+                switch (mode)
                 {
                     case INVENTORY -> Helpers.addInventoryTooltipInfo(inventory, text);
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
@@ -196,7 +198,7 @@ public class VesselItem extends Item
                             .append(" ")
                             .append(new TranslatableComponent("tfc.tooltip.fluid_units", alloy.getAmount()))
                             .append(" ")
-                            .append(new TranslatableComponent(mode() == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
+                            .append(new TranslatableComponent(mode == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
                         if (!Helpers.isEmpty(inventory))
                         {
                             text.add(new TranslatableComponent("tfc.tooltip.small_vessel.still_has_unmelted_items").withStyle(ChatFormatting.RED));
@@ -265,7 +267,14 @@ public class VesselItem extends Item
         @Override
         public FluidStack drain(int maxDrain, FluidAction action)
         {
-            if (mode() == Mode.MOLTEN_ALLOY)
+            return mode() == Mode.MOLTEN_ALLOY ? drainIgnoringTemperature(maxDrain, action) : FluidStack.EMPTY;
+        }
+
+        @Override
+        public FluidStack drainIgnoringTemperature(int maxDrain, FluidAction action)
+        {
+            final Mode mode = mode();
+            if (mode == Mode.MOLTEN_ALLOY || mode == Mode.SOLID_ALLOY)
             {
                 final Metal result = alloy.getResult();
                 final int amount = alloy.removeAlloy(maxDrain, action.simulate());
@@ -308,6 +317,15 @@ public class VesselItem extends Item
             return result;
         }
 
+        @Override
+        public CompoundTag serializeNBT()
+        {
+            return new CompoundTag(); // Unused since we serialize directly to stack tag
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag nbt) {}
+
         /**
          * Updates the heat capacity.
          * When in inventory mode, the heat capacity will be the weighted average of the contents, based on stack size.
@@ -335,7 +353,11 @@ public class VesselItem extends Item
             {
                 value = alloy.getResult().getHeatCapacity();
             }
-            heat.setHeatCapacity(value);
+            if (value != heat.getHeatCapacity())
+            {
+                heat.setHeatCapacity(value);
+                save(); // Save, since we've changed the heat capacity, and possibly the temperature
+            }
         }
 
         /**
@@ -359,9 +381,19 @@ public class VesselItem extends Item
                         final ItemStack outputStack = recipe.assemble(wrapper);
                         final FluidStack outputFluid = recipe.getOutputFluid(wrapper);
 
-                        // Multiply the contents by the inventory count, since heat recipes only apply to single stack sizes
-                        Helpers.setCountSafely(outputStack, outputStack.getCount() * stack.getCount(), getSlotStackLimit(i));
-                        outputFluid.setAmount(outputFluid.getAmount() * stack.getCount());
+                        if (!outputStack.isEmpty())
+                        {
+                            // Multiply the contents by the inventory count, since heat recipes only apply to single stack sizes
+                            outputStack.setCount(Math.min(
+                                outputStack.getCount() * stack.getCount(),
+                                Math.min(outputStack.getMaxStackSize(), getSlotStackLimit(i))
+                            ));
+                        }
+
+                        if (!outputFluid.isEmpty())
+                        {
+                            outputFluid.setAmount(outputFluid.getAmount() * stack.getCount());
+                        }
 
                         // Apply item output
                         inventory.setStackInSlot(i, outputStack);
@@ -399,6 +431,11 @@ public class VesselItem extends Item
                 final CompoundTag tag = stack.getOrCreateTag();
                 inventory.deserializeNBT(tag.getCompound("inventory"));
                 alloy.deserializeNBT(tag.getCompound("alloy"));
+
+                // Deserialize heat capacity before we deserialize heat
+                // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
+                // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
+                heat.setHeatCapacity(tag.getFloat("heat_capacity"));
                 heat.deserializeNBT(tag.getCompound("heat"));
 
                 // Additionally, we need to update the contents of our cached recipes. Since we can experience modification (copy) which will invalidate our cache, that would not trigger setAndUpdateSlots
@@ -418,6 +455,7 @@ public class VesselItem extends Item
             tag.put("inventory", inventory.serializeNBT());
             tag.put("alloy", alloy.serializeNBT());
             tag.put("heat", heat.serializeNBT());
+            tag.putFloat("heat_capacity", heat.getHeatCapacity());
         }
     }
 }

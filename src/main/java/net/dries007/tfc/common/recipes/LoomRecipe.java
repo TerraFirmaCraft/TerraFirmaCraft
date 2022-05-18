@@ -6,26 +6,22 @@
 
 package net.dries007.tfc.common.recipes;
 
-import java.util.Objects;
-
-import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
+// todo: refactor to use ItemStackIngredient instead of Ingredient + count, for consistency reasons
 public class LoomRecipe extends SimpleItemRecipe
 {
     public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(LoomRecipe::getValidItems, TFCRecipeTypes.LOOM);
@@ -47,7 +43,6 @@ public class LoomRecipe extends SimpleItemRecipe
     private final int stepsRequired;
     private final ResourceLocation inProgressTexture;
 
-
     public LoomRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider result, int inputCount, int stepsRequired, ResourceLocation inProgressTexture)
     {
         super(id, ingredient, result);
@@ -66,42 +61,6 @@ public class LoomRecipe extends SimpleItemRecipe
     public RecipeType<?> getType()
     {
         return TFCRecipeTypes.LOOM.get();
-    }
-
-    @Override
-    public boolean isIncomplete()
-    {
-        return super.isIncomplete();
-    }
-
-    @Override
-    public boolean canCraftInDimensions(int width, int height)
-    {
-        return super.canCraftInDimensions(width, height);
-    }
-
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(ItemStackInventory inv)
-    {
-        return super.getRemainingItems(inv);
-    }
-
-    @Override
-    public boolean isSpecial()
-    {
-        return super.isSpecial();
-    }
-
-    @Override
-    public String getGroup()
-    {
-        return super.getGroup();
-    }
-
-    @Override
-    public ItemStack getToastSymbol()
-    {
-        return super.getToastSymbol();
     }
 
     public int getInputCount()
@@ -124,11 +83,11 @@ public class LoomRecipe extends SimpleItemRecipe
         @Override
         public LoomRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            final Ingredient ingredient = Ingredient.fromJson(Objects.requireNonNull(json.get("ingredient"), "Missing required field 'ingredient'"));
+            final Ingredient ingredient = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
             final ItemStackProvider stack = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final int inputCount = json.get("input_count").getAsInt();
-            final int stepsRequired = json.get("steps_required").getAsInt();
-            final ResourceLocation inProgressTexture = new ResourceLocation(JsonHelpers.convertToString(json.get("in_progress_texture"), "in_progress_texture"));
+            final int inputCount = JsonHelpers.getAsInt(json, "input_count");
+            final int stepsRequired = JsonHelpers.getAsInt(json, "steps_required");
+            final ResourceLocation inProgressTexture = new ResourceLocation(JsonHelpers.getAsString(json, "in_progress_texture"));
             return new LoomRecipe(recipeId, ingredient, stack, inputCount, stepsRequired, inProgressTexture);
         }
 

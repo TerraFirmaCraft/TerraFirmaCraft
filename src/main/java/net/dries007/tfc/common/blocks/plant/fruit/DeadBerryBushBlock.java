@@ -55,7 +55,7 @@ public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLogg
         }
         else
         {
-            FluidHelpers.tickFluid(level, currentPos, state, this);
+            FluidHelpers.tickFluid(level, currentPos, state);
             return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
         }
     }

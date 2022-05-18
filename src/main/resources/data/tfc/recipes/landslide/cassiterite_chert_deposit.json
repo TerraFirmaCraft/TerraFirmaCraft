@@ -2,5 +2,5 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:landslide",
   "ingredient": "tfc:deposit/cassiterite/chert",
-  "result": "tfc:rock/gravel/chert"
+  "result": "tfc:deposit/cassiterite/chert"
 }

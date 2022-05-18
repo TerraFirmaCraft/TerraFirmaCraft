@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.ImmutableMap;
@@ -50,7 +52,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
 
     protected static final Map<BooleanProperty, VoxelShape> SHAPES_BY_PROPERTY = ImmutableMap.<BooleanProperty, VoxelShape>builder().put(UP, UP_SHAPE).put(DOWN, DOWN_SHAPE).put(NORTH, NORTH_SHAPE).put(SOUTH, SOUTH_SHAPE).put(EAST, EAST_SHAPE).put(WEST, WEST_SHAPE).build();
 
-    public static CreepingPlantBlock create(IPlant plant, Properties properties)
+    public static CreepingPlantBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new CreepingPlantBlock(properties)
         {
@@ -64,7 +66,7 @@ public abstract class CreepingPlantBlock extends PlantBlock
 
     protected final Map<BlockState, VoxelShape> shapeCache;
 
-    protected CreepingPlantBlock(Properties properties)
+    protected CreepingPlantBlock(ExtendedProperties properties)
     {
         super(properties);
 

@@ -22,6 +22,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -38,7 +39,7 @@ public class LooseRockBlock extends GroundcoverBlock implements IFluidLoggable
 
     public LooseRockBlock(Properties properties)
     {
-        super(properties, Shapes.empty(), null);
+        super(ExtendedProperties.of(properties), Shapes.empty(), null);
 
         registerDefaultState(defaultBlockState().setValue(COUNT, 1));
     }

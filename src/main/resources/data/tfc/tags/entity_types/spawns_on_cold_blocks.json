@@ -3,6 +3,6 @@
   "replace": false,
   "values": [
     "tfc:penguin",
-    "minecraft:polar_bear"
+    "tfc:polar_bear"
   ]
 }

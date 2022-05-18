@@ -7,12 +7,11 @@
 package net.dries007.tfc.world;
 
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.chunkdata.RockData;
 
 public class ChunkBaseBlockSource
@@ -23,13 +22,13 @@ public class ChunkBaseBlockSource
     }
 
     private final RockData rockData;
-    private final Sampler<Biome> biomeSampler;
+    private final Sampler<BiomeVariants> biomeSampler;
     private final BlockState[] cachedFluidStates;
     private final LevelAccessor level;
 
     private final BlockState freshWater = Blocks.WATER.defaultBlockState(), saltWater = TFCBlocks.SALT_WATER.get().defaultBlockState();
 
-    public ChunkBaseBlockSource(LevelAccessor level, RockData rockData, Sampler<Biome> biomeSampler)
+    public ChunkBaseBlockSource(LevelAccessor level, RockData rockData, Sampler<BiomeVariants> biomeSampler)
     {
         this.level = level;
         this.rockData = rockData;
@@ -50,7 +49,7 @@ public class ChunkBaseBlockSource
             BlockState state = cachedFluidStates[index];
             if (state == null)
             {
-                state = TFCBiomes.getExtensionOrThrow(level, biomeSampler.get(x, z)).variants().isSalty() ? saltWater : freshWater;
+                state = biomeSampler.get(x, z).isSalty() ? saltWater : freshWater;
                 cachedFluidStates[index] = state;
             }
             return state;

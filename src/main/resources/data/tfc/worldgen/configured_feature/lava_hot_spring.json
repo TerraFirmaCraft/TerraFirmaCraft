@@ -1,0 +1,116 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:hot_spring",
+  "config": {
+    "fluid_state": "minecraft:lava",
+    "radius": 10,
+    "allow_underwater": true,
+    "replaces_on_fluid_contact": [
+      {
+        "replace": [
+          "tfc:rock/raw/rhyolite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/magma/rhyolite",
+            "weight": 1
+          },
+          {
+            "block": "tfc:rock/hardened/rhyolite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/basalt"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/magma/basalt",
+            "weight": 1
+          },
+          {
+            "block": "tfc:rock/hardened/basalt",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/andesite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/magma/andesite",
+            "weight": 1
+          },
+          {
+            "block": "tfc:rock/hardened/andesite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/dacite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/magma/dacite",
+            "weight": 1
+          },
+          {
+            "block": "tfc:rock/hardened/dacite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/granite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/magma/granite",
+            "weight": 1
+          },
+          {
+            "block": "tfc:rock/hardened/granite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/diorite"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/magma/diorite",
+            "weight": 1
+          },
+          {
+            "block": "tfc:rock/hardened/diorite",
+            "weight": 2
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/gabbro"
+        ],
+        "with": [
+          {
+            "block": "tfc:rock/magma/gabbro",
+            "weight": 1
+          },
+          {
+            "block": "tfc:rock/hardened/gabbro",
+            "weight": 2
+          }
+        ]
+      }
+    ]
+  }
+}

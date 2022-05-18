@@ -6,37 +6,66 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.Random;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.util.Helpers;
 
-public class BellowsBlock extends BaseEntityBlock implements IForgeBlockExtension, EntityBlockExtension
+public class BellowsBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
+    private static VoxelShape createShapeFor(Direction direction, float extension)
+    {
+        return Shapes.or(makeFrontShape(direction), makeMiddleShape(direction, extension), makeEndShape(direction, extension));
+    }
+
+    private static VoxelShape makeFrontShape(Direction direction)
+    {
+        return Helpers.rotateShape(direction, 0, 0, 0, 16, 16, 2);
+    }
+
+    private static VoxelShape makeMiddleShape(Direction direction, float extension)
+    {
+        return Helpers.rotateShape(direction, 2, 2, 2, 14, 14, extension * 16);
+    }
+
+    private static VoxelShape makeEndShape(Direction direction, float extension)
+    {
+        return Helpers.rotateShape(direction, 0, 0, extension * 16, 16, 16, extension * 16 + 2);
+    }
+
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+    private static final VoxelShape[] COMPLETE_SHAPES = Helpers.computeHorizontalShapes(d -> createShapeFor(d, 0.875f));
 
     private final ExtendedProperties properties;
 
     public BellowsBlock(ExtendedProperties properties)
     {
-        super(properties.properties());
+        super(properties, InventoryRemoveBehavior.NOOP);
         this.properties = properties;
 
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH));
@@ -49,10 +78,28 @@ public class BellowsBlock extends BaseEntityBlock implements IForgeBlockExtensio
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        final Direction direction = state.getValue(FACING);
+        return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).map(bellows -> {
+            final float ext = 1f - bellows.getExtensionLength();
+            return ext == 0.875f ? COMPLETE_SHAPES[direction.get2DDataValue()] : createShapeFor(direction, ext);
+        }).orElse(COMPLETE_SHAPES[direction.get2DDataValue()]);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    {
+        state.updateNeighbourShapes(level, pos, 3);
+    }
+
+    @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        Direction direction = context.getHorizontalDirection();
-        boolean isShifting = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
+        final Direction direction = context.getHorizontalDirection();
+        final boolean isShifting = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
         return defaultBlockState().setValue(FACING, isShifting ? direction.getOpposite() : direction);
     }
 
@@ -60,6 +107,7 @@ public class BellowsBlock extends BaseEntityBlock implements IForgeBlockExtensio
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
+        level.scheduleTick(pos, this, 2);
         return level.getBlockEntity(pos, TFCBlockEntities.BELLOWS.get()).map(BellowsBlockEntity::onRightClick).orElse(InteractionResult.PASS);
     }
 
@@ -67,6 +115,13 @@ public class BellowsBlock extends BaseEntityBlock implements IForgeBlockExtensio
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(FACING);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public PushReaction getPistonPushReaction(BlockState state)
+    {
+        return PushReaction.DESTROY;
     }
 
     @Override

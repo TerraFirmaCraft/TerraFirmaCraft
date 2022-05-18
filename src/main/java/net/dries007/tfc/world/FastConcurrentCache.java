@@ -7,19 +7,20 @@
 package net.dries007.tfc.world;
 
 import java.util.Arrays;
-import org.jetbrains.annotations.Nullable;
+import java.util.concurrent.locks.StampedLock;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
 
 import it.unimi.dsi.fastutil.HashCommon;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A concurrent (safe to read and write between multiple threads) positional based, lossy, cache.
  */
 public class FastConcurrentCache<T>
 {
-    private final Object lock = new Object();
+    private final StampedLock lock = new StampedLock();
 
     private final long[] keys;
     private final T[] values;
@@ -42,24 +43,27 @@ public class FastConcurrentCache<T>
     {
         final long key = ChunkPos.asLong(x, z);
         final int index = (int) HashCommon.mix(key) & mask;
-        synchronized (lock)
+        final long stamp = lock.readLock();
+
+        T t = null;
+        if (keys[index] == key)
         {
-            if (keys[index] == key)
-            {
-                return values[index];
-            }
+            t = values[index];
         }
-        return null;
+
+        lock.unlockRead(stamp);
+        return t;
     }
 
     public void set(int x, int z, T value)
     {
         final long key = ChunkPos.asLong(x, z);
         final int index = (int) HashCommon.mix(key) & mask;
-        synchronized (lock)
-        {
-            keys[index] = key;
-            values[index] = value;
-        }
+        final long stamp = lock.writeLock();
+
+        keys[index] = key;
+        values[index] = value;
+
+        lock.unlockWrite(stamp);
     }
 }

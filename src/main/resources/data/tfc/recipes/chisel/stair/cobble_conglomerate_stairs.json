@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:chisel",
+  "ingredient": "tfc:rock/cobble/conglomerate",
+  "result": "tfc:rock/cobble/conglomerate_stairs",
+  "mode": "stair"
+}

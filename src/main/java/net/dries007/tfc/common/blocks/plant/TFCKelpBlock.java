@@ -20,20 +20,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
 public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLoggable
 {
-    public static TFCKelpBlock create(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
+    public static TFCKelpBlock create(Properties properties, Supplier<? extends Block> headBlock, Direction direction, VoxelShape shape, FluidProperty fluid)
     {
-        return new TFCKelpBlock(properties.lootFrom(headBlock), headBlock, shape, direction)
+        return new TFCKelpBlock(ExtendedProperties.of(properties.lootFrom(headBlock)), headBlock, shape, direction)
         {
             @Override
             public FluidProperty getFluidProperty()
@@ -45,7 +45,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
 
     private final Supplier<? extends Block> headBlock;
 
-    protected TFCKelpBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
+    protected TFCKelpBlock(ExtendedProperties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
         super(properties, headBlock, shape, direction);
         this.headBlock = headBlock;
@@ -70,7 +70,7 @@ public abstract class TFCKelpBlock extends BodyPlantBlock implements IFluidLogga
         }
         if (scheduleFluidTicks)
         {
-            FluidHelpers.tickFluid(level, currentPos, state, this);
+            FluidHelpers.tickFluid(level, currentPos, state);
         }
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }

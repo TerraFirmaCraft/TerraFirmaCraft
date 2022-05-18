@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
-import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +13,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * An ingredient which respects non-rotten foods
@@ -46,9 +45,12 @@ public class NotRottenIngredient extends DelegateIngredient
     }
 
     @Override
-    protected ItemStack[] getDefaultItems()
+    protected @Nullable ItemStack testDefaultItem(ItemStack stack)
     {
-        return FoodCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(ItemStack::new).toArray(ItemStack[]::new);
+        return stack.getCapability(FoodCapability.CAPABILITY).map(food -> {
+            food.setNonDecaying();
+            return stack;
+        }).orElse(null);
     }
 
     public enum Serializer implements IIngredientSerializer<NotRottenIngredient>

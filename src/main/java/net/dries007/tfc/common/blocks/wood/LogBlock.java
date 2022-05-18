@@ -22,20 +22,24 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public class LogBlock extends RotatedPillarBlock
+public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
 {
     public static final BooleanProperty NATURAL = TFCBlockStateProperties.NATURAL;
 
     @Nullable private final Supplier<? extends Block> stripped;
+    private final ExtendedProperties properties;
 
-    public LogBlock(Properties properties, @Nullable Supplier<? extends Block> stripped)
+    public LogBlock(ExtendedProperties properties, @Nullable Supplier<? extends Block> stripped)
     {
-        super(properties);
+        super(properties.properties());
         this.stripped = stripped;
+        this.properties = properties;
 
         registerDefaultState(defaultBlockState().setValue(NATURAL, false));
     }
@@ -54,6 +58,12 @@ public class LogBlock extends RotatedPillarBlock
             final int toolModifier = ForgeHooks.isCorrectToolForDrops(state, player) ? 30 : 100;
             return player.getDigSpeed(state, pos) / baseSpeed / (float) toolModifier;
         }
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 
     @Override

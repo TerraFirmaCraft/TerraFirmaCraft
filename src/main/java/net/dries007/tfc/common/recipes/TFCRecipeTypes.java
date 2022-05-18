@@ -22,6 +22,7 @@ public class TFCRecipeTypes
 
     public static final RegistryObject<RecipeType<CollapseRecipe>> COLLAPSE = register("collapse");
     public static final RegistryObject<RecipeType<LandslideRecipe>> LANDSLIDE = register("landslide");
+    public static final RegistryObject<RecipeType<ChiselRecipe>> CHISEL = register("chisel");
     public static final RegistryObject<RecipeType<HeatingRecipe>> HEATING = register("heating");
     public static final RegistryObject<RecipeType<QuernRecipe>> QUERN = register("quern");
     public static final RegistryObject<RecipeType<PotRecipe>> POT = register("pot");
@@ -36,6 +37,8 @@ public class TFCRecipeTypes
     public static final RegistryObject<RecipeType<SealedBarrelRecipe>> BARREL_SEALED = register("barrel_sealed");
     public static final RegistryObject<RecipeType<InstantBarrelRecipe>> BARREL_INSTANT = register("barrel_instant");
     public static final RegistryObject<RecipeType<BloomeryRecipe>> BLOOMERY = register("bloomery");
+    public static final RegistryObject<RecipeType<AnvilRecipe>> ANVIL = register("anvil");
+    public static final RegistryObject<RecipeType<WeldingRecipe>> WELDING = register("welding");
 
     public static void registerPotRecipeOutputTypes()
     {

@@ -83,7 +83,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
         // Draw the temperature indicator
-        int temperature = (int) (51 * blockEntity.getSyncableData().get(CrucibleBlockEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
+        int temperature = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
             blit(poseStack, leftPos + 7, topPos + 131 - Math.min(temperature, 51), 176, 0, 15, 5);

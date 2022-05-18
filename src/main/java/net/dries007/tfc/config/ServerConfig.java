@@ -52,6 +52,8 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    // Blocks - Anvil
+    public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
     // Blocks - Composter
@@ -93,6 +95,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
     public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
+    public final ForgeConfigSpec.BooleanValue enableChiselsStartCollapses;
     public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
     public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
@@ -148,6 +151,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue chickenEggTicks;
     public final ForgeConfigSpec.DoubleValue chickenMinEggFamiliarity;
     public final ForgeConfigSpec.IntValue chickenHatchDays;
+
+    // Below Everything
+    public final ForgeConfigSpec.BooleanValue farmlandMakesTheBestRaceTracks;
 
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -212,6 +218,10 @@ public class ServerConfig
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("anvil");
+
+        anvilAcceptableWorkRange = builder.apply("anvilAcceptableWorkRange").comment("The number of pixels that the anvil's result may be off by, but still count as recipe completion. By defualt this requires pixel perfect accuracy.").defineInRange("anvilAcceptableWorkRange", 0, 0, 150);
+
         innerBuilder.pop().push("barrel");
 
         barrelCapacity = builder.apply("barrelCapacity").comment("Tank capacity of a barrel (in mB).").defineInRange("barrelCapacity", 10000, 0, Integer.MAX_VALUE);
@@ -269,6 +279,7 @@ public class ServerConfig
         enableBlockCollapsing = builder.apply("enableBlockCollapsing").comment("Enable rock collapsing when mining raw stone blocks").define("enableBlockCollapsing", true);
         enableExplosionCollapsing = builder.apply("enableExplosionCollapsing").comment("Enable explosions causing immediate collapses.").define("enableExplosionCollapsing", true);
         enableBlockLandslides = builder.apply("enableBlockLandslides").comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").define("enableBlockLandslides", true);
+        enableChiselsStartCollapses = builder.apply("enableChiselsStartCollapses").comment("Enable chisels starting collapses").define("enableChiselsStartCollapses", true);
 
         collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
         collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
@@ -340,8 +351,8 @@ public class ServerConfig
         chickenMinEggFamiliarity = builder.apply("chickenMinEggFamiliarity").comment("Minimum familiarity [0-1] needed to lay eggs. Set above 1 to disable egg laying.").defineInRange("chickenMinEggFamiliarity", 0.15d, 0, Float.MAX_VALUE);
         chickenHatchDays = builder.apply("chickenHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("chickenHatchDays", 8, 0, Integer.MAX_VALUE);
 
-        innerBuilder.pop();
+        innerBuilder.pop(3);
 
-        innerBuilder.pop().pop();
+        farmlandMakesTheBestRaceTracks = builder.apply("farmlandMakesTheBestRaceTracks").define("farmlandMakesTheBestRaceTracks", false);
     }
 }

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities;
 
 import java.util.function.Supplier;
 
+import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
@@ -34,6 +35,7 @@ public class Faunas
     public static final FaunaType<TFCPufferfish> PUFFERFISH = registerFish(TFCEntities.PUFFERFISH);
     public static final FaunaType<TFCSalmon> SALMON = registerFish(TFCEntities.SALMON);
     public static final FaunaType<AquaticCritter> LOBSTER = registerFish(TFCEntities.LOBSTER);
+    public static final FaunaType<FreshWaterCritter> CRAYFISH = registerFish(TFCEntities.CRAYFISH);
     public static final FaunaType<AquaticCritter> ISOPOD = registerFish(TFCEntities.ISOPOD);
     public static final FaunaType<AquaticCritter> HORSESHOE_CRAB = registerFish(TFCEntities.HORSESHOE_CRAB);
     public static final FaunaType<TFCDolphin> DOLPHIN = registerFish(TFCEntities.DOLPHIN);
@@ -42,6 +44,12 @@ public class Faunas
     public static final FaunaType<AmphibiousAnimal> TURTLE = registerAnimal(TFCEntities.TURTLE);
     public static final FaunaType<AmphibiousAnimal> PENGUIN = registerAnimal(TFCEntities.PENGUIN);
     public static final FaunaType<Predator> POLAR_BEAR = registerAnimal(TFCEntities.POLAR_BEAR);
+    public static final FaunaType<Predator> GRIZZLY_BEAR = registerAnimal(TFCEntities.GRIZZLY_BEAR);
+    public static final FaunaType<Predator> BLACK_BEAR = registerAnimal(TFCEntities.BLACK_BEAR);
+    public static final FaunaType<FelinePredator> COUGAR = registerAnimal(TFCEntities.COUGAR);
+    public static final FaunaType<FelinePredator> PANTHER = registerAnimal(TFCEntities.PANTHER);
+    public static final FaunaType<FelinePredator> LION = registerAnimal(TFCEntities.LION);
+    public static final FaunaType<FelinePredator> SABERTOOTH = registerAnimal(TFCEntities.SABERTOOTH);
     public static final FaunaType<TFCSquid> SQUID = registerFish(TFCEntities.SQUID);
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
@@ -58,6 +66,7 @@ public class Faunas
         registerSpawnPlacement(PUFFERFISH);
         registerSpawnPlacement(SALMON);
         registerSpawnPlacement(LOBSTER);
+        registerSpawnPlacement(CRAYFISH);
         registerSpawnPlacement(ISOPOD);
         registerSpawnPlacement(HORSESHOE_CRAB);
         registerSpawnPlacement(DOLPHIN);
@@ -66,6 +75,12 @@ public class Faunas
         registerSpawnPlacement(TURTLE);
         registerSpawnPlacement(PENGUIN);
         registerSpawnPlacement(POLAR_BEAR);
+        registerSpawnPlacement(GRIZZLY_BEAR);
+        registerSpawnPlacement(BLACK_BEAR);
+        registerSpawnPlacement(COUGAR);
+        registerSpawnPlacement(PANTHER);
+        registerSpawnPlacement(LION);
+        registerSpawnPlacement(SABERTOOTH);
         registerSpawnPlacement(SQUID);
         registerSpawnPlacement(OCTOPOTEUTHIS);
         registerSpawnPlacement(PIG);

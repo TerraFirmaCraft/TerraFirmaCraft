@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/knife_blade/bronze"
+  },
+  "second_input": {
+    "item": "tfc:metal/knife_blade/bronze"
+  },
+  "tier": 1,
+  "result": {
+    "item": "tfc:metal/shears/bronze"
+  }
+}

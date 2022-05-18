@@ -27,15 +27,23 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
+public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IForgeBlockExtension
 {
+    public static void doParticles(ServerLevel level, double x, double y, double z, int count)
+    {
+        level.sendParticles(TFCParticles.LEAF.get(), x, y, z, count, Helpers.triangle(level.random), Helpers.triangle(level.random), Helpers.triangle(level.random), 0.3f);
+    }
+
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
 
-    public static TFCLeavesBlock create(Properties properties, int maxDecayDistance)
+    public static TFCLeavesBlock create(ExtendedProperties properties, int maxDecayDistance)
     {
         final IntegerProperty distanceProperty = getDistanceProperty(maxDecayDistance);
         return new TFCLeavesBlock(properties, maxDecayDistance)
@@ -59,14 +67,22 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     /* The maximum value of the decay property. */
     private final int maxDecayDistance;
+    private final ExtendedProperties properties;
 
-    protected TFCLeavesBlock(Properties properties, int maxDecayDistance)
+    protected TFCLeavesBlock(ExtendedProperties properties, int maxDecayDistance)
     {
-        super(properties);
+        super(properties.properties());
         this.maxDecayDistance = maxDecayDistance;
+        this.properties = properties;
 
         // Distance is dependent on tree species
         registerDefaultState(stateDefinition.any().setValue(getDistanceProperty(), 1).setValue(PERSISTENT, false));
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 
     /**
@@ -89,14 +105,14 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public int getLightBlock(BlockState state, BlockGetter worldIn, BlockPos pos)
+    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
         return 1;
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return Shapes.empty();
     }
@@ -110,33 +126,38 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public void tick(BlockState state, ServerLevel worldIn, BlockPos pos, Random rand)
+    public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        int distance = updateDistance(worldIn, pos);
+        int distance = updateDistance(level, pos);
         if (distance > maxDecayDistance)
         {
             if (!state.getValue(PERSISTENT))
             {
-                worldIn.removeBlock(pos, false);
+                level.removeBlock(pos, false);
+                doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
             }
             else
             {
-                worldIn.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
+                level.setBlock(pos, state.setValue(getDistanceProperty(), maxDecayDistance), 3);
             }
         }
         else
         {
-            worldIn.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
+            level.setBlock(pos, state.setValue(getDistanceProperty(), distance), 3);
         }
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
-            Helpers.slowEntityInBlock(entityIn, 0.3f, 5);
+            Helpers.slowEntityInBlock(entity, 0.3f, 5);
+        }
+        if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
+        {
+            doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
         }
     }
 
@@ -163,14 +184,14 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock
      */
     protected abstract IntegerProperty getDistanceProperty();
 
-    private int updateDistance(LevelAccessor worldIn, BlockPos pos)
+    private int updateDistance(LevelAccessor level, BlockPos pos)
     {
         int distance = 1 + maxDecayDistance;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : Direction.values())
         {
             mutablePos.set(pos).move(direction);
-            distance = Math.min(distance, getDistance(worldIn.getBlockState(mutablePos)) + 1);
+            distance = Math.min(distance, getDistance(level.getBlockState(mutablePos)) + 1);
             if (distance == 1)
             {
                 break;

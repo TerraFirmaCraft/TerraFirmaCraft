@@ -44,6 +44,7 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
     }
 
     private final ModelPart neck;
+    private final ModelPart head;
     private final ModelPart body;
     private final ModelPart legBL;
     private final ModelPart legBR;
@@ -61,7 +62,7 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
     {
         body = root.getChild("body");
         neck = body.getChild("neck");
-        ModelPart head = neck.getChild("head");
+        head = neck.getChild("head");
         wool_body_f = body.getChild("wool_body_f");
         wool_head_f = head.getChild("wool_head_f");
         wool_neck_f = neck.getChild("wool_neck_f");
@@ -79,11 +80,13 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
     public void setupAnim(WoolyAnimal animal, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         wool_body_f.visible = wool_head_f.visible = wool_neck_f.visible = wool_legBL_f.visible = wool_legBR_f.visible = wool_legFL_f.visible = wool_legFR_f.visible = animal.hasProduct();
-        neck.xRot = headPitch * ((float)Math.PI / 180F);
-        neck.yRot = headYaw * ((float)Math.PI / 180F);
+        head.xRot = headPitch * ((float) Math.PI / 240F);
+        neck.xRot = headPitch * ((float) Math.PI / 720F);
+        head.yRot = headYaw * ((float) Math.PI / 360F);
+        neck.yRot = headYaw * ((float) Math.PI / 360F);
         legBR.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        legBL.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-        legFR.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+        legBL.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+        legFR.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         legFL.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
     }
 

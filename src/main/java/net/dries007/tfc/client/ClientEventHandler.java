@@ -20,8 +20,8 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.SquidModel;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -35,7 +35,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.FishingRodItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
@@ -45,22 +46,20 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import net.dries007.tfc.client.model.*;
+import net.dries007.tfc.client.model.ContainedFluidModel;
 import net.dries007.tfc.client.model.entity.*;
-import net.dries007.tfc.client.particle.BubbleParticle;
-import net.dries007.tfc.client.particle.SteamParticle;
-import net.dries007.tfc.client.particle.TFCParticles;
-import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.particle.*;
 import net.dries007.tfc.client.render.blockentity.*;
+import net.dries007.tfc.client.render.entity.*;
 import net.dries007.tfc.client.screen.*;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.ItemPropertyProviderBlock;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.common.container.TFCMenuTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.PanItem;
@@ -68,7 +67,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import org.slf4j.Logger;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -96,24 +94,28 @@ public final class ClientEventHandler
         event.enqueueWork(() -> {
 
             // Not thread-safe
-            MenuScreens.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
-            MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
-            MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
-            MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
-            MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
-            MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
-            MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
-            MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
-            MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
-            MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
-            MenuScreens.register(TFCContainerTypes.CRUCIBLE.get(), CrucibleScreen::new);
-            MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
-            MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
-            MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
-            MenuScreens.register(TFCContainerTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
-            MenuScreens.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
-            MenuScreens.register(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
-            MenuScreens.register(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
+            MenuScreens.register(TFCMenuTypes.CALENDAR.get(), CalendarScreen::new);
+            MenuScreens.register(TFCMenuTypes.NUTRITION.get(), NutritionScreen::new);
+            MenuScreens.register(TFCMenuTypes.CLIMATE.get(), ClimateScreen::new);
+            MenuScreens.register(TFCMenuTypes.WORKBENCH.get(), CraftingScreen::new);
+
+            MenuScreens.register(TFCMenuTypes.FIREPIT.get(), FirepitScreen::new);
+            MenuScreens.register(TFCMenuTypes.GRILL.get(), GrillScreen::new);
+            MenuScreens.register(TFCMenuTypes.POT.get(), PotScreen::new);
+            MenuScreens.register(TFCMenuTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
+            MenuScreens.register(TFCMenuTypes.LOG_PILE.get(), LogPileScreen::new);
+            MenuScreens.register(TFCMenuTypes.NEST_BOX.get(), NestBoxScreen::new);
+            MenuScreens.register(TFCMenuTypes.CRUCIBLE.get(), CrucibleScreen::new);
+            MenuScreens.register(TFCMenuTypes.BARREL.get(), BarrelScreen::new);
+            MenuScreens.register(TFCMenuTypes.ANVIL.get(), AnvilScreen::new);
+            MenuScreens.register(TFCMenuTypes.ANVIL_PLAN.get(), AnvilPlanScreen::new);
+
+            MenuScreens.register(TFCMenuTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCMenuTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCMenuTypes.LEATHER_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCMenuTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
+            MenuScreens.register(TFCMenuTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
+            MenuScreens.register(TFCMenuTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
         });
 
         event.enqueueWork(() -> {
@@ -147,14 +149,14 @@ public final class ClientEventHandler
                         return 1F;
                     });
 
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("rock"), (stack, level, entity, unused) -> {
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ROCK_PROPERTY.id(), (stack, level, entity, unused) -> {
                         final BlockState state = PanItem.readState(stack);
-                        return state != null ? OreDeposit.rockValue(state) : 0F;
+                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ROCK_PROPERTY) : 0f;
                     });
 
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("ore"), (stack, level, entity, unused) -> {
+                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ORE_PROPERTY.id(), (stack, level, entity, unused) -> {
                         final BlockState state = PanItem.readState(stack);
-                        return state != null ? OreDeposit.oreValue(state) : 0F;
+                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ORE_PROPERTY) : 0F;
                     });
 
                     ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
@@ -175,6 +177,8 @@ public final class ClientEventHandler
 
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
+        ClientRegistry.registerKeyBinding(TFCKeyBindings.CYCLE_CHISEL_MODE);
+        ClientRegistry.registerKeyBinding(TFCKeyBindings.STACK_FOOD);
 
         // Render Types
         final RenderType solid = RenderType.solid();
@@ -275,6 +279,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), ctx -> new SimpleMobRenderer<>(ctx, new BluegillModel(RenderHelpers.bakeSimple(ctx, "bluegill")), "bluegill", true));
         event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
         event.registerEntityRenderer(TFCEntities.LOBSTER.get(), ctx -> new SimpleMobRenderer<>(ctx, new LobsterModel(RenderHelpers.bakeSimple(ctx, "lobster")), "lobster"));
+        event.registerEntityRenderer(TFCEntities.CRAYFISH.get(), ctx -> new SimpleMobRenderer<>(ctx, new LobsterModel(RenderHelpers.bakeSimple(ctx, "crayfish")), "crayfish"));
         event.registerEntityRenderer(TFCEntities.ISOPOD.get(), ctx -> new SimpleMobRenderer<>(ctx, new IsopodModel(RenderHelpers.bakeSimple(ctx, "isopod")), "isopod"));
         event.registerEntityRenderer(TFCEntities.HORSESHOE_CRAB.get(), ctx -> new SimpleMobRenderer<>(ctx, new HorseshoeCrabModel(RenderHelpers.bakeSimple(ctx, "horseshoe_crab")), "horseshoe_crab"));
         event.registerEntityRenderer(TFCEntities.DOLPHIN.get(), DolphinRenderer::new);
@@ -282,7 +287,13 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.MANATEE.get(), ctx -> new SimpleMobRenderer<>(ctx, new ManateeModel(RenderHelpers.bakeSimple(ctx, "manatee")), "manatee"));
         event.registerEntityRenderer(TFCEntities.TURTLE.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCTurtleModel(RenderHelpers.bakeSimple(ctx, "turtle")), "turtle"));
         event.registerEntityRenderer(TFCEntities.PENGUIN.get(), PenguinRenderer::new);
-        event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), TFCPolarBearRenderer::new);
+        event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), ctx -> new BearRenderer(ctx, 1.3F, "polar_bear"));
+        event.registerEntityRenderer(TFCEntities.GRIZZLY_BEAR.get(), ctx -> new BearRenderer(ctx, 1.1F, "grizzly_bear"));
+        event.registerEntityRenderer(TFCEntities.BLACK_BEAR.get(), ctx -> new BearRenderer(ctx, 0.9F, "black_bear"));
+        event.registerEntityRenderer(TFCEntities.COUGAR.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "cougar")), "cougar", 0.8F));
+        event.registerEntityRenderer(TFCEntities.PANTHER.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "panther")), "panther", 0.8F));
+        event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new PredatorRenderer<>(ctx, new LionModel(RenderHelpers.bakeSimple(ctx, "lion")), "lion"));
+        event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new PredatorRenderer<>(ctx, new SabertoothModel(RenderHelpers.bakeSimple(ctx, "sabertooth")), "sabertooth"));
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
@@ -306,6 +317,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.SIGN.get(), TFCSignBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.BARREL.get(), ctx -> new BarrelBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CRUCIBLE.get(), ctx -> new CrucibleBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.ANVIL.get(), ctx -> new AnvilBlockEntityRenderer());
     }
 
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event)
@@ -320,13 +332,20 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("bluegill"), BluegillModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("jellyfish"), JellyfishModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("lobster"), LobsterModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("crayfish"), LobsterModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("horseshoe_crab"), HorseshoeCrabModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("isopod"), IsopodModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("orca"), OrcaModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("manatee"), ManateeModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("turtle"), TFCTurtleModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("penguin"), PenguinModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("polar_bear"), TFCPolarBearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("polar_bear"), BearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("grizzly_bear"), BearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("black_bear"), BearModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("cougar"), CougarModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("panther"), CougarModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("lion"), LionModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("sabertooth"), SabertoothModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
@@ -405,6 +424,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
+        particleEngine.register(TFCParticles.LEAF.get(), LeafParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

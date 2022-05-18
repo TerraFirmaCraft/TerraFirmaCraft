@@ -6,6 +6,11 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.common.capabilities.forge.ForgeStep.*;
@@ -45,10 +50,21 @@ public enum ForgeRule
 
     private static final ForgeRule[] VALUES = values();
 
+    static
+    {
+        assert VALUES.length < Byte.MAX_VALUE; // ForgeRule is serialized to a single byte
+    }
+
     @Nullable
     public static ForgeRule valueOf(int id)
     {
         return id >= 0 && id < VALUES.length ? VALUES[id] : null;
+    }
+
+    public static ForgeRule fromNetwork(FriendlyByteBuf buffer)
+    {
+        final ForgeRule rule = valueOf(buffer.readByte());
+        return rule == null ? HIT_ANY : rule;
     }
 
     private final Order order;
@@ -62,19 +78,24 @@ public enum ForgeRule
         assert type != HIT_MEDIUM && type != HIT_HARD;
     }
 
-    public int getU()
+    public void toNetwork(FriendlyByteBuf buffer)
     {
-        return type == HIT_LIGHT ? 218 : type.getU();
+        buffer.writeByte(ordinal());
     }
 
-    public int getV()
+    public int iconX()
     {
-        return type == HIT_LIGHT ? 18 : type.getV();
+        return type == HIT_LIGHT ? 218 : type.iconX();
     }
 
-    public int getW()
+    public int iconY()
     {
-        return order.v;
+        return type == HIT_LIGHT ? 18 : type.iconY();
+    }
+
+    public int overlayY()
+    {
+        return order.y;
     }
 
     public boolean matches(ForgeSteps steps)
@@ -87,6 +108,13 @@ public enum ForgeRule
                 case SECOND_LAST -> matches(steps.getStep(1));
                 case THIRD_LAST -> matches(steps.getStep(0));
             };
+    }
+
+    public Component getDescriptionId()
+    {
+        return (type == HIT_LIGHT ? new TranslatableComponent("tfc.enum.forgestep.hit") : Helpers.translateEnum(type))
+            .append(" ")
+            .append(Helpers.translateEnum(order));
     }
 
     private boolean matches(@Nullable ForgeStep step)
@@ -106,11 +134,11 @@ public enum ForgeRule
         SECOND_LAST(22),
         THIRD_LAST(44);
 
-        private final int v;
+        private final int y;
 
-        Order(int v)
+        Order(int y)
         {
-            this.v = v;
+            this.y = y;
         }
     }
 }

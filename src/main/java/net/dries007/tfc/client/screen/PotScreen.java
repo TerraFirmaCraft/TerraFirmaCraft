@@ -11,7 +11,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.PotContainer;
@@ -43,7 +42,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
-        int temp = (int) (51 * blockEntity.getSyncableData().get(AbstractFirepitBlockEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
+        int temp = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
         if (temp > 0)
         {
             blit(poseStack, leftPos + 30, topPos + 76 - Math.min(51, temp), 176, 0, 15, 5);

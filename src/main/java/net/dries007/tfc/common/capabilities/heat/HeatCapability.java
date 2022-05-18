@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +19,7 @@ import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -34,7 +33,7 @@ public final class HeatCapability
     public static final Capability<IHeatBlock> BLOCK_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>("item_heats", "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, DataManagerSyncPacket.THeatDefinition::new);
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>("item_heats", "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(HeatDefinition::getValidItems, MANAGER::getValues);
 
     @Nullable
@@ -206,4 +205,6 @@ public final class HeatCapability
     }
 
     public record Remainder(int burnTicks, float burnTemperature, long ticks) {}
+
+    public static class Packet extends DataManagerSyncPacket<HeatDefinition> {}
 }

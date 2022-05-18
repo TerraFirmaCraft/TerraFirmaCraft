@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -23,8 +20,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
 {
@@ -58,7 +57,7 @@ public class TFCChainBlock extends RotatedPillarBlock implements IFluidLoggable
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        FluidHelpers.tickFluid(level, currentPos, state, this);
+        FluidHelpers.tickFluid(level, currentPos, state);
         return super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
