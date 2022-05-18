@@ -30,6 +30,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
@@ -48,6 +49,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
@@ -101,6 +103,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedIn);
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
+        bus.addListener(ClientForgeEventHandler::onScreenKey);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
         bus.addListener(ClientForgeEventHandler::onFogRender);
         bus.addListener(ClientForgeEventHandler::onHandRender);
@@ -321,6 +324,18 @@ public class ClientForgeEventHandler
         else if (TFCKeyBindings.CYCLE_CHISEL_MODE.isDown())
         {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new CycleChiselModePacket());
+        }
+    }
+
+    public static void onScreenKey(ScreenEvent.KeyboardKeyPressedEvent.Pre event)
+    {
+        if (TFCKeyBindings.STACK_FOOD.isActiveAndMatches(InputConstants.getKey(event.getKeyCode(), event.getScanCode())) && event.getScreen() instanceof InventoryScreen inv)
+        {
+            Slot slot = inv.getSlotUnderMouse();
+            if (slot != null)
+            {
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new StackFoodPacket(slot.index));
+            }
         }
     }
 

@@ -80,8 +80,6 @@ public class Predator extends PathfinderMob
         attackAnimationLength = attackLength;
         walkAnimationLength = walkLength;
         this.diurnal = diurnal;
-        this.entityData.define(DATA_IS_MALE, random.nextBoolean());
-        this.setPersistenceRequired();
         getNavigation().setCanFloat(true);
     }
 
@@ -208,8 +206,16 @@ public class Predator extends PathfinderMob
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
+        SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.getLevel().dimension(), blockPosition()));
-        return super.finalizeSpawn(level, difficulty, type, data, tag);
+        entityData.define(DATA_IS_MALE, random.nextBoolean());
+        return spawnData;
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance)
+    {
+        return false;
     }
 
     @Override

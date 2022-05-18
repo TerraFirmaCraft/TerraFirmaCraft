@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.capabilities.MoldLike;
 
 public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
 {
@@ -31,7 +32,16 @@ public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
     {
         return switch (typeOf(slotIndex))
             {
-                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, CrucibleBlockEntity.SLOT_INPUT_START, CrucibleBlockEntity.SLOT_INPUT_END + 1, false);
+                case MAIN_INVENTORY, HOTBAR -> {
+                    if (MoldLike.get(stack) != null)
+                    {
+                        yield !moveItemStackTo(stack, CrucibleBlockEntity.SLOT_OUTPUT, CrucibleBlockEntity.SLOT_OUTPUT + 1, false);
+                    }
+                    else
+                    {
+                        yield !moveItemStackTo(stack, CrucibleBlockEntity.SLOT_INPUT_START, CrucibleBlockEntity.SLOT_INPUT_END + 1, false);
+                    }
+                }
                 case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
             };
     }

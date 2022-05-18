@@ -14,19 +14,19 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTrait;
 import org.jetbrains.annotations.Nullable;
 
-public class HasTraitIngredient extends TraitIngredient
+public class LacksTraitIngredient extends TraitIngredient
 {
-    public static HasTraitIngredient of(@Nullable Ingredient delegate, FoodTrait trait)
+    public static LacksTraitIngredient of(@Nullable Ingredient delegate, FoodTrait trait)
     {
-        return new HasTraitIngredient(delegate, trait);
+        return new LacksTraitIngredient(delegate, trait);
     }
 
-    public static HasTraitIngredient of(FoodTrait trait)
+    public static LacksTraitIngredient of(FoodTrait trait)
     {
-        return new HasTraitIngredient(null, trait);
+        return new LacksTraitIngredient(null, trait);
     }
 
-    public HasTraitIngredient(@Nullable Ingredient delegate, FoodTrait trait)
+    public LacksTraitIngredient(@Nullable Ingredient delegate, FoodTrait trait)
     {
         super(delegate, trait);
     }
@@ -34,23 +34,27 @@ public class HasTraitIngredient extends TraitIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(f -> f.getTraits().contains(trait)).orElse(false);
+        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(f -> !f.getTraits().contains(trait)).orElse(false);
     }
 
     @Override
     public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
-        return TraitSerializer.HAS_TRAIT;
+        return TraitIngredient.TraitSerializer.LACKS_TRAIT;
     }
 
     @Nullable
     @Override
     protected ItemStack testDefaultItem(ItemStack stack)
     {
-        return stack.getCapability(FoodCapability.CAPABILITY).map(food -> {
+        return stack.getCapability(FoodCapability.CAPABILITY).resolve().map(food -> {
             food.setNonDecaying();
-            food.getTraits().add(trait);
+            if (food.getTraits().remove(trait))
+            {
+                return null;
+            }
             return stack;
         }).orElse(null);
     }
+
 }
