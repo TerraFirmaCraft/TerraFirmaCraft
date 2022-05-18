@@ -823,8 +823,10 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         rm.item_tag('foods/%ss' % category.name.lower(), ingredient)
     if category in (Category.meat, Category.cooked_meat):
         rm.item_tag('foods/meats', ingredient)
-    if category == Category.cooked_meat:
-        rm.item_tag('foods/cooked_meats', ingredient)
+        if category == Category.cooked_meat:
+            rm.item_tag('foods/cooked_meats', ingredient)
+        else:
+            rm.item_tag('foods/raw_meats', ingredient)
     if category == Category.dairy:
         rm.item_tag('foods/dairy', ingredient)
 

@@ -9,13 +9,19 @@ package net.dries007.tfc.common.recipes;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
+import org.apache.commons.lang3.tuple.Pair;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
 
@@ -51,6 +57,32 @@ public class CastingCraftingRecipe implements CraftingRecipe, ISimpleRecipe<Craf
     }
 
     @Override
+    public NonNullList<ItemStack> getRemainingItems(CraftingContainer inv)
+    {
+        NonNullList<ItemStack> items = NonNullList.withSize(inv.getContainerSize(), ItemStack.EMPTY);
+        for (int i = 0; i < inv.getContainerSize(); i++)
+        {
+            ItemStack item = inv.getItem(i);
+            final MoldLike mold = MoldLike.get(item);
+            if (!item.isEmpty() && mold != null)
+            {
+                final CastingRecipe recipe = CastingRecipe.get(mold);
+                if (recipe != null)
+                {
+                    final Player player = ForgeHooks.getCraftingPlayer();
+                    // greater than the break chance == we should keep the item
+                    if (player != null && player.getRandom().nextFloat() > recipe.getBreakChance())
+                    {
+                        mold.drainIgnoringTemperature(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                        items.set(i, item.copy());
+                    }
+                }
+            }
+        }
+        return items;
+    }
+
+    @Override
     public ItemStack getResultItem()
     {
         return ItemStack.EMPTY;
@@ -69,7 +101,7 @@ public class CastingCraftingRecipe implements CraftingRecipe, ISimpleRecipe<Craf
     }
 
     /**
-     * @return The single mold in the crafting container, if one and only exactly one can be found, otherwise null.
+     * @return The single mold in the crafting container, if one and only exactly one can be found, paired with its ItemStack, otherwise null.
      */
     @Nullable
     private MoldLike getMold(CraftingContainer inventory)

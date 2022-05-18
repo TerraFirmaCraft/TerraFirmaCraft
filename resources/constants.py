@@ -634,6 +634,7 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
+    'tfc.key.stack_food': 'Stack Food',
     # Sounds todo: subtitles for everything and standardize the format
     'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
     'tfc.animal.alpaca.hurt': 'Alpaca Yelps',

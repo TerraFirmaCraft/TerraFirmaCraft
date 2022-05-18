@@ -94,6 +94,8 @@ def generate(rm: ResourceManager):
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
                 advanced_shaped(rm, 'crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': '#forge:rods/wooden'}, item_stack_provider('tfc:metal/%s/%s' % (tool, metal), copy_forging=True), (0, 0)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
 
+    unsalted_raw_meat = not_rotten(has_trait('#tfc:foods/raw_meats', 'tfc:salted', invert=True))
+    advanced_shapeless(rm, 'crafting/salting', (unsalted_raw_meat, 'tfc:powder/salt'), item_stack_provider(copy_input=True, add_trait='tfc:salted'), unsalted_raw_meat).with_advancement('tfc:powder/salt')
     rm.crafting_shaped('crafting/wood/stick_from_twigs', ['X', 'X'], {'X': '#tfc:twigs'}, 'minecraft:stick')  # todo: advancement?
 
     for wood in WOODS.keys():
@@ -547,6 +549,7 @@ def generate(rm: ResourceManager):
                 casting_recipe(rm, '%s_%s' % (metal, tool), tool, metal, tool_data.smelt_amount, 0.1 if tool == 'ingot' else 1)
 
     rm.recipe('casting', 'tfc:casting_crafting', {})  # simple recipe to allow any casting recipe to be used in a crafting grid
+    rm.recipe('food_combining', 'tfc:food_combining', {})
 
     # Alloy Recipes
 
@@ -803,6 +806,17 @@ def advanced_shaped(rm: ResourceManager, name_parts: ResourceIdentifier, pattern
     })
     return RecipeContext(rm, res)
 
+def advanced_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: Json, primary_ingredient: Json, group: str = None, conditions: Optional[Json] = None) -> RecipeContext:
+    res = utils.resource_location(rm.domain, name_parts)
+    rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
+        'type': 'tfc:advanced_shapeless_crafting',
+        'group': group,
+        'ingredients': utils.item_stack_list(ingredients),
+        'result': result,
+        'primary_ingredient': utils.ingredient(primary_ingredient),
+        'conditions': utils.recipe_condition(conditions)
+    })
+    return RecipeContext(rm, res)
 
 def quern_recipe(rm: ResourceManager, name: ResourceIdentifier, item: str, result: str, count: int = 1) -> RecipeContext:
     result = result if not isinstance(result, str) else utils.item_stack((count, result))
@@ -1033,9 +1047,9 @@ def not_rotten(ingredient: Json) -> Json:
         'ingredient': utils.ingredient(ingredient)
     }
 
-def has_trait(ingredient: Json, trait: str) -> Json:
+def has_trait(ingredient: Json, trait: str, invert: bool = False) -> Json:
     return {
-        'type': 'tfc:has_trait',
+        'type': 'tfc:lacks_trait' if invert else 'tfc:has_trait',
         'trait': trait,
         'ingredient': utils.ingredient(ingredient)
     }
