@@ -155,8 +155,9 @@ public class CougarModel extends EntityModel<FelinePredator>
     private final ModelPart nose;
     private final ModelPart rear;
 
-    private float prevLimbSwing;
 
+    private float prevLimbSwing;
+    
     public CougarModel(ModelPart root)
     {
         this.body = root.getChild("body");
@@ -205,7 +206,9 @@ public class CougarModel extends EntityModel<FelinePredator>
                 body.y = 28f;
                 CROUCH.tick(parts, felinePredator.walkProgress);
             }
+
             else if (felinePredator.walkProgress > 0 || felinePredator.isMoving())
+
             {
                 if (felinePredator.isAggressive())
                 {

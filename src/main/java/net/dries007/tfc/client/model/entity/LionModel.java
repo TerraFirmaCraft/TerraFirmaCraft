@@ -146,9 +146,9 @@ public class LionModel extends EntityModel<FelinePredator>
     private final ModelPart maneBone;
     private final ModelPart maneHeadBone;
 
-    private float prevLimbSwing;
 
-    public LionModel(ModelPart root)
+    private float prevLimbSwing;
+    
     {
         this.body = root.getChild("body");
         this.neck = body.getChild("neck");
@@ -203,7 +203,9 @@ public class LionModel extends EntityModel<FelinePredator>
             {
                 ATTACK.tick(parts, ageInTicks);
             }
+
             else if (felinePredator.walkProgress > 0 || felinePredator.isMoving())
+
             {
                 if (felinePredator.isAggressive())
                 {

@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import net.dries007.tfc.common.blockentities.LogPileBlockEntity;
 import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
 
 public class NestBoxContainer extends BlockEntityContainer<NestBoxBlockEntity>
@@ -23,7 +22,7 @@ public class NestBoxContainer extends BlockEntityContainer<NestBoxBlockEntity>
 
     public NestBoxContainer(NestBoxBlockEntity blockEntity, Inventory playerInv, int windowId)
     {
-        super(TFCContainerTypes.NEST_BOX.get(), windowId, blockEntity);
+        super(TFCMenuTypes.NEST_BOX.get(), windowId, blockEntity);
     }
 
     @Override

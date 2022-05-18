@@ -9,6 +9,7 @@
     "XXXX"
   ],
   "result": {
-    "item": "tfc:ceramic/unfired_ingot_mold"
+    "item": "tfc:ceramic/unfired_ingot_mold",
+    "count": 2
   }
 }

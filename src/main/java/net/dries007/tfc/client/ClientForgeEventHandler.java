@@ -30,6 +30,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
@@ -48,6 +49,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
@@ -59,7 +61,6 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
@@ -84,7 +85,11 @@ import static net.minecraft.ChatFormatting.*;
 
 public class ClientForgeEventHandler
 {
-    private static final Field CAP_NBT_FIELD = Helpers.findUnobfField(ItemStack.class, "capNBT");
+    private static final Field CAP_NBT_FIELD = Helpers.uncheck(() -> {
+        final Field field = ItemStack.class.getDeclaredField("capNBT");
+        field.setAccessible(true);
+        return field;
+    });
 
     public static void init()
     {
@@ -98,6 +103,7 @@ public class ClientForgeEventHandler
         bus.addListener(ClientForgeEventHandler::onClientPlayerLoggedIn);
         bus.addListener(ClientForgeEventHandler::onClientTick);
         bus.addListener(ClientForgeEventHandler::onKeyEvent);
+        bus.addListener(ClientForgeEventHandler::onScreenKey);
         bus.addListener(ClientForgeEventHandler::onHighlightBlockEvent);
         bus.addListener(ClientForgeEventHandler::onFogRender);
         bus.addListener(ClientForgeEventHandler::onHandRender);
@@ -163,6 +169,7 @@ public class ClientForgeEventHandler
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void onItemTooltip(ItemTooltipEvent event)
     {
         final ItemStack stack = event.getItemStack();
@@ -217,13 +224,6 @@ public class ClientForgeEventHandler
                 final FluidStack fluid = recipe.getOutputFluid(wrapper);
                 if (!fluid.isEmpty())
                 {
-                    stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
-                        if (cap.getTemperature() > 0.9 * recipe.getTemperature())
-                        {
-                            text.add(new TranslatableComponent("tfc.tooltip.danger"));
-                        }
-                    });
-
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
@@ -327,6 +327,18 @@ public class ClientForgeEventHandler
         }
     }
 
+    public static void onScreenKey(ScreenEvent.KeyboardKeyPressedEvent.Pre event)
+    {
+        if (TFCKeyBindings.STACK_FOOD.isActiveAndMatches(InputConstants.getKey(event.getKeyCode(), event.getScanCode())) && event.getScreen() instanceof InventoryScreen inv)
+        {
+            Slot slot = inv.getSlotUnderMouse();
+            if (slot != null)
+            {
+                PacketHandler.send(PacketDistributor.SERVER.noArg(), new StackFoodPacket(slot.index));
+            }
+        }
+    }
+
     /**
      * Handles custom bounding boxes drawing
      * eg: Chisel, Quern handle
@@ -347,13 +359,11 @@ public class ClientForgeEventHandler
             BlockState stateAt = level.getBlockState(lookingAt);
             Block blockAt = stateAt.getBlock();
 
-            BlockState chiseled = ChiselRecipe.computeResultWithEvent(player, stateAt, hit);
-            if (chiseled != null)
-            {
+            ChiselRecipe.computeResult(player, stateAt, hit, false).ifLeft(chiseled -> {
                 IHighlightHandler.drawBox(poseStack, chiseled.getShape(level, pos), event.getMultiBufferSource(), pos, camera.getPosition(), 1f, 0f, 0f, 0.4f);
                 event.setCanceled(true);
-            }
-            else if (blockAt instanceof IHighlightHandler handler)
+            });
+            if (blockAt instanceof IHighlightHandler handler)
             {
                 // Pass on to custom implementations
                 if (handler.drawHighlight(level, lookingAt, player, hit, poseStack, event.getMultiBufferSource(), camera.getPosition()))

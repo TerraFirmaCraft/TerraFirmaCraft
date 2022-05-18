@@ -15,6 +15,7 @@ import net.dries007.tfc.client.model.entity.CougarModel;
 import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
+
 import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

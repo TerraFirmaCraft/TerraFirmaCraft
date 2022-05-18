@@ -12,7 +12,10 @@
       "type": "minecraft:crafting_shapeless",
       "ingredients": [
         {
-          "item": "tfc:food/rice"
+          "type": "tfc:not_rotten",
+          "ingredient": {
+            "item": "tfc:food/rice"
+          }
         },
         {
           "tag": "tfc:knives"

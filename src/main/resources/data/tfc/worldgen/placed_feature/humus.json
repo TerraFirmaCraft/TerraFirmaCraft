@@ -9,10 +9,7 @@
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "matching_blocks",
-        "blocks": [
-          "minecraft:air"
-        ]
+        "type": "tfc:replaceable"
       }
     },
     {
@@ -25,12 +22,6 @@
             "fluid": "empty"
           }
         }
-      }
-    },
-    {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "tfc:replaceable"
       }
     }
   ]

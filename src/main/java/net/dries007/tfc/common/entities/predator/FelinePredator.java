@@ -6,15 +6,18 @@
 
 package net.dries007.tfc.common.entities.predator;
 
+
 import java.util.function.Supplier;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+
 
 import net.dries007.tfc.client.TFCSounds;
 
@@ -23,6 +26,7 @@ public class FelinePredator extends Predator
     public final double crouchSpeedMod;
     public final double sprintSpeedMod;
     public final double attackDistanceSquared;
+
 
     public static FelinePredator createCougar(EntityType<? extends Predator> type, Level level)
     {
@@ -42,6 +46,7 @@ public class FelinePredator extends Predator
     public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackAnimLength, int walkAnimationLength, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> attack, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> sleeping, Supplier<? extends SoundEvent> step)
     {
         super(type, level, diurnal, attackAnimLength, walkAnimationLength, ambient, attack, death, hurt, sleeping, step);
+
         this.crouchSpeedMod = crouchSpeedMod;
         this.sprintSpeedMod = sprintSpeedMod;
         this.attackDistanceSquared = attackDistanceSquared;

@@ -48,6 +48,11 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  * - Entity attributes, set in this class below
  * - In datagen, a json entry for fauna
  * - In datagen, an entry in biome spawners
+ *
+ * When making an entity, some rules:
+ * - Each synced data parameter and any variable that needs to persist should be serialized
+ * - Use Brain or Goals when appropriate, and do not mix the two
+ * - Avoid creating unnecessary classes. See the anonymous constructors at the bottom of this class.
  */
 @SuppressWarnings("unused")
 public class TFCEntities
@@ -90,6 +95,7 @@ public class TFCEntities
     // Creatures
     public static final RegistryObject<EntityType<AmphibiousAnimal>> TURTLE = register("turtle", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.8F, 0.3F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<AmphibiousAnimal>> PENGUIN = register("penguin", EntityType.Builder.of(AmphibiousAnimal::new, MobCategory.CREATURE).sized(0.3F, 0.6F).clientTrackingRange(10));
+
     public static final RegistryObject<EntityType<Predator>> POLAR_BEAR = register("polar_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.4F, 1.6F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Predator>> GRIZZLY_BEAR = register("grizzly_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.3F, 1.4F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Predator>> BLACK_BEAR = register("black_bear", EntityType.Builder.of(Predator::createBear, MobCategory.CREATURE).immuneTo(Blocks.POWDER_SNOW).sized(1.2F, 1.3F).clientTrackingRange(10));

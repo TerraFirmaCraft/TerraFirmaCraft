@@ -2,15 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/beef"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/beef"
+    }
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_beef"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_beef"
   },
   "temperature": 200
 }

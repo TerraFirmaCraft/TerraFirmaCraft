@@ -34,7 +34,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
 
     private MoldLikeAlloyContainer(ItemStack stack, InteractionHand hand, Inventory playerInv, int windowId)
     {
-        super(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), windowId, playerInv, stack, hand);
+        super(TFCMenuTypes.MOLD_LIKE_ALLOY.get(), windowId, playerInv, stack, hand);
 
         this.mold = MoldLike.get(stack);
         this.inventory = new InventoryItemHandler(this, 1);

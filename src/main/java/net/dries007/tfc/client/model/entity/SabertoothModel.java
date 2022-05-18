@@ -198,7 +198,9 @@ public class SabertoothModel extends EntityModel<FelinePredator>
             {
                 ATTACK.tick(parts, ageInTicks);
             }
+
             else if (felinePredator.walkProgress > 0 || felinePredator.isMoving())
+
             {
                 if (felinePredator.isAggressive())
                 {

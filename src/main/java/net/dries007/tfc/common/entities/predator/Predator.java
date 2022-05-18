@@ -38,6 +38,7 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
 
+
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -52,6 +53,7 @@ public class Predator extends PathfinderMob
 
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> DATA_IS_MALE = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
+
 
     private final int attackAnimationLength;
     @Nullable
@@ -69,6 +71,7 @@ public class Predator extends PathfinderMob
     private final Supplier<? extends SoundEvent> sleeping;
     private final Supplier<? extends SoundEvent> step;
 
+
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
 
@@ -82,7 +85,14 @@ public class Predator extends PathfinderMob
         this(type, level, diurnal, 20, 20, ambient, attack, death, hurt, sleeping, step);
     }
 
+
     public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> attack, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> sleeping, Supplier<? extends SoundEvent> step)
+
+    {
+        this(type, level, diurnal, 20, 20);
+    }
+
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength)
     {
         super(type, level);
         attackAnimationLength = attackLength;
@@ -141,9 +151,11 @@ public class Predator extends PathfinderMob
         {
             walkProgress = 0f;
         }
+
         else if (this.isMoving() || walkProgress > 0f)
         {
             walkProgress = Math.min(walkProgress + limbSwing, (float) walkAnimationLength);
+
         }
     }
 
@@ -222,8 +234,16 @@ public class Predator extends PathfinderMob
     @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
+        SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.getLevel().dimension(), blockPosition()));
-        return super.finalizeSpawn(level, difficulty, type, data, tag);
+        entityData.define(DATA_IS_MALE, random.nextBoolean());
+        return spawnData;
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distance)
+    {
+        return false;
     }
 
     @Override

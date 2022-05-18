@@ -11,10 +11,10 @@
     },
     {
       "type": "tfc:climate",
-      "min_temperature": -5,
-      "max_temperature": 33,
-      "min_rainfall": 200,
-      "max_rainfall": 500,
+      "min_temperature": -14,
+      "max_temperature": 0,
+      "min_rainfall": 60,
+      "max_rainfall": 320,
       "min_forest": "normal"
     }
   ]

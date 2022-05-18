@@ -2,14 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:quern",
   "ingredient": {
-    "item": "tfc:food/maize_grain"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/maize_grain"
+    }
   },
   "result": {
-    "stack": {
-      "item": "tfc:food/maize_flour"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/maize_flour"
   }
 }

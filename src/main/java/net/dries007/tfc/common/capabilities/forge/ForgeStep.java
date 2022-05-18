@@ -7,9 +7,6 @@
 package net.dries007.tfc.common.capabilities.forge;
 
 import java.util.Arrays;
-import java.util.Locale;
-
-import net.minecraft.network.chat.TranslatableComponent;
 
 import it.unimi.dsi.fastutil.ints.IntArrayFIFOQueue;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -111,10 +108,5 @@ public enum ForgeStep
     public int iconY()
     {
         return iconY;
-    }
-
-    public TranslatableComponent getDescriptionId()
-    {
-        return new TranslatableComponent("tfc.enum.forge_step." + name().toLowerCase(Locale.ROOT));
     }
 }

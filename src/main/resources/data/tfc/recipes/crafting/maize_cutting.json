@@ -12,7 +12,10 @@
       "type": "minecraft:crafting_shapeless",
       "ingredients": [
         {
-          "item": "tfc:food/maize"
+          "type": "tfc:not_rotten",
+          "ingredient": {
+            "item": "tfc:food/maize"
+          }
         },
         {
           "tag": "tfc:knives"

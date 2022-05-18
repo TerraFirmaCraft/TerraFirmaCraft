@@ -12,14 +12,15 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
-import org.jetbrains.annotations.VisibleForTesting;
 
-public final class ItemStackProvider
+public record ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
 {
     private static final ItemStackModifier[] NONE = new ItemStackModifier[0];
     private static final ItemStackProvider EMPTY = new ItemStackProvider(ItemStack.EMPTY, NONE);
-    private static final ItemStackProvider COPY_INPUT = new ItemStackProvider(ItemStack.EMPTY, new ItemStackModifier[] { CopyInputModifier.INSTANCE });
+    private static final ItemStackProvider COPY_INPUT = new ItemStackProvider(ItemStack.EMPTY, new ItemStackModifier[] {CopyInputModifier.INSTANCE});
 
     public static ItemStackProvider empty()
     {
@@ -84,13 +85,15 @@ public final class ItemStackProvider
         return new ItemStackProvider(stack, modifiers);
     }
 
-    private final ItemStack stack;
-    private final ItemStackModifier[] modifiers;
-
-    private ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
+    public ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
     {
         this.stack = stack;
         this.modifiers = modifiers;
+
+        if (!Helpers.BOOTSTRAP_ENVIRONMENT)
+        {
+            FoodCapability.setStackNonDecaying(stack);
+        }
     }
 
     public ItemStack getStack(ItemStack input)
@@ -111,17 +114,5 @@ public final class ItemStackProvider
         {
             modifier.toNetwork(buffer);
         }
-    }
-
-    @VisibleForTesting
-    public ItemStack stack()
-    {
-        return stack;
-    }
-
-    @VisibleForTesting
-    public ItemStackModifier[] modifiers()
-    {
-        return modifiers;
     }
 }

@@ -2,15 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/mutton"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/mutton"
+    }
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_mutton"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_mutton"
   },
   "temperature": 200
 }

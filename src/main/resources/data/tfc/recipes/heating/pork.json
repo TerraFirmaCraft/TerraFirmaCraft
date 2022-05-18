@@ -2,15 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/pork"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/pork"
+    }
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_pork"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_pork"
   },
   "temperature": 200
 }

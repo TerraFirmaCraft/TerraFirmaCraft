@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -29,9 +28,9 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IWeighted;
 import net.dries007.tfc.util.collections.Weighted;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A collection of common codecs that reference vanilla code
@@ -53,7 +52,7 @@ public final class Codecs
     public static final Codec<BlockState> BLOCK_STATE = Codec.either(
         BLOCK.xmap(Block::defaultBlockState, BlockState::getBlock),
         BlockState.CODEC
-    ).xmap(Helpers::resolveEither, Either::right);
+    ).xmap(e -> e.map(e1 -> e1, e1 -> e1), Either::right);
 
     /**
      * A codec for a mapping from blocks -> {weighted block states}.
