@@ -30,6 +30,7 @@ public class SurfaceStates
     public static final SurfaceState TOP_SOIL = new SoilSurfaceState(SoilBlockType.GRASS);
     public static final SurfaceState MID_SOIL = new SoilSurfaceState(SoilBlockType.DIRT);
     public static final SurfaceState LOW_SOIL = new DeepSoilSurfaceState();
+    public static final SurfaceState MUD = new SoilSurfaceState(SoilBlockType.MUD);
 
     public static final SurfaceState TOP_UNDERWATER = new UnderwaterSurfaceState(false);
     public static final SurfaceState LOW_UNDERWATER = new UnderwaterSurfaceState(true);

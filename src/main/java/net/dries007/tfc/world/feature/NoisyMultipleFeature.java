@@ -34,13 +34,13 @@ public class NoisyMultipleFeature extends Feature<SimpleRandomFeatureConfigurati
         final BlockPos pos = context.origin();
         final ChunkDataProvider provider = ChunkDataProvider.get(context.chunkGenerator());
         final ChunkData data = provider.get(context.level(), pos);
-        final int rotation2 = (int) Math.ceil(data.getForestWeirdness() * context.config().features.size());
+        final int rotation2 = (int) Math.ceil(data.getForestWeirdness() * 10 * context.config().features.size());
 
         List<Holder<PlacedFeature>> features = context.config().features.stream().collect(Collectors.toList());
         Collections.rotate(features, rotation2);
 
         int placed = 0;
-        for (Holder<PlacedFeature> feature : context.config().features)
+        for (Holder<PlacedFeature> feature : features)
         {
             if (feature.value().placeWithBiomeCheck(context.level(), context.chunkGenerator(), context.random(), pos))
             {

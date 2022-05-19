@@ -2,9 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#minecraft:dirt",
-    "#minecraft:sand",
-    "#forge:gravel",
+    "#tfc:bush_plantable_on",
+    "tfc:peat",
     "#tfc:mud"
   ]
 }

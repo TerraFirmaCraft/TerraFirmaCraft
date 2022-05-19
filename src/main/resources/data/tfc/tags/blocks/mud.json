@@ -2,9 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#minecraft:dirt",
-    "#minecraft:sand",
-    "#forge:gravel",
-    "#tfc:mud"
+    "tfc:mud/silt",
+    "tfc:mud/loam",
+    "tfc:mud/sandy_loam",
+    "tfc:mud/silty_loam"
   ]
 }

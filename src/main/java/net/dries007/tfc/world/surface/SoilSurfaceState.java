@@ -29,7 +29,7 @@ public class SoilSurfaceState implements SurfaceState
     public static final float RAINFALL_SAND_SANDY_MEAN = (RAINFALL_SAND + RAINFALL_SAND_SANDY_MIX) / 2f;
     public static final float RAINFALL_SAND_SANDY_RANGE = (RAINFALL_SAND_SANDY_MIX - RAINFALL_SAND) / 2f;
 
-    private static final long PATCH_NOISE_SEED = 18273952837592L;
+    public static final long PATCH_NOISE_SEED = 18273952837592L;
 
     protected final SoilBlockType soil;
     protected final Noise2D patchNoise = new OpenSimplex2D(PATCH_NOISE_SEED).octaves(2).spread(0.04f);
@@ -57,8 +57,8 @@ public class SoilSurfaceState implements SurfaceState
             else
             {
                 final double slope = context.getSlope();
-                final float forest2 = data.getForestDensity();
-                if (forest2 < 0.5f && slope < 2 && (slope < 1 || context.random().nextFloat() > slope - 1) && (forest2 < 0.45f || context.random().nextBoolean()))
+                final float weirdness = data.getForestWeirdness();
+                if (weirdness < 0.2f && slope < 2 && (slope < 1 || context.random().nextBoolean()))
                 {
                     return context.getRock().gravel().defaultBlockState();
                 }
