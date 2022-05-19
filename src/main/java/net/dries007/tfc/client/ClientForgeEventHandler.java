@@ -51,7 +51,6 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -91,6 +90,8 @@ public class ClientForgeEventHandler
         field.setAccessible(true);
         return field;
     });
+
+    private static float waterFogLevel = 0f;
 
     public static void init()
     {
@@ -409,8 +410,13 @@ public class ClientForgeEventHandler
                 final float fog = Climate.getWaterFogginess(mc.level, pos);
                 if (fog != 1f)
                 {
-                    event.scaleFarPlaneDistance(fog);
+                    waterFogLevel = Mth.lerp(0.01f, waterFogLevel, fog);
+                    event.scaleFarPlaneDistance(waterFogLevel);
                     event.setCanceled(true);
+                }
+                else
+                {
+                    waterFogLevel = 1f;
                 }
             }
 
