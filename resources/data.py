@@ -243,7 +243,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', *['tfc:grass_path/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:farmland/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:farmland')
-    rm.block_tag('mud', *['tfc:mud/%s' % v for v in SOIL_BLOCK_VARIANTS])
+    block_and_item_tag(rm, 'mud', *['tfc:mud/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('grass_plantable_on', '#tfc:bush_plantable_on', 'tfc:peat', '#tfc:mud')
     rm.block_tag('small_spike', 'tfc:calcite')
     rm.block_tag('sea_bush_plantable_on', '#minecraft:dirt', '#minecraft:sand', '#forge:gravel', '#tfc:mud')

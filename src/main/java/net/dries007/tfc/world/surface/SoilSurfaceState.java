@@ -97,6 +97,11 @@ public class SoilSurfaceState implements SurfaceState
             else
             {
                 // Silt
+                if (pos.getY() == context.getSeaLevel() -1 || pos.getY() == context.getSeaLevel())
+                {
+                    float noise = patchNoise.noise(pos.getX(), pos.getZ());
+                    if (noise > 0) return mud(SoilBlockType.Variant.SILT);
+                }
                 return soil(SoilBlockType.Variant.SILT);
             }
         }
@@ -130,5 +135,10 @@ public class SoilSurfaceState implements SurfaceState
     private BlockState rooted(SoilBlockType.Variant variant)
     {
         return TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT).get(variant).get().defaultBlockState();
+    }
+
+    private BlockState mud(SoilBlockType.Variant variant)
+    {
+        return TFCBlocks.SOIL.get(SoilBlockType.MUD).get(variant).get().defaultBlockState();
     }
 }

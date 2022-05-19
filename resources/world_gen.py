@@ -149,6 +149,7 @@ def generate(rm: ResourceManager):
         rm.placed_feature('%s_spring' % spring_cfg[0], 'tfc:%s_spring' % spring_cfg[0], decorate_count(spring_cfg[1]), decorate_square(), decorate_range(y, 180, bias='biased_to_bottom'))
 
     clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
+    water_clay = [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
 
     # Clay discs have decorators added later, where they're paired with indicator plants
     configured_placed_feature(rm, 'clay_disc', 'tfc:soil_disc', {
@@ -161,7 +162,7 @@ def generate(rm: ResourceManager):
         'min_radius': 2,
         'max_radius': 3,
         'height': 2,
-        'states': clay
+        'states': water_clay
     })
 
     rm.configured_feature('peat_disc', 'tfc:soil_disc', {
@@ -612,7 +613,8 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'hanging_vines_cave'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), decorate_carving_mask(30, 100), decorate_chance(0.003), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'liana'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(30, 100), decorate_chance(0.003), decorate_climate(16, 32, 150, 470, True, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'tree_fern'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), decorate_square(), decorate_climate(19, 50, 300, 500), decorate_air_or_empty_fluid())
-    configured_placed_feature(rm, ('plant', 'arundo'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), decorate_square(), decorate_climate(5, 22, 100, 500), ('tfc:near_water', {'radius': 6}), decorate_air_or_empty_fluid())
+    configured_placed_feature(rm, ('plant', 'arundo'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), decorate_square(), decorate_climate(5, 22, 150, 500), ('tfc:near_water', {'radius': 6}), decorate_air_or_empty_fluid())
+    configured_placed_feature(rm, ('plant', 'dry_phragmite'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/dry_phragmite_plant', 'tfc:plant/dry_phragmite', 70, 7, 3, 5), decorate_range(62, 64), decorate_square(), decorate_climate(-5, 30, 100, 370), decorate_replaceable())
 
     configured_placed_feature(rm, ('plant', 'winged_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-15, 15, 0, 450, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'leafy_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-20, 20, 0, 500, fuzzy=True), decorate_air_or_empty_fluid())
@@ -1279,6 +1281,8 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     if category == 'river':
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
         features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
+    if category in ('river', 'lake', 'swamp'):
+        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/dry_phragmite']
     if name == 'deep_ocean_trench':
         features[Decoration.LARGE_FEATURES].append('tfc:lava_hot_spring')
     if name.find('lake') != -1:

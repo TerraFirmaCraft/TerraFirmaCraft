@@ -6,16 +6,27 @@
 
 package net.dries007.tfc.world.surface.builder;
 
+
+import net.dries007.tfc.world.noise.Noise2D;
+import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
 public class LowlandsSurfaceBuilder implements SurfaceBuilder
 {
-    public static final SurfaceBuilderFactory INSTANCE = seed -> new LowlandsSurfaceBuilder();
+    public static final SurfaceBuilderFactory INSTANCE = LowlandsSurfaceBuilder::new;
+
+    private final Noise2D surfaceMaterialNoise;
+
+    public LowlandsSurfaceBuilder(long seed)
+    {
+        surfaceMaterialNoise = new OpenSimplex2D(seed).octaves(2).spread(0.04f);
+    }
 
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.MUD, SurfaceStates.GRAVEL, SurfaceStates.LOW_SOIL);
+        final float noise = surfaceMaterialNoise.noise(context.pos().getX(), context.pos().getZ()) * 0.9f + context.random().nextFloat() * 0.1f;
+        NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, noise < 0f ? SurfaceStates.TOP_SOIL : SurfaceStates.MUD, SurfaceStates.GRAVEL, SurfaceStates.LOW_SOIL);
     }
 }

@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:twisting_vines",
+  "config": {
+    "body": "tfc:plant/dry_phragmite_plant",
+    "head": "tfc:plant/dry_phragmite",
+    "tries": 70,
+    "radius": 7,
+    "min_height": 3,
+    "max_height": 5
+  }
+}
