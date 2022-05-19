@@ -34,40 +34,46 @@ public final class CoralHelpers
      */
     public static boolean placeCoralBlock(LevelAccessor level, Random rand, BlockPos pos, BlockState coralBlockState)
     {
-        BlockPos abovePos = pos.above();
-        BlockState blockstate = level.getBlockState(pos);
-        if ((Helpers.isBlock(blockstate, TFCBlocks.SALT_WATER.get()) || Helpers.isBlock(blockstate, TFCTags.Blocks.CORALS)) && Helpers.isBlock(level.getBlockState(abovePos), TFCBlocks.SALT_WATER.get()))
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        mutable.set(pos);
+        BlockState stateAt = level.getBlockState(mutable);
+        if ((Helpers.isBlock(stateAt, TFCBlocks.SALT_WATER.get()) || Helpers.isBlock(stateAt, TFCTags.Blocks.CORALS)))
         {
-            level.setBlock(pos, coralBlockState, 3);
-            if (rand.nextFloat() < 0.25F)
+            mutable.move(0, 1, 0);
+            if (Helpers.isBlock(level.getBlockState(mutable), TFCBlocks.SALT_WATER.get()))
             {
-                Helpers.getRandomElement(ForgeRegistries.BLOCKS, TFCTags.Blocks.CORALS, rand).ifPresent(block -> {
-                    level.setBlock(abovePos, salty(block.defaultBlockState()), 2);
-                });
-            }
-            else if (rand.nextFloat() < 0.05F)
-            {
-                level.setBlock(abovePos, salty(TFCBlocks.SEA_PICKLE.get().defaultBlockState().setValue(SeaPickleBlock.PICKLES, rand.nextInt(4) + 1)), 2);
-            }
-
-            for (Direction direction : Direction.Plane.HORIZONTAL)
-            {
-                if (rand.nextFloat() < 0.2F)
+                level.setBlock(pos, coralBlockState, 3);
+                if (rand.nextFloat() < 0.25F)
                 {
-                    BlockPos relativePos = pos.relative(direction);
-                    if (Helpers.isBlock(level.getBlockState(relativePos), TFCBlocks.SALT_WATER.get()))
+                    Helpers.getRandomElement(ForgeRegistries.BLOCKS, TFCTags.Blocks.CORALS, rand).ifPresent(block -> {
+                        level.setBlock(mutable, salty(block.defaultBlockState()), 2);
+                    });
+                }
+                else if (rand.nextFloat() < 0.05F)
+                {
+                    level.setBlock(mutable, salty(TFCBlocks.SEA_PICKLE.get().defaultBlockState().setValue(SeaPickleBlock.PICKLES, rand.nextInt(4) + 1)), 2);
+                }
+
+                for (Direction direction : Direction.Plane.HORIZONTAL)
+                {
+                    if (rand.nextFloat() < 0.2F)
                     {
-                        Helpers.getRandomElement(ForgeRegistries.BLOCKS, TFCTags.Blocks.WALL_CORALS, rand).ifPresent(block -> {
-                            BlockState wallCoralState = block.defaultBlockState();
-                            if (wallCoralState.hasProperty(CoralWallFanBlock.FACING))
-                            {
-                                level.setBlock(relativePos, salty(wallCoralState.setValue(CoralWallFanBlock.FACING, direction)), 2);
-                            }
-                        });
+                        mutable.setWithOffset(pos, direction);
+                        if (Helpers.isBlock(level.getBlockState(mutable), TFCBlocks.SALT_WATER.get()))
+                        {
+                            Helpers.getRandomElement(ForgeRegistries.BLOCKS, TFCTags.Blocks.WALL_CORALS, rand).ifPresent(block -> {
+                                BlockState wallCoralState = block.defaultBlockState();
+                                if (wallCoralState.hasProperty(CoralWallFanBlock.FACING))
+                                {
+                                    level.setBlock(mutable, salty(wallCoralState.setValue(CoralWallFanBlock.FACING, direction)), 2);
+                                }
+                            });
+                        }
                     }
                 }
+                return true;
             }
-            return true;
+
         }
         return false;
     }
