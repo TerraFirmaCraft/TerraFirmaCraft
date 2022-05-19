@@ -87,19 +87,12 @@ public class Predator extends PathfinderMob
 
 
     public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> attack, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> sleeping, Supplier<? extends SoundEvent> step)
-
-    {
-        this(type, level, diurnal, 20, 20);
-    }
-
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength)
     {
         super(type, level);
         attackAnimationLength = attackLength;
         walkAnimationLength = walkLength;
         this.diurnal = diurnal;
         this.entityData.define(DATA_IS_MALE, random.nextBoolean());
-        this.setPersistenceRequired();
         getNavigation().setCanFloat(true);
         this.ambient = ambient;
         this.attack = attack;
@@ -236,7 +229,6 @@ public class Predator extends PathfinderMob
     {
         SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.getLevel().dimension(), blockPosition()));
-        entityData.define(DATA_IS_MALE, random.nextBoolean());
         return spawnData;
     }
 

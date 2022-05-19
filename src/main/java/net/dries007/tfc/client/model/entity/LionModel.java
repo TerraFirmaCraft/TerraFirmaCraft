@@ -148,7 +148,8 @@ public class LionModel extends EntityModel<FelinePredator>
 
 
     private float prevLimbSwing;
-    
+
+    public LionModel(ModelPart root)
     {
         this.body = root.getChild("body");
         this.neck = body.getChild("neck");

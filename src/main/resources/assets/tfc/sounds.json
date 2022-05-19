@@ -304,9 +304,18 @@
   "animal.cougar.ambient": {
     "subtitle": "tfc.animal.cougar.ambient",
     "sounds": [
-      "tfc:cougarsay1",
-      "tfc:cougarsay2",
-      "tfc:cougarsay3"
+      {
+        "name": "tfc:cougarsay1",
+        "volume": 0.5
+      },
+      {
+        "name": "tfc:cougarsay2",
+        "volume": 0.5
+      },
+      {
+        "name": "tfc:cougarsay3",
+        "volume": 0.5
+      }
     ]
   },
   "animal.lion.ambient": {
@@ -314,10 +323,12 @@
     "sounds": [
       {
         "name": "tfc:lionambient",
+        "volume": 0.5,
         "weight": 9
       },
       {
         "name": "tfc:lionroarlong",
+        "volume": 0.5,
         "weight": 1
       }
     ]
@@ -325,7 +336,10 @@
   "animal.lion.attack": {
     "subtitle": "tfc.animal.lion.attack",
     "sounds": [
-      "tfc:lionroarshort"
+      {
+        "name": "tfc:lionroarshort",
+        "volume": 0.7
+      }
     ]
   },
   "animal.lion.death": {
@@ -344,9 +358,18 @@
   "animal.sabertooth.ambient": {
     "subtitle": "tfc.animal.sabertooth.ambient",
     "sounds": [
-      "tfc:sabertooth1",
-      "tfc:sabertooth2",
-      "tfc:sabertooth3"
+      {
+        "name": "tfc:sabertooth1",
+        "volume": 0.6
+      },
+      {
+        "name": "tfc:sabertooth2",
+        "volume": 0.6
+      },
+      {
+        "name": "tfc:sabertooth3",
+        "volume": 0.6
+      }
     ]
   },
   "animal.sabertooth.attack": {
