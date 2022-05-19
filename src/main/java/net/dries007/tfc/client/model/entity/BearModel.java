@@ -121,6 +121,9 @@ public class BearModel extends EntityModel<Predator>
     private final ModelPart right_ear;
     private final ModelPart left_ear;
 
+
+    private float prevLimbSwing;
+
     public BearModel(ModelPart root)
     {
         this.body = root.getChild("body");
@@ -142,6 +145,10 @@ public class BearModel extends EntityModel<Predator>
     public void setupAnim(Predator predator, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
         defaults.forEach(ModelPart::loadPose);
+
+        predator.setLimbSwing(Math.min(Math.max((limbSwing-prevLimbSwing)*10F, 0.4F),1.4F));
+        prevLimbSwing = limbSwing;
+        
         if (predator.isSleeping())
         {
             setupSleeping();
@@ -162,7 +169,9 @@ public class BearModel extends EntityModel<Predator>
                 body.y = 22f;
                 SWIM.tick(parts, predator.walkProgress);
             }
-            else if (predator.walkProgress > 0)
+
+            else if (predator.walkProgress > 0 || predator.isMoving())
+
             {
                 if (predator.isAggressive())
                 {

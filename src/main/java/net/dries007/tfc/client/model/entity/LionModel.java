@@ -146,7 +146,9 @@ public class LionModel extends EntityModel<FelinePredator>
     private final ModelPart maneBone;
     private final ModelPart maneHeadBone;
 
-    public LionModel(ModelPart root)
+
+    private float prevLimbSwing;
+    
     {
         this.body = root.getChild("body");
         this.neck = body.getChild("neck");
@@ -176,6 +178,9 @@ public class LionModel extends EntityModel<FelinePredator>
         defaults.forEach(ModelPart::loadPose);
         maneHeadBone.visible = maneBone.visible = felinePredator.isMale();
 
+        felinePredator.setLimbSwing(Math.min(Math.max((limbSwing-prevLimbSwing)*10F, 0.4F),1.4F));
+        prevLimbSwing = limbSwing;
+
         if (felinePredator.isSleeping())
         {
             body.y = 30f;
@@ -198,7 +203,9 @@ public class LionModel extends EntityModel<FelinePredator>
             {
                 ATTACK.tick(parts, ageInTicks);
             }
-            else if (felinePredator.walkProgress > 0)
+
+            else if (felinePredator.walkProgress > 0 || felinePredator.isMoving())
+
             {
                 if (felinePredator.isAggressive())
                 {
