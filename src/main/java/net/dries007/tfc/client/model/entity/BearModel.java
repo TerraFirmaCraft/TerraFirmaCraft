@@ -169,9 +169,7 @@ public class BearModel extends EntityModel<Predator>
                 body.y = 22f;
                 SWIM.tick(parts, predator.walkProgress);
             }
-
             else if (predator.walkProgress > 0 || predator.isMoving())
-
             {
                 if (predator.isAggressive())
                 {

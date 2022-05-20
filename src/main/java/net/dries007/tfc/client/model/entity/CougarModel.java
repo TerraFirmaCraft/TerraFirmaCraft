@@ -157,7 +157,7 @@ public class CougarModel extends EntityModel<FelinePredator>
 
 
     private float prevLimbSwing;
-    
+
     public CougarModel(ModelPart root)
     {
         this.body = root.getChild("body");
@@ -186,7 +186,7 @@ public class CougarModel extends EntityModel<FelinePredator>
     {
         defaults.forEach(ModelPart::loadPose);
 
-        felinePredator.setLimbSwing(Math.min(Math.max((limbSwing-prevLimbSwing)*10F, 0.4F),1.4F));
+        felinePredator.setLimbSwing(Math.min(Math.max((limbSwing - prevLimbSwing) * 10F, 0.4F), 1.4F));
         prevLimbSwing = limbSwing;
 
         if (felinePredator.isSleeping())
@@ -206,9 +206,7 @@ public class CougarModel extends EntityModel<FelinePredator>
                 body.y = 28f;
                 CROUCH.tick(parts, felinePredator.walkProgress);
             }
-
             else if (felinePredator.walkProgress > 0 || felinePredator.isMoving())
-
             {
                 if (felinePredator.isAggressive())
                 {
