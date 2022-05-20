@@ -31,7 +31,7 @@ public abstract class DataManagerSyncPacket<T>
         return this;
     }
 
-    void encode(DataManager<T> manager, FriendlyByteBuf buffer)
+    public void encode(DataManager<T> manager, FriendlyByteBuf buffer)
     {
         buffer.writeVarInt(elements.size());
         for (Map.Entry<ResourceLocation, T> entry : elements.entrySet())
@@ -41,7 +41,7 @@ public abstract class DataManagerSyncPacket<T>
         }
     }
 
-    void decode(DataManager<T> manager, FriendlyByteBuf buffer)
+    public void decode(DataManager<T> manager, FriendlyByteBuf buffer)
     {
         this.elements = new HashMap<>();
         final int size = buffer.readVarInt();
@@ -53,7 +53,7 @@ public abstract class DataManagerSyncPacket<T>
         }
     }
 
-    void handle(NetworkEvent.Context context, DataManager<T> manager)
+    public void handle(NetworkEvent.Context context, DataManager<T> manager)
     {
         manager.onSync(context, elements);
     }
