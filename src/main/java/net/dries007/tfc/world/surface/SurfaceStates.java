@@ -37,6 +37,7 @@ public class SurfaceStates
 
     public static final SurfaceState SHORE_SAND = context -> context.getBottomRock().sand().defaultBlockState();
     public static final SurfaceState SHORE_SANDSTONE = context -> context.getBottomRock().sandstone().defaultBlockState();
+    public static final SurfaceState SHORE_MUD = context -> TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.SANDY_LOAM).get().defaultBlockState();
 
     public static final SurfaceState RARE_SHORE_SAND = new SurfaceState()
     {

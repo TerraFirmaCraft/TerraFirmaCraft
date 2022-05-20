@@ -20,6 +20,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
@@ -36,7 +37,7 @@ public class TFCVinesFeature extends Feature<VineConfig>
     @Override
     public boolean place(FeaturePlaceContext<VineConfig> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final VineConfig config = context.config();
@@ -53,16 +54,16 @@ public class TFCVinesFeature extends Feature<VineConfig>
                 mutablePos.set(pos);
                 mutablePos.move(rand.nextInt(r) - rand.nextInt(r), 0, rand.nextInt(r) - rand.nextInt(r));
                 mutablePos.setY(y);
-                if (world.isEmptyBlock(mutablePos))
+                if (EnvironmentHelpers.isWorldgenReplaceable(level, mutablePos))
                 {
                     for (Direction direction : DIRECTIONS)
                     {
                         mutablePos.move(direction);
-                        BlockState foundState = world.getBlockState(mutablePos);
+                        BlockState foundState = level.getBlockState(mutablePos);
                         if (direction != Direction.DOWN && (Helpers.isBlock(foundState, TFCTags.Blocks.CREEPING_PLANTABLE_ON) || Helpers.isBlock(foundState, BlockTags.LOGS) || Helpers.isBlock(foundState, BlockTags.LEAVES)))
                         {
                             mutablePos.move(direction.getOpposite());
-                            world.setBlock(mutablePos, state.setValue(VineBlock.getPropertyForFace(direction), true), 2);
+                            level.setBlock(mutablePos, state.setValue(VineBlock.getPropertyForFace(direction), true), 2);
                             if (direction != Direction.UP)
                                 dirs.add(direction);
                             break;
@@ -74,11 +75,11 @@ public class TFCVinesFeature extends Feature<VineConfig>
                         for (int k = 0; k < 6 + rand.nextInt(13); k++)
                         {
                             mutablePos.move(Direction.DOWN);
-                            if (world.isEmptyBlock(mutablePos))
+                            if (level.isEmptyBlock(mutablePos))
                             {
                                 for (Direction direction : dirs)
                                 {
-                                    world.setBlock(mutablePos, state.setValue(VineBlock.getPropertyForFace(direction), true), 2);
+                                    level.setBlock(mutablePos, state.setValue(VineBlock.getPropertyForFace(direction), true), 2);
                                 }
                             }
                         }

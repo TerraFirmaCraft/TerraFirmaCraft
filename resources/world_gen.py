@@ -172,7 +172,15 @@ def generate(rm: ResourceManager):
         'states': [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS] +
                   [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS]
     })
-    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12))
+    rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(40), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12))
+
+    rm.configured_feature('peat_disc_in_mud', 'tfc:soil_disc', {
+        'min_radius': 5,
+        'max_radius': 9,
+        'height': 2,
+        'states': [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS]
+    })
+    rm.placed_feature('peat_disc_in_mud', 'tfc:peat_disc', decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'))
 
     for ore in ORE_DEPOSITS:
         configured_placed_feature(rm, '%s_deposit' % ore, 'tfc:soil_disc', {
@@ -736,8 +744,8 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'humus', patch_config('tfc:groundcover/humus[fluid=empty]', 1, 5, 100), decorate_chance(5), decorate_square(), decorate_climate(8, 20, 180, 420, True, fuzzy=True), biome_check=False)
     configured_patch_feature(rm, 'salt_lick', patch_config('tfc:groundcover/salt_lick[fluid=empty]', 1, 5, 100), decorate_chance(110), decorate_square(), decorate_climate(5, 33, 100, 500, True), biome_check=False)
     configured_patch_feature(rm, 'dead_grass', patch_config('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100), decorate_chance(70), decorate_square(), decorate_climate(10, 20, 0, 150, True, fuzzy=True), biome_check=False)
-    configured_patch_feature(rm, 'rotten_flesh', patch_config('tfc:groundcover/rotten_flesh[fluid=empty]', 1, 5, 100), decorate_chance(100), decorate_square(), decorate_climate(-30, 30, 0, 400), biome_check=False)
-    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 5, 100), decorate_chance(200), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('forge:gravel'), biome_check=False)
+    configured_patch_feature(rm, 'rotten_flesh', patch_config('tfc:groundcover/rotten_flesh[fluid=empty]', 1, 10, 10), decorate_chance(100), decorate_square(), decorate_climate(-30, 30, 0, 400), biome_check=False)
+    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 10, 10), decorate_chance(200), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('forge:gravel'), biome_check=False)
 
     # Loose Rocks - Both Surface + Underground
     configured_placed_feature(rm, 'loose_rock', 'tfc:loose_rock', {}, decorate_heightmap('ocean_floor_wg'))
@@ -1304,7 +1312,7 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
 
     # Continental / Land Features
     if land_features:
-        features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc']
+        features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:peat_disc_in_mud']
         if temp.id in ('cold', 'frozen'):
             features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
         features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']

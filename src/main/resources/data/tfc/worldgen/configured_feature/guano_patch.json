@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:random_patch",
   "config": {
-    "tries": 100,
-    "xz_spread": 5,
+    "tries": 10,
+    "xz_spread": 10,
     "y_spread": 1,
     "feature": "tfc:guano"
   }
