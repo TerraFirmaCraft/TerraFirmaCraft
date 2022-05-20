@@ -84,7 +84,6 @@ public class AdvancedShapedRecipeTest extends TestHelper
         assertRecipeEquals(before, after);
     }
 
-
     private AdvancedShapedRecipe exampleRecipe()
     {
         final ResourceLocation id = new ResourceLocation("recipe");

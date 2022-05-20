@@ -71,7 +71,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
         return TFCRecipeSerializers.ADVANCED_SHAPELESS_CRAFTING.get();
     }
 
-    public static class AdvancedSerializer extends RecipeSerializerImpl<AdvancedShapelessRecipe>
+    public static class Serializer extends RecipeSerializerImpl<AdvancedShapelessRecipe>
     {
         @Override
         public AdvancedShapelessRecipe fromJson(ResourceLocation id, JsonObject json)

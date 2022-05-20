@@ -65,6 +65,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -139,6 +141,12 @@ public final class Helpers
     public static <T> T notNull()
     {
         return null;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static <T> Capability<T> capability(CapabilityToken<T> token)
+    {
+        return BOOTSTRAP_ENVIRONMENT ? null : CapabilityManager.get(token);
     }
 
     /**
