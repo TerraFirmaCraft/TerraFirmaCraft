@@ -73,6 +73,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
     rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
     rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
+    rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
 
     # Item Heats
 
@@ -160,7 +161,12 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:gems/lapis', 'tfc:gem/lapis_lazuli')
     rm.item_tag('forge:gems/emerald', 'tfc:gem/emerald')
     rm.item_tag('bush_cutting_tools', '#forge:shears', '#tfc:knives')
-    rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill')
+    rm.item_tag('minecraft:fishes', 'tfc:food/cod', 'tfc:food/cooked_cod', 'tfc:food/salmon', 'tfc:food/cooked_salmon', 'tfc:food/tropical_fish', 'tfc:food/cooked_tropical_fish', 'tfc:food/bluegill', 'tfc:food/cooked_bluegill', 'tfc:food/shellfish', 'tfc:food/cooked_shellfish')
+    rm.item_tag('small_fishing_bait', 'tfc:food/shellfish', '#tfc:seeds')
+    rm.item_tag('large_fishing_bait', 'tfc:food/cod', 'tfc:food/salmon', 'tfc:food/tropical_fish', 'tfc:food/bluegill')
+    rm.item_tag('holds_small_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal, data in METALS.items() if 'tool' in data.types])
+    rm.item_tag('holds_large_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal in ('wrought_iron', 'red_steel', 'blue_steel', 'black_steel', 'steel')])
+    rm.item_tag('forge:string', 'tfc:wool_yarn')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -174,7 +180,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:double_sheets/any_bronze', *['#forge:double_sheets/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('tfc:bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     block_and_item_tag(rm, 'tfc:anvils', *['tfc:metal/anvil/%s' % metal for metal, data in METALS.items() if 'utility' in data.types])
-    rm.item_tag('fluxstone', 'tfc:shell', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
+    rm.item_tag('fluxstone', 'tfc:food/shellfish', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
     rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
@@ -602,6 +608,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'chicken', 'tfc:food/chicken', Category.meat, 4, 0, 0, 3, protein=1.5)
     food_item(rm, 'mutton', 'tfc:food/mutton', Category.meat, 4, 0, 0, 3, protein=1.5)
     food_item(rm, 'bluegill', 'tfc:food/bluegill', Category.meat, 4, 0, 0, 3, protein=1)
+    food_item(rm, 'shellfish', 'tfc:food/shellfish', Category.meat, 2, 0, 0, 2, protein=0.5)
     food_item(rm, 'cod', 'tfc:food/cod', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'salmon', 'tfc:food/salmon', Category.meat, 4, 0, 0, 3, protein=1)
     food_item(rm, 'tropical_fish', 'tfc:food/tropical_fish', Category.meat, 4, 0, 0, 3, protein=1)
@@ -622,6 +629,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_pork', 'tfc:food/cooked_pork', Category.cooked_meat, 4, 2, 0, 1.5, protein=2.5)
     food_item(rm, 'cooked_chicken', 'tfc:food/cooked_chicken', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_mutton', 'tfc:food/cooked_mutton', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
+    food_item(rm, 'cooked_shellfish', 'tfc:food/cooked_shellfish', Category.cooked_meat, 2, 2, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_cod', 'tfc:food/cooked_cod', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_tropical_fish', 'tfc:food/cooked_tropical_fish', Category.cooked_meat, 4, 1, 0, 1.5, protein=2)
     food_item(rm, 'cooked_salmon', 'tfc:food/cooked_salmon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
@@ -672,6 +680,7 @@ def generate(rm: ResourceManager):
 
     # Entities
     rm.data(('tfc', 'fauna', 'isopod'), fauna(distance_below_sea_level=20, climate=climate_config(max_temp=14)))
+    rm.data(('tfc', 'fauna', 'crayfish'), fauna(distance_below_sea_level=20, climate=climate_config(min_temp=5, min_rain=125)))
     rm.data(('tfc', 'fauna', 'lobster'), fauna(distance_below_sea_level=1, climate=climate_config(max_temp=21)))
     rm.data(('tfc', 'fauna', 'horseshoe_crab'), fauna(distance_below_sea_level=10, climate=climate_config(min_temp=10, max_temp=21, max_rain=400)))
     rm.data(('tfc', 'fauna', 'cod'), fauna(climate=climate_config(max_temp=18), distance_below_sea_level=5))
@@ -715,7 +724,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'squid', 'minecraft:ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'})
     mob_loot(rm, 'octopoteuthis', 'minecraft:glow_ink_sac', max_amount=10, extra_pool={'name': 'tfc:food/calamari'})
     for mob in ('isopod', 'lobster', 'horseshoe_crab', 'crayfish'):
-        mob_loot(rm, mob, 'tfc:shell')
+        mob_loot(rm, mob, 'tfc:food/shellfish')
     for mob in ('orca', 'dolphin', 'manatee'):
         mob_loot(rm, mob, 'tfc:blubber', min_amount=0, max_amount=2, bones=4)
     mob_loot(rm, 'penguin', 'minecraft:feather', max_amount=3, hide_size='small', hide_chance=0.5, bones=2)

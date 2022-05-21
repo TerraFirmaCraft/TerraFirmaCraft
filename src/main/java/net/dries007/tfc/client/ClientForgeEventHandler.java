@@ -65,6 +65,7 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
+import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -188,6 +189,12 @@ public class ClientForgeEventHandler
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
+
+            ItemStack bait = TFCFishingRodItem.getBaitItem(stack);
+            if (!bait.isEmpty())
+            {
+                text.add(new TranslatableComponent("tfc.tooltip.fishing.bait").append(bait.getHoverName()));
+            }
 
             // Fuel information
             final Fuel fuel = Fuel.get(stack);

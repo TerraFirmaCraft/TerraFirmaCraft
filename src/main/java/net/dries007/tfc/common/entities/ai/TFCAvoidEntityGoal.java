@@ -12,7 +12,10 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
+
+import net.dries007.tfc.common.entities.TFCFishingHook;
 
 public class TFCAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T>
 {
@@ -22,6 +25,12 @@ public class TFCAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<
     {
         super(mob, avoidClass, dist, farSpeed, nearSpeed);
         avoidEntityTargeting = TargetingConditions.forCombat().range(dist).selector(EntitySelector.NO_SPECTATORS::test);
+    }
+
+    @Override
+    public boolean canContinueToUse()
+    {
+        return super.canContinueToUse() && !isHooked();
     }
 
     @Override
@@ -36,6 +45,7 @@ public class TFCAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<
         else
         {
             if ((toAvoid.isSteppingCarefully() || toAvoid.getDeltaMovement().length() < 0.01D) && !toAvoid.isInWater()) return false; //tfc: stand still or sneak to avoid fish
+            if (isHooked()) return false;
 
             Vec3 vec3 = DefaultRandomPos.getPosAway(mob, 16, 7, toAvoid.position());
             if (vec3 == null)
@@ -52,5 +62,10 @@ public class TFCAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<
                 return path != null;
             }
         }
+    }
+
+    private boolean isHooked()
+    {
+        return toAvoid != null && toAvoid instanceof Player player && player.fishing instanceof TFCFishingHook hook && hook.getHookedIn() == mob;
     }
 }

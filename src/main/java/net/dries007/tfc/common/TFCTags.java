@@ -140,6 +140,8 @@ public class TFCTags
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
+        public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
+        public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");
 
         private static TagKey<Item> create(String id)
         {
@@ -153,6 +155,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
         public static final TagKey<EntityType<?>> DESTROYS_FLOATING_PLANTS = create("destroys_floating_plants");
         public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = create("bubble_column_immune");
+        public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = create("needs_large_fishing_bait");
 
         private static TagKey<EntityType<?>> create(String id)
         {

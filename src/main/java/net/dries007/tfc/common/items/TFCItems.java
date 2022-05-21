@@ -166,7 +166,6 @@ public final class TFCItems
     public static final RegistryObject<Item> PURE_PHOSPHORUS = register("pure_phosphorus", MISC);
     public static final RegistryObject<Item> PURE_POTASSIUM = register("pure_potassium", MISC);
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
-    public static final RegistryObject<Item> SHELL = register("shell", MISC);
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);
     public static final RegistryObject<Item> SPINDLE = register("spindle", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(40)));
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);

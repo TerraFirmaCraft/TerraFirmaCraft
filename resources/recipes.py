@@ -93,9 +93,13 @@ def generate(rm: ResourceManager):
             for tool in METAL_TOOL_HEADS:
                 suffix = '_blade' if tool in ('knife', 'saw', 'scythe', 'sword') else '_head'
                 advanced_shaped(rm, 'crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': '#forge:rods/wooden'}, item_stack_provider('tfc:metal/%s/%s' % (tool, metal), copy_forging=True), (0, 0)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
+            advanced_shaped(rm, 'crafting/metal/fishing_rod/%s' % metal, ['X  ', 'YX ', 'YZX'], {'X': '#forge:rods/wooden', 'Y': '#forge:string', 'Z': 'tfc:metal/fish_hook/%s' % metal}, item_stack_provider('tfc:metal/fishing_rod/%s' % metal, copy_forging=True), (1, 2)).with_advancement('tfc:metal/fish_hook/%s' % metal)
 
     unsalted_raw_meat = not_rotten(has_trait('#tfc:foods/raw_meats', 'tfc:salted', invert=True))
     advanced_shapeless(rm, 'crafting/salting', (unsalted_raw_meat, 'tfc:powder/salt'), item_stack_provider(copy_input=True, add_trait='tfc:salted'), unsalted_raw_meat).with_advancement('tfc:powder/salt')
+    advanced_shapeless(rm, 'crafting/add_small_bait', ('#tfc:holds_small_fishing_bait', '#tfc:small_fishing_bait'), item_stack_provider(copy_input=True), '#tfc:holds_small_fishing_bait', serializer='tfc:add_bait_crafting').with_advancement('#tfc:holds_small_fishing_bait')
+    advanced_shapeless(rm, 'crafting/add_large_bait', ('#tfc:holds_large_fishing_bait', '#tfc:large_fishing_bait'), item_stack_provider(copy_input=True), '#tfc:holds_large_fishing_bait', serializer='tfc:add_bait_crafting').with_advancement('#tfc:holds_large_fishing_bait')
+
     rm.crafting_shaped('crafting/wood/stick_from_twigs', ['X', 'X'], {'X': '#tfc:twigs'}, 'minecraft:stick')  # todo: advancement?
 
     for wood in WOODS.keys():
@@ -179,7 +183,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/item_frame', ['XXX', 'XYX', 'XXX'], {'X': '#tfc:lumber', 'Y': '#forge:leather'}, (4, 'minecraft:item_frame')).with_advancement('#forge:leather')
     rm.crafting_shaped('crafting/vanilla/ladder', ['X X', 'X X', 'X X'], {'X': '#tfc:lumber'}, (16, 'minecraft:ladder')).with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/vanilla/lapis_block', ['XXX', 'XXX', 'XXX'], {'X': 'tfc:gem/lapis_lazuli'}, 'minecraft:lapis_block').with_advancement('tfc:gem/lapis_lazuli')
-    rm.crafting_shaped('crafting/vanilla/name_tag', ['XX', 'XY', 'XX'], {'X': 'minecraft:string', 'Y': 'minecraft:paper'}, 'minecraft:name_tag')
+    rm.crafting_shaped('crafting/vanilla/name_tag', ['XX', 'XY', 'XX'], {'X': '#forge:string', 'Y': 'minecraft:paper'}, 'minecraft:name_tag')
     rm.crafting_shaped('crafting/vanilla/painting', ['XXX', 'XYX', 'XXX'], {'X': '#tfc:high_quality_cloth', 'Y': '#forge:rods/wooden'}, 'minecraft:painting').with_advancement('#tfc:high_quality_cloth')
     rm.crafting_shaped('crafting/vanilla/tnt', ['XYX', 'YXY', 'XYX'], {'X': 'minecraft:gunpowder', 'Y': 'minecraft:sand'}, 'minecraft:tnt').with_advancement('minecraft:gunpowder')
     rm.crafting_shaped('crafting/vanilla/spyglass', ['X', 'Y', 'Y'], {'Y': '#forge:sheets/copper', 'X': 'minecraft:glass_pane'}, 'minecraft:spyglass').with_advancement('#forge:sheets/copper')
@@ -669,6 +673,7 @@ def generate(rm: ResourceManager):
             anvil_recipe(rm, '%s_chisel_head' % metal, item('ingot'), item('chisel_head'), metal_data.tier, Rules.hit_last, Rules.hit_not_last, Rules.draw_not_last, bonus=True)
 
             anvil_recipe(rm, '%s_shield' % metal, item('double_sheet'), item('shield'), metal_data.tier, Rules.upset_last, Rules.bend_second_last, Rules.bend_third_last, bonus=True)
+            anvil_recipe(rm, '%s_fish_hook' % metal, item('sheet'), item('fish_hook'), metal_data.tier, Rules.draw_not_last, Rules.bend_any, Rules.hit_any, bonus=True)
 
         # Armor
         if 'armor' in metal_data.types:
@@ -806,10 +811,10 @@ def advanced_shaped(rm: ResourceManager, name_parts: ResourceIdentifier, pattern
     })
     return RecipeContext(rm, res)
 
-def advanced_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: Json, primary_ingredient: Json, group: str = None, conditions: Optional[Json] = None) -> RecipeContext:
+def advanced_shapeless(rm: ResourceManager, name_parts: ResourceIdentifier, ingredients: Json, result: Json, primary_ingredient: Json, group: str = None, conditions: Optional[Json] = None, serializer: str = 'tfc:advanced_shapeless_crafting') -> RecipeContext:
     res = utils.resource_location(rm.domain, name_parts)
     rm.write((*rm.resource_dir, 'data', res.domain, 'recipes', res.path), {
-        'type': 'tfc:advanced_shapeless_crafting',
+        'type': serializer,
         'group': group,
         'ingredients': utils.item_stack_list(ingredients),
         'result': result,

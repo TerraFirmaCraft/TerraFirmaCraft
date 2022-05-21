@@ -32,7 +32,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;

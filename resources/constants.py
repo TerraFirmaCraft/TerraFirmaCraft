@@ -489,7 +489,7 @@ COLOR_COMBOS = [
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
-                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'shell', 'silk_cloth', 'spindle',
+                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
@@ -533,7 +533,7 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane')
-MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari')
+MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = {
     'grain': 'Wholesome',
     'fruit': 'Tasty',
@@ -758,6 +758,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.fertilized': '§6Fertilized',
     'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
     'tfc.tooltip.egg_hatch_today': 'Will hatch today!',
+    'tfc.tooltip.fishing.bait': '§6Bait: ',
     'tfc.tooltip.animal.pregnant': 'This %s is pregnant!',
     'tfc.tooltip.animal.male_milk': 'This %s is a male.',
     'tfc.tooltip.animal.old': 'This %s is too old to produce.',
@@ -911,6 +912,8 @@ DEFAULT_LANG = {
     'tfc.chisel.cannot_place': 'The chiseled version of this block cannot exist here',
     'tfc.chisel.no_recipe': 'This block cannot be chiseled',
     'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',
+    'tfc.fishing.no_bait': 'This fishing rod needs bait!',
+    'tfc.fishing.pulled_too_hard': 'You pulled too hard, and the fish got away with the bait.',
 
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 

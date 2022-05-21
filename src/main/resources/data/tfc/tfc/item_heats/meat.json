@@ -63,6 +63,9 @@
     },
     {
       "item": "tfc:food/calamari"
+    },
+    {
+      "item": "tfc:food/shellfish"
     }
   ],
   "heat_capacity": 1

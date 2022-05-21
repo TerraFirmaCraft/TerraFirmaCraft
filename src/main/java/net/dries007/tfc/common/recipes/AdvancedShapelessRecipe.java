@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
 
+import com.mojang.datafixers.util.Function5;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +31,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AdvancedShapelessRecipe extends ShapelessRecipe
 {
-    private final ItemStackProvider result;
-    private final Ingredient primaryIngredient;
+    protected final ItemStackProvider result;
+    protected final Ingredient primaryIngredient;
 
     public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, Ingredient primaryIngredient)
     {
@@ -73,10 +74,16 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
         return TFCRecipeSerializers.ADVANCED_SHAPELESS_CRAFTING.get();
     }
 
-    public static class AdvancedSerializer extends RecipeSerializerImpl<AdvancedShapelessRecipe>
+    public static class AdvancedSerializer<T extends AdvancedShapelessRecipe> extends RecipeSerializerImpl<T>
     {
+        private final Function5<ResourceLocation, String, ItemStackProvider, NonNullList<Ingredient>, Ingredient, T> factory;
+        public AdvancedSerializer(Function5<ResourceLocation, String, ItemStackProvider, NonNullList<Ingredient>, Ingredient, T> factory)
+        {
+            this.factory = factory;
+        }
+
         @Override
-        public AdvancedShapelessRecipe fromJson(ResourceLocation id, JsonObject json)
+        public T fromJson(ResourceLocation id, JsonObject json)
         {
             final String group = JsonHelpers.getAsString(json, "group", "");
             final NonNullList<Ingredient> ingredients = RecipeHelpers.itemsFromJson(JsonHelpers.getAsJsonArray(json, "ingredients"));
@@ -86,12 +93,12 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
             }
             final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
             final Ingredient primaryIngredient = Ingredient.fromJson(json.get("primary_ingredient"));
-            return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
+            return factory.apply(id, group, result, ingredients, primaryIngredient);
         }
 
         @Nullable
         @Override
-        public AdvancedShapelessRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
+        public T fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
         {
             final String group = buffer.readUtf();
             final int size = buffer.readVarInt();
@@ -102,11 +109,11 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
             }
             final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
             final Ingredient primaryIngredient = Ingredient.fromNetwork(buffer);
-            return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
+            return factory.apply(id, group, result, ingredients, primaryIngredient);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, AdvancedShapelessRecipe recipe)
+        public void toNetwork(FriendlyByteBuf buffer, T recipe)
         {
             buffer.writeUtf(recipe.getGroup());
             buffer.writeVarInt(recipe.getIngredients().size());
