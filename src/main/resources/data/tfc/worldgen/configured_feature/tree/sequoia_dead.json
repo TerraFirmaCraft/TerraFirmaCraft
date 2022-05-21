@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:sequoia_dead/1",
+      "tfc:sequoia_dead/2",
+      "tfc:sequoia_dead/3",
+      "tfc:sequoia_dead/4",
+      "tfc:sequoia_dead/5",
+      "tfc:sequoia_dead/6"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 9,
+      "allow_submerged": true
+    }
+  }
+}

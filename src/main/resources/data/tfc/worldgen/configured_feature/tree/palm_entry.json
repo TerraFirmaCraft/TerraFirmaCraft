@@ -12,6 +12,7 @@
       }
     ],
     "normal_tree": "tfc:tree/palm",
+    "dead_tree": "tfc:tree/palm_dead",
     "fallen_log": "tfc:wood/log/palm"
   }
 }

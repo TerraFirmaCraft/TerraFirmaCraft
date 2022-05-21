@@ -97,9 +97,14 @@ public class ForestFeature extends Feature<ForestConfig>
         {
             ConfiguredFeature<?, ?> feature;
             final int oldChance = entry.oldGrowthChance();
+            final int deadChance = entry.deadChance();
             if (typeConfig.allowOldGrowth() && oldChance > 0 && random.nextInt(oldChance) == 0)
             {
                 feature = entry.getOldGrowthFeature();
+            }
+            else if (deadChance > 0 && random.nextInt(deadChance) == 0)
+            {
+                feature = entry.getDeadFeature();
             }
             else
             {
@@ -267,30 +272,10 @@ public class ForestFeature extends Feature<ForestConfig>
                             }
                         }
 
-                }
-
+                    }
                 }
             }
         }
-    }
-
-    private boolean placeDeadTree(WorldGenLevel level, Random random, BlockPos chunkBlockPos, BlockPos.MutableBlockPos mutablePos, ForestConfig.Entry entry)
-    {
-        final int chunkX = chunkBlockPos.getX();
-        final int chunkZ = chunkBlockPos.getZ();
-
-        mutablePos.set(chunkX + random.nextInt(16), 0, chunkZ + random.nextInt(16));
-        mutablePos.setY(level.getHeight(Heightmap.Types.OCEAN_FLOOR, mutablePos.getX(), mutablePos.getZ()));
-
-        mutablePos.move(Direction.DOWN);
-        BlockState downState = level.getBlockState(mutablePos);
-        mutablePos.move(Direction.UP);
-
-        if (Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(downState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
-        {
-            return true;
-        }
-        return false;
     }
 
     @Nullable

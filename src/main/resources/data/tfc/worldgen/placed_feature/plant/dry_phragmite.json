@@ -22,7 +22,8 @@
       "min_temperature": -5,
       "max_temperature": 30,
       "min_rainfall": 100,
-      "max_rainfall": 370
+      "max_rainfall": 370,
+      "min_forest": "sparse"
     },
     {
       "type": "block_predicate_filter",

@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/aspen",
+    "dead_tree": "tfc:tree/aspen_dead",
     "fallen_log": "tfc:wood/log/aspen",
     "bush_log": {
       "Name": "tfc:wood/wood/aspen",
