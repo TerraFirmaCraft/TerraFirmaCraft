@@ -55,6 +55,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -72,7 +73,6 @@ import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import net.dries007.tfc.common.blocks.wood.LogBlock;
 import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
@@ -733,13 +733,10 @@ public final class ForgeEventHandler
                         {
                             mutable.setWithOffset(pos, x, y, z);
                             BlockState state = level.getBlockState(mutable);
-                            if (state.getBlock() instanceof LogBlock log)
+                            BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
+                            if (modified != null)
                             {
-                                BlockState stripped = log.getStrippedState(state);
-                                if (stripped != null)
-                                {
-                                    level.setBlockAndUpdate(mutable, stripped);
-                                }
+                                level.setBlockAndUpdate(mutable, modified);
                             }
                         }
                     }

@@ -76,16 +76,10 @@ public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
     @Override
     public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate)
     {
-        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.AXE_STRIP)
+        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.AXE_STRIP && stripped != null)
         {
-            return getStrippedState(state);
+            return Helpers.copyProperties(stripped.get().defaultBlockState(), state);
         }
         return null;
-    }
-
-    @Nullable
-    public BlockState getStrippedState(BlockState state)
-    {
-        return stripped == null ? null : Helpers.copyProperties(stripped.get().defaultBlockState(), state);
     }
 }

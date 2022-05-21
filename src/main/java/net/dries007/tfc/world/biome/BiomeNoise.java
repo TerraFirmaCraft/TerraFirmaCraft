@@ -158,7 +158,7 @@ public final class BiomeNoise
      */
     public static Noise2D lowlands(long seed)
     {
-        return new OpenSimplex2D(seed).octaves(6).spread(0.55f).scaled(SEA_LEVEL_Y - 4, SEA_LEVEL_Y + 3).clamped(SEA_LEVEL_Y - 2, SEA_LEVEL_Y + 2).affine(1f, -1f);
+        return new OpenSimplex2D(seed).octaves(6).spread(0.55f).scaled(SEA_LEVEL_Y - 5, SEA_LEVEL_Y + 2).clamped(SEA_LEVEL_Y - 2, SEA_LEVEL_Y + 2);
     }
 
     public static Noise2D mountains(long seed, int baseHeight, int scaleHeight)

@@ -113,11 +113,6 @@ public class ForestFeature extends Feature<ForestConfig>
                     feature = entry.getFeature();
                 }
             }
-            final int deadChance = entry.deadChance();
-            if (deadChance > 0 && random.nextInt(deadChance) == 0 && feature.config() instanceof ITreePlacementConfig treeConfig)
-            {
-                return placeDeadTree(level, random, chunkBlockPos, mutablePos, entry, treeConfig.getPlacementConfig());
-            }
             return feature.place(level, generator, random, mutablePos);
         }
         return false;
@@ -279,7 +274,7 @@ public class ForestFeature extends Feature<ForestConfig>
         }
     }
 
-    private boolean placeDeadTree(WorldGenLevel level, Random random, BlockPos chunkBlockPos, BlockPos.MutableBlockPos mutablePos, ForestConfig.Entry entry, TreePlacementConfig placement)
+    private boolean placeDeadTree(WorldGenLevel level, Random random, BlockPos chunkBlockPos, BlockPos.MutableBlockPos mutablePos, ForestConfig.Entry entry)
     {
         final int chunkX = chunkBlockPos.getX();
         final int chunkZ = chunkBlockPos.getZ();
@@ -293,46 +288,7 @@ public class ForestFeature extends Feature<ForestConfig>
 
         if (Helpers.isBlock(downState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(downState, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
         {
-            return entry.fallenLog().map(log -> {
-                final int height = placement.height() - random.nextInt(placement.height() / 2);
-                if (height > 0)
-                {
-                    if (log.hasProperty(LogBlock.AXIS))
-                    {
-                        log = log.setValue(LogBlock.AXIS, Direction.Axis.Y);
-                    }
-                    for (int i = 0; i < height; i++)
-                    {
-                        BlockState stateAt = level.getBlockState(mutablePos);
-                        if (!EnvironmentHelpers.isWorldgenReplaceable(stateAt) || stateAt.hasProperty(RiverWaterBlock.FLOW))
-                        {
-                            return false;
-                        }
-                        mutablePos.move(0, 1, 0);
-                    }
-                    mutablePos.move(0, -height, 0);
-                    for (int i = 0; i < height; i++)
-                    {
-                        setBlock(level, mutablePos, log);
-                        if (random.nextInt(5) == 0)
-                        {
-                            Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
-                            mutablePos.move(direction);
-                            setBlock(level, mutablePos, log.setValue(LogBlock.AXIS, direction.getAxis()));
-                            mutablePos.move(direction.getOpposite());
-                            if (random.nextInt(4) == 0)
-                            {
-                                mutablePos.move(direction, 2);
-                                setBlock(level, mutablePos, log.setValue(LogBlock.AXIS, direction.getAxis()));
-                                mutablePos.move(direction, -2);
-                            }
-                        }
-                        mutablePos.move(0, 1, 0);
-                    }
-                    return true;
-                }
-                return false;
-            }).orElse(false);
+            return true;
         }
         return false;
     }

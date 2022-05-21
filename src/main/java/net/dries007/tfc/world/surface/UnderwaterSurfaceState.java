@@ -42,7 +42,7 @@ public class UnderwaterSurfaceState implements SurfaceState
             }
             if (!context.salty() && patchNoise.noise(pos.getX(), pos.getZ()) > 0f)
             {
-                float rainfall = context.getChunkData().getRainfall(pos);
+                float rainfall = context.rainfall();
                 if (rainfall > SoilSurfaceState.RAINFALL_SAND_SANDY_MIX)
                 {
                     if (rainfall < SoilSurfaceState.RAINFALL_SANDY)
