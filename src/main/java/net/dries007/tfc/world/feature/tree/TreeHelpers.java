@@ -12,6 +12,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -22,10 +23,14 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnorePr
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.RiverWaterBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -59,30 +64,52 @@ public final class TreeHelpers
                 transformMutable(mutablePos, settings.getMirror(), settings.getRotation());
                 mutablePos.move(pos);
 
-                final BlockState stateAt = level.getBlockState(mutablePos);
-                final boolean isInWater = stateAt.getFluidState().getType() == Fluids.WATER;
-                if (!(config.allowSubmerged() && FluidHelpers.isAirOrEmptyFluid(stateAt) && isInWater)
-                    && !stateAt.isAir()
-                    && !(stateAt.getBlock() instanceof SaplingBlock))
-                {
-                    return false;
-                }
-
-                mutablePos.move(0, -1, 0);
-
-                final BlockState stateBelow = level.getBlockState(mutablePos);
-                final boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
-                if (isInWater && config.allowSubmerged() && !Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
-                {
-                    return false;
-                }
-                else if (!treeGrowsOn)
+                if (!(config.allowDeeplySubmerged() ? isValidPositionPossiblyUnderwater(level, mutablePos) : isValidPosition(level, mutablePos, config)))
                 {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    /**
+     * @return {@code false} if the position is invalid
+     */
+    private static boolean isValidPosition(LevelAccessor level, BlockPos.MutableBlockPos mutablePos, TreePlacementConfig config)
+    {
+        final BlockState stateAt = level.getBlockState(mutablePos);
+        final boolean isInWater = stateAt.getFluidState().getType() == Fluids.WATER;
+        if (!(config.allowSubmerged() && FluidHelpers.isAirOrEmptyFluid(stateAt) && isInWater)
+            && !stateAt.isAir()
+            && !(stateAt.getBlock() instanceof SaplingBlock))
+        {
+            return false;
+        }
+
+        mutablePos.move(0, -1, 0);
+
+        final BlockState stateBelow = level.getBlockState(mutablePos);
+        final boolean treeGrowsOn = Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
+        if (isInWater && config.allowSubmerged() && !Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON))
+        {
+            return false;
+        }
+        return treeGrowsOn;
+    }
+
+    private static boolean isValidPositionPossiblyUnderwater(LevelAccessor level, BlockPos.MutableBlockPos mutablePos)
+    {
+        final BlockState stateAt = level.getBlockState(mutablePos);
+        final FluidState fluid = stateAt.getFluidState();
+        if (!Helpers.isFluid(fluid, FluidTags.WATER) || stateAt.hasProperty(RiverWaterBlock.FLOW))
+        {
+            return false;
+        }
+
+        mutablePos.move(0, -1, 0);
+        final BlockState stateBelow = level.getBlockState(mutablePos);
+        return Helpers.isBlock(stateBelow, TFCTags.Blocks.SEA_BUSH_PLANTABLE_ON) && Helpers.isBlock(stateBelow, TFCTags.Blocks.TREE_GROWS_ON);
     }
 
     /**

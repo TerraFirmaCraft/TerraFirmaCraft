@@ -91,7 +91,7 @@ public class ClientForgeEventHandler
         return field;
     });
 
-    private static float waterFogLevel = 0f;
+    private static float waterFogLevel = 1f;
 
     public static void init()
     {

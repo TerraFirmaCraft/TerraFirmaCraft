@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": {
+      "model": "tfc:block/mud_bricks/silty_loam"
+    }
+  }
+}

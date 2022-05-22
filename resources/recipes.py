@@ -43,6 +43,11 @@ class Rules(Enum):
 
 
 def generate(rm: ResourceManager):
+    def craft_decorations(recipe_name: str, base_block: str):
+        rm.crafting_shaped(recipe_name + '_slab', ['XXX'], base_block, (6, base_block + '_slab')).with_advancement(base_block)
+        rm.crafting_shaped(recipe_name + '_stairs', ['X  ', 'XX ', 'XXX'], base_block, (8, base_block + '_stairs')).with_advancement(base_block)
+        rm.crafting_shaped(recipe_name + '_wall', ['XXX', 'XXX'], base_block, (6, base_block + '_wall')).with_advancement(base_block)
+
     # Rock Things
     for rock in ROCKS.keys():
 
@@ -65,9 +70,7 @@ def generate(rm: ResourceManager):
         for block_type in CUTTABLE_ROCKS:
             block = 'tfc:rock/%s/%s' % (block_type, rock)
 
-            rm.crafting_shaped('crafting/rock/%s_%s_slab' % (rock, block_type), ['XXX'], block, (6, block + '_slab')).with_advancement(block)
-            rm.crafting_shaped('crafting/rock/%s_%s_stairs' % (rock, block_type), ['X  ', 'XX ', 'XXX'], block, (8, block + '_stairs')).with_advancement(block)
-            rm.crafting_shaped('crafting/rock/%s_%s_wall' % (rock, block_type), ['XXX', 'XXX'], block, (6, block + '_wall')).with_advancement(block)
+            craft_decorations('crafting/rock/%s_%s' % (rock, block_type), block)
 
             # Vanilla allows stone cutting from any -> any, we only allow stairs/slabs/walls as other variants require mortar / chisel
             stone_cutting(rm, 'rock/%s_%s_slab' % (rock, block_type), block, block + '_slab', 2).with_advancement(block)
@@ -128,6 +131,15 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_sluice' % wood, ['  X', ' XY', 'XYY'], {'X': '#forge:rods/wooden', 'Y': item('lumber')}, item('sluice')).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_sign' % wood, ['XXX', 'XXX', ' Y '], {'X': item('lumber'), 'Y': '#forge:rods/wooden'}, (3, item('sign'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_barrel' % wood, ['X X', 'X X', 'XXX'], {'X': item('lumber')}, item('barrel')).with_advancement(item('lumber'))
+
+    for soil in SOIL_BLOCK_VARIANTS:
+        craft_decorations('crafting/soil/%s_mud_bricks' % soil, 'tfc:mud_bricks/%s' % soil)
+        rm.crafting_shapeless('crafting/soil/%s_drying_bricks' % soil, ('tfc:mud/%s' % soil, 'tfc:straw'), (4, 'tfc:drying_bricks/%s' % soil)).with_advancement('tfc:mud/%s' % soil)
+        rm.crafting_shaped('crafting/soil/%s_mud_bricks' % soil, ['XX', 'XX'], {'X': 'tfc:mud_brick/%s' % soil}, 'tfc:mud_bricks/%s' % soil).with_advancement('tfc:mud_brick/%s' % soil)
+
+    for sand in SAND_BLOCK_TYPES:
+        for variant in ('raw', 'cut', 'smooth'):
+            craft_decorations('crafting/sandstone/%s_%s' % (sand, variant), 'tfc:%s_sandstone/%s' % (variant, sand))
 
     rm.crafting_shaped('crafting/aggregate', ['XYX', 'Y Y', 'XYX'], {'X': '#forge:sand', 'Y': '#forge:gravel'}, (8, 'tfc:aggregate')).with_advancement('#forge:sand')
     damage_shapeless(rm, 'crafting/alabaster_brick', ('tfc:ore/gypsum', '#tfc:chisels'), (4, 'tfc:alabaster_brick')).with_advancement('tfc:ore/gypsum')
@@ -262,7 +274,8 @@ def generate(rm: ResourceManager):
     # Soil Blocks
     for variant in SOIL_BLOCK_VARIANTS:
         for block_type in SOIL_BLOCK_TYPES:
-            rm.block_tag('can_landslide', 'tfc:%s/%s' % (block_type, variant))
+            if block_type not in ('mud_bricks', 'drying_bricks'):
+                rm.block_tag('can_landslide', 'tfc:%s/%s' % (block_type, variant))
 
         # Blocks that create normal dirt
         landslide_recipe(rm, '%s_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('dirt', 'grass', 'grass_path', 'farmland', 'rooted_dirt')], 'tfc:dirt/%s' % variant)
@@ -296,27 +309,28 @@ def generate(rm: ResourceManager):
     # Chisel Recipes
     # ============
 
+    def chisel_stair_slab(name: str, ingredient: str):
+        chisel_recipe(rm, name + '_stairs', ingredient, ingredient + '_stairs', 'stair')
+        chisel_recipe(rm, name + '_slab', ingredient, ingredient + '_slab', 'slab')
+
     for rock in ROCKS.keys():
         for block_type in CUTTABLE_ROCKS:
-            chisel_recipe(rm, '%s_%s_stairs' % (block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock), 'tfc:rock/%s/%s_stairs' % (block_type, rock), 'stair')
-            chisel_recipe(rm, '%s_%s_slab' % (block_type, rock), 'tfc:rock/%s/%s' % (block_type, rock), 'tfc:rock/%s/%s_slab' % (block_type, rock), 'slab')
+            chisel_stair_slab(block_type + '_' + rock, 'tfc:rock/%s/%s' % (block_type, rock))
         chisel_recipe(rm, '%s_smooth' % rock, 'tfc:rock/raw/%s' % rock, 'tfc:rock/smooth/%s' % rock, 'smooth')
         chisel_recipe(rm, '%s_hardened_smooth' % rock, 'tfc:rock/hardened/%s' % rock, 'tfc:rock/smooth/%s' % rock, 'smooth')
         chisel_recipe(rm, '%s_chiseled' % rock, 'tfc:rock/bricks/%s' % rock, 'tfc:rock/chiseled/%s' % rock, 'smooth')
     for sand in SAND_BLOCK_TYPES:
         for variant in ('raw', 'cut', 'smooth'):
-            chisel_recipe(rm, '%s_%s_stairs' % (variant, sand), 'tfc:%s_sandstone/%s' % (variant, sand), 'tfc:%s_sandstone/%s_stairs' % (variant, sand), 'stair')
-            chisel_recipe(rm, '%s_%s_slab' % (variant, sand), 'tfc:%s_sandstone/%s' % (variant, sand), 'tfc:%s_sandstone/%s_slab' % (variant, sand), 'slab')
+            chisel_stair_slab(variant + '_' + sand, 'tfc:%s_sandstone/%s' % (variant, sand))
         chisel_recipe(rm, '%s_cut' % sand, 'tfc:raw_sandstone/%s' % sand, 'tfc:cut_sandstone/%s' % sand, 'smooth')
+    for soil in SOIL_BLOCK_VARIANTS:
+        chisel_stair_slab(soil + '_brick', 'tfc:mud_bricks/%s' % soil)
     for color in COLORS:
-        chisel_recipe(rm, '%s_alabaster_bricks_stairs' % color, 'tfc:alabaster/stained/%s_alabaster_bricks' % color, 'tfc:alabaster/stained/%s_alabaster_bricks_stairs' % color, 'stair')
-        chisel_recipe(rm, '%s_alabaster_bricks_slab' % color, 'tfc:alabaster/stained/%s_alabaster_bricks' % color, 'tfc:alabaster/stained/%s_alabaster_bricks_slab' % color, 'slab')
-        chisel_recipe(rm, '%s_polished_alabaster_stairs' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster_stairs' % color, 'stair')
-        chisel_recipe(rm, '%s_polished_alabaster_slab' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster_slab' % color, 'slab')
+        chisel_stair_slab('%s_alabaster_bricks' % color, 'tfc:alabaster/stained/%s_alabaster_bricks' % color)
+        chisel_stair_slab('%s_polished_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color)
         chisel_recipe(rm, '%s_alabaster_bricks_polished' % color, 'tfc:alabaster/stained/%s_raw_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color, 'smooth')
     for wood in WOODS.keys():
-        chisel_recipe(rm, '%s_wood_stairs' % wood, 'tfc:wood/planks/%s' % wood, 'tfc:wood/planks/%s_stairs' % wood, 'stair')
-        chisel_recipe(rm, '%s_wood_slab' % wood, 'tfc:wood/planks/%s' % wood, 'tfc:wood/planks/%s_slab' % wood, 'slab')
+        chisel_stair_slab('%s_wood' % wood, 'tfc:wood/planks/%s' % wood)
 
     # ============
     # Heat Recipes

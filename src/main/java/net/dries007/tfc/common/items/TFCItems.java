@@ -124,6 +124,11 @@ public final class TFCItems
 
     // Decorations
 
+    public static final RegistryObject<Item> LOAM_MUD_BRICK = register("mud_brick/loam", DECORATIONS);
+    public static final RegistryObject<Item> SILTY_LOAM_MUD_BRICK = register("mud_brick/silty_loam", DECORATIONS);
+    public static final RegistryObject<Item> SANDY_LOAM_MUD_BRICK = register("mud_brick/sandy_loam", DECORATIONS);
+    public static final RegistryObject<Item> SILT_MUD_BRICK = register("mud_brick/silt", DECORATIONS);
+
     public static final RegistryObject<Item> ALABASTER_BRICK = register("alabaster_brick", DECORATIONS);
     public static final RegistryObject<Item> TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
     public static final RegistryObject<Item> TORCH_DEAD = register("dead_torch", () -> new StandingAndWallBlockItem(TFCBlocks.DEAD_TORCH.get(), TFCBlocks.DEAD_WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));

@@ -386,9 +386,31 @@ def generate(rm: ResourceManager):
         # Regular Dirt
         block = rm.blockstate(('dirt', soil), variants={'': [{'model': 'tfc:block/dirt/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)
         block.with_block_model().with_item_model().with_block_loot('tfc:dirt/%s' % soil).with_lang(lang('%s Dirt', soil))
-        for variant in ('mud', 'rooted_dirt'):
-            block = rm.blockstate((variant, soil)).with_block_model().with_item_model().with_block_loot('tfc:%s/%s' % (variant, soil))
-            block.with_lang(lang('%s Mud', soil) if variant == 'mud' else lang('Rooted %s', soil))
+        for variant in ('mud', 'rooted_dirt', 'mud_bricks'):
+            rm.blockstate((variant, soil)).with_block_model().with_item_model().with_block_loot('tfc:%s/%s' % (variant, soil)).with_lang(lang('%s %s', soil, variant))
+
+        rm.item_model('mud_brick/%s' % soil).with_lang(lang('%s mud brick', soil))
+        mud_bricks = rm.block(('mud_bricks', soil))
+        mud_bricks.make_slab()
+        mud_bricks.make_stairs()
+        mud_bricks.make_wall().with_tag('minecraft:walls')
+        for variant in ('_stairs', '_slab', '_wall'):
+            rm.block_loot('mud_bricks/%s%s' % (soil, variant), 'tfc:mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
+
+        for variant in ('dry', 'wet'):
+            texture = {'mud': 'tfc:block/mud_bricks/%s' % soil if variant == 'dry' else 'tfc:block/mud/%s' % soil}
+            for i in range(1, 5):
+                rm.block_model('mud_bricks/%s_%s_%s' % (variant, i, soil), textures=texture, parent='tfc:block/mud_bricks/%s' % i)
+        block = rm.blockstate(('drying_bricks', soil), variants=dict(
+            ('count=%s,dried=%s' % (c, d), {'model': 'tfc:block/mud_bricks/%s_%s_%s' % (e, c, soil)})
+            for c in range(1, 5) for d, e in (('true', 'dry'), ('false', 'wet'))
+        )).with_lang(lang('wet %s mud bricks', soil))
+        loot_pools = []
+        for i in range(1, 5):
+            for m, d in (('tfc:drying_bricks/%s' % soil, 'false'), ('tfc:mud_brick/%s' % soil, 'true')):
+                loot_pools += [{'name': m, 'conditions': [loot_tables.block_state_property('tfc:drying_bricks/%s[count=%s,dried=%s]' % (soil, i, d))], 'functions': [loot_tables.set_count(i)]}]
+        block.with_block_loot(*loot_pools)
+        rm.item_model('tfc:drying_bricks/%s' % soil, 'tfc:item/mud_brick/%s_wet' % soil)
 
         # Clay Dirt
         block = rm.blockstate(('clay', soil), variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)

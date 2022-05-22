@@ -419,7 +419,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'oak'), 'tfc:overlay_tree', overlay_config('oak', 3, 5, place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'oak_dead'), 'tfc:random_tree', random_config('oak', 6, 1, '_dead', place=tree_placement_config(1, 6, True)))
     configured_placed_feature(rm, ('tree', 'palm'), 'tfc:random_tree', random_config('palm', 7, place=tree_placement_config(1, 5)))
-    configured_placed_feature(rm, ('tree', 'palm_dead'), 'tfc:random_tree', random_config('palm', 3, 1, '_dead', place=tree_placement_config(1, 3, True)))
+    configured_placed_feature(rm, ('tree', 'palm_dead'), 'tfc:random_tree', random_config('palm', 3, 1, '_dead', place=tree_placement_config(2, 3, True)))
     configured_placed_feature(rm, ('tree', 'pine'), 'tfc:random_tree', random_config('pine', 9, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'pine_large'), 'tfc:random_tree', random_config('pine', 5, 2, '_large', place=tree_placement_config(1, 5)))
     configured_placed_feature(rm, ('tree', 'pine_dead'), 'tfc:random_tree', random_config('pine', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
@@ -439,7 +439,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('tree', 'white_cedar_dead'), 'tfc:random_tree', random_config('white_cedar', 6, 1, '_dead', place=tree_placement_config(1, 9, True)))
     configured_placed_feature(rm, ('tree', 'willow'), 'tfc:random_tree', random_config('willow', 7, place=tree_placement_config(1, 3, True)))
     configured_placed_feature(rm, ('tree', 'willow_large'), 'tfc:random_tree', random_config('willow', 14, 1, '_large', place=tree_placement_config(2, 3, True)))
-    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(1, 3, True)))
+    configured_placed_feature(rm, ('tree', 'willow_dead'), 'tfc:random_tree', random_config('willow', 3, 1, '_dead', place=tree_placement_config(2, 3, True)))
 
     # Ore Veins
     for vein_name, vein in ORE_VEINS.items():
