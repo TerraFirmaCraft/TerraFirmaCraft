@@ -132,7 +132,7 @@ public final class Metal
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full" + id.getPath());
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
 
         this.tier = JsonHelpers.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);

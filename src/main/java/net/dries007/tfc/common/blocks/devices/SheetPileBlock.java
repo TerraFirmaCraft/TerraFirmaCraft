@@ -35,6 +35,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
@@ -44,7 +45,7 @@ import org.jetbrains.annotations.Nullable;
  * A collection of arbitrary metal sheets in a single block
  * Each side contains it's own sheet, which is identified by the face of the block which the side is on - so the UP property identifies the sheet on the TOP of the sheet pile block.
  */
-public class SheetPileBlock extends ExtendedBlock implements DirectionPropertyBlock
+public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
 {
     private static final Map<BooleanProperty, VoxelShape> SHAPES = new ImmutableMap.Builder<BooleanProperty, VoxelShape>()
         .put(NORTH, box(0, 0, 0, 16, 16, 1))
@@ -107,7 +108,7 @@ public class SheetPileBlock extends ExtendedBlock implements DirectionPropertyBl
                     {
                         firstDirection = DirectionPropertyBlock.getDirection(property);
                     }
-                    if (entry.getValue().bounds().inflate(0.01d).contains(hit))
+                    if (entry.getValue().bounds().move(result.getBlockPos()).inflate(0.01d).contains(hit))
                     {
                         return DirectionPropertyBlock.getDirection(property);
                     }

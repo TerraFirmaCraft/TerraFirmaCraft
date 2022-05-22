@@ -46,8 +46,10 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         poseStack.translate(-0.5D, 0.0D, -0.5D);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
-        drawUpper(builder, poseStack, planksSprite, loom.currentBoolean() ? tileZ : 0, combinedOverlay, combinedLight);
-        drawLower(builder, poseStack, planksSprite, loom.currentBoolean() ? 0 : tileZ, combinedOverlay, combinedLight);
+        float z = loom.currentBoolean() ? tileZ : 0;
+        RenderHelpers.renderTexturedCuboid(poseStack, builder, planksSprite, combinedLight, combinedOverlay, 0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z);
+        float z1 = loom.currentBoolean() ? 0 : tileZ;
+        RenderHelpers.renderTexturedCuboid(poseStack, builder, planksSprite, combinedLight, combinedOverlay, 0.0625F, 0.09375F, 0.5626F - z1, 0.9375F, 0.15625F, 0.625F - z1);
         poseStack.popPose();
 
         if (loom.hasRecipe())
@@ -69,7 +71,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
 
     private void drawProduct(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, LoomBlockEntity te, int combinedOverlay, int combinedLight)
     {
-        for (float[] v : getPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, te.getProgress() / (float) te.getMaxProgress()))
+        for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, te.getProgress() / (float) te.getMaxProgress()))
         {
             vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU((v[3] * 16D)), sprite.getV((v[4] * 16D)), combinedOverlay, combinedLight);
         }
@@ -108,7 +110,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
                 y2 = 0.125F;
             }
 
-            for (float[] v : getPlaneVertices(0.1875F + (0.625F / maxPieces) * i, y1, z1 - 0.001F, 0.1875F + (0.625F / maxPieces) * (i + 1F), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
+            for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F + (0.625F / maxPieces) * i, y1, z1 - 0.001F, 0.1875F + (0.625F / maxPieces) * (i + 1F), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
             {
                 vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
             }
@@ -127,62 +129,10 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
             }
             texY2 = 0.5625F;
 
-            for (float[] v : getPlaneVertices(0.1875F + (0.625F / maxPieces) * i, 0, z1 - 0.001F, 0.1875F + (0.625F / maxPieces) * (i + 1), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
+            for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F + (0.625F / maxPieces) * i, (float) 0, z1 - 0.001F, 0.1875F + (0.625F / maxPieces) * (i + 1), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
             {
                 vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
             }
-        }
-    }
-
-    private float[][] getPlaneVertices(float x1, float y1, float z1, float x2, float y2, float z2, float u1, float v1, float u2, float v2)
-    {
-        return new float[][] {
-            {x1, y1, z1, u1, v1},
-            {x2, y1, z1, u2, v1},
-            {x2, y2, z2, u2, v2},
-            {x1, y2, z2, u1, v2},
-
-            {x2, y1, z1, u2, v1},
-            {x1, y1, z1, u1, v1},
-            {x1, y2, z2, u1, v2},
-            {x2, y2, z2, u2, v2}
-        };
-    }
-
-    private void drawUpper(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float z, int combinedOverlay, int combinedLight)
-    {
-        float[][] sidesX = RenderHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "x");
-        float[][] sidesY = RenderHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "y");
-        float[][] sidesZ = RenderHelpers.getVerticesBySide(0.0625F, 0.3125F, 0.5626F - z, 0.9375F, 0.375F, 0.625F - z, "z");
-        draw3D(b, matrixStack, sprite, sidesX, sidesY, sidesZ, combinedOverlay, combinedLight);
-    }
-
-    private void drawLower(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float z, int combinedOverlay, int combinedLight)
-    {
-        float[][] sidesX = RenderHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "x");
-        float[][] sidesY = RenderHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "y");
-        float[][] sidesZ = RenderHelpers.getVerticesBySide(0.0625F, 0.09375F, 0.5626F - z, 0.9375F, 0.15625F, 0.625F - z, "z");
-        draw3D(b, matrixStack, sprite, sidesX, sidesY, sidesZ, combinedOverlay, combinedLight);
-    }
-
-    private void draw3D(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float[][] sidesX, float[][] sidesY, float[][] sidesZ, int combinedOverlay, int combinedLight)
-    {
-        Matrix4f mat = matrixStack.last().pose();
-        Matrix3f norm = matrixStack.last().normal();
-
-        for (float[] v : sidesX)
-        {
-            vertex(b, mat, norm, v[0], v[1], v[2], sprite.getU(v[3]), sprite.getV(v[4]), combinedOverlay, combinedLight);
-        }
-
-        for (float[] v : sidesY)
-        {
-            vertex(b, mat, norm, v[0], v[1], v[2], sprite.getU(v[3]), sprite.getV(v[4] * 14D), combinedOverlay, combinedLight);
-        }
-
-        for (float[] v : sidesZ)
-        {
-            vertex(b, mat, norm, v[0], v[1], v[2], sprite.getU(v[3] * 14D), sprite.getV(v[4]), combinedOverlay, combinedLight);
         }
     }
 

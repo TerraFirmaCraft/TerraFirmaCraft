@@ -64,6 +64,7 @@ import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -239,7 +240,8 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.WATTLE.get(), cutout);
         TFCBlocks.STAINED_WATTLE.values().forEach(wattle -> ItemBlockRenderTypes.setRenderLayer(wattle.get(), cutout));
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.UNSTAINED_WATTLE.get(), cutout);
-
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.SHEET_PILE.get(), cutout);
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.INGOT_PILE.get(), cutout);
 
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
@@ -426,15 +428,24 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.LEAF.get(), LeafParticle.Provider::new);
     }
 
+    @SuppressWarnings("deprecation")
     public static void onTextureStitch(TextureStitchEvent.Pre event)
     {
         final ResourceLocation sheet = event.getAtlas().location();
-        // noinspection deprecation
         if (sheet.equals(TextureAtlas.LOCATION_BLOCKS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
             event.addSprite(Helpers.identifier("block/devices/bellows/back"));
             event.addSprite(Helpers.identifier("block/devices/bellows/side"));
+
+            for (Metal.Default metal : Metal.Default.values())
+            {
+                event.addSprite(Helpers.identifier("block/metal/full/" + metal.getSerializedName()));
+            }
+            for (String texture : TFCConfig.CLIENT.additionalMetalSheetTextures.get())
+            {
+                event.addSprite(new ResourceLocation(texture));
+            }
         }
         else if (sheet.equals(Sheets.CHEST_SHEET))
         {
@@ -452,5 +463,4 @@ public final class ClientEventHandler
             Arrays.stream(Wood.VALUES).map(Wood::getSerializedName).forEach(name -> event.addSprite(Helpers.identifier("entity/signs/" + name)));
         }
     }
-
 }

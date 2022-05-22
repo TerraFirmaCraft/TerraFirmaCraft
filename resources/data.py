@@ -50,7 +50,7 @@ def generate(rm: ResourceManager):
             'melt_temperature': metal_data.melt_temperature,
             'heat_capacity': metal_data.heat_capacity,
             'ingots': utils.ingredient('#forge:ingots/%s' % metal),
-            'sheets': utils.ingredient('#forge:ingots/%s' % metal)
+            'sheets': utils.ingredient('#forge:sheets/%s' % metal)
         })
 
         # Metal Items and Blocks
@@ -271,6 +271,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
     rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
+    rm.block_tag('tfc:blast_furnace_insulation', 'tfc:fire_bricks')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
@@ -439,7 +440,9 @@ def generate(rm: ResourceManager):
         'tfc:bloom',
         'tfc:pot',
         'tfc:grill',
-        'tfc:firepit'
+        'tfc:firepit',
+        'tfc:ingot_pile',
+        'tfc:sheet_pile'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest') for wood in WOODS.keys()],

@@ -27,14 +27,15 @@ import net.dries007.tfc.util.Metal;
 
 public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPileBlockEntity>
 {
+
     @Override
-    public void render(IngotPileBlockEntity pile, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay)
+    public void render(IngotPileBlockEntity pile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         final BlockState state = pile.getBlockState();
         if (state.hasProperty(IngotPileBlock.COUNT))
         {
             @SuppressWarnings("deprecation") final Function<ResourceLocation, TextureAtlasSprite> textureAtlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
-            final VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
+            final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
 
             for (int i = 0; i < state.getValue(IngotPileBlock.COUNT); i++)
             {
@@ -42,55 +43,35 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
                 final TextureAtlasSprite sprite = textureAtlas.apply(metal.getTextureId());
 
                 final int layer = (i + 8) / 8;
+                final boolean oddLayer = (layer % 2) == 1;
                 final float x = (i % 4) * 0.25f;
                 final float y = (layer - 1) * 0.125f;
                 final float z = i % 8 >= 4 ? 0.5f : 0;
 
                 poseStack.pushPose();
-                if (layer % 2 == 1)
+                if (oddLayer)
                 {
                     // Rotate 90 degrees every other layer
                     poseStack.translate(0.5f, 0f, 0.5f);
                     poseStack.mulPose(Vector3f.YP.rotationDegrees(90f));
                     poseStack.translate(-0.5f, 0f, -0.5f);
-
-                    // And translate into position
-                    poseStack.translate(x, y, z + 0.5f);
-                }
-                else
-                {
-                    poseStack.translate(z, y, x);
                 }
 
-                renderIngot(poseStack, sprite, builder, packedLight, packedOverlay);
+                poseStack.translate(x, y, z);
+
+                final float scale = 0.0625f / 2f;
+                final float minX = scale * 0.5f;
+                final float minY = scale * 0f;
+                final float minZ = scale * 0.5f;
+                final float maxX = scale * (minX + 7);
+                final float maxY = scale * (minY + 4);
+                final float maxZ = scale * (minZ + 15);
+
+                RenderHelpers.renderTexturedTrapezoidalCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, minX, maxX, minZ, maxZ, minX + scale, maxX - scale, minZ + scale, maxZ - scale, minY, maxY, 7, 15, 4);
 
                 poseStack.popPose();
 
             }
-        }
-    }
-
-    private void renderIngot(PoseStack poseStack, TextureAtlasSprite sprite, VertexConsumer builder, int packedLight, int packedOverlay)
-    {
-        final float scale = 0.0625f / 2f;
-        final float minX = 0.5f;
-        final float minY = 0f;
-        final float minZ = 0.5f;
-        final float maxX = minX + 15;
-        final float maxY = minY + 4;
-        final float maxZ = minZ + 7;
-
-        final float[][] vertices = RenderHelpers.getVerticesBySide(minX * scale, minY * scale, minZ * scale, maxX * scale, maxY * scale, maxZ * scale, "xyz");
-
-        for (float[] v : vertices)
-        {
-            builder.vertex(poseStack.last().pose(), v[0], v[1], v[2])
-                .color(1, 1, 1, 1)
-                .uv(sprite.getU(v[3]), sprite.getV(v[4]))
-                .uv2(packedLight)
-                .overlayCoords(packedOverlay)
-                .normal(poseStack.last().normal(), 1, 1, 1)
-                .endVertex();
         }
     }
 }

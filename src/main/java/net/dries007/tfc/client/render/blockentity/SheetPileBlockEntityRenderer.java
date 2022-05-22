@@ -38,7 +38,6 @@ public class SheetPileBlockEntityRenderer implements BlockEntityRenderer<SheetPi
             @SuppressWarnings("deprecation") final Function<ResourceLocation, TextureAtlasSprite> textureAtlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
             final VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
 
-            poseStack.pushPose();
             for (Direction direction : Helpers.DIRECTIONS)
             {
                 if (state.getValue(DirectionPropertyBlock.getProperty(direction))) // The properties are authoritative on which sides should be rendered
@@ -49,23 +48,11 @@ public class SheetPileBlockEntityRenderer implements BlockEntityRenderer<SheetPi
                     renderSheet(poseStack, sprite, builder, direction, packedLight, packedOverlay);
                 }
             }
-            poseStack.popPose();
         }
     }
 
-    private void renderSheet(PoseStack poseStack, TextureAtlasSprite sprite, VertexConsumer builder, Direction direction, int packedLight, int packedOverlay)
+    private void renderSheet(PoseStack poseStack, TextureAtlasSprite sprite, VertexConsumer buffer, Direction direction, int packedLight, int packedOverlay)
     {
-        final float[][] vertices = RenderHelpers.getVerticesByShape(SheetPileBlock.getShapeForSingleFace(direction), "xyz");
-
-        for (float[] v : vertices)
-        {
-            builder.vertex(poseStack.last().pose(), v[0], v[1], v[2])
-                .color(1, 1, 1, 1)
-                .uv(sprite.getU(v[3]), sprite.getV(v[4]))
-                .uv2(packedLight)
-                .overlayCoords(packedOverlay)
-                .normal(poseStack.last().normal(), 1, 1, 1)
-                .endVertex();
-        }
+        RenderHelpers.renderTexturedCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, SheetPileBlock.getShapeForSingleFace(direction).bounds());
     }
 }

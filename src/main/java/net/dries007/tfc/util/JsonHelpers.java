@@ -31,7 +31,6 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import org.jetbrains.annotations.Nullable;
 
 public final class JsonHelpers extends GsonHelper
 {
@@ -112,6 +111,11 @@ public final class JsonHelpers extends GsonHelper
             throw new JsonParseException("Missing required key: " + key);
         }
         return json.get(key);
+    }
+
+    public static FluidStack getFluidStack(JsonObject json, String key)
+    {
+        return getFluidStack(getAsJsonObject(json, key));
     }
 
     public static FluidStack getFluidStack(JsonObject json)

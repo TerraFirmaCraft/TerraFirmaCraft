@@ -79,6 +79,7 @@ public final class TFCBlockEntities
     ));
     public static final RegistryObject<BlockEntityType<SheetPileBlockEntity>> SHEET_PILE = register("sheet_pile", SheetPileBlockEntity::new, TFCBlocks.SHEET_PILE);
     public static final RegistryObject<BlockEntityType<IngotPileBlockEntity>> INGOT_PILE = register("ingot_pile", IngotPileBlockEntity::new, TFCBlocks.INGOT_PILE);
+    public static final RegistryObject<BlockEntityType<BlastFurnaceBlockEntity>> BLAST_FURNACE = register("blast_furnace", BlastFurnaceBlockEntity::new, TFCBlocks.BLAST_FURNACE);
 
     @SuppressWarnings("ConstantConditions")
     private static <T extends BlockEntity> RegistryObject<BlockEntityType<T>> register(String name, BlockEntityType.BlockEntitySupplier<T> factory, Supplier<? extends Block> block)

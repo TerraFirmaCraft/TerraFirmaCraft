@@ -34,6 +34,7 @@ public class IngotPileBlockEntity extends TFCBlockEntity
     public void addIngot(ItemStack stack)
     {
         stacks.add(stack);
+        cachedMetals.add(null);
         markForSync();
     }
 
@@ -52,13 +53,17 @@ public class IngotPileBlockEntity extends TFCBlockEntity
      */
     public Metal getOrCacheMetal(int index)
     {
-        if (index > stacks.size())
+        if (index >= stacks.size())
         {
             return Metal.unknown();
         }
 
         final ItemStack stack = stacks.get(index);
 
+        while (index >= cachedMetals.size())
+        {
+            cachedMetals.add(null);
+        }
         Metal metal = cachedMetals.get(index);
         if (metal == null)
         {
@@ -75,7 +80,7 @@ public class IngotPileBlockEntity extends TFCBlockEntity
     @Override
     protected void saveAdditional(CompoundTag tag)
     {
-        Helpers.writeItemStacksToNbt(stacks);
+        tag.put("stacks", Helpers.writeItemStacksToNbt(stacks));
         super.saveAdditional(tag);
     }
 
