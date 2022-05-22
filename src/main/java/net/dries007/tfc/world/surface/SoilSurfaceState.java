@@ -58,7 +58,7 @@ public class SoilSurfaceState implements SurfaceState
             {
                 final double slope = context.getSlope();
                 final float weirdness = data.getForestWeirdness();
-                if (weirdness < 0.2f && slope < 2 && (slope < 1 || context.random().nextBoolean()))
+                if ((weirdness < 0.18f || (weirdness < 0.22f && (weirdness - context.random().nextFloat() * 0.5f < 0f))) && slope < 2 && (slope < 1 || context.random().nextBoolean()))
                 {
                     return context.getRock().gravel().defaultBlockState();
                 }

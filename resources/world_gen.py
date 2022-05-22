@@ -648,8 +648,8 @@ def generate(rm: ResourceManager):
 
     configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 20, water='salt', custom_feature='tfc:kelp_tree'), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
 
-    configured_placed_feature(rm, ('plant', 'ivy'), 'tfc:vines', vine_config('tfc:plant/ivy', 15, 7, 96, 150), decorate_climate(-4, 14, 90, 450, True, fuzzy=True), decorate_chance(5), decorate_air_or_empty_fluid())
-    configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', vine_config('tfc:plant/jungle_vines', 33, 7, 64, 160), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_chance(5), decorate_air_or_empty_fluid())
+    configured_placed_feature(rm, ('plant', 'ivy'), 'tfc:vines', {'state': utils.block_state('tfc:plant/ivy[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 128), decorate_replaceable(), decorate_climate(-4, 14, 90, 450, True, fuzzy=True))
+    configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 128), decorate_replaceable(), decorate_climate(16, 32, 150, 470, True, fuzzy=True))
 
     # Grass-Type / Basic Plants
     configured_plant_patch_feature(rm, ('plant', 'fountain_grass'), plant_config('tfc:plant/fountain_grass[age=1,stage=1]', 1, 15, 64), decorate_square(), decorate_climate(0, 26, 75, 150))
