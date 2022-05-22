@@ -692,12 +692,12 @@ def generate(rm: ResourceManager):
         singular_feature = utils.resource_location(rm.domain, name_parts)
         rm.tag('crop_features', 'worldgen/placed_feature', patch_feature)
 
-        rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 4, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
+        rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
         rm.placed_feature(patch_feature, patch_feature)
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(name))
 
-    configured_placed_feature(rm, 'tfc:plant/wild_crops', 'minecraft:simple_random_selector', {'features': '#tfc:crop_features'}, decorate_chance(40), decorate_square(), decorate_climate(min_rain=125, min_temp=-15))
+    configured_placed_feature(rm, 'tfc:plant/wild_crops', 'minecraft:simple_random_selector', {'features': '#tfc:crop_features'}, decorate_chance(20), decorate_square(), decorate_climate(min_rain=125, min_temp=-15))
 
     rm.tag('clay_plant_features', 'worldgen/placed_feature', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
     rm.tag('clay_disc_with_indicator_features', 'worldgen/placed_feature', 'tfc:clay_disc', '#tfc:clay_plant_features')
