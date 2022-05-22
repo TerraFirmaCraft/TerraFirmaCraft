@@ -1338,6 +1338,9 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('bellows', model='tfc:block/bellows', variants=four_rotations('tfc:block/bellows', (270, 180, None, 90))).with_lang(lang('Bellows')).with_block_loot('tfc:bellows').with_tag('minecraft:mineable/axe')
 
+    rm.blockstate('ingot_pile', 'tfc:block/empty').with_lang('ingot pile')
+    rm.blockstate('sheet_pile', 'tfc:block/empty').with_lang('sheet pile')
+
     for be in BLOCK_ENTITIES:
         rm.lang('tfc.block_entity.%s' % be, lang(be))
 

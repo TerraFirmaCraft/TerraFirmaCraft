@@ -48,7 +48,9 @@ def generate(rm: ResourceManager):
             'tier': metal_data.tier,
             'fluid': 'tfc:metal/%s' % metal,
             'melt_temperature': metal_data.melt_temperature,
-            'heat_capacity': metal_data.heat_capacity
+            'heat_capacity': metal_data.heat_capacity,
+            'ingots': utils.ingredient('#forge:ingots/%s' % metal),
+            'sheets': utils.ingredient('#forge:ingots/%s' % metal)
         })
 
         # Metal Items and Blocks
@@ -234,6 +236,13 @@ def generate(rm: ResourceManager):
     # Sand
     for color in SAND_BLOCK_TYPES:
         block_and_item_tag(rm, 'minecraft:sand', 'tfc:sand/%s' % color)
+
+    # Metal Ingots / Sheets, for Ingot/Sheet Piles
+    for metal in METALS.keys():
+        rm.item_tag('forge:ingots/%s' % metal)
+        rm.item_tag('forge:sheets/%s' % metal)
+        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
+        rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
 
     # ==========
     # BLOCK TAGS

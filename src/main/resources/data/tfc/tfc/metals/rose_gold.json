@@ -3,5 +3,11 @@
   "tier": 1,
   "fluid": "tfc:metal/rose_gold",
   "melt_temperature": 960,
-  "heat_capacity": 0.35
+  "heat_capacity": 0.35,
+  "ingots": {
+    "tag": "forge:ingots/rose_gold"
+  },
+  "sheets": {
+    "tag": "forge:ingots/rose_gold"
+  }
 }

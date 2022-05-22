@@ -13,6 +13,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
@@ -109,6 +110,16 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return t;
     }
 
+    public ResourceLocation getIdOrThrow(T type)
+    {
+        final ResourceLocation id = getId(type);
+        if (id == null)
+        {
+            throw new IllegalArgumentException("No id for " + typeName + ": " + type);
+        }
+        return id;
+    }
+
     @Nullable
     public ResourceLocation getId(T type)
     {
@@ -118,6 +129,17 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     public Set<T> getValues()
     {
         return types.values();
+    }
+
+    public void toNetwork(T element, FriendlyByteBuf buffer)
+    {
+        buffer.writeResourceLocation(getIdOrThrow(element));
+    }
+
+    public Supplier<T> fromNetwork(FriendlyByteBuf buffer)
+    {
+        final ResourceLocation id = buffer.readResourceLocation();
+        return Suppliers.memoize(() -> getOrThrow(id));
     }
 
     public DataManagerSyncPacket<T> createSyncPacket()
@@ -136,13 +158,13 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return factory.apply(id, obj);
     }
 
-    public void encode(FriendlyByteBuf buffer, T element)
+    public void rawToNetwork(FriendlyByteBuf buffer, T element)
     {
         assert networkEncoder != null;
         networkEncoder.accept(element, buffer);
     }
 
-    public T decode(ResourceLocation id, FriendlyByteBuf buffer)
+    public T rawFromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
     {
         assert networkFactory != null;
         return networkFactory.apply(id, buffer);

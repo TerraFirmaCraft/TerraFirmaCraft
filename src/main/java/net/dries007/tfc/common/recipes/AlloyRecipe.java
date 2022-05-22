@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
+import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -22,11 +22,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.Lazy;
 
 import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.Metal;
+import org.jetbrains.annotations.Nullable;
 
 public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
 {
@@ -101,7 +101,6 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
             {
                 final JsonObject content = JsonHelpers.convertToJsonObject(element, "entry in 'contents'");
                 final Metal metal = JsonHelpers.getFrom(content, "metal", Metal.MANAGER);
-                final Supplier<Metal> resolvedMetal = () -> Metal.MANAGER.get(metal.getId());
                 final double min = JsonHelpers.getAsDouble(content, "min");
                 final double max = JsonHelpers.getAsDouble(content, "max");
                 builder.put(metal, new Range(min, max));
@@ -116,18 +115,18 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
         {
             // Lazily initialize metals, since we cannot guarantee that when this deserializes, the metal manager is loaded.
             final int size = buffer.readVarInt();
-            final Map<ResourceLocation, Range> metals = new HashMap<>();
+            final Map<Supplier<Metal>, Range> metals = new HashMap<>();
             for (int i = 0; i < size; i++)
             {
-                final ResourceLocation metal = buffer.readResourceLocation();
+                final Supplier<Metal> metal = Metal.MANAGER.fromNetwork(buffer);
                 final double min = buffer.readDouble();
                 final double max = buffer.readDouble();
                 metals.put(metal, new Range(min, max));
             }
-            final Supplier<Map<Metal, Range>> lazyMetals = Lazy.of(() -> metals.entrySet()
+            final Supplier<Map<Metal, Range>> lazyMetals = Suppliers.memoize(() -> metals.entrySet()
                 .stream()
-                .collect(Collectors.toMap(e -> Metal.MANAGER.getOrThrow(e.getKey()), Map.Entry::getValue)));
-            final Supplier<Metal> result = Metal.MANAGER.getLazyOrThrow(buffer.readResourceLocation());
+                .collect(Collectors.toMap(e -> e.getKey().get(), Map.Entry::getValue)));
+            final Supplier<Metal> result = Metal.MANAGER.fromNetwork(buffer);
             return new AlloyRecipe(recipeId, lazyMetals, result);
         }
 
@@ -136,11 +135,11 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
         {
             buffer.writeVarInt(recipe.metals.get().size());
             recipe.metals.get().forEach((metal, range) -> {
-                buffer.writeResourceLocation(metal.getId());
+                Metal.MANAGER.toNetwork(metal, buffer);
                 buffer.writeDouble(range.min());
                 buffer.writeDouble(range.max());
             });
-            buffer.writeResourceLocation(recipe.result.get().getId());
+            Metal.MANAGER.toNetwork(recipe.result.get(), buffer);
         }
     }
 }

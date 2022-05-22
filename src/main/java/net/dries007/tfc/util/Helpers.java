@@ -382,12 +382,31 @@ public final class Helpers
         return list;
     }
 
+    public static ListTag writeItemStacksToNbt(@Nullable ItemStack[] stacks)
+    {
+        final ListTag list = new ListTag();
+        for (final ItemStack stack : stacks)
+        {
+            list.add((stack == null ? ItemStack.EMPTY : stack).save(new CompoundTag()));
+        }
+        return list;
+    }
+
     public static void readItemStacksFromNbt(List<ItemStack> stacks, ListTag list)
     {
         stacks.clear();
         for (int i = 0; i < list.size(); i++)
         {
             stacks.add(ItemStack.of(list.getCompound(i)));
+        }
+    }
+
+    public static void readItemStacksFromNbt(ItemStack[] stacks, ListTag list)
+    {
+        assert list.size() == stacks.length;
+        for (int i = 0; i < list.size(); i++)
+        {
+            stacks[i] = ItemStack.of(list.getCompound(i));
         }
     }
 
@@ -764,16 +783,6 @@ public final class Helpers
         {
             list.add(index, element); // Insert at the target location, shifts the target forwards
         }
-    }
-
-    public static <T> List<T> listOf(@Nullable T element, int size)
-    {
-        final List<T> list = new ArrayList<>(size);
-        for (int i = 0; i < size; i++)
-        {
-            list.add(element);
-        }
-        return list;
     }
 
     public static <T extends IForgeRegistryEntry<T>> Collection<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)

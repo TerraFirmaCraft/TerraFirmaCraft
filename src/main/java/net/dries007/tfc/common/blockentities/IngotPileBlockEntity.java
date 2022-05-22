@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
@@ -18,37 +18,31 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
-public class SheetPileBlockEntity extends TFCBlockEntity
+public class IngotPileBlockEntity extends TFCBlockEntity
 {
-    private final ItemStack[] stacks;
-    private final Metal[] cachedMetals;
+    private final List<ItemStack> stacks;
+    private final List<Metal> cachedMetals;
 
-    public SheetPileBlockEntity(BlockPos pos, BlockState state)
+    public IngotPileBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.SHEET_PILE.get(), pos, state);
+        super(TFCBlockEntities.INGOT_PILE.get(), pos, state);
 
-        this.stacks = new ItemStack[6];
-        this.cachedMetals = new Metal[6];
-
-        Arrays.fill(stacks, ItemStack.EMPTY);
+        stacks = new ArrayList<>();
+        cachedMetals = new ArrayList<>();
     }
 
-    public void addSheet(Direction direction, ItemStack stack)
+    public void addIngot(ItemStack stack)
     {
-        final int index = direction.ordinal();
-        stacks[index] = stack;
-        cachedMetals[index] = null;
+        stacks.add(stack);
         markForSync();
     }
 
-    public ItemStack removeSheet(Direction direction)
+    public ItemStack removeIngot()
     {
-        final int index = direction.ordinal();
-        final ItemStack stack = stacks[index];
-        stacks[index] = ItemStack.EMPTY;
-        cachedMetals[index] = null;
+        final ItemStack remove = stacks.remove(stacks.size() - 1);
+        cachedMetals.remove(cachedMetals.size() - 1);
         markForSync();
-        return stack;
+        return remove;
     }
 
     /**
@@ -56,20 +50,24 @@ public class SheetPileBlockEntity extends TFCBlockEntity
      * The metal is defined by checking what metal the stack would melt into if heated.
      * Any other items turn into {@link Metal#unknown()}.
      */
-    public Metal getOrCacheMetal(Direction direction)
+    public Metal getOrCacheMetal(int index)
     {
-        final int index = direction.ordinal();
-        final ItemStack stack = stacks[index];
+        if (index > stacks.size())
+        {
+            return Metal.unknown();
+        }
 
-        Metal metal = cachedMetals[index];
+        final ItemStack stack = stacks.get(index);
+
+        Metal metal = cachedMetals.get(index);
         if (metal == null)
         {
-            metal = Metal.getFromSheet(stack);
+            metal = Metal.getFromIngot(stack);
             if (metal == null)
             {
                 metal = Metal.unknown();
             }
-            cachedMetals[index] = metal;
+            cachedMetals.set(index, metal);
         }
         return metal;
     }
@@ -77,7 +75,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     @Override
     protected void saveAdditional(CompoundTag tag)
     {
-        tag.put("stacks", Helpers.writeItemStacksToNbt(stacks));
+        Helpers.writeItemStacksToNbt(stacks);
         super.saveAdditional(tag);
     }
 

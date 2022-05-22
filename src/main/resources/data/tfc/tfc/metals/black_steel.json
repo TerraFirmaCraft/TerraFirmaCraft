@@ -3,5 +3,11 @@
   "tier": 5,
   "fluid": "tfc:metal/black_steel",
   "melt_temperature": 1485,
-  "heat_capacity": 0.35
+  "heat_capacity": 0.35,
+  "ingots": {
+    "tag": "forge:ingots/black_steel"
+  },
+  "sheets": {
+    "tag": "forge:ingots/black_steel"
+  }
 }

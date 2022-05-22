@@ -140,6 +140,8 @@ public class TFCTags
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
+        public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
+        public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
 
         private static TagKey<Item> create(String id)
         {

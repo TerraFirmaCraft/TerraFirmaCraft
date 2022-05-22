@@ -3,5 +3,11 @@
   "tier": 2,
   "fluid": "tfc:metal/bismuth_bronze",
   "melt_temperature": 985,
-  "heat_capacity": 0.35
+  "heat_capacity": 0.35,
+  "ingots": {
+    "tag": "forge:ingots/bismuth_bronze"
+  },
+  "sheets": {
+    "tag": "forge:ingots/bismuth_bronze"
+  }
 }

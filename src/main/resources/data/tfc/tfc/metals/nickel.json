@@ -3,5 +3,11 @@
   "tier": 1,
   "fluid": "tfc:metal/nickel",
   "melt_temperature": 1453,
-  "heat_capacity": 0.48
+  "heat_capacity": 0.48,
+  "ingots": {
+    "tag": "forge:ingots/nickel"
+  },
+  "sheets": {
+    "tag": "forge:ingots/nickel"
+  }
 }

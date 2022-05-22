@@ -3,5 +3,11 @@
   "tier": 1,
   "fluid": "tfc:metal/gold",
   "melt_temperature": 1060,
-  "heat_capacity": 0.6
+  "heat_capacity": 0.6,
+  "ingots": {
+    "tag": "forge:ingots/gold"
+  },
+  "sheets": {
+    "tag": "forge:ingots/gold"
+  }
 }

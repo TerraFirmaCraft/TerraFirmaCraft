@@ -297,6 +297,7 @@ public final class TFCBlocks
     public static final RegistryObject<Block> SALTWATER_BUBBLE_COLUMN = register("saltwater_bubble_column", () -> new TFCBubbleColumnBlock(Properties.of(Material.BUBBLE_COLUMN).noCollission().noDrops(), TFCFluids.SALT_WATER::getSource));
 
     public static final RegistryObject<Block> SHEET_PILE = register("sheet_pile", () -> new SheetPileBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(4, 60).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.SHEET_PILE)));
+    public static final RegistryObject<Block> INGOT_PILE = register("ingot_pile", () -> new IngotPileBlock(ExtendedProperties.of(Properties.of(Material.METAL).strength(4, 60).sound(SoundType.METAL)).blockEntity(TFCBlockEntities.INGOT_PILE)));
 
     // Fluids
 

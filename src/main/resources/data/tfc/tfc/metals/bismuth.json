@@ -3,5 +3,11 @@
   "tier": 1,
   "fluid": "tfc:metal/bismuth",
   "melt_temperature": 270,
-  "heat_capacity": 0.14
+  "heat_capacity": 0.14,
+  "ingots": {
+    "tag": "forge:ingots/bismuth"
+  },
+  "sheets": {
+    "tag": "forge:ingots/bismuth"
+  }
 }

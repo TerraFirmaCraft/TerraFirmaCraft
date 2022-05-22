@@ -3,5 +3,11 @@
   "tier": 1,
   "fluid": "tfc:metal/cast_iron",
   "melt_temperature": 1535,
-  "heat_capacity": 0.35
+  "heat_capacity": 0.35,
+  "ingots": {
+    "tag": "forge:ingots/cast_iron"
+  },
+  "sheets": {
+    "tag": "forge:ingots/cast_iron"
+  }
 }
