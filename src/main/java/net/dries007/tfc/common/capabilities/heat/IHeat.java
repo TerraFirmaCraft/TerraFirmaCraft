@@ -101,10 +101,10 @@ public interface IHeat extends INBTSerializable<CompoundTag>
                 tooltip.append(new TranslatableComponent("tfc.tooltip.forging"));
             }
 
+            // 'DANGER' tooltip is displayed for things that may be lost - defined by an empty item output
             final ItemStackInventory wrapper = new ItemStackInventory(stack);
             final HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
-
-            if (recipe != null && temperature > 0.9 * recipe.getTemperature())
+            if (recipe != null && temperature > 0.9 * recipe.getTemperature() && recipe.assemble(wrapper).isEmpty())
             {
                 tooltip.append(new TranslatableComponent("tfc.tooltip.danger"));
             }

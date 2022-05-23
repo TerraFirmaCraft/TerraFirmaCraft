@@ -53,12 +53,12 @@ public class RegisteredDataManager<T> extends DataManager<RegisteredDataManager.
     protected final Function<ResourceLocation, T> fallbackFactory;
     protected final String typeName;
 
-    public RegisteredDataManager(BiFunction<ResourceLocation, JsonObject, T> factory, Function<ResourceLocation, T> fallbackFactory, String domain, String typeName)
+    public RegisteredDataManager(BiFunction<ResourceLocation, JsonObject, T> factory, Function<ResourceLocation, T> fallbackFactory, ResourceLocation domain, String typeName)
     {
         this(factory, fallbackFactory, domain, typeName, null, null, null);
     }
 
-    public RegisteredDataManager(BiFunction<ResourceLocation, JsonObject, T> factory, Function<ResourceLocation, T> fallbackFactory, String domain, String typeName, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<Entry<T>>> networkPacketFactory)
+    public RegisteredDataManager(BiFunction<ResourceLocation, JsonObject, T> factory, Function<ResourceLocation, T> fallbackFactory, ResourceLocation domain, String typeName, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<Entry<T>>> networkPacketFactory)
     {
         super(domain, typeName, (res, id) -> null, fixNetworkFactory(networkFactory), fixNetworkEncoder(networkEncoder), networkPacketFactory);
 

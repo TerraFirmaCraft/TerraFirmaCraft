@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class Fuel extends ItemDefinition
 {
-    public static final DataManager<Fuel> MANAGER = new DataManager<>("fuels", "fuel", Fuel::new, Fuel::new, Fuel::encode, Packet::new);
+    public static final DataManager<Fuel> MANAGER = new DataManager<>(Helpers.identifier("fuels"), "fuel", Fuel::new, Fuel::new, Fuel::encode, Packet::new);
     public static final IndirectHashCollection<Item, Fuel> CACHE = IndirectHashCollection.create(Fuel::getValidItems, MANAGER::getValues);
 
     @Nullable

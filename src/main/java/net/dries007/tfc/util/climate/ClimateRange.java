@@ -11,13 +11,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.network.DataManagerSyncPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.RegisteredDataManager;
 import org.jetbrains.annotations.NotNull;
 
 public class ClimateRange
 {
-    public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, "climate_ranges", "climate range", ClimateRange::new, ClimateRange::encode, Packet::new);
+    public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, Helpers.identifier("climate_ranges"), "climate range", ClimateRange::new, ClimateRange::encode, Packet::new);
 
     private final ResourceLocation id;
     private final int minHydration, maxHydration, hydrationWiggleRange; // Hydration = a hybrid of nearby water and rainfall

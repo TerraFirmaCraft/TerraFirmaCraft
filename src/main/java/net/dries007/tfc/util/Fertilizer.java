@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Fertilizer extends ItemDefinition
 {
-    public static final DataManager<Fertilizer> MANAGER = new DataManager<>("fertilizers", "fertilizer", Fertilizer::new, Fertilizer::new, Fertilizer::encode, Packet::new);
+    public static final DataManager<Fertilizer> MANAGER = new DataManager<>(Helpers.identifier("fertilizers"), "fertilizer", Fertilizer::new, Fertilizer::new, Fertilizer::encode, Packet::new);
     public static final IndirectHashCollection<Item, Fertilizer> CACHE = IndirectHashCollection.create(Fertilizer::getValidItems, MANAGER::getValues);
 
     @Nullable

@@ -915,7 +915,7 @@ def generate(rm: ResourceManager):
             rm.block_loot(p, p)
         else:
             rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools')]})
-    for plant in MISC_PLANT_FEATURES:
+    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower', 'dry_phragmite'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
