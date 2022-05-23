@@ -30,7 +30,7 @@ public final class FoodCapability
 {
     public static final Capability<IFood> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("food");
-    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>("food_items", "food", FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, Packet::new);
+    public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food_items"), "food", FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(FoodDefinition::getValidItems, MANAGER::getValues);
 
     @Nullable

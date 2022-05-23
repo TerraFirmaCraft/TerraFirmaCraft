@@ -18,6 +18,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +34,7 @@ public final class HeatCapability
     public static final Capability<IHeatBlock> BLOCK_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation BLOCK_KEY = new ResourceLocation(MOD_ID, "block_heat");
 
-    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>("item_heats", "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
+    public static final DataManager<HeatDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_heats"), "item heat", HeatDefinition::new, HeatDefinition::new, HeatDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, HeatDefinition> CACHE = IndirectHashCollection.create(HeatDefinition::getValidItems, MANAGER::getValues);
 
     @Nullable
