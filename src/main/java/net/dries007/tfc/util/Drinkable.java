@@ -47,7 +47,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Drinkable extends FluidDefinition
 {
-    public static final DataManager<Drinkable> MANAGER = new DataManager<>("drinkables", "drinkable", Drinkable::new, Drinkable::new, Drinkable::encode, Packet::new);
+    public static final DataManager<Drinkable> MANAGER = new DataManager<>(Helpers.identifier("drinkables"), "drinkable", Drinkable::new, Drinkable::new, Drinkable::encode, Packet::new);
     public static final IndirectHashCollection<Fluid, Drinkable> CACHE = IndirectHashCollection.create(Drinkable::getFluids, MANAGER::getValues);
 
     /** Amount of mB drank when drinking by hand on a source block */

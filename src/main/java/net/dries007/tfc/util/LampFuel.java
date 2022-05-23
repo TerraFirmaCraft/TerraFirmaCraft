@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class LampFuel
 {
-    public static final DataManager<LampFuel> MANAGER = new DataManager<>("lamp_fuels", "lamp_fuel", LampFuel::new);
+    public static final DataManager<LampFuel> MANAGER = new DataManager<>(Helpers.identifier("lamp_fuels"), "lamp_fuel", LampFuel::new);
     public static final IndirectHashCollection<Fluid, LampFuel> CACHE = IndirectHashCollection.create(s -> s.getFluidIngredient().getMatchingFluids(), MANAGER::getValues);
 
     @Nullable

@@ -234,7 +234,7 @@ public class ServerConfig
         innerBuilder.pop().push("sluice");
         sluiceTicks = builder.apply("sluiceTicks").comment("Number of ticks required for a sluice to process an item. (20 = 1 second), default is 5 seconds.").defineInRange("sluiceTicks", 100, 1, Integer.MAX_VALUE);
 
-        innerBuilder.pop().push("composter");
+        innerBuilder.pop().push("lamp");
         lampCapacity = builder.apply("lampCapacity").comment("Tank capacity of a lamp (in mB).").defineInRange("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
