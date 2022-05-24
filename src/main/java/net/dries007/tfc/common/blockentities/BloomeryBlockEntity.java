@@ -11,7 +11,8 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
@@ -35,6 +36,7 @@ import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -398,7 +400,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         final Direction direction = getBlockState().getValue(BloomeryBlock.FACING);
         if (BloomeryBlock.isFormed(level, pos, direction))
         {
-            return BloomeryBlock.getChimneyLevels(level, pos) * 8;
+            return BloomeryBlock.getChimneyLevels(level, pos) * TFCConfig.SERVER.bloomeryCapacity.get();
         }
         return 0;
     }
@@ -475,7 +477,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
                         }
                         else if (fluid.isFluidEqual(toAdd))
                         {
-                            fluid.setAmount(fluid.getAmount() + toAdd.getAmount());
+                            fluid.grow(toAdd.getAmount());
                         }
                     }
                 }

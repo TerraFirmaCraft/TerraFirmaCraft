@@ -14,12 +14,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CharcoalForgeContainer;
-
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import net.dries007.tfc.util.Helpers;
 
 public class CharcoalForgeScreen extends BlockEntityScreen<CharcoalForgeBlockEntity, CharcoalForgeContainer>
 {
-    private static final ResourceLocation FORGE = new ResourceLocation(MOD_ID, "textures/gui/charcoal_forge.png");
+    private static final ResourceLocation FORGE = Helpers.identifier("textures/gui/charcoal_forge.png");
 
     public CharcoalForgeScreen(CharcoalForgeContainer container, Inventory playerInventory, Component name)
     {

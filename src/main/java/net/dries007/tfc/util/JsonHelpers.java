@@ -50,7 +50,7 @@ public final class JsonHelpers extends GsonHelper
         final T obj = registry.getValue(res);
         if (obj == null || !registry.containsKey(res))
         {
-            throw new JsonParseException("Unknown entry from " + registry.getRegistryName().getPath() + ": " + key);
+            throw new JsonParseException("Unknown " + registry.getRegistryName().getPath() + ": " + key);
         }
         return obj;
     }

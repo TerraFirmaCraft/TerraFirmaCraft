@@ -2168,6 +2168,7 @@
     "tfc:grill",
     "tfc:firepit",
     "tfc:ingot_pile",
-    "tfc:sheet_pile"
+    "tfc:sheet_pile",
+    "tfc:blast_furnace"
   ]
 }

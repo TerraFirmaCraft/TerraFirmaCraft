@@ -110,6 +110,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.BARREL.get(), BarrelScreen::new);
             MenuScreens.register(TFCContainerTypes.ANVIL.get(), AnvilScreen::new);
             MenuScreens.register(TFCContainerTypes.ANVIL_PLAN.get(), AnvilPlanScreen::new);
+            MenuScreens.register(TFCContainerTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
 
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);

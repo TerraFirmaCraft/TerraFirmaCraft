@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -256,11 +257,11 @@ public final class InteractionManager
                 else if (!level.getBlockState(relativePos.below()).isAir())
                 {
                     // when placing against a non-pile block
-                    final InteractionResult result = logPilePlacement.onItemUse(stack, context);
+                    final ItemStack stackBefore = stack.copy();
+                    final InteractionResult result = logPilePlacement.onItemUse(stack, context); // Consumes the item if successful
                     if (result.consumesAction())
                     {
-                        // shrinking is handled by the item placement
-                        Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), stack);
+                        Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), stackBefore);
                     }
                     return result;
                 }
@@ -331,13 +332,49 @@ public final class InteractionManager
                     {
                         final ItemStack insertStack = stack.split(1);
 
+                        level.playSound(null, posClicked, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
                         level.setBlock(posClicked, stateClicked.setValue(IngotPileBlock.COUNT, currentIngots + 1), Block.UPDATE_CLIENTS);
                         level.getBlockEntity(posClicked, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> pile.addIngot(insertStack));
                         return InteractionResult.SUCCESS;
                     }
                     else
                     {
-                        // todo: Handle ingot piles adding to the top of the stack
+                        // Iterate upwards until we find a non-full ingot pile in the stack
+                        BlockPos topPos = posClicked;
+                        BlockState topState;
+                        do
+                        {
+                            topPos = topPos.above();
+                            topState = level.getBlockState(topPos);
+                        } while (Helpers.isBlock(topState, TFCBlocks.INGOT_PILE.get()) && topState.getValue(IngotPileBlock.COUNT) == 64);
+
+                        if (Helpers.isBlock(topState, TFCBlocks.INGOT_PILE.get()))
+                        {
+                            // We must be at a non-full ingot pile, so we want to place another ingot on this pile instead
+                            final ItemStack insertStack = stack.split(1);
+                            final int topIngots = topState.getValue(IngotPileBlock.COUNT);
+
+                            level.playSound(null, topPos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 0.7f, 0.9f + 0.2f * level.getRandom().nextFloat());
+                            level.setBlock(topPos, topState.setValue(IngotPileBlock.COUNT, topIngots + 1), Block.UPDATE_CLIENTS);
+                            level.getBlockEntity(topPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(topPile -> topPile.addIngot(insertStack));
+                            return InteractionResult.SUCCESS;
+                        }
+                        else if (topState.isAir())
+                        {
+                            // We arrived at something that *isn't* an ingot pile, and we want to try and place another ingot on top
+                            // We check for air, as we may have run into something solid - don't place anything if that's the case
+                            final ItemStack stackBefore = stack.copy();
+                            final BlockPos topOfIngotPilePos = topPos.below();
+                            final UseOnContext topOfIngotPileContext = new UseOnContext(player, context.getHand(), new BlockHitResult(Vec3.ZERO, Direction.UP, topOfIngotPilePos, false));
+                            final InteractionResult result = ingotPilePlacement.onItemUse(stack, topOfIngotPileContext);
+                            if (result.consumesAction())
+                            {
+                                // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
+                                stackBefore.setCount(1);
+                                level.getBlockEntity(topPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(topPile -> topPile.addIngot(stackBefore));
+                            }
+                            return InteractionResult.SUCCESS;
+                        }
                         return InteractionResult.FAIL;
                     }
                 }

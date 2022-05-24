@@ -10,6 +10,10 @@ import java.util.function.BiPredicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -17,13 +21,17 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blockentities.SheetPileBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.MultiBlock;
@@ -33,16 +41,15 @@ public class BlastFurnaceBlock extends DeviceBlock
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     private static final MultiBlock BLAST_FURNACE_CHIMNEY;
-    private static final int MAX_CHIMNEY_LEVELS = 4;
 
     static
     {
         BLAST_FURNACE_CHIMNEY = new MultiBlock()
             .match(new BlockPos(0, 0, 0), state -> state.isAir() || Helpers.isBlock(state, TFCBlocks.MOLTEN.get()))
-            .match(new BlockPos(0, 0, 1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
-            .match(new BlockPos(0, 0, -1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
-            .match(new BlockPos(1, 0, 0), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
-            .match(new BlockPos(-1, 0, 0), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
+            .match(new BlockPos(0, 1, 1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
+            .match(new BlockPos(0, 1, -1), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
+            .match(new BlockPos(1, 1, 0), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
+            .match(new BlockPos(-1, 1, 0), TFCTags.Blocks.BLAST_FURNACE_INSULATION)
             .match(new BlockPos(0, 0, -2), matchSheet(Direction.SOUTH))
             .match(new BlockPos(0, 0, 2), matchSheet(Direction.NORTH))
             .match(new BlockPos(2, 0, 0), matchSheet(Direction.WEST))
@@ -54,19 +61,21 @@ public class BlastFurnaceBlock extends DeviceBlock
     }
 
     /**
+     * @param pos The position of the blast furnace.
      * @return The number of layers of chimney present in the blast furnace, in the range [0, 4].
      */
-    public static int getChimneyLevels(Level level, BlockPos centerPos)
+    public static int getChimneyLevels(Level level, BlockPos pos)
     {
-        for (int i = 0; i < MAX_CHIMNEY_LEVELS; i++)
+        final int maxHeight = TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get();
+        for (int i = 0; i < maxHeight; i++)
         {
-            final BlockPos center = centerPos.above(i + 1);
+            final BlockPos center = pos.above(i + 1);
             if (!BLAST_FURNACE_CHIMNEY.test(level, center))
             {
                 return i;
             }
         }
-        return MAX_CHIMNEY_LEVELS;
+        return maxHeight;
     }
 
     private static BiPredicate<LevelAccessor, BlockPos> matchSheet(Direction face)
@@ -101,6 +110,24 @@ public class BlastFurnaceBlock extends DeviceBlock
     public BlastFurnaceBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
+
+        registerDefaultState(getStateDefinition().any().setValue(LIT, false));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
+    {
+        final BlastFurnaceBlockEntity blastFurnace = level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).orElse(null);
+        if (blastFurnace != null)
+        {
+            if (player instanceof ServerPlayer serverPlayer)
+            {
+                NetworkHooks.openGui(serverPlayer, blastFurnace, pos);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
     }
 
     @Override

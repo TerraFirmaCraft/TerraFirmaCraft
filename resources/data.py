@@ -143,6 +143,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge_fuel', '#minecraft:coals')
     rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle')
     rm.item_tag('bloomery_fuel', 'minecraft:charcoal')
+    rm.item_tag('blast_furnace_fuel', 'minecraft:charcoal')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
     rm.item_tag('firepit_logs', '#minecraft:logs')
@@ -267,10 +268,11 @@ def generate(rm: ResourceManager):
     rm.block_tag('logs_that_log', '#minecraft:logs')
     rm.block_tag('scraping_surface', '#minecraft:logs')
     rm.block_tag('forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag
+    rm.block_tag('forge:concrete', *['minecraft:%s_concrete' % c for c in COLORS])
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
-    rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
+    rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', 'minecraft:bricks', 'tfc:fire_bricks', '#forge:concrete')
     rm.block_tag('tfc:blast_furnace_insulation', 'tfc:fire_bricks')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
@@ -442,7 +444,8 @@ def generate(rm: ResourceManager):
         'tfc:grill',
         'tfc:firepit',
         'tfc:ingot_pile',
-        'tfc:sheet_pile'
+        'tfc:sheet_pile',
+        'tfc:blast_furnace'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest') for wood in WOODS.keys()],

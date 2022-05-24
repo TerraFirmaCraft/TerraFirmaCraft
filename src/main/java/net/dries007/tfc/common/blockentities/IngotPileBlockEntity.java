@@ -33,13 +33,28 @@ public class IngotPileBlockEntity extends TFCBlockEntity
 
     public void addIngot(ItemStack stack)
     {
+        //assert stacks.size() == cachedMetals.size();
+
         stacks.add(stack);
         cachedMetals.add(null);
         markForSync();
     }
 
+    public List<ItemStack> removeAllIngots()
+    {
+        //assert stacks.size() == cachedMetals.size();
+
+        final List<ItemStack> stacks = new ArrayList<>(this.stacks);
+        this.stacks.clear();
+        this.cachedMetals.clear();
+        markForSync();
+        return stacks;
+    }
+
     public ItemStack removeIngot()
     {
+        //assert stacks.size() == cachedMetals.size();
+
         final ItemStack remove = stacks.remove(stacks.size() - 1);
         cachedMetals.remove(cachedMetals.size() - 1);
         markForSync();
@@ -53,6 +68,8 @@ public class IngotPileBlockEntity extends TFCBlockEntity
      */
     public Metal getOrCacheMetal(int index)
     {
+        //assert stacks.size() == cachedMetals.size();
+
         if (index >= stacks.size())
         {
             return Metal.unknown();
@@ -60,10 +77,6 @@ public class IngotPileBlockEntity extends TFCBlockEntity
 
         final ItemStack stack = stacks.get(index);
 
-        while (index >= cachedMetals.size())
-        {
-            cachedMetals.add(null);
-        }
         Metal metal = cachedMetals.get(index);
         if (metal == null)
         {
@@ -88,6 +101,10 @@ public class IngotPileBlockEntity extends TFCBlockEntity
     protected void loadAdditional(CompoundTag tag)
     {
         Helpers.readItemStacksFromNbt(stacks, tag.getList("stacks", Tag.TAG_COMPOUND));
+        while (stacks.size() >= cachedMetals.size())
+        {
+            cachedMetals.add(null);
+        }
         super.loadAdditional(tag);
     }
 }

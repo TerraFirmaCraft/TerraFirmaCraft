@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.util.function.Function;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -70,26 +72,31 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
     }
 
     @Override
-    public void render(BellowsBlockEntity bellows, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
+    public void render(BellowsBlockEntity bellows, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         int meta = bellows.getBlockState().getValue(BellowsBlock.FACING).get2DDataValue();
 
         poseStack.pushPose();
-        TextureAtlasSprite endSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(BACK_TEXTURE);
-        TextureAtlasSprite sideSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(SIDE_TEXTURE);
 
-        VertexConsumer builder = buffer.getBuffer(RenderType.cutout());
+        @SuppressWarnings("deprecation") final Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+
+        final TextureAtlasSprite endSprite = atlas.apply(BACK_TEXTURE);
+        final TextureAtlasSprite sideSprite = atlas.apply(SIDE_TEXTURE);
+
+        final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
+        final float width = 1 - bellows.getExtensionLength();
+
         poseStack.translate(0.5d, 0, 0.5d);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
         poseStack.translate(-0.5d, 0.0d, -0.5d);
 
-        float width = 1 - bellows.getExtensionLength();
-        drawMiddle(builder, poseStack, sideSprite, width, combinedOverlay, combinedLight);
-        drawTop(builder, poseStack, endSprite, width, combinedOverlay, combinedLight);
+        drawMiddle(buffer, poseStack, sideSprite, width, packedLight, packedOverlay);
+        RenderHelpers.renderTexturedCuboid(poseStack, buffer, endSprite, packedLight, packedOverlay, 0, 0, width, 1, 1, 0.125f + width);
+
         poseStack.popPose();
     }
 
-    private void drawMiddle(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float width, int combinedOverlay, int combinedLight)
+    private void drawMiddle(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, float width, int packedLight, int packedOverlay)
     {
         float widthPerSection = (width - headWidth) / planeCount;
         float currentWidth = headWidth;
@@ -103,9 +110,9 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
             float max = isIndented ? bellowsWidthMax - change : bellowsWidthMax;
             for (float[] v : getVertices(min, max, currentWidth, max, min, lastWidth, isIndented ? -change : change, isIndented ? -change : change))
             {
-                // Texture needs to the reversed due to the directionMapper the planes are rendered in
+                // Texture needs to the reversed due to the direction the planes are rendered in
                 // Otherwise the texture is cut up and displayed out of order
-                vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * -texWidth + (texWidth * (i + 1))), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
+                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * -texWidth + (texWidth * (i + 1))), sprite.getV(v[4] * 16D), 1, 0, 0); // todo: incorrect normal
             }
             lastWidth = currentWidth;
         }
@@ -113,8 +120,8 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
 
     private void drawTop(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float width, int combinedOverlay, int combinedLight)
     {
-        float[][] sides = RenderHelpers.getVerticesBySide(0, 1, 0.125f + width, 1, 0, width, "xy");
-        float[][] tops = RenderHelpers.getVerticesBySide(0, 1, 0.125f + width, 1, 0, width, "z");
+        float[][] sides = null; //RenderHelpers.getVerticesBySide(0, 1, 0.125f + width, 1, 0, width, "xy");
+        float[][] tops = null; //RenderHelpers.getVerticesBySide(0, 1, 0.125f + width, 1, 0, width, "z");
 
         for (float[] v : sides)
         {

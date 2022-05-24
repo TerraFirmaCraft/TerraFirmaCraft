@@ -39,6 +39,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.MultiBlock;
 import org.jetbrains.annotations.Nullable;
@@ -134,7 +135,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
      */
     public static int getChimneyLevels(Level level, BlockPos centerPos)
     {
-        for (int i = 1; i < 4; i++)
+        for (int i = 1; i < 1 + TFCConfig.SERVER.bloomeryMaxChimneyHeight.get(); i++)
         {
             BlockPos center = centerPos.above(i);
             if (!BLOOMERY_CHIMNEY.test(level, center))
@@ -142,8 +143,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
                 return i - 1;
             }
         }
-        // Maximum levels
-        return 3;
+        return TFCConfig.SERVER.bloomeryMaxChimneyHeight.get();
     }
 
     public static boolean canGateStayInPlace(Level level, BlockPos pos, Direction.Axis axis)

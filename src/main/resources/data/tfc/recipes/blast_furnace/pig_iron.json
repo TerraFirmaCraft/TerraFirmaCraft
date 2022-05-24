@@ -1,0 +1,13 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:blast_furnace",
+  "fluid": {
+    "ingredient": "tfc:metal/cast_iron"
+  },
+  "result": {
+    "fluid": "tfc:metal/pig_iron"
+  },
+  "catalyst": {
+    "tag": "tfc:flux"
+  }
+}

@@ -67,7 +67,7 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
                 final float maxY = scale * (minY + 4);
                 final float maxZ = scale * (minZ + 15);
 
-                RenderHelpers.renderTexturedTrapezoidalCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, minX, maxX, minZ, maxZ, minX + scale, maxX - scale, minZ + scale, maxZ - scale, minY, maxY, 7, 15, 4);
+                RenderHelpers.renderTexturedTrapezoidalCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, minX, maxX, minZ, maxZ, minX + scale, maxX - scale, minZ + scale, maxZ - scale, minY, maxY, 7, 4, 15);
 
                 poseStack.popPose();
 

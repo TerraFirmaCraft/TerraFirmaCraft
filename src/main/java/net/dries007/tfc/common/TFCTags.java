@@ -56,7 +56,7 @@ public class TFCTags
         public static final TagKey<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
         public static final TagKey<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // i.e., crucibles. stuff that can be in a forge's chimney
         public static final TagKey<Block> BLOOMERY_INSULATION = create("bloomery_insulation"); // valid blocks for bloomery structure
-        public static final TagKey<Block> BLAST_FURNACE_INSULATION = create("blast_furnace_insulation"); // balid blocks for blast furnace structure
+        public static final TagKey<Block> BLAST_FURNACE_INSULATION = create("blast_furnace_insulation"); // valid blocks for blast furnace structure
         public static final TagKey<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
         public static final TagKey<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
         public static final TagKey<Block> LOGS_THAT_LOG = create("logs_that_log"); // logs that are cut down in entire trees
@@ -117,6 +117,7 @@ public class TFCTags
         public static final TagKey<Item> CAN_BE_LIT_ON_TORCH = create("can_be_lit_on_torch");
         public static final TagKey<Item> FIREPIT_FUEL = create("firepit_fuel");
         public static final TagKey<Item> FORGE_FUEL = create("forge_fuel");
+        public static final TagKey<Item> BLAST_FURNACE_FUEL = create("blast_furnace_fuel");
         public static final TagKey<Item> HANDSTONE = create("handstone");
         public static final TagKey<Item> SCRAPABLE = create("scrapable");
         public static final TagKey<Item> KNIVES = create("knives");
@@ -125,6 +126,7 @@ public class TFCTags
         public static final TagKey<Item> CHISELS = create("chisels");
         public static final TagKey<Item> FLUX = create("flux");
         public static final TagKey<Item> ANVILS = create("anvils");
+        public static final TagKey<Item> TUYERES = create("tuyeres");
         public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
         public static final TagKey<Item> CLAY_KNAPPING = create("clay_knapping");
         public static final TagKey<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");

@@ -24,7 +24,6 @@ import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 
 public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEntity>
 {
-
     @Override
     public void render(LoomBlockEntity loom, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
@@ -36,7 +35,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         poseStack.mulPose(Vector3f.YP.rotationDegrees(meta));
         poseStack.popPose();
 
-        TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(((TFCLoomBlock) loom.getBlockState().getBlock()).getTextureLocation());
+        @SuppressWarnings("deprecation") final TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(((TFCLoomBlock) loom.getBlockState().getBlock()).getTextureLocation());
 
         float tileZ = (float) loom.getAnimPos();
 
@@ -59,8 +58,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
             poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
             poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-            // noinspection deprecation
-            TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(loom.getInProgressTexture());
+            @SuppressWarnings("deprecation") final TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(loom.getInProgressTexture());
 
             drawMaterial(builder, poseStack, progressSprite, loom, tileZ * 2F / 3F, combinedOverlay, combinedLight);
             drawProduct(builder, poseStack, progressSprite, loom, combinedOverlay, combinedLight);

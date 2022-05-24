@@ -38,8 +38,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.model.Animation;
-import net.dries007.tfc.client.model.Easing;
 import net.dries007.tfc.common.entities.land.TFCAnimal;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
@@ -143,7 +141,7 @@ public final class RenderHelpers
      *     `O------P
      * </pre>
      *
-     * @return A collection of vertices for two parallel faces of a cube, facing outwards, defined by (minX, minY, minZ) x (maxX, maxY, maxZ). Or the face P in the above art
+     * @return A collection of vertices for two parallel faces of a cube, facing outwards, defined by (minX, minY, minZ) x (maxX, maxY, maxZ). Or the faces O and P in the above art
      */
     public static float[][] getXVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
     {
@@ -255,7 +253,7 @@ public final class RenderHelpers
      *     `P------P = minY
      * </pre>
      *
-     * @return A collection of vertices for the positive and negative X outward faces of the above trapezoidal cuboid, defined by two planes, the plane P, and the plane Q, minY, and maxY.
+     * @return A collection of vertices for the positive and negative X outward faces of the above trapezoidal cuboid, defined by the plane P, and the plane Q, minY, and maxY.
      */
     public static float[][] getTrapezoidalCuboidXVertices(float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY)
     {
@@ -283,7 +281,7 @@ public final class RenderHelpers
      *     `P------P = minY
      * </pre>
      *
-     * @return A collection of vertices for the positive and negative X outward faces of the above trapezoidal cuboid, defined by two planes, the plane P, and the plane Q, minY, and maxY.
+     * @return A collection of vertices for the positive and negative Y outward faces of the above trapezoidal cuboid, defined by the plane P, and the plane Q, minY, and maxY.
      */
     public static float[][] getTrapezoidalCuboidYVertices(float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY)
     {
@@ -311,7 +309,7 @@ public final class RenderHelpers
      *     `P------P = minY
      * </pre>
      *
-     * @return A collection of vertices for the positive and negative X outward faces of the above trapezoidal cuboid, defined by two planes, the plane P, and the plane Q, minY, and maxY.
+     * @return A collection of vertices for the positive and negative X outward faces of the above trapezoidal cuboid, defined by the plane P, and the plane Q, minY, and maxY.
      */
     public static float[][] getTrapezoidalCuboidZVertices(float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY)
     {
@@ -393,11 +391,6 @@ public final class RenderHelpers
         return ctx.bakeLayer(modelIdentifier(layerName));
     }
 
-    public static Animation.Bone.Builder newBone()
-    {
-        return new Animation.Bone.Builder(Easing.LINEAR);
-    }
-
     public static float itemTimeRotation()
     {
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
@@ -455,32 +448,6 @@ public final class RenderHelpers
                 consumer.accept(component);
             }
         };
-    }
-
-    /**
-     * Use this to get vertices for a box from Min - Max point in 3D
-     * Pass the string of the axes you want the box to render on ('xz') for no top / bottom, etc.
-     * Pass "xyz" for all vertices.
-     *
-     * @deprecated Callers should use {@link #renderTexturedCuboid(PoseStack, VertexConsumer, TextureAtlasSprite, int, int, float, float, float, float, float, float)} and overloads to do cuboid drawing, or {@link #renderTexturedQuads(PoseStack, VertexConsumer, TextureAtlasSprite, int, int, float[][], float, float, float, float, float)} to do a single quad.
-     */
-    @Deprecated
-    public static float[][] getVerticesBySide(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, String axes)
-    {
-        float[][] ret = new float[][] {};
-        if (axes.contains("x"))
-        {
-            ret = append(ret, getXVertices(minX, minY, minZ, maxX, maxY, maxZ));
-        }
-        if (axes.contains("y"))
-        {
-            ret = append(ret, getYVertices(minX, minY, minZ, maxX, maxY, maxZ));
-        }
-        if (axes.contains("z"))
-        {
-            ret = append(ret, getZVertices(minX, minY, minZ, maxX, maxY, maxZ));
-        }
-        return ret;
     }
 
     private static float calculateTilt(float pitch)

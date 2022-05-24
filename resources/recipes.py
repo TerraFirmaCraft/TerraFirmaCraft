@@ -160,6 +160,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
     damage_shapeless(rm, 'crafting/paper', ('tfc:food/sugarcane', 'tfc:food/sugarcane', 'tfc:food/sugarcane', '#tfc:knives'), (3, 'minecraft:paper')).with_advancement('tfc:food/sugarcane')
     rm.crafting_shaped('crafting/nest_box', ['Y Y', 'XYX', 'XXX'], {'Y': 'tfc:straw', 'X': '#tfc:lumber'}, 'tfc:nest_box').with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/blast_furnace', ['XXX', 'XCX', 'XXX'], {'X': 'tfc:metal/sheet/wrought_iron', 'C': 'tfc:crucible'}, 'tfc:blast_furnace').with_advancement('tfc:metal/sheet/wrought_iron')
 
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
@@ -563,6 +564,9 @@ def generate(rm: ResourceManager):
     # Bloomery Recipes
     bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
 
+    # Blast Furnace Recipes
+    blast_furnace_recipe(rm, 'pig_iron', 'tfc:metal/cast_iron', 'tfc:metal/pig_iron', '#tfc:flux')
+
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
         barrel_sealed_recipe(rm, '%s_soaked_hide' % size, '%s Soaked Hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='tfc:%s_soaked_hide' % size)
@@ -887,6 +891,15 @@ def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, r
         'catalyst': utils.ingredient(catalyst),
         'duration': time
     })
+
+
+def blast_furnace_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, metal_in: Json, metal_out: Json, catalyst: Json):
+    rm.recipe(('blast_furnace', name_parts), 'tfc:blast_furnace', {
+        'fluid': fluid_stack_ingredient(metal_in),
+        'result': fluid_stack(metal_out),
+        'catalyst': utils.ingredient(catalyst)
+    })
+
 
 def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, translation: str, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None, sound: Optional[str] = None):
     rm.recipe(('barrel', name_parts), 'tfc:barrel_sealed', {
