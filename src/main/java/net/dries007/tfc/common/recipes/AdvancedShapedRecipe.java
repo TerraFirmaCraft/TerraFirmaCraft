@@ -43,7 +43,7 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     @Override
     public ItemStack getResultItem()
     {
-        return providerResult.getStack(ItemStack.EMPTY);
+        return providerResult.getEmptyStack();
     }
 
     @Override
@@ -51,8 +51,7 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     {
         final int matchSlot = RecipeHelpers.translateMatch(this, inputSlot, inventory);
         final ItemStack inputStack = matchSlot != -1 ? inventory.getItem(matchSlot).copy() : ItemStack.EMPTY;
-        if (!inputStack.isEmpty()) inputStack.setCount(1);
-        return providerResult.getStack(inputStack);
+        return providerResult.getSingleStack(inputStack);
     }
 
     @Override

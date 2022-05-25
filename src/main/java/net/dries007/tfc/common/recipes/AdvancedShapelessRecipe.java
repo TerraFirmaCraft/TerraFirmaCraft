@@ -35,7 +35,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
 
     public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, Ingredient primaryIngredient)
     {
-        super(id, group, result.getStack(ItemStack.EMPTY), ingredients);
+        super(id, group, result.getEmptyStack(), ingredients);
         this.result = result;
         this.primaryIngredient = primaryIngredient;
     }
@@ -49,9 +49,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public ItemStack assemble(CraftingContainer inv)
     {
-        ItemStack seed = getSeed(inv).copy();
-        seed.setCount(1);
-        return result.getStack(seed);
+        return result.getSingleStack(getSeed(inv).copy());
     }
 
     private ItemStack getSeed(CraftingContainer inv)

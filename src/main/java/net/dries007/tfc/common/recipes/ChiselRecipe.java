@@ -9,7 +9,6 @@ package net.dries007.tfc.common.recipes;
 import java.util.Locale;
 
 import com.google.gson.JsonObject;
-import org.apache.commons.lang3.tuple.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -25,10 +24,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.datafixers.util.Either;
@@ -158,7 +155,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     public ItemStack getExtraDrop(ItemStack chisel)
     {
-        return extraDrop.getStack(chisel);
+        return extraDrop.getSingleStack(chisel);
     }
 
     public static class Serializer extends RecipeSerializerImpl<ChiselRecipe>

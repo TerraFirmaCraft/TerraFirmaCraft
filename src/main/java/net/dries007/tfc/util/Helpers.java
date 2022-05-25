@@ -355,6 +355,13 @@ public final class Helpers
         level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
     }
 
+    public static ItemStack copyWithSize(ItemStack stack, int size)
+    {
+        final ItemStack copy = stack.copy();
+        copy.setCount(size);
+        return copy;
+    }
+
     /**
      * Iterate through all slots in an {@code inventory}.
      */
