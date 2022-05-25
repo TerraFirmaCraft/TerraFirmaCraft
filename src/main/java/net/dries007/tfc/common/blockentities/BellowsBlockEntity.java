@@ -11,6 +11,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -57,6 +58,20 @@ public class BellowsBlockEntity extends TFCBlockEntity
         super(TFCBlockEntities.BELLOWS.get(), pos, state);
     }
 
+    @Override
+    protected void saveAdditional(CompoundTag tag)
+    {
+        super.saveAdditional(tag);
+        tag.putLong("pushed", lastPushed);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag)
+    {
+        super.loadAdditional(tag);
+        lastPushed = tag.getLong("pushed");
+    }
+
     public float getExtensionLength()
     {
         assert level != null;
@@ -78,6 +93,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
         if (level.getGameTime() - lastPushed < 20) return InteractionResult.PASS;
         level.playSound(null, worldPosition, TFCSounds.BELLOWS.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
         lastPushed = level.getGameTime();
+        markForSync();
 
         final Direction direction = getBlockState().getValue(BellowsBlock.FACING);
         final BlockPos facingPos = worldPosition.relative(direction);

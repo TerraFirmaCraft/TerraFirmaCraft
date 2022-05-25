@@ -20,6 +20,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraftforge.common.ForgeConfig;
 
 /**
  * Most of these are copied from {@link net.minecraft.world.item.crafting.ShapedRecipe} due to access level concerns
@@ -204,6 +205,20 @@ public final class RecipeHelpers
             }
         }
         return -1;
+    }
+
+    public static NonNullList<Ingredient> itemsFromJson(JsonArray array)
+    {
+        final NonNullList<Ingredient> list = NonNullList.create();
+        for (int i = 0; i < array.size(); ++i)
+        {
+            Ingredient ingredient = Ingredient.fromJson(array.get(i));
+            if (ForgeConfig.SERVER.skipEmptyShapelessCheck.get() || !ingredient.isEmpty())
+            {
+                list.add(ingredient);
+            }
+        }
+        return list;
     }
 
     private static boolean matches(NonNullList<Ingredient> recipeItems, CraftingContainer inventory, int startCol, int startRow, boolean mirrored, int width, int height)

@@ -104,13 +104,13 @@ public class BloomeryRecipe implements ISimpleRecipe<BloomeryInventory>
     @Override
     public ItemStack getResultItem()
     {
-        return result.getStack(ItemStack.EMPTY);
+        return result.getEmptyStack();
     }
 
     @Override
     public ItemStack assemble(BloomeryInventory inventory)
     {
-        ItemStack stack = result.getStack(inventory.getCatalyst());
+        final ItemStack stack = result.getEmptyStack(); // There isn't a proper input stack, so we use the empty result
         stack.setCount(inventory.getFluid().getAmount() / inputFluid.amount());
         return stack;
     }

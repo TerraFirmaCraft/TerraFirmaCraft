@@ -2,15 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/rye_dough"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/rye_dough"
+    }
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/rye_bread"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/rye_bread"
   },
   "temperature": 200
 }

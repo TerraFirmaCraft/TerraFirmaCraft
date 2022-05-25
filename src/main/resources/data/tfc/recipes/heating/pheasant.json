@@ -2,15 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/pheasant"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/pheasant"
+    }
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_pheasant"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_pheasant"
   },
   "temperature": 200
 }

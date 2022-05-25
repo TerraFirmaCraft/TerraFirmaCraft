@@ -36,7 +36,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -175,7 +174,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onLivingJump);
-        bus.addListener(ForgeEventHandler::onItemCrafted);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
     }
 
@@ -313,7 +311,7 @@ public final class ForgeEventHandler
 
             if (stack.getItem() == Items.EGG)
             {
-                event.addCapability(EggCapability.KEY, new EggHandler());
+                event.addCapability(EggCapability.KEY, new EggHandler(stack));
             }
         }
     }
@@ -812,9 +810,10 @@ public final class ForgeEventHandler
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
+        if (event.getPlayer() instanceof ServerPlayer player)
         {
             TFCFoodData.replaceFoodStats(event.getPlayer());
+            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
         }
     }
 
@@ -948,6 +947,7 @@ public final class ForgeEventHandler
         event.addListener(Fauna.MANAGER);
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
+        event.addListener(FoodCapability.DecayingItemStackFixer.INSTANCE);
 
         // In addition, we capture the recipe manager here
         Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());
@@ -978,11 +978,7 @@ public final class ForgeEventHandler
     public static void onTagsUpdated(TagsUpdatedEvent event)
     {
         // First, reload all caches
-        final RecipeManager manager = Helpers.getUnsafeRecipeManager();
-        if (manager != null)
-        {
-            IndirectHashCollection.reloadAllCaches(manager);
-        }
+        IndirectHashCollection.reloadAllCaches(Helpers.getUnsafeRecipeManager());
 
         // Then apply post reload actions which may query the cache
         Support.updateMaximumSupportRange();
@@ -1001,11 +997,6 @@ public final class ForgeEventHandler
             event.setResult(Event.Result.DENY);
             event.setCanceled(true);
         }
-    }
-
-    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event)
-    {
-        FoodCapability.updateFoodDecayOnCreate(event.getCrafting());
     }
 
     public static void onSelectClimateModel(SelectClimateModelEvent event)

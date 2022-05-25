@@ -5,13 +5,22 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:food/sugarcane"
+        "type": "tfc:not_rotten",
+        "ingredient": {
+          "item": "tfc:food/sugarcane"
+        }
       },
       {
-        "item": "tfc:food/sugarcane"
+        "type": "tfc:not_rotten",
+        "ingredient": {
+          "item": "tfc:food/sugarcane"
+        }
       },
       {
-        "item": "tfc:food/sugarcane"
+        "type": "tfc:not_rotten",
+        "ingredient": {
+          "item": "tfc:food/sugarcane"
+        }
       },
       {
         "tag": "tfc:knives"

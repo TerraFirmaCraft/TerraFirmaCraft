@@ -17,6 +17,7 @@ import java.util.function.Function;
 
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.item.ItemStack;
@@ -195,6 +196,11 @@ public class TestHelper
         assertCustomListEquals(expected.getIngredients(), actual.getIngredients(), TestHelper::assertIngredientEquals);
     }
 
+    public static <R extends Recipe<?>, S extends RecipeSerializer<R>> R encodeAndDecode(R recipe, S serializer)
+    {
+        return encodeAndDecode(recipe, (r, buf) -> serializer.toNetwork(buf, r), buf -> serializer.fromNetwork(recipe.getId(), buf));
+    }
+
     public static <T> T encodeAndDecode(T t, BiConsumer<T, FriendlyByteBuf> encode, Function<FriendlyByteBuf, T> decode)
     {
         final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
@@ -204,8 +210,20 @@ public class TestHelper
         return result;
     }
 
-    public static <R extends Recipe<?>, S extends RecipeSerializer<R>> R encodeAndDecode(R recipe, S serializer)
+    public static <T> T writeAndRead(T before, BiConsumer<T, CompoundTag> encoder, T after, BiConsumer<T, CompoundTag> decoder)
     {
-        return encodeAndDecode(recipe, (r, buf) -> serializer.toNetwork(buf, r), buf -> serializer.fromNetwork(recipe.getId(), buf));
+        return writeAndRead(before, t -> {
+            final CompoundTag tag = new CompoundTag();
+            encoder.accept(t, tag);
+            return tag;
+        }, tag -> {
+            decoder.accept(after, tag);
+            return after;
+        });
+    }
+
+    public static <T> T writeAndRead(T before, Function<T, CompoundTag> encoder, Function<CompoundTag, T> decoder)
+    {
+        return encoder.andThen(decoder).apply(before);
     }
 }

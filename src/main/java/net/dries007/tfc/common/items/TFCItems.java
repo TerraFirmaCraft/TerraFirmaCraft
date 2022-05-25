@@ -111,7 +111,7 @@ public final class TFCItems
     // Flora
 
     public static final Map<Crop, RegistryObject<Item>> CROP_SEEDS = Helpers.mapOfKeys(Crop.class, crop ->
-        register("seeds/" + crop.name().toLowerCase(), () -> new ItemNameBlockItem(TFCBlocks.CROPS.get(crop).get(), new Item.Properties().tab(FLORA)))
+        register("seeds/" + crop.name(), () -> new ItemNameBlockItem(TFCBlocks.CROPS.get(crop).get(), new Item.Properties().tab(FLORA)))
     );
 
     public static final Map<Coral, RegistryObject<Item>> CORAL_FANS = Helpers.mapOfKeys(Coral.class, color ->

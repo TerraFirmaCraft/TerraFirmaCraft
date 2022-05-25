@@ -12,10 +12,8 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
 import net.minecraftforge.registries.IRegistryDelegate;
 
-import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.config.TFCConfig;
@@ -42,7 +40,7 @@ public abstract class ItemColorsMixin
         {
             // If so, then if we're a food and rotten, apply our color handler
             final IFood food = stack.getCapability(FoodCapability.CAPABILITY).resolve().orElse(null);
-            if (food != null && food.isRotten(true))
+            if (food != null && food.isRotten())
             {
                 cir.setReturnValue(TFCConfig.CLIENT.foodExpiryOverlayColor.get());
             }

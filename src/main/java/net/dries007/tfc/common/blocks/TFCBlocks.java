@@ -187,15 +187,15 @@ public final class TFCBlocks
     );
 
     public static final Map<Crop, RegistryObject<Block>> CROPS = Helpers.mapOfKeys(Crop.class, crop ->
-        register(("crop/" + crop.name()).toLowerCase(), crop::create)
+        register("crop/" + crop.name(), crop::create)
     );
 
     public static final Map<Crop, RegistryObject<Block>> DEAD_CROPS = Helpers.mapOfKeys(Crop.class, crop ->
-        register("dead_crop/" + crop.name().toLowerCase(), crop::createDead)
+        register("dead_crop/" + crop.name(), crop::createDead)
     );
 
     public static final Map<Crop, RegistryObject<Block>> WILD_CROPS = Helpers.mapOfKeys(Crop.class, crop ->
-        register("wild_crop/" + crop.name().toLowerCase(), crop::createWild, FLORA)
+        register("wild_crop/" + crop.name(), crop::createWild, FLORA)
     );
 
     public static final Map<Coral, Map<Coral.BlockType, RegistryObject<Block>>> CORAL = Helpers.mapOfKeys(Coral.class, color ->

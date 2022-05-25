@@ -55,13 +55,13 @@ public class WeldingRecipe implements ISimpleRecipe<WeldingRecipe.Inventory>
     @Override
     public ItemStack assemble(Inventory inventory)
     {
-        return output.getStack(inventory.getLeft());
+        return output.getSingleStack(inventory.getLeft());
     }
 
     @Override
     public ItemStack getResultItem()
     {
-        return output.getStack(ItemStack.EMPTY);
+        return output.getEmptyStack();
     }
 
     @Override

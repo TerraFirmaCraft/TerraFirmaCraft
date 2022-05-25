@@ -59,7 +59,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 /**
  * Central location for all self tests
  * These are tests that are performed at runtime for various static analysis purposes.
- * None of these are executed unless {@link Helpers#detectAssertionsEnabled()} returns {@code true}.
+ * None of these are executed unless {@link Helpers#ASSERTIONS_ENABLED} is {@code true}.
  */
 public final class SelfTests
 {
@@ -68,7 +68,7 @@ public final class SelfTests
 
     public static void runClientSelfTests()
     {
-        if (Helpers.detectAssertionsEnabled())
+        if (Helpers.ASSERTIONS_ENABLED)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
@@ -83,7 +83,7 @@ public final class SelfTests
 
     public static void runServerSelfTests()
     {
-        if (Helpers.detectAssertionsEnabled())
+        if (Helpers.ASSERTIONS_ENABLED)
         {
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(

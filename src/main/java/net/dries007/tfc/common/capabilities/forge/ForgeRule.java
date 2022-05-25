@@ -6,12 +6,11 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import java.util.Locale;
-
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.common.capabilities.forge.ForgeStep.*;
@@ -103,17 +102,19 @@ public enum ForgeRule
     {
         return switch (order)
             {
-                case ANY -> matches(steps.getStep(2)) || matches(steps.getStep(1)) || matches(steps.getStep(0));
-                case NOT_LAST -> matches(steps.getStep(1)) || matches(steps.getStep(0));
-                case LAST -> matches(steps.getStep(2));
-                case SECOND_LAST -> matches(steps.getStep(1));
-                case THIRD_LAST -> matches(steps.getStep(0));
+                case ANY -> matches(steps.last()) || matches(steps.secondLast()) || matches(steps.thirdLast());
+                case NOT_LAST -> matches(steps.secondLast()) || matches(steps.thirdLast());
+                case LAST -> matches(steps.last());
+                case SECOND_LAST -> matches(steps.secondLast());
+                case THIRD_LAST -> matches(steps.thirdLast());
             };
     }
 
     public Component getDescriptionId()
     {
-        return type.getDescriptionId().append(", ").append(order.getDescriptionId());
+        return (type == HIT_LIGHT ? new TranslatableComponent("tfc.enum.forgestep.hit") : Helpers.translateEnum(type))
+            .append(" ")
+            .append(Helpers.translateEnum(order));
     }
 
     private boolean matches(@Nullable ForgeStep step)
@@ -138,11 +139,6 @@ public enum ForgeRule
         Order(int y)
         {
             this.y = y;
-        }
-
-        public TranslatableComponent getDescriptionId()
-        {
-            return new TranslatableComponent("tfc.enum.order." + name().toLowerCase(Locale.ROOT));
         }
     }
 }

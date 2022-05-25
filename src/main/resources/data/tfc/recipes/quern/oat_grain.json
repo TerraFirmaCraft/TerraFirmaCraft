@@ -2,14 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:quern",
   "ingredient": {
-    "item": "tfc:food/oat_grain"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/oat_grain"
+    }
   },
   "result": {
-    "stack": {
-      "item": "tfc:food/oat_flour"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/oat_flour"
   }
 }

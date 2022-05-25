@@ -64,12 +64,13 @@ public final class PacketHandler
         register(ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
         register(PlayerDrinkPacket.class, PlayerDrinkPacket::new, PlayerDrinkPacket::handle);
         register(RequestClimateModelPacket.class, RequestClimateModelPacket::new, RequestClimateModelPacket::handle);
+        register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends DataManagerSyncPacket<E>, E> void registerDataManager(Class<T> cls, DataManager<E> manager)
+    public static <T extends DataManagerSyncPacket<E>, E> void registerDataManager(Class<T> cls, DataManager<E> manager, SimpleChannel channel, int id)
     {
-        CHANNEL.registerMessage(ID.getAndIncrement(), cls,
+        channel.registerMessage(id, cls,
             (packet, buffer) -> packet.encode(manager, buffer),
             buffer -> {
                 final T packet = (T) manager.createEmptyPacket();
@@ -80,6 +81,11 @@ public final class PacketHandler
                 context.get().setPacketHandled(true);
                 context.get().enqueueWork(() -> packet.handle(context.get(), manager));
             });
+    }
+
+    private static <T extends DataManagerSyncPacket<E>, E> void registerDataManager(Class<T> cls, DataManager<E> manager)
+    {
+        registerDataManager(cls, manager, CHANNEL, ID.getAndIncrement());
     }
 
     private static <T> void register(Class<T> cls, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder, BiConsumer<T, NetworkEvent.Context> handler)

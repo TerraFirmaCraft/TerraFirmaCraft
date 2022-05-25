@@ -1,13 +1,12 @@
 # Handles generation of all world gen objects
 
-import hashlib
 import typing
-
 from enum import IntEnum
 from typing import Union
 
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import ResourceIdentifier, JsonObject, Json, VerticalAnchor
+
 from constants import *
 
 
@@ -731,7 +730,7 @@ def generate(rm: ResourceManager):
 
     # Forest Only
     configured_patch_feature(rm, 'sticks_forest', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), decorate_square(), decorate_climate(-20, 50, 70, 500, True), biome_check=False)
-    configured_patch_feature(rm, 'pinecone', patch_config('tfc:groundcover/pinecone[fluid=empty]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-5, 33, 200, 500, True), biome_check=False)
+    configured_patch_feature(rm, 'pinecone', patch_config('tfc:groundcover/pinecone[fluid=empty]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-14, 0, 60, 320, True), biome_check=False)
     configured_patch_feature(rm, 'humus', patch_config('tfc:groundcover/humus[fluid=empty]', 1, 5, 100), decorate_chance(5), decorate_square(), decorate_climate(8, 20, 180, 420, True, fuzzy=True), biome_check=False)
     configured_patch_feature(rm, 'salt_lick', patch_config('tfc:groundcover/salt_lick[fluid=empty]', 1, 5, 100), decorate_chance(110), decorate_square(), decorate_climate(5, 33, 100, 500, True), biome_check=False)
     configured_patch_feature(rm, 'dead_grass', patch_config('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100), decorate_chance(70), decorate_square(), decorate_climate(10, 20, 0, 150, True, fuzzy=True), biome_check=False)
@@ -749,8 +748,17 @@ def generate(rm: ResourceManager):
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(6, 30), decorate_biome())
 
     # Global Worldgen Tagged Features
-    rm.tag('land_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES], 'tfc:plant/wild_crops', '#tfc:forest_patch_features', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay], 'tfc:berry_bushes', 'tfc:fruit_trees')
-    rm.tag('forest_patch_features', 'worldgen/placed_feature', *['tfc:%s_patch' % d for d in FOREST_DECORATORS])
+    rm.tag('land_plant_features', 'worldgen/placed_feature', *[
+        *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES],
+        'tfc:plant/wild_crops',
+        '#tfc:forest_patch_features',
+        *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay],
+        'tfc:berry_bushes',
+        'tfc:fruit_trees'
+    ])
+    rm.tag('forest_patch_features', 'worldgen/placed_feature', *[
+        'tfc:%s_patch' % d for d in FOREST_DECORATORS
+    ])
     configured_placed_feature(rm, 'land_plants', 'tfc:multiple', {'features': '#tfc:land_plant_features', 'biome_check': False})
 
     rm.tag('ocean_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
@@ -868,7 +876,7 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         else:
             singular_decorators.append(decorate_air_or_empty_fluid())
     else:
-        singular_decorators.append(decorate_matching_blocks('minecraft:air'))
+        singular_decorators.append(decorate_replaceable())
 
     if patch.custom_feature is not None:
         feature = patch.custom_feature
@@ -882,7 +890,6 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         singular_decorators.append(decorate_would_survive_with_fluid(patch.block))
     else:
         singular_decorators.append(decorate_would_survive(patch.block))
-        singular_decorators.append(decorate_replaceable())
 
     if extra_singular_decorators is not None:
         singular_decorators += extra_singular_decorators

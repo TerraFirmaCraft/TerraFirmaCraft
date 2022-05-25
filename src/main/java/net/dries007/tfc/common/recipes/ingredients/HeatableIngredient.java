@@ -7,14 +7,11 @@
 package net.dries007.tfc.common.recipes.ingredients;
 
 
-import java.util.Objects;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
@@ -51,21 +48,15 @@ public class HeatableIngredient extends DelegateIngredient
     }
 
     @Override
-    protected ItemStack[] getDefaultItems()
+    @Nullable
+    protected ItemStack testDefaultItem(ItemStack stack)
     {
-        return ForgeRegistries.ITEMS.getValues()
-            .stream()
-            .map(item -> {
-                final ItemStack stack = new ItemStack(item);
-                return stack.getCapability(HeatCapability.CAPABILITY)
-                    .map(h -> {
-                        h.setTemperature(minTemp);
-                        return stack;
-                    })
-                    .orElse(null);
+        return stack.getCapability(HeatCapability.CAPABILITY)
+            .map(h -> {
+                h.setTemperature(minTemp);
+                return stack;
             })
-            .filter(Objects::nonNull)
-            .toArray(ItemStack[]::new);
+            .orElse(null);
     }
 
     @Override

@@ -306,7 +306,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide())
+        if (!level.isClientSide() && level.getGameTime() % 20 == 0)
         {
             // Is it time to decay familiarity?
             // If this entity was never fed(eg: new born, wild)

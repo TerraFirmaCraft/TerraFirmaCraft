@@ -2,15 +2,13 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:food/bear"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/bear"
+    }
   },
   "result_item": {
-    "stack": {
-      "item": "tfc:food/cooked_bear"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/cooked_bear"
   },
   "temperature": 200
 }

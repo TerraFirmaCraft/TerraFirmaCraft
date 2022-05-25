@@ -49,7 +49,7 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     private static <T> void assertUniquePacketTypes(DataManager<?> instance, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
     {
-        if (Helpers.detectAssertionsEnabled() && networkPacketFactory != null)
+        if (Helpers.ASSERTIONS_ENABLED && networkPacketFactory != null)
         {
             final Class<?> packetType = networkPacketFactory.get().getClass();
             final DataManager<?> old = NETWORK_TYPES.put(packetType, instance);
@@ -69,14 +69,14 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
 
     private final BiFunction<ResourceLocation, JsonObject, T> factory;
 
-    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
+    public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
     {
         this(domain, typeName, factory, null, null, null);
     }
 
-    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
+    public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
     {
-        super(GSON, TerraFirmaCraft.MOD_ID + "/" + domain);
+        super(GSON, domain.getNamespace() + "/" + domain.getPath());
 
         assertUniquePacketTypes(this, networkPacketFactory);
 

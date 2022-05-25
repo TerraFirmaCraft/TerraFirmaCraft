@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class Support
 {
-    public static final DataManager<Support> MANAGER = new DataManager<>("supports", "support", Support::new);
+    public static final DataManager<Support> MANAGER = new DataManager<>(Helpers.identifier("supports"), "support", Support::new);
     public static final IndirectHashCollection<Block, Support> CACHE = IndirectHashCollection.create(s -> s.ingredient.getValidBlocks(), MANAGER::getValues);
 
     /**

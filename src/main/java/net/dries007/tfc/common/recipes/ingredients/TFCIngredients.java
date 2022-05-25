@@ -17,7 +17,8 @@ public final class TFCIngredients
     public static void registerIngredientTypes()
     {
         register("not_rotten", NotRottenIngredient.Serializer.INSTANCE);
-        register("has_trait", HasTraitIngredient.Serializer.INSTANCE);
+        register("has_trait", TraitIngredient.TraitSerializer.HAS_TRAIT);
+        register("lacks_trait", TraitIngredient.TraitSerializer.LACKS_TRAIT);
         register("heatable", HeatableIngredient.Serializer.INSTANCE);
         register("not", NotIngredient.Serializer.INSTANCE);
         register("fluid_item", FluidItemIngredient.Serializer.INSTANCE);

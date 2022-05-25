@@ -178,4 +178,16 @@ public class WoodenBucketItem extends Item
         }
         return false;
     }
+
+    @Override
+    public boolean hasContainerItem(ItemStack stack)
+    {
+        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack)
+    {
+        return new ItemStack(this);
+    }
 }

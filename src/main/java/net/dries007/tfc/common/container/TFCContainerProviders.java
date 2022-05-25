@@ -11,7 +11,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 
 /**
- * {@link MenuProvider} for static screen / container pairs that are not attached to a TE or other object which makes sense to implement this on.
+ * {@link MenuProvider} for static screen / container pairs that are not attached to a block entity or other object which makes sense to implement this on.
  */
 public class TFCContainerProviders
 {

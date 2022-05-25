@@ -23,7 +23,8 @@ public class ServerCalendar extends Calendar
     public static final int SYNC_INTERVAL = 20; // Number of ticks between sync attempts. This mimics vanilla's time sync
     public static final int TIME_DESYNC_THRESHOLD = 5;
 
-    private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(Calendars.SERVER::setDoDaylightCycle);
+    @SuppressWarnings("Convert2MethodRef") // Creates a class load dependent NPE
+    private static final ReentrantRunnable DO_DAYLIGHT_CYCLE = new ReentrantRunnable(() -> Calendars.SERVER.setDoDaylightCycle());
 
     public static void overrideDoDaylightCycleCallback()
     {

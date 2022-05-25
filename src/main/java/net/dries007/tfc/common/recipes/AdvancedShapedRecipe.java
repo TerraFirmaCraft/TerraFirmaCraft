@@ -43,7 +43,7 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     @Override
     public ItemStack getResultItem()
     {
-        return providerResult.getStack(ItemStack.EMPTY);
+        return providerResult.getEmptyStack();
     }
 
     @Override
@@ -51,13 +51,13 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     {
         final int matchSlot = RecipeHelpers.translateMatch(this, inputSlot, inventory);
         final ItemStack inputStack = matchSlot != -1 ? inventory.getItem(matchSlot).copy() : ItemStack.EMPTY;
-        return providerResult.getStack(inputStack);
+        return providerResult.getSingleStack(inputStack);
     }
 
     @Override
     public RecipeSerializer<?> getSerializer()
     {
-        return TFCRecipeSerializers.ADVANCED_SHAPED.get();
+        return TFCRecipeSerializers.ADVANCED_SHAPED_CRAFTING.get();
     }
 
     public static class Serializer extends RecipeSerializerImpl<AdvancedShapedRecipe>

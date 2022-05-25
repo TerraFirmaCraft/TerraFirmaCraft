@@ -8,6 +8,7 @@ package net.dries007.tfc.common.capabilities;
 
 import java.util.List;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -27,6 +28,12 @@ public interface DelegateHeatHandler extends IHeat
     default void setTemperature(float temperature)
     {
         getHeatHandler().setTemperature(temperature);
+    }
+
+    @Override
+    default void setTemperatureIfWarmer(float temperature)
+    {
+        getHeatHandler().setTemperatureIfWarmer(temperature);
     }
 
     @Override
@@ -51,5 +58,17 @@ public interface DelegateHeatHandler extends IHeat
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         getHeatHandler().addTooltipInfo(stack, text);
+    }
+
+    @Override
+    default CompoundTag serializeNBT()
+    {
+        return getHeatHandler().serializeNBT();
+    }
+
+    @Override
+    default void deserializeNBT(CompoundTag nbt)
+    {
+        getHeatHandler().deserializeNBT(nbt);
     }
 }

@@ -623,6 +623,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'bear', 'tfc:food/bear', Category.meat, 4, 0, 0, 2, protein=1.5)
     food_item(rm, 'calamari', 'tfc:food/calamari', Category.meat, 4, 0, 0, 3, protein=0.5)
     food_item(rm, 'horse_meat', 'tfc:food/horse_meat', Category.meat, 4, 0, 0, 2, protein=1.5)
+    food_item(rm, 'turtle', 'tfc:food/turtle', Category.meat, 4, 0, 0, 2, protein=1.5)
     food_item(rm, 'pheasant', 'tfc:food/pheasant', Category.meat, 4, 0, 0, 3, protein=1.5)
     food_item(rm, 'venison', 'tfc:food/venison', Category.meat, 4, 0, 0, 2, protein=1)
     food_item(rm, 'wolf', 'tfc:food/wolf', Category.meat, 4, 0, 0, 3, protein=0.5)
@@ -643,6 +644,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_bear', 'tfc:food/cooked_bear', Category.cooked_meat, 4, 1, 0, 1.5, protein=2.5)
     food_item(rm, 'cooked_calamari', 'tfc:food/cooked_calamari', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
     food_item(rm, 'cooked_horse_meat', 'tfc:food/cooked_horse_meat', Category.cooked_meat, 4, 2, 0, 1.5, protein=2.5)
+    food_item(rm, 'cooked_turtle', 'tfc:food/cooked_turtle', Category.meat, 4, 0, 0, 2, protein=2.5)
     food_item(rm, 'cooked_pheasant', 'tfc:food/cooked_pheasant', Category.cooked_meat, 4, 1, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_venison', 'tfc:food/cooked_venison', Category.cooked_meat, 4, 1, 0, 1.5, protein=2)
     food_item(rm, 'cooked_wolf', 'tfc:food/cooked_wolf', Category.cooked_meat, 4, 1, 0, 2.25, protein=1.5)
@@ -836,8 +838,10 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         rm.item_tag('foods/%ss' % category.name.lower(), ingredient)
     if category in (Category.meat, Category.cooked_meat):
         rm.item_tag('foods/meats', ingredient)
-    if category == Category.cooked_meat:
-        rm.item_tag('foods/cooked_meats', ingredient)
+        if category == Category.cooked_meat:
+            rm.item_tag('foods/cooked_meats', ingredient)
+        else:
+            rm.item_tag('foods/raw_meats', ingredient)
     if category == Category.dairy:
         rm.item_tag('foods/dairy', ingredient)
 

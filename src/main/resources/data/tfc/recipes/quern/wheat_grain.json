@@ -2,14 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:quern",
   "ingredient": {
-    "item": "tfc:food/wheat_grain"
+    "type": "tfc:not_rotten",
+    "ingredient": {
+      "item": "tfc:food/wheat_grain"
+    }
   },
   "result": {
-    "stack": {
-      "item": "tfc:food/wheat_flour"
-    },
-    "modifiers": [
-      "tfc:reset_decay"
-    ]
+    "item": "tfc:food/wheat_flour"
   }
 }

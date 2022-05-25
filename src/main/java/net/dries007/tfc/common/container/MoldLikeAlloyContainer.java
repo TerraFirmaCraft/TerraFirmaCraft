@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.container;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +19,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import org.jetbrains.annotations.Nullable;
 
 public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotCallback
 {

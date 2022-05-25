@@ -44,8 +44,9 @@ public class NotRottenIngredient extends DelegateIngredient
         return Serializer.INSTANCE;
     }
 
+    @Nullable
     @Override
-    protected @Nullable ItemStack testDefaultItem(ItemStack stack)
+    protected ItemStack testDefaultItem(ItemStack stack)
     {
         return stack.getCapability(FoodCapability.CAPABILITY).map(food -> {
             food.setNonDecaying();

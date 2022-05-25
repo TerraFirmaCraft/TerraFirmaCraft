@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.function.*;
@@ -65,6 +64,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -78,7 +79,6 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
 
-import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -97,6 +97,21 @@ public final class Helpers
     public static final Direction[] DIRECTIONS = Direction.values();
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
+    /**
+     * If assertions (-ea) are enabled. Used to selectively enable various self-test mechanisms
+     */
+    public static final boolean ASSERTIONS_ENABLED = detectAssertionsEnabled();
+
+    /**
+     * If the current environment is a bootstrapped one, i.e. one outside the transforming class loader, such as /gradlew test launch
+     */
+    public static final boolean BOOTSTRAP_ENVIRONMENT = detectBootstrapEnvironment();
+
+    /**
+     * If the current one includes test source sets, i.e. gametest, indev, or ./gradlew test
+     */
+    public static final boolean TEST_ENVIRONMENT = detectTestSourcesPresent();
+
     public static final String BLOCK_ENTITY_TAG = "BlockEntityTag"; // BlockItem.BLOCK_ENTITY_TAG;
     public static final String BLOCK_STATE_TAG = BlockItem.BLOCK_STATE_TAG;
 
@@ -112,6 +127,12 @@ public final class Helpers
     public static ResourceLocation identifier(String name)
     {
         return new ResourceLocation(MOD_ID, name);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static <T> Capability<T> capability(CapabilityToken<T> token)
+    {
+        return BOOTSTRAP_ENVIRONMENT ? null : CapabilityManager.get(token);
     }
 
     /**
@@ -257,7 +278,6 @@ public final class Helpers
         return (Map<ResourceLocation, R>) ((RecipeManagerAccessor) recipeManager).invoke$byType(type.get());
     }
 
-    @Nullable
     public static RecipeManager getUnsafeRecipeManager()
     {
         final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
@@ -285,8 +305,7 @@ public final class Helpers
             return CACHED_RECIPE_MANAGER;
         }
 
-        LOGGER.error("No recipe manager was present - tried server, client, and captured value. This will cause problems!", new RuntimeException("Stacktrace"));
-        return null;
+        throw new IllegalStateException("No recipe manager was present - tried server, client, and captured value. This will cause problems!");
     }
 
     public static void setCachedRecipeManager(RecipeManager manager)
@@ -330,23 +349,11 @@ public final class Helpers
         level.setBlock(pos, level.getFluidState(pos).createLegacyBlock(), flags);
     }
 
-    /**
-     * Set a {@code stack}'s count to {@code count}, after respecting both the slot stack limit, and the stack's max stack size.
-     * Returns the difference between the count that was attempted to set, and the actual count set.
-     */
-    public static int setCountSafely(ItemStack stack, int count, int slotStackLimit)
+    public static ItemStack copyWithSize(ItemStack stack, int size)
     {
-        final int initialCount = count;
-        if (count > slotStackLimit)
-        {
-            count = slotStackLimit;
-        }
-        if (count > stack.getMaxStackSize())
-        {
-            count = stack.getMaxStackSize();
-        }
-        stack.setCount(count);
-        return initialCount - count;
+        final ItemStack copy = stack.copy();
+        copy.setCount(size);
+        return copy;
     }
 
     /**
@@ -729,14 +736,6 @@ public final class Helpers
     }
 
     /**
-     * You know this will work, and I know this will work, but this compiler looks pretty stupid.
-     */
-    public static <E> E resolveEither(Either<E, E> either)
-    {
-        return either.map(e -> e, e -> e);
-    }
-
-    /**
      * @see net.minecraft.core.QuartPos#toBlock(int)
      */
     public static BlockPos quartToBlock(int x, int y, int z)
@@ -804,32 +803,9 @@ public final class Helpers
         return Objects.requireNonNull(registry.tags()).getTag(tag).stream().toList();
     }
 
-    public static Field findUnobfField(Class<?> clazz, String fieldName)
-    {
-        try
-        {
-            final Field field = clazz.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return field;
-        }
-        catch (NoSuchFieldException e)
-        {
-            throw new RuntimeException("Missing field: " + clazz.getSimpleName() + "." + fieldName, e);
-        }
-    }
-
-    public static void uncheck(ThrowingRunnable action)
-    {
-        uncheck(() -> {
-            action.run();
-            return null;
-        });
-    }
-
     /**
      * For when you want to ignore every possible safety measure in front of you
      */
-    @Nullable
     @SuppressWarnings("unchecked")
     public static <T> T uncheck(Callable<?> action)
     {
@@ -848,46 +824,10 @@ public final class Helpers
      */
     public static void warnWhenCalledFromClientThread()
     {
-        if (Helpers.detectAssertionsEnabled() && Thread.currentThread().getName().equalsIgnoreCase("render thread"))
+        if (ASSERTIONS_ENABLED && Thread.currentThread().getName().equalsIgnoreCase("render thread"))
         {
             LOGGER.warn("This method should not be called from client thread, this is a bug!", new RuntimeException("Stacktrace"));
         }
-    }
-
-    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
-    public static boolean detectAssertionsEnabled()
-    {
-        boolean enabled = false;
-        assert enabled = true;
-        return enabled;
-    }
-
-    /**
-     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
-     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
-     */
-    public static boolean detectBootstrapEnvironment()
-    {
-        if (System.getProperty("forge.enabledGameTestNamespaces") != null)
-        {
-            return false;
-        }
-        return detectTestSourcesPresent();
-    }
-
-    /**
-     * Detect if test sources are present, if we're running from a environment which includes TFC's test sources
-     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
-     */
-    public static boolean detectTestSourcesPresent()
-    {
-        try
-        {
-            Class.forName("net.dries007.tfc.TestMarker");
-            return true;
-        }
-        catch (ClassNotFoundException e) { /* Guess not */ }
-        return false;
     }
 
     // Math Functions
@@ -1204,6 +1144,38 @@ public final class Helpers
         throw (E) exception;
     }
 
+    @SuppressWarnings({"AssertWithSideEffects", "ConstantConditions"})
+    private static boolean detectAssertionsEnabled()
+    {
+        boolean enabled = false;
+        assert enabled = true;
+        return enabled;
+    }
+
+    /**
+     * Detect if we are in a bootstrapped environment - one where transforming and many MC/Forge mechanics are not properly setup
+     * This detects i.e. when running from /gradlew test, and some things have to be avoided (for instance, invoking Forge registry methods)
+     */
+    private static boolean detectBootstrapEnvironment()
+    {
+        return System.getProperty("forge.enabledGameTestNamespaces") == null && detectTestSourcesPresent();
+    }
+
+    /**
+     * Detect if test sources are present, if we're running from a environment which includes TFC's test sources
+     * This can happen through a gametest launch, TFC dev launch (since we include test sources), or through gradle test
+     */
+    private static boolean detectTestSourcesPresent()
+    {
+        try
+        {
+            Class.forName("net.dries007.tfc.TestMarker");
+            return true;
+        }
+        catch (ClassNotFoundException e) { /* Guess not */ }
+        return false;
+    }
+
     static abstract class ItemProtectedAccessor extends Item
     {
         static BlockHitResult invokeGetPlayerPOVHitResult(Level level, Player player, ClipContext.Fluid mode)
@@ -1213,10 +1185,5 @@ public final class Helpers
 
         @SuppressWarnings("ConstantConditions")
         private ItemProtectedAccessor() { super(null); } // Never called
-    }
-
-    interface ThrowingRunnable
-    {
-        void run() throws Exception;
     }
 }

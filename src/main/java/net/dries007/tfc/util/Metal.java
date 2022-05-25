@@ -51,7 +51,7 @@ import org.jetbrains.annotations.Nullable;
 public final class Metal
 {
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
-    public static final DataManager<Metal> MANAGER = new DataManager<>("metals", "metal", Metal::new, Metal::new, Metal::encode, Packet::new);
+    public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::new, Metal::new, Metal::encode, Packet::new);
 
     private static final Map<Fluid, Metal> METAL_FLUIDS = new HashMap<>();
 

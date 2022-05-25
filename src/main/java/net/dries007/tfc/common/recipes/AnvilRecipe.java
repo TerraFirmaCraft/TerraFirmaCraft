@@ -111,7 +111,7 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
     @Override
     public ItemStack getResultItem()
     {
-        return output.getStack(ItemStack.EMPTY);
+        return output.getEmptyStack();
     }
 
     @Override

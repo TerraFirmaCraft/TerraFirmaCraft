@@ -500,7 +500,7 @@ VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'go
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
 UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
 
 BERRIES: Dict[str, Berry] = {
@@ -634,6 +634,7 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
+    'tfc.key.stack_food': 'Stack Food',
     # Sounds todo: subtitles for everything and standardize the format
     'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
     'tfc.animal.alpaca.hurt': 'Alpaca Yelps',
@@ -887,14 +888,15 @@ DEFAULT_LANG = {
     'tfc.enum.forgingbonus.well_forged': 'Well Forged',
     'tfc.enum.forgingbonus.expertly_forged': 'Expertly Forged',
     'tfc.enum.forgingbonus.perfectly_forged': 'Perfectly Forged!',
-    'tfc.enum.forge_step.hit_light': 'Light Hit',
-    'tfc.enum.forge_step.hit_medium': 'Medium Hit',
-    'tfc.enum.forge_step.hit_hard': 'Hard Hit',
-    'tfc.enum.forge_step.draw': 'Draw',
-    'tfc.enum.forge_step.punch': 'Punch',
-    'tfc.enum.forge_step.bend': 'Bend',
-    'tfc.enum.forge_step.upset': 'Upset',
-    'tfc.enum.forge_step.shrink': 'Shrink',
+    'tfc.enum.forgestep.hit': 'Hit',
+    'tfc.enum.forgestep.hit_light': 'Light Hit',
+    'tfc.enum.forgestep.hit_medium': 'Medium Hit',
+    'tfc.enum.forgestep.hit_hard': 'Hard Hit',
+    'tfc.enum.forgestep.draw': 'Draw',
+    'tfc.enum.forgestep.punch': 'Punch',
+    'tfc.enum.forgestep.bend': 'Bend',
+    'tfc.enum.forgestep.upset': 'Upset',
+    'tfc.enum.forgestep.shrink': 'Shrink',
     'tfc.enum.order.any': 'Any',
     'tfc.enum.order.last': 'Last',
     'tfc.enum.order.not_last': 'Not Last',
@@ -906,6 +908,9 @@ DEFAULT_LANG = {
     'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
     'tfc.composter.too_many_greens': 'This composter has enough green items',
     'tfc.composter.too_many_browns': 'This composter has enough brown items',
+    'tfc.chisel.cannot_place': 'The chiseled version of this block cannot exist here',
+    'tfc.chisel.no_recipe': 'This block cannot be chiseled',
+    'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',
 
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 

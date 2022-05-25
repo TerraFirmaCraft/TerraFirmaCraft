@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client.screen;
 
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -44,9 +46,10 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
         super.init();
 
         addRenderableWidget(new AnvilPlanButton(blockEntity, getGuiLeft(), getGuiTop(), RenderHelpers.makeButtonTooltip(this, new TranslatableComponent("tfc.tooltip.anvil_plan"))));
+
         for (ForgeStep step : ForgeStep.values())
         {
-            addRenderableWidget(new AnvilStepButton(step, getGuiLeft(), getGuiTop(), RenderHelpers.makeButtonTooltip(this, step.getDescriptionId())));
+            addRenderableWidget(new AnvilStepButton(step, getGuiLeft(), getGuiTop(), RenderHelpers.makeButtonTooltip(this, Helpers.translateEnum(step))));
         }
     }
 
@@ -103,13 +106,13 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
             }
 
             // Draw step icons
+            final ForgeStep[] stepSequence = {steps.last(), steps.secondLast(), steps.thirdLast()};
             for (int i = 0; i < 3; i++)
             {
-                final ForgeStep step = steps.getStep(i);
+                final ForgeStep step = stepSequence[i];
                 if (step != null)
                 {
-                    // Reverses the placement of the steps to line up better with the rules
-                    final int xOffset = (2 - i) * 19;
+                    final int xOffset = i * 19;
                     blit(poseStack, guiLeft + 64 + xOffset, guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
                 }
             }
@@ -120,6 +123,15 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
     protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
     {
         super.renderTooltip(poseStack, mouseX, mouseY);
+
+        for (Widget widget : renderables)
+        {
+            if (widget instanceof Button button && button.isHoveredOrFocused())
+            {
+                button.renderToolTip(poseStack, mouseX, mouseY);
+                return;
+            }
+        }
 
         final Level level = blockEntity.getLevel();
         final Forging forging = blockEntity.getMainInputForging();

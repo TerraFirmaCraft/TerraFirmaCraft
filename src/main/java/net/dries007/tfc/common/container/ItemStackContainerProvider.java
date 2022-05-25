@@ -51,6 +51,6 @@ public class ItemStackContainerProvider
 
     public MenuProvider of(ItemStack stack, InteractionHand hand)
     {
-        return new SimpleMenuProvider((windowId, playerInventory, player) -> factory.create(stack, hand, playerInventory, windowId), name == null ? stack.getDisplayName() : name);
+        return new SimpleMenuProvider((windowId, playerInventory, player) -> factory.create(stack, hand, playerInventory, windowId), name == null ? stack.getHoverName() : name);
     }
 }

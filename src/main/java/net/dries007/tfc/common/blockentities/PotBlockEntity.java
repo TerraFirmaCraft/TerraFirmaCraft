@@ -149,9 +149,10 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
                 markForSync();
             }
         }
-        else
+        else if (boilingTicks > 0) // catch accidentally not syncing when it dips below temperature
         {
             boilingTicks = 0;
+            markForSync();
         }
     }
 
@@ -159,6 +160,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     protected void coolInstantly()
     {
         boilingTicks = 0;
+        markForSync();
     }
 
     @Override

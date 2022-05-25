@@ -11,10 +11,12 @@ import java.util.Locale;
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,13 +24,11 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -38,58 +38,59 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
-import net.dries007.tfc.util.events.ChiselResultEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class ChiselRecipe extends SimpleBlockRecipe
 {
-    @Nullable
-    public static BlockState computeResultWithEvent(Player player, BlockState state, BlockHitResult hit)
-    {
-        BlockState output = computeResult(player, state, hit);
-        ChiselResultEvent event = new ChiselResultEvent(player, state, hit, output);
-        if (!MinecraftForge.EVENT_BUS.post(event))
-        {
-            return output;
-        }
-        return event.getOutputState();
-    }
-
-    @Nullable
-    public static BlockState computeResult(Player player, BlockState state, BlockHitResult hit)
+    /**
+     * In a sentence, this method returns "Either" a BlockState, which the caller must handle, or an InteractionResult to be returned
+     */
+    public static Either<BlockState, InteractionResult> computeResult(Player player, BlockState state, BlockHitResult hit, boolean informWhy)
     {
         ItemStack held = player.getMainHandItem();
         if (Helpers.isItem(held, TFCTags.Items.CHISELS) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.HAMMERS))
         {
             BlockPos pos = hit.getBlockPos();
-            BlockState returned = player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> {
+            return player.getCapability(PlayerDataCapability.CAPABILITY).map(cap -> {
                 final Mode mode = cap.getChiselMode();
                 final ChiselRecipe recipe = ChiselRecipe.getRecipe(state, held, mode);
-                if (recipe != null)
+                if (recipe == null)
                 {
-                    final BlockState chiseled = recipe.getBlockCraftingResult(state);
-                    if (mode == Mode.SLAB || mode == Mode.STAIR)
+                    if (informWhy) complain(player, "no_recipe");
+                    return Either.<BlockState, InteractionResult>right(InteractionResult.PASS);
+                }
+                else
+                {
+                    BlockState chiseled = recipe.getBlockCraftingResult(state);
+                    chiseled = chiseled.getBlock().getStateForPlacement(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(chiseled.getBlock()), hit));
+                    if (chiseled == null)
                     {
-                        BlockState placed = chiseled.getBlock().getStateForPlacement(new BlockPlaceContext(player, InteractionHand.MAIN_HAND, new ItemStack(chiseled.getBlock()), hit));
-                        if (placed != null) return placed;
+                        if (informWhy) complain(player, "cannot_place");
+                        return Either.<BlockState, InteractionResult>right(InteractionResult.FAIL);
                     }
                     else
                     {
-                        return chiseled;
+                        // covers case where a waterlogged block is chiseled and the new block can't take the fluid contained
+                        chiseled = FluidHelpers.fillWithFluid(chiseled, player.level.getFluidState(pos).getType());
+                        if (chiseled == null)
+                        {
+                            if (informWhy) complain(player, "bad_fluid");
+                            return Either.<BlockState, InteractionResult>right(InteractionResult.FAIL);
+                        }
+                        else
+                        {
+                            return Either.<BlockState, InteractionResult>left(chiseled);
+                        }
                     }
                 }
-                return Blocks.AIR.defaultBlockState();
-            }).orElse(null);
-            // doing a fake getStateForPlacement call might mess this up, so let's give it our best shot here.
-            // that said this is not possible with any of our default options
-            if (returned != null && !returned.isAir())
-            {
-                BlockState fluidFilled = FluidHelpers.fillWithFluid(returned, player.level.getFluidState(pos).getType());
-                return fluidFilled == null ? returned : fluidFilled;
-            }
-
+            }).orElse(Either.right(InteractionResult.PASS));
         }
-        return null;
+        return Either.right(InteractionResult.PASS);
+    }
+
+    private static void complain(Player player, String message)
+    {
+        player.displayClientMessage(new TranslatableComponent("tfc.chisel." + message), true);
     }
 
     public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.CHISEL);
@@ -154,7 +155,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     public ItemStack getExtraDrop(ItemStack chisel)
     {
-        return extraDrop.getStack(chisel);
+        return extraDrop.getSingleStack(chisel);
     }
 
     public static class Serializer extends RecipeSerializerImpl<ChiselRecipe>
