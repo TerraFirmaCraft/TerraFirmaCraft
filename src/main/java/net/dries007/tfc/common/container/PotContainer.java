@@ -28,7 +28,7 @@ public class PotContainer extends BlockEntityContainer<PotBlockEntity>
 
     private PotContainer(PotBlockEntity pot, int windowId)
     {
-        super(TFCMenuTypes.POT.get(), windowId, pot);
+        super(TFCContainerTypes.POT.get(), windowId, pot);
 
         addDataSlots(pot.getSyncableData());
     }

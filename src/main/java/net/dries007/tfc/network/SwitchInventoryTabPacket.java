@@ -11,7 +11,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.dries007.tfc.common.container.TFCMenuProviders;
+import net.dries007.tfc.common.container.TFCContainerProviders;
 
 public class SwitchInventoryTabPacket
 {
@@ -45,15 +45,15 @@ public class SwitchInventoryTabPacket
                 }
                 else if (type == Type.CALENDAR)
                 {
-                    NetworkHooks.openGui(player, TFCMenuProviders.CALENDAR);
+                    NetworkHooks.openGui(player, TFCContainerProviders.CALENDAR);
                 }
                 else if (type == Type.NUTRITION)
                 {
-                    NetworkHooks.openGui(player, TFCMenuProviders.NUTRITION);
+                    NetworkHooks.openGui(player, TFCContainerProviders.NUTRITION);
                 }
                 else if (type == Type.CLIMATE)
                 {
-                    NetworkHooks.openGui(player, TFCMenuProviders.CLIMATE);
+                    NetworkHooks.openGui(player, TFCContainerProviders.CLIMATE);
                 }
                 else
                 {
