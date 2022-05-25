@@ -23,7 +23,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -32,7 +31,6 @@ import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.MoltenBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -52,30 +50,30 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
 {
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.blast_furnace");
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, BlastFurnaceBlockEntity forge)
+    public static void serverTick(Level level, BlockPos pos, BlockState state, BlastFurnaceBlockEntity entity)
     {
-        forge.checkForLastTickSync();
-        forge.checkForCalendarUpdate();
+        entity.checkForLastTickSync();
+        entity.checkForCalendarUpdate();
 
         if (level.getGameTime() % 20 == 0)
         {
             // Re-check the multiblock state and calculate the total capacity of the device
-            final int capacity = forge.calculateCapacity();
+            final int capacity = entity.calculateCapacity();
 
             // If we have to, dump items from the device until we're back down at capacity.
             // Pop items off of the end of the list
-            final boolean modified = forge.inputStacks.size() > capacity || forge.catalystStacks.size() > capacity;
-            while (forge.inputStacks.size() > capacity)
+            final boolean modified = entity.inputStacks.size() > capacity || entity.catalystStacks.size() > capacity;
+            while (entity.inputStacks.size() > capacity)
             {
-                Helpers.spawnItem(level, pos, forge.inputStacks.remove(forge.inputStacks.size() - 1));
+                Helpers.spawnItem(level, pos, entity.inputStacks.remove(entity.inputStacks.size() - 1));
             }
-            while (forge.catalystStacks.size() > capacity)
+            while (entity.catalystStacks.size() > capacity)
             {
-                Helpers.spawnItem(level, pos, forge.catalystStacks.remove(forge.catalystStacks.size() - 1));
+                Helpers.spawnItem(level, pos, entity.catalystStacks.remove(entity.catalystStacks.size() - 1));
             }
-            while (forge.fuelStacks.size() > capacity)
+            while (entity.fuelStacks.size() > capacity)
             {
-                Helpers.spawnItem(level, pos, forge.fuelStacks.remove(forge.fuelStacks.size() - 1));
+                Helpers.spawnItem(level, pos, entity.fuelStacks.remove(entity.fuelStacks.size() - 1));
             }
 
             if (modified)
@@ -87,61 +85,61 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                     level.setBlockAndUpdate(pos, state);
                 }
 
-                forge.markForSync();
+                entity.markForSync();
             }
 
             // Finally, if we're in a valid state, and we've checked the capacity, then we can attempt to add items in from the world
             final boolean lit = state.getValue(BloomeryBlock.LIT);
             if (!lit)
             {
-                forge.addItemsFromWorld(capacity);
+                entity.addItemsFromWorld(capacity);
             }
 
             // And refresh the molten block(s) based on the current inputs
-            forge.updateMoltenBlock(lit);
+            MoltenBlock.manageMoltenBlockTower(level, entity.worldPosition, lit, TFCConfig.SERVER.bloomeryMaxChimneyHeight.get(), entity.inputStacks.size(), TFCConfig.SERVER.bloomeryCapacity.get());
         }
 
         if (state.getValue(BlastFurnaceBlock.LIT))
         {
             // Update fuel
-            if (forge.burnTicks > 0)
+            if (entity.burnTicks > 0)
             {
-                forge.burnTicks -= TFCConfig.SERVER.blastFurnaceFuelConsumptionMultiplier.get() * (forge.airTicks > 0 ? 2 : 1); // Fuel burns twice as fast using bellows
+                entity.burnTicks -= TFCConfig.SERVER.blastFurnaceFuelConsumptionMultiplier.get() * (entity.airTicks > 0 ? 2 : 1); // Fuel burns twice as fast using bellows
             }
-            if (forge.burnTicks <= 0 && !forge.consumeFuel())
+            if (entity.burnTicks <= 0 && !entity.consumeFuel())
             {
-                forge.extinguish(state);
+                entity.extinguish(state);
             }
         }
-        else if (forge.burnTemperature > 0)
+        else if (entity.burnTemperature > 0)
         {
-            forge.extinguish(state);
+            entity.extinguish(state);
         }
-        if (forge.airTicks > 0)
+        if (entity.airTicks > 0)
         {
-            forge.airTicks--;
+            entity.airTicks--;
         }
 
         // Always update temperature / cooking, until the device is not hot anymore
-        if (forge.temperature > 0 || forge.burnTemperature > 0)
+        if (entity.temperature > 0 || entity.burnTemperature > 0)
         {
-            forge.temperature = HeatCapability.adjustDeviceTemp(forge.temperature, forge.burnTemperature, forge.airTicks, false);
+            entity.temperature = HeatCapability.adjustDeviceTemp(entity.temperature, entity.burnTemperature, entity.airTicks, false);
 
             // Provide heat to blocks below
             final BlockEntity below = level.getBlockEntity(pos.below());
             if (below != null)
             {
-                below.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(forge.temperature));
+                below.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(entity.temperature));
             }
 
             // Ensures that cached recipes are cached properly and 1-1 with input stacks
             // This way we can iterate and remove pairwise
-            forge.ensureCachedRecipesAreAligned();
+            entity.ensureCachedRecipesAreAligned();
 
             final List<FluidStack> newInputFluids = new ArrayList<>();
 
-            final Iterator<ItemStack> inputIterator = forge.inputStacks.iterator();
-            final Iterator<HeatingRecipe> recipeIterator = forge.inputCachedRecipes.iterator();
+            final Iterator<ItemStack> inputIterator = entity.inputStacks.iterator();
+            final Iterator<HeatingRecipe> recipeIterator = entity.inputCachedRecipes.iterator();
             while (inputIterator.hasNext())
             {
                 final ItemStack inputStack = inputIterator.next();
@@ -150,9 +148,9 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
 
                     // Update temperature of item
                     float itemTemp = cap.getTemperature();
-                    if (forge.temperature > itemTemp)
+                    if (entity.temperature > itemTemp)
                     {
-                        HeatCapability.addTemp(cap, forge.temperature);
+                        HeatCapability.addTemp(cap, entity.temperature);
                     }
 
                     // Handle melting of the input. For now, just append results sequentially to a buffer, which will be added to the blast furnace later.
@@ -175,21 +173,21 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                 // Insert all new input fluids sequentially
                 for (FluidStack newInputFluid : newInputFluids)
                 {
-                    forge.insertOrReplaceInputFluid(newInputFluid);
+                    entity.insertOrReplaceInputFluid(newInputFluid);
                 }
 
                 // Then, convert the input to the output via a recipe, just matching fluid ratios
-                final BlastFurnaceRecipe recipe = BlastFurnaceRecipe.get(level, forge.inputFluid);
+                final BlastFurnaceRecipe recipe = BlastFurnaceRecipe.get(level, entity.inputFluid);
                 if (recipe != null)
                 {
-                    final FluidStack newOutputFluid = recipe.assembleFluidOutput(forge.inputFluid);
+                    final FluidStack newOutputFluid = recipe.assembleFluidOutput(entity.inputFluid);
 
                     // And merge into the output fluid stack
-                    forge.insertOrReplaceOutputFluid(newOutputFluid);
+                    entity.insertOrReplaceOutputFluid(newOutputFluid);
                 }
             }
 
-            forge.markForSync();
+            entity.markForSync();
         }
     }
 
@@ -225,7 +223,22 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     @Override
     public void onCalendarUpdate(long ticks)
     {
-        // todo
+        assert level != null;
+
+        final HeatCapability.Remainder remainder = HeatCapability.consumeFuelForTicks(ticks, burnTicks, burnTemperature, fuelStacks);
+
+        burnTicks = remainder.burnTicks();
+        burnTemperature = remainder.burnTemperature();
+
+        if (remainder.ticks() > 0)
+        {
+            // Consumed all fuel, so extinguish and cool instantly
+            extinguish(getBlockState());
+            for (ItemStack stack : inputStacks)
+            {
+                stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.setTemperature(0f));
+            }
+        }
     }
 
     @Nullable
@@ -276,8 +289,8 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     @Override
     public void ejectInventory()
     {
-        destroyMolten();
         dumpItems();
+        destroyMolten();
     }
 
     private void dumpItems()
@@ -473,62 +486,11 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
     }
 
-    /**
-     * Sets a molten block inside the bloomery structure. If there is nothing in the bloomery, attempts to delete any molten blocks left over.
-     */
-    private void updateMoltenBlock(boolean cooking)
-    {
-        assert level != null;
-
-        // If there's at least one item, show one layer so player knows that it is holding stacks
-        final BlockPos internalPos = worldPosition.above();
-
-        int slagLayers = 0;
-        if (!inputStacks.isEmpty())
-        {
-            slagLayers = Math.max(1, 4 * inputStacks.size() / TFCConfig.SERVER.blastFurnaceCapacity.get());
-        }
-
-        for (int i = 0; i < TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get(); i++)
-        {
-            final BlockPos checkPos = internalPos.above(i);
-            if (slagLayers > 0)
-            {
-                int toPlace = 4;
-                if (slagLayers >= 4)
-                {
-                    slagLayers -= 4;
-                }
-                else
-                {
-                    toPlace = slagLayers;
-                    slagLayers = 0;
-                }
-                level.setBlockAndUpdate(checkPos, TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, toPlace));
-            }
-            else
-            {
-                // Remove any surplus slag(ie: after cooking/structure became compromised)
-                if (Helpers.isBlock(level.getBlockState(checkPos), TFCBlocks.MOLTEN.get()))
-                {
-                    level.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
-                }
-            }
-        }
-    }
-
     private void destroyMolten()
     {
         assert level != null;
 
-        for (int i = 0; i < 4; i++)
-        {
-            final BlockPos moltenPos = worldPosition.above(1 + i);
-            if (Helpers.isBlock(level.getBlockState(moltenPos), TFCBlocks.MOLTEN.get()))
-            {
-                level.destroyBlock(moltenPos, false);
-            }
-        }
+        MoltenBlock.removeMoltenBlockTower(level, worldPosition.above(), TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get());
     }
 
     /**

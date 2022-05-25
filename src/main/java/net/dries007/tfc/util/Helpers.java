@@ -13,7 +13,6 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.common.collect.AbstractIterator;
 import com.google.common.collect.Iterators;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -355,19 +354,34 @@ public final class Helpers
      */
     public static Iterable<ItemStack> iterate(IItemHandler inventory)
     {
-        return () -> new AbstractIterator<>()
+        return iterate(inventory, 0, inventory.getSlots());
+    }
+
+    /**
+     * Iterate through all slots in an {@code inventory}.
+     */
+    public static Iterable<ItemStack> iterate(IItemHandler inventory, int startSlotInclusive, int endSlotExclusive)
+    {
+        return () -> new Iterator<>()
         {
-            private int slot = -1;
+            private int slot = startSlotInclusive;
 
             @Override
-            protected ItemStack computeNext()
+            public boolean hasNext()
             {
-                slot++;
-                if (slot < inventory.getSlots())
-                {
-                    return inventory.getStackInSlot(slot);
-                }
-                return endOfData();
+                return slot < endSlotExclusive;
+            }
+
+            @Override
+            public ItemStack next()
+            {
+                return inventory.getStackInSlot(slot++);
+            }
+
+            @Override
+            public void remove()
+            {
+                Helpers.removeStack(inventory, slot - 1); // Remove the previous slot = previous call to next()
             }
         };
     }

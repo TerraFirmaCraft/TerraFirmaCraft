@@ -27,12 +27,10 @@ public class BlastFurnaceContainer extends BlockEntityContainer<BlastFurnaceBloc
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        // todo: impl
         return switch (typeOf(slotIndex))
             {
-                case CONTAINER -> true;
-                case HOTBAR -> !moveItemStackTo(stack, containerSlots, containerSlots + 27, false);
-                case MAIN_INVENTORY -> !moveItemStackTo(stack, containerSlots + 27, containerSlots + 36, false);
+                case CONTAINER -> !moveItemStackTo(stack, containerSlots, containerSlots + 36, false);
+                case HOTBAR, MAIN_INVENTORY -> !moveItemStackTo(stack, 0, 1, false);
             };
     }
 

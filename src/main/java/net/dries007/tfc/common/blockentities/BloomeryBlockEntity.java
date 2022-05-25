@@ -20,7 +20,6 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
@@ -106,7 +105,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             }
 
             // And refresh the molten block(s) based on the current inputs
-            bloomery.updateMoltenBlock(lit);
+            MoltenBlock.manageMoltenBlockTower(level, bloomery.worldPosition, lit, TFCConfig.SERVER.bloomeryMaxChimneyHeight.get(), bloomery.inputStacks.size(), TFCConfig.SERVER.bloomeryCapacity.get());
         }
     }
 
@@ -203,7 +202,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     @Override
     public void ejectInventory()
     {
-        super.ejectInventory();
         dumpItems();
         destroyMolten();
     }
@@ -333,59 +331,13 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         }
     }
 
-    /**
-     * Sets a molten block inside the bloomery structure. If there is nothing in the bloomery, attempts to delete any molten blocks left over.
-     */
-    private void updateMoltenBlock(boolean cooking)
-    {
-        assert level != null;
-        final BlockPos internalPos = getInternalBlockPos();
-        //If there's at least one item, show one layer so player knows that it is holding stacks
-        float totalItems = (float) inputStacks.size() + catalystStacks.size();
-        int slagLayers = totalItems == 0 ? 0 : (int) Math.max(1, totalItems / 8f) * 4;
-        for (int i = 0; i < 4; i++)
-        {
-            BlockPos checkPos = internalPos.above(i);
-            if (slagLayers > 0)
-            {
-                int toPlace = 4;
-                if (slagLayers >= 4)
-                {
-                    slagLayers -= 4;
-                }
-                else
-                {
-                    toPlace = slagLayers;
-                    slagLayers = 0;
-                }
-                level.setBlockAndUpdate(checkPos, TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, toPlace));
-            }
-            else
-            {
-                //Remove any surplus slag(ie: after cooking/structure became compromised)
-                if (Helpers.isBlock(level.getBlockState(checkPos), TFCBlocks.MOLTEN.get()))
-                {
-                    level.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
-                }
-            }
-        }
-    }
-
     private void destroyMolten()
     {
         assert level != null;
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for (Direction d : Direction.Plane.HORIZONTAL)
+
+        for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            mutable.setWithOffset(worldPosition, d);
-            for (int i = 0; i < 4; i++)
-            {
-                if (Helpers.isBlock(level.getBlockState(mutable), TFCBlocks.MOLTEN.get()))
-                {
-                    level.destroyBlock(mutable, true);
-                }
-                mutable.move(0, 1, 0);
-            }
+            MoltenBlock.removeMoltenBlockTower(level, worldPosition.relative(direction), TFCConfig.SERVER.bloomeryMaxChimneyHeight.get());
         }
     }
 

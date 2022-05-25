@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +33,7 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
         final BlockState state = pile.getBlockState();
         if (state.hasProperty(IngotPileBlock.COUNT))
         {
-            @SuppressWarnings("deprecation") final Function<ResourceLocation, TextureAtlasSprite> textureAtlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+            final Function<ResourceLocation, TextureAtlasSprite> textureAtlas = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS);
             final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutout());
 
             for (int i = 0; i < state.getValue(IngotPileBlock.COUNT); i++)

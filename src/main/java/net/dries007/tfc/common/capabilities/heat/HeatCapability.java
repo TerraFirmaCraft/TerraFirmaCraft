@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
+import java.util.Iterator;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +20,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Fuel;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import org.jetbrains.annotations.Nullable;
 
@@ -170,6 +173,20 @@ public final class HeatCapability
      */
     public static Remainder consumeFuelForTicks(long ticks, IItemHandlerModifiable inventory, int burnTicks, float burnTemperature, int slotStart, int slotEnd)
     {
+        return consumeFuelForTicks(ticks, burnTicks, burnTemperature, Helpers.iterate(inventory, slotStart, 1 + slotEnd));
+    }
+
+    /**
+     * Common logic for block entities to consume fuel during larger time skips.
+     *
+     * @param ticks           Ticks since the last calendar update. This is decremented as the method checks different fuel consumption options.
+     * @param burnTicks       Remaining burn ticks of the fuel being burned
+     * @param burnTemperature Current burning temperature of the TE (this is the fuel's target temperature)
+     * @param fuelStacks      An iterator of fuel stacks which supports removal (to indicate fuel is consumed).
+     * @return The remainder after consuming fuel, along with an amount (possibly > 0) of ticks that haven't been accounted for.
+     */
+    public static Remainder consumeFuelForTicks(long ticks, int burnTicks, float burnTemperature, Iterable<ItemStack> fuelStacks)
+    {
         if (burnTicks > ticks)
         {
             burnTicks -= ticks;
@@ -180,14 +197,15 @@ public final class HeatCapability
             ticks -= burnTicks;
             burnTicks = 0;
         }
-        // Need to consume fuel
-        for (int i = slotStart; i <= slotEnd; i++)
+
+        final Iterator<ItemStack> iterator = fuelStacks.iterator();
+        while (iterator.hasNext())
         {
-            ItemStack fuelStack = inventory.getStackInSlot(i);
-            Fuel fuel = Fuel.get(fuelStack);
+            final ItemStack fuelStack = iterator.next();
+            final Fuel fuel = Fuel.get(fuelStack);
             if (fuel != null)
             {
-                inventory.setStackInSlot(i, ItemStack.EMPTY);
+                iterator.remove(); // Consume fuel item stack
                 if (fuel.getDuration() > ticks)
                 {
                     burnTicks = (int) (fuel.getDuration() - ticks);
@@ -197,7 +215,6 @@ public final class HeatCapability
                 else
                 {
                     ticks -= fuel.getDuration();
-                    burnTicks = 0;
                 }
             }
         }

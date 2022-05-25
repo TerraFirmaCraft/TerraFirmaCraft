@@ -10,7 +10,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -27,7 +26,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
     @Override
     public void render(LoomBlockEntity loom, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        if (!(loom.getBlockState().getBlock() instanceof TFCLoomBlock)) return;
+        if (!(loom.getBlockState().getBlock() instanceof TFCLoomBlock loomBlock)) return;
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.03125D, 0.5D);
@@ -35,7 +34,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         poseStack.mulPose(Vector3f.YP.rotationDegrees(meta));
         poseStack.popPose();
 
-        @SuppressWarnings("deprecation") final TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(((TFCLoomBlock) loom.getBlockState().getBlock()).getTextureLocation());
+        final TextureAtlasSprite planksSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(loomBlock.getTextureLocation());
 
         float tileZ = (float) loom.getAnimPos();
 
@@ -58,7 +57,7 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
             poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
             poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-            @SuppressWarnings("deprecation") final TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(loom.getInProgressTexture());
+            final TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(loom.getInProgressTexture());
 
             drawMaterial(builder, poseStack, progressSprite, loom, tileZ * 2F / 3F, combinedOverlay, combinedLight);
             drawProduct(builder, poseStack, progressSprite, loom, combinedOverlay, combinedLight);

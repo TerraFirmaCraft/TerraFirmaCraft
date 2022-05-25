@@ -30,7 +30,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -429,11 +428,10 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.LEAF.get(), LeafParticle.Provider::new);
     }
 
-    @SuppressWarnings("deprecation")
     public static void onTextureStitch(TextureStitchEvent.Pre event)
     {
         final ResourceLocation sheet = event.getAtlas().location();
-        if (sheet.equals(TextureAtlas.LOCATION_BLOCKS))
+        if (sheet.equals(RenderHelpers.BLOCKS_ATLAS))
         {
             event.addSprite(Helpers.identifier("block/burlap"));
             event.addSprite(Helpers.identifier("block/devices/bellows/back"));

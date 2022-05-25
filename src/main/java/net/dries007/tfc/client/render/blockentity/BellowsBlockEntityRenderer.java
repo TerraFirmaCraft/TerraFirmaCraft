@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
@@ -78,7 +77,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
 
         poseStack.pushPose();
 
-        @SuppressWarnings("deprecation") final Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+        final Function<ResourceLocation, TextureAtlasSprite> atlas = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS);
 
         final TextureAtlasSprite endSprite = atlas.apply(BACK_TEXTURE);
         final TextureAtlasSprite sideSprite = atlas.apply(SIDE_TEXTURE);
