@@ -62,6 +62,9 @@ public enum ForgeStep
         }
     }
 
+    /**
+     * @return The step by ordinal, or {@code null} or an invalid index.
+     */
     @Nullable
     public static ForgeStep valueOf(int id)
     {

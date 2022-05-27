@@ -12,7 +12,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -28,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class FoodCapability
 {
-    public static final Capability<IFood> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<IFood> CAPABILITY = Helpers.capability(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("food");
     public static final DataManager<FoodDefinition> MANAGER = new DataManager<>(Helpers.identifier("food_items"), "food", FoodDefinition::new, FoodDefinition::new, FoodDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, FoodDefinition> CACHE = IndirectHashCollection.create(FoodDefinition::getValidItems, MANAGER::getValues);

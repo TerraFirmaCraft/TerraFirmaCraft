@@ -22,7 +22,7 @@ public class CrucibleContainer extends BlockEntityContainer<CrucibleBlockEntity>
 
     private CrucibleContainer(int windowId, CrucibleBlockEntity crucible)
     {
-        super(TFCMenuTypes.CRUCIBLE.get(), windowId, crucible);
+        super(TFCContainerTypes.CRUCIBLE.get(), windowId, crucible);
 
         addDataSlots(crucible.getSyncableData());
     }

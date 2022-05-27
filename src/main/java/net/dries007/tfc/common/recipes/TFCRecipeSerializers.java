@@ -63,9 +63,7 @@ public class TFCRecipeSerializers
     public static final RegistryObject<SimpleRecipeSerializer<FoodCombiningCraftingRecipe>> FOOD_COMBINING_CRAFTING = register("food_combining", () -> new SimpleRecipeSerializer<>(FoodCombiningCraftingRecipe::new));
     public static final RegistryObject<SimpleRecipeSerializer<CastingCraftingRecipe>> CASTING_CRAFTING = register("casting_crafting", () -> new SimpleRecipeSerializer<>(CastingCraftingRecipe::new));
     public static final RegistryObject<AdvancedShapedRecipe.Serializer> ADVANCED_SHAPED_CRAFTING = register("advanced_shaped_crafting", AdvancedShapedRecipe.Serializer::new);
-    public static final RegistryObject<AdvancedShapelessRecipe.AdvancedSerializer<AdvancedShapelessRecipe>> ADVANCED_SHAPELESS_CRAFTING = register("advanced_shapeless_crafting", () -> new AdvancedShapelessRecipe.AdvancedSerializer<>(AdvancedShapelessRecipe::new));
-    public static final RegistryObject<AdvancedShapelessRecipe.AdvancedSerializer<AddBaitRecipe>> ADD_BAIT_CRAFTING = register("add_bait_crafting", () -> new AdvancedShapelessRecipe.AdvancedSerializer<>(AddBaitRecipe::new));
-
+    public static final RegistryObject<AdvancedShapelessRecipe.Serializer> ADVANCED_SHAPELESS_CRAFTING = register("advanced_shapeless_crafting", AdvancedShapelessRecipe.Serializer::new);
 
     private static <S extends RecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
     {

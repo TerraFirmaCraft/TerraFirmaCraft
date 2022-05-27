@@ -106,13 +106,13 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
             }
 
             // Draw step icons
+            final ForgeStep[] stepSequence = {steps.last(), steps.secondLast(), steps.thirdLast()};
             for (int i = 0; i < 3; i++)
             {
-                final ForgeStep step = steps.getStep(i);
+                final ForgeStep step = stepSequence[i];
                 if (step != null)
                 {
-                    // Reverses the placement of the steps to line up better with the rules
-                    final int xOffset = (2 - i) * 19;
+                    final int xOffset = i * 19;
                     blit(poseStack, guiLeft + 64 + xOffset, guiTop + 31, 10, 10, step.iconX(), step.iconY(), 32, 32, 256, 256);
                 }
             }

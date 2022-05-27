@@ -36,7 +36,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
 
     public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, Ingredient primaryIngredient)
     {
-        super(id, group, result.getStack(ItemStack.EMPTY), ingredients);
+        super(id, group, result.getEmptyStack(), ingredients);
         this.result = result;
         this.primaryIngredient = primaryIngredient;
     }
@@ -50,9 +50,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public ItemStack assemble(CraftingContainer inv)
     {
-        ItemStack seed = getSeed(inv).copy();
-        seed.setCount(1);
-        return result.getStack(seed);
+        return result.getSingleStack(getSeed(inv).copy());
     }
 
     private ItemStack getSeed(CraftingContainer inv)
@@ -74,16 +72,10 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
         return TFCRecipeSerializers.ADVANCED_SHAPELESS_CRAFTING.get();
     }
 
-    public static class AdvancedSerializer<T extends AdvancedShapelessRecipe> extends RecipeSerializerImpl<T>
+    public static class Serializer extends RecipeSerializerImpl<AdvancedShapelessRecipe>
     {
-        private final Function5<ResourceLocation, String, ItemStackProvider, NonNullList<Ingredient>, Ingredient, T> factory;
-        public AdvancedSerializer(Function5<ResourceLocation, String, ItemStackProvider, NonNullList<Ingredient>, Ingredient, T> factory)
-        {
-            this.factory = factory;
-        }
-
         @Override
-        public T fromJson(ResourceLocation id, JsonObject json)
+        public AdvancedShapelessRecipe fromJson(ResourceLocation id, JsonObject json)
         {
             final String group = JsonHelpers.getAsString(json, "group", "");
             final NonNullList<Ingredient> ingredients = RecipeHelpers.itemsFromJson(JsonHelpers.getAsJsonArray(json, "ingredients"));
@@ -93,12 +85,12 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
             }
             final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
             final Ingredient primaryIngredient = Ingredient.fromJson(json.get("primary_ingredient"));
-            return factory.apply(id, group, result, ingredients, primaryIngredient);
+            return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
         }
 
         @Nullable
         @Override
-        public T fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
+        public AdvancedShapelessRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
         {
             final String group = buffer.readUtf();
             final int size = buffer.readVarInt();
@@ -109,11 +101,11 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
             }
             final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
             final Ingredient primaryIngredient = Ingredient.fromNetwork(buffer);
-            return factory.apply(id, group, result, ingredients, primaryIngredient);
+            return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, T recipe)
+        public void toNetwork(FriendlyByteBuf buffer, AdvancedShapelessRecipe recipe)
         {
             buffer.writeUtf(recipe.getGroup());
             buffer.writeVarInt(recipe.getIngredients().size());

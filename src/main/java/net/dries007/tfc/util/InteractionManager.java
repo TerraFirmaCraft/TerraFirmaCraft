@@ -37,8 +37,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -46,7 +46,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
-import net.dries007.tfc.common.container.TFCMenuProviders;
+import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -301,10 +301,10 @@ public final class InteractionManager
         }
 
         // Knapping
-        register(TFCTags.Items.CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCMenuProviders.CLAY_KNAPPING));
-        register(TFCTags.Items.FIRE_CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCMenuProviders.FIRE_CLAY_KNAPPING));
-        register(TFCTags.Items.LEATHER_KNAPPING, true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCMenuProviders.LEATHER_KNAPPING));
-        register(TFCTags.Items.ROCK_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCMenuProviders.ROCK_KNAPPING));
+        register(TFCTags.Items.CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
+        register(TFCTags.Items.FIRE_CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
+        register(TFCTags.Items.LEATHER_KNAPPING, true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
+        register(TFCTags.Items.ROCK_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING));
     }
 
     /**

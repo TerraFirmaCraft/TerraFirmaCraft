@@ -73,7 +73,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
 
             // Output items
             // All output items, and then remaining input items, get inserted into the output overflow
-            final ItemStack outputItem = this.outputItem.getStack(stack);
+            final ItemStack outputItem = this.outputItem.getSingleStack(stack);
             if (!outputItem.isEmpty())
             {
                 Helpers.consumeInStackSizeIncrements(outputItem, multiplier * outputItem.getCount(), inventory::insertItemWithOverflow);
@@ -118,7 +118,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
     @Override
     public ItemStack getResultItem()
     {
-        return outputItem.getStack(ItemStack.EMPTY);
+        return outputItem.getEmptyStack();
     }
 
     @Override

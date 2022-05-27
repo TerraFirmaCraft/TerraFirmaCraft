@@ -102,11 +102,11 @@ public enum ForgeRule
     {
         return switch (order)
             {
-                case ANY -> matches(steps.getStep(2)) || matches(steps.getStep(1)) || matches(steps.getStep(0));
-                case NOT_LAST -> matches(steps.getStep(1)) || matches(steps.getStep(0));
-                case LAST -> matches(steps.getStep(2));
-                case SECOND_LAST -> matches(steps.getStep(1));
-                case THIRD_LAST -> matches(steps.getStep(0));
+                case ANY -> matches(steps.last()) || matches(steps.secondLast()) || matches(steps.thirdLast());
+                case NOT_LAST -> matches(steps.secondLast()) || matches(steps.thirdLast());
+                case LAST -> matches(steps.last());
+                case SECOND_LAST -> matches(steps.secondLast());
+                case THIRD_LAST -> matches(steps.thirdLast());
             };
     }
 

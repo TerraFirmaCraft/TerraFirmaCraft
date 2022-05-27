@@ -23,7 +23,7 @@ public class FirepitContainer extends BlockEntityContainer<FirepitBlockEntity>
 
     private FirepitContainer(FirepitBlockEntity tile, int windowId)
     {
-        super(TFCMenuTypes.FIREPIT.get(), windowId, tile);
+        super(TFCContainerTypes.FIREPIT.get(), windowId, tile);
 
         addDataSlots(tile.getSyncableData());
     }

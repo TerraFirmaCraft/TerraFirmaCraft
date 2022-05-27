@@ -96,6 +96,33 @@ public record ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
         }
     }
 
+    /**
+     * Gets the output stack for this provider, for the given input stack, assuming the input is a single item.
+     *
+     * @param input The input stack. <strong>Important:</strong> the input stack will be treated as if it has count = 1.
+     * @return A new stack, independent of the input stack size.
+     */
+    public ItemStack getSingleStack(ItemStack input)
+    {
+        return getStack(Helpers.copyWithSize(input, 1));
+    }
+
+    /**
+     * Gets the output stack from this provider, without taking into consideration the input
+     *
+     * @return A new stack, possibly invalid if the provider is dependent on the input stack.
+     */
+    public ItemStack getEmptyStack()
+    {
+        return getStack(ItemStack.EMPTY);
+    }
+
+    /**
+     * Gets the output stack from this provider, for the given input stack.
+     *
+     * @param input The input stack. <strong>Important:</strong> The input stack will be treated as an entire stack, including count, and the returned stack may be the same count as the input due to the presence of {@link CopyInputModifier}s. If this behavior is not desired, use {@link #getSingleStack(ItemStack)}.
+     * @return A new stack, possibly dependent on the input stack size.
+     */
     public ItemStack getStack(ItemStack input)
     {
         ItemStack output = stack.copy();
