@@ -2,6 +2,7 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 from enum import Enum
+from typing import Union
 
 from mcresources import ResourceManager, RecipeContext, utils
 from mcresources.type_definitions import ResourceIdentifier, Json
@@ -863,7 +864,7 @@ def rock_knapping(rm: ResourceManager, name, pattern: List[str], result: utils.R
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[str | Json] = None, result_fluid: Optional[str] = None) -> RecipeContext:
+def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None) -> RecipeContext:
     result_item = item_stack_provider(result_item) if isinstance(result_item, str) else result_item
     result_fluid = None if result_fluid is None else fluid_stack(result_fluid)
     return rm.recipe(('heating', name_parts), 'tfc:heating', {
