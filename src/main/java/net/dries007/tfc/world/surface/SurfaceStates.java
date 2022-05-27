@@ -30,12 +30,14 @@ public class SurfaceStates
     public static final SurfaceState TOP_SOIL = new SoilSurfaceState(SoilBlockType.GRASS);
     public static final SurfaceState MID_SOIL = new SoilSurfaceState(SoilBlockType.DIRT);
     public static final SurfaceState LOW_SOIL = new DeepSoilSurfaceState();
+    public static final SurfaceState MUD = new SoilSurfaceState(SoilBlockType.MUD);
 
     public static final SurfaceState TOP_UNDERWATER = new UnderwaterSurfaceState(false);
     public static final SurfaceState LOW_UNDERWATER = new UnderwaterSurfaceState(true);
 
     public static final SurfaceState SHORE_SAND = context -> context.getBottomRock().sand().defaultBlockState();
     public static final SurfaceState SHORE_SANDSTONE = context -> context.getBottomRock().sandstone().defaultBlockState();
+    public static final SurfaceState SHORE_MUD = context -> TFCBlocks.SOIL.get(SoilBlockType.MUD).get(SoilBlockType.Variant.SANDY_LOAM).get().defaultBlockState();
 
     public static final SurfaceState RARE_SHORE_SAND = new SurfaceState()
     {

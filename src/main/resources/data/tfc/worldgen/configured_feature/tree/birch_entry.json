@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/birch",
+    "dead_tree": "tfc:tree/birch_dead",
     "fallen_log": "tfc:wood/log/birch",
     "bush_log": {
       "Name": "tfc:wood/wood/birch",

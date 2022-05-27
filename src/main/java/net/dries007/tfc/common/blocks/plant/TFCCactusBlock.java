@@ -52,7 +52,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         {
             if (state.getBlock() != this)
             {
-                return Helpers.isBlock(blockstate, BlockTags.SAND); //calling super here is stupid it does nothing lets just check tags
+                return Helpers.isBlock(blockstate, BlockTags.SAND);
             }
             return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
         }

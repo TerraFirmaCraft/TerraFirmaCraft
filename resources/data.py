@@ -167,6 +167,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('holds_small_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal, data in METALS.items() if 'tool' in data.types])
     rm.item_tag('holds_large_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal in ('wrought_iron', 'red_steel', 'blue_steel', 'black_steel', 'steel')])
     rm.item_tag('forge:string', 'tfc:wool_yarn')
+    rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -246,11 +247,13 @@ def generate(rm: ResourceManager):
     # BLOCK TAGS
     # ==========
 
-    rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass')
+    rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', *['tfc:grass_path/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:farmland/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:farmland')
+    block_and_item_tag(rm, 'mud', *['tfc:mud/%s' % v for v in SOIL_BLOCK_VARIANTS])
+    rm.block_tag('grass_plantable_on', '#tfc:bush_plantable_on', 'tfc:peat', '#tfc:mud')
     rm.block_tag('small_spike', 'tfc:calcite')
-    rm.block_tag('sea_bush_plantable_on', '#minecraft:dirt', '#minecraft:sand', '#forge:gravel')
+    rm.block_tag('sea_bush_plantable_on', '#minecraft:dirt', '#minecraft:sand', '#forge:gravel', '#tfc:mud')
     rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld', '#minecraft:logs')
     rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
     rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
@@ -275,6 +278,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')
+    rm.block_tag('powder_snow_replaceable', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', 'minecraft:snow')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
@@ -350,7 +354,8 @@ def generate(rm: ResourceManager):
     for sand in SAND_BLOCK_TYPES:
         rm.block_tag('can_carve', 'tfc:sand/%s' % sand, 'tfc:raw_sandstone/%s' % sand)
     for soil in SOIL_BLOCK_VARIANTS:
-        rm.block_tag('can_carve', 'tfc:dirt/%s' % soil, 'tfc:grass/%s' % soil)
+        rm.block_tag('can_carve', 'tfc:dirt/%s' % soil, 'tfc:grass/%s' % soil, 'tfc:mud/%s' % soil, 'tfc:rooted_dirt/%s' % soil)
+    rm.block_tag('can_carve', 'minecraft:powder_snow')
 
     # Soil / Standard blocks are toughness 0 - dirt destroys charcoal
     rm.block_tag('toughness_1', 'tfc:charcoal_pile', 'tfc:charcoal_forge')  # Charcoal is toughness 1 - resistant against destruction from soil

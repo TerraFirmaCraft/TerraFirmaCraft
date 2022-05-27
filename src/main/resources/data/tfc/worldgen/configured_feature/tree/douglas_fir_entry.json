@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/douglas_fir",
+    "dead_tree": "tfc:tree/douglas_fir_dead",
     "fallen_log": "tfc:wood/log/douglas_fir",
     "bush_log": {
       "Name": "tfc:wood/wood/douglas_fir",

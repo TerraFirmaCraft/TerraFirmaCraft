@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/blackwood",
+    "dead_tree": "tfc:tree/blackwood_dead",
     "fallen_log": "tfc:wood/log/blackwood",
     "bush_log": {
       "Name": "tfc:wood/wood/blackwood",

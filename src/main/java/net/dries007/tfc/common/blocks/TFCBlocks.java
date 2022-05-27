@@ -79,12 +79,18 @@ public final class TFCBlocks
 
     public static final Map<SoilBlockType, Map<SoilBlockType.Variant, RegistryObject<Block>>> SOIL = Helpers.mapOfKeys(SoilBlockType.class, type ->
         Helpers.mapOfKeys(SoilBlockType.Variant.class, variant ->
-            register((type.name() + "/" + variant.name()), () -> type.create(variant), EARTH)
+            register((type.name() + "/" + variant.name()), () -> type.create(variant), type == SoilBlockType.MUD_BRICKS ? DECORATIONS : EARTH)
         )
     );
 
-    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).strength(0.6F).sound(TFCSounds.PEAT)), EARTH);
-    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(TFCSounds.PEAT), PEAT, null, null), EARTH);
+    public static final Map<SoilBlockType.Variant, DecorationBlockRegistryObject> MUD_BRICK_DECORATIONS = Helpers.mapOfKeys(SoilBlockType.Variant.class, variant -> new DecorationBlockRegistryObject(
+        register(("mud_bricks/" + variant.name() + "_slab"), () -> new SlabBlock(SoilBlockType.mudProperties()), DECORATIONS),
+        register(("mud_bricks/" + variant.name() + "_stairs"), () -> new StairBlock(() -> SOIL.get(SoilBlockType.MUD_BRICKS).get(variant).get().defaultBlockState(), SoilBlockType.mudProperties()), DECORATIONS),
+        register(("mud_bricks/" + variant.name() + "_wall"), () -> new WallBlock(SoilBlockType.mudProperties()), DECORATIONS)
+    ));
+
+    public static final RegistryObject<Block> PEAT = register("peat", () -> new Block(Properties.of(Material.DIRT, MaterialColor.TERRACOTTA_BLACK).strength(3.0F).sound(TFCSounds.PEAT)), EARTH);
+    public static final RegistryObject<Block> PEAT_GRASS = register("peat_grass", () -> new ConnectedGrassBlock(Properties.of(Material.GRASS).randomTicks().strength(3.0F).sound(TFCSounds.PEAT), PEAT, null, null), EARTH);
 
     public static final Map<SandBlockType, RegistryObject<Block>> SAND = Helpers.mapOfKeys(SandBlockType.class, type ->
         register(("sand/" + type.name()), type::create, EARTH)
@@ -92,15 +98,15 @@ public final class TFCBlocks
 
     public static final Map<SandBlockType, Map<SandstoneBlockType, RegistryObject<Block>>> SANDSTONE = Helpers.mapOfKeys(SandBlockType.class, color ->
         Helpers.mapOfKeys(SandstoneBlockType.class, type ->
-            register((type.name() + "_sandstone/" + color.name()), () -> new Block(type.properties(color)), EARTH)
+            register((type.name() + "_sandstone/" + color.name()), () -> new Block(type.properties(color)), DECORATIONS)
         )
     );
 
     public static final Map<SandBlockType, Map<SandstoneBlockType, DecorationBlockRegistryObject>> SANDSTONE_DECORATIONS = Helpers.mapOfKeys(SandBlockType.class, color ->
         Helpers.mapOfKeys(SandstoneBlockType.class, type -> new DecorationBlockRegistryObject(
-            register((type.name() + "_sandstone/" + color.name() + "_slab"), () -> new SlabBlock(type.properties(color)), EARTH),
-            register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairBlock(() -> SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color)), EARTH),
-            register((type.name() + "_sandstone/" + color.name() + "_wall"), () -> new WallBlock(type.properties(color)), EARTH)
+            register((type.name() + "_sandstone/" + color.name() + "_slab"), () -> new SlabBlock(type.properties(color)), DECORATIONS),
+            register((type.name() + "_sandstone/" + color.name() + "_stairs"), () -> new StairBlock(() -> SANDSTONE.get(color).get(type).get().defaultBlockState(), type.properties(color)), DECORATIONS),
+            register((type.name() + "_sandstone/" + color.name() + "_wall"), () -> new WallBlock(type.properties(color)), DECORATIONS)
         ))
     );
 

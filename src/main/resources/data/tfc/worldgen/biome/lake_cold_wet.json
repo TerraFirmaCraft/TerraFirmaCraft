@@ -32,6 +32,7 @@
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc",
+      "tfc:peat_disc_in_mud",
       "tfc:powder_snow"
     ],
     [
@@ -48,6 +49,7 @@
     ],
     [
       "tfc:surface_loose_rocks",
+      "tfc:plant/dry_phragmite",
       "tfc:land_plants"
     ],
     [

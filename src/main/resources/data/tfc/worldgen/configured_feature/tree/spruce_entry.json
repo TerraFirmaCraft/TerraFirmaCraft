@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/spruce",
+    "dead_tree": "tfc:tree/spruce_dead",
     "fallen_log": "tfc:wood/log/spruce",
     "bush_log": {
       "Name": "tfc:wood/wood/spruce",

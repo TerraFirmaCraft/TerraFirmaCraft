@@ -18,6 +18,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 
 public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
 {
@@ -40,6 +42,10 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
         final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);
         final ResourceLocation structureId = config.structureNames().get(random.nextInt(config.structureNames().size()));
         final StructureTemplate structure = manager.getOrCreate(structureId);
+        if (((StructureTemplateAccessor) structure).accessor$getPalettes().isEmpty())
+        {
+            throw new IllegalStateException("Empty structure: " + structureId);
+        }
 
         if (TreeHelpers.isValidLocation(level, pos, settings, config.placement()))
         {

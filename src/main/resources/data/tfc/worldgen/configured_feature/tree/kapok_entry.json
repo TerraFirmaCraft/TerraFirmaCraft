@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/kapok",
+    "dead_tree": "tfc:tree/kapok_dead",
     "fallen_log": "tfc:wood/log/kapok",
     "bush_log": {
       "Name": "tfc:wood/wood/kapok",

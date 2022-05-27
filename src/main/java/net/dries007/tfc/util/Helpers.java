@@ -1038,6 +1038,11 @@ public final class Helpers
         return checkTag(ForgeRegistries.FLUIDS, first, second);
     }
 
+    public static boolean isFluid(FluidState first, Fluid second)
+    {
+        return first.is(second);
+    }
+
     public static boolean isEntity(Entity entity, TagKey<EntityType<?>> tag)
     {
         return checkTag(ForgeRegistries.ENTITIES, entity.getType(), tag);

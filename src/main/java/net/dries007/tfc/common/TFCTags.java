@@ -30,6 +30,7 @@ public class TFCTags
         public static final TagKey<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final TagKey<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
         public static final TagKey<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
+        public static final TagKey<Block> GRASS_PLANTABLE_ON = create("grass_plantable_on"); // Grass has a slightly expanded placing allowance
         public static final TagKey<Block> PLANTS = create("plants"); // for some decoration placement
         public static final TagKey<Block> SINGLE_BLOCK_REPLACEABLE = create("single_block_replaceable"); // blocks that features can safely destroy
         public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
@@ -76,6 +77,7 @@ public class TFCTags
         public static final TagKey<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final TagKey<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
+        public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
         public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
         public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
 
