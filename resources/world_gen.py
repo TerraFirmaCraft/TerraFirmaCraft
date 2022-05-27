@@ -605,7 +605,7 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'silver_spurflower'), plant_config('tfc:plant/silver_spurflower[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(14, 24, 230, 400, min_forest='sparse', max_forest='edge'))
     configured_plant_patch_feature(rm, ('plant', 'desert_flame'), plant_config('tfc:plant/desert_flame[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(0, 20, 40, 170, min_forest='none', max_forest='sparse'))
     configured_plant_patch_feature(rm, ('plant', 'anthurium'), plant_config('tfc:plant/anthurium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(12, 40, 290, 500))
-    configured_plant_patch_feature(rm, ('plant', 'reindeer_lichen'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 6), decorate_chance(15), decorate_square(), decorate_climate(10, 33, 50, 470))
+    configured_plant_patch_feature(rm, ('plant', 'reindeer_lichen'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 6), decorate_chance(15), decorate_square(), decorate_climate(-24, -8, 50, 470))
     configured_plant_patch_feature(rm, ('plant', 'moss'), plant_config('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 6), decorate_chance(15), decorate_square(), decorate_climate(-7, 30, 250, 450))
     configured_plant_patch_feature(rm, ('plant', 'morning_glory'), plant_config('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 6), decorate_chance(15), decorate_square(), decorate_climate(-11, 19, 300, 500))
 
@@ -637,7 +637,7 @@ def generate(rm: ResourceManager):
     # Covers
     configured_noise_plant_feature(rm, ('plant', 'moss_cover'), plant_config('tfc:plant/moss[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(18, 35, 340, 500, True, fuzzy=True), decorate_square(), water=False)
     configured_noise_plant_feature(rm, ('plant', 'morning_glory_cover'), plant_config('tfc:plant/morning_glory[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(9, 13, 160, 230, True, fuzzy=True), decorate_square(), water=False)
-    configured_noise_plant_feature(rm, ('plant', 'reindeer_lichen_cover'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-6, 2, 220, 310, True, fuzzy=True), decorate_square(), water=False)
+    configured_noise_plant_feature(rm, ('plant', 'reindeer_lichen_cover'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-20, -10, 220, 310, True, fuzzy=True), decorate_square(), water=False)
 
     # Clay Indicator Plants
     # These piggy back on the clay disc feature, and so have limited decorators

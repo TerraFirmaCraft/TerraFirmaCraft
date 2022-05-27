@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -210,9 +211,19 @@ public enum Plant implements IPlant
         return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
     }
 
+    public boolean isFoliage()
+    {
+        return type == BlockType.WEEPING || type == BlockType.WEEPING_TOP || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING || type == BlockType.WATER_FRESH || type == BlockType.GRASS_WATER_FRESH || type == BlockType.GRASS_WATER;
+    }
+
     public boolean isSeasonal()
     {
         return type == BlockType.VINE;
+    }
+
+    public boolean isTallGrass()
+    {
+        return type == BlockType.TALL_GRASS || type == BlockType.SHORT_GRASS;
     }
 
     public boolean isItemTinted()

@@ -421,7 +421,7 @@ PLANTS: Dict[str, Plant] = {
     'primrose': Plant(False, -8, 10, 150, 300, 'standard'),
     'pulsatilla': Plant(False, -10, 2, 50, 200, 'standard'),
     'red_sealing_wax_palm': Plant(False, 18, 40, 280, 500, 'tall_plant'),
-    'reindeer_lichen': Plant(False, 10, 33, 50, 470, 'creeping'),
+    'reindeer_lichen': Plant(False, -24, -8, 50, 470, 'creeping'),
     'rose': Plant(True, -5, 20, 150, 300, 'tall_plant'),
     'sacred_datura': Plant(False, 4, 18, 75, 150, 'standard'),
     'sagebrush': Plant(False, -10, 14, 0, 120, 'dry'),
