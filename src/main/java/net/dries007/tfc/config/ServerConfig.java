@@ -68,6 +68,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue bloomeryMaxChimneyHeight;
     // Blocks - Blast Furnace
     public final ForgeConfigSpec.IntValue blastFurnaceCapacity;
+    public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
     public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
     public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
     // Items - Small Vessel
@@ -253,6 +254,7 @@ public class ServerConfig
         innerBuilder.pop().push("blastFurnace");
 
         blastFurnaceCapacity = builder.apply("blastFurnaceCapacity").comment("Inventory capacity (in number of items per level of chimney) of the blast furnace.").defineInRange("blastFurnaceCapacity", 4, 1, Integer.MAX_VALUE);
+        blastFurnaceFluidCapacity = builder.apply("blastFurnaceFluidCapacity").comment("Fluid capacity (in mB) of the output tank of the blast furnace.").defineInRange("blastFurnaceCapacity", 10000, 1, Integer.MAX_VALUE);
         blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
         blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
 

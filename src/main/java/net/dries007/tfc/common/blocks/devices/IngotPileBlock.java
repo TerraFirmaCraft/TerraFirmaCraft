@@ -64,7 +64,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     {
         if (direction == Direction.DOWN && !neighborState.isFaceSturdy(level, neighborPos, direction.getOpposite()) && !Helpers.isBlock(neighborState, this))
         {
-            level.scheduleTick(currentPos, this, 0);
+            level.scheduleTick(currentPos, this, 1);
         }
         return state;
     }

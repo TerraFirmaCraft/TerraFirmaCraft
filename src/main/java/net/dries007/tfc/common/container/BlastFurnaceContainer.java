@@ -19,9 +19,11 @@ public class BlastFurnaceContainer extends BlockEntityContainer<BlastFurnaceBloc
         return new BlastFurnaceContainer(windowId, blastFurnace).init(playerInventory, 20);
     }
 
-    private BlastFurnaceContainer(int windowId, BlastFurnaceBlockEntity blockEntity)
+    private BlastFurnaceContainer(int windowId, BlastFurnaceBlockEntity blastFurnace)
     {
-        super(TFCContainerTypes.BLAST_FURNACE.get(), windowId, blockEntity);
+        super(TFCContainerTypes.BLAST_FURNACE.get(), windowId, blastFurnace);
+
+        addDataSlots(blastFurnace.getSyncedData());
     }
 
     @Override
@@ -38,7 +40,7 @@ public class BlastFurnaceContainer extends BlockEntityContainer<BlastFurnaceBloc
     protected void addContainerSlots()
     {
         blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            addSlot(new CallbackSlot(blockEntity, handler, 0, 0, 0)); // todo: slot x, y
+            addSlot(new CallbackSlot(blockEntity, handler, 0, 152, 17));
         });
     }
 }

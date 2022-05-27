@@ -96,7 +96,6 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         AlloyView alloy = blockEntity.getAlloy();
         if (alloy.getAmount() > 0)
         {
-
             final TextureAtlasSprite sprite = getAndBindFluidSprite(alloy.getResultAsFluidStack());
             final int startY = 93;
             final int endY = 124;

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -21,27 +22,39 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.MoltenBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
+import net.dries007.tfc.common.capabilities.PartialFluidHandler;
+import net.dries007.tfc.common.capabilities.SidedHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.container.BlastFurnaceContainer;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -117,6 +130,15 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
         if (entity.airTicks > 0)
         {
+            if (entity.airTicks % 10 == 0)
+            {
+                // Damage Tuyere every half second of use while consuming bellows air
+                final ItemStack tuyere = entity.inventory.getStackInSlot(0);
+                if (!tuyere.isEmpty())
+                {
+                    Helpers.damageItem(tuyere, 1);
+                }
+            }
             entity.airTicks--;
         }
 
@@ -125,19 +147,11 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         {
             entity.temperature = HeatCapability.adjustDeviceTemp(entity.temperature, entity.burnTemperature, entity.airTicks, false);
 
-            // Provide heat to blocks below
-            final BlockEntity below = level.getBlockEntity(pos.below());
-            if (below != null)
-            {
-                below.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(entity.temperature));
-            }
-
             // Ensures that cached recipes are cached properly and 1-1 with input stacks
             // This way we can iterate and remove pairwise
             entity.ensureCachedRecipesAreAligned();
 
             final List<FluidStack> newInputFluids = new ArrayList<>();
-
             final Iterator<ItemStack> inputIterator = entity.inputStacks.iterator();
             final Iterator<HeatingRecipe> recipeIterator = entity.inputCachedRecipes.iterator();
             while (inputIterator.hasNext())
@@ -183,12 +197,29 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                     final FluidStack newOutputFluid = recipe.assembleFluidOutput(entity.inputFluid);
 
                     // And merge into the output fluid stack
-                    entity.insertOrReplaceOutputFluid(newOutputFluid);
+                    entity.outputFluidTank.fill(newOutputFluid, IFluidHandler.FluidAction.EXECUTE);
                 }
             }
 
             entity.markForSync();
         }
+
+        if (!entity.outputFluidTank.isEmpty())
+        {
+            // If we have output fluid, then try and transfer some, including heat, to the block below
+            final BlockEntity below = level.getBlockEntity(pos.below());
+            if (below != null)
+            {
+                final IFluidHandler belowFluidHandler = below.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).resolve().orElse(null);
+                if (belowFluidHandler != null && FluidHelpers.transferExact(entity.outputFluidTank, belowFluidHandler, 1))
+                {
+                    // And try and transfer heat
+                    below.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(entity.temperature));
+                }
+            }
+        }
+
+        entity.setChanged();
     }
 
     private final List<ItemStack> inputStacks; // Input items, that match any input to a blast furnace recipe
@@ -196,8 +227,11 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private final List<ItemStack> catalystStacks; // Catalyst items, 1-1 with input items
     private final List<ItemStack> fuelStacks; // Fuel items, consumed sequentially
 
+    private final IntArrayBuilder syncedData;
+    private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
+
+    private final FluidTank outputFluidTank; // The output fluid, after converting from the input fluid. This is dripped into the container below, excess is voided.
     private FluidStack inputFluid; // The fluid, after melting from the input. This is immediately converted to output fluid, unless there isn't enough, in which case it is stored here as excess
-    private FluidStack outputFluid; // The output fluid, after converting from the input fluid. This is dripped into the container below, excess is voided.
 
     @Nullable private BlastFurnaceRecipe cachedRecipe;
 
@@ -206,6 +240,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private float burnTemperature; // Temperature provided from the current item of fuel
     private int airTicks; // Ticks of air provided by bellows
     private long lastPlayerTick; // Last player tick this device was ticked (for purposes of catching up)
+    private int lastKnownCapacity; // Last calculation of capacity (happens every 20 ticks), used by the gui
 
     public BlastFurnaceBlockEntity(BlockPos pos, BlockState state)
     {
@@ -217,7 +252,94 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         fuelStacks = new ArrayList<>();
 
         inputFluid = FluidStack.EMPTY;
-        outputFluid = FluidStack.EMPTY;
+        outputFluidTank = new FluidTank(TFCConfig.SERVER.blastFurnaceFluidCapacity.get());
+
+        syncedData = new IntArrayBuilder()
+            .add(() -> lastKnownCapacity, value -> lastKnownCapacity = value)
+            .add(() -> (int) temperature, value -> temperature = value);
+
+        sidedInventory
+            .on(inventory, side -> true); // Insert tuyere from all sides
+
+        sidedFluidInventory = new SidedHandler.Builder<IFluidHandler>(inventory)
+            .on(new PartialFluidHandler(inventory).extract(), side -> true); // Allow extracting fluid from all sides
+    }
+
+    public int getCapacity()
+    {
+        return lastKnownCapacity;
+    }
+
+    public int getInputCount()
+    {
+        return inputStacks.size();
+    }
+
+    public int getFuelCount()
+    {
+        return fuelStacks.size();
+    }
+
+    public float getTemperature()
+    {
+        return temperature;
+    }
+
+    public ContainerData getSyncedData()
+    {
+        return syncedData;
+    }
+
+    public boolean hasTuyere()
+    {
+        return !inventory.getStackInSlot(0).isEmpty();
+    }
+
+    public void intakeAir(int amount)
+    {
+        airTicks += amount;
+        if (airTicks > BellowsBlockEntity.MAX_DEVICE_AIR_TICKS)
+        {
+            airTicks = BellowsBlockEntity.MAX_DEVICE_AIR_TICKS;
+        }
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag nbt)
+    {
+        Helpers.readItemStacksFromNbt(inputStacks, nbt.getList("inputStacks", Tag.TAG_COMPOUND));
+        Helpers.readItemStacksFromNbt(catalystStacks, nbt.getList("catalystStacks", Tag.TAG_COMPOUND));
+        Helpers.readItemStacksFromNbt(fuelStacks, nbt.getList("fuelStacks", Tag.TAG_COMPOUND));
+
+        inputFluid = FluidStack.loadFluidStackFromNBT(nbt.getCompound("inputFluid"));
+        outputFluidTank.readFromNBT(nbt.getCompound("outputFluidTank"));
+
+        temperature = nbt.getFloat("temperature");
+        burnTicks = nbt.getInt("burnTicks");
+        airTicks = nbt.getInt("airTicks");
+        burnTemperature = nbt.getFloat("burnTemperature");
+        lastPlayerTick = nbt.getLong("lastPlayerTick");
+
+        super.loadAdditional(nbt);
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag nbt)
+    {
+        nbt.put("inputStacks", Helpers.writeItemStacksToNbt(inputStacks));
+        nbt.put("catalystStacks", Helpers.writeItemStacksToNbt(catalystStacks));
+        nbt.put("fuelStacks", Helpers.writeItemStacksToNbt(fuelStacks));
+
+        nbt.put("inputFluid", inputFluid.writeToNBT(new CompoundTag()));
+        nbt.put("outputFluidTank", outputFluidTank.writeToNBT(new CompoundTag()));
+
+        nbt.putFloat("temperature", temperature);
+        nbt.putInt("burnTicks", burnTicks);
+        nbt.putInt("airTicks", airTicks);
+        nbt.putFloat("burnTemperature", burnTemperature);
+        nbt.putLong("lastPlayerTick", lastPlayerTick);
+
+        super.saveAdditional(nbt);
     }
 
     @Override
@@ -249,16 +371,6 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     }
 
     @Override
-    public void loadAdditional(CompoundTag nbt)
-    {
-        Helpers.readItemStacksFromNbt(inputStacks, nbt.getList("inputStacks", Tag.TAG_COMPOUND));
-        Helpers.readItemStacksFromNbt(catalystStacks, nbt.getList("catalystStacks", Tag.TAG_COMPOUND));
-        Helpers.readItemStacksFromNbt(fuelStacks, nbt.getList("fuelStacks", Tag.TAG_COMPOUND));
-
-        super.loadAdditional(nbt);
-    }
-
-    @Override
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
@@ -276,14 +388,22 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         return Helpers.isItem(stack, TFCTags.Items.TUYERES);
     }
 
+    @NotNull
     @Override
-    public void saveAdditional(CompoundTag nbt)
+    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        nbt.put("inputStacks", Helpers.writeItemStacksToNbt(inputStacks));
-        nbt.put("catalystStacks", Helpers.writeItemStacksToNbt(catalystStacks));
-        nbt.put("fuelStacks", Helpers.writeItemStacksToNbt(fuelStacks));
+        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return sidedFluidInventory.getSidedHandler(side).cast();
+        }
+        return super.getCapability(cap, side);
+    }
 
-        super.saveAdditional(nbt);
+    @Override
+    public void invalidateCapabilities()
+    {
+        sidedInventory.invalidate();
+        sidedFluidInventory.invalidate();
     }
 
     @Override
@@ -309,11 +429,6 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private void insertOrReplaceInputFluid(FluidStack newFluid)
     {
         inputFluid = insertOrReplaceFluid(newFluid, inputFluid);
-    }
-
-    private void insertOrReplaceOutputFluid(FluidStack newFluid)
-    {
-        outputFluid = insertOrReplaceFluid(newFluid, outputFluid);
     }
 
     private FluidStack insertOrReplaceFluid(FluidStack newFluid, FluidStack currentFluid)
@@ -499,7 +614,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private int calculateCapacity()
     {
         assert level != null;
-        return BlastFurnaceBlock.getChimneyLevels(level, worldPosition) * TFCConfig.SERVER.blastFurnaceCapacity.get();
+        return lastKnownCapacity = BlastFurnaceBlock.getChimneyLevels(level, worldPosition) * TFCConfig.SERVER.blastFurnaceCapacity.get();
     }
 
     private void updateCachedRecipe()
@@ -515,7 +630,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
     }
 
-    static class BlastFurnaceInventory extends ItemStackHandler implements BlastFurnaceRecipe.Inventory
+    static class BlastFurnaceInventory extends ItemStackHandler implements BlastFurnaceRecipe.Inventory, DelegateFluidHandler
     {
         private final BlastFurnaceBlockEntity blastFurnace;
 
@@ -536,6 +651,12 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         public ItemStack getCatalyst()
         {
             return blastFurnace.catalystStacks.isEmpty() ? ItemStack.EMPTY : blastFurnace.catalystStacks.get(0);
+        }
+
+        @Override
+        public IFluidHandler getFluidHandler()
+        {
+            return blastFurnace.outputFluidTank;
         }
     }
 }

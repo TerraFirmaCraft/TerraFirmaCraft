@@ -28,6 +28,10 @@ import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
 
 public class BellowsBlockEntity extends TFCBlockEntity
 {
+    // Constants used for all TFC bellows related devices
+    public static final int BELLOWS_AIR = 200;
+    public static final int MAX_DEVICE_AIR_TICKS = 600;
+
     public static void tickBoth(Level level, BlockPos pos, BlockState state, BellowsBlockEntity bellows)
     {
         if (level.getGameTime() - bellows.lastPushed > 20 || !(state.getBlock() instanceof BellowsBlock))
@@ -49,7 +53,6 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
         }
     }
-    private static final int BELLOWS_AIR = 200;
 
     private long lastPushed = 0L;
 

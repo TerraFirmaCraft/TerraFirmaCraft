@@ -42,12 +42,13 @@ import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
+public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -145,6 +146,12 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
     public float alpha()
     {
         return 0.33F;
+    }
+
+    @Override
+    public void intakeAir(Level level, BlockPos pos, BlockState state, int amount)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.intakeAir(amount));
     }
 
     @Override

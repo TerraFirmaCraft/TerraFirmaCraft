@@ -216,7 +216,7 @@ public final class Helpers
         return null; // A modder has done a strange ass thing
     }
 
-    public static BlockHitResult rayTracePlayer(BlockGetter level, Player player, ClipContext.Fluid mode)
+    public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
     {
         return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
     }
@@ -353,6 +353,13 @@ public final class Helpers
     {
         final ItemStack copy = stack.copy();
         copy.setCount(size);
+        return copy;
+    }
+
+    public static FluidStack copyWithSize(FluidStack stack, int size)
+    {
+        final FluidStack copy = stack.copy();
+        copy.setAmount(size);
         return copy;
     }
 

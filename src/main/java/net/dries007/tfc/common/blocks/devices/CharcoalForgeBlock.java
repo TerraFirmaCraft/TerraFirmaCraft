@@ -118,7 +118,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     @Override
     public void intakeAir(Level level, BlockPos pos, BlockState state, int amount)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(forge -> forge.onAirIntake(amount));
+        level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(forge -> forge.intakeAir(amount));
     }
 
     @Override

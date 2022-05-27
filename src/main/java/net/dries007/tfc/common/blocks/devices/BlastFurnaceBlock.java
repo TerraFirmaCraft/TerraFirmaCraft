@@ -36,7 +36,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.MultiBlock;
 
-public class BlastFurnaceBlock extends DeviceBlock
+public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -128,6 +128,20 @@ public class BlastFurnaceBlock extends DeviceBlock
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    public boolean canAcceptAir(Level level, BlockPos pos, BlockState state)
+    {
+        return level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get())
+            .map(BlastFurnaceBlockEntity::hasTuyere)
+            .orElse(false);
+    }
+
+    @Override
+    public void intakeAir(Level level, BlockPos pos, BlockState state, int amount)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> blastFurnace.intakeAir(amount));
     }
 
     @Override
