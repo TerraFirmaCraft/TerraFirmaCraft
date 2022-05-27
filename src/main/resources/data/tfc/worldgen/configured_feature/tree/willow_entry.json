@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/willow",
+    "dead_tree": "tfc:tree/willow_dead",
     "fallen_tree_chance": 0,
     "bush_log": {
       "Name": "tfc:wood/wood/willow",

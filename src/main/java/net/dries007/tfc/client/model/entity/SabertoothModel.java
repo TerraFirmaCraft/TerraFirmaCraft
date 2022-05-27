@@ -145,6 +145,8 @@ public class SabertoothModel extends EntityModel<FelinePredator>
     private final ModelPart nose;
     private final ModelPart rear;
 
+    private float prevLimbSwing;
+
     public SabertoothModel(ModelPart root)
     {
         this.body = root.getChild("body");
@@ -172,6 +174,9 @@ public class SabertoothModel extends EntityModel<FelinePredator>
     {
         defaults.forEach(ModelPart::loadPose);
 
+        felinePredator.setLimbSwing(Math.min(Math.max((limbSwing-prevLimbSwing)*10F, 0.4F),1.4F));
+        prevLimbSwing = limbSwing;
+
         if (felinePredator.isSleeping())
         {
             body.y = 28f;
@@ -193,7 +198,7 @@ public class SabertoothModel extends EntityModel<FelinePredator>
             {
                 ATTACK.tick(parts, ageInTicks);
             }
-            else if (felinePredator.walkProgress > 0)
+            else if (felinePredator.walkProgress > 0 || felinePredator.isMoving())
             {
                 if (felinePredator.isAggressive())
                 {

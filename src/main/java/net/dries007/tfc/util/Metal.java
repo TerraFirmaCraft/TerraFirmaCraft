@@ -430,7 +430,7 @@ public final class Metal
         ROD(Type.PART, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         TUYERE(Type.TOOL, metal -> new TieredItem(metal.getToolTier(), new Item.Properties().tab(TFCItemGroup.METAL))),
         FISH_HOOK(Type.TOOL, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        FISHING_ROD(Type.TOOL, metal -> new TFCFishingRodItem(new Item.Properties().tab(TFCItemGroup.METAL).defaultDurability(metal.getToolTier().getUses()))),
+        FISHING_ROD(Type.TOOL, metal -> new TFCFishingRodItem(new Item.Properties().tab(TFCItemGroup.METAL).defaultDurability(metal.getToolTier().getUses()), metal.getToolTier())),
 
         // Tools and Tool Heads
         PICKAXE(Type.TOOL, metal -> new PickaxeItem(metal.getToolTier(), (int) ToolItem.calculateVanillaAttackDamage(0.75F, metal.getToolTier()), -2.8F, new Item.Properties().tab(TFCItemGroup.METAL))),

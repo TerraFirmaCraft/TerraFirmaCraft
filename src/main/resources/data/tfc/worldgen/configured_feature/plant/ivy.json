@@ -2,10 +2,15 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:vines",
   "config": {
-    "state": "tfc:plant/ivy",
-    "tries": 15,
-    "radius": 7,
-    "min_height": 96,
-    "max_height": 150
+    "state": {
+      "Name": "tfc:plant/ivy",
+      "Properties": {
+        "up": "false",
+        "north": "false",
+        "east": "false",
+        "south": "false",
+        "west": "false"
+      }
+    }
   }
 }

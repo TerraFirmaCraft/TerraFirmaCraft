@@ -21,7 +21,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomSource;
 
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.RockData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
@@ -30,7 +29,7 @@ import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
 public class SurfaceBuilderContext
 {
-    private final LevelAccessor world;
+    private final LevelAccessor level;
     private final ChunkAccess chunk;
     private final ChunkData chunkData;
     private final RockData rockData;
@@ -51,9 +50,9 @@ public class SurfaceBuilderContext
     private float rainfall;
     private boolean salty;
 
-    public SurfaceBuilderContext(LevelAccessor world, ChunkAccess chunk, ChunkData chunkData, RandomSource random, long seed, RockLayerSettings rockLayerSettings, int seaLevel, int minY)
+    public SurfaceBuilderContext(LevelAccessor level, ChunkAccess chunk, ChunkData chunkData, RandomSource random, long seed, RockLayerSettings rockLayerSettings, int seaLevel, int minY)
     {
-        this.world = world;
+        this.level = level;
         this.chunk = chunk;
         this.chunkData = chunkData;
         this.rockData = chunkData.getRockData();
@@ -160,7 +159,7 @@ public class SurfaceBuilderContext
 
     public LevelAccessor level()
     {
-        return world;
+        return level;
     }
 
     public ChunkAccess chunk()
@@ -186,6 +185,11 @@ public class SurfaceBuilderContext
     public int getSeaLevel()
     {
         return seaLevel;
+    }
+
+    public double getSlope()
+    {
+        return slope;
     }
 
     public boolean isDefaultBlock(BlockState state)

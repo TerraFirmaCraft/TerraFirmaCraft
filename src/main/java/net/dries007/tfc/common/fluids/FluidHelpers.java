@@ -197,6 +197,16 @@ public final class FluidHelpers
     }
 
     /**
+     * Any fluid block, given that it's an empty one.
+     */
+    public static boolean isAnEmptyFluid(BlockState state)
+    {
+        final FluidState fluid = state.getFluidState();
+        if (fluid.isEmpty()) return false;
+        return state.getBlock() == fluid.getType().defaultFluidState().createLegacyBlock().getBlock();
+    }
+
+    /**
      * Given a block state and a fluid, attempts to fill the block state with the fluid
      * Returns null if the provided combination cannot be filled
      *

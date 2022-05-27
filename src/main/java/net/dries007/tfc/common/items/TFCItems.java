@@ -124,6 +124,11 @@ public final class TFCItems
 
     // Decorations
 
+    public static final RegistryObject<Item> LOAM_MUD_BRICK = register("mud_brick/loam", DECORATIONS);
+    public static final RegistryObject<Item> SILTY_LOAM_MUD_BRICK = register("mud_brick/silty_loam", DECORATIONS);
+    public static final RegistryObject<Item> SANDY_LOAM_MUD_BRICK = register("mud_brick/sandy_loam", DECORATIONS);
+    public static final RegistryObject<Item> SILT_MUD_BRICK = register("mud_brick/silt", DECORATIONS);
+
     public static final RegistryObject<Item> ALABASTER_BRICK = register("alabaster_brick", DECORATIONS);
     public static final RegistryObject<Item> TORCH = register("torch", () -> new TorchItem(TFCBlocks.TORCH.get(), TFCBlocks.WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
     public static final RegistryObject<Item> TORCH_DEAD = register("dead_torch", () -> new StandingAndWallBlockItem(TFCBlocks.DEAD_TORCH.get(), TFCBlocks.DEAD_WALL_TORCH.get(), new Item.Properties().tab(DECORATIONS)));
@@ -166,7 +171,6 @@ public final class TFCItems
     public static final RegistryObject<Item> PURE_PHOSPHORUS = register("pure_phosphorus", MISC);
     public static final RegistryObject<Item> PURE_POTASSIUM = register("pure_potassium", MISC);
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
-    public static final RegistryObject<Item> SHELL = register("shell", MISC);
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);
     public static final RegistryObject<Item> SPINDLE = register("spindle", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(40)));
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);

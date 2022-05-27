@@ -30,6 +30,7 @@ public class TFCTags
         public static final TagKey<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final TagKey<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
         public static final TagKey<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
+        public static final TagKey<Block> GRASS_PLANTABLE_ON = create("grass_plantable_on"); // Grass has a slightly expanded placing allowance
         public static final TagKey<Block> PLANTS = create("plants"); // for some decoration placement
         public static final TagKey<Block> SINGLE_BLOCK_REPLACEABLE = create("single_block_replaceable"); // blocks that features can safely destroy
         public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
@@ -77,6 +78,7 @@ public class TFCTags
         public static final TagKey<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final TagKey<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
+        public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
         public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
         public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
 
@@ -143,6 +145,11 @@ public class TFCTags
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
+        public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
+        public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");
+        public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = create("holds_small_fishing_bait");
+        public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = create("holds_large_fishing_bait");
+        public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
         public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
         public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
 
@@ -158,6 +165,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
         public static final TagKey<EntityType<?>> DESTROYS_FLOATING_PLANTS = create("destroys_floating_plants");
         public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = create("bubble_column_immune");
+        public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = create("needs_large_fishing_bait");
 
         private static TagKey<EntityType<?>> create(String id)
         {

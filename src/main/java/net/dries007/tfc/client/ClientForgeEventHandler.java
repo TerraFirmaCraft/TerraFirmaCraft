@@ -38,6 +38,7 @@ import net.minecraft.world.level.ColorResolver;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FogType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -51,7 +52,6 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -66,6 +66,7 @@ import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
+import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
@@ -91,6 +92,8 @@ public class ClientForgeEventHandler
         field.setAccessible(true);
         return field;
     });
+
+    private static float waterFogLevel = 1f;
 
     public static void init()
     {
@@ -392,16 +395,39 @@ public class ClientForgeEventHandler
     public static void onFogRender(EntityViewRenderEvent.RenderFogEvent event)
     {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level != null && (event.getMode() == FogRenderer.FogMode.FOG_TERRAIN))
+        if (mc.level != null && event.getMode() == FogRenderer.FogMode.FOG_TERRAIN)
         {
-            final float fog = Climate.getFogginess(mc.level, event.getCamera().getBlockPosition());
-            if (fog == 0) return;
-            final float renderDistance = mc.gameRenderer.getRenderDistance();
-            final float density = renderDistance * (1 - fog);
+            FogType fluid = event.getCamera().getFluidInCamera();
+            BlockPos pos = event.getCamera().getBlockPosition();
+            if (fluid == FogType.NONE)
+            {
+                final float fog = Climate.getFogginess(mc.level, pos);
+                if (fog != 0)
+                {
+                    final float renderDistance = mc.gameRenderer.getRenderDistance();
+                    final float density = renderDistance * (1 - fog);
 
-            // let's just do this the same way MC does because the FogDensityEvent is crap
-            RenderSystem.setShaderFogStart(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
-            RenderSystem.setShaderFogEnd(density);
+                    // let's just do this the same way MC does because the FogDensityEvent is crap
+                    event.setNearPlaneDistance(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
+                    event.setFarPlaneDistance(density);
+                    event.setCanceled(true);
+                }
+            }
+            else if (fluid == FogType.WATER)
+            {
+                final float fog = Climate.getWaterFogginess(mc.level, pos);
+                if (fog != 1f)
+                {
+                    waterFogLevel = Mth.lerp(0.01f, waterFogLevel, fog);
+                    event.scaleFarPlaneDistance(waterFogLevel);
+                    event.setCanceled(true);
+                }
+                else
+                {
+                    waterFogLevel = 1f;
+                }
+            }
+
         }
     }
 

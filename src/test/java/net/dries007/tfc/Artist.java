@@ -366,8 +366,7 @@ public abstract class Artist<T, A extends Artist<T, A>>
                     sourceMinMax[0] = Math.min(sourceMinMax[0], value);
                     sourceMinMax[1] = Math.max(sourceMinMax[1], value);
                     return value;
-                })
-                .collect(Collectors.toList()).stream() // Block after min/max calculations
+                }).toList().stream() // Block after min/max calculations
                 .peek(loc -> {
                     if (histogram)
                     {

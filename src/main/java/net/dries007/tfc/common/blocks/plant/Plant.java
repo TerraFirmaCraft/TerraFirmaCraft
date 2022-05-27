@@ -53,6 +53,7 @@ public enum Plant implements IPlant
     SCUTCH_GRASS(BlockType.SHORT_GRASS, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
     STAR_GRASS(BlockType.GRASS_WATER, 0.9F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     TIMOTHY_GRASS(BlockType.SHORT_GRASS, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    RADDIA_GRASS(BlockType.SHORT_GRASS, 0.9F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
 
     // Other Plants
     ALLIUM(BlockType.STANDARD, 0.8F, new int[] {6, 6, 7, 0, 1, 1, 2, 2, 3, 4, 5, 6}),
@@ -145,6 +146,8 @@ public enum Plant implements IPlant
     TREE_FERN(BlockType.TWISTING_SOLID_TOP, 0F, null),
     ARUNDO_PLANT(BlockType.TWISTING, 0.3F, null),
     ARUNDO(BlockType.TWISTING_TOP, 0.3F, null),
+    DRY_PHRAGMITE_PLANT(BlockType.TWISTING, 0.3F, null),
+    DRY_PHRAGMITE(BlockType.TWISTING_TOP, 0.3F, null),
     WINGED_KELP_PLANT(BlockType.KELP, 0.7F, null),
     WINGED_KELP(BlockType.KELP_TOP, 0.7F, null),
     LEAFY_KELP_PLANT(BlockType.KELP, 0.7F, null),
@@ -240,6 +243,8 @@ public enum Plant implements IPlant
                 case LEAFY_KELP_PLANT -> LEAFY_KELP;
                 case ARUNDO -> ARUNDO_PLANT;
                 case ARUNDO_PLANT -> ARUNDO;
+                case DRY_PHRAGMITE -> DRY_PHRAGMITE_PLANT;
+                case DRY_PHRAGMITE_PLANT -> DRY_PHRAGMITE;
                 case LIANA -> LIANA_PLANT;
                 case LIANA_PLANT -> LIANA;
                 default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");

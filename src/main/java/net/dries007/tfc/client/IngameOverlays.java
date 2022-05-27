@@ -27,6 +27,7 @@ import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
+import net.dries007.tfc.common.entities.TFCFishingHook;
 import net.dries007.tfc.config.HealthDisplayStyle;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -49,6 +50,7 @@ public class IngameOverlays
     public static final IIngameOverlay INK = OverlayRegistry.registerOverlayTop(MOD_NAME + " Ink", IngameOverlays::renderInk);
 
     public static final IIngameOverlay CHISEL = OverlayRegistry.registerOverlayTop(MOD_NAME + " Chisel Mode", IngameOverlays::renderChiselMode);
+    public static final IIngameOverlay EXPERIENCE = OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, MOD_NAME + " EXPERIENCE", IngameOverlays::renderExperience);
 
     public static void reloadOverlays()
     {
@@ -60,6 +62,7 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, !enableHealth);
         OverlayRegistry.enableOverlay(ForgeIngameGui.MOUNT_HEALTH_ELEMENT, !enableHealth);
         OverlayRegistry.enableOverlay(ForgeIngameGui.FOOD_LEVEL_ELEMENT, !enableFood);
+        OverlayRegistry.enableOverlay(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, false);
 
         OverlayRegistry.enableOverlay(HEALTH, enableHealth);
         OverlayRegistry.enableOverlay(MOUNT_HEALTH, enableHealth);
@@ -67,6 +70,7 @@ public class IngameOverlays
         OverlayRegistry.enableOverlay(THIRST, enableThirst);
         OverlayRegistry.enableOverlay(INK, TFCConfig.CLIENT.enableInkSplatter.get());
         OverlayRegistry.enableOverlay(CHISEL, true);
+        OverlayRegistry.enableOverlay(EXPERIENCE, true);
     }
 
     public static void renderHealth(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
@@ -157,6 +161,33 @@ public class IngameOverlays
                 gui.blit(stack, width / 2 + 100, height - 21, u, 58, 20, 20);
                 stack.popPose();
             }
+        }
+    }
+
+    private static void renderExperience(ForgeIngameGui gui, PoseStack stack, float partialTicks, int width, int height)
+    {
+        final Minecraft mc = Minecraft.getInstance();
+        final LocalPlayer player = mc.player;
+        if (player != null && player.fishing instanceof TFCFishingHook hook && setup(gui, mc))
+        {
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.disableBlend();
+
+            final int x = width / 2 - 91;
+            final int y = height - 29;
+            final int amount = Mth.ceil(Mth.clampedMap(hook.pullExhaustion, 0, 100, 0, 183));
+            gui.blit(stack, x, y, 0, 111, 182, 5);
+            if (amount > 0)
+            {
+                gui.blit(stack, x, y, 0, 116, amount, 5);
+            }
+
+            RenderSystem.enableBlend();
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        }
+        else
+        {
+            ForgeIngameGui.EXPERIENCE_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
         }
     }
 

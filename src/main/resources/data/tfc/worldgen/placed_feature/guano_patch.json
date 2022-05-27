@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:guano_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 200
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": -30,
+      "max_temperature": 10,
+      "min_rainfall": 100,
+      "max_rainfall": 500
+    },
+    {
+      "type": "tfc:on_top",
+      "predicate": {
+        "type": "minecraft:matching_block_tag",
+        "tag": "forge:gravel"
+      }
+    }
+  ]
+}

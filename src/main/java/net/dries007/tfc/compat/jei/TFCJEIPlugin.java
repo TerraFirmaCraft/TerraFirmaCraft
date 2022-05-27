@@ -20,7 +20,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 
 import net.minecraftforge.registries.ForgeRegistries;
@@ -34,6 +33,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -176,6 +176,12 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCatalyst(new ItemStack(TFCBlocks.BLOOMERY.get()), BLOOMERY);
         addCatalystTag(r, TFCTags.Items.ANVILS, WELDING);
         addCatalystTag(r, TFCTags.Items.ANVILS, ANVIL);
+    }
+
+    @Override
+    public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration r)
+    {
+        // todo: add bait, salting recipes
     }
 
     private void addIngredientInfo(IRecipeRegistration r)

@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:birch_dead/1",
+      "tfc:birch_dead/2",
+      "tfc:birch_dead/3",
+      "tfc:birch_dead/4",
+      "tfc:birch_dead/5",
+      "tfc:birch_dead/6"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 9,
+      "allow_submerged": true
+    }
+  }
+}

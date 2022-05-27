@@ -34,7 +34,6 @@ import net.minecraft.world.phys.Vec3;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCEffects;
-import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 

@@ -2,6 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:firestarter",
+    "minecraft:bow",
+    "minecraft:crossbow",
+    "minecraft:flint_and_steel",
     "tfc:stone/axe/sedimentary",
     "tfc:stone/hammer/sedimentary",
     "tfc:stone/hoe/sedimentary",
@@ -169,10 +173,6 @@
     "tfc:metal/scythe/red_steel",
     "tfc:metal/shears/red_steel",
     "tfc:metal/tuyere/red_steel",
-    "tfc:metal/fishing_rod/red_steel",
-    "tfc:firestarter",
-    "minecraft:bow",
-    "minecraft:crossbow",
-    "minecraft:flint_and_steel"
+    "tfc:metal/fishing_rod/red_steel"
   ]
 }

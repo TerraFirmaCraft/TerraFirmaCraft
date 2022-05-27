@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:soil_disc",
+  "config": {
+    "min_radius": 5,
+    "max_radius": 9,
+    "height": 2,
+    "states": [
+      {
+        "replace": "tfc:mud/silt",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/loam",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/sandy_loam",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/silty_loam",
+        "with": "tfc:peat"
+      }
+    ]
+  }
+}

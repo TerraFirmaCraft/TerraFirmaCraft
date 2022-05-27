@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:shell",
+    "tfc:food/shellfish",
     "tfc:groundcover/mollusk",
     "tfc:groundcover/clam",
     "minecraft:scute",

@@ -22,11 +22,29 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraftforge.common.ForgeConfig;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Most of these are copied from {@link net.minecraft.world.item.crafting.ShapedRecipe} due to access level concerns
  */
 public final class RecipeHelpers
 {
+    private static final ThreadLocal<CraftingContainer> CRAFTING_CONTAINER = ThreadLocal.withInitial(() -> null);
+
+    public static void setCraftingContainer(CraftingContainer container)
+    {
+        CRAFTING_CONTAINER.set(container);
+    }
+
+    /**
+     * @return The crafting container of the player currently crafting an recipe which might need it. Provided by {@link AdvancedShapedRecipe} and {@link AdvancedShapelessRecipe}. Used by {@link AddBaitToRodModifier}.
+     */
+    @Nullable
+    public static CraftingContainer getCraftingContainer()
+    {
+        return CRAFTING_CONTAINER.get();
+    }
+
     public static NonNullList<Ingredient> dissolvePattern(String[] pattern, Map<String, Ingredient> keys, int patternWidth, int patternHeight)
     {
         final NonNullList<Ingredient> recipeItems = NonNullList.withSize(patternWidth * patternHeight, Ingredient.EMPTY);

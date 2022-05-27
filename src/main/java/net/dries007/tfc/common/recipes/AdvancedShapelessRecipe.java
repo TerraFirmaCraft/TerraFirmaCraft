@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
 
+import com.mojang.datafixers.util.Function5;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
@@ -30,8 +31,8 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AdvancedShapelessRecipe extends ShapelessRecipe
 {
-    private final ItemStackProvider result;
-    private final Ingredient primaryIngredient;
+    protected final ItemStackProvider result;
+    protected final Ingredient primaryIngredient;
 
     public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, Ingredient primaryIngredient)
     {
@@ -49,7 +50,18 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public ItemStack assemble(CraftingContainer inv)
     {
+        RecipeHelpers.setCraftingContainer(inv);
         return result.getSingleStack(getSeed(inv).copy());
+    }
+
+    public ItemStackProvider getResult()
+    {
+        return result;
+    }
+
+    public Ingredient getPrimaryIngredient()
+    {
+        return primaryIngredient;
     }
 
     private ItemStack getSeed(CraftingContainer inv)

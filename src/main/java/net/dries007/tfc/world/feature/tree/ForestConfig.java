@@ -33,7 +33,7 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
         Codec.BOOL.fieldOf("use_weirdness").orElse(true).forGetter(c -> c.useWeirdness)
     ).apply(instance, ForestConfig::new));
 
-    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<IWeighted<BlockState>> groundcover, Holder<ConfiguredFeature<?, ?>> treeFeature, Optional<Holder<ConfiguredFeature<?, ?>>> oldGrowthFeature, int oldGrowthChance, int spoilerOldGrowthChance, int fallenChance) implements FeatureConfiguration
+    public record Entry(float minRainfall, float maxRainfall, float minAverageTemp, float maxAverageTemp, Optional<BlockState> bushLog, Optional<BlockState> bushLeaves, Optional<BlockState> fallenLog, Optional<IWeighted<BlockState>> groundcover, Holder<ConfiguredFeature<?, ?>> treeFeature, Holder<ConfiguredFeature<?, ?>> deadFeature, Optional<Holder<ConfiguredFeature<?, ?>>> oldGrowthFeature, int oldGrowthChance, int spoilerOldGrowthChance, int fallenChance, int deadChance) implements FeatureConfiguration
     {
         public static final Codec<Entry> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.FLOAT.fieldOf("min_rain").forGetter(c -> c.minRainfall),
@@ -45,10 +45,12 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
             Codecs.BLOCK_STATE.optionalFieldOf("fallen_log").forGetter(c -> c.fallenLog),
             Codecs.weightedCodec(Codecs.BLOCK_STATE, "block").optionalFieldOf("groundcover").forGetter(c -> c.groundcover),
             ConfiguredFeature.CODEC.fieldOf("normal_tree").forGetter(c -> c.treeFeature),
+            ConfiguredFeature.CODEC.fieldOf("dead_tree").forGetter(c -> c.deadFeature),
             ConfiguredFeature.CODEC.optionalFieldOf("old_growth_tree").forGetter(c -> c.oldGrowthFeature),
             Codec.INT.fieldOf("old_growth_chance").orElse(6).forGetter(c -> c.oldGrowthChance),
             Codec.INT.fieldOf("spoiler_old_growth_chance").orElse(200).forGetter(c -> c.spoilerOldGrowthChance),
-            Codec.INT.fieldOf("fallen_tree_chance").orElse(14).forGetter(c -> c.fallenChance)
+            Codec.INT.fieldOf("fallen_tree_chance").orElse(14).forGetter(c -> c.fallenChance),
+            Codec.INT.fieldOf("dead_chance").orElse(75).forGetter(c -> c.deadChance)
         ).apply(instance, Entry::new));
 
         public boolean isValid(float temperature, float rainfall)
@@ -75,6 +77,12 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
         {
             return treeFeature.value();
         }
+
+        public ConfiguredFeature<?, ?> getDeadFeature()
+        {
+            return deadFeature.value();
+        }
+
 
         public ConfiguredFeature<?, ?> getOldGrowthFeature()
         {

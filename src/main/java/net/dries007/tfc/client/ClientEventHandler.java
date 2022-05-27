@@ -34,7 +34,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
@@ -62,6 +61,7 @@ import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.PanItem;
+import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
@@ -130,48 +130,43 @@ public final class ClientEventHandler
                         }
                         else
                         {
-                            boolean main = entity.getMainHandItem() == stack;
-                            boolean off = entity.getOffhandItem() == stack;
-                            if (entity.getMainHandItem().getItem() instanceof FishingRodItem)
-                            {
-                                off = false;
-                            }
-                            return (main || off) && entity instanceof Player && ((Player) entity).fishing != null ? 1.0F : 0.0F;
+                            return entity instanceof Player player && TFCFishingRodItem.isThisTheHeldRod(player, stack) && player.fishing != null ? 1.0F : 0.0F;
                         }
                     });
-
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
-                        if (entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem())
-                        {
-                            return (float) player.getUseItemRemainingTicks() / PanItem.USE_TIME;
-                        }
-                        return 1F;
-                    });
-
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ROCK_PROPERTY.id(), (stack, level, entity, unused) -> {
-                        final BlockState state = PanItem.readState(stack);
-                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ROCK_PROPERTY) : 0f;
-                    });
-
-                    ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ORE_PROPERTY.id(), (stack, level, entity, unused) -> {
-                        final BlockState state = PanItem.readState(stack);
-                        return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ORE_PROPERTY) : 0F;
-                    });
-
-                    ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
-
-                    ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), new ResourceLocation("level"), (stack, level, entity, unused) -> {
-                        CompoundTag stackTag = stack.getTag();
-                        if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
-                        {
-                            return stackTag.getInt("level") / 16F;
-                        }
-                        return 1.0F;
-                    });
-
-                    TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
                 }
             }
+
+            ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
+                if (entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem())
+                {
+                    return (float) player.getUseItemRemainingTicks() / PanItem.USE_TIME;
+                }
+                return 1F;
+            });
+
+            ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ROCK_PROPERTY.id(), (stack, level, entity, unused) -> {
+                final BlockState state = PanItem.readState(stack);
+                return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ROCK_PROPERTY) : 0f;
+            });
+
+            ItemProperties.register(TFCItems.FILLED_PAN.get(), OreDeposit.ORE_PROPERTY.id(), (stack, level, entity, unused) -> {
+                final BlockState state = PanItem.readState(stack);
+                return state != null ? ItemPropertyProviderBlock.getValue(state.getBlock(), OreDeposit.ORE_PROPERTY) : 0F;
+            });
+
+            ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
+
+            ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), new ResourceLocation("level"), (stack, level, entity, unused) -> {
+                CompoundTag stackTag = stack.getTag();
+                if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
+                {
+                    return stackTag.getInt("level") / 16F;
+                }
+                return 1.0F;
+            });
+
+            TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+
         });
 
         // Keybindings
@@ -265,7 +260,7 @@ public final class ClientEventHandler
     {
         // Entities
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
-        event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), FishingHookRenderer::new);
+        event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), TFCFishingHookRenderer::new);
         event.registerEntityRenderer(TFCEntities.GLOW_ARROW.get(), GlowArrowRenderer::new);
         event.registerEntityRenderer(TFCEntities.SEAT.get(), NoopRenderer::new);
         for (Wood wood : Wood.VALUES)
@@ -292,8 +287,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.BLACK_BEAR.get(), ctx -> new BearRenderer(ctx, 0.9F, "black_bear"));
         event.registerEntityRenderer(TFCEntities.COUGAR.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "cougar")), "cougar", 0.8F));
         event.registerEntityRenderer(TFCEntities.PANTHER.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "panther")), "panther", 0.8F));
-        event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new PredatorRenderer<>(ctx, new LionModel(RenderHelpers.bakeSimple(ctx, "lion")), "lion"));
-        event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new PredatorRenderer<>(ctx, new SabertoothModel(RenderHelpers.bakeSimple(ctx, "sabertooth")), "sabertooth"));
+        event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new PredatorRenderer<>(ctx, new LionModel(RenderHelpers.bakeSimple(ctx, "lion")), "lion", 0.8F));
+        event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new PredatorRenderer<>(ctx, new SabertoothModel(RenderHelpers.bakeSimple(ctx, "sabertooth")), "sabertooth", 0.8F));
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));

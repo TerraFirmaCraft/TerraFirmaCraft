@@ -15,7 +15,9 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class ShortGrassBlock extends PlantBlock
 {
@@ -51,6 +53,12 @@ public abstract class ShortGrassBlock extends PlantBlock
                 case 2 -> SHORT_GRASS_SHAPE;
                 default -> GRASS_SHAPE;
             };
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.GRASS_PLANTABLE_ON);
     }
 
     @Override

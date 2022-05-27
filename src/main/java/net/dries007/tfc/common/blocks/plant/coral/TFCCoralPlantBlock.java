@@ -137,7 +137,7 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
         }
         else
         {
-            for (Direction direction : Direction.values())
+            for (Direction direction : Helpers.DIRECTIONS)
             {
                 if (Helpers.isFluid(level.getFluidState(pos.relative(direction)), FluidTags.WATER))
                 {

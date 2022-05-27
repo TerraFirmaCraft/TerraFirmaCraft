@@ -43,7 +43,8 @@
       "tfc:mollusk_patch",
       "tfc:mussel_patch",
       "tfc:seaweed_patch",
-      "tfc:sticks_shore_patch"
+      "tfc:sticks_shore_patch",
+      "tfc:guano_patch"
     ],
     [
       "tfc:ice_and_snow"

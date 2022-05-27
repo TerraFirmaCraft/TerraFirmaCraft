@@ -29,6 +29,7 @@ public final class TFCPlacements
 
     public static final RegistryObject<PlacementModifierType<NearWaterPlacement>> NEAR_WATER = register("near_water", () -> NearWaterPlacement.CODEC);
     public static final RegistryObject<PlacementModifierType<ShallowWaterPlacement>> SHALLOW_WATER = register("shallow_water", () -> ShallowWaterPlacement.CODEC);
+    public static final RegistryObject<PlacementModifierType<OnTopPlacement>> ON_TOP = register("on_top", () -> OnTopPlacement.CODEC);
 
     private static <C extends PlacementModifier> RegistryObject<PlacementModifierType<C>> register(String name, PlacementModifierType<C> codec)
     {

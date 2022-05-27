@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:blackwood_dead/1",
+      "tfc:blackwood_dead/2",
+      "tfc:blackwood_dead/3",
+      "tfc:blackwood_dead/4",
+      "tfc:blackwood_dead/5",
+      "tfc:blackwood_dead/6"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 6,
+      "allow_submerged": true
+    }
+  }
+}

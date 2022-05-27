@@ -7,6 +7,9 @@
 package net.dries007.tfc.world.feature.tree;
 
 import java.util.*;
+
+import net.dries007.tfc.common.blocks.RiverWaterBlock;
+import net.dries007.tfc.common.blocks.wood.LogBlock;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -19,6 +22,8 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
@@ -92,9 +97,14 @@ public class ForestFeature extends Feature<ForestConfig>
         {
             ConfiguredFeature<?, ?> feature;
             final int oldChance = entry.oldGrowthChance();
+            final int deadChance = entry.deadChance();
             if (typeConfig.allowOldGrowth() && oldChance > 0 && random.nextInt(oldChance) == 0)
             {
                 feature = entry.getOldGrowthFeature();
+            }
+            else if (deadChance > 0 && random.nextInt(deadChance) == 0)
+            {
+                feature = entry.getDeadFeature();
             }
             else
             {
@@ -227,7 +237,7 @@ public class ForestFeature extends Feature<ForestConfig>
                         for (; valid < length; valid++)
                         {
                             final BlockState replaceState = level.getBlockState(mutablePos);
-                            if (replaceState.getMaterial().isReplaceable() || replaceState.getBlock() instanceof ILeavesBlock)
+                            if (EnvironmentHelpers.isWorldgenReplaceable(replaceState) || replaceState.getBlock() instanceof ILeavesBlock)
                             {
                                 mutablePos.move(Direction.DOWN);
                                 moment[valid] = level.getBlockState(mutablePos).isFaceSturdy(level, mutablePos, Direction.UP);
@@ -262,8 +272,7 @@ public class ForestFeature extends Feature<ForestConfig>
                             }
                         }
 
-                }
-
+                    }
                 }
             }
         }

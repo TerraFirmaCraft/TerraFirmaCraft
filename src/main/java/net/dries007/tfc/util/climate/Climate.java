@@ -107,6 +107,11 @@ public final class Climate
         return model(level).getFogginess(level, pos, Calendars.get(level).getTicks());
     }
 
+    public static float getWaterFogginess(Level level, BlockPos pos)
+    {
+        return model(level).getWaterFogginess(level, pos, Calendars.get(level).getTicks());
+    }
+
     /**
      * @see Biome#coldEnoughToSnow(BlockPos)
      */

@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "distance_below_sea_level": 1,
+  "distance_below_sea_level": 20,
   "climate": {
-	"min_temperature": -20,
-    "max_temperature": 21
+    "min_temperature": 5,
+    "min_rainfall": 125
   }
 }

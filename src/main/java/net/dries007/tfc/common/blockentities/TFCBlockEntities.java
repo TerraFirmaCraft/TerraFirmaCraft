@@ -45,7 +45,8 @@ public final class TFCBlockEntities
         TFCBlocks.DEAD_BERRY_BUSH,
         TFCBlocks.DEAD_CANE,
         TFCBlocks.BANANA_SAPLING,
-        TFCBlocks.DEAD_BANANA_PLANT
+        TFCBlocks.DEAD_BANANA_PLANT,
+        TFCBlocks.SOIL.get(SoilBlockType.DRYING_BRICKS).values()
         ).<Supplier<? extends Block>>flatMap(Helpers::flatten)
     );
 
