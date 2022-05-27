@@ -287,8 +287,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.BLACK_BEAR.get(), ctx -> new BearRenderer(ctx, 0.9F, "black_bear"));
         event.registerEntityRenderer(TFCEntities.COUGAR.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "cougar")), "cougar", 0.8F));
         event.registerEntityRenderer(TFCEntities.PANTHER.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "panther")), "panther", 0.8F));
-        event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new PredatorRenderer<>(ctx, new LionModel(RenderHelpers.bakeSimple(ctx, "lion")), "lion"));
-        event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new PredatorRenderer<>(ctx, new SabertoothModel(RenderHelpers.bakeSimple(ctx, "sabertooth")), "sabertooth"));
+        event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new PredatorRenderer<>(ctx, new LionModel(RenderHelpers.bakeSimple(ctx, "lion")), "lion", 0.8F));
+        event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new PredatorRenderer<>(ctx, new SabertoothModel(RenderHelpers.bakeSimple(ctx, "sabertooth")), "sabertooth", 0.8F));
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));

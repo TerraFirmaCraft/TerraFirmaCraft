@@ -6,8 +6,15 @@
 
 package net.dries007.tfc.client.render.entity;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.dries007.tfc.client.RenderHelpers;
 
 import net.minecraft.client.model.EntityModel;
+
+import net.dries007.tfc.client.model.entity.CougarModel;
+import net.dries007.tfc.common.entities.aquatic.Jellyfish;
+import net.dries007.tfc.common.entities.predator.FelinePredator;
+import net.dries007.tfc.common.entities.predator.Predator;
 
 import net.dries007.tfc.util.Helpers;
 
