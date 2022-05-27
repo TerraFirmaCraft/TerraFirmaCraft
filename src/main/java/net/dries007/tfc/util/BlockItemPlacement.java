@@ -146,7 +146,7 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
             {
                 return InteractionResult.FAIL;
             }
-            else if (!this.placeBlock(context, placementState))
+            else if (!placeBlock(context, placementState))
             {
                 return InteractionResult.FAIL;
             }

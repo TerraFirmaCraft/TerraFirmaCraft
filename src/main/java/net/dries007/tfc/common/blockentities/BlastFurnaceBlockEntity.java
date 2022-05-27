@@ -96,7 +96,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             }
 
             // And refresh the molten block(s) based on the current inputs
-            MoltenBlock.manageMoltenBlockTower(level, entity.worldPosition, lit, TFCConfig.SERVER.bloomeryMaxChimneyHeight.get(), entity.inputStacks.size(), TFCConfig.SERVER.bloomeryCapacity.get());
+            MoltenBlock.manageMoltenBlockTower(level, entity.worldPosition.above(), lit, TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get(), entity.inputStacks.size(), TFCConfig.SERVER.blastFurnaceCapacity.get());
         }
 
         if (state.getValue(BlastFurnaceBlock.LIT))

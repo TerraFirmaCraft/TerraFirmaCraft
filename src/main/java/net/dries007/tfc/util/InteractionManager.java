@@ -403,7 +403,11 @@ public final class InteractionManager
                 final Level level = context.getLevel();
                 final Direction clickedFace = context.getClickedFace(); // i.e. click on UP
                 final Direction sheetFace = clickedFace.getOpposite(); // i.e. place on DOWN
-                final BlockPos relativePos = context.getClickedPos().relative(clickedFace);
+
+                final BlockPos clickedPos = context.getClickedPos();
+                final BlockPos relativePos = clickedPos.relative(clickedFace);
+
+                final BlockState clickedState = level.getBlockState(clickedPos);
                 final BlockState relativeState = level.getBlockState(relativePos);
 
                 final BlockPlaceContext blockContext = new BlockPlaceContext(context);
@@ -411,7 +415,7 @@ public final class InteractionManager
 
                 if (blockContext.replacingClickedOnBlock())
                 {
-                    // todo: this causes weird behavior, how to handle properly?
+                    // Sheets are not allowed to place on replaceable blocks, as it is dependent on the face clicked - but when we click on a replaceable block, that face doesn't make sense.
                     return InteractionResult.FAIL;
                 }
 
@@ -420,7 +424,7 @@ public final class InteractionManager
                 if (Helpers.isBlock(relativeState, TFCBlocks.SHEET_PILE.get()))
                 {
                     // We targeted a existing sheet pile, so we need to check if there's an empty space for it
-                    if (!relativeState.getValue(property))
+                    if (!relativeState.getValue(property) && BlockItemPlacement.canPlace(blockContext, clickedState) && clickedState.isFaceSturdy(level, clickedPos, clickedFace))
                     {
                         // Add to an existing sheet pile
                         final ItemStack insertStack = stack.split(1);
@@ -433,11 +437,12 @@ public final class InteractionManager
                         return InteractionResult.FAIL;
                     }
                 }
-                else
+                // This is where we assert that we can only replace replaceable blocks
+                else if (level.getBlockState(relativePos).canBeReplaced(blockContext))
                 {
                     // Want to place a new sheet at the above location
                     final BlockState placingState = TFCBlocks.SHEET_PILE.get().defaultBlockState().setValue(property, true);
-                    if (BlockItemPlacement.canPlace(blockContext, placingState))
+                    if (BlockItemPlacement.canPlace(blockContext, placingState) && clickedState.isFaceSturdy(level, clickedPos, clickedFace))
                     {
                         final ItemStack insertStack = stack.split(1);
                         SheetPileBlock.addSheet(level, relativePos, placingState, sheetFace, insertStack);

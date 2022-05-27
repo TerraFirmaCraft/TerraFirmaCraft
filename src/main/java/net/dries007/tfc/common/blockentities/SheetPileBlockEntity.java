@@ -51,6 +51,11 @@ public class SheetPileBlockEntity extends TFCBlockEntity
         return stack;
     }
 
+    public ItemStack getSheet(Direction direction)
+    {
+        return stacks[direction.ordinal()].copy();
+    }
+
     /**
      * Returns a cached metal for the given side, if present, otherwise grabs from the cache.
      * The metal is defined by checking what metal the stack would melt into if heated.

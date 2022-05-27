@@ -17,12 +17,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -86,6 +84,9 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
 
         level.setBlock(pos, newState, Block.UPDATE_CLIENTS);
         level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.addSheet(face, stack));
+
+        final SoundType placementSound = state.getSoundType(level, pos, null);
+        level.playSound(null, pos, state.getSoundType(level, pos, null).getPlaceSound(), SoundSource.BLOCKS, (placementSound.getVolume() + 1.0f) / 2.0f, placementSound.getPitch() * 0.8f);
     }
 
     /**
@@ -175,6 +176,42 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
             }
         }
     }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        for (Direction direction : Helpers.DIRECTIONS)
+        {
+            if (state.getValue(PROPERTY_BY_DIRECTION.get(direction)))
+            {
+                final BlockPos adjacentPos = pos.relative(direction);
+                final BlockState adjacentState = level.getBlockState(adjacentPos);
+                if (!adjacentState.isFaceSturdy(level, adjacentPos, direction.getOpposite()))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    {
+        if (level instanceof Level realLevel)
+        {
+            final Direction targetFace = getTargetedFace(realLevel, state, player);
+            if (targetFace != null)
+            {
+                return level.getBlockEntity(pos, TFCBlockEntities.SHEET_PILE.get())
+                    .map(pile -> pile.getSheet(targetFace))
+                    .orElse(ItemStack.EMPTY);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
 
     /**
      * Destroys the block, including setting it to air. Called on both sides, and regardless of if a player has the correct tool to drop the block.

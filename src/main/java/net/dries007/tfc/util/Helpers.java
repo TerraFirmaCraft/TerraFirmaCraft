@@ -216,7 +216,7 @@ public final class Helpers
         return null; // A modder has done a strange ass thing
     }
 
-    public static BlockHitResult rayTracePlayer(Level level, Player player, ClipContext.Fluid mode)
+    public static BlockHitResult rayTracePlayer(BlockGetter level, Player player, ClipContext.Fluid mode)
     {
         return ItemProtectedAccessor.invokeGetPlayerPOVHitResult(level, player, mode);
     }

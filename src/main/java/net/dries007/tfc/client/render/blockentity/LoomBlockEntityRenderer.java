@@ -14,12 +14,11 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
 import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
+import net.dries007.tfc.common.recipes.LoomRecipe;
 
 public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEntity>
 {
@@ -50,43 +49,44 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
         RenderHelpers.renderTexturedCuboid(poseStack, builder, planksSprite, combinedLight, combinedOverlay, 0.0625F, 0.09375F, 0.5626F - z1, 0.9375F, 0.15625F, 0.625F - z1);
         poseStack.popPose();
 
-        if (loom.hasRecipe())
+        final LoomRecipe recipe = loom.getRecipe();
+        if (recipe != null)
         {
             poseStack.pushPose();
             poseStack.translate(0.5D, 0.0D, 0.5D);
             poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
             poseStack.translate(-0.5D, 0.0D, -0.5D);
 
-            final TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(loom.getInProgressTexture());
+            final TextureAtlasSprite progressSprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(recipe.getInProgressTexture());
 
-            drawMaterial(builder, poseStack, progressSprite, loom, tileZ * 2F / 3F, combinedOverlay, combinedLight);
-            drawProduct(builder, poseStack, progressSprite, loom, combinedOverlay, combinedLight);
+            drawMaterial(builder, poseStack, progressSprite, loom, recipe, tileZ * 2F / 3F, combinedOverlay, combinedLight);
+            drawProduct(builder, poseStack, progressSprite, loom, recipe, combinedOverlay, combinedLight);
             poseStack.popPose();
         }
     }
 
 
-    private void drawProduct(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, LoomBlockEntity te, int combinedOverlay, int combinedLight)
+    private void drawProduct(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, LoomBlockEntity loom, LoomRecipe recipe, int packedOverlay, int packedLight)
     {
-        for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, te.getProgress() / (float) te.getMaxProgress()))
+        for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F, 0.9375F, 0.75F - 0.001F, 0.8125F, 0.9375F - 0.625F / recipe.getStepCount() * loom.getProgress(), 0.75F - 0.001F, 0F, 0F, 1F, loom.getProgress() / (float) recipe.getStepCount()))
         {
-            vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU((v[3] * 16D)), sprite.getV((v[4] * 16D)), combinedOverlay, combinedLight);
+            RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), 0, 1, 0);
         }
     }
 
-    private void drawMaterial(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, LoomBlockEntity te, float tileZ, int combinedOverlay, int combinedLight)
+    private void drawMaterial(VertexConsumer buffer, PoseStack poseStack, TextureAtlasSprite sprite, LoomBlockEntity loom, LoomRecipe recipe, float tileZ, int packedOverlay, int packedLight)
     {
 
-        final int maxPieces = te.getMaxInputCount();
-        final float Z1 = te.currentBoolean() ? tileZ : 0;
-        final float Z2 = te.currentBoolean() ? 0 : tileZ;
+        final int maxPieces = recipe.getInputCount();
+        final float Z1 = loom.currentBoolean() ? tileZ : 0;
+        final float Z2 = loom.currentBoolean() ? 0 : tileZ;
 
-        float y1 = 0.9375F - (0.625F / te.getMaxProgress()) * te.getProgress();
+        float y1 = 0.9375F - 0.625F / recipe.getStepCount() * loom.getProgress();
         float y2;
         float z1 = 0.75F;
         float z2;
         float texX1, texX2, texY1, texY2;
-        for (int i = 0; i < te.getCount(); i++)
+        for (int i = 0; i < loom.getCount(); i++)
         {
             if (i % 2 == 0)
             {
@@ -107,34 +107,22 @@ public class LoomBlockEntityRenderer implements BlockEntityRenderer<LoomBlockEnt
                 y2 = 0.125F;
             }
 
-            for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F + (0.625F / maxPieces) * i, y1, z1 - 0.001F, 0.1875F + (0.625F / maxPieces) * (i + 1F), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
+            for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F + 0.625F / maxPieces * i, y1, z1 - 0.001F, 0.1875F + 0.625F / maxPieces * (i + 1F), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
             {
-                vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
+                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), 0, 1, 0);
             }
 
             if (i % 2 == 0)
             {
                 texX1 = 0F;
-                texY1 = 0.5F;
-                texX2 = 0.0625F;
             }
-            else
-            {
-                texX1 = 0.125F;
-                texY1 = 0.5F;
-                texX2 = 0.1875F;
-            }
+            texY1 = 0.5F;
             texY2 = 0.5625F;
 
-            for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F + (0.625F / maxPieces) * i, (float) 0, z1 - 0.001F, 0.1875F + (0.625F / maxPieces) * (i + 1), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
+            for (float[] v : RenderHelpers.getDiagonalPlaneVertices(0.1875F + 0.625F / maxPieces * i, (float) 0, z1 - 0.001F, 0.1875F + 0.625F / maxPieces * (i + 1), y2, z2 - 0.001F, texX1, texY1, texX2, texY2))
             {
-                vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
+                RenderHelpers.renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * 16D), sprite.getV(v[4] * 16D), 0, 1, 0);
             }
         }
-    }
-
-    private void vertex(VertexConsumer builder, Matrix4f mat, Matrix3f norm, float x, float y, float z, float u, float v, int combinedOverlay, int combinedLight)
-    {
-        builder.vertex(mat, x, y, z).color(1.0F, 1.0F, 1.0F, 1.0F).uv(u, v).uv2(combinedLight).overlayCoords(combinedOverlay).normal(norm, 1F, 1F, 1F).endVertex();
     }
 }

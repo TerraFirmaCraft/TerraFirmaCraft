@@ -16,7 +16,7 @@ public class BlastFurnaceContainer extends BlockEntityContainer<BlastFurnaceBloc
 {
     public static BlastFurnaceContainer create(BlastFurnaceBlockEntity blastFurnace, Inventory playerInventory, int windowId)
     {
-        return new BlastFurnaceContainer(windowId, blastFurnace).init(playerInventory);
+        return new BlastFurnaceContainer(windowId, blastFurnace).init(playerInventory, 20);
     }
 
     private BlastFurnaceContainer(int windowId, BlastFurnaceBlockEntity blockEntity)

@@ -22,11 +22,20 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
     public BlastFurnaceScreen(BlastFurnaceContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BLAST_FURNACE);
+
+        inventoryLabelY += 20;
+        imageHeight += 20;
     }
 
     @Override
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        super.renderTooltip(poseStack, mouseX, mouseY);
     }
 }
