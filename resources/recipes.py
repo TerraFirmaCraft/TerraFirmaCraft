@@ -569,7 +569,7 @@ def generate(rm: ResourceManager):
     bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
 
     # Blast Furnace Recipes
-    blast_furnace_recipe(rm, 'pig_iron', 'tfc:metal/cast_iron', 'tfc:metal/pig_iron', '#tfc:flux')
+    blast_furnace_recipe(rm, 'pig_iron', '1 tfc:metal/cast_iron', '1 tfc:metal/pig_iron', '#tfc:flux')
 
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):

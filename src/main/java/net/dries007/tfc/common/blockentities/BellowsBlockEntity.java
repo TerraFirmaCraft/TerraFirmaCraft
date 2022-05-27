@@ -93,15 +93,19 @@ public class BellowsBlockEntity extends TFCBlockEntity
     public InteractionResult onRightClick()
     {
         assert level != null;
-        if (level.getGameTime() - lastPushed < 20) return InteractionResult.PASS;
-        level.playSound(null, worldPosition, TFCSounds.BELLOWS.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-        lastPushed = level.getGameTime();
-        markForSync();
+
+        if (level.getGameTime() - lastPushed < 20)
+        {
+            return InteractionResult.PASS;
+        }
 
         final Direction direction = getBlockState().getValue(BellowsBlock.FACING);
         final BlockPos facingPos = worldPosition.relative(direction);
 
-        level.addParticle(ParticleTypes.POOF, facingPos.getX() + 0.5f - 0.3f * direction.getStepX(), facingPos.getY() + 0.5f, facingPos.getZ() + 0.5f - 0.3f * direction.getStepZ(), 0, 0.005D, 0);
+        // We can push EITHER if there are no receivers (and we're just pushing air into empty space), OR if there are receivers willing to receive air.
+        // We CANNOT push if the only receivers we can find are not accepting air - this is to give the player feedback something is wrong (why the receiver cannot receive air).
+        boolean foundAnyReceivers = false;
+        boolean foundAnyAllowingReceivers = false;
 
         for (IBellowsConsumer.Offset offset : IBellowsConsumer.offsets())
         {
@@ -111,14 +115,24 @@ public class BellowsBlockEntity extends TFCBlockEntity
             final BlockState state = level.getBlockState(airPosition);
             if (state.getBlock() instanceof IBellowsConsumer consumer)
             {
+                foundAnyReceivers = true;
                 if (consumer.canAcceptAir(level, airPosition, state))
                 {
+                    foundAnyAllowingReceivers = true;
                     consumer.intakeAir(level, airPosition, state, BELLOWS_AIR);
-                    return InteractionResult.SUCCESS;
                 }
-                return InteractionResult.FAIL;
             }
         }
-        return InteractionResult.PASS;
+
+        if (!foundAnyReceivers || foundAnyAllowingReceivers)
+        {
+            level.playSound(null, worldPosition, TFCSounds.BELLOWS.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+            level.addParticle(ParticleTypes.POOF, facingPos.getX() + 0.5f - 0.3f * direction.getStepX(), facingPos.getY() + 0.5f, facingPos.getZ() + 0.5f - 0.3f * direction.getStepZ(), 0, 0.005D, 0);
+
+            lastPushed = level.getGameTime();
+            markForSync();
+        }
+        // Return success in both cases because we want the player's arm to swing, because they 'tried'
+        return InteractionResult.SUCCESS;
     }
 }

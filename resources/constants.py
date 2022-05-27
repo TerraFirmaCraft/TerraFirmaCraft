@@ -45,7 +45,8 @@ TOOL_TAGS: Dict[str, str] = {
     'saw': 'saws',
     'propick': 'propicks',
     'scythe': 'scythes',
-    'shears': 'shears'
+    'shears': 'shears',
+    'tuyere': 'tuyeres'
 }
 
 ROCKS: Dict[str, Rock] = {
@@ -756,6 +757,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.no_flux_to_weld': 'There is no flux in the anvil!',
     'tfc.tooltip.hammer_required_to_work': 'A hammer is required to work in the anvil!',
     'tfc.tooltip.anvil_has_been_worked': 'Worked',
+    'tfc.tooltip.blast_furnace_ore': 'Input: %d / %d',
+    'tfc.tooltip.blast_furnace_fuel': 'Fuel: %d / %d',
     'tfc.tooltip.fertilized': '§6Fertilized',
     'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
     'tfc.tooltip.egg_hatch_today': 'Will hatch today!',

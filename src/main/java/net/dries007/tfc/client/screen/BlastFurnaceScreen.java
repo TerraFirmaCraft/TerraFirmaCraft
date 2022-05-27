@@ -55,19 +55,22 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         final int temperature = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
-            blit(poseStack, leftPos + 8, topPos + 78 - Math.min(51, temperature), 176, 0, 15, 5);
+            blit(poseStack, leftPos + 8, topPos + 76 - Math.min(51, temperature), 176, 0, 15, 5);
         }
 
         // Render output fluid tank
         final FluidStack fluid = blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             .map(c -> c.getFluidInTank(0))
             .orElse(FluidStack.EMPTY);
-        final TextureAtlasSprite sprite = getAndBindFluidSprite(fluid);
-        final int startY = 53;
-        final int endY = 84;
-        final int fillHeight = (int) Math.ceil((float) (endY - startY) * fluid.getAmount() / TFCConfig.SERVER.blastFurnaceFluidCapacity.get());
+        if (!fluid.isEmpty())
+        {
+            final TextureAtlasSprite sprite = getAndBindFluidSprite(fluid);
+            final int startY = 53;
+            final int endY = 84;
+            final int fillHeight = (int) Math.ceil((float) (endY - startY) * fluid.getAmount() / TFCConfig.SERVER.blastFurnaceFluidCapacity.get());
 
-        fillAreaWithSprite(sprite, poseStack, 70, 106, endY, fillHeight);
+            fillAreaWithSprite(sprite, poseStack, 70, 106, endY, fillHeight);
+        }
 
         resetToBackgroundSprite();
     }
@@ -81,6 +84,10 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         final int fuelCount = blockEntity.getFuelCount();
         final int inputCount = blockEntity.getInputCount();
 
+        final FluidStack fluid = blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            .map(c -> c.getFluidInTank(0))
+            .orElse(FluidStack.EMPTY);
+
         if (isMouseIn(42, 22, 10, 66, mouseX, mouseY))
         {
             renderTooltip(poseStack, new TranslatableComponent("tfc.tooltip.blast_furnace_ore", inputCount, capacity), mouseX, mouseY);
@@ -88,6 +95,10 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         if (isMouseIn(124, 22, 10, 66, mouseX, mouseY))
         {
             renderTooltip(poseStack, new TranslatableComponent("tfc.tooltip.blast_furnace_fuel", fuelCount, capacity), mouseX, mouseY);
+        }
+        if (isMouseIn(70, 54, 36, 31, mouseX, mouseY) && !fluid.isEmpty())
+        {
+            renderTooltip(poseStack, new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName()), mouseX, mouseY);
         }
     }
 
@@ -101,22 +112,22 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         else if (content == 0)
         {
             // If we have capacity but no content, we render just an top section of the empty content bar.
-            final int emptyHeight = 1 + (64 * capacity) / maximum;
+            final int emptyHeight = (64 * capacity) / maximum;
             blit(poseStack, leftPos + x, topPos + y + 64 - emptyHeight, 236, 0, 10, 1 + emptyHeight);
         }
         else
         {
             // Both capacity and content are > 0, so we render the top section of an empty content bar, and the bottom section of a full content bar
-            final int emptyHeight = 1 + (64 * capacity) / maximum;
+            final int emptyHeight = (64 * capacity) / maximum;
             final int fillHeight = (64 * content) / maximum;
 
             blit(poseStack, leftPos + x, topPos + y + 64 - emptyHeight, 236, 0, 10, 1 + emptyHeight - fillHeight);
-            blit(poseStack, leftPos + x, topPos + y + 65 - fillHeight, fillU, 0, 10, fillHeight);
+            blit(poseStack, leftPos + x, topPos + y + 65 - fillHeight, fillU, 1, 10, fillHeight);
         }
     }
 
     private boolean isMouseIn(int x, int y, int width, int height, int mouseX, int mouseY)
     {
-        return mouseX > x && mouseX < x + width && mouseY > y && mouseY < y + height;
+        return mouseX > leftPos + x && mouseX < leftPos + x + width && mouseY > topPos + y && mouseY < topPos + y + height;
     }
 }

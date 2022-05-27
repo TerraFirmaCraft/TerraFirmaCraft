@@ -117,10 +117,11 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
     public FluidStack assembleFluidOutput(FluidStack inputFluid)
     {
         final int maximumRatio = inputFluid.getAmount() / this.inputFluid.amount();
-        inputFluid.shrink(maximumRatio * this.inputFluid.amount());
-
         final FluidStack outputFluid = this.outputFluid.copy();
+
+        inputFluid.shrink(maximumRatio * this.inputFluid.amount());
         outputFluid.setAmount(this.outputFluid.getAmount() * maximumRatio);
+
         return outputFluid;
     }
 

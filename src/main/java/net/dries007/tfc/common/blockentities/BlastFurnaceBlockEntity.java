@@ -25,6 +25,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -102,14 +103,10 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             }
 
             // Finally, if we're in a valid state, and we've checked the capacity, then we can attempt to add items in from the world
-            final boolean lit = state.getValue(BloomeryBlock.LIT);
-            if (!lit)
-            {
-                entity.addItemsFromWorld(capacity);
-            }
+            entity.addItemsFromWorld(capacity);
 
             // And refresh the molten block(s) based on the current inputs
-            MoltenBlock.manageMoltenBlockTower(level, entity.worldPosition.above(), lit, TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get(), entity.inputStacks.size(), TFCConfig.SERVER.blastFurnaceCapacity.get());
+            MoltenBlock.manageMoltenBlockTower(level, entity.worldPosition.above(), state.getValue(BloomeryBlock.LIT), TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get(), entity.inputStacks.size(), TFCConfig.SERVER.blastFurnaceCapacity.get());
         }
 
         if (state.getValue(BlastFurnaceBlock.LIT))
@@ -130,9 +127,9 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
         if (entity.airTicks > 0)
         {
-            if (entity.airTicks % 10 == 0)
+            if (entity.airTicks % 10 == 0 && entity.temperature > 400)
             {
-                // Damage Tuyere every half second of use while consuming bellows air
+                // Damage Tuyere every half second of use while consuming bellows air, and the blast furnace is lit and hot
                 final ItemStack tuyere = entity.inventory.getStackInSlot(0);
                 if (!tuyere.isEmpty())
                 {
@@ -302,6 +299,16 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         {
             airTicks = BellowsBlockEntity.MAX_DEVICE_AIR_TICKS;
         }
+    }
+
+    public boolean light(Level level, BlockPos pos, BlockState state)
+    {
+        if (!fuelStacks.isEmpty())
+        {
+            level.setBlock(pos, state.setValue(BlastFurnaceBlock.LIT, true), Block.UPDATE_ALL);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -521,7 +528,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
 
         // If we are already at capacity, we can exit early, as we cannot possibly add any more items
-        if (inputStacks.size() == capacity)
+        if (inputStacks.size() == capacity && fuelStacks.size() == capacity)
         {
             return;
         }

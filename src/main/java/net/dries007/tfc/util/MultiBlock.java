@@ -105,7 +105,7 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
     {
         for (BiPredicate<LevelAccessor, BlockPos> condition : conditions)
         {
-            if (!condition.test(level, pos) && !condition.test(level, pos.above()))
+            if (!condition.test(level, pos))
             {
                 return false;
             }
