@@ -497,12 +497,4 @@ public final class RenderHelpers
         }
         return 0f;
     }
-
-    private static float[][] append(float[][] a, float[][] b)
-    {
-        float[][] result = new float[a.length + b.length][];
-        System.arraycopy(a, 0, result, 0, a.length);
-        System.arraycopy(b, 0, result, a.length, b.length);
-        return result;
-    }
 }

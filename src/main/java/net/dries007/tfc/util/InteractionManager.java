@@ -395,7 +395,6 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        final BlockItemPlacement sheetPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.SHEET_PILE);
         register(TFCTags.Items.PILEABLE_SHEETS, false, (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())

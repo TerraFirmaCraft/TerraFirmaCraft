@@ -90,6 +90,7 @@ public class SheetPileBlockEntity extends TFCBlockEntity
     protected void loadAdditional(CompoundTag tag)
     {
         Helpers.readItemStacksFromNbt(stacks, tag.getList("stacks", Tag.TAG_COMPOUND));
+        Arrays.fill(cachedMetals, null); // Invalidate metal cache
         super.loadAdditional(tag);
     }
 }

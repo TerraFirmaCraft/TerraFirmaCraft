@@ -17,8 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
@@ -116,26 +114,4 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
             lastWidth = currentWidth;
         }
     }
-
-    private void drawTop(VertexConsumer b, PoseStack matrixStack, TextureAtlasSprite sprite, float width, int combinedOverlay, int combinedLight)
-    {
-        float[][] sides = null; //RenderHelpers.getVerticesBySide(0, 1, 0.125f + width, 1, 0, width, "xy");
-        float[][] tops = null; //RenderHelpers.getVerticesBySide(0, 1, 0.125f + width, 1, 0, width, "z");
-
-        for (float[] v : sides)
-        {
-            vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * 2D), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
-        }
-        for (float[] v : tops)
-        {
-            vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * 16F), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
-        }
-    }
-
-    private void vertex(VertexConsumer builder, Matrix4f mat, Matrix3f norm, float x, float y, float z, float u, float v, int combinedOverlay, int combinedLight)
-    {
-        builder.vertex(mat, x, y, z).color(1.0F, 1.0F, 1.0F, 1.0F).uv(u, v).uv2(combinedLight).overlayCoords(combinedOverlay).normal(norm, 1, 1, 1).endVertex();
-    }
-
-
 }
