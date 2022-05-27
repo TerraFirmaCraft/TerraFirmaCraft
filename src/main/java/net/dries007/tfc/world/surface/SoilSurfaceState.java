@@ -56,6 +56,7 @@ public class SoilSurfaceState implements SurfaceState
             }
             else
             {
+                // Patchy gravel deserts. Only places gravel in mostly-flat areas, otherwise defaults to sand
                 final double slope = context.getSlope();
                 final float weirdness = data.getForestWeirdness();
                 if ((weirdness < 0.18f || (weirdness < 0.22f && (weirdness - context.random().nextFloat() * 0.5f < 0f))) && slope < 2 && (slope < 1 || context.random().nextBoolean()))
@@ -68,6 +69,7 @@ public class SoilSurfaceState implements SurfaceState
                     float noise = patchNoise.noise(pos.getX(), pos.getZ());
                     if (noise > 0.2f && forest > 0.5f)
                     {
+                        // offset patches of rooted dirt theoretically forested areas
                         float noise2 = patchNoise.noise(pos.getX() + 2000, pos.getZ() + 2000);
                         if (noise2 > 0) return rooted(SoilBlockType.Variant.SANDY_LOAM);
                     }
@@ -96,12 +98,13 @@ public class SoilSurfaceState implements SurfaceState
             }
             else
             {
-                // Silt
+                // Muddy areas at low elevation
                 if (pos.getY() == context.getSeaLevel() -1 || pos.getY() == context.getSeaLevel())
                 {
                     float noise = patchNoise.noise(pos.getX(), pos.getZ());
                     if (noise > 0) return mud(SoilBlockType.Variant.SILT);
                 }
+                // Silt
                 return soil(SoilBlockType.Variant.SILT);
             }
         }
