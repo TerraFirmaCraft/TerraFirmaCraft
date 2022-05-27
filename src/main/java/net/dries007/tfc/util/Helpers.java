@@ -778,9 +778,14 @@ public final class Helpers
         }
     }
 
-    public static <T extends IForgeRegistryEntry<T>> Collection<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
+    public static <T extends IForgeRegistryEntry<T>> List<T> getAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
     {
-        return Objects.requireNonNull(registry.tags()).getTag(tag).stream().toList();
+        return streamAllTagValues(tag, registry).toList();
+    }
+
+    public static <T extends IForgeRegistryEntry<T>> Stream<T> streamAllTagValues(TagKey<T> tag, IForgeRegistry<T> registry)
+    {
+        return Objects.requireNonNull(registry.tags()).getTag(tag).stream();
     }
 
     /**

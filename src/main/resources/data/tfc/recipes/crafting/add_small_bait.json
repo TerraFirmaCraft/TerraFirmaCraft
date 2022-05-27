@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:add_bait_crafting",
+  "type": "tfc:advanced_shapeless_crafting",
   "ingredients": [
     {
       "tag": "tfc:holds_small_fishing_bait"
@@ -11,7 +11,8 @@
   ],
   "result": {
     "modifiers": [
-      "tfc:copy_input"
+      "tfc:copy_input",
+      "tfc:add_bait_to_rod"
     ]
   },
   "primary_ingredient": {

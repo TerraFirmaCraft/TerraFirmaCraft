@@ -50,7 +50,18 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public ItemStack assemble(CraftingContainer inv)
     {
+        RecipeHelpers.setCraftingContainer(inv);
         return result.getSingleStack(getSeed(inv).copy());
+    }
+
+    public ItemStackProvider getResult()
+    {
+        return result;
+    }
+
+    public Ingredient getPrimaryIngredient()
+    {
+        return primaryIngredient;
     }
 
     private ItemStack getSeed(CraftingContainer inv)

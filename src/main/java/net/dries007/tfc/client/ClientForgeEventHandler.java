@@ -190,12 +190,6 @@ public class ClientForgeEventHandler
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(EggCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(text));
 
-            ItemStack bait = TFCFishingRodItem.getBaitItem(stack);
-            if (!bait.isEmpty())
-            {
-                text.add(new TranslatableComponent("tfc.tooltip.fishing.bait").append(bait.getHoverName()));
-            }
-
             // Fuel information
             final Fuel fuel = Fuel.get(stack);
             if (fuel != null)

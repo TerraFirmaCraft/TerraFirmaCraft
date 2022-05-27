@@ -142,6 +142,9 @@ public class TFCTags
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
         public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");
+        public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = create("holds_small_fishing_bait");
+        public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = create("holds_large_fishing_bait");
+        public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
 
         private static TagKey<Item> create(String id)
         {

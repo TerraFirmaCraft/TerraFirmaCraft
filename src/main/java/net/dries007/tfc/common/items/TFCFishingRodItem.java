@@ -6,7 +6,10 @@
 
 package net.dries007.tfc.common.items;
 
+import java.util.List;
+
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -17,12 +20,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFishingHook;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCFishingRodItem extends FishingRodItem
 {
@@ -113,6 +118,16 @@ public class TFCFishingRodItem extends FishingRodItem
         }
 
         return InteractionResultHolder.sidedSuccess(rod, level.isClientSide());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> text, TooltipFlag flag)
+    {
+        ItemStack bait = TFCFishingRodItem.getBaitItem(stack);
+        if (!bait.isEmpty())
+        {
+            text.add(new TranslatableComponent("tfc.tooltip.fishing.bait").append(bait.getHoverName()));
+        }
     }
 
     public float getFishingStrength()

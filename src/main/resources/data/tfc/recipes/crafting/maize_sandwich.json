@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:sandwich_crafting",
+  "type": "tfc:damage_inputs_shaped_crafting",
   "recipe": {
-    "type": "minecraft:crafting_shaped",
+    "type": "tfc:advanced_shaped_crafting",
     "pattern": [
       "ZX ",
       "YYY",
@@ -26,8 +26,15 @@
       }
     },
     "result": {
-      "item": "tfc:food/maize_bread_sandwich",
-      "count": 2
-    }
+      "stack": {
+        "item": "tfc:food/maize_bread_sandwich",
+        "count": 2
+      },
+      "modifiers": [
+        "tfc:sandwich"
+      ]
+    },
+    "input_row": 0,
+    "input_column": 0
   }
 }

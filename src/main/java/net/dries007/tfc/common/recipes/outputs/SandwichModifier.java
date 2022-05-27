@@ -4,41 +4,39 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.recipes;
+package net.dries007.tfc.common.recipes.outputs;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.food.FoodData;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.crafting.IShapedRecipe;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.food.*;
+import net.dries007.tfc.common.recipes.RecipeHelpers;
 import net.dries007.tfc.util.Helpers;
 
-public class SandwichCraftingRecipe extends DamageInputsCraftingRecipe<IShapedRecipe<CraftingContainer>>
+public enum SandwichModifier implements ItemStackModifier.SingleInstance<SandwichModifier>
 {
-    protected SandwichCraftingRecipe(ResourceLocation id, IShapedRecipe<CraftingContainer> recipe)
-    {
-        super(id, recipe);
-    }
+    INSTANCE;
 
     @Override
-    public ItemStack assemble(CraftingContainer inv)
+    public ItemStack apply(ItemStack stack, ItemStack input)
     {
-        ItemStack sandwich = super.assemble(inv);
-        sandwich.getCapability(FoodCapability.CAPABILITY)
-            .filter(food -> food instanceof FoodHandler.Dynamic)
-            .ifPresent(food -> {
-                FoodHandler.Dynamic sandwichHandler = (FoodHandler.Dynamic) food;
-                food.setCreationDate(FoodCapability.getRoundedCreationDate());
-                initFoodStats(inv, sandwichHandler);
-            });
-        return sandwich;
+        CraftingContainer inv = RecipeHelpers.getCraftingContainer();
+        if (inv != null)
+        {
+            stack.getCapability(FoodCapability.CAPABILITY)
+                .filter(food -> food instanceof FoodHandler.Dynamic)
+                .ifPresent(food -> {
+                    FoodHandler.Dynamic sandwichHandler = (FoodHandler.Dynamic) food;
+                    food.setCreationDate(FoodCapability.getRoundedCreationDate());
+                    initFoodStats(inv, sandwichHandler);
+                });
+            return stack;
+        }
+        return stack;
     }
 
     private void initFoodStats(CraftingContainer inv, FoodHandler.Dynamic handler)
@@ -66,7 +64,7 @@ public class SandwichCraftingRecipe extends DamageInputsCraftingRecipe<IShapedRe
                     }
                     else
                     {
-                       checkBread = false; // we found two bread
+                        checkBread = false; // we found two bread
                     }
                 }
             }
@@ -96,8 +94,8 @@ public class SandwichCraftingRecipe extends DamageInputsCraftingRecipe<IShapedRe
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer()
+    public SandwichModifier instance()
     {
-        return TFCRecipeSerializers.SANDWICH.get();
+        return INSTANCE;
     }
 }
