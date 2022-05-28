@@ -1358,7 +1358,7 @@ def generate(rm: ResourceManager):
             })
             block.with_lang(lang('%s candle' % color if color else 'candle'))
             block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1,5)])
-            rm.item_model(namespace,parent='minecraft:item/%s' % candle, no_textures=True)
+            rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
             if color: rm.item_tag('tfc:colored_candles', namespace)
 
         # Tags

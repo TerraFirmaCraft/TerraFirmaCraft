@@ -3,7 +3,7 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "item": "tfc:wool_yarn"
+      "tag": "forge:string"
     }
   },
   "input_fluid": {

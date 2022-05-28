@@ -136,9 +136,12 @@ public class BarrelBlock extends DeviceBlock implements IItemSize
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
             tank.readFromNBT(inventoryTag.getCompound("tank"));
 
-            tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
-            Helpers.addInventoryTooltipInfo(inventory, tooltip);
-            Helpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
+            if (!Helpers.isEmpty(inventory) || !tank.isEmpty())
+            {
+                tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
+                Helpers.addInventoryTooltipInfo(inventory, tooltip);
+                Helpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
+            }
         }
     }
 

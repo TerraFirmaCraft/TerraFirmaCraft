@@ -186,8 +186,11 @@ public class LargeVesselBlock extends DeviceBlock implements IItemSize
 
             inventory.deserializeNBT(tag.getCompound("inventory"));
 
-            tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
-            Helpers.addInventoryTooltipInfo(inventory, tooltip);
+            if (!Helpers.isEmpty(inventory))
+            {
+                tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
+                Helpers.addInventoryTooltipInfo(inventory, tooltip);
+            }
         }
     }
 }

@@ -40,18 +40,6 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         super(TFCBlockEntities.LARGE_VESSEL.get(), pos, state, VesselInventory::new, NAME);
     }
 
-    @Override
-    public void saveAdditional(CompoundTag tag)
-    {
-        super.saveAdditional(tag);
-    }
-
-    @Override
-    public void loadAdditional(CompoundTag tag)
-    {
-        super.loadAdditional(tag);
-    }
-
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory inv, Player player)

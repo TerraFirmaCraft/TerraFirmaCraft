@@ -640,7 +640,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'cheese', 'Cheese', 8000, input_fluid='625 tfc:curdled_milk', output_item=item_stack_provider('2 tfc:food/cheese'))
     barrel_sealed_recipe(rm, 'raw_alabaster', 'Raw Alabaster', 1000, 'tfc:ore/gypsum', '100 tfc:limewater', output_item='tfc:alabaster/raw/alabaster')
     barrel_sealed_recipe(rm, 'clean_jute_net', 'Cleaning Jute Net', 1000, 'tfc:dirty_jute_net', '125 minecraft:water', output_item='tfc:jute_net')
-    barrel_sealed_recipe(rm, 'candle', 'Candle', 4000, 'tfc:wool_yarn', '40 tfc:tallow', output_item='tfc:candle')
+    barrel_sealed_recipe(rm, 'candle', 'Candle', 4000, '#forge:string', '40 tfc:tallow', output_item='tfc:candle')
 
     # Bleaching Recipes
     for variant in VANILLA_DYED_ITEMS:
