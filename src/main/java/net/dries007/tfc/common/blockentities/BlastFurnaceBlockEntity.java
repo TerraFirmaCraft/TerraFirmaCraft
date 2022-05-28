@@ -76,19 +76,11 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
 
             // If we have to, dump items from the device until we're back down at capacity.
             // Pop items off of the end of the list
-            final boolean modified = entity.inputStacks.size() > capacity || entity.catalystStacks.size() > capacity;
-            while (entity.inputStacks.size() > capacity)
-            {
-                Helpers.spawnItem(level, pos, entity.inputStacks.remove(entity.inputStacks.size() - 1));
-            }
-            while (entity.catalystStacks.size() > capacity)
-            {
-                Helpers.spawnItem(level, pos, entity.catalystStacks.remove(entity.catalystStacks.size() - 1));
-            }
-            while (entity.fuelStacks.size() > capacity)
-            {
-                Helpers.spawnItem(level, pos, entity.fuelStacks.remove(entity.fuelStacks.size() - 1));
-            }
+            final boolean modified = entity.inputStacks.size() > capacity || entity.catalystStacks.size() > capacity || entity.fuelStacks.size() > capacity;
+
+            entity.popItemsOffOverCapacity(entity.inputStacks, capacity);
+            entity.popItemsOffOverCapacity(entity.catalystStacks, capacity);
+            entity.popItemsOffOverCapacity(entity.fuelStacks, capacity);
 
             if (modified)
             {
@@ -105,8 +97,8 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             // Finally, if we're in a valid state, and we've checked the capacity, then we can attempt to add items in from the world
             entity.addItemsFromWorld(capacity);
 
-            // And refresh the molten block(s) based on the current inputs
-            MoltenBlock.manageMoltenBlockTower(level, entity.worldPosition.above(), state.getValue(BloomeryBlock.LIT), TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get(), entity.inputStacks.size(), TFCConfig.SERVER.blastFurnaceCapacity.get());
+            // And refresh the molten block(s) based on the average of inputs and fuel
+            MoltenBlock.manageMoltenBlockTower(level, entity.worldPosition.above(), state.getValue(BloomeryBlock.LIT), TFCConfig.SERVER.blastFurnaceMaxChimneyHeight.get(), entity.inputStacks.size() + entity.fuelStacks.size(), 2 * TFCConfig.SERVER.blastFurnaceCapacity.get());
         }
 
         if (state.getValue(BlastFurnaceBlock.LIT))
@@ -127,9 +119,9 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         }
         if (entity.airTicks > 0)
         {
-            if (entity.airTicks % 10 == 0 && entity.temperature > 400)
+            if (entity.airTicks % 20 == 0 && entity.temperature > 400)
             {
-                // Damage Tuyere every half second of use while consuming bellows air, and the blast furnace is lit and hot
+                // Damage Tuyere every second of use while consuming bellows air, and the blast furnace is lit and hot
                 final ItemStack tuyere = entity.inventory.getStackInSlot(0);
                 if (!tuyere.isEmpty())
                 {
@@ -150,11 +142,14 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
 
             final List<FluidStack> newInputFluids = new ArrayList<>();
             final Iterator<ItemStack> inputIterator = entity.inputStacks.iterator();
+            final Iterator<ItemStack> catalystIterator = entity.catalystStacks.iterator();
             final Iterator<HeatingRecipe> recipeIterator = entity.inputCachedRecipes.iterator();
             while (inputIterator.hasNext())
             {
                 final ItemStack inputStack = inputIterator.next();
+                final ItemStack catalystStack = catalystIterator.next();
                 final HeatingRecipe inputRecipe = recipeIterator.next();
+
                 inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
 
                     // Update temperature of item
@@ -171,8 +166,9 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                         final FluidStack fluidStack = inputRecipe.getOutputFluid(new ItemStackInventory(inputStack));
                         newInputFluids.add(fluidStack);
 
-                        // And then remove this item and recipe from the iterators
+                        // And then remove this item, it's catalyst, and recipe from the iterators
                         inputIterator.remove();
+                        catalystIterator.remove();
                         recipeIterator.remove();
                     }
                 });
@@ -455,6 +451,15 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         {
             // Fluids are different, so we need to void the current input and replace it
             return newFluid;
+        }
+    }
+
+    private void popItemsOffOverCapacity(List<ItemStack> items, int capacity)
+    {
+        assert level != null;
+        while (items.size() > capacity)
+        {
+            Helpers.spawnItem(level, worldPosition, items.remove(items.size() - 1));
         }
     }
 

@@ -356,13 +356,6 @@ public final class Helpers
         return copy;
     }
 
-    public static FluidStack copyWithSize(FluidStack stack, int size)
-    {
-        final FluidStack copy = stack.copy();
-        copy.setAmount(size);
-        return copy;
-    }
-
     /**
      * Iterate through all slots in an {@code inventory}.
      */

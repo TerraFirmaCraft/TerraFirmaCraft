@@ -69,14 +69,9 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             // If we have to, dump items from the bloomery until we're back down at capacity.
             // Pop items off of the end of the list
             final boolean modified = bloomery.inputStacks.size() > capacity || bloomery.catalystStacks.size() > capacity;
-            while (bloomery.inputStacks.size() > capacity)
-            {
-                Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.inputStacks.remove(bloomery.inputStacks.size() - 1));
-            }
-            while (bloomery.catalystStacks.size() > capacity)
-            {
-                Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.catalystStacks.remove(bloomery.catalystStacks.size() - 1));
-            }
+
+            bloomery.popItemsOffOverCapacity(bloomery.inputStacks, capacity);
+            bloomery.popItemsOffOverCapacity(bloomery.catalystStacks, capacity);
 
             if (modified)
             {
@@ -247,8 +242,18 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         cachedRecipe = null;
     }
 
+    private void popItemsOffOverCapacity(List<ItemStack> items, int capacity)
+    {
+        assert level != null;
+        while (items.size() > capacity)
+        {
+            Helpers.spawnItem(level, worldPosition, items.remove(items.size() - 1));
+        }
+    }
+
     /**
      * Attempt to add new items into the bloomery that are tossed into the chimney area
+     *
      * @param capacity The maximum capacity (in items) that can be added.
      */
     private void addItemsFromWorld(int capacity)

@@ -42,6 +42,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A collection of arbitrary metal sheets in a single block
  * Each side contains it's own sheet, which is identified by the face of the block which the side is on - so the UP property identifies the sheet on the TOP of the sheet pile block.
+ *
+ * todo: this could use {@link net.dries007.tfc.client.IHighlightHandler} for better viewing of which face is targeted, when placing, or breaking. Is it really necessary though?
  */
 public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtension, DirectionPropertyBlock
 {
