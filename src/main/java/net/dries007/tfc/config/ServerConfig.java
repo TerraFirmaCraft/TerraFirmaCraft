@@ -44,6 +44,8 @@ public class ServerConfig
     public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
+    // Blocks - Torch
+    public final ForgeConfigSpec.IntValue candleTicks;
     // Blocks - Charcoal Pit
     public final ForgeConfigSpec.IntValue charcoalTicks;
     // Blocks - Pit Kiln
@@ -197,6 +199,10 @@ public class ServerConfig
         innerBuilder.pop().push("torch");
 
         torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (1000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 72000, -1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("candle");
+
+        candleTicks = builder.apply("candleTicks").comment("Number of ticks required for a candle to burn out (1000 = 1 in game hour = 50 seconds), default is 264 hours. Set to -1 to disable candle burnout.").defineInRange("candleTicks", 264000, -1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("charcoal");
 

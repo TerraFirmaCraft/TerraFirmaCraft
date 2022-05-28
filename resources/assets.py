@@ -1273,6 +1273,25 @@ def generate(rm: ResourceManager):
         block.with_block_loot('tfc:wood/lectern/%s' % wood)
         block.with_tag('minecraft:mineable/axe')
 
+        # Candles
+        for color in [None, *COLORS]:
+            namespace = 'tfc:candle' + ('/'+color if color else '')
+            candle = '%s_candle' % color if color else 'candle'
+            block = rm.blockstate(namespace, variants={
+                "candles=1,lit=false": {"model": "minecraft:block/%s_one_candle" % candle},
+                "candles=1,lit=true": {"model": "minecraft:block/%s_one_candle_lit" % candle},
+                "candles=2,lit=false": {"model": "minecraft:block/%s_two_candles" % candle},
+                "candles=2,lit=true": {"model": "minecraft:block/%s_two_candles_lit" % candle},
+                "candles=3,lit=false": {"model": "minecraft:block/%s_three_candles" % candle},
+                "candles=3,lit=true": {"model": "minecraft:block/%s_three_candles_lit" % candle},
+                "candles=4,lit=false": {"model": "minecraft:block/%s_four_candles" % candle},
+                "candles=4,lit=true": {"model": "minecraft:block/%s_four_candles_lit" % candle}
+            })
+            block.with_lang(lang('%s candle' % color if color else 'candle'))
+            block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1,5)])
+            rm.item_model(namespace,parent='minecraft:item/%s' % candle, no_textures=True)
+            if color: rm.item_tag('tfc:colored_candles', namespace)
+
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
             rm.block_tag('minecraft:wooden_fences', fence_namespace)

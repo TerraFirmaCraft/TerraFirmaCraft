@@ -74,6 +74,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
@@ -619,6 +620,12 @@ public final class ForgeEventHandler
                     event.setCanceled(true);
                 }
             });
+        }
+        else if (block instanceof TFCCandleBlock)
+        {
+            level.setBlockAndUpdate(pos, state.setValue(TFCCandleBlock.LIT, true));
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            event.setCanceled(true);
         }
     }
 

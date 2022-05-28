@@ -514,6 +514,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'cheese', 'Cheese', 8000, input_fluid='625 tfc:curdled_milk', output_item='2 tfc:food/cheese')
     barrel_sealed_recipe(rm, 'raw_alabaster', 'Raw Alabaster', 1000, 'tfc:ore/gypsum', '100 tfc:limewater', output_item='tfc:alabaster/raw/alabaster')
     barrel_sealed_recipe(rm, 'clean_jute_net', 'Cleaning Jute Net', 1000, 'tfc:dirty_jute_net', '125 minecraft:water', output_item='tfc:jute_net')
+    barrel_sealed_recipe(rm, 'candle', 'Candle', 4000, 'tfc:wool_yarn', '40 tfc:tallow', output_item='tfc:candle')
 
     # Bleaching Recipes
     for variant in VANILLA_DYED_ITEMS:
@@ -521,6 +522,7 @@ def generate(rm: ResourceManager):
         barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s' % variant, 1000, '#tfc:colored_%s' % variant, '%d tfc:lye' % cost, output_item='minecraft:white_%s' % variant)
     barrel_sealed_recipe(rm, 'dye/bleach_shulkers', 'Bleaching Shulker Box', 1000, '#tfc:colored_shulker_boxes', '125 tfc:lye', output_item='minecraft:shulker_box')
     barrel_sealed_recipe(rm, 'dye/bleach_concrete_powder', 'Bleaching Concrete Powder', 1000, '#tfc:colored_concrete_powder', '125 tfc:lye', output_item='tfc:aggregate')
+    barrel_sealed_recipe(rm, 'dye/bleach_candles', 'Bleaching Candles', 1000, '#tfc:colored_candles', '125 tfc:lye', output_item='tfc:candle')
     for variant in ('raw_alabaster', 'alabaster_bricks', 'polished_alabaster'):
         result_name = 'tfc:alabaster/raw/%s' % variant if variant != 'raw_alabaster' else 'tfc:alabaster/raw/alabaster'
         barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s' % variant, 1000, '#tfc:colored_%s' % variant, '125 tfc:lye', output_item=result_name)
@@ -537,6 +539,7 @@ def generate(rm: ResourceManager):
         barrel_sealed_recipe(rm, 'dye/%s_glazed_vessel' % color, 'Dyeing Unfired Vessel %s' % color, 1000, 'tfc:ceramic/unfired_vessel', fluid, 'tfc:ceramic/%s_unfired_vessel' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_large_vessel' % color, 'Dyeing Unfired Large Vessel %s' % color, 1000, 'tfc:ceramic/unfired_large_vessel', fluid, 'tfc:ceramic/unfired_large_vessel/%s' % color)
         barrel_sealed_recipe(rm, 'dye/%s_concrete_powder' % color, 'Dyeing Aggregate %s' % color, 1000, 'tfc:aggregate', fluid, 'minecraft:%s_concrete_powder' % color)
+        barrel_sealed_recipe(rm, 'dye/%s_candle' % color, 'Dyeing Candle %s' % color, 1000, 'tfc:candle', fluid, 'tfc:candle/%s' % color)
 
     # Instant Barrel Recipes
     barrel_instant_recipe(rm, 'fresh_to_salt_water', 'tfc:powder/salt', '125 minecraft:water', output_fluid='125 tfc:salt_water')

@@ -288,6 +288,11 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> LIGHT = register("light", () -> new TFCLightBlock(Properties.of(Material.AIR).strength(-1.0F, 3600000.8F).noDrops().noOcclusion().lightLevel(state -> state.getValue(TFCLightBlock.LEVEL)).randomTicks()), MISC);
 
+    public static final RegistryObject<Block> CANDLE = register("candle", () -> new TFCCandleBlock(ExtendedProperties.of(Properties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION)).blockEntity(TFCBlockEntities.TICK_COUNTER)), MISC);
+    public static final Map<DyeColor, RegistryObject<Block>> DYED_CANDLE = Helpers.mapOfKeys(DyeColor.class, color ->
+        register("candle/" + color.getName(), () -> new TFCCandleBlock(ExtendedProperties.of(Properties.of(Material.DECORATION, MaterialColor.SAND).randomTicks().noOcclusion().strength(0.1F).sound(SoundType.CANDLE).lightLevel(CandleBlock.LIGHT_EMISSION)).blockEntity(TFCBlockEntities.TICK_COUNTER)), MISC)
+    );
+
     public static final RegistryObject<Block> LARGE_VESSEL = register("ceramic/large_vessel", () -> new LargeVesselBlock(ExtendedProperties.of(Properties.of(Material.CLAY).strength(2.5F).noOcclusion()).blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC);
     public static final Map<DyeColor, RegistryObject<Block>> GLAZED_LARGE_VESSELS = Helpers.mapOfKeys(DyeColor.class, color ->
         register("ceramic/large_vessel/" + color.getName(), () -> new LargeVesselBlock(ExtendedProperties.of(Properties.of(Material.CLAY).strength(2.5F).noOcclusion()).blockEntity(TFCBlockEntities.LARGE_VESSEL)), MISC)
