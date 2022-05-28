@@ -8,7 +8,7 @@
   ],
   "key": {
     "X": {
-      "item": "minecraft:string"
+      "tag": "forge:string"
     },
     "Y": {
       "item": "minecraft:paper"

@@ -59,21 +59,22 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        int saplings = state.getValue(SAPLINGS);
-        if (!level.isClientSide() && handIn == InteractionHand.MAIN_HAND && saplings < 4)
+        final int saplings = state.getValue(SAPLINGS);
+        if (saplings < 4)
         {
             ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
             ItemStack off = player.getItemInHand(InteractionHand.OFF_HAND);
             if (defaultBlockState().getBlock().asItem() == held.getItem() && off.is(TFCTags.Items.KNIVES) && state.hasProperty(TFCBlockStateProperties.SAPLINGS))
             {
                 if (saplings > 2 && Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH))
+                {
                     return InteractionResult.FAIL;
-                if (!player.isCreative())
-                    held.shrink(1);
+                }
+                held.shrink(1);
                 level.setBlockAndUpdate(pos, state.setValue(SAPLINGS, saplings + 1));
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
         }
         return InteractionResult.FAIL;
@@ -93,9 +94,9 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
             if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
             {
-                int hydration = (int) Climate.getRainfall(level, pos) / 5;
-                float temp = Climate.getTemperature(level, pos);
-                if (climateRange.get().checkBoth(hydration, temp, false))
+                final int hydration = (int) Climate.getRainfall(level, pos) / 5;
+                final float temp = Climate.getTemperature(level, pos);
+                if (!climateRange.get().checkBoth(hydration, temp, false))
                 {
                     level.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
                 }

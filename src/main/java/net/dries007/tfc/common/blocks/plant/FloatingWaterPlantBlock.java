@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
 public abstract class FloatingWaterPlantBlock extends PlantBlock
@@ -29,7 +30,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
 
     public static FloatingWaterPlantBlock create(IPlant plant, Supplier<? extends Fluid> fluid, Properties properties)
     {
-        return new FloatingWaterPlantBlock(properties, fluid)
+        return new FloatingWaterPlantBlock(ExtendedProperties.of(properties), fluid)
         {
             @Override
             public IPlant getPlant()
@@ -41,7 +42,7 @@ public abstract class FloatingWaterPlantBlock extends PlantBlock
 
     private final Supplier<? extends Fluid> fluid;
 
-    protected FloatingWaterPlantBlock(Properties properties, Supplier<? extends Fluid> fluid)
+    protected FloatingWaterPlantBlock(ExtendedProperties properties, Supplier<? extends Fluid> fluid)
     {
         super(properties);
         this.fluid = fluid;

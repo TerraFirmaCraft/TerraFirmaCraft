@@ -12,14 +12,19 @@ import java.util.function.Supplier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.common.ForgeHooks;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GrowingPlantHeadBlock;
@@ -27,14 +32,16 @@ import net.minecraft.world.level.block.NetherVines;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TopPlantBlock extends GrowingPlantHeadBlock
+public class TopPlantBlock extends GrowingPlantHeadBlock implements IForgeBlockExtension
 {
     private final Supplier<? extends Block> bodyBlock;
+    private final ExtendedProperties properties;
 
-    public TopPlantBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
+    public TopPlantBlock(ExtendedProperties properties, Supplier<? extends Block> bodyBlock, Direction direction, VoxelShape shape)
     {
-        super(properties, direction, shape, false, 0);
+        super(properties.properties(), direction, shape, false, 0);
         this.bodyBlock = bodyBlock;
+        this.properties = properties;
     }
 
     @Override
@@ -52,9 +59,23 @@ public class TopPlantBlock extends GrowingPlantHeadBlock
     }
 
     @Override
+    @Nullable
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        BlockState state = super.getStateForPlacement(context);
+        return state == null ? null : state.setValue(AGE, Mth.nextInt(context.getLevel().getRandom(), 10, 18));
+    }
+
+    @Override
     public boolean isValidBonemealTarget(BlockGetter level, BlockPos pos, BlockState state, boolean isClient)
     {
         return false;
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 
     @Override

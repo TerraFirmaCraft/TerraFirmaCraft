@@ -45,7 +45,8 @@ TOOL_TAGS: Dict[str, str] = {
     'saw': 'saws',
     'propick': 'propicks',
     'scythe': 'scythes',
-    'shears': 'shears'
+    'shears': 'shears',
+    'tuyere': 'tuyeres'
 }
 
 ROCKS: Dict[str, Rock] = {
@@ -299,7 +300,7 @@ CUTTABLE_ROCKS = ('raw', 'bricks', 'cobble', 'smooth', 'mossy_cobble', 'mossy_br
 ROCK_SPIKE_PARTS = ('base', 'middle', 'tip')
 SAND_BLOCK_TYPES = ('brown', 'white', 'black', 'red', 'yellow', 'green', 'pink')
 SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
-SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt')
+SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt', 'mud', 'mud_bricks', 'drying_bricks')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
 
@@ -371,6 +372,7 @@ PLANTS: Dict[str, Plant] = {
     'scutch_grass': Plant(False, 0, 40, 150, 500, 'short_grass'),
     'star_grass': Plant(False, 2, 40, 50, 260, 'grass_water'),
     'timothy_grass': Plant(False, -22, 16, 289, 500, 'short_grass'),
+    'raddia_grass': Plant(False, 18, 40, 330, 500, 'short_grass'),
 
     'allium': Plant(False, -10, -2, 150, 400, 'standard'),
     'anthurium': Plant(False, 12, 40, 290, 500, 'standard'),
@@ -421,7 +423,7 @@ PLANTS: Dict[str, Plant] = {
     'primrose': Plant(False, -8, 10, 150, 300, 'standard'),
     'pulsatilla': Plant(False, -10, 2, 50, 200, 'standard'),
     'red_sealing_wax_palm': Plant(False, 18, 40, 280, 500, 'tall_plant'),
-    'reindeer_lichen': Plant(False, 10, 33, 50, 470, 'creeping'),
+    'reindeer_lichen': Plant(False, -24, -8, 50, 470, 'creeping'),
     'rose': Plant(True, -5, 20, 150, 300, 'tall_plant'),
     'sacred_datura': Plant(False, 4, 18, 75, 150, 'standard'),
     'sagebrush': Plant(False, -10, 14, 0, 120, 'dry'),
@@ -453,7 +455,7 @@ PLANTS: Dict[str, Plant] = {
     'water_taro': Plant(False, 12, 40, 260, 500, 'emergent_fresh'),
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
-UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
+UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
 SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
 CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
 CORAL_BLOCKS: List[str] = ['dead_coral', 'dead_coral', 'dead_coral_fan', 'coral_fan', 'dead_coral_wall_fan', 'coral_wall_fan']
@@ -489,7 +491,7 @@ COLOR_COMBOS = [
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
-                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'rotten_compost', 'shell', 'silk_cloth', 'spindle',
+                'halter', 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
@@ -497,10 +499,11 @@ VANILLA_DYED_ITEMS = ('wool', 'carpet', 'bed', 'terracotta', 'stained_glass', 's
 SIMPLE_POTTERY = ('bowl', 'fire_brick', 'pot', 'spindle_head', 'vessel')
 SIMPLE_UNFIRED_POTTERY = ('brick', 'crucible', 'flower_pot', 'jug', 'pan')
 VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'golden')
-SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore')
-FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus')
+SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
+FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover', 'reindeer_lichen_cover', 'morning_glory_cover', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
+SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
 
 BERRIES: Dict[str, Berry] = {
@@ -532,8 +535,8 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
-MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle')
-VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'sugarcane')
+VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane')
+MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = {
     'grain': 'Wholesome',
     'fruit': 'Tasty',
@@ -542,8 +545,11 @@ NUTRIENTS = {
     'dairy': 'Creamy'
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken']
-BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken')
+BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
+
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace')
+TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
 
 BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'large_vessel']
 TANNIN_WOOD_TYPES = ['oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia']
@@ -570,13 +576,17 @@ OCEAN_AMBIENT: Dict[str, Dict[str, Any]] = {
 OCEAN_CREATURES: Dict[str, Dict[str, Any]] = {
     'orca': spawner('tfc:orca', min_count=1, max_count=3),
     'dolphin': spawner('tfc:dolphin', min_count=1, max_count=3),
-    'squid': spawner('tfc:squid', min_count=1, max_count=3),
+    'squid': spawner('tfc:squid', min_count=1, max_count=3)
+}
+
+UNDERGROUND_WATER_CREATURES: Dict[str, Dict[str, Any]] = {
     'octopoteuthis': spawner('tfc:octopoteuthis', min_count=1, max_count=2)
 }
 
 LAKE_AMBIENT: Dict[str, Dict[str, Any]] = {
     'salmon': spawner('tfc:salmon', min_count=2, max_count=6, weight=10),
-    'bluegill': spawner('tfc:bluegill', min_count=2, max_count=4, weight=10)
+    'bluegill': spawner('tfc:bluegill', min_count=2, max_count=4, weight=10),
+    'crayfish': spawner('tfc:crayfish', min_count=1, max_count=4, weight=3)
 }
 
 LAKE_CREATURES: Dict[str, Dict[str, Any]] = {
@@ -595,7 +605,10 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'chicken': spawner('tfc:chicken', min_count=2, max_count=6)
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli')
+ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
+VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
+VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -628,6 +641,9 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.scribing_table.rename_item': 'Player scribbling',
     'subtitles.block.tfc.vessel.opened': 'Vessel opened',
     'subtitles.block.tfc.vessel.closed': 'Vessel closed',
+    'tfc.key.place_block': 'Place Block',
+    'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
+    'tfc.key.stack_food': 'Stack Food',
     # Sounds todo: subtitles for everything and standardize the format
     'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
     'tfc.animal.alpaca.hurt': 'Alpaca Yelps',
@@ -656,6 +672,8 @@ DEFAULT_LANG = {
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
+    'tfc.tooltip.danger': '§f - Danger!!',
+    'tfc.tooltip.anvil_plan': 'Plans',
     'tfc.tooltip.calendar_days_years': '%d, %04d',
     'tfc.tooltip.calendar_season': 'Season : ',
     'tfc.tooltip.calendar_day': 'Day : ',
@@ -697,6 +715,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pan.water': 'You need to stand in water to be able to pan.',
     'tfc.tooltip.small_vessel.inventory_too_hot': 'Too hot to open!',
     'tfc.tooltip.small_vessel.alloy_solid': 'Contents have solidified!',
+    'tfc.tooltip.small_vessel.alloy_molten': 'Contents are still liquid!',
     'tfc.tooltip.small_vessel.contents': 'Contents:',
     'tfc.tooltip.small_vessel.solid': '- Solid.',
     'tfc.tooltip.small_vessel.molten': '- Molten!',
@@ -739,9 +758,19 @@ DEFAULT_LANG = {
     'tfc.tooltip.unseal_barrel': 'Unseal',
     'tfc.tooltip.while_sealed': 'While sealed',
     'tfc.tooltip.while_sealed_description': 'While the barrel is sealed and the required fluid is present',
+    'tfc.tooltip.anvil_is_too_low_tier_to_weld': 'The Anvil is not a high enough tier to weld that!',
+    'tfc.tooltip.anvil_is_too_low_tier_to_work': 'The Anvil is not a high enough tier to work that!',
+    'tfc.tooltip.not_hot_enough_to_weld': 'Not hot enough to weld!',
+    'tfc.tooltip.not_hot_enough_to_work': 'Not hot enough to work!',
+    'tfc.tooltip.no_flux_to_weld': 'There is no flux in the anvil!',
+    'tfc.tooltip.hammer_required_to_work': 'A hammer is required to work in the anvil!',
+    'tfc.tooltip.anvil_has_been_worked': 'Worked',
+    'tfc.tooltip.blast_furnace_ore': 'Input: %d / %d',
+    'tfc.tooltip.blast_furnace_fuel': 'Fuel: %d / %d',
     'tfc.tooltip.fertilized': '§6Fertilized',
     'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
     'tfc.tooltip.egg_hatch_today': 'Will hatch today!',
+    'tfc.tooltip.fishing.bait': '§6Bait: ',
     'tfc.tooltip.animal.pregnant': 'This %s is pregnant!',
     'tfc.tooltip.animal.male_milk': 'This %s is a male.',
     'tfc.tooltip.animal.old': 'This %s is too old to produce.',
@@ -787,6 +816,7 @@ DEFAULT_LANG = {
     'entity.tfc.dolphin': 'Dolphin',
     'entity.tfc.isopod': 'Isopod',
     'entity.tfc.lobster': 'Lobster',
+    'entity.tfc.crayfish': 'Crayfish',
     'entity.tfc.horseshoe_crab': 'Horseshoe Crab',
     'entity.tfc.penguin': 'Penguin',
     'entity.tfc.turtle': 'Turtle',
@@ -800,6 +830,12 @@ DEFAULT_LANG = {
     'entity.tfc.alpaca.female': 'Female Alpaca',
     'entity.tfc.alpaca.male': 'Male Alpaca',
     'entity.tfc.polar_bear': 'Polar Bear',
+    'entity.tfc.grizzly_bear': 'Grizzly Bear',
+    'entity.tfc.black_bear': 'Black Bear',
+    'entity.tfc.cougar': 'Cougar',
+    'entity.tfc.panther': 'Panther',
+    'entity.tfc.lion': 'Lion',
+    'entity.tfc.sabertooth': 'Sabertooth',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.squid': 'Squid',
@@ -862,12 +898,36 @@ DEFAULT_LANG = {
     'tfc.enum.nutrient.vegetables': 'Vegetables',
     'tfc.enum.nutrient.protein': 'Protein',
     'tfc.enum.nutrient.dairy': 'Dairy',
+    'tfc.enum.forgingbonus.none': 'No Forging Bonus',
+    'tfc.enum.forgingbonus.poorly_forged': 'Poorly Forged',
+    'tfc.enum.forgingbonus.well_forged': 'Well Forged',
+    'tfc.enum.forgingbonus.expertly_forged': 'Expertly Forged',
+    'tfc.enum.forgingbonus.perfectly_forged': 'Perfectly Forged!',
+    'tfc.enum.forgestep.hit': 'Hit',
+    'tfc.enum.forgestep.hit_light': 'Light Hit',
+    'tfc.enum.forgestep.hit_medium': 'Medium Hit',
+    'tfc.enum.forgestep.hit_hard': 'Hard Hit',
+    'tfc.enum.forgestep.draw': 'Draw',
+    'tfc.enum.forgestep.punch': 'Punch',
+    'tfc.enum.forgestep.bend': 'Bend',
+    'tfc.enum.forgestep.upset': 'Upset',
+    'tfc.enum.forgestep.shrink': 'Shrink',
+    'tfc.enum.order.any': 'Any',
+    'tfc.enum.order.last': 'Last',
+    'tfc.enum.order.not_last': 'Not Last',
+    'tfc.enum.order.second_last': 'Second Last',
+    'tfc.enum.order.third_last': 'Third Last',
 
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
     'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
     'tfc.composter.too_many_greens': 'This composter has enough green items',
     'tfc.composter.too_many_browns': 'This composter has enough brown items',
+    'tfc.chisel.cannot_place': 'The chiseled version of this block cannot exist here',
+    'tfc.chisel.no_recipe': 'This block cannot be chiseled',
+    'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',
+    'tfc.fishing.no_bait': 'This fishing rod needs bait!',
+    'tfc.fishing.pulled_too_hard': 'You pulled too hard, and the fish got away with the bait.',
 
     **dict(('metal.tfc.%s' % metal, lang(metal)) for metal in METALS.keys()),
 
@@ -885,7 +945,19 @@ DEFAULT_LANG = {
     'tfc.jei.loom': 'Loom',
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
-    'tfc.jei.bloomery': 'Bloomery'
+    'tfc.jei.bloomery': 'Bloomery',
+    'tfc.jei.welding': 'Welding',
+    'tfc.jei.anvil': 'Anvil',
+    'tfc.jei.chisel': 'Chisel',
+
+    # jei tooltips
+    'tfc.jei.compost_greens': 'This item can be added to the Composter as a green item. Composters need four green and four brown items to work.',
+    'tfc.jei.compost_browns': 'This item can be added to the Composter as a brown item. Composters need four green and four brown items to work.',
+    'tfc.jei.compost_poisons': 'This item poisons compost in the Composter. This causes it to produce rotten compost.',
+    'tfc.jei.compost': 'This fertilizer is made by adding four green items and four brown items to the Composter, and waiting for a while.',
+    'tfc.jei.rotten_compost': 'This kills plants. It is made by adding compost poisons to the Composter.',
+
+
 }
 
 # Automatically Generated by generate_trees.py

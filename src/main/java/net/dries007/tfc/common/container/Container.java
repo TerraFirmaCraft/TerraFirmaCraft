@@ -13,6 +13,8 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * Base container implementation, which just adds the player inventory.
  * Can be used as-is, although most commonly used with a implementation extending either {@link ItemStackContainer} or {@link BlockEntityContainer}
@@ -25,6 +27,7 @@ public class Container extends AbstractContainerMenu
     }
 
     protected int containerSlots; // The number of slots in the container (not including the player inventory)
+    @Nullable protected Player player;
 
     protected Container(MenuType<?> type, int windowId)
     {
@@ -44,6 +47,7 @@ public class Container extends AbstractContainerMenu
         addContainerSlots();
         containerSlots = slots.size();
         addPlayerInventorySlots(playerInventory, yOffset);
+        player = playerInventory.player;
         return (C) this;
     }
 

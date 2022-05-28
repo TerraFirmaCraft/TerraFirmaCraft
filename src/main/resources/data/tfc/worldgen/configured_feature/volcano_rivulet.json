@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:rivulet",
   "config": {
-    "state": "minecraft:magma_block"
+    "state": "tfc:rock/magma/basalt"
   }
 }

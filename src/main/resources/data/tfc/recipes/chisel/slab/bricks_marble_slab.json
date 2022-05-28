@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:chisel",
+  "ingredient": "tfc:rock/bricks/marble",
+  "result": "tfc:rock/bricks/marble_slab",
+  "mode": "slab",
+  "extra_drop": {
+    "item": "tfc:rock/bricks/marble_slab"
+  }
+}

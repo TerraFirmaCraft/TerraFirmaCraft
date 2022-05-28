@@ -34,11 +34,26 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 
 public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
+    /**
+     * @return if there is, given the current state values, no way this block can be supported.
+     */
+    public static boolean isEmpty(BlockState state)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (state.getValue(ITEM_PROPERTIES[i])) return false;
+        }
+        return true;
+    }
+
     private static final BooleanProperty ITEM_0 = TFCBlockStateProperties.ITEM_0;
     private static final BooleanProperty ITEM_1 = TFCBlockStateProperties.ITEM_1;
     private static final BooleanProperty ITEM_2 = TFCBlockStateProperties.ITEM_2;
@@ -124,9 +139,9 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             if (placedItem != null)
             {
                 ItemStack held = player.getItemInHand(hand);
-                if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4 && PitKilnBlockEntity.isValid(level, pos))
+                if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && !held.isEmpty() && PitKilnBlockEntity.isValid(level, pos))
                 {
-                    PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(4));
+                    PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(1));
                     return InteractionResult.SUCCESS;
                 }
                 return placedItem.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;
@@ -153,14 +168,5 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(ITEM_0, ITEM_1, ITEM_2, ITEM_3);
-    }
-
-    public boolean isEmpty(BlockState state)
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            if (state.getValue(ITEM_PROPERTIES[i])) return false;
-        }
-        return true;
     }
 }

@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/sycamore",
+    "dead_tree": "tfc:tree/sycamore_dead",
     "fallen_log": "tfc:wood/log/sycamore",
     "old_growth_tree": "tfc:tree/sycamore_large"
   }

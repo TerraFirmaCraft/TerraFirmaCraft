@@ -27,16 +27,20 @@ import net.minecraft.world.level.block.GrowingPlantHeadBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 
-public class BodyPlantBlock extends GrowingPlantBodyBlock
+public class BodyPlantBlock extends GrowingPlantBodyBlock implements IForgeBlockExtension
 {
     private final Supplier<? extends Block> headBlock;
+    private final ExtendedProperties properties;
 
-    public BodyPlantBlock(BlockBehaviour.Properties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
+    public BodyPlantBlock(ExtendedProperties properties, Supplier<? extends Block> headBlock, VoxelShape shape, Direction direction)
     {
-        super(properties, direction, shape, true);
+        super(properties.properties(), direction, shape, true);
         this.headBlock = headBlock;
+        this.properties = properties;
     }
 
     @Override
@@ -71,6 +75,12 @@ public class BodyPlantBlock extends GrowingPlantBodyBlock
         {
             return block == getHeadBlock() || block == getBodyBlock() || Helpers.isBlock(blockstate, BlockTags.LEAVES) || blockstate.isFaceSturdy(level, blockpos, growthDirection);
         }
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 
     @Override

@@ -103,7 +103,6 @@ public class TFCLayers
 
     private static final BiomeVariants[] BIOME_LAYERS = new BiomeVariants[64];
     private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
-    private static final boolean ENABLE_DEBUG = Helpers.detectBootstrapEnvironment();
 
     static
     {
@@ -463,7 +462,7 @@ public class TFCLayers
         {
             throw new IllegalStateException("Tried to register layer id " + index + " but only had space for " + BIOME_LAYERS.length + " layers");
         }
-        BIOME_LAYERS[index] = ENABLE_DEBUG ? null : variants.get();
+        BIOME_LAYERS[index] = Helpers.BOOTSTRAP_ENVIRONMENT ? null : variants.get();
         return index;
     }
 }

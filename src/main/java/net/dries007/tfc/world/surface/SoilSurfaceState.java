@@ -29,7 +29,7 @@ public class SoilSurfaceState implements SurfaceState
     public static final float RAINFALL_SAND_SANDY_MEAN = (RAINFALL_SAND + RAINFALL_SAND_SANDY_MIX) / 2f;
     public static final float RAINFALL_SAND_SANDY_RANGE = (RAINFALL_SAND_SANDY_MIX - RAINFALL_SAND) / 2f;
 
-    private static final long PATCH_NOISE_SEED = 18273952837592L;
+    public static final long PATCH_NOISE_SEED = 18273952837592L;
 
     protected final SoilBlockType soil;
     protected final Noise2D patchNoise = new OpenSimplex2D(PATCH_NOISE_SEED).octaves(2).spread(0.04f);
@@ -46,6 +46,7 @@ public class SoilSurfaceState implements SurfaceState
         final float rainfall = context.rainfall();
         final ChunkData data = context.getChunkData();
 
+        final float forest = data.getAdjustedForestDensity();
         if (rainfall < RAINFALL_SANDY)
         {
             if (rainfall > RAINFALL_SAND_SANDY_MIX)
@@ -53,22 +54,34 @@ public class SoilSurfaceState implements SurfaceState
                 // Sandy
                 return soil(SoilBlockType.Variant.SANDY_LOAM);
             }
-            else if (rainfall > RAINFALL_SAND)
-            {
-                // Sandy - Sand Transition Zone
-                float noise = patchNoise.noise(pos.getX(), pos.getZ());
-                if (noise > 0.2f && data.getAdjustedForestDensity() > 0.5f)
-                {
-                    float noise2 = patchNoise.noise(pos.getX() + 2000, pos.getZ() + 2000);
-                    if (noise2 > 0) return rooted(SoilBlockType.Variant.SANDY_LOAM);
-                }
-                return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? context.getRock().sand().defaultBlockState() : soil(SoilBlockType.Variant.SANDY_LOAM);
-            }
             else
             {
-                // Sand
-                return context.getRock().sand().defaultBlockState();
+                // Patchy gravel deserts. Only places gravel in mostly-flat areas, otherwise defaults to sand
+                final double slope = context.getSlope();
+                final float weirdness = data.getForestWeirdness();
+                if ((weirdness < 0.18f || (weirdness < 0.22f && (weirdness - context.random().nextFloat() * 0.5f < 0f))) && slope < 2 && (slope < 1 || context.random().nextBoolean()))
+                {
+                    return context.getRock().gravel().defaultBlockState();
+                }
+                else if (rainfall > RAINFALL_SAND)
+                {
+                    // Sandy - Sand Transition Zone
+                    float noise = patchNoise.noise(pos.getX(), pos.getZ());
+                    if (noise > 0.2f && forest > 0.5f)
+                    {
+                        // offset patches of rooted dirt theoretically forested areas
+                        float noise2 = patchNoise.noise(pos.getX() + 2000, pos.getZ() + 2000);
+                        if (noise2 > 0) return rooted(SoilBlockType.Variant.SANDY_LOAM);
+                    }
+                    return noise > 0.2f * (rainfall - RAINFALL_SAND_SANDY_MEAN) / RAINFALL_SAND_SANDY_RANGE ? context.getRock().sand().defaultBlockState() : soil(SoilBlockType.Variant.SANDY_LOAM);
+                }
+                else
+                {
+                    // Sand
+                    return context.getRock().sand().defaultBlockState();
+                }
             }
+
         }
         else if (rainfall > RAINFALL_SILTY)
         {
@@ -85,6 +98,12 @@ public class SoilSurfaceState implements SurfaceState
             }
             else
             {
+                // Muddy areas at low elevation
+                if (pos.getY() == context.getSeaLevel() -1 || pos.getY() == context.getSeaLevel())
+                {
+                    float noise = patchNoise.noise(pos.getX(), pos.getZ());
+                    if (noise > 0) return mud(SoilBlockType.Variant.SILT);
+                }
                 // Silt
                 return soil(SoilBlockType.Variant.SILT);
             }
@@ -93,7 +112,7 @@ public class SoilSurfaceState implements SurfaceState
         {
             // Sandy / Silty Transition Zone
             float noise = patchNoise.noise(pos.getX(), pos.getZ());
-            if (noise > 0 && data.getAdjustedForestDensity() > 0.5f)
+            if (noise > 0 && forest > 0.5f)
             {
                 return rooted(SoilBlockType.Variant.SILTY_LOAM);
             }
@@ -119,5 +138,10 @@ public class SoilSurfaceState implements SurfaceState
     private BlockState rooted(SoilBlockType.Variant variant)
     {
         return TFCBlocks.SOIL.get(SoilBlockType.ROOTED_DIRT).get(variant).get().defaultBlockState();
+    }
+
+    private BlockState mud(SoilBlockType.Variant variant)
+    {
+        return TFCBlocks.SOIL.get(SoilBlockType.MUD).get(variant).get().defaultBlockState();
     }
 }

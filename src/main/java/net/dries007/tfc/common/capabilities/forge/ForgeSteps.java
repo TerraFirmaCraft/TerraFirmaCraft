@@ -6,52 +6,74 @@
 
 package net.dries007.tfc.common.capabilities.forge;
 
-import org.jetbrains.annotations.Nullable;
+import java.util.Objects;
 
 import net.minecraft.nbt.CompoundTag;
 
-public class ForgeSteps
+import org.jetbrains.annotations.Nullable;
+
+/**
+ * Records the last three steps taken, and also the total number of steps taken since starting working.
+ */
+public final class ForgeSteps
 {
     @Nullable private ForgeStep first, second, third;
+    private int total;
 
+    /**
+     * Adds a step to the head of the queue (the new "last") shifting all others down.
+     */
     public void addStep(@Nullable ForgeStep step)
     {
         third = second;
         second = first;
         first = step;
+        total++;
+    }
+
+    @Nullable
+    public ForgeStep last()
+    {
+        return first;
+    }
+
+    @Nullable
+    public ForgeStep secondLast()
+    {
+        return second;
+    }
+
+    @Nullable
+    public ForgeStep thirdLast()
+    {
+        return third;
+    }
+
+    public int total()
+    {
+        return total;
     }
 
     public void write(CompoundTag tag)
     {
-        // Serialize to ordinal + 1, so that a zero entry (which is the default when reading from a nbt tag where the value doesn't exist) turns into null.
-        tag.putInt("first", first != null ? first.ordinal() + 1 : 0);
-        tag.putInt("second", second != null ? second.ordinal() + 1 : 0);
-        tag.putInt("third", third != null ? third.ordinal() + 1 : 0);
+        tag.putByte("first", (byte) (first != null ? first.ordinal() : -1));
+        tag.putByte("second", (byte) (second != null ? second.ordinal() : -1));
+        tag.putByte("third", (byte) (third != null ? third.ordinal() : -1));
+        tag.putInt("total", total);
     }
 
     public void read(CompoundTag nbt)
     {
-        first = ForgeStep.valueOf(nbt.getInt("first") - 1);
-        second = ForgeStep.valueOf(nbt.getInt("second") - 1);
-        third = ForgeStep.valueOf(nbt.getInt("third") - 1);
-    }
-
-    @Nullable
-    public ForgeStep getStep(int step)
-    {
-        return switch (step)
-            {
-                case 0 -> first;
-                case 1 -> second;
-                case 2 -> third;
-                default -> throw new IllegalArgumentException("Cannot get step for index: " + step);
-            };
+        first = ForgeStep.valueOf(nbt.getByte("first"));
+        second = ForgeStep.valueOf(nbt.getByte("second"));
+        third = ForgeStep.valueOf(nbt.getByte("third"));
+        total = nbt.getInt("total");
     }
 
     @Override
     public String toString()
     {
-        return "[" + getStep(0) + ", " + getStep(1) + ", " + getStep(2) + "]";
+        return "[" + first + ", " + second + ", " + third + ", ...]";
     }
 
     /**
@@ -61,6 +83,21 @@ public class ForgeSteps
      */
     public boolean any()
     {
-        return first != null || second != null || third != null;
+        return total > 0;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(first, second, third, total);
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final ForgeSteps that = (ForgeSteps) o;
+        return total == that.total && first == that.first && second == that.second && third == that.third;
     }
 }

@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/double_sheet/wrought_iron"
+  },
+  "result": {
+    "item": "tfc:metal/unfinished_greaves/wrought_iron"
+  },
+  "tier": 3,
+  "rules": [
+    "bend_any",
+    "draw_any",
+    "hit_any"
+  ]
+}

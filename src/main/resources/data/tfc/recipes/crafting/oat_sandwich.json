@@ -1,0 +1,40 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:damage_inputs_shaped_crafting",
+  "recipe": {
+    "type": "tfc:advanced_shaped_crafting",
+    "pattern": [
+      "ZX ",
+      "YYY",
+      " X "
+    ],
+    "key": {
+      "X": {
+        "type": "tfc:not_rotten",
+        "ingredient": {
+          "item": "tfc:food/oat_bread"
+        }
+      },
+      "Y": {
+        "type": "tfc:not_rotten",
+        "ingredient": {
+          "tag": "tfc:foods/usable_in_sandwich"
+        }
+      },
+      "Z": {
+        "tag": "tfc:knives"
+      }
+    },
+    "result": {
+      "stack": {
+        "item": "tfc:food/oat_bread_sandwich",
+        "count": 2
+      },
+      "modifiers": [
+        "tfc:sandwich"
+      ]
+    },
+    "input_row": 0,
+    "input_column": 0
+  }
+}

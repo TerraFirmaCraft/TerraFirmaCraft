@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/ingot/cast_iron"
+  },
+  "second_input": {
+    "item": "tfc:metal/ingot/cast_iron"
+  },
+  "tier": 0,
+  "result": {
+    "item": "tfc:metal/double_ingot/cast_iron"
+  }
+}

@@ -105,10 +105,18 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level)
                     .ifPresent(instantRecipe -> {
                         instantRecipe.assembleOutputs(barrel.inventory);
-                        Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
+                        if (barrel.soundCooldownTicks == 0)
+                        {
+                            Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
+                            barrel.soundCooldownTicks = 5;
+                        }
                     });
                 barrel.markForSync();
             }
+        }
+        if (barrel.soundCooldownTicks > 0)
+        {
+            barrel.soundCooldownTicks--;
         }
     }
 
@@ -118,6 +126,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     private long lastUpdateTick; // The last tick this barrel was updated in serverTick()
     private long sealedTick; // The tick this barrel was sealed
     private long recipeTick; // The tick this barrel started working on the current recipe
+    private int soundCooldownTicks = 0;
 
     private boolean needsRecipeUpdate;
     private boolean needsInstantRecipeUpdate; // If the instant recipe needs to be checked again

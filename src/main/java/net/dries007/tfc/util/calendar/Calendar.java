@@ -6,13 +6,12 @@
 
 package net.dries007.tfc.util.calendar;
 
-import com.mojang.logging.LogUtils;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 
+import com.mojang.logging.LogUtils;
 import net.dries007.tfc.config.TFCConfig;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 /**
@@ -33,11 +32,7 @@ public class Calendar implements ICalendar
 
     public Calendar()
     {
-        daysInMonth = TFCConfig.COMMON.defaultMonthLength.get();
-        playerTicks = 0;
-        calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.TICKS_IN_DAY) + (6L * ICalendar.TICKS_IN_HOUR);
-        doDaylightCycle = true;
-        arePlayersLoggedOn = false;
+        resetToDefault();
     }
 
     @Override
@@ -109,7 +104,10 @@ public class Calendar implements ICalendar
         arePlayersLoggedOn = buffer.readBoolean();
     }
 
-    public void reset(Calendar resetTo)
+    /**
+     * Resets to the value of the provided calendar
+     */
+    public void resetTo(Calendar resetTo)
     {
         this.daysInMonth = resetTo.daysInMonth;
 
@@ -118,5 +116,17 @@ public class Calendar implements ICalendar
 
         this.doDaylightCycle = resetTo.doDaylightCycle;
         this.arePlayersLoggedOn = resetTo.arePlayersLoggedOn;
+    }
+
+    /**
+     * Resets to default values
+     */
+    public void resetToDefault()
+    {
+        daysInMonth = TFCConfig.COMMON.defaultMonthLength.get();
+        playerTicks = 0;
+        calendarTicks = ((long) TFCConfig.COMMON.defaultCalendarStartDay.get() * ICalendar.TICKS_IN_DAY) + (6L * ICalendar.TICKS_IN_HOUR);
+        doDaylightCycle = true;
+        arePlayersLoggedOn = false;
     }
 }

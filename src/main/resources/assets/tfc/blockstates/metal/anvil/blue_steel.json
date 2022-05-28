@@ -1,7 +1,19 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
+    "facing=north": {
+      "model": "tfc:block/metal/anvil/blue_steel",
+      "y": 90
+    },
+    "facing=east": {
+      "model": "tfc:block/metal/anvil/blue_steel",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "tfc:block/metal/anvil/blue_steel",
+      "y": 270
+    },
+    "facing=west": {
       "model": "tfc:block/metal/anvil/blue_steel"
     }
   }

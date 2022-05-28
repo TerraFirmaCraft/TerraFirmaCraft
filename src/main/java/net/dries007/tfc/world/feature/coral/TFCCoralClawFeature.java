@@ -24,8 +24,8 @@ public class TFCCoralClawFeature extends CoralClawFeature
     }
 
     @Override
-    protected boolean placeCoralBlock(LevelAccessor world, Random random, BlockPos pos, BlockState state)
+    protected boolean placeCoralBlock(LevelAccessor level, Random random, BlockPos pos, BlockState state)
     {
-        return CoralHelpers.placeCoralBlock(world, random, pos, state);
+        return CoralHelpers.placeCoralBlock(level, random, pos, state);
     }
 }

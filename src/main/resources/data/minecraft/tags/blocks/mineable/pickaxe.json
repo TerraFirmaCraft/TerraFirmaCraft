@@ -1982,6 +1982,13 @@
     "tfc:rock/anvil/basalt",
     "tfc:rock/anvil/andesite",
     "tfc:rock/anvil/dacite",
+    "tfc:rock/magma/granite",
+    "tfc:rock/magma/diorite",
+    "tfc:rock/magma/gabbro",
+    "tfc:rock/magma/rhyolite",
+    "tfc:rock/magma/basalt",
+    "tfc:rock/magma/andesite",
+    "tfc:rock/magma/dacite",
     "tfc:coral/tube_dead_coral",
     "tfc:coral/tube_dead_coral_fan",
     "tfc:coral/tube_coral_fan",
@@ -2176,6 +2183,9 @@
     "tfc:bloom",
     "tfc:pot",
     "tfc:grill",
-    "tfc:firepit"
+    "tfc:firepit",
+    "tfc:ingot_pile",
+    "tfc:sheet_pile",
+    "tfc:blast_furnace"
   ]
 }

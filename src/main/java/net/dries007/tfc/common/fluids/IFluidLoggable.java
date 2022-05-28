@@ -6,19 +6,18 @@
 
 package net.dries007.tfc.common.fluids;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
@@ -79,9 +78,9 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
     default FluidState getFluidState(BlockState state)
     {
         final Fluid containedFluid = state.getValue(getFluidProperty()).getFluid();
-        if (containedFluid instanceof FlowingFluid)
+        if (containedFluid instanceof FlowingFluid flowingFluid)
         {
-            return ((FlowingFluid) containedFluid).getSource(false);
+            return flowingFluid.getSource(false);
         }
         return containedFluid.defaultFluidState();
     }

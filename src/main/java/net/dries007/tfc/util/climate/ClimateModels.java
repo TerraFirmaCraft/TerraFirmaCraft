@@ -17,7 +17,7 @@ public final class ClimateModels
     public static final Supplier<ClimateModelType> OVERWORLD = register("overworld", OverworldClimateModel::new);
     public static final Supplier<ClimateModelType> BIOME_BASED = register("biome_based", BiomeBasedClimateModel::new);
 
-    public static void registerAll()
+    public static void registerClimateModels()
     {
         OVERWORLD.get();
         BIOME_BASED.get();

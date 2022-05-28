@@ -29,6 +29,7 @@
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
       "tfc:peat_disc",
+      "tfc:peat_disc_in_mud",
       "tfc:powder_snow"
     ],
     [
@@ -130,7 +131,9 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 3
-      },
+      }
+    ],
+    "underground_water_creature": [
       {
         "type": "tfc:octopoteuthis",
         "weight": 1,

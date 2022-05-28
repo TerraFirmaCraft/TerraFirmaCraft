@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
@@ -31,7 +32,7 @@ public abstract class HangingPlantBlock extends PlantBlock
     protected static final BooleanProperty HANGING = BlockStateProperties.HANGING;
     protected static final VoxelShape NOT_HANGING_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
 
-    public static HangingPlantBlock create(IPlant plant, Properties properties)
+    public static HangingPlantBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new HangingPlantBlock(properties)
         {
@@ -43,7 +44,7 @@ public abstract class HangingPlantBlock extends PlantBlock
         };
     }
 
-    protected HangingPlantBlock(Properties properties)
+    protected HangingPlantBlock(ExtendedProperties properties)
     {
         super(properties);
     }

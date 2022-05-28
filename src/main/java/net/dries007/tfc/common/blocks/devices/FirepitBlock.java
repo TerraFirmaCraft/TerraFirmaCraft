@@ -42,12 +42,13 @@ import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
+public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -78,9 +79,9 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
         box(2, 0, 2, 14, 1.0, 14)
     );
 
-    public static boolean canSurvive(LevelReader world, BlockPos pos)
+    public static boolean canSurvive(LevelReader level, BlockPos pos)
     {
-        return world.getBlockState(pos.below()).isFaceSturdy(world, pos, Direction.UP);
+        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
     }
 
     public FirepitBlock(ExtendedProperties properties)
@@ -91,7 +92,7 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
     }
 
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
         if (!state.getValue(LIT)) return;
         double x = pos.getX() + 0.5;
@@ -100,30 +101,30 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
 
         if (rand.nextInt(10) == 0)
         {
-            world.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
+            level.playLocalSound(x, y, z, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.6F, false);
         }
         for (int i = 0; i < 1 + rand.nextInt(3); i++)
         {
-            world.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
+            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.07D, 0);
         }
         for (int i = 0; i < rand.nextInt(4); i++)
         {
-            world.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
         if (rand.nextInt(8) == 1)
         {
-            world.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
+            level.addParticle(ParticleTypes.LARGE_SMOKE, x + Helpers.triangle(rand), y + rand.nextDouble(), z + Helpers.triangle(rand), 0, 0.005D, 0);
         }
     }
 
     @Override
-    public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity)
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
-        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && world.getBlockState(pos).getValue(LIT))
+        if (!entity.fireImmune() && entity instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity) entity) && level.getBlockState(pos).getValue(LIT))
         {
             entity.hurt(DamageSource.HOT_FLOOR, 1.0F);
         }
-        super.stepOn(world, pos, state, entity);
+        super.stepOn(level, pos, state, entity);
     }
 
     @Nullable
@@ -145,6 +146,12 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
     public float alpha()
     {
         return 0.33F;
+    }
+
+    @Override
+    public void intakeAir(Level level, BlockPos pos, BlockState state, int amount)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.intakeAir(amount));
     }
 
     @Override
@@ -177,7 +184,7 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler
                 if (!level.isClientSide)
                 {
                     AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
-                    stack.shrink(1);
+                    if (!player.isCreative()) stack.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
             }

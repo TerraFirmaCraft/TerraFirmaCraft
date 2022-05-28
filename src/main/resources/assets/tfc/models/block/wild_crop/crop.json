@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"ambientocclusion": false,
+    "parent": "block/block",
 	"textures": {
 		"1": "tfc:block/crop/wild_crop_grass",
 		"particle": "#crop",

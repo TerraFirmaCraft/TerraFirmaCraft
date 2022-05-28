@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/ingot/brass"
+  },
+  "second_input": {
+    "item": "tfc:metal/ingot/brass"
+  },
+  "tier": 1,
+  "result": {
+    "item": "tfc:metal/double_ingot/brass"
+  }
+}

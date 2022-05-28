@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import com.google.gson.JsonElement;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntComparators;
@@ -42,7 +45,10 @@ public abstract class DelegateIngredient extends Ingredient
         {
             if (delegate != null)
             {
-                cachedItemStacks = delegate.getItems();
+                cachedItemStacks = Arrays.stream(delegate.getItems())
+                    .map(this::testDefaultItem)
+                    .filter(Objects::nonNull)
+                    .toArray(ItemStack[]::new);
             }
             else
             {
@@ -108,5 +114,29 @@ public abstract class DelegateIngredient extends Ingredient
     @Override
     public abstract IIngredientSerializer<? extends DelegateIngredient> getSerializer();
 
-    protected abstract ItemStack[] getDefaultItems();
+    /**
+     * @return The default items that this ingredient matches when there is no delegate. In order to respect item based caches this <strong>must</strong> return all possible items that could match this ingredient.
+     */
+    protected ItemStack[] getDefaultItems()
+    {
+        return ForgeRegistries.ITEMS.getValues()
+            .stream()
+            .map(item -> {
+                final ItemStack stack = new ItemStack(item);
+                return testDefaultItem(stack);
+            })
+            .filter(Objects::nonNull)
+            .toArray(ItemStack[]::new);
+    }
+
+    /**
+     * Tests if an item stack is valid for the default items, and applies specific traits (usually desirable to show in JEI) if possible.
+     *
+     * @return {@code null} if the item is not valid for this ingredient, otherwise return the stack possibly with modifications.
+     */
+    @Nullable
+    protected ItemStack testDefaultItem(ItemStack stack)
+    {
+        return stack;
+    }
 }

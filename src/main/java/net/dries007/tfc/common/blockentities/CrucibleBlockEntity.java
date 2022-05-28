@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -41,6 +38,8 @@ import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBlockEntity.CrucibleInventory> implements ICalendarTickable
 {
@@ -48,8 +47,6 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     public static final int SLOT_INPUT_START = 0;
     public static final int SLOT_INPUT_END = 8;
     public static final int SLOT_OUTPUT = 9;
-
-    public static final int DATA_SLOT_TEMPERATURE = 0;
 
     private static final Component NAME = new TranslatableComponent("tfc.tile_entity.crucible");
     private static final int TARGET_TEMPERATURE_STABILITY_TICKS = 5;
@@ -194,6 +191,11 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         syncableData = new IntArrayBuilder()
             .add(() -> (int) temperature, value -> temperature = value);
+    }
+
+    public float getTemperature()
+    {
+        return temperature;
     }
 
     public ContainerData getSyncableData()

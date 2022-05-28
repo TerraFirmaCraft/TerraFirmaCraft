@@ -6,15 +6,18 @@
 
 package net.dries007.tfc.client;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+
+import org.jetbrains.annotations.Nullable;
+
+import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
  * Client side methods for proxy use
@@ -22,6 +25,8 @@ import net.minecraft.world.phys.BlockHitResult;
 public final class ClientHelpers
 {
     public static final Direction[] DIRECTIONS_AND_NULL = new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.DOWN, Direction.UP, null};
+
+    public static final ResourceLocation GUI_ICONS = new ResourceLocation(MOD_ID, "textures/gui/icons.png");
 
     @Nullable
     public static Level getLevel()

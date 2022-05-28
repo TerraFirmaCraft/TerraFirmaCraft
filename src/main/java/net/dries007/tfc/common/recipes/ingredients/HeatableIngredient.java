@@ -48,9 +48,15 @@ public class HeatableIngredient extends DelegateIngredient
     }
 
     @Override
-    protected ItemStack[] getDefaultItems()
+    @Nullable
+    protected ItemStack testDefaultItem(ItemStack stack)
     {
-        return HeatCapability.MANAGER.getValues().stream().distinct().flatMap(i -> i.getValidItems().stream()).map(ItemStack::new).toArray(ItemStack[]::new);
+        return stack.getCapability(HeatCapability.CAPABILITY)
+            .map(h -> {
+                h.setTemperature(minTemp);
+                return stack;
+            })
+            .orElse(null);
     }
 
     @Override

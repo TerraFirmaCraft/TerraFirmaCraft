@@ -19,6 +19,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.server.level.ServerLevel;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -31,7 +32,7 @@ public abstract class PlantBlock extends TFCBushBlock
 
     protected static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
-    public static PlantBlock create(IPlant plant, Properties properties)
+    public static PlantBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new PlantBlock(properties)
         {
@@ -44,7 +45,7 @@ public abstract class PlantBlock extends TFCBushBlock
         };
     }
 
-    protected PlantBlock(Properties properties)
+    protected PlantBlock(ExtendedProperties properties)
     {
         super(properties);
 

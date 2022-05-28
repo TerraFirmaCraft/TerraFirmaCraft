@@ -21,6 +21,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.PotRecipe;
 
 import static net.dries007.tfc.common.blockentities.PotBlockEntity.SLOT_EXTRA_INPUT_END;
@@ -41,7 +42,7 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
             .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME) : FluidStack.EMPTY);
         if (!fluidStack.isEmpty())
         {
-            int color = useDefaultFluid ? 0xA64214 : RenderHelpers.getFluidColor(fluidStack);
+            int color = useDefaultFluid ? TFCFluids.ALPHA_MASK | 0xA64214 : RenderHelpers.getFluidColor(fluidStack);
             RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color, 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
         }
 

@@ -51,9 +51,9 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
 
     private static final VoxelShape FULL_SHAPE = Shapes.join(Shapes.or(BASE_SHAPE, HANDSTONE_SHAPE, HANDLE_SHAPE), INPUT_SLOT_SHAPE, BooleanOp.ONLY_FIRST);
 
-    private static SelectionPlace getPlayerSelection(BlockGetter world, BlockPos pos, Player player, BlockHitResult result)
+    private static SelectionPlace getPlayerSelection(BlockGetter level, BlockPos pos, Player player, BlockHitResult result)
     {
-        return world.getBlockEntity(pos, TFCBlockEntities.QUERN.get())
+        return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get())
             .flatMap(quern -> quern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
                 .map(inventory -> {
                     final ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
@@ -93,6 +93,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
             }
         }
         quern.setAndUpdateSlots(slot);
+        quern.markForSync();
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
@@ -116,7 +117,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
                             if (quern.startGrinding())
                             {
                                 level.playSound(null, pos, TFCSounds.QUERN_DRAG.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-                                yield InteractionResult.SUCCESS;
+                                yield InteractionResult.sidedSuccess(level.isClientSide);
                             }
                             yield InteractionResult.FAIL;
                         }

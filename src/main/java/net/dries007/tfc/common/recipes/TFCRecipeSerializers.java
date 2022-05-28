@@ -10,9 +10,10 @@ import java.util.function.Supplier;
 
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -25,6 +26,7 @@ public class TFCRecipeSerializers
 
     public static final RegistryObject<SimpleBlockRecipe.Serializer<CollapseRecipe>> COLLAPSE = register("collapse", () -> new SimpleBlockRecipe.Serializer<>(CollapseRecipe::new));
     public static final RegistryObject<SimpleBlockRecipe.Serializer<LandslideRecipe>> LANDSLIDE = register("landslide", () -> new SimpleBlockRecipe.Serializer<>(LandslideRecipe::new));
+    public static final RegistryObject<ChiselRecipe.Serializer> CHISEL = register("chisel", ChiselRecipe.Serializer::new);
 
     // Item Recipes
 
@@ -46,13 +48,21 @@ public class TFCRecipeSerializers
     public static final RegistryObject<SealedBarrelRecipe.Serializer> SEALED_BARREL = register("barrel_sealed", SealedBarrelRecipe.Serializer::new);
     public static final RegistryObject<InstantBarrelRecipe.Serializer> INSTANT_BARREL = register("barrel_instant", InstantBarrelRecipe.Serializer::new);
     public static final RegistryObject<LoomRecipe.Serializer> LOOM = register("loom", LoomRecipe.Serializer::new);
+    public static final RegistryObject<AnvilRecipe.Serializer> ANVIL = register("anvil", AnvilRecipe.Serializer::new);
+    public static final RegistryObject<WeldingRecipe.Serializer> WELDING = register("welding", WeldingRecipe.Serializer::new);
+    public static final RegistryObject<BlastFurnaceRecipe.Serializer> BLAST_FURNACE = register("blast_furnace", BlastFurnaceRecipe.Serializer::new);
 
     // Crafting
 
     public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> DAMAGE_INPUTS_SHAPELESS_CRAFTING = register("damage_inputs_shapeless_crafting", () -> DelegateRecipe.Serializer.shapeless(DamageInputsCraftingRecipe.Shapeless::new));
     public static final RegistryObject<DelegateRecipe.Serializer<CraftingContainer>> DAMAGE_INPUT_SHAPED_CRAFTING = register("damage_inputs_shaped_crafting", () -> DelegateRecipe.Serializer.shaped(DamageInputsCraftingRecipe.Shaped::new));
+    public static final RegistryObject<ExtraProductsCraftingRecipe.ExtraProductsSerializer> EXTRA_PRODUCTS_SHAPELESS_CRAFTING = register("extra_products_shapeless_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shapeless(ExtraProductsCraftingRecipe.Shapeless::new));
+    public static final RegistryObject<ExtraProductsCraftingRecipe.ExtraProductsSerializer> EXTRA_PRODUCTS_SHAPED_CRAFTING = register("extra_products_shaped_crafting", () -> ExtraProductsCraftingRecipe.ExtraProductsSerializer.shaped(ExtraProductsCraftingRecipe.Shaped::new));
 
-    public static final RegistryObject<CastingCraftingRecipe.Serializer> CASTING_CRAFTING = register("casting_crafting", CastingCraftingRecipe.Serializer::new);
+    public static final RegistryObject<SimpleRecipeSerializer<FoodCombiningCraftingRecipe>> FOOD_COMBINING_CRAFTING = register("food_combining", () -> new SimpleRecipeSerializer<>(FoodCombiningCraftingRecipe::new));
+    public static final RegistryObject<SimpleRecipeSerializer<CastingCraftingRecipe>> CASTING_CRAFTING = register("casting_crafting", () -> new SimpleRecipeSerializer<>(CastingCraftingRecipe::new));
+    public static final RegistryObject<AdvancedShapedRecipe.Serializer> ADVANCED_SHAPED_CRAFTING = register("advanced_shaped_crafting", AdvancedShapedRecipe.Serializer::new);
+    public static final RegistryObject<AdvancedShapelessRecipe.Serializer> ADVANCED_SHAPELESS_CRAFTING = register("advanced_shapeless_crafting", AdvancedShapelessRecipe.Serializer::new);
 
     private static <S extends RecipeSerializer<?>> RegistryObject<S> register(String name, Supplier<S> factory)
     {

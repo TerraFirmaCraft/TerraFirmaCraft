@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:shell"
+          "name": "tfc:food/shellfish"
         }
       ]
     }

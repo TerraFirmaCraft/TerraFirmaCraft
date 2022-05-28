@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.Arrays;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -43,6 +42,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -54,10 +54,8 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public static final int SLOT_INPUT_MAX = 9;
     public static final int SLOT_EXTRA_MIN = 10;
     public static final int SLOT_EXTRA_MAX = 13;
-    public static final int DATA_SLOT_TEMPERATURE = 0;
 
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.charcoal_forge");
-    private static final int MAX_AIR_TICKS = 600;
 
     public static void createFromCharcoalPile(Level level, BlockPos pos)
     {
@@ -171,12 +169,12 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         Arrays.fill(cachedRecipes, null);
     }
 
-    public void onAirIntake(int amount)
+    public void intakeAir(int amount)
     {
         airTicks += amount;
-        if (airTicks > MAX_AIR_TICKS)
+        if (airTicks > BellowsBlockEntity.MAX_DEVICE_AIR_TICKS)
         {
-            airTicks = MAX_AIR_TICKS;
+            airTicks = BellowsBlockEntity.MAX_DEVICE_AIR_TICKS;
         }
     }
 
@@ -221,6 +219,11 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public ContainerData getSyncableData()
     {
         return syncableData;
+    }
+
+    public float getTemperature()
+    {
+        return temperature;
     }
 
     public void onFirstCreation()

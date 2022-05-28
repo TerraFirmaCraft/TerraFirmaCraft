@@ -9,7 +9,6 @@ package net.dries007.tfc.common.recipes;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,12 +17,12 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Handling for simple Ingredient -> ItemStack recipes
@@ -47,7 +46,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
     }
 
     @Override
-    public boolean matches(ItemStackInventory wrapper, Level worldIn)
+    public boolean matches(ItemStackInventory wrapper, Level level)
     {
         return this.getIngredient().test(wrapper.getStack());
     }
@@ -55,7 +54,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
     @Override
     public ItemStack getResultItem()
     {
-        return result.getStack(ItemStack.EMPTY);
+        return result.getEmptyStack();
     }
 
     public ItemStackProvider getResult()
@@ -72,7 +71,7 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
     @Override
     public ItemStack assemble(ItemStackInventory wrapper)
     {
-        return result.getStack(wrapper.getStack());
+        return result.getSingleStack(wrapper.getStack());
     }
 
     public Ingredient getIngredient()
