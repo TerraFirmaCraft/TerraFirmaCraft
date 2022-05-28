@@ -626,6 +626,8 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.block.tfc.scribing_table.rename_item': 'Player scribbling',
+    'subtitles.block.tfc.vessel.opened': 'Vessel opened',
+    'subtitles.block.tfc.vessel.closed': 'Vessel closed',
     # Sounds todo: subtitles for everything and standardize the format
     'tfc.animal.alpaca.ambient': 'Alpaca Bleats',
     'tfc.animal.alpaca.hurt': 'Alpaca Yelps',

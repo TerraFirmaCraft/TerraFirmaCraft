@@ -15,8 +15,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -41,6 +39,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.devices.DeviceBlock;
@@ -69,10 +68,12 @@ public class LargeVesselBlock extends DeviceBlock implements IItemSize
             if (previousSealed)
             {
                 barrel.onUnseal();
+                Helpers.playSound(level, pos, TFCSounds.OPEN_VESSEL.get());
             }
             else
             {
                 barrel.onSeal();
+                Helpers.playSound(level, pos, TFCSounds.CLOSE_VESSEL.get());
             }
         });
     }
@@ -124,7 +125,6 @@ public class LargeVesselBlock extends DeviceBlock implements IItemSize
         if (player.isShiftKeyDown())
         {
             toggleSeal(level, pos, state);
-            level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
         }
         else
         {

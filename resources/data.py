@@ -91,6 +91,9 @@ def generate(rm: ResourceManager):
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+        
+    for color in COLORS:
+        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HC)
 
     for item, item_data in METAL_ITEMS.items():
         if item_data.mold:
