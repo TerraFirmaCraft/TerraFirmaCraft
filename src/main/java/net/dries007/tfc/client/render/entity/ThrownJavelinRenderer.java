@@ -26,7 +26,7 @@ import net.dries007.tfc.util.Helpers;
 
 public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
 {
-    private static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/projectile/stone_javelin.png");
+    private static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/projectiles/stone_javelin.png");
 
     private final ThrownJavelinModel model;
 
@@ -37,17 +37,18 @@ public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
     }
 
     @Override
-    public void render(ThrownJavelin javelin, float ageInTicks, float pitch, PoseStack poseStack, MultiBufferSource buffers, int partialTicks)
+    public void render(ThrownJavelin javelin, float ageInTicks, float pitch, PoseStack poseStack, MultiBufferSource buffers, int light)
     {
         poseStack.pushPose();
+
         poseStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pitch, javelin.yRotO, javelin.getYRot()) - 90.0F));
         poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pitch, javelin.xRotO, javelin.getXRot()) + 90.0F));
 
         VertexConsumer vertexconsumer = ItemRenderer.getFoilBufferDirect(buffers, this.model.renderType(this.getTextureLocation(javelin)), false, javelin.isEnchantGlowing());
-        this.model.renderToBuffer(poseStack, vertexconsumer, partialTicks, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.renderToBuffer(poseStack, vertexconsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 
         poseStack.popPose();
-        super.render(javelin, ageInTicks, pitch, poseStack, buffers, partialTicks);
+        super.render(javelin, ageInTicks, pitch, poseStack, buffers, light);
     }
 
     @Override
