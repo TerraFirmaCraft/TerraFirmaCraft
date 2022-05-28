@@ -426,7 +426,7 @@ def generate(rm: ResourceManager):
         rm.item_model('tfc:drying_bricks/%s' % soil, 'tfc:item/mud_brick/%s_wet' % soil)
 
         # Clay Dirt
-        block = rm.blockstate(('clay', soil), variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)
+        block = rm.blockstate(('clay', soil), use_default_model=False)
         block.with_block_model()
         block.with_block_loot({
             'name': 'minecraft:clay_ball',
