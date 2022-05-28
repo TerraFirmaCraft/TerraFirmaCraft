@@ -44,6 +44,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<NestBoxContainer>> NEST_BOX = TFCContainerTypes.<NestBoxBlockEntity, NestBoxContainer>registerBlock("nest_box", TFCBlockEntities.NEST_BOX, NestBoxContainer::create);
     public static final RegistryObject<MenuType<AnvilContainer>> ANVIL = TFCContainerTypes.<AnvilBlockEntity, AnvilContainer>registerBlock("anvil", TFCBlockEntities.ANVIL, AnvilContainer::create);
     public static final RegistryObject<MenuType<AnvilPlanContainer>> ANVIL_PLAN = TFCContainerTypes.<AnvilBlockEntity, AnvilPlanContainer>registerBlock("anvil_plan", TFCBlockEntities.ANVIL, AnvilPlanContainer::create);
+    public static final RegistryObject<MenuType<BlastFurnaceContainer>> BLAST_FURNACE = TFCContainerTypes.<BlastFurnaceBlockEntity, BlastFurnaceContainer>registerBlock("blast_furnace", TFCBlockEntities.BLAST_FURNACE, BlastFurnaceContainer::create);
 
 
     public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = registerItem("clay_knapping", KnappingContainer::createClay);

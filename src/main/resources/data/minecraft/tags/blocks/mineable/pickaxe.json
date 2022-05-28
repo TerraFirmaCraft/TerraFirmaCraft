@@ -2166,6 +2166,9 @@
     "tfc:bloom",
     "tfc:pot",
     "tfc:grill",
-    "tfc:firepit"
+    "tfc:firepit",
+    "tfc:ingot_pile",
+    "tfc:sheet_pile",
+    "tfc:blast_furnace"
   ]
 }

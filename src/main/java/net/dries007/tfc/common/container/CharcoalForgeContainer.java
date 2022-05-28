@@ -14,16 +14,16 @@ import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
 
 public class CharcoalForgeContainer extends BlockEntityContainer<CharcoalForgeBlockEntity>
 {
-    public static CharcoalForgeContainer create(CharcoalForgeBlockEntity tile, Inventory playerInventory, int windowId)
+    public static CharcoalForgeContainer create(CharcoalForgeBlockEntity forge, Inventory playerInventory, int windowId)
     {
-        return new CharcoalForgeContainer(tile, windowId).init(playerInventory, 20);
+        return new CharcoalForgeContainer(forge, windowId).init(playerInventory, 20);
     }
 
-    private CharcoalForgeContainer(CharcoalForgeBlockEntity tile, int windowId)
+    private CharcoalForgeContainer(CharcoalForgeBlockEntity forge, int windowId)
     {
-        super(TFCContainerTypes.CHARCOAL_FORGE.get(), windowId, tile);
+        super(TFCContainerTypes.CHARCOAL_FORGE.get(), windowId, forge);
 
-        addDataSlots(tile.getSyncableData());
+        addDataSlots(forge.getSyncableData());
     }
 
     @Override

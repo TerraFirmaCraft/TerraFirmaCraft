@@ -39,6 +39,7 @@ public class TFCRecipeTypes
     public static final RegistryObject<RecipeType<BloomeryRecipe>> BLOOMERY = register("bloomery");
     public static final RegistryObject<RecipeType<AnvilRecipe>> ANVIL = register("anvil");
     public static final RegistryObject<RecipeType<WeldingRecipe>> WELDING = register("welding");
+    public static final RegistryObject<RecipeType<BlastFurnaceRecipe>> BLAST_FURNACE = register("blast_furnace");
 
     public static void registerPotRecipeOutputTypes()
     {

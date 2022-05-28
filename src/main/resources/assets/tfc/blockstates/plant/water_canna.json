@@ -2,22 +2,32 @@
   "multipart": [
     {
       "when": {
-        "stage": "0"
+        "stage": "0|1|2|3"
       },
       "apply": [
         {
-          "model": "tfc:block/plant/water_canna_0"
+          "model": "tfc:block/plant/canna_base"
+        }
+      ]
+    },
+	{
+      "when": {
+        "stage": "0|1|2|3"
+      },
+      "apply": [
+        {
+          "model": "tfc:block/plant/canna_stem"
         }
       ]
     },
     {
       "when": {
-        "stage": "1"
+        "stage": "1" 
       },
       "apply": [
         {
-          "model": "tfc:block/plant/water_canna_1"
-        }
+		  "model": "tfc:block/plant/canna_1"
+		}
       ]
     },
     {
@@ -26,7 +36,7 @@
       },
       "apply": [
         {
-          "model": "tfc:block/plant/water_canna_2"
+          "model": "tfc:block/plant/canna_2"
         }
       ]
     },
@@ -36,7 +46,7 @@
       },
       "apply": [
         {
-          "model": "tfc:block/plant/water_canna_3"
+          "model": "tfc:block/plant/canna_3"
         }
       ]
     }

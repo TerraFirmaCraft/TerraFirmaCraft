@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -20,9 +19,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidAttributes;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -51,7 +48,6 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void render(SluiceBlockEntity sluice, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (sluice.getLevel() == null) return;
@@ -103,10 +99,10 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
 
         FluidAttributes attributes = fluid.getAttributes();
         ResourceLocation texture = attributes.getStillTexture();
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
         final int color = RenderHelpers.getFluidColor(fluid);
 
-        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));
         Matrix4f matrix4f = poseStack.last().pose();
 
         final QuadRenderInfo info = new QuadRenderInfo(builder, matrix4f, combinedOverlay, combinedLight);

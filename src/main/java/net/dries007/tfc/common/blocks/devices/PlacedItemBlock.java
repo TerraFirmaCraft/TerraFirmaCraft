@@ -34,7 +34,10 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blockentities.PlacedItemBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.*;
+import net.dries007.tfc.common.blocks.EntityBlockExtension;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.util.Helpers;
 
 public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension, EntityBlockExtension
@@ -136,9 +139,9 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
             if (placedItem != null)
             {
                 ItemStack held = player.getItemInHand(hand);
-                if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && held.getCount() >= 4 && PitKilnBlockEntity.isValid(level, pos))
+                if (Helpers.isItem(held.getItem(), TFCTags.Items.PIT_KILN_STRAW) && !held.isEmpty() && PitKilnBlockEntity.isValid(level, pos))
                 {
-                    PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(4));
+                    PlacedItemBlockEntity.convertPlacedItemToPitKiln(level, pos, held.split(1));
                     return InteractionResult.SUCCESS;
                 }
                 return placedItem.onRightClick(player, held, hit) ? InteractionResult.SUCCESS : InteractionResult.FAIL;

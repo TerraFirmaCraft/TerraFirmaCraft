@@ -37,7 +37,7 @@ public abstract class DataManagerSyncPacket<T>
         for (Map.Entry<ResourceLocation, T> entry : elements.entrySet())
         {
             buffer.writeResourceLocation(entry.getKey());
-            manager.encode(buffer, entry.getValue());
+            manager.rawToNetwork(buffer, entry.getValue());
         }
     }
 
@@ -48,7 +48,7 @@ public abstract class DataManagerSyncPacket<T>
         for (int i = 0; i < size; i++)
         {
             final ResourceLocation id = buffer.readResourceLocation();
-            final T element = manager.decode(id, buffer);
+            final T element = manager.rawFromNetwork(id, buffer);
             elements.put(id, element);
         }
     }

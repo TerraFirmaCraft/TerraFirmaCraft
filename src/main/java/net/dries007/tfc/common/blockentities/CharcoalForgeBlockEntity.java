@@ -56,7 +56,6 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public static final int SLOT_EXTRA_MAX = 13;
 
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.charcoal_forge");
-    private static final int MAX_AIR_TICKS = 600;
 
     public static void createFromCharcoalPile(Level level, BlockPos pos)
     {
@@ -170,12 +169,12 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         Arrays.fill(cachedRecipes, null);
     }
 
-    public void onAirIntake(int amount)
+    public void intakeAir(int amount)
     {
         airTicks += amount;
-        if (airTicks > MAX_AIR_TICKS)
+        if (airTicks > BellowsBlockEntity.MAX_DEVICE_AIR_TICKS)
         {
-            airTicks = MAX_AIR_TICKS;
+            airTicks = BellowsBlockEntity.MAX_DEVICE_AIR_TICKS;
         }
     }
 

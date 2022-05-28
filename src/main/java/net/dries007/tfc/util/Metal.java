@@ -21,10 +21,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TrapDoorBlock;
@@ -76,6 +76,35 @@ public final class Metal
         return MANAGER.getOrThrow(UNKNOWN_ID);
     }
 
+    /**
+     * @return The matching metal for a given ingot, as defined by the metal itself.
+     */
+    @Nullable
+    public static Metal getFromIngot(ItemStack stack)
+    {
+        for (Metal metal : MANAGER.getValues())
+        {
+            if (metal.ingots.test(stack))
+            {
+                return metal;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public static Metal getFromSheet(ItemStack stack)
+    {
+        for (Metal metal : MANAGER.getValues())
+        {
+            if (metal.sheets.test(stack))
+            {
+                return metal;
+            }
+        }
+        return null;
+    }
+
     public static void updateMetalFluidMap()
     {
         // Ensure 'unknown' metal exists
@@ -95,26 +124,39 @@ public final class Metal
     private final float heatCapacity;
 
     private final ResourceLocation id;
+    private final ResourceLocation textureId;
     private final String translationKey;
+
+    private final Ingredient ingots, sheets;
 
     public Metal(ResourceLocation id, JsonObject json)
     {
         this.id = id;
-        this.tier = GsonHelper.getAsInt(json, "tier", 0);
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+
+        this.tier = JsonHelpers.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
         this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
         this.heatCapacity = JsonHelpers.getAsFloat(json, "heat_capacity");
         this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
+
+        this.ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
+        this.sheets = Ingredient.fromJson(JsonHelpers.get(json, "sheets"));
     }
 
     public Metal(ResourceLocation id, FriendlyByteBuf buffer)
     {
         this.id = id;
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+
         this.tier = buffer.readVarInt();
         this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
         this.meltTemperature = buffer.readFloat();
         this.heatCapacity = buffer.readFloat();
         this.translationKey = buffer.readUtf();
+
+        this.ingots = Ingredient.fromNetwork(buffer);
+        this.sheets = Ingredient.fromNetwork(buffer);
     }
 
     public void encode(FriendlyByteBuf buffer)
@@ -124,11 +166,19 @@ public final class Metal
         buffer.writeFloat(meltTemperature);
         buffer.writeFloat(heatCapacity);
         buffer.writeUtf(translationKey);
+
+        ingots.toNetwork(buffer);
+        sheets.toNetwork(buffer);
     }
 
     public ResourceLocation getId()
     {
         return id;
+    }
+
+    public ResourceLocation getTextureId()
+    {
+        return textureId;
     }
 
     public int getTier()
@@ -159,6 +209,16 @@ public final class Metal
     public String getTranslationKey()
     {
         return translationKey;
+    }
+
+    public boolean isIngot(ItemStack stack)
+    {
+        return ingots.test(stack);
+    }
+
+    public boolean isSheet(ItemStack stack)
+    {
+        return sheets.test(stack);
     }
 
     /**

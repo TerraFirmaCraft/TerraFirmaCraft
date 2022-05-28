@@ -180,6 +180,15 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         lastPlayerTick = tick;
     }
 
+    public void intakeAir(int amount)
+    {
+        airTicks += amount;
+        if (airTicks > BellowsBlockEntity.MAX_DEVICE_AIR_TICKS)
+        {
+            airTicks = BellowsBlockEntity.MAX_DEVICE_AIR_TICKS;
+        }
+    }
+
     public void extinguish(BlockState state)
     {
         assert level != null;

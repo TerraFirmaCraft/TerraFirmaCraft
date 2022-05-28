@@ -8,7 +8,6 @@ package net.dries007.tfc.client.model;
 
 import java.util.*;
 import java.util.function.Function;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -17,7 +16,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.*;
 import net.minecraft.core.Direction;
@@ -34,7 +32,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Copy pasta of {@link net.minecraftforge.client.model.DynamicBucketModel} with
@@ -63,7 +63,6 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public BakedModel bake(IModelConfiguration owner, ModelBakery bakery, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelTransform, ItemOverrides overrides, ResourceLocation modelLocation)
     {
         Material particleLocation = owner.isTexturePresent("particle") ? owner.resolveTexture("particle") : null;
@@ -82,7 +81,7 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
         TextureAtlasSprite particleSprite = particleLocation != null ? spriteGetter.apply(particleLocation) : null;
         if (particleSprite == null)
         {
-            particleSprite = fluidSprite == null ? spriteGetter.apply(new Material(TextureAtlas.LOCATION_BLOCKS, Helpers.identifier("block/empty"))) : fluidSprite;
+            particleSprite = fluidSprite == null ? spriteGetter.apply(new Material(RenderHelpers.BLOCKS_ATLAS, Helpers.identifier("block/empty"))) : fluidSprite;
         }
 
         Transformation transform = modelTransform.getRotation();

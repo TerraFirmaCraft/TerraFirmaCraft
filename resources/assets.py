@@ -362,20 +362,33 @@ def generate(rm: ResourceManager):
 
     rm.blockstate('bloom', variants=dict((('layers=%d' % i), {'model': 'tfc:block/bloom/bloom_height%d' % (i * 2) if i != 8 else 'tfc:block/bloom/bloom_block'}) for i in range(1, 1 + 8))).with_lang(lang('Bloom'))
     rm.item_model('bloom', parent='tfc:block/bloom/bloom_block', no_textures=True)
+
     rm.blockstate('molten', variants=dict(
         ('layers=%s,lit=%s' % (i, j), {'model': 'tfc:block/molten/molten%s%s' % (k, l)})
         for i, l in ((1, '_height4'), (2, '_height8'), (3, '_height12'), (4, '_block'))
         for j, k in (('true', '_lit'), ('false', ''))
     )).with_lang(lang('Molten'))
     rm.item_model('molten', parent='tfc:block/molten/molten_block', no_textures=True)
+
     rm.blockstate('bloomery', variants=dict(
         ('facing=%s,open=%s,lit=%s' % (d, b, l), {'model': m, 'y': r})
         for d, r in (('north', None), ('east', 90), ('south', 180), ('west', 270))
         for b, l, m in (('true', 'false', 'tfc:block/bloomery/open_off'), ('false', 'false', 'tfc:block/bloomery/closed_off'), ('false', 'true', 'tfc:block/bloomery/closed_on'), ('true', 'true', 'tfc:block/bloomery/open_on'))
     )).with_lang(lang('Bloomery')).with_block_loot('tfc:bloomery')
     rm.item_model('bloomery', {'all': 'tfc:block/devices/bloomery/off'}, parent='tfc:block/bloomery/inventory')
+
     rm.item_model('raw_iron_bloom', 'tfc:item/bloom/unrefined').with_lang(lang('Raw Iron Bloom')).with_tag('blooms')
     rm.item_model('refined_iron_bloom', 'tfc:item/bloom/refined').with_lang(lang('Refined Iron Bloom')).with_tag('blooms')
+
+    block = rm.blockstate('blast_furnace', variants={
+        'lit=false': {'model': 'tfc:block/blast_furnace/unlit'},
+        'lit=true': {'model': 'tfc:block/blast_furnace/lit'}
+    })
+    block.with_lang(lang('blast furnace'))
+    block.with_block_loot('tfc:blast_furnace')
+    rm.item_model(block.res, parent='tfc:block/blast_furnace/unlit', no_textures=True)
+    rm.block_model('blast_furnace/unlit', {'side': 'tfc:block/devices/blast_furnace/side', 'end': 'tfc:block/devices/blast_furnace/top', 'particle': 'tfc:block/devices/blast_furnace/side'}, 'block/cube_column')
+    rm.block_model('blast_furnace/lit', {'side': 'tfc:block/devices/blast_furnace/side_lit', 'end': 'tfc:block/devices/blast_furnace/top_lit', 'particle': 'tfc:block/devices/blast_furnace/side_lit'}, 'block/cube_column')
 
     rm.blockstate('placed_item', 'tfc:block/empty').with_lang(lang('placed items'))
     rm.blockstate('scraping', 'tfc:block/empty').with_lang(lang('scraped item'))
@@ -413,7 +426,7 @@ def generate(rm: ResourceManager):
         rm.item_model('tfc:drying_bricks/%s' % soil, 'tfc:item/mud_brick/%s_wet' % soil)
 
         # Clay Dirt
-        block = rm.blockstate(('clay', soil), variants={'': [{'model': 'tfc:block/clay/%s' % soil, 'y': i} for i in range(0, 360, 90)]}, use_default_model=False)
+        block = rm.blockstate(('clay', soil), use_default_model=False)
         block.with_block_model()
         block.with_block_loot({
             'name': 'minecraft:clay_ball',
@@ -1361,6 +1374,9 @@ def generate(rm: ResourceManager):
         corals(rm, color, True)
 
     rm.blockstate('bellows', model='tfc:block/bellows', variants=four_rotations('tfc:block/bellows', (270, 180, None, 90))).with_lang(lang('Bellows')).with_block_loot('tfc:bellows').with_tag('minecraft:mineable/axe')
+
+    rm.blockstate('ingot_pile', 'tfc:block/empty').with_lang(lang('ingot pile'))
+    rm.blockstate('sheet_pile', 'tfc:block/empty').with_lang(lang('sheet pile'))
 
     for be in BLOCK_ENTITIES:
         rm.lang('tfc.block_entity.%s' % be, lang(be))

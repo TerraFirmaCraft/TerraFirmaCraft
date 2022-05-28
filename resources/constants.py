@@ -45,7 +45,8 @@ TOOL_TAGS: Dict[str, str] = {
     'saw': 'saws',
     'propick': 'propicks',
     'scythe': 'scythes',
-    'shears': 'shears'
+    'shears': 'shears',
+    'tuyere': 'tuyeres'
 }
 
 ROCKS: Dict[str, Rock] = {
@@ -422,7 +423,7 @@ PLANTS: Dict[str, Plant] = {
     'primrose': Plant(False, -8, 10, 150, 300, 'standard'),
     'pulsatilla': Plant(False, -10, 2, 50, 200, 'standard'),
     'red_sealing_wax_palm': Plant(False, 18, 40, 280, 500, 'tall_plant'),
-    'reindeer_lichen': Plant(False, 10, 33, 50, 470, 'creeping'),
+    'reindeer_lichen': Plant(False, -24, -8, 50, 470, 'creeping'),
     'rose': Plant(True, -5, 20, 150, 300, 'tall_plant'),
     'sacred_datura': Plant(False, 4, 18, 75, 150, 'standard'),
     'sagebrush': Plant(False, -10, 14, 0, 120, 'dry'),
@@ -544,11 +545,12 @@ NUTRIENTS = {
     'dairy': 'Creamy'
 }
 
-SPAWN_EGG_ENTITIES = ['isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken']
-BUCKETABLE_FISH = ['cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill']
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken')
+BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 
-BLOCK_ENTITIES = ['log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil']
-TANNIN_WOOD_TYPES = ['oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia']
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace')
+TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
+
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
     return {
@@ -757,6 +759,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.no_flux_to_weld': 'There is no flux in the anvil!',
     'tfc.tooltip.hammer_required_to_work': 'A hammer is required to work in the anvil!',
     'tfc.tooltip.anvil_has_been_worked': 'Worked',
+    'tfc.tooltip.blast_furnace_ore': 'Input: %d / %d',
+    'tfc.tooltip.blast_furnace_fuel': 'Fuel: %d / %d',
     'tfc.tooltip.fertilized': '§6Fertilized',
     'tfc.tooltip.egg_hatch': 'Will hatch in %s days',
     'tfc.tooltip.egg_hatch_today': 'Will hatch today!',

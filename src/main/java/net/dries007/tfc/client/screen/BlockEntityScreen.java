@@ -10,8 +10,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.InventoryMenu;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 
@@ -39,10 +37,10 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
 
     public TextureAtlasSprite getAndBindFluidSprite(FluidStack fluid)
     {
-        final TextureAtlasSprite sprite = getMinecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluid.getFluid().getAttributes().getStillTexture(fluid));
+        final TextureAtlasSprite sprite = getMinecraft().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(fluid.getFluid().getAttributes().getStillTexture(fluid));
 
         RenderHelpers.setShaderColor(fluid.getFluid().getAttributes().getColor(fluid));
-        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+        RenderSystem.setShaderTexture(0, RenderHelpers.BLOCKS_ATLAS);
 
         return sprite;
     }

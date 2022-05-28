@@ -11,7 +11,8 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
@@ -19,7 +20,6 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,6 +35,7 @@ import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -68,14 +69,9 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             // If we have to, dump items from the bloomery until we're back down at capacity.
             // Pop items off of the end of the list
             final boolean modified = bloomery.inputStacks.size() > capacity || bloomery.catalystStacks.size() > capacity;
-            while (bloomery.inputStacks.size() > capacity)
-            {
-                Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.inputStacks.remove(bloomery.inputStacks.size() - 1));
-            }
-            while (bloomery.catalystStacks.size() > capacity)
-            {
-                Helpers.spawnItem(level, bloomery.getExternalBlock(), bloomery.catalystStacks.remove(bloomery.catalystStacks.size() - 1));
-            }
+
+            bloomery.popItemsOffOverCapacity(bloomery.inputStacks, capacity);
+            bloomery.popItemsOffOverCapacity(bloomery.catalystStacks, capacity);
 
             if (modified)
             {
@@ -104,7 +100,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             }
 
             // And refresh the molten block(s) based on the current inputs
-            bloomery.updateMoltenBlock(lit);
+            MoltenBlock.manageMoltenBlockTower(level, bloomery.worldPosition, lit, TFCConfig.SERVER.bloomeryMaxChimneyHeight.get(), bloomery.inputStacks.size(), TFCConfig.SERVER.bloomeryCapacity.get());
         }
     }
 
@@ -201,7 +197,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     @Override
     public void ejectInventory()
     {
-        super.ejectInventory();
         dumpItems();
         destroyMolten();
     }
@@ -247,8 +242,18 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         cachedRecipe = null;
     }
 
+    private void popItemsOffOverCapacity(List<ItemStack> items, int capacity)
+    {
+        assert level != null;
+        while (items.size() > capacity)
+        {
+            Helpers.spawnItem(level, worldPosition, items.remove(items.size() - 1));
+        }
+    }
+
     /**
      * Attempt to add new items into the bloomery that are tossed into the chimney area
+     *
      * @param capacity The maximum capacity (in items) that can be added.
      */
     private void addItemsFromWorld(int capacity)
@@ -331,59 +336,13 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         }
     }
 
-    /**
-     * Sets a molten block inside the bloomery structure. If there is nothing in the bloomery, attempts to delete any molten blocks left over.
-     */
-    private void updateMoltenBlock(boolean cooking)
-    {
-        assert level != null;
-        final BlockPos internalPos = getInternalBlockPos();
-        //If there's at least one item, show one layer so player knows that it is holding stacks
-        float totalItems = (float) inputStacks.size() + catalystStacks.size();
-        int slagLayers = totalItems == 0 ? 0 : (int) Math.max(1, totalItems / 8f) * 4;
-        for (int i = 0; i < 4; i++)
-        {
-            BlockPos checkPos = internalPos.above(i);
-            if (slagLayers > 0)
-            {
-                int toPlace = 4;
-                if (slagLayers >= 4)
-                {
-                    slagLayers -= 4;
-                }
-                else
-                {
-                    toPlace = slagLayers;
-                    slagLayers = 0;
-                }
-                level.setBlockAndUpdate(checkPos, TFCBlocks.MOLTEN.get().defaultBlockState().setValue(MoltenBlock.LIT, cooking).setValue(MoltenBlock.LAYERS, toPlace));
-            }
-            else
-            {
-                //Remove any surplus slag(ie: after cooking/structure became compromised)
-                if (Helpers.isBlock(level.getBlockState(checkPos), TFCBlocks.MOLTEN.get()))
-                {
-                    level.setBlockAndUpdate(checkPos, Blocks.AIR.defaultBlockState());
-                }
-            }
-        }
-    }
-
     private void destroyMolten()
     {
         assert level != null;
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        for (Direction d : Direction.Plane.HORIZONTAL)
+
+        for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            mutable.setWithOffset(worldPosition, d);
-            for (int i = 0; i < 4; i++)
-            {
-                if (Helpers.isBlock(level.getBlockState(mutable), TFCBlocks.MOLTEN.get()))
-                {
-                    level.destroyBlock(mutable, true);
-                }
-                mutable.move(0, 1, 0);
-            }
+            MoltenBlock.removeMoltenBlockTower(level, worldPosition.relative(direction), TFCConfig.SERVER.bloomeryMaxChimneyHeight.get());
         }
     }
 
@@ -398,7 +357,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         final Direction direction = getBlockState().getValue(BloomeryBlock.FACING);
         if (BloomeryBlock.isFormed(level, pos, direction))
         {
-            return BloomeryBlock.getChimneyLevels(level, pos) * 8;
+            return BloomeryBlock.getChimneyLevels(level, pos) * TFCConfig.SERVER.bloomeryCapacity.get();
         }
         return 0;
     }
@@ -475,7 +434,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
                         }
                         else if (fluid.isFluidEqual(toAdd))
                         {
-                            fluid.setAmount(fluid.getAmount() + toAdd.getAmount());
+                            fluid.grow(toAdd.getAmount());
                         }
                     }
                 }

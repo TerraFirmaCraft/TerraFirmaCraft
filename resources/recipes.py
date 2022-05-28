@@ -2,6 +2,7 @@
 #  See the project README.md and LICENSE.txt for more information.
 
 from enum import Enum
+from typing import Union
 
 from mcresources import ResourceManager, RecipeContext, utils
 from mcresources.type_definitions import ResourceIdentifier, Json
@@ -179,6 +180,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
     damage_shapeless(rm, 'crafting/paper', (not_rotten('tfc:food/sugarcane'), not_rotten('tfc:food/sugarcane'), not_rotten('tfc:food/sugarcane'), '#tfc:knives'), (3, 'minecraft:paper')).with_advancement('tfc:food/sugarcane')
     rm.crafting_shaped('crafting/nest_box', ['Y Y', 'XYX', 'XXX'], {'Y': 'tfc:straw', 'X': '#tfc:lumber'}, 'tfc:nest_box').with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/blast_furnace', ['XXX', 'XCX', 'XXX'], {'X': 'tfc:metal/sheet/wrought_iron', 'C': 'tfc:crucible'}, 'tfc:blast_furnace').with_advancement('tfc:metal/sheet/wrought_iron')
 
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
@@ -349,6 +351,7 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', POTTERY_MELT, result_item='tfc:ceramic/jug')
     heat_recipe(rm, 'ceramic_pan', 'tfc:ceramic/unfired_pan', POTTERY_MELT, result_item='tfc:pan/empty')
     heat_recipe(rm, 'terracotta', 'minecraft:clay', POTTERY_MELT, result_item='minecraft:terracotta')
+    heat_recipe(rm, 'crucible', 'tfc:unfired_crucible', POTTERY_MELT, result_item='tfc:crucible')
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -595,6 +598,9 @@ def generate(rm: ResourceManager):
     # Bloomery Recipes
     bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
 
+    # Blast Furnace Recipes
+    blast_furnace_recipe(rm, 'pig_iron', '1 tfc:metal/cast_iron', '1 tfc:metal/pig_iron', '#tfc:flux')
+
     # Barrel Recipes
     for size, amount, output in (('small', 300, 1), ('medium', 400, 2), ('large', 500, 3)):
         barrel_sealed_recipe(rm, '%s_soaked_hide' % size, '%s Soaked Hide' % size, 8000, 'tfc:%s_raw_hide' % size, '%d tfc:limewater' % amount, output_item='tfc:%s_soaked_hide' % size)
@@ -653,9 +659,9 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'fresh_to_salt_water', 'tfc:powder/salt', '125 minecraft:water', output_fluid='125 tfc:salt_water')
     barrel_instant_recipe(rm, 'limewater', 'tfc:powder/flux', '500 minecraft:water', output_fluid='500 tfc:limewater')
     barrel_instant_recipe(rm, 'olive_oil', 'tfc:jute_net', '250 tfc:olive_oil_water', 'tfc:dirty_jute_net', '50 tfc:olive_oil')
-    barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
-    barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
-    barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 0}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
+    barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
+    barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
+    barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 tfc:salt_water', output_fluid='10000 tfc:brine')
     barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 minecraft:milk', output_fluid='10000 tfc:milk_vinegar')
     barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soup_bowls', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
@@ -901,7 +907,7 @@ def rock_knapping(rm: ResourceManager, name, pattern: List[str], result: utils.R
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[str | Json] = None, result_fluid: Optional[str] = None) -> RecipeContext:
+def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None) -> RecipeContext:
     result_item = item_stack_provider(result_item) if isinstance(result_item, str) else result_item
     result_fluid = None if result_fluid is None else fluid_stack(result_fluid)
     return rm.recipe(('heating', name_parts), 'tfc:heating', {
@@ -939,6 +945,15 @@ def bloomery_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, r
         'catalyst': utils.ingredient(catalyst),
         'duration': time
     })
+
+
+def blast_furnace_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, metal_in: Json, metal_out: Json, catalyst: Json):
+    rm.recipe(('blast_furnace', name_parts), 'tfc:blast_furnace', {
+        'fluid': fluid_stack_ingredient(metal_in),
+        'result': fluid_stack(metal_out),
+        'catalyst': utils.ingredient(catalyst)
+    })
+
 
 def barrel_sealed_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, translation: str, duration: int, input_item: Optional[Json] = None, input_fluid: Optional[Json] = None, output_item: Optional[Json] = None, output_fluid: Optional[Json] = None, on_seal: Optional[Json] = None, on_unseal: Optional[Json] = None, sound: Optional[str] = None):
     rm.recipe(('barrel', name_parts), 'tfc:barrel_sealed', {
