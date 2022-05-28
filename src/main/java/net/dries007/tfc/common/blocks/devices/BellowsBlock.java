@@ -98,9 +98,12 @@ public class BellowsBlock extends DeviceBlock implements IForgeBlockExtension, E
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
+        // When placing, you're typically either placing it naturally, or placing it against a device like a blast furnace, which has a GUI (which means you have to use shift)
+        // In the first case, we can assume you're placing it facing towards yourself - it doesn't really matter which.
+        // In the second case, you're generally trying to place it facing *into* the thing you're holding shift to place on, which means we want it to face away from you
         final Direction direction = context.getHorizontalDirection();
         final boolean isShifting = context.getPlayer() != null && context.getPlayer().isShiftKeyDown();
-        return defaultBlockState().setValue(FACING, isShifting ? direction.getOpposite() : direction);
+        return defaultBlockState().setValue(FACING, isShifting ? direction : direction.getOpposite());
     }
 
     @Override

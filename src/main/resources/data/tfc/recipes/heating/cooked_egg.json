@@ -1,12 +1,11 @@
 {
   "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:heating",
   "ingredient": {
+    "item": "minecraft:egg"
+  },
+  "result_item": {
     "item": "tfc:food/cooked_egg"
   },
-  "category": "other",
-  "hunger": 4,
-  "saturation": 0.5,
-  "decay": 4,
-  "protein": 1.5,
-  "dairy": 0.25
+  "temperature": 200
 }
