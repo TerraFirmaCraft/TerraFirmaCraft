@@ -1258,7 +1258,7 @@ def generate(rm: ResourceManager):
         }, 'tfc:wood/barrel/%s' % wood))
 
         # Lecterns
-        block = rm.blockstate('tfc:wood/lectern/%s' % wood, model='tfc:block/wood/lectern/%s' % wood, variants=four_rotations('tfc:block/wood/lectern/%s' % wood, (90, None, 180, 270)))
+        block = rm.blockstate('tfc:wood/lectern/%s' % wood, variants=four_rotations('tfc:block/wood/lectern/%s' % wood, (90, None, 180, 270)))
         block.with_block_model(textures={'bottom': 'tfc:block/wood/planks/%s' % wood, 'base': 'tfc:block/wood/lectern/%s/base' % wood, 'front': 'tfc:block/wood/lectern/%s/front' % wood, 'sides': 'tfc:block/wood/lectern/%s/sides' % wood, 'top': 'tfc:block/wood/lectern/%s/top' % wood, 'particle': 'tfc:block/wood/lectern/%s/sides' % wood}, parent='minecraft:block/lectern')
         block.with_item_model()
         block.with_lang(lang("%s lectern" % wood))
@@ -1266,7 +1266,7 @@ def generate(rm: ResourceManager):
         block.with_tag('minecraft:mineable/axe')
 
         # Scribing Table
-        block = rm.blockstate('tfc:wood/scribing_table/%s' % wood, model='tfc:block/wood/scribing_table/%s' % wood, variants=four_rotations('tfc:block/wood/scribing_table/%s' % wood, (90, None, 180, 270)))
+        block = rm.blockstate('tfc:wood/scribing_table/%s' % wood, variants=four_rotations('tfc:block/wood/scribing_table/%s' % wood, (90, None, 180, 270)))
         block.with_block_model(textures={'top': 'tfc:block/wood/scribing_table/%s' % wood, 'leg' : 'tfc:block/wood/log/%s' % wood, 'side' : 'tfc:block/wood/planks/%s' % wood, 'misc': 'tfc:block/wood/scribing_table/scribing_paraphernalia', 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/scribing_table')
         block.with_item_model()
         block.with_lang(lang("%s scribing table" % wood))

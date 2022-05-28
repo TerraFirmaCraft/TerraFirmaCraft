@@ -48,14 +48,14 @@ public class TFCWallTorchBlock extends WallTorchBlock implements IForgeBlockExte
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        TFCTorchBlock.onRandomTick(world, pos, TFCBlocks.DEAD_WALL_TORCH.get().withPropertiesOf(state));
+        TFCTorchBlock.onRandomTick(level, pos, TFCBlocks.DEAD_WALL_TORCH.get().withPropertiesOf(state));
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TFCBlocks.TORCH.get().setPlacedBy(worldIn, pos, state, placer, stack);
+        TFCBlocks.TORCH.get().setPlacedBy(level, pos, state, placer, stack);
     }
 }
