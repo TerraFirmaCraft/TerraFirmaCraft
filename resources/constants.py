@@ -829,6 +829,7 @@ DEFAULT_LANG = {
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',
+    'entity.tfc.thrown_javelin': 'Javelin',
     'entity.tfc.seat': 'Seat',
     'entity.tfc.chicken': 'Chicken',
     'entity.tfc.chicken.male': 'Rooster',
