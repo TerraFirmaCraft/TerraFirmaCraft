@@ -52,6 +52,7 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
+        if (blockEntity.getBlockState().getValue(BarrelBlock.SEALED)) return true;
         final int containerSlot = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
         return switch (typeOf(slotIndex))
             {

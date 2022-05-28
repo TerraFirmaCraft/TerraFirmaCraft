@@ -41,6 +41,7 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
+        if (blockEntity.getBlockState().getValue(LargeVesselBlock.SEALED)) return true;
         return switch (typeOf(slotIndex))
             {
                 case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, 0, LargeVesselBlockEntity.SLOTS, false);
