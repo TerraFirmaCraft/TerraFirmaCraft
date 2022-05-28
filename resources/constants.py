@@ -537,13 +537,7 @@ GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane')
 MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
-NUTRIENTS = {
-    'grain': 'Wholesome',
-    'fruit': 'Tasty',
-    'vegetables': 'Filling',
-    'protein': 'Hearty',
-    'dairy': 'Creamy'
-}
+NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
@@ -696,6 +690,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.nutrition_water': ' - Water: %s%%',
     'tfc.tooltip.nutrition_none': '- None!',
     'tfc.tooltip.hold_shift_for_nutrition_info': 'Hold (Shift) for Nutrition Info',
+    'tfc.tooltip.salad': 'Salad',
     'tfc.tooltip.contents': 'Contents:',
     'tfc.tooltip.propick.found_very_large': 'Found a very large sample of',
     'tfc.tooltip.propick.found_large': 'Found a large sample of',

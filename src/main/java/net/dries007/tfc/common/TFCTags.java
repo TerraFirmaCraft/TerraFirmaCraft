@@ -139,7 +139,9 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
         public static final TagKey<Item> USABLE_ON_TOOL_RACK = create("usable_on_tool_rack");
-        public static final TagKey<Item> SOUP_BOWL = create("soup_bowl");
+        public static final TagKey<Item> SOUP_BOWLS = create("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
+        public static final TagKey<Item> SALAD_BOWLS = create("salad_bowls"); // Bowls that when right clicked, open the salad UI
+        public static final TagKey<Item> USABLE_IN_SALAD = create("foods/usable_in_salad"); // Items that are valid ingredients for a salad
         public static final TagKey<Item> PIG_FOOD = create("pig_food");
         public static final TagKey<Item> COW_FOOD = create("cow_food");
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");

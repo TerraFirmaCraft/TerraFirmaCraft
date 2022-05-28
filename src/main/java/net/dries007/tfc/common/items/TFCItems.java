@@ -17,9 +17,9 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.blocks.Gem;
@@ -100,12 +100,21 @@ public final class TFCItems
 
     public static final Map<Wood, RegistryObject<Item>> SIGNS = Helpers.mapOfKeys(Wood.class, wood -> register("wood/sign/" + wood.name(), () -> new SignItem(new Item.Properties().tab(WOOD), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.SIGN).get(), TFCBlocks.WOODS.get(wood).get(Wood.BlockType.WALL_SIGN).get())));
 
+
     // Food
 
-    public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food -> register("food/" + food.name(), () -> new DecayingItem(new Item.Properties().food(food.getFoodProperties()).tab(TFCItemGroup.FOOD))));
-
-    public static final Map<Nutrient, RegistryObject<SoupItem>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient -> register("food/" + nutrient.name() + "_soup", () -> new SoupItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
-    public static final Map<Grain, RegistryObject<Item>> SANDWICHES = Helpers.mapOfKeys(Grain.class, grain -> register("food/" + grain.name() + "_bread_sandwich", () -> new SandwichItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD))));
+    public static final Map<Food, RegistryObject<Item>> FOOD = Helpers.mapOfKeys(Food.class, food ->
+        register("food/" + food.name(), () -> new DecayingItem(new Item.Properties().food(food.getFoodProperties()).tab(TFCItemGroup.FOOD)))
+    );
+    public static final Map<Nutrient, RegistryObject<DynamicBowlFood>> SOUPS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
+        register("food/" + nutrient.name() + "_soup", () -> new DynamicBowlFood(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD)))
+    );
+    public static final Map<Nutrient, RegistryObject<DynamicBowlFood>> SALADS = Helpers.mapOfKeys(Nutrient.class, nutrient ->
+        register("food/" + nutrient.name() + "_salad", () -> new DynamicBowlFood(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD)))
+    );
+    public static final Map<Grain, RegistryObject<Item>> SANDWICHES = Helpers.mapOfKeys(Grain.class, grain ->
+        register("food/" + grain.name() + "_bread_sandwich", () -> new SandwichItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()).tab(TFCItemGroup.FOOD)))
+    );
 
 
     // Flora

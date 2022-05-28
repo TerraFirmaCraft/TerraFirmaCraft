@@ -451,6 +451,21 @@ public final class InteractionManager
             }
             return InteractionResult.PASS;
         });
+
+        register(TFCTags.Items.SALAD_BOWLS, true, (stack, context) -> {
+            // Only open salads when shift key is down
+            // Normally when consuming bowl food (like salads), you'll be holding right click down causing the salad gui to immediately open
+            // That feels bad to use, so we require shift to open salads - better in the common case
+            if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown())
+            {
+                if (context.getPlayer() instanceof ServerPlayer player)
+                {
+                    NetworkHooks.openGui(player, TFCContainerProviders.SALAD);
+                }
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        });
     }
 
     /**

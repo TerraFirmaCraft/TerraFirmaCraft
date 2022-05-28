@@ -97,6 +97,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
             MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
             MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+            MenuScreens.register(TFCContainerTypes.SALAD.get(), SaladScreen::new);
             MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
 
             MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);

@@ -188,10 +188,13 @@ def generate(rm: ResourceManager):
     rm.item_tag('fluxstone', 'tfc:food/shellfish', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
-    rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
+    rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats')
+    rm.item_tag('foods/usable_in_salad', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats')
+    rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
     rm.item_tag('sandwich_bread', *['tfc:food/%s_bread' % grain for grain in GRAINS])
-    rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
-    rm.item_tag('soup_bowl', 'tfc:ceramic/bowl')
+    rm.item_tag('bowls', 'tfc:ceramic/bowl', 'minecraft:bowl')
+    rm.item_tag('soup_bowls', '#tfc:bowls')
+    rm.item_tag('salad_bowls', '#tfc:bowls')
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
 
     for color in COLORS:
@@ -544,7 +547,8 @@ def generate(rm: ResourceManager):
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
-    item_size(rm, 'soups', '#tfc:soup_bowls', Size.very_small, Weight.very_heavy)
+    item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.very_heavy)
+    item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)

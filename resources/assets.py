@@ -961,9 +961,20 @@ def generate(rm: ResourceManager):
         rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
     for veg in VEGETABLES:
         rm.item_model(('food', veg)).with_lang(lang(veg))
-    for nut, name in NUTRIENTS.items():
-        rm.item_model(('food', '%s_soup' % nut)).with_lang(lang('%s Soup', name)).with_tag('soup_bowls')
-    for grain in GRAINS: # todo: no rice sandwich if we remove the bread
+
+    funny_names = {  # Dict[nutrient, (soup, salad)]
+        'grain': ('Wholesome', 'Crunchy'),
+        'fruit': ('Tasty', 'Sweet'),
+        'vegetables': ('Filling', 'Healthy'),
+        'protein': ('Hearty', 'Flavorful'),
+        'dairy': ('Creamy', 'Disgusting')
+    }
+    for nutrient in NUTRIENTS:
+        funny_soup_name, funny_salad_name = funny_names[nutrient]
+        rm.item_model(('food', '%s_soup' % nutrient)).with_lang(lang('%s soup', funny_soup_name)).with_tag('soups')
+        rm.item_model(('food', '%s_salad' % nutrient)).with_lang(lang('%s salad', funny_salad_name)).with_tag('salads')
+
+    for grain in GRAINS:
         rm.item_model(('food', '%s_bread_sandwich' % grain)).with_lang(lang('%s Bread Sandwich', grain)).with_tag('sandwiches').with_tag('foods')
 
     # Berry Bushes
@@ -971,7 +982,7 @@ def generate(rm: ResourceManager):
     lifecycles = ('healthy', 'dormant', 'fruiting', 'flowering')
 
     for berry, data in BERRIES.items():
-        block = rm.blockstate('plant/%s_bush' % berry, variants=dict(
+        rm.blockstate('plant/%s_bush' % berry, variants=dict(
             (
                 'lifecycle=%s,stage=%d' % (lifecycle, stage),
                 {'model': 'tfc:block/plant/%s%s_bush_%d' % (lifecycle_to_model[lifecycle], berry, stage)}
