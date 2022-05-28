@@ -103,7 +103,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
             float max = isIndented ? bellowsWidthMax - change : bellowsWidthMax;
             for (float[] v : getVertices(min, max, currentWidth, max, min, lastWidth, isIndented ? -change : change, isIndented ? -change : change))
             {
-                // Texture needs to the reversed due to the directionMapper the planes are rendered in
+                // Texture needs to the reversed due to the direction the planes are rendered in
                 // Otherwise the texture is cut up and displayed out of order
                 vertex(b, matrixStack.last().pose(), matrixStack.last().normal(), v[0], v[1], v[2], sprite.getU(v[3] * -texWidth + (texWidth * (i + 1))), sprite.getV(v[4] * 16D), combinedOverlay, combinedLight);
             }

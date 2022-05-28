@@ -92,7 +92,10 @@ public class BellowsBlockEntity extends TFCBlockEntity
     }
 
     /**
-     * @param pos a
+     * An in-world position relative to the bellow's output face to supply with air.
+     *
+     * @param pos             x controls distance from the bellow's face, y is up/down, z is left/right
+     * @param directionMapper the face of the target block to supply with air, optionally controllable by the bellow's blockstate
      */
     public record BellowsOffset(Vec3i pos, Function<BlockState, Direction> directionMapper)
     {
