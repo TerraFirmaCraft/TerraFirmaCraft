@@ -347,12 +347,12 @@
       "translation": [3.3, -1.9, 3]
     },
     "firstperson_righthand": {
-      "rotation": [0, -75, 15],
-      "translation": [4, -3, 0]
+      "rotation": [0, -15, 15],
+      "translation": [2, -2.5, 0]
     },
     "firstperson_lefthand": {
-      "rotation": [0, -75, 15],
-      "translation": [4, -3, 0]
+      "rotation": [0, -15, 15],
+      "translation": [2, -2.5, 0]
     },
     "ground": {
       "translation": [0, 2, 0],
@@ -369,13 +369,5 @@
       "translation": [0, 0, -0.38],
       "scale": [2, 2, 2]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "blocking": 1
-      },
-      "model": "tfc:item/metal/shield/blue_steel_blocking"
-    }
-  ]
+  }
 }

@@ -2,9 +2,9 @@
   "credit": "Made with Blockbench",
   "gui_light": "front",
   "textures": {
-    "1": "tfc:item/metal/shield/black_bronze_front",
-    "2": "tfc:item/metal/shield/black_bronze_back",
-    "particle": "tfc:item/metal/shield/black_bronze_front"
+    "1": "tfc:item/metal/shield/bismuth_bronze_front",
+    "2": "tfc:item/metal/shield/bismuth_bronze_back",
+    "particle": "tfc:item/metal/shield/bismuth_bronze_front"
   },
   "elements": [
     {
@@ -376,12 +376,12 @@
       "translation": [2.3, -2, 5]
     },
     "firstperson_righthand": {
-      "rotation": [0, -75, 15],
-      "translation": [4, -3, 0]
+      "rotation": [0, -15, 15],
+      "translation": [2, -2.5, 0]
     },
     "firstperson_lefthand": {
-      "rotation": [0, -75, 15],
-      "translation": [4, -3, 0]
+      "rotation": [0, -15, 15],
+      "translation": [2, -2.5, 0]
     },
     "ground": {
       "translation": [0, 2, 0],
@@ -397,13 +397,5 @@
       "translation": [0, 0, -0.38],
       "scale": [2, 2, 2]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "blocking": 1
-      },
-      "model": "tfc:item/metal/shield/black_bronze_blocking"
-    }
-  ]
+  }
 }

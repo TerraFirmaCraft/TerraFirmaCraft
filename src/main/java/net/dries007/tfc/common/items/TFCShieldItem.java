@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.common.items;
 
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.Tier;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 public class TFCShieldItem extends ShieldItem
 {
@@ -18,6 +21,9 @@ public class TFCShieldItem extends ShieldItem
     {
         super(builder.defaultDurability(tier.getUses()));
         this.tier = tier;
+        if (FMLEnvironment.dist.isClient()) {
+            ItemProperties.register(this, new ResourceLocation("blocking"), (stack, world, living, i) -> living != null && living.isUsingItem() && living.getUseItem() == stack ? 1.0f : 0.0f);
+        }
     }
 
     @Override
