@@ -351,7 +351,7 @@ def generate(rm: ResourceManager):
     heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', POTTERY_MELT, result_item='tfc:ceramic/jug')
     heat_recipe(rm, 'ceramic_pan', 'tfc:ceramic/unfired_pan', POTTERY_MELT, result_item='tfc:pan/empty')
     heat_recipe(rm, 'terracotta', 'minecraft:clay', POTTERY_MELT, result_item='minecraft:terracotta')
-    heat_recipe(rm, 'crucible', 'tfc:unfired_crucible', POTTERY_MELT, result_item='tfc:crucible')
+    heat_recipe(rm, 'crucible', 'tfc:ceramic/unfired_crucible', POTTERY_MELT, result_item='tfc:crucible')
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -765,8 +765,9 @@ def generate(rm: ResourceManager):
         welding_recipe(rm, '%s_ingot' % metal_out, 'tfc:metal/ingot/%s' % metal_in_1, 'tfc:metal/ingot/%s' % metal_in_2, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_out].tier - 1)
 
 
-def disable_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier):
-    rm.recipe(name_parts, 'forge:conditional', {'recipes': []})
+def disable_recipe(rm: ResourceManager, name_parts: ResourceIdentifier):
+    # noinspection PyTypeChecker
+    rm.recipe(name_parts, None, {}, conditions='forge:false')
 
 
 def collapse_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient, result: Optional[utils.Json] = None, copy_input: Optional[bool] = None):
