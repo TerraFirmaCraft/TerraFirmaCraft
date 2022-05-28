@@ -96,6 +96,7 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_JUG = create("usable_in_jug");
         public static final TagKey<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
+        public static final TagKey<Fluid> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
 
         private static TagKey<Fluid> create(String id)
@@ -146,6 +147,7 @@ public class TFCTags
         public static final TagKey<Item> COW_FOOD = create("cow_food");
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
+        public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
         public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");

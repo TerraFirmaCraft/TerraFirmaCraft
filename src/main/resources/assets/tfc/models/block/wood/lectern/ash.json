@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/ash",
+    "base": "tfc:block/wood/lectern/ash/base",
+    "front": "tfc:block/wood/lectern/ash/front",
+    "sides": "tfc:block/wood/lectern/ash/sides",
+    "top": "tfc:block/wood/lectern/ash/top",
+    "particle": "tfc:block/wood/lectern/ash/sides"
+  }
+}

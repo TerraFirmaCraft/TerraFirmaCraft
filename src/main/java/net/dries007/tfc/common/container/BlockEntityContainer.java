@@ -24,9 +24,9 @@ public abstract class BlockEntityContainer<T extends InventoryBlockEntity<?>> ex
     }
 
     @Override
-    public boolean stillValid(Player playerIn)
+    public boolean stillValid(Player player)
     {
-        return blockEntity.canInteractWith(playerIn);
+        return blockEntity.canInteractWith(player);
     }
 
     public T getBlockEntity()

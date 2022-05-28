@@ -96,8 +96,10 @@ def generate(rm: ResourceManager):
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+
     for color in COLORS:
         item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HC)
+        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HC)
 
     for item, item_data in METAL_ITEMS.items():
         if item_data.mold:
@@ -195,6 +197,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('bowls', 'tfc:ceramic/bowl', 'minecraft:bowl')
     rm.item_tag('soup_bowls', '#tfc:bowls')
     rm.item_tag('salad_bowls', '#tfc:bowls')
+    rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
 
     for color in COLORS:
@@ -513,6 +516,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
     rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
+    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
 
     # Item Sizes

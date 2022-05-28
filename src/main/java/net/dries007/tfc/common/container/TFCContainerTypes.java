@@ -36,6 +36,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<SaladContainer>> SALAD = register("salad", (windowId, inv, data) -> SaladContainer.create(windowId, inv));
 
     public static final RegistryObject<MenuType<TFCWorkbenchContainer>> WORKBENCH = register("workbench", (windowId, inv, data) -> new TFCWorkbenchContainer(windowId, inv));
+    public static final RegistryObject<MenuType<ScribingTableContainer>> SCRIBING_TABLE = register("scribing_table", ((windowId, inv, data) -> new ScribingTableContainer(inv, windowId)));
 
     public static final RegistryObject<MenuType<FirepitContainer>> FIREPIT = TFCContainerTypes.<FirepitBlockEntity, FirepitContainer>registerBlock("firepit", TFCBlockEntities.FIREPIT, FirepitContainer::create);
     public static final RegistryObject<MenuType<GrillContainer>> GRILL = TFCContainerTypes.<GrillBlockEntity, GrillContainer>registerBlock("grill", TFCBlockEntities.GRILL, GrillContainer::create);
@@ -45,6 +46,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<CrucibleContainer>> CRUCIBLE = TFCContainerTypes.<CrucibleBlockEntity, CrucibleContainer>registerBlock("crucible", TFCBlockEntities.CRUCIBLE, CrucibleContainer::create);
     public static final RegistryObject<MenuType<BarrelContainer>> BARREL = TFCContainerTypes.<BarrelBlockEntity, BarrelContainer>registerBlock("barrel", TFCBlockEntities.BARREL, BarrelContainer::create);
     public static final RegistryObject<MenuType<NestBoxContainer>> NEST_BOX = TFCContainerTypes.<NestBoxBlockEntity, NestBoxContainer>registerBlock("nest_box", TFCBlockEntities.NEST_BOX, NestBoxContainer::create);
+    public static final RegistryObject<MenuType<LargeVesselContainer>> LARGE_VESSEL = TFCContainerTypes.<LargeVesselBlockEntity, LargeVesselContainer>registerBlock("large_vessel", TFCBlockEntities.LARGE_VESSEL, LargeVesselContainer::create);
     public static final RegistryObject<MenuType<AnvilContainer>> ANVIL = TFCContainerTypes.<AnvilBlockEntity, AnvilContainer>registerBlock("anvil", TFCBlockEntities.ANVIL, AnvilContainer::create);
     public static final RegistryObject<MenuType<AnvilPlanContainer>> ANVIL_PLAN = TFCContainerTypes.<AnvilBlockEntity, AnvilPlanContainer>registerBlock("anvil_plan", TFCBlockEntities.ANVIL, AnvilPlanContainer::create);
     public static final RegistryObject<MenuType<BlastFurnaceContainer>> BLAST_FURNACE = TFCContainerTypes.<BlastFurnaceBlockEntity, BlastFurnaceContainer>registerBlock("blast_furnace", TFCBlockEntities.BLAST_FURNACE, BlastFurnaceContainer::create);
