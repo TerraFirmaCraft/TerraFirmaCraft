@@ -134,8 +134,6 @@ def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
         elif block['Name'] == 'minecraft:oak_leaves':
             block['Name'] = StringTag('tfc:wood/leaves/%s' % wood)
             block['Properties']['persistent'] = StringTag('false')
-        elif block['Name'] == 'minecraft:air':
-            block['Name'] = StringTag('minecraft:structure_void')
         else:
             print('Structure: %s has an invalid block state \'%s\'' % (template, block['Name']))
 
