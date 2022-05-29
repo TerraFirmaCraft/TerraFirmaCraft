@@ -83,10 +83,14 @@ public class ItemStackContainer extends Container
         // the slot is the item index, and it's an illegal action (like, swapping the items)
         // the hotbar item is being swapped out
         // the action is "pickup all" (this ignores every slot, so we cannot allow it)
-        if (!(slot == itemIndex && ILLEGAL_ITEM_CLICKS.contains(clickType)) && !(dragType == hotbarIndex && clickType == ClickType.SWAP) && clickType != ClickType.PICKUP_ALL)
+        if ((slot == itemIndex && ILLEGAL_ITEM_CLICKS.contains(clickType)) ||
+            (dragType == hotbarIndex && clickType == ClickType.SWAP) ||
+            (dragType == 40 && clickType == ClickType.SWAP && hand == InteractionHand.OFF_HAND) ||
+            clickType == ClickType.PICKUP_ALL)
         {
-            super.clicked(slot, dragType, clickType, player);
+            return;
         }
+        super.clicked(slot, dragType, clickType, player);
     }
 
     @FunctionalInterface
