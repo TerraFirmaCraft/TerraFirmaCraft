@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/acacia",
+    "base": "tfc:block/wood/lectern/acacia/base",
+    "front": "tfc:block/wood/lectern/acacia/front",
+    "sides": "tfc:block/wood/lectern/acacia/sides",
+    "top": "tfc:block/wood/lectern/acacia/top",
+    "particle": "tfc:block/wood/lectern/acacia/sides"
+  }
+}

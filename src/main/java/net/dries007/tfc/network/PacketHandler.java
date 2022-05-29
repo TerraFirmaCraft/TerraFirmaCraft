@@ -64,7 +64,9 @@ public final class PacketHandler
         register(ScreenButtonPacket.class, ScreenButtonPacket::encode, ScreenButtonPacket::new, ScreenButtonPacket::handle);
         register(PlayerDrinkPacket.class, PlayerDrinkPacket::new, PlayerDrinkPacket::handle);
         register(RequestClimateModelPacket.class, RequestClimateModelPacket::new, RequestClimateModelPacket::handle);
+        register(ScribingTablePacket.class, ScribingTablePacket::encode, ScribingTablePacket::new, ScribingTablePacket::handle);
         register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
+
     }
 
     @SuppressWarnings("unchecked")

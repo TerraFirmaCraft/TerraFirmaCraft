@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/ceramic/white_large_vessel_opened",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:sealed": 1.0
+      },
+      "model": "tfc:block/ceramic/white_large_vessel_sealed"
+    }
+  ]
+}

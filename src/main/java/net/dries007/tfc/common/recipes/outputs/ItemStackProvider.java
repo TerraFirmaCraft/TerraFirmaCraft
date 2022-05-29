@@ -133,6 +133,21 @@ public record ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
         return output;
     }
 
+    /**
+     * @return {@code true} if the item stack provider is dependent on it's input in such a way that would render the output meaningless without proper inputs.
+     */
+    public boolean dependsOnInput()
+    {
+        for (ItemStackModifier modifier : modifiers)
+        {
+            if (modifier.dependsOnInput())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void toNetwork(FriendlyByteBuf buffer)
     {
         buffer.writeItem(stack);

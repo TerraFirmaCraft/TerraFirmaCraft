@@ -537,20 +537,13 @@ GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane')
 MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
-NUTRIENTS = {
-    'grain': 'Wholesome',
-    'fruit': 'Tasty',
-    'vegetables': 'Filling',
-    'protein': 'Hearty',
-    'dairy': 'Creamy'
-}
+NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
 SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 
-BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace')
+BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel')
 TANNIN_WOOD_TYPES = ('oak', 'birch', 'chestnut', 'douglas_fir', 'hickory', 'maple', 'sequoia')
-
 
 def spawner(entity: str, weight: int = 1, min_count: int = 1, max_count: int = 4) -> Dict[str, Any]:
     return {
@@ -636,6 +629,9 @@ DEFAULT_LANG = {
     'subtitles.block.tfc.wattle.daubed': 'Wattle daubed',
     'subtitles.block.tfc.wattle.woven': 'Wattle woven',
     'subtitles.item.tfc.pan.use': 'Pan sifting',
+    'subtitles.block.tfc.scribing_table.rename_item': 'Player scribbling',
+    'subtitles.block.tfc.vessel.opened': 'Vessel opened',
+    'subtitles.block.tfc.vessel.closed': 'Vessel closed',
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
     'tfc.key.stack_food': 'Stack Food',
@@ -663,6 +659,7 @@ DEFAULT_LANG = {
     'tfc.screen.clay_knapping': 'Clay Knapping',
     'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
     'tfc.screen.leather_knapping': 'Leather Knapping',
+    'tfc.screen.scribing_table': 'Rename Items',
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
@@ -696,6 +693,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.nutrition_water': ' - Water: %s%%',
     'tfc.tooltip.nutrition_none': '- None!',
     'tfc.tooltip.hold_shift_for_nutrition_info': 'Hold (Shift) for Nutrition Info',
+    'tfc.tooltip.salad': 'Salad',
     'tfc.tooltip.contents': 'Contents:',
     'tfc.tooltip.propick.found_very_large': 'Found a very large sample of',
     'tfc.tooltip.propick.found_large': 'Found a large sample of',
@@ -772,6 +770,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.low_familiarity': 'This %s is not familiar enough to produce.',
     'tfc.tooltip.animal.no_milk': 'This %s has no milk.',
     'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
+    'tfc.tooltip.scribing_table.missingink': 'Ink is missing!',
+    'tfc.tooltip.scribing_table.invalidink': 'Item isn\'t ink!',
 
     # Commands
 

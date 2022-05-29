@@ -8,6 +8,7 @@ package net.dries007.tfc.client;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import net.minecraft.ChatFormatting;
@@ -27,6 +28,7 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -35,6 +37,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
@@ -97,6 +100,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.CALENDAR.get(), CalendarScreen::new);
             MenuScreens.register(TFCContainerTypes.NUTRITION.get(), NutritionScreen::new);
             MenuScreens.register(TFCContainerTypes.CLIMATE.get(), ClimateScreen::new);
+            MenuScreens.register(TFCContainerTypes.SALAD.get(), SaladScreen::new);
             MenuScreens.register(TFCContainerTypes.WORKBENCH.get(), CraftingScreen::new);
 
             MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
@@ -117,6 +121,8 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.ROCK_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), SmallVesselInventoryScreen::new);
             MenuScreens.register(TFCContainerTypes.MOLD_LIKE_ALLOY.get(), MoldLikeAlloyScreen::new);
+            MenuScreens.register(TFCContainerTypes.LARGE_VESSEL.get(), LargeVesselScreen::new);
+            MenuScreens.register(TFCContainerTypes.SCRIBING_TABLE.get(), ScribingTableScreen::new);
 
             for (Metal.Default metal : Metal.Default.values())
             {
@@ -156,6 +162,10 @@ public final class ClientEventHandler
 
             ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
 
+            TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+
+            Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).forEach(vessel -> ItemProperties.register(vessel.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+
             ItemProperties.register(TFCBlocks.LIGHT.get().asItem(), new ResourceLocation("level"), (stack, level, entity, unused) -> {
                 CompoundTag stackTag = stack.getTag();
                 if (stackTag != null && stackTag.contains("level", Tag.TAG_INT))
@@ -166,9 +176,8 @@ public final class ClientEventHandler
             });
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
-
         });
-
+        
         // Keybindings
         ClientRegistry.registerKeyBinding(TFCKeyBindings.PLACE_BLOCK);
         ClientRegistry.registerKeyBinding(TFCKeyBindings.CYCLE_CHISEL_MODE);
@@ -188,7 +197,7 @@ public final class ClientEventHandler
 
         // Wood blocks
         TFCBlocks.WOODS.values().forEach(map -> {
-            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
+            Stream.of(SAPLING, DOOR, TRAPDOOR, FENCE, FENCE_GATE, BUTTON, PRESSURE_PLATE, SLAB, STAIRS, TWIG, BARREL, SCRIBING_TABLE).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), cutout));
             Stream.of(LEAVES, FALLEN_LEAVES).forEach(type -> ItemBlockRenderTypes.setRenderLayer(map.get(type).get(), layer -> Minecraft.useFancyGraphics() ? layer == cutoutMipped : layer == solid));
         });
 
@@ -242,6 +251,9 @@ public final class ClientEventHandler
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.COMPOSTER.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.BLOOMERY.get(), cutout);
         ItemBlockRenderTypes.setRenderLayer(TFCBlocks.ICE_PILE.get(), translucent);
+
+        ItemBlockRenderTypes.setRenderLayer(TFCBlocks.LARGE_VESSEL.get(), cutout);
+        TFCBlocks.GLAZED_LARGE_VESSELS.values().forEach(vessel -> ItemBlockRenderTypes.setRenderLayer(vessel.get(), cutout));
 
         // Fluids
         ItemBlockRenderTypes.setRenderLayer(TFCFluids.SALT_WATER.getFlowing(), translucent);
@@ -312,6 +324,7 @@ public final class ClientEventHandler
         event.registerBlockEntityRenderer(TFCBlockEntities.SIGN.get(), TFCSignBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.BARREL.get(), ctx -> new BarrelBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.CRUCIBLE.get(), ctx -> new CrucibleBlockEntityRenderer());
+        event.registerBlockEntityRenderer(TFCBlockEntities.LECTERN.get(), LecternRenderer::new);
         event.registerBlockEntityRenderer(TFCBlockEntities.ANVIL.get(), ctx -> new AnvilBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.SHEET_PILE.get(), ctx -> new SheetPileBlockEntityRenderer());
         event.registerBlockEntityRenderer(TFCBlockEntities.INGOT_PILE.get(), ctx -> new IngotPileBlockEntityRenderer());

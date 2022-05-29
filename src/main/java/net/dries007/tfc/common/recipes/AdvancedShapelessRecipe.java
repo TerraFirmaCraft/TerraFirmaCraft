@@ -18,7 +18,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
 
-import com.mojang.datafixers.util.Function5;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
@@ -75,6 +74,12 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isSpecial()
+    {
+        return result.dependsOnInput();
     }
 
     @Override

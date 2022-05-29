@@ -155,12 +155,14 @@ public enum Wood implements StringRepresentable
         HORIZONTAL_SUPPORT(wood -> new HorizontalSupportBlock(fire(properties(wood).strength(1.0F).noOcclusion()).flammable(60, 60)), false),
         WORKBENCH(wood -> new TFCCraftingTableBlock(fire(properties(wood).strength(2.5F)).flammable(60, 30)), true),
         TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(fire(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
-        CHEST((self, wood) -> new TFCChestBlock(fire(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, (block, properties) -> new ChestBlockItem(block, properties)),
+        CHEST((self, wood) -> new TFCChestBlock(fire(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
         LOOM(wood -> new TFCLoomBlock(fire(properties(wood).strength(2.5F).noOcclusion()).flammable(60, 30).blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.name().toLowerCase(Locale.ROOT))), true),
         SLUICE(wood -> new SluiceBlock(fire(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false),
         SIGN(wood -> new TFCStandingSignBlock(fire(properties(wood).noCollission().strength(1F)).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
         WALL_SIGN(wood -> new TFCWallSignBlock(fire(properties(wood).noCollission().strength(1F).lootFrom(getBlock(SIGN, wood))).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
-        BARREL((self, wood) -> new BarrelBlock(fire(properties(wood).strength(2.5f)).flammable(60, 30).blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false);
+        BARREL((self, wood) -> new BarrelBlock(fire(properties(wood).strength(2.5f)).flammable(60, 30).blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false),
+        LECTERN(wood -> new TFCLecternBlock(ExtendedProperties.of(properties(wood).noCollission().strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.LECTERN)), false),
+        SCRIBING_TABLE(wood -> new ScribingTableBlock(ExtendedProperties.of(properties(wood).noOcclusion().strength(2.5F)).flammable(60, 30)), false);
 
         public static final BlockType[] VALUES = values();
 
@@ -217,7 +219,8 @@ public enum Wood implements StringRepresentable
                 {
                     case LOG -> STRIPPED_LOG;
                     case WOOD -> STRIPPED_WOOD;
-                    default -> throw new IllegalStateException("Block type " + name() + " does not have a stripped variant");
+                    default ->
+                        throw new IllegalStateException("Block type " + name() + " does not have a stripped variant");
                 };
         }
 

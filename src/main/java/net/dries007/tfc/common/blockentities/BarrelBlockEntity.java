@@ -49,7 +49,6 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -175,11 +174,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return switch (slot) {
-            case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent() || stack.getItem() instanceof BucketItem;
-            case SLOT_ITEM -> ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.HUGE);
-            default -> true;
-        };
+        return switch (slot)
+            {
+                case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent() || stack.getItem() instanceof BucketItem;
+                case SLOT_ITEM -> ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.HUGE);
+                default -> true;
+            };
     }
 
     @Override
@@ -260,7 +260,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         if (!level.isClientSide())
         {
             // Drop container items, but allow the main slot to be filled
-            for (int slot : new int[] { SLOT_FLUID_CONTAINER_IN, SLOT_FLUID_CONTAINER_OUT })
+            for (int slot : new int[] {SLOT_FLUID_CONTAINER_IN, SLOT_FLUID_CONTAINER_OUT})
             {
                 Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(slot));
                 inventory.setStackInSlot(slot, ItemStack.EMPTY);
@@ -429,6 +429,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             return canModify() ? inventory.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack)
+        {
+            return canModify() && DelegateItemHandler.super.isItemValid(slot, stack);
         }
 
         @Override
