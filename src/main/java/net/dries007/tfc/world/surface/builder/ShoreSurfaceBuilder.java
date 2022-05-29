@@ -9,6 +9,7 @@ package net.dries007.tfc.world.surface.builder;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.surface.SurfaceBuilderContext;
+import net.dries007.tfc.world.surface.SurfaceState;
 import net.dries007.tfc.world.surface.SurfaceStates;
 
 public class ShoreSurfaceBuilder implements SurfaceBuilder
@@ -32,7 +33,8 @@ public class ShoreSurfaceBuilder implements SurfaceBuilder
         }
         else
         {
-            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SAND, SurfaceStates.SHORE_SANDSTONE);
+            SurfaceState top = context.rainfall() > 400 && variantNoiseValue > 0.4f ? SurfaceStates.SHORE_MUD : SurfaceStates.SHORE_SAND;
+            NormalSurfaceBuilder.INSTANCE.buildSurface(context, startY, endY, top, top, SurfaceStates.SHORE_SANDSTONE);
         }
     }
 }

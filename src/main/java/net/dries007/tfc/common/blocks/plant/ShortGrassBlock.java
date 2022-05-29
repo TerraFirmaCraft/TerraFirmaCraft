@@ -15,6 +15,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.util.Helpers;
+
 public abstract class ShortGrassBlock extends PlantBlock
 {
     protected static final VoxelShape GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
@@ -22,7 +26,7 @@ public abstract class ShortGrassBlock extends PlantBlock
     protected static final VoxelShape SHORT_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 12.0, 14.0);
     protected static final VoxelShape SHORTEST_GRASS_SHAPE = box(2.0, 0.0, 2.0, 14.0, 4.0, 14.0);
 
-    public static ShortGrassBlock create(IPlant plant, Properties properties)
+    public static ShortGrassBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new ShortGrassBlock(properties)
         {
@@ -34,7 +38,7 @@ public abstract class ShortGrassBlock extends PlantBlock
         };
     }
 
-    protected ShortGrassBlock(Properties properties)
+    protected ShortGrassBlock(ExtendedProperties properties)
     {
         super(properties);
     }
@@ -49,6 +53,12 @@ public abstract class ShortGrassBlock extends PlantBlock
                 case 2 -> SHORT_GRASS_SHAPE;
                 default -> GRASS_SHAPE;
             };
+    }
+
+    @Override
+    protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.GRASS_PLANTABLE_ON);
     }
 
     @Override

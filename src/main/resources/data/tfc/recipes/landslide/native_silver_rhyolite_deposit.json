@@ -2,5 +2,5 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:landslide",
   "ingredient": "tfc:deposit/native_silver/rhyolite",
-  "result": "tfc:rock/gravel/rhyolite"
+  "result": "tfc:deposit/native_silver/rhyolite"
 }

@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:cut_sandstone/green"
+    }
+  },
+  "result": {
+    "item": "tfc:cut_sandstone/green_stairs",
+    "count": 8
+  }
+}

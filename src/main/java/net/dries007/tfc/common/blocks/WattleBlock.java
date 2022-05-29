@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.Tags;
@@ -81,6 +82,14 @@ public class WattleBlock extends StainedWattleBlock implements IGhostBlockHandle
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return state.getValue(WOVEN) ? super.getCollisionShape(state, level, pos, context) : Shapes.empty();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public VoxelShape getOcclusionShape(BlockState state, BlockGetter level, BlockPos pos)
     {
         return state.getValue(WOVEN) ? super.getOcclusionShape(state, level, pos) : Shapes.empty();

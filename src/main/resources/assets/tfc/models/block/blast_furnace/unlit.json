@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_column",
+  "textures": {
+    "side": "tfc:block/devices/blast_furnace/side",
+    "end": "tfc:block/devices/blast_furnace/top",
+    "particle": "tfc:block/devices/blast_furnace/side"
+  }
+}

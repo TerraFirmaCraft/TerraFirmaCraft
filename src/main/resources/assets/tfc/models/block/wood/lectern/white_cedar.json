@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/white_cedar",
+    "base": "tfc:block/wood/lectern/white_cedar/base",
+    "front": "tfc:block/wood/lectern/white_cedar/front",
+    "sides": "tfc:block/wood/lectern/white_cedar/sides",
+    "top": "tfc:block/wood/lectern/white_cedar/top",
+    "particle": "tfc:block/wood/lectern/white_cedar/sides"
+  }
+}

@@ -8,17 +8,17 @@ package net.dries007.tfc;
 
 import java.awt.*;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import net.minecraft.DetectedVersion;
 import net.minecraft.SharedConstants;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -29,7 +29,6 @@ import io.netty.buffer.Unpooled;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
@@ -47,7 +46,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class TestHelper
 {
-    public static final Supplier<ResourceLocation> TEST_RECIPE = () -> Helpers.identifier("test");
     public static final Artist.Custom<MidpointFractal> MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
     public static final Artist.Custom<List<MidpointFractal>> MULTI_MIDPOINT_FRACTAL = Artist.custom((fractal, g) -> fractal.forEach(f -> draw(f, g, 1)));
     public static final Artist.Custom<RiverFractal> RIVER_FRACTAL = Artist.custom((fractal, g) -> draw(fractal, g, 1));
@@ -151,6 +149,27 @@ public class TestHelper
         }
     }
 
+    public static <T> void assertCustomArrayEquals(T[] expected, T[] actual, BiConsumer<T, T> assertion)
+    {
+        assertCustomListEquals(Arrays.asList(expected), Arrays.asList(actual), assertion);
+    }
+
+    public static <T> void assertCustomListEquals(List<? extends T> expected, List<? extends T> actual, BiConsumer<T, T> assertion)
+    {
+        for (int i = 0; i < Math.min(expected.size(), actual.size()); i++)
+        {
+            assertion.accept(expected.get(i), actual.get(i));
+        }
+        if (expected.size() > actual.size())
+        {
+            fail("List is missing " + (expected.size() - actual.size()) + " expected elements");
+        }
+        if (actual.size() > expected.size())
+        {
+            fail("List contains " + (actual.size() - expected.size()) + " unexpected elements");
+        }
+    }
+
     public static void assertIngredientEquals(Ingredient expected, Ingredient actual)
     {
         assertEquals(expected.getClass(), actual.getClass());
@@ -158,12 +177,7 @@ public class TestHelper
         assertEquals(expected.toJson(), actual.toJson());
         fail("oops");
 
-        final ItemStack[] expectedItems = expected.getItems(), actualItems = actual.getItems();
-        assertEquals(expectedItems.length, actualItems.length);
-        for (int i = 0; i < Math.min(expectedItems.length, actualItems.length); i++)
-        {
-            assertItemStackEquals(expectedItems[i], actualItems[i]);
-        }
+        assertCustomArrayEquals(expected.getItems(), actual.getItems(), TestHelper::assertItemStackEquals);
     }
 
     public static void assertItemStackEquals(ItemStack expected, ItemStack actual)
@@ -177,6 +191,15 @@ public class TestHelper
     public static void assertRecipeEquals(Recipe<?> expected, Recipe<?> actual)
     {
         assertEquals(expected.getClass(), actual.getClass());
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getGroup(), actual.getGroup());
+        assertItemStackEquals(expected.getResultItem(), actual.getResultItem());
+        assertCustomListEquals(expected.getIngredients(), actual.getIngredients(), TestHelper::assertIngredientEquals);
+    }
+
+    public static <R extends Recipe<?>, S extends RecipeSerializer<R>> R encodeAndDecode(R recipe, S serializer)
+    {
+        return encodeAndDecode(recipe, (r, buf) -> serializer.toNetwork(buf, r), buf -> serializer.fromNetwork(recipe.getId(), buf));
     }
 
     public static <T> T encodeAndDecode(T t, BiConsumer<T, FriendlyByteBuf> encode, Function<FriendlyByteBuf, T> decode)
@@ -184,16 +207,24 @@ public class TestHelper
         final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
         encode.accept(t, buffer);
         final T result = decode.apply(buffer);
-        assertEquals(buffer.readableBytes(), 0);
+        assertEquals(0, buffer.readableBytes(), "Buffer has " + buffer.readableBytes() + " remaining bytes");
         return result;
     }
 
-    public static <R extends Recipe<?>, S extends RecipeSerializer<R>> R encodeAndDecode(R recipe, S serializer)
+    public static <T> T writeAndRead(T before, BiConsumer<T, CompoundTag> encoder, T after, BiConsumer<T, CompoundTag> decoder)
     {
-        final FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        serializer.toNetwork(buffer, recipe);
-        final R result = serializer.fromNetwork(TEST_RECIPE.get(), buffer);
-        assertEquals(buffer.readableBytes(), 0);
-        return result;
+        return writeAndRead(before, t -> {
+            final CompoundTag tag = new CompoundTag();
+            encoder.accept(t, tag);
+            return tag;
+        }, tag -> {
+            decoder.accept(after, tag);
+            return after;
+        });
+    }
+
+    public static <T> T writeAndRead(T before, Function<T, CompoundTag> encoder, Function<CompoundTag, T> decoder)
+    {
+        return encoder.andThen(decoder).apply(before);
     }
 }

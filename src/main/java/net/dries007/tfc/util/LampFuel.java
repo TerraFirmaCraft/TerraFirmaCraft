@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 public final class LampFuel
 {
-    public static final DataManager<LampFuel> MANAGER = new DataManager<>("lamp_fuels", "lamp_fuel", LampFuel::new);
+    public static final DataManager<LampFuel> MANAGER = new DataManager<>(Helpers.identifier("lamp_fuels"), "lamp_fuel", LampFuel::new);
     public static final IndirectHashCollection<Fluid, LampFuel> CACHE = IndirectHashCollection.create(s -> s.getFluidIngredient().getMatchingFluids(), MANAGER::getValues);
 
     @Nullable
@@ -58,9 +58,12 @@ public final class LampFuel
         return id;
     }
 
+    /**
+     * @return The burn rate of this lamp, in ticks per mB.
+     */
     public int getBurnRate()
     {
-        return burnRate; // ticks / mB
+        return burnRate;
     }
 
     public FluidIngredient getFluidIngredient()

@@ -37,8 +37,6 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     public static final int SLOT_FUEL_CONSUME = 0; // where fuel is taken by the firepit
     public static final int SLOT_FUEL_INPUT = 3; // where fuel is inserted into the firepit (0-3 are all fuel slots)
 
-    public static final int DATA_SLOT_TEMPERATURE = 0;
-
     public static void convertTo(LevelAccessor level, BlockPos pos, BlockState state, AbstractFirepitBlockEntity<?> firepit, Block newBlock)
     {
         // Convert firepit to another device
@@ -182,6 +180,15 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         lastPlayerTick = tick;
     }
 
+    public void intakeAir(int amount)
+    {
+        airTicks += amount;
+        if (airTicks > BellowsBlockEntity.MAX_DEVICE_AIR_TICKS)
+        {
+            airTicks = BellowsBlockEntity.MAX_DEVICE_AIR_TICKS;
+        }
+    }
+
     public void extinguish(BlockState state)
     {
         assert level != null;
@@ -252,6 +259,11 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
                 case FirepitBlockEntity.SLOT_OUTPUT_1, FirepitBlockEntity.SLOT_OUTPUT_2 -> true;
                 default -> false;
             };
+    }
+
+    public float getTemperature()
+    {
+        return temperature;
     }
 
     public ContainerData getSyncableData()

@@ -83,7 +83,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
         // Draw the temperature indicator
-        int temperature = (int) (51 * blockEntity.getSyncableData().get(CrucibleBlockEntity.DATA_SLOT_TEMPERATURE) / Heat.maxVisibleTemperature());
+        int temperature = (int) (51 * blockEntity.getTemperature() / Heat.maxVisibleTemperature());
         if (temperature > 0)
         {
             blit(poseStack, leftPos + 7, topPos + 131 - Math.min(temperature, 51), 176, 0, 15, 5);
@@ -96,7 +96,6 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         AlloyView alloy = blockEntity.getAlloy();
         if (alloy.getAmount() > 0)
         {
-
             final TextureAtlasSprite sprite = getAndBindFluidSprite(alloy.getResultAsFluidStack());
             final int startY = 93;
             final int endY = 124;
@@ -139,13 +138,13 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 String units;
                 if (entry.getDoubleValue() >= 1)
                 {
-                    units = I18n.get("tfc.tooltip.fluid_units", (int) entry.getDoubleValue());
+                    units = I18n.get("tfc.tooltip.fluid_units", Math.round(entry.getDoubleValue()));
                 }
                 else
                 {
                     units = I18n.get("tfc.tooltip.less_than_one_fluid_units");
                 }
-                String content = String.format("  %s(%s%2.1f%%%s)", units, ChatFormatting.DARK_GREEN, 100 * entry.getDoubleValue() / alloy.getAmount(), ChatFormatting.RESET);
+                String content = String.format("  %s(%s%2.1f%%%s)", units, ChatFormatting.DARK_GREEN, Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f, ChatFormatting.RESET);
                 font.draw(poseStack, metalName, leftPos + 10, yPos, 0x404040);
                 font.draw(poseStack, content, leftPos + 10, yPos + 9, 0x404040);
                 yPos += 18;

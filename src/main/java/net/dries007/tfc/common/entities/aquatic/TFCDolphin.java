@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.AquaticMob;
+import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
 
@@ -37,6 +37,7 @@ public class TFCDolphin extends Dolphin implements AquaticMob
     {
         goalSelector.addGoal(0, new BreathAirGoal(this));
         goalSelector.addGoal(0, new TryFindWaterGoal(this));
+        goalSelector.addGoal(1, new GetHookedGoal(this));
         goalSelector.addGoal(4, new RandomSwimmingGoal(this, 1.0D, 10));
         goalSelector.addGoal(4, new RandomLookAroundGoal(this));
         goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));

@@ -42,7 +42,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:seeds/tomato"
+          "name": "tfc:seeds/tomato",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:wild_crop/tomato",
+              "properties": {
+                "part": "bottom"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

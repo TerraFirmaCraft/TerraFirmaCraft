@@ -44,6 +44,8 @@ public class ServerConfig
     public final ForgeConfigSpec.EnumValue<Size> chestMaximumItemSize;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue torchTicks;
+    // Blocks - Torch
+    public final ForgeConfigSpec.IntValue candleTicks;
     // Blocks - Charcoal Pit
     public final ForgeConfigSpec.IntValue charcoalTicks;
     // Blocks - Pit Kiln
@@ -52,6 +54,8 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    // Blocks - Anvil
+    public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
     // Blocks - Composter
@@ -61,6 +65,14 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue sluiceTicks;
     // Blocks - Lamp
     public final ForgeConfigSpec.IntValue lampCapacity;
+    // Blocks - Bloomery
+    public final ForgeConfigSpec.IntValue bloomeryCapacity;
+    public final ForgeConfigSpec.IntValue bloomeryMaxChimneyHeight;
+    // Blocks - Blast Furnace
+    public final ForgeConfigSpec.IntValue blastFurnaceCapacity;
+    public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
+    public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
+    public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -93,6 +105,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableBlockCollapsing;
     public final ForgeConfigSpec.BooleanValue enableExplosionCollapsing;
     public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
+    public final ForgeConfigSpec.BooleanValue enableChiselsStartCollapses;
     public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
     public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
@@ -149,6 +162,9 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue chickenMinEggFamiliarity;
     public final ForgeConfigSpec.IntValue chickenHatchDays;
 
+    // Below Everything
+    public final ForgeConfigSpec.BooleanValue farmlandMakesTheBestRaceTracks;
+
     ServerConfig(ForgeConfigSpec.Builder innerBuilder)
     {
         Function<String, ForgeConfigSpec.Builder> builder = name -> innerBuilder.translation(MOD_ID + ".config.server." + name);
@@ -198,6 +214,10 @@ public class ServerConfig
 
         torchTicks = builder.apply("torchTicks").comment("Number of ticks required for a torch to burn out (1000 = 1 in game hour = 50 seconds), default is 72 hours. Set to -1 to disable torch burnout.").defineInRange("torchTicks", 72000, -1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("candle");
+
+        candleTicks = builder.apply("candleTicks").comment("Number of ticks required for a candle to burn out (1000 = 1 in game hour = 50 seconds), default is 264 hours. Set to -1 to disable candle burnout.").defineInRange("candleTicks", 264000, -1, Integer.MAX_VALUE);
+
         innerBuilder.pop().push("charcoal");
 
         charcoalTicks = builder.apply("charcoalTicks").comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.").defineInRange("charcoalTicks", 18000, -1, Integer.MAX_VALUE);
@@ -212,6 +232,10 @@ public class ServerConfig
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("anvil");
+
+        anvilAcceptableWorkRange = builder.apply("anvilAcceptableWorkRange").comment("The number of pixels that the anvil's result may be off by, but still count as recipe completion. By defualt this requires pixel perfect accuracy.").defineInRange("anvilAcceptableWorkRange", 0, 0, 150);
+
         innerBuilder.pop().push("barrel");
 
         barrelCapacity = builder.apply("barrelCapacity").comment("Tank capacity of a barrel (in mB).").defineInRange("barrelCapacity", 10000, 0, Integer.MAX_VALUE);
@@ -224,8 +248,21 @@ public class ServerConfig
         innerBuilder.pop().push("sluice");
         sluiceTicks = builder.apply("sluiceTicks").comment("Number of ticks required for a sluice to process an item. (20 = 1 second), default is 5 seconds.").defineInRange("sluiceTicks", 100, 1, Integer.MAX_VALUE);
 
-        innerBuilder.pop().push("composter");
+        innerBuilder.pop().push("lamp");
+
         lampCapacity = builder.apply("lampCapacity").comment("Tank capacity of a lamp (in mB).").defineInRange("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
+
+        innerBuilder.pop().push("bloomery");
+
+        bloomeryCapacity = builder.apply("bloomeryCapacity").comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").defineInRange("bloomeryCapacity", 8, 1, Integer.MAX_VALUE);
+        bloomeryMaxChimneyHeight = builder.apply("bloomeryMaxChimneyHeight").comment("The maximum number of levels that can be built in a bloomery multiblock, for added capacity.").defineInRange("bloomeryMaxChimneyHeight", 3, 1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("blastFurnace");
+
+        blastFurnaceCapacity = builder.apply("blastFurnaceCapacity").comment("Inventory capacity (in number of items per level of chimney) of the blast furnace.").defineInRange("blastFurnaceCapacity", 4, 1, Integer.MAX_VALUE);
+        blastFurnaceFluidCapacity = builder.apply("blastFurnaceFluidCapacity").comment("Fluid capacity (in mB) of the output tank of the blast furnace.").defineInRange("blastFurnaceFluidCapacity", 10_000, 1, Integer.MAX_VALUE);
+        blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
+        blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
@@ -269,6 +306,7 @@ public class ServerConfig
         enableBlockCollapsing = builder.apply("enableBlockCollapsing").comment("Enable rock collapsing when mining raw stone blocks").define("enableBlockCollapsing", true);
         enableExplosionCollapsing = builder.apply("enableExplosionCollapsing").comment("Enable explosions causing immediate collapses.").define("enableExplosionCollapsing", true);
         enableBlockLandslides = builder.apply("enableBlockLandslides").comment("Enable land slides (gravity affected blocks) when placing blocks or on block updates.").define("enableBlockLandslides", true);
+        enableChiselsStartCollapses = builder.apply("enableChiselsStartCollapses").comment("Enable chisels starting collapses").define("enableChiselsStartCollapses", true);
 
         collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
         collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
@@ -340,8 +378,8 @@ public class ServerConfig
         chickenMinEggFamiliarity = builder.apply("chickenMinEggFamiliarity").comment("Minimum familiarity [0-1] needed to lay eggs. Set above 1 to disable egg laying.").defineInRange("chickenMinEggFamiliarity", 0.15d, 0, Float.MAX_VALUE);
         chickenHatchDays = builder.apply("chickenHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("chickenHatchDays", 8, 0, Integer.MAX_VALUE);
 
-        innerBuilder.pop();
+        innerBuilder.pop(3);
 
-        innerBuilder.pop().pop();
+        farmlandMakesTheBestRaceTracks = builder.apply("farmlandMakesTheBestRaceTracks").define("farmlandMakesTheBestRaceTracks", false);
     }
 }

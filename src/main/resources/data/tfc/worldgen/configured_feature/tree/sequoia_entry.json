@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/sequoia",
+    "dead_tree": "tfc:tree/sequoia_dead",
     "old_growth_chance": 3,
     "fallen_log": "tfc:wood/log/sequoia",
     "bush_log": {

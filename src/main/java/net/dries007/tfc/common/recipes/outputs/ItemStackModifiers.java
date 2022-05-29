@@ -28,8 +28,11 @@ public class ItemStackModifiers
         register("copy_input", CopyInputModifier.INSTANCE);
         register("copy_food", CopyFoodModifier.INSTANCE);
         register("copy_heat", CopyHeatModifier.INSTANCE);
+        register("copy_forging_bonus", CopyForgingBonusModifier.INSTANCE);
         register("reset_food", ResetFoodModifier.INSTANCE);
         register("empty_bowl", EmptyBowlModifier.INSTANCE);
+        register("add_bait_to_rod", AddBaitToRodModifier.INSTANCE);
+        register("sandwich", SandwichModifier.INSTANCE);
 
         register("add_trait", AddRemoveTraitModifier.Serializer.ADD);
         register("remove_trait", AddRemoveTraitModifier.Serializer.REMOVE);

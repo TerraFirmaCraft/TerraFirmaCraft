@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:aspen_dead/1",
+      "tfc:aspen_dead/2",
+      "tfc:aspen_dead/3",
+      "tfc:aspen_dead/4",
+      "tfc:aspen_dead/5",
+      "tfc:aspen_dead/6"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 1,
+      "height": 9,
+      "allow_submerged": true
+    }
+  }
+}

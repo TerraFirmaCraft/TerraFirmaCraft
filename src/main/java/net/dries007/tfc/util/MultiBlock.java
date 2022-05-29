@@ -13,7 +13,9 @@ import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,15 +45,24 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
         return new MultiBlock(new ArrayList<>(conditions));
     }
 
-    public MultiBlock match(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition)
+    public MultiBlock match(BlockPos posOffset, TagKey<Block> tagMatch)
     {
-        conditions.add((level, pos) -> condition.test(level, pos.offset(posOffset)));
-        return this;
+        return match(posOffset, (level, pos) -> Helpers.isBlock(level.getBlockState(pos), tagMatch));
     }
 
     public MultiBlock match(BlockPos posOffset, Predicate<BlockState> stateMatcher)
     {
-        conditions.add((level, pos) -> stateMatcher.test(level.getBlockState(pos.offset(posOffset))));
+        return match(posOffset, (level, pos) -> stateMatcher.test(level.getBlockState(pos)));
+    }
+
+    public <T extends BlockEntity> MultiBlock match(BlockPos posOffset, Predicate<T> blockEntityMatcher, BlockEntityType<T> type)
+    {
+        return match(posOffset, (level, pos) -> level.getBlockEntity(pos, type).map(blockEntityMatcher::test).orElse(false));
+    }
+
+    public MultiBlock match(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition)
+    {
+        conditions.add((level, pos) -> condition.test(level, pos.offset(posOffset)));
         return this;
     }
 
@@ -70,12 +81,6 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
         {
             conditions.add((level, pos) -> condition.test(level, pos.offset(posOffset).relative(d, relativeAmount)));
         }
-        return this;
-    }
-
-    public <T extends BlockEntity> MultiBlock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, BlockEntityType<T> type)
-    {
-        conditions.add((level, pos) -> level.getBlockEntity(pos.offset(posOffset), type).map(tileEntityPredicate::test).orElse(false));
         return this;
     }
 

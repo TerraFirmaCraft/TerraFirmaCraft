@@ -25,7 +25,7 @@ import org.slf4j.Logger;
 
 public final class ItemSizeManager
 {
-    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>("item_sizes", "item size", ItemSizeDefinition::new, ItemSizeDefinition::new, ItemSizeDefinition::encode, DataManagerSyncPacket.TItemSizeDefinition::new);
+    public static final DataManager<ItemSizeDefinition> MANAGER = new DataManager<>(Helpers.identifier("item_sizes"), "item size", ItemSizeDefinition::new, ItemSizeDefinition::new, ItemSizeDefinition::encode, Packet::new);
     public static final IndirectHashCollection<Item, ItemSizeDefinition> CACHE = IndirectHashCollection.create(ItemSizeDefinition::getValidItems, MANAGER::getValues);
 
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -113,4 +113,6 @@ public final class ItemSizeManager
             return ItemSize.of(Size.VERY_SMALL, Weight.VERY_LIGHT); // Stored anywhere and stack size = 64
         }
     }
+
+    public static class Packet extends DataManagerSyncPacket<ItemSizeDefinition> {}
 }

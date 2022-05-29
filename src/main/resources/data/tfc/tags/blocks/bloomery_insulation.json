@@ -5,6 +5,9 @@
     "#forge:stone",
     "#forge:cobblestone",
     "#forge:stone_bricks",
-    "#forge:smooth_stone"
+    "#forge:smooth_stone",
+    "minecraft:bricks",
+    "tfc:fire_bricks",
+    "#forge:concrete"
   ]
 }

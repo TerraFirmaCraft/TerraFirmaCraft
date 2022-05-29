@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.RegisteredDataManager;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -19,7 +20,7 @@ import net.dries007.tfc.world.placement.ClimatePlacement;
  */
 public class Fauna
 {
-    public static final RegisteredDataManager<Fauna> MANAGER = new RegisteredDataManager<>(Fauna::new, Fauna::new, "fauna", "fauna");
+    public static final RegisteredDataManager<Fauna> MANAGER = new RegisteredDataManager<>(Fauna::new, Fauna::new, Helpers.identifier("fauna"), "fauna");
 
     private static final ClimatePlacement DEFAULT_CLIMATE = new ClimatePlacement(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, ForestType.NONE, ForestType.OLD_GROWTH, false);
 

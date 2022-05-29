@@ -10,16 +10,12 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
-import net.dries007.tfc.client.ClientHelpers;
-import net.dries007.tfc.util.CacheInvalidationListener;
+import net.dries007.tfc.util.Helpers;
 
 /**
  * This is a structure which provides O(1), {@link HashMap} access of the wrapped {@code Map<Predicate<V>, R>}
@@ -36,85 +32,64 @@ import net.dries007.tfc.util.CacheInvalidationListener;
  */
 public class IndirectHashCollection<K, R>
 {
+    private static final Map<IndirectHashCollection<?, ?>, Supplier<Collection<?>>> DIRECT_CACHES = new HashMap<>();
+    private static final Map<IndirectHashCollection<?, ?>, Supplier<RecipeType<?>>> RECIPE_CACHES = new HashMap<>();
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static <K, R> IndirectHashCollection<K, R> create(Function<R, Iterable<? extends K>> keyExtractor, Supplier<Collection<R>> reloadableCollection)
     {
-        return new IndirectHashCollection<>(keyExtractor, reloadableCollection);
+        final IndirectHashCollection<K, R> cache = new IndirectHashCollection<>(keyExtractor);
+        DIRECT_CACHES.put(cache, (Supplier) reloadableCollection);
+        return cache;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static <C extends Container, K, R extends Recipe<C>> IndirectHashCollection<K, R> createForRecipe(Function<R, Iterable<? extends K>> keyExtractor, Supplier<RecipeType<R>> recipeType)
     {
-        return new IndirectHashCollection<>(keyExtractor, () -> getTheRecipeManagerInTheMostHackyAwfulWay()
-            .map(r -> r.getAllRecipesFor(recipeType.get()))
-            .orElse(Collections.emptyList()));
+        final IndirectHashCollection<K, R> cache = new IndirectHashCollection<>(keyExtractor);
+        RECIPE_CACHES.put(cache, (Supplier) recipeType);
+        return cache;
     }
 
-    /**
-     * Cannot cache recipes on resource reload, when a level is available, as tags aren't present and can't be resolved. Recipes may be accessed through {@link CacheInvalidationListener} but holding references to them is awkward for client side caches.
-     * Resolving recipes needs access to a {@link RecipeManager} which needs to be obtained from a {@link Level} which is prohibitively difficult for use cases such as item stack capabilities, where a level is not readily available.
-     * This seems to work.
-     */
-    private static Optional<RecipeManager> getTheRecipeManagerInTheMostHackyAwfulWay()
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static void reloadAllCaches(RecipeManager manager)
     {
-        final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        if (server != null)
-        {
-            return Optional.of(server.getRecipeManager());
-        }
-        try
-        {
-            final Level level = ClientHelpers.getLevel();
-            if (level != null)
-            {
-                return Optional.of(level.getRecipeManager());
-            }
-        }
-        catch (Throwable t) { /* super safe */ }
-        return Optional.empty();
+        DIRECT_CACHES.forEach((cache, values) -> reloadDirectCache((IndirectHashCollection) cache, (Supplier) values));
+        RECIPE_CACHES.forEach((cache, type) -> reloadRecipeCache((IndirectHashCollection) cache, manager, (Supplier) type));
+    }
+
+    private static <K, R> void reloadDirectCache(IndirectHashCollection<K, R> cache, Supplier<Collection<R>> values)
+    {
+        cache.reload(values.get());
+    }
+
+    private static <C extends Container, K, R extends Recipe<C>> void reloadRecipeCache(IndirectHashCollection<K, R> cache, RecipeManager manager, Supplier<RecipeType<R>> recipe)
+    {
+        cache.reload(Helpers.getRecipes(manager, recipe).values());
     }
 
     private final Map<K, Collection<R>> indirectResultMap;
     private final Function<R, Iterable<? extends K>> keyExtractor;
-    private final Supplier<Collection<R>> reloadableCollection;
-    private volatile boolean valid;
 
-    private IndirectHashCollection(Function<R, Iterable<? extends K>> keyExtractor, Supplier<Collection<R>> reloadableCollection)
+    public IndirectHashCollection(Function<R, Iterable<? extends K>> keyExtractor)
     {
         this.keyExtractor = keyExtractor;
         this.indirectResultMap = new HashMap<>();
-        this.reloadableCollection = reloadableCollection;
-        this.valid = false;
-
-        CacheInvalidationListener.INSTANCE.doOnInvalidate(this::invalidate);
     }
 
     public Collection<R> getAll(K key)
     {
-        if (!valid)
-        {
-            synchronized (this)
-            {
-                if (!valid)
-                {
-                    final Collection<R> entries = reloadableCollection.get();
-                    if (!entries.isEmpty())
-                    {
-                        indirectResultMap.clear();
-                        entries.forEach(result -> {
-                            for (K directKey : keyExtractor.apply(result))
-                            {
-                                indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
-                            }
-                        });
-                        valid = true;
-                    }
-                }
-            }
-        }
         return indirectResultMap.getOrDefault(key, Collections.emptyList());
     }
 
-    public void invalidate()
+    public void reload(Collection<R> values)
     {
-        valid = false;
+        indirectResultMap.clear();
+        values.forEach(result -> {
+            for (K directKey : keyExtractor.apply(result))
+            {
+                indirectResultMap.computeIfAbsent(directKey, k -> new ArrayList<>()).add(result);
+            }
+        });
     }
 }

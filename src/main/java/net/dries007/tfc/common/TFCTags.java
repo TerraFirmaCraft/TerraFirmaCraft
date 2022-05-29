@@ -30,6 +30,7 @@ public class TFCTags
         public static final TagKey<Block> GRASS = create("grass"); // Used for connected textures on grass blocks, different from the vanilla/forge tag
         public static final TagKey<Block> TREE_GROWS_ON = create("tree_grows_on"); // Used for tree growth
         public static final TagKey<Block> BUSH_PLANTABLE_ON = create("bush_plantable_on"); // Used for plant placement
+        public static final TagKey<Block> GRASS_PLANTABLE_ON = create("grass_plantable_on"); // Grass has a slightly expanded placing allowance
         public static final TagKey<Block> PLANTS = create("plants"); // for some decoration placement
         public static final TagKey<Block> SINGLE_BLOCK_REPLACEABLE = create("single_block_replaceable"); // blocks that features can safely destroy
         public static final TagKey<Block> SEA_BUSH_PLANTABLE_ON = create("sea_bush_plantable_on"); // Used for sea plant placement
@@ -51,12 +52,12 @@ public class TFCTags
         public static final TagKey<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles
         public static final TagKey<Block> CAN_BE_ICE_PILED = create("can_be_ice_piled"); // Blocks that need to be replaced with ice piles, either from ice freezing below it, or ice freezing inside the block itself.
         public static final TagKey<Block> BREAKS_WHEN_ISOLATED = create("breaks_when_isolated"); // When surrounded on all six sides by air, this block will break and drop itself
-        public static final TagKey<Block> SMALL_SPIKE = create("small_spike");
         public static final TagKey<Block> LIT_BY_DROPPED_TORCH = create("lit_by_dropped_torch"); // Causes dropped torches to start fires on them
         public static final TagKey<Block> CHARCOAL_COVER_WHITELIST = create("charcoal_cover_whitelist"); // things that skip the valid cover block check on charcoal pits
         public static final TagKey<Block> FORGE_INSULATION = create("forge_insulation"); // blocks that can hold a forge inside them
         public static final TagKey<Block> FORGE_INVISIBLE_WHITELIST = create("forge_invisible_whitelist"); // i.e., crucibles. stuff that can be in a forge's chimney
-        public static final TagKey<Block> BLOOMERY_INSULATION = create("bloomery_insulation"); //valid blocks for bloomery structure
+        public static final TagKey<Block> BLOOMERY_INSULATION = create("bloomery_insulation"); // valid blocks for bloomery structure
+        public static final TagKey<Block> BLAST_FURNACE_INSULATION = create("blast_furnace_insulation"); // valid blocks for blast furnace structure
         public static final TagKey<Block> SCRAPING_SURFACE = create("scraping_surface"); // surfaces you can scrape hides on
         public static final TagKey<Block> CAN_CARVE = create("can_carve"); // carvable by TFC world carvers
         public static final TagKey<Block> LOGS_THAT_LOG = create("logs_that_log"); // logs that are cut down in entire trees
@@ -77,6 +78,9 @@ public class TFCTags
         public static final TagKey<Block> CONVERTS_TO_HUMUS = create("converts_to_humus");
         public static final TagKey<Block> WILD_CROP_GROWS_ON = create("wild_crop_grows_on"); // Used for wild crops
         public static final TagKey<Block> FARMLAND = create("farmland"); // Crops that are not wild can grow on this
+        public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
+        public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
+        public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
 
         private static TagKey<Block> create(String id)
         {
@@ -92,6 +96,8 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_JUG = create("usable_in_jug");
         public static final TagKey<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
+        public static final TagKey<Fluid> SCRIBING_INK = create("scribing_ink");
+        public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
 
         private static TagKey<Fluid> create(String id)
         {
@@ -114,10 +120,16 @@ public class TFCTags
         public static final TagKey<Item> CAN_BE_LIT_ON_TORCH = create("can_be_lit_on_torch");
         public static final TagKey<Item> FIREPIT_FUEL = create("firepit_fuel");
         public static final TagKey<Item> FORGE_FUEL = create("forge_fuel");
+        public static final TagKey<Item> BLAST_FURNACE_FUEL = create("blast_furnace_fuel");
         public static final TagKey<Item> HANDSTONE = create("handstone");
         public static final TagKey<Item> SCRAPABLE = create("scrapable");
         public static final TagKey<Item> KNIVES = create("knives");
         public static final TagKey<Item> HOES = create("hoes");
+        public static final TagKey<Item> HAMMERS = create("hammers");
+        public static final TagKey<Item> CHISELS = create("chisels");
+        public static final TagKey<Item> FLUX = create("flux");
+        public static final TagKey<Item> ANVILS = create("anvils");
+        public static final TagKey<Item> TUYERES = create("tuyeres");
         public static final TagKey<Item> ROCK_KNAPPING = create("rock_knapping");
         public static final TagKey<Item> CLAY_KNAPPING = create("clay_knapping");
         public static final TagKey<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
@@ -128,11 +140,22 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
         public static final TagKey<Item> USABLE_ON_TOOL_RACK = create("usable_on_tool_rack");
-        public static final TagKey<Item> SOUP_BOWL = create("soup_bowl");
+        public static final TagKey<Item> SOUP_BOWLS = create("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
+        public static final TagKey<Item> SALAD_BOWLS = create("salad_bowls"); // Bowls that when right clicked, open the salad UI
+        public static final TagKey<Item> USABLE_IN_SALAD = create("foods/usable_in_salad"); // Items that are valid ingredients for a salad
         public static final TagKey<Item> PIG_FOOD = create("pig_food");
         public static final TagKey<Item> COW_FOOD = create("cow_food");
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
+        public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
+        public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
+        public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");
+        public static final TagKey<Item> LARGE_FISHING_BAIT = create("large_fishing_bait");
+        public static final TagKey<Item> HOLDS_SMALL_FISHING_BAIT = create("holds_small_fishing_bait");
+        public static final TagKey<Item> HOLDS_LARGE_FISHING_BAIT = create("holds_large_fishing_bait");
+        public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
+        public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
+        public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
 
         private static TagKey<Item> create(String id)
         {
@@ -145,6 +168,8 @@ public class TFCTags
         public static final TagKey<EntityType<?>> TURTLE_FRIENDS = create("turtle_friends");
         public static final TagKey<EntityType<?>> SPAWNS_ON_COLD_BLOCKS = create("spawns_on_cold_blocks"); // if ice is a valid spawn
         public static final TagKey<EntityType<?>> DESTROYS_FLOATING_PLANTS = create("destroys_floating_plants");
+        public static final TagKey<EntityType<?>> BUBBLE_COLUMN_IMMUNE = create("bubble_column_immune");
+        public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = create("needs_large_fishing_bait");
 
         private static TagKey<EntityType<?>> create(String id)
         {

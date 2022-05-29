@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.container;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +15,7 @@ import net.dries007.tfc.common.capabilities.VesselLike;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.items.VesselItem;
+import org.jetbrains.annotations.Nullable;
 
 public class SmallVesselInventoryContainer extends ItemStackContainer
 {

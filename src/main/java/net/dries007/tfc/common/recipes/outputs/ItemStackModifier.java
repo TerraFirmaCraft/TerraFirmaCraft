@@ -10,9 +10,27 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 
+import net.dries007.tfc.common.recipes.RecipeHelpers;
+
 public interface ItemStackModifier
 {
+    /**
+     * Apply the modifier to the stack and input pair.
+     *
+     * @param stack The current output stack, which is passed between modifiers. A no-op modifier would just return this stack.
+     * @param input The provided 'input' stack - do not modify this stack during the modifier.
+     * @return The stack, after modification. Modifying the {@code stack} parameter directly without copying is allowed.
+     * @see RecipeHelpers#getCraftingContainer()
+     */
     ItemStack apply(ItemStack stack, ItemStack input);
+
+    /**
+     * @return {@code true} if the modifier in question introduces a strong dependency on the input item. That is, with an empty input provided, the output of this recipe makes no sense and needs to be marked as special.
+     */
+    default boolean dependsOnInput()
+    {
+        return false;
+    }
 
     Serializer<?> serializer();
 

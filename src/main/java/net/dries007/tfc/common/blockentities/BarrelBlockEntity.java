@@ -49,7 +49,6 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -106,10 +105,18 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level)
                     .ifPresent(instantRecipe -> {
                         instantRecipe.assembleOutputs(barrel.inventory);
-                        Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
+                        if (barrel.soundCooldownTicks == 0)
+                        {
+                            Helpers.playSound(level, barrel.getBlockPos(), instantRecipe.getCompleteSound());
+                            barrel.soundCooldownTicks = 5;
+                        }
                     });
                 barrel.markForSync();
             }
+        }
+        if (barrel.soundCooldownTicks > 0)
+        {
+            barrel.soundCooldownTicks--;
         }
     }
 
@@ -119,6 +126,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     private long lastUpdateTick; // The last tick this barrel was updated in serverTick()
     private long sealedTick; // The tick this barrel was sealed
     private long recipeTick; // The tick this barrel started working on the current recipe
+    private int soundCooldownTicks = 0;
 
     private boolean needsRecipeUpdate;
     private boolean needsInstantRecipeUpdate; // If the instant recipe needs to be checked again
@@ -166,11 +174,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return switch (slot) {
-            case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent() || stack.getItem() instanceof BucketItem;
-            case SLOT_ITEM -> ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.HUGE);
-            default -> true;
-        };
+        return switch (slot)
+            {
+                case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent() || stack.getItem() instanceof BucketItem;
+                case SLOT_ITEM -> ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.HUGE);
+                default -> true;
+            };
     }
 
     @Override
@@ -251,7 +260,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         if (!level.isClientSide())
         {
             // Drop container items, but allow the main slot to be filled
-            for (int slot : new int[] { SLOT_FLUID_CONTAINER_IN, SLOT_FLUID_CONTAINER_OUT })
+            for (int slot : new int[] {SLOT_FLUID_CONTAINER_IN, SLOT_FLUID_CONTAINER_OUT})
             {
                 Helpers.spawnItem(level, worldPosition, inventory.getStackInSlot(slot));
                 inventory.setStackInSlot(slot, ItemStack.EMPTY);
@@ -420,6 +429,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
             return canModify() ? inventory.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack)
+        {
+            return canModify() && DelegateItemHandler.super.isItemValid(slot, stack);
         }
 
         @Override

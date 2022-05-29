@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/large_vessel_opened",
+  "textures": {
+    "side": "tfc:block/ceramic/large_vessel/glazed/light_gray/side",
+    "bottom": "tfc:block/ceramic/large_vessel/glazed/light_gray/bottom",
+    "particle": "tfc:block/ceramic/large_vessel/glazed/light_gray/side"
+  }
+}

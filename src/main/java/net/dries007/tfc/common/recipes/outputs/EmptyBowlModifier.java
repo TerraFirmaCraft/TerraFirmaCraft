@@ -9,7 +9,7 @@ package net.dries007.tfc.common.recipes.outputs;
 import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.items.SoupItem;
+import net.dries007.tfc.common.items.DynamicBowlFood;
 
 public enum EmptyBowlModifier implements ItemStackModifier.SingleInstance<EmptyBowlModifier>
 {
@@ -19,9 +19,15 @@ public enum EmptyBowlModifier implements ItemStackModifier.SingleInstance<EmptyB
     public ItemStack apply(ItemStack stack, ItemStack input)
     {
         return input.getCapability(FoodCapability.CAPABILITY)
-            .filter(cap -> cap instanceof SoupItem.SoupHandler)
-            .map(cap -> ((SoupItem.SoupHandler) cap).getBowl())
+            .filter(cap -> cap instanceof DynamicBowlFood.DynamicBowlHandler)
+            .map(cap -> ((DynamicBowlFood.DynamicBowlHandler) cap).getBowl())
             .orElse(ItemStack.EMPTY);
+    }
+
+    @Override
+    public boolean dependsOnInput()
+    {
+        return true;
     }
 
     @Override

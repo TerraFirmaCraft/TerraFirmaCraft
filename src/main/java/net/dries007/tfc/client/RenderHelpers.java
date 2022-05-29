@@ -6,7 +6,11 @@
 
 package net.dries007.tfc.client;
 
+import java.util.function.Consumer;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -18,12 +22,14 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,14 +38,296 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.model.Animation;
-import net.dries007.tfc.client.model.Easing;
 import net.dries007.tfc.common.entities.land.TFCAnimal;
 import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
-public class RenderHelpers
+public final class RenderHelpers
 {
+    @SuppressWarnings("deprecation") public static final ResourceLocation BLOCKS_ATLAS = TextureAtlas.LOCATION_BLOCKS;
+
+    /**
+     * Renders a fully textured, solid cuboid described by the provided {@link AABB}, usually obtained from {@link VoxelShape#bounds()}.
+     * Texture widths (in pixels) are inferred to be 16 x the width of the quad, which matches normal block pixel texture sizes.
+     */
+    public static void renderTexturedCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, AABB bounds)
+    {
+        renderTexturedCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, (float) bounds.minX, (float) bounds.minY, (float) bounds.minZ, (float) bounds.maxX, (float) bounds.maxY, (float) bounds.maxZ);
+    }
+
+    /**
+     * Renders a fully textured, solid cuboid described by the shape (minX, minY, minZ) x (maxX, maxY, maxZ).
+     * Texture widths (in pixels) are inferred to be 16 x the width of the quad, which matches normal block pixel texture sizes.
+     */
+    public static void renderTexturedCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+    {
+        renderTexturedCuboid(poseStack, buffer, sprite, packedLight, packedOverlay, minX, minY, minZ, maxX, maxY, maxZ, 16f * (maxX - minX), 16f * (maxY - minY), 16f * (maxZ - minZ));
+    }
+
+    /**
+     * Renders a fully textured, solid cuboid described by the shape (minX, minY, minZ) x (maxX, maxY, maxZ).
+     * (xPixels, yPixels, zPixels) represent pixel widths for each side, which are used for texture (u, v) purposes.
+     */
+    public static void renderTexturedCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float minX, float minY, float minZ, float maxX, float maxY, float maxZ, float xPixels, float yPixels, float zPixels)
+    {
+        renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getXVertices(minX, minY, minZ, maxX, maxY, maxZ), zPixels, yPixels, 1, 0, 0);
+        renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getYVertices(minX, minY, minZ, maxX, maxY, maxZ), zPixels, xPixels, 0, 1, 0);
+        renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getZVertices(minX, minY, minZ, maxX, maxY, maxZ), xPixels, yPixels, 0, 0, 1);
+    }
+
+    /**
+     * <pre>
+     *  Q------Q.  ^ y
+     *  |`.    | `.|
+     *  |  `Q--+---Q--> x = maxY
+     *  |   |  |   |
+     *  P---+--P.  |
+     *   `. |    `.|
+     *     `P------P = minY
+     * </pre>
+     *
+     * Renders a fully textured, solid trapezoidal cuboid described by the plane P, the plane Q, minY, and maxY.
+     * (xPixels, yPixels, zPixels) represent pixel widths for each side, which are used for texture (u, v) purposes.
+     */
+    public static void renderTexturedTrapezoidalCuboid(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY, float xPixels, float yPixels, float zPixels)
+    {
+        renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getTrapezoidalCuboidXVertices(pMinX, pMaxX, pMinZ, pMaxZ, qMinX, qMaxX, qMinZ, qMaxZ, minY, maxY), zPixels, yPixels, 1, 0, 0);
+        renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getTrapezoidalCuboidYVertices(pMinX, pMaxX, pMinZ, pMaxZ, qMinX, qMaxX, qMinZ, qMaxZ, minY, maxY), zPixels, xPixels, 0, 1, 0);
+        renderTexturedQuads(poseStack, buffer, sprite, packedLight, packedOverlay, getTrapezoidalCuboidZVertices(pMinX, pMaxX, pMinZ, pMaxZ, qMinX, qMaxX, qMinZ, qMaxZ, minY, maxY), xPixels, yPixels, 0, 0, 1);
+    }
+
+    /**
+     * Renders a single textured quad, either by itself or as part of a larger cuboid construction.
+     * {@code vertices} must be a set of vertices, usually obtained through {@link #getXVertices(float, float, float, float, float, float)}, {@link #getYVertices(float, float, float, float, float, float)}, or {@link #getZVertices(float, float, float, float, float, float)}. Parameters are (x, y, z, u, v, normalSign) for each vertex.
+     * (normalX, normalY, normalZ) are the normal vectors (positive), for the quad. For example, for an X quad, this will be (1, 0, 0).
+     *
+     * @param vertices The vertices.
+     * @param uSize    The horizontal (u) texture size of the quad, in pixels.
+     * @param vSize    The vertical (v) texture size of the quad, in pixels.
+     */
+    public static void renderTexturedQuads(PoseStack poseStack, VertexConsumer buffer, TextureAtlasSprite sprite, int packedLight, int packedOverlay, float[][] vertices, float uSize, float vSize, float normalX, float normalY, float normalZ)
+    {
+        for (float[] v : vertices)
+        {
+            renderTexturedVertex(poseStack, buffer, packedLight, packedOverlay, v[0], v[1], v[2], sprite.getU(v[3] * uSize), sprite.getV(v[4] * vSize), v[5] * normalX, v[5] * normalY, v[5] * normalZ);
+        }
+    }
+
+    /**
+     * Renders a single vertex as part of a quad.
+     * <ul>
+     *     <li>(x, y, z) describe the position of the vertex.</li>
+     *     <li>(u, v) describe the texture coordinates, typically will be a number of pixels (i.e. 16x something)</li>
+     *     <li>(normalX, normalY, normalZ) describe the normal vector to the quad.</li>
+     * </ul>
+     */
+    public static void renderTexturedVertex(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float x, float y, float z, float u, float v, float normalX, float normalY, float normalZ)
+    {
+        buffer.vertex(poseStack.last().pose(), x, y, z)
+            .color(1f, 1f, 1f, 1f)
+            .uv(u, v)
+            .uv2(packedLight)
+            .overlayCoords(packedOverlay)
+            .normal(poseStack.last().normal(), normalX, normalY, normalZ)
+            .endVertex();
+    }
+
+    /**
+     * <pre>
+     *  O------P.  ^ y
+     *  |`.    | `.|
+     *  |  `O--+---P--> x
+     *  |   |  |   |
+     *  O---+--P.  |
+     *   `. |    `.|
+     *     `O------P
+     * </pre>
+     *
+     * @return A collection of vertices for two parallel faces of a cube, facing outwards, defined by (minX, minY, minZ) x (maxX, maxY, maxZ). Or the faces O and P in the above art
+     */
+    public static float[][] getXVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+    {
+        return new float[][] {
+            {minX, minY, minZ, 0, 1, 1}, // +X
+            {minX, minY, maxZ, 1, 1, 1},
+            {minX, maxY, maxZ, 1, 0, 1},
+            {minX, maxY, minZ, 0, 0, 1},
+
+            {maxX, minY, maxZ, 1, 0, -1}, // -X
+            {maxX, minY, minZ, 0, 0, -1},
+            {maxX, maxY, minZ, 0, 1, -1},
+            {maxX, maxY, maxZ, 1, 1, -1}
+        };
+    }
+
+    /**
+     * <pre>
+     *  O------O.  ^ y
+     *  |`.    | `.|
+     *  |  `O--+---O--> x
+     *  |   |  |   |
+     *  P---+--P.  |
+     *   `. |    `.|
+     *     `P------P
+     * </pre>
+     *
+     * @return A collection of vertices for two parallel faces of a cube, facing outwards, defined by (minX, minY, minZ) x (maxX, maxY, maxZ). Or the faces O and P in the above art
+     */
+    public static float[][] getYVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+    {
+        return new float[][] {
+            {minX, maxY, minZ, 0, 1, 1}, // +Y
+            {minX, maxY, maxZ, 1, 1, 1},
+            {maxX, maxY, maxZ, 1, 0, 1},
+            {maxX, maxY, minZ, 0, 0, 1},
+
+            {minX, minY, maxZ, 1, 0, -1}, // -Y
+            {minX, minY, minZ, 0, 0, -1},
+            {maxX, minY, minZ, 0, 1, -1},
+            {maxX, minY, maxZ, 1, 1, -1}
+        };
+    }
+
+    /**
+     * <pre>
+     *  O------O.  ^ y
+     *  |`.    | `.|
+     *  |  `P--+---P--> x
+     *  |   |  |   |
+     *  O---+--O.  |
+     *   `. |    `.|
+     *     `P------P
+     * </pre>
+     *
+     * @return A collection of vertices for two parallel faces of a cube, facing outwards, defined by (minX, minY, minZ) x (maxX, maxY, maxZ). Or the faces O and P in the above art
+     */
+    public static float[][] getZVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+    {
+        return new float[][] {
+            {maxX, minY, minZ, 0, 1, 1}, // +Z
+            {minX, minY, minZ, 1, 1, 1},
+            {minX, maxY, minZ, 1, 0, 1},
+            {maxX, maxY, minZ, 0, 0, 1},
+
+            {minX, minY, maxZ, 1, 0, -1}, // -Z
+            {maxX, minY, maxZ, 0, 0, -1},
+            {maxX, maxY, maxZ, 0, 1, -1},
+            {minX, maxY, maxZ, 1, 1, -1}
+        };
+    }
+
+    /**
+     * <pre>
+     *  P------P.  ^ y
+     *  |`.    | `.|
+     *  |  `+--+---+--> x
+     *  |   |  |   |
+     *  +---+--+.  |
+     *   `. |    `.|
+     *     `P------P
+     * </pre>
+     *
+     * @return A collection of vertices for both sides of one of the diagonal faces of a cube defined by (minX, minY, minZ) x (maxX, maxY, maxZ). Or both sides of the face defined by vertices P in the above art.
+     */
+    public static float[][] getDiagonalPlaneVertices(float x1, float y1, float z1, float x2, float y2, float z2, float u1, float v1, float u2, float v2)
+    {
+        return new float[][] {
+            {x1, y1, z1, u1, v1},
+            {x2, y1, z1, u2, v1},
+            {x2, y2, z2, u2, v2},
+            {x1, y2, z2, u1, v2},
+
+            {x2, y1, z1, u2, v1},
+            {x1, y1, z1, u1, v1},
+            {x1, y2, z2, u1, v2},
+            {x2, y2, z2, u2, v2}
+        };
+    }
+
+    /**
+     * <pre>
+     *  Q------Q.  ^ y
+     *  |`.    | `.|
+     *  |  `Q--+---Q--> x = maxY
+     *  |   |  |   |
+     *  P---+--P.  |
+     *   `. |    `.|
+     *     `P------P = minY
+     * </pre>
+     *
+     * @return A collection of vertices for the positive and negative X outward faces of the above trapezoidal cuboid, defined by the plane P, and the plane Q, minY, and maxY.
+     */
+    public static float[][] getTrapezoidalCuboidXVertices(float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY)
+    {
+        return new float[][] {
+            {pMinX, minY, pMinZ, 0, 1, 1}, // +X
+            {pMinX, minY, pMaxZ, 1, 1, 1},
+            {qMinX, maxY, qMaxZ, 1, 0, 1},
+            {qMinX, maxY, qMinZ, 0, 0, 1},
+
+            {pMaxX, minY, pMaxZ, 1, 0, -1}, // -X
+            {pMaxX, minY, pMinZ, 0, 0, -1},
+            {qMaxX, maxY, qMinZ, 0, 1, -1},
+            {qMaxX, maxY, qMaxZ, 1, 1, -1},
+        };
+    }
+
+    /**
+     * <pre>
+     *  Q------Q.  ^ y
+     *  |`.    | `.|
+     *  |  `Q--+---Q--> x = maxY
+     *  |   |  |   |
+     *  P---+--P.  |
+     *   `. |    `.|
+     *     `P------P = minY
+     * </pre>
+     *
+     * @return A collection of vertices for the positive and negative Y outward faces of the above trapezoidal cuboid, defined by the plane P, and the plane Q, minY, and maxY.
+     */
+    public static float[][] getTrapezoidalCuboidYVertices(float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY)
+    {
+        return new float[][] {
+            {qMinX, maxY, qMinZ, 0, 1, 1}, // +Y
+            {qMinX, maxY, qMaxZ, 1, 1, 1},
+            {qMaxX, maxY, qMaxZ, 1, 0, 1},
+            {qMaxX, maxY, qMinZ, 0, 0, 1},
+
+            {pMinX, minY, pMaxZ, 1, 0, -1}, // -Y
+            {pMinX, minY, pMinZ, 0, 0, -1},
+            {pMaxX, minY, pMinZ, 0, 1, -1},
+            {pMaxX, minY, pMaxZ, 1, 1, -1},
+        };
+    }
+
+    /**
+     * <pre>
+     *  Q------Q.  ^ y
+     *  |`.    | `.|
+     *  |  `Q--+---Q--> x = maxY
+     *  |   |  |   |
+     *  P---+--P.  |
+     *   `. |    `.|
+     *     `P------P = minY
+     * </pre>
+     *
+     * @return A collection of vertices for the positive and negative X outward faces of the above trapezoidal cuboid, defined by the plane P, and the plane Q, minY, and maxY.
+     */
+    public static float[][] getTrapezoidalCuboidZVertices(float pMinX, float pMaxX, float pMinZ, float pMaxZ, float qMinX, float qMaxX, float qMinZ, float qMaxZ, float minY, float maxY)
+    {
+        return new float[][] {
+            {pMaxX, minY, pMinZ, 0, 1, 1}, // +Z
+            {pMinX, minY, pMinZ, 1, 1, 1},
+            {qMinX, maxY, qMinZ, 1, 0, 1},
+            {qMaxX, maxY, qMinZ, 0, 0, 1},
+
+            {pMinX, minY, pMaxZ, 1, 0, -1}, // -Z
+            {pMaxX, minY, pMaxZ, 0, 0, -1},
+            {qMaxX, maxY, qMaxZ, 0, 1, -1},
+            {qMinX, maxY, qMaxZ, 1, 1, -1}
+        };
+    }
+
     public static void setShaderColor(int color)
     {
         float a = ((color >> 24) & 0xFF) / 255f;
@@ -48,81 +336,6 @@ public class RenderHelpers
         float b = ((color) & 0xFF) / 255f;
 
         RenderSystem.setShaderColor(r, g, b, a);
-    }
-
-    // Use this to get vertices for a box from Min - Max point in 3D
-    // Pass the string of the axies you want the box to render on ('xz') for no top / bottom, etc.
-    // Pass 'xyz' for all vertices
-    public static float[][] getVerticesBySide(float minX, float minY, float minZ, float maxX, float maxY, float maxZ, String axes)
-    {
-        float[][] ret = new float[][] {};
-        if (axes.contains("x"))
-        {
-            ret = append(ret, getXVertices(minX, minY, minZ, maxX, maxY, maxZ));
-        }
-        if (axes.contains("y"))
-        {
-            ret = append(ret, getYVertices(minX, minY, minZ, maxX, maxY, maxZ));
-        }
-        if (axes.contains("z"))
-        {
-            ret = append(ret, getZVertices(minX, minY, minZ, maxX, maxY, maxZ));
-        }
-        return ret;
-
-    }
-
-    public static float[][] getXVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
-    {
-        return new float[][] {
-            {minX, minY, minZ, 0, 1}, // Main +X Side
-            {minX, minY, maxZ, 1, 1},
-            {minX, maxY, maxZ, 1, 0},
-            {minX, maxY, minZ, 0, 0},
-
-            {maxX, minY, maxZ, 1, 0}, // Main -X Side
-            {maxX, minY, minZ, 0, 0},
-            {maxX, maxY, minZ, 0, 1},
-            {maxX, maxY, maxZ, 1, 1}
-        };
-    }
-
-    public static float[][] getYVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
-    {
-        return new float[][] {
-            {minX, maxY, minZ, 0, 1}, // Top
-            {minX, maxY, maxZ, 1, 1},
-            {maxX, maxY, maxZ, 1, 0},
-            {maxX, maxY, minZ, 0, 0},
-
-            {minX, minY, maxZ, 1, 0}, // Bottom
-            {minX, minY, minZ, 0, 0},
-            {maxX, minY, minZ, 0, 1},
-            {maxX, minY, maxZ, 1, 1}
-        };
-    }
-
-    public static float[][] getZVertices(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
-    {
-        return new float[][] {
-            {maxX, minY, minZ, 0, 1}, // Main +Z Side
-            {minX, minY, minZ, 1, 1},
-            {minX, maxY, minZ, 1, 0},
-            {maxX, maxY, minZ, 0, 0},
-
-            {minX, minY, maxZ, 1, 0}, // Main -Z Side
-            {maxX, minY, maxZ, 0, 0},
-            {maxX, maxY, maxZ, 0, 1},
-            {minX, maxY, maxZ, 1, 1}
-        };
-    }
-
-    public static float[][] append(float[][] a, float[][] b)
-    {
-        float[][] result = new float[a.length + b.length][];
-        System.arraycopy(a, 0, result, 0, a.length);
-        System.arraycopy(b, 0, result, a.length, b.length);
-        return result;
     }
 
     /**
@@ -180,11 +393,6 @@ public class RenderHelpers
         return ctx.bakeLayer(modelIdentifier(layerName));
     }
 
-    public static Animation.Bone.Builder newBone()
-    {
-        return new Animation.Bone.Builder(Easing.LINEAR);
-    }
-
     public static float itemTimeRotation()
     {
         return (float) (360.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
@@ -192,7 +400,12 @@ public class RenderHelpers
 
     public static int getFluidColor(FluidStack fluid)
     {
-        return fluid.getFluid().getAttributes().getColor();
+        return getFluidColor(fluid.getFluid());
+    }
+
+    public static int getFluidColor(Fluid fluid)
+    {
+        return fluid.getAttributes().getColor();
     }
 
     public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
@@ -200,15 +413,14 @@ public class RenderHelpers
         renderFluidFace(poseStack, fluidStack, buffer, getFluidColor(fluidStack), minX, minZ, maxX, maxZ, y, combinedOverlay, combinedLight);
     }
 
-    @SuppressWarnings("deprecation")
     public static void renderFluidFace(PoseStack poseStack, FluidStack fluidStack, MultiBufferSource buffer, int color, float minX, float minZ, float maxX, float maxZ, float y, int combinedOverlay, int combinedLight)
     {
         Fluid fluid = fluidStack.getFluid();
         FluidAttributes attributes = fluid.getAttributes();
         ResourceLocation texture = attributes.getStillTexture(fluidStack);
-        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
 
-        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS));
+        VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));
         Matrix4f matrix4f = poseStack.last().pose();
 
         builder.vertex(matrix4f, minX, y, minZ).color(color).uv(sprite.getU(minX * 16), sprite.getV(minZ * 16)).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
@@ -220,6 +432,23 @@ public class RenderHelpers
     public static ResourceLocation getTextureForAge(TFCAnimal animal, ResourceLocation young, ResourceLocation old)
     {
         return animal.getAgeType() == TFCAnimalProperties.Age.OLD ? old : young;
+    }
+
+    public static Button.OnTooltip makeButtonTooltip(Screen screen, Component component)
+    {
+        return new Button.OnTooltip() {
+            @Override
+            public void onTooltip(Button button, PoseStack poseStack, int mouseX, int mouseY)
+            {
+                screen.renderTooltip(poseStack, component, mouseX, mouseY);
+            }
+
+            @Override
+            public void narrateTooltip(Consumer<Component> consumer)
+            {
+                consumer.accept(component);
+            }
+        };
     }
 
     private static float calculateTilt(float pitch)

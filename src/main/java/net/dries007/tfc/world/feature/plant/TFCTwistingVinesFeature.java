@@ -20,26 +20,30 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class TFCTwistingVinesFeature extends Feature<ColumnPlantConfig>
 {
-    public static void placeColumn(LevelAccessor world, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
+    public static void placeColumn(LevelAccessor level, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState body, BlockState head)
     {
         for (int i = 1; i <= height; ++i)
         {
-            if (world.isEmptyBlock(mutablePos))
+            if (EnvironmentHelpers.isWorldgenReplaceable((WorldGenLevel) level, mutablePos))
             {
-                if (i == height || !world.isEmptyBlock(mutablePos.above()))
+                mutablePos.move(0, 1, 0);
+                if (i == height || !level.isEmptyBlock(mutablePos))
                 {
-                    world.setBlock(mutablePos, head.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 2);
+                    mutablePos.move(0, -1, 0);
+                    level.setBlock(mutablePos, head.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 2);
                     break;
                 }
-                world.setBlock(mutablePos, body, 2);
+                mutablePos.move(0, -1, 0);
+                level.setBlock(mutablePos, body, 2);
             }
-            mutablePos.move(Direction.UP);
+            mutablePos.move(0, 1, 0);
         }
     }
 
@@ -50,7 +54,7 @@ public class TFCTwistingVinesFeature extends Feature<ColumnPlantConfig>
 
     public boolean place(FeaturePlaceContext<ColumnPlantConfig> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final ColumnPlantConfig config = context.config();
@@ -62,11 +66,13 @@ public class TFCTwistingVinesFeature extends Feature<ColumnPlantConfig>
         {
             mutablePos.setWithOffset(pos, Helpers.triangle(rand, radius), 0, Helpers.triangle(rand, radius));
 
-            if (!Helpers.isBlock(world.getBlockState(mutablePos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON)) return false;
+            mutablePos.move(0, -1, 0);
+            if (!Helpers.isBlock(level.getBlockState(mutablePos), TFCTags.Blocks.GRASS_PLANTABLE_ON)) return false;
+            mutablePos.move(0, 1, 0);
 
-            if (world.isEmptyBlock(mutablePos))
+            if (EnvironmentHelpers.isWorldgenReplaceable(level, mutablePos))
             {
-                placeColumn(world, rand, world.getHeightmapPos(Heightmap.Types.WORLD_SURFACE_WG, mutablePos).mutable(), rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, config.bodyState(), config.headState());
+                placeColumn(level, rand, mutablePos, rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, config.bodyState(), config.headState());
                 placedAny = true;
             }
         }

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import net.minecraft.client.resources.sounds.Sound;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.util.ForgeSoundType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -65,6 +66,10 @@ public final class TFCSounds
 
     public static final RegistryObject<SoundEvent> PANNING = create("panning");
 
+    public static final RegistryObject<SoundEvent> SCRIBING_TABLE = create("scribing_table");
+    public static final RegistryObject<SoundEvent> OPEN_VESSEL = create("open_vessel");
+    public static final RegistryObject<SoundEvent> CLOSE_VESSEL = create("close_vessel");
+
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("wattle_dyed");
     public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("wattle_daubed");
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("wattle_woven");
@@ -73,6 +78,24 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> ALPACA_STEP = create("animal.alpaca.step");
     public static final RegistryObject<SoundEvent> ALPACA_AMBIENT = create("animal.alpaca.ambient");
     public static final RegistryObject<SoundEvent> ALPACA_DEATH = create("animal.alpaca.death");
+
+    public static final RegistryObject<SoundEvent> PREDATOR_SLEEP = create("animal.predator.sleep");
+
+    public static final RegistryObject<SoundEvent> COUGAR_AMBIENT = create("animal.cougar.ambient");
+    public static final RegistryObject<SoundEvent> COUGAR_ATTACK = create("animal.cougar.attack");
+    public static final RegistryObject<SoundEvent> COUGAR_DEATH = create("animal.cougar.death");
+    public static final RegistryObject<SoundEvent> COUGAR_HURT = create("animal.cougar.hurt");
+
+    public static final RegistryObject<SoundEvent> LION_AMBIENT = create("animal.lion.ambient");
+    public static final RegistryObject<SoundEvent> LION_ATTACK = create("animal.lion.attack");
+    public static final RegistryObject<SoundEvent> LION_DEATH = create("animal.lion.death");
+    public static final RegistryObject<SoundEvent> LION_HURT = create("animal.lion.hurt");
+
+    public static final RegistryObject<SoundEvent> SABERTOOTH_AMBIENT = create("animal.sabertooth.ambient");
+    public static final RegistryObject<SoundEvent> SABERTOOTH_ATTACK = create("animal.sabertooth.attack");
+    public static final RegistryObject<SoundEvent> SABERTOOTH_DEATH = create("animal.sabertooth.death");
+    public static final RegistryObject<SoundEvent> SABERTOOTH_HURT = create("animal.sabertooth.hurt");
+
 
     public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_HIT, CHARCOAL_PILE_FALL);
     public static final ForgeSoundType THATCH = new ForgeSoundType(1.0f, 1.0f, THATCH_BREAK, THATCH_STEP, THATCH_PLACE, THATCH_HIT, THATCH_FALL);

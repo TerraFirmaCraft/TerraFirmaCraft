@@ -7,7 +7,6 @@
 package net.dries007.tfc.util;
 
 import java.util.Locale;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -16,13 +15,13 @@ import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -51,7 +50,7 @@ public final class JsonHelpers extends GsonHelper
         final T obj = registry.getValue(res);
         if (obj == null || !registry.containsKey(res))
         {
-            throw new JsonParseException("Unknown entry from " + registry.getRegistryName().getPath() + ": " + key);
+            throw new JsonParseException("Unknown " + registry.getRegistryName().getPath() + ": " + key);
         }
         return obj;
     }
@@ -67,25 +66,26 @@ public final class JsonHelpers extends GsonHelper
         return TagKey.create(registry, res);
     }
 
-    public static <E extends Enum<E>> E getEnum(JsonObject obj, String key, Class<E> enumClass, @Nullable E defaultValue)
+    public static <E extends Enum<E>> E getEnum(JsonObject obj, String key, Class<E> enumClass, E defaultValue)
     {
-        final String enumName = GsonHelper.getAsString(obj, key, null);
-        if (enumName != null)
+        if (obj.has(key))
         {
-            try
-            {
-                return Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
-            }
-            catch (IllegalArgumentException e)
-            {
-                throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
-            }
+            return getEnum(obj.get(key), enumClass);
         }
-        if (defaultValue != null)
+        return defaultValue;
+    }
+
+    public static <E extends Enum<E>> E getEnum(JsonElement json, Class<E> enumClass)
+    {
+        final String enumName = JsonHelpers.convertToString(json, enumClass.getSimpleName());
+        try
         {
-            return defaultValue;
+            return Enum.valueOf(enumClass, enumName.toUpperCase(Locale.ROOT));
         }
-        throw new JsonParseException("Missing " + key + ", expected to find a string " + enumClass.getSimpleName());
+        catch (IllegalArgumentException e)
+        {
+            throw new JsonParseException("No " + enumClass.getSimpleName() + " named: " + enumName);
+        }
     }
 
     public static <T> T getFrom(JsonObject json, String key, DataManager<T> manager)
@@ -113,9 +113,14 @@ public final class JsonHelpers extends GsonHelper
         return json.get(key);
     }
 
+    public static FluidStack getFluidStack(JsonObject json, String key)
+    {
+        return getFluidStack(getAsJsonObject(json, key));
+    }
+
     public static FluidStack getFluidStack(JsonObject json)
     {
-        final int amount = GsonHelper.getAsInt(json, "amount", -1);
+        final int amount = GsonHelper.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
         final Fluid fluid = getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
         return new FluidStack(fluid, amount);
     }

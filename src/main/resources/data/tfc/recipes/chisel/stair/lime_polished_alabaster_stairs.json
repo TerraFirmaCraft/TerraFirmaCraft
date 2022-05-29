@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:chisel",
+  "ingredient": "tfc:alabaster/stained/lime_polished_alabaster",
+  "result": "tfc:alabaster/stained/lime_polished_alabaster_stairs",
+  "mode": "stair"
+}

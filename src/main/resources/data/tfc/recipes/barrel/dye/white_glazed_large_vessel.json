@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": {
+      "item": "tfc:ceramic/unfired_large_vessel"
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:white_dye",
+    "amount": 125
+  },
+  "output_item": {
+    "item": "tfc:ceramic/unfired_large_vessel/white"
+  },
+  "duration": 1000
+}

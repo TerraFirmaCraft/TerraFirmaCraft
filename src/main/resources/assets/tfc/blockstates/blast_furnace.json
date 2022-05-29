@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "lit=false": {
+      "model": "tfc:block/blast_furnace/unlit"
+    },
+    "lit=true": {
+      "model": "tfc:block/blast_furnace/lit"
+    }
+  }
+}

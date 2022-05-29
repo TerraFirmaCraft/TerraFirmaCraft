@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:noisy_multiple",
+  "config": {
+    "features": "#tfc:surface_grass_features",
+    "biome_check": false
+  }
+}

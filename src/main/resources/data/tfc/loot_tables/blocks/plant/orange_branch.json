@@ -41,6 +41,12 @@
                 "up": "true",
                 "south": "true"
               }
+            },
+            {
+              "condition": "minecraft:match_tool",
+              "predicate": {
+                "tag": "tfc:axes"
+              }
             }
           ]
         }

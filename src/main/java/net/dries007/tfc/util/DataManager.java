@@ -13,9 +13,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
-import com.mojang.logging.LogUtils;
-import org.jetbrains.annotations.Nullable;
-
+import com.google.common.base.Suppliers;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
@@ -31,9 +29,12 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.common.util.Lazy;
+import net.minecraftforge.network.NetworkEvent;
 
+import com.mojang.logging.LogUtils;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.network.DataManagerSyncPacket;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 /**
@@ -41,52 +42,45 @@ import org.slf4j.Logger;
  */
 public class DataManager<T> extends SimpleJsonResourceReloadListener
 {
-    private static final Logger LOGGER = LogUtils.getLogger();
-    private static final Gson GSON = new Gson();
+    public static final Logger LOGGER = LogUtils.getLogger();
+    public static final Gson GSON = new Gson();
+
     private static final Map<Class<?>, DataManager<?>> NETWORK_TYPES = new HashMap<>();
+
+    private static <T> void assertUniquePacketTypes(DataManager<?> instance, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
+    {
+        if (Helpers.ASSERTIONS_ENABLED && networkPacketFactory != null)
+        {
+            final Class<?> packetType = networkPacketFactory.get().getClass();
+            final DataManager<?> old = NETWORK_TYPES.put(packetType, instance);
+            if (old != null)
+            {
+                throw new IllegalStateException("Packet class " + packetType.getSimpleName() + " registered for managers for " + old.typeName + " and " + instance.typeName);
+            }
+        }
+    }
 
     protected final BiMap<ResourceLocation, T> types;
     protected final String typeName;
 
-    private int generation;
-
-    protected final BiFunction<ResourceLocation, JsonObject, T> factory;
-    @Nullable protected final Runnable postReloadCallback;
     @Nullable protected final BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory;
     @Nullable protected final BiConsumer<T, FriendlyByteBuf> networkEncoder;
     @Nullable protected final Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory;
 
-    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
+    private final BiFunction<ResourceLocation, JsonObject, T> factory;
+
+    public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory)
     {
-        this(domain, typeName, factory, null, null, null, null);
+        this(domain, typeName, factory, null, null, null);
     }
 
-    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, Runnable postReloadCallback)
+    public DataManager(ResourceLocation domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
     {
-        this(domain, typeName, factory, postReloadCallback, null, null, null);
-    }
+        super(GSON, domain.getNamespace() + "/" + domain.getPath());
 
-    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
-    {
-        this(domain, typeName, factory, null, networkFactory, networkEncoder, networkPacketFactory);
-    }
-
-    public DataManager(String domain, String typeName, BiFunction<ResourceLocation, JsonObject, T> factory, @Nullable Runnable postReloadCallback, @Nullable BiFunction<ResourceLocation, FriendlyByteBuf, T> networkFactory, @Nullable BiConsumer<T, FriendlyByteBuf> networkEncoder, @Nullable Supplier<? extends DataManagerSyncPacket<T>> networkPacketFactory)
-    {
-        super(GSON, TerraFirmaCraft.MOD_ID + "/" + domain);
-
-        if (Helpers.detectAssertionsEnabled() && networkPacketFactory != null)
-        {
-            final Class<?> packetType = networkPacketFactory.get().getClass();
-            final DataManager<?> old = NETWORK_TYPES.put(packetType, this);
-            if (old != null)
-            {
-                throw new IllegalStateException("Packet class " + packetType.getSimpleName() + " registered for managers for " + old.typeName + " and " + typeName);
-            }
-        }
+        assertUniquePacketTypes(this, networkPacketFactory);
 
         this.factory = factory;
-        this.postReloadCallback = postReloadCallback;
         this.networkFactory = networkFactory;
         this.networkEncoder = networkEncoder;
         this.networkPacketFactory = networkPacketFactory;
@@ -116,6 +110,16 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return t;
     }
 
+    public ResourceLocation getIdOrThrow(T type)
+    {
+        final ResourceLocation id = getId(type);
+        if (id == null)
+        {
+            throw new IllegalArgumentException("No id for " + typeName + ": " + type);
+        }
+        return id;
+    }
+
     @Nullable
     public ResourceLocation getId(T type)
     {
@@ -127,9 +131,20 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return types.values();
     }
 
+    public void toNetwork(T element, FriendlyByteBuf buffer)
+    {
+        buffer.writeResourceLocation(getIdOrThrow(element));
+    }
+
+    public Supplier<T> fromNetwork(FriendlyByteBuf buffer)
+    {
+        final ResourceLocation id = buffer.readResourceLocation();
+        return Suppliers.memoize(() -> getOrThrow(id));
+    }
+
     public DataManagerSyncPacket<T> createSyncPacket()
     {
-        return createEmptyPacket().with(types, generation);
+        return createEmptyPacket().with(types);
     }
 
     public DataManagerSyncPacket<T> createEmptyPacket()
@@ -143,36 +158,30 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
         return factory.apply(id, obj);
     }
 
-    public void encode(FriendlyByteBuf buffer, T element)
+    public void rawToNetwork(FriendlyByteBuf buffer, T element)
     {
         assert networkEncoder != null;
         networkEncoder.accept(element, buffer);
     }
 
-    public T decode(ResourceLocation id, FriendlyByteBuf buffer)
+    public T rawFromNetwork(ResourceLocation id, FriendlyByteBuf buffer)
     {
         assert networkFactory != null;
         return networkFactory.apply(id, buffer);
     }
 
-    public void onSync(Map<ResourceLocation, T> elements, int generation)
+    public void onSync(NetworkEvent.Context context, Map<ResourceLocation, T> elements)
     {
-        if (this.generation != generation)
+        if (context.getNetworkManager().isMemoryConnection())
         {
-            // Only update if the incoming generation is not the same as the existing generation
-            // This prevents a sync form local server -> local client.
-            types.clear();
-            types.putAll(elements);
-            this.generation++;
-            if (postReloadCallback != null)
-            {
-                postReloadCallback.run();
-            }
-            LOGGER.info("Received {} {}(s) from server", types.size(), typeName);
+            LOGGER.info("Ignored {}(s) sync from logical server", typeName);
         }
         else
         {
-            LOGGER.info("Ignored {}(s) sync with generation {}", typeName, generation);
+            // Sync received from physical server
+            types.clear();
+            types.putAll(elements);
+            LOGGER.info("Received {} {}(s) from physical server", types.size(), typeName);
         }
     }
 
@@ -180,7 +189,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
     protected void apply(Map<ResourceLocation, JsonElement> elements, ResourceManager resourceManagerIn, ProfilerFiller profilerIn)
     {
         types.clear();
-        generation++;
         for (Map.Entry<ResourceLocation, JsonElement> entry : elements.entrySet())
         {
             ResourceLocation name = entry.getKey();
@@ -201,10 +209,6 @@ public class DataManager<T> extends SimpleJsonResourceReloadListener
             {
                 LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, name, e.getClass().getSimpleName(), e.getMessage());
             }
-        }
-        if (postReloadCallback != null)
-        {
-            postReloadCallback.run();
         }
         LOGGER.info("Loaded {} {}(s).", types.size(), typeName);
     }

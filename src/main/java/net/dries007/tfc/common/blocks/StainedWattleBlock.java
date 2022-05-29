@@ -155,7 +155,9 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         else
         {
             if (Helpers.isBlock(state, TFCBlocks.WATTLE.get()))
+            {
                 return null;
+            }
             BlockState dyed = getPossibleDyedState(item, state);
             if (dyed != null)
             {
@@ -212,11 +214,8 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
 
     protected InteractionResult setState(Level level, BlockPos pos, BlockState state, Player player, ItemStack item, int toShrink)
     {
-        if (!level.isClientSide)
-        {
-            if (!player.isCreative()) item.shrink(toShrink);
-            level.setBlockAndUpdate(pos, state);
-        }
+        if (!player.isCreative()) item.shrink(toShrink);
+        level.setBlockAndUpdate(pos, state);
         return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

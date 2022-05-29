@@ -10,9 +10,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -22,14 +19,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
 {
@@ -78,7 +76,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     @Override
     public ItemStack getResultItem()
     {
-        return outputItem.getStack(ItemStack.EMPTY);
+        return outputItem.getEmptyStack();
     }
 
     @Override
@@ -103,7 +101,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     public ItemStack assemble(ItemStackInventory inventory)
     {
         final ItemStack inputStack = inventory.getStack();
-        final ItemStack outputStack = outputItem.getStack(inputStack);
+        final ItemStack outputStack = outputItem.getSingleStack(inputStack);
         // We always upgrade the heat regardless
         inputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(oldCap ->
             outputStack.getCapability(HeatCapability.CAPABILITY).ifPresent(newCap ->

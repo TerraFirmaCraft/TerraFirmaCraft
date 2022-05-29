@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/large_vessel_sealed",
+  "textures": {
+    "top": "tfc:block/ceramic/large_vessel/top",
+    "side": "tfc:block/ceramic/large_vessel/side",
+    "bottom": "tfc:block/ceramic/large_vessel/bottom",
+    "particle": "tfc:block/ceramic/large_vessel/side"
+  }
+}

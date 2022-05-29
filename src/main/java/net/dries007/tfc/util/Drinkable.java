@@ -6,16 +6,17 @@
 
 package net.dries007.tfc.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -35,15 +36,18 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
-import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
+import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.recipes.ingredients.FluidIngredient;
+import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 public class Drinkable extends FluidDefinition
 {
-    public static final DataManager<Drinkable> MANAGER = new DataManager<>("drinkables", "drinkable", Drinkable::new);
+    public static final DataManager<Drinkable> MANAGER = new DataManager<>(Helpers.identifier("drinkables"), "drinkable", Drinkable::new, Drinkable::new, Drinkable::encode, Packet::new);
     public static final IndirectHashCollection<Fluid, Drinkable> CACHE = IndirectHashCollection.create(Drinkable::getFluids, MANAGER::getValues);
 
     /** Amount of mB drank when drinking by hand on a source block */
@@ -114,7 +118,7 @@ public class Drinkable extends FluidDefinition
     private final int intoxication;
     private final List<Effect> effects;
 
-    protected Drinkable(ResourceLocation id, JsonObject json)
+    private Drinkable(ResourceLocation id, JsonObject json)
     {
         super(id, json);
 
@@ -131,7 +135,7 @@ public class Drinkable extends FluidDefinition
                 final JsonObject effectJson = JsonHelpers.convertToJsonObject(e, "effect");
                 final MobEffect type = JsonHelpers.getRegistryEntry(effectJson, "type", ForgeRegistries.MOB_EFFECTS);
                 final int duration = JsonHelpers.getAsInt(effectJson, "duration", 20);
-                final int amplifier = JsonHelpers.getAsInt(effectJson, "amplifier", 1);
+                final int amplifier = JsonHelpers.getAsInt(effectJson, "amplifier", 0);
                 final float chance = (float) JsonHelpers.getAsDouble(effectJson, "chance", 1);
 
                 builder.add(new Effect(type, duration, amplifier, chance));
@@ -140,10 +144,20 @@ public class Drinkable extends FluidDefinition
         this.effects = builder.build();
     }
 
+    private Drinkable(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        super(id, FluidIngredient.fromNetwork(buffer));
+
+        this.consumeChance = buffer.readFloat();
+        this.thirst = buffer.readVarInt();
+        this.intoxication = buffer.readVarInt();
+
+        this.effects = Helpers.decodeAll(buffer, new ArrayList<>(), Effect::fromNetwork);
+    }
+
     /**
-     *
      * @param player The player doing the drinking
-     * @param mB The amount of fluid that is being drank, in mB. This will scale certain effects proportional to the volume. 25mB is a reference for amount drank when right clicking a fluid source with an open hand, which is also the amount that the drinkable JSON is defined as.
+     * @param mB     The amount of fluid that is being drank, in mB. This will scale certain effects proportional to the volume. 25mB is a reference for amount drank when right clicking a fluid source with an open hand, which is also the amount that the drinkable JSON is defined as.
      */
     public void onDrink(Player player, int mB)
     {
@@ -191,5 +205,36 @@ public class Drinkable extends FluidDefinition
         return effects;
     }
 
-    public record Effect(MobEffect type, int duration, int amplifier, float chance) {}
+    private void encode(FriendlyByteBuf buffer)
+    {
+        ingredient.toNetwork(buffer);
+
+        buffer.writeFloat(consumeChance);
+        buffer.writeVarInt(thirst);
+        buffer.writeVarInt(intoxication);
+
+        Helpers.encodeAll(buffer, effects, Effect::toNetwork);
+    }
+
+    public record Effect(MobEffect type, int duration, int amplifier, float chance)
+    {
+        public static Effect fromNetwork(FriendlyByteBuf buffer)
+        {
+            final MobEffect type = buffer.readRegistryIdUnsafe(ForgeRegistries.MOB_EFFECTS);
+            final int duration = buffer.readVarInt();
+            final int amplifier = buffer.readVarInt();
+            final float chance = buffer.readFloat();
+            return new Effect(type, duration, amplifier, chance);
+        }
+
+        public void toNetwork(FriendlyByteBuf buffer)
+        {
+            buffer.writeRegistryIdUnsafe(ForgeRegistries.MOB_EFFECTS, type);
+            buffer.writeVarInt(duration);
+            buffer.writeVarInt(amplifier);
+            buffer.writeFloat(chance);
+        }
+    }
+
+    public static class Packet extends DataManagerSyncPacket<Drinkable> {}
 }

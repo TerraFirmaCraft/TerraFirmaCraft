@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/ingot/weak_steel"
+  },
+  "second_input": {
+    "item": "tfc:metal/ingot/pig_iron"
+  },
+  "tier": 3,
+  "result": {
+    "item": "tfc:metal/ingot/high_carbon_black_steel"
+  }
+}

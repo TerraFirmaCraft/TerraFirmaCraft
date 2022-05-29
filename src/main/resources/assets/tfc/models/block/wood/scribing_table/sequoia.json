@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/scribing_table",
+  "textures": {
+    "top": "tfc:block/wood/scribing_table/sequoia",
+    "leg": "tfc:block/wood/log/sequoia",
+    "side": "tfc:block/wood/planks/sequoia",
+    "misc": "tfc:block/wood/scribing_table/scribing_paraphernalia",
+    "particle": "tfc:block/wood/planks/sequoia"
+  }
+}

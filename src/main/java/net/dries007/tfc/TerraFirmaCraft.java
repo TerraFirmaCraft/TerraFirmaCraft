@@ -24,18 +24,17 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.food.IFood;
-import net.dries007.tfc.common.capabilities.forge.IForging;
+import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.capabilities.heat.IHeatBlock;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.capabilities.sync.ISyncable;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.EntityHelpers;
@@ -66,8 +65,8 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.blockpredicate.TFCBlockPredicates;
 import net.dries007.tfc.world.carver.TFCCarvers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.feature.TFCFeatures;
+import net.dries007.tfc.world.placement.TFCPlacements;
 import net.dries007.tfc.world.settings.RockSettings;
 import net.dries007.tfc.world.stateprovider.TFCStateProviders;
 import org.slf4j.Logger;
@@ -82,8 +81,7 @@ public final class TerraFirmaCraft
     public TerraFirmaCraft()
     {
         LOGGER.info("Initializing TerraFirmaCraft");
-        LOGGER.debug("Debug Logging Enabled");
-        if (Helpers.detectAssertionsEnabled()) LOGGER.debug("Assertions Enabled");
+        LOGGER.info("Options: Assertions Enabled = {}, Boostrap = {}, Test = {}, Debug Logging = {}", Helpers.ASSERTIONS_ENABLED, Helpers.BOOTSTRAP_ENVIRONMENT, Helpers.TEST_ENVIRONMENT, LOGGER.isDebugEnabled());
 
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 
@@ -122,7 +120,6 @@ public final class TerraFirmaCraft
         PacketHandler.init();
         CalendarEventHandler.init();
         ForgeEventHandler.init();
-        EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
 
         if (FMLEnvironment.dist == Dist.CLIENT)
         {
@@ -146,17 +143,17 @@ public final class TerraFirmaCraft
         ServerCalendar.overrideDoDaylightCycleCallback();
 
         event.enqueueWork(() -> {
-            // Vanilla Registries (not thread safe)
             TFCIngredients.registerIngredientTypes();
             TFCCommands.registerSuggestionProviders();
+            TFCCommands.registerArgumentTypes();
             FoodTraits.registerFoodTraits();
-            ClimateModels.registerAll();
-
+            ClimateModels.registerClimateModels();
+            EntityDataSerializers.registerSerializer(EntityHelpers.LONG_SERIALIZER);
             ItemSizeManager.setupItemStackSizeOverrides();
-            DispenserBehaviors.registerAll();
+            DispenserBehaviors.registerDispenserBehaviors();
             Faunas.registerSpawnPlacements();
-            FarmlandBlock.registerTillables();
-            OreDeposit.computeCache();
+            IBellowsConsumer.registerDefaultOffsets();
+            FoodCapability.setCreativeTabsNonDecaying();
         });
     }
 
@@ -164,12 +161,11 @@ public final class TerraFirmaCraft
     {
         event.register(IHeat.class);
         event.register(IHeatBlock.class);
-        event.register(IForging.class);
+        event.register(Forging.class);
         event.register(ChunkData.class);
         event.register(WorldTracker.class);
         event.register(IFood.class);
         event.register(PlayerData.class);
-        event.register(ISyncable.class);
     }
 
     public void loadComplete(FMLLoadCompleteEvent event)

@@ -39,12 +39,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
      *
      * @return the calendar time of creation
      */
-    default long getCreationDate()
-    {
-        return getCreationDate(false);
-    }
-
-    long getCreationDate(boolean isClientSide);
+    long getCreationDate();
 
     /**
      * Sets the creation date. DO NOT USE TO PRESERVE FOOD! Use {@link FoodTrait} instead
@@ -58,24 +53,14 @@ public interface IFood extends INBTSerializable<CompoundTag>
      *
      * @return a calendar time
      */
-    default long getRottenDate()
-    {
-        return getRottenDate(false);
-    }
-
-    long getRottenDate(boolean isClientSide);
+    long getRottenDate();
 
     /**
      * @return true if the food is rotten / decayed.
      */
     default boolean isRotten()
     {
-        return isRotten(false);
-    }
-
-    default boolean isRotten(boolean isClientSide)
-    {
-        return getRottenDate(isClientSide) < Calendars.get(isClientSide).getTicks();
+        return getRottenDate() < Calendars.get().getTicks();
     }
 
     /**
@@ -119,7 +104,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
     default void addTooltipInfo(ItemStack stack, List<Component> text)
     {
         // Expiration dates
-        if (isRotten(true))
+        if (isRotten())
         {
             text.add(new TranslatableComponent("tfc.tooltip.food_rotten").withStyle(ChatFormatting.RED));
             if (((stack.hashCode() * 1928634918231L) & 0xFF) == 0)
@@ -129,7 +114,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
         }
         else
         {
-            long rottenDate = getRottenDate(true);
+            long rottenDate = getRottenDate();
             if (rottenDate == Long.MAX_VALUE)
             {
                 text.add(new TranslatableComponent("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
@@ -169,7 +154,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
             text.add(new TranslatableComponent("tfc.tooltip.nutrition").withStyle(ChatFormatting.GRAY));
 
             boolean any = false;
-            if (!isRotten(true))
+            if (!isRotten())
             {
                 final FoodRecord data = getData();
 
@@ -218,7 +203,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
 
         if (TFCConfig.CLIENT.enableDebug.get())
         {
-            text.add(new TextComponent(ChatFormatting.GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
+            text.add(new TextComponent(ChatFormatting.DARK_GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
         }
     }
 }
