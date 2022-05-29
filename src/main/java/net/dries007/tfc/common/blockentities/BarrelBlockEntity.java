@@ -49,7 +49,6 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.IntArrayBuilder;
 import net.dries007.tfc.util.calendar.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

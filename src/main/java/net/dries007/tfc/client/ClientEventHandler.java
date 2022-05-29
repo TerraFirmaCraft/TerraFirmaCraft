@@ -102,6 +102,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
             MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
             MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
+            MenuScreens.register(TFCContainerTypes.POWDERKEG.get(), PowderkegScreen::new);
             MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
             MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
             MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);

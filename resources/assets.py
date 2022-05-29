@@ -350,6 +350,12 @@ def generate(rm: ResourceManager):
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
+    rm.blockstate('powderkeg', variants={
+        'sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
+        'sealed=false': {'model': 'tfc:block/powderkeg_unsealed'}
+    }).with_lang(lang('Powderkeg')).with_block_loot('tfc:powderkeg').with_tag('minecraft:mineable/axe')
+    rm.item_model('powderkeg', parent='tfc:block/powderkeg_unsealed')
+    
     states = [({'model': 'tfc:block/composter/composter'})]
     for i in range(1, 9):
         for age in ('normal', 'ready', 'rotten'):
@@ -553,7 +559,7 @@ def generate(rm: ResourceManager):
         # Metal Items
         for metal_item, metal_item_data in METAL_ITEMS.items():
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
-                texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
+                texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron')
                 if metal_item == 'fishing_rod':
                     item = item_model_property(rm, ('metal', '%s' % metal_item, '%s' % metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
                 else:

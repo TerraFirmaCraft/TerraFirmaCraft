@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XY ",
+    "Z",
+    ""
+  ],
+  "key": {
+    "X": {
+      "tag": "tfc:barrel"
+    },
+    "Y": {
+      "tag": "minecraft:dye_red"
+    },
+    "Z": {
+      "item": "minecraft:gunpowder"
+    }
+  },
+  "result": {
+    "item": "tfc:powderkeg"
+  }
+}

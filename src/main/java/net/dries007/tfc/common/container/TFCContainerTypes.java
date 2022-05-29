@@ -41,6 +41,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<LogPileContainer>> LOG_PILE = TFCContainerTypes.<LogPileBlockEntity, LogPileContainer>registerBlock("log_pile", TFCBlockEntities.LOG_PILE, LogPileContainer::create);
     public static final RegistryObject<MenuType<CrucibleContainer>> CRUCIBLE = TFCContainerTypes.<CrucibleBlockEntity, CrucibleContainer>registerBlock("crucible", TFCBlockEntities.CRUCIBLE, CrucibleContainer::create);
     public static final RegistryObject<MenuType<BarrelContainer>> BARREL = TFCContainerTypes.<BarrelBlockEntity, BarrelContainer>registerBlock("barrel", TFCBlockEntities.BARREL, BarrelContainer::create);
+    public static final RegistryObject<MenuType<PowderkegContainer>> POWDERKEG = TFCContainerTypes.<PowderkegBlockEntity, PowderkegContainer>registerBlock("powderkeg", TFCBlockEntities.POWDERKEG, PowderkegContainer::create);
     public static final RegistryObject<MenuType<NestBoxContainer>> NEST_BOX = TFCContainerTypes.<NestBoxBlockEntity, NestBoxContainer>registerBlock("nest_box", TFCBlockEntities.NEST_BOX, NestBoxContainer::create);
     public static final RegistryObject<MenuType<AnvilContainer>> ANVIL = TFCContainerTypes.<AnvilBlockEntity, AnvilContainer>registerBlock("anvil", TFCBlockEntities.ANVIL, AnvilContainer::create);
     public static final RegistryObject<MenuType<AnvilPlanContainer>> ANVIL_PLAN = TFCContainerTypes.<AnvilBlockEntity, AnvilPlanContainer>registerBlock("anvil_plan", TFCBlockEntities.ANVIL, AnvilPlanContainer::create);

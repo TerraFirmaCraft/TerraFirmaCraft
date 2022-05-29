@@ -457,7 +457,8 @@ def generate(rm: ResourceManager):
         'tfc:log_pile',
         'tfc:burning_log_pile',
         'tfc:composter',
-        'tfc:nest_box'
+        'tfc:nest_box',
+        'tfc:powderkeg'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],
