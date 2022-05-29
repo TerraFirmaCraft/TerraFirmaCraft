@@ -92,7 +92,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
-    item_heat(rm, 'blooms', '#tfc:blooms', 0.35)
+    item_heat(rm, 'blooms', '#tfc:blooms', 0.35, METALS['wrought_iron'].melt_temperature)
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
@@ -887,7 +887,7 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[int] = None):
+def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None):
     if melt_temperature is not None:
         forging_temperature = melt_temperature * 0.6
         welding_temperature = melt_temperature * 0.8
