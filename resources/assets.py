@@ -608,9 +608,12 @@ def generate(rm: ResourceManager):
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 if metal_item == 'fishing_rod':
-                    item = item_model_property(rm, ('metal', '%s' % metal_item, '%s' % metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                    item = item_model_property(rm, ('metal', metal_item,metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                elif metal_item == 'shield':
+                    item = rm.item(('metal', metal_item, metal))  # Shields have a custom model for inventory and blocking
                 else:
-                    item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), texture, parent=metal_item_data.parent_model)
+                    item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
+
                 if metal_item == 'propick':
                     item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
                 else:

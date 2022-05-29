@@ -139,6 +139,17 @@ public final class ClientEventHandler
                             return entity instanceof Player player && TFCFishingRodItem.isThisTheHeldRod(player, stack) && player.fishing != null ? 1.0F : 0.0F;
                         }
                     });
+
+                    Item shield = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHIELD).get();
+                    ItemProperties.register(shield, new ResourceLocation("blocking"), (stack, level, entity, unused) -> {
+                        if(entity == null)
+                        {
+                            return 0.0F;
+                        }else
+                        {
+                            return entity instanceof Player && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0f : 0.0f;
+                        }
+                    });
                 }
             }
 

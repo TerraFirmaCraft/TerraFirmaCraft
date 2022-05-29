@@ -231,12 +231,12 @@
       "translation": [2.3, -2, 5]
     },
     "firstperson_righthand": {
-      "rotation": [0, -75, 15],
-      "translation": [4, -4, 0]
+      "rotation": [0, -15, 15],
+      "translation": [2, -4.5, 0]
     },
     "firstperson_lefthand": {
-      "rotation": [0, -75, 15],
-      "translation": [4, -4, 0]
+      "rotation": [0, -15, 15],
+      "translation": [2, -4.5, 0]
     },
     "ground": {
       "translation": [0, 10, 0],
@@ -254,13 +254,5 @@
       "translation": [0, 0, -0.38],
       "scale": [2, 2, 2]
     }
-  },
-  "overrides": [
-    {
-      "predicate": {
-        "blocking": 1
-      },
-      "model": "tfc:item/metal/shield/wrought_iron_blocking"
-    }
-  ]
+  }
 }
