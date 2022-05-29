@@ -67,6 +67,7 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -134,6 +135,19 @@ public final class ClientEventHandler
                             return entity instanceof Player player && TFCFishingRodItem.isThisTheHeldRod(player, stack) && player.fishing != null ? 1.0F : 0.0F;
                         }
                     });
+
+                    Item shield = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHIELD).get();
+                    //if (FMLEnvironment.dist.isClient()) {
+                    ItemProperties.register(shield, new ResourceLocation("blocking"), (stack, level, entity, unused) -> {
+                        if(entity == null)
+                        {
+                            return 0.0F;
+                        }else
+                        {
+                            return entity instanceof Player player && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0f : 0.0f;
+                        }
+                    });
+                    //}
                 }
             }
 
