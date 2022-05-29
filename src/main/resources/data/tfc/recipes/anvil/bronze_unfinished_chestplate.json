@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/double_sheet/bronze"
+  },
+  "result": {
+    "item": "tfc:metal/unfinished_chestplate/bronze"
+  },
+  "tier": 2,
+  "rules": [
+    "hit_last",
+    "hit_second_last",
+    "upset_third_last"
+  ]
+}

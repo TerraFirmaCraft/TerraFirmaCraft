@@ -4,6 +4,7 @@
   "values": [
     "#minecraft:dirt",
     "#minecraft:sand",
-    "#forge:gravel"
+    "#forge:gravel",
+    "#tfc:mud"
   ]
 }

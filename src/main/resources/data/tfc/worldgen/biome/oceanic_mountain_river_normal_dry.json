@@ -26,9 +26,12 @@
       "tfc:underground_flood_fill_lake"
     ],
     [
+      "tfc:surface_ore_deposits",
+      "tfc:deep_ore_deposits",
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
-      "tfc:peat_disc"
+      "tfc:peat_disc",
+      "tfc:peat_disc_in_mud"
     ],
     [
       "tfc:veins"
@@ -51,6 +54,7 @@
       "tfc:clam_patch",
       "tfc:mollusk_patch",
       "tfc:mussel_patch",
+      "tfc:plant/dry_phragmite",
       "tfc:land_plants"
     ],
     [
@@ -72,6 +76,12 @@
         "weight": 10,
         "minCount": 2,
         "maxCount": 4
+      },
+      {
+        "type": "tfc:crayfish",
+        "weight": 3,
+        "minCount": 1,
+        "maxCount": 4
       }
     ],
     "water_creature": [
@@ -92,12 +102,40 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 3
-      },
+      }
+    ],
+    "underground_water_creature": [
       {
         "type": "tfc:octopoteuthis",
         "weight": 1,
         "minCount": 1,
         "maxCount": 2
+      }
+    ],
+    "creature": [
+      {
+        "type": "tfc:pig",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:cow",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:alpaca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:chicken",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
       }
     ]
   },

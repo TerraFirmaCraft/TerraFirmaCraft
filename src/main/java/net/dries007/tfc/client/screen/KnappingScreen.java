@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.client.screen;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +18,7 @@ import net.dries007.tfc.client.screen.button.KnappingButton;
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -62,7 +61,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     }
 
     @Override
-    protected void renderBg(PoseStack matrixStack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         // Check if the container has been updated
         if (menu.requiresReset())
@@ -77,7 +76,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
             menu.setRequiresReset(false);
         }
 
-        super.renderBg(matrixStack, partialTicks, mouseX, mouseY);
+        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
         for (Widget widget : renderables)
         {
@@ -86,12 +85,12 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
                 if (button.visible) // Active button
                 {
                     RenderSystem.setShaderTexture(0, buttonLocation);
-                    blit(matrixStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
+                    blit(poseStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
                 }
                 else if (buttonDisabledLocation != null) // Disabled / background texture
                 {
                     RenderSystem.setShaderTexture(0, buttonDisabledLocation);
-                    blit(matrixStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
+                    blit(poseStack, button.x, button.y, 0, 0, 16, 16, 16, 16);
                 }
             }
         }

@@ -4,24 +4,18 @@
   "input_item": {
     "ingredient": {
       "type": "tfc:fluid_item",
-      "ingredient": {
-        "type": "tfc:not",
-        "ingredient": {
-          "tag": "tfc:empty"
-        }
-      },
       "fluid_ingredient": {
         "ingredient": "tfc:vinegar",
-        "amount": 1
+        "amount": 1000
       }
     }
   },
   "input_fluid": {
     "ingredient": "tfc:salt_water",
-    "amount": 9
+    "amount": 9000
   },
   "output_fluid": {
     "fluid": "tfc:brine",
-    "amount": 10
+    "amount": 10000
   }
 }

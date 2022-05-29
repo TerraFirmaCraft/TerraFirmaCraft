@@ -5,6 +5,9 @@ from nbtlib import nbt
 from nbtlib.tag import String as StringTag, Int as IntTag
 
 Tree = NamedTuple('Tree', name=str, feature=Literal['random', 'overlay', 'stacked'], variant=str, count=Union[int, Tuple[int, ...]])
+
+DATA_VERSION = 2970
+
 NORMAL_TREES = [
     Tree('acacia', 'random', 'acacia', 35),
     Tree('ash', 'overlay', 'normal', 0),
@@ -43,6 +46,28 @@ LARGE_TREES = [
     Tree('willow', 'random', 'willow_large', 14)
 ]
 
+DEAD_TREES = [
+    Tree('acacia', 'random', 'dead_small', 6),
+    Tree('ash', 'random', 'dead_tall', 6),
+    Tree('aspen', 'random', 'dead_tall', 6),
+    Tree('birch', 'random', 'dead_tall', 6),
+    Tree('blackwood', 'random', 'dead_small', 6),
+    Tree('chestnut', 'random', 'dead_small', 6),
+    Tree('douglas_fir', 'random', 'dead_tall', 6),
+    Tree('hickory', 'random', 'dead_tall', 6),
+    Tree('kapok', 'random', 'dead_jungle', 4),
+    Tree('maple', 'random', 'dead_small', 6),
+    Tree('oak', 'random', 'dead_small', 6),
+    Tree('palm', 'random', 'dead_stump', 3),
+    Tree('pine', 'random', 'dead_tall', 6),
+    Tree('rosewood', 'random', 'dead_tall', 6),
+    Tree('sequoia', 'random', 'dead_tall', 6),
+    Tree('spruce', 'random', 'dead_tall', 6),
+    Tree('sycamore', 'random', 'dead_small', 6),
+    Tree('white_cedar', 'random', 'dead_tall', 6),
+    Tree('willow', 'random', 'dead_stump', 3),
+]
+
 
 class Count:  # global mutable variables that doesn't require using the word "global" :)
     SKIPPED = 0
@@ -61,6 +86,10 @@ def main():
     verify_center_trunk('jungle', 17)
     verify_center_trunk('tropical', 7)
     verify_center_trunk('willow', 7)
+    verify_center_trunk('dead_jungle', 4)
+    verify_center_trunk('dead_stump', 3)
+    verify_center_trunk('dead_small', 6)
+    verify_center_trunk('dead_tall', 6)
 
     print('Tree sapling drop chances:')
     for tree in NORMAL_TREES:
@@ -68,16 +97,19 @@ def main():
 
     print('Making tree structures')
     for tree in NORMAL_TREES:
-        make_tree_structures(tree, False)
+        make_tree_structures(tree)
 
     for tree in LARGE_TREES:
-        make_tree_structures(tree, True)
+        make_tree_structures(tree, '_large')
+
+    for tree in DEAD_TREES:
+        make_tree_structures(tree, '_dead')
 
     print('New = %d, Modified = %d, Unchanged = %d, Errors = %d' % (Count.NEW, Count.MODIFIED, Count.SKIPPED, Count.ERRORS))
 
 
-def make_tree_structures(tree: Tree, large: bool):
-    result = tree.name + '_large' if large else tree.name
+def make_tree_structures(tree: Tree, suffix: str = ''):
+    result = tree.name + suffix
     if tree.feature == 'random':
         for i in range(1, 1 + tree.count):
             make_tree_structure(tree.variant + str(i), tree.name, str(i), result)
@@ -102,11 +134,13 @@ def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
         elif block['Name'] == 'minecraft:oak_leaves':
             block['Name'] = StringTag('tfc:wood/leaves/%s' % wood)
             block['Properties']['persistent'] = StringTag('false')
+        elif block['Name'] == 'minecraft:air':
+            block['Name'] = StringTag('minecraft:structure_void')
         else:
             print('Structure: %s has an invalid block state \'%s\'' % (template, block['Name']))
 
     # Hack the data version, to avoid needing to run DFU on anything
-    f['DataVersion'] = IntTag(2865)
+    f['DataVersion'] = IntTag(DATA_VERSION)
 
     result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
     os.makedirs(result_dir, exist_ok=True)

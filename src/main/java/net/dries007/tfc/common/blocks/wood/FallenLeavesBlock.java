@@ -13,17 +13,22 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.level.BlockGetter;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.GroundcoverBlock;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
-public class FallenLeavesBlock extends GroundcoverBlock
+public class FallenLeavesBlock extends GroundcoverBlock implements IForgeBlockExtension
 {
     private static final VoxelShape VERY_FLAT = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
-    public FallenLeavesBlock(Properties properties)
+    private final ExtendedProperties properties;
+
+    public FallenLeavesBlock(ExtendedProperties properties)
     {
         super(properties, VERY_FLAT, null);
+        this.properties = properties;
     }
 
     @Override
@@ -36,5 +41,11 @@ public class FallenLeavesBlock extends GroundcoverBlock
     public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
     {
         return VERY_FLAT;
+    }
+
+    @Override
+    public ExtendedProperties getExtendedProperties()
+    {
+        return properties;
     }
 }

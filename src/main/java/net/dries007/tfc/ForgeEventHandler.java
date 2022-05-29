@@ -7,9 +7,8 @@
 package net.dries007.tfc;
 
 import java.util.Random;
+import java.util.concurrent.Executor;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -18,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.WorldStem;
 import net.minecraft.server.level.PlayerRespawnLogic;
 import net.minecraft.server.level.ServerChunkCache;
 import net.minecraft.server.level.ServerLevel;
@@ -29,11 +29,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.GameRules;
@@ -53,6 +55,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -62,45 +65,59 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.server.ServerAboutToStartEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.logging.LogUtils;
+import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
+import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodDefinition;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
+import net.dries007.tfc.common.capabilities.forge.Forging;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
-import net.dries007.tfc.common.capabilities.forge.ForgingHandler;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.commands.LocateVeinCommand;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
-import net.dries007.tfc.network.*;
+import net.dries007.tfc.network.ChunkUnwatchPacket;
+import net.dries007.tfc.network.EffectExpirePacket;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.PlayerDrinkPacket;
 import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.util.collections.IndirectHashCollection;
+import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -111,12 +128,12 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataCache;
 import net.dries007.tfc.world.chunkdata.ChunkDataCapability;
 import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
-import net.dries007.tfc.world.settings.ClimateSettings;
 import net.dries007.tfc.world.settings.RockLayerSettings;
+import org.slf4j.Logger;
 
 public final class ForgeEventHandler
 {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz";
     private static final BlockHitResult FAKE_MISS = BlockHitResult.miss(Vec3.ZERO, Direction.UP, BlockPos.ZERO);
 
@@ -135,14 +152,14 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkUnload);
         bus.addListener(ForgeEventHandler::onChunkDataSave);
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
-        bus.addListener(ForgeEventHandler::addReloadListeners);
-        bus.addListener(ForgeEventHandler::beforeServerStart);
+        bus.addListener(ForgeEventHandler::onServerStart);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
+        bus.addListener(ForgeEventHandler::onBreakSpeed);
         bus.addListener(ForgeEventHandler::onNeighborUpdate);
-        bus.addListener(ForgeEventHandler::onWorldTick);
         bus.addListener(ForgeEventHandler::onExplosionDetonate);
+        bus.addListener(ForgeEventHandler::onWorldTick);
         bus.addListener(ForgeEventHandler::onWorldLoad);
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
@@ -160,9 +177,12 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerRightClickBlock);
         bus.addListener(ForgeEventHandler::onPlayerRightClickItem);
         bus.addListener(ForgeEventHandler::onPlayerRightClickEmpty);
+        bus.addListener(ForgeEventHandler::addReloadListeners);
         bus.addListener(ForgeEventHandler::onDataPackSync);
+        bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onLivingJump);
+        bus.addListener(ForgeEventHandler::onSelectClimateModel);
     }
 
     /**
@@ -282,7 +302,7 @@ public final class ForgeEventHandler
         if (!stack.isEmpty())
         {
             // Attach mandatory capabilities
-            event.addCapability(ForgingCapability.KEY, new ForgingHandler(stack));
+            event.addCapability(ForgingCapability.KEY, new Forging(stack));
 
             // Optional capabilities
             HeatDefinition def = HeatCapability.get(stack);
@@ -295,6 +315,11 @@ public final class ForgeEventHandler
             if (food != null)
             {
                 event.addCapability(FoodCapability.KEY, new FoodHandler(food.getData()));
+            }
+
+            if (stack.getItem() == Items.EGG)
+            {
+                event.addCapability(EggCapability.KEY, new EggHandler(stack));
             }
         }
     }
@@ -380,32 +405,9 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void addReloadListeners(AddReloadListenerEvent event)
+    public static void onServerStart(ServerStartingEvent event)
     {
-        // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
-        // So, we hack internal resource lists in order to stick metals before recipes.
-        // see ReloadableServerResourcesMixin
-
-        // All other resource reload listeners can be inserted after recipes.
-        event.addListener(Fuel.MANAGER);
-        event.addListener(Drinkable.MANAGER);
-        event.addListener(Support.MANAGER);
-        event.addListener(LampFuel.MANAGER);
-        event.addListener(Fertilizer.MANAGER);
-        event.addListener(ItemSizeManager.MANAGER);
-        event.addListener(ClimateRange.MANAGER);
-        event.addListener(Fauna.MANAGER);
-
-        event.addListener(HeatCapability.MANAGER);
-        event.addListener(FoodCapability.MANAGER);
-
-        // Last
-        event.addListener(CacheInvalidationListener.INSTANCE);
-    }
-
-    public static void beforeServerStart(ServerAboutToStartEvent event)
-    {
-        CacheInvalidationListener.INSTANCE.invalidateServerCaches(event.getServer());
+        LocateVeinCommand.reloadVeinsCache(event.getServer());
     }
 
     public static void registerCommands(RegisterCommandsEvent event)
@@ -455,6 +457,25 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
+    {
+        // todo: this needs to be re-evaluated, it was way too harsh and applied on way too many blocks. Maybe apply only if the tool cannot harvest the block?
+        // Apply global modifiers when not using the correct tool
+        // This makes the difference between bare fists and tools more pronounced, without having to massively buff either our tools or make our blocks way higher than the standard hardness.
+        /*final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
+        if (defaultDestroySpeed <= 1.0f)
+        {
+            event.setNewSpeed(event.getNewSpeed() * 0.4f);
+        }*/
+
+        // Apply mining speed modifiers from forging bonuses
+        final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
+        if (bonus != ForgingBonus.NONE)
+        {
+            event.setNewSpeed(event.getNewSpeed() * bonus.efficiency());
+        }
+    }
+
     public static void onNeighborUpdate(BlockEvent.NeighborNotifyEvent event)
     {
         if (event.getWorld() instanceof final ServerLevel level)
@@ -478,19 +499,19 @@ public final class ForgeEventHandler
         }
     }
 
-    public static void onWorldTick(TickEvent.WorldTickEvent event)
-    {
-        if (event.phase == TickEvent.Phase.START)
-        {
-            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
-        }
-    }
-
     public static void onExplosionDetonate(ExplosionEvent.Detonate event)
     {
         if (!event.getWorld().isClientSide)
         {
             event.getWorld().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapsePositions(new BlockPos(event.getExplosion().getPosition()), event.getAffectedBlocks()));
+        }
+    }
+
+    public static void onWorldTick(TickEvent.WorldTickEvent event)
+    {
+        if (event.phase == TickEvent.Phase.START)
+        {
+            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
         }
     }
 
@@ -512,13 +533,11 @@ public final class ForgeEventHandler
                 LOGGER.info("Updating TFC Relevant Game Rules for level {}.", level.dimension().location());
             }
 
-            if (level.dimension() == Level.OVERWORLD && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
+            Climate.onWorldLoad(level);
+            if (level.dimension() == Level.OVERWORLD)
             {
-                // Update climate settings
-                final ClimateSettings settings = ex.getBiomeSource().getTemperatureSettings();
-
-                Climate.updateCachedSettings(level, settings, ex.getClimateSeed()); // Server
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(settings, ex.getClimateSeed())); // Client
+                ItemSizeManager.applyItemStackSizeOverrides();
+                SelfTests.runServerSelfTests();
             }
         }
     }
@@ -533,16 +552,17 @@ public final class ForgeEventHandler
 
     public static void onFluidPlaceBlock(BlockEvent.FluidPlaceBlockEvent event)
     {
-        Block originalBlock = event.getOriginalState().getBlock();
-        if (originalBlock == Blocks.STONE)
+        // Currently, getOriginalState gets the fluid block that's placing the block, not the block getting placed
+        BlockState state = event.getNewState();
+        if (Helpers.isBlock(state, Blocks.STONE))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.GABBRO).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
-        else if (originalBlock == Blocks.COBBLESTONE)
+        else if (Helpers.isBlock(state, Blocks.COBBLESTONE))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.RHYOLITE).get(net.dries007.tfc.common.blocks.rock.Rock.BlockType.HARDENED).get().defaultBlockState());
         }
-        else if (originalBlock == Blocks.BASALT)
+        else if (Helpers.isBlock(state, Blocks.BASALT))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
         }
@@ -601,6 +621,23 @@ public final class ForgeEventHandler
             {
                 event.setCanceled(true);
             }
+        }
+        else if (block == TFCBlocks.BLOOMERY.get() && !state.getValue(BloomeryBlock.LIT))
+        {
+            final BlockEntity entity = level.getBlockEntity(pos);
+            if (entity instanceof BloomeryBlockEntity bloomery && bloomery.light(state))
+            {
+                event.setCanceled(true);
+            }
+        }
+        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
+                if (blastFurnace.light(level, pos, state))
+                {
+                    event.setCanceled(true);
+                }
+            });
         }
         else if (block instanceof LampBlock)
         {
@@ -680,7 +717,8 @@ public final class ForgeEventHandler
      */
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
-        if (event.getEntity() instanceof ItemEntity entity && !event.getWorld().isClientSide && TFCConfig.SERVER.coolHeatablesinLevel.get())
+        Level level = event.getWorld();
+        if (event.getEntity() instanceof ItemEntity entity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
         {
             final ItemStack item = entity.getItem();
             item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
@@ -689,6 +727,30 @@ public final class ForgeEventHandler
                     entity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
                 }
             });
+        }
+        if (event.getEntity() instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
+        {
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+            BlockPos pos = lightning.blockPosition();
+            for (int x = -5; x <= 5; x++)
+            {
+                for (int y = -5; y <= 5; y++)
+                {
+                    for (int z = -5; z <= 5; z++)
+                    {
+                        if (level.random.nextInt(3) == 0 && x * x + y * y + z * z <= 25)
+                        {
+                            mutable.setWithOffset(pos, x, y, z);
+                            BlockState state = level.getBlockState(mutable);
+                            BlockState modified = state.getToolModifiedState(new UseOnContext(level, null, InteractionHand.MAIN_HAND, new ItemStack(Items.DIAMOND_AXE), new BlockHitResult(Vec3.atBottomCenterOf(mutable), Direction.DOWN, mutable, false)), ToolActions.AXE_STRIP, true);
+                            if (modified != null)
+                            {
+                                level.setBlockAndUpdate(mutable, modified);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -700,7 +762,7 @@ public final class ForgeEventHandler
      */
     public static void onItemExpire(ItemExpireEvent event)
     {
-        if (!TFCConfig.SERVER.coolHeatablesinLevel.get()) return;
+        if (!TFCConfig.SERVER.coolHotItemEntities.get()) return;
         final ItemEntity entity = event.getEntityItem();
         final ServerLevel level = (ServerLevel) entity.getLevel();
         final ItemStack stack = entity.getItem();
@@ -790,15 +852,10 @@ public final class ForgeEventHandler
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
+        if (event.getPlayer() instanceof ServerPlayer player)
         {
             TFCFoodData.replaceFoodStats(event.getPlayer());
-
-            final ServerLevel overworld = ServerLifecycleHooks.getCurrentServer().overworld();
-            if (overworld.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension ex)
-            {
-                PacketHandler.send(PacketDistributor.ALL.noArg(), new ClimateSettingsUpdatePacket(ex.getBiomeSource().getTemperatureSettings(), ex.getClimateSeed()));
-            }
+            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
         }
     }
 
@@ -821,7 +878,7 @@ public final class ForgeEventHandler
     public static void onServerChat(ServerChatEvent event)
     {
         // Apply intoxication after six hours
-        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks() - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
+        final long intoxicatedTicks = event.getPlayer().getCapability(PlayerDataCapability.CAPABILITY).map(p -> p.getIntoxicatedTicks(event.getPlayer().getLevel().isClientSide()) - 6 * ICalendar.TICKS_IN_HOUR).orElse(0L);
         if (intoxicatedTicks > 0)
         {
             final float intoxicationChance = Mth.clamp((float) (intoxicatedTicks - 6 * ICalendar.TICKS_IN_HOUR) / PlayerData.MAX_INTOXICATED_TICKS, 0, 0.7f);
@@ -881,6 +938,16 @@ public final class ForgeEventHandler
                 event.setCancellationResult(result);
             }
         }
+
+        // Some blocks have interactions that respect sneaking, both with items in hand and not
+        // These need to be able to interact, regardless of if an item has sneakBypassesUse set
+        // So, we have to explicitly allow the Block.use() interaction for these blocks.
+        final Level level = event.getWorld();
+        final BlockState state = level.getBlockState(event.getPos());
+        if (state.getBlock() instanceof AnvilBlock || state.getBlock() instanceof RockAnvilBlock)
+        {
+            event.setUseBlock(Event.Result.ALLOW);
+        }
     }
 
     public static void onPlayerRightClickItem(PlayerInteractEvent.RightClickItem event)
@@ -905,6 +972,29 @@ public final class ForgeEventHandler
         }
     }
 
+    public static void addReloadListeners(AddReloadListenerEvent event)
+    {
+        // Alloy recipes are loaded as part of recipes, but have a hard dependency on metals.
+        // So, we hack internal resource lists in order to stick metals before recipes.
+        // see ReloadableServerResourcesMixin
+
+        // All other resource reload listeners can be inserted after recipes.
+        event.addListener(Fuel.MANAGER);
+        event.addListener(Drinkable.MANAGER);
+        event.addListener(Support.MANAGER);
+        event.addListener(LampFuel.MANAGER);
+        event.addListener(Fertilizer.MANAGER);
+        event.addListener(ItemSizeManager.MANAGER);
+        event.addListener(ClimateRange.MANAGER);
+        event.addListener(Fauna.MANAGER);
+        event.addListener(HeatCapability.MANAGER);
+        event.addListener(FoodCapability.MANAGER);
+        event.addListener(FoodCapability.DecayingItemStackFixer.INSTANCE);
+
+        // In addition, we capture the recipe manager here
+        Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());
+    }
+
     public static void onDataPackSync(OnDatapackSyncEvent event)
     {
         // Sync managers
@@ -917,6 +1007,25 @@ public final class ForgeEventHandler
         PacketHandler.send(target, HeatCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, FoodCapability.MANAGER.createSyncPacket());
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
+        PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
+        PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
+    }
+
+    /**
+     * This is when tags are safe to be loaded, so we can do post reload actions that involve querying ingredients.
+     * It is fired on both logical server and client after resources are reloaded (or, sent from server).
+     * In addition, during the first load on a server in {@link net.minecraft.server.Main}, where {@link net.minecraft.server.WorldStem#load(WorldStem.InitConfig, WorldStem.DataPackConfigSupplier, WorldStem.WorldDataSupplier, Executor, Executor)} is invoked, the server won't exist yet at all.
+     * In that case, we need to rely on the fact that {@link AddReloadListenerEvent} will be fired before that point, and we can capture the server's recipe manager there.
+     */
+    public static void onTagsUpdated(TagsUpdatedEvent event)
+    {
+        // First, reload all caches
+        IndirectHashCollection.reloadAllCaches(Helpers.getUnsafeRecipeManager());
+
+        // Then apply post reload actions which may query the cache
+        Support.updateMaximumSupportRange();
+        Metal.updateMetalFluidMap();
+        ItemSizeManager.applyItemStackSizeOverrides();
     }
 
     /**
@@ -929,6 +1038,16 @@ public final class ForgeEventHandler
         {
             event.setResult(Event.Result.DENY);
             event.setCanceled(true);
+        }
+    }
+
+    public static void onSelectClimateModel(SelectClimateModelEvent event)
+    {
+        final ServerLevel level = event.level();
+        if (event.level().dimension() == Level.OVERWORLD && level.getChunkSource().getGenerator() instanceof ChunkGeneratorExtension)
+        {
+            // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
+            event.setModel(new OverworldClimateModel());
         }
     }
 }

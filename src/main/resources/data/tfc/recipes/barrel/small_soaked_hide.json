@@ -11,8 +11,7 @@
     "amount": 300
   },
   "output_item": {
-    "item": "tfc:small_soaked_hide",
-    "count": 1
+    "item": "tfc:small_soaked_hide"
   },
   "duration": 8000
 }

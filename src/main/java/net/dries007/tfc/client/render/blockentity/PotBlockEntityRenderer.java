@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
-import java.awt.*;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -23,6 +21,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.PotRecipe;
 
 import static net.dries007.tfc.common.blockentities.PotBlockEntity.SLOT_EXTRA_INPUT_END;
@@ -43,12 +42,8 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
             .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME) : FluidStack.EMPTY);
         if (!fluidStack.isEmpty())
         {
-            Color color = RenderHelpers.getFluidColor(fluidStack);
-            if (useDefaultFluid)
-            {
-                color = new Color(color.getRed() * 3, color.getGreen() / 4, 0, color.getAlpha());
-            }
-            RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha(), 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
+            int color = useDefaultFluid ? TFCFluids.ALPHA_MASK | 0xA64214 : RenderHelpers.getFluidColor(fluidStack);
+            RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color, 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
         }
 
         pot.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {

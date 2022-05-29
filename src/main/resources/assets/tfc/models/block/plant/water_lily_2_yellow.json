@@ -1,37 +1,7 @@
 {
-	"credit": "Made with Blockbench",
-	"ambientocclusion": false,
-	"textures": {
-		"flower": "tfc:block/plant/water_lily/water_lily_2_yellow",
-		"particle": "tfc:block/plant/water_lily/water_lily",
-		"layer0": "tfc:block/plant/water_lily/water_lily"
-	},
-	"elements": [
-		{
-			"from": [0, 1, 0],
-			"to": [16, 1, 16],
-			"faces": {
-				"up": {"uv": [0, 0, 16, 16], "texture": "#layer0", "tintindex": 0},
-				"down": {"uv": [16, 0, 0, 16], "texture": "#layer0", "tintindex": 0}
-			}
-		},
-		{
-			"from": [2, -4, 1],
-			"to": [14, 4, 1],
-			"rotation": {"angle": -45, "axis": "y", "origin": [8, 8, 1]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#flower"}
-			}
-		},
-		{
-			"from": [2, -4, 1],
-			"to": [14, 4, 1],
-			"rotation": {"angle": 45, "axis": "y", "origin": [8, 8, 1]},
-			"faces": {
-				"north": {"uv": [0, 0, 16, 16], "texture": "#flower"},
-				"south": {"uv": [16, 0, 0, 16], "texture": "#flower"}
-			}
-		}
-	]
+  "parent": "tfc:block/plant/template_floating_tinted_flower",
+  "textures": {
+    "pad": "tfc:block/plant/water_lily/water_lily",
+	"flower": "tfc:block/plant/water_lily/water_lily_2_yellow"
+  }
 }

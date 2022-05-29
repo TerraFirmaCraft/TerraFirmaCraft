@@ -38,12 +38,12 @@ public abstract class TypedZoomLayer<A> implements TypedTransformLayer<A>
         }
     }
 
-    protected abstract A choose(AreaContext context, A first, A second, A third, A fourth);
+    public abstract A choose(AreaContext context, A first, A second, A third, A fourth);
 
     public static class Normal<A> extends TypedZoomLayer<A>
     {
         @Override
-        protected A choose(AreaContext context, A first, A second, A third, A fourth)
+        public A choose(AreaContext context, A first, A second, A third, A fourth)
         {
             if (first == second)
             {
@@ -72,7 +72,7 @@ public abstract class TypedZoomLayer<A> implements TypedTransformLayer<A>
     public static class Fuzzy<A> extends TypedZoomLayer<A>
     {
         @Override
-        protected A choose(AreaContext context, A first, A second, A third, A fourth)
+        public A choose(AreaContext context, A first, A second, A third, A fourth)
         {
             return context.choose(first, second, third, fourth);
         }

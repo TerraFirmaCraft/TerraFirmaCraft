@@ -15,6 +15,7 @@
       }
     ],
     "normal_tree": "tfc:tree/pine",
+    "dead_tree": "tfc:tree/pine_dead",
     "fallen_log": "tfc:wood/log/pine",
     "bush_log": {
       "Name": "tfc:wood/wood/pine",

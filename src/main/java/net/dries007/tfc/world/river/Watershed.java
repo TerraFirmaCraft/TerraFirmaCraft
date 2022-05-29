@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.levelgen.RandomSource;
@@ -21,11 +20,11 @@ import it.unimi.dsi.fastutil.longs.LongList;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.FastConcurrentCache;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.framework.TypedArea;
 import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
+import org.jetbrains.annotations.VisibleForTesting;
 
 public abstract class Watershed
 {
@@ -126,7 +125,7 @@ public abstract class Watershed
         }
     }
 
-    static class Rivers extends Watershed
+    public static class Rivers extends Watershed
     {
         public final LongSet interior, sources;
         private final List<RiverFractal> rivers;
@@ -172,6 +171,7 @@ public abstract class Watershed
             return rivers;
         }
 
+        @VisibleForTesting
         public LongSet getSources()
         {
             return sources;

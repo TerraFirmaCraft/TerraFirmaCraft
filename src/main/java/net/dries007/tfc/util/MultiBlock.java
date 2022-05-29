@@ -13,11 +13,16 @@ import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * An API for programmatically checking a list of positions, returning true if all the predicates succeed.
+ */
 public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
 {
     protected final List<BiPredicate<LevelAccessor, BlockPos>> conditions;
@@ -27,15 +32,37 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
         this.conditions = new ArrayList<>();
     }
 
-    public MultiBlock match(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition)
+    MultiBlock(List<BiPredicate<LevelAccessor, BlockPos>> conditions)
     {
-        conditions.add((world, pos) -> condition.test(world, pos.offset(posOffset)));
-        return this;
+        this.conditions = conditions;
+    }
+
+    /**
+     * @return A fresh MultiBlock instance with all the conditions of the original
+     */
+    public MultiBlock copy()
+    {
+        return new MultiBlock(new ArrayList<>(conditions));
+    }
+
+    public MultiBlock match(BlockPos posOffset, TagKey<Block> tagMatch)
+    {
+        return match(posOffset, (level, pos) -> Helpers.isBlock(level.getBlockState(pos), tagMatch));
     }
 
     public MultiBlock match(BlockPos posOffset, Predicate<BlockState> stateMatcher)
     {
-        conditions.add((world, pos) -> stateMatcher.test(world.getBlockState(pos.offset(posOffset))));
+        return match(posOffset, (level, pos) -> stateMatcher.test(level.getBlockState(pos)));
+    }
+
+    public <T extends BlockEntity> MultiBlock match(BlockPos posOffset, Predicate<T> blockEntityMatcher, BlockEntityType<T> type)
+    {
+        return match(posOffset, (level, pos) -> level.getBlockEntity(pos, type).map(blockEntityMatcher::test).orElse(false));
+    }
+
+    public MultiBlock match(BlockPos posOffset, BiPredicate<LevelAccessor, BlockPos> condition)
+    {
+        conditions.add((level, pos) -> condition.test(level, pos.offset(posOffset)));
         return this;
     }
 
@@ -43,7 +70,7 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
     {
         for (Direction d : directions)
         {
-            conditions.add((world, pos) -> condition.test(world, pos.offset(posOffset).relative(d, relativeAmount)));
+            conditions.add((level, pos) -> condition.test(level, pos.offset(posOffset).relative(d, relativeAmount)));
         }
         return this;
     }
@@ -52,24 +79,18 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
     {
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
-            conditions.add((world, pos) -> condition.test(world, pos.offset(posOffset).relative(d, relativeAmount)));
+            conditions.add((level, pos) -> condition.test(level, pos.offset(posOffset).relative(d, relativeAmount)));
         }
-        return this;
-    }
-
-    public <T extends BlockEntity> MultiBlock match(BlockPos posOffset, Predicate<T> tileEntityPredicate, BlockEntityType<T> type)
-    {
-        conditions.add((world, pos) -> world.getBlockEntity(pos.offset(posOffset), type).map(tileEntityPredicate::test).orElse(false));
         return this;
     }
 
     public MultiBlock matchOneOf(BlockPos baseOffset, MultiBlock subMultiBlock)
     {
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        conditions.add((world, pos) -> {
+        conditions.add((level, pos) -> {
             for (BiPredicate<LevelAccessor, BlockPos> condition : subMultiBlock.conditions)
             {
-                if (condition.test(world, mutable.set(pos).move(baseOffset)))
+                if (condition.test(level, mutable.set(pos).move(baseOffset)))
                 {
                     return true;
                 }
@@ -80,11 +101,11 @@ public class MultiBlock implements BiPredicate<LevelAccessor, BlockPos>
     }
 
     @Override
-    public boolean test(LevelAccessor world, BlockPos pos)
+    public boolean test(LevelAccessor level, BlockPos pos)
     {
         for (BiPredicate<LevelAccessor, BlockPos> condition : conditions)
         {
-            if (!condition.test(world, pos))
+            if (!condition.test(level, pos))
             {
                 return false;
             }

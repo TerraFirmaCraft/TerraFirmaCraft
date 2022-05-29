@@ -8,8 +8,6 @@ package net.dries007.tfc.util.calendar;
 
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,10 +18,13 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerWakeUpEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 
+import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.config.TFCConfig;
+import org.slf4j.Logger;
 
 /**
  * Event handler for calendar related ticking
@@ -32,13 +33,14 @@ import net.dries007.tfc.config.TFCConfig;
  */
 public class CalendarEventHandler
 {
-    private static final Logger LOGGER = LogManager.getLogger();
+    private static final Logger LOGGER = LogUtils.getLogger();
 
     public static void init()
     {
         final IEventBus bus = MinecraftForge.EVENT_BUS;
 
         bus.addListener(CalendarEventHandler::onServerStart);
+        bus.addListener(CalendarEventHandler::onServerStop);
         bus.addListener(CalendarEventHandler::onServerTick);
         bus.addListener(CalendarEventHandler::onOverworldTick);
         bus.addListener(CalendarEventHandler::onPlayerWakeUp);
@@ -49,6 +51,11 @@ public class CalendarEventHandler
     public static void onServerStart(ServerStartingEvent event)
     {
         Calendars.SERVER.onServerStart(event.getServer());
+    }
+
+    public static void onServerStop(ServerStoppedEvent event)
+    {
+        Calendars.SERVER.onServerStop();
     }
 
     /**

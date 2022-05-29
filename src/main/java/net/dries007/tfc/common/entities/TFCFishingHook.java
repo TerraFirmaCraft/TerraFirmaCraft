@@ -10,11 +10,18 @@ import java.util.Collections;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.AbstractFish;
@@ -31,12 +38,18 @@ import net.dries007.tfc.common.items.TFCFishingRodItem;
 
 public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpawnData
 {
+    public static final EntityDataAccessor<ItemStack> BAIT = SynchedEntityData.defineId(TFCFishingHook.class, EntityDataSerializers.ITEM_STACK);
+
+    public int pullExhaustion = 0;
+    private float strength = 0.04f;
+    private long lastPulled = 0;
+
     public TFCFishingHook(EntityType<? extends TFCFishingHook> type, Level level)
     {
         super(type, level);
     }
 
-    public TFCFishingHook(Player player, Level level)
+    public TFCFishingHook(Player player, Level level, float strength, ItemStack bait)
     {
         this(TFCEntities.FISHING_BOBBER.get(), level);
         this.setOwner(player);
@@ -58,6 +71,27 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
         this.setXRot((float) (Mth.atan2(vec3.y, vec3.horizontalDistance()) * (double) (180F / (float) Math.PI)));
         this.yRotO = this.getYRot();
         this.xRotO = this.getXRot();
+
+        // TFC
+        this.strength = strength;
+        setBait(bait);
+    }
+
+    @Override
+    protected void defineSynchedData()
+    {
+        super.defineSynchedData();
+        entityData.define(BAIT, ItemStack.EMPTY);
+    }
+
+    public void setBait(ItemStack item)
+    {
+        entityData.set(BAIT, item);
+    }
+
+    public ItemStack getBait()
+    {
+        return entityData.get(BAIT);
     }
 
     @Override
@@ -68,6 +102,11 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
         {
             currentState = FishHookState.HOOKED_IN_ENTITY;
             setPos(hookedIn.getX(), hookedIn.getY(0.8D), hookedIn.getZ());
+        }
+        // gradually reduce exhaustion
+        if (pullExhaustion > 0)
+        {
+            pullExhaustion--;
         }
     }
 
@@ -90,10 +129,35 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     @Override
     public void catchingFish(BlockPos pos) { } // no-op fishing
 
+    /**
+     * This is a little different from the vanilla method in that we call it on both sides. Vanilla mistakenly does not.
+     */
     @Override
     public int retrieve(ItemStack stack)
     {
         Player player = getPlayerOwner();
+        long diff = level.getGameTime() - lastPulled;
+        if (diff < 25)
+        {
+            pullExhaustion += (25 - diff) * 2;
+            if (pullExhaustion > 100)
+            {
+                if (player != null && level.isClientSide)
+                {
+                    player.displayClientMessage(new TranslatableComponent("tfc.fishing.pulled_too_hard"), true);
+                }
+                eatBait();
+                playSound(SoundEvents.ITEM_BREAK, 1f, 0.5f + random.nextFloat());
+                discard();
+                return 1;
+            }
+            else
+            {
+                // warning sound
+                playSound(SoundEvents.FISHING_BOBBER_THROW, 1f, 0.5f + random.nextFloat());
+            }
+        }
+        lastPulled = level.getGameTime();
         if (!level.isClientSide && player != null && !shouldStopFishing(player))
         {
             if (hookedIn != null)
@@ -147,8 +211,53 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
             double dx = owner.getX() - this.getX();
             double dy = owner.getY() - this.getY();
             double dz = owner.getZ() - this.getZ();
-            double mod = 0.04D;
-            entity.setDeltaMovement(new Vec3(dx * mod, dy * mod, dz * mod));
+            if (dy > 0 && dx < 5 && dz < 5)
+            {
+                dy = 4; // helps you pull the thing onto shore.
+            }
+            entity.setDeltaMovement(new Vec3(dx, dy, dz).normalize().scale(strength));
+        }
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag)
+    {
+        super.addAdditionalSaveData(tag);
+        tag.putLong("lastPulled", lastPulled);
+        tag.putInt("exhaustion", pullExhaustion);
+        tag.putFloat("strength", strength);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag)
+    {
+        super.readAdditionalSaveData(tag);
+        lastPulled = tag.getLong("lastPulled");
+        pullExhaustion = tag.getInt("exhaustion");
+        strength = tag.getFloat("strength");
+    }
+
+    public void eatBait()
+    {
+        Player owner = getPlayerOwner();
+        if (owner != null)
+        {
+            final ItemStack main = owner.getMainHandItem();
+            final ItemStack off = owner.getOffhandItem();
+            ItemStack use = ItemStack.EMPTY;
+            if (main.getItem() instanceof TFCFishingRodItem)
+            {
+                use = main;
+            }
+            else if (off.getItem() instanceof TFCFishingRodItem)
+            {
+                use = off;
+            }
+            if (!use.isEmpty())
+            {
+                use.removeTagKey("bait");
+            }
+            playSound(SoundEvents.GENERIC_EAT, 1f, 1f);
         }
     }
 

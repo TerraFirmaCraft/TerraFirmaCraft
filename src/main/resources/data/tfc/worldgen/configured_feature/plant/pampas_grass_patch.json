@@ -3,7 +3,7 @@
   "type": "minecraft:random_patch",
   "config": {
     "tries": 16,
-    "xz_spread": 10,
+    "xz_spread": 6,
     "y_spread": 1,
     "feature": "tfc:plant/pampas_grass"
   }

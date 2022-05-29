@@ -1,4 +1,83 @@
 {
+  "wattle_dyed": {
+    "sounds": [
+      {
+        "name": "minecraft:block/honeyblock/break1",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break2",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break3",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break4",
+        "pitch": 0.7
+      },
+      {
+        "name": "minecraft:block/honeyblock/break5",
+        "pitch": 0.7
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.wattle.dyed"
+  },
+  "wattle_daubed": {
+    "sounds": [
+      {
+        "name": "dig/gravel1",
+        "pitch": 0.5
+      },
+      {
+        "name": "dig/gravel2",
+        "pitch": 0.5
+      },
+      {
+        "name": "dig/gravel3",
+        "pitch": 0.5
+      },
+      {
+        "name": "dig/gravel4",
+        "pitch": 0.5
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.wattle.daubed"
+  },
+  "wattle_woven": {
+    "sounds": [
+      {
+        "name": "step/scaffold1",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold2",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold3",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold4",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold5",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold6",
+        "pitch": 0.6
+      },
+      {
+        "name": "step/scaffold7",
+        "pitch": 0.6
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.wattle.woven"
+  },
   "ceramic_break": {
     "sounds": [
       "tfc:ceramic_break"
@@ -94,7 +173,6 @@
     ]
   },
   "panning": {
-    "category": "player",
     "sounds": [
       "minecraft:dig/sand1",
       "minecraft:dig/sand2",
@@ -174,12 +252,15 @@
       "tfc:rock_slide_short_2"
     ]
   },
-  "anvil.metalimpact": {
+  "animal.alpaca.ambient": {
+    "subtitle": "tfc.animal.alpaca.ambient",
     "sounds": [
-      "tfc:metalimpact1",
-      "tfc:metalimpact2",
-      "tfc:metalimpact3",
-      "tfc:metalimpact4"
+      "tfc:alpaca1",
+      "tfc:alpaca2",
+      "tfc:alpaca3",
+      "tfc:alpacacry1",
+      "tfc:alpacacry2",
+      "tfc:alpacacry3"
     ]
   },
   "animal.deer.say": {
@@ -278,17 +359,147 @@
     ],
     "subtitle": "subtitles.entity.tfc.pheasant.death"
   },
-  "animal.cricket": {
+  "animal.alpaca.hurt": {
+    "subtitle": "tfc.animal.alpaca.hurt",
     "sounds": [
-      "tfc:cricket1",
-      "tfc:cricket2",
-      "tfc:cricket3",
-      "tfc:cricket4"
+      "tfc:alpacahurt1",
+      "tfc:alpacahurt2"
     ]
   },
-  "animal.frog": {
+  "animal.alpaca.step": {
+    "subtitle": "tfc.animal.alpaca.step",
     "sounds": [
-      "tfc:frog1"
+      "minecraft:mob/sheep/step1",
+      "minecraft:mob/sheep/step2",
+      "minecraft:mob/sheep/step3",
+      "minecraft:mob/sheep/step4",
+      "minecraft:mob/sheep/step5"
+    ]
+  },
+  "animal.alpaca.death": {
+    "subtitle": "tfc.animal.alpaca.death",
+    "sounds": [
+      "tfc:alpacadeath1"
+    ]
+  },
+  "animal.predator.sleep": {
+    "subtitle": "tfc.animal.predator.sleep",
+    "sounds": [
+      {
+        "name": "minecraft:mob/fox/sleep1",
+        "pitch": 0.5
+      }
+    ]
+  },
+  "animal.cougar.death": {
+    "subtitle": "tfc.animal.cougar.death",
+    "sounds": [
+      "tfc:cougardeath1"
+    ]
+  },
+  "animal.cougar.attack": {
+    "subtitle": "tfc.animal.cougar.attack",
+    "sounds": [
+      "tfc:cougarattack1"
+    ]
+  },
+  "animal.cougar.hurt": {
+    "subtitle": "tfc.animal.cougar.hurt",
+    "sounds": [
+      "tfc:cougarhurt1",
+      "tfc:cougarhurt2",
+      "tfc:cougarcry1"
+    ]
+  },
+  "animal.cougar.ambient": {
+    "subtitle": "tfc.animal.cougar.ambient",
+    "sounds": [
+      {
+        "name": "tfc:cougarsay1",
+        "volume": 0.5
+      },
+      {
+        "name": "tfc:cougarsay2",
+        "volume": 0.5
+      },
+      {
+        "name": "tfc:cougarsay3",
+        "volume": 0.5
+      }
+    ]
+  },
+  "animal.lion.ambient": {
+    "subtitle": "tfc.animal.lion.ambient",
+    "sounds": [
+      {
+        "name": "tfc:lionambient",
+        "volume": 0.5,
+        "weight": 9
+      },
+      {
+        "name": "tfc:lionroarlong",
+        "volume": 0.5,
+        "weight": 1
+      }
+    ]
+  },
+  "animal.lion.attack": {
+    "subtitle": "tfc.animal.lion.attack",
+    "sounds": [
+      {
+        "name": "tfc:lionroarshort",
+        "volume": 0.7
+      }
+    ]
+  },
+  "animal.lion.death": {
+    "subtitle": "tfc.animal.lion.death",
+    "sounds": [
+      "tfc:liondeath"
+    ]
+  },
+  "animal.lion.hurt": {
+    "subtitle": "tfc.animal.lion.hurt",
+    "sounds": [
+      "tfc:lionhurt1",
+      "tfc:lionhurt2"
+    ]
+  },
+  "animal.sabertooth.ambient": {
+    "subtitle": "tfc.animal.sabertooth.ambient",
+    "sounds": [
+      {
+        "name": "tfc:sabertooth1",
+        "volume": 0.6
+      },
+      {
+        "name": "tfc:sabertooth2",
+        "volume": 0.6
+      },
+      {
+        "name": "tfc:sabertooth3",
+        "volume": 0.6
+      }
+    ]
+  },
+  "animal.sabertooth.attack": {
+    "subtitle": "tfc.animal.sabertooth.attack",
+    "sounds": [
+      "tfc:sabertoothcry1",
+      "tfc:sabertoothcry2"
+    ]
+  },
+  "animal.sabertooth.death": {
+    "subtitle": "tfc.animal.sabertooth.death",
+    "sounds": [
+      "tfc:sabertoothdeath1"
+    ]
+  },
+  "animal.sabertooth.hurt": {
+    "subtitle": "tfc.animal.sabertooth.hurt",
+    "sounds": [
+      "tfc:sabertoothhurt1",
+      "tfc:sabertoothhurt2"
     ]
   },
   "block.charcoal.break": {

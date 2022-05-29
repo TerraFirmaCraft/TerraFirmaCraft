@@ -7,7 +7,6 @@
 package net.dries007.tfc.client;
 
 import java.util.function.ToIntFunction;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +23,7 @@ import net.dries007.tfc.util.calendar.Season;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.biome.TFCBiomes;
+import org.jetbrains.annotations.Nullable;
 
 public final class TFCColors
 {
@@ -35,6 +35,7 @@ public final class TFCColors
     public static final ResourceLocation FOLIAGE_FALL_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_fall.png");
     public static final ResourceLocation FOLIAGE_WINTER_COLORS_LOCATION = Helpers.identifier("textures/colormap/foliage_winter.png");
     public static final ResourceLocation GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/grass.png");
+    public static final ResourceLocation TALL_GRASS_COLORS_LOCATION = Helpers.identifier("textures/colormap/tall_grass.png");
 
     public static final ColorResolver FRESH_WATER;
     public static final ColorResolver SALT_WATER;
@@ -50,6 +51,7 @@ public final class TFCColors
     private static int[] FOLIAGE_FALL_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] FOLIAGE_WINTER_COLORS_CACHE = new int[COLORMAP_SIZE];
     private static int[] GRASS_COLORS_CACHE = new int[COLORMAP_SIZE];
+    private static int[] TALL_GRASS_COLORS_CACHE = new int[COLORMAP_SIZE];
 
     static
     {
@@ -96,6 +98,11 @@ public final class TFCColors
     public static void setGrassColors(int[] grassColorsCache)
     {
         GRASS_COLORS_CACHE = grassColorsCache;
+    }
+
+    public static void setTallGrassColors(int[] tallGrassColorsCache)
+    {
+        TALL_GRASS_COLORS_CACHE = tallGrassColorsCache;
     }
 
     public static int getSkyColor(CommonLevelAccessor level, Biome biome, BlockPos pos)
@@ -159,6 +166,19 @@ public final class TFCColors
                 return getClimateColor(GRASS_COLORS_CACHE, pos);
             }
             return getClimateColor(GRASS_COLORS_CACHE, 10f, 250f); // Default values
+        }
+        return -1;
+    }
+
+    public static int getTallGrassColor(@Nullable BlockPos pos, int tintIndex)
+    {
+        if (tintIndex == 0)
+        {
+            if (pos != null)
+            {
+                return getClimateColor(TALL_GRASS_COLORS_CACHE, pos);
+            }
+            return getClimateColor(TALL_GRASS_COLORS_CACHE, 10f, 250f); // Default values
         }
         return -1;
     }

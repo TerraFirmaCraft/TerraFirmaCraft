@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.common.items.TFCItems;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -112,5 +113,13 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
             final ItemStack stack = inventory.getStackInSlot(slot);
             cachedRecipes[slot - SLOT_EXTRA_INPUT_START] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(new ItemStackInventory(stack));
         }
+    }
+
+    @Override
+    public void ejectInventory()
+    {
+        super.ejectInventory();
+        assert level != null;
+        Helpers.spawnItem(level, worldPosition, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
     }
 }

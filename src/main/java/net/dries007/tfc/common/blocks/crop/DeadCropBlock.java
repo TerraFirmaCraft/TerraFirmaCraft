@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.plant.TFCBushBlock;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
@@ -40,7 +41,7 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
 
     private final Supplier<ClimateRange> climateRange;
 
-    public DeadCropBlock(Properties properties, Crop crop)
+    public DeadCropBlock(ExtendedProperties properties, Crop crop)
     {
         super(properties);
         this.climateRange = ClimateRanges.CROPS.get(crop);
@@ -72,7 +73,7 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FARMLAND);
+        return Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
 
     @Override

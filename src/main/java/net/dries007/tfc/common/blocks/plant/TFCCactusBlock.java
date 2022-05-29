@@ -18,11 +18,12 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
 
 public abstract class TFCCactusBlock extends TFCTallGrassBlock
 {
-    public static TFCCactusBlock create(IPlant plant, Properties properties)
+    public static TFCCactusBlock create(IPlant plant, ExtendedProperties properties)
     {
         return new TFCCactusBlock(properties)
         {
@@ -34,7 +35,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         };
     }
 
-    protected TFCCactusBlock(Properties properties)
+    protected TFCCactusBlock(ExtendedProperties properties)
     {
         super(properties);
     }
@@ -51,7 +52,7 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         {
             if (state.getBlock() != this)
             {
-                return Helpers.isBlock(blockstate, BlockTags.SAND); //calling super here is stupid it does nothing lets just check tags
+                return Helpers.isBlock(blockstate, BlockTags.SAND);
             }
             return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
         }

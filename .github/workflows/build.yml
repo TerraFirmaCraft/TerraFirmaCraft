@@ -48,6 +48,13 @@ jobs:
       env:
         VERSION: ${{ steps.version.outputs.result }}
         GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
+    - name: Game Test
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: runGameTestServer
+      env:
+        VERSION: indev-test
+        GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
     - name: Create Release
       id: create_release
       if: ${{ steps.version.outputs.result != 'indev' && success() }}

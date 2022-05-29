@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import com.google.common.collect.BiMap;
@@ -17,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -46,6 +49,16 @@ public class BlockIngredients
         }
         REGISTRY.put(key, serializer);
         return serializer;
+    }
+
+    public static BlockIngredient of(Block... blocks)
+    {
+        return new SimpleBlockIngredient(Arrays.asList(blocks));
+    }
+
+    public static BlockIngredient of(TagKey<Block> tag)
+    {
+        return new TagBlockIngredient(tag);
     }
 
     public static BlockIngredient fromJson(JsonElement json)
@@ -106,10 +119,14 @@ public class BlockIngredients
         return serializer.fromNetwork(buffer);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void toNetwork(FriendlyByteBuf buffer, BlockIngredient ingredient)
+    public static BlockIngredient.Serializer<?> byId(ResourceLocation id)
     {
-        buffer.writeResourceLocation(REGISTRY.inverse().get(ingredient.getSerializer()));
-        ((BlockIngredient.Serializer) ingredient.getSerializer()).toNetwork(buffer, ingredient);
+        return Objects.requireNonNull(REGISTRY.get(id), () -> "No serializer by id: " + id);
     }
+
+    public static ResourceLocation getId(BlockIngredient.Serializer<?> serializer)
+    {
+        return Objects.requireNonNull(REGISTRY.inverse().get(serializer), () -> "Unregistered serializer: " + serializer);
+    }
+
 }

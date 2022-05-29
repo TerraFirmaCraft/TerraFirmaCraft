@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/double_sheet/red_steel"
+  },
+  "result": {
+    "item": "tfc:metal/tuyere/red_steel"
+  },
+  "tier": 6,
+  "rules": [
+    "bend_last",
+    "bend_second_last"
+  ]
+}

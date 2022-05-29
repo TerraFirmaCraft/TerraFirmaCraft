@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "tfc:block/plant/dry_phragmite_plant"
+    }
+  }
+}

@@ -12,13 +12,15 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
-public final class ItemStackProvider
+public record ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
 {
     private static final ItemStackModifier[] NONE = new ItemStackModifier[0];
     private static final ItemStackProvider EMPTY = new ItemStackProvider(ItemStack.EMPTY, NONE);
-    private static final ItemStackProvider COPY_INPUT = new ItemStackProvider(ItemStack.EMPTY, new ItemStackModifier[] { CopyInputModifier.INSTANCE });
+    private static final ItemStackProvider COPY_INPUT = new ItemStackProvider(ItemStack.EMPTY, new ItemStackModifier[] {CopyInputModifier.INSTANCE});
 
     public static ItemStackProvider empty()
     {
@@ -28,6 +30,11 @@ public final class ItemStackProvider
     public static ItemStackProvider copyInput()
     {
         return COPY_INPUT;
+    }
+
+    public static ItemStackProvider of(ItemStack stack, ItemStackModifier... modifiers)
+    {
+        return new ItemStackProvider(stack, modifiers);
     }
 
     public static ItemStackProvider fromJson(JsonObject json)
@@ -78,15 +85,44 @@ public final class ItemStackProvider
         return new ItemStackProvider(stack, modifiers);
     }
 
-    private final ItemStack stack;
-    private final ItemStackModifier[] modifiers;
-
-    private ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
+    public ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
     {
         this.stack = stack;
         this.modifiers = modifiers;
+
+        if (!Helpers.BOOTSTRAP_ENVIRONMENT)
+        {
+            FoodCapability.setStackNonDecaying(stack);
+        }
     }
 
+    /**
+     * Gets the output stack for this provider, for the given input stack, assuming the input is a single item.
+     *
+     * @param input The input stack. <strong>Important:</strong> the input stack will be treated as if it has count = 1.
+     * @return A new stack, independent of the input stack size.
+     */
+    public ItemStack getSingleStack(ItemStack input)
+    {
+        return getStack(Helpers.copyWithSize(input, 1));
+    }
+
+    /**
+     * Gets the output stack from this provider, without taking into consideration the input
+     *
+     * @return A new stack, possibly invalid if the provider is dependent on the input stack.
+     */
+    public ItemStack getEmptyStack()
+    {
+        return getStack(ItemStack.EMPTY);
+    }
+
+    /**
+     * Gets the output stack from this provider, for the given input stack.
+     *
+     * @param input The input stack. <strong>Important:</strong> The input stack will be treated as an entire stack, including count, and the returned stack may be the same count as the input due to the presence of {@link CopyInputModifier}s. If this behavior is not desired, use {@link #getSingleStack(ItemStack)}.
+     * @return A new stack, possibly dependent on the input stack size.
+     */
     public ItemStack getStack(ItemStack input)
     {
         ItemStack output = stack.copy();

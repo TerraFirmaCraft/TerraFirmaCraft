@@ -41,6 +41,10 @@ public class TFCBlockStateProperties
     public static final FluidProperty FRESH_WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER));
 
     public static final IntegerProperty COUNT_1_3 = IntegerProperty.create("count", 1, 3);
+    public static final IntegerProperty COUNT_1_4 = IntegerProperty.create("count", 1, 4);
+    public static final IntegerProperty COUNT_1_64 = IntegerProperty.create("count", 1, 64);
+
+    public static final IntegerProperty LAYERS_4 = IntegerProperty.create("layers", 1, 4);
 
     public static final IntegerProperty STAGE_1 = BlockStateProperties.STAGE;
     public static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 2);
@@ -78,6 +82,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty MATURE = BooleanProperty.create("mature");
     public static final BooleanProperty NATURAL = BooleanProperty.create("natural");
     public static final BooleanProperty SEALED = BooleanProperty.create("sealed");
+    public static final BooleanProperty DRIED = BooleanProperty.create("dried");
 
     // for placed items
     public static final BooleanProperty ITEM_0 = BooleanProperty.create("item_0");
@@ -90,7 +95,7 @@ public class TFCBlockStateProperties
     public static final BooleanProperty LEFT = BooleanProperty.create("left");
     public static final BooleanProperty RIGHT = BooleanProperty.create("right");
     public static final BooleanProperty BOTTOM = BooleanProperty.create("bottom");
-    public static final EnumProperty<WattleBlock.Type> WATTLE_TYPE = EnumProperty.create("type", WattleBlock.Type.class);
+    public static final BooleanProperty WATTLE_WOVEN = BooleanProperty.create("woven");
 
     public static final IntegerProperty PIT_KILN_STAGE = IntegerProperty.create("stage", 0, 16);
     public static final IntegerProperty HEAT_LEVEL = IntegerProperty.create("heat_level", 0, 7);

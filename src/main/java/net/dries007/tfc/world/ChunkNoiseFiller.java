@@ -19,7 +19,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.chunk.CarvingMask;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
@@ -29,6 +31,7 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import net.dries007.tfc.common.fluids.RiverWaterFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.world.biome.BiomeClimateSampler;
 import net.dries007.tfc.world.biome.BiomeVariants;
 import net.dries007.tfc.world.biome.RiverSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -92,13 +95,15 @@ public class ChunkNoiseFiller
     private final ChunkBaseBlockSource baseBlockSource;
 
     private final Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers; // Biome -> Noise Samplers
+    private final BiomeClimateSampler biomeClimateSampler; // Delayed query for biome variants -> biomes
     private final Object2DoubleMap<BiomeNoiseSampler> columnBiomeNoiseSamplers; // Per column weighted map of biome noises samplers
 
-    private final Object2DoubleMap<Biome>[] sampledBiomeWeights; // 7x7 array of biome weights, at quart pos resolution
-    private final Object2DoubleMap<Biome> biomeWeights1; // Local biome weights, for individual column adjustment
+    private final Object2DoubleMap<BiomeVariants>[] sampledBiomeWeights; // 7x7 array of biome weights, at quart pos resolution
+    private final Object2DoubleMap<BiomeVariants> biomeWeights1; // Local biome weights, for individual column adjustment
 
     private final int[] surfaceHeight; // 16x16, block pos resolution
     private final Biome[] localBiomes; // 16x16, block pos resolution
+    private final double[] localBiomeWeights; // 16x16, block pos resolution
 
     // Current local position / context
     private int blockX, blockZ; // Absolute x/z positions
@@ -106,7 +111,7 @@ public class ChunkNoiseFiller
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<Biome>[] sampledBiomeWeights, RiverSource riverSource, Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
+    public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<BiomeVariants>[] sampledBiomeWeights, RiverSource riverSource, Map<BiomeVariants, BiomeNoiseSampler> biomeNoiseSamplers, BiomeClimateSampler biomeClimateSampler, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
     {
         this.level = level;
         this.chunk = chunk;
@@ -140,12 +145,14 @@ public class ChunkNoiseFiller
         this.aquifer = new TFCAquifer(chunk.getPos(), settings, baseBlockSource, seaLevel, sampler.positionalRandomFactory, sampler.barrierNoise);
 
         this.biomeNoiseSamplers = biomeNoiseSamplers;
+        this.biomeClimateSampler = biomeClimateSampler;
         this.columnBiomeNoiseSamplers = new Object2DoubleOpenHashMap<>();
         this.sampledBiomeWeights = sampledBiomeWeights;
         this.biomeWeights1 = new Object2DoubleOpenHashMap<>();
 
         this.surfaceHeight = new int[16 * 16];
         this.localBiomes = new Biome[16 * 16];
+        this.localBiomeWeights = new double[16 * 16];
     }
 
     public TFCAquifer aquifer()
@@ -158,7 +165,7 @@ public class ChunkNoiseFiller
      * Computes the surface height and local biome arrays
      * Initializes aquifer positions based on the surface height
      */
-    public void setupAquiferSurfaceHeight(Sampler<Biome> biomeSampler)
+    public void setupAquiferSurfaceHeight(Sampler<BiomeVariants> biomeSampler)
     {
         final boolean debugAquiferSurfaceHeight = false;
 
@@ -176,14 +183,13 @@ public class ChunkNoiseFiller
             {
                 final int actualX = chunkMinX - 32 + (x << 3);
                 final int actualZ = chunkMinZ - 32 + (z << 3);
-                final Biome biome = biomeSampler.get(actualX, actualZ);
-                final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, biome).variants();
+                final BiomeVariants biome = biomeSampler.get(actualX, actualZ);
 
-                final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(variants);
+                final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(biome);
 
                 sampler.setColumn(actualX, actualZ);
 
-                double aquiferSurfaceHeight = variants.getAquiferSurfaceHeight(sampler.height());
+                double aquiferSurfaceHeight = biome.getAquiferSurfaceHeight(sampler.height());
                 if (aquiferSurfaceHeight > seaLevel)
                 {
                     // Above sea level, we reduce the overall height *above* sea level, to more eagerly prevent above-surface level fluid aquifers
@@ -237,6 +243,11 @@ public class ChunkNoiseFiller
     public Biome[] getLocalBiomes()
     {
         return localBiomes;
+    }
+
+    public double[] getLocalBiomeWeights()
+    {
+        return localBiomeWeights;
     }
 
     /**
@@ -539,23 +550,23 @@ public class ChunkNoiseFiller
      * @param updateArrays If the local biome and height arrays should be updated, if we are sampling within the chunk
      * @return The maximum height at this location
      */
-    private double sampleColumnHeightAndBiome(Object2DoubleMap<Biome> biomeWeights, boolean updateArrays)
+    private double sampleColumnHeightAndBiome(Object2DoubleMap<BiomeVariants> biomeWeights, boolean updateArrays)
     {
         columnBiomeNoiseSamplers.clear();
 
         // Requires the column to be initialized (just x/z)
         double totalHeight = 0, riverHeight = 0, shoreHeight = 0;
         double riverWeight = 0, shoreWeight = 0;
-        Biome biomeAt = null, normalBiomeAt = null, riverBiomeAt = null, shoreBiomeAt = null;
+        BiomeVariants biomeAt = null, normalBiomeAt = null, riverBiomeAt = null, shoreBiomeAt = null;
         double maxNormalWeight = 0, maxRiverWeight = 0, maxShoreWeight = 0; // Partition on biome type
 
-        Biome oceanicBiomeAt = null;
+        BiomeVariants oceanicBiomeAt = null;
         double oceanicWeight = 0, maxOceanicWeight = 0; // Partition on ocean/non-ocean or water type.
 
-        for (Object2DoubleMap.Entry<Biome> entry : biomeWeights.object2DoubleEntrySet())
+        for (Object2DoubleMap.Entry<BiomeVariants> entry : biomeWeights.object2DoubleEntrySet())
         {
             final double weight = entry.getDoubleValue();
-            final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, entry.getKey()).variants();
+            final BiomeVariants variants = entry.getKey();
             final BiomeNoiseSampler sampler = biomeNoiseSamplers.get(variants);
 
             if (columnBiomeNoiseSamplers.containsKey(sampler))
@@ -662,13 +673,14 @@ public class ChunkNoiseFiller
             biomeAt = shoreBiomeAt;
         }
 
+        assert biomeAt != null;
         if (updateArrays)
         {
-            localBiomes[localX + 16 * localZ] = biomeAt;
+            localBiomes[localX + 16 * localZ] = biomeClimateSampler.sample(biomeAt, QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ)).value();
+            localBiomeWeights[localX + 16 * localZ] = biomeWeights.getOrDefault(biomeAt, 0.5);
             surfaceHeight[localX + 16 * localZ] = (int) actualHeight;
         }
 
-        assert biomeAt != null;
         return actualHeight;
     }
 

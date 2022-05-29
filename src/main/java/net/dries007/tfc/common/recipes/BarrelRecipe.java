@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,7 +15,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,6 +26,7 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.BarrelInventory>
 {
@@ -75,7 +73,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
 
             // Output items
             // All output items, and then remaining input items, get inserted into the output overflow
-            final ItemStack outputItem = this.outputItem.getStack(stack);
+            final ItemStack outputItem = this.outputItem.getSingleStack(stack);
             if (!outputItem.isEmpty())
             {
                 Helpers.consumeInStackSizeIncrements(outputItem, multiplier * outputItem.getCount(), inventory::insertItemWithOverflow);
@@ -120,7 +118,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
     @Override
     public ItemStack getResultItem()
     {
-        return outputItem.getStack(ItemStack.EMPTY);
+        return outputItem.getEmptyStack();
     }
 
     @Override

@@ -4,6 +4,7 @@
   "values": [
     "minecraft:grass_block",
     "#minecraft:dirt",
-    "#tfc:grass"
+    "#tfc:grass",
+    "#tfc:farmland"
   ]
 }

@@ -8,7 +8,6 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,13 +20,15 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 public class CastingRecipe implements ISimpleRecipe<MoldLike>
 {
-    public static final IndirectHashCollection<Item, CastingRecipe> CACHE = new IndirectHashCollection<>(recipe -> Arrays.stream(recipe.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toList()));
+    public static final IndirectHashCollection<Item, CastingRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> Arrays.stream(recipe.ingredient.getItems()).map(ItemStack::getItem).collect(Collectors.toList()), TFCRecipeTypes.CASTING);
 
     @Nullable
     public static CastingRecipe get(MoldLike mold)
@@ -72,11 +73,18 @@ public class CastingRecipe implements ISimpleRecipe<MoldLike>
         return fluidIngredient;
     }
 
-
     @Override
     public boolean matches(MoldLike mold, @Nullable Level level)
     {
         return ingredient.test(mold.getContainer()) && fluidIngredient.test(mold.getFluidInTank(0));
+    }
+
+    @Override
+    public ItemStack assemble(MoldLike inventory)
+    {
+        final ItemStack stack = result.copy();
+        stack.getCapability(HeatCapability.CAPABILITY).ifPresent(h -> h.setTemperatureIfWarmer(inventory.getTemperature()));
+        return stack;
     }
 
     @Override

@@ -7,6 +7,8 @@
 package net.dries007.tfc.world.settings;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
@@ -76,6 +78,7 @@ public class RockLayerSettings
     private final Map<ResourceLocation, RockSettings> rocksById;
     private final List<RockSettings> rocks;
     private final Map<Block, RockSettings> rockBlocks;
+    private final Map<Block, Block> rawToHardened;
     private final int rockLayerScale; // In [0, 32]
 
     public RockLayerSettings(Map<ResourceLocation, RockSettings> rocksById, int rockLayerScale)
@@ -101,6 +104,16 @@ public class RockLayerSettings
             rock.loose().ifPresent(loose -> rockBlocks.put(loose, rock));
             rock.spike().ifPresent(spike -> rockBlocks.put(spike, rock));
         }
+
+        this.rawToHardened = getRocks()
+            .stream()
+            .collect(Collectors.toMap(RockSettings::raw, RockSettings::hardened));
+    }
+
+    @Nullable
+    public Block getHardened(Block raw)
+    {
+        return rawToHardened.get(raw);
     }
 
     @Nullable

@@ -10,19 +10,19 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import org.jetbrains.annotations.Nullable;
 
 public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> implements ButtonHandlerContainer
 {
     public static BarrelContainer create(BarrelBlockEntity barrel, Inventory playerInv, int windowId)
     {
-        return new BarrelContainer(windowId, barrel).init(playerInv, 6);
+        return new BarrelContainer(windowId, barrel).init(playerInv, 12);
     }
 
     private BarrelContainer(int windowId, BarrelBlockEntity barrel)
@@ -53,7 +53,7 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        final int containerSlot = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
+        final int containerSlot = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() == 0f).orElse(false) ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
         return switch (typeOf(slotIndex))
             {
                 case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, containerSlot, containerSlot + 1, false);

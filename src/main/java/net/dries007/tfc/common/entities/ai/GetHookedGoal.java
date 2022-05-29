@@ -8,6 +8,8 @@ package net.dries007.tfc.common.entities.ai;
 
 import java.util.List;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.items.TFCFishingRodItem;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -16,7 +18,9 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.phys.AABB;
 
@@ -41,6 +45,11 @@ public class GetHookedGoal extends MoveToBlockGoal
         {
             hook.setHookedEntity(mob);
             mob.level.playSound(null, mob.blockPosition(), SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.NEUTRAL, 1.0F + mob.getRandom().nextFloat(), mob.getRandom().nextFloat() + 0.7F + 0.3F);
+            // delete the bait. Large mobs always eat the bait, Small mobs only sometimes
+            if (Helpers.isEntity(mob, TFCTags.Entities.NEEDS_LARGE_FISHING_BAIT) || mob.getRandom().nextInt(5) == 0)
+            {
+                hook.eatBait();
+            }
         }
         super.tick();
     }
@@ -66,12 +75,19 @@ public class GetHookedGoal extends MoveToBlockGoal
     @Override
     protected boolean findNearestBlock()
     {
-        List<TFCFishingHook> entities = mob.level.getEntitiesOfClass(TFCFishingHook.class, new AABB(mob.blockPosition().offset(-16, -16, -16), mob.blockPosition().offset(16, 16, 16)), hook -> !hook.isRemoved());
+        List<TFCFishingHook> entities = mob.level.getEntitiesOfClass(TFCFishingHook.class, new AABB(mob.blockPosition()).inflate(12), hook -> !hook.isRemoved());
         if (!entities.isEmpty())
         {
-            hook = entities.get(0);
-            blockPos = hook.blockPosition();
-            return true;
+            final TFCFishingHook possibleHook = entities.get(0);
+            final ItemStack bait = possibleHook.getBait();
+            final TFCFishingRodItem.BaitType type = TFCFishingRodItem.getBaitType(bait);
+            final boolean isLarge = Helpers.isEntity(mob, TFCTags.Entities.NEEDS_LARGE_FISHING_BAIT);
+            if ((type == TFCFishingRodItem.BaitType.LARGE && isLarge) || (type == TFCFishingRodItem.BaitType.SMALL && !isLarge))
+            {
+                hook = possibleHook;
+                blockPos = hook.blockPosition();
+                return true;
+            }
         }
         return false;
     }

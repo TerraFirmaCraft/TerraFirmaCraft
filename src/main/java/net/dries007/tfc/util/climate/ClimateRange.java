@@ -6,17 +6,19 @@
 
 package net.dries007.tfc.util.climate;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.gson.JsonObject;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
+import net.dries007.tfc.network.DataManagerSyncPacket;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.RegisteredDataManager;
+import org.jetbrains.annotations.NotNull;
 
 public class ClimateRange
 {
-    public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, "climate_ranges", "climate range");
+    public static final RegisteredDataManager<ClimateRange> MANAGER = new RegisteredDataManager<>(ClimateRange::new, ClimateRange::new, Helpers.identifier("climate_ranges"), "climate range", ClimateRange::new, ClimateRange::encode, Packet::new);
 
     private final ResourceLocation id;
     private final int minHydration, maxHydration, hydrationWiggleRange; // Hydration = a hybrid of nearby water and rainfall
@@ -44,6 +46,30 @@ public class ClimateRange
         this.minTemperature = JsonHelpers.getAsFloat(json, "min_temperature", -100);
         this.maxTemperature = JsonHelpers.getAsFloat(json, "max_temperature", 100);
         this.temperatureWiggleRange = JsonHelpers.getAsFloat(json, "temperature_wiggle_range", 0);
+    }
+
+    private ClimateRange(ResourceLocation id, FriendlyByteBuf buffer)
+    {
+        this.id = id;
+
+        this.minHydration = buffer.readVarInt();
+        this.maxHydration = buffer.readVarInt();
+        this.hydrationWiggleRange = buffer.readVarInt();
+
+        this.minTemperature = buffer.readFloat();
+        this.maxTemperature = buffer.readFloat();
+        this.temperatureWiggleRange = buffer.readFloat();
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeVarInt(minHydration);
+        buffer.writeVarInt(maxHydration);
+        buffer.writeVarInt(hydrationWiggleRange);
+
+        buffer.writeFloat(minTemperature);
+        buffer.writeFloat(maxTemperature);
+        buffer.writeFloat(temperatureWiggleRange);
     }
 
     public ResourceLocation getId()
@@ -109,4 +135,6 @@ public class ClimateRange
     {
         LOW, VALID, HIGH
     }
+
+    public static class Packet extends DataManagerSyncPacket<RegisteredDataManager.Entry<ClimateRange>> {}
 }

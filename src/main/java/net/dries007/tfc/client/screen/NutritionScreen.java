@@ -51,9 +51,9 @@ public class NutritionScreen extends TFCContainerScreen<Container>
     }
 
     @Override
-    protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY)
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
-        super.renderBg(stack, partialTicks, mouseX, mouseY);
+        super.renderBg(poseStack, partialTicks, mouseX, mouseY);
 
         final Player player = ClientHelpers.getPlayer();
         if (player != null && player.getFoodData() instanceof TFCFoodData data)
@@ -62,7 +62,7 @@ public class NutritionScreen extends TFCContainerScreen<Container>
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 final int width = (int) (nutrition.getNutrient(nutrient) * 50);
-                blit(stack, leftPos + 118, topPos + 21 + 13 * nutrient.ordinal(), 176, 0, width, 5);
+                blit(poseStack, leftPos + 118, topPos + 21 + 13 * nutrient.ordinal(), 176, 0, width, 5);
             }
         }
     }

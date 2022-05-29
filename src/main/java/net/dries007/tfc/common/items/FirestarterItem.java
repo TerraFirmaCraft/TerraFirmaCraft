@@ -49,6 +49,7 @@ public class FirestarterItem extends Item
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void onUseTick(Level world, LivingEntity livingEntityIn, ItemStack stack, int countLeft)
     {
         if (livingEntityIn instanceof final Player player)

@@ -8,7 +8,13 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:stick"
+          "name": "minecraft:stick",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.5
+            }
+          ]
         }
       ],
       "conditions": [

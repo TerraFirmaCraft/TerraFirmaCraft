@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:chisel",
+  "ingredient": "tfc:rock/raw/basalt",
+  "result": "tfc:rock/raw/basalt_slab",
+  "mode": "slab",
+  "extra_drop": {
+    "item": "tfc:rock/raw/basalt_slab"
+  }
+}

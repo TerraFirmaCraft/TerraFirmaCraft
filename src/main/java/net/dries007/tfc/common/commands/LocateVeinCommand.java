@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -32,7 +31,6 @@ import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -41,6 +39,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import net.dries007.tfc.world.feature.vein.Vein;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -52,28 +51,19 @@ public class LocateVeinCommand
 
     @Nullable private static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> VEINS_CACHE = null;
 
-    @SuppressWarnings("unchecked")
     public static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> getVeins()
     {
-        if (VEINS_CACHE == null)
-        {
-            final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-            if (server != null)
-            {
-                final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
-                VEINS_CACHE = registry.entrySet()
-                    .stream()
-                    .filter(entry -> entry.getValue().feature() instanceof VeinFeature)
-                    .collect(Collectors.toMap(entry -> entry.getKey().location(), entry -> (ConfiguredFeature<?, ? extends VeinFeature<?, ?>>) entry.getValue()));
-            }
-            return Collections.emptyMap();
-        }
-        return VEINS_CACHE;
+        return VEINS_CACHE == null ? Collections.emptyMap() : VEINS_CACHE;
     }
 
-    public static void clearCache()
+    @SuppressWarnings("unchecked")
+    public static void reloadVeinsCache(MinecraftServer server)
     {
-        VEINS_CACHE = null;
+        final Registry<ConfiguredFeature<?, ?>> registry = server.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
+        VEINS_CACHE = registry.entrySet()
+            .stream()
+            .filter(entry -> entry.getValue().feature() instanceof VeinFeature)
+            .collect(Collectors.toMap(entry -> entry.getKey().location(), entry -> (ConfiguredFeature<?, ? extends VeinFeature<?, ?>>) entry.getValue()));
     }
 
     public static LiteralArgumentBuilder<CommandSourceStack> create()

@@ -9,15 +9,14 @@ package net.dries007.tfc.common.blocks.soil;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -34,6 +33,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class ConnectedGrassBlock extends Block implements IGrassBlock
 {
@@ -49,18 +49,20 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     private final Supplier<? extends Block> dirt;
     @Nullable private final Supplier<? extends Block> path;
+    @Nullable private final Supplier<? extends Block> farmland;
 
-    public ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant soilType)
+    public ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant variant)
     {
-        this(properties, TFCBlocks.SOIL.get(dirtType).get(soilType), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(soilType));
+        this(properties, TFCBlocks.SOIL.get(dirtType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
     }
 
-    public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> path)
+    public ConnectedGrassBlock(Properties properties, Supplier<? extends Block> dirt, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland)
     {
         super(properties.hasPostProcess(TFCBlocks::always));
 
         this.dirt = dirt;
         this.path = path;
+        this.farmland = farmland;
 
         registerDefaultState(stateDefinition.any().setValue(SOUTH, false).setValue(EAST, false).setValue(NORTH, false).setValue(WEST, false).setValue(SNOWY, false));
     }
@@ -170,11 +172,20 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
 
     @Nullable
     @Override
-    public BlockState getToolModifiedState(BlockState state, Level world, BlockPos pos, Player player, ItemStack stack, ToolAction action)
+    public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate)
     {
-        if (stack.canPerformAction(action) && action == ToolActions.SHOVEL_FLATTEN && TFCConfig.SERVER.enableGrassPathCreation.get() && path != null)
+        if (context.getItemInHand().canPerformAction(action))
         {
-            return path.get().defaultBlockState();
+            if (action == ToolActions.SHOVEL_FLATTEN && TFCConfig.SERVER.enableGrassPathCreation.get() && path != null)
+            {
+                return path.get().defaultBlockState();
+            }
+            if (action == ToolActions.HOE_TILL && farmland != null && TFCConfig.SERVER.enableFarmlandCreation.get() && HoeItem.onlyIfAirAbove(context))
+            {
+                final BlockState farmlandState = farmland.get().defaultBlockState();
+                HoeItem.changeIntoState(farmlandState).accept(context);
+                return farmlandState;
+            }
         }
         return null;
     }

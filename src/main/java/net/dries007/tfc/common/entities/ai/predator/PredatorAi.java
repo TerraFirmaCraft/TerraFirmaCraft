@@ -63,16 +63,23 @@ public class PredatorAi
             {
                 brain.getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(entity -> brain.setActiveActivityIfPossible(Activity.FIGHT));
             }
-            else if (active == Activity.FIGHT && brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty())
+            else if (active == Activity.FIGHT)
             {
-                brain.setActiveActivityIfPossible(TFCBrain.HUNT.get());
+                predator.setAggressive(true);
+                if (brain.getMemory(MemoryModuleType.ATTACK_TARGET).isEmpty())
+                {
+                    brain.setActiveActivityIfPossible(TFCBrain.HUNT.get());
+                    predator.setAggressive(false);
+                }
             }
+
         }
     }
 
     public static void initCoreActivity(Brain<Predator> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
+            new Swim(0.8F),
             new LookAtTargetSink(45, 90),
             new MoveToTargetSink()
         ));

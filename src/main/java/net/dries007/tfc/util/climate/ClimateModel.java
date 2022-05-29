@@ -6,9 +6,12 @@
 
 package net.dries007.tfc.util.climate;
 
+import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -24,6 +27,12 @@ public interface ClimateModel
 {
     float MINIMUM_RAINFALL = 0f;
     float MAXIMUM_RAINFALL = 500f;
+
+    /**
+     * The type of this climate model.
+     * Must be registered through {@link Climate#register(ResourceLocation, Supplier)}
+     */
+    ClimateModelType type();
 
     /**
      * Get the temperature at a given position, and timestamp.
@@ -57,7 +66,18 @@ public interface ClimateModel
     /**
      * @return A value in the range [0, 1] scaling the sky fog as a % of the render distance
      */
-    float getFogginess(LevelReader level, BlockPos pos, long calendarTime);
+    default float getFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    {
+        return 0f;
+    }
+
+    /**
+     * @return A value in the range [0, 1] scaling the water fog as a % of render distance
+     */
+    default float getWaterFogginess(LevelReader level, BlockPos pos, long calendarTime)
+    {
+        return 1f;
+    }
 
     /**
      * Update a chunk on load with climate specific modifications, such as melting or freezing blocks.
@@ -65,7 +85,17 @@ public interface ClimateModel
     default void onChunkLoad(WorldGenLevel level, ChunkAccess chunk, ChunkData chunkData) {}
 
     /**
-     * Provides a {@link ClimateSettings} to models that may use them, when a world loads (or earlier).
+     * Update a climate model when a world loads, just after the climate model is selected.
      */
-    default void updateCachedTemperatureSettings(ClimateSettings settings, long climateSeed) {}
+    default void onWorldLoad(ServerLevel level) {}
+
+    /**
+     * Allows this climate model to write some data to be synced to client automatically
+     */
+    default void onSyncToClient(FriendlyByteBuf buffer) {}
+
+    /**
+     * @see #onSyncToClient(FriendlyByteBuf)
+     */
+    default void onReceiveOnClient(FriendlyByteBuf buffer) {}
 }

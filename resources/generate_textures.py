@@ -1,4 +1,5 @@
 from PIL import Image, ImageDraw, ImageEnhance
+from PIL.Image import Transpose
 
 from constants import *
 
@@ -17,7 +18,7 @@ def create_chest(wood: str):
     empty = (0, 0, 0, 0)
     frame = log.copy()
     ImageDraw.Draw(frame).rectangle((1, 1, 12, 12), fill=empty)
-    top = sheet.copy().transpose(Image.TRANSVERSE)
+    top = sheet.copy().transpose(Transpose.TRANSVERSE)
     top.paste(frame, (0, 0), frame)
 
     side = top.copy()
@@ -165,6 +166,16 @@ def create_sign_item(wood: str, plank_color, log_color):
     image = ImageEnhance.Color(image).enhance(2)
     image.save(path + 'item/wood/sign/%s.png' % wood)
 
+def create_magma(rock: str):
+    magma = Image.new('RGBA', (16, 48), (0, 0, 0, 0))
+    raw = Image.open('texture_templates/raw/%s.png' % rock)
+    magma.paste(raw, (0, 0))
+    magma.paste(raw, (0, 16))
+    magma.paste(raw, (0, 32))
+    overlay = Image.open('texture_templates/magma.png')
+    magma = Image.alpha_composite(magma, overlay)
+    magma.save(path + 'block/rock/magma/%s.png' % rock)
+
 def get_wood_colors(wood_path: str):
     wood = Image.open(path + 'block/wood/%s.png' % wood_path)
     return wood.getpixel((0, 0))
@@ -204,9 +215,11 @@ def main():
         for item in ('twig', 'boat', 'lumber'):
             easy_colorize(plank_color, 'texture_templates/%s' % item, path + 'item/wood/%s/%s' % (item, wood), 2)
 
-    for rock in ROCKS.keys():
+    for rock, data in ROCKS.items():
         overlay_image('texture_templates/mossy_stone_bricks', path + 'block/rock/bricks/%s' % rock, path + 'block/rock/mossy_bricks/%s' % rock)
         overlay_image('texture_templates/mossy_cobblestone', path + 'block/rock/cobble/%s' % rock, path + 'block/rock/mossy_cobble/%s' % rock)
+        if data.category == 'igneous_intrusive' or data.category == 'igneous_extrusive':
+            create_magma(rock)
 
     for soil in SOIL_BLOCK_VARIANTS:
         overlay_image('texture_templates/rooted_dirt', 'texture_templates/dirt/%s' % soil, path + 'block/rooted_dirt/%s' % soil)

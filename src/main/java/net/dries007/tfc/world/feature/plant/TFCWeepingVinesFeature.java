@@ -26,18 +26,18 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
 {
     // This code is copied from WeepingVineFeature
-    private static void placeColumn(LevelAccessor world, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState bodyState, BlockState headState)
+    private static void placeColumn(LevelAccessor level, Random rand, BlockPos.MutableBlockPos mutablePos, int height, int minAge, int maxAge, BlockState bodyState, BlockState headState)
     {
         for (int i = 0; i <= height; ++i)//this assumes that we found a valid place to attach
         {
-            if (world.isEmptyBlock(mutablePos))//if it's empty, we can grow
+            if (level.isEmptyBlock(mutablePos))//if it's empty, we can grow
             {
-                if (i == height || !world.isEmptyBlock(mutablePos.below()))//if we guarantee the next iteration will fail, set the end block
+                if (i == height || !level.isEmptyBlock(mutablePos.below()))//if we guarantee the next iteration will fail, set the end block
                 {
-                    world.setBlock(mutablePos, headState.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 2);
+                    level.setBlock(mutablePos, headState.setValue(GrowingPlantHeadBlock.AGE, Mth.nextInt(rand, minAge, maxAge)), 2);
                     break;
                 }
-                world.setBlock(mutablePos, bodyState, 2);
+                level.setBlock(mutablePos, bodyState, 2);
             }
             mutablePos.move(Direction.DOWN);
         }
@@ -50,7 +50,7 @@ public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
 
     public boolean place(FeaturePlaceContext<ColumnPlantConfig> context)
     {
-        final WorldGenLevel world = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
         final Random rand = context.random();
         final ColumnPlantConfig config = context.config();
@@ -62,11 +62,11 @@ public class TFCWeepingVinesFeature extends Feature<ColumnPlantConfig>
         {
             mutablePos.setWithOffset(pos, Helpers.triangle(rand, radius), Helpers.triangle(rand, 4) + 10, Helpers.triangle(rand, radius));
             mutablePos.move(Direction.UP);
-            BlockState aboveState = world.getBlockState(mutablePos);
+            BlockState aboveState = level.getBlockState(mutablePos);
             mutablePos.move(Direction.DOWN);
-            if ((Helpers.isBlock(aboveState, BlockTags.LEAVES) || Helpers.isBlock(aboveState, BlockTags.LOGS) || Helpers.isBlock(aboveState, BlockTags.BASE_STONE_OVERWORLD)) && world.isEmptyBlock(mutablePos))
+            if ((Helpers.isBlock(aboveState, BlockTags.LEAVES) || Helpers.isBlock(aboveState, BlockTags.LOGS) || Helpers.isBlock(aboveState, BlockTags.BASE_STONE_OVERWORLD)) && level.isEmptyBlock(mutablePos))
             {
-                placeColumn(world, rand, mutablePos, rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, config.bodyState(), config.headState());
+                placeColumn(level, rand, mutablePos, rand.nextInt(config.maxHeight() - config.minHeight()) + config.minHeight(), 17, 25, config.bodyState(), config.headState());
                 placedAny = true;
             }
         }

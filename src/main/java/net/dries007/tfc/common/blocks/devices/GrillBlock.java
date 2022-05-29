@@ -24,8 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -55,14 +53,13 @@ public class GrillBlock extends FirepitBlock
         super(properties);
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
-    public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random rand)
     {
-        super.animateTick(state, world, pos, rand);
+        super.animateTick(state, level, pos, rand);
         if (state.getValue(LIT))
         {
-            world.getBlockEntity(pos, TFCBlockEntities.GRILL.get())
+            level.getBlockEntity(pos, TFCBlockEntities.GRILL.get())
                 .flatMap(grill -> grill.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
                 .ifPresent(cap -> {
                     for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
@@ -72,8 +69,8 @@ public class GrillBlock extends FirepitBlock
                             double x = pos.getX() + 0.5D;
                             double y = pos.getY() + 0.5D;
                             double z = pos.getZ() + 0.5D;
-                            world.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
-                            world.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
+                            level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 0.25F, rand.nextFloat() * 0.7F + 0.4F, false);
+                            level.addParticle(ParticleTypes.SMOKE, x + rand.nextFloat() / 2 - 0.25, y + 0.1D, z + rand.nextFloat() / 2 - 0.25, 0.0D, 0.1D, 0.0D);
                             break;
                         }
                     }

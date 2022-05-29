@@ -8,6 +8,9 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import net.dries007.tfc.common.items.Powder;
+import net.dries007.tfc.common.items.TFCItems;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.item.BlockItem;
@@ -32,7 +35,7 @@ public enum GroundcoverBlockType
     MUSSEL(GroundcoverBlock.SMALL),
     PINECONE(GroundcoverBlock.SMALL),
     ROTTEN_FLESH(GroundcoverBlock.FLAT, () -> Items.ROTTEN_FLESH),
-    SALT_LICK(GroundcoverBlock.PIXEL_HIGH),
+    SALT_LICK(GroundcoverBlock.PIXEL_HIGH, TFCItems.POWDERS.get(Powder.SALT)),
     SEAWEED(GroundcoverBlock.FLAT),
     STICK(GroundcoverBlock.FLAT, () -> Items.STICK);
 

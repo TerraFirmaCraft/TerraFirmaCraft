@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -52,7 +53,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
         return part == BedPart.FOOT ? direction : direction.getOpposite();
     }
 
-    private ExtendedProperties properties;
+    private final ExtendedProperties properties;
 
     public ThatchBedBlock(ExtendedProperties properties)
     {
@@ -77,26 +78,26 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!level.isClientSide())
+        if (BedBlock.canSetSpawn(level))
         {
-            if (BedBlock.canSetSpawn(level))
+            if (!level.isThundering())
             {
-                if (!level.isThundering())
+                player.displayClientMessage(new TranslatableComponent("tfc.thatch_bed.use"), true);
+                if (!level.isClientSide && player instanceof ServerPlayer serverPlayer && (serverPlayer.getRespawnDimension() != level.dimension() || !pos.equals(serverPlayer.getRespawnPosition())))
                 {
-                    player.displayClientMessage(new TranslatableComponent("tfc.thatch_bed.use"), true);
-                }
-                else
-                {
-                    player.displayClientMessage(new TranslatableComponent("tfc.thatch_bed.thundering"), true);
+                    serverPlayer.setRespawnPosition(level.dimension(), pos, 0, false, false);
                 }
             }
             else
             {
-                level.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.BlockInteraction.DESTROY);
+                player.displayClientMessage(new TranslatableComponent("tfc.thatch_bed.thundering"), true);
             }
-            return InteractionResult.SUCCESS;
         }
-        return InteractionResult.CONSUME;
+        else if (!level.isClientSide)
+        {
+            level.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.BlockInteraction.DESTROY);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override

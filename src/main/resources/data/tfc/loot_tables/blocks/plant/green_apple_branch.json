@@ -11,41 +11,67 @@
           "name": "tfc:plant/green_apple_sapling",
           "conditions": [
             {
-              "condition": "alternative",
-              "terms": [
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:plant/green_apple_branch",
-                  "properties": {
-                    "up": "true",
-                    "west": "true"
-                  }
-                },
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:plant/green_apple_branch",
-                  "properties": {
-                    "up": "true",
-                    "east": "true"
-                  }
-                },
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:plant/green_apple_branch",
-                  "properties": {
-                    "up": "true",
-                    "north": "true"
-                  }
-                },
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "tfc:plant/green_apple_branch",
-                  "properties": {
-                    "up": "true",
-                    "south": "true"
-                  }
-                }
-              ]
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:plant/green_apple_branch",
+              "properties": {
+                "up": "true",
+                "west": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:plant/green_apple_branch",
+              "properties": {
+                "up": "true",
+                "east": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:plant/green_apple_branch",
+              "properties": {
+                "up": "true",
+                "north": "true"
+              }
+            },
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:plant/green_apple_branch",
+              "properties": {
+                "up": "true",
+                "south": "true"
+              }
+            },
+            {
+              "condition": "minecraft:match_tool",
+              "predicate": {
+                "tag": "tfc:axes"
+              }
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 4,
+                "type": "minecraft:uniform"
+              }
             }
           ]
         }

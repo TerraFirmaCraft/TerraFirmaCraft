@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:anvil",
+  "input": {
+    "item": "tfc:metal/ingot/black_bronze"
+  },
+  "result": {
+    "item": "tfc:metal/lamp/black_bronze"
+  },
+  "tier": 2,
+  "rules": [
+    "bend_last",
+    "bend_second_last",
+    "draw_third_last"
+  ]
+}

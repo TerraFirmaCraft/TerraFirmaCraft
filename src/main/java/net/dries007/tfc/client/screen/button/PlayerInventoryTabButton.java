@@ -6,22 +6,19 @@
 
 package net.dries007.tfc.client.screen.button;
 
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.network.PacketDistributor;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.SwitchInventoryTabPacket;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 public class PlayerInventoryTabButton extends Button
 {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/gui/icons.png");
 
     private final int textureU;
     private final int textureV;
@@ -76,7 +73,7 @@ public class PlayerInventoryTabButton extends Button
     @Override
     public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShaderTexture(0, ClientHelpers.GUI_ICONS);
         RenderSystem.disableDepthTest();
 
         tickCallback.run();

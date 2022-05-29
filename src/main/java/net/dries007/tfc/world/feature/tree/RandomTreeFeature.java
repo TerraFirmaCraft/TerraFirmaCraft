@@ -18,6 +18,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import com.mojang.serialization.Codec;
+import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.mixin.accessor.StructureTemplateAccessor;
 
 public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
 {
@@ -40,18 +42,21 @@ public class RandomTreeFeature extends TreeFeature<RandomTreeConfig>
         final StructurePlaceSettings settings = TreeHelpers.getPlacementSettings(level, chunkPos, random);
         final ResourceLocation structureId = config.structureNames().get(random.nextInt(config.structureNames().size()));
         final StructureTemplate structure = manager.getOrCreate(structureId);
-
-        if (!isValidLocation(level, mutablePos) || !isAreaClear(level, mutablePos, config.radius(), 2))
+        if (((StructureTemplateAccessor) structure).accessor$getPalettes().isEmpty())
         {
-            return false;
+            throw new IllegalStateException("Empty structure: " + structureId);
         }
 
-        config.trunk().ifPresent(trunk -> {
-            final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
-            mutablePos.move(0, height, 0);
-        });
+        if (TreeHelpers.isValidLocation(level, pos, settings, config.placement()))
+        {
+            config.trunk().ifPresent(trunk -> {
+                final int height = TreeHelpers.placeTrunk(level, mutablePos, random, settings, trunk);
+                mutablePos.move(0, height, 0);
+            });
 
-        TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
-        return true;
+            TreeHelpers.placeTemplate(structure, settings, level, mutablePos.subtract(TreeHelpers.transformCenter(structure.getSize(), settings)));
+            return true;
+        }
+        return false;
     }
 }

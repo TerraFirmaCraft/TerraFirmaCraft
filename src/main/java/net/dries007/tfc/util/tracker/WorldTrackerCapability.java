@@ -15,6 +15,6 @@ import net.dries007.tfc.util.Helpers;
 
 public class WorldTrackerCapability
 {
-    public static final Capability<IWorldTracker> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<WorldTracker> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final ResourceLocation KEY = Helpers.identifier("world_tracker");
 }

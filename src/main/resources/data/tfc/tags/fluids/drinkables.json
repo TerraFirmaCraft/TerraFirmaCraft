@@ -5,6 +5,7 @@
     "minecraft:water",
     "tfc:salt_water",
     "tfc:river_water",
-    "#tfc:alcohols"
+    "#tfc:alcohols",
+    "#tfc:milks"
   ]
 }

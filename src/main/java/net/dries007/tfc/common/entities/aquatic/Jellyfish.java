@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -30,24 +31,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.material.Fluid;
 
-import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.AquaticMob;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.Helpers;
 
 public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
 {
     private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(Jellyfish.class, EntityDataSerializers.INT);
 
     private static final ResourceLocation[] LOCATIONS = {
-        RenderHelpers.animalTexture("jellyfish_blue"),
-        RenderHelpers.animalTexture("jellyfish_red"),
-        RenderHelpers.animalTexture("jellyfish_yellow"),
-        RenderHelpers.animalTexture("jellyfish_purple"),
-        RenderHelpers.animalTexture("jellyfish_orange"),
+        Helpers.animalTexture("jellyfish_blue"),
+        Helpers.animalTexture("jellyfish_red"),
+        Helpers.animalTexture("jellyfish_yellow"),
+        Helpers.animalTexture("jellyfish_purple"),
+        Helpers.animalTexture("jellyfish_orange"),
     };
 
     public Jellyfish(EntityType<? extends AbstractSchoolingFish> type, Level level)
@@ -159,7 +158,7 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        return Helpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
+        return EntityHelpers.bucketMobPickup(player, hand, this).orElse(super.mobInteract(player, hand));
     }
 
     @Override

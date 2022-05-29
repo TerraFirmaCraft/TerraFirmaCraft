@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -35,6 +38,9 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
+    public final ForgeConfigSpec.BooleanValue displayFamiliarityAsPercent;
+    // Compatibility
+    public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalMetalSheetTextures;
 
     ClientConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -86,6 +92,15 @@ public class ClientConfig
         sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect information should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
 
         showHoeOverlaysOnlyWhenShifting = builder.apply("showHoeOverlaysOnlyWhenShifting").comment("If hoe overlays (for hydration, nutrition, or temperature, shown when hovering over a plant or farmland while holding a hoe), should only be shown when the shift key is held down.").define("showHoeOverlaysOnlyWhenShifting", false);
+
+        displayFamiliarityAsPercent = builder.apply("displayFamiliarityAsPercent").comment("If familiarity is displayed as a percent rather than a heart").define("displayFamiliarityAsPercent", false);
+
+        innerBuilder.pop().push("compatibility");
+
+        additionalMetalSheetTextures = builder.apply("additionalMetalSheetTextures").comment(
+            "Defines additional metal sheet textures that should be added to the block atlas, as they would be otherwise unused, for use in ingot piles and metal sheet blocks.",
+            "For Pack Makers: When adding a Metal via a datapack, with a custom texture \"domain:block/my_texture\", and you get missing textures in ingot piles and sheet blocks, that texture needs to be added here"
+        ).defineList("additionalMetalSheetTextures", ArrayList::new, o -> o instanceof String s && ResourceLocation.isValidResourceLocation(s));
 
         innerBuilder.pop();
     }

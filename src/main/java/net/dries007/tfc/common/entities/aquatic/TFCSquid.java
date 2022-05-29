@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.aquatic;
 
 import java.util.Objects;
-import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,7 +22,6 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.BehaviorUtils;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.animal.Squid;
 import net.minecraft.world.entity.player.Player;
@@ -36,8 +34,8 @@ import net.minecraft.world.phys.Vec3;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCEffects;
-import net.dries007.tfc.common.entities.AquaticMob;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 
 public class TFCSquid extends Squid implements AquaticMob
@@ -108,7 +106,7 @@ public class TFCSquid extends Squid implements AquaticMob
     {
         if (super.hurt(source, amount))
         {
-            if (!level.isClientSide && getLastHurtByMob() instanceof Player player && random.nextInt(3) == 0)
+            if (!level.isClientSide && getLastHurtByMob() instanceof Player player && random.nextInt(3) == 0 && player.distanceToSqr(this) < 64)
             {
                 player.addEffect(new MobEffectInstance(getInkEffect(), 100));
             }

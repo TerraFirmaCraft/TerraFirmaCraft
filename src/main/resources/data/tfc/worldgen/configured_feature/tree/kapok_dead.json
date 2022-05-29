@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:random_tree",
+  "config": {
+    "structures": [
+      "tfc:kapok_dead/1",
+      "tfc:kapok_dead/2",
+      "tfc:kapok_dead/3",
+      "tfc:kapok_dead/4"
+    ],
+    "radius": 1,
+    "placement": {
+      "width": 2,
+      "height": 9,
+      "allow_submerged": true
+    }
+  }
+}

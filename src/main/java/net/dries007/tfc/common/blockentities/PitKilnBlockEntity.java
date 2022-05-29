@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
@@ -29,6 +28,7 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class PitKilnBlockEntity extends PlacedItemBlockEntity
@@ -82,40 +82,22 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
 
     public static void convertPitKilnToPlacedItem(Level level, BlockPos pos)
     {
-        PitKilnBlockEntity pitKiln = level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
-        if (pitKiln != null)
-        {
+        level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(pitKiln -> {
             // Remove inventory items
             // This happens here to stop the block dropping its items in onBreakBlock()
-            ItemStack[] inventory = new ItemStack[4];
-            pitKiln.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                for (int i = 0; i < 4; i++)
-                {
-                    inventory[i] = cap.extractItem(i, 64, false);
-                }
-            });
+            NonNullList<ItemStack> items = Helpers.extractAllItems(pitKiln.inventory);
 
             // Replace the block
             level.setBlock(pos, TFCBlocks.PLACED_ITEM.get().defaultBlockState(), 3);
 
             // Replace inventory items
-            PlacedItemBlockEntity placedItem = level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).orElse(null);
-            if (placedItem != null)
-            {
-                placedItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        if (inventory[i] != null && !inventory[i].isEmpty())
-                        {
-                            cap.insertItem(i, inventory[i], false);
-                        }
-                    }
-                });
+            level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).ifPresent(placedItem -> {
+                Helpers.insertAllItems(placedItem.inventory, items);
 
                 // Copy misc data
                 placedItem.isHoldingLargeItem = pitKiln.isHoldingLargeItem;
-            }
-        }
+            });
+        });
     }
 
     public static boolean isValid(Level level, BlockPos worldPosition)

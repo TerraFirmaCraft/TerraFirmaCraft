@@ -13,6 +13,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +21,7 @@ public class FluidItemIngredient extends DelegateIngredient
 {
     private final FluidStackIngredient fluid;
 
-    protected FluidItemIngredient(Ingredient delegate, FluidStackIngredient fluid)
+    public FluidItemIngredient(@Nullable Ingredient delegate, FluidStackIngredient fluid)
     {
         super(delegate);
         this.fluid = fluid;
@@ -29,7 +30,7 @@ public class FluidItemIngredient extends DelegateIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        if (super.test(stack) && stack != null)
+        if (super.test(stack) && stack != null && !stack.isEmpty())
         {
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
                 .map(cap -> cap.getFluidInTank(0))
@@ -40,9 +41,19 @@ public class FluidItemIngredient extends DelegateIngredient
     }
 
     @Override
-    public IIngredientSerializer<? extends Ingredient> getSerializer()
+    public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {
         return Serializer.INSTANCE;
+    }
+
+    @Override
+    protected ItemStack[] getDefaultItems()
+    {
+        return fluid.ingredient()
+            .getMatchingFluids()
+            .stream()
+            .map(fluid -> new ItemStack(fluid.getBucket()))
+            .toArray(ItemStack[]::new);
     }
 
     public enum Serializer implements IIngredientSerializer<FluidItemIngredient>
@@ -52,7 +63,7 @@ public class FluidItemIngredient extends DelegateIngredient
         @Override
         public FluidItemIngredient parse(FriendlyByteBuf buffer)
         {
-            final Ingredient internal = Ingredient.fromNetwork(buffer);
+            final Ingredient internal = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
             final FluidStackIngredient fluid = FluidStackIngredient.fromNetwork(buffer);
             return new FluidItemIngredient(internal, fluid);
         }
@@ -60,7 +71,7 @@ public class FluidItemIngredient extends DelegateIngredient
         @Override
         public FluidItemIngredient parse(JsonObject json)
         {
-            final Ingredient internal = Ingredient.fromJson(JsonHelpers.get(json, "ingredient"));
+            final Ingredient internal = json.has("ingredient") ? Ingredient.fromJson(JsonHelpers.get(json, "ingredient")) : null;
             final FluidStackIngredient fluid = FluidStackIngredient.fromJson(json.getAsJsonObject("fluid_ingredient")); // avoid name conflict with ingredient field
             return new FluidItemIngredient(internal, fluid);
         }
@@ -68,7 +79,7 @@ public class FluidItemIngredient extends DelegateIngredient
         @Override
         public void write(FriendlyByteBuf buffer, FluidItemIngredient ingredient)
         {
-            ingredient.delegate.toNetwork(buffer);
+            Helpers.encodeNullable(ingredient.delegate, buffer, Ingredient::toNetwork);
             ingredient.fluid.toNetwork(buffer);
         }
     }

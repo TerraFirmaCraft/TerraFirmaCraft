@@ -7,6 +7,7 @@
 package net.dries007.tfc.util.calendar;
 
 import net.minecraft.world.level.LevelReader;
+import net.minecraftforge.server.ServerLifecycleHooks;
 
 import net.dries007.tfc.client.ClientCalendar;
 import net.dries007.tfc.util.Helpers;
@@ -39,6 +40,19 @@ public final class Calendars
     public static ICalendar get(boolean isClientSide)
     {
         return isClientSide ? CLIENT : SERVER;
+    }
+
+    /**
+     * Makes a best guess about which calendar is valid based on the current tick values
+     */
+    public static ICalendar get()
+    {
+        return get(isClientSide());
+    }
+
+    private static boolean isClientSide()
+    {
+        return ServerLifecycleHooks.getCurrentServer() == null || SERVER.getTicks() == 0;
     }
 
     private Calendars() {}

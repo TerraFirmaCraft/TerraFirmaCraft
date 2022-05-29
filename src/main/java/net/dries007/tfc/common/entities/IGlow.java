@@ -10,6 +10,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCLightBlock;
@@ -70,23 +73,17 @@ public interface IGlow
                     entity.level.setBlockAndUpdate(oldPos, entity.level.getFluidState(oldPos).createLegacyBlock());
                 }
                 BlockState currentState = entity.level.getBlockState(currentPos);
-                if (entity instanceof AquaticMob)
+                Fluid fluid = currentState.getFluidState().getType();
+                // avoid setting light blocks in water streams and thus deleting them
+                if (FluidHelpers.isAirOrEmptyFluid(currentState) && !currentState.hasProperty(FlowingFluid.LEVEL))
                 {
-                    // if we have an empty fluid, we are good to go
-                    FluidHelpers.isEmptyFluid(currentState).ifPresent(fluid -> {
-                        // since we know what we're dealing with, FluidHelpers#fillWithFluid has more checks than we need.
-                        BlockState newState = TFCBlocks.LIGHT.get().defaultBlockState().setValue(TFCLightBlock.LEVEL, getLightLevel()).setValue(TFCLightBlock.FLUID, TFCLightBlock.FLUID.keyFor(fluid.getType()));
+                    BlockState newState = FluidHelpers.fillWithFluid(TFCBlocks.LIGHT.get().defaultBlockState().setValue(TFCLightBlock.LEVEL, getLightLevel()), fluid);
+                    if (newState != null)
+                    {
                         entity.level.setBlockAndUpdate(currentPos, newState);
                         setLightPos(currentPos);
-                    });
+                    }
                 }
-                else if (FluidHelpers.isAirOrEmptyFluid(currentState))
-                {
-                    BlockState newState = TFCBlocks.LIGHT.get().defaultBlockState().setValue(TFCLightBlock.LEVEL, getLightLevel()).setValue(TFCLightBlock.FLUID, TFCLightBlock.FLUID.keyFor(currentState.getFluidState().getType()));
-                    entity.level.setBlockAndUpdate(currentPos, newState);
-                    setLightPos(currentPos);
-                }
-
             }
         }
     }

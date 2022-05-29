@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:chisel",
+  "ingredient": "tfc:alabaster/stained/pink_alabaster_bricks",
+  "result": "tfc:alabaster/stained/pink_alabaster_bricks_slab",
+  "mode": "slab",
+  "extra_drop": {
+    "item": "tfc:alabaster/stained/pink_alabaster_bricks_slab"
+  }
+}

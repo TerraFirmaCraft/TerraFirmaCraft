@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:welding",
+  "first_input": {
+    "item": "tfc:metal/sheet/gold"
+  },
+  "second_input": {
+    "item": "tfc:metal/sheet/gold"
+  },
+  "tier": 0,
+  "result": {
+    "item": "tfc:metal/double_sheet/gold"
+  }
+}

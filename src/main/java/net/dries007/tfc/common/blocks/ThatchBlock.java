@@ -7,14 +7,12 @@
 package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.util.Helpers;
 
@@ -31,14 +29,14 @@ public class ThatchBlock extends Block implements IForgeBlockExtension
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos)
     {
-        return Shapes.empty();
+        return Mth.clamp(level.getMaxLightLevel() - 2, 0, 16); // block almost all light. also prevents indoor rain
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn)
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
     {
         Helpers.slowEntityInBlock(entityIn, 0.3f, 5);
     }

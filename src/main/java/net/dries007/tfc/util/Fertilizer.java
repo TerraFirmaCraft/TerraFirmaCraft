@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.util;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -17,11 +15,12 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
+import org.jetbrains.annotations.Nullable;
 
 public class Fertilizer extends ItemDefinition
 {
-    public static final DataManager<Fertilizer> MANAGER = new DataManager<>("fertilizers", "fertilizer", Fertilizer::new, Fertilizer::reload, Fertilizer::new, Fertilizer::encode, DataManagerSyncPacket.TFertilizer::new);
-    public static final IndirectHashCollection<Item, Fertilizer> CACHE = new IndirectHashCollection<>(Fertilizer::getValidItems);
+    public static final DataManager<Fertilizer> MANAGER = new DataManager<>(Helpers.identifier("fertilizers"), "fertilizer", Fertilizer::new, Fertilizer::new, Fertilizer::encode, Packet::new);
+    public static final IndirectHashCollection<Item, Fertilizer> CACHE = IndirectHashCollection.create(Fertilizer::getValidItems, MANAGER::getValues);
 
     @Nullable
     public static Fertilizer get(ItemStack stack)
@@ -34,11 +33,6 @@ public class Fertilizer extends ItemDefinition
             }
         }
         return null;
-    }
-
-    private static void reload()
-    {
-        CACHE.reload(MANAGER.getValues());
     }
 
     private final float nitrogen, phosphorus, potassium;
@@ -83,4 +77,6 @@ public class Fertilizer extends ItemDefinition
     {
         return potassium;
     }
+
+    public static class Packet extends DataManagerSyncPacket<Fertilizer> {}
 }

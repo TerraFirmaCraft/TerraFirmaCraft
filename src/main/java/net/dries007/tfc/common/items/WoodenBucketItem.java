@@ -6,20 +6,22 @@
 
 package net.dries007.tfc.common.items;
 
+import java.util.List;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -28,6 +30,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -103,6 +106,13 @@ public class WoodenBucketItem extends Item
         return new ItemStackFluidHandler(stack, getWhitelistTag(), getCapacity());
     }
 
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
+    {
+        FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(cap -> cap.getFluidInTank(0)).orElse(FluidStack.EMPTY);
+        if (!fluid.isEmpty()) Helpers.addFluidStackTooltipInfo(fluid, tooltip);
+    }
+
     protected TagKey<Fluid> getWhitelistTag()
     {
         return TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET;
@@ -167,5 +177,17 @@ public class WoodenBucketItem extends Item
             return emptyContents(handler, level, newPos, level.getBlockState(newPos), null);
         }
         return false;
+    }
+
+    @Override
+    public boolean hasContainerItem(ItemStack stack)
+    {
+        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack)
+    {
+        return new ItemStack(this);
     }
 }

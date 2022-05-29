@@ -17,41 +17,63 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-
     private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.loom");
     private static final int SLOT_RECIPE = 0;
     private static final int SLOT_OUTPUT = 1;
 
-    private int progress = 0;
+    public static void tick(Level level, BlockPos pos, BlockState state, LoomBlockEntity loom)
+    {
+        // No access to the level when loading NBT, so it has to happen on the first tick
+        if (loom.needsRecipeUpdate)
+        {
+            loom.updateCachedRecipe();
+            loom.needsRecipeUpdate = false;
+        }
+        if (loom.recipe != null)
+        {
+            LoomRecipe recipe = loom.recipe; // Avoids NPE on slot changes
+            if (loom.needsProgressUpdate)
+            {
+                if (level.getGameTime() - loom.lastPushed >= 20)
+                {
+                    loom.needsProgressUpdate = false;
+                    loom.progress++;
 
-    private LoomRecipe recipe = null;
+                    if (loom.progress == recipe.getStepCount())
+                    {
+                        loom.inventory.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
+                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE))));
+                    }
+                    loom.markForBlockUpdate();
+                }
+            }
+        }
+    }
+
+
+    @Nullable private LoomRecipe recipe = null;
+    @Nullable private ResourceLocation recipeId;
+
+    private int progress = 0;
     private long lastPushed = 0L;
     private boolean needsProgressUpdate = false;
     private boolean needsRecipeUpdate = false;
-    private ResourceLocation recipeId;
 
     public LoomBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.LOOM.get(), pos, state, defaultInventory(2), NAME);
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public boolean currentBoolean()
-    {
-        return progress % 2 == 0;
     }
 
     public InteractionResult onRightClick(Player player)
@@ -94,7 +116,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
             }
             else if (!inventory.getStackInSlot(SLOT_RECIPE).isEmpty()) // we are holding something that can be added to the current loom inventory
             {
-                if (heldItem.sameItem(inventory.getStackInSlot(SLOT_RECIPE)) && recipe.getInputCount() > inventory.getStackInSlot(SLOT_RECIPE).getCount())
+                if (heldItem.sameItem(inventory.getStackInSlot(SLOT_RECIPE)) && recipe != null && recipe.getInputCount() > inventory.getStackInSlot(SLOT_RECIPE).getCount())
                 {
                     if (!level.isClientSide)
                     {
@@ -138,39 +160,9 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return InteractionResult.PASS;
     }
 
-    public static void tick(Level level, BlockPos pos, BlockState state, LoomBlockEntity loom)
+    public boolean currentBoolean()
     {
-        assert level != null;
-        // No access to the level when loading NBT, so it has to happen on the first tick
-        if (loom.needsRecipeUpdate)
-        {
-            loom.updateCachedRecipe();
-            loom.needsRecipeUpdate = false;
-        }
-        if (loom.recipe != null)
-        {
-            LoomRecipe recipe = loom.recipe; // Avoids NPE on slot changes
-            if (loom.needsProgressUpdate)
-            {
-                if (level.getGameTime() - loom.lastPushed >= 20)
-                {
-                    loom.needsProgressUpdate = false;
-                    loom.progress++;
-
-                    if (loom.progress == recipe.getStepCount())
-                    {
-                        loom.inventory.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
-                        loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE))));
-                    }
-                    loom.markForBlockUpdate();
-                }
-            }
-        }
-    }
-
-    public int getMaxInputCount()
-    {
-        return (recipe == null) ? 1 : recipe.getInputCount();
+        return progress % 2 == 0;
     }
 
     public int getCount()
@@ -178,24 +170,15 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return inventory.getStackInSlot(SLOT_RECIPE).getCount();
     }
 
-    public int getMaxProgress()
-    {
-        return (recipe == null) ? 1 : recipe.getStepCount();
-    }
-
     public int getProgress()
     {
         return progress;
     }
 
-    public boolean hasRecipe()
+    @Nullable
+    public LoomRecipe getRecipe()
     {
-        return recipe != null;
-    }
-
-    public ResourceLocation getInProgressTexture()
-    {
-        return recipe.getInProgressTexture();
+        return recipe;
     }
 
     private void updateCachedRecipe()
@@ -208,7 +191,6 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
     public double getAnimPos()
     {
         assert level != null;

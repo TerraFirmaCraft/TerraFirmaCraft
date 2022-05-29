@@ -35,6 +35,7 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -47,7 +48,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public static void serverTick(Level level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
     {
         if (!state.getValue(SluiceBlock.UPPER)) return; // only tick the top block
-        if (sluice.hasFlow() && --sluice.ticksRemaining <= 0) // consume a single ore block
+        if (sluice.getFlow() != null && --sluice.ticksRemaining <= 0) // consume a single ore block
         {
             boolean itemUsed = false;
             for (ItemStack stack : Helpers.iterate(sluice.inventory))
@@ -68,7 +69,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         else if (level.getGameTime() % 20 == 0)
         {
             Fluid fluid = level.getFluidState(sluice.getWaterInputPos()).getType();
-            if (!fluid.isSame(Fluids.EMPTY) && Helpers.isFluid(fluid, FluidTags.WATER)) // attempt to let water flow through the sluice
+            if (!fluid.isSame(Fluids.EMPTY) && Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE)) // attempt to let water flow through the sluice
             {
                 final BlockPos outputPos = sluice.getWaterOutputPos();
                 if (level.getBlockState(outputPos).getMaterial().isReplaceable())
@@ -156,7 +157,8 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return getBlockPos().above().relative(getFacing().getOpposite());
     }
 
-    private boolean hasFlow()
+    @Nullable
+    public Fluid getFlow()
     {
         assert level != null;
         FluidState inputState = level.getFluidState(getWaterInputPos());
@@ -164,8 +166,11 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         Fluid output = level.getFluidState(getWaterOutputPos()).getType();
         if (inputState.hasProperty(FlowingFluid.LEVEL) && inputState.getValue(FlowingFluid.LEVEL) == 1)
         {
-            return Helpers.isFluid(input, FluidTags.WATER) && output.isSame(input);
+            if (Helpers.isFluid(input, TFCTags.Fluids.USABLE_IN_SLUICE) && output.isSame(input))
+            {
+                return input;
+            }
         }
-        return false;
+        return null;
     }
 }

@@ -28,7 +28,8 @@
     [
       "tfc:clay_disc_with_indicator",
       "tfc:water_clay_disc_with_indicator",
-      "tfc:peat_disc"
+      "tfc:peat_disc",
+      "tfc:peat_disc_in_mud"
     ],
     [
       "tfc:veins"
@@ -52,7 +53,34 @@
     []
   ],
   "starts": [],
-  "spawners": {},
+  "spawners": {
+    "creature": [
+      {
+        "type": "tfc:pig",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:cow",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:alpaca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:chicken",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      }
+    ]
+  },
   "player_spawn_friendly": true,
   "creature_spawn_probability": 0.5,
   "spawn_costs": {}

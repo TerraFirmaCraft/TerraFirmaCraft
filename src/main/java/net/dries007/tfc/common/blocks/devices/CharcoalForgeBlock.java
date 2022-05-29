@@ -33,8 +33,6 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCTags;
@@ -81,7 +79,6 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
         registerDefaultState(getStateDefinition().any().setValue(HEAT, 0));
     }
 
-    @OnlyIn(Dist.CLIENT)
     @Override
     public void animateTick(BlockState state, Level world, BlockPos pos, Random rand)
     {
@@ -119,15 +116,9 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     }
 
     @Override
-    public boolean canAcceptAir(BlockState state, Level level, BlockPos pos, Direction facing)
+    public void intakeAir(Level level, BlockPos pos, BlockState state, int amount)
     {
-        return facing == Direction.UP;
-    }
-
-    @Override
-    public void intakeAir(BlockState state, Level level, BlockPos pos, Direction facing, int amount)
-    {
-        level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(forge -> forge.onAirIntake(amount));
+        level.getBlockEntity(pos, TFCBlockEntities.CHARCOAL_FORGE.get()).ifPresent(forge -> forge.intakeAir(amount));
     }
 
     @Override
