@@ -8,6 +8,10 @@ package net.dries007.tfc.client.screen;
 
 import java.util.function.Consumer;
 
+import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.recipes.BarrelRecipe;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -32,8 +36,8 @@ public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, Pow
     public PowderkegScreen(PowderkegContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        inventoryLabelY += 12;
-        imageHeight += 12;
+        inventoryLabelY += 0;
+        imageHeight += 0;
     }
 
     @Override
@@ -61,4 +65,13 @@ public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, Pow
         return blockEntity.getBlockState().getValue(PowderkegBlock.SEALED);
     }
 
+    @Override
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY)
+    {
+        super.renderLabels(poseStack, mouseX, mouseY);
+        if (isSealed())
+        {
+            drawDisabled(poseStack, PowderkegBlockEntity.SLOT_INPUT_START, PowderkegBlockEntity.SLOT_INPUT_END);
+        }
+    }
 }

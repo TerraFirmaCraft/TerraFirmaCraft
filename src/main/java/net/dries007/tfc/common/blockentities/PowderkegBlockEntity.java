@@ -12,6 +12,7 @@ import net.dries007.tfc.common.container.PowderkegContainer;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PowderKegExplosion;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -44,10 +45,10 @@ import java.util.List;
 public class PowderkegBlockEntity extends TickableInventoryBlockEntity<PowderkegBlockEntity.PowderkegInventory>
 {
 
-    private boolean sealed;
     private int fuse = -1;
     private static final int SLOTS = 12;
-
+    public static final int SLOT_INPUT_START = 0;
+    public static final int SLOT_INPUT_END = 11;
     private boolean isLit = false;
     private Entity igniter;
 
@@ -57,6 +58,20 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     {
         super(TFCBlockEntities.POWDERKEG.get(), pos, state, PowderkegBlockEntity.PowderkegInventory::new, NAME);
         sidedInventory.on(new PartialItemHandler(inventory).insertAll(), Direction.UP);
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag nbt)
+    {
+        nbt.putLong("sealedTick", 1l);
+        super.saveAdditional(nbt);
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag nbt)
+    {
+        System.out.println(String.valueOf(nbt.getLong("sealedTick")));
+        super.loadAdditional(nbt);
     }
 
     @Nullable
@@ -90,6 +105,16 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         super.ejectInventory();
         assert level != null;
         inventory.excess.stream().filter(item -> !item.isEmpty()).forEach(item -> Helpers.spawnItem(level, worldPosition, item));
+    }
+
+    public void onSeal()
+    {
+        markForSync();
+    }
+
+    public void onUnseal()
+    {
+        markForSync();
     }
 
     public int getFuse()
@@ -148,10 +173,6 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     private static void explode(PowderkegBlockEntity powderkeg)
     {
         PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
-        /*if (ForgeEventFactory.onExplosionStart(world, explosion))
-        {
-            return;
-        }*/
         explosion.explode();
         explosion.finalizeExplosion(true);
     }
@@ -182,16 +203,6 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
                 mutable = false;
             }
         }
-/*
-        public void insertItemWithOverflow(ItemStack stack)
-        {
-            final ItemStack remainder = inventory.insertItem(SLOT_ITEM, stack, false);
-            if (!remainder.isEmpty())
-            {
-                excess.add(remainder);
-            }
-        }
-*/
 
         @Override
         public IItemHandlerModifiable getItemHandler()

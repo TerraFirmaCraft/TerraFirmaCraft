@@ -7,8 +7,43 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "tfc:powderkeg"
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "tfc:powderkeg",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:powderkeg",
+                  "properties": {
+                    "sealed": "true"
+                  }
+                }
+              ],
+              "functions": [
+                {
+                  "function": "minecraft:copy_name",
+                  "source": "block_entity"
+                },
+                {
+                  "function": "minecraft:copy_nbt",
+                  "source": "block_entity",
+                  "ops": [
+                    {
+                      "source": "",
+                      "target": "BlockEntityTag",
+                      "op": "replace"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "tfc:powderkeg"
+            }
+          ]
         }
       ],
       "conditions": [

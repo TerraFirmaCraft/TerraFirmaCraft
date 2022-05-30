@@ -80,7 +80,6 @@ public class PowderKegExplosion extends Explosion
         {
             BlockState blockstate = level.getBlockState(blockpos);
             Block block = blockstate.getBlock();
-
             if (spawnParticles)
             {
                 double d0 = ((float) blockpos.getX() + this.level.random.nextFloat());
@@ -102,7 +101,7 @@ public class PowderKegExplosion extends Explosion
                 level.addParticle(ParticleTypes.EXPLOSION, d0, d1, d2, d3, d4, d5);
             }
 
-            if (blockstate.getMaterial() != Material.AIR)
+            if (!blockstate.isAir())
             {
                 BlockPos blockpos1 = blockpos.immutable();
                 this.level.getProfiler().push("explosion_blocks");
@@ -110,8 +109,8 @@ public class PowderKegExplosion extends Explosion
                     BlockEntity blockentity = blockstate.hasBlockEntity() ? this.level.getBlockEntity(blockpos) : null;
                     LootContext.Builder lootcontext$builder = (new LootContext.Builder((ServerLevel)this.level)).withRandom(this.level.random).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockpos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockentity).withOptionalParameter(LootContextParams.THIS_ENTITY, this.source);
 
-                    blockstate.getDrops(lootcontext$builder).forEach((p_46074_) -> {
-                        addBlockDrops(allDrops, p_46074_, blockpos1);
+                    blockstate.getDrops(lootcontext$builder).forEach((drop) -> {
+                        addBlockDrops(allDrops, drop, blockpos1);
                     });
                 }
 
@@ -138,12 +137,11 @@ public class PowderKegExplosion extends Explosion
                 block.onBlockExploded(blockstate, this.level, blockpos, this);*/
             }
 
-            for(Pair<ItemStack, BlockPos> pair : allDrops) {
-                Block.popResource(this.level, pair.getSecond(), pair.getFirst());
-            }
-
         }
 
+        for(Pair<ItemStack, BlockPos> pair : allDrops) {
+            Block.popResource(this.level, pair.getSecond(), pair.getFirst());
+        }
     }
 
     private static void addBlockDrops(ObjectArrayList<Pair<ItemStack, BlockPos>> allDrops, ItemStack drop, BlockPos dropPos) {

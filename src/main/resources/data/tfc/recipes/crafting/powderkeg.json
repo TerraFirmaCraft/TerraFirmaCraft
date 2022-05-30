@@ -3,15 +3,15 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "XY ",
-    "Z",
-    ""
+    "Z  ",
+    "   "
   ],
   "key": {
     "X": {
       "tag": "tfc:barrel"
     },
     "Y": {
-      "tag": "minecraft:dye_red"
+      "item": "tfc:powder/hematite"
     },
     "Z": {
       "item": "minecraft:gunpowder"

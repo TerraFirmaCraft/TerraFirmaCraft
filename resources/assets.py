@@ -350,12 +350,17 @@ def generate(rm: ResourceManager):
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
-    rm.blockstate('powderkeg', variants={
+    block = rm.blockstate('powderkeg', variants={
         'sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
-        'sealed=false': {'model': 'tfc:block/powderkeg_unsealed'}
-    }).with_lang(lang('Powderkeg')).with_block_loot('tfc:powderkeg').with_tag('minecraft:mineable/axe')
-    rm.item_model('powderkeg', parent='tfc:block/powderkeg_unsealed')
-    
+        'sealed=false': {'model': 'tfc:block/powderkeg'}
+    }).with_lang(lang('Powderkeg')).with_tag('minecraft:mineable/axe')
+    item_model_property(rm, ('powderkeg'), [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/powderkeg_sealed'}], {'parent': 'tfc:block/powderkeg'})
+    block.with_block_loot(({
+        'name': 'tfc:powderkeg',
+        'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+        'conditions': [loot_tables.block_state_property('tfc:powderkeg[sealed=true]')]
+    }, 'tfc:powderkeg'))
+     
     states = [({'model': 'tfc:block/composter/composter'})]
     for i in range(1, 9):
         for age in ('normal', 'ready', 'rotten'):
@@ -558,8 +563,8 @@ def generate(rm: ResourceManager):
     for metal, metal_data in METALS.items():
         # Metal Items
         for metal_item, metal_item_data in METAL_ITEMS.items():
-            if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
-                texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron')
+            if (metal_item_data.type in metal_data.types or metal_item_data.type == 'all') and metal_item != 'shield':
+                texture = 'tfc:item/metal/%s/%s' % (metal_item, metal)
                 if metal_item == 'fishing_rod':
                     item = item_model_property(rm, ('metal', '%s' % metal_item, '%s' % metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
                 else:

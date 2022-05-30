@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.container;
 
+import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
+import net.dries007.tfc.common.capabilities.MoldLike;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +24,7 @@ public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntit
 {
     public static PowderkegContainer create(PowderkegBlockEntity powderkeg, Inventory playerInv, int windowId)
     {
-        return new PowderkegContainer(windowId, powderkeg).init(playerInv, 12);
+        return new PowderkegContainer(windowId, powderkeg).init(playerInv, 0);
     }
 
     private PowderkegContainer(int windowId, PowderkegBlockEntity powderkeg)
@@ -38,6 +40,16 @@ public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntit
         {
             PowderkegBlock.toggleSeal(level, blockEntity.getBlockPos(), blockEntity.getBlockState());
         }
+    }
+
+    @Override
+    protected boolean moveStack(ItemStack stack, int slotIndex)
+    {
+        return switch (typeOf(slotIndex))
+            {
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack,  PowderkegBlockEntity.SLOT_INPUT_START, PowderkegBlockEntity.SLOT_INPUT_END + 1, false);
+                case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
+            };
     }
 
     @Override

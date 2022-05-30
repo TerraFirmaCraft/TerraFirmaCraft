@@ -46,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class PowderkegBlock extends DeviceBlock implements IItemSize// ILightableBlock
+public class PowderkegBlock extends DeviceBlock implements IItemSize
 {
     public static final BooleanProperty SEALED = TFCBlockStateProperties.SEALED;
 
@@ -57,6 +57,14 @@ public class PowderkegBlock extends DeviceBlock implements IItemSize// ILightabl
         level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(powderkeg -> {
             final boolean previousSealed = state.getValue(SEALED);
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
+            if (previousSealed)
+            {
+                powderkeg.onUnseal();
+            }
+            else
+            {
+                powderkeg.onSeal();
+            }
         });
     }
 
@@ -99,7 +107,7 @@ public class PowderkegBlock extends DeviceBlock implements IItemSize// ILightabl
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState();
+        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, false) : defaultBlockState();
     }
 
     @Override
