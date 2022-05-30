@@ -1,8 +1,23 @@
-from typing import NamedTuple, Tuple
-from warnings import warn
+import os
+import warnings
+from typing import NamedTuple, Tuple, Mapping
 
 from mcresources import ResourceManager, utils
-from mcresources.type_definitions import JsonObject
+from mcresources.type_definitions import JsonObject, ResourceIdentifier
+
+
+class LocalInstance:
+    INSTANCE_DIR = os.getenv('LOCAL_MINECRAFT_INSTANCE')  # The location of a local .minecraft directory, for testing in external minecraft instance (as hot reloading works much better)
+
+    @staticmethod
+    def wrap(rm: ResourceManager):
+        def data(name_parts: ResourceIdentifier, data_in: JsonObject):
+            return rm.write((LocalInstance.INSTANCE_DIR, '/'.join(utils.str_path(name_parts))), data_in)
+
+        if LocalInstance.INSTANCE_DIR is not None:
+            rm.data = data
+            return rm
+        return None
 
 
 class Warnings:
@@ -11,22 +26,25 @@ class Warnings:
     @staticmethod
     def warn(content: str):
         if Warnings.enabled:
-            warn(content, stacklevel=3)
+            warnings.warn(content, stacklevel=3)
 
 
 def main():
-    for target, show_warnings in (
-        # ('../src/main/resources', True),
-        ('../book_datapack/', True),
-        # ('../out/production/resources', False)
-    ):
-        Warnings.enabled = show_warnings
-        rm = ResourceManager('tfc', resource_dir=target)
-        make_book(rm)
+    Warnings.enabled = True
+    rm = ResourceManager('tfc', '../src/main/resources')
+
+    print('Writing book')
+    make_book(rm)
+
+    Warnings.enabled = False
+    if LocalInstance.wrap(rm):
+        print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
+        make_book(rm, 'guide')
+
     print('Done')
 
 
-def make_book(rm: ResourceManager):
+def make_book(rm: ResourceManager, root: str = 'book'):
     """
     Notes for those contributing to the book, for a consistent sort of style:
 
@@ -44,31 +62,53 @@ def make_book(rm: ResourceManager):
 
     All the documentation on entry(), category(), all the book page functions, are copied from the Patchouli documentation, found here:
     https://vazkiimods.github.io/Patchouli/docs/reference/overview
+
+
+    In addition, here's some useful things for dev work, and also making standardized images:
+
+    - Images of scenery are taken in screenshots, a square section is copied and downsized to 512 x 512
+    - Images of guis are taken in screenshots, then JUST THE GUI (so erase all those little pixels in the corner) is copied out. A 256 x 256 image is used, and the gui is placed horizontally centered on the FIRST 200 PIXELS (so a 176 pixel wide gui image is placed with 14 blank pixels to it's left). Make the inventory clean, but also believable (i.e. if you were just talking about items X, Y, Z, have those items in your inventory. Don't make the inventory a focal point of the image.
+
+    - Spotlights of single blocks can be done with block_spotlight()
+    - Making a resource pack ready-to-go can be done with the following command:
+
+    jar -cMf "<root directory>\.minecraft\resourcepacks\book-images.zip" pack.mcmeta assets
+
+    Simply copy the /assets/tfc/textures/gui/book directory from /src/ into a different folder so you ONLY get those assets in the reloadable resource pack (makes things much faster)
+
     """
-    book = Book(rm, 'book')
+    book = Book(rm, root)
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
-        entry('a_first_look', 'A First Look', 'tfc:grass/loam', pages=(
-            text('At first glance, the world of TerraFirmaCraft might seem like vanilla Minecraft, but don\'t let that fool you, nearly everything has changed. On the surface, you might find one of many different biomes, find yourself in one of many different climates, each with their own flora, fauna, and other decoration. Everything from the grass under your feet to the leaves on the trees to the ores in the ground has changed.'),
-            text('First, the dirt and grass under your feet might be one of a few different types of soil. Sand, loam, silt, or some in-between shades might appear based on the climate or biome of the region. In addition to normal dirt and grass, clay dirt and clay grass will also be scattered around the world, in addition to peat soil and peat grass in specific $(thing)climates$().'),
-            text('Most of the blocks under your feet are also affected by some form of $(thing)gravity$(). Dirt, gravel, sand, and other loose soils will not only fall downwards, but they will fall down slopes if they are stacked too tall without support. Harder materials such as raw stone does not collapse immediately, but be wary of mining in unsupported areas, as raw stone can collapse with destructive force, putting any careless miner\'s life in danger'),
-            text('On top of the dirt and grass, you can find over one hundred different plants, from the $(thing)athyrium fern$() to the $(thing)yucca$(). Some of these plants serve as special indicators of different resources, and can indicate the presence of clay, or fresh water nearby. Others can be used for decoration, or dyes. And almost all plants can be harvested for straw, which has many uses.'),
-            text('Perhaps most importantly in TerraFirmaCraft, is to look up to the sky. The natural world has a climate, and a yearly calendar. New worlds are created in June, but as the winter months approach, the temperature will gradually drop, the weather will get colder and snowier, and plants will die or retreat until next spring, when they will start flowering again. However, in addition to the seasons passing, different regions have different climates based on their latitude and longitude. This affects the average $(thing)temperature$() and $(thing)rainfall$() of an area, which will affect what flora and fauna is found there.')
-        )),
         entry('biomes', 'Biomes', '', pages=(
             # Overview of biomes and what they are, and what they affect
             # Rough overview of how biomes spawn in terms of where to find them
             # Previews of most/all biomes in a showcase mode
             text('The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found.'),
             text('The next few pages show a few (but not all) of the biomes that you might find in the world.'),
-            text('Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or ', title='Plains'),
-            text('Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween', title='Badlands'),
-            image('textures/gui/book/biomes/badlands.png', text_contents='A badlands')
+            text('Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or they may be forested.', title='Plains'),
+            image('tfc:textures/gui/book/biomes/plains.png', text_contents='A Plains.'),
+            text('Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.', title='Hills & Rolling Hills'),
+            image('tfc:textures/gui/book/biomes/rolling_hills_with_river.png', text_contents='A Rolling Hills with a river winding through it.'),
+            text('Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.', title='Badlands'),
+            image('tfc:textures/gui/book/biomes/badlands.png', text_contents='A Badlands.'),
+            text('In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.', title='Mountains'),
+            image('tfc:textures/gui/book/biomes/old_mountains.png', text_contents='An Old Mountains with a hot spring on the snowy slopes.'),
+            text('In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.', title='Lowlands'),
+            image('tfc:textures/gui/book/biomes/lowlands.png', text_contents='A Lowlands.')
         )),
         entry('waterways', 'Where the River Flows', '', pages=(
             # Overview of rivers, oceans, and lakes
             # Minor mention of underground rivers and lakes
             # Resources found in rivers + lakes: ore deposits and other gem ores
+            text('While exploring, you might come across large bodies of water: rivers, lakes, or vast oceans. Rivers and lakes contain $(thing)freshwater$(), while oceans contain $(thing)saltwater$(). Drinking freshwater can restore your thirst, however drinking saltwater will deplete it over time.'),
+            image('tfc:textures/gui/book/biomes/river.png', text_contents='A river.'),
+            text('Rivers in TerraFirmaCraft have $(thing)current$(). They will push along items, players, and entities the same as flowing water. River currents will ultimately lead out to the ocean, joining up with other branches along the way. Occasionally, rivers will also disappear underground, and there have even been rare sightings of vast cavernous underground lakes, but will always find their way to the ocean eventually.'),
+            image('tfc:textures/gui/book/biomes/underground_river.png', text_contents='A segment of an underground river.'),
+            text('Lakes and rivers can also be the source of some resources. The first of which is small ore deposits. Gravel with small flecks of ores can be found in the bottom of rivers and lakes. These can be $(thing)panned$() to obtain small amounts of ores. Native Copper, Native Silver, Native Gold, and Cassiterite can be found this way.', title='Ore Deposits'),
+            block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
+            text('In addition to gravel ore deposits, lakes can also hide clusters of some gemstones. Amethyst and Opal ores can be found this way in surface level ore veins under lakes and rivers.', title='Gemstones'),
+            block_spotlight('Example', 'A block of amethyst ore in limestone.', 'tfc:ore/amethyst/limestone')
         )),
         entry('geology', 'Geology', '', pages=(
             # Minor intro to plate tectonics
@@ -108,6 +148,34 @@ def make_book(rm: ResourceManager):
         entry('wild_animals', 'Wild Animals', '', pages=(
             # Wild animals - address both hostile and passive important animals
         ))
+        # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
+    ))
+
+    book.category('getting_started', 'Getting Started', 'An introduction to surviving in the world of TerraFirmaCraft. How to survive the stone age and obtain your first pickaxe.', 'tfc:rock/loose/granite', is_sorted=True, entries=(
+        entry('introduction', 'Introduction', '', pages=(
+            text('In TerraFirmaCraft, the first things you can obtain are sticks, twigs, and loose rocks. They can be found in almost every climate, lying scattered on the ground. $(thing)$(k:key.use)$() or break these to pick them up.'),
+            multiblock('Example', 'A smattering of common sticks and stones.', False, pattern=(
+                ('1    ', ' 2  4', '  03 ', ' 4   ', '    5'),
+                ('GGGGG', 'GGGGG', 'GGGGG', 'GGGGG', 'GGGGG')
+            ), mapping={
+                'G': 'tfc:grass/sandy_loam',
+                '1': 'tfc:rock/loose/granite[count=1]',
+                '2': 'tfc:rock/loose/granite[count=2]',
+                '3': 'tfc:rock/loose/granite[count=3]',
+                '4': 'tfc:groundcover/stick',
+                '5': 'tfc:wood/twig/ash',
+            }),
+            text('In addition to gathering sticks and twigs on the ground, sticks can also be obtained by breaking leaves with your fist. Once you have a number of rocks and sticks, you are ready to start $(thing)Knapping$(). Knapping is a process where two rocks are hit together, to form a particular shape. In order to knap, first hold at least two rocks in your hand, then right click in the air, which will open up the $(thing)Knapping Interface$().'),
+            image('tfc:textures/gui/book/gui/rock_knapping.png', text_contents='The Knapping Interface.', border=False),
+            text('In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.'),
+            empty(),  # todo: knapping recipe
+            crafting('tfc:crafting/stone/knife_sedimentary', text_contents='Once you have obtained a knife blade, in order to create a stone knife, simply craft it with a stick in your inventory.'),
+            crafting('tfc:crafting/wood/stick_from_twigs', text_contents='The twigs from earlier can also be used to create sticks, if needed.'),
+            item_spotlight('tfc:stone/knife/sedimentary', text_contents='Knives are a very useful tool. One of their primary uses is to collect straw by breaking plants. Most tall grasses and plants will drop straw when broken with a knife.'),
+            crafting('tfc:crafting/thatch', text_contents='Straw can be used to craft one of the first building materials: $(thing)thatch$(). Thatch is a lightweight block that isn\'t affected by gravity, however players and other entities can pass right through it!'),
+            text('In addition to knives, you will likely want to craft a couple other tools. $(thing)Axes$() can be used to chop down trees (finally!), and also make a useful weapon. $(thing)Hammers$() can be used as a crushing weapon, but can also be used to turn logs into sticks, by breaking log blocks with the hammer.'),
+            text('Finally, $(thing)Shovels$() and ($thing)Hoes$() behave the same as they do in Vanilla, and $(thing)Javelins$() can be used as a simple toss-once-and-retrieve ranged weapon.'),
+        )),
     ))
 
 
@@ -223,7 +291,47 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: str | N
     return BookPage('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents})
 
 
-# todo: other default page types: (smelting, multiblock, entity, spotlight, link) as we need them
+# todo: other default page types: (smelting, entity, link) as we need them
+
+def item_spotlight(item: str, title: str | None = None, link_recipe: bool = False, text_contents: str | None = None) -> BookPage:
+    """
+    :param item: An ItemStack String representing the item to be spotlighted.
+    :param title: A custom title to show instead on top of the item. If this is empty or not defined, it'll use the item's name instead.
+    :param link_recipe: Defaults to false. Set this to true to mark this spotlight page as the "recipe page" for the item being spotlighted. If you do so, when looking at pages that display the item, you can shift-click the item to be taken to this page. Highly recommended if the spotlight page has instructions on how to create an item by non-conventional means.
+    :param text_contents: The text to display on this page, under the item. This text can be formatted.
+    """
+    return BookPage('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents})
+
+
+def block_spotlight(title: str, text_content: str, block: str) -> BookPage:
+    """ A shortcut for making a single block multiblock that is meant to act the same as item_spotlight() but for blocks """
+    return multiblock(title, text_content, False, (('X',), ('0',)), {'X': block})
+
+
+def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> BookPage:
+    """
+    Page type: "patchouli:multiblock"
+
+    :param title: The name of the multiblock you're displaying. Shows as a header above the multiblock display.
+    :param text_content: The text to display on this page, under the multiblock. This text can be formatted.
+    :param enable_visualize: Set this to false to disable the "Visualize" button.
+    :param pattern: Terse explanation of the format: the pattern attribute is an array of array of strings. It is indexed in the following order: y (top to bottom), x (west to east), then z (north to south).
+    :param mapping: Patchouli already provides built in characters for Air and (Any Block), which are respectively a space, and an underscore, so we don't have to account for those. Patchouli uses the same vanilla logic to parse blockstate predicate as, for example, the /execute if block ~ ~ ~ <PREDICATE> command. This means you can use block ID's, tags, as well as specify blockstate properties you want to constraint. Therefore, we have:
+    :param offset: An int array of 3 values ([X, Y, Z]) to offset the multiblock relative to its center.
+    :param multiblock_id: For modders only. The ID of the multiblock you want to display.
+    """
+    data = {'name': title, 'text': text_content, 'enable_visualize': enable_visualize}
+    if multiblock_id is not None:
+        return BookPage('patchouli:multiblock', {'multiblock_id': multiblock_id, **data})
+    elif pattern is not None and mapping is not None:
+        return BookPage('patchouli:multiblock', {'multiblock': {
+            'pattern': pattern,
+            'mapping': mapping,
+            'offset': offset,
+        }, **data})
+    else:
+        raise ValueError('multiblock page must have either \'multiblock\' or \'pattern\' and \'mapping\' entries')
+
 
 def empty() -> BookPage:
     return BookPage('patchouli:empty', {})

@@ -175,7 +175,6 @@ public class TestHelper
         assertEquals(expected.getClass(), actual.getClass());
         assertEquals(expected.getSerializer(), actual.getSerializer());
         assertEquals(expected.toJson(), actual.toJson());
-        fail("oops");
 
         assertCustomArrayEquals(expected.getItems(), actual.getItems(), TestHelper::assertItemStackEquals);
     }
