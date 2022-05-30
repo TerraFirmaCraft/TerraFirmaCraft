@@ -34,15 +34,14 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
 {
     public static void onRandomTick(ServerLevel level, BlockPos pos, BlockState placeState)
     {
-        TickCounterBlockEntity torch = level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).orElse(null);
-        if (torch != null)
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(torch ->
         {
             final int torchTicks = TFCConfig.SERVER.torchTicks.get();
             if (torch.getTicksSinceUpdate() > torchTicks && torchTicks > 0)
             {
                 level.setBlockAndUpdate(pos, placeState);
             }
-        }
+        });
     }
 
     private final ExtendedProperties properties;
@@ -61,9 +60,9 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
-        if (!world.isClientSide())
+        if (!level.isClientSide())
         {
             ItemStack held = player.getItemInHand(hand);
             if (Helpers.isItem(held.getItem(), TFCTags.Items.CAN_BE_LIT_ON_TORCH))
@@ -77,19 +76,15 @@ public class TFCTorchBlock extends TorchBlock implements IForgeBlockExtension, E
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        onRandomTick(world, pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
+        onRandomTick(level, pos, TFCBlocks.DEAD_TORCH.get().defaultBlockState());
     }
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        TickCounterBlockEntity torch = level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).orElse(null);
-        if (torch != null)
-        {
-            torch.resetCounter();
-        }
+        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
         super.setPlacedBy(level, pos, state, placer, stack);
     }
 }

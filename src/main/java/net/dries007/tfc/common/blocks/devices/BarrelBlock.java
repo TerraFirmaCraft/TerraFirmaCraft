@@ -33,7 +33,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -131,16 +130,18 @@ public class BarrelBlock extends DeviceBlock implements IItemSize
         {
             // Decode the contents of the barrel
             final CompoundTag inventoryTag = tag.getCompound("inventory");
-            final CompoundTag tankTag = tag.getCompound("tank");
             final ItemStackHandler inventory = new ItemStackHandler();
             final FluidTank tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get());
 
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
-            tank.readFromNBT(tankTag);
+            tank.readFromNBT(inventoryTag.getCompound("tank"));
 
-            tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
-            Helpers.addInventoryTooltipInfo(inventory, tooltip);
-            Helpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
+            if (!Helpers.isEmpty(inventory) || !tank.isEmpty())
+            {
+                tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
+                Helpers.addInventoryTooltipInfo(inventory, tooltip);
+                Helpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
+            }
         }
     }
 

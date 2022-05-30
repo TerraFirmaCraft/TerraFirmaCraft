@@ -1,4 +1,63 @@
 {
+  "scribing_table": {
+    "sounds": [
+      {
+        "name": "ui/cartography_table/drawmap1",
+        "pitch": 0.8
+      },
+      {
+        "name": "ui/cartography_table/drawmap2",
+        "pitch": 0.8
+      },
+      {
+        "name": "ui/cartography_table/drawmap3",
+        "pitch": 0.8
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.scribing_table.rename_item"
+  },
+  "open_vessel": {
+    "sounds": [
+      {
+        "name": "dig/stone1",
+        "pitch": 0.9
+      },
+      {
+        "name": "dig/stone2",
+        "pitch": 0.9
+      },
+      {
+        "name": "dig/stone3",
+        "pitch": 0.9
+      },
+      {
+        "name": "dig/stone4",
+        "pitch": 0.9
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.vessel.opened"
+  },
+  "close_vessel": {
+    "sounds": [
+      {
+        "name": "dig/stone1",
+        "pitch": 0.65
+      },
+      {
+        "name": "dig/stone2",
+        "pitch": 0.65
+      },
+      {
+        "name": "dig/stone3",
+        "pitch": 0.65
+      },
+      {
+        "name": "dig/stone4",
+        "pitch": 0.65
+      }
+    ],
+    "subtitle": "subtitles.block.tfc.vessel.closed"
+  },
   "wattle_dyed": {
     "sounds": [
       {

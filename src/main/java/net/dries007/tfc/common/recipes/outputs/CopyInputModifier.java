@@ -19,6 +19,12 @@ public enum CopyInputModifier implements ItemStackModifier.SingleInstance<CopyIn
     }
 
     @Override
+    public boolean dependsOnInput()
+    {
+        return true;
+    }
+
+    @Override
     public CopyInputModifier instance()
     {
         return INSTANCE;

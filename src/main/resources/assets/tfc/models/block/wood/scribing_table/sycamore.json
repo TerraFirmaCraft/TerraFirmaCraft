@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/scribing_table",
+  "textures": {
+    "top": "tfc:block/wood/scribing_table/sycamore",
+    "leg": "tfc:block/wood/log/sycamore",
+    "side": "tfc:block/wood/planks/sycamore",
+    "misc": "tfc:block/wood/scribing_table/scribing_paraphernalia",
+    "particle": "tfc:block/wood/planks/sycamore"
+  }
+}

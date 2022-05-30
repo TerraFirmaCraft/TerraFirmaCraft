@@ -49,6 +49,14 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
         box(1, 1, 1, 3, 16, 15) // west
     );
 
+    /**
+     * Full interaction shape when placing blocks against the composter, as otherwise targeting the top is quite difficult
+     */
+    private static final VoxelShape INTERACTION_SHAPE = Shapes.or(
+        box(3, 0, 3, 13, 2, 13), // base
+        box(1, 1, 1, 15, 16, 15) // interior
+    );
+
     public CrucibleBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.SAVE);
@@ -74,6 +82,13 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return INTERACTION_SHAPE;
     }
 
     @Override

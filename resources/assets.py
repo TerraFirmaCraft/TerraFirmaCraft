@@ -310,6 +310,46 @@ def generate(rm: ResourceManager):
             {'name': 'minecraft:stick', 'conditions': [loot_tables.block_state_property(wattle + '[right=true]')]}
         )
 
+    # Fired large undyed vessel
+    block = rm.blockstate('tfc:ceramic/large_vessel', variants={
+        'sealed=true': {'model': 'tfc:block/ceramic/large_vessel_sealed'},
+        'sealed=false': {'model': 'tfc:block/ceramic/large_vessel_opened'}
+    })
+    block.with_lang(lang('large vessel'))
+    block.with_block_loot(({
+        'name': 'tfc:ceramic/large_vessel',
+        'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+        'conditions': [loot_tables.block_state_property('tfc:ceramic/large_vessel[sealed=true]')]
+    }, 'tfc:ceramic/large_vessel'))
+    block.with_tag('minecraft:mineable/pickaxe')
+    rm.block_model('tfc:ceramic/large_vessel_sealed', textures={'top': 'tfc:block/ceramic/large_vessel/top', 'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_sealed')
+    rm.block_model('tfc:ceramic/large_vessel_opened', textures={'side': 'tfc:block/ceramic/large_vessel/side','bottom':'tfc:block/ceramic/large_vessel/bottom', 'particle': 'tfc:block/ceramic/large_vessel/side'}, parent='tfc:block/large_vessel_opened')
+    item_model_property(rm, 'tfc:ceramic/large_vessel', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/large_vessel_sealed'}], {'parent': 'tfc:block/ceramic/large_vessel_opened'})
+    
+    # Unfired large undyed vessel
+    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay','bottom':'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed')
+    rm.lang('item.tfc.ceramic.unfired_large_vessel', lang("unfired large vessel"))
+
+    for color in COLORS:
+        vessel = 'tfc:ceramic/large_vessel/%s' % color
+        block = rm.blockstate(vessel, variants={
+            'sealed=true': {'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color},
+            'sealed=false': {'model': 'tfc:block/ceramic/%s_large_vessel_opened' % color}
+        })
+        block.with_lang(lang('%s large vessel', color))
+        block.with_block_loot(({
+            'name': vessel,
+            'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+            'conditions': [loot_tables.block_state_property(vessel + '[sealed=true]')]
+        }, vessel))
+        block.with_tag('minecraft:mineable/pickaxe')
+        rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures={'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_sealed')
+        rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures={'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_opened')
+        item_model_property(rm, 'tfc:ceramic/large_vessel/%s' % color, [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color}], {'parent': 'tfc:block/ceramic/%s_large_vessel_opened' % color})
+        rm.item_model('tfc:ceramic/unfired_large_vessel/%s' % color, {'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top_clay' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom_clay' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color}, parent='tfc:block/ceramic/large_vessel_sealed')
+        rm.lang('item.tfc.ceramic.unfired_large_vessel.%s' % color, lang("%s unfired large vessel", color))
+    
+
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
     rm.blockstate('log_pile', variants={'axis=x': {'model': 'tfc:block/log_pile', 'y': 90, 'x': 90}, 'axis=z': {'model': 'tfc:block/log_pile', 'x': 90}}) \
@@ -568,9 +608,12 @@ def generate(rm: ResourceManager):
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 if metal_item == 'fishing_rod':
-                    item = item_model_property(rm, ('metal', '%s' % metal_item, '%s' % metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                    item = item_model_property(rm, ('metal', metal_item,metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                elif metal_item == 'shield':
+                    item = rm.item(('metal', metal_item, metal))  # Shields have a custom model for inventory and blocking
                 else:
-                    item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), texture, parent=metal_item_data.parent_model)
+                    item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
+
                 if metal_item == 'propick':
                     item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
                 else:
@@ -961,9 +1004,20 @@ def generate(rm: ResourceManager):
         rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
     for veg in VEGETABLES:
         rm.item_model(('food', veg)).with_lang(lang(veg))
-    for nut, name in NUTRIENTS.items():
-        rm.item_model(('food', '%s_soup' % nut)).with_lang(lang('%s Soup', name)).with_tag('soup_bowls')
-    for grain in GRAINS: # todo: no rice sandwich if we remove the bread
+
+    funny_names = {  # Dict[nutrient, (soup, salad)]
+        'grain': ('Wholesome', 'Crunchy'),
+        'fruit': ('Tasty', 'Sweet'),
+        'vegetables': ('Filling', 'Healthy'),
+        'protein': ('Hearty', 'Flavorful'),
+        'dairy': ('Creamy', 'Disgusting')
+    }
+    for nutrient in NUTRIENTS:
+        funny_soup_name, funny_salad_name = funny_names[nutrient]
+        rm.item_model(('food', '%s_soup' % nutrient)).with_lang(lang('%s soup', funny_soup_name)).with_tag('soups')
+        rm.item_model(('food', '%s_salad' % nutrient)).with_lang(lang('%s salad', funny_salad_name)).with_tag('salads')
+
+    for grain in GRAINS:
         rm.item_model(('food', '%s_bread_sandwich' % grain)).with_lang(lang('%s Bread Sandwich', grain)).with_tag('sandwiches').with_tag('foods')
 
     # Berry Bushes
@@ -971,7 +1025,7 @@ def generate(rm: ResourceManager):
     lifecycles = ('healthy', 'dormant', 'fruiting', 'flowering')
 
     for berry, data in BERRIES.items():
-        block = rm.blockstate('plant/%s_bush' % berry, variants=dict(
+        rm.blockstate('plant/%s_bush' % berry, variants=dict(
             (
                 'lifecycle=%s,stage=%d' % (lifecycle, stage),
                 {'model': 'tfc:block/plant/%s%s_bush_%d' % (lifecycle_to_model[lifecycle], berry, stage)}
@@ -1285,6 +1339,41 @@ def generate(rm: ResourceManager):
             'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
             'conditions': [loot_tables.block_state_property('tfc:wood/barrel/%s[sealed=true]' % wood)]
         }, 'tfc:wood/barrel/%s' % wood))
+
+        # Lecterns
+        block = rm.blockstate('tfc:wood/lectern/%s' % wood, variants=four_rotations('tfc:block/wood/lectern/%s' % wood, (90, None, 180, 270)))
+        block.with_block_model(textures={'bottom': 'tfc:block/wood/planks/%s' % wood, 'base': 'tfc:block/wood/lectern/%s/base' % wood, 'front': 'tfc:block/wood/lectern/%s/front' % wood, 'sides': 'tfc:block/wood/lectern/%s/sides' % wood, 'top': 'tfc:block/wood/lectern/%s/top' % wood, 'particle': 'tfc:block/wood/lectern/%s/sides' % wood}, parent='minecraft:block/lectern')
+        block.with_item_model()
+        block.with_lang(lang("%s lectern" % wood))
+        block.with_block_loot('tfc:wood/lectern/%s' % wood)
+        block.with_tag('minecraft:mineable/axe')
+
+        # Scribing Table
+        block = rm.blockstate('tfc:wood/scribing_table/%s' % wood, variants=four_rotations('tfc:block/wood/scribing_table/%s' % wood, (90, None, 180, 270)))
+        block.with_block_model(textures={'top': 'tfc:block/wood/scribing_table/%s' % wood, 'leg' : 'tfc:block/wood/log/%s' % wood, 'side' : 'tfc:block/wood/planks/%s' % wood, 'misc': 'tfc:block/wood/scribing_table/scribing_paraphernalia', 'particle': 'tfc:block/wood/planks/%s' % wood}, parent='tfc:block/scribing_table')
+        block.with_item_model()
+        block.with_lang(lang("%s scribing table" % wood))
+        block.with_block_loot('tfc:wood/lectern/%s' % wood)
+        block.with_tag('minecraft:mineable/axe')
+
+        # Candles
+        for color in [None, *COLORS]:
+            namespace = 'tfc:candle' + ('/'+color if color else '')
+            candle = '%s_candle' % color if color else 'candle'
+            block = rm.blockstate(namespace, variants={
+                "candles=1,lit=false": {"model": "minecraft:block/%s_one_candle" % candle},
+                "candles=1,lit=true": {"model": "minecraft:block/%s_one_candle_lit" % candle},
+                "candles=2,lit=false": {"model": "minecraft:block/%s_two_candles" % candle},
+                "candles=2,lit=true": {"model": "minecraft:block/%s_two_candles_lit" % candle},
+                "candles=3,lit=false": {"model": "minecraft:block/%s_three_candles" % candle},
+                "candles=3,lit=true": {"model": "minecraft:block/%s_three_candles_lit" % candle},
+                "candles=4,lit=false": {"model": "minecraft:block/%s_four_candles" % candle},
+                "candles=4,lit=true": {"model": "minecraft:block/%s_four_candles_lit" % candle}
+            })
+            block.with_lang(lang('%s candle' % color if color else 'candle'))
+            block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1,5)])
+            rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
+            if color: rm.item_tag('tfc:colored_candles', namespace)
 
         # Tags
         for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):

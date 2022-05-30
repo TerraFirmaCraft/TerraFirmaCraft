@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "item": "tfc:unfired_crucible"
+    "item": "tfc:ceramic/unfired_crucible"
   },
   "result_item": {
     "item": "tfc:crucible"

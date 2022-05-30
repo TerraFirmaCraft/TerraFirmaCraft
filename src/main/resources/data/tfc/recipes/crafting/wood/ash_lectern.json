@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "XXX",
+    " Y ",
+    " X "
+  ],
+  "key": {
+    "X": {
+      "item": "tfc:wood/planks/ash_slab"
+    },
+    "Y": {
+      "item": "tfc:wood/planks/ash_bookshelf"
+    }
+  },
+  "result": {
+    "item": "tfc:wood/lectern/ash"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/blackwood",
+    "base": "tfc:block/wood/lectern/blackwood/base",
+    "front": "tfc:block/wood/lectern/blackwood/front",
+    "sides": "tfc:block/wood/lectern/blackwood/sides",
+    "top": "tfc:block/wood/lectern/blackwood/top",
+    "particle": "tfc:block/wood/lectern/blackwood/sides"
+  }
+}
