@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.common.items;
 
+import java.util.function.Consumer;
+
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -23,6 +26,10 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.common.util.NonNullLazy;
+
+import net.dries007.tfc.client.render.blockentity.JavelinItemRenderer;
 import net.dries007.tfc.common.entities.ThrownJavelin;
 import net.dries007.tfc.util.Helpers;
 
@@ -102,6 +109,19 @@ public class JavelinItem extends SwordItem
             player.startUsingItem(hand);
             return InteractionResultHolder.consume(held);
         }
+    }
+
+    @Override
+    public void initializeClient(Consumer<IItemRenderProperties> consumer)
+    {
+        consumer.accept(new IItemRenderProperties() {
+            private final NonNullLazy<JavelinItemRenderer> renderer = NonNullLazy.of(() -> new JavelinItemRenderer(getTextureLocation()));
+            @Override
+            public BlockEntityWithoutLevelRenderer getItemStackRenderer()
+            {
+                return renderer.get();
+            }
+        });
     }
 
     public ResourceLocation getTextureLocation()

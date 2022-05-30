@@ -127,6 +127,12 @@ public class ThrownJavelin extends AbstractArrow
         return 0.99F;
     }
 
+    @Override
+    public SoundEvent getDefaultHitGroundSoundEvent()
+    {
+        return SoundEvents.TRIDENT_HIT_GROUND;
+    }
+
     /**
      * Slightly better than whacking like a sword
      * if not a javelin inside (for some reason), default to 8 which is the trident damage value

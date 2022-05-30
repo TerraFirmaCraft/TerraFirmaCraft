@@ -13,27 +13,26 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.projectile.ThrownTrident;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.client.model.entity.ThrownJavelinModel;
+import net.dries007.tfc.client.model.entity.JavelinModel;
 import net.dries007.tfc.common.entities.ThrownJavelin;
 import net.dries007.tfc.common.items.JavelinItem;
 import net.dries007.tfc.util.Helpers;
 
 public class ThrownJavelinRenderer extends EntityRenderer<ThrownJavelin>
 {
-    private static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/projectiles/stone_javelin.png");
+    public static final ResourceLocation DEFAULT_TEXTURE = Helpers.identifier("textures/entity/projectiles/stone_javelin.png");
 
-    private final ThrownJavelinModel model;
+    private final JavelinModel model;
 
     public ThrownJavelinRenderer(EntityRendererProvider.Context context)
     {
         super(context);
-        this.model = new ThrownJavelinModel(context.bakeLayer(RenderHelpers.modelIdentifier("thrown_javelin")));
+        this.model = new JavelinModel(context.bakeLayer(RenderHelpers.modelIdentifier("javelin")));
     }
 
     @Override

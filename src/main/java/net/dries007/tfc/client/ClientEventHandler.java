@@ -350,7 +350,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("cow"), TFCCowModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("alpaca"), AlpacaModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chicken"), ChickenModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("thrown_javelin"), ThrownJavelinModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)
