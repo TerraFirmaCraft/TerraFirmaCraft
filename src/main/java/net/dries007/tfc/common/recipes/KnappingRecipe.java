@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import org.jetbrains.annotations.Nullable;
 import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
@@ -21,11 +20,12 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.util.KnappingPattern;
+import org.jetbrains.annotations.Nullable;
 
 public class KnappingRecipe implements ISimpleRecipe<KnappingContainer>
 {
     protected final ResourceLocation id;
-    private final KnappingPattern pattern;
+    protected final KnappingPattern pattern;
     protected final ItemStack result;
     protected final TypedRecipeSerializer<?> serializer;
 

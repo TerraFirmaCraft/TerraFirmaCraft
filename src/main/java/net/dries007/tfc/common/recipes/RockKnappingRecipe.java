@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.recipes;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.container.KnappingContainer;
 import net.dries007.tfc.util.KnappingPattern;
+import org.jetbrains.annotations.Nullable;
 
 public class RockKnappingRecipe extends KnappingRecipe
 {
@@ -41,6 +40,11 @@ public class RockKnappingRecipe extends KnappingRecipe
     public boolean matches(KnappingContainer container, Level level)
     {
         return container.getPattern().matches(this.getPattern()) && ingredient.test(container.getOriginalStack());
+    }
+
+    public boolean matchesItem(ItemStack stack)
+    {
+        return ingredient.test(stack);
     }
 
     public static class RockSerializer extends TypedRecipeSerializer<RockKnappingRecipe>

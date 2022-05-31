@@ -72,11 +72,13 @@ repositories {
     }
     maven {
         // Cyanide
-        url = 'https://alcatrazescapee.jfrog.io/artifactory/mods'
+        name = "AlcatrazEscapee"
+        url = "https://alcatrazescapee.jfrog.io/artifactory/mods"
     }
     maven {
         // Patchouli
-        url 'https://maven.blamejared.com'
+        name = "BlameJared"
+        url = "https://maven.blamejared.com"
     }
     flatDir {
         dirs 'libs'
@@ -156,7 +158,7 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     // Patchouli
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}") // Patchouli doesn't have an API jar anymore?
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     if (System.getProperty("idea.sync.active") != "true") {
@@ -235,12 +237,4 @@ jar {
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
     add sourceSets.test, "${mod_id}.refmap.json"
-}
-
-task makeTestDataPack(type: Exec) {
-    workingDir "${projectDir}/book_datapack"
-    commandLine 'jar', '-cMf', '../book_assets.zip', 'pack.mcmeta', 'assets'
-    doLast {
-        println "Executed!"
-    }
 }

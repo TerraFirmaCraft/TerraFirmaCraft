@@ -54,15 +54,15 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right."
+      "text": "In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.$(br2)Like crafting recipes, the location of the desired pattern doesn't matter for the output, and some recipes have multiple variants that are valid."
     },
     {
       "type": "patchouli:rock_knapping_recipe",
-      "recipe": [
-        "tfc:rock_knapping/knife_blade_igneous_extrusive",
-        "tfc:rock_knapping/knife_blade_igneous_intrusive",
-        "tfc:rock_knapping/knife_blade_metamorphic",
-        "tfc:rock_knapping/knife_blade_sedimentary"
+      "recipes": [
+        "tfc:rock_knapping/knife_head_igneous_extrusive",
+        "tfc:rock_knapping/knife_head_igneous_intrusive",
+        "tfc:rock_knapping/knife_head_metamorphic",
+        "tfc:rock_knapping/knife_head_sedimentary"
       ],
       "text": "Hi"
     },
@@ -93,8 +93,9 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Finally, $(thing)Shovels$() and ($thing)Hoes$() behave the same as they do in Vanilla, and $(thing)Javelins$() can be used as a simple toss-once-and-retrieve ranged weapon."
+      "text": "Finally, $(thing)Shovels$() and $(thing)Hoes$() behave the same as they do in Vanilla, and $(thing)Javelins$() can be used as a simple toss-once-and-retrieve ranged weapon."
     }
   ],
+  "read_by_default": true,
   "sortnum": 0
 }

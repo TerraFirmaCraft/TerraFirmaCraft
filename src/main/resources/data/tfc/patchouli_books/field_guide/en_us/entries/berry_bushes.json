@@ -1,8 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "Berry Bushes",
-  "category": "tfc:the_world",
+  "category": "patchouli:the_world",
   "icon": "",
   "pages": [],
-  "sortnum": 9
+  "read_by_default": true,
+  "sortnum": 8
 }

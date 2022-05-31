@@ -1,9 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Flora",
-  "category": "patchouli:the_world",
+  "name": "Pit Kilns",
+  "category": "patchouli:getting_started",
   "icon": "",
   "pages": [],
-  "read_by_default": true,
   "sortnum": 6
 }

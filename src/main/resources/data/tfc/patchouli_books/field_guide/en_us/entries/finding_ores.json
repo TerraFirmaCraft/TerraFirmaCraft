@@ -1,9 +1,9 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Wild Animals",
-  "category": "patchouli:the_world",
+  "name": "Finding Ores",
+  "category": "patchouli:getting_started",
   "icon": "",
   "pages": [],
   "read_by_default": true,
-  "sortnum": 10
+  "sortnum": 5
 }

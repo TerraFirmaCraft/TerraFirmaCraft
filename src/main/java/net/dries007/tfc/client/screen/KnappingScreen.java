@@ -20,11 +20,18 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.KnappingPattern;
 import org.jetbrains.annotations.Nullable;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
 public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
 {
-    private static final ResourceLocation KNAPPING_BACKGROUND = new ResourceLocation(MOD_ID, "textures/gui/knapping.png");
+    public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/knapping.png");
+
+    public static final ResourceLocation CLAY = Helpers.identifier("textures/gui/knapping/clay_ball.png");
+    public static final ResourceLocation CLAY_DISABLED = Helpers.identifier("textures/gui/knapping/clay_ball_disabled.png");
+
+    public static final ResourceLocation FIRE_CLAY = Helpers.identifier("textures/gui/knapping/fire_clay.png");
+    public static final ResourceLocation FIRE_CLAY_DISABLED = Helpers.identifier("textures/gui/knapping/fire_clay_disabled.png");
+
+    public static final ResourceLocation LEATHER = Helpers.identifier("textures/gui/knapping/clay_ball.png");
+
     private final ResourceLocation buttonLocation;
     @Nullable private final ResourceLocation buttonDisabledLocation;
 
@@ -32,12 +39,12 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     {
         ResourceLocation buttonAssetPath = item.getRegistryName();
         assert buttonAssetPath != null;
-        return Helpers.identifier( "textures/gui/knapping/" + buttonAssetPath.getPath() + (disabled ? "_disabled" : "") + ".png");
+        return Helpers.identifier("textures/gui/knapping/" + buttonAssetPath.getPath() + (disabled ? "_disabled" : "") + ".png");
     }
 
     public KnappingScreen(KnappingContainer container, Inventory inv, Component name)
     {
-        super(container, inv, name, KNAPPING_BACKGROUND);
+        super(container, inv, name, BACKGROUND);
         imageHeight = 186;
         inventoryLabelY += 22;
         titleLabelY -= 2;

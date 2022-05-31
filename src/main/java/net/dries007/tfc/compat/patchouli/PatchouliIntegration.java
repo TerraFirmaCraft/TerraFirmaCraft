@@ -12,9 +12,10 @@ import net.minecraft.server.level.ServerPlayer;
 import net.dries007.tfc.util.Helpers;
 import vazkii.patchouli.api.PatchouliAPI;
 
-public class PatchouliIntegration
+public final class PatchouliIntegration
 {
-    private static final ResourceLocation BOOK_ID = Helpers.identifier("field_guide");
+    public static final ResourceLocation BOOK_ID = Helpers.identifier("field_guide");
+    public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/book/icons.png");
 
     public static void openGui(ServerPlayer player)
     {

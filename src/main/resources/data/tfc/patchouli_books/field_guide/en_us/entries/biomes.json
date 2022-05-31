@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "Biomes",
-  "category": "tfc:the_world",
+  "category": "patchouli:the_world",
   "icon": "",
   "pages": [
     {
@@ -10,17 +10,74 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Biomes appear in specific patterns based on the underlying plate tectonics which shape the world. The world is divided up into two main regions: continental, and oceanic. In continental regions, many biomes may appear depending on the elevation, and the type of continental area. In an oceanic region, oceans of varying depth appear but also volcanic islands or mountain chains. Areas near plate tectonic boundaries are generally more volcanic, and contain different biomes. At any time, open the inventory and click on the climate tab to see the current region you are in.",
-      "title": "Locating Biomes"
+      "text": "The next few pages show a few (but not all) of the biomes that you might find in the world."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or they may be forested.",
+      "title": "Plains"
     },
     {
       "type": "patchouli:image",
       "images": [
-        "textures/gui/book/biomes/badlands.png"
+        "tfc:textures/gui/book/biomes/plains.png"
       ],
-      "text": "Badlands: Mid elevation with sand and sandstone layers through it.",
+      "text": "A Plains.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.",
+      "title": "Hills & Rolling Hills"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rolling_hills_with_river.png"
+      ],
+      "text": "A Rolling Hills with a river winding through it.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.",
+      "title": "Badlands"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/badlands.png"
+      ],
+      "text": "A Badlands.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.",
+      "title": "Mountains"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/old_mountains.png"
+      ],
+      "text": "An Old Mountains with a hot spring on the snowy slopes.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.",
+      "title": "Lowlands"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/lowlands.png"
+      ],
+      "text": "A Lowlands.",
       "border": true
     }
   ],
-  "sortnum": 1
+  "read_by_default": true,
+  "sortnum": 0
 }

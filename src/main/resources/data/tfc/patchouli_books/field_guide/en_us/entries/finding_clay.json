@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Finding Clay",
+  "category": "patchouli:getting_started",
+  "icon": "",
+  "pages": [
+    {
+      "type": "patchouli:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/vessel",
+      "text": "Test"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 2
+}
