@@ -142,14 +142,20 @@ public final class ClientEventHandler
 
                     Item shield = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHIELD).get();
                     ItemProperties.register(shield, new ResourceLocation("blocking"), (stack, level, entity, unused) -> {
-                        if(entity == null)
+                        if (entity == null)
                         {
                             return 0.0F;
-                        }else
+                        }
+                        else
                         {
                             return entity instanceof Player && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0f : 0.0f;
                         }
                     });
+
+                    Item javelin = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.JAVELIN).get();
+                    ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
+                        entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                    );
                 }
             }
 

@@ -1,7 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "tfc:item/metal/javelin/black_steel"
-  }
+  "parent": "tfc:item/metal/javelin/black_steel_normal",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:throwing": 1
+      },
+      "model": "tfc:item/metal/javelin/black_steel_throwing"
+    }
+  ]
 }

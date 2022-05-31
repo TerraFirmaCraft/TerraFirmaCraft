@@ -608,9 +608,13 @@ def generate(rm: ResourceManager):
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 if metal_item == 'fishing_rod':
-                    item = item_model_property(rm, ('metal', metal_item,metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                    item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
                 elif metal_item == 'shield':
                     item = rm.item(('metal', metal_item, metal))  # Shields have a custom model for inventory and blocking
+                elif metal_item == 'javelin':
+                    rm.item_model(('metal', metal_item, metal + '_normal'), texture, parent=metal_item_data.parent_model)
+                    rm.item_model(('metal', metal_item, metal + '_throwing'), {'particle': 'tfc:item/metal/javelin/%s' % metal}, parent='minecraft:item/trident_throwing')
+                    item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:throwing': 1}, 'model': 'tfc:item/metal/javelin/%s_throwing' % metal}], {'parent': 'tfc:item/metal/javelin/%s_normal' % metal})
                 else:
                     item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
 
