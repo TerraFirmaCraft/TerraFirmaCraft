@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/handheld",
+  "parent": "item/trident_in_hand",
   "textures": {
-    "layer0": "tfc:item/metal/javelin/black_bronze"
+    "particle": "tfc:item/stone/javelin"
   }
 }

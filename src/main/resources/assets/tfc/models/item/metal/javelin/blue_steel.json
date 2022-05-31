@@ -1,6 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:item/metal/javelin/blue_steel_normal",
+  "loader": "forge:separate-perspective",
+  "gui_light": "front",
   "overrides": [
     {
       "predicate": {
@@ -8,5 +9,22 @@
       },
       "model": "tfc:item/metal/javelin/blue_steel_throwing"
     }
-  ]
+  ],
+  "base": {
+    "parent": "tfc:item/metal/javelin/blue_steel_in_hand"
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/metal/javelin/blue_steel_gui"
+    },
+    "fixed": {
+      "parent": "tfc:item/metal/javelin/blue_steel_gui"
+    },
+    "ground": {
+      "parent": "tfc:item/metal/javelin/blue_steel_gui"
+    },
+    "gui": {
+      "parent": "tfc:item/metal/javelin/blue_steel_gui"
+    }
+  }
 }

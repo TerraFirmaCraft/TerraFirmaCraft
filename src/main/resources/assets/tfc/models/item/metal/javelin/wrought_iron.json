@@ -1,6 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:item/metal/javelin/wrought_iron_normal",
+  "loader": "forge:separate-perspective",
+  "gui_light": "front",
   "overrides": [
     {
       "predicate": {
@@ -8,5 +9,22 @@
       },
       "model": "tfc:item/metal/javelin/wrought_iron_throwing"
     }
-  ]
+  ],
+  "base": {
+    "parent": "tfc:item/metal/javelin/wrought_iron_in_hand"
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/metal/javelin/wrought_iron_gui"
+    },
+    "fixed": {
+      "parent": "tfc:item/metal/javelin/wrought_iron_gui"
+    },
+    "ground": {
+      "parent": "tfc:item/metal/javelin/wrought_iron_gui"
+    },
+    "gui": {
+      "parent": "tfc:item/metal/javelin/wrought_iron_gui"
+    }
+  }
 }

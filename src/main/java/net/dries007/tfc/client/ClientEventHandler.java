@@ -58,6 +58,7 @@ import net.dries007.tfc.common.blocks.ItemPropertyProviderBlock;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -158,6 +159,13 @@ public final class ClientEventHandler
                     );
                 }
             }
+
+            TFCItems.ROCK_TOOLS.values().forEach(tool -> {
+                Item javelin = tool.get(RockCategory.ItemType.JAVELIN).get();
+                ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
+                    entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                );
+            });
 
             ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
                 if (entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem())

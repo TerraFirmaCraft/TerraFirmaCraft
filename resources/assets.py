@@ -4,6 +4,7 @@
 import itertools
 
 from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables
+from mcresources.type_definitions import ResourceIdentifier
 
 from constants import *
 
@@ -595,7 +596,10 @@ def generate(rm: ResourceManager):
         for rock_item in ROCK_CATEGORY_ITEMS:
             for suffix in ('', '_head'):
                 rock_item = rock_item + suffix
-                item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
+                if suffix == '' and rock_item == 'javelin':
+                    item = make_javelin(rm, 'stone/%s/%s' % (rock_item, rock), 'tfc:item/stone/%s' % rock_item)
+                else:
+                    item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
                 item.with_lang(lang('stone %s', rock_item))
 
     # Rock Items
@@ -612,9 +616,7 @@ def generate(rm: ResourceManager):
                 elif metal_item == 'shield':
                     item = rm.item(('metal', metal_item, metal))  # Shields have a custom model for inventory and blocking
                 elif metal_item == 'javelin':
-                    rm.item_model(('metal', metal_item, metal + '_normal'), texture, parent=metal_item_data.parent_model)
-                    rm.item_model(('metal', metal_item, metal + '_throwing'), {'particle': 'tfc:item/metal/javelin/%s' % metal}, parent='minecraft:item/trident_throwing')
-                    item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:throwing': 1}, 'model': 'tfc:item/metal/javelin/%s_throwing' % metal}], {'parent': 'tfc:item/metal/javelin/%s_normal' % metal})
+                    item = make_javelin(rm, 'metal/%s/%s' % (metal_item, metal), 'tfc:item/metal/javelin/%s' % metal)
                 else:
                     item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
 
@@ -1572,3 +1574,20 @@ def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
             }
         }
     }
+
+def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemContext':
+    rm.item_model(name_parts + '_throwing', {'particle': texture}, parent='minecraft:item/trident_throwing')
+    rm.item_model(name_parts + '_in_hand', {'particle': texture}, parent='minecraft:item/trident_in_hand')
+    rm.item_model(name_parts + '_gui', texture)
+    model = rm.domain + ':item/' + name_parts
+    return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
+        'gui_light': 'front',
+        'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
+        'base': {'parent': model + '_in_hand'},
+        'perspectives': {
+            'none': {'parent': model + '_gui'},
+            'fixed': {'parent': model + '_gui'},
+            'ground': {'parent': model + '_gui'},
+            'gui': {'parent': model + '_gui'}
+        }
+    })
