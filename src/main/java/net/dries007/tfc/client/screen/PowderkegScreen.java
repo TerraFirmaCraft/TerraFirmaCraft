@@ -32,8 +32,6 @@ public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, Pow
     public PowderkegScreen(PowderkegContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        inventoryLabelY += 0;
-        imageHeight += 0;
     }
 
     @Override
