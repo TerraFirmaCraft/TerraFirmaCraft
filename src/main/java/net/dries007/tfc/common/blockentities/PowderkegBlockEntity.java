@@ -44,13 +44,48 @@ import java.util.List;
 
 public class PowderkegBlockEntity extends TickableInventoryBlockEntity<PowderkegBlockEntity.PowderkegInventory>
 {
-
-    private int fuse = -1;
     public static final int SLOTS = 12;
-    private boolean isLit = false;
-    private Entity igniter;
 
     private static final Component NAME = new TranslatableComponent("tfc.block_entity.powderkeg");
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, PowderkegBlockEntity powderkeg)
+    {
+        if (powderkeg.isLit)
+        {
+            --powderkeg.fuse;
+
+            if (powderkeg.fuse <= 0)
+            {
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+                if (!powderkeg.level.isClientSide())
+                {
+                    explode(powderkeg);
+                }
+            }
+        }
+    }
+
+    public static int getStrength(PowderkegBlockEntity powderkeg)
+    {
+        int count = 0;
+        for (int i = 0; i < powderkeg.inventory.getSlots(); i++)
+        {
+            count += powderkeg.inventory.getStackInSlot(i).getCount();
+        }
+        return count / 12;
+    }
+
+    private static void explode(PowderkegBlockEntity powderkeg)
+    {
+        assert powderkeg.level != null;
+        PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
+        explosion.explode();
+        explosion.finalizeExplosion(true);
+    }
+
+    private int fuse = -1;
+    private boolean isLit = false;
+    private Entity igniter;
 
     public PowderkegBlockEntity(BlockPos pos, BlockState state)
     {
@@ -131,41 +166,6 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
             fuse = -1;
         }
         markForSync();
-    }
-
-    public static void serverTick(Level level, BlockPos pos, BlockState state, PowderkegBlockEntity powderkeg)
-    {
-        if (powderkeg.isLit)
-        {
-            --powderkeg.fuse;
-
-            if (powderkeg.fuse <= 0)
-            {
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
-                if (!powderkeg.level.isClientSide())
-                {
-                    explode(powderkeg);
-                }
-            }
-        }
-    }
-
-    public static int getStrength(PowderkegBlockEntity powderkeg)
-    {
-        int count = 0;
-        for (int i = 0; i < powderkeg.inventory.getSlots(); i++)
-        {
-            count += powderkeg.inventory.getStackInSlot(i).getCount();
-        }
-        return count / 12;
-    }
-
-    private static void explode(PowderkegBlockEntity powderkeg)
-    {
-        assert powderkeg.level != null;
-        PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
-        explosion.explode();
-        explosion.finalizeExplosion(true);
     }
 
     public static class PowderkegInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>, EmptyInventory

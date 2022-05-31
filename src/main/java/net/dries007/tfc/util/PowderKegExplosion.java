@@ -42,7 +42,7 @@ public class PowderKegExplosion extends Explosion
     private final Entity source;
     private final float size;
 
-    public PowderKegExplosion(Level level, Entity entity, double x, double y, double z, float size)
+    public PowderKegExplosion(Level level, @Nullable Entity entity, double x, double y, double z, float size)
     {
         super(level, entity, x, y, z, size, false, BlockInteraction.NONE);
         this.level = level;

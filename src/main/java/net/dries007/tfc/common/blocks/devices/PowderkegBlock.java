@@ -107,7 +107,7 @@ public class PowderkegBlock extends DeviceBlock implements IItemSize
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, false) : defaultBlockState();
+        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState();
     }
 
     @Override
@@ -121,8 +121,11 @@ public class PowderkegBlock extends DeviceBlock implements IItemSize
 
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
 
-            tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
-            Helpers.addInventoryTooltipInfo(inventory, tooltip);
+            if (Helpers.isEmpty(inventory))
+            {
+                tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
+                Helpers.addInventoryTooltipInfo(inventory, tooltip);
+            }
         }
     }
 

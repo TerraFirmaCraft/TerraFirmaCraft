@@ -199,6 +199,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('salad_bowls', '#tfc:bowls')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
+    block_and_item_tag(rm, 'tfc:barrels', *['tfc:wood/barrel/%s' % wood for wood in WOODS.keys()])
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
