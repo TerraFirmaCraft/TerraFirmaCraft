@@ -45,12 +45,14 @@ import java.util.List;
 public class PowderkegBlockEntity extends TickableInventoryBlockEntity<PowderkegBlockEntity.PowderkegInventory>
 {
 
-    private int fuse = -1;
-    private static final int SLOTS = 12;
     public static final int SLOT_INPUT_START = 0;
     public static final int SLOT_INPUT_END = 11;
+
+    private static final int SLOTS = 12;
+
+    private int fuse = -1;
     private boolean isLit = false;
-    private Entity igniter;
+    private @Nullable Entity igniter;
 
     private static final Component NAME = new TranslatableComponent("tfc.block_entity.powderkeg");
 
