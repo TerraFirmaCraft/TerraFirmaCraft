@@ -48,7 +48,9 @@ def generate(rm: ResourceManager):
             'tier': metal_data.tier,
             'fluid': 'tfc:metal/%s' % metal,
             'melt_temperature': metal_data.melt_temperature,
-            'heat_capacity': metal_data.heat_capacity
+            'heat_capacity': metal_data.heat_capacity,
+            'ingots': utils.ingredient('#forge:ingots/%s' % metal),
+            'sheets': utils.ingredient('#forge:sheets/%s' % metal)
         })
 
         # Metal Items and Blocks
@@ -90,12 +92,14 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
-    item_heat(rm, 'blooms', '#tfc:blooms', 0.35)
+    item_heat(rm, 'blooms', '#tfc:blooms', 0.35, METALS['wrought_iron'].melt_temperature)
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+
     for color in COLORS:
         item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HC)
+        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HC)
 
     for item, item_data in METAL_ITEMS.items():
         if item_data.mold:
@@ -142,6 +146,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge_fuel', '#minecraft:coals')
     rm.item_tag('firepit_fuel', '#minecraft:logs', 'tfc:peat', 'tfc:peat_grass', 'tfc:stick_bundle')
     rm.item_tag('bloomery_fuel', 'minecraft:charcoal')
+    rm.item_tag('blast_furnace_fuel', 'minecraft:charcoal')
     rm.item_tag('log_pile_logs', 'tfc:stick_bundle')
     rm.item_tag('pit_kiln_straw', 'tfc:straw')
     rm.item_tag('firepit_logs', '#minecraft:logs')
@@ -185,10 +190,14 @@ def generate(rm: ResourceManager):
     rm.item_tag('fluxstone', 'tfc:food/shellfish', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
-    rm.item_tag('foods/usable_in_soup', '#tfc:foods/vegetables', '#tfc:foods/fruits', '#tfc:foods/meats')
+    rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats')
+    rm.item_tag('foods/usable_in_salad', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats')
+    rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
     rm.item_tag('sandwich_bread', *['tfc:food/%s_bread' % grain for grain in GRAINS])
-    rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
-    rm.item_tag('soup_bowl', 'tfc:ceramic/bowl')
+    rm.item_tag('bowls', 'tfc:ceramic/bowl', 'minecraft:bowl')
+    rm.item_tag('soup_bowls', '#tfc:bowls')
+    rm.item_tag('salad_bowls', '#tfc:bowls')
+    rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
 
     for color in COLORS:
@@ -243,6 +252,13 @@ def generate(rm: ResourceManager):
     for color in SAND_BLOCK_TYPES:
         block_and_item_tag(rm, 'minecraft:sand', 'tfc:sand/%s' % color)
 
+    # Metal Ingots / Sheets, for Ingot/Sheet Piles
+    for metal in METALS.keys():
+        rm.item_tag('forge:ingots/%s' % metal)
+        rm.item_tag('forge:sheets/%s' % metal)
+        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
+        rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
+
     # ==========
     # BLOCK TAGS
     # ==========
@@ -268,10 +284,12 @@ def generate(rm: ResourceManager):
     rm.block_tag('logs_that_log', '#minecraft:logs')
     rm.block_tag('scraping_surface', '#minecraft:logs')
     rm.block_tag('forge:sand', '#minecraft:sand')  # Forge doesn't reference the vanilla tag
+    rm.block_tag('forge:concrete', *['minecraft:%s_concrete' % c for c in COLORS])
     rm.block_tag('thatch_bed_thatch', 'tfc:thatch')
     rm.block_tag('snow', 'minecraft:snow', 'minecraft:snow_block', 'tfc:snow_pile')
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
-    rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
+    rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', 'minecraft:bricks', 'tfc:fire_bricks', '#forge:concrete')
+    rm.block_tag('tfc:blast_furnace_insulation', 'tfc:fire_bricks')
     rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
     block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
@@ -442,7 +460,10 @@ def generate(rm: ResourceManager):
         'tfc:bloom',
         'tfc:pot',
         'tfc:grill',
-        'tfc:firepit'
+        'tfc:firepit',
+        'tfc:ingot_pile',
+        'tfc:sheet_pile',
+        'tfc:blast_furnace'
     ])
     rm.block_tag('minecraft:mineable/axe', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood', 'planks', 'twig', 'vertical_support', 'horizontal_support', 'sluice', 'chest', 'trapped_chest') for wood in WOODS.keys()],
@@ -496,6 +517,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
     rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
+    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
 
     # Item Sizes
@@ -530,7 +552,8 @@ def generate(rm: ResourceManager):
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
     item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
-    item_size(rm, 'soups', '#tfc:soup_bowls', Size.very_small, Weight.very_heavy)
+    item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.very_heavy)
+    item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
@@ -607,7 +630,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'tomato', 'tfc:food/tomato', Category.vegetable, 4, 0.5, 5, 3.5, veg=1.5)
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
-    food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=0.75, dairy=0.25)
+    food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=1.5, dairy=0.25)
     # todo: figure out what to do with sugarcane, do we need a different plant? or item or something? or modify the vanilla one
     # food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.grain, 4, 0, 0, 1.6, grain=0.5)
     food_item(rm, 'beef', 'tfc:food/beef', Category.meat, 4, 0, 0, 2, protein=2)
@@ -865,7 +888,7 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[int] = None):
+def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None):
     if melt_temperature is not None:
         forging_temperature = melt_temperature * 0.6
         welding_temperature = melt_temperature * 0.8

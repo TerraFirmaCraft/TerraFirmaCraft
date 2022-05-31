@@ -8,35 +8,78 @@ package net.dries007.tfc.util;
 
 import java.util.Collections;
 import java.util.function.Supplier;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.level.Level;
-
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.phys.shapes.CollisionContext;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is a fake {@link BlockItem} copy pasta for a vanilla item that we want to behave like a block item for a specific block.
  */
 public class BlockItemPlacement implements InteractionManager.OnItemUseAction
 {
+    public static boolean placeBlock(BlockPlaceContext context, BlockState state)
+    {
+        return context.getLevel().setBlock(context.getClickedPos(), state, 11);
+    }
+
+    public static boolean canPlace(BlockPlaceContext context, BlockState stateToPlace)
+    {
+        Player player = context.getPlayer();
+        CollisionContext selectionContext = player == null ? CollisionContext.empty() : CollisionContext.of(player);
+        return (stateToPlace.canSurvive(context.getLevel(), context.getClickedPos())) && context.getLevel().isUnobstructed(stateToPlace, context.getClickedPos(), selectionContext);
+    }
+
+    /**
+     * Copy pasta from {@link BlockItem#updateBlockStateFromTag(BlockPos, World, ItemStack, BlockState)}
+     */
+    @SuppressWarnings("ALL")
+    public static BlockState updateBlockStateFromTag(BlockPos pos, Level world, ItemStack stack, BlockState state)
+    {
+        BlockState newState = state;
+        CompoundTag nbt = stack.getTag();
+        if (nbt != null)
+        {
+            CompoundTag blockStateNbt = nbt.getCompound("BlockStateTag");
+            StateDefinition<Block, BlockState> container = state.getBlock().getStateDefinition();
+
+            for (String propertyKey : blockStateNbt.getAllKeys())
+            {
+                Property<?> property = container.getProperty(propertyKey);
+                if (property != null)
+                {
+                    String s1 = blockStateNbt.get(propertyKey).getAsString();
+                    newState = updateState(newState, property, s1);
+                }
+            }
+        }
+
+        if (newState != state)
+        {
+            world.setBlock(pos, newState, 2);
+        }
+        return newState;
+    }
+
     /**
      * Copy pasta from {@link BlockItem#updateState(BlockState, Property, String)}
      */
@@ -103,7 +146,7 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
             {
                 return InteractionResult.FAIL;
             }
-            else if (!this.placeBlock(context, placementState))
+            else if (!placeBlock(context, placementState))
             {
                 return InteractionResult.FAIL;
             }
@@ -143,48 +186,5 @@ public class BlockItemPlacement implements InteractionManager.OnItemUseAction
     {
         BlockState placementState = block.get().getStateForPlacement(context);
         return placementState != null && canPlace(context, placementState) ? placementState : null;
-    }
-
-    protected boolean placeBlock(BlockPlaceContext context, BlockState state)
-    {
-        return context.getLevel().setBlock(context.getClickedPos(), state, 11);
-    }
-
-    protected boolean canPlace(BlockPlaceContext context, BlockState stateToPlace)
-    {
-        Player player = context.getPlayer();
-        CollisionContext selectionContext = player == null ? CollisionContext.empty() : CollisionContext.of(player);
-        return (stateToPlace.canSurvive(context.getLevel(), context.getClickedPos())) && context.getLevel().isUnobstructed(stateToPlace, context.getClickedPos(), selectionContext);
-    }
-
-    /**
-     * Copy pasta from {@link BlockItem#updateBlockStateFromTag(BlockPos, World, ItemStack, BlockState)}
-     */
-    @SuppressWarnings("ALL")
-    private BlockState updateBlockStateFromTag(BlockPos pos, Level world, ItemStack stack, BlockState state)
-    {
-        BlockState newState = state;
-        CompoundTag nbt = stack.getTag();
-        if (nbt != null)
-        {
-            CompoundTag blockStateNbt = nbt.getCompound("BlockStateTag");
-            StateDefinition<Block, BlockState> container = state.getBlock().getStateDefinition();
-
-            for (String propertyKey : blockStateNbt.getAllKeys())
-            {
-                Property<?> property = container.getProperty(propertyKey);
-                if (property != null)
-                {
-                    String s1 = blockStateNbt.get(propertyKey).getAsString();
-                    newState = updateState(newState, property, s1);
-                }
-            }
-        }
-
-        if (newState != state)
-        {
-            world.setBlock(pos, newState, 2);
-        }
-        return newState;
     }
 }

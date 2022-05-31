@@ -21,7 +21,6 @@ import net.dries007.tfc.util.JsonHelpers;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import org.jetbrains.annotations.Nullable;
 
-// todo: refactor to use ItemStackIngredient instead of Ingredient + count, for consistency reasons
 public class LoomRecipe extends SimpleItemRecipe
 {
     public static final IndirectHashCollection<Item, LoomRecipe> CACHE = IndirectHashCollection.createForRecipe(LoomRecipe::getValidItems, TFCRecipeTypes.LOOM);

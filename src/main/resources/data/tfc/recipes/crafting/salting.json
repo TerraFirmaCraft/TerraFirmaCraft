@@ -8,7 +8,7 @@
         "type": "tfc:lacks_trait",
         "trait": "tfc:salted",
         "ingredient": {
-          "tag": "tfc:foods/raw_meats"
+          "tag": "tfc:foods/can_be_salted"
         }
       }
     },
@@ -31,7 +31,7 @@
       "type": "tfc:lacks_trait",
       "trait": "tfc:salted",
       "ingredient": {
-        "tag": "tfc:foods/raw_meats"
+        "tag": "tfc:foods/can_be_salted"
       }
     }
   }

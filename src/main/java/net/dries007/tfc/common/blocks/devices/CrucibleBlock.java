@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.devices;
 
 import java.util.List;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -27,8 +26,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -38,6 +37,7 @@ import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize
 {
@@ -47,6 +47,14 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
         box(1, 1, 13, 15, 16, 15), // south
         box(13, 1, 1, 15, 16, 15), // east
         box(1, 1, 1, 3, 16, 15) // west
+    );
+
+    /**
+     * Full interaction shape when placing blocks against the composter, as otherwise targeting the top is quite difficult
+     */
+    private static final VoxelShape INTERACTION_SHAPE = Shapes.or(
+        box(3, 0, 3, 13, 2, 13), // base
+        box(1, 1, 1, 15, 16, 15) // interior
     );
 
     public CrucibleBlock(ExtendedProperties properties)
@@ -64,6 +72,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             {
                 level.getBlockEntity(pos, TFCBlockEntities.CRUCIBLE.get()).ifPresent(crucible -> NetworkHooks.openGui(serverPlayer, crucible, crucible.getBlockPos()));
             }
+            return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
     }
@@ -73,6 +82,13 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getInteractionShape(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return INTERACTION_SHAPE;
     }
 
     @Override

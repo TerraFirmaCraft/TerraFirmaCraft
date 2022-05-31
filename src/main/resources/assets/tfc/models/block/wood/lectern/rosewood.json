@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/rosewood",
+    "base": "tfc:block/wood/lectern/rosewood/base",
+    "front": "tfc:block/wood/lectern/rosewood/front",
+    "sides": "tfc:block/wood/lectern/rosewood/sides",
+    "top": "tfc:block/wood/lectern/rosewood/top",
+    "particle": "tfc:block/wood/lectern/rosewood/sides"
+  }
+}

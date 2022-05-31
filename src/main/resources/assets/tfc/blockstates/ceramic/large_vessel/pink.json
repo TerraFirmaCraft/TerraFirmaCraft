@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "sealed=true": {
+      "model": "tfc:block/ceramic/pink_large_vessel_sealed"
+    },
+    "sealed=false": {
+      "model": "tfc:block/ceramic/pink_large_vessel_opened"
+    }
+  }
+}
