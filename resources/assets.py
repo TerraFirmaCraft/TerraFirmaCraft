@@ -563,17 +563,22 @@ def generate(rm: ResourceManager):
     for metal, metal_data in METALS.items():
         # Metal Items
         for metal_item, metal_item_data in METAL_ITEMS.items():
-            if (metal_item_data.type in metal_data.types or metal_item_data.type == 'all') and metal_item != 'shield':
-                texture = 'tfc:item/metal/%s/%s' % (metal_item, metal)
-                if metal_item == 'fishing_rod':
-                    item = item_model_property(rm, ('metal', '%s' % metal_item, '%s' % metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+            if (metal_item_data.type in metal_data.types or metal_item_data.type == 'all'):
+                if metal_item == 'shield':
+                    rm.lang('item.tfc.metal.shield.%s' % metal, lang('%s %s', metal, metal_item))
                 else:
-                    item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), texture, parent=metal_item_data.parent_model)
-                if metal_item == 'propick':
-                    item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
-                else:
-                    item.with_lang(lang('%s %s', metal, metal_item))
+                    texture = 'tfc:item/metal/%s/%s' % (metal_item, metal)
+                    if metal_item == 'fishing_rod':
+                        item = item_model_property(rm, ('metal', '%s' % metal_item, '%s' % metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                    else:
+                        item = rm.item_model(('metal', '%s' % metal_item, '%s' % metal), texture, parent=metal_item_data.parent_model)
+                    if metal_item == 'propick':
+                        item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
+                    else:
+                        item.with_lang(lang('%s %s', metal, metal_item))
+            
 
+            
         # Metal Blocks
         for metal_block, metal_block_data in METAL_BLOCKS.items():
             if metal_block_data.type in metal_data.types or metal_block_data.type == 'all':

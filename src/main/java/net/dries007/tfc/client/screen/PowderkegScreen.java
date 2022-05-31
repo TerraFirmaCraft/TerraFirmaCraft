@@ -8,10 +8,6 @@ package net.dries007.tfc.client.screen;
 
 import java.util.function.Consumer;
 
-import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
-import net.dries007.tfc.common.recipes.BarrelRecipe;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
