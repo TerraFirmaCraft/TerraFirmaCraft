@@ -6,15 +6,8 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
-import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.capabilities.size.IItemSize;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
-import net.dries007.tfc.util.Helpers;
+import java.util.List;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -42,9 +35,17 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.capabilities.size.IItemSize;
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class PowderkegBlock extends DeviceBlock implements IItemSize
 {

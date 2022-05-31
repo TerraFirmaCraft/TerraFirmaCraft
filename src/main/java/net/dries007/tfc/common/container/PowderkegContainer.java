@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.container;
 
-import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -45,7 +44,7 @@ public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntit
         if (blockEntity.getBlockState().getValue(PowderkegBlock.SEALED)) return true;
         return switch (typeOf(slotIndex))
             {
-                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack,  0, PowderkegBlockEntity.SLOTS, false);
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, 0, PowderkegBlockEntity.SLOTS, false);
                 case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
             };
     }

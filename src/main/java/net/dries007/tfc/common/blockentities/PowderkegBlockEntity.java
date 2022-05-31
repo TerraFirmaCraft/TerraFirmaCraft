@@ -6,19 +6,9 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
-import net.dries007.tfc.common.capabilities.*;
-import net.dries007.tfc.common.container.PowderkegContainer;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.PowderKegExplosion;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
@@ -28,20 +18,23 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.capabilities.DelegateItemHandler;
+import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.capabilities.PartialItemHandler;
+import net.dries007.tfc.common.container.PowderkegContainer;
+import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.PowderKegExplosion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PowderkegBlockEntity extends TickableInventoryBlockEntity<PowderkegBlockEntity.PowderkegInventory>
 {
@@ -147,6 +140,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     {
         private final PowderkegBlockEntity powderkeg;
         private final InventoryItemHandler inventory;
+
         PowderkegInventory(InventoryBlockEntity<?> entity)
         {
             powderkeg = (PowderkegBlockEntity) entity;
