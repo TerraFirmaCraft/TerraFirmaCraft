@@ -629,12 +629,10 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED))
         {
-            final BlockEntity entity = level.getBlockEntity(pos);
-            if (entity instanceof PowderkegBlockEntity)
-            {
-                ((PowderkegBlockEntity) entity).setLit(true);
+            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG).ifPresent(entity -> {
+                entity.setLit(true);
                 event.setCanceled(true);
-            }
+            });
         }
         else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
         {
