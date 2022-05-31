@@ -44,6 +44,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -73,20 +74,16 @@ import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import net.dries007.tfc.util.SelfTests;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
-import net.dries007.tfc.common.blocks.devices.BurningLogPileBlock;
-import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
-import net.dries007.tfc.common.blocks.devices.LampBlock;
-import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
+import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
+import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.EggHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -639,6 +636,15 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
+        else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
+                if (blastFurnace.light(level, pos, state))
+                {
+                    event.setCanceled(true);
+                }
+            });
+        }
         else if (block instanceof LampBlock)
         {
             level.getBlockEntity(pos, TFCBlockEntities.LAMP.get()).ifPresent(lamp -> {
@@ -649,6 +655,12 @@ public final class ForgeEventHandler
                     event.setCanceled(true);
                 }
             });
+        }
+        else if (block instanceof TFCCandleBlock)
+        {
+            level.setBlockAndUpdate(pos, state.setValue(TFCCandleBlock.LIT, true));
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            event.setCanceled(true);
         }
     }
 
@@ -938,7 +950,16 @@ public final class ForgeEventHandler
                 event.setCancellationResult(result);
             }
         }
-
+        else if (Helpers.isItem(event.getItemStack(), Items.WRITABLE_BOOK) || Helpers.isItem(event.getItemStack(), Items.WRITTEN_BOOK))
+        {
+            Level world = event.getWorld();
+            BlockState state = world.getBlockState(event.getPos());
+            if (state.getBlock() instanceof TFCLecternBlock && LecternBlock.tryPlaceBook(event.getPlayer(), event.getWorld(), event.getPos(), state, event.getItemStack()))
+            {
+                event.setCanceled(true);
+                event.setCancellationResult(InteractionResult.SUCCESS);
+            }
+        }
         // Some blocks have interactions that respect sneaking, both with items in hand and not
         // These need to be able to interact, regardless of if an item has sneakBypassesUse set
         // So, we have to explicitly allow the Block.use() interaction for these blocks.

@@ -7,6 +7,6 @@
   "hunger": 4,
   "saturation": 0.5,
   "decay": 4,
-  "protein": 0.75,
+  "protein": 1.5,
   "dairy": 0.25
 }

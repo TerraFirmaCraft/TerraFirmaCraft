@@ -3,5 +3,11 @@
   "tier": 1,
   "fluid": "tfc:metal/tin",
   "melt_temperature": 230,
-  "heat_capacity": 0.14
+  "heat_capacity": 0.14,
+  "ingots": {
+    "tag": "forge:ingots/tin"
+  },
+  "sheets": {
+    "tag": "forge:sheets/tin"
+  }
 }

@@ -11,8 +11,10 @@ import java.util.function.Consumer;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -33,6 +35,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
 {
     private static final Component SEAL = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
     private static final Component UNSEAL = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
+    private static final int MAX_RECIPE_NAME_LENGTH = 100;
 
     public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/barrel.png");
 
@@ -72,21 +75,26 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             drawDisabled(poseStack, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, BarrelBlockEntity.SLOT_ITEM);
 
             // Draw the text displaying both the seal date, and the recipe name
-            boolean isLong = false;
             BarrelRecipe recipe = blockEntity.getRecipe();
             if (recipe != null)
             {
-                //TODO improve this
-                String resultName = recipe.getTranslationComponent().getString();
-                int recipeWidth = font.width(resultName);
-                if (recipeWidth > 80)
+                FormattedText resultText = recipe.getTranslationComponent();
+                if (font.width(resultText) > MAX_RECIPE_NAME_LENGTH)
                 {
-                    isLong = true;
+                    int line = 0;
+                    for (FormattedCharSequence text : font.split(resultText, MAX_RECIPE_NAME_LENGTH))
+                    {
+                        font.draw(poseStack, text, 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(text), 2), titleLabelY + (line * font.lineHeight), 0x404040);
+                        line++;
+                    }
                 }
-                font.draw(poseStack, resultName, isLong ? recipeWidth / 2f - 42 : 70, isLong ? 73 : 61, 0x404040);
+                else
+                {
+                    font.draw(poseStack, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040);
+                }
             }
             String date = ICalendar.getTimeAndDate(blockEntity.getSealedTick(), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
-            font.draw(poseStack, date, isLong ? 58 : font.width(date) / 2f + 4, isLong ? 19 : 73, 0x404040);
+            font.draw(poseStack, date, imageWidth / 2f - font.width(date) / 2f, 74, 0x404040);
         }
     }
 

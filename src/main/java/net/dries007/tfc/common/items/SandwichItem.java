@@ -11,13 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
-import net.dries007.tfc.common.capabilities.food.FoodRecord;
 import org.jetbrains.annotations.Nullable;
 
 public class SandwichItem extends DecayingItem
 {
-    public static final FoodRecord SANDWICH_STATS = new FoodRecord(4, 0f, 3f, new float[5], 4.5f);
-
     public SandwichItem(Properties properties)
     {
         super(properties);
@@ -27,6 +24,6 @@ public class SandwichItem extends DecayingItem
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new FoodHandler.Dynamic(SANDWICH_STATS);
+        return new FoodHandler.Dynamic();
     }
 }

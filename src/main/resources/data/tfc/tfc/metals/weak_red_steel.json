@@ -3,5 +3,11 @@
   "tier": 5,
   "fluid": "tfc:metal/weak_red_steel",
   "melt_temperature": 1540,
-  "heat_capacity": 0.35
+  "heat_capacity": 0.35,
+  "ingots": {
+    "tag": "forge:ingots/weak_red_steel"
+  },
+  "sheets": {
+    "tag": "forge:sheets/weak_red_steel"
+  }
 }

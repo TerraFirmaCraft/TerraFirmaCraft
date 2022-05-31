@@ -31,7 +31,7 @@ public class CastingCraftingRecipe extends CustomRecipe implements ISimpleRecipe
     public boolean matches(CraftingContainer inventory, @Nullable Level level)
     {
         final MoldLike mold = getMold(inventory);
-        return mold != null && CastingRecipe.get(mold) != null;
+        return mold != null && !mold.isMolten() && CastingRecipe.get(mold) != null;
     }
 
     @Override

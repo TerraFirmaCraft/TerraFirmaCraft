@@ -135,7 +135,7 @@ public class Drinkable extends FluidDefinition
                 final JsonObject effectJson = JsonHelpers.convertToJsonObject(e, "effect");
                 final MobEffect type = JsonHelpers.getRegistryEntry(effectJson, "type", ForgeRegistries.MOB_EFFECTS);
                 final int duration = JsonHelpers.getAsInt(effectJson, "duration", 20);
-                final int amplifier = JsonHelpers.getAsInt(effectJson, "amplifier", 1);
+                final int amplifier = JsonHelpers.getAsInt(effectJson, "amplifier", 0);
                 final float chance = (float) JsonHelpers.getAsDouble(effectJson, "chance", 1);
 
                 builder.add(new Effect(type, duration, amplifier, chance));

@@ -3,5 +3,11 @@
   "tier": 3,
   "fluid": "tfc:metal/pig_iron",
   "melt_temperature": 1535,
-  "heat_capacity": 0.35
+  "heat_capacity": 0.35,
+  "ingots": {
+    "tag": "forge:ingots/pig_iron"
+  },
+  "sheets": {
+    "tag": "forge:sheets/pig_iron"
+  }
 }

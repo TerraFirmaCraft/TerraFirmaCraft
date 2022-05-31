@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/lectern",
+  "textures": {
+    "bottom": "tfc:block/wood/planks/willow",
+    "base": "tfc:block/wood/lectern/willow/base",
+    "front": "tfc:block/wood/lectern/willow/front",
+    "sides": "tfc:block/wood/lectern/willow/sides",
+    "top": "tfc:block/wood/lectern/willow/top",
+    "particle": "tfc:block/wood/lectern/willow/sides"
+  }
+}

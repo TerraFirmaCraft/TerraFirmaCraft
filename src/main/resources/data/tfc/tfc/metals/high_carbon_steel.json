@@ -3,5 +3,11 @@
   "tier": 3,
   "fluid": "tfc:metal/high_carbon_steel",
   "melt_temperature": 1540,
-  "heat_capacity": 0.35
+  "heat_capacity": 0.35,
+  "ingots": {
+    "tag": "forge:ingots/high_carbon_steel"
+  },
+  "sheets": {
+    "tag": "forge:sheets/high_carbon_steel"
+  }
 }

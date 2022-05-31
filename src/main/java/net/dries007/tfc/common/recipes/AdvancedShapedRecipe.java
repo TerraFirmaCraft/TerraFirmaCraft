@@ -56,6 +56,12 @@ public class AdvancedShapedRecipe extends ShapedRecipe
     }
 
     @Override
+    public boolean isSpecial()
+    {
+        return providerResult.dependsOnInput();
+    }
+
+    @Override
     public RecipeSerializer<?> getSerializer()
     {
         return TFCRecipeSerializers.ADVANCED_SHAPED_CRAFTING.get();

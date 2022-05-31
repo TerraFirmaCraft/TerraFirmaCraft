@@ -30,6 +30,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -253,12 +254,18 @@ public class ClientForgeEventHandler
                 }
 
                 final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
-                if (capTag != null)
+                if (capTag != null && !capTag.isEmpty())
                 {
                     text.add(new TextComponent(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
                 }
 
-                text.add(new TextComponent(DARK_GRAY + "[Debug] Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                text.add(new TextComponent(DARK_GRAY + "[Debug] Item Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+
+                if (stack.getItem() instanceof BlockItem blockItem)
+                {
+                    final Block block = blockItem.getBlock();
+                    text.add(new TextComponent(DARK_GRAY + "[Debug] Block Tags: " + Helpers.getHolder(ForgeRegistries.BLOCKS, block).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                }
             }
         }
     }

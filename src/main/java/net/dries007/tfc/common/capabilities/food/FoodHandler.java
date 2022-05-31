@@ -212,9 +212,9 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
      */
     public static class Dynamic extends FoodHandler
     {
-        public Dynamic(FoodRecord data)
+        public Dynamic()
         {
-            super(data);
+            super(FoodRecord.EMPTY);
         }
 
         public void setFood(FoodRecord data)
