@@ -173,6 +173,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('holds_large_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal in ('wrought_iron', 'red_steel', 'blue_steel', 'black_steel', 'steel')])
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
+    rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
 import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.container.PowderkegContainer;
@@ -75,6 +76,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 
     private static void explode(PowderkegBlockEntity powderkeg)
     {
+        assert powderkeg.level != null;
         PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
         explosion.explode();
         explosion.finalizeExplosion(true);
@@ -100,8 +102,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        //TODO: Oredict
-        return  stack.is(Items.GUNPOWDER);
+        return Helpers.isItem(stack, TFCTags.Items.USABLE_IN_POWDER_KEG);
     }
 
     public void onSeal()
@@ -129,11 +130,13 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         isLit = lit;
         if (lit)
         {
+            assert level != null;
             level.playSound(null, worldPosition.getX(), worldPosition.getY() + 0.5D, worldPosition.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.33F);
             fuse = 80;
         }
         else
         {
+            assert level != null;
             level.playSound(null, worldPosition.getX(), worldPosition.getY() + 0.5D, worldPosition.getZ(), SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.8f, 0.6f + level.random.nextFloat() * 0.4f);
             fuse = -1;
         }
