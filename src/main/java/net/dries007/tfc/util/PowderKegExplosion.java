@@ -1,6 +1,7 @@
 /*
- * Work under Copyright. Licensed under the EUPL.
- * See the project README.md and LICENSE.txt for more information.
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
 package net.dries007.tfc.util;
@@ -116,25 +117,6 @@ public class PowderKegExplosion extends Explosion
 
                 blockstate.onBlockExploded(this.level, blockpos, this);
                 this.level.getProfiler().pop();
-                /*if (isSmall)
-                {
-                    block.dropBlockAsItemWithChance(this.level, blockpos, blockstate, 1f, 0);
-                }
-                else
-                {
-                    // noinspection deprecation
-                    if(!this.level.isClientSide()) {
-                        List<ItemStack> drops = block.getDrops(blockstate, (ServerLevel) this.level, blockpos, source, 0, 0);
-                        float chance = ForgeEventFactory.fireBlockHarvesting(drops, this.level, blockpos, blockstate, 0, 1f, false, null);
-                        if (this.level.random.nextFloat() <= chance) {
-                            for (ItemStack stack : drops) {
-                                //noinspection all
-                                allDrops.add(stack); //addAll is unsupported
-                            }
-                        }
-                    }
-                }
-                block.onBlockExploded(blockstate, this.level, blockpos, this);*/
             }
 
         }

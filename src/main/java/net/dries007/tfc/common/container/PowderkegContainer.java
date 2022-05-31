@@ -6,18 +6,15 @@
 
 package net.dries007.tfc.common.container;
 
-import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
-import net.dries007.tfc.common.capabilities.MoldLike;
+import net.dries007.tfc.common.blocks.LargeVesselBlock;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
-import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import org.jetbrains.annotations.Nullable;
 
 public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntity> implements ButtonHandlerContainer
@@ -45,9 +42,10 @@ public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntit
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
+        if (blockEntity.getBlockState().getValue(PowderkegBlock.SEALED)) return true;
         return switch (typeOf(slotIndex))
             {
-                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack,  PowderkegBlockEntity.SLOT_INPUT_START, PowderkegBlockEntity.SLOT_INPUT_END + 1, false);
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack,  0, PowderkegBlockEntity.SLOTS, false);
                 case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
             };
     }

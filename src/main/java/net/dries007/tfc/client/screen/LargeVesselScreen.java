@@ -8,6 +8,7 @@ package net.dries007.tfc.client.screen;
 
 import java.util.function.Consumer;
 
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -60,10 +61,7 @@ public class LargeVesselScreen extends BlockEntityScreen<LargeVesselBlockEntity,
         super.renderLabels(poseStack, mouseX, mouseY);
         if (isSealed())
         {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
-                // draw disabled texture over the slots
-                menu.slots.stream().filter(slot -> slot.index < LargeVesselBlockEntity.SLOTS).forEach(slot -> fillGradient(poseStack, slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
-            });
+            drawDisabled(poseStack, 0, LargeVesselBlockEntity.SLOTS - 1);
         }
     }
 

@@ -32,8 +32,6 @@ public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, Pow
     public PowderkegScreen(PowderkegContainer container, Inventory playerInventory, Component name)
     {
         super(container, playerInventory, name, BACKGROUND);
-        inventoryLabelY += 0;
-        imageHeight += 0;
     }
 
     @Override
@@ -67,7 +65,7 @@ public class PowderkegScreen extends BlockEntityScreen<PowderkegBlockEntity, Pow
         super.renderLabels(poseStack, mouseX, mouseY);
         if (isSealed())
         {
-            drawDisabled(poseStack, PowderkegBlockEntity.SLOT_INPUT_START, PowderkegBlockEntity.SLOT_INPUT_END);
+            drawDisabled(poseStack, 0, PowderkegBlockEntity.SLOTS - 1);
         }
     }
 }

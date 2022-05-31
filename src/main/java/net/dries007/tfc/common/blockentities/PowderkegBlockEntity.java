@@ -46,9 +46,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 {
 
     private int fuse = -1;
-    private static final int SLOTS = 12;
-    public static final int SLOT_INPUT_START = 0;
-    public static final int SLOT_INPUT_END = 11;
+    public static final int SLOTS = 12;
     private boolean isLit = false;
     private Entity igniter;
 
@@ -58,20 +56,6 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     {
         super(TFCBlockEntities.POWDERKEG.get(), pos, state, PowderkegBlockEntity.PowderkegInventory::new, NAME);
         sidedInventory.on(new PartialItemHandler(inventory).insertAll(), Direction.UP);
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag nbt)
-    {
-        nbt.putLong("sealedTick", 1l);
-        super.saveAdditional(nbt);
-    }
-
-    @Override
-    public void loadAdditional(CompoundTag nbt)
-    {
-        System.out.println(String.valueOf(nbt.getLong("sealedTick")));
-        super.loadAdditional(nbt);
     }
 
     @Nullable
@@ -104,7 +88,13 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     {
         super.ejectInventory();
         assert level != null;
-        inventory.excess.stream().filter(item -> !item.isEmpty()).forEach(item -> Helpers.spawnItem(level, worldPosition, item));
+        for (ItemStack stack : Helpers.iterate(inventory))
+        {
+            if (!stack.isEmpty())
+            {
+                Helpers.spawnItem(level, worldPosition, stack);
+            }
+        }
     }
 
     public void onSeal()
@@ -172,96 +162,39 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 
     private static void explode(PowderkegBlockEntity powderkeg)
     {
+        assert powderkeg.level != null;
         PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
         explosion.explode();
         explosion.finalizeExplosion(true);
     }
 
-    public static class PowderkegInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory
+    public static class PowderkegInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>, EmptyInventory
     {
         private final PowderkegBlockEntity powderkeg;
-        private final InventoryItemHandler inventory;
-        private final List<ItemStack> excess;
-        private boolean mutable; // If the inventory is pretending to be mutable, despite the powderkeg being sealed and preventing extractions / insertions
 
         PowderkegInventory(InventoryBlockEntity<?> entity)
         {
+            super(entity, SLOTS);
             powderkeg = (PowderkegBlockEntity) entity;
-            inventory = new InventoryItemHandler(entity, SLOTS);
-            excess = new ArrayList<>();
-        }
-
-        public void whileMutable(Runnable action)
-        {
-            try
-            {
-                mutable = true;
-                action.run();
-            }
-            finally
-            {
-                mutable = false;
-            }
-        }
-
-        @Override
-        public IItemHandlerModifiable getItemHandler()
-        {
-            return inventory;
         }
 
         @NotNull
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
         {
-            return canModify() ? inventory.insertItem(slot, stack, simulate) : stack;
+            return canModify() ? super.insertItem(slot, stack, simulate) : stack;
         }
 
         @NotNull
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate)
         {
-            return canModify() ? inventory.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
-        }
-
-        @Override
-        public CompoundTag serializeNBT()
-        {
-            final CompoundTag nbt = new CompoundTag();
-            nbt.put("inventory", inventory.serializeNBT());
-
-            if (!excess.isEmpty())
-            {
-                final ListTag excessNbt = new ListTag();
-                for (ItemStack stack : excess)
-                {
-                    excessNbt.add(stack.save(new CompoundTag()));
-                }
-                nbt.put("excess", excessNbt);
-            }
-
-            return nbt;
-        }
-
-        @Override
-        public void deserializeNBT(CompoundTag nbt)
-        {
-            inventory.deserializeNBT(nbt.getCompound("inventory"));
-
-            excess.clear();
-            if (nbt.contains("excess"))
-            {
-                final ListTag excessNbt = nbt.getList("excess", Tag.TAG_COMPOUND);
-                for (int i = 0; i < excessNbt.size(); i++)
-                {
-                    excess.add(ItemStack.of(excessNbt.getCompound(i)));
-                }
-            }
+            return canModify() ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
         }
 
         private boolean canModify()
         {
-            return mutable || !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED);
+            return !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED);
         }
     }
 
