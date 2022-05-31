@@ -45,35 +45,49 @@ import java.util.List;
 public class PowderkegBlockEntity extends TickableInventoryBlockEntity<PowderkegBlockEntity.PowderkegInventory>
 {
 
-    public static final int SLOT_INPUT_START = 0;
-    public static final int SLOT_INPUT_END = 11;
+    public static final int SLOTS = 12;
 
-    private static final int SLOTS = 12;
+    private static final Component NAME = new TranslatableComponent("tfc.block_entity.powderkeg");
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, PowderkegBlockEntity powderkeg)
+    {
+        if (powderkeg.isLit)
+        {
+            --powderkeg.fuse;
+
+            if (powderkeg.fuse <= 0)
+            {
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+                explode(powderkeg);
+            }
+        }
+    }
+
+    public static int getStrength(PowderkegBlockEntity powderkeg)
+    {
+        int count = 0;
+        for (int i = 0; i < powderkeg.inventory.getSlots(); i++)
+        {
+            count += powderkeg.inventory.getStackInSlot(i).getCount();
+        }
+        return count / 12;
+    }
+
+    private static void explode(PowderkegBlockEntity powderkeg)
+    {
+        PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
+        explosion.explode();
+        explosion.finalizeExplosion(true);
+    }
 
     private int fuse = -1;
     private boolean isLit = false;
     private @Nullable Entity igniter;
 
-    private static final Component NAME = new TranslatableComponent("tfc.block_entity.powderkeg");
-
     public PowderkegBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.POWDERKEG.get(), pos, state, PowderkegBlockEntity.PowderkegInventory::new, NAME);
         sidedInventory.on(new PartialItemHandler(inventory).insertAll(), Direction.UP);
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag nbt)
-    {
-        nbt.putLong("sealedTick", 1l);
-        super.saveAdditional(nbt);
-    }
-
-    @Override
-    public void loadAdditional(CompoundTag nbt)
-    {
-        System.out.println(String.valueOf(nbt.getLong("sealedTick")));
-        super.loadAdditional(nbt);
     }
 
     @Nullable
@@ -83,30 +97,11 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         return PowderkegContainer.create(this, player.getInventory(), containerId);
     }
 
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-    {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-        {
-            return sidedInventory.getSidedHandler(side).cast();
-        }
-        return super.getCapability(cap, side);
-    }
-
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
         //TODO: Oredict
         return  stack.is(Items.GUNPOWDER);
-    }
-
-    @Override
-    public void ejectInventory()
-    {
-        super.ejectInventory();
-        assert level != null;
-        inventory.excess.stream().filter(item -> !item.isEmpty()).forEach(item -> Helpers.spawnItem(level, worldPosition, item));
     }
 
     public void onSeal()
@@ -145,65 +140,14 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         markForSync();
     }
 
-    public static void serverTick(Level level, BlockPos pos, BlockState state, PowderkegBlockEntity powderkeg)
-    {
-        if (powderkeg.isLit)
-        {
-            --powderkeg.fuse;
-
-            if (powderkeg.fuse <= 0)
-            {
-                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
-                if (!powderkeg.level.isClientSide())
-                {
-                    explode(powderkeg);
-                }
-            }
-        }
-    }
-
-    public static int getStrength(PowderkegBlockEntity powderkeg)
-    {
-        int count = 0;
-        for (int i = 0; i < powderkeg.inventory.getSlots(); i++)
-        {
-            count += powderkeg.inventory.getStackInSlot(i).getCount();
-        }
-        return count / 12;
-    }
-
-    private static void explode(PowderkegBlockEntity powderkeg)
-    {
-        PowderKegExplosion explosion = new PowderKegExplosion(powderkeg.level, powderkeg.igniter, powderkeg.worldPosition.getX(), powderkeg.worldPosition.getY(), powderkeg.worldPosition.getZ(), getStrength(powderkeg));
-        explosion.explode();
-        explosion.finalizeExplosion(true);
-    }
-
     public static class PowderkegInventory implements DelegateItemHandler, INBTSerializable<CompoundTag>, EmptyInventory
     {
         private final PowderkegBlockEntity powderkeg;
         private final InventoryItemHandler inventory;
-        private final List<ItemStack> excess;
-        private boolean mutable; // If the inventory is pretending to be mutable, despite the powderkeg being sealed and preventing extractions / insertions
-
         PowderkegInventory(InventoryBlockEntity<?> entity)
         {
             powderkeg = (PowderkegBlockEntity) entity;
             inventory = new InventoryItemHandler(entity, SLOTS);
-            excess = new ArrayList<>();
-        }
-
-        public void whileMutable(Runnable action)
-        {
-            try
-            {
-                mutable = true;
-                action.run();
-            }
-            finally
-            {
-                mutable = false;
-            }
         }
 
         @Override
@@ -231,17 +175,6 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         {
             final CompoundTag nbt = new CompoundTag();
             nbt.put("inventory", inventory.serializeNBT());
-
-            if (!excess.isEmpty())
-            {
-                final ListTag excessNbt = new ListTag();
-                for (ItemStack stack : excess)
-                {
-                    excessNbt.add(stack.save(new CompoundTag()));
-                }
-                nbt.put("excess", excessNbt);
-            }
-
             return nbt;
         }
 
@@ -249,21 +182,11 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         public void deserializeNBT(CompoundTag nbt)
         {
             inventory.deserializeNBT(nbt.getCompound("inventory"));
-
-            excess.clear();
-            if (nbt.contains("excess"))
-            {
-                final ListTag excessNbt = nbt.getList("excess", Tag.TAG_COMPOUND);
-                for (int i = 0; i < excessNbt.size(); i++)
-                {
-                    excess.add(ItemStack.of(excessNbt.getCompound(i)));
-                }
-            }
         }
 
         private boolean canModify()
         {
-            return mutable || !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED);
+            return !powderkeg.getBlockState().getValue(PowderkegBlock.SEALED);
         }
     }
 
