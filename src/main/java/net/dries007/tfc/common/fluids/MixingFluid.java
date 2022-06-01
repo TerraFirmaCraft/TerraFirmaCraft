@@ -155,7 +155,7 @@ public abstract class MixingFluid extends ForgeFlowingFluid
         if (!state.isSource())
         {
             // Flowing fluid ticks
-            // Inside this statement, we know we're in a non-waterlogged block, as getFlowing fluids cannot be waterlogged.
+            // Inside this statement, we know we're in a non-waterlogged block, as flowing fluids cannot be waterlogged.
             FluidState fluidAt = getNewLiquid(level, pos, level.getBlockState(pos));
             int spreadDelay = getSpreadDelay(level, pos, state, fluidAt);
             if (fluidAt.isEmpty())

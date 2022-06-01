@@ -293,7 +293,7 @@ public final class FluidHelpers
      */
     public static FluidState getNewFluidWithMixing(FlowingFluid self, LevelReader level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
-        int maxAdjacentFluidAmount = 0; // The maximum height of fluids getFlowing into this block from the sides
+        int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides
         FlowingFluid maxAdjacentFluid = self;
 
         int adjacentSourceBlocks = 0; // How many adjacent source blocks that could convert this into a source block
@@ -358,8 +358,8 @@ public final class FluidHelpers
         }
 
         // At this point, we haven't been able to convert into a source block
-        // Check the block above to see if that is getFlowing downwards into this one (creating a level 8, falling, getFlowing block)
-        // A fluid above, getFlowing down, will always replace an existing fluid block
+        // Check the block above to see if that is flowing downwards into this one (creating a level 8, falling, flowing block)
+        // A fluid above, flowing down, will always replace an existing fluid block
         BlockPos abovePos = pos.above();
         BlockState aboveState = level.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
