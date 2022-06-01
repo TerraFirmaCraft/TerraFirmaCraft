@@ -109,6 +109,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
                 {
                     if (!player.isCreative()) stack.shrink(1);
                     Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
+                    resetCounter();
                 }
             }
             return finishUse(client);
@@ -126,6 +127,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
                 {
                     if (!player.isCreative()) stack.shrink(1);
                     Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
+                    resetCounter();
                 }
             }
             return finishUse(client);
