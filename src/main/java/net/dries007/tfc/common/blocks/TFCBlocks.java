@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks;
 
-import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -60,6 +59,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.registry.RegistrationHelpers;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -162,11 +162,11 @@ public final class TFCBlocks
         ))
     );
 
-    public static final Map<Rock, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+    public static final Map<Rock, RegistryObject<Block>> ROCK_ANVILS = Helpers.mapOfKeys(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
         register("rock/anvil/" + rock.name(), () -> new RockAnvilBlock(ExtendedProperties.of(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2, 10).requiresCorrectToolForDrops()).blockEntity(TFCBlockEntities.ANVIL), TFCBlocks.ROCK_BLOCKS.get(rock).get(Rock.BlockType.RAW)), ROCK_STUFFS)
     );
 
-    public static final Map<Rock, RegistryObject<Block>> MAGMA_BLOCKS = Helpers.mapOfKeys(Rock.class, rock -> rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
+    public static final Map<Rock, RegistryObject<Block>> MAGMA_BLOCKS = Helpers.mapOfKeys(Rock.class, rock -> rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE, rock ->
         register("rock/magma/" + rock.name(), () -> new TFCMagmaBlock(Properties.of(Material.STONE, MaterialColor.NETHER).requiresCorrectToolForDrops().lightLevel(s -> 6).randomTicks().strength(0.5F).isValidSpawn((state, level, pos, type) -> type.fireImmune()).hasPostProcess(TFCBlocks::always)), ROCK_STUFFS)
     );
 
@@ -321,23 +321,23 @@ public final class TFCBlocks
     // Fluids
 
     public static final Map<Metal.Default, RegistryObject<LiquidBlock>> METAL_FLUIDS = Helpers.mapOfKeys(Metal.Default.class, metal ->
-        register("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).getSecond(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
+        register("fluid/metal/" + metal.name(), () -> new LiquidBlock(TFCFluids.METALS.get(metal).source(), Properties.of(TFCMaterials.MOLTEN_METAL).noCollission().strength(100f).noDrops()))
     );
 
     public static final Map<SimpleFluid, RegistryObject<LiquidBlock>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid ->
-        register("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).getSecond(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
+        register("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.SIMPLE_FLUIDS.get(fluid).source(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
     );
 
     public static final Map<DyeColor, RegistryObject<LiquidBlock>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, fluid ->
-        register("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).getSecond(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
+        register("fluid/" + fluid.getName() + "_dye", () -> new LiquidBlock(TFCFluids.COLORED_FLUIDS.get(fluid).source(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
     );
 
     public static final Map<Alcohol, RegistryObject<LiquidBlock>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid ->
-        register("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.ALCOHOLS.get(fluid).getSecond(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
+        register("fluid/" + fluid.getId(), () -> new LiquidBlock(TFCFluids.ALCOHOLS.get(fluid).source(), Properties.of(Material.WATER).noCollission().strength(100f).noDrops()))
     );
 
-    public static final RegistryObject<LiquidBlock> SALT_WATER = register("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.getSecond(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));
-    public static final RegistryObject<LiquidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.getSecond(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
+    public static final RegistryObject<LiquidBlock> SALT_WATER = register("fluid/salt_water", () -> new LiquidBlock(TFCFluids.SALT_WATER.flowing(), Properties.of(TFCMaterials.SALT_WATER).noCollission().strength(100f).noDrops()));
+    public static final RegistryObject<LiquidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.source(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
 
     public static final RegistryObject<RiverWaterBlock> RIVER_WATER = register("fluid/river_water", () -> new RiverWaterBlock(BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()));
 
@@ -383,12 +383,6 @@ public final class TFCBlocks
 
     private static <T extends Block> RegistryObject<T> register(String name, Supplier<T> blockSupplier, @Nullable Function<T, ? extends BlockItem> blockItemFactory)
     {
-        final String actualName = name.toLowerCase(Locale.ROOT);
-        final RegistryObject<T> block = BLOCKS.register(actualName, blockSupplier);
-        if (blockItemFactory != null)
-        {
-            TFCItems.ITEMS.register(actualName, () -> blockItemFactory.apply(block.get()));
-        }
-        return block;
+        return RegistrationHelpers.registerBlock(TFCBlocks.BLOCKS, TFCItems.ITEMS, name, blockSupplier, blockItemFactory);
     }
 }
