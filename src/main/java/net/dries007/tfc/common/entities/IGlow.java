@@ -66,7 +66,7 @@ public interface IGlow
         {
             final BlockPos oldPos = getLightPos();
             final BlockPos currentPos = entity.blockPosition();
-            final boolean initialized = oldPos != BlockPos.ZERO;
+            final boolean initialized = !oldPos.equals(BlockPos.ZERO);
             if (oldPos.distSqr(currentPos) > getLightUpdateDistanceSqr() || !initialized)
             {
                 if (initialized && entity.level.hasChunkAt(oldPos))
