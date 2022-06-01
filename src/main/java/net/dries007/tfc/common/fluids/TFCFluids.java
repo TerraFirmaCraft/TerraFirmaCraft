@@ -8,31 +8,26 @@ package net.dries007.tfc.common.fluids;
 
 import java.awt.*;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.registry.RegistrationHelpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -62,7 +57,7 @@ public final class TFCFluids
     /**
      * Fluid instances
      */
-    public static final Map<Metal.Default, FluidPair<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
+    public static final Map<Metal.Default, FlowingFluidRegistryObject<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
         "metal/" + metal.getSerializedName(),
         "metal/flowing_" + metal.getSerializedName(),
         properties -> properties.block(TFCBlocks.METAL_FLUIDS.get(metal)).bucket(TFCItems.METAL_FLUID_BUCKETS.get(metal)).explosionResistance(100),
@@ -79,11 +74,11 @@ public final class TFCFluids
         MoltenFluid.Flowing::new
     ));
 
-    public static final FluidPair<ForgeFlowingFluid> SALT_WATER = register(
+    public static final FlowingFluidRegistryObject<ForgeFlowingFluid> SALT_WATER = register(
         "salt_water",
         "flowing_salt_water",
         properties -> properties.block(TFCBlocks.SALT_WATER).bucket(TFCItems.SALT_WATER_BUCKET).canMultiply(),
-        builder(WATER_STILL, WATER_FLOW, SaltWaterAttributes::new)
+        new FluidAttributes.Builder(WATER_STILL, WATER_FLOW, SaltWaterAttributes::new) {}
             .translationKey("fluid.tfc.salt_water")
             .overlay(WATER_OVERLAY)
             .color(ALPHA_MASK | 0x3F76E4)
@@ -92,7 +87,7 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     );
 
-    public static final FluidPair<ForgeFlowingFluid> SPRING_WATER = register(
+    public static final FlowingFluidRegistryObject<ForgeFlowingFluid> SPRING_WATER = register(
         "spring_water",
         "flowing_spring_water",
         properties -> properties.block(TFCBlocks.SPRING_WATER).bucket(TFCItems.SPRING_WATER_BUCKET),
@@ -107,7 +102,7 @@ public final class TFCFluids
 
     public static final RegistryObject<RiverWaterFluid> RIVER_WATER = register("river_water", RiverWaterFluid::new);
 
-    public static final Map<SimpleFluid, FluidPair<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
+    public static final Map<SimpleFluid, FlowingFluidRegistryObject<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
         fluid.getId(),
         "flowing_" + fluid.getId(),
         properties -> properties.block(TFCBlocks.SIMPLE_FLUIDS.get(fluid)).bucket(TFCItems.SIMPLE_FLUID_BUCKETS.get(fluid)),
@@ -120,7 +115,7 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     ));
 
-    public static final Map<Alcohol, FluidPair<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
+    public static final Map<Alcohol, FlowingFluidRegistryObject<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
         fluid.getId(),
         "flowing_" + fluid.getId(),
         properties -> properties.block(TFCBlocks.ALCOHOLS.get(fluid)).bucket(TFCItems.ALCOHOL_BUCKETS.get(fluid)),
@@ -133,7 +128,7 @@ public final class TFCFluids
         MixingFluid.Flowing::new
     ));
 
-    public static final Map<DyeColor, FluidPair<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> {
+    public static final Map<DyeColor, FlowingFluidRegistryObject<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> {
         float[] colors = color.getTextureDiffuseColors();
         return register(
             color.getName() + "_dye",
@@ -158,28 +153,14 @@ public final class TFCFluids
      * @param attributes  Fluid attributes
      * @return The registered fluid
      */
-    private static FluidPair<ForgeFlowingFluid> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes)
+    private static FlowingFluidRegistryObject<ForgeFlowingFluid> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes)
     {
-        return register(sourceName, flowingName, builder, attributes, ForgeFlowingFluid.Source::new, ForgeFlowingFluid.Flowing::new);
+        return RegistrationHelpers.registerFluid(FLUIDS, sourceName, flowingName, builder, attributes);
     }
 
-    private static <F extends FlowingFluid> FluidPair<F> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
+    private static <F extends FlowingFluid> FlowingFluidRegistryObject<F> register(String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
     {
-        // The properties needs a reference to both source and flowing
-        // In addition, the properties builder cannot be invoked statically, as it has hard references to registry objects, which may not be populated based on class load order - it must be invoked at registration time.
-        // So, first we prepare the source and flowing registry objects, referring to the properties box (which will be opened during registration, which is ok)
-        // Then, we populate the properties box lazily, (since it's a mutable lazy), so the properties inside are only constructed when the box is opened (again, during registration)
-        final Mutable<Lazy<ForgeFlowingFluid.Properties>> propertiesBox = new MutableObject<>();
-        final RegistryObject<F> source = register(sourceName, () -> sourceFactory.apply(propertiesBox.getValue().get()));
-        final RegistryObject<F> flowing = register(flowingName, () -> flowingFactory.apply(propertiesBox.getValue().get()));
-
-        propertiesBox.setValue(Lazy.of(() -> {
-            ForgeFlowingFluid.Properties lazyProperties = new ForgeFlowingFluid.Properties(source, flowing, attributes);
-            builder.accept(lazyProperties);
-            return lazyProperties;
-        }));
-
-        return new FluidPair<>(flowing, source);
+        return RegistrationHelpers.registerFluid(FLUIDS, sourceName, flowingName, builder, attributes, sourceFactory, flowingFactory);
     }
 
     private static <F extends Fluid> RegistryObject<F> register(String name, Supplier<F> factory)
@@ -187,37 +168,4 @@ public final class TFCFluids
         return FLUIDS.register(name, factory);
     }
 
-    /**
-     * Helper for the stupid protected constructor on {@link FluidAttributes.Builder}
-     */
-    private static FluidAttributes.Builder builder(ResourceLocation stillTexture, ResourceLocation flowingTexture, BiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory)
-    {
-        return new FluidAttributes.Builder(stillTexture, flowingTexture, factory) {};
-    }
-
-    /**
-     * This exists for simpler labels and type parameters
-     */
-    public static class FluidPair<F extends FlowingFluid> extends Pair<RegistryObject<F>, RegistryObject<F>>
-    {
-        private FluidPair(RegistryObject<F> first, RegistryObject<F> second)
-        {
-            super(first, second);
-        }
-
-        public F getFlowing()
-        {
-            return getFirst().get();
-        }
-
-        public F getSource()
-        {
-            return getSecond().get();
-        }
-
-        public BlockState getSourceBlock()
-        {
-            return getSource().defaultFluidState().createLegacyBlock();
-        }
-    }
 }

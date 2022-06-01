@@ -12,7 +12,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.core.Direction;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -23,7 +22,6 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.LoomBlockEntity;
@@ -37,51 +35,52 @@ import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.items.ChestBlockItem;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryWood;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Default wood types used for block registration calls
+ * Default wood types used for block registration calls.
+ *
+ * @see RegistryWood for addon support, to use {@link BlockType}.
  */
-public enum Wood implements StringRepresentable
+public enum Wood implements RegistryWood
 {
-    ACACIA(false, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 7, 11),
-    ASH(false, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_ORANGE, 8, 7),
-    ASPEN(false, MaterialColor.TERRACOTTA_GREEN, MaterialColor.TERRACOTTA_GREEN, MaterialColor.TERRACOTTA_WHITE, 7, 8),
-    BIRCH(false, MaterialColor.COLOR_BROWN, MaterialColor.COLOR_BROWN, MaterialColor.TERRACOTTA_WHITE, 7, 7),
-    BLACKWOOD(false, MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BROWN, 7, 8),
-    CHESTNUT(false, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, MaterialColor.COLOR_LIGHT_GREEN, 8, 7),
-    DOUGLAS_FIR(false, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_BROWN, 7, 7),
-    HICKORY(false, MaterialColor.TERRACOTTA_BROWN, MaterialColor.TERRACOTTA_BROWN, MaterialColor.COLOR_GRAY, 7, 10),
-    KAPOK(true, MaterialColor.COLOR_PINK, MaterialColor.COLOR_PINK, MaterialColor.COLOR_BROWN, 8, 7),
-    MAPLE(false, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE, MaterialColor.TERRACOTTA_GRAY, 8, 7),
-    OAK(false, MaterialColor.WOOD, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 8, 10),
-    PALM(true, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_BROWN, 7, 7),
-    PINE(true, MaterialColor.TERRACOTTA_GRAY, MaterialColor.TERRACOTTA_GRAY, MaterialColor.COLOR_GRAY, 7, 7),
-    ROSEWOOD(false, MaterialColor.COLOR_RED, MaterialColor.COLOR_RED, MaterialColor.TERRACOTTA_LIGHT_GRAY, 9, 8),
-    SEQUOIA(true, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, 7, 18),
-    SPRUCE(true, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_BLACK, 7, 7),
-    SYCAMORE(false, MaterialColor.COLOR_YELLOW, MaterialColor.COLOR_YELLOW, MaterialColor.TERRACOTTA_LIGHT_GREEN, 7, 8),
-    WHITE_CEDAR(true, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 7, 7),
-    WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 7, 11);
+    ACACIA(false, MaterialColor.TERRACOTTA_ORANGE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 7, 11),
+    ASH(false, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_ORANGE, 8, 7),
+    ASPEN(false, MaterialColor.TERRACOTTA_GREEN, MaterialColor.TERRACOTTA_WHITE, 7, 8),
+    BIRCH(false, MaterialColor.COLOR_BROWN, MaterialColor.TERRACOTTA_WHITE, 7, 7),
+    BLACKWOOD(false, MaterialColor.COLOR_BLACK, MaterialColor.COLOR_BROWN, 7, 8),
+    CHESTNUT(false, MaterialColor.TERRACOTTA_RED, MaterialColor.COLOR_LIGHT_GREEN, 8, 7),
+    DOUGLAS_FIR(false, MaterialColor.TERRACOTTA_YELLOW, MaterialColor.TERRACOTTA_BROWN, 7, 7),
+    HICKORY(false, MaterialColor.TERRACOTTA_BROWN, MaterialColor.COLOR_GRAY, 7, 10),
+    KAPOK(true, MaterialColor.COLOR_PINK, MaterialColor.COLOR_BROWN, 8, 7),
+    MAPLE(false, MaterialColor.COLOR_ORANGE, MaterialColor.TERRACOTTA_GRAY, 8, 7),
+    OAK(false, MaterialColor.WOOD, MaterialColor.COLOR_BROWN, 8, 10),
+    PALM(true, MaterialColor.COLOR_ORANGE, MaterialColor.COLOR_BROWN, 7, 7),
+    PINE(true, MaterialColor.TERRACOTTA_GRAY, MaterialColor.COLOR_GRAY, 7, 7),
+    ROSEWOOD(false, MaterialColor.COLOR_RED, MaterialColor.TERRACOTTA_LIGHT_GRAY, 9, 8),
+    SEQUOIA(true, MaterialColor.TERRACOTTA_RED, MaterialColor.TERRACOTTA_RED, 7, 18),
+    SPRUCE(true, MaterialColor.TERRACOTTA_PINK, MaterialColor.TERRACOTTA_BLACK, 7, 7),
+    SYCAMORE(false, MaterialColor.COLOR_YELLOW, MaterialColor.TERRACOTTA_LIGHT_GREEN, 7, 8),
+    WHITE_CEDAR(true, MaterialColor.TERRACOTTA_WHITE, MaterialColor.TERRACOTTA_LIGHT_GRAY, 7, 7),
+    WILLOW(false, MaterialColor.COLOR_GREEN, MaterialColor.TERRACOTTA_BROWN, 7, 11);
 
     public static final Wood[] VALUES = values();
 
     private final String serializedName;
     private final boolean conifer;
-    private final MaterialColor mainColor;
-    private final MaterialColor topColor;
+    private final MaterialColor woodColor;
     private final MaterialColor barkColor;
     private final TFCTreeGrower tree;
     private final int maxDecayDistance;
     private final int daysToGrow;
 
-    Wood(boolean conifer, MaterialColor mainColor, MaterialColor topColor, MaterialColor barkColor, int maxDecayDistance, int daysToGrow)
+    Wood(boolean conifer, MaterialColor woodColor, MaterialColor barkColor, int maxDecayDistance, int daysToGrow)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.conifer = conifer;
-        this.mainColor = mainColor;
-        this.topColor = topColor;
+        this.woodColor = woodColor;
         this.barkColor = barkColor;
         this.tree = new TFCTreeGrower(Helpers.identifier("tree/" + serializedName), Helpers.identifier("tree/" + serializedName + "_large"));
         this.maxDecayDistance = maxDecayDistance;
@@ -99,45 +98,51 @@ public enum Wood implements StringRepresentable
         return conifer;
     }
 
-    public TFCTreeGrower getTree()
+    @Override
+    public MaterialColor woodColor()
     {
-        return tree;
+        return woodColor;
     }
 
-    public int getMaxDecayDistance()
-    {
-        return maxDecayDistance;
-    }
-
-    public MaterialColor getMainColor()
-    {
-        return mainColor;
-    }
-
-    public MaterialColor getTopColor()
-    {
-        return topColor;
-    }
-
-    public MaterialColor getBarkColor()
+    @Override
+    public MaterialColor barkColor()
     {
         return barkColor;
     }
 
-    public int getDaysToGrow()
+    @Override
+    public TFCTreeGrower tree()
+    {
+        return tree;
+    }
+
+    @Override
+    public int maxDecayDistance()
+    {
+        return maxDecayDistance;
+    }
+
+    @Override
+    public int daysToGrow()
     {
         return daysToGrow;
     }
 
+    @Override
+    public Supplier<Block> getBlock(BlockType type)
+    {
+        return TFCBlocks.WOODS.get(this).get(type);
+    }
+
     public enum BlockType
     {
-        LOG((self, wood) -> new LogBlock(fire(Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), getBlock(self.stripped(), wood)), false),
-        STRIPPED_LOG(wood -> new LogBlock(fire(Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.getTopColor() : wood.getBarkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), null), false),
-        WOOD((self, wood) -> new LogBlock(fire(properties(wood).strength(2.0F).requiresCorrectToolForDrops()), getBlock(self.stripped(), wood)), false),
+        LOG((self, wood) -> new LogBlock(fire(Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.woodColor() : wood.barkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), wood.getBlock(self.stripped())), false),
+        STRIPPED_LOG(wood -> new LogBlock(fire(Properties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.woodColor() : wood.barkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops()), null), false),
+        WOOD((self, wood) -> new LogBlock(fire(properties(wood).strength(2.0F).requiresCorrectToolForDrops()), wood.getBlock(self.stripped())), false),
         STRIPPED_WOOD(wood -> new LogBlock(fire(properties(wood).strength(2.0F).requiresCorrectToolForDrops()), null), false),
-        LEAVES(wood -> TFCLeavesBlock.create(fire(Properties.of(Material.LEAVES, wood.getMainColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().isViewBlocking(TFCBlocks::never)), wood.getMaxDecayDistance()), false),
+        LEAVES(wood -> TFCLeavesBlock.create(fire(Properties.of(Material.LEAVES, wood.woodColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().isViewBlocking(TFCBlocks::never)), wood.maxDecayDistance()), false),
         PLANKS(wood -> new ExtendedBlock(fire(properties(wood).strength(2.0F, 3.0F))), false),
-        SAPLING(wood -> new TFCSaplingBlock(wood.getTree(), fire(Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER), wood.getDaysToGrow()), false),
+        SAPLING(wood -> new TFCSaplingBlock(wood.tree(), fire(Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER), wood.daysToGrow()), false),
         BOOKSHELF(wood -> new ExtendedBlock(fire(properties(wood).strength(2.0F, 3.0F))), true),
         DOOR(wood -> new TFCDoorBlock(fire(properties(wood).strength(3.0F).noOcclusion())), true),
         TRAPDOOR(wood -> new TFCTrapDoorBlock(fire(properties(wood).strength(3.0F).noOcclusion())), true),
@@ -147,7 +152,7 @@ public enum Wood implements StringRepresentable
         BUTTON(wood -> new TFCWoodButtonBlock(fire(Properties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD))), true),
         PRESSURE_PLATE(wood -> new TFCPressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, fire(properties(wood).noCollission().strength(0.5F).sound(SoundType.WOOD))), true),
         SLAB(wood -> new TFCSlabBlock(fire(properties(wood).strength(2.0F, 3.0F))), true),
-        STAIRS(wood -> new TFCStairBlock(() -> getBlock(PLANKS, wood).get().defaultBlockState(), fire(properties(wood).strength(2.0F, 3.0F).sound(SoundType.WOOD))), true),
+        STAIRS(wood -> new TFCStairBlock(() -> wood.getBlock(PLANKS).get().defaultBlockState(), fire(properties(wood).strength(2.0F, 3.0F).sound(SoundType.WOOD))), true),
         TOOL_RACK(wood -> new ToolRackBlock(fire(properties(wood).strength(2.0F).noOcclusion()).blockEntity(TFCBlockEntities.TOOL_RACK)), true),
         TWIG(wood -> GroundcoverBlock.twig(fire(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noCollission())), false),
         FALLEN_LEAVES(wood -> new FallenLeavesBlock(fire(Properties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP))), false),
@@ -156,45 +161,38 @@ public enum Wood implements StringRepresentable
         WORKBENCH(wood -> new TFCCraftingTableBlock(fire(properties(wood).strength(2.5F)).flammable(60, 30)), true),
         TRAPPED_CHEST((self, wood) -> new TFCTrappedChestBlock(fire(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.TRAPPED_CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
         CHEST((self, wood) -> new TFCChestBlock(fire(properties(wood).strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.CHEST).clientTicks(ChestBlockEntity::lidAnimateTick), wood.getSerializedName()), false, ChestBlockItem::new),
-        LOOM(wood -> new TFCLoomBlock(fire(properties(wood).strength(2.5F).noOcclusion()).flammable(60, 30).blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.name().toLowerCase(Locale.ROOT))), true),
+        LOOM(wood -> new TFCLoomBlock(fire(properties(wood).strength(2.5F).noOcclusion()).flammable(60, 30).blockEntity(TFCBlockEntities.LOOM).ticks(LoomBlockEntity::tick), Helpers.identifier("block/wood/planks/" + wood.getSerializedName())), true),
         SLUICE(wood -> new SluiceBlock(fire(properties(wood).strength(3F).noOcclusion()).flammable(30, 30).blockEntity(TFCBlockEntities.SLUICE).serverTicks(SluiceBlockEntity::serverTick)), false),
-        SIGN(wood -> new TFCStandingSignBlock(fire(properties(wood).noCollission().strength(1F)).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
-        WALL_SIGN(wood -> new TFCWallSignBlock(fire(properties(wood).noCollission().strength(1F).lootFrom(getBlock(SIGN, wood))).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN), wood), true),
+        SIGN(wood -> new TFCStandingSignBlock(fire(properties(wood).noCollission().strength(1F)).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN)), true),
+        WALL_SIGN(wood -> new TFCWallSignBlock(fire(properties(wood).noCollission().strength(1F).lootFrom(wood.getBlock(SIGN))).flammable(60, 30).blockEntity(TFCBlockEntities.SIGN)), true),
         BARREL((self, wood) -> new BarrelBlock(fire(properties(wood).strength(2.5f)).flammable(60, 30).blockEntity(TFCBlockEntities.BARREL).serverTicks(BarrelBlockEntity::serverTick)), false),
         LECTERN(wood -> new TFCLecternBlock(ExtendedProperties.of(properties(wood).noCollission().strength(2.5F)).flammable(60, 30).blockEntity(TFCBlockEntities.LECTERN)), false),
         SCRIBING_TABLE(wood -> new ScribingTableBlock(ExtendedProperties.of(properties(wood).noOcclusion().strength(2.5F)).flammable(60, 30)), false);
 
-        public static final BlockType[] VALUES = values();
-
-        public static BlockType valueOf(int i)
+        private static Properties properties(RegistryWood wood)
         {
-            return i >= 0 && i < VALUES.length ? VALUES[i] : LOG;
+            return Properties.of(Material.WOOD, wood.woodColor()).sound(SoundType.WOOD);
         }
 
-        private final BiFunction<BlockType, Wood, Block> blockFactory;
         private final BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory;
         private final boolean isPlanksVariant;
+        private final BiFunction<BlockType, RegistryWood, Block> blockFactory;
 
-        BlockType(Function<Wood, Block> blockFactory, boolean isPlanksVariant)
+        BlockType(Function<RegistryWood, Block> blockFactory, boolean isPlanksVariant)
         {
             this((self, wood) -> blockFactory.apply(wood), isPlanksVariant);
         }
 
-        BlockType(BiFunction<BlockType, Wood, Block> blockFactory, boolean isPlanksVariant)
+        BlockType(BiFunction<BlockType, RegistryWood, Block> blockFactory, boolean isPlanksVariant)
         {
             this(blockFactory, isPlanksVariant, BlockItem::new);
         }
 
-        BlockType(BiFunction<BlockType, Wood, Block> blockFactory, boolean isPlanksVariant, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
+        BlockType(BiFunction<BlockType, RegistryWood, Block> blockFactory, boolean isPlanksVariant, BiFunction<Block, Item.Properties, ? extends BlockItem> blockItemFactory)
         {
             this.blockFactory = blockFactory;
             this.isPlanksVariant = isPlanksVariant;
             this.blockItemFactory = blockItemFactory;
-        }
-
-        public Supplier<Block> create(Wood wood)
-        {
-            return () -> blockFactory.apply(this, wood);
         }
 
         @Nullable
@@ -224,19 +222,14 @@ public enum Wood implements StringRepresentable
                 };
         }
 
-        private static Properties properties(Wood wood)
+        public Supplier<Block> create(RegistryWood wood)
         {
-            return Properties.of(Material.WOOD, wood.getMainColor()).sound(SoundType.WOOD);
+            return () -> blockFactory.apply(this, wood);
         }
 
         private static ExtendedProperties fire(Properties properties)
         {
             return ExtendedProperties.of(properties).flammable(60, 30);
-        }
-
-        private static RegistryObject<Block> getBlock(BlockType type, Wood wood)
-        {
-            return TFCBlocks.WOODS.get(wood).get(type);
         }
     }
 }

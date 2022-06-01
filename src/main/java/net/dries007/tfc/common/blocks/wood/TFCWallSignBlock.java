@@ -39,9 +39,9 @@ public class TFCWallSignBlock extends AbstractSignBlock
         Direction.WEST, Block.box(14.0D, 4.5D, 0.0D, 16.0D, 12.5D, 16.0D)
     ));
 
-    public TFCWallSignBlock(ExtendedProperties properties, Wood wood)
+    public TFCWallSignBlock(ExtendedProperties properties)
     {
-        super(properties, wood);
+        super(properties);
         registerDefaultState(getStateDefinition().any().setValue(FACING, Direction.NORTH).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
     }
 
