@@ -2,6 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:drinkable_ingredients"
+    "#minecraft:water",
+    "#tfc:alcohols",
+    "#tfc:milks"
   ]
 }

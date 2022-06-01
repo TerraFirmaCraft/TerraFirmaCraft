@@ -1422,10 +1422,8 @@ def generate(rm: ResourceManager):
         water_based_fluid(rm, fluid)
     for fluid in ALCOHOLS:
         water_based_fluid(rm, fluid)
-        rm.fluid_tag('alcohols', 'tfc:%s' % fluid)
     for color in COLORS:
         water_based_fluid(rm, color + '_dye')
-        rm.fluid_tag('dye_fluids', 'tfc:%s_dye' % color)
 
     # River water, since it doesn't have a bucket
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
