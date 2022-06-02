@@ -4,5 +4,6 @@
   "landing_text": "tfc.field_guide.book_landing_text",
   "subtitle": "TFC_VERSION",
   "dont_generate_book": true,
-  "show_progress": false
+  "show_progress": false,
+  "macros": {}
 }

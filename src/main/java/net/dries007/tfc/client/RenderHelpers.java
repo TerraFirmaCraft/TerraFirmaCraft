@@ -9,6 +9,7 @@ package net.dries007.tfc.client;
 import java.util.function.Consumer;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -26,6 +27,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
@@ -434,9 +436,37 @@ public final class RenderHelpers
         return animal.getAgeType() == TFCAnimalProperties.Age.OLD ? old : young;
     }
 
+    public static TextureAtlasSprite getAndBindFluidSprite(FluidStack fluid)
+    {
+        setShaderColor(getFluidColor(fluid));
+        RenderSystem.setShaderTexture(0, InventoryMenu.BLOCK_ATLAS);
+        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluid.getFluid().getAttributes().getStillTexture(fluid));
+    }
+
+    public static void fillAreaWithSprite(int left, int top, TextureAtlasSprite sprite, PoseStack poseStack, int startX, int endX, int endY, int fillHeight)
+    {
+        int yPos = endY;
+        while (fillHeight > 0)
+        {
+            int yPixels = Math.min(fillHeight, 16);
+            int fillWidth = endX - startX;
+            int xPos = endX;
+            while (fillWidth > 0)
+            {
+                int xPixels = Math.min(fillWidth, 16);
+                GuiComponent.blit(poseStack, left + xPos - xPixels, top + yPos - yPixels, 0, xPixels, yPixels, sprite);
+                fillWidth -= 16;
+                xPos -= 16;
+            }
+            fillHeight -= 16;
+            yPos -= 16;
+        }
+    }
+
     public static Button.OnTooltip makeButtonTooltip(Screen screen, Component component)
     {
-        return new Button.OnTooltip() {
+        return new Button.OnTooltip()
+        {
             @Override
             public void onTooltip(Button button, PoseStack poseStack, int mouseX, int mouseY)
             {

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Introduction",
   "category": "patchouli:getting_started",
-  "icon": "",
+  "icon": "tfc:rock/loose/granite",
   "pages": [
     {
       "type": "patchouli:text",
@@ -64,7 +64,7 @@
         "tfc:rock_knapping/knife_head_metamorphic",
         "tfc:rock_knapping/knife_head_sedimentary"
       ],
-      "text": "Hi"
+      "text": "A knife blade, crafted from several different rock types."
     },
     {
       "type": "patchouli:crafting",

@@ -10,11 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep oceans.$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as lowlands, low canyons, or plains are common."
+      "text": "Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:biomes#lowlands)Lowlands$(), $(l:biomes#low_canyons)Low Canyons$(), or $(l:biomes#plains)Plains$() are common."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with rolling hills, plateaus, and old mountain biomes.$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other."
+      "text": "$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with $(l:biomes#hills)Rolling Hills$(), $(l:biomes#plateau)Plateaus$(), and $(l:biomes#mountains)Old Mountains$().$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other."
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of canyons biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall mountains and plateaus."
+      "text": "$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of $(l:biomes#canyons)Canyons$() biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall $(l:biomes#mountains)Mountains$() and $(l:biomes#plateau)Plateaus$()."
     },
     {
       "type": "patchouli:text",

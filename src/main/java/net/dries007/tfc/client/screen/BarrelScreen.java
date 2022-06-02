@@ -21,6 +21,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.BarrelSealButton;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
@@ -106,12 +107,12 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty())
             {
-                final TextureAtlasSprite sprite = getAndBindFluidSprite(fluidStack);
+                final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluidStack);
                 final int startY = 20;
                 final int endY = 70;
                 final int fillHeight = (int) Math.ceil((float) (endY - startY) * fluidStack.getAmount() / (float) TFCConfig.SERVER.barrelCapacity.get());
 
-                fillAreaWithSprite(sprite, poseStack, 8, 24, endY, fillHeight);
+                RenderHelpers.fillAreaWithSprite(leftPos, topPos, sprite, poseStack, 8, 24, endY, fillHeight);
 
                 resetToBackgroundSprite();
             }

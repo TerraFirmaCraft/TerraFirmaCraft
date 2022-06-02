@@ -10,15 +10,20 @@ import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 import net.minecraft.ResourceLocationException;
+import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.fluids.FluidStack;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.RenderHelpers;
 import org.slf4j.Logger;
 import vazkii.patchouli.api.IComponentRenderContext;
 import vazkii.patchouli.api.ICustomComponent;
@@ -43,6 +48,23 @@ public abstract class CustomComponent implements ICustomComponent
 
     @Override
     public void onVariablesAvailable(UnaryOperator<IVariable> lookup) {}
+
+    protected void renderSetup(PoseStack poseStack)
+    {
+        poseStack.pushPose();
+        poseStack.translate(x, y, 0);
+
+        RenderSystem.enableBlend();
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.setShaderTexture(0, PatchouliIntegration.TEXTURE);
+    }
+
+    protected void renderFluidStack(PoseStack stack, FluidStack fluid, int x, int y)
+    {
+        if (fluid.isEmpty()) return;
+        final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluid);
+        GuiComponent.blit(stack, x, y, 0, 16, 16, sprite);
+    }
 
     @SuppressWarnings("unchecked")
     protected <T extends Recipe<?>> Optional<T> asRecipe(String variable, RecipeType<T> type)

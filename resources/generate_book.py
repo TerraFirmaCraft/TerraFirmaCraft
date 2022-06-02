@@ -77,7 +77,7 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
     Simply copy the /assets/tfc/textures/gui/book directory from /src/ into a different folder so you ONLY get those assets in the reloadable resource pack (makes things much faster)
 
     """
-    book = Book(rm, root)
+    book = Book(rm, root, {})
 
     book.template('rock_knapping_recipe', custom_component(0, 0, 'RockKnappingComponent', {'recipes': '#recipes'}), text_component(0, 99))
     book.template('clay_knapping_recipe', custom_component(0, 0, 'ClayKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
@@ -92,15 +92,23 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             text('The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found.'),
             text('The next few pages show a few (but not all) of the biomes that you might find in the world.'),
             text('Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or they may be forested.', title='Plains'),
-            image('tfc:textures/gui/book/biomes/plains.png', text_contents='A Plains.'),
-            text('Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.', title='Hills & Rolling Hills'),
+            image('tfc:textures/gui/book/biomes/plains.png', text_contents='A Plains.').anchor('plains'),
+            text('Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.', title='Hills & Rolling Hills').anchor('hills'),
             image('tfc:textures/gui/book/biomes/rolling_hills_with_river.png', text_contents='A Rolling Hills with a river winding through it.'),
-            text('Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.', title='Badlands'),
+            text('Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.', title='Badlands').anchor('badlands'),
             image('tfc:textures/gui/book/biomes/badlands.png', text_contents='A Badlands.'),
-            text('In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.', title='Mountains'),
+            text('', title='Plateaus').anchor('plateau'),
+            empty(),  # todo: plateau
+            text('In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.', title='Mountains').anchor('mountains'),
             image('tfc:textures/gui/book/biomes/old_mountains.png', text_contents='An Old Mountains with a hot spring on the snowy slopes.'),
-            text('In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.', title='Lowlands'),
-            image('tfc:textures/gui/book/biomes/lowlands.png', text_contents='A Lowlands.')
+            text('In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.', title='Lowlands').anchor('lowlands'),
+            image('tfc:textures/gui/book/biomes/lowlands.png', text_contents='A Lowlands.'),
+            text('', title='Low Canyons').anchor('low_canyons'),
+            empty(),  # todo: low canyons
+            text('', title='Canyons').anchor('canyons'),
+            empty(),  # todo: canyons
+            text('', title='Oceans').anchor('ocean'),
+            empty(),  # todo: ocean
         )),
         entry('waterways', 'Where the River Flows', '', pages=(
             # Overview of rivers, oceans, and lakes
@@ -108,7 +116,7 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             # Resources found in rivers + lakes: ore deposits and other gem ores
             text('While exploring, you might come across large bodies of water: rivers, lakes, or vast oceans. Rivers and lakes contain $(thing)freshwater$(), while oceans contain $(thing)saltwater$(). Drinking freshwater can restore your thirst, however drinking saltwater will deplete it over time.'),
             image('tfc:textures/gui/book/biomes/river.png', text_contents='A river.'),
-            text('Rivers in TerraFirmaCraft have $(thing)current$(). They will push along items, players, and entities the same as flowing water. River currents will ultimately lead out to the ocean, joining up with other branches along the way. Occasionally, rivers will also disappear underground, and there have even been rare sightings of vast cavernous underground lakes, but will always find their way to the ocean eventually.'),
+            text('Rivers in TerraFirmaCraft have $(thing)current$(). They will push along items, players, and entities the same as flowing water. River currents will ultimately lead out to $(l:biomes#ocean)Oceans$(), joining up with other branches along the way. Occasionally, rivers will also disappear underground, and there have even been rare sightings of vast cavernous underground lakes, but will always find their way to the ocean eventually.'),
             image('tfc:textures/gui/book/biomes/underground_river.png', text_contents='A segment of an underground river.'),
             text('Lakes and rivers can also be the source of some resources. The first of which is small ore deposits. Gravel with small flecks of ores can be found in the bottom of rivers and lakes. These can be $(thing)panned$() to obtain small amounts of ores. Native Copper, Native Silver, Native Gold, and Cassiterite can be found this way.', title='Ore Deposits'),
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
@@ -120,10 +128,10 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             # Explanation of volcanoes with pictures and how to find them, and what resources they hold in fissures
             # Hot springs, empty hot springs, and what resources they hold
             text('The world of TerraFirmaCraft is formed by the movement of $(l:https://en.wikipedia.org/wiki/Plate_tectonics)plate tectonics$(), and some of that is still visible in the ground around you. By pressing $(thing)$(k:key.inventory)$(), and clicking on the $(thing)Climate$() tab, the current tectonic area will be listed under $(thing)Region$(). There are several regions, and they will influence what kinds of biomes, and also what kind of features are present in the area.'),
-            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep oceans.$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as lowlands, low canyons, or plains are common.'),
-            text('$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with rolling hills, plateaus, and old mountain biomes.$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other.'),
+            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:biomes#lowlands)Lowlands$(), $(l:biomes#low_canyons)Low Canyons$(), or $(l:biomes#plains)Plains$() are common.'),
+            text('$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with $(l:biomes#hills)Rolling Hills$(), $(l:biomes#plateau)Plateaus$(), and $(l:biomes#mountains)Old Mountains$().$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other.'),
             text('It can generate rare volcanism and some volcanic mountains.$(br2)$(bold)Oceanic Subduction$()$(br)A subduction zone is where one plate slips under the other. In the ocean, this can form lots of volcanic mountains, island chains, and deep ocean ridges.$(br2)$(bold)Continental Subduction$()$(br)A continental subduction zone is a area of frequent volcanic activity, and huge coastal mountains. Active hot springs and volcanoes are common.'),
-            text('$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of canyons biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall mountains and plateaus.'),
+            text('$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of $(l:biomes#canyons)Canyons$() biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall $(l:biomes#mountains)Mountains$() and $(l:biomes#plateau)Plateaus$().'),
             text('$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates.')
         )),
         entry('the_underground', 'The Underground', '', pages=(
@@ -142,6 +150,12 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             # How to check current temperature, rainfall, and climate
             # What affects current temperature
             # What temperature can affect - mainly direct stuff like snow, ice, icicles, etc.
+            text('First page'),
+            text('Climate screen?'),
+            text('Temperature and stuff', title='Temperature').anchor('temperature'),
+            text('More about temperature?'),
+            text('Rainfall and stuff', title='Rainfall').anchor('rainfall'),
+            text('More about rainfall?'),
         )),
         entry('flora', 'Flora', '', pages=(
             # Overview of various plants
@@ -163,7 +177,7 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
     ))
 
     book.category('getting_started', 'Getting Started', 'An introduction to surviving in the world of TerraFirmaCraft. How to survive the stone age and obtain your first pickaxe.', 'tfc:stone/axe/sedimentary', is_sorted=True, entries=(
-        entry('introduction', 'Introduction', '', pages=(
+        entry('introduction', 'Introduction', 'tfc:rock/loose/granite', pages=(
             text('In TerraFirmaCraft, the first things you can obtain are sticks, twigs, and loose rocks. They can be found in almost every climate, lying scattered on the ground. $(thing)$(k:key.use)$() or break these to pick them up.'),
             multiblock('Example', 'A smattering of common sticks and stones.', False, pattern=(
                 ('1    ', ' 2  4', '  03 ', ' 4   ', '    5'),
@@ -184,7 +198,7 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
                 'tfc:rock_knapping/knife_head_igneous_intrusive',
                 'tfc:rock_knapping/knife_head_metamorphic',
                 'tfc:rock_knapping/knife_head_sedimentary',
-                text_content='Hi'),
+                text_content='A knife blade, crafted from several different rock types.'),
             crafting('tfc:crafting/stone/knife_sedimentary', text_contents='Once you have obtained a knife blade, in order to create a stone knife, simply craft it with a stick in your inventory.'),
             crafting('tfc:crafting/wood/stick_from_twigs', text_contents='The twigs from earlier can also be used to create sticks, if needed.'),
             item_spotlight('tfc:stone/knife/sedimentary', text_contents='Knives are a very useful tool. One of their primary uses is to collect straw by breaking plants. Most tall grasses and plants will drop straw when broken with a knife.'),
@@ -192,15 +206,64 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             text('In addition to knives, you will likely want to craft a couple other tools. $(thing)Axes$() can be used to chop down trees (finally!), and also make a useful weapon. $(thing)Hammers$() can be used as a crushing weapon, but can also be used to turn logs into sticks, by breaking log blocks with the hammer.'),
             text('Finally, $(thing)Shovels$() and $(thing)Hoes$() behave the same as they do in Vanilla, and $(thing)Javelins$() can be used as a simple toss-once-and-retrieve ranged weapon.'),
         )),
-        entry('firepit', 'Pits of Fire', '', pages=()),
-        entry('finding_clay', 'Finding Clay', '', pages=(
-            clay_knapping('tfc:clay_knapping/vessel', 'Test'),
+        entry('firepit', 'Pits of Fire', 'tfc:firepit', pages=(
+            text('$(thing)Fire$() is an important technological advancement. In order to create fire, you will need a $(thing)Firestarter$(). In order to use, simply hold $(thing)$(k:key.use)$() down on the ground. After a few moments, smoke, and then fire will be created. It may take a couple tries to light successfully.'),
+            crafting('tfc:crafting/firestarter', text_contents='Crafting a firestarter can be done with two sticks.'),
+            text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper, straw, or other items, and will increase the chance of successfully creating a firepit. Throw ($(thing)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
+            block_spotlight('', 'If you were successful, a firepit will be created.', 'tfc:firepit[lit=true]'),
+            text('Using the firepit again will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:heating)heated$() in.'),
+            image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False)
         )),
-        entry('pottery', 'Pottery', '', pages=()),
-        entry('thatch_bed', 'Thatch Bed', '', pages=()),
-        entry('finding_ores', 'Finding Ores', '', pages=()),  # Surface prospecting
-        entry('pit_kiln', 'Pit Kilns', '', pages=()),  # And casting
-        entry('building_materials', 'Building Materials', '', pages=()),  # Wattle and Daub, Mud Bricks
+        entry('heating', 'Heating', 'tfc:firestarter', pages=(
+            text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:pit_kiln)Pit Kiln$(), or a $(l:charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip'),
+            text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
+            # todo: some useful heating recipes for early game? or put this in the firepit section
+            # todo: other just general heating recipes?
+        )),
+        entry('pottery', 'Pottery', 'tfc:ceramic/vessel', pages=(
+            text('$(thing)Clay$() is an incredibly useful and balanced material, which can be used for pottery. However first, it needs to be located. Clay is usually hidden by grass, but it is found often in two locations. In areas with of at least 175mm $(l:climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, however these patches are usually marked the by presence of certain $(thing)Plants$().'),
+            multiblock('Clay Indicators', 'A clay indicator plant found atop some clay grass', False, pattern=(
+                ('   ', ' C ', '   '),
+                ('XXX', 'X0X', 'XXX')
+            ), mapping={
+                '0': 'tfc:clay_grass/sandy_loam',
+                'X': 'tfc:clay_grass/sandy_loam',
+                'C': '#tfc:clay_indicators'
+            }),
+            text('Additionally, clay can be found in smaller deposits close to water sources, such as rivers, lakes, or ponds.'),
+            empty(),
+            text('Like with rocks, clay can be knapped into different shapes. It requires five clay in your hand to knap. Unlike rocks, if you make a mistake, you can simply close the knapping interface, reshape your clay, and try again.'),
+            image('tfc:textures/gui/book/gui/clay_knapping.png', text_contents='The Knapping Interface.', border=False),  # todo: clay knapping
+            text('In order to survive and progress in the world of TFC, you need things that can\'t just be made out of sticks, rocks, and grass. This is where $(thing)pottery$() comes in. Dig up some clay with a shovel, or just your fists. Hold at least 5 clay in your hand and right-click, and a $(thing)knapping$() interface will show up, just like it did for stone.$(br2)One such pottery item is a $(thing)Small Vesel$().'),
+            clay_knapping('tfc:clay_knapping/vessel', 'This is a item that can hold four other stacks in it\'s inventory. However in order to use, it must first be $(thing)fired$().'),
+            # clay_knapping('tfc:clay_knapping/jug', 'The jug is a great tool for drinking more water than you can with just your hands.'),
+            text('In order to fire your clay items, you\'ll have to build a $(thing)pit kiln$(). This is very easy! First, dig a one block hole in the ground. Then, press V to place your unfired clay items in the hole, one by one. Then, right-click with 8 $(thing)straw$() and then 8 $(thing)logs$() to fill it, before lighting it with a $(thing)firestarter$().'),
+        )),
+        entry('finding_ores', 'Finding Ores', 'tfc:ore/normal_native_copper', pages=(
+            # Surface prospecting
+        )),
+        entry('pit_kiln', 'Pit Kilns', '', pages=(
+            text('In order to create a pit kiln, '),  # todo
+            empty(),
+            text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(thing)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:heating)heating$() the items inside up.'),
+            image(*['tfc:textures/gui/book/tutorial/pit_kiln_%d.png' % i for i in range(1, 1 + 5)], text_contents='Tutorial: creating a pit kiln.')
+        )),  # And casting
+        entry('building_materials', 'Building Materials', 'tfc:wattle/unstained', pages=(
+            crafting('tfc:crafting/wattle', text_contents='$(thing)Wattle$() is a very versatile building material, which can be improved with $(thing)daub$().'),
+            crafting('tfc:crafting/daub', text_contents='To weave sticks into Wattle and make it solid, right-click on it with 4 $(thing)sticks$(). Optionally, add $(thing)daub$() to it in the same way.'),
+            text('Adding daub to $(thing)Woven Wattle$() makes it $(thing)Unstained Wattle$(). At this point, it can be right-clicked with $(thing)dye$() to stain it. At any point in this process, you can add framing to the wattle by right-clicking it with extra sticks on the sides and corners. See what you can come up with!')
+        )),  # Wattle and Daub, Mud Bricks
+
+        entry('foraging', 'Foraging', 'tfc:food/cattail_root', pages=(
+            block_spotlight('Wild Crops', 'One of your first food sources will be $(thing)wild crops$(). These will give you $(thing)food$() and $(thing)seeds$().', 'tfc:wild_crop/rye'),
+            text('In shallow water $(thing)cattails$() can be broken with a knife to get $(thing)cattail roots$(). They are a great early source of grain. Also, underwater plants that aren\'t grass can be broken with a knife to get $(thing)seaweed$().'),
+            # recipe_with_text('tfc:heating', 'tfc:heating/seaweed', 'Seaweed can be cooked into dried seaweed, which is a vegetable.'),
+            text('Rivers and seas are teeming with aquatic life. All small $(thing)fish$() are edible, but you might not want to eat a pufferfish! Of course, the world is also full of $(thing)domestic animals$() that you can tame or kill for food. Predators like $(thing)bears$() don\'t drop any useful meat.')
+        )),
+        entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
+            text('To make a thatch bed, place two $(thing)thatch$() blocks adjacent to each other. Then, right click with a $(thing)large raw hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
+            multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),))
+        )),
     ))
 
 
@@ -217,6 +280,10 @@ class Component(NamedTuple):
 class Page(NamedTuple):
     type: str
     data: JsonObject
+    anchor_id: str | None
+
+    def anchor(self, anchor_id: str):
+        return Page(self.type, self.data, anchor_id)
 
 
 class Entry(NamedTuple):
@@ -229,7 +296,7 @@ class Entry(NamedTuple):
 
 class Book:
 
-    def __init__(self, rm: ResourceManager, root_name: str):
+    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject):
         self.rm: ResourceManager = rm
         self.root_name = root_name
         self.category_count = 0
@@ -239,7 +306,8 @@ class Book:
             'landing_text': 'tfc.field_guide.book_landing_text',
             'subtitle': 'TFC_VERSION',
             'dont_generate_book': True,
-            'show_progress': False
+            'show_progress': False,
+            'macros': macros
         })
 
     def template(self, template_id: str, *components: Component):
@@ -282,6 +350,7 @@ class Book:
                 'icon': e.icon,
                 'pages': [{
                     'type': page.type,
+                    'anchor': page.anchor_id,
                     **page.data
                 } for page in e.pages],
                 'advancement': e.advancement,
@@ -312,7 +381,7 @@ def text(text_contents: str, title: str | None = None) -> Page:
     """
     if len(text_contents) > 600:
         Warnings.warn('Possibly overlong text page (%d chars)' % len(text_contents))
-    return Page('patchouli:text', {'text': text_contents, 'title': title})
+    return Page('patchouli:text', {'text': text_contents, 'title': title}, None)
 
 
 def image(*images: str, text_contents: str | None = None, border: bool = True) -> Page:
@@ -322,7 +391,7 @@ def image(*images: str, text_contents: str | None = None, border: bool = True) -
     :param text_contents: The text to display on this page, under the image. This text can be formatted.
     :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
     """
-    return Page('patchouli:image', {'images': images, 'text': text_contents, 'border': border})
+    return Page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, None)
 
 
 def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:
@@ -333,7 +402,7 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: str | N
     :param text_contents: The text to display on this page, under the recipes. This text can be formatted.
     Note: the text will not display if there are two recipes with two different outputs, and "title" is not set. This is the case of the image displayed, in which both recipes have the output names displayed, and there's no space for text.
     """
-    return Page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents})
+    return Page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents}, None)
 
 
 # todo: other default page types: (smelting, entity, link) as we need them
@@ -345,7 +414,7 @@ def item_spotlight(item: str, title: str | None = None, link_recipe: bool = Fals
     :param link_recipe: Defaults to false. Set this to true to mark this spotlight page as the "recipe page" for the item being spotlighted. If you do so, when looking at pages that display the item, you can shift-click the item to be taken to this page. Highly recommended if the spotlight page has instructions on how to create an item by non-conventional means.
     :param text_contents: The text to display on this page, under the item. This text can be formatted.
     """
-    return Page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents})
+    return Page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, None)
 
 
 def block_spotlight(title: str, text_content: str, block: str) -> Page:
@@ -367,19 +436,19 @@ def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: T
     """
     data = {'name': title, 'text': text_content, 'enable_visualize': enable_visualize}
     if multiblock_id is not None:
-        return Page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data})
+        return Page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data}, None)
     elif pattern is not None and mapping is not None:
         return Page('patchouli:multiblock', {'multiblock': {
             'pattern': pattern,
             'mapping': mapping,
             'offset': offset,
-        }, **data})
+        }, **data}, None)
     else:
         raise ValueError('multiblock page must have either \'multiblock\' or \'pattern\' and \'mapping\' entries')
 
 
 def empty() -> Page:
-    return Page('patchouli:empty', {})
+    return Page('patchouli:empty', {}, None)
 
 
 # ==============
@@ -388,19 +457,19 @@ def empty() -> Page:
 
 
 def rock_knapping(*recipes: str, text_content: str) -> Page:
-    return Page('patchouli:rock_knapping_recipe', {'recipes': recipes, 'text': text_content})
+    return Page('patchouli:rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, None)
 
 
 def leather_knapping(recipe: str, text_content: str) -> Page:
-    return Page('patchouli:leather_knapping_recipe', {'recipe': recipe, 'text': text_content})
+    return Page('patchouli:leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, None)
 
 
 def clay_knapping(recipe: str, text_content: str) -> Page:
-    return Page('patchouli:clay_knapping_recipe', {'recipe': recipe, 'text': text_content})
+    return Page('patchouli:clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, None)
 
 
 def fire_clay_knapping(recipe: str, text_content: str) -> Page:
-    return Page('patchouli:fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content})
+    return Page('patchouli:fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, None)
 
 
 # Components

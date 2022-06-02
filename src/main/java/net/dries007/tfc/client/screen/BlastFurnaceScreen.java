@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.capabilities.heat.Heat;
@@ -64,12 +65,12 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
             .orElse(FluidStack.EMPTY);
         if (!fluid.isEmpty())
         {
-            final TextureAtlasSprite sprite = getAndBindFluidSprite(fluid);
+            final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluid);
             final int startY = 53;
             final int endY = 84;
             final int fillHeight = (int) Math.ceil((float) (endY - startY) * fluid.getAmount() / TFCConfig.SERVER.blastFurnaceFluidCapacity.get());
 
-            fillAreaWithSprite(sprite, poseStack, 70, 106, endY, fillHeight);
+            RenderHelpers.fillAreaWithSprite(leftPos, topPos, sprite, poseStack, 70, 106, endY, fillHeight);
         }
 
         resetToBackgroundSprite();

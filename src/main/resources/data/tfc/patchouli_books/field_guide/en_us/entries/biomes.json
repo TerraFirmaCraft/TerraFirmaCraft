@@ -19,6 +19,7 @@
     },
     {
       "type": "patchouli:image",
+      "anchor": "plains",
       "images": [
         "tfc:textures/gui/book/biomes/plains.png"
       ],
@@ -27,6 +28,7 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "hills",
       "text": "Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.",
       "title": "Hills & Rolling Hills"
     },
@@ -40,6 +42,7 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "badlands",
       "text": "Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.",
       "title": "Badlands"
     },
@@ -53,6 +56,16 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "plateau",
+      "text": "",
+      "title": "Plateaus"
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mountains",
       "text": "In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.",
       "title": "Mountains"
     },
@@ -66,6 +79,7 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "lowlands",
       "text": "In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.",
       "title": "Lowlands"
     },
@@ -76,6 +90,33 @@
       ],
       "text": "A Lowlands.",
       "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "low_canyons",
+      "text": "",
+      "title": "Low Canyons"
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "canyons",
+      "text": "",
+      "title": "Canyons"
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ocean",
+      "text": "",
+      "title": "Oceans"
+    },
+    {
+      "type": "patchouli:empty"
     }
   ],
   "read_by_default": true,

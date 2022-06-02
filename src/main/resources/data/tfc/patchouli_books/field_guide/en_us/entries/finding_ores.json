@@ -2,8 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Finding Ores",
   "category": "patchouli:getting_started",
-  "icon": "",
+  "icon": "tfc:ore/normal_native_copper",
   "pages": [],
   "read_by_default": true,
-  "sortnum": 5
+  "sortnum": 4
 }
