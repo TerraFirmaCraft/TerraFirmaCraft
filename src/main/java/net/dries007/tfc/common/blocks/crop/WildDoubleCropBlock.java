@@ -17,6 +17,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -42,10 +43,10 @@ public class WildDoubleCropBlock extends WildCropBlock
                 {
                     BlockPos blockpos = pos.below();
                     BlockState blockstate = level.getBlockState(blockpos);
-                    if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == DoubleCropBlock.Part.TOP)
+                    if (blockstate.getBlock() == state.getBlock() && blockstate.getValue(PART) == DoubleCropBlock.Part.BOTTOM)
                     {
                         level.setBlock(blockpos, Blocks.AIR.defaultBlockState(), 35);
-                        level.levelEvent(player, 2001, blockpos, Block.getId(blockstate));
+                        level.levelEvent(player, LevelEvent.PARTICLES_DESTROY_BLOCK, blockpos, Block.getId(blockstate));
                     }
                 }
             }
@@ -117,6 +118,7 @@ public class WildDoubleCropBlock extends WildCropBlock
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
         onPlayerWillDestroy(level, pos, state, player);
+        super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override
