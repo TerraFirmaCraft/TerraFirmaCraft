@@ -6,52 +6,33 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
-import java.util.List;
 
-import net.minecraft.ChatFormatting;
+import java.util.Random;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
-import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.capabilities.size.IItemSize;
-import net.dries007.tfc.common.capabilities.size.Size;
-import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
-public class PowderkegBlock extends DeviceBlock implements IItemSize
+public class PowderkegBlock extends SealableDeviceBlock
 {
-    public static final BooleanProperty SEALED = TFCBlockStateProperties.SEALED;
-
-    private static final VoxelShape SHAPE = box(2, 0, 2, 14, 16, 14);
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public static void toggleSeal(Level level, BlockPos pos, BlockState state)
     {
@@ -71,61 +52,52 @@ public class PowderkegBlock extends DeviceBlock implements IItemSize
 
     public PowderkegBlock(ExtendedProperties properties)
     {
-        super(properties, DeviceBlock.InventoryRemoveBehavior.SAVE);
-        registerDefaultState(getStateDefinition().any().setValue(SEALED, false));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-    {
-        return SHAPE;
+        super(properties);
+        registerDefaultState(getStateDefinition().any().setValue(SEALED, false).setValue(LIT, false));
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        final PowderkegBlockEntity powderkeg = level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).orElse(null);
-        if (powderkeg != null)
-        {
+        return level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).map(powderkeg -> {
             final ItemStack stack = player.getItemInHand(hand);
             if (stack.isEmpty() && player.isShiftKeyDown())
             {
-                toggleSeal(level, pos, state);
-                level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
-                return InteractionResult.SUCCESS;
+                if (state.getValue(LIT))
+                {
+                    powderkeg.setLit(false);
+                    Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
+                }
+                else
+                {
+                    toggleSeal(level, pos, state);
+                    Helpers.playSound(level, pos, SoundEvents.WOOD_PLACE);
+                }
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
                 NetworkHooks.openGui(serverPlayer, powderkeg, powderkeg.getBlockPos());
+                return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.PASS;
+            return InteractionResult.PASS;
+        }).orElse(InteractionResult.PASS);
     }
 
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context)
-    {
-        return context.getItemInHand().getTag() != null ? defaultBlockState().setValue(SEALED, true) : defaultBlockState();
-    }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable BlockGetter level, List<Component> tooltip, TooltipFlag flag)
+    public void animateTick(BlockState state, Level level, BlockPos pos, Random random)
     {
-        final CompoundTag tag = stack.getTagElement(Helpers.BLOCK_ENTITY_TAG);
-        if (tag != null)
+        if (state.getValue(LIT))
         {
-            final CompoundTag inventoryTag = tag.getCompound("inventory");
-            final ItemStackHandler inventory = new ItemStackHandler();
-
-            inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
-
-            if (!Helpers.isEmpty(inventory))
+            final int count = random.nextInt(3) + 5;
+            for (int i = 0; i < count; i++)
             {
-                tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
-                Helpers.addInventoryTooltipInfo(inventory, tooltip);
+                final double x = pos.getX() + random.nextFloat();
+                final double z = pos.getZ() + random.nextFloat();
+                final double y = pos.getY() + 0.98f + (random.nextFloat() / 5f);
+                level.addParticle(TFCParticles.SPARK.get(), x, y, z, Helpers.uniform(random, -5f, 5f), 3f + random.nextFloat(), Helpers.uniform(random, -5f, 5f));
             }
         }
     }
@@ -133,44 +105,7 @@ public class PowderkegBlock extends DeviceBlock implements IItemSize
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(SEALED));
-    }
-
-    @Override
-    public Size getSize(ItemStack stack)
-    {
-        return stack.getTag() == null ? Size.VERY_LARGE : Size.HUGE;
-    }
-
-    @Override
-    public Weight getWeight(ItemStack stack)
-    {
-        return Weight.VERY_HEAVY;
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
-    {
-        final ItemStack stack = super.getCloneItemStack(state, target, level, pos, player);
-        if (state.getValue(SEALED))
-        {
-            final BlockEntity entity = level.getBlockEntity(pos);
-            if (entity instanceof InventoryBlockEntity<?> inv)
-            {
-                inv.saveToItem(stack);
-            }
-        }
-        return stack;
-    }
-
-    @Override
-    protected void beforeRemove(InventoryBlockEntity<?> entity)
-    {
-        if (!entity.getBlockState().getValue(SEALED))
-        {
-            entity.ejectInventory();
-        }
-        entity.invalidateCapabilities();
+        super.createBlockStateDefinition(builder.add(LIT));
     }
 
 }

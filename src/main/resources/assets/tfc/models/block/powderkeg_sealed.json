@@ -2,11 +2,11 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-      "outside": "tfc:block/powderkeg_outside",
-      "inside": "tfc:block/powderkeg_inside",
-      "sheet": "tfc:block/powderkeg_sheet",
-      "particle": "tfc:block/powderkeg_outside",
-      "fuse": "tfc:block/powderkeg_fuse"
+      "outside": "tfc:block/devices/powderkeg/powderkeg_outside",
+      "inside": "tfc:block/devices/powderkeg/powderkeg_inside",
+      "sheet": "tfc:block/devices/powderkeg/powderkeg_sheet",
+      "particle": "tfc:block/devices/powderkeg/powderkeg_outside",
+      "fuse": "tfc:block/devices/powderkeg/powderkeg_fuse"
   },
   "elements": [
     {

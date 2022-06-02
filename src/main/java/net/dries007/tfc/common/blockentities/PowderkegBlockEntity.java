@@ -121,15 +121,15 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     public void setLit(boolean lit)
     {
         isLit = lit;
+        assert level != null;
+        level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(PowderkegBlock.LIT, lit));
         if (lit)
         {
-            assert level != null;
             level.playSound(null, worldPosition.getX(), worldPosition.getY() + 0.5D, worldPosition.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.33F);
             fuse = 80;
         }
         else
         {
-            assert level != null;
             level.playSound(null, worldPosition.getX(), worldPosition.getY() + 0.5D, worldPosition.getZ(), SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.8f, 0.6f + level.random.nextFloat() * 0.4f);
             fuse = -1;
         }

@@ -2,11 +2,11 @@
   "credit": "Made with Blockbench",
   "parent": "block/block",
   "textures": {
-      "outside": "tfc:block/devices/powderkeg/powderkeg_outside",
+      "outside": "tfc:block/devices/powderkeg/powderkeg_outside_lit",
       "inside": "tfc:block/devices/powderkeg/powderkeg_inside",
       "sheet": "tfc:block/devices/powderkeg/powderkeg_sheet",
-      "particle": "tfc:block/devices/powderkeg/powderkeg_outside",
-      "fuse": "tfc:block/devices/powderkeg/powderkeg_fuse"
+      "particle": "tfc:block/devices/powderkeg/powderkeg_outside_lit",
+      "fuse": "tfc:block/devices/powderkeg/powderkeg_fuse_lit"
   },
   "elements": [
     {
@@ -74,6 +74,28 @@
       "faces": {
         "up": {"uv": [2, 2, 14, 14], "rotation": 90, "texture": "#sheet"},
         "down": {"uv": [14, 2, 2, 14], "rotation": 90, "texture": "#sheet"}
+      }
+    },
+    {
+      "name": "top",
+      "from": [2, 14, 2],
+      "to": [14, 15, 14],
+      "faces": {
+        "up": {"uv": [2, 2, 14, 14], "rotation": 90, "texture": "#sheet"},
+        "down": {"uv": [14, 2, 2, 14], "rotation": 90, "texture": "#sheet"}
+      }
+    },
+    {
+      "name": "fuse",
+      "from": [10, 15, 5],
+      "to": [11, 17, 6],
+      "faces": {
+        "north": {"uv": [0, 0, 1, 2], "texture": "#fuse"},
+        "east": {"uv": [0, 0, 1, 2], "texture": "#fuse"},
+        "south": {"uv": [0, 0, 1, 2], "texture": "#fuse"},
+        "west": {"uv": [0, 0, 1, 2], "texture": "#fuse"},
+        "up": {"uv": [1, 0, 2, 1], "texture": "#fuse"},
+        "down": {"uv": [0, 0, 1, 1], "texture": "#fuse"}
       }
     }
   ]

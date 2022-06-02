@@ -1,10 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "sealed=true": {
+    "lit=false,sealed=true": {
       "model": "tfc:block/powderkeg_sealed"
     },
-    "sealed=false": {
+    "lit=false,sealed=false": {
+      "model": "tfc:block/powderkeg"
+    },
+    "lit=true,sealed=true": {
+      "model": "tfc:block/powderkeg_lit"
+    },
+    "lit=true,sealed=false": {
       "model": "tfc:block/powderkeg"
     }
   }

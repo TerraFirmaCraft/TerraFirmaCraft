@@ -392,8 +392,10 @@ def generate(rm: ResourceManager):
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
     block = rm.blockstate('powderkeg', variants={
-        'sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
-        'sealed=false': {'model': 'tfc:block/powderkeg'}
+        'lit=false,sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
+        'lit=false,sealed=false': {'model': 'tfc:block/powderkeg'},
+        'lit=true,sealed=true': {'model': 'tfc:block/powderkeg_lit'},
+        'lit=true,sealed=false': {'model': 'tfc:block/powderkeg'}  # cannot occur
     }).with_lang(lang('Powderkeg')).with_tag('minecraft:mineable/axe')
     block.with_block_loot(({
         'name': 'tfc:powderkeg',
