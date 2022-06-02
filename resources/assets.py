@@ -391,6 +391,17 @@ def generate(rm: ResourceManager):
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
+    block = rm.blockstate('powderkeg', variants={
+        'sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
+        'sealed=false': {'model': 'tfc:block/powderkeg'}
+    }).with_lang(lang('Powderkeg')).with_tag('minecraft:mineable/axe')
+    block.with_block_loot(({
+        'name': 'tfc:powderkeg',
+        'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+        'conditions': [loot_tables.block_state_property('tfc:powderkeg[sealed=true]')]
+    }, 'tfc:powderkeg'))
+    item_model_property(rm, 'tfc:powderkeg', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/powderkeg_sealed'}], {'parent': 'tfc:block/powderkeg'})
+     
     states = [({'model': 'tfc:block/composter/composter'})]
     for i in range(1, 9):
         for age in ('normal', 'ready', 'rotten'):
@@ -619,7 +630,6 @@ def generate(rm: ResourceManager):
                     item = make_javelin(rm, 'metal/%s/%s' % (metal_item, metal), 'tfc:item/metal/javelin/%s' % metal)
                 else:
                     item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
-
                 if metal_item == 'propick':
                     item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
                 else:

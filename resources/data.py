@@ -174,6 +174,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('holds_large_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal in ('wrought_iron', 'red_steel', 'blue_steel', 'black_steel', 'steel')])
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
+    rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -200,6 +201,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('salad_bowls', '#tfc:bowls')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
+    block_and_item_tag(rm, 'tfc:barrels', *['tfc:wood/barrel/%s' % wood for wood in WOODS.keys()])
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -479,7 +481,8 @@ def generate(rm: ResourceManager):
         'tfc:log_pile',
         'tfc:burning_log_pile',
         'tfc:composter',
-        'tfc:nest_box'
+        'tfc:nest_box',
+        'tfc:powderkeg'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],
