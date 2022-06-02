@@ -26,7 +26,7 @@ public class DecayingItem extends Item
         // Explicitly set the food item non-decaying.
         if (allowdedIn(category))
         {
-            items.add(FoodCapability.setStackNonDecaying(FoodCapability.updateFoodDecayOnCreate(new ItemStack(this))));
+            items.add(FoodCapability.setStackNonDecaying(new ItemStack(this)));
         }
     }
 }

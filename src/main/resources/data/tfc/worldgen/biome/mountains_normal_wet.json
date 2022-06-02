@@ -113,6 +113,6 @@
     ]
   },
   "player_spawn_friendly": true,
-  "creature_spawn_probability": 0.5,
+  "creature_spawn_probability": 0.05,
   "spawn_costs": {}
 }

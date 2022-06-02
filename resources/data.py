@@ -96,6 +96,7 @@ def generate(rm: ResourceManager):
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HC)
 
     for color in COLORS:
         item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HC)
@@ -500,24 +501,30 @@ def generate(rm: ResourceManager):
         'tfc:thatch_bed'
     ])
     rm.block_tag('tfc:mineable_with_blunt_tool',
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood') for wood in WOODS.keys()]
-    )
+                 *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood') for wood in WOODS.keys()]
+                 )
 
     # ==========
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS], '#tfc:milks')
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols', '#tfc:milks')
-    rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water', '#tfc:milks')
+    # Categories
     rm.fluid_tag('milks', 'minecraft:milk')
+    rm.fluid_tag('alcohols', *ALCOHOLS)
+    rm.fluid_tag('dyes', *['tfc:%s_dye' % dye for dye in COLORS])
+    rm.fluid_tag('drinkable_ingredients', '#minecraft:water', '#tfc:alcohols', '#tfc:milks')
+    rm.fluid_tag('ingredients', *SIMPLE_FLUIDS, '#tfc:drinkable_ingredients', '#tfc:dyes')
 
-    rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
-    rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
-    rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
-    rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
-    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
+    # Applications
+    rm.fluid_tag('drinkables', 'tfc:river_water', '#tfc:drinkable_ingredients')
+    rm.fluid_tag('hydrating', 'tfc:river_water', '#minecraft:water')
+
+    rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
+    rm.fluid_tag('usable_in_jug', '#tfc:drinkable_ingredients')
+    rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
+    rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
+    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
 
     # Item Sizes
 

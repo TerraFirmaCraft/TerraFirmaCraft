@@ -9,8 +9,10 @@ package net.dries007.tfc.common.fluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -21,7 +23,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.world.river.Flow;
 
-public class RiverWaterFluid extends WaterFluid
+public class RiverWaterFluid extends WaterFluid implements FlowingFluidExtension
 {
     public static final EnumProperty<Flow> FLOW = TFCBlockStateProperties.FLOW;
 
@@ -55,6 +57,24 @@ public class RiverWaterFluid extends WaterFluid
     public BlockState createLegacyBlock(FluidState state)
     {
         return TFCBlocks.RIVER_WATER.get().defaultBlockState().setValue(FLOW, state.getValue(FLOW));
+    }
+
+    @Override
+    public FluidState getSource(LevelReader level, BlockPos pos, boolean falling)
+    {
+        // Average contribution from four corners
+        final Flow flow = Flow.lerp(
+            getFlowFromDirection(level, pos, Direction.NORTH),
+            getFlowFromDirection(level, pos, Direction.EAST),
+            getFlowFromDirection(level, pos, Direction.WEST),
+            getFlowFromDirection(level, pos, Direction.SOUTH),
+            0.5f, 0.5f
+        );
+        if (flow == Flow.NONE)
+        {
+            return getSource(falling);
+        }
+        return TFCFluids.RIVER_WATER.get().defaultFluidState().setValue(BlockStateProperties.FALLING, falling).setValue(FLOW, flow);
     }
 
     @Override
@@ -92,5 +112,15 @@ public class RiverWaterFluid extends WaterFluid
     public int getAmount(FluidState state)
     {
         return 8;
+    }
+
+    private Flow getFlowFromDirection(LevelReader level, BlockPos pos, Direction direction)
+    {
+        final FluidState adjacentFluid = level.getFluidState(pos.relative(direction));
+        if (adjacentFluid.hasProperty(TFCBlockStateProperties.FLOW))
+        {
+            return adjacentFluid.getValue(TFCBlockStateProperties.FLOW);
+        }
+        return Flow.NONE;
     }
 }
