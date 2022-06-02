@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util.registry;
 
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorMaterial;
 
 import net.dries007.tfc.util.Metal;
@@ -13,7 +14,7 @@ import net.dries007.tfc.util.Metal;
 /**
  * Interface used in registration to allow {@link Metal.BlockType}, {@link Metal.ItemType} to be used by addons.
  */
-public interface RegistryMetal
+public interface RegistryMetal extends StringRepresentable
 {
     net.minecraft.world.item.Tier toolTier();
 

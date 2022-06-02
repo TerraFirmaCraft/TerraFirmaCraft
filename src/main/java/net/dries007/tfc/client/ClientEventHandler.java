@@ -58,6 +58,7 @@ import net.dries007.tfc.common.blocks.ItemPropertyProviderBlock;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -142,16 +143,29 @@ public final class ClientEventHandler
 
                     Item shield = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHIELD).get();
                     ItemProperties.register(shield, new ResourceLocation("blocking"), (stack, level, entity, unused) -> {
-                        if(entity == null)
+                        if (entity == null)
                         {
                             return 0.0F;
-                        }else
+                        }
+                        else
                         {
                             return entity instanceof Player && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0f : 0.0f;
                         }
                     });
+
+                    Item javelin = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.JAVELIN).get();
+                    ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
+                        entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                    );
                 }
             }
+
+            TFCItems.ROCK_TOOLS.values().forEach(tool -> {
+                Item javelin = tool.get(RockCategory.ItemType.JAVELIN).get();
+                ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
+                    entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                );
+            });
 
             ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
                 if (entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem())
@@ -284,6 +298,7 @@ public final class ClientEventHandler
         // Entities
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
         event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), TFCFishingHookRenderer::new);
+        event.registerEntityRenderer(TFCEntities.THROWN_JAVELIN.get(), ThrownJavelinRenderer::new);
         event.registerEntityRenderer(TFCEntities.GLOW_ARROW.get(), GlowArrowRenderer::new);
         event.registerEntityRenderer(TFCEntities.SEAT.get(), NoopRenderer::new);
         for (Wood wood : Wood.VALUES)
@@ -373,6 +388,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("cow"), TFCCowModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("alpaca"), AlpacaModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chicken"), ChickenModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

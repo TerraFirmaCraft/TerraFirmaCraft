@@ -141,6 +141,36 @@
         "weight": 1,
         "minCount": 2,
         "maxCount": 6
+      },
+      {
+        "type": "tfc:polar_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:grizzly_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:black_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:lion",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:sabertooth",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       }
     ]
   },

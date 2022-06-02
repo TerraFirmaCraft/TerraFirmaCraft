@@ -593,7 +593,12 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'pig': spawner('tfc:pig', min_count=1, max_count=4),
     'cow': spawner('tfc:cow', min_count=1, max_count=4),
     'alpaca': spawner('tfc:alpaca', min_count=1, max_count=4),
-    'chicken': spawner('tfc:chicken', min_count=2, max_count=6)
+    'chicken': spawner('tfc:chicken', min_count=2, max_count=6),
+    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1),
+    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1),
+    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1),
+    'lion': spawner('tfc:lion', min_count=1, max_count=3),
+    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1),
 }
 
 DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli')
@@ -833,6 +838,7 @@ DEFAULT_LANG = {
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',
+    'entity.tfc.thrown_javelin': 'Javelin',
     'entity.tfc.seat': 'Seat',
     'entity.tfc.chicken': 'Chicken',
     'entity.tfc.chicken.male': 'Rooster',
