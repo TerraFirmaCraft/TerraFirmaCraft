@@ -122,7 +122,7 @@ public class PowderkegBlock extends DeviceBlock implements IItemSize
 
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
 
-            if (Helpers.isEmpty(inventory))
+            if (!Helpers.isEmpty(inventory))
             {
                 tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
                 Helpers.addInventoryTooltipInfo(inventory, tooltip);

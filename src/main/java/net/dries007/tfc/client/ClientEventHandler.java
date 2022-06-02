@@ -435,6 +435,7 @@ public final class ClientEventHandler
                 registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor, reg.get());
         });
         TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get(), value.get(LEAVES).get()));
+        TFCBlocks.WILD_CROPS.forEach((key, value) -> registry.register(grassColor, value.get().asItem()));
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)

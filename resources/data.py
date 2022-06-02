@@ -92,6 +92,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
+    item_heat(rm, 'egg', 'minecraft:egg', 1)
     item_heat(rm, 'blooms', '#tfc:blooms', 0.35, METALS['wrought_iron'].melt_temperature)
 
     for pottery in SIMPLE_POTTERY:
@@ -192,7 +193,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('fluxstone', 'tfc:food/shellfish', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
-    rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats')
+    rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats', 'tfc:food/cooked_rice')
     rm.item_tag('foods/usable_in_salad', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats')
     rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
     rm.item_tag('sandwich_bread', *['tfc:food/%s_bread' % grain for grain in GRAINS])
@@ -604,12 +605,12 @@ def generate(rm: ResourceManager):
     food_item(rm, 'oat_flour', 'tfc:food/oat_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'oat_dough', 'tfc:food/oat_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'oat_bread', 'tfc:food/oat_bread', Category.bread, 4, 1, 0, 1, grain=1)
-    # todo: figure out what to do with rice. thinking rice -> grain -> cooked rice in a pot recipe? so remove flour/dough/bread for this one
     food_item(rm, 'rice', 'tfc:food/rice', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rice_grain', 'tfc:food/rice_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'rice_flour', 'tfc:food/rice_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'rice_dough', 'tfc:food/rice_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'rice_bread', 'tfc:food/rice_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
+    food_item(rm, 'cooked_rice', 'tfc:food/cooked_rice', Category.bread, 4, 2, 5, 1, grain=1)
     food_item(rm, 'rye', 'tfc:food/rye', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rye_grain', 'tfc:food/rye_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'rye_flour', 'tfc:food/rye_flour', Category.grain, 4, 0, 0, 0.5)
@@ -640,6 +641,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
     food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=1.5, dairy=0.25)
+    food_item(rm, 'boiled_egg', 'tfc:food/boiled_egg', Category.other, 4, 2, 10, 4, protein=1.5, dairy=0.25)
     # todo: figure out what to do with sugarcane, do we need a different plant? or item or something? or modify the vanilla one
     # food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.grain, 4, 0, 0, 1.6, grain=0.5)
     food_item(rm, 'beef', 'tfc:food/beef', Category.meat, 4, 0, 0, 2, protein=2)

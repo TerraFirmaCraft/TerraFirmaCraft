@@ -1,22 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "XY ",
-    "Z  ",
-    "   "
-  ],
-  "key": {
-    "X": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
       "tag": "tfc:barrels"
     },
-    "Y": {
+    {
       "item": "tfc:powder/hematite"
     },
-    "Z": {
+    {
       "item": "minecraft:gunpowder"
     }
-  },
+  ],
   "result": {
     "item": "tfc:powderkeg"
   }

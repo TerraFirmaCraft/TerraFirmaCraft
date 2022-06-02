@@ -535,7 +535,7 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
-VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane')
+VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
 MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
@@ -937,7 +937,7 @@ DEFAULT_LANG = {
     'tfc.jei.leather_knapping': 'Leather Knapping Recipe',
     'tfc.jei.rock_knapping': 'Rock Knapping Recipe',
     'tfc.jei.soup_pot': 'Soup Pot',
-    'tfc.jei.fluid_pot': 'Fluid Pot',
+    'tfc.jei.simple_pot': 'Pot',
     'tfc.jei.casting': 'Casting',
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom': 'Loom',

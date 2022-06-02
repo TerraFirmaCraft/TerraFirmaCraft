@@ -127,7 +127,7 @@ public final class FoodCapability
     @SuppressWarnings("unused")
     public static ItemStack updateFoodDecayOnCreate(ItemStack stack)
     {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(Calendars.get().getTicks()));
+        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(getRoundedCreationDate()));
         return stack;
     }
 
