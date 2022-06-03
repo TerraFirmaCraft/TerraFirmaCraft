@@ -14,6 +14,7 @@ import net.minecraft.world.level.material.Material;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import vazkii.patchouli.api.PatchouliAPI;
 
@@ -21,6 +22,17 @@ public final class PatchouliIntegration
 {
     public static final ResourceLocation BOOK_ID = Helpers.identifier("field_guide");
     public static final ResourceLocation TEXTURE = Helpers.identifier("textures/gui/book/icons.png");
+
+    /**
+     * Does not detect if the nod Patchouli is present (as we hard depend on it). Only detects if the client wants to see it, effectively hiding it even if we do depend on it.
+     */
+    public static void ifEnabled(Runnable action)
+    {
+        if (TFCConfig.CLIENT.showGuideBookTabInInventory.get())
+        {
+            action.run();
+        }
+    }
 
     public static void openGui(ServerPlayer player)
     {

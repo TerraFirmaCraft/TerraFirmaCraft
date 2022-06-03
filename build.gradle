@@ -179,7 +179,7 @@ test {
 
 processResources {
 
-    filesMatching("**/field_guide.json") {
+    filesMatching("book.json") {
         expand "TFC_VERSION": project.version
     }
 

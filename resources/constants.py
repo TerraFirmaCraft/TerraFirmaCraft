@@ -950,7 +950,7 @@ DEFAULT_LANG = {
     'tfc.jei.compost': 'This fertilizer is made by adding four green items and four brown items to the Composter, and waiting for a while.',
     'tfc.jei.rotten_compost': 'This kills plants. It is made by adding compost poisons to the Composter.',
 
-    'tfc.field_guide.book_name': 'TerraFirmaCraft Field Guide',
+    'tfc.field_guide.book_name': 'TerraFirmaCraft',
     'tfc.field_guide.book_landing_text': 'Welcome traveller! This book will be the source of all you need to know as you explore the world of TerraFirmaCraft (TFC).'
 }
 

@@ -76,6 +76,8 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
     book.template('fire_clay_knapping_recipe', custom_component(0, 0, 'FireClayKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
     book.template('leather_knapping_recipe', custom_component(0, 0, 'LeatherKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
 
+    book.template('heat_recipe', custom_component(0, 0, 'HeatingComponent', {'recipe': '#recipe'}), text_component(0, 35))
+
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('biomes', 'Biomes', '', pages=(
             # Overview of biomes and what they are, and what they affect
@@ -110,9 +112,9 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             image('tfc:textures/gui/book/biomes/river.png', text_contents='A river.'),
             text('Rivers in TerraFirmaCraft have $(thing)current$(). They will push along items, players, and entities the same as flowing water. River currents will ultimately lead out to $(l:the_world/biomes#ocean)Oceans$(), joining up with other branches along the way. Occasionally, rivers will also disappear underground, and there have even been rare sightings of vast cavernous underground lakes, but will always find their way to the ocean eventually.'),
             image('tfc:textures/gui/book/biomes/underground_river.png', text_contents='A segment of an underground river.'),
-            text('Lakes and rivers can also be the source of some resources. The first of which is small ore deposits. Gravel with small flecks of ores can be found in the bottom of rivers and lakes. These can be $(thing)panned$() to obtain small amounts of ores. Native Copper, Native Silver, Native Gold, and Cassiterite can be found this way.', title='Ore Deposits'),
+            text('Lakes and rivers can also be the source of some resources. The first of which is small ore deposits. Gravel with small flecks of ores can be found in the bottom of rivers and lakes. These can be $(l:mechanics/panning)panned$() to obtain small amounts of ores. Native Copper, Native Silver, Native Gold, and Cassiterite can be found this way.', title='Ore Deposits').anchor('ore_deposits'),
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
-            text('In addition to gravel ore deposits, lakes can also hide clusters of some gemstones. Amethyst and Opal ores can be found this way in surface level ore veins under lakes and rivers.', title='Gemstones'),
+            text('In addition to gravel ore deposits, lakes can also hide clusters of some gemstones. Amethyst and Opal ores can be found this way in surface level ore veins under lakes and rivers.', title='Gemstones').anchor('gemstones'),
             block_spotlight('Example', 'A block of amethyst ore in limestone.', 'tfc:ore/amethyst/limestone')
         )),
         entry('geology', 'Geology', '', pages=(
@@ -199,66 +201,89 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('Finally, $(thing)Shovels$() and $(thing)Hoes$() behave the same as they do in Vanilla, and $(thing)Javelins$() can be used as a simple toss-once-and-retrieve ranged weapon.'),
         )),
         entry('firepit', 'Pits of Fire', 'tfc:firepit', pages=(
-            text('$(thing)Fire$() is an important technological advancement. In order to create fire, you will need a $(thing)Firestarter$(). In order to use, simply hold $(thing)$(k:key.use)$() down on the ground. After a few moments, smoke, and then fire will be created. It may take a couple tries to light successfully.'),
+            text('$(thing)Fire$() is an important technological advancement. In order to create fire, you will need a $(thing)Firestarter$(). In order to use, simply hold $(thing)$(k:key.use)$() down on the ground. After a few moments, smoke, and then fire will be created. It may take a couple tries to light successfully.').anchor('firestarter'),
             crafting('tfc:crafting/firestarter', text_contents='Crafting a firestarter can be done with two sticks.'),
             text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper, straw, or other items, and will increase the chance of successfully creating a firepit. Throw ($(thing)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
             block_spotlight('', 'If you were successful, a firepit will be created.', 'tfc:firepit[lit=true]'),
             text('Using the firepit again will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:getting_started/heating)heated$() in.'),
-            image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False)
-        )),
-        entry('heating', 'Heating', 'tfc:firestarter', pages=(
-            text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip'),
-            text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
-            # todo: some useful heating recipes for early game? or put this in the firepit section
-            # todo: other just general heating recipes?
+            image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False),
+            heat_recipe('tfc:heating/torch_from_stick', 'Many useful items can be made in a firepit by heating them. Sticks can be heated, where they will produce two $(thing)Torches$(). Note that torches will eventually burn out, and need to be re-lit by using a $(thing)Firestarter$(), or using another $(thing)Torch$() on them.'),
+            heat_recipe('tfc:heating/cod', 'The fire pit is also a good device for $(thing)cooking food$(). All raw meats and doughs can be cooked in a firepit, which will lengthen their shelf life. (More on that $(l:food/decay)here$())')
         )),
         entry('pottery', 'Pottery', 'tfc:ceramic/vessel', pages=(
             text('$(thing)Clay$() is an incredibly useful and balanced material, which can be used for pottery. However first, it needs to be located. Clay is usually hidden by grass, but it is found often in two locations. In areas with of at least 175mm $(l:the_world/climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, however these patches are usually marked the by presence of certain $(thing)Plants$().'),
-            multiblock('Clay Indicators', 'A clay indicator plant found atop some clay grass', False, pattern=(
+            multiblock('Clay Indicators', 'Clay, with one of the plants that may indicate it\'s presence.', False, pattern=(
                 ('   ', ' C ', '   '),
                 ('XXX', 'X0X', 'XXX')
             ), mapping={
                 '0': 'tfc:clay_grass/sandy_loam',
                 'X': 'tfc:clay_grass/sandy_loam',
-                'C': '#tfc:clay_indicators'
+                'C': '#tfc:clay_indicators',
             }),
-            text('Additionally, clay can be found in smaller deposits close to water sources, such as rivers, lakes, or ponds.'),
-            empty(),
-            text('Like with rocks, clay can be knapped into different shapes. It requires five clay in your hand to knap. Unlike rocks, if you make a mistake, you can simply close the knapping interface, reshape your clay, and try again.'),
+            text('$(thing)Athyrium Fern$(), $(thing)Canna$(), $(thing)Goldenrod$(), $(thing)Pampas Grass$(), $(thing)Perovskia$(), and $(thing)Water Canna$() all can indicate the presence of clay nearby. Clay can be found in smaller deposits close to water sources, such as rivers, lakes, or ponds.$(br2)Like with rocks, clay can be knapped to form new items. It requires five clay in your hand to knap. Unlike rocks, if you make a mistake, you can simply close the knapping interface, reshape your clay, and try again.').link('#tfc:clay_indicators'),
             image('tfc:textures/gui/book/gui/clay_knapping.png', text_contents='The Knapping Interface.', border=False),  # todo: clay knapping
-            text('In order to survive and progress in the world of TFC, you need things that can\'t just be made out of sticks, rocks, and grass. This is where $(thing)pottery$() comes in. Dig up some clay with a shovel, or just your fists. Hold at least 5 clay in your hand and right-click, and a $(thing)knapping$() interface will show up, just like it did for stone.$(br2)One such pottery item is a $(thing)Small Vesel$().'),
-            clay_knapping('tfc:clay_knapping/vessel', 'This is a item that can hold four other stacks in it\'s inventory. However in order to use, it must first be $(thing)fired$().'),
-            # clay_knapping('tfc:clay_knapping/jug', 'The jug is a great tool for drinking more water than you can with just your hands.'),
-            text('In order to fire your clay items, you\'ll have to build a $(thing)pit kiln$(). This is very easy! First, dig a one block hole in the ground. Then, press V to place your unfired clay items in the hole, one by one. Then, right-click with 8 $(thing)straw$() and then 8 $(thing)logs$() to fill it, before lighting it with a $(thing)firestarter$().'),
+            text('The small vessel is one such item. Like all pottery items, before it can be used it must be $(l:https://en.wikipedia.org/wiki/Pottery)fired$(). Firing is a process of $(l:mechanics/heating)heating$() the item up to a point where the clay will turn into a hard $(thing)Ceramic$() material, which requires heating to 1200 °C, or $(e)$(bold)$(t:Yellow)Yellow$().$(br2)In order to do this in the early game, you will need to use a $(l:getting_started/pit_kiln)Pit Kiln$().', title='Small Vessel'),
         )),
         entry('finding_ores', 'Finding Ores', 'tfc:ore/normal_native_copper', pages=(
             # Surface prospecting
         )),
-        entry('pit_kiln', 'Pit Kilns', '', pages=(
-            text('In order to create a pit kiln, '),  # todo
-            empty(),
-            text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(thing)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:getting_started/heating)heating$() the items inside up.'),
+        entry('pit_kiln', 'Pit Kilns', 'tfc:textures/block/molten.png', pages=(
+            text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat it\'s contents up to 1600 °C, or $(bold)$(f)$(t:Brilliant White)Brilliant White$().'),
+            text('To build a pit kiln, you will need:$(br)$(li)Up to four items to be fired.$(li)Eight pieces of $(thing)Straw$()$(li)Eight $(thing)Logs$()$(li)An item capable of lighting fires, like a $(l:getting_started/firepit#firestarter)Firestarter$(), or a $(thing)Torch$().$(br2)$(bold)Note:$() Torches can start fires simply by tossing the torch on the pit kiln, and waiting a few seconds.'),
+            text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(thing)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:mechanics/heating)heating$() the items inside up.'),
             image(*['tfc:textures/gui/book/tutorial/pit_kiln_%d.png' % i for i in range(1, 1 + 5)], text_contents='Tutorial: creating a pit kiln.')
-        )),  # And casting
+        )),
         entry('building_materials', 'Building Materials', 'tfc:wattle/unstained', pages=(
+            # Better intro, and guide to how to use wattle
+            # todo: mud bricks
+            # todo: any other early game blocks?
+            # todo: alabaster? (I know it's not early game but it would be a good mention)
             crafting('tfc:crafting/wattle', text_contents='$(thing)Wattle$() is a very versatile building material, which can be improved with $(thing)daub$().'),
             crafting('tfc:crafting/daub', text_contents='To weave sticks into Wattle and make it solid, right-click on it with 4 $(thing)sticks$(). Optionally, add $(thing)daub$() to it in the same way.'),
             text('Adding daub to $(thing)Woven Wattle$() makes it $(thing)Unstained Wattle$(). At this point, it can be right-clicked with $(thing)dye$() to stain it. At any point in this process, you can add framing to the wattle by right-clicking it with extra sticks on the sides and corners. See what you can come up with!')
-        )),  # Wattle and Daub, Mud Bricks
-
-        entry('foraging', 'Foraging', 'tfc:food/cattail_root', pages=(
-            block_spotlight('Wild Crops', 'One of your first food sources will be $(thing)wild crops$(). These will give you $(thing)food$() and $(thing)seeds$().', 'tfc:wild_crop/rye'),
-            text('In shallow water $(thing)cattails$() can be broken with a knife to get $(thing)cattail roots$(). They are a great early source of grain. Also, underwater plants that aren\'t grass can be broken with a knife to get $(thing)seaweed$().'),
-            # recipe_with_text('tfc:heating', 'tfc:heating/seaweed', 'Seaweed can be cooked into dried seaweed, which is a vegetable.'),
-            text('Rivers and seas are teeming with aquatic life. All small $(thing)fish$() are edible, but you might not want to eat a pufferfish! Of course, the world is also full of $(thing)domestic animals$() that you can tame or kill for food. Predators like $(thing)bears$() don\'t drop any useful meat.')
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
-            text('To make a thatch bed, place two $(thing)thatch$() blocks adjacent to each other. Then, right click with a $(thing)large raw hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
+            text('To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
             multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),))
         )),
     ))
 
+    book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
+        entry('panning', 'Panning', 'tfc:pan/empty', pages=(
+            text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/rivers#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need a empty pan.').link('#tfc:ore_deposits'),
+            clay_knapping('tfc:clay_knapping/pan', 'A clay pan can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
+            heat_recipe('tfc:heating/ceramic_pan', 'Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite.'),
+            block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
+            text('Then, you can begin panning!$(br2)$(bold)1.$() With the pan in hand, $(thing)use$() it on the ore deposit block.$(br2)$(bold)2.$() While standing in water with the pan in your hand, hold down $(thing)$(k:key.use)$(), and you will start panning.$(br2)$(bold)3.$() After a few moments, if you are lucky, you may be rewarded with a small piece of ore in your inventory after panning.'),
+        )),
+        entry('heating', 'Heating', 'tfc:firestarter', pages=(
+            text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip'),
+            text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
+            # todo: other just general heating recipes?
+        )),
+        entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
+            text('Forging and stuff idk'),
+            multiblock('A Charcoal Forge', '', False, (('   ', ' 0 ', '   '), ('XXX', 'XCX', 'XXX'),), {'X': 'tfc:rock/bricks/andesite', 'C': 'tfc:charcoal_forge[heat_level=7]'})
+        )),
+        entry('crucible', 'Crucible', 'tfc:crucible', pages=(
+            text('Getting toasty in here'),
+            block_spotlight('A Crucible', '', 'tfc:crucible'),
+        )),
+        entry('grill', 'Firepit And Grill', 'tfc:grill', pages=(
+            text('Grill grill baby!'),
+            block_spotlight('A Firepit with Grill', '', 'tfc:grill'),
+        )),
+    ))
+
     book.category('food', 'Food', 'How to find, harvest, and cook food.', 'tfc:food/wheat', entries=(
+        entry('decay', 'Preservation', 'minecraft:rotten_flesh', pages=(
+            text('In TerraFirmaCraft, no food will last forever! Food will $(thing)expire$() over time, turning rotten. Rotten food will not restore any hunger, and has the potential to give you unhelpful effects such as $(thing)Hunger$() or $(thing)Poison$()!$(br2)Fortunately, there are a number of ways to make your food last longer by $(thing)Preserving$() it.'),
+            text('When you hover over a piece of food, you will see a tooltip which shows how long the food has until it will rot. It might look something like:$(br2)$(bold)$(2)Expires on: 5:30 July 5, 1000 (in 5 day(s))$()$(br2)By using various preservation mechanics, that date can be extended, giving you more time before your food roots.'),
+            text('One of the easiest ways to preserve food, is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$(), the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.', title='Vessels'),
+            block_spotlight('', 'A Sealed Large Vessel.', 'tfc:ceramic/large_vessel[sealed=true]'),
+            text('One other way to preserve certain types of food easily, is to cook it. $(thing)Meats$() will all expire slower when they are cooked than when they are raw.$(br2)It is also important to use the correct device for cooking. Certain devices that heat very hot, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() or a $(l:mechanics/crucible)Crucible$() are $(bold)bad$() for cooking food, which will make them expire faster!', title='Cooking'),
+            heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it\'s lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it\'s lifetime by 1.66x!')
+        )),
         entry('crops', 'Crops', 'tfc:food/wheat', pages=(
             text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). In the stone age, a Hoe can be $(thing)knapped$() as seen on the right.'),
             rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'A hoe head, knapped from various igneous rocks.'),
@@ -356,6 +381,8 @@ class Page(NamedTuple):
         return Page(self.type, self.data, self.custom, anchor_id, self.link_ids)
 
     def link(self, link_id: str) -> 'Page':
+        if link_id.startswith('#'):  # Patchouli format for linking tags
+            link_id = 'tag:' + link_id[1:]
         self.link_ids.append(link_id)
         return self
 
@@ -379,7 +406,7 @@ class Book:
         rm.data(('patchouli_books', self.root_name, 'book'), {
             'name': 'tfc.field_guide.book_name',
             'landing_text': 'tfc.field_guide.book_landing_text',
-            'subtitle': 'TFC_VERSION',
+            'subtitle': '${TFC_VERSION}',
             # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
             # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
             'dont_generate_book': False,
@@ -570,6 +597,10 @@ def fire_clay_knapping(recipe: str, text_content: str) -> Page:
     return page('fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
 
 
+def heat_recipe(recipe: str, text_content: str) -> Page:
+    return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+
+
 def page(page_type: str, page_data: JsonObject, custom: bool = False) -> Page:
     return Page(page_type, page_data, custom, None, [])
 
@@ -589,7 +620,7 @@ def seperator_component(x: int, y: int) -> Component:
 
 
 def custom_component(x: int, y: int, class_name: str, data: JsonObject) -> Component:
-    return Component('patchouli:custom', x, y, {'class': 'net.dries007.tfc.compat.patchouli.' + class_name, **data})
+    return Component('patchouli:custom', x, y, {'class': 'net.dries007.tfc.compat.patchouli.component.' + class_name, **data})
 
 
 if __name__ == '__main__':

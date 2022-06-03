@@ -21,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.config.TFCConfig;
 import vazkii.patchouli.client.RenderHelper;
 import vazkii.patchouli.client.base.ClientTicker;
 import vazkii.patchouli.client.book.BookEntry;
@@ -49,6 +50,8 @@ public final class PatchouliClientEventHandler
 
     public static void renderBookTooltipWithoutBook(RenderTooltipEvent.Pre event)
     {
+        if (!TFCConfig.CLIENT.showGuideBookLinksAlways.get()) return;
+
         final Minecraft minecraft = Minecraft.getInstance();
         final PoseStack poseStack = event.getPoseStack();
         final ItemStack stack = event.getItemStack();

@@ -32,6 +32,8 @@ public class HeatingComponent extends InputOutputComponent<HeatingRecipe>
         context.renderItemStack(poseStack, 86, 5, mouseX, mouseY, getOutput(recipe));
         renderFluidStack(poseStack, recipe.getDisplayOutputFluid(), 64, 5);
 
+        // todo: render a tooltip for the temperature below
+
         poseStack.popPose();
     }
 
