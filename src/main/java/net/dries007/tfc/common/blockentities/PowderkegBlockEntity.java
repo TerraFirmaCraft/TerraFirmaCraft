@@ -12,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class PowderkegBlockEntity extends TickableInventoryBlockEntity<PowderkegBlockEntity.PowderkegInventory>
 {
-
     public static final int SLOTS = 12;
 
     private static final Component NAME = new TranslatableComponent("tfc.block_entity.powderkeg");
@@ -85,6 +83,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         sidedInventory.on(new PartialItemHandler(inventory).insertAll(), Direction.UP);
     }
 
+
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
@@ -118,19 +117,20 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
         return isLit;
     }
 
-    public void setLit(boolean lit)
+    public void setLit(boolean lit, @Nullable Entity igniter)
     {
         isLit = lit;
         assert level != null;
         level.setBlockAndUpdate(worldPosition, level.getBlockState(worldPosition).setValue(PowderkegBlock.LIT, lit));
         if (lit)
         {
-            level.playSound(null, worldPosition.getX(), worldPosition.getY() + 0.5D, worldPosition.getZ(), SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0F, 1.33F);
+            Helpers.playSound(level, worldPosition, SoundEvents.TNT_PRIMED);
             fuse = 80;
+            this.igniter = igniter;
         }
         else
         {
-            level.playSound(null, worldPosition.getX(), worldPosition.getY() + 0.5D, worldPosition.getZ(), SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 0.8f, 0.6f + level.random.nextFloat() * 0.4f);
+            Helpers.playSound(level, worldPosition, SoundEvents.LAVA_EXTINGUISH);
             fuse = -1;
         }
         markForSync();

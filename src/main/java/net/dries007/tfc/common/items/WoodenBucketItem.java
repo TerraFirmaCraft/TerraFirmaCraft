@@ -41,7 +41,7 @@ public class WoodenBucketItem extends TFCBucketItem
     /**
      * Follows the super without interacting with fluid logging or containers
      */
-    public boolean emptyContents(IFluidHandler handler, Player player, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult hit)
+    public boolean emptyContents(IFluidHandler handler, @Nullable Player player, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult hit)
     {
         Fluid fluid = handler.getFluidInTank(0).getFluid();
         if (state.isAir() || state.canBeReplaced(fluid))
@@ -70,7 +70,7 @@ public class WoodenBucketItem extends TFCBucketItem
                 }
                 else
                 {
-                    Helpers.playSound(level, pos, SoundEvents.BUCKET_EMPTY);
+                    playEmptySound(fluid, player, level, pos);
                     return true;
                 }
             }

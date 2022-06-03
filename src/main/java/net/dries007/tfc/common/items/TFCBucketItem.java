@@ -152,7 +152,7 @@ public abstract class TFCBucketItem extends Item
         }
     }
 
-    private void playEmptySound(Fluid content, @Nullable Player player, LevelAccessor level, BlockPos pos)
+    protected void playEmptySound(Fluid content, @Nullable Player player, LevelAccessor level, BlockPos pos)
     {
         SoundEvent sound = content.getAttributes().getEmptySound();
         if (sound == null)
