@@ -756,22 +756,12 @@ def generate(rm: ResourceManager):
     for pottery in SIMPLE_UNFIRED_POTTERY:  # just the unfired item (fired is a vanilla item)
         rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
 
-    rm.custom_item_model(('ceramic', 'jug'), 'tfc:contained_fluid', {
-        'parent': 'forge:item/default',
-        'textures': {
-            'base': 'tfc:item/ceramic/jug_empty',
-            'fluid': 'tfc:item/ceramic/jug_overlay'
-        }
-    }).with_lang(lang('Ceramic Jug'))
-    rm.custom_item_model('wooden_bucket', 'tfc:contained_fluid', {
-        'parent': 'forge:item/default',
-        'textures': {
-            'base': 'tfc:item/bucket/wooden_bucket_empty',
-            'fluid': 'tfc:item/bucket/wooden_bucket_overlay'
-        }
-    }).with_lang(lang('Wooden Bucket'))
+    contained_fluid(rm, ('ceramic', 'jug'), 'tfc:item/ceramic/jug_empty', 'tfc:item/ceramic/jug_overlay').with_lang(lang('Ceramic Jug'))
+    contained_fluid(rm, 'wooden_bucket', 'tfc:item/bucket/wooden_bucket_empty', 'tfc:item/bucket/wooden_bucket_overlay').with_lang(lang('Wooden Bucket'))
+    contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
+    contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
 
-    # Small Ceramic Vessels (colored)
+# Small Ceramic Vessels (colored)
     for color in COLORS:
         rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color))
         rm.item_model(('ceramic', color + '_glazed_vessel')).with_lang(lang('%s Glazed Vessel', color))
@@ -780,13 +770,7 @@ def generate(rm: ResourceManager):
     for variant, data in METAL_ITEMS.items():
         if data.mold:
             rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
-            rm.custom_item_model(('ceramic', '%s_mold' % variant), 'tfc:contained_fluid', {
-                'parent': 'forge:item/default',
-                'textures': {
-                    'base': 'tfc:item/ceramic/fired_mold/%s_empty' % variant,
-                    'fluid': 'tfc:item/ceramic/fired_mold/%s_overlay' % variant
-                }
-            }).with_lang(lang('%s mold', variant))
+            contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant))
 
     # Crops
     for crop, crop_data in CROPS.items():
@@ -1603,5 +1587,14 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
             'fixed': {'parent': model + '_gui'},
             'ground': {'parent': model + '_gui'},
             'gui': {'parent': model + '_gui'}
+        }
+    })
+
+def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: str, overlay: str) -> 'ItemContext':
+    return rm.custom_item_model(name_parts, 'tfc:contained_fluid', {
+        'parent': 'forge:item/default',
+        'textures': {
+            'base': base,
+            'fluid': overlay
         }
     })

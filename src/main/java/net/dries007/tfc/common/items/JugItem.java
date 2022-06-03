@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -30,6 +29,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Drinkable;
+import org.jetbrains.annotations.Nullable;
 
 public class JugItem extends WoodenBucketItem
 {
@@ -107,7 +107,7 @@ public class JugItem extends WoodenBucketItem
     }
 
     @Override
-    protected boolean emptyContents(IFluidHandler handler, Level level, BlockPos pos, BlockState state, BlockHitResult result)
+    public boolean emptyContents(IFluidHandler handler, Player player, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult result)
     {
         return false;
     }

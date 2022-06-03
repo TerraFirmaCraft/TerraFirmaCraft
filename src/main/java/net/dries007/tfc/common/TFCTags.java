@@ -95,6 +95,8 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_POT = create("usable_in_pot");
         public static final TagKey<Fluid> USABLE_IN_JUG = create("usable_in_jug");
         public static final TagKey<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
+        public static final TagKey<Fluid> USABLE_IN_RED_STEEL_BUCKET = create("usable_in_red_steel_bucket");
+        public static final TagKey<Fluid> USABLE_IN_BLUE_STEEL_BUCKET = create("usable_in_blue_steel_bucket");
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
         public static final TagKey<Fluid> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");

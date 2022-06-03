@@ -526,6 +526,8 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkable_ingredients')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
+    rm.fluid_tag('usable_in_red_steel_bucket', '#tfc:ingredients')
+    rm.fluid_tag('usable_in_blue_steel_bucket', '#tfc:ingredients', '#minecraft:lava')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
     rm.fluid_tag('scribing_ink', 'tfc:black_dye')

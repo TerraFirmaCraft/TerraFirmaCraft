@@ -17,6 +17,7 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -289,6 +290,9 @@ public final class TFCItems
     public static final Map<Alcohol, RegistryObject<BucketItem>> ALCOHOL_BUCKETS = Helpers.mapOfKeys(Alcohol.class, fluid ->
         register("bucket/" + fluid.getId(), () -> new BucketItem(TFCFluids.ALCOHOLS.get(fluid).source(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
     );
+
+    public static final RegistryObject<TFCBucketItem> RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new MetalBucketItem(new Item.Properties().stacksTo(1).tab(MISC), () -> FluidAttributes.BUCKET_VOLUME, false));
+    public static final RegistryObject<TFCBucketItem> BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new MetalBucketItem(new Item.Properties().stacksTo(1).tab(MISC), () -> FluidAttributes.BUCKET_VOLUME, true));
 
     public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.source(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
     public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.source(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
