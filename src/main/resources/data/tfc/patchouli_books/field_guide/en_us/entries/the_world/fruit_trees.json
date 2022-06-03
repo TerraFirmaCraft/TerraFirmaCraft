@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Fruit Trees",
+  "category": "tfc:the_world",
+  "icon": "tfc:food/red_apple",
+  "pages": [],
+  "read_by_default": true,
+  "sortnum": 9
+}

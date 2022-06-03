@@ -1,0 +1,48 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Climate",
+  "category": "tfc:the_world",
+  "icon": "",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "First page"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Climate screen?"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "Temperature and stuff",
+      "title": "Temperature"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "More about temperature?"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "Rainfall and stuff",
+      "title": "Rainfall"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "More about rainfall?"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hydration",
+      "text": "Hydration",
+      "title": "Hydration"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "More about hydration!"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

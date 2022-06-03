@@ -71,6 +71,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -829,7 +830,7 @@ public final class Helpers
      */
     public static void warnWhenCalledFromClientThread()
     {
-        if (ASSERTIONS_ENABLED && Thread.currentThread().getName().equalsIgnoreCase("render thread"))
+        if (ASSERTIONS_ENABLED && EffectiveSide.get().isClient())
         {
             LOGGER.warn("This method should not be called from client thread, this is a bug!", new RuntimeException("Stacktrace"));
         }

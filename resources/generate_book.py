@@ -1,9 +1,10 @@
 import os
-import warnings
-from typing import NamedTuple, Tuple, Mapping
+from typing import NamedTuple, Tuple, List, Mapping
 
 from mcresources import ResourceManager, utils
-from mcresources.type_definitions import JsonObject, ResourceIdentifier
+from mcresources.type_definitions import JsonObject, ResourceIdentifier, ResourceLocation
+
+from constants import CROPS, ROCK_CATEGORIES
 
 
 class LocalInstance:
@@ -20,31 +21,20 @@ class LocalInstance:
         return None
 
 
-class Warnings:
-    enabled: bool = False
-
-    @staticmethod
-    def warn(content: str):
-        if Warnings.enabled:
-            warnings.warn(content, stacklevel=3)
-
-
 def main():
-    Warnings.enabled = True
     rm = ResourceManager('tfc', '../src/main/resources')
 
     print('Writing book')
     make_book(rm)
 
-    Warnings.enabled = False
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        make_book(rm)
+        make_book(rm, local_instance=True)
 
     print('Done')
 
 
-def make_book(rm: ResourceManager, root: str = 'field_guide'):
+def make_book(rm: ResourceManager, local_instance: bool = False):
     """
     Notes for those contributing to the book, for a consistent sort of style:
 
@@ -77,7 +67,9 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
     Simply copy the /assets/tfc/textures/gui/book directory from /src/ into a different folder so you ONLY get those assets in the reloadable resource pack (makes things much faster)
 
     """
-    book = Book(rm, root, {})
+    book = Book(rm, 'field_guide', {}, local_instance)
+
+    book.template('multimultiblock', custom_component(0, 0, 'MultiMultiBlockComponent', {'multiblocks': '#multiblocks'}), text_component(0, 115))
 
     book.template('rock_knapping_recipe', custom_component(0, 0, 'RockKnappingComponent', {'recipes': '#recipes'}), text_component(0, 99))
     book.template('clay_knapping_recipe', custom_component(0, 0, 'ClayKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
@@ -97,18 +89,18 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             image('tfc:textures/gui/book/biomes/rolling_hills_with_river.png', text_contents='A Rolling Hills with a river winding through it.'),
             text('Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.', title='Badlands').anchor('badlands'),
             image('tfc:textures/gui/book/biomes/badlands.png', text_contents='A Badlands.'),
-            text('', title='Plateaus').anchor('plateau'),
-            empty(),  # todo: plateau
+            text('Plateaus are a high elevation continental biome. They are similar to plains but at a higher altitude - flat, grassy areas. Plateaus can have frequent boulders dotted across them, and dry or empty hot springs are occasional sightings here.', title='Plateaus').anchor('plateau'),
+            image('tfc:textures/gui/book/biomes/plateau.png', text_contents='A Plateau with a deep river canyon running through it.'),
             text('In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.', title='Mountains').anchor('mountains'),
             image('tfc:textures/gui/book/biomes/old_mountains.png', text_contents='An Old Mountains with a hot spring on the snowy slopes.'),
             text('In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.', title='Lowlands').anchor('lowlands'),
             image('tfc:textures/gui/book/biomes/lowlands.png', text_contents='A Lowlands.'),
-            text('', title='Low Canyons').anchor('low_canyons'),
-            empty(),  # todo: low canyons
-            text('', title='Canyons').anchor('canyons'),
-            empty(),  # todo: canyons
-            text('', title='Oceans').anchor('ocean'),
-            empty(),  # todo: ocean
+            text('The low canyons is another low elevation continental biome, often found bordering oceans or other low elevation biomes. It is a moderately hilly area with frequent twisting ponds. It is similar to a Geologic Shield, and empty inactive hot springs can appear here.', title='Low Canyons').anchor('low_canyons'),
+            image('tfc:textures/gui/book/biomes/low_canyons.png', text_contents='A Low Canyons.'),
+            text('Similar to the $(l:the_world/biomes#low_canyons)Low Canyons$(), the Canyons is a mid elevation continental biome with moderate hills and frequent twisting ponds and lakes. This is a very geologically active area, with frequent short and stubby volcanoes, boulders, and active hot springs', title='Canyons').anchor('canyons'),
+            image('tfc:textures/gui/book/biomes/canyons.png', text_contents='A Canyons, with a volcano in the distance.'),
+            text('The vast oceans of TerraFirmaCraft separate continents from each other. Oceans are large featureless expanses of water on the surface, but underneath various plants, sea creatures, and kelp will be found. In colder climates, oceans can be occupied by towering icebergs and floating chunks of sea ice.', title='Oceans').anchor('ocean'),
+            image('tfc:textures/gui/book/biomes/ocean.png', text_contents='An ocean, pictured standing on the coast.'),
         )),
         entry('waterways', 'Where the River Flows', '', pages=(
             # Overview of rivers, oceans, and lakes
@@ -116,7 +108,7 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             # Resources found in rivers + lakes: ore deposits and other gem ores
             text('While exploring, you might come across large bodies of water: rivers, lakes, or vast oceans. Rivers and lakes contain $(thing)freshwater$(), while oceans contain $(thing)saltwater$(). Drinking freshwater can restore your thirst, however drinking saltwater will deplete it over time.'),
             image('tfc:textures/gui/book/biomes/river.png', text_contents='A river.'),
-            text('Rivers in TerraFirmaCraft have $(thing)current$(). They will push along items, players, and entities the same as flowing water. River currents will ultimately lead out to $(l:biomes#ocean)Oceans$(), joining up with other branches along the way. Occasionally, rivers will also disappear underground, and there have even been rare sightings of vast cavernous underground lakes, but will always find their way to the ocean eventually.'),
+            text('Rivers in TerraFirmaCraft have $(thing)current$(). They will push along items, players, and entities the same as flowing water. River currents will ultimately lead out to $(l:the_world/biomes#ocean)Oceans$(), joining up with other branches along the way. Occasionally, rivers will also disappear underground, and there have even been rare sightings of vast cavernous underground lakes, but will always find their way to the ocean eventually.'),
             image('tfc:textures/gui/book/biomes/underground_river.png', text_contents='A segment of an underground river.'),
             text('Lakes and rivers can also be the source of some resources. The first of which is small ore deposits. Gravel with small flecks of ores can be found in the bottom of rivers and lakes. These can be $(thing)panned$() to obtain small amounts of ores. Native Copper, Native Silver, Native Gold, and Cassiterite can be found this way.', title='Ore Deposits'),
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
@@ -128,18 +120,18 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             # Explanation of volcanoes with pictures and how to find them, and what resources they hold in fissures
             # Hot springs, empty hot springs, and what resources they hold
             text('The world of TerraFirmaCraft is formed by the movement of $(l:https://en.wikipedia.org/wiki/Plate_tectonics)plate tectonics$(), and some of that is still visible in the ground around you. By pressing $(thing)$(k:key.inventory)$(), and clicking on the $(thing)Climate$() tab, the current tectonic area will be listed under $(thing)Region$(). There are several regions, and they will influence what kinds of biomes, and also what kind of features are present in the area.'),
-            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:biomes#lowlands)Lowlands$(), $(l:biomes#low_canyons)Low Canyons$(), or $(l:biomes#plains)Plains$() are common.'),
-            text('$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with $(l:biomes#hills)Rolling Hills$(), $(l:biomes#plateau)Plateaus$(), and $(l:biomes#mountains)Old Mountains$().$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other.'),
+            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:the_world/biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:the_world/biomes#lowlands)Lowlands$(), $(l:the_world/biomes#low_canyons)Low Canyons$(), or $(l:biomes#plains)Plains$() are common.'),
+            text('$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with $(l:the_world/biomes#hills)Rolling Hills$(), $(l:the_world/biomes#plateau)Plateaus$(), and $(l:the_world/biomes#mountains)Old Mountains$().$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other.'),
             text('It can generate rare volcanism and some volcanic mountains.$(br2)$(bold)Oceanic Subduction$()$(br)A subduction zone is where one plate slips under the other. In the ocean, this can form lots of volcanic mountains, island chains, and deep ocean ridges.$(br2)$(bold)Continental Subduction$()$(br)A continental subduction zone is a area of frequent volcanic activity, and huge coastal mountains. Active hot springs and volcanoes are common.'),
-            text('$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of $(l:biomes#canyons)Canyons$() biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall $(l:biomes#mountains)Mountains$() and $(l:biomes#plateau)Plateaus$().'),
+            text('$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of $(l:the_world/biomes#canyons)Canyons$() biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall $(l:the_world/biomes#mountains)Mountains$() and $(l:the_world/biomes#plateau)Plateaus$().'),
             text('$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates.')
         )),
-        entry('the_underground', 'The Underground', '', pages=(
+        entry('the_underground', 'The Underground', 'tfc:rock/raw/shale', pages=(
             # Overview of rock layers, including what rock layers appear at what altitudes
             # Brief introduction to the fact ores are rock layer specific
             # Some info about caves, possible things to find in caves
         )),
-        entry('ores_and_minerals', 'Ores and Minerals', '', pages=(
+        entry('ores_and_minerals', 'Ores and Minerals', 'tfc:ore/normal_hematite', pages=(
             # Overview of all underground ores
             # General spawning patterns of ores (deeper = richer)
             # Indicators
@@ -156,18 +148,23 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             text('More about temperature?'),
             text('Rainfall and stuff', title='Rainfall').anchor('rainfall'),
             text('More about rainfall?'),
+            text('Hydration', title='Hydration').anchor('hydration'),
+            text('More about hydration!'),
         )),
         entry('flora', 'Flora', '', pages=(
             # Overview of various plants
             # Mention some usages (dyes)
         )),
-        entry('wild_crops', 'Wild Crops', '', pages=(
+        entry('wild_crops', 'Wild Crops', 'tfc:wild_crop/wheat', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
+            text('$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$().'),
+            block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:food/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat'),
+            text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:food/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated.')
         )),
-        entry('berry_bushes', 'Berry Bushes', '', pages=(
+        entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
             # Berry bushes - how to find them, how to harvest and move them
         )),
-        entry('fruit_trees', 'Fruit Trees', '', pages=(
+        entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
             # Fruit trees - how to find them, how to harvest and move them
         )),
         entry('wild_animals', 'Wild Animals', '', pages=(
@@ -193,12 +190,7 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             text('In addition to gathering sticks and twigs on the ground, sticks can also be obtained by breaking leaves with your fist. Once you have a number of rocks and sticks, you are ready to start $(thing)Knapping$(). Knapping is a process where two rocks are hit together, to form a particular shape. In order to knap, first hold at least two rocks in your hand, then right click in the air, which will open up the $(thing)Knapping Interface$().'),
             image('tfc:textures/gui/book/gui/rock_knapping.png', text_contents='The Knapping Interface.', border=False),
             text('In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.$(br2)Like crafting recipes, the location of the desired pattern doesn\'t matter for the output, and some recipes have multiple variants that are valid.'),
-            rock_knapping(
-                'tfc:rock_knapping/knife_head_igneous_extrusive',
-                'tfc:rock_knapping/knife_head_igneous_intrusive',
-                'tfc:rock_knapping/knife_head_metamorphic',
-                'tfc:rock_knapping/knife_head_sedimentary',
-                text_content='A knife blade, crafted from several different rock types.'),
+            rock_knapping_typical('tfc:rock_knapping/knife_head_%s', 'A knife blade, crafted from several different rock types.'),
             crafting('tfc:crafting/stone/knife_sedimentary', text_contents='Once you have obtained a knife blade, in order to create a stone knife, simply craft it with a stick in your inventory.'),
             crafting('tfc:crafting/wood/stick_from_twigs', text_contents='The twigs from earlier can also be used to create sticks, if needed.'),
             item_spotlight('tfc:stone/knife/sedimentary', text_contents='Knives are a very useful tool. One of their primary uses is to collect straw by breaking plants. Most tall grasses and plants will drop straw when broken with a knife.'),
@@ -211,17 +203,17 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
             crafting('tfc:crafting/firestarter', text_contents='Crafting a firestarter can be done with two sticks.'),
             text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper, straw, or other items, and will increase the chance of successfully creating a firepit. Throw ($(thing)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
             block_spotlight('', 'If you were successful, a firepit will be created.', 'tfc:firepit[lit=true]'),
-            text('Using the firepit again will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:heating)heated$() in.'),
+            text('Using the firepit again will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:getting_started/heating)heated$() in.'),
             image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False)
         )),
         entry('heating', 'Heating', 'tfc:firestarter', pages=(
-            text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:pit_kiln)Pit Kiln$(), or a $(l:charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip'),
+            text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip'),
             text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
             # todo: some useful heating recipes for early game? or put this in the firepit section
             # todo: other just general heating recipes?
         )),
         entry('pottery', 'Pottery', 'tfc:ceramic/vessel', pages=(
-            text('$(thing)Clay$() is an incredibly useful and balanced material, which can be used for pottery. However first, it needs to be located. Clay is usually hidden by grass, but it is found often in two locations. In areas with of at least 175mm $(l:climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, however these patches are usually marked the by presence of certain $(thing)Plants$().'),
+            text('$(thing)Clay$() is an incredibly useful and balanced material, which can be used for pottery. However first, it needs to be located. Clay is usually hidden by grass, but it is found often in two locations. In areas with of at least 175mm $(l:the_world/climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, however these patches are usually marked the by presence of certain $(thing)Plants$().'),
             multiblock('Clay Indicators', 'A clay indicator plant found atop some clay grass', False, pattern=(
                 ('   ', ' C ', '   '),
                 ('XXX', 'X0X', 'XXX')
@@ -245,7 +237,7 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
         entry('pit_kiln', 'Pit Kilns', '', pages=(
             text('In order to create a pit kiln, '),  # todo
             empty(),
-            text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(thing)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:heating)heating$() the items inside up.'),
+            text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(thing)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:getting_started/heating)heating$() the items inside up.'),
             image(*['tfc:textures/gui/book/tutorial/pit_kiln_%d.png' % i for i in range(1, 1 + 5)], text_contents='Tutorial: creating a pit kiln.')
         )),  # And casting
         entry('building_materials', 'Building Materials', 'tfc:wattle/unstained', pages=(
@@ -266,6 +258,82 @@ def make_book(rm: ResourceManager, root: str = 'field_guide'):
         )),
     ))
 
+    book.category('food', 'Food', 'How to find, harvest, and cook food.', 'tfc:food/wheat', entries=(
+        entry('crops', 'Crops', 'tfc:food/wheat', pages=(
+            text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). In the stone age, a Hoe can be $(thing)knapped$() as seen on the right.'),
+            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'A hoe head, knapped from various igneous rocks.'),
+            crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe. Hoe\'s function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$().'),
+            text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on.'),
+            # todo: crop nutrients overview
+            # todo: crop yield overview
+            # Listing of all crops, their growth conditions, and how to grow them
+            text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
+            text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland to be grown, and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/oat[age=%d]' % i) for i in range(8)]),
+            text(f'{detail_crop("rye")}Rye is a single block crop. Rye seeds can be planted on farmland to be grown, and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.', title='Rye').link('tfc:seeds/rye').link('tfc:food/rye').anchor('rye'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/rye[age=%d]' % i) for i in range(8)]),
+            text(f'{detail_crop("maize")}Maize is a two block tall crop. Maize seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.', title='Maize').link('tfc:seeds/maize').link('tfc:food/maize').anchor('maize'),
+            multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
+                'X': 'tfc:crop/maize[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
+                'Y': 'tfc:crop/maize[age=%d,part=bottom]' % i,
+                'Z': 'tfc:farmland/loam',
+            }) for i in range(6)]),
+            text(f'{detail_crop("wheat")}Wheat is a single block crop. Wheat seeds can be planted on farmland to be grown, and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.', title='Wheat').link('tfc:seeds/wheat').link('tfc:food/wheat').anchor('wheat'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/wheat[age=%d]' % i) for i in range(8)]),
+            text(f'{detail_crop("rice")}Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.', title='Rice').link('tfc:seeds/rice').link('tfc:food/rice').anchor('rice'),
+            multimultiblock(
+                'Note: in order to grow, the rice block must be $(thing)Waterlogged$().',
+                *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/rice[age=%d,fluid=water]' % i) for i in range(8)],
+            ),
+            text(f'{detail_crop("beet")}Beets area a single block crop. Beet seeds can be planted on farmland to be grown, and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.', title='Beet').link('tfc:seeds/beet').link('tfc:food/beet').anchor('beet'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/beet[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("cabbage")}Cabbage is a single block crop. Cabbage seeds can be planted on farmland to be grown, and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.', title='Cabbage').link('tfc:seeds/cabbage').link('tfc:food/cabbage').anchor('cabbage'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/cabbage[age=%d]' % i) for i in range(6)]),
+            text(f'{detail_crop("carrot")}Carrot is a single block crop. Carrot seeds can be planted on farmland to be grown, and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.', title='Carrot').link('tfc:seeds/carrot').link('tfc:food/carrot').anchor('carrot'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/carrot[age=%d]' % i) for i in range(5)]),
+            text(f'{detail_crop("garlic")}Garlic is a single block crop. Garlic seeds can be planted on farmland to be grown, and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.', title='Garlic').link('tfc:seeds/garlic').link('tfc:food/garlic').anchor('garlic'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/garlic[age=%d]' % i) for i in range(5)]),
+            text(f'{detail_crop("green_bean")}Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.', title='Green Beans').link('tfc:seeds/green_bean').link('tfc:food/green_bean').anchor('green_bean'),
+            multimultiblock('The stick is required in order for the crop to fully grow.', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
+                'X': 'tfc:crop/green_bean[age=%d,part=top,stick=true]' % i,
+                'Y': 'tfc:crop/green_bean[age=%d,part=bottom,stick=true]' % i,
+                'Z': 'tfc:farmland/loam',
+            }) for i in range(8)]),
+            text(f'{detail_crop("potato")}Potatoes are a single block crop. Potato seeds can be planted on farmland to be grown, and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.', title='Potatoes').link('tfc:seeds/potato').link('tfc:food/potato').anchor('potato'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/potato[age=%d]' % i) for i in range(7)]),
+            text(f'{detail_crop("onion")}Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.', title='Onions').link('tfc:seeds/onion').link('tfc:food/onion').anchor('onion'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/onion[age=%d]' % i) for i in range(7)]),
+            text(f'{detail_crop("soybean")}Soybean is a single block crop. Soybean seeds can be planted on farmland to be grown, and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.', title='Soybean').link('tfc:seeds/soybean').link('tfc:food/soybean').anchor('soybean'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/soybean[age=%d]' % i) for i in range(7)]),
+            text(f'{detail_crop("squash")}Squash is a single block crop. Squash seeds can be planted on farmland to be grown, and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.', title='Squash').link('tfc:seeds/squash').link('tfc:food/squash').anchor('squash'),
+            multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/squash[age=%d]' % i) for i in range(8)]),
+            text(f'{detail_crop("sugarcane")}Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().', title='Sugarcane').link('tfc:seeds/sugarcane').link('tfc:food/sugarcane').anchor('sugarcane'),
+            multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
+                'X': 'tfc:crop/sugarcane[age=%d,part=top]' % i if i >= 4 else 'minecraft:air',
+                'Y': 'tfc:crop/sugarcane[age=%d,part=bottom]' % i,
+                'Z': 'tfc:farmland/loam',
+            }) for i in range(8)]),
+            text(f'{detail_crop("tomato")}Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.', title='Tomatoes').link('tfc:seeds/tomato').link('tfc:food/tomato').anchor('tomatoes'),
+            multimultiblock('The stick is required in order for the crop to fully grow.', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
+                'X': 'tfc:crop/tomato[age=%d,part=top,stick=true]' % i,
+                'Y': 'tfc:crop/tomato[age=%d,part=bottom,stick=true]' % i,
+                'Z': 'tfc:farmland/loam',
+            }) for i in range(8)]),
+            text(f'{detail_crop("jute")}Jute is a two block tall crop. Jute seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.', title='Jute').link('tfc:seeds/jute').link('tfc:jute').anchor('jute'),
+            multimultiblock('', *[multiblock('', '', False, (('X',), ('Y',), ('Z',), ('0',)), {
+                'X': 'tfc:crop/jute[age=%d,part=top]' % i if i >= 3 else 'minecraft:air',
+                'Y': 'tfc:crop/jute[age=%d,part=bottom]' % i,
+                'Z': 'tfc:farmland/loam',
+            }) for i in range(6)]),
+        )),
+    ))
+
+
+def detail_crop(crop: str) -> str:
+    data = CROPS[crop]
+    return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
+
 
 # ==================== Book Resource Generation API Functions =============================
 
@@ -280,10 +348,15 @@ class Component(NamedTuple):
 class Page(NamedTuple):
     type: str
     data: JsonObject
-    anchor_id: str | None
+    anchor_id: str | None  # Anchor for referencing from other pages
+    link_ids: List[str]  # Items that are linked to this page
 
-    def anchor(self, anchor_id: str):
-        return Page(self.type, self.data, anchor_id)
+    def anchor(self, anchor_id: str) -> 'Page':
+        return Page(self.type, self.data, anchor_id, self.link_ids)
+
+    def link(self, link_id: str) -> 'Page':
+        self.link_ids.append(link_id)
+        return self
 
 
 class Entry(NamedTuple):
@@ -296,10 +369,11 @@ class Entry(NamedTuple):
 
 class Book:
 
-    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject):
+    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject, local_instance: bool):
         self.rm: ResourceManager = rm
         self.root_name = root_name
         self.category_count = 0
+        self.local_instance = local_instance
 
         rm.data(('patchouli_books', self.root_name, 'book'), {
             'name': 'tfc.field_guide.book_name',
@@ -338,24 +412,32 @@ class Book:
         })
         self.category_count += 1
 
-        category_id = utils.resource_location(self.rm.domain, category_id).join()
+        category_res: ResourceLocation = utils.resource_location(self.rm.domain, category_id)
 
         assert not isinstance(entries, Entry), 'One entry in singleton entries, did you forget a comma after entry(), ?\n  at: %s' % str(entries)
         for i, e in enumerate(entries):
             assert not isinstance(e.pages, Page), 'One entry in singleton pages, did you forget a comma after page(), ?\n  at: %s' % str(e.pages)
 
-            self.rm.data(('patchouli_books', self.root_name, 'en_us', 'entries', e.entry_id), {
+            extra_recipe_mappings = {}
+            for index, p in enumerate(e.pages):
+                for link in p.link_ids:
+                    extra_recipe_mappings[link] = index
+            if not extra_recipe_mappings:  # Exclude if there's nothing here
+                extra_recipe_mappings = None
+
+            self.rm.data(('patchouli_books', self.root_name, 'en_us', 'entries', category_res.path, e.entry_id), {
                 'name': e.name,
-                'category': category_id.replace('tfc:', 'patchouli:'),
+                'category': ('patchouli' if self.local_instance else 'tfc') + ':' + category_res.path,
                 'icon': e.icon,
                 'pages': [{
-                    'type': page.type,
-                    'anchor': page.anchor_id,
-                    **page.data
-                } for page in e.pages],
+                    'type': p.type,
+                    'anchor': p.anchor_id,
+                    **p.data
+                } for p in e.pages],
                 'advancement': e.advancement,
                 'read_by_default': True,
-                'sortnum': i if is_sorted else None
+                'sortnum': i if is_sorted else None,
+                'extra_recipe_mappings': extra_recipe_mappings
             })
 
 
@@ -379,9 +461,7 @@ def text(text_contents: str, title: str | None = None) -> Page:
     :param title An optional title to display at the top of the page. If you set this, the rest of the text will be shifted down a bit. You can't use "title" in the first page of an entry.
     :return:
     """
-    if len(text_contents) > 600:
-        Warnings.warn('Possibly overlong text page (%d chars)' % len(text_contents))
-    return Page('patchouli:text', {'text': text_contents, 'title': title}, None)
+    return page('patchouli:text', {'text': text_contents, 'title': title})
 
 
 def image(*images: str, text_contents: str | None = None, border: bool = True) -> Page:
@@ -391,7 +471,7 @@ def image(*images: str, text_contents: str | None = None, border: bool = True) -
     :param text_contents: The text to display on this page, under the image. This text can be formatted.
     :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
     """
-    return Page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, None)
+    return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border})
 
 
 def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:
@@ -402,7 +482,7 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: str | N
     :param text_contents: The text to display on this page, under the recipes. This text can be formatted.
     Note: the text will not display if there are two recipes with two different outputs, and "title" is not set. This is the case of the image displayed, in which both recipes have the output names displayed, and there's no space for text.
     """
-    return Page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents}, None)
+    return page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents})
 
 
 # todo: other default page types: (smelting, entity, link) as we need them
@@ -414,13 +494,17 @@ def item_spotlight(item: str, title: str | None = None, link_recipe: bool = Fals
     :param link_recipe: Defaults to false. Set this to true to mark this spotlight page as the "recipe page" for the item being spotlighted. If you do so, when looking at pages that display the item, you can shift-click the item to be taken to this page. Highly recommended if the spotlight page has instructions on how to create an item by non-conventional means.
     :param text_contents: The text to display on this page, under the item. This text can be formatted.
     """
-    return Page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, None)
+    return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents})
 
 
-def block_spotlight(title: str, text_content: str, block: str) -> Page:
+def block_spotlight(title: str, text_content: str, block: str, lower: str | None = None) -> Page:
     """ A shortcut for making a single block multiblock that is meant to act the same as item_spotlight() but for blocks """
-    return multiblock(title, text_content, False, (('X',), ('0',)), {'X': block})
+    return multiblock(title, text_content, False, pattern=(('X',), ('0',)), mapping={'X': block, '0': lower})
 
+
+def two_tall_block_spotlight(title: str, text_content: str, lower: str, upper: str) -> Page:
+    """ A shortcut for making a single block multiblock for a double tall block, such as crops or tall grass """
+    return multiblock(title, text_content, False, pattern=(('X',), ('Y',), ('0',)), mapping={'X': upper, 'Y': lower})
 
 def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> Page:
     """
@@ -436,40 +520,51 @@ def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: T
     """
     data = {'name': title, 'text': text_content, 'enable_visualize': enable_visualize}
     if multiblock_id is not None:
-        return Page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data}, None)
+        return page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data})
     elif pattern is not None and mapping is not None:
-        return Page('patchouli:multiblock', {'multiblock': {
+        return page('patchouli:multiblock', {'multiblock': {
             'pattern': pattern,
             'mapping': mapping,
             'offset': offset,
-        }, **data}, None)
+        }, **data})
     else:
         raise ValueError('multiblock page must have either \'multiblock\' or \'pattern\' and \'mapping\' entries')
 
 
 def empty() -> Page:
-    return Page('patchouli:empty', {}, None)
+    return page('patchouli:empty', {})
 
 
 # ==============
 # TFC Page Types
 # ==============
 
+def multimultiblock(text_content: str, *pages) -> Page:
+    return page('patchouli:multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] for p in pages]})
+
+
+def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:
+    return rock_knapping(*[recipe_with_category_format % c for c in ROCK_CATEGORIES], text_content=text_content)
+
 
 def rock_knapping(*recipes: str, text_content: str) -> Page:
-    return Page('patchouli:rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, None)
+    return page('patchouli:rock_knapping_recipe', {'recipes': recipes, 'text': text_content})
 
 
 def leather_knapping(recipe: str, text_content: str) -> Page:
-    return Page('patchouli:leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, None)
+    return page('patchouli:leather_knapping_recipe', {'recipe': recipe, 'text': text_content})
 
 
 def clay_knapping(recipe: str, text_content: str) -> Page:
-    return Page('patchouli:clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, None)
+    return page('patchouli:clay_knapping_recipe', {'recipe': recipe, 'text': text_content})
 
 
 def fire_clay_knapping(recipe: str, text_content: str) -> Page:
-    return Page('patchouli:fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, None)
+    return page('patchouli:fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content})
+
+
+def page(page_type: str, page_data: JsonObject) -> Page:
+    return Page(page_type, page_data, None, [])
 
 
 # Components

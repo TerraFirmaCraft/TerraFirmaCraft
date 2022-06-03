@@ -16,7 +16,7 @@ Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=
 Wood = NamedTuple('Wood', temp=float, duration=int)
 Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=BerryBushType, min_forest=str, max_forest=str)
 Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
-Crop = NamedTuple('Crop', type=str, stages=int)
+Crop = NamedTuple('Crop', type=str, stages=int, nutrient=str, min_temp=int, max_temp=int, min_hydration=int, max_hydration=int)
 
 # Melting Temps
 POTTERY_MELT = 1200 - 1
@@ -335,25 +335,26 @@ WOODS: Dict[str, Wood] = {
     'willow': Wood(603, 1000)
 }
 
+# todo: make the nutrients accurate, and make proper climate ranges for these
 CROPS: Dict[str, Crop] = {
-    'barley': Crop('default', 8),
-    'oat': Crop('default', 8),
-    'rye': Crop('default', 8),
-    'maize': Crop('double', 6),
-    'wheat': Crop('default', 8),
-    'rice': Crop('default', 8),
-    'beet': Crop('default', 6),
-    'cabbage': Crop('default', 6),
-    'carrot': Crop('default', 5),
-    'garlic': Crop('default', 5),
-    'green_bean': Crop('double_stick', 8),
-    'potato': Crop('default', 7),
-    'onion': Crop('default', 7),
-    'soybean': Crop('default', 7),
-    'squash': Crop('default', 8),
-    'sugarcane': Crop('double', 8),
-    'tomato': Crop('double_stick', 8),
-    'jute': Crop('double', 6)
+    'barley': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
+    'oat': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
+    'rye': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
+    'maize': Crop('double', 6, 'nitrogen', 5, 25, 40, 100),
+    'wheat': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
+    'rice': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
+    'beet': Crop('default', 6, 'nitrogen', 5, 25, 40, 100),
+    'cabbage': Crop('default', 6, 'nitrogen', 5, 25, 40, 100),
+    'carrot': Crop('default', 5, 'nitrogen', 5, 25, 40, 100),
+    'garlic': Crop('default', 5, 'nitrogen', 5, 25, 40, 100),
+    'green_bean': Crop('double_stick', 8, 'nitrogen', 5, 25, 40, 100),
+    'potato': Crop('default', 7, 'nitrogen', 5, 25, 40, 100),
+    'onion': Crop('default', 7, 'nitrogen', 5, 25, 40, 100),
+    'soybean': Crop('default', 7, 'nitrogen', 5, 25, 40, 100),
+    'squash': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
+    'sugarcane': Crop('double', 8, 'nitrogen', 5, 25, 40, 100),
+    'tomato': Crop('double_stick', 8, 'nitrogen', 5, 25, 40, 100),
+    'jute': Crop('double', 6, 'nitrogen', 5, 25, 40, 100)
 }
 
 PLANTS: Dict[str, Plant] = {

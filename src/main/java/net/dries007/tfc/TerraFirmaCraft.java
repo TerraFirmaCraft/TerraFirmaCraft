@@ -11,7 +11,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -49,6 +48,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
+import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
@@ -127,6 +127,7 @@ public final class TerraFirmaCraft
         {
             ClientEventHandler.init();
             ClientForgeEventHandler.init();
+            PatchouliClientEventHandler.init();
         }
 
         ForgeMod.enableMilkFluid();
@@ -158,10 +159,7 @@ public final class TerraFirmaCraft
             FoodCapability.setCreativeTabsNonDecaying();
         });
 
-        if (ModList.get().isLoaded("patchouli"))
-        {
-            PatchouliIntegration.registerMultiBlocks();
-        }
+        PatchouliIntegration.registerMultiBlocks();
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event)
