@@ -9,7 +9,7 @@
       "text": "Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). In the stone age, a Hoe can be $(thing)knapped$() as seen on the right."
     },
     {
-      "type": "patchouli:rock_knapping_recipe",
+      "type": "tfc:rock_knapping_recipe",
       "recipes": [
         "tfc:rock_knapping/hoe_head_sedimentary",
         "tfc:rock_knapping/hoe_head_metamorphic",
@@ -34,7 +34,7 @@
       "title": "Barley"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -182,7 +182,7 @@
       "title": "Oat"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -330,7 +330,7 @@
       "title": "Rye"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -478,7 +478,7 @@
       "title": "Maize"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -616,7 +616,7 @@
       "title": "Wheat"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -764,7 +764,7 @@
       "title": "Rice"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "Note: in order to grow, the rice block must be $(thing)Waterlogged$().",
       "multiblocks": [
         {
@@ -912,7 +912,7 @@
       "title": "Beet"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -1026,7 +1026,7 @@
       "title": "Cabbage"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -1140,7 +1140,7 @@
       "title": "Carrot"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -1237,7 +1237,7 @@
       "title": "Garlic"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -1334,7 +1334,7 @@
       "title": "Green Beans"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "The stick is required in order for the crop to fully grow.",
       "multiblocks": [
         {
@@ -1514,7 +1514,7 @@
       "title": "Potatoes"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -1645,7 +1645,7 @@
       "title": "Onions"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -1776,7 +1776,7 @@
       "title": "Soybean"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -1907,7 +1907,7 @@
       "title": "Squash"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -2055,7 +2055,7 @@
       "title": "Sugarcane"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {
@@ -2235,7 +2235,7 @@
       "title": "Tomatoes"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "The stick is required in order for the crop to fully grow.",
       "multiblocks": [
         {
@@ -2415,7 +2415,7 @@
       "title": "Jute"
     },
     {
-      "type": "patchouli:multimultiblock",
+      "type": "tfc:multimultiblock",
       "text": "",
       "multiblocks": [
         {

@@ -3,7 +3,7 @@
   "name": "tfc.field_guide.book_name",
   "landing_text": "tfc.field_guide.book_landing_text",
   "subtitle": "TFC_VERSION",
-  "dont_generate_book": true,
+  "dont_generate_book": false,
   "show_progress": false,
   "macros": {}
 }

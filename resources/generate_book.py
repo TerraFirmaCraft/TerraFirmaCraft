@@ -348,11 +348,12 @@ class Component(NamedTuple):
 class Page(NamedTuple):
     type: str
     data: JsonObject
+    custom: bool  # If this page is a custom template.
     anchor_id: str | None  # Anchor for referencing from other pages
     link_ids: List[str]  # Items that are linked to this page
 
     def anchor(self, anchor_id: str) -> 'Page':
-        return Page(self.type, self.data, anchor_id, self.link_ids)
+        return Page(self.type, self.data, self.custom, anchor_id, self.link_ids)
 
     def link(self, link_id: str) -> 'Page':
         self.link_ids.append(link_id)
@@ -379,7 +380,9 @@ class Book:
             'name': 'tfc.field_guide.book_name',
             'landing_text': 'tfc.field_guide.book_landing_text',
             'subtitle': 'TFC_VERSION',
-            'dont_generate_book': True,
+            # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
+            # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
+            'dont_generate_book': False,
             'show_progress': False,
             'macros': macros
         })
@@ -427,10 +430,10 @@ class Book:
 
             self.rm.data(('patchouli_books', self.root_name, 'en_us', 'entries', category_res.path, e.entry_id), {
                 'name': e.name,
-                'category': ('patchouli' if self.local_instance else 'tfc') + ':' + category_res.path,
+                'category': self.prefix(category_res.path),
                 'icon': e.icon,
                 'pages': [{
-                    'type': p.type,
+                    'type': self.prefix(p.type) if p.custom else p.type,
                     'anchor': p.anchor_id,
                     **p.data
                 } for p in e.pages],
@@ -439,6 +442,10 @@ class Book:
                 'sortnum': i if is_sorted else None,
                 'extra_recipe_mappings': extra_recipe_mappings
             })
+
+    def prefix(self, path: str) -> str:
+        """ In a local instance, domains are all under patchouli, otherwise under tfc """
+        return ('patchouli' if self.local_instance else 'tfc') + ':' + path
 
 
 def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, pages: Tuple[Page, ...] = ()) -> Entry:
@@ -540,7 +547,7 @@ def empty() -> Page:
 # ==============
 
 def multimultiblock(text_content: str, *pages) -> Page:
-    return page('patchouli:multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] for p in pages]})
+    return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] for p in pages]}, custom=True)
 
 
 def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:
@@ -548,23 +555,23 @@ def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -
 
 
 def rock_knapping(*recipes: str, text_content: str) -> Page:
-    return page('patchouli:rock_knapping_recipe', {'recipes': recipes, 'text': text_content})
+    return page('rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, custom=True)
 
 
 def leather_knapping(recipe: str, text_content: str) -> Page:
-    return page('patchouli:leather_knapping_recipe', {'recipe': recipe, 'text': text_content})
+    return page('leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
 
 
 def clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('patchouli:clay_knapping_recipe', {'recipe': recipe, 'text': text_content})
+    return page('clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
 
 
 def fire_clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('patchouli:fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content})
+    return page('fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
 
 
-def page(page_type: str, page_data: JsonObject) -> Page:
-    return Page(page_type, page_data, None, [])
+def page(page_type: str, page_data: JsonObject, custom: bool = False) -> Page:
+    return Page(page_type, page_data, custom, None, [])
 
 
 # Components

@@ -57,7 +57,7 @@
       "text": "In order to knap a particular item, you want to remove squares until you form the desired pattern. For example, create a knife blade by matching the recipe shown to the right.$(br2)Like crafting recipes, the location of the desired pattern doesn't matter for the output, and some recipes have multiple variants that are valid."
     },
     {
-      "type": "patchouli:rock_knapping_recipe",
+      "type": "tfc:rock_knapping_recipe",
       "recipes": [
         "tfc:rock_knapping/knife_head_sedimentary",
         "tfc:rock_knapping/knife_head_metamorphic",

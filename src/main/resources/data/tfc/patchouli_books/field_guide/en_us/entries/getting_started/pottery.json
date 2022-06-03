@@ -57,7 +57,7 @@
       "text": "In order to survive and progress in the world of TFC, you need things that can't just be made out of sticks, rocks, and grass. This is where $(thing)pottery$() comes in. Dig up some clay with a shovel, or just your fists. Hold at least 5 clay in your hand and right-click, and a $(thing)knapping$() interface will show up, just like it did for stone.$(br2)One such pottery item is a $(thing)Small Vesel$()."
     },
     {
-      "type": "patchouli:clay_knapping_recipe",
+      "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/vessel",
       "text": "This is a item that can hold four other stacks in it's inventory. However in order to use, it must first be $(thing)fired$()."
     },

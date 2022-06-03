@@ -28,7 +28,7 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
 
     public void resetToBackgroundSprite()
     {
-        RenderSystem.setShaderColor(1, 1, 1, 1);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.setShaderTexture(0, texture);
     }
 

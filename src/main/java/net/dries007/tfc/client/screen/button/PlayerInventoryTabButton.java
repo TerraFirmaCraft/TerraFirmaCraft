@@ -19,7 +19,6 @@ import net.dries007.tfc.network.SwitchInventoryTabPacket;
 
 public class PlayerInventoryTabButton extends Button
 {
-
     private final int textureU;
     private final int textureV;
     private final int iconU;
@@ -74,13 +73,13 @@ public class PlayerInventoryTabButton extends Button
     public void renderButton(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks)
     {
         RenderSystem.setShaderTexture(0, ClientHelpers.GUI_ICONS);
-        RenderSystem.disableDepthTest();
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.enableBlend();
 
         tickCallback.run();
 
         blit(matrixStack, x, y, 0, (float) textureU, (float) textureV, width, height, 256, 256);
         blit(matrixStack, iconX, iconY, 16, 16, (float) iconU, (float) iconV, 32, 32, 256, 256);
-        RenderSystem.enableDepthTest();
     }
 
     public void updateGuiSize(int guiLeft, int guiTop)
