@@ -25,11 +25,6 @@ public class DirtBlock extends Block implements IDirtBlock
     @Nullable private final Supplier<? extends Block> path;
     @Nullable private final Supplier<? extends Block> farmland;
 
-    public DirtBlock(Properties properties, SoilBlockType grassType, SoilBlockType.Variant variant)
-    {
-        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
-    }
-
     public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland)
     {
         super(properties);
@@ -37,6 +32,11 @@ public class DirtBlock extends Block implements IDirtBlock
         this.grass = grass;
         this.path = path;
         this.farmland = farmland;
+    }
+
+    DirtBlock(Properties properties, SoilBlockType grassType, SoilBlockType.Variant variant)
+    {
+        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
     }
 
     public BlockState getGrass()

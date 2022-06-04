@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Geology",
   "category": "tfc:the_world",
-  "icon": "",
+  "icon": "tfc:rock/raw/shale",
   "pages": [
     {
       "type": "patchouli:text",
@@ -27,6 +27,30 @@
     {
       "type": "patchouli:text",
       "text": "$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sedimentary",
+      "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They can be found in $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
+      "title": "Sedimentary"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "metamorphic",
+      "text": "$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found at $(thing)any elevation$(). They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble",
+      "title": "Metamorphic"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_extrusive",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth's surface. They can be found at $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite",
+      "title": "Igneous Extrusive"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "igneous_intrusive",
+      "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found at $(thing)mid to low altitude$() rock layers. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
+      "title": "Igneous Intrusive"
     }
   ],
   "read_by_default": true,

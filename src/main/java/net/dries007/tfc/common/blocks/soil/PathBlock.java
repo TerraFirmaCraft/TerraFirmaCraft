@@ -22,16 +22,15 @@ public class PathBlock extends DirtPathBlock implements ISoilBlock
 {
     private final Supplier<Block> dirt;
 
-    public PathBlock(Properties properties, SoilBlockType soil, SoilBlockType.Variant variant)
-    {
-        this(properties, TFCBlocks.SOIL.get(soil).get(variant));
-    }
-
     public PathBlock(Properties builder, Supplier<Block> dirt)
     {
         super(builder);
-
         this.dirt = dirt;
+    }
+
+    PathBlock(Properties properties, SoilBlockType soil, SoilBlockType.Variant variant)
+    {
+        this(properties, TFCBlocks.SOIL.get(soil).get(variant));
     }
 
     @Override

@@ -60,6 +60,11 @@ public class BlastFurnaceBlock extends DeviceBlock implements IBellowsConsumer
             .match(new BlockPos(1, 0, 1), matchSheet(Direction.NORTH, Direction.WEST));
     }
 
+    public static boolean isBlastFurnaceInsulationBlock(BlockState state)
+    {
+        return state.is(TFCTags.Blocks.BLAST_FURNACE_INSULATION);
+    }
+
     /**
      * @param pos The position of the blast furnace.
      * @return The number of layers of chimney present in the blast furnace, in the range [0, 4].

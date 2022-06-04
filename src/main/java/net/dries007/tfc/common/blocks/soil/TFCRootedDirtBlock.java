@@ -25,17 +25,22 @@ public class TFCRootedDirtBlock extends Block
 {
     private final Supplier<? extends Block> dirt;
 
-    public TFCRootedDirtBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant variant)
+    public TFCRootedDirtBlock(Properties properties, Supplier<? extends Block> dirt)
     {
         super(properties);
-        this.dirt = TFCBlocks.SOIL.get(dirtType).get(variant);
+        this.dirt = dirt;
+    }
+
+    TFCRootedDirtBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant variant)
+    {
+        this(properties, TFCBlocks.SOIL.get(dirtType).get(variant));
     }
 
     @Nullable
     @Override
     public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate)
     {
-        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.HOE_TILL && TFCConfig.SERVER.enableGrassPathCreation.get())
+        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.HOE_TILL && TFCConfig.SERVER.enableRootedDirtToDirtCreation.get())
         {
             return dirt.get().defaultBlockState();
         }

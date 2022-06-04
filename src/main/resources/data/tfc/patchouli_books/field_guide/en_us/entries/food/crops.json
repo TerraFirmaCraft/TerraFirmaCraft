@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). In the stone age, a Hoe can be $(thing)knapped$() as seen on the right."
+      "text": "Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$()."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -16,12 +16,12 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "A hoe head, knapped from various igneous rocks."
+      "text": "In the stone age, a Hoe can be $(thing)knapped$() as seen above."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "Once the hoe head is knapped, it can be crafted into a Hoe. Hoe's function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$()."
+      "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to create $(thing)Path Blocks$(), and convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
     },
     {
       "type": "patchouli:text",
@@ -30,7 +30,7 @@
     {
       "type": "patchouli:text",
       "anchor": "barley",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
       "title": "Barley"
     },
     {
@@ -178,7 +178,7 @@
     {
       "type": "patchouli:text",
       "anchor": "oat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Oat is a single block crop. Oat seeds can be planted on farmland to be grown, and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Oat is a single block crop. Oat seeds can be planted on farmland to be grown, and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
       "title": "Oat"
     },
     {
@@ -326,7 +326,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rye",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Rye is a single block crop. Rye seeds can be planted on farmland to be grown, and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Rye is a single block crop. Rye seeds can be planted on farmland to be grown, and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
       "title": "Rye"
     },
     {
@@ -474,7 +474,7 @@
     {
       "type": "patchouli:text",
       "anchor": "maize",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Maize is a two block tall crop. Maize seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Maize is a two block tall crop. Maize seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
       "title": "Maize"
     },
     {
@@ -612,7 +612,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wheat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Wheat is a single block crop. Wheat seeds can be planted on farmland to be grown, and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Wheat is a single block crop. Wheat seeds can be planted on farmland to be grown, and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
       "title": "Wheat"
     },
     {
@@ -760,7 +760,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.",
       "title": "Rice"
     },
     {
@@ -908,7 +908,7 @@
     {
       "type": "patchouli:text",
       "anchor": "beet",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Beets area a single block crop. Beet seeds can be planted on farmland to be grown, and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Beets area a single block crop. Beet seeds can be planted on farmland to be grown, and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
       "title": "Beet"
     },
     {
@@ -1022,7 +1022,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cabbage",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Cabbage is a single block crop. Cabbage seeds can be planted on farmland to be grown, and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Cabbage is a single block crop. Cabbage seeds can be planted on farmland to be grown, and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
       "title": "Cabbage"
     },
     {
@@ -1136,7 +1136,7 @@
     {
       "type": "patchouli:text",
       "anchor": "carrot",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Carrot is a single block crop. Carrot seeds can be planted on farmland to be grown, and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Carrot is a single block crop. Carrot seeds can be planted on farmland to be grown, and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
       "title": "Carrot"
     },
     {
@@ -1233,7 +1233,7 @@
     {
       "type": "patchouli:text",
       "anchor": "garlic",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Garlic is a single block crop. Garlic seeds can be planted on farmland to be grown, and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Garlic is a single block crop. Garlic seeds can be planted on farmland to be grown, and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
       "title": "Garlic"
     },
     {
@@ -1330,7 +1330,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_bean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
       "title": "Green Beans"
     },
     {
@@ -1510,7 +1510,7 @@
     {
       "type": "patchouli:text",
       "anchor": "potato",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Potatoes are a single block crop. Potato seeds can be planted on farmland to be grown, and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Potatoes are a single block crop. Potato seeds can be planted on farmland to be grown, and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
       "title": "Potatoes"
     },
     {
@@ -1641,7 +1641,7 @@
     {
       "type": "patchouli:text",
       "anchor": "onion",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
       "title": "Onions"
     },
     {
@@ -1772,7 +1772,7 @@
     {
       "type": "patchouli:text",
       "anchor": "soybean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Soybean is a single block crop. Soybean seeds can be planted on farmland to be grown, and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Soybean is a single block crop. Soybean seeds can be planted on farmland to be grown, and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
       "title": "Soybean"
     },
     {
@@ -1903,7 +1903,7 @@
     {
       "type": "patchouli:text",
       "anchor": "squash",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Squash is a single block crop. Squash seeds can be planted on farmland to be grown, and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Squash is a single block crop. Squash seeds can be planted on farmland to be grown, and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
       "title": "Squash"
     },
     {
@@ -2051,7 +2051,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
       "title": "Sugarcane"
     },
     {
@@ -2231,7 +2231,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tomatoes",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
       "title": "Tomatoes"
     },
     {
@@ -2411,7 +2411,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jute",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Jute is a two block tall crop. Jute seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Jute is a two block tall crop. Jute seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
       "title": "Jute"
     },
     {

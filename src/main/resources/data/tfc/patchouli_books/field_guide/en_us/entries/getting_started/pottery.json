@@ -88,7 +88,7 @@
       "item": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/copper\"}}",
       "title": "Casting",
       "link_recipes": false,
-      "text": "...$(br2)The next few pages show a couple of the knapping patterns for various useful tools."
+      "text": "The next few pages show a couple of the knapping patterns for various useful tools."
     },
     {
       "type": "tfc:clay_knapping_recipe",
@@ -118,27 +118,27 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/axe_head_mold",
-      "text": "An $(thing)Axe$()."
+      "text": "An $(thing)Axe$() for all your tree chopping purposes."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/hammer_head_mold",
-      "text": "A $(thing)Hammer$()."
+      "text": "A $(thing)Hammer$(), which is an essential tool to create $(l:mechanics/anvils)Anvils$(), and work them."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/knife_blade_mold",
-      "text": "A $(thing)Knife$()."
+      "text": "A $(thing)Knife$(), which can be used as a weapon, or as a cutting tool for plant type blocks."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/hoe_head_mold",
-      "text": "A $(thing)Hoe$()."
+      "text": "A $(thing)Hoe$(), used for planting and maintaining $(l:food/crops)Crops$()."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/shovel_head_mold",
-      "text": "A $(thing)Shovel$()."
+      "text": "A $(thing)Shovel$() for all your digging purposes."
     }
   ],
   "read_by_default": true,

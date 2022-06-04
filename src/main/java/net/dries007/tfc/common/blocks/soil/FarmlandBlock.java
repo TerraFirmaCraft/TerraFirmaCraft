@@ -126,17 +126,17 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     private final ExtendedProperties properties;
     private final Supplier<? extends Block> dirt;
 
-    public FarmlandBlock(ExtendedProperties properties, SoilBlockType.Variant variant)
-    {
-        this(properties, TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant));
-    }
-
     public FarmlandBlock(ExtendedProperties properties, Supplier<? extends Block> dirt)
     {
         super(properties.properties());
 
         this.properties = properties;
         this.dirt = dirt;
+    }
+
+    FarmlandBlock(ExtendedProperties properties, SoilBlockType.Variant variant)
+    {
+        this(properties, TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant));
     }
 
     @Override

@@ -31,6 +31,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
     // Blocks - Grass Path
     public final ForgeConfigSpec.BooleanValue enableGrassPathCreation;
+    // Blocks - Rooted Dirt
+    public final ForgeConfigSpec.BooleanValue enableRootedDirtToDirtCreation;
     // Blocks - Snow
     public final ForgeConfigSpec.BooleanValue enableSnowSlowEntities;
     // Blocks - Leaves
@@ -123,6 +125,7 @@ public class ServerConfig
     // Mechanics - Vanilla Changes
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
     public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
+    public final ForgeConfigSpec.BooleanValue enableVanillaSkeletonHorseSpawning;
 
     // Animals
     // Pig
@@ -184,11 +187,15 @@ public class ServerConfig
 
         innerBuilder.pop().push("blocks").push("farmland");
 
-        enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland").define("enableFarmlandCreation", true);
+        enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland using a hoe.").define("enableFarmlandCreation", true);
 
         innerBuilder.pop().push("grassPath");
 
-        enableGrassPathCreation = builder.apply("enableGrassPathCreation").comment("If TFC soil blocks are able to be created into (grass) path blocks.").define("enableGrassPathCreation", true);
+        enableGrassPathCreation = builder.apply("enableGrassPathCreation").comment("If TFC soil blocks are able to be created into (grass) path blocks using a hoe.").define("enableGrassPathCreation", true);
+
+        innerBuilder.pop().push("rootedDirt");
+
+        enableRootedDirtToDirtCreation = builder.apply("enableRootedDirtToDirtCreation").comment("If TFC rooted dirt blocks are able to be created into dirt blocks using a hoe.").define("enableRootedDirtToDirtCreation", true);
 
         innerBuilder.pop().push("snow");
 
@@ -340,6 +347,7 @@ public class ServerConfig
 
         enableVanillaBonemeal = builder.apply("enableVanillaBonemeal").comment("If vanilla bonemeal's instant-growth effect should be enabled.").define("enableVanillaBonemeal", false);
         enableVanillaWeatherEffects = builder.apply("enableVanillaWeatherEffects").comment("If true, vanilla's snow and ice formation mechanics will be used, and none of the TFC mechanics (improved snow and ice placement, snow stacking, icicle formation, passive snow or ice melting) will exist.").define("enableVanillaWeatherEffects", false);
+        enableVanillaSkeletonHorseSpawning = builder.apply("enableVanillaSkeletonHorseSpawning").comment("If true, vanilla will attempt to spawn skeleton 'trap' horses during thunderstorms.").define("enableVanillaSkeletonHorseSpawning", false);
 
         innerBuilder.pop().push("animals").push("pig");
         pigAdulthoodDays = builder.apply("pigAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("pigAdulthoodDays", 80, 0, Integer.MAX_VALUE);

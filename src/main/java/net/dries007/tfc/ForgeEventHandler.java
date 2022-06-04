@@ -29,6 +29,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -716,11 +717,16 @@ public final class ForgeEventHandler
     }
 
     /**
-     * Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
+     * Applies multiple effect for entities joining the world:
+     *
+     * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
+     * - Causes lightning bolts to strip nearby logs
+     * - Prevents skeleton trap horses from spawning (see {@link ServerLevel#tickChunk(LevelChunk, int)}
      */
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
-        Level level = event.getWorld();
+        final Level level = event.getWorld();
+
         if (event.getEntity() instanceof ItemEntity entity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
         {
             final ItemStack item = entity.getItem();
@@ -731,6 +737,7 @@ public final class ForgeEventHandler
                 }
             });
         }
+
         if (event.getEntity() instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
         {
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
@@ -754,6 +761,11 @@ public final class ForgeEventHandler
                     }
                 }
             }
+        }
+
+        if (event.getEntity().getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
+        {
+            event.setCanceled(true);
         }
     }
 

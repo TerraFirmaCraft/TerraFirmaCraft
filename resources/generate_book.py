@@ -6,6 +6,9 @@ from mcresources.type_definitions import JsonObject, ResourceIdentifier, Resourc
 
 from constants import CROPS, ROCK_CATEGORIES
 
+GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
+GRADES_ALL = ['small', 'poor', 'normal', 'rich']
+
 
 class LocalInstance:
     INSTANCE_DIR = os.getenv('LOCAL_MINECRAFT_INSTANCE')  # The location of a local .minecraft directory, for testing in external minecraft instance (as hot reloading works much better)
@@ -76,7 +79,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
     book.template('fire_clay_knapping_recipe', custom_component(0, 0, 'FireClayKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
     book.template('leather_knapping_recipe', custom_component(0, 0, 'LeatherKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
 
-    book.template('heat_recipe', custom_component(0, 0, 'HeatingComponent', {'recipe': '#recipe'}), text_component(0, 35))
+    book.template('heat_recipe', custom_component(0, 0, 'HeatingComponent', {'recipe': '#recipe'}), text_component(0, 45))
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('biomes', 'Biomes', '', pages=(
@@ -117,7 +120,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('In addition to gravel ore deposits, lakes can also hide clusters of some gemstones. Amethyst and Opal ores can be found this way in surface level ore veins under lakes and rivers.', title='Gemstones').anchor('gemstones'),
             block_spotlight('Example', 'A block of amethyst ore in limestone.', 'tfc:ore/amethyst/limestone')
         )),
-        entry('geology', 'Geology', '', pages=(
+        entry('geology', 'Geology', 'tfc:rock/raw/shale', pages=(
             # Minor intro to plate tectonics
             # Explanation of volcanoes with pictures and how to find them, and what resources they hold in fissures
             # Hot springs, empty hot springs, and what resources they hold
@@ -129,18 +132,29 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates.'),
             # todo: small blurb about volcanoes, mention ores found in volcano fissures
             # todo: small blurb about hot springs, mention ores found in hot springs
-        )),
-        entry('the_underground', 'The Underground', 'tfc:rock/raw/shale', pages=(
             # todo: Overview of rock layers, including what rock layers appear at what altitudes
+            text('$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They can be found in $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk', title='Sedimentary').anchor('sedimentary'),
+            text('$(l:https://en.wikipedia.org/wiki/Metamorphic_rock)Metamorphic$() rocks are created by a process called metamorphism. They can be found at $(thing)any elevation$(). They are:$(br)$(li)Quartzite$(li)Slate$(li)Phyllite$(li)Schist$(li)Gneiss$(li)Marble', title='Metamorphic').anchor('metamorphic'),
+            text('$(l:https://en.wikipedia.org/wiki/Igneous_rock#Extrusive)Igneous Extrusive$() rocks are formed from magma cooling on the Earth\'s surface. They can be found at $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Rhyolite$(li)Basalt$(li)Andesite$(li)Dacite', title='Igneous Extrusive').anchor('igneous_extrusive'),
+            text('$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth\'s crust. They can be found at $(thing)mid to low altitude$() rock layers. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro', title='Igneous Intrusive').anchor('igneous_intrusive'),
             # todo: Brief introduction to the fact ores are rock layer specific
             # todo: Some info about caves, possible things to find in caves
-            # Merge this into the above entry?
         )),
         entry('ores_and_minerals', 'Ores and Minerals', 'tfc:ore/normal_hematite', pages=(
             # todo: Overview of all underground ores
             # todo: General spawning patterns of ores (deeper = richer)
             # todo: Indicators
             # todo: A decent list / showcase of most/all ores and their spawning conditions
+            text('Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for.'),
+            text('In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, and where to find them.'),
+            text('Native Copper is a ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Native Copper').link(*['tfc:ore/%s_%s' % (g, 'native_copper') for g in GRADES_ALL]).anchor('native_copper'),
+            multimultiblock('Native Copper Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_copper', 'dacite')) for g in GRADES]),
+            text('Native Gold is a ore of $(thing)Gold$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
+            multimultiblock('Native Gold Ores in Diorite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_gold', 'dacite')) for g in GRADES]),
+            text('Native Silver is a ore of $(thing)Silver$() metal. It can be found at elevations between y=-32 and y=100. It can be found in $(thing)Granite$(), and $(thing)Gneiss$() primarily, however poor deposits can be found in any $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
+            multimultiblock('Native Silver Ores in Granite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_silver', 'granite')) for g in GRADES]),
+            text('Oh my god there\'s a lot of ores to list...')
+            # todo: continue listing ores in this fashion BY HOLY HELL THERE'S A LOT OF THESE
         )),
         entry('climate', 'Calendar and Climate', 'tfc:textures/gui/book/icons/thermometer.png', pages=(
             # Overview of both temperature and rainfall and where they spawn on X/Z
@@ -162,33 +176,34 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('Hydration', title='Hydration').anchor('hydration'),  # todo: more on hydration
             text('More about hydration!'),
         )),
-        entry('flora', 'Flora', '', pages=(
+        entry('flora', 'Flora', 'tfc:plant/goldenrod', pages=(
             # Overview of various plants
             # Mention some usages (dyes)
+            text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft. Some would say over nine thousand. Those people would be wrong.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes.'),
             # todo: list about plants
         )),
         entry('wild_crops', 'Wild Crops', 'tfc:wild_crop/wheat', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
             text('$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$().'),
             block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:food/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat'),
-            text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:food/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated.')
+            text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:food/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated.'),
         )),
-        entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
-            # Berry bushes - how to find them, how to harvest and move them
-            # todo: info about berry bushes
-            # todo: listing of various berry bushes
-        )),
-        entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
-            # Fruit trees - how to find them, how to harvest and move them
-            # todo: info about fruit trees
-            # todo: listing of various fruit trees
-        )),
-        entry('wild_animals', 'Wild Animals', '', pages=(
-            # Wild animals - address both hostile and passive important animals
-            # todo: info about wild animals
-            # todo: predators
-            # todo: passive animals - link to another section about animal husbandry
-        ))
+        # entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
+        # Berry bushes - how to find them, how to harvest and move them
+        # todo: info about berry bushes
+        # todo: listing of various berry bushes
+        # )),
+        # entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
+        # Fruit trees - how to find them, how to harvest and move them
+        # todo: info about fruit trees
+        # todo: listing of various fruit trees
+        # )),
+        # entry('wild_animals', 'Wild Animals', '', pages=(
+        # Wild animals - address both hostile and passive important animals
+        # todo: info about wild animals
+        # todo: predators
+        # todo: passive animals - link to another section about animal husbandry
+        # ))
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
         # todo: need to work gravity, collapses, and water/freshwater/saltwater mechanics in here somehow
     ))
@@ -248,17 +263,17 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             clay_knapping('tfc:clay_knapping/ingot_mold', 'Knapping a clay ingot mold.'),
             heat_recipe('tfc:heating/ingot_mold', 'The mold then needs to be fired, like all clay items, to be usable - likely in a $(l:getting_started/pit_kiln)Pit Kiln$().$(br2)Once it is fired, molten metal can be poured in. Once the metal has cooled enough, it can be extracted.'),
             # todo: convert this to a casting recipe somehow?
-            item_spotlight('tfc:ceramic/ingot_mold{tank:{"Amount":100,"FluidName":"tfc:metal/copper"}}', 'Casting', text_contents='...$(br2)The next few pages show a couple of the knapping patterns for various useful tools.'),
+            item_spotlight('tfc:ceramic/ingot_mold{tank:{"Amount":100,"FluidName":"tfc:metal/copper"}}', 'Casting', text_contents='The next few pages show a couple of the knapping patterns for various useful tools.'),
             clay_knapping('tfc:clay_knapping/propick_head_mold', 'A $(l:mechanics/prospecting)Prospector\'s Pick$() is an essential tool for locating large quantities of ore, other than surface prospecting.'),
             clay_knapping('tfc:clay_knapping/pickaxe_head_mold', 'A $(thing)Pickaxe$()! The bread and butter tool for mining.'),
             clay_knapping('tfc:clay_knapping/saw_blade_mold', 'An $(thing)Saw$() is a tool which is required in order to craft many advanced wooden components like a $(thing)Workbench$(), along with many other useful devices like $(l:mechanics/support_beams)Supports$().'),
             clay_knapping('tfc:clay_knapping/scythe_blade_mold', 'A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!'),
             clay_knapping('tfc:clay_knapping/chisel_head_mold', 'A $(l:mechanics/chisel)Chisel$() is a tool used for decorating, and creating a large number of decoration blocks.'),
-            clay_knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$().'),  # todo: we include these tool recipes because this is a nice list, but add any blurbs about them?
-            clay_knapping('tfc:clay_knapping/hammer_head_mold', 'A $(thing)Hammer$().'),
-            clay_knapping('tfc:clay_knapping/knife_blade_mold', 'A $(thing)Knife$().'),
-            clay_knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$().'),
-            clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$().'),
+            clay_knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$() for all your tree chopping purposes.'),
+            clay_knapping('tfc:clay_knapping/hammer_head_mold', 'A $(thing)Hammer$(), which is an essential tool to create $(l:mechanics/anvils)Anvils$(), and work them.'),
+            clay_knapping('tfc:clay_knapping/knife_blade_mold', 'A $(thing)Knife$(), which can be used as a weapon, or as a cutting tool for plant type blocks.'),
+            clay_knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$(), used for planting and maintaining $(l:food/crops)Crops$().'),
+            clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$() for all your digging purposes.'),
         )),
         entry('pit_kiln', 'Pit Kilns', 'tfc:textures/block/molten.png', pages=(
             text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat it\'s contents up to 1600 °C, or $(bold)$(f)$(t:Brilliant White)Brilliant White$().'),
@@ -273,15 +288,47 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
                 'X': 'tfc:grass/loam',
                 **{k: 'tfc:ore/small_%s' % v for k, v in zip('ABCDEFGHIJKL', ('native_copper', 'native_gold', 'hematite', 'native_silver', 'cassiterite', 'bismuthinite', 'garnierite', 'malachite', 'magnetite', 'limonite', 'sphalerite', 'tetrahedrite'))},
             }),
-            text('These small ore pieces can serve two purposes: they can provide a source of metal, and more importantly, they indicate the presence of an underground, close to the surface, larger vein of ore somewhere nearby.$(br2)In TerraFirmaCraft, ores each contain a certain number of $(thing)units$(), or $(thing)mB (millibuckets)$() of actual metal which can be extracted. Small ores like this found on the surface are the lowest quality, and only provide $(thing)10 mB$() of metal.'),
-            text('In order to extract this metal, it needs to be $(thing)melted$(), and made into tools using a process called $(thing)casting$(). You will need:$(br)$(li)A $(l:getting_started/pottery#vessel)Small Vessel$()$(li)Enough materials for a $(l:getting_started/pit_kiln)Pit Kiln$().$(li)A $(l:getting_started/pottery#mold)Mold$(), or multiple to cast the molten metal.$(li)And finally, you will need at least 100 mB total of a metal which is suitable for casting: $(thing)Copper$(), in one of it\'s three ore forms'),
+            text('These small ore pieces can serve two purposes: they can provide a source of metal, and more importantly, they indicate the presence of an underground, close to the surface, larger vein of ore somewhere nearby. Be sure to note where you find small ores, as the location of ore veins will be useful later.$(br2)The twelve types of small ores, and the metal they can be melted into are listed on the next page.'),
+            text('$(li)Native Copper ($(thing)Copper$())$(li)Native Gold ($(thing)Gold$())$(li)Hematite ($(thing)Cast Iron$())$(li)Native Silver ($(thing)Silver$())$(li)Cassiterite ($(thing)Tin$())$(li)Bismuthinite ($(thing)Bismuth$())$(li)Garnierite ($(thing)Nickel$())$(li)Malachite ($(thing)Copper$())$(li)Magnetite ($(thing)Cast Iron$())$(li)Limonite ($(thing)Cast Iron$())$(li)Sphalerite ($(thing)Zinc$())$(li)Tetrahedrite ($(thing)Copper$())', title='Small Ores'),
+            text('In TerraFirmaCraft, ores each contain a certain number of $(thing)units$(), or $(thing)mB (millibuckets)$() of actual metal which can be extracted. Small ores like this found on the surface are the lowest quality, and only provide $(thing)10 mB$() of metal. In order to extract this metal, it needs to be $(thing)melted$(), and made into tools using a process called $(thing)casting$().', title='Casting').anchor('casting'),
+            text('You will need:$(br)$(li)A $(l:getting_started/pottery#vessel)Small Vessel$()$(li)Enough materials for a $(l:getting_started/pit_kiln)Pit Kiln$().$(li)A $(l:getting_started/pottery#mold)Mold$(), or multiple to cast the molten metal.$(li)And finally, you will need at least 100 mB total of a metal which is suitable for casting: $(thing)Copper$(), in one of it\'s three ore forms.$(br2)$(br)$(italic)Note: Casting can also be done with $(l:getting_started/primitive_alloys)Alloys$()'),
             text('First, open the $(thing)Small Vessel$() and put the ores inside. Count up the total amount of metal in the ores carefully! Then, you need to build a $(l:getting_started/pit_kiln)Pit Kiln$(), and this time, put the entire small vessel inside it. As the vessel heats, the ores inside it will melt, and you\'ll be left with a vessel of molten metal.$(br2)Take the vessel out and $(thing)$(k:key.use)$() it, to open the $(thing)Casting$() interface.'),
             image('tfc:textures/gui/book/gui/casting.png', text_contents='The Casting Interface.', border=False),
             text('With the casting interface open, place your empty fired mold in the center slot. It will fill up as long as the vessel remains liquid. (If the vessel solidifies, it can be reheated in another pit kiln.) Once the mold is full, it can be removed and left to cool. Once cool, the mold and it\'s contents can be extracted by using the mold, or putting it in the crafting grid.'),
             crafting('tfc:crafting/metal/pickaxe/copper', text_contents='With a tool head in hand, you are now able to craft your first pickaxe! Find enough copper to make a single pickaxe head, cast it using a mold and a few pit kilns, and then slap it on a stick, and voila!'),
         )),
+        entry('primitive_alloys', 'Primitive Alloys', 'tfc:ceramic/ingot_mold{tank:{"Amount":100,"FluidName":"tfc:metal/bronze"}}', pages=(
+            # todo: basic introduction to alloys, enough to make bronze in a small vessel, recipes for other types of bronze, then link to the alloy page
+            text('$(thing)Alloys$() are a method of mixing two or more metals together, to create a new, stronger metal. During the early game, while copper is a useful metal for creating tools, the next tier of metal is one of three types of $(thing)Bronze$(). An alloy is made up of component $(thing)metals$(), which must each satisfy a specific percentage of the overall whole.'),
+            text('One method through which alloys can be made during the early game is through the usage of a $(thing)Small Vessel$(). The process is very similar to $(l:getting_started/finding_ores#casting)Casting$(). However, instead of using just a single metal, inside the vessel, place enough ore pieces, in the correct ratio, to form a known alloy mix.'),
+            text('For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, armor, and other metal items, although each metal is slightly different, and tools will have different durability, efficiency, or attack damage.'),
+            alloy_recipe('Bronze', 'tfc:metal/ingot/bronze', ('Copper', 88, 92), ('Tin', 8, 12), text_content=''),
+            alloy_recipe('Bismuth Bronze', 'tfc:metal/ingot/bismuth_bronze', ('Copper', 50, 65), ('Zinc', 20, 30), ('Bismuth', 10, 20), text_content=''),
+            alloy_recipe('Black Bronze', 'tfc:metal/ingot/black_bronze', ('Copper', 50, 70), ('Gold', 10, 25), ('Silver', 10, 25), text_content=''),
+        )),
+        entry('primitive_anvils', 'Primitive Anvils', 'tfc:rock/anvil/granite', pages=(
+            text('An alternative to casting tool molds directly in the early game, and a requirement for higher tier metals, is to use an $(thing)Anvil$(). An anvil is a block which can be used for two different processes: $(l:mechanics/anvils#working)Working$(), ad $(l:mechanics/anvils#welding)Welding$(). This chapter is just going to show you how to obtain your first, primitive stone anvil.'),
+            text('First, you need to acquire a block of $(thing)Raw Rock$(), that is $(thing)Igneous Intrusive$() (Rhyolite, Basalt, Andesite, or Dacite), or $(thing)Igneous Extrusive$() (Granite, Diorite, or Gabbro). You could find and use an exposed block in the world, or you could $(l:getting_started/primitive_anvils#raw_rock)extract one$() from the surrounding rock.'),
+            text('You will also need any material of $(thing)Hammer$(). In order to make the anvil, simply right click the exposed $(thing)top$() face of one of the aforementioned raw rocks with your $(thing)hammer$(), and voila! An anvil will be formed.$(br2)Anvils each have $(thing)tiers$(), and the rock anvil is a Tier 0 - the lowest tier. It is only able to $(l:mechanics/anvils#welding)Weld$() Tier I ingots.', title='Rock Anvil').anchor('stone_anvils'),
+            multimultiblock(
+                'Converting the center raw rock to an anvil',
+                multiblock('', '', False, ((' 0 ',), ('RRR',)), {'0': 'AIR', 'R': 'tfc:rock/raw/gabbro'}),
+                multiblock('', '', False, ((' 0 ',), ('RAR',)), {'0': 'AIR', 'R': 'tfc:rock/raw/gabbro', 'A': 'tfc:rock/anvil/gabbro'}),
+            ),
+            text('In order to obtain raw rock without it breaking into smaller rocks, it needs to be $(thing)extracted$(). You must mine the blocks on all six sides of a raw rock block - once it is surrounded by air on all sides, it will pop off as a raw rock item which you can then move.', title='Obtaining Raw Rock').anchor('raw_rock'),
+            multimultiblock(
+                'Mining all six sides of a piece of raw stone - once complete, the center block will pop off as an item.',
+                multiblock('', '', False, (('   ', ' R ', '   '), (' R ', 'RRR', ' R '), ('   ', ' 0 ', '   ')), {'0': 'tfc:rock/raw/gabbro', 'R': 'tfc:rock/raw/gabbro'}),
+                multiblock('', '', False, (('   ', '   ', '   '), (' R ', 'RRR', ' R '), ('   ', ' 0 ', '   ')), {'0': 'tfc:rock/raw/gabbro', 'R': 'tfc:rock/raw/gabbro'}),
+                multiblock('', '', False, (('   ', '   ', '   '), ('   ', 'RRR', ' R '), ('   ', ' 0 ', '   ')), {'0': 'tfc:rock/raw/gabbro', 'R': 'tfc:rock/raw/gabbro'}),
+                multiblock('', '', False, (('   ', '   ', '   '), ('   ', ' RR', ' R '), ('   ', ' 0 ', '   ')), {'0': 'tfc:rock/raw/gabbro', 'R': 'tfc:rock/raw/gabbro'}),
+                multiblock('', '', False, (('   ', '   ', '   '), ('   ', ' RR', '   '), ('   ', ' 0 ', '   ')), {'0': 'tfc:rock/raw/gabbro', 'R': 'tfc:rock/raw/gabbro'}),
+                multiblock('', '', False, (('   ', '   ', '   '), ('   ', ' R ', '   '), ('   ', ' 0 ', '   ')), {'0': 'tfc:rock/raw/gabbro', 'R': 'tfc:rock/raw/gabbro'}),
+                multiblock('', '', False, (('   ', '   ', '   '), ('   ', ' R ', '   '), ('   ', ' 0 ', '   ')), {'0': 'AIR', 'R': 'tfc:rock/raw/gabbro'}),
+            ),
+        )),
         entry('building_materials', 'Building Materials', 'tfc:wattle/unstained', pages=(
-            # Better intro, and guide to how to use wattle
+            # todo: Better intro, and guide to how to use wattle
             # todo: mud bricks
             # todo: any other early game blocks?
             # todo: alabaster? (I know it's not early game but it would be a good mention)
@@ -290,6 +337,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('Adding daub to $(thing)Woven Wattle$() makes it $(thing)Unstained Wattle$(). At this point, it can be right-clicked with $(thing)dye$() to stain it. At any point in this process, you can add framing to the wattle by right-clicking it with extra sticks on the sides and corners. See what you can come up with!')
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
+            # todo: editing
             text('To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
             multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),)),
         )),
@@ -332,6 +380,24 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
             # todo: prospectors pick and prospecting
         )),
+        entry('bloomery', 'Bloomery', 'tfc:bloomery', pages=(
+            # todo: bloomery and wrought iron
+            text('Bloomeries are cool yo!'),
+            multiblock('A Bloomery', '', True, multiblock_id='tfc:bloomery'),
+        )),
+        entry('blast_furnace', 'Blast Furnace', 'tfc:blast_furnace', pages=(
+            # todo: blast furnace and steel
+            text('Blast Furnaces are cool yo!'),
+            multiblock('A Blast Furnace', '', True, multiblock_id='tfc:blast_furnace'),
+        )),
+        entry('anvils', 'Anvils', 'tfc:metal/anvil/copper', pages=(
+            text('Anvils yay!'),
+            block_spotlight('', 'A $(thing)Bronze Anvil$()', 'tfc:metal/anvil/bronze'),
+            text('', title='Working').anchor('working'),
+            empty(),  # todo: working tutorial, anvil GUI
+            text('', title='Welding').anchor('welding'),
+            empty(),  # todo: welding tutorial
+        )),
     ))
 
     book.category('food', 'Food', 'How to find, harvest, and cook food.', 'tfc:food/wheat', entries=(
@@ -344,9 +410,9 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it\'s lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it\'s lifetime by 1.66x!')
         )),
         entry('crops', 'Crops', 'tfc:food/wheat', pages=(
-            text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). In the stone age, a Hoe can be $(thing)knapped$() as seen on the right.'),
-            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'A hoe head, knapped from various igneous rocks.'),
-            crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe. Hoe\'s function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$().'),
+            text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$().'),
+            rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'In the stone age, a Hoe can be $(thing)knapped$() as seen above.'),
+            crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to create $(thing)Path Blocks$(), and convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on.'),
             # todo: crop nutrients overview
             # todo: crop yield overview
@@ -416,7 +482,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
 
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
-    return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:the_world/climate#hydrayion)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
+    return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
 
 
 # ==================== Book Resource Generation API Functions =============================
@@ -439,10 +505,11 @@ class Page(NamedTuple):
     def anchor(self, anchor_id: str) -> 'Page':
         return Page(self.type, self.data, self.custom, anchor_id, self.link_ids)
 
-    def link(self, link_id: str) -> 'Page':
-        if link_id.startswith('#'):  # Patchouli format for linking tags
-            link_id = 'tag:' + link_id[1:]
-        self.link_ids.append(link_id)
+    def link(self, *link_ids: str) -> 'Page':
+        for link_id in link_ids:
+            if link_id.startswith('#'):  # Patchouli format for linking tags
+                link_id = 'tag:' + link_id[1:]
+            self.link_ids.append(link_id)
         return self
 
 
@@ -658,6 +725,11 @@ def fire_clay_knapping(recipe: str, text_content: str) -> Page:
 
 def heat_recipe(recipe: str, text_content: str) -> Page:
     return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+
+
+def alloy_recipe(title: str, ingot: str, *components: Tuple[str, int, int], text_content: str) -> Page:
+    recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (lo, hi, alloy) for (alloy, lo, hi) in components])
+    return item_spotlight(ingot, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
 
 
 def page(page_type: str, page_data: JsonObject, custom: bool = False) -> Page:

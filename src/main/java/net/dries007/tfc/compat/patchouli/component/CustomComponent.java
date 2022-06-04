@@ -61,9 +61,11 @@ public abstract class CustomComponent implements ICustomComponent
 
     protected void renderFluidStack(PoseStack stack, FluidStack fluid, int x, int y)
     {
-        if (fluid.isEmpty()) return;
-        final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluid);
-        GuiComponent.blit(stack, x, y, 0, 16, 16, sprite);
+        if (!fluid.isEmpty())
+        {
+            final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluid);
+            GuiComponent.blit(stack, x, y, 0, 16, 16, sprite);
+        }
     }
 
     @SuppressWarnings("unchecked")
