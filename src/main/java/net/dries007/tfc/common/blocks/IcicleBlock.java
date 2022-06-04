@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blocks;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -67,10 +68,10 @@ public class IcicleBlock extends ThinSpikeBlock
                 BlockState stateAt = level.getBlockState(mutable);
                 if (!stateAt.isAir()) // if we hit a non-air block, we won't be returning
                 {
-                    BlockEntity blockEntity = level.getBlockEntity(pos);
+                    BlockEntity blockEntity = level.getBlockEntity(mutable);
                     if (blockEntity != null)
                     {
-                        blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE));
+                        blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE));
                     }
                     return;
                 }

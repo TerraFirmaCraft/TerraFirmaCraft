@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.common.items;
 
 import java.util.List;
@@ -108,13 +114,14 @@ public abstract class TFCBucketItem extends Item
         Material material = state.getMaterial();
         Block block = state.getBlock();
         Fluid content = handler.getFluidInTank(0).getFluid();
-        if (!(content instanceof FlowingFluid flowing)) return false;
 
         boolean replaceable = state.canBeReplaced(content);
         boolean willReplace = state.isAir() || replaceable || block instanceof LiquidBlockContainer && ((LiquidBlockContainer) block).canPlaceLiquid(level, pos, state, content);
         if (!willReplace)
         {
-            return hit != null && this.emptyContents(handler, player, level, hit.getBlockPos().relative(hit.getDirection()), state, null);
+            if (hit == null) return false;
+            BlockPos relativePos = hit.getBlockPos().relative(hit.getDirection());
+            return this.emptyContents(handler, player, level, relativePos, level.getBlockState(relativePos), null);
         }
         else if (level.dimensionType().ultraWarm() && Helpers.isFluid(content, FluidTags.WATER))
         {
@@ -128,7 +135,7 @@ public abstract class TFCBucketItem extends Item
         }
         else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, content))
         {
-            container.placeLiquid(level, pos, state, flowing.getSource(false));
+            container.placeLiquid(level, pos, state, content.defaultFluidState());
             playEmptySound(content, player, level, pos);
             return true;
         }

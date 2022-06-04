@@ -33,7 +33,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.common.TFCTags;
@@ -347,12 +346,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return sealedTick;
     }
 
-    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory
+    public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback
     {
         private final BarrelBlockEntity barrel;
         private final InventoryItemHandler inventory;
         private final List<ItemStack> excess;
-        private final FluidTank tank;
+        private final SnitchingFluidTank tank;
         private boolean mutable; // If the inventory is pretending to be mutable, despite the barrel being sealed and preventing extractions / insertions
 
         BarrelInventory(InventoryBlockEntity<?> entity)
@@ -360,7 +359,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel = (BarrelBlockEntity) entity;
             inventory = new InventoryItemHandler(entity, SLOTS);
             excess = new ArrayList<>();
-            tank = new FluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL));
+            tank = new SnitchingFluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL), this);
         }
 
         public void whileMutable(Runnable action)
@@ -472,6 +471,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                     excess.add(ItemStack.of(excessNbt.getCompound(i)));
                 }
             }
+        }
+
+        @Override
+        public void fluidTankChanged(SnitchingFluidTank tank)
+        {
+            barrel.markForSync();
         }
 
         private boolean canModify()
