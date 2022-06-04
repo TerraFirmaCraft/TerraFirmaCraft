@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Heating",
+  "category": "tfc:mechanics",
+  "icon": "tfc:firestarter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item's tooltip"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 \u00b0C$(br)$(7)$(bold)Hot$(): 80 - 210 \u00b0C$(br)$(7)$(bold)Very Hot$(): 210 - 480 \u00b0C$(br)$(4)$(bold)Faint Red$(): 480 - 580 \u00b0C$(br)$(bold)$(4)Dark Red$(): 580 - 730 \u00b0C$(br)$(c)$(bold)Bright Red$(): 730 - 930 \u00b0C$(br)$(6)$(bold)Orange$(): 930 - 1100 \u00b0C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 \u00b0C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 \u00b0C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 \u00b0C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 \u00b0C"
+    }
+  ],
+  "read_by_default": true
+}

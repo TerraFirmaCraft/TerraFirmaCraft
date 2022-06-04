@@ -616,6 +616,8 @@ def generate(rm: ResourceManager):
 
                 if metal_item == 'propick':
                     item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
+                elif metal_item == 'propick_head':
+                    item.with_lang('%s Prospector\'s Pick Head' % lang(metal))
                 else:
                     item.with_lang(lang('%s %s', metal, metal_item))
 

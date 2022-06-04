@@ -57,7 +57,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
     In addition, here's some useful things for dev work, and also making standardized images:
 
     - Images of scenery are taken in screenshots, a square section is copied and downsized to 512 x 512
-    - Images of guis are taken in screenshots, then JUST THE GUI (so erase all those little pixels in the corner) is copied out. A 256 x 256 image is used, and the gui is placed horizontally centered on the FIRST 200 PIXELS (so a 176 pixel wide gui image is placed with 14 blank pixels to it's left). Make the inventory clean, but also believable (i.e. if you were just talking about items X, Y, Z, have those items in your inventory. Don't make the inventory a focal point of the image.
+    - Images of guis are taken in screenshots, then JUST THE GUI (so erase all those little pixels in the corner) is copied out. A 256 x 256 image is used, and the gui is placed horizontally centered on the FIRST 200 PIXELS (so a 176 pixel wide gui image is placed with 12 blank pixels to it's left). Make the inventory clean, but also believable (i.e. if you were just talking about items X, Y, Z, have those items in your inventory. Don't make the inventory a focal point of the image.
 
     - Spotlights of single blocks can be done with block_spotlight()
     - Making a resource pack ready-to-go can be done with the following command:
@@ -126,36 +126,46 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with $(l:the_world/biomes#hills)Rolling Hills$(), $(l:the_world/biomes#plateau)Plateaus$(), and $(l:the_world/biomes#mountains)Old Mountains$().$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other.'),
             text('It can generate rare volcanism and some volcanic mountains.$(br2)$(bold)Oceanic Subduction$()$(br)A subduction zone is where one plate slips under the other. In the ocean, this can form lots of volcanic mountains, island chains, and deep ocean ridges.$(br2)$(bold)Continental Subduction$()$(br)A continental subduction zone is a area of frequent volcanic activity, and huge coastal mountains. Active hot springs and volcanoes are common.'),
             text('$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of $(l:the_world/biomes#canyons)Canyons$() biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall $(l:the_world/biomes#mountains)Mountains$() and $(l:the_world/biomes#plateau)Plateaus$().'),
-            text('$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates.')
+            text('$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates.'),
+            # todo: small blurb about volcanoes, mention ores found in volcano fissures
+            # todo: small blurb about hot springs, mention ores found in hot springs
         )),
         entry('the_underground', 'The Underground', 'tfc:rock/raw/shale', pages=(
-            # Overview of rock layers, including what rock layers appear at what altitudes
-            # Brief introduction to the fact ores are rock layer specific
-            # Some info about caves, possible things to find in caves
+            # todo: Overview of rock layers, including what rock layers appear at what altitudes
+            # todo: Brief introduction to the fact ores are rock layer specific
+            # todo: Some info about caves, possible things to find in caves
+            # Merge this into the above entry?
         )),
         entry('ores_and_minerals', 'Ores and Minerals', 'tfc:ore/normal_hematite', pages=(
-            # Overview of all underground ores
-            # General spawning patterns of ores (deeper = richer)
-            # Indicators
-            # A decent list / showcase of most/all ores and their spawning conditions
+            # todo: Overview of all underground ores
+            # todo: General spawning patterns of ores (deeper = richer)
+            # todo: Indicators
+            # todo: A decent list / showcase of most/all ores and their spawning conditions
         )),
-        entry('climate', 'Climate', '', pages=(
+        entry('climate', 'Calendar and Climate', 'tfc:textures/gui/book/icons/thermometer.png', pages=(
             # Overview of both temperature and rainfall and where they spawn on X/Z
             # How to check current temperature, rainfall, and climate
             # What affects current temperature
             # What temperature can affect - mainly direct stuff like snow, ice, icicles, etc.
-            text('First page'),
-            text('Climate screen?'),
-            text('Temperature and stuff', title='Temperature').anchor('temperature'),
+            text('In TerraFirmaCraft, the climate and the time are both very important factors. Let\'s start with the $(thing)Calendar$().$(br2)At any time, you can view the calendar by pressing $(thing)$(k:key.inventory)$(), and clicking on the calendar tab. This will show the $(thing)Season$(), the $(thing)Day$(), and the $(thing)Date$().').anchor('calendar'),
+            image('tfc:textures/gui/book/gui/calendar.png', text_contents='The Calendar Screen', border=False),
+            text('There are seasons, and the weather and climate will change along with them! There are four seasons in TerraFirmaCraft, each divided up into $(thing)Early$(), $(thing)Mid$() and $(thing)Late$() months. The four seasons are:$(br)$(li)$(bold)Spring$(): March - May$(li)$(bold)Summer$(): June - August$(li)$(bold)Autumn$(): September - November$(li)$(bold)Winter$(): December - February'),
+            text('The current season can influence the temperature of the area, the precipitation (if it will rain or snow), among other things. Pay attention to the calendar tab, it will be useful!$(br2)Now, onto the climate...'),
+            text('Another tab on the main inventory screen is the $(thing)Climate$() screen. This one shows information about the current location$(br2)The first line shows the overall $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)Climate$() .$(br2)The second line shows the $(l:the_world/geology)Geologic Province$().$(br2)The third line shows the $(thing)Average Annual Temperature$().', title='Climate').anchor('climate'),
+            image('tfc:textures/gui/book/gui/climate.png', text_contents='The Climate Screen', border=False),
+            text('Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can also be different day-to-day, and even hourly.'),
+            text('The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more.').anchor('temperature'),
+            text('Temperature and stuff', title='Temperature').anchor('temperature'),  # todo: more on temperature
             text('More about temperature?'),
-            text('Rainfall and stuff', title='Rainfall').anchor('rainfall'),
+            text('Rainfall and stuff', title='Rainfall').anchor('rainfall'),  # todo: more on rainfall
             text('More about rainfall?'),
-            text('Hydration', title='Hydration').anchor('hydration'),
+            text('Hydration', title='Hydration').anchor('hydration'),  # todo: more on hydration
             text('More about hydration!'),
         )),
         entry('flora', 'Flora', '', pages=(
             # Overview of various plants
             # Mention some usages (dyes)
+            # todo: list about plants
         )),
         entry('wild_crops', 'Wild Crops', 'tfc:wild_crop/wheat', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
@@ -165,14 +175,22 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         )),
         entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
             # Berry bushes - how to find them, how to harvest and move them
+            # todo: info about berry bushes
+            # todo: listing of various berry bushes
         )),
         entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
             # Fruit trees - how to find them, how to harvest and move them
+            # todo: info about fruit trees
+            # todo: listing of various fruit trees
         )),
         entry('wild_animals', 'Wild Animals', '', pages=(
             # Wild animals - address both hostile and passive important animals
+            # todo: info about wild animals
+            # todo: predators
+            # todo: passive animals - link to another section about animal husbandry
         ))
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
+        # todo: need to work gravity, collapses, and water/freshwater/saltwater mechanics in here somehow
     ))
 
     book.category('getting_started', 'Getting Started', 'An introduction to surviving in the world of TerraFirmaCraft. How to survive the stone age and obtain your first pickaxe.', 'tfc:stone/axe/sedimentary', is_sorted=True, entries=(
@@ -221,17 +239,46 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
                 'C': '#tfc:clay_indicators',
             }),
             text('$(thing)Athyrium Fern$(), $(thing)Canna$(), $(thing)Goldenrod$(), $(thing)Pampas Grass$(), $(thing)Perovskia$(), and $(thing)Water Canna$() all can indicate the presence of clay nearby. Clay can be found in smaller deposits close to water sources, such as rivers, lakes, or ponds.$(br2)Like with rocks, clay can be knapped to form new items. It requires five clay in your hand to knap. Unlike rocks, if you make a mistake, you can simply close the knapping interface, reshape your clay, and try again.').link('#tfc:clay_indicators'),
-            image('tfc:textures/gui/book/gui/clay_knapping.png', text_contents='The Knapping Interface.', border=False),  # todo: clay knapping
-            text('The small vessel is one such item. Like all pottery items, before it can be used it must be $(l:https://en.wikipedia.org/wiki/Pottery)fired$(). Firing is a process of $(l:mechanics/heating)heating$() the item up to a point where the clay will turn into a hard $(thing)Ceramic$() material, which requires heating to 1200 °C, or $(e)$(bold)$(t:Yellow)Yellow$().$(br2)In order to do this in the early game, you will need to use a $(l:getting_started/pit_kiln)Pit Kiln$().', title='Small Vessel'),
-        )),
-        entry('finding_ores', 'Finding Ores', 'tfc:ore/normal_native_copper', pages=(
-            # Surface prospecting
+            image('tfc:textures/gui/book/gui/clay_knapping.png', text_contents='The Knapping Interface.', border=False),
+            text('The small vessel is one such item. Like all pottery items, before it can be used it must be $(l:https://en.wikipedia.org/wiki/Pottery)fired$(). Firing is a process of $(l:mechanics/heating)heating$() the item up to a point where the clay will turn into a hard $(thing)Ceramic$() material, which requires heating to 1200 °C, or $(e)$(bold)$(t:Yellow)Yellow$().$(br2)In order to do this in the early game, you will need to use a $(l:getting_started/pit_kiln)Pit Kiln$().', title='Small Vessel').link('tfc:ceramic/unfired_vessel').link('tfc:ceramic/vessel').anchor('vessel'),
+            clay_knapping('tfc:clay_knapping/vessel', 'Knapping a Clay Small Vessel.'),
+            text('Another useful pottery item is the $(thing)Jug$(). It can be used to pick up and $(thing)drink$() fluids, such as fresh water.$(br2)In order to use it, simply $(thing)$(k:key.use)$() the jug on the fluid in the world. Then use the jug in order to drink from it. The jug can hold $(thing)100 mB$() of fluid at a time.', title='Jug').link('tfc:ceramic/unfired_jug').link('tfc:ceramic/jug').anchor('jug'),
+            clay_knapping('tfc:clay_knapping/jug', 'Knapping a Clay Jug.'),
+            text('Clay is also a very useful material for making $(thing)Molds$(). Molds can have molten metal poured into them, which will eventually solidify into the shape of a mold. The item and potentially the mold can then be retrieved by using $(thing)$(k:key.use)$() on the mold.$(br2)The most simple type of mold is the ingot mold, to the right.', title='Molds').anchor('mold'),
+            clay_knapping('tfc:clay_knapping/ingot_mold', 'Knapping a clay ingot mold.'),
+            heat_recipe('tfc:heating/ingot_mold', 'The mold then needs to be fired, like all clay items, to be usable - likely in a $(l:getting_started/pit_kiln)Pit Kiln$().$(br2)Once it is fired, molten metal can be poured in. Once the metal has cooled enough, it can be extracted.'),
+            # todo: convert this to a casting recipe somehow?
+            item_spotlight('tfc:ceramic/ingot_mold{tank:{"Amount":100,"FluidName":"tfc:metal/copper"}}', 'Casting', text_contents='...$(br2)The next few pages show a couple of the knapping patterns for various useful tools.'),
+            clay_knapping('tfc:clay_knapping/propick_head_mold', 'A $(l:mechanics/prospecting)Prospector\'s Pick$() is an essential tool for locating large quantities of ore, other than surface prospecting.'),
+            clay_knapping('tfc:clay_knapping/pickaxe_head_mold', 'A $(thing)Pickaxe$()! The bread and butter tool for mining.'),
+            clay_knapping('tfc:clay_knapping/saw_blade_mold', 'An $(thing)Saw$() is a tool which is required in order to craft many advanced wooden components like a $(thing)Workbench$(), along with many other useful devices like $(l:mechanics/support_beams)Supports$().'),
+            clay_knapping('tfc:clay_knapping/scythe_blade_mold', 'A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!'),
+            clay_knapping('tfc:clay_knapping/chisel_head_mold', 'A $(l:mechanics/chisel)Chisel$() is a tool used for decorating, and creating a large number of decoration blocks.'),
+            clay_knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$().'),  # todo: we include these tool recipes because this is a nice list, but add any blurbs about them?
+            clay_knapping('tfc:clay_knapping/hammer_head_mold', 'A $(thing)Hammer$().'),
+            clay_knapping('tfc:clay_knapping/knife_blade_mold', 'A $(thing)Knife$().'),
+            clay_knapping('tfc:clay_knapping/hoe_head_mold', 'A $(thing)Hoe$().'),
+            clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$().'),
         )),
         entry('pit_kiln', 'Pit Kilns', 'tfc:textures/block/molten.png', pages=(
             text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat it\'s contents up to 1600 °C, or $(bold)$(f)$(t:Brilliant White)Brilliant White$().'),
             text('To build a pit kiln, you will need:$(br)$(li)Up to four items to be fired.$(li)Eight pieces of $(thing)Straw$()$(li)Eight $(thing)Logs$()$(li)An item capable of lighting fires, like a $(l:getting_started/firepit#firestarter)Firestarter$(), or a $(thing)Torch$().$(br2)$(bold)Note:$() Torches can start fires simply by tossing the torch on the pit kiln, and waiting a few seconds.'),
             text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(thing)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:mechanics/heating)heating$() the items inside up.'),
             image(*['tfc:textures/gui/book/tutorial/pit_kiln_%d.png' % i for i in range(1, 1 + 5)], text_contents='Tutorial: creating a pit kiln.')
+        )),
+        entry('finding_ores', 'Ores, Metal, and Casting', 'tfc:ore/normal_native_copper', pages=(
+            # Surface prospecting
+            text('In addition to sticks, twigs, and stones on the ground, in your travels you may encounter small pieces of ores scattered around the ground. These are important, as they are one of the only sources of ore and metal before obtaining a pickaxe.'),
+            multiblock('', 'All small ore pieces', False, pattern=(('    ', '  0 ', '    '), ('ABCD', 'EFGH', 'IJKL'), ('XXXX', 'XXXX', 'XXXX')), mapping={
+                'X': 'tfc:grass/loam',
+                **{k: 'tfc:ore/small_%s' % v for k, v in zip('ABCDEFGHIJKL', ('native_copper', 'native_gold', 'hematite', 'native_silver', 'cassiterite', 'bismuthinite', 'garnierite', 'malachite', 'magnetite', 'limonite', 'sphalerite', 'tetrahedrite'))},
+            }),
+            text('These small ore pieces can serve two purposes: they can provide a source of metal, and more importantly, they indicate the presence of an underground, close to the surface, larger vein of ore somewhere nearby.$(br2)In TerraFirmaCraft, ores each contain a certain number of $(thing)units$(), or $(thing)mB (millibuckets)$() of actual metal which can be extracted. Small ores like this found on the surface are the lowest quality, and only provide $(thing)10 mB$() of metal.'),
+            text('In order to extract this metal, it needs to be $(thing)melted$(), and made into tools using a process called $(thing)casting$(). You will need:$(br)$(li)A $(l:getting_started/pottery#vessel)Small Vessel$()$(li)Enough materials for a $(l:getting_started/pit_kiln)Pit Kiln$().$(li)A $(l:getting_started/pottery#mold)Mold$(), or multiple to cast the molten metal.$(li)And finally, you will need at least 100 mB total of a metal which is suitable for casting: $(thing)Copper$(), in one of it\'s three ore forms'),
+            text('First, open the $(thing)Small Vessel$() and put the ores inside. Count up the total amount of metal in the ores carefully! Then, you need to build a $(l:getting_started/pit_kiln)Pit Kiln$(), and this time, put the entire small vessel inside it. As the vessel heats, the ores inside it will melt, and you\'ll be left with a vessel of molten metal.$(br2)Take the vessel out and $(thing)$(k:key.use)$() it, to open the $(thing)Casting$() interface.'),
+            image('tfc:textures/gui/book/gui/casting.png', text_contents='The Casting Interface.', border=False),
+            text('With the casting interface open, place your empty fired mold in the center slot. It will fill up as long as the vessel remains liquid. (If the vessel solidifies, it can be reheated in another pit kiln.) Once the mold is full, it can be removed and left to cool. Once cool, the mold and it\'s contents can be extracted by using the mold, or putting it in the crafting grid.'),
+            crafting('tfc:crafting/metal/pickaxe/copper', text_contents='With a tool head in hand, you are now able to craft your first pickaxe! Find enough copper to make a single pickaxe head, cast it using a mold and a few pit kilns, and then slap it on a stick, and voila!'),
         )),
         entry('building_materials', 'Building Materials', 'tfc:wattle/unstained', pages=(
             # Better intro, and guide to how to use wattle
@@ -244,7 +291,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
             text('To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
-            multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),))
+            multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),)),
         )),
     ))
 
@@ -264,14 +311,26 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
             text('Forging and stuff idk'),
             multiblock('A Charcoal Forge', '', False, (('   ', ' 0 ', '   '), ('XXX', 'XCX', 'XXX'),), {'X': 'tfc:rock/bricks/andesite', 'C': 'tfc:charcoal_forge[heat_level=7]'})
+            # todo: chargoal forge
         )),
         entry('crucible', 'Crucible', 'tfc:crucible', pages=(
             text('Getting toasty in here'),
             block_spotlight('A Crucible', '', 'tfc:crucible'),
+            # todo: crucible and advanced alloying
         )),
         entry('grill', 'Firepit And Grill', 'tfc:grill', pages=(
             text('Grill grill baby!'),
             block_spotlight('A Firepit with Grill', '', 'tfc:grill'),
+            # todo: grill
+        )),
+        entry('chisel', 'Chisel', 'tfc:metal/chisel/wrought_iron', pages=(
+            # todo: chisel mechanics
+        )),
+        entry('support_beams', 'Support Beams', 'tfc:wood/support/oak', pages=(
+            # todo: supports, more on collapses?
+        )),
+        entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
+            # todo: prospectors pick and prospecting
         )),
     ))
 

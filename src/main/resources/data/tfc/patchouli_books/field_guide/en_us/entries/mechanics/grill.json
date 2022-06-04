@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Firepit And Grill",
+  "category": "tfc:mechanics",
+  "icon": "tfc:grill",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Grill grill baby!"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grill"
+        }
+      },
+      "name": "A Firepit with Grill",
+      "text": "",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true
+}

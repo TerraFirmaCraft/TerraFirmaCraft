@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Support Beams",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/support/oak",
+  "pages": [],
+  "read_by_default": true
+}
