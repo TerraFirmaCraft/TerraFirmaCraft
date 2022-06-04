@@ -13,10 +13,15 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
+
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
@@ -48,14 +53,28 @@ public class IcicleBlock extends ThinSpikeBlock
             // Melt, shrink the icicle, and possibly fill a fluid handler beneath
             level.removeBlock(pos, false);
 
-            final BlockPos posAbove = pos.above();
-            final BlockState stateAbove = level.getBlockState(posAbove);
+            BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos().setWithOffset(pos, 0, 1, 0);
+
+            final BlockState stateAbove = level.getBlockState(mutable);
             if (Helpers.isBlock(stateAbove, this))
             {
-                level.setBlock(posAbove, stateAbove.setValue(TIP, true), Block.UPDATE_ALL);
+                level.setBlock(mutable, stateAbove.setValue(TIP, true), Block.UPDATE_ALL);
             }
 
-            // todo: fill fluid containers a certain distance below with 100mB water
+            for (int i = 0; i < 5; i++)
+            {
+                mutable.move(0, -1, 0);
+                BlockState stateAt = level.getBlockState(mutable);
+                if (!stateAt.isAir()) // if we hit a non-air block, we won't be returning
+                {
+                    BlockEntity blockEntity = level.getBlockEntity(pos);
+                    if (blockEntity != null)
+                    {
+                        blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE));
+                    }
+                    return;
+                }
+            }
         }
     }
 
