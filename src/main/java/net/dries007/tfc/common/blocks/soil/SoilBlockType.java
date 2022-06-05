@@ -21,7 +21,11 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.DryingBricksBlock;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 
+/**
+ * @see RegistrySoilVariant
+ */
 public enum SoilBlockType
 {
     DIRT((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
@@ -33,7 +37,7 @@ public enum SoilBlockType
     ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.ROOTED_DIRT), self.transform(), variant)),
     MUD((self, variant) -> new MudBlock(mudProperties())),
     MUD_BRICKS((self, variant) -> new Block(mudProperties())),
-    DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER), variant.dried()));
+    DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER), variant.getDriedMudBrick()));
 
     public static final SoilBlockType[] VALUES = values();
 
@@ -48,14 +52,14 @@ public enum SoilBlockType
         return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.0f).sound(SoundType.SHROOMLIGHT);
     }
 
-    private final BiFunction<SoilBlockType, Variant, Block> factory;
+    private final BiFunction<SoilBlockType, RegistrySoilVariant, Block> factory;
 
-    SoilBlockType(BiFunction<SoilBlockType, Variant, Block> factory)
+    SoilBlockType(BiFunction<SoilBlockType, RegistrySoilVariant, Block> factory)
     {
         this.factory = factory;
     }
 
-    public Block create(Variant variant)
+    public Block create(RegistrySoilVariant variant)
     {
         return factory.apply(this, variant);
     }
@@ -74,7 +78,7 @@ public enum SoilBlockType
             };
     }
 
-    public enum Variant
+    public enum Variant implements RegistrySoilVariant
     {
         SILT,
         LOAM,
@@ -88,15 +92,22 @@ public enum SoilBlockType
             return i >= 0 && i < VALUES.length ? VALUES[i] : SILT;
         }
 
-        public Supplier<? extends Item> dried()
+        @Override
+        public Supplier<? extends Block> getBlock(SoilBlockType type)
+        {
+            return TFCBlocks.SOIL.get(type).get(this);
+        }
+
+        @Override
+        public Supplier<? extends Item> getDriedMudBrick()
         {
             return switch (this)
-            {
-                case SILT -> TFCItems.SILT_MUD_BRICK;
-                case LOAM -> TFCItems.LOAM_MUD_BRICK;
-                case SANDY_LOAM -> TFCItems.SANDY_LOAM_MUD_BRICK;
-                case SILTY_LOAM -> TFCItems.SILTY_LOAM_MUD_BRICK;
-            };
+                {
+                    case SILT -> TFCItems.SILT_MUD_BRICK;
+                    case LOAM -> TFCItems.LOAM_MUD_BRICK;
+                    case SANDY_LOAM -> TFCItems.SANDY_LOAM_MUD_BRICK;
+                    case SILTY_LOAM -> TFCItems.SILTY_LOAM_MUD_BRICK;
+                };
         }
     }
 }

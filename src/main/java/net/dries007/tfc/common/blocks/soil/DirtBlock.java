@@ -15,8 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 import org.jetbrains.annotations.Nullable;
 
 public class DirtBlock extends Block implements IDirtBlock
@@ -34,9 +34,9 @@ public class DirtBlock extends Block implements IDirtBlock
         this.farmland = farmland;
     }
 
-    DirtBlock(Properties properties, SoilBlockType grassType, SoilBlockType.Variant variant)
+    DirtBlock(Properties properties, SoilBlockType grassType, RegistrySoilVariant variant)
     {
-        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
+        this(properties, variant.getBlock(grassType), variant.getBlock(SoilBlockType.GRASS_PATH), variant.getBlock(SoilBlockType.FARMLAND));
     }
 
     public BlockState getGrass()

@@ -33,6 +33,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 import org.jetbrains.annotations.Nullable;
 
 public class ConnectedGrassBlock extends Block implements IGrassBlock
@@ -62,9 +63,9 @@ public class ConnectedGrassBlock extends Block implements IGrassBlock
         registerDefaultState(stateDefinition.any().setValue(SOUTH, false).setValue(EAST, false).setValue(NORTH, false).setValue(WEST, false).setValue(SNOWY, false));
     }
 
-    ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant variant)
+    ConnectedGrassBlock(Properties properties, SoilBlockType dirtType, RegistrySoilVariant variant)
     {
-        this(properties, TFCBlocks.SOIL.get(dirtType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
+        this(properties, variant.getBlock(dirtType), variant.getBlock(SoilBlockType.GRASS_PATH), variant.getBlock(SoilBlockType.FARMLAND));
     }
 
     @Override

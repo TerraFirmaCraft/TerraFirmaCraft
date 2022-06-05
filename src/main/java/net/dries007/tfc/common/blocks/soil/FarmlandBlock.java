@@ -38,12 +38,12 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.crop.CropHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock, IForgeBlockExtension, EntityBlockExtension
@@ -134,9 +134,9 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
         this.dirt = dirt;
     }
 
-    FarmlandBlock(ExtendedProperties properties, SoilBlockType.Variant variant)
+    FarmlandBlock(ExtendedProperties properties, RegistrySoilVariant variant)
     {
-        this(properties, TFCBlocks.SOIL.get(SoilBlockType.DIRT).get(variant));
+        this(properties, variant.getBlock(SoilBlockType.DIRT));
     }
 
     @Override

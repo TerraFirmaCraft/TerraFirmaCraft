@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -31,9 +31,9 @@ public class TFCRootedDirtBlock extends Block
         this.dirt = dirt;
     }
 
-    TFCRootedDirtBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant variant)
+    TFCRootedDirtBlock(Properties properties, SoilBlockType dirtType, RegistrySoilVariant variant)
     {
-        this(properties, TFCBlocks.SOIL.get(dirtType).get(variant));
+        this(properties, variant.getBlock(dirtType));
     }
 
     @Nullable
