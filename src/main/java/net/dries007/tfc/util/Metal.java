@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.util.NonNullFunction;
@@ -51,6 +52,8 @@ import org.jetbrains.annotations.Nullable;
 public final class Metal
 {
     public static final ResourceLocation UNKNOWN_ID = Helpers.identifier("unknown");
+    public static final ResourceLocation WROUGHT_IRON_ID = Helpers.identifier("wrought_iron");
+
     public static final DataManager<Metal> MANAGER = new DataManager<>(Helpers.identifier("metals"), "metal", Metal::new, Metal::new, Metal::encode, Packet::new);
 
     private static final Map<Fluid, Metal> METAL_FLUIDS = new HashMap<>();
@@ -157,6 +160,24 @@ public final class Metal
 
         this.ingots = Ingredient.fromNetwork(buffer);
         this.sheets = Ingredient.fromNetwork(buffer);
+    }
+
+    /**
+     * <strong>Not for general purpose use!</strong> Explicitly creates unregistered metals outside of the system, which are able to act as rendering stubs.
+     */
+    public Metal(ResourceLocation id)
+    {
+        this.id = id;
+        this.textureId = new ResourceLocation(id.getNamespace(), "block/metal/full/" + id.getPath());
+
+        this.tier = 0;
+        this.fluid = Fluids.EMPTY;
+        this.meltTemperature = 0;
+        this.heatCapacity = 0;
+        this.translationKey = "";
+
+        this.ingots = Ingredient.EMPTY;
+        this.sheets = Ingredient.EMPTY;
     }
 
     public void encode(FriendlyByteBuf buffer)

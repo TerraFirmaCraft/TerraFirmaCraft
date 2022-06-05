@@ -36,21 +36,7 @@
             "R": "tfc:rock/raw/gabbro"
           }
         },
-        {
-          "pattern": [
-            [
-              " 0 "
-            ],
-            [
-              "RAR"
-            ]
-          ],
-          "mapping": {
-            "0": "AIR",
-            "R": "tfc:rock/raw/gabbro",
-            "A": "tfc:rock/anvil/gabbro"
-          }
-        }
+        "tfc:rock_anvil"
       ]
     },
     {

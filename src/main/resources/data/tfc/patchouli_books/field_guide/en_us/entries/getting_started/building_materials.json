@@ -5,6 +5,29 @@
   "icon": "tfc:wattle/unstained",
   "pages": [
     {
+      "type": "patchouli:text",
+      "text": "Intro to different building blocks during the early game"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "More intro or something"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mud_bricks",
+      "text": "Mud Bricks...",
+      "title": "Mud Bricks"
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wattle_and_daub",
+      "text": "Wattle and Daub... or something",
+      "title": "Wattle & Daub"
+    },
+    {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wattle",
       "text": "$(thing)Wattle$() is a very versatile building material, which can be improved with $(thing)daub$()."
@@ -17,6 +40,15 @@
     {
       "type": "patchouli:text",
       "text": "Adding daub to $(thing)Woven Wattle$() makes it $(thing)Unstained Wattle$(). At this point, it can be right-clicked with $(thing)dye$() to stain it. At any point in this process, you can add framing to the wattle by right-clicking it with extra sticks on the sides and corners. See what you can come up with!"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "alabaster",
+      "text": "Alabaster! Not really early game but that's why it's at the end of the chapter",
+      "title": "Alabaster"
+    },
+    {
+      "type": "patchouli:empty"
     }
   ],
   "read_by_default": true,

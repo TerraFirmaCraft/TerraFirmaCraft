@@ -14,11 +14,31 @@
     "blocks": [
       {
         "replace": [
-          "tfc:rock/raw/slate"
+          "tfc:rock/raw/claystone"
         ],
         "with": [
           {
-            "block": "tfc:ore/borax/slate"
+            "block": "tfc:ore/borax/claystone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/limestone"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/borax/limestone"
+          }
+        ]
+      },
+      {
+        "replace": [
+          "tfc:rock/raw/shale"
+        ],
+        "with": [
+          {
+            "block": "tfc:ore/borax/shale"
           }
         ]
       }

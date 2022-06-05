@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Biomes",
   "category": "tfc:the_world",
-  "icon": "",
+  "icon": "tfc:textures/gui/book/icons/biomes.png",
   "pages": [
     {
       "type": "patchouli:text",

@@ -151,7 +151,10 @@ def generate(rm: ResourceManager):
                     'overlay': 'tfc:block/ore/%s' % ore
                 }, parent='tfc:block/ore')
                 block.with_item_model()
-                block.with_lang(lang('%s %s', rock, ore))
+                if ore == 'diamond':
+                    block.with_lang(lang('%s kimberlite', rock))
+                else:
+                    block.with_lang(lang('%s %s', rock, ore))
                 rm.block_loot('tfc:ore/%s/%s' % (ore, rock), 'tfc:ore/%s' % ore)
 
     # Loose Ore Items
@@ -161,7 +164,11 @@ def generate(rm: ResourceManager):
                 rm.item_model('tfc:ore/%s_%s' % (grade, ore)).with_lang(lang('%s %s', grade, ore))
             rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore))
         else:
-            rm.item_model('tfc:ore/%s' % ore).with_lang(lang('%s', ore))
+            item = rm.item_model('tfc:ore/%s' % ore)
+            if ore == 'diamond':
+                item.with_lang(lang('kimberlite'))
+            else:
+                item.with_lang(lang(ore))
 
     # Sand
     for sand in SAND_BLOCK_TYPES:

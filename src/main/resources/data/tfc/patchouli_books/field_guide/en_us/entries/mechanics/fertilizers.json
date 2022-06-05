@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Fertilizers",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/sylvite",
+  "pages": [],
+  "read_by_default": true
+}

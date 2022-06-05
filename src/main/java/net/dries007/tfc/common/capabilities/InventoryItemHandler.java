@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.capabilities;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -20,6 +21,14 @@ public class InventoryItemHandler extends ItemStackHandler implements ISlotCallb
     {
         super(slots);
         this.callback = callback;
+    }
+
+    /**
+     * Provide access to the internal stacks, when direct mutation is acceptable.
+     */
+    public NonNullList<ItemStack> getInternalStacks()
+    {
+        return stacks;
     }
 
     @Override

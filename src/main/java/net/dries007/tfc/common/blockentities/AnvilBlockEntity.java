@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import java.util.Collection;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -339,6 +340,17 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     public int getTier()
     {
         return getBlockState().getBlock() instanceof Tiered tiered ? tiered.getTier() : 0;
+    }
+
+    /**
+     * Sets the inventory for a block entity that is not placed in the world
+     */
+    public void setInventoryFromOutsideWorld(ItemStack main, ItemStack hammer, ItemStack flux)
+    {
+        final NonNullList<ItemStack> internalStacks = inventory.getInternalStacks();
+        internalStacks.set(SLOT_INPUT_MAIN, main);
+        internalStacks.set(SLOT_HAMMER, hammer);
+        internalStacks.set(SLOT_CATALYST, flux);
     }
 
     public static class AnvilInventory extends InventoryItemHandler implements AnvilRecipe.Inventory, WeldingRecipe.Inventory

@@ -45,6 +45,15 @@
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/mutton",
       "text": "Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it's lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it's lifetime by 1.66x!"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "salting",
+      "text": "Are you salty this page is blank?",
+      "title": "Salting"
+    },
+    {
+      "type": "patchouli:empty"
     }
   ],
   "read_by_default": true

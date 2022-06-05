@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Flux",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/flux",
+  "pages": [],
+  "read_by_default": true
+}

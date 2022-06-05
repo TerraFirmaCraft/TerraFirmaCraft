@@ -158,7 +158,8 @@ dependencies {
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
     // Patchouli
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}") // Patchouli doesn't have an API jar anymore?
+    // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
 
     if (System.getProperty("idea.sync.active") != "true") {
