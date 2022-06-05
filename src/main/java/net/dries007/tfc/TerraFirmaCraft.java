@@ -101,7 +101,7 @@ public final class TerraFirmaCraft
         TFCRecipeSerializers.RECIPE_SERIALIZERS.register(bus);
         TFCSounds.SOUNDS.register(bus);
         TFCParticles.PARTICLE_TYPES.register(bus);
-        TFCBlockEntities.TILE_ENTITIES.register(bus);
+        TFCBlockEntities.BLOCK_ENTITIES.register(bus);
         TFCLoot.registerAll(bus);
 
         TFCBiomes.BIOMES.register(bus);

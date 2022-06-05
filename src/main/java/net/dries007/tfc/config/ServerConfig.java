@@ -241,7 +241,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("anvil");
 
-        anvilAcceptableWorkRange = builder.apply("anvilAcceptableWorkRange").comment("The number of pixels that the anvil's result may be off by, but still count as recipe completion. By defualt this requires pixel perfect accuracy.").defineInRange("anvilAcceptableWorkRange", 0, 0, 150);
+        anvilAcceptableWorkRange = builder.apply("anvilAcceptableWorkRange").comment("The number of pixels that the anvil's result may be off by, but still count as recipe completion. By default this requires pixel perfect accuracy.").defineInRange("anvilAcceptableWorkRange", 0, 0, 150);
 
         innerBuilder.pop().push("barrel");
 

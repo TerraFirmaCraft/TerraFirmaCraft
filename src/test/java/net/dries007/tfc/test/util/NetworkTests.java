@@ -152,7 +152,7 @@ public class NetworkTests extends TestHelper
         final ItemStackProvider before = ItemStackProvider.of(new ItemStack(Items.GREEN_BANNER, 3), EmptyBowlModifier.INSTANCE, CopyHeatModifier.INSTANCE, new AddHeatModifier(32));
         final ItemStackProvider after = encodeAndDecode(before, ItemStackProvider::toNetwork, ItemStackProvider::fromNetwork);
 
-        assertItemStackEquals(before.stack(), after.stack());
+        assertItemStackEquals(before.stack().get(), after.stack().get());
         assertArrayEquals(before.modifiers(), after.modifiers());
     }
 }
