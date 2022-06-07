@@ -79,6 +79,26 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> ALPACA_AMBIENT = create("animal.alpaca.ambient");
     public static final RegistryObject<SoundEvent> ALPACA_DEATH = create("animal.alpaca.death");
 
+    public static final RegistryObject<SoundEvent> YAK_HURT = create("animal.yak.hurt");
+    public static final RegistryObject<SoundEvent> YAK_STEP = create("animal.yak.step");
+    public static final RegistryObject<SoundEvent> YAK_AMBIENT = create("animal.yak.ambient");
+    public static final RegistryObject<SoundEvent> YAK_DEATH = create("animal.yak.death");
+
+    public static final RegistryObject<SoundEvent> MUSK_OX_HURT = create("animal.musk_ox.hurt");
+    public static final RegistryObject<SoundEvent> MUSK_OX_STEP = create("animal.musk_ox.step");
+    public static final RegistryObject<SoundEvent> MUSK_OX_AMBIENT = create("animal.musk_ox.ambient");
+    public static final RegistryObject<SoundEvent> MUSK_OX_DEATH = create("animal.musk_ox.death");
+
+    public static final RegistryObject<SoundEvent> DUCK_HURT = create("animal.duck.hurt");
+    public static final RegistryObject<SoundEvent> DUCK_STEP = create("animal.duck.step");
+    public static final RegistryObject<SoundEvent> DUCK_AMBIENT = create("animal.duck.ambient");
+    public static final RegistryObject<SoundEvent> DUCK_DEATH = create("animal.duck.death");
+
+    public static final RegistryObject<SoundEvent> QUAIL_HURT = create("animal.quail.hurt");
+    public static final RegistryObject<SoundEvent> QUAIL_STEP = create("animal.quail.step");
+    public static final RegistryObject<SoundEvent> QUAIL_AMBIENT = create("animal.quail.ambient");
+    public static final RegistryObject<SoundEvent> QUAIL_DEATH = create("animal.quail.death");
+
     public static final RegistryObject<SoundEvent> PREDATOR_SLEEP = create("animal.predator.sleep");
 
     public static final RegistryObject<SoundEvent> COUGAR_AMBIENT = create("animal.cougar.ambient");

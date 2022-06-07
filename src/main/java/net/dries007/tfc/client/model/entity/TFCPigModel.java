@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.model.entity;
 
+import com.google.common.collect.ImmutableList;
 import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -36,6 +37,7 @@ public class TFCPigModel extends PigModel<Mammal>
         );
         return LayerDefinition.create(meshdefinition, 64, 32);
     }
+
     private final ModelPart tusk1;
     private final ModelPart tusk2;
 
@@ -51,5 +53,17 @@ public class TFCPigModel extends PigModel<Mammal>
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         tusk1.visible = tusk2.visible = entity.displayMaleCharacteristics();
+    }
+
+    @Override
+    protected Iterable<ModelPart> headParts()
+    {
+        return ImmutableList.of();
+    }
+
+    @Override
+    protected Iterable<ModelPart> bodyParts()
+    {
+        return ImmutableList.of(this.head, this.body, this.rightHindLeg, this.leftHindLeg, this.rightFrontLeg, this.leftFrontLeg);
     }
 }

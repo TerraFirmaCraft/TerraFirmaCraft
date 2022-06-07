@@ -1,0 +1,15 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "#tfc:foods/grains",
+    "#tfc:foods/fruits",
+    "#tfc:foods/vegetables",
+    "#tfc:seeds",
+    "tfc:food/barley_bread",
+    "tfc:food/wheat_bread",
+    "tfc:food/rye_bread",
+    "tfc:food/maize_bread",
+    "tfc:food/oat_bread"
+  ]
+}

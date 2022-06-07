@@ -6,17 +6,16 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import net.minecraft.client.model.EntityModel;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.dries007.tfc.common.entities.land.WoolyAnimal;
 
-public class AlpacaModel extends EntityModel<WoolyAnimal>
+public class AlpacaModel extends AgeableListModel<WoolyAnimal>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -32,13 +31,13 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
         PartDefinition wool_head_f = head.addOrReplaceChild("wool_head_f", CubeListBuilder.create().texOffs(29, 31).addBox(-3.0F, -5.0F, -0.75F, 6.0F, 6.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
         PartDefinition wool_neck_f = neck.addOrReplaceChild("wool_neck_f", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, -13.0F, -4.75F, 4.0F, 13.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
         PartDefinition tail = body.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(29, 42).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -17.5F, 7.5F, 0.9599F, 0.0F, 0.0F));
-        PartDefinition legBR = body.addOrReplaceChild("legBR", CubeListBuilder.create().texOffs(8, 57).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 15.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -14.0F, 6.0F));
+        PartDefinition legBR = body.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(8, 57).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 15.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -14.0F, 6.0F));
         PartDefinition wool_legBR_f = legBR.addOrReplaceChild("wool_legBR_f", CubeListBuilder.create().texOffs(35, 0).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 10.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-        PartDefinition legBL = body.addOrReplaceChild("legBL", CubeListBuilder.create().texOffs(0, 57).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 15.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, -14.0F, 6.0F));
+        PartDefinition legBL = body.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(0, 57).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 15.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, -14.0F, 6.0F));
         PartDefinition wool_legBL_f = legBL.addOrReplaceChild("wool_legBL_f", CubeListBuilder.create().texOffs(0, 31).addBox(4.0F, -3.0F, -2.0F, 4.0F, 10.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.0F, 0.0F, 0.0F));
-        PartDefinition legFR = body.addOrReplaceChild("legFR", CubeListBuilder.create().texOffs(16, 57).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -11.0F, -6.0F));
+        PartDefinition legFR = body.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(16, 57).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -11.0F, -6.0F));
         PartDefinition wool_legFR_f = legFR.addOrReplaceChild("wool_legFR_f", CubeListBuilder.create().texOffs(56, 54).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-        PartDefinition legFL = body.addOrReplaceChild("legFL", CubeListBuilder.create().texOffs(24, 57).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, -11.0F, -6.0F));
+        PartDefinition legFL = body.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(24, 57).addBox(-1.0F, -1.0F, -1.0F, 2.0F, 11.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, -11.0F, -6.0F));
         PartDefinition wool_legFL_f = legFL.addOrReplaceChild("wool_legFL_f", CubeListBuilder.create().texOffs(51, 27).addBox(-2.0F, -3.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
         return LayerDefinition.create(mesh, 128, 128);
     }
@@ -46,10 +45,10 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
     private final ModelPart neck;
     private final ModelPart head;
     private final ModelPart body;
-    private final ModelPart legBL;
-    private final ModelPart legBR;
-    private final ModelPart legFL;
-    private final ModelPart legFR;
+    private final ModelPart leftHindLeg;
+    private final ModelPart rightHindLeg;
+    private final ModelPart leftFrontLeg;
+    private final ModelPart rightFrontLeg;
     private final ModelPart wool_body_f;
     private final ModelPart wool_head_f;
     private final ModelPart wool_neck_f;
@@ -60,20 +59,21 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
 
     public AlpacaModel(ModelPart root)
     {
+        super(false, 0F, 0F, 1.8F, 1.8F, 19F);
         body = root.getChild("body");
         neck = body.getChild("neck");
         head = neck.getChild("head");
         wool_body_f = body.getChild("wool_body_f");
         wool_head_f = head.getChild("wool_head_f");
         wool_neck_f = neck.getChild("wool_neck_f");
-        legBL = body.getChild("legBL");
-        wool_legBL_f = legBL.getChild("wool_legBL_f");
-        legBR = body.getChild("legBR");
-        wool_legBR_f = legBR.getChild("wool_legBR_f");
-        legFL = body.getChild("legFL");
-        wool_legFL_f = legFL.getChild("wool_legFL_f");
-        legFR = body.getChild("legFR");
-        wool_legFR_f = legFR.getChild("wool_legFR_f");
+        leftHindLeg = body.getChild("left_hind_leg");
+        wool_legBL_f = leftHindLeg.getChild("wool_legBL_f");
+        rightHindLeg = body.getChild("right_hind_leg");
+        wool_legBR_f = rightHindLeg.getChild("wool_legBR_f");
+        leftFrontLeg = body.getChild("left_front_leg");
+        wool_legFL_f = leftFrontLeg.getChild("wool_legFL_f");
+        rightFrontLeg = body.getChild("right_front_leg");
+        wool_legFR_f = rightFrontLeg.getChild("wool_legFR_f");
     }
 
     @Override
@@ -84,15 +84,21 @@ public class AlpacaModel extends EntityModel<WoolyAnimal>
         neck.xRot = headPitch * ((float) Math.PI / 720F);
         head.yRot = headYaw * ((float) Math.PI / 360F);
         neck.yRot = headYaw * ((float) Math.PI / 360F);
-        legBR.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-        legBL.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        legFR.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
-        legFL.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+        rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
+        leftFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    protected Iterable<ModelPart> headParts()
     {
-        body.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        return ImmutableList.of();
+    }
+
+    @Override
+    protected Iterable<ModelPart> bodyParts()
+    {
+        return ImmutableList.of(this.body);
     }
 }

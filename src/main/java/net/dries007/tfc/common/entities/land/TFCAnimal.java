@@ -229,7 +229,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         this.matingTime = nbt.getLong("mating");
         this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.addUses(nbt.getInt("uses"));
+        this.setUses(nbt.getInt("uses"));
     }
 
     @Override
@@ -362,6 +362,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         }
         return InteractionResult.PASS;
     }
+
 
     @Override
     public boolean canMate(Animal otherAnimal)

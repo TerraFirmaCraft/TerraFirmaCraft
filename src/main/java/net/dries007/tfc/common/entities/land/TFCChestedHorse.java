@@ -122,7 +122,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
         this.matingTime = nbt.getLong("mating");
         this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.addUses(nbt.getInt("uses"));
+        this.setUses(nbt.getInt("uses"));
     }
 
     @Override

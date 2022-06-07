@@ -536,10 +536,10 @@ NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
 VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane')
-MEATS = ('beef', 'pork', 'chicken', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
+MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'alpaca', 'chicken')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 
 BLOCK_ENTITIES = ('log_pile', 'burning_log_pile', 'placed_item', 'pit_kiln', 'charcoal_forge', 'quern', 'scraping', 'crucible', 'bellows', 'composter', 'chest', 'trapped_chest', 'barrel', 'loom', 'sluice', 'tool_rack', 'sign', 'lamp', 'berry_bush', 'crop', 'firepit', 'pot', 'grill', 'pile', 'farmland', 'tick_counter', 'nest_box', 'bloomery', 'bloom', 'anvil', 'ingot_pile', 'sheet_pile', 'blast_furnace', 'large_vessel')
@@ -592,8 +592,19 @@ SHORE_CREATURES: Dict[str, Dict[str, Any]] = {
 LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'pig': spawner('tfc:pig', min_count=1, max_count=4),
     'cow': spawner('tfc:cow', min_count=1, max_count=4),
+    'goat': spawner('tfc:goat', min_count=1, max_count=4),
+    'yak': spawner('tfc:yak', min_count=1, max_count=4),
     'alpaca': spawner('tfc:alpaca', min_count=1, max_count=4),
-    'chicken': spawner('tfc:chicken', min_count=2, max_count=6)
+    'sheep': spawner('tfc:sheep', min_count=1, max_count=4),
+    'musk_ox': spawner('tfc:musk_ox', min_count=1, max_count=4),
+    'chicken': spawner('tfc:chicken', min_count=2, max_count=6),
+    'duck': spawner('tfc:duck', min_count=2, max_count=6),
+    'quail': spawner('tfc:quail', min_count=2, max_count=6),
+    'polar_bear': spawner('tfc:polar_bear', min_count=1, max_count=1),
+    'grizzly_bear': spawner('tfc:grizzly_bear', min_count=1, max_count=1),
+    'black_bear': spawner('tfc:black_bear', min_count=1, max_count=1),
+    'lion': spawner('tfc:lion', min_count=1, max_count=3),
+    'sabertooth': spawner('tfc:sabertooth', min_count=1, max_count=1),
 }
 
 DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli')
@@ -640,6 +651,36 @@ DEFAULT_LANG = {
     'tfc.animal.alpaca.hurt': 'Alpaca Yelps',
     'tfc.animal.alpaca.death': 'Alpaca Dies',
     'tfc.animal.alpaca.step': 'Alpaca Steps',
+    'tfc.animal.yak.ambient': 'Yak Grumbles',
+    'tfc.animal.yak.hurt': 'Yak Groans',
+    'tfc.animal.yak.death': 'Yak Dies',
+    'tfc.animal.yak.step': 'Yak Steps',
+    'tfc.animal.musk_ox.ambient': 'Musk Ox Pants',
+    'tfc.animal.musk_ox.hurt': 'Musk Ox Bellows',
+    'tfc.animal.musk_ox.death': 'Musk Ox Dies',
+    'tfc.animal.musk_ox.step': 'Musk Ox Steps',
+    'tfc.animal.duck.ambient': 'Duck Quacks',
+    'tfc.animal.duck.hurt': 'Duck Quacks Angrily',
+    'tfc.animal.duck.death': 'Duck Dies',
+    'tfc.animal.duck.step': 'Duck Steps',
+    'tfc.animal.quail.ambient': 'Quail Calls',
+    'tfc.animal.quail.hurt': 'Quail Yelps',
+    'tfc.animal.quail.death': 'Quail Dies',
+    'tfc.animal.quail.step': 'Quail Steps',
+    'tfc.animal.predator.sleep': 'Predator Sleeps',
+    'tfc.animal.cougar.death': 'Cougar Dies',
+    'tfc.animal.cougar.attack': 'Cougar Roars',
+    'tfc.animal.cougar.ambient': 'Cougar Screams',
+    'tfc.animal.cougar.hurt': "Cougar Yowls",
+    'tfc.animal.lion.death': 'Lion Dies',
+    'tfc.animal.lion.attack': 'Lion Roars',
+    'tfc.animal.lion.ambient': 'Lion Grunts',
+    'tfc.animal.lion.hurt': "Lion Roars",
+    'tfc.animal.sabertooth.death': 'Sabertooth Dies',
+    'tfc.animal.sabertooth.attack': 'Sabertooth Roars',
+    'tfc.animal.sabertooth.ambient': 'Sabertooth Calls',
+    'tfc.animal.sabertooth.hurt': "Sabertooth Yowls",
+
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
     'itemGroup.tfc.ores': 'TFC Ores',
@@ -818,9 +859,21 @@ DEFAULT_LANG = {
     'entity.tfc.cow': 'Cow',
     'entity.tfc.cow.female': 'Cow',
     'entity.tfc.cow.male': 'Bull',
+    'entity.tfc.goat': 'Goat',
+    'entity.tfc.goat.female': 'Nanny Goat',
+    'entity.tfc.goat.male': 'Billy Goat',
     'entity.tfc.alpaca': 'Alpaca',
     'entity.tfc.alpaca.female': 'Female Alpaca',
     'entity.tfc.alpaca.male': 'Male Alpaca',
+    'entity.tfc.sheep': 'Sheep',
+    'entity.tfc.sheep.female': 'Ewe',
+    'entity.tfc.sheep.male': 'Ram',
+    'entity.tfc.musk_ox': 'Musk Ox',
+    'entity.tfc.musk_ox.female': 'Musk Ox Cow',
+    'entity.tfc.musk_ox.male': 'Musk Ox Bull',
+    'entity.tfc.yak': 'Yak',
+    'entity.tfc.yak.female': 'Female Yak',
+    'entity.tfc.yak.male': 'Male Yak',
     'entity.tfc.polar_bear': 'Polar Bear',
     'entity.tfc.grizzly_bear': 'Grizzly Bear',
     'entity.tfc.black_bear': 'Black Bear',
@@ -837,6 +890,10 @@ DEFAULT_LANG = {
     'entity.tfc.chicken': 'Chicken',
     'entity.tfc.chicken.male': 'Rooster',
     'entity.tfc.chicken.female': 'Chicken',
+    'entity.tfc.duck': 'Duck',
+    'entity.tfc.duck.male': 'Drake',
+    'entity.tfc.duck.female': 'Duck',
+    'entity.tfc.quail': 'Quail',
     **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums

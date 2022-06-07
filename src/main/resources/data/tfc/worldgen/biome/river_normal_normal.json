@@ -92,7 +92,31 @@
         "maxCount": 4
       },
       {
+        "type": "tfc:goat",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:yak",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:alpaca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:sheep",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:musk_ox",
         "weight": 1,
         "minCount": 1,
         "maxCount": 4
@@ -102,6 +126,48 @@
         "weight": 1,
         "minCount": 2,
         "maxCount": 6
+      },
+      {
+        "type": "tfc:duck",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:quail",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:polar_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:grizzly_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:black_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:lion",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:sabertooth",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       }
     ]
   },
