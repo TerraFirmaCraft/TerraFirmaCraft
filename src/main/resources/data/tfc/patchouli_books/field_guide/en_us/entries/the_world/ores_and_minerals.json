@@ -5,9 +5,17 @@
   "icon": "tfc:ore/normal_hematite",
   "pages": [
     {
+      "type": "patchouli:text",
+      "text": "Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, and where to find them."
+    },
+    {
       "type": "patchouli:image",
       "images": [
-        "tfc:textures/gui/book/tutorial/indicator1.png"
+        "tfc:textures/gui/book/tutorial/indicators_1.png"
       ],
       "text": "The presence of $(thing)loose ores$() indicates a $(thing)vein$() below.",
       "border": true
@@ -15,18 +23,10 @@
     {
       "type": "patchouli:image",
       "images": [
-        "tfc:textures/gui/book/tutorial/indicator2.png"
+        "tfc:textures/gui/book/tutorial/indicators_2.png"
       ],
       "text": "Deep underneath that loose rock was a $(l:the_world/ores_and_minerals#hematite)Hematite$() vein.",
       "border": true
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, and where to find them."
     },
     {
       "type": "patchouli:text",

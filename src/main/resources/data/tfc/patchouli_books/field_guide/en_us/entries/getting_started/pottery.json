@@ -59,7 +59,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jug",
-      "text": "Another useful pottery item is the $(thing)Jug$(). It can be used to pick up and $(thing)drink$() fluids, such as fresh water.$(br2)In order to use it, simply $(thing)$(k:key.use)$() the jug on the fluid in the world. Then use the jug in order to drink from it. The jug can hold $(thing)100 mB$() of fluid at a time.",
+      "text": "Another useful pottery item is the $(thing)Jug$(). It can be used to pick up and $(thing)drink$() fluids, such as fresh water.$(br2)In order to use it, simply $(item)$(k:key.use)$() the jug on the fluid in the world. Then use the jug in order to drink from it. The jug can hold $(thing)100 mB$() of fluid at a time.",
       "title": "Jug"
     },
     {
@@ -70,7 +70,7 @@
     {
       "type": "patchouli:text",
       "anchor": "mold",
-      "text": "Clay is also a very useful material for making $(thing)Molds$(). Molds can have molten metal poured into them, which will eventually solidify into the shape of a mold. The item and potentially the mold can then be retrieved by using $(thing)$(k:key.use)$() on the mold.$(br2)The most simple type of mold is the ingot mold, to the right.",
+      "text": "Clay is also a very useful material for making $(thing)Molds$(). Molds can have molten metal poured into them, which will eventually solidify into the shape of a mold. The item and potentially the mold can then be retrieved by using $(item)$(k:key.use)$() on the mold.$(br2)The most simple type of mold is the ingot mold, to the right.",
       "title": "Molds"
     },
     {

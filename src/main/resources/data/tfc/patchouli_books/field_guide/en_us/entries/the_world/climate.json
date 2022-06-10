@@ -7,7 +7,7 @@
     {
       "type": "patchouli:text",
       "anchor": "calendar",
-      "text": "In TerraFirmaCraft, the climate and the time are both very important factors. Let's start with the $(thing)Calendar$().$(br2)At any time, you can view the calendar by pressing $(thing)$(k:key.inventory)$(), and clicking on the calendar tab. This will show the $(thing)Season$(), the $(thing)Day$(), and the $(thing)Date$()."
+      "text": "In TerraFirmaCraft, the climate and the time are both very important factors. Let's start with the $(thing)Calendar$().$(br2)At any time, you can view the calendar by pressing $(item)$(k:key.inventory)$(), and clicking on the calendar tab. This will show the $(thing)Season$(), the $(thing)Day$(), and the $(thing)Date$()."
     },
     {
       "type": "patchouli:image",
