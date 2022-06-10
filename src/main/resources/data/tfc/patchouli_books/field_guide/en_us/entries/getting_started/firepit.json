@@ -51,6 +51,10 @@
       "border": false
     },
     {
+      "type": "patchouli:text",
+      "text": "The firepit can be extinguished at any time by pressing $(thing)$(k:key.use)$() with a shovel. Firepits can take two attachments: the $(l:mechanics/grill)grill$() and $(l:mechanics/pot)pot$(). To add an attachment, $(thing)$(k:key.use)$(). To remove it, $(thing)$(k:key.use)$() while holding $(thing)$(k:key.sneak)$(). Be careful not to try to remove a hot grill or pot!"
+    },
+    {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/torch_from_stick",
       "text": "Many useful items can be made in a firepit by heating them. Sticks can be heated, where they will produce two $(thing)Torches$(). Note that torches will eventually burn out, and need to be re-lit by using a $(thing)Firestarter$(), or using another $(thing)Torch$() on them."

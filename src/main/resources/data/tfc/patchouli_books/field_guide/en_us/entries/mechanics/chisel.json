@@ -3,6 +3,40 @@
   "name": "Chisel",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/chisel/wrought_iron",
-  "pages": [],
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Chisels are an essential tool for anyone wanting to build. Their function is, in short, converting blocks to other blocks in the world with a simple click. Chisels have $(thing)modes$() which determine the operation they are using. The modes are $(thing)Slab$(), $(thing)Stair$(), and $(thing)Smooth$(). To switch modes, hold a chisel and press $(thing)$(k:tfc.key.cycle_chisel_mode)$(). An indicator of your chisel mode should show up next to the hotbar.",
+      "title": "Hammer and Chisel"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/hammer/bismuth_bronze",
+      "title": "Hammer Time",
+      "link_recipes": false,
+      "text": "To use a chisel, you must hold a $(thing)hammer$() in your offhand."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/chisel_outline.png"
+      ],
+      "text": "To chisel a block, highlight it with your cursor. A red outline should show up.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Press $(thing)$(k:key.use)$() to convert the block to the shape that was highlighted in red. If you chiseled a slab, the half of the block you chiseled will pop off, and you can grab it. Change the orientation of your player and your mouse to change the orientation of the chiseled block. As a rule of thumb, the orientation of the chiseled block will be the same as if you placed it in that orientation yourself."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/marble_smooth",
+      "text": "The chisel can also be used in some crafting recipes as a shortcut for large quantities."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(thing)collapse$()."
+    }
+  ],
   "read_by_default": true
 }

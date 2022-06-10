@@ -79,7 +79,9 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
     book.template('fire_clay_knapping_recipe', custom_component(0, 0, 'FireClayKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
     book.template('leather_knapping_recipe', custom_component(0, 0, 'LeatherKnappingComponent', {'recipe': '#recipe'}), text_component(0, 99))
 
+    book.template('quern_recipe', custom_component(0, 0, 'QuernComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('heat_recipe', custom_component(0, 0, 'HeatingComponent', {'recipe': '#recipe'}), text_component(0, 45))
+    book.template('anvil_recipe', custom_component(0, 0, 'AnvilComponent', {'recipe': '#recipe'}), text_component(0, 45))
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('biomes', 'Biomes', 'tfc:textures/gui/book/icons/biomes.png', pages=(
@@ -143,7 +145,8 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         entry('ores_and_minerals', 'Ores and Minerals', 'tfc:ore/normal_hematite', pages=(
             # todo: Overview of all underground ores
             # todo: General spawning patterns of ores (deeper = richer)
-            # todo: Indicators
+            image('tfc:textures/gui/book/tutorial/indicator1.png', text_contents='The presence of $(thing)loose ores$() indicates a $(thing)vein$() below.'),
+            image('tfc:textures/gui/book/tutorial/indicator2.png', text_contents='Deep underneath that loose rock was a $(l:the_world/ores_and_minerals#hematite)Hematite$() vein.'),
             # todo: A decent list / showcase of most/all ores and their spawning conditions
             text('Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for.'),
             text('In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, and where to find them.'),
@@ -225,8 +228,25 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         entry('flora', 'Flora', 'tfc:plant/goldenrod', pages=(
             # Overview of various plants
             # Mention some usages (dyes)
-            text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft. Some would say over nine thousand. Those people would be wrong.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes.'),
-            # todo: list about plants
+            text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft. Some would say over nine thousand. Those people would be wrong.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye.'),
+            block_spotlight('Standard', 'Standard plants are like small flowers. They grow on grass, dirt, and farmland.', 'tfc:plant/anthurium'),
+            block_spotlight('Dry', 'Dry plants are like standard plants, but they can grow on sand. These generally only spawn in areas with low rainfall.', 'tfc:plant/sagebrush'),
+            two_tall_block_spotlight('Cacti', 'Cacti can grow two blocks high, and they will damage you!', 'tfc:plant/barrel_cactus[part=lower]', 'tfc:plant/barrel_cactus[part=upper]'),
+            block_spotlight('Creeping', 'Creeping plants take the shape of the surrounding block faces. They spawn in blobs on the ground, mostly.', 'tfc:plant/moss[down=true]'),
+            two_tall_block_spotlight('Hanging', 'Hanging plants are relatable, because they don\'t do work and mostly just hang out.', 'tfc:plant/spanish_moss[hanging=true]', 'tfc:wood/wood/oak'),
+            multiblock('Epiphyte', 'Epiphytes only live on the sides of logs.', False, pattern=(('XY',), ('0 ',)), mapping={'X': 'tfc:wood/wood/birch', 'Y': 'tfc:plant/licorice_fern[facing=south]'}),
+            block_spotlight('Short Grass', 'Short grass blocks grow taller with age. They also are able to grow on peat and mud.', 'tfc:plant/bluegrass'),
+            two_tall_block_spotlight('Tall Grass', 'Tall grass blocks are just tall enough to block your field of view.', 'tfc:plant/king_fern[part=lower]', 'tfc:plant/king_fern[part=upper]'),
+            block_spotlight('Vines', 'Vine blocks spread around the world on their own, if it\'s warm enough.', 'tfc:plant/ivy[up=true,north=true]'),
+            two_tall_block_spotlight('Weeping Vines', 'Weeping vines grow downward from the an anchoring block.', 'tfc:plant/liana', 'tfc:plant/liana_plant'),
+            two_tall_block_spotlight('Twisting Vines', 'Twisting vines twist upward from the Earth. They can come in a solid variant.', 'tfc:plant/arundo_plant', 'tfc:plant/arundo'),
+            text('Water plants are restricted to either spawn in fresh or salty water. Otherwise, they grow and act much like the plants you see on the surface. Some water plants can be cooked for food.', title='Water Plants'),
+            block_spotlight('Standard Water', 'Standard water plants can be broken with a $(thing)$()knife$() to get $(thing)seaweed$().', 'tfc:plant/sago[fluid=water]'),
+            block_spotlight('Water Grass', 'Water grasses are grasses that grow under the water.', 'tfc:plant/manatee_grass[fluid=salt_water]'),
+            two_tall_block_spotlight('Tall Water Plant', 'Tall water plants can grow with just the bottom block in water. $(thing)Water Taro$() and $()Cattail$() can be broken with a $(thing)knife$() for $(thing)roots$().', 'tfc:plant/cattail[part=lower,fluid=water]', 'tfc:plant/cattail[part=upper]'),
+            two_tall_block_spotlight('Floating', 'Floating plants sit on top of the water. Boats will break them on contact.', 'minecraft:water', 'tfc:plant/duckweed'),
+            two_tall_block_spotlight('Kelp', 'Kelp are twisting vines that grow underwater.', 'tfc:plant/winged_kelp_plant[fluid=salt_water]', 'tfc:plant/winged_kelp[fluid=salt_water]'),
+            two_tall_block_spotlight('Tree Kelp', 'Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)knife$().', 'tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]', 'tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]'),  # note: anyone want to make a nice multiblock for this?
         )),
         entry('wild_crops', 'Wild Crops', 'tfc:wild_crop/wheat', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
@@ -286,6 +306,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             block_spotlight('', 'If you were successful, a firepit will be created.', 'tfc:firepit[lit=true]'),
             text('Using the firepit again will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:getting_started/heating)heated$() in.'),
             image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False),
+            text('The firepit can be extinguished at any time by pressing $(thing)$(k:key.use)$() with a shovel. Firepits can take two attachments: the $(l:mechanics/grill)grill$() and $(l:mechanics/pot)pot$(). To add an attachment, $(thing)$(k:key.use)$(). To remove it, $(thing)$(k:key.use)$() while holding $(thing)$(k:key.sneak)$(). Be careful not to try to remove a hot grill or pot!'),
             heat_recipe('tfc:heating/torch_from_stick', 'Many useful items can be made in a firepit by heating them. Sticks can be heated, where they will produce two $(thing)Torches$(). Note that torches will eventually burn out, and need to be re-lit by using a $(thing)Firestarter$(), or using another $(thing)Torch$() on them.'),
             heat_recipe('tfc:heating/cod', 'The fire pit is also a good device for $(thing)cooking food$(). All raw meats and doughs can be cooked in a firepit, which will lengthen their shelf life. (More on that $(l:food/decay)here$())')
         )),
@@ -418,12 +439,23 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             # todo: crucible and advanced alloying
         )),
         entry('grill', 'Firepit And Grill', 'tfc:grill', pages=(
-            text('Grill grill baby!'),
-            block_spotlight('A Firepit with Grill', '', 'tfc:grill'),
-            # todo: grill
+            block_spotlight('A Firepit with Grill', 'The grill is a way of cooking foods more efficiently.', 'tfc:grill'),
+            anvil_recipe('tfc:anvil/wrought_iron_grill', 'The grill is smithed from a $(thing)Wrought Iron Double Sheet$(). It has 5 slots, each of which can be used for cooking. Food cooked in a grill has the $(thing)wood grilled$() trait, which makes it last longer.')
+        )),
+        entry('pot', 'Firepit And Pot', 'tfc:pot', pages=(
+            block_spotlight('A Firepit with Pot', 'The pot is used to boil items.', 'tfc:pot'),
+            clay_knapping('tfc:clay_knapping/pot', 'The pot is $(thing)knapped$() and then $(thing)heated$().'),
+            text('It contains $(thing)1000mB$() of a fluid, and up to 5 items. Fluid can be added or removed using a $(thing)bucket$(). When a pot is boiling, it will visually bubble and make boiling sounds, and the inventory cannot be modified.'),
+            item_spotlight('tfc:food/fruit_soup', 'Soup Recipes', text_contents='Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(thing)$(k:key.use)$() with a $(thing)bowl$() to retrieve it. Soup combines multiple nutrients into a single meal.'),
+            item_spotlight('tfc:bucket/red_dye', 'Simple Recipes', text_contents='Other pot recipes transform the items and fluid in the pot into something else. For example, boiling 5 $(thing)ash$() in $(thing)water$() makes $(thing)lye$().')
         )),
         entry('chisel', 'Chisel', 'tfc:metal/chisel/wrought_iron', pages=(
-            # todo: chisel mechanics
+            text('Chisels are an essential tool for anyone wanting to build. Their function is, in short, converting blocks to other blocks in the world with a simple click. Chisels have $(thing)modes$() which determine the operation they are using. The modes are $(thing)Slab$(), $(thing)Stair$(), and $(thing)Smooth$(). To switch modes, hold a chisel and press $(thing)$(k:tfc.key.cycle_chisel_mode)$(). An indicator of your chisel mode should show up next to the hotbar.', title='Hammer and Chisel'),
+            item_spotlight('tfc:metal/hammer/bismuth_bronze', title='Hammer Time', text_contents='To use a chisel, you must hold a $(thing)hammer$() in your offhand.'),
+            image('tfc:textures/gui/book/tutorial/chisel_outline.png', text_contents='To chisel a block, highlight it with your cursor. A red outline should show up.'),
+            text('Press $(thing)$(k:key.use)$() to convert the block to the shape that was highlighted in red. If you chiseled a slab, the half of the block you chiseled will pop off, and you can grab it. Change the orientation of your player and your mouse to change the orientation of the chiseled block. As a rule of thumb, the orientation of the chiseled block will be the same as if you placed it in that orientation yourself.'),
+            crafting('tfc:crafting/rock/marble_smooth', text_contents='The chisel can also be used in some crafting recipes as a shortcut for large quantities.'),
+            text('Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(thing)collapse$().')  # todo: ref gravity
         )),
         entry('support_beams', 'Support Beams', 'tfc:wood/support/oak', pages=(
             # todo: supports, more on collapses?
@@ -450,17 +482,32 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             empty(),  # todo: welding tutorial
         )),
         entry('fire_clay', 'Fire Clay', 'tfc:fire_clay', pages=(
-
+            text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay, that has better heat resistance. It is used to make things that have to get very hot!'),
+            crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from the remnants of $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$().'),
+            fire_clay_knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.'),
+            fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.')
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
 
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
-
+            text('Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(thing)$(k:key.use)$() with a fertilizer in your hand on some $(thing)farmland$() or a $(thing)crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
+            crafting('tfc:crafting/composter', text_contents='The composter is an essential tool for making fertilizer. It needs 4 $(2)green$() and 4 $(4)brown$() items to work. To add an item to it, $(thing)$(k:key.use)$().'),
+            text('Green items include $(2)plants$(), $(2)fruits$(), $(2)vegetables$() and $(2)grains$(). Brown items include $(4)humus$(), $(4)paper$(), $(4)dead grass$(), $(4)driftwood$(), and $(4)pinecones$(). When compost is ready, the composter will begin to visually smoke.'),
+            item_spotlight('tfc:rotten_compost', text_contents='Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it.'),
+            fertilizer('tfc:compost', 'Compost is the product of the composter.', 0.4, 0.2, 0.4),
+            fertilizer('minecraft:bone_meal', 'Bonemeal is made of crushed bones.', p=0.1),
+            fertilizer('tfc:powder/saltpeter', 'Saltpeter is made from its ore.', n=0.1, k=0.4),
+            fertilizer('tfc:groundcover/guano', 'Guano is found deep underground and on gravelly shores.', 0.8, 0.5, 0.1),
+            fertilizer('tfc:powder/wood_ash', 'Wood ash is made from broken firepits.', p=0.1, k=0.3),
+            fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', p=0.5)
         )),
         entry('flux', 'Flux', 'tfc:powder/flux', pages=(
-
+            text('Flux is the magical stuff that makes $(l:mechanics/anvils#welding)welding$() happen, and is used to operate the $(l:mechanics/bloomery)bloomery(). Flux is only obtained with using a $(l:mechanics/quern)quern() with special items.'),
+            quern_recipe('tfc:quern/borax', 'The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()'),
+            quern_recipe('tfc:quern/fluxstone', 'The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(thing)Shellfish$()') # todo: link to the shellfish page!
         )),
+        # todo: lamps
     ))
 
     book.category('food', 'Food', 'How to find, harvest, and cook food.', 'tfc:food/wheat', entries=(
@@ -803,10 +850,28 @@ def heat_recipe(recipe: str, text_content: str) -> Page:
     return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
 
 
+def quern_recipe(recipe: str, text_content: str) -> Page:
+    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+
+
+def anvil_recipe(recipe: str, text_content: str) -> Page:
+    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+
+
 def alloy_recipe(title: str, ingot: str, *components: Tuple[str, int, int], text_content: str) -> Page:
     recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (lo, hi, alloy) for (alloy, lo, hi) in components])
     return item_spotlight(ingot, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
 
+
+def fertilizer(item: str, text_contents: str, n: float = 0, p: float = 0, k: float = 0) -> Page:
+    text_contents += ' $(br)'
+    if n > 0:
+        text_contents += '$(li)$(b)Nitrogen: %d$()' % (n * 100)
+    if p > 0:
+        text_contents += '$(li)$(6)Phosphorous: %d$()' % (p * 100)
+    if k > 0:
+        text_contents += '$(li)$(d)Potassium: %d$()' % (k * 100)
+    return item_spotlight(item, text_contents=text_contents)
 
 def page(page_type: str, page_data: JsonObject, custom: bool = False) -> Page:
     return Page(page_type, page_data, custom, None, [])

@@ -3,6 +3,21 @@
   "name": "Flux",
   "category": "tfc:mechanics",
   "icon": "tfc:powder/flux",
-  "pages": [],
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Flux is the magical stuff that makes $(l:mechanics/anvils#welding)welding$() happen, and is used to operate the $(l:mechanics/bloomery)bloomery(). Flux is only obtained with using a $(l:mechanics/quern)quern() with special items."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/borax",
+      "text": "The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(thing)Shellfish$()"
+    }
+  ],
   "read_by_default": true
 }
