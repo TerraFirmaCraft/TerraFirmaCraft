@@ -26,9 +26,9 @@ public class TFCStandingSignBlock extends AbstractSignBlock
 {
     public static final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
 
-    public TFCStandingSignBlock(ExtendedProperties properties, Wood wood)
+    public TFCStandingSignBlock(ExtendedProperties properties)
     {
-        super(properties, wood);
+        super(properties);
         registerDefaultState(getStateDefinition().any().setValue(ROTATION, 0).setValue(FLUID, FLUID.keyFor(Fluids.EMPTY)));
     }
 

@@ -92,10 +92,12 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
+    item_heat(rm, 'egg', 'minecraft:egg', 1)
     item_heat(rm, 'blooms', '#tfc:blooms', 0.35, METALS['wrought_iron'].melt_temperature)
 
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HC)
 
     for color in COLORS:
         item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HC)
@@ -173,6 +175,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('holds_large_fishing_bait', *['tfc:metal/fishing_rod/%s' % metal for metal in ('wrought_iron', 'red_steel', 'blue_steel', 'black_steel', 'steel')])
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
+    rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -196,7 +199,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('fluxstone', 'tfc:food/shellfish', 'tfc:groundcover/mollusk', 'tfc:groundcover/clam', 'minecraft:scute')
     rm.item_tag('minecraft:arrows', 'tfc:glow_arrow')
     rm.item_tag('foods/apples', 'tfc:food/green_apple', 'tfc:food/red_apple')
-    rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats')
+    rm.item_tag('foods/usable_in_soup', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats', '#tfc:foods/cooked_meats', 'tfc:food/cooked_rice')
     rm.item_tag('foods/usable_in_salad', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats')
     rm.item_tag('foods/usable_in_sandwich', '#tfc:foods/vegetables', '#tfc:foods/cooked_meats', '#tfc:foods/dairy')
     rm.item_tag('sandwich_bread', *['tfc:food/%s_bread' % grain for grain in GRAINS])
@@ -205,6 +208,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('salad_bowls', '#tfc:bowls')
     rm.item_tag('scribing_ink', 'minecraft:black_dye')
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
+    block_and_item_tag(rm, 'tfc:barrels', *['tfc:wood/barrel/%s' % wood for wood in WOODS.keys()])
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -484,7 +488,8 @@ def generate(rm: ResourceManager):
         'tfc:log_pile',
         'tfc:burning_log_pile',
         'tfc:composter',
-        'tfc:nest_box'
+        'tfc:nest_box',
+        'tfc:powderkeg'
     ])
     rm.block_tag('tfc:mineable_with_sharp_tool', *[
         *['tfc:wood/%s/%s' % (variant, wood) for variant in ('leaves', 'sapling', 'fallen_leaves') for wood in WOODS.keys()],
@@ -506,24 +511,30 @@ def generate(rm: ResourceManager):
         'tfc:thatch_bed'
     ])
     rm.block_tag('tfc:mineable_with_blunt_tool',
-        *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood') for wood in WOODS.keys()]
-    )
+                 *['tfc:wood/%s/%s' % (variant, wood) for variant in ('log', 'stripped_log', 'wood', 'stripped_wood') for wood in WOODS.keys()]
+                 )
 
     # ==========
     # FLUID TAGS
     # ==========
 
-    rm.fluid_tag('fluid_ingredients', 'minecraft:water', 'tfc:salt_water', 'tfc:spring_water', '#tfc:alcohols', '#tfc:dye_fluids', *['tfc:%s' % fluid for fluid in SIMPLE_FLUIDS], '#tfc:milks')
-    rm.fluid_tag('drinkables', 'minecraft:water', 'tfc:salt_water', 'tfc:river_water', '#tfc:alcohols', '#tfc:milks')
-    rm.fluid_tag('hydrating', 'minecraft:water', 'tfc:river_water', '#tfc:milks')
+    # Categories
     rm.fluid_tag('milks', 'minecraft:milk')
+    rm.fluid_tag('alcohols', *ALCOHOLS)
+    rm.fluid_tag('dyes', *['tfc:%s_dye' % dye for dye in COLORS])
+    rm.fluid_tag('drinkable_ingredients', '#minecraft:water', '#tfc:alcohols', '#tfc:milks')
+    rm.fluid_tag('ingredients', *SIMPLE_FLUIDS, '#tfc:drinkable_ingredients', '#tfc:dyes')
 
-    rm.fluid_tag('usable_in_pot', '#tfc:fluid_ingredients')
-    rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
-    rm.fluid_tag('usable_in_wooden_bucket', '#tfc:fluid_ingredients', '#tfc:drinkables')
-    rm.fluid_tag('usable_in_barrel', '#tfc:fluid_ingredients', '#tfc:drinkables')
-    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
+    # Applications
+    rm.fluid_tag('drinkables', 'tfc:river_water', '#tfc:drinkable_ingredients')
+    rm.fluid_tag('hydrating', 'tfc:river_water', '#minecraft:water')
+
+    rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
+    rm.fluid_tag('usable_in_jug', '#tfc:drinkable_ingredients')
+    rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
+    rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
+    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
 
     # Item Sizes
 
@@ -600,12 +611,12 @@ def generate(rm: ResourceManager):
     food_item(rm, 'oat_flour', 'tfc:food/oat_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'oat_dough', 'tfc:food/oat_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'oat_bread', 'tfc:food/oat_bread', Category.bread, 4, 1, 0, 1, grain=1)
-    # todo: figure out what to do with rice. thinking rice -> grain -> cooked rice in a pot recipe? so remove flour/dough/bread for this one
     food_item(rm, 'rice', 'tfc:food/rice', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rice_grain', 'tfc:food/rice_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'rice_flour', 'tfc:food/rice_flour', Category.grain, 4, 0, 0, 0.5)
     food_item(rm, 'rice_dough', 'tfc:food/rice_dough', Category.grain, 4, 0, 0, 3)
     food_item(rm, 'rice_bread', 'tfc:food/rice_bread', Category.bread, 4, 1, 0, 1, grain=1.5)
+    food_item(rm, 'cooked_rice', 'tfc:food/cooked_rice', Category.bread, 4, 2, 5, 1, grain=1)
     food_item(rm, 'rye', 'tfc:food/rye', Category.grain, 4, 0, 0, 2)
     food_item(rm, 'rye_grain', 'tfc:food/rye_grain', Category.grain, 4, 0.5, 0, 0.25)
     food_item(rm, 'rye_flour', 'tfc:food/rye_flour', Category.grain, 4, 0, 0, 0.5)
@@ -636,6 +647,7 @@ def generate(rm: ResourceManager):
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
     food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=1.5, dairy=0.25)
+    food_item(rm, 'boiled_egg', 'tfc:food/boiled_egg', Category.other, 4, 2, 10, 4, protein=1.5, dairy=0.25)
     # todo: figure out what to do with sugarcane, do we need a different plant? or item or something? or modify the vanilla one
     # food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.grain, 4, 0, 0, 1.6, grain=0.5)
     food_item(rm, 'beef', 'tfc:food/beef', Category.meat, 4, 0, 0, 2, protein=2)

@@ -27,13 +27,12 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
         CraftingContainer inv = RecipeHelpers.getCraftingContainer();
         if (inv != null)
         {
-            stack.getCapability(FoodCapability.CAPABILITY)
-                .filter(food -> food instanceof FoodHandler.Dynamic)
-                .ifPresent(food -> {
-                    FoodHandler.Dynamic sandwichHandler = (FoodHandler.Dynamic) food;
-                    food.setCreationDate(FoodCapability.getRoundedCreationDate());
-                    initFoodStats(inv, sandwichHandler);
-                });
+            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> {
+                if (food instanceof FoodHandler.Dynamic dynamic)
+                {
+                    initFoodStats(inv, dynamic);
+                }
+            });
             return stack;
         }
         return stack;
@@ -90,7 +89,9 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
             saturation += 0.8f * ingredient.getSaturation();
             water += 0.8f * ingredient.getWater();
         }
-        handler.setFood(new FoodRecord(4, water, saturation, nutrition, handler.getDecayDateModifier()));
+
+        handler.setFood(new FoodRecord(4, water, saturation, nutrition, 1f / handler.getDecayDateModifier()));
+        handler.setCreationDate(FoodCapability.getRoundedCreationDate());
     }
 
     @Override

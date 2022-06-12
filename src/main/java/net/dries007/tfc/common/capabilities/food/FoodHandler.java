@@ -130,6 +130,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     public void setNonDecaying()
     {
         isNonDecaying = true;
+        creationDate = UNKNOWN_CREATION_DATE;
     }
 
     @Override

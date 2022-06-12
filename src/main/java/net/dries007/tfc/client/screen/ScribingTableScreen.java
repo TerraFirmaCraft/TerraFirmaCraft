@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
+import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
@@ -83,7 +84,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (keyCode == 256)
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE)
         {
             minecraft.player.closeContainer();
         }

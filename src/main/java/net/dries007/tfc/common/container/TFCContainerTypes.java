@@ -8,20 +8,16 @@ package net.dries007.tfc.common.container;
 
 import java.util.function.Supplier;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.util.registry.RegistrationHelpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -45,6 +41,7 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<LogPileContainer>> LOG_PILE = TFCContainerTypes.<LogPileBlockEntity, LogPileContainer>registerBlock("log_pile", TFCBlockEntities.LOG_PILE, LogPileContainer::create);
     public static final RegistryObject<MenuType<CrucibleContainer>> CRUCIBLE = TFCContainerTypes.<CrucibleBlockEntity, CrucibleContainer>registerBlock("crucible", TFCBlockEntities.CRUCIBLE, CrucibleContainer::create);
     public static final RegistryObject<MenuType<BarrelContainer>> BARREL = TFCContainerTypes.<BarrelBlockEntity, BarrelContainer>registerBlock("barrel", TFCBlockEntities.BARREL, BarrelContainer::create);
+    public static final RegistryObject<MenuType<PowderkegContainer>> POWDERKEG = TFCContainerTypes.<PowderkegBlockEntity, PowderkegContainer>registerBlock("powderkeg", TFCBlockEntities.POWDERKEG, PowderkegContainer::create);
     public static final RegistryObject<MenuType<NestBoxContainer>> NEST_BOX = TFCContainerTypes.<NestBoxBlockEntity, NestBoxContainer>registerBlock("nest_box", TFCBlockEntities.NEST_BOX, NestBoxContainer::create);
     public static final RegistryObject<MenuType<LargeVesselContainer>> LARGE_VESSEL = TFCContainerTypes.<LargeVesselBlockEntity, LargeVesselContainer>registerBlock("large_vessel", TFCBlockEntities.LARGE_VESSEL, LargeVesselContainer::create);
     public static final RegistryObject<MenuType<AnvilContainer>> ANVIL = TFCContainerTypes.<AnvilBlockEntity, AnvilContainer>registerBlock("anvil", TFCBlockEntities.ANVIL, AnvilContainer::create);
@@ -60,27 +57,16 @@ public final class TFCContainerTypes
 
     private static <T extends InventoryBlockEntity<?>, C extends BlockEntityContainer<T>> RegistryObject<MenuType<C>> registerBlock(String name, Supplier<BlockEntityType<T>> type, BlockEntityContainer.Factory<T, C> factory)
     {
-        return register(name, (windowId, playerInventory, buffer) -> {
-            final Level world = playerInventory.player.level;
-            final BlockPos pos = buffer.readBlockPos();
-            final T entity = world.getBlockEntity(pos, type.get()).orElseThrow();
-
-            return factory.create(entity, playerInventory, windowId);
-        });
+        return RegistrationHelpers.registerBlockEntityContainer(CONTAINERS, name, type, factory);
     }
 
     private static <C extends ItemStackContainer> RegistryObject<MenuType<C>> registerItem(String name, ItemStackContainer.Factory<C> factory)
     {
-        return register(name, (windowId, playerInventory, buffer) -> {
-            final InteractionHand hand = ItemStackContainerProvider.read(buffer);
-            final ItemStack stack = playerInventory.player.getItemInHand(hand);
-
-            return factory.create(stack, hand, playerInventory, windowId);
-        });
+        return RegistrationHelpers.registerItemStackContainer(CONTAINERS, name, factory);
     }
 
     private static <C extends AbstractContainerMenu> RegistryObject<MenuType<C>> register(String name, IContainerFactory<C> factory)
     {
-        return CONTAINERS.register(name, () -> IForgeMenuType.create(factory));
+        return RegistrationHelpers.registerContainer(CONTAINERS, name, factory);
     }
 }
