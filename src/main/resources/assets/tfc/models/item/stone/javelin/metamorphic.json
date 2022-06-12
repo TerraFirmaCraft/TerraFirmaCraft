@@ -1,30 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "loader": "forge:separate-perspective",
-  "gui_light": "front",
-  "overrides": [
-    {
-      "predicate": {
-        "tfc:throwing": 1
-      },
-      "model": "tfc:item/stone/javelin/metamorphic_throwing"
-    }
-  ],
-  "base": {
-    "parent": "tfc:item/stone/javelin/metamorphic_in_hand"
-  },
-  "perspectives": {
-    "none": {
-      "parent": "tfc:item/stone/javelin/metamorphic_gui"
-    },
-    "fixed": {
-      "parent": "tfc:item/stone/javelin/metamorphic_gui"
-    },
-    "ground": {
-      "parent": "tfc:item/stone/javelin/metamorphic_gui"
-    },
-    "gui": {
-      "parent": "tfc:item/stone/javelin/metamorphic_gui"
-    }
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "tfc:item/stone/javelin"
   }
 }

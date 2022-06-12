@@ -35,11 +35,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCategory<T>
 {
+
     protected static final String FLUID_INPUT = "fluidInput";
     protected static final String ITEM_INPUT = "itemInput";
     protected static final String FLUID_OUTPUT = "fluidOutput";
     protected static final String ITEM_OUTPUT = "itemOutput";
-
     protected @Nullable IRecipeSlotBuilder inputFluidSlot;
     protected @Nullable IRecipeSlotBuilder inputItemSlot;
     protected @Nullable IRecipeSlotBuilder outputFluidSlot;
@@ -47,12 +47,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
 
     public BarrelRecipeCategory(RecipeType<T> type, IGuiHelper helper, int width, int height, Wood iconType)
     {
-        this(type, helper, width, height, new ItemStack(TFCBlocks.WOODS.get(iconType).get(Wood.BlockType.BARREL).get()));
-    }
-
-    public BarrelRecipeCategory(RecipeType<T> type, IGuiHelper helper, int width, int height, ItemStack iconType)
-    {
-        super(type, helper, helper.createBlankDrawable(width, height), iconType);
+        super(type, helper, helper.createBlankDrawable(width, height), new ItemStack(TFCBlocks.WOODS.get(iconType).get(Wood.BlockType.BARREL).get()));
     }
 
     @Override

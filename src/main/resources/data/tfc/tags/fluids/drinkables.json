@@ -2,7 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "minecraft:water",
+    "tfc:salt_water",
     "tfc:river_water",
-    "#tfc:drinkable_ingredients"
+    "#tfc:alcohols",
+    "#tfc:milks"
   ]
 }

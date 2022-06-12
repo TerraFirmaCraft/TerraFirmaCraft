@@ -17,7 +17,7 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 
 public class TFCLecternBlock extends LecternBlock implements IForgeBlockExtension, EntityBlockExtension
 {
-    private final ExtendedProperties properties;
+    private ExtendedProperties properties;
 
     public TFCLecternBlock(ExtendedProperties properties)
     {

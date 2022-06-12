@@ -10,13 +10,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class FluidProperty extends Property<FluidProperty.FluidKey>
 {
@@ -35,9 +35,9 @@ public class FluidProperty extends Property<FluidProperty.FluidKey>
             {
                 return reg.getId(); // Registry objects are allowed, we assume they're fluids
             }
-            else if (obj instanceof FlowingFluidRegistryObject<?> pair)
+            else if (obj instanceof TFCFluids.FluidPair<?> pair)
             {
-                return pair.source().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
+                return pair.getSecond().getId(); // Fluid pairs are allowed (we know how to obtain the ID from it without loading the fluid)
             }
             else
             {

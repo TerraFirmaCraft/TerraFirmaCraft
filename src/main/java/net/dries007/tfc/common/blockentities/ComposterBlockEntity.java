@@ -13,7 +13,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
@@ -30,11 +29,6 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     public ComposterBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.COMPOSTER.get(), pos, state);
-    }
-
-    public ComposterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
-    {
-        super(type, pos, state);
     }
 
     public void randomTick()
@@ -115,7 +109,6 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
                 {
                     if (!player.isCreative()) stack.shrink(1);
                     Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
-                    resetCounter();
                 }
             }
             return finishUse(client);
@@ -133,7 +126,6 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
                 {
                     if (!player.isCreative()) stack.shrink(1);
                     Helpers.playSound(level, pos, SoundEvents.HOE_TILL);
-                    resetCounter();
                 }
             }
             return finishUse(client);

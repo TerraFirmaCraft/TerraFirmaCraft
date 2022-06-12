@@ -99,14 +99,9 @@ public final class JsonHelpers extends GsonHelper
         return obj;
     }
 
-    public static ItemStack getItemStack(JsonObject json)
-    {
-        return CraftingHelper.getItemStack(json, true);
-    }
-
     public static ItemStack getItemStack(JsonObject json, String key)
     {
-        return getItemStack(getAsJsonObject(json, key));
+        return CraftingHelper.getItemStack(getAsJsonObject(json, key), true);
     }
 
     public static JsonElement get(JsonObject json, String key)

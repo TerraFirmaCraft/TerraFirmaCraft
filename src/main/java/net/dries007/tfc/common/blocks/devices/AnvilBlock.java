@@ -8,11 +8,9 @@ package net.dries007.tfc.common.blocks.devices;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +30,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -82,13 +79,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
                 if (weldResult == InteractionResult.SUCCESS)
                 {
                     // Welding occurred
-                    if (level instanceof ServerLevel server)
-                    {
-                        final double x = pos.getX() + Mth.nextDouble(level.random, 0.2, 0.8);
-                        final double z = pos.getX() + Mth.nextDouble(level.random, 0.2, 0.8);
-                        final double y = pos.getY() + Mth.nextDouble(level.random, 0.8, 1.0);
-                        server.sendParticles(TFCParticles.SPARK.get(), x, y, z, 5, Helpers.uniform(level.random, -5f, 5f), 1.5 + level.random.nextFloat(), Helpers.uniform(level.random, -5f, 5f), 5f);
-                    }
+                    // todo: spark particles?
                     level.playSound(null, pos, SoundEvents.ANVIL_USE, SoundSource.PLAYERS, 0.6f, 1.0f);
                     return InteractionResult.SUCCESS;
                 }

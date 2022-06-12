@@ -27,5 +27,4 @@ public class TFCParticles
     public static final RegistryObject<SimpleParticleType> COMPOST_ROTTEN = PARTICLE_TYPES.register("compost_rotten", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SLEEP = PARTICLE_TYPES.register("sleep", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> LEAF = PARTICLE_TYPES.register("leaf", () -> new SimpleParticleType(false));
-    public static final RegistryObject<SimpleParticleType> SPARK = PARTICLE_TYPES.register("spark", () -> new SimpleParticleType(false));
 }

@@ -29,11 +29,13 @@ public abstract class AbstractSignBlock extends SignBlock implements IFluidLogga
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
+    private final Wood wood;
     private final ExtendedProperties properties;
 
-    public AbstractSignBlock(ExtendedProperties properties)
+    public AbstractSignBlock(ExtendedProperties properties, Wood wood)
     {
         super(properties.properties(), WoodType.OAK);
+        this.wood = wood;
         this.properties = properties;
     }
 
@@ -72,5 +74,10 @@ public abstract class AbstractSignBlock extends SignBlock implements IFluidLogga
     public FluidProperty getFluidProperty()
     {
         return FLUID;
+    }
+
+    public Wood getWood()
+    {
+        return wood;
     }
 }

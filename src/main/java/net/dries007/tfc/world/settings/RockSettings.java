@@ -73,7 +73,7 @@ public record RockSettings(ResourceLocation id, Block raw, Block hardened, Block
         for (Rock rock : Rock.values())
         {
             final ResourceLocation id = Helpers.identifier(rock.getSerializedName());
-            final RockCategory category = rock.category();
+            final RockCategory category = rock.getCategory();
             final Map<Rock.BlockType, RegistryObject<Block>> blocks = TFCBlocks.ROCK_BLOCKS.get(rock);
 
             register(new RockSettings(

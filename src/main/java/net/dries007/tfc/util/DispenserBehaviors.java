@@ -26,9 +26,9 @@ import net.dries007.tfc.common.items.TFCItems;
 
 public class DispenserBehaviors
 {
-    public static final DispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
+    private static final DispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
 
-    public static final DispenseItemBehavior BUCKET_BEHAVIOR = new DefaultDispenseItemBehavior()
+    private static final DispenseItemBehavior BUCKET_BEHAVIOR = new DefaultDispenseItemBehavior()
     {
         @Override
         public ItemStack execute(BlockSource source, ItemStack stack)
@@ -48,7 +48,7 @@ public class DispenserBehaviors
         }
     };
 
-    public static final DispenseItemBehavior CHEST_BEHAVIOR = new OptionalDispenseItemBehavior()
+    private static final DispenseItemBehavior CHEST_BEHAVIOR = new OptionalDispenseItemBehavior()
     {
         public ItemStack execute(BlockSource level, ItemStack stack)
         {

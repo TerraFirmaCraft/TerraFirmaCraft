@@ -38,7 +38,7 @@ public final class TreeCommand
 
     private static int placeTree(ServerLevel world, BlockPos pos, Wood wood, Variant variant)
     {
-        TFCTreeGrower tree = wood.tree();
+        TFCTreeGrower tree = wood.getTree();
         Registry<ConfiguredFeature<?, ?>> registry = world.registryAccess().registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
         ConfiguredFeature<?, ?> feature = variant == Variant.NORMAL ? tree.getNormalFeature(registry) : tree.getOldGrowthFeature(registry);
         feature.place(world, world.getChunkSource().getGenerator(), world.getRandom(), pos);

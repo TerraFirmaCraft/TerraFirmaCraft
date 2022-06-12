@@ -77,7 +77,6 @@ public class DeadDoubleCropBlock extends DeadCropBlock
     public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
     {
         WildDoubleCropBlock.onPlayerWillDestroy(level, pos, state, player);
-        super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override

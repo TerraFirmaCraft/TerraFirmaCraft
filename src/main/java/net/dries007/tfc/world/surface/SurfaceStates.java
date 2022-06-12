@@ -86,6 +86,6 @@ public class SurfaceStates
     };
 
     public static final SurfaceState WATER = context -> context.salty() ?
-        TFCFluids.SALT_WATER.createSourceBlock() :
+        TFCFluids.SALT_WATER.getSourceBlock() :
         Fluids.WATER.defaultFluidState().createLegacyBlock();
 }

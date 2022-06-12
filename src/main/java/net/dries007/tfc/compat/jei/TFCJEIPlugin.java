@@ -87,7 +87,7 @@ public class TFCJEIPlugin implements IModPlugin
     public static final RecipeType<KnappingRecipe> LEATHER_KNAPPING = type("leather_knapping", KnappingRecipe.class);
     public static final RecipeType<RockKnappingRecipe> ROCK_KNAPPING = type("rock_knapping", RockKnappingRecipe.class);
     public static final RecipeType<PotRecipe> SOUP_POT = type("soup_pot", PotRecipe.class);
-    public static final RecipeType<PotRecipe> SIMPLE_POT = type("simple_pot", PotRecipe.class);
+    public static final RecipeType<PotRecipe> FLUID_POT = type("fluid_pot", PotRecipe.class);
     public static final RecipeType<CastingRecipe> CASTING = type("casting", CastingRecipe.class);
     public static final RecipeType<LoomRecipe> LOOM = type("loom", LoomRecipe.class);
     public static final RecipeType<AlloyRecipe> ALLOYING = type("alloying", AlloyRecipe.class);
@@ -117,7 +117,7 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipeCategories(new KnappingRecipeCategory<>(LEATHER_KNAPPING, gui, new ItemStack(Items.LEATHER), LEATHER_TEXTURE, null));
         r.addRecipeCategories(new RockKnappingRecipeCategory(ROCK_KNAPPING, gui));
         r.addRecipeCategories(new SoupPotRecipeCategory(SOUP_POT, gui));
-        r.addRecipeCategories(new SimplePotRecipeCategory(SIMPLE_POT, gui));
+        r.addRecipeCategories(new FluidPotRecipeCategory(FLUID_POT, gui));
         r.addRecipeCategories(new CastingRecipeCategory(CASTING, gui));
         r.addRecipeCategories(new LoomRecipeCategory(LOOM, gui));
         r.addRecipeCategories(new AlloyRecipeCategory(ALLOYING, gui));
@@ -140,7 +140,7 @@ public class TFCJEIPlugin implements IModPlugin
         r.addRecipes(LEATHER_KNAPPING, getRecipes(TFCRecipeTypes.LEATHER_KNAPPING.get()));
         r.addRecipes(ROCK_KNAPPING, getRecipes(TFCRecipeTypes.ROCK_KNAPPING.get()));
         r.addRecipes(SOUP_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SOUP.get()));
-        r.addRecipes(SIMPLE_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_SIMPLE.get()));
+        r.addRecipes(FLUID_POT, getRecipes(TFCRecipeTypes.POT.get(), recipe -> recipe.getSerializer() == TFCRecipeSerializers.POT_FLUID.get()));
         r.addRecipes(CASTING, getRecipes(TFCRecipeTypes.CASTING.get()));
         r.addRecipes(LOOM, getRecipes(TFCRecipeTypes.LOOM.get()));
         r.addRecipes(ALLOYING, getRecipes(TFCRecipeTypes.ALLOY.get()));
@@ -165,7 +165,7 @@ public class TFCJEIPlugin implements IModPlugin
         addCatalystTag(r, TFCTags.Items.FIRE_CLAY_KNAPPING, FIRE_CLAY_KNAPPING);
         addCatalystTag(r, TFCTags.Items.LEATHER_KNAPPING, LEATHER_KNAPPING);
         addCatalystTag(r, TFCTags.Items.ROCK_KNAPPING, ROCK_KNAPPING);
-        r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SIMPLE_POT);
+        r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), FLUID_POT);
         r.addRecipeCatalyst(new ItemStack(TFCItems.POT.get()), SOUP_POT);
         woodCatalyst(r, Wood.BlockType.LOOM, LOOM);
         r.addRecipeCatalyst(new ItemStack(TFCBlocks.CRUCIBLE.get()), ALLOYING);

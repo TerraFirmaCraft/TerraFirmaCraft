@@ -83,10 +83,6 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
      */
     public static int getHydration(LevelAccessor level, BlockPos pos)
     {
-        if (Helpers.isFluid(level.getFluidState(pos.above()), TFCTags.Fluids.HYDRATING))
-        {
-            return 100; // special case for waterlogged crops
-        }
         final ChunkData data = ChunkData.get(level, pos);
         final float rainfall = data.getRainfall(pos); // Rainfall forms a baseline, providing up to 60% hydration
         final int waterCost = findMinCostWater(level, pos); // Nearby water contributes an additional 0 - 80% hydration based on proximity

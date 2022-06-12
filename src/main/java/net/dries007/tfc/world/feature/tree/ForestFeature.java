@@ -135,17 +135,17 @@ public class ForestFeature extends Feature<ForestConfig>
         if (entry != null && EnvironmentHelpers.canPlaceBushOn(level, mutablePos))
         {
             entry.bushLog().ifPresent(log -> entry.bushLeaves().ifPresent(leaves -> {
-                placeBushPart(level, mutablePos, log, leaves, 1.0F, random, true);
+                placeBushPart(level, mutablePos, log, leaves, 1.0F, random);
                 for (int i = 0; i < 5; i++)
                 {
                     if (random.nextInt(4) == 0)
                     {
                         mutablePos.move(Direction.Plane.HORIZONTAL.getRandomDirection(random));
-                        placeBushPart(level, mutablePos, leaves, leaves, 0.7F, random, false);
+                        placeBushPart(level, mutablePos, leaves, leaves, 0.7F, random);
                         if (random.nextInt(6) == 0)
                         {
                             mutablePos.move(Direction.UP);
-                            placeBushPart(level, mutablePos, leaves, leaves, 0.6F, random, false);
+                            placeBushPart(level, mutablePos, leaves, leaves, 0.6F, random);
                             break;
                         }
                     }
@@ -156,16 +156,9 @@ public class ForestFeature extends Feature<ForestConfig>
         return false;
     }
 
-    private void placeBushPart(WorldGenLevel level, BlockPos.MutableBlockPos mutablePos, BlockState log, BlockState leaves, float decay, Random rand, boolean needsEmptyCenter)
+    private void placeBushPart(WorldGenLevel level, BlockPos.MutableBlockPos mutablePos, BlockState log, BlockState leaves, float decay, Random rand)
     {
-        if (EnvironmentHelpers.isWorldgenReplaceable(level, mutablePos))
-        {
-            setBlock(level, mutablePos, log);
-        }
-        else if (needsEmptyCenter)
-        {
-            return;
-        }
+        setBlock(level, mutablePos, log);
         for (Direction facing : Helpers.DIRECTIONS)
         {
             if (facing != Direction.DOWN)

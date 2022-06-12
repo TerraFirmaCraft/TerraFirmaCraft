@@ -13,7 +13,6 @@
 
 # Resource generation
 !resources/**/*.py
-!/resources/texture_templates/**/*.png
 !resources/structure_templates/**/*.nbt
 
 # Metadata

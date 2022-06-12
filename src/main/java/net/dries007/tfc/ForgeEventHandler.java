@@ -627,13 +627,6 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED))
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
-                entity.setLit(true);
-                event.setCanceled(true);
-            });
-        }
         else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
         {
             level.getBlockEntity(pos, TFCBlockEntities.BLAST_FURNACE.get()).ifPresent(blastFurnace -> {
@@ -1008,6 +1001,7 @@ public final class ForgeEventHandler
         event.addListener(Fauna.MANAGER);
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
+        event.addListener(FoodCapability.DecayingItemStackFixer.INSTANCE);
 
         // In addition, we capture the recipe manager here
         Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());
@@ -1044,7 +1038,6 @@ public final class ForgeEventHandler
         Support.updateMaximumSupportRange();
         Metal.updateMetalFluidMap();
         ItemSizeManager.applyItemStackSizeOverrides();
-        FoodCapability.markRecipeOutputsAsNonDecaying();
     }
 
     /**

@@ -70,7 +70,6 @@ public class ScribingTableBlock extends HorizontalDirectionalBlock implements IF
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(FACING))
@@ -82,7 +81,6 @@ public class ScribingTableBlock extends HorizontalDirectionalBlock implements IF
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         if (level.isClientSide)
@@ -98,7 +96,6 @@ public class ScribingTableBlock extends HorizontalDirectionalBlock implements IF
 
     @Nullable
     @Override
-    @SuppressWarnings("deprecation")
     public MenuProvider getMenuProvider(BlockState state, Level level, BlockPos pos)
     {
         return new SimpleMenuProvider((windowId, inv, player) -> new ScribingTableContainer(inv, windowId, ContainerLevelAccess.create(level, pos)), CONTAINER_TITLE);

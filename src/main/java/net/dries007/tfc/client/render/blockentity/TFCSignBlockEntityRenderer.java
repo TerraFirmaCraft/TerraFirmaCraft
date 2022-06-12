@@ -6,25 +6,24 @@
 
 package net.dries007.tfc.client.render.blockentity;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Stream;
 
+import com.google.common.base.Functions;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -35,10 +34,11 @@ import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.blocks.wood.AbstractSignBlock;
 import net.dries007.tfc.common.blocks.wood.TFCStandingSignBlock;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.util.Helpers;
 
 import static net.minecraft.client.renderer.Sheets.SIGN_SHEET;
 
@@ -47,9 +47,9 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
 {
     private static final int OUTLINE_RENDER_DISTANCE = Mth.square(16);
 
-    private static Material createSignMaterial(String domain, String name)
+    private static Material createSignMaterial(String name)
     {
-        return new Material(SIGN_SHEET, new ResourceLocation(domain, "entity/signs/" + name));
+        return new Material(SIGN_SHEET, Helpers.identifier("entity/signs/" + name.toLowerCase(Locale.ROOT)));
     }
 
     private static int getDarkColor(SignBlockEntity sign)
@@ -82,44 +82,16 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
             }
         }
     }
-
     private final Font font;
-    private final Map<Block, Material> materials;
-    private final Map<Block, SignModel> models;
+    private final Map<Wood, Material> materials;
+    private final Map<Wood, SignModel> models;
 
     public TFCSignBlockEntityRenderer(BlockEntityRendererProvider.Context context)
     {
-        this(context, TFCBlocks.WOODS.entrySet()
-            .stream()
-            .map(entry -> new SignModelData(
-                TerraFirmaCraft.MOD_ID,
-                entry.getKey().getSerializedName(),
-                entry.getValue().get(Wood.BlockType.SIGN).get(),
-                entry.getValue().get(Wood.BlockType.WALL_SIGN).get()
-            )));
-    }
-
-    public TFCSignBlockEntityRenderer(BlockEntityRendererProvider.Context context, Stream<SignModelData> blocks)
-    {
         super(context);
-
         this.font = context.getFont();
-
-        ImmutableMap.Builder<Block, Material> materialBuilder = ImmutableMap.builder();
-        ImmutableMap.Builder<Block, SignModel> modelBuilder = ImmutableMap.builder();
-
-        blocks.forEach(data -> {
-            final Material material = createSignMaterial(data.domain, data.name);
-            final SignModel model = new SignModel(context.bakeLayer(new ModelLayerLocation(new ResourceLocation(data.domain, "sign/" + data.name), "main")));
-
-            materialBuilder.put(data.sign, material);
-            materialBuilder.put(data.wallSign, material);
-            modelBuilder.put(data.sign, model);
-            modelBuilder.put(data.wallSign, model);
-        });
-
-        this.materials = materialBuilder.build();
-        this.models = modelBuilder.build();
+        this.materials = Arrays.stream(Wood.VALUES).collect(ImmutableMap.toImmutableMap(Functions.identity(), wood -> createSignMaterial(wood.name().toLowerCase(Locale.ROOT))));
+        this.models = Arrays.stream(Wood.VALUES).collect(ImmutableMap.toImmutableMap(Functions.identity(), wood -> new SignModel(context.bakeLayer(RenderHelpers.modelIdentifier("sign/" + wood.name().toLowerCase(Locale.ROOT))))));
     }
 
     public void render(SignBlockEntity sign, float partialTicks, PoseStack poseStack, MultiBufferSource source, int packedLight, int overlay)
@@ -127,7 +99,7 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
         BlockState state = sign.getBlockState();
         poseStack.pushPose();
         float scale = 0.6666667F;
-        SignModel model = models.get(state.getBlock());
+        SignModel model = models.get(((AbstractSignBlock) state.getBlock()).getWood());
         if (state.getBlock() instanceof TFCStandingSignBlock)
         {
             poseStack.translate(0.5D, 0.5D, 0.5D);
@@ -146,7 +118,7 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
 
         poseStack.pushPose();
         poseStack.scale(scale, -scale, -scale);
-        Material material = materials.get(state.getBlock());
+        Material material = materials.get(((AbstractSignBlock) state.getBlock()).getWood());
         VertexConsumer vertexconsumer = material.buffer(source, model::renderType);
         model.root.render(poseStack, vertexconsumer, packedLight, overlay);
         poseStack.popPose();
@@ -193,6 +165,4 @@ public class TFCSignBlockEntityRenderer extends SignRenderer
 
         poseStack.popPose();
     }
-
-    public record SignModelData(String domain, String name, Block sign, Block wallSign) {}
 }

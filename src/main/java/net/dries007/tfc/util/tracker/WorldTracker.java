@@ -224,12 +224,11 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
-    private boolean isIsolated(LevelAccessor level, BlockPos pos)
+    private boolean isIsolated(LevelAccessor world, BlockPos pos)
     {
         for (Direction direction : Helpers.DIRECTIONS)
         {
-            BlockState state = level.getBlockState(pos.relative(direction));
-            if (!state.getCollisionShape(level, pos).isEmpty())
+            if (!world.isEmptyBlock(pos.relative(direction)))
             {
                 return false;
             }

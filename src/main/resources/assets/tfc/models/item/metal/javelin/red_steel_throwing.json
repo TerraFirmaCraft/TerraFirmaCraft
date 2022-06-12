@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/trident_throwing",
-  "textures": {
-    "particle": "tfc:item/metal/javelin/red_steel"
-  }
-}

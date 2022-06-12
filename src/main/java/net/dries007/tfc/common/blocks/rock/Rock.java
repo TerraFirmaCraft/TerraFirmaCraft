@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Locale;
-import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -21,13 +20,12 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCMaterials;
 import net.dries007.tfc.common.blocks.soil.SandBlockType;
-import net.dries007.tfc.util.registry.RegistryRock;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Default rocks that are used for block registration calls. Not extensible.
  */
-public enum Rock implements RegistryRock
+public enum Rock implements StringRepresentable
 {
     GRANITE(RockCategory.IGNEOUS_INTRUSIVE, SandBlockType.BROWN),
     DIORITE(RockCategory.IGNEOUS_INTRUSIVE, SandBlockType.WHITE),
@@ -63,27 +61,14 @@ public enum Rock implements RegistryRock
         this.sandType = sandType;
     }
 
-    public SandBlockType getSandType()
-    {
-        return sandType;
-    }
-
-    @Override
-    public RockCategory category()
+    public RockCategory getCategory()
     {
         return category;
     }
 
-    @Override
-    public Supplier<Block> getBlock(BlockType type)
+    public SandBlockType getSandType()
     {
-        return TFCBlocks.ROCK_BLOCKS.get(this).get(type);
-    }
-
-    @Override
-    public Supplier<Block> getAnvil()
-    {
-        return TFCBlocks.ROCK_ANVILS.get(this);
+        return sandType;
     }
 
     @Override
@@ -92,13 +77,14 @@ public enum Rock implements RegistryRock
         return serializedName;
     }
 
+
     public enum BlockType implements StringRepresentable
     {
-        RAW((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2 + rock.category().getHardness(), 10).requiresCorrectToolForDrops(), rock), true),
-        HARDENED((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.25f + rock.category().getHardness(), 10).requiresCorrectToolForDrops(), rock), false),
+        RAW((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2 + rock.getCategory().getHardness(), 10).requiresCorrectToolForDrops(), rock), true),
+        HARDENED((rock, self) -> RockConvertableToAnvilBlock.createForIgneousOnly(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.25f + rock.getCategory().getHardness(), 10).requiresCorrectToolForDrops(), rock), false),
         SMOOTH((rock, self) -> new Block(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops()), true),
-        COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
-        BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.0f, 10).requiresCorrectToolForDrops(), rock.getBlock(Objects.requireNonNull(self.mossy()))), true),
+        COBBLE((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops(), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
+        BRICKS((rock, self) -> new MossGrowingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(2.0f, 10).requiresCorrectToolForDrops(), TFCBlocks.ROCK_BLOCKS.get(rock).get(self.mossy())), true),
         GRAVEL((rock, self) -> new Block(Block.Properties.of(Material.SAND, MaterialColor.STONE).sound(SoundType.GRAVEL).strength(0.8f)), false),
         SPIKE((rock, self) -> new RockSpikeBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.4f, 10).requiresCorrectToolForDrops()), false),
         CRACKED_BRICKS((rock, self) -> new MossSpreadingBlock(Block.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops()), true),
@@ -117,10 +103,10 @@ public enum Rock implements RegistryRock
         }
 
         private final boolean variants;
-        private final BiFunction<RegistryRock, BlockType, Block> blockFactory;
+        private final BiFunction<Rock, BlockType, Block> blockFactory;
         private final String serializedName;
 
-        BlockType(BiFunction<RegistryRock, BlockType, Block> blockFactory, boolean variants)
+        BlockType(BiFunction<Rock, BlockType, Block> blockFactory, boolean variants)
         {
             this.blockFactory = blockFactory;
             this.variants = variants;
@@ -135,7 +121,7 @@ public enum Rock implements RegistryRock
             return variants;
         }
 
-        public Block create(RegistryRock rock)
+        public Block create(Rock rock)
         {
             return blockFactory.apply(rock, this);
         }

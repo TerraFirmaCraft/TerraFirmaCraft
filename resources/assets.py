@@ -4,7 +4,6 @@
 import itertools
 
 from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables
-from mcresources.type_definitions import ResourceIdentifier
 
 from constants import *
 
@@ -391,19 +390,6 @@ def generate(rm: ResourceManager):
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
-    block = rm.blockstate('powderkeg', variants={
-        'lit=false,sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
-        'lit=false,sealed=false': {'model': 'tfc:block/powderkeg'},
-        'lit=true,sealed=true': {'model': 'tfc:block/powderkeg_lit'},
-        'lit=true,sealed=false': {'model': 'tfc:block/powderkeg'}  # cannot occur
-    }).with_lang(lang('Powderkeg')).with_tag('minecraft:mineable/axe')
-    block.with_block_loot(({
-        'name': 'tfc:powderkeg',
-        'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
-        'conditions': [loot_tables.block_state_property('tfc:powderkeg[sealed=true]')]
-    }, 'tfc:powderkeg'))
-    item_model_property(rm, 'tfc:powderkeg', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/powderkeg_sealed'}], {'parent': 'tfc:block/powderkeg'})
-     
     states = [({'model': 'tfc:block/composter/composter'})]
     for i in range(1, 9):
         for age in ('normal', 'ready', 'rotten'):
@@ -609,10 +595,7 @@ def generate(rm: ResourceManager):
         for rock_item in ROCK_CATEGORY_ITEMS:
             for suffix in ('', '_head'):
                 rock_item = rock_item + suffix
-                if suffix == '' and rock_item == 'javelin':
-                    item = make_javelin(rm, 'stone/%s/%s' % (rock_item, rock), 'tfc:item/stone/%s' % rock_item)
-                else:
-                    item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
+                item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
                 item.with_lang(lang('stone %s', rock_item))
 
     # Rock Items
@@ -625,13 +608,12 @@ def generate(rm: ResourceManager):
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 if metal_item == 'fishing_rod':
-                    item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                    item = item_model_property(rm, ('metal', metal_item,metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
                 elif metal_item == 'shield':
                     item = rm.item(('metal', metal_item, metal))  # Shields have a custom model for inventory and blocking
-                elif metal_item == 'javelin':
-                    item = make_javelin(rm, 'metal/%s/%s' % (metal_item, metal), 'tfc:item/metal/javelin/%s' % metal)
                 else:
                     item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
+
                 if metal_item == 'propick':
                     item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
                 else:
@@ -1102,11 +1084,7 @@ def generate(rm: ResourceManager):
                 if prefix == '':
                     block.with_block_loot({
                         'name': 'tfc:plant/%s_sapling' % fruit,
-                        'conditions': [{
-                            'condition': 'minecraft:alternative',
-                            'terms': [loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')]
-                        },
-                            loot_tables.match_tag('tfc:axes')]
+                        'conditions': [*[loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')], loot_tables.match_tag('tfc:axes')]
                     }, {
                         'name': 'minecraft:stick',
                         'functions': [loot_tables.set_count(1, 4)]
@@ -1444,8 +1422,10 @@ def generate(rm: ResourceManager):
         water_based_fluid(rm, fluid)
     for fluid in ALCOHOLS:
         water_based_fluid(rm, fluid)
+        rm.fluid_tag('alcohols', 'tfc:%s' % fluid)
     for color in COLORS:
         water_based_fluid(rm, color + '_dye')
+        rm.fluid_tag('dye_fluids', 'tfc:%s_dye' % color)
 
     # River water, since it doesn't have a bucket
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
@@ -1588,20 +1568,3 @@ def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
             }
         }
     }
-
-def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemContext':
-    rm.item_model(name_parts + '_throwing', {'particle': texture}, parent='minecraft:item/trident_throwing')
-    rm.item_model(name_parts + '_in_hand', {'particle': texture}, parent='minecraft:item/trident_in_hand')
-    rm.item_model(name_parts + '_gui', texture)
-    model = rm.domain + ':item/' + name_parts
-    return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
-        'gui_light': 'front',
-        'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
-        'base': {'parent': model + '_in_hand'},
-        'perspectives': {
-            'none': {'parent': model + '_gui'},
-            'fixed': {'parent': model + '_gui'},
-            'ground': {'parent': model + '_gui'},
-            'gui': {'parent': model + '_gui'}
-        }
-    })

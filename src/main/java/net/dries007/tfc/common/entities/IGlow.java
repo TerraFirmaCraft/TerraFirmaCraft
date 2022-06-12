@@ -58,7 +58,6 @@ public interface IGlow
         setLightPos(new BlockPos(tag.getInt("lightX"), tag.getInt("lightY"), tag.getInt("lightZ")));
     }
 
-    @SuppressWarnings("deprecation") // hasChunkAt
     default void tick()
     {
         Entity entity = getEntity();
@@ -66,18 +65,13 @@ public interface IGlow
         {
             final BlockPos oldPos = getLightPos();
             final BlockPos currentPos = entity.blockPosition();
-            final boolean initialized = !oldPos.equals(BlockPos.ZERO);
-            if (oldPos.distSqr(currentPos) > getLightUpdateDistanceSqr() || !initialized)
+            if (oldPos.distSqr(currentPos) > getLightUpdateDistanceSqr() || oldPos == BlockPos.ZERO)
             {
-                if (initialized && entity.level.hasChunkAt(oldPos))
+                // guarding our check for setting the old block to empty fluid
+                if (Helpers.isBlock(entity.level.getBlockState(oldPos), TFCBlocks.LIGHT.get()))
                 {
-                    // guarding our check for setting the old block to empty fluid
-                    if (Helpers.isBlock(entity.level.getBlockState(oldPos), TFCBlocks.LIGHT.get()))
-                    {
-                        entity.level.setBlockAndUpdate(oldPos, entity.level.getFluidState(oldPos).createLegacyBlock());
-                    }
+                    entity.level.setBlockAndUpdate(oldPos, entity.level.getFluidState(oldPos).createLegacyBlock());
                 }
-
                 BlockState currentState = entity.level.getBlockState(currentPos);
                 Fluid fluid = currentState.getFluidState().getType();
                 // avoid setting light blocks in water streams and thus deleting them

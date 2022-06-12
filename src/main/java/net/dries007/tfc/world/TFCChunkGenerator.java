@@ -418,15 +418,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void spawnOriginalMobs(WorldGenRegion level)
     {
-        if (!this.settings.value().disableMobGeneration())
-        {
-            ChunkPos pos = level.getCenter();
-            Holder<Biome> biome = level.getBiome(pos.getWorldPosition().atY(level.getMaxBuildHeight() - 1));
-            WorldgenRandom random = new WorldgenRandom(new XoroshiroRandomSource(RandomSupport.seedUniquifier()));
-            random.setDecorationSeed(level.getSeed(), pos.getMinBlockX(), pos.getMinBlockZ());
-
-            NaturalSpawner.spawnMobsForChunkGeneration(level, biome, pos, random);
-        }
+        // todo: what on earth?
     }
 
     @Override
@@ -444,13 +436,13 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void createStructures(RegistryAccess dynamicRegistry, StructureFeatureManager structureFeatureManager, ChunkAccess chunk, StructureManager templateManager, long seed)
     {
-        super.createStructures(dynamicRegistry, structureFeatureManager, chunk, templateManager, seed);
+        // todo: structures?
     }
 
     @Override
     public void createReferences(WorldGenLevel level, StructureFeatureManager structureFeatureManager, ChunkAccess chunk)
     {
-        super.createReferences(level, structureFeatureManager, chunk);
+        // todo: structures?
     }
 
     @Override

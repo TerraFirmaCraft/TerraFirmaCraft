@@ -46,7 +46,7 @@ archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 
 // Use version from environment variable, if set
 def envVersion = System.getenv('VERSION')
-version = envVersion == null ? '0.0.0-indev' : envVersion
+version = envVersion == null ? 'indev' : envVersion
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 

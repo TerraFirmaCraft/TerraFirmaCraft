@@ -7,11 +7,13 @@
 package net.dries007.tfc.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +21,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -28,7 +31,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -39,6 +41,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -64,60 +67,11 @@ public final class InteractionManager
 {
     private static final ThreadLocal<Boolean> ACTIVE = ThreadLocal.withInitial(() -> false);
     private static final List<Entry> ACTIONS = new ArrayList<>();
-    private static final IndirectHashCollection<Item, Entry> CACHE = IndirectHashCollection.create(e -> Arrays.stream(e.item.getItems()).map(ItemStack::getItem).toList(), () -> ACTIONS);
+    private static final IndirectHashCollection<Item, Entry> CACHE = IndirectHashCollection.create(wrapper -> wrapper.keyExtractor.get(), () -> ACTIONS);
 
-    // Public API
-
-    /**
-     * Register an interaction for a block item placement. Will only target blocks using the selected item.
-     *
-     * This method is safe to call during parallel mod loading.
-     */
-    public static void register(BlockItemPlacement wrapper)
-    {
-        register(new Entry(wrapper, Ingredient.of(wrapper.getItem()), true, false));
-    }
-
-    /**
-     * Register an interaction. This method is safe to call during parallel mod loading.
-     *
-     * @see #register(Ingredient, boolean, boolean, OnItemUseAction)
-     */
-    public static void register(Ingredient item, OnItemUseAction action)
-    {
-        register(item, false, action);
-    }
-
-    /**
-     * Register an interaction. This method is safe to call during parallel mod loading.
-     *
-     * @see #register(Ingredient, boolean, boolean, OnItemUseAction)
-     */
-    public static void register(Ingredient item, boolean targetAir, OnItemUseAction action)
-    {
-        register(item, true, targetAir, action);
-    }
-
-    /**
-     * Register an interaction. This method is safe to call during parallel mod loading.
-     *
-     * @param item         The items this action should apply to
-     * @param targetBlocks if this action should trigger when targeting a block with the item
-     * @param targetAir    if this action should trigger when targeting air with the item
-     * @param action       The action to run.
-     */
-    public static void register(Ingredient item, boolean targetBlocks, boolean targetAir, OnItemUseAction action)
-    {
-        register(new Entry(action, item, targetBlocks, targetAir));
-    }
-
-
-    /**
-     * Registers TFC's interactions.
-     */
     public static void registerDefaultInteractions()
     {
-        register(Ingredient.of(TFCTags.Items.THATCH_BED_HIDES), false, (stack, context) -> {
+        register(TFCTags.Items.THATCH_BED_HIDES, false, (stack, context) -> {
             final Level level = context.getLevel();
             final Player player = context.getPlayer();
             if (!level.isClientSide() && player != null)
@@ -147,7 +101,7 @@ public final class InteractionManager
             return InteractionResult.FAIL;
         });
 
-        register(Ingredient.of(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY), false, (stack, context) -> {
+        register(TFCTags.Items.STARTS_FIRES_WITH_DURABILITY, false, (stack, context) -> {
             final Player player = context.getPlayer();
             final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
@@ -163,7 +117,7 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(Ingredient.of(TFCTags.Items.STARTS_FIRES_WITH_ITEMS), false, (stack, context) -> {
+        register(TFCTags.Items.STARTS_FIRES_WITH_ITEMS, false, (stack, context) -> {
             final Player playerEntity = context.getPlayer();
             if (playerEntity instanceof final ServerPlayer player)
             {
@@ -177,7 +131,7 @@ public final class InteractionManager
             return InteractionResult.FAIL;
         });
 
-        register(Ingredient.of(Items.SNOW), false, (stack, context) -> {
+        register(Items.SNOW, false, (stack, context) -> {
             Player player = context.getPlayer();
             if (player != null && !player.getAbilities().mayBuild)
             {
@@ -218,7 +172,7 @@ public final class InteractionManager
             }
         });
 
-        register(Ingredient.of(Items.CHARCOAL), false, (stack, context) -> {
+        register(Items.CHARCOAL, false, (stack, context) -> {
             Player player = context.getPlayer();
             if (player != null && !player.getAbilities().mayBuild)
             {
@@ -262,7 +216,7 @@ public final class InteractionManager
         // - holding log, targeting log pile, shift click = insert all
         // - holding log, targeting log pile, click normally = insert one
         final BlockItemPlacement logPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.LOG_PILE);
-        register(Ingredient.of(TFCTags.Items.LOG_PILE_LOGS), false, (stack, context) -> {
+        register(TFCTags.Items.LOG_PILE_LOGS, false, (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())
             {
@@ -315,7 +269,7 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(Ingredient.of(TFCTags.Items.SCRAPABLE), false, (stack, context) -> {
+        register(TFCTags.Items.SCRAPABLE, false, (stack, context) -> {
             Level level = context.getLevel();
             ScrapingRecipe recipe = ScrapingRecipe.getRecipe(level, new ItemStackInventory(stack));
             if (recipe != null)
@@ -351,16 +305,16 @@ public final class InteractionManager
         }
 
         // Knapping
-        register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
+        register(TFCTags.Items.CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
+        register(TFCTags.Items.FIRE_CLAY_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
+        register(TFCTags.Items.LEATHER_KNAPPING, true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
+        register(TFCTags.Items.ROCK_KNAPPING, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING));
 
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)
         // Removal (Non-Shift Click) is handled by the respective pile block
         final BlockItemPlacement ingotPilePlacement = new BlockItemPlacement(() -> Items.AIR, TFCBlocks.INGOT_PILE);
-        register(Ingredient.of(TFCTags.Items.PILEABLE_INGOTS), false, (stack, context) -> {
+        register(TFCTags.Items.PILEABLE_INGOTS, false, (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())
             {
@@ -441,7 +395,7 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(Ingredient.of(TFCTags.Items.PILEABLE_SHEETS), false, (stack, context) -> {
+        register(TFCTags.Items.PILEABLE_SHEETS, false, (stack, context) -> {
             final Player player = context.getPlayer();
             if (player != null && player.isShiftKeyDown())
             {
@@ -498,7 +452,7 @@ public final class InteractionManager
             return InteractionResult.PASS;
         });
 
-        register(Ingredient.of(TFCTags.Items.SALAD_BOWLS), true, (stack, context) -> {
+        register(TFCTags.Items.SALAD_BOWLS, true, (stack, context) -> {
             // Only open salads when shift key is down
             // Normally when consuming bowl food (like salads), you'll be holding right click down causing the salad gui to immediately open
             // That feels bad to use, so we require shift to open salads - better in the common case
@@ -514,11 +468,35 @@ public final class InteractionManager
         });
     }
 
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static void register(BlockItemPlacement wrapper)
+    {
+        register(new Entry(wrapper, stack -> stack.getItem() == wrapper.getItem(), () -> Collections.singleton(wrapper.getItem()), false));
+    }
+
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static void register(Item item, boolean targetAir, OnItemUseAction action)
+    {
+        register(new Entry(action, stack -> stack.getItem() == item, () -> Collections.singleton(item), targetAir));
+    }
+
+    /**
+     * Register an interaction. This method is safe to call during parallel mod loading.
+     */
+    public static void register(TagKey<Item> tag, boolean targetAir, OnItemUseAction action)
+    {
+        register(new Entry(action, stack -> Helpers.isItem(stack.getItem(), tag), () -> Helpers.getAllTagValues(tag, ForgeRegistries.ITEMS), targetAir));
+    }
+
     public static OnItemUseAction createKnappingInteraction(BiPredicate<ItemStack, Player> condition, ItemStackContainerProvider container)
     {
         return (stack, context) -> {
             final Player player = context.getPlayer();
-            if (player != null && condition.test(stack, player) && context.getClickedPos().equals(BlockPos.ZERO))
+            if (player != null && condition.test(stack, player))
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
@@ -536,7 +514,7 @@ public final class InteractionManager
         {
             for (Entry entry : CACHE.getAll(stack.getItem()))
             {
-                if ((isTargetingAir ? entry.targetAir : entry.targetBlocks) && entry.item.test(stack))
+                if ((entry.targetAir() || !isTargetingAir) && entry.test().test(stack))
                 {
                     InteractionResult result;
                     ACTIVE.set(true);
@@ -572,5 +550,5 @@ public final class InteractionManager
         InteractionResult onItemUse(ItemStack stack, UseOnContext context);
     }
 
-    private record Entry(OnItemUseAction action, Ingredient item, boolean targetBlocks, boolean targetAir) {}
+    private record Entry(OnItemUseAction action, Predicate<ItemStack> test, Supplier<Iterable<Item>> keyExtractor, boolean targetAir) {}
 }

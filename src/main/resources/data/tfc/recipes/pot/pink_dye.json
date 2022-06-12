@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:pot",
+  "type": "tfc:pot_fluid",
   "ingredients": [
     {
       "item": "minecraft:pink_dye"

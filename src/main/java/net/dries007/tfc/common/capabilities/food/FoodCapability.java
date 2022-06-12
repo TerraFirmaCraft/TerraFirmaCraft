@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
-import java.util.function.Supplier;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -21,6 +19,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.SyncReloadListener;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
@@ -127,7 +126,7 @@ public final class FoodCapability
     @SuppressWarnings("unused")
     public static ItemStack updateFoodDecayOnCreate(ItemStack stack)
     {
-        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(getRoundedCreationDate()));
+        stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(Calendars.get().getTicks()));
         return stack;
     }
 
@@ -146,25 +145,7 @@ public final class FoodCapability
     }
 
     /**
-     * Creates a box of an item stack, that we want to always not decay.
-     * The reason we can't evaluate this immediately is because the stack may be created at a time when tags (and as a result, capabilities) don't exist yet
-     */
-    public static Supplier<ItemStack> createNonDecayingStack(ItemStack stack)
-    {
-        return new NonDecayingItemStack(stack);
-    }
-
-    public static void markRecipeOutputsAsNonDecaying()
-    {
-        for (Recipe<?> recipe : Helpers.getUnsafeRecipeManager().getRecipes())
-        {
-            FoodCapability.setStackNonDecaying(recipe.getResultItem());
-        }
-    }
-
-    /**
      * Merges two item stacks with different creation dates, taking the earlier of the two.
-     *
      * @param stackToMergeInto the stack to merge into. Not modified.
      * @param stackToMerge     the stack to merge, which will be left with the remainder after merging. Will be modified.
      * @return The merged stack.
@@ -253,12 +234,17 @@ public final class FoodCapability
 
     public static class Packet extends DataManagerSyncPacket<FoodDefinition> {}
 
-    private record NonDecayingItemStack(ItemStack internal) implements Supplier<ItemStack>
+    public enum DecayingItemStackFixer implements SyncReloadListener
     {
+        INSTANCE;
+
         @Override
-        public ItemStack get()
+        public void reloadSync()
         {
-            return FoodCapability.setStackNonDecaying(internal);
+            for (Recipe<?> recipe : Helpers.getUnsafeRecipeManager().getRecipes())
+            {
+                FoodCapability.setStackNonDecaying(recipe.getResultItem());
+            }
         }
     }
 }

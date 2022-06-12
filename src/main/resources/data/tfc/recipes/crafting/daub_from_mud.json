@@ -3,7 +3,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "minecraft:clay_ball"
+      "item": "tfc:straw"
     },
     {
       "tag": "tfc:mud"

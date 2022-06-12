@@ -2,6 +2,11 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "minecraft:water",
+    "tfc:salt_water",
+    "tfc:spring_water",
+    "#tfc:alcohols",
+    "#tfc:dye_fluids",
     "tfc:brine",
     "tfc:curdled_milk",
     "tfc:limewater",
@@ -12,7 +17,6 @@
     "tfc:tallow",
     "tfc:tannin",
     "tfc:vinegar",
-    "#tfc:drinkable_ingredients",
-    "#tfc:dyes"
+    "#tfc:milks"
   ]
 }

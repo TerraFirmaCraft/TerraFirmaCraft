@@ -20,14 +20,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.registry.RegistryRock;
 
 public class RockConvertableToAnvilBlock extends Block
 {
-    public static Block createForIgneousOnly(Properties properties, RegistryRock rock)
+    public static Block createForIgneousOnly(Properties properties, Rock rock)
     {
-        return rock.category() == RockCategory.IGNEOUS_EXTRUSIVE || rock.category() == RockCategory.IGNEOUS_INTRUSIVE ? new RockConvertableToAnvilBlock(properties, rock.getAnvil()) : new Block(properties);
+        return rock.getCategory() == RockCategory.IGNEOUS_EXTRUSIVE || rock.getCategory() == RockCategory.IGNEOUS_INTRUSIVE ? new RockConvertableToAnvilBlock(properties, TFCBlocks.ROCK_ANVILS.get(rock)) : new Block(properties);
     }
 
     private final Supplier<? extends Block> anvil;

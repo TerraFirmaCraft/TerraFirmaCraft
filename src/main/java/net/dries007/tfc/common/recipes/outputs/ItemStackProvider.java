@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.recipes.outputs;
 
-import java.util.function.Supplier;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,7 +16,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 
-public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] modifiers)
+public record ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
 {
     private static final ItemStackModifier[] NONE = new ItemStackModifier[0];
     private static final ItemStackProvider EMPTY = new ItemStackProvider(ItemStack.EMPTY, NONE);
@@ -89,7 +87,13 @@ public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] m
 
     public ItemStackProvider(ItemStack stack, ItemStackModifier[] modifiers)
     {
-        this(FoodCapability.createNonDecayingStack(stack), modifiers);
+        this.stack = stack;
+        this.modifiers = modifiers;
+
+        if (!Helpers.BOOTSTRAP_ENVIRONMENT)
+        {
+            FoodCapability.setStackNonDecaying(stack);
+        }
     }
 
     /**
@@ -121,7 +125,7 @@ public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] m
      */
     public ItemStack getStack(ItemStack input)
     {
-        ItemStack output = stack.get().copy();
+        ItemStack output = stack.copy();
         for (ItemStackModifier modifier : modifiers)
         {
             output = modifier.apply(output, input);
@@ -146,7 +150,7 @@ public record ItemStackProvider(Supplier<ItemStack> stack, ItemStackModifier[] m
 
     public void toNetwork(FriendlyByteBuf buffer)
     {
-        buffer.writeItem(stack.get());
+        buffer.writeItem(stack);
         buffer.writeVarInt(modifiers.length);
         for (ItemStackModifier modifier : modifiers)
         {

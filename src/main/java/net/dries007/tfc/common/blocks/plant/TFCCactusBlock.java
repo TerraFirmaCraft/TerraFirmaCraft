@@ -11,7 +11,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -76,11 +75,5 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
         entity.hurt(DamageSource.CACTUS, 1.0F);
-    }
-
-    @Override
-    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
-    {
-        return false;
     }
 }
