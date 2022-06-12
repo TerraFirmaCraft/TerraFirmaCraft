@@ -8,7 +8,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:food/duck"
+          "name": "tfc:food/duck",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 3,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
         }
       ]
     },
