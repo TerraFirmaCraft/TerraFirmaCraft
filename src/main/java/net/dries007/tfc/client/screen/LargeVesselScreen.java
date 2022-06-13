@@ -13,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -60,10 +59,7 @@ public class LargeVesselScreen extends BlockEntityScreen<LargeVesselBlockEntity,
         super.renderLabels(poseStack, mouseX, mouseY);
         if (isSealed())
         {
-            blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
-                // draw disabled texture over the slots
-                menu.slots.stream().filter(slot -> slot.index < LargeVesselBlockEntity.SLOTS).forEach(slot -> fillGradient(poseStack, slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
-            });
+            drawDisabled(poseStack, 0, LargeVesselBlockEntity.SLOTS - 1);
         }
     }
 

@@ -368,6 +368,137 @@
       }
     ]
   },
+  "entity.yak.ambient": {
+    "subtitle": "subtitles.entity.tfc.yak.ambient",
+    "sounds": [
+      "tfc:entity/yak/say1",
+      "tfc:entity/yak/say2",
+      "tfc:entity/yak/say3",
+      "tfc:entity/yak/say4"
+    ]
+  },
+  "entity.yak.hurt": {
+    "subtitle": "subtitles.entity.tfc.yak.hurt",
+    "sounds": [
+      "tfc:entity/yak/hurt1",
+      "tfc:entity/yak/hurt2"
+    ]
+  },
+  "entity.yak.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.sheep.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.yak.death": {
+    "subtitle": "subtitles.entity.tfc.yak.death",
+    "sounds": [
+      "tfc:entity/yak/death1"
+    ]
+  },
+  "entity.musk_ox.ambient": {
+    "subtitle": "subtitles.entity.tfc.musk_ox.ambient",
+    "sounds": [
+      {
+        "name": "tfc:entity/musk_ox/say1",
+        "weight": 10
+      },
+      {
+        "name": "tfc:entity/musk_ox/say2",
+        "weight": 10
+      },
+      "tfc:entity/musk_ox/call1"
+    ]
+  },
+  "entity.musk_ox.hurt": {
+    "subtitle": "subtitles.entity.tfc.musk_ox.hurt",
+    "sounds": [
+      "tfc:entity/musk_ox/hurt1",
+      "tfc:entity/musk_ox/hurt2"
+    ]
+  },
+  "entity.musk_ox.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.sheep.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.musk_ox.death": {
+    "subtitle": "subtitles.entity.tfc.musk_ox.death",
+    "sounds": [
+      "tfc:entity/musk_ox/death1"
+    ]
+  },
+  "entity.duck.ambient": {
+    "subtitle": "subtitles.entity.tfc.duck.ambient",
+    "sounds": [
+      "tfc:entity/duck/say1",
+      "tfc:entity/duck/say2",
+      "tfc:entity/duck/say3"
+    ]
+  },
+  "entity.duck.hurt": {
+    "subtitle": "subtitles.entity.tfc.duck.hurt",
+    "sounds": [
+      "tfc:entity/duck/hurt1",
+      "tfc:entity/duck/hurt2",
+      "tfc:entity/duck/hurt3"
+    ]
+  },
+  "entity.duck.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.chicken.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.duck.death": {
+    "subtitle": "subtitles.entity.tfc.duck.death",
+    "sounds": [
+      "tfc:entity/duck/death1",
+      "tfc:entity/duck/death2"
+    ]
+  },
+  "entity.quail.ambient": {
+    "subtitle": "subtitles.entity.tfc.quail.ambient",
+    "sounds": [
+      "tfc:entity/quail/say1",
+      "tfc:entity/quail/say2",
+      "tfc:entity/quail/say3",
+      "tfc:entity/quail/say4",
+      "tfc:entity/quail/say5"
+    ]
+  },
+  "entity.quail.hurt": {
+    "subtitle": "subtitles.entity.tfc.quail.hurt",
+    "sounds": [
+      "tfc:entity/quail/hurt1",
+      "tfc:entity/quail/hurt2"
+    ]
+  },
+  "entity.quail.step": {
+    "subtitle": "subtitles.block.generic.footsteps",
+    "sounds": [
+      {
+        "name": "minecraft:entity.chicken.step",
+        "type": "event"
+      }
+    ]
+  },
+  "entity.quail.death": {
+    "subtitle": "subtitles.entity.tfc.quail.death",
+    "sounds": [
+      "tfc:entity/quail/death1"
+    ]
+  },
   "block.scribing_table.use": {
     "subtitle": "subtitles.block.tfc.scribing_table.rename_item",
     "sounds": [

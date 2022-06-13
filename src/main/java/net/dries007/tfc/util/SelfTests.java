@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -259,7 +256,7 @@ public final class SelfTests
             item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
             items.forEach(stack -> validateTranslation(missingTranslations, stack.getHoverName()));
         });
-        
+
         SoundManager soundManager = Minecraft.getInstance().getSoundManager();
         ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(missingTranslations, subtitle)));
 

@@ -103,7 +103,7 @@ public abstract class Mammal extends TFCAnimal
                 birthChildren();
                 setFertilized(false);
                 setPregnantTime(-1L);
-                addUses(1);
+                addUses(10);
             }
         }
     }

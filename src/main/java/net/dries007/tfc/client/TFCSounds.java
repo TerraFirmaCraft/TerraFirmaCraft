@@ -54,7 +54,13 @@ public final class TFCSounds
     public static final EntitySound PIG = new EntitySound(() -> SoundEvents.PIG_AMBIENT, () -> SoundEvents.PIG_DEATH, () -> SoundEvents.PIG_HURT, () -> SoundEvents.PIG_STEP);
     public static final EntitySound COW = new EntitySound(() -> SoundEvents.COW_AMBIENT, () -> SoundEvents.COW_DEATH, () -> SoundEvents.COW_HURT, () -> SoundEvents.COW_STEP);
     public static final EntitySound CHICKEN = new EntitySound(() -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_STEP);
+    public static final EntitySound GOAT = new EntitySound(() -> SoundEvents.GOAT_AMBIENT, () -> SoundEvents.GOAT_DEATH, () -> SoundEvents.GOAT_HURT, () -> SoundEvents.GOAT_STEP);
+    public static final EntitySound SHEEP = new EntitySound(() -> SoundEvents.SHEEP_AMBIENT, () -> SoundEvents.SHEEP_DEATH, () -> SoundEvents.SHEEP_HURT, () -> SoundEvents.SHEEP_STEP);
     public static final EntitySound ALPACA = createEntity("alpaca", false, false);
+    public static final EntitySound YAK = createEntity("yak", false, false);
+    public static final EntitySound MUSK_OX = createEntity("musk_ox", false, false);
+    public static final EntitySound DUCK = createEntity("duck", false, false);
+    public static final EntitySound QUAIL = createEntity("quail", false, false);
     public static final EntitySound LION = createEntity("lion", true, true);
     public static final EntitySound COUGAR = createEntity("cougar", true, true);
     public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);

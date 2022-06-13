@@ -100,7 +100,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             }
 
             // And refresh the molten block(s) based on the current inputs
-            MoltenBlock.manageMoltenBlockTower(level, bloomery.worldPosition, lit, TFCConfig.SERVER.bloomeryMaxChimneyHeight.get(), bloomery.inputStacks.size(), TFCConfig.SERVER.bloomeryCapacity.get());
+            MoltenBlock.manageMoltenBlockTower(level, bloomery.getInternalBlockPos(), lit, TFCConfig.SERVER.bloomeryMaxChimneyHeight.get(), bloomery.inputStacks.size(), TFCConfig.SERVER.bloomeryCapacity.get());
         }
     }
 

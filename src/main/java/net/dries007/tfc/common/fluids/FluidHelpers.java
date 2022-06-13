@@ -154,18 +154,26 @@ public final class FluidHelpers
     public static FluidStack pickupFluid(LevelAccessor level, BlockPos pos, BlockState state, @Nullable Player player, IFluidHandler.FluidAction action)
     {
         final Block block = state.getBlock();
+        if (block instanceof BucketPickupExtension pickup)
+        {
+            final FluidStack fluid = pickup.pickupBlock(level, pos, state, action);
+            pickup.getPickupSound(state).ifPresent(sound -> level.playSound(player, pos, sound, SoundSource.PLAYERS, 1.0f, 1.0f));
+            return fluid;
+        }
         if (block instanceof BucketPickup pickup)
         {
             if (action.execute())
             {
+                // Directly execute, assuming that we can pickup into a bucket, then empty the bucket to obtain the contents
                 final ItemStack stack = pickup.pickupBlock(level, pos, state);
                 final FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE)).orElse(FluidStack.EMPTY);
 
-                pickup.getPickupSound().ifPresent(sound -> level.playSound(player, pos, sound, SoundSource.PLAYERS, 1.0f, 1.0f));
+                pickup.getPickupSound(state).ifPresent(sound -> level.playSound(player, pos, sound, SoundSource.PLAYERS, 1.0f, 1.0f));
                 return fluid;
             }
             else
             {
+                // Can't simulate, so just infer what we think would've happened
                 return new FluidStack(state.getFluidState().getType(), FluidAttributes.BUCKET_VOLUME);
             }
         }
@@ -275,7 +283,7 @@ public final class FluidHelpers
      * This is the main logic from {@link FlowingFluid#getNewLiquid(LevelReader, BlockPos, BlockState)}, but modified to support fluid mixing, and extracted into a static helper method to allow other {@link FlowingFluid} classes (namely, vanilla water) to be modified.
      *
      * @param self               The fluid instance this would've been called upon
-     * @param worldIn            The world
+     * @param level              The world
      * @param pos                A position
      * @param blockStateIn       The current block state at that position
      * @param canConvertToSource The result of {@code self.canConvertToSource()} as it's protected
@@ -283,7 +291,7 @@ public final class FluidHelpers
      * @return The fluid state that should exist at that position
      * @see FlowingFluid#getNewLiquid(LevelReader, BlockPos, BlockState)
      */
-    public static FluidState getNewFluidWithMixing(FlowingFluid self, LevelReader worldIn, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
+    public static FluidState getNewFluidWithMixing(FlowingFluid self, LevelReader level, BlockPos pos, BlockState blockStateIn, boolean canConvertToSource, int dropOff)
     {
         int maxAdjacentFluidAmount = 0; // The maximum height of fluids flowing into this block from the sides
         FlowingFluid maxAdjacentFluid = self;
@@ -294,14 +302,14 @@ public final class FluidHelpers
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
             BlockPos offsetPos = pos.relative(direction);
-            BlockState offsetState = worldIn.getBlockState(offsetPos);
+            BlockState offsetState = level.getBlockState(offsetPos);
             FluidState offsetFluid = offsetState.getFluidState();
 
             // Look for adjacent fluids that are the same, for purposes of flow into this fluid
             // canPassThroughWall detects if a fluid state has a barrier - e.g. via a stair edge - that would prevent it from connecting to the current block.
-            if (offsetFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, worldIn, pos, blockStateIn, offsetPos, offsetState))
+            if (offsetFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(direction, level, pos, blockStateIn, offsetPos, offsetState))
             {
-                if (offsetFluid.isSource() && ForgeEventFactory.canCreateFluidSource(worldIn, offsetPos, offsetState, canConvertToSource))
+                if (offsetFluid.isSource() && ForgeEventFactory.canCreateFluidSource(level, offsetPos, offsetState, canConvertToSource))
                 {
                     adjacentSourceBlocks++;
                     adjacentSourceBlocksByFluid.mergeInt((FlowingFluid) offsetFluid.getType(), 1, Integer::sum);
@@ -319,13 +327,13 @@ public final class FluidHelpers
         {
             // There are two adjacent source blocks (although potentially of different kinds) - check if the below block is also a source, or if it's a solid block
             // If true, then this block should be converted to a source block as well
-            BlockState belowState = worldIn.getBlockState(pos.below());
+            BlockState belowState = level.getBlockState(pos.below());
             FluidState belowFluid = belowState.getFluidState();
 
-            if (belowFluid.isSource() && belowFluid.getType() instanceof FlowingFluid && adjacentSourceBlocksByFluid.getInt(belowFluid.getType()) >= 2)
+            if (belowFluid.isSource() && belowFluid.getType() instanceof FlowingFluid belowFlowingFluid && adjacentSourceBlocksByFluid.getInt(belowFluid.getType()) >= 2)
             {
                 // Try and create a source block of the same type as the below
-                return ((FlowingFluid) belowFluid.getType()).getSource(false);
+                return FlowingFluidExtension.getSourceOrDefault(level, pos, belowFlowingFluid, false);
             }
             else if (belowState.getMaterial().isSolid())
             {
@@ -344,7 +352,7 @@ public final class FluidHelpers
                 // Three adjacent (if not same), or two (if same)
                 if (maximumAdjacentSourceBlocks >= 3 || (maximumAdjacentSourceBlocks >= 2 && self.isSame(maximumAdjacentSourceFluid)))
                 {
-                    return maximumAdjacentSourceFluid.getSource(false);
+                    return FlowingFluidExtension.getSourceOrDefault(level, pos, maximumAdjacentSourceFluid, false);
                 }
             }
         }
@@ -353,9 +361,9 @@ public final class FluidHelpers
         // Check the block above to see if that is flowing downwards into this one (creating a level 8, falling, flowing block)
         // A fluid above, flowing down, will always replace an existing fluid block
         BlockPos abovePos = pos.above();
-        BlockState aboveState = worldIn.getBlockState(abovePos);
+        BlockState aboveState = level.getBlockState(abovePos);
         FluidState aboveFluid = aboveState.getFluidState();
-        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, worldIn, pos, blockStateIn, abovePos, aboveState))
+        if (!aboveFluid.isEmpty() && aboveFluid.getType() instanceof FlowingFluid && ((FlowingFluidAccessor) self).invoke$canPassThroughWall(Direction.UP, level, pos, blockStateIn, abovePos, aboveState))
         {
             return ((FlowingFluid) aboveFluid.getType()).getFlowing(8, true);
         }

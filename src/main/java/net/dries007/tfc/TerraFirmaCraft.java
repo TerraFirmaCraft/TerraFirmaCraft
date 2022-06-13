@@ -25,8 +25,8 @@ import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.blocks.devices.IBellowsConsumer;
+import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.food.IFood;
@@ -99,7 +99,7 @@ public final class TerraFirmaCraft
         TFCRecipeSerializers.RECIPE_SERIALIZERS.register(bus);
         TFCSounds.SOUNDS.register(bus);
         TFCParticles.PARTICLE_TYPES.register(bus);
-        TFCBlockEntities.TILE_ENTITIES.register(bus);
+        TFCBlockEntities.BLOCK_ENTITIES.register(bus);
         TFCLoot.registerAll(bus);
 
         TFCBiomes.BIOMES.register(bus);

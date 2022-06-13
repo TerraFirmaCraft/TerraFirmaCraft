@@ -1384,7 +1384,8 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
         air_carvers=air_carvers,
         water_carvers=water_carvers,
         features=features,
-        player_spawn_friendly=spawnable
+        player_spawn_friendly=spawnable,
+        creature_spawn_probability=0.05
     )
 
 
