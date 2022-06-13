@@ -7,20 +7,18 @@
 package net.dries007.tfc.common.entities.land;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.IForgeShearable;
 import net.minecraftforge.common.MinecraftForge;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.NotNull;
@@ -31,9 +29,9 @@ import org.jetbrains.annotations.Nullable;
 // eating grass should be a property in TFCAnimal, NOT just sheep. And we need to study how that exactly will work
 public abstract class WoolyAnimal extends ProducingMammal implements IForgeShearable
 {
-    public WoolyAnimal(EntityType<? extends WoolyAnimal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity)
+    public WoolyAnimal(EntityType<? extends WoolyAnimal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
     {
-        super(animal, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, childCount, gestationDays, produceTicks, produceFamiliarity);
+        super(animal, level, sounds, config);
     }
 
     @Override
