@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.client;
 
-import net.minecraft.client.resources.sounds.Sound;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.util.ForgeSoundType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -21,89 +24,92 @@ public final class TFCSounds
 {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MOD_ID);
 
-    public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG = create("rock_slide_long");
-    public static final RegistryObject<SoundEvent> ROCK_SLIDE_SHORT = create("rock_slide_short");
-    public static final RegistryObject<SoundEvent> DIRT_SLIDE_SHORT = create("dirt_slide_short");
+    // Items
+    public static final RegistryObject<SoundEvent> KNAP_STONE = create("item.knapping.stone");
+    public static final RegistryObject<SoundEvent> KNAP_CLAY = create("item.knapping.clay");
+    public static final RegistryObject<SoundEvent> KNAP_LEATHER = create("item.knapping.leather");
+    public static final RegistryObject<SoundEvent> FIRESTARTER = create("item.firestarter.use");
+    public static final RegistryObject<SoundEvent> CERAMIC_BREAK = create("item.ceramic.break");
+    public static final RegistryObject<SoundEvent> JUG_BLOW = create("item.jug.blow");
+    public static final RegistryObject<SoundEvent> PANNING = create("item.pan.use");
 
-    public static final RegistryObject<SoundEvent> THATCH_HIT = create("block.thatch.hit");
-    public static final RegistryObject<SoundEvent> THATCH_PLACE = create("block.thatch.place");
-    public static final RegistryObject<SoundEvent> THATCH_STEP = create("block.thatch.step");
-    public static final RegistryObject<SoundEvent> THATCH_FALL = create("block.thatch.fall");
-    public static final RegistryObject<SoundEvent> THATCH_BREAK = create("block.thatch.break");
+    // Blocks
+    public static final RegistryObject<SoundEvent> QUERN_DRAG = create("block.quern.drag");
+    public static final RegistryObject<SoundEvent> LOOM_WEAVE = create("block.loom.weave");
+    public static final RegistryObject<SoundEvent> TOOL_RACK_PLACE = create("block.tool_rack.place");
+    public static final RegistryObject<SoundEvent> BELLOWS_BLOW = create("block.bellows.blow");
+    public static final RegistryObject<SoundEvent> SCRIBING_TABLE = create("block.scribing_table.use");
+    public static final RegistryObject<SoundEvent> OPEN_VESSEL = create("block.large_vessel.open");
+    public static final RegistryObject<SoundEvent> CLOSE_VESSEL = create("block.large_vessel.close");
+    public static final RegistryObject<SoundEvent> WATTLE_DYED = create("block.wattle.dyed");
+    public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("block.wattle.daubed");
+    public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("block.wattle.woven");
 
-    public static final RegistryObject<SoundEvent> PEAT_HIT = create("block.peat.hit");
-    public static final RegistryObject<SoundEvent> PEAT_PLACE = create("block.peat.place");
-    public static final RegistryObject<SoundEvent> PEAT_STEP = create("block.peat.step");
-    public static final RegistryObject<SoundEvent> PEAT_FALL = create("block.peat.fall");
-    public static final RegistryObject<SoundEvent> PEAT_BREAK = create("block.peat.break");
+    public static final ForgeSoundType CHARCOAL = createBlock("charcoal");
+    public static final ForgeSoundType THATCH = createBlock("thatch");
+    public static final ForgeSoundType PEAT = createBlock("peat");
+    public static final ForgeSoundType THIN = createBlock("thin");
 
-    public static final RegistryObject<SoundEvent> THIN_HIT = create("block.thin.hit");
-    public static final RegistryObject<SoundEvent> THIN_PLACE = create("block.thin.place");
-    public static final RegistryObject<SoundEvent> THIN_STEP = create("block.thin.step");
-    public static final RegistryObject<SoundEvent> THIN_FALL = create("block.thin.fall");
-    public static final RegistryObject<SoundEvent> THIN_BREAK = create("block.thin.break");
+    // Entities
+    public static final EntitySound PIG = new EntitySound(() -> SoundEvents.PIG_AMBIENT, () -> SoundEvents.PIG_DEATH, () -> SoundEvents.PIG_HURT, () -> SoundEvents.PIG_STEP);
+    public static final EntitySound COW = new EntitySound(() -> SoundEvents.COW_AMBIENT, () -> SoundEvents.COW_DEATH, () -> SoundEvents.COW_HURT, () -> SoundEvents.COW_STEP);
+    public static final EntitySound CHICKEN = new EntitySound(() -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_STEP);
+    public static final EntitySound ALPACA = createEntity("alpaca", false, false);
+    public static final EntitySound LION = createEntity("lion", true, true);
+    public static final EntitySound COUGAR = createEntity("cougar", true, true);
+    public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);
+    public static final EntitySound BEAR = createEntity("bear", true, true);
 
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_HIT = create("block.charcoal.hit");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_PLACE = create("block.charcoal.place");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_STEP = create("block.charcoal.step");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_FALL = create("block.charcoal.fall");
-    public static final RegistryObject<SoundEvent> CHARCOAL_PILE_BREAK = create("block.charcoal.break");
-
-    public static final RegistryObject<SoundEvent> FIRESTARTER = create("firestarter");
-
-    public static final RegistryObject<SoundEvent> QUERN_DRAG = create("quern_drag");
-    public static final RegistryObject<SoundEvent> LOOM_WEAVE = create("loom_weave");
-    public static final RegistryObject<SoundEvent> TOOL_RACK_PLACE = create("tool_rack_place");
-
-    public static final RegistryObject<SoundEvent> KNAP_STONE = create("knap_stone");
-    public static final RegistryObject<SoundEvent> KNAP_CLAY = create("knap_clay");
-    public static final RegistryObject<SoundEvent> KNAP_LEATHER = create("knap_leather");
-
-    public static final RegistryObject<SoundEvent> CERAMIC_BREAK = create("ceramic_break");
-    public static final RegistryObject<SoundEvent> JUG_BLOW = create("jug_blow");
-
-    public static final RegistryObject<SoundEvent> BELLOWS = create("bellows.blow.air");
-
-    public static final RegistryObject<SoundEvent> PANNING = create("panning");
-
-    public static final RegistryObject<SoundEvent> SCRIBING_TABLE = create("scribing_table");
-    public static final RegistryObject<SoundEvent> OPEN_VESSEL = create("open_vessel");
-    public static final RegistryObject<SoundEvent> CLOSE_VESSEL = create("close_vessel");
-
-    public static final RegistryObject<SoundEvent> WATTLE_DYED = create("wattle_dyed");
-    public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("wattle_daubed");
-    public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("wattle_woven");
-
-    public static final RegistryObject<SoundEvent> ALPACA_HURT = create("animal.alpaca.hurt");
-    public static final RegistryObject<SoundEvent> ALPACA_STEP = create("animal.alpaca.step");
-    public static final RegistryObject<SoundEvent> ALPACA_AMBIENT = create("animal.alpaca.ambient");
-    public static final RegistryObject<SoundEvent> ALPACA_DEATH = create("animal.alpaca.death");
-
-    public static final RegistryObject<SoundEvent> PREDATOR_SLEEP = create("animal.predator.sleep");
-
-    public static final RegistryObject<SoundEvent> COUGAR_AMBIENT = create("animal.cougar.ambient");
-    public static final RegistryObject<SoundEvent> COUGAR_ATTACK = create("animal.cougar.attack");
-    public static final RegistryObject<SoundEvent> COUGAR_DEATH = create("animal.cougar.death");
-    public static final RegistryObject<SoundEvent> COUGAR_HURT = create("animal.cougar.hurt");
-
-    public static final RegistryObject<SoundEvent> LION_AMBIENT = create("animal.lion.ambient");
-    public static final RegistryObject<SoundEvent> LION_ATTACK = create("animal.lion.attack");
-    public static final RegistryObject<SoundEvent> LION_DEATH = create("animal.lion.death");
-    public static final RegistryObject<SoundEvent> LION_HURT = create("animal.lion.hurt");
-
-    public static final RegistryObject<SoundEvent> SABERTOOTH_AMBIENT = create("animal.sabertooth.ambient");
-    public static final RegistryObject<SoundEvent> SABERTOOTH_ATTACK = create("animal.sabertooth.attack");
-    public static final RegistryObject<SoundEvent> SABERTOOTH_DEATH = create("animal.sabertooth.death");
-    public static final RegistryObject<SoundEvent> SABERTOOTH_HURT = create("animal.sabertooth.hurt");
-
-
-    public static final ForgeSoundType CHARCOAL = new ForgeSoundType(1.0F, 1.0F, CHARCOAL_PILE_BREAK, CHARCOAL_PILE_STEP, CHARCOAL_PILE_PLACE, CHARCOAL_PILE_HIT, CHARCOAL_PILE_FALL);
-    public static final ForgeSoundType THATCH = new ForgeSoundType(1.0f, 1.0f, THATCH_BREAK, THATCH_STEP, THATCH_PLACE, THATCH_HIT, THATCH_FALL);
-    public static final ForgeSoundType PEAT = new ForgeSoundType(1.0f, 1.0f, PEAT_BREAK, PEAT_STEP, PEAT_PLACE, PEAT_HIT, PEAT_FALL);
-    public static final ForgeSoundType THIN = new ForgeSoundType(1.0f, 1.0f, THIN_BREAK, THIN_STEP, THIN_PLACE, THIN_HIT, THIN_FALL);
+    // Random
+    public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG = create("random.rock_slide_long");
+    public static final RegistryObject<SoundEvent> ROCK_SLIDE_SHORT = create("random.rock_slide_short");
+    public static final RegistryObject<SoundEvent> DIRT_SLIDE_SHORT = create("random.dirt_slide_short");
 
     private static RegistryObject<SoundEvent> create(String name)
     {
         return SOUNDS.register(name, () -> new SoundEvent(Helpers.identifier(name)));
+    }
+
+    private static Optional<Supplier<SoundEvent>> createOptional(String name, boolean present)
+    {
+        return Optional.ofNullable(present ? create(name) : null);
+    }
+
+    private static ForgeSoundType createBlock(String name)
+    {
+        return new ForgeSoundType(1.0f, 1.0f,
+            create("block.%s.break".formatted(name)),
+            create("block.%s.step".formatted(name)),
+            create("block.%s.place".formatted(name)),
+            create("block.%s.hit".formatted(name)),
+            create("block.%s.fall".formatted(name))
+        );
+    }
+
+    private static EntitySound createEntity(String name, boolean attack, boolean sleep)
+    {
+        return new EntitySound(
+            create("entity.%s.ambient".formatted(name)),
+            create("entity.%s.death".formatted(name)),
+            create("entity.%s.hurt".formatted(name)),
+            create("entity.%s.step".formatted(name)),
+            createOptional("entity.%s.attack".formatted(name), attack),
+            createOptional("entity.%s.sleep".formatted(name), sleep)
+        );
+    }
+
+    public record EntitySound(
+        Supplier<SoundEvent> ambient,
+        Supplier<SoundEvent> death,
+        Supplier<SoundEvent> hurt,
+        Supplier<SoundEvent> step,
+        Optional<Supplier<SoundEvent>> attack,
+        Optional<Supplier<SoundEvent>> sleep
+    )
+    {
+        public EntitySound(Supplier<SoundEvent> ambient, Supplier<SoundEvent> death, Supplier<SoundEvent> hurt, Supplier<SoundEvent> step)
+        {
+            this(ambient, death, hurt, step, Optional.empty(), Optional.empty());
+        }
     }
 }
