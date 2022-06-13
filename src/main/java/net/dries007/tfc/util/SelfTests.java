@@ -22,6 +22,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.sounds.SoundManager;
+import net.minecraft.client.sounds.WeighedSoundEvents;
 import net.minecraft.core.NonNullList;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -257,6 +259,9 @@ public final class SelfTests
             item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
             items.forEach(stack -> validateTranslation(missingTranslations, stack.getHoverName()));
         });
+        
+        SoundManager soundManager = Minecraft.getInstance().getSoundManager();
+        ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(missingTranslations, subtitle)));
 
         boolean metaError = false;
         for (CreativeModeTab tab : CreativeModeTab.TABS)
