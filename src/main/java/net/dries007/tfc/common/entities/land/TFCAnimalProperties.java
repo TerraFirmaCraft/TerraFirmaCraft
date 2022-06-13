@@ -83,7 +83,7 @@ public interface TFCAnimalProperties
      */
     default void addUses(int uses)
     {
-        setUses(getUses() + 1);
+        setUses(getUses() + uses);
     }
 
     void setUses(int uses);
@@ -247,6 +247,11 @@ public interface TFCAnimalProperties
     default boolean displayMaleCharacteristics()
     {
         return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.MALE;
+    }
+
+    default boolean displayFemaleCharacteristics()
+    {
+        return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.FEMALE;
     }
 
     default boolean isFood(ItemStack stack)

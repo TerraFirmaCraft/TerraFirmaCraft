@@ -65,17 +65,17 @@ public class LionModel extends EntityModel<FelinePredator>
             .texOffs(0, 0).addBox(0.0F, -0.866F, 3.634F, 0.0F, 2.0F, 2.0F, new CubeDeformation(0.0F))
             .texOffs(7, 0).addBox(-1.0F, 0.134F, 3.634F, 2.0F, 0.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 7.0F, 1.0472F, 0.0F, 0.0F));
 
-        PartDefinition legFR = body.addOrReplaceChild("legFR", CubeListBuilder.create().texOffs(48, 53).addBox(-1.99F, -2.0F, -1.0F, 4.0F, 17.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legFR = body.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(48, 53).addBox(-1.99F, -2.0F, -1.0F, 4.0F, 17.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(65, 12).addBox(-1.99F, 15.0F, -2.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -14.0F, -7.0F));
 
-        PartDefinition legFL = body.addOrReplaceChild("legFL", CubeListBuilder.create().texOffs(32, 53).addBox(-2.01F, -2.0F, -1.0F, 4.0F, 17.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legFL = body.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(32, 53).addBox(-2.01F, -2.0F, -1.0F, 4.0F, 17.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(66, 33).addBox(-2.0F, 15.0F, -2.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, -14.0F, -7.0F));
 
-        PartDefinition legBL = body.addOrReplaceChild("legBL", CubeListBuilder.create().texOffs(64, 64).addBox(-1.0F, 6.0F, 1.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legBL = body.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(64, 64).addBox(-1.0F, 6.0F, 1.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(0, 60).addBox(-1.0F, -2.0F, -1.0F, 4.0F, 8.0F, 6.0F, new CubeDeformation(0.0F))
             .texOffs(15, 69).addBox(-1.0F, 13.0F, 0.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -12.0F, 8.0F));
 
-        PartDefinition legBR = body.addOrReplaceChild("legBR", CubeListBuilder.create().texOffs(64, 53).addBox(-7.0F, 6.0F, 1.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legBR = body.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(64, 53).addBox(-7.0F, 6.0F, 1.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(50, 3).addBox(-7.0F, -2.0F, -1.0F, 4.0F, 8.0F, 6.0F, new CubeDeformation(0.0F))
             .texOffs(64, 0).addBox(-7.0F, 13.0F, 0.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, -12.0F, 8.0F));
 
@@ -87,10 +87,10 @@ public class LionModel extends EntityModel<FelinePredator>
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30.0F, 0F, 0F).rotation(0.25F, -30.43855F, 7.05302F, -7.10708F).rotation(0.75F, -30.47002F, -6.45856F, 6.51352F).rotation(1.0F, -30.0F, 0F, 0F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 50.0F, 0F, 0F).rotation(0.375F, 51.16156F, 8.64738F, 15.27269F).rotation(0.875F, 67.99327F, -4.47045F, -7.80797F).rotation(1.0F, 50.0F, 0F, 0F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, 1F).rotation(0.5F, 0F, 0F, -1F).rotation(1.0F, 0F, 0F, 1F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
         .build();
 
     //TODO: Add translations to body
@@ -98,22 +98,22 @@ public class LionModel extends EntityModel<FelinePredator>
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -15F, 0F, 0F).noRotation(0.4F).build())
         .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
         .bone("jaw", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F).rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F).noRotation(0.4F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -17.5F, 0F, -20F).rotation(0.1667F, -65.625F, 0F, -15F).noRotation(0.4F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F).rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F).noRotation(0.4F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -17.5F, 0F, -20F).rotation(0.1667F, -65.625F, 0F, -15F).noRotation(0.4F).build())
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 95F, 0F, 0F).noRotation(0.4F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -109.17912F, 0F, 0F).rotation(0.25F, -32.51868F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 15F, 0F, 0F).noRotation(0.4F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
         .build();
 
     public static final Animation SLEEP = new Animation.Builder(2.0F)
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 15F, 0F, 0F).rotation(1.0F, 12.5F, 0F, 0F).rotation(2.0F, 15F, 0F, 0F).build())
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30F, 0F, 0F).rotation(2.0F, -30F, 0F, 0F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 2.5F, 0F, 0F).rotation(2.0F, 2.5F, 0F, 0F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, 0F, 0F).rotation(2.0F, -90F, 0F, 0F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, 0F, 0F).rotation(2.0F, -90F, 0F, 0F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, -5F, 0F).rotation(2.0F, -90F, -5F, 0F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, 5F, 0F).rotation(2.0F, -90F, 5F, 0F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, 0F, 0F).rotation(2.0F, -90F, 0F, 0F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, 0F, 0F).rotation(2.0F, -90F, 0F, 0F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, -5F, 0F).rotation(2.0F, -90F, -5F, 0F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -90F, 5F, 0F).rotation(2.0F, -90F, 5F, 0F).build())
         .build();
 
     public static final Animation RUN = new Animation.Builder(0.5F)
@@ -121,10 +121,10 @@ public class LionModel extends EntityModel<FelinePredator>
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 60F, 0F, 0F).noRotation(0.5F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -90F, 0F, 0F).rotation(0.4167F, -2.5F, 0F, 0F).noRotation(0.5F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 7.5F, 0F, 0F).noRotation(0.3333F).rotation(0.4167F, -4.69F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -32.5F, 0F, 0F).rotation(0.375F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, -32.5F, 0F, 0F).rotation(0.3333F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 40F, 0F, 0F).rotation(0.3333F, -30F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -32.5F, 0F, 0F).rotation(0.375F, 25.5F, 0F, 0F).noRotation(0.5F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, -32.5F, 0F, 0F).rotation(0.3333F, 25.5F, 0F, 0F).noRotation(0.5F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 40F, 0F, 0F).rotation(0.3333F, -30F, 0F, 0F).noRotation(0.5F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
         .build();
 
     public final Map<String, ModelPart> parts;
@@ -160,16 +160,16 @@ public class LionModel extends EntityModel<FelinePredator>
         this.nose = head.getChild("nose");
         this.earL = head.getChild("earL");
         this.earR = head.getChild("earR");
-        this.legFR = body.getChild("legFR");
-        this.legFL = body.getChild("legFL");
-        this.legBR = body.getChild("legBR");
-        this.legBL = body.getChild("legBL");
+        this.legFR = body.getChild("right_front_leg");
+        this.legFL = body.getChild("left_front_leg");
+        this.legBR = body.getChild("right_hind_leg");
+        this.legBL = body.getChild("left_hind_leg");
         this.maneBone = body.getChild("maneBone");
         this.maneHeadBone = head.getChild("maneHeadBone");
 
         parts = new ImmutableMap.Builder<String, ModelPart>().put("body", body).put("tail", tail).put("tail1", tail1).put("head", head)
-            .put("jaw", jaw).put("earL", earL).put("earR", earR).put("legFR", legFR).put("legFL", legFL).put("legBR", legBR)
-            .put("legBL", legBL).put("nose", nose).put("neck", neck).put("maneBone", maneBone).put("maneHeadBone", maneHeadBone).build();
+            .put("jaw", jaw).put("earL", earL).put("earR", earR).put("right_front_leg", legFR).put("left_front_leg", legFL).put("right_hind_leg", legBR)
+            .put("left_hind_leg", legBL).put("nose", nose).put("neck", neck).put("maneBone", maneBone).put("maneHeadBone", maneHeadBone).build();
         defaults = Animation.initDefaults(parts);
     }
 

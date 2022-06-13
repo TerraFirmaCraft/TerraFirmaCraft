@@ -152,13 +152,49 @@
         "maxCount": 4
       },
       {
+        "type": "tfc:goat",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:yak",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:alpaca",
         "weight": 1,
         "minCount": 1,
         "maxCount": 4
       },
       {
+        "type": "tfc:sheep",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:musk_ox",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
         "type": "tfc:chicken",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:duck",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:quail",
         "weight": 1,
         "minCount": 2,
         "maxCount": 6
@@ -196,6 +232,6 @@
     ]
   },
   "player_spawn_friendly": true,
-  "creature_spawn_probability": 0.05,
+  "creature_spawn_probability": 0.5,
   "spawn_costs": {}
 }

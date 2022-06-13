@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import net.dries007.tfc.common.entities.predator.FelinePredator;
+
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -107,8 +109,14 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<Mammal>> PIG = register("pig", EntityType.Builder.of(TFCEntities::makePig, MobCategory.CREATURE).sized(0.9F, 0.9F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<DairyAnimal>> COW = register("cow", EntityType.Builder.of(TFCEntities::makeCow, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
-    public static final RegistryObject<EntityType<WoolyAnimal>> ALPACA = register("alpaca", EntityType.Builder.of(TFCEntities::makeAlpaca, MobCategory.CREATURE).sized(0.9F, 1.4F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<DairyAnimal>> GOAT = register("goat", EntityType.Builder.of(TFCEntities::makeGoat, MobCategory.CREATURE).sized(0.9F, 1.3F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<DairyAnimal>> YAK = register("yak", EntityType.Builder.of(TFCEntities::makeYak, MobCategory.CREATURE).sized(1.3F, 1.7F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<WoolyAnimal>> ALPACA = register("alpaca", EntityType.Builder.of(TFCEntities::makeAlpaca, MobCategory.CREATURE).sized(0.9F, 1.9F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<WoolyAnimal>> SHEEP = register("sheep", EntityType.Builder.of(TFCEntities::makeSheep, MobCategory.CREATURE).sized(0.9F, 1.2F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<WoolyAnimal>> MUSK_OX = register("musk_ox", EntityType.Builder.of(TFCEntities::makeMuskOx, MobCategory.CREATURE).sized(1.3F, 1.5F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<OviparousAnimal>> CHICKEN = register("chicken", EntityType.Builder.of(TFCEntities::makeChicken, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<OviparousAnimal>> DUCK = register("duck", EntityType.Builder.of(TFCEntities::makeDuck, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<OviparousAnimal>> QUAIL = register("quail", EntityType.Builder.of(TFCEntities::makeQuail, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -149,8 +157,14 @@ public class TFCEntities
         event.put(OCTOPOTEUTHIS.get(), GlowSquid.createAttributes().build());
         event.put(PIG.get(), Pig.createAttributes().build());
         event.put(COW.get(), Cow.createAttributes().build());
+        event.put(GOAT.get(), Pig.createAttributes().build());
+        event.put(YAK.get(), Cow.createAttributes().build());
         event.put(ALPACA.get(), Cow.createAttributes().build());
+        event.put(SHEEP.get(), Cow.createAttributes().build());
+        event.put(MUSK_OX.get(), Cow.createAttributes().build());
         event.put(CHICKEN.get(), Chicken.createAttributes().build());
+        event.put(DUCK.get(), Chicken.createAttributes().build());
+        event.put(QUAIL.get(), Chicken.createAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)
@@ -177,9 +191,34 @@ public class TFCEntities
         };
     }
 
+    public static DairyAnimal makeGoat(EntityType<? extends DairyAnimal> animal, Level level)
+    {
+        return new DairyAnimal(animal, level, () -> SoundEvents.GOAT_AMBIENT, () -> SoundEvents.GOAT_HURT, () -> SoundEvents.GOAT_DEATH, () -> SoundEvents.GOAT_STEP, TFCConfig.SERVER.goatFamiliarityCap, TFCConfig.SERVER.goatAdulthoodDays, TFCConfig.SERVER.goatUses, TFCConfig.SERVER.goatEatsRottenFood, TFCConfig.SERVER.goatChildCount, TFCConfig.SERVER.goatGestationDays, TFCConfig.SERVER.goatMilkTicks, TFCConfig.SERVER.goatMinMilkFamiliarity)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.GOAT_FOOD;
+            }
+        };
+    }
+
+    public static DairyAnimal makeYak(EntityType<? extends DairyAnimal> animal, Level level)
+    {
+        return new DairyAnimal(animal, level, TFCSounds.YAK_AMBIENT, TFCSounds.YAK_HURT, TFCSounds.YAK_DEATH, TFCSounds.YAK_STEP, TFCConfig.SERVER.yakFamiliarityCap, TFCConfig.SERVER.yakAdulthoodDays, TFCConfig.SERVER.yakUses, TFCConfig.SERVER.yakEatsRottenFood, TFCConfig.SERVER.yakChildCount, TFCConfig.SERVER.yakGestationDays, TFCConfig.SERVER.yakMilkTicks, TFCConfig.SERVER.yakMinMilkFamiliarity)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.YAK_FOOD;
+            }
+        };
+    }
+
     public static WoolyAnimal makeAlpaca(EntityType<? extends WoolyAnimal> animal, Level level)
     {
-        return new WoolyAnimal(animal, level, TFCSounds.ALPACA_AMBIENT, TFCSounds.ALPACA_HURT, TFCSounds.ALPACA_DEATH, TFCSounds.ALPACA_STEP, TFCConfig.SERVER.alpacaFamiliarityCap, TFCConfig.SERVER.alpacaAdulthoodDays, TFCConfig.SERVER.alpacaUses, TFCConfig.SERVER.alpacaEatsRottenFood, TFCConfig.SERVER.alpacaChildCount, TFCConfig.SERVER.alpacaGestationDays, TFCConfig.SERVER.alpacaWoolTicks, TFCConfig.SERVER.alpacaMinWoolFamiliarity) {
+        return new WoolyAnimal(animal, level, TFCSounds.ALPACA_AMBIENT, TFCSounds.ALPACA_HURT, TFCSounds.ALPACA_DEATH, TFCSounds.ALPACA_STEP, TFCConfig.SERVER.alpacaFamiliarityCap, TFCConfig.SERVER.alpacaAdulthoodDays, TFCConfig.SERVER.alpacaUses, TFCConfig.SERVER.alpacaEatsRottenFood, TFCConfig.SERVER.alpacaChildCount, TFCConfig.SERVER.alpacaGestationDays, TFCConfig.SERVER.alpacaWoolTicks, TFCConfig.SERVER.alpacaMinWoolFamiliarity)
+        {
             @Override
             public TagKey<Item> getFoodTag()
             {
@@ -188,13 +227,62 @@ public class TFCEntities
         };
     }
 
+    public static WoolyAnimal makeSheep(EntityType<? extends WoolyAnimal> animal, Level level)
+    {
+        return new WoolyAnimal(animal, level, () -> SoundEvents.SHEEP_AMBIENT, () -> SoundEvents.SHEEP_HURT, () -> SoundEvents.SHEEP_DEATH, () -> SoundEvents.SHEEP_STEP, TFCConfig.SERVER.sheepFamiliarityCap, TFCConfig.SERVER.sheepAdulthoodDays, TFCConfig.SERVER.sheepUses, TFCConfig.SERVER.sheepEatsRottenFood, TFCConfig.SERVER.sheepChildCount, TFCConfig.SERVER.sheepGestationDays, TFCConfig.SERVER.sheepWoolTicks, TFCConfig.SERVER.sheepMinWoolFamiliarity)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.SHEEP_FOOD;
+            }
+        };
+    }
+
+    public static WoolyAnimal makeMuskOx(EntityType<? extends WoolyAnimal> animal, Level level)
+    {
+        return new WoolyAnimal(animal, level, TFCSounds.MUSK_OX_AMBIENT, TFCSounds.MUSK_OX_HURT, TFCSounds.MUSK_OX_DEATH, TFCSounds.MUSK_OX_STEP, TFCConfig.SERVER.muskOxFamiliarityCap, TFCConfig.SERVER.muskOxAdulthoodDays, TFCConfig.SERVER.muskOxUses, TFCConfig.SERVER.muskOxEatsRottenFood, TFCConfig.SERVER.muskOxChildCount, TFCConfig.SERVER.muskOxGestationDays, TFCConfig.SERVER.muskOxWoolTicks, TFCConfig.SERVER.muskOxMinWoolFamiliarity)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.MUSK_OX_FOOD;
+            }
+        };
+    }
+
     public static OviparousAnimal makeChicken(EntityType<? extends OviparousAnimal> animal, Level level)
     {
-        return new OviparousAnimal(animal, level, () -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_STEP, TFCConfig.SERVER.chickenFamiliarityCap, TFCConfig.SERVER.chickenAdulthoodDays, TFCConfig.SERVER.chickenUses, TFCConfig.SERVER.chickenEatsRottenFood, TFCConfig.SERVER.chickenEggTicks, TFCConfig.SERVER.chickenMinEggFamiliarity, TFCConfig.SERVER.chickenHatchDays) {
+        return new OviparousAnimal(animal, level, () -> SoundEvents.CHICKEN_AMBIENT, () -> SoundEvents.CHICKEN_HURT, () -> SoundEvents.CHICKEN_DEATH, () -> SoundEvents.CHICKEN_STEP, TFCConfig.SERVER.chickenFamiliarityCap, TFCConfig.SERVER.chickenAdulthoodDays, TFCConfig.SERVER.chickenUses, TFCConfig.SERVER.chickenEatsRottenFood, TFCConfig.SERVER.chickenEggTicks, TFCConfig.SERVER.chickenMinEggFamiliarity, TFCConfig.SERVER.chickenHatchDays)
+        {
             @Override
             public TagKey<Item> getFoodTag()
             {
                 return TFCTags.Items.CHICKEN_FOOD;
+            }
+        };
+    }
+
+    public static OviparousAnimal makeDuck(EntityType<? extends OviparousAnimal> animal, Level level)
+    {
+        return new OviparousAnimal(animal, level, TFCSounds.DUCK_AMBIENT, TFCSounds.DUCK_HURT, TFCSounds.DUCK_DEATH, TFCSounds.DUCK_STEP, TFCConfig.SERVER.duckFamiliarityCap, TFCConfig.SERVER.duckAdulthoodDays, TFCConfig.SERVER.duckUses, TFCConfig.SERVER.duckEatsRottenFood, TFCConfig.SERVER.duckEggTicks, TFCConfig.SERVER.duckMinEggFamiliarity, TFCConfig.SERVER.duckHatchDays)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.DUCK_FOOD;
+            }
+        };
+    }
+
+    public static OviparousAnimal makeQuail(EntityType<? extends OviparousAnimal> animal, Level level)
+    {
+        return new OviparousAnimal(animal, level, TFCSounds.QUAIL_AMBIENT, TFCSounds.QUAIL_HURT, TFCSounds.QUAIL_DEATH, TFCSounds.QUAIL_STEP, TFCConfig.SERVER.quailFamiliarityCap, TFCConfig.SERVER.quailAdulthoodDays, TFCConfig.SERVER.quailUses, TFCConfig.SERVER.quailEatsRottenFood, TFCConfig.SERVER.quailEggTicks, TFCConfig.SERVER.quailFamiliarityCap, TFCConfig.SERVER.quailHatchDays)
+        {
+            @Override
+            public TagKey<Item> getFoodTag()
+            {
+                return TFCTags.Items.QUAIL_FOOD;
             }
         };
     }

@@ -8,7 +8,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:food/chicken"
+          "name": "tfc:food/chicken",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 3,
+                "type": "minecraft:uniform"
+              }
+            }
+          ]
         }
       ]
     },

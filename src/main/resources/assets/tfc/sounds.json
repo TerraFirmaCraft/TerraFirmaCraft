@@ -331,6 +331,144 @@
       "tfc:alpacadeath1"
     ]
   },
+  "animal.yak.ambient": {
+    "subtitle": "tfc.animal.yak.ambient",
+    "sounds": [
+      "tfc:yaksay1",
+      "tfc:yaksay2",
+      "tfc:yaksay3",
+      "tfc:yaksay4"
+    ]
+  },
+  "animal.yak.hurt": {
+    "subtitle": "tfc.animal.yak.hurt",
+    "sounds": [
+      "tfc:yakhurt1",
+      "tfc:yakhurt2"
+    ]
+  },
+  "animal.yak.step": {
+    "subtitle": "tfc.animal.yak.step",
+    "sounds": [
+      "minecraft:mob/sheep/step1",
+      "minecraft:mob/sheep/step2",
+      "minecraft:mob/sheep/step3",
+      "minecraft:mob/sheep/step4",
+      "minecraft:mob/sheep/step5"
+    ]
+  },
+  "animal.yak.death": {
+    "subtitle": "tfc.animal.yak.death",
+    "sounds": [
+      "tfc:yakdeath1"
+    ]
+  },
+  "animal.musk_ox.ambient": {
+    "subtitle": "tfc.animal.musk_ox.ambient",
+    "sounds": [
+      {
+        "name": "tfc:muskoxsay1",
+        "weight": 9
+      },
+      {
+        "name": "tfc:muskoxsay2",
+        "weight": 9
+      },
+      {
+        "name": "tfc:muskox_call",
+        "weight": 1
+      }
+    ]
+  },
+  "animal.musk_ox.hurt": {
+    "subtitle": "tfc.animal.musk_ox.hurt",
+    "sounds": [
+      "tfc:muskoxhurt1",
+      "tfc:muskoxhurt2"
+    ]
+  },
+  "animal.musk_ox.step": {
+    "subtitle": "tfc.animal.musk_ox.step",
+    "sounds": [
+      "minecraft:mob/sheep/step1",
+      "minecraft:mob/sheep/step2",
+      "minecraft:mob/sheep/step3",
+      "minecraft:mob/sheep/step4",
+      "minecraft:mob/sheep/step5"
+    ]
+  },
+  "animal.musk_ox.death": {
+    "subtitle": "tfc.animal.musk_ox.death",
+    "sounds": [
+      "tfc:muskoxdeath1"
+    ]
+  },
+  "animal.duck.ambient": {
+    "subtitle": "tfc.animal.duck.ambient",
+    "sounds": [
+      "tfc:duck1",
+      "tfc:duck2",
+      "tfc:duck3"
+    ]
+  },
+  "animal.duck.hurt": {
+    "subtitle": "tfc.animal.duck.hurt",
+    "sounds": [
+      "tfc:duckhurt1",
+      "tfc:duckcry1",
+      "tfc:duckcry2"
+    ]
+  },
+  "animal.duck.step": {
+    "subtitle": "tfc.animal.duck.step",
+    "sounds": [
+      "minecraft:mob/chicken/step1",
+      "minecraft:mob/chicken/step2",
+      "minecraft:mob/chicken/step3",
+      "minecraft:mob/chicken/step4",
+      "minecraft:mob/chicken/step5"
+    ]
+  },
+  "animal.duck.death": {
+    "subtitle": "tfc.animal.duck.death",
+    "sounds": [
+      "tfc:duckdeath1",
+      "tfc:duckdeath"
+    ]
+  },
+  "animal.quail.ambient": {
+    "subtitle": "tfc.animal.quail.ambient",
+    "sounds": [
+      "tfc:quailsay1",
+      "tfc:quailsay2",
+      "tfc:quailsay3",
+      "tfc:quailsay4",
+      "tfc:quailsay5"
+    ]
+  },
+  "animal.quail.hurt": {
+    "subtitle": "tfc.animal.quail.hurt",
+    "sounds": [
+      "tfc:quailhurt1",
+      "tfc:quailhurt2"
+    ]
+  },
+  "animal.quail.step": {
+    "subtitle": "tfc.animal.quail.step",
+    "sounds": [
+      "minecraft:mob/chicken/step1",
+      "minecraft:mob/chicken/step2",
+      "minecraft:mob/chicken/step3",
+      "minecraft:mob/chicken/step4",
+      "minecraft:mob/chicken/step5"
+    ]
+  },
+  "animal.quail.death": {
+    "subtitle": "tfc.animal.quail.death",
+    "sounds": [
+      "tfc:quaildeath1"
+    ]
+  },
   "animal.predator.sleep": {
     "subtitle": "tfc.animal.predator.sleep",
     "sounds": [
