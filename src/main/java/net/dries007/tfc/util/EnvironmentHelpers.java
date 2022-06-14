@@ -7,14 +7,7 @@
 package net.dries007.tfc.util;
 
 import java.util.Random;
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blocks.IcePileBlock;
-import net.dries007.tfc.common.blocks.SnowPileBlock;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.ThinSpikeBlock;
-import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.util.climate.Climate;
-import net.dries007.tfc.util.climate.OverworldClimateModel;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -29,6 +22,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.Fluids;
+
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.IcePileBlock;
+import net.dries007.tfc.common.blocks.SnowPileBlock;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.blocks.ThinSpikeBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -37,6 +39,10 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class EnvironmentHelpers
 {
+    public static final int ICICLE_MELT_RANDOM_TICK_CHANCE = 120; // Icicles don't melt naturally well at all, since they form under overhangs
+    public static final int SNOW_MELT_RANDOM_TICK_CHANCE = 150; // Snow and ice melt naturally, but snow naturally gets placed under overhangs due to smoothing
+    public static final int ICE_MELT_RANDOM_TICK_CHANCE = 400; // Ice practically never should form under overhangs, so this can be very low chance
+
     /**
      * Ticks a chunk for environment specific effects.
      * Handles:
@@ -140,7 +146,7 @@ public final class EnvironmentHelpers
                     }
                 }
             }
-            else if (temperature > OverworldClimateModel.SNOW_MELT_TEMPERATURE)
+            else if (temperature > OverworldClimateModel.SNOW_MELT_TEMPERATURE && random.nextInt(3) == 0)
             {
                 // Snow melting - both snow and snow piles
                 final BlockState state = level.getBlockState(surfacePos);

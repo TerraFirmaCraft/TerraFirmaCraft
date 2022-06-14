@@ -18,6 +18,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 
+import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
@@ -43,7 +44,7 @@ public class IcicleBlock extends ThinSpikeBlock
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         final float temperature = Climate.getTemperature(level, pos);
-        if (state.getValue(TIP) && state.getValue(FLUID).getFluid() == Fluids.EMPTY && temperature > OverworldClimateModel.ICICLE_MELT_TEMPERATURE && random.nextFloat() < 0.008f)
+        if (state.getValue(TIP) && state.getValue(FLUID).getFluid() == Fluids.EMPTY && temperature > OverworldClimateModel.ICICLE_MELT_TEMPERATURE && random.nextInt(EnvironmentHelpers.ICICLE_MELT_RANDOM_TICK_CHANCE) == 0)
         {
             // Melt, shrink the icicle, and possibly fill a fluid handler beneath
             level.removeBlock(pos, false);

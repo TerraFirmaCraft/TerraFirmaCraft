@@ -10,6 +10,7 @@
     "FallingBlockMixin",
     "FlowingFluidMixin",
     "FriendlyByteBufMixin",
+    "IceBlockMixin",
     "ItemStackMixin",
     "LevelMixin",
     "PrimaryLevelDataMixin",
