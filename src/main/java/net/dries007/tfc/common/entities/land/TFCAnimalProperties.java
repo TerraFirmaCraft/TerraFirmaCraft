@@ -178,6 +178,8 @@ public interface TFCAnimalProperties
 
     boolean eatsRottenFood();
 
+    void setMated();
+
     /**
      * Check if this animal is ready to mate
      *

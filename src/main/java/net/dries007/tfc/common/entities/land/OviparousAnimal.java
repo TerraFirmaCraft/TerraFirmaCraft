@@ -21,10 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.ai.FindNestGoal;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.Nullable;
@@ -50,6 +48,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     @Override
     public void registerGoals()
     {
+        // todo FIXME
         super.registerGoals();
         goalSelector.addGoal(2, new FindNestGoal(this));
     }
