@@ -15,6 +15,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class ProducingMammal extends Mammal
@@ -26,9 +27,9 @@ public abstract class ProducingMammal extends Mammal
 
     public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
     {
-        super(animal, level, sounds, config);
-        this.produceTicks = config.produceTicks;
-        this.produceFamiliarity = config.produceFamiliarity;
+        super(animal, level, sounds, config.inner());
+        this.produceTicks = config.produceTicks();
+        this.produceFamiliarity = config.produceFamiliarity();
     }
 
     @Override
@@ -80,9 +81,4 @@ public abstract class ProducingMammal extends Mammal
         entityData.set(DATA_PRODUCED, producedTick);
     }
 
-    public static class ProducingMammalConfig extends MammalConfig
-    {
-        public ForgeConfigSpec.IntValue produceTicks;
-        public ForgeConfigSpec.DoubleValue produceFamiliarity;
-    }
 }

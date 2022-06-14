@@ -42,6 +42,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -77,10 +78,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         this.hurt = sounds.hurt();
         this.death = sounds.death();
         this.step = sounds.step();
-        this.adultFamiliarityCap = config.familiarityCap;
-        this.daysToAdulthood = config.adulthoodDays;
-        this.usesToElderly = config.uses;
-        this.eatsRottenFood = config.eatsRottenFood;
+        this.adultFamiliarityCap = config.familiarityCap();
+        this.daysToAdulthood = config.adulthoodDays();
+        this.usesToElderly = config.uses();
+        this.eatsRottenFood = config.eatsRottenFood();
     }
 
     @Override
@@ -438,13 +439,5 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     protected void playStepSound(BlockPos pPos, BlockState pBlock)
     {
         this.playSound(step.get(), 0.15F, 1.0F);
-    }
-
-    public static class AnimalConfig
-    {
-        public ForgeConfigSpec.DoubleValue familiarityCap;
-        public ForgeConfigSpec.IntValue adulthoodDays;
-        public ForgeConfigSpec.IntValue uses;
-        public ForgeConfigSpec.BooleanValue eatsRottenFood;
     }
 }

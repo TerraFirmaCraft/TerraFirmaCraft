@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;

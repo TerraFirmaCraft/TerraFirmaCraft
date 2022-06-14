@@ -21,6 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.ai.FindNestGoal;
+import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.Nullable;
@@ -39,8 +40,8 @@ public abstract class OviparousAnimal extends ProducingAnimal
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
     {
-        super(type, level, sounds, config);
-        this.hatchDays = config.hatchDays;
+        super(type, level, sounds, config.inner());
+        this.hatchDays = config.hatchDays();
     }
 
     @Override
@@ -128,8 +129,4 @@ public abstract class OviparousAnimal extends ProducingAnimal
         return event.getProduct();
     }
 
-    public static class OviparousAnimalConfig extends ProducingAnimalConfig
-    {
-        public ForgeConfigSpec.IntValue hatchDays;
-    }
 }

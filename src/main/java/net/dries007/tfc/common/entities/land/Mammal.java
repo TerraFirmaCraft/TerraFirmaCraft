@@ -24,6 +24,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class Mammal extends TFCAnimal
@@ -34,9 +35,9 @@ public abstract class Mammal extends TFCAnimal
 
     public Mammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
-        super(animal, level, sounds, config);
-        this.childCount = config.childCount;
-        this.gestationDays = config.gestationDays;
+        super(animal, level, sounds, config.inner());
+        this.childCount = config.childCount();
+        this.gestationDays = config.gestationDays();
     }
 
     public long getPregnantTime()
@@ -139,9 +140,4 @@ public abstract class Mammal extends TFCAnimal
         return gestationDays.get();
     }
 
-    public static class MammalConfig extends TFCAnimal.AnimalConfig
-    {
-        public ForgeConfigSpec.IntValue gestationDays;
-        public ForgeConfigSpec.IntValue childCount;
-    }
 }

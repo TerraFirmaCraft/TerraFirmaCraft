@@ -20,6 +20,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
