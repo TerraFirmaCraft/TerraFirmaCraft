@@ -83,35 +83,15 @@ public final class TFCSounds
 
     private static ForgeSoundType createBlock(String name)
     {
-        return new ForgeSoundType(1.0f, 1.0f,
-            create("block.%s.break".formatted(name)),
-            create("block.%s.step".formatted(name)),
-            create("block.%s.place".formatted(name)),
-            create("block.%s.hit".formatted(name)),
-            create("block.%s.fall".formatted(name))
-        );
+        return new ForgeSoundType(1.0f, 1.0f, create("block.%s.break".formatted(name)), create("block.%s.step".formatted(name)), create("block.%s.place".formatted(name)), create("block.%s.hit".formatted(name)), create("block.%s.fall".formatted(name)));
     }
 
     private static EntitySound createEntity(String name, boolean attack, boolean sleep)
     {
-        return new EntitySound(
-            create("entity.%s.ambient".formatted(name)),
-            create("entity.%s.death".formatted(name)),
-            create("entity.%s.hurt".formatted(name)),
-            create("entity.%s.step".formatted(name)),
-            createOptional("entity.%s.attack".formatted(name), attack),
-            createOptional("entity.%s.sleep".formatted(name), sleep)
-        );
+        return new EntitySound(create("entity.%s.ambient".formatted(name)), create("entity.%s.death".formatted(name)), create("entity.%s.hurt".formatted(name)), create("entity.%s.step".formatted(name)), createOptional("entity.%s.attack".formatted(name), attack), createOptional("entity.%s.sleep".formatted(name), sleep));
     }
 
-    public record EntitySound(
-        Supplier<SoundEvent> ambient,
-        Supplier<SoundEvent> death,
-        Supplier<SoundEvent> hurt,
-        Supplier<SoundEvent> step,
-        Optional<Supplier<SoundEvent>> attack,
-        Optional<Supplier<SoundEvent>> sleep
-    )
+    public record EntitySound(Supplier<SoundEvent> ambient, Supplier<SoundEvent> death, Supplier<SoundEvent> hurt, Supplier<SoundEvent> step, Optional<Supplier<SoundEvent>> attack, Optional<Supplier<SoundEvent>> sleep)
     {
         public EntitySound(Supplier<SoundEvent> ambient, Supplier<SoundEvent> death, Supplier<SoundEvent> hurt, Supplier<SoundEvent> step)
         {
