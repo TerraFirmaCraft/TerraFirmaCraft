@@ -6,6 +6,10 @@
 
 package net.dries007.tfc.common.blocks;
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.util.EnvironmentHelpers;
+import net.dries007.tfc.util.Helpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
@@ -22,11 +26,6 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.HitResult;
 
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.util.EnvironmentHelpers;
-import net.dries007.tfc.util.Helpers;
-
 public class IcePileBlock extends IceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
     public static void placeIcePileOrIce(LevelAccessor level, BlockPos groundPos, BlockState groundState, boolean skipEdgeCheck)
@@ -34,7 +33,7 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
         // Don't just check for water, check for water with plants that can freeze as well
         final FluidState fluid = groundState.getFluidState();
         final boolean icePileAtGround = Helpers.isBlock(groundState.getBlock(), TFCTags.Blocks.CAN_BE_ICE_PILED);
-        if (fluid.getType() == Fluids.WATER && (icePileAtGround || groundState.getBlock() == Blocks.WATER) && (skipEdgeCheck || EnvironmentHelpers.isWaterAtEdge(level, groundPos)))
+        if (fluid.getType() == Fluids.WATER && (icePileAtGround || groundState.getBlock() == Blocks.WATER) && (skipEdgeCheck || EnvironmentHelpers.isAdjacentToNotWater(level, groundPos)))
         {
             // Freeze block, handling possible plants *in* the block, and *above* the block
             final BlockPos surfacePos = groundPos.above();

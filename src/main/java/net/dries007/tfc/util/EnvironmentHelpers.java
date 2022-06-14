@@ -7,21 +7,6 @@
 package net.dries007.tfc.util;
 
 import java.util.Random;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SnowLayerBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
-
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.IcePileBlock;
 import net.dries007.tfc.common.blocks.SnowPileBlock;
@@ -30,6 +15,21 @@ import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This is a helper class which handles environment effects
@@ -77,17 +77,48 @@ public final class EnvironmentHelpers
         return Helpers.isBlock(state, Blocks.WATER) || Helpers.isBlock(state, TFCBlocks.SALT_WATER.get());
     }
 
-    public static boolean isWaterAtEdge(LevelAccessor level, BlockPos pos)
+    public static boolean isAdjacentToWater(LevelAccessor level, BlockPos pos)
+    {
+        return isAdjacentToMaybeWater(level, pos, true);
+    }
+
+    public static boolean isAdjacentToNotWater(LevelAccessor level, BlockPos pos)
+    {
+        return isAdjacentToMaybeWater(level, pos, false);
+    }
+
+    private static boolean isAdjacentToMaybeWater(LevelAccessor level, BlockPos pos, boolean expected)
     {
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction direction : Direction.Plane.HORIZONTAL)
         {
-            if (!level.isWaterAt(mutablePos.setWithOffset(pos, direction)))
+            if (level.isWaterAt(mutablePos.setWithOffset(pos, direction)) == expected)
             {
                 return true;
             }
         }
         return false;
+    }
+
+    public static boolean isWorldgenReplaceable(WorldGenLevel level, BlockPos pos)
+    {
+        return isWorldgenReplaceable(level.getBlockState(pos));
+    }
+
+    public static boolean isWorldgenReplaceable(BlockState state)
+    {
+        return FluidHelpers.isAirOrEmptyFluid(state) || Helpers.isBlock(state, TFCTags.Blocks.SINGLE_BLOCK_REPLACEABLE);
+    }
+
+    public static boolean canPlaceBushOn(WorldGenLevel level, BlockPos pos)
+    {
+        return isWorldgenReplaceable(level, pos) && Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
+    }
+
+    public static boolean isOnSturdyFace(WorldGenLevel level, BlockPos pos)
+    {
+        pos = pos.below();
+        return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
     }
 
     private static void doSnow(Level level, BlockPos surfacePos, float temperature)
@@ -189,15 +220,18 @@ public final class EnvironmentHelpers
     private static void doIce(Level level, BlockPos groundPos, float temperature)
     {
         final Random random = level.getRandom();
-        if (random.nextInt(16) == 0)
+        BlockState groundState = level.getBlockState(groundPos);
+        if (temperature < OverworldClimateModel.ICE_FREEZE_TEMPERATURE)
         {
-            BlockState groundState = level.getBlockState(groundPos);
-            if (temperature < OverworldClimateModel.ICE_FREEZE_TEMPERATURE)
+            if (random.nextInt(16) == 0)
             {
-                FluidState groundFluid = groundState.getFluidState();
-
                 // First, since we want to handle water with a single block above, if we find no water, but we find one below, we choose that instead
-                if (groundFluid.getType() != Fluids.WATER)
+                // However, we have to also exclude ice here, since we don't intend to freeze two layers down
+                if (groundState.getBlock() == Blocks.ICE)
+                {
+                    return;
+                }
+                if (groundState.getFluidState().getType() != Fluids.WATER)
                 {
                     groundPos = groundPos.below();
                     groundState = level.getBlockState(groundPos);
@@ -205,10 +239,14 @@ public final class EnvironmentHelpers
 
                 IcePileBlock.placeIcePileOrIce(level, groundPos, groundState, false);
             }
-            else if (temperature > OverworldClimateModel.ICE_MELT_TEMPERATURE)
+        }
+        else if (temperature > OverworldClimateModel.ICE_MELT_TEMPERATURE)
+        {
+            // Handle ice melting
+            if (groundState.getBlock() == Blocks.ICE || groundState.getBlock() == TFCBlocks.ICE_PILE.get())
             {
-                // Handle ice melting
-                if (groundState.getBlock() == Blocks.ICE || groundState.getBlock() == TFCBlocks.ICE_PILE.get())
+                // Apply a heuristic to try and make ice melting more smooth, in the same way ice freezing works
+                if (random.nextInt(600) == 0 || (random.nextInt(12) == 0 && isAdjacentToWater(level, groundPos)))
                 {
                     IcePileBlock.removeIcePileOrIce(level, groundPos, groundState);
                 }
@@ -260,26 +298,5 @@ public final class EnvironmentHelpers
             adjacentPos = posAbove;
         }
         return foundPos;
-    }
-
-    public static boolean isWorldgenReplaceable(WorldGenLevel level, BlockPos pos)
-    {
-        return isWorldgenReplaceable(level.getBlockState(pos));
-    }
-
-    public static boolean isWorldgenReplaceable(BlockState state)
-    {
-        return FluidHelpers.isAirOrEmptyFluid(state) || Helpers.isBlock(state, TFCTags.Blocks.SINGLE_BLOCK_REPLACEABLE);
-    }
-
-    public static boolean canPlaceBushOn(WorldGenLevel level, BlockPos pos)
-    {
-        return isWorldgenReplaceable(level, pos) && Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.BUSH_PLANTABLE_ON);
-    }
-
-    public static boolean isOnSturdyFace(WorldGenLevel level, BlockPos pos)
-    {
-        pos = pos.below();
-        return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
     }
 }
