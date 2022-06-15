@@ -21,26 +21,20 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 public class WoodenBucketItem extends TFCBucketItem
 {
-    public WoodenBucketItem(Properties properties, Supplier<Integer> capacity)
+    public WoodenBucketItem(Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist)
     {
-        super(properties, capacity);
-    }
-
-    @Override
-    protected TagKey<Fluid> getWhitelistTag()
-    {
-        return TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET;
+        super(properties, capacity, whitelist);
     }
 
     /**
      * Follows the super without interacting with fluid logging or containers
      */
+    @Override
     public boolean emptyContents(IFluidHandler handler, @Nullable Player player, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult hit)
     {
         Fluid fluid = handler.getFluidInTank(0).getFluid();

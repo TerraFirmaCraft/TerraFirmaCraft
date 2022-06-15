@@ -6,13 +6,13 @@
 
 package net.dries007.tfc.common.items;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,7 +23,6 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -31,7 +30,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlockContainer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
@@ -46,14 +44,16 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class TFCBucketItem extends Item
+public class TFCBucketItem extends Item
 {
+    private final TagKey<Fluid> whitelist;
     private final Supplier<Integer> capacity;
 
-    public TFCBucketItem(Properties properties, Supplier<Integer> capacity)
+    public TFCBucketItem(Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist)
     {
         super(properties);
         this.capacity = capacity;
+        this.whitelist = whitelist;
     }
 
     @Override
@@ -185,7 +185,10 @@ public abstract class TFCBucketItem extends Item
         return capacity.get();
     }
 
-    abstract TagKey<Fluid> getWhitelistTag();
+    protected TagKey<Fluid> getWhitelistTag()
+    {
+        return whitelist;
+    }
 
     @Nullable
     @Override
@@ -195,10 +198,14 @@ public abstract class TFCBucketItem extends Item
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
+    public Component getName(ItemStack stack)
     {
         FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(cap -> cap.getFluidInTank(0)).orElse(FluidStack.EMPTY);
-        if (!fluid.isEmpty()) Helpers.addFluidStackTooltipInfo(fluid, tooltip);
+        if (!fluid.isEmpty())
+        {
+            return fluid.getDisplayName().copy().append(" ").append(super.getName(stack));
+        }
+        return super.getName(stack);
     }
 
     @Override

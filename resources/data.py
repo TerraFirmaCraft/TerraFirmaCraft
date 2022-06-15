@@ -177,6 +177,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('forge:string', 'tfc:wool_yarn')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
+    rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -534,7 +535,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkable_ingredients')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
     rm.fluid_tag('usable_in_red_steel_bucket', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_blue_steel_bucket', '#tfc:ingredients', '#minecraft:lava')
+    rm.fluid_tag('usable_in_blue_steel_bucket', '#tfc:ingredients', '#minecraft:lava', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
     rm.fluid_tag('scribing_ink', 'tfc:black_dye')
@@ -573,6 +574,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.very_heavy)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
+    item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)

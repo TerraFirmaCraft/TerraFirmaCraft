@@ -8,5 +8,5 @@ package net.dries007.tfc.common.capabilities;
 
 public interface FluidTankCallback
 {
-    void fluidTankChanged(SnitchingFluidTank tank);
+    void fluidTankChanged(InventoryFluidTank tank);
 }

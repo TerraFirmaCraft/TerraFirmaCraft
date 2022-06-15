@@ -33,9 +33,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class JugItem extends WoodenBucketItem
 {
-    public JugItem(Item.Properties properties, Supplier<Integer> capacity)
+    public JugItem(Item.Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist)
     {
-        super(properties, capacity);
+        super(properties, capacity, whitelist);
     }
 
     @Override

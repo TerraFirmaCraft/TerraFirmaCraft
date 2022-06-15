@@ -351,7 +351,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         private final BarrelBlockEntity barrel;
         private final InventoryItemHandler inventory;
         private final List<ItemStack> excess;
-        private final SnitchingFluidTank tank;
+        private final InventoryFluidTank tank;
         private boolean mutable; // If the inventory is pretending to be mutable, despite the barrel being sealed and preventing extractions / insertions
 
         BarrelInventory(InventoryBlockEntity<?> entity)
@@ -359,7 +359,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel = (BarrelBlockEntity) entity;
             inventory = new InventoryItemHandler(entity, SLOTS);
             excess = new ArrayList<>();
-            tank = new SnitchingFluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL), this);
+            tank = new InventoryFluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL), this);
         }
 
         public void whileMutable(Runnable action)
@@ -474,7 +474,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
 
         @Override
-        public void fluidTankChanged(SnitchingFluidTank tank)
+        public void fluidTankChanged(InventoryFluidTank tank)
         {
             barrel.markForSync();
         }

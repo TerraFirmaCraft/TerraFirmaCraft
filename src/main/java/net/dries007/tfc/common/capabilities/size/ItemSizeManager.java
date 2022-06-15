@@ -16,7 +16,6 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.logging.LogUtils;
-import net.dries007.tfc.common.items.TFCBucketItem;
 import net.dries007.tfc.mixin.accessor.ItemAccessor;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.DataManager;
@@ -100,10 +99,6 @@ public final class ItemSizeManager
         if (item instanceof TieredItem)
         {
             return ItemSize.of(Size.LARGE, Weight.MEDIUM); // Stored only in chests, stack size should be limited to 1 since it is a tool
-        }
-        else if (item instanceof TFCBucketItem)
-        {
-            return ItemSize.of(Size.LARGE, Weight.VERY_HEAVY); // Fits in chests, stacks to 1
         }
         else if (item instanceof ArmorItem)
         {

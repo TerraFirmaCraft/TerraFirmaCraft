@@ -11,17 +11,17 @@ import java.util.function.Predicate;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class SnitchingFluidTank extends FluidTank
+public class InventoryFluidTank extends FluidTank
 {
     private final FluidTankCallback callback;
 
-    public SnitchingFluidTank(int capacity, FluidTankCallback callback)
+    public InventoryFluidTank(int capacity, FluidTankCallback callback)
     {
         super(capacity);
         this.callback = callback;
     }
 
-    public SnitchingFluidTank(int capacity, Predicate<FluidStack> validator, FluidTankCallback callback)
+    public InventoryFluidTank(int capacity, Predicate<FluidStack> validator, FluidTankCallback callback)
     {
         super(capacity, validator);
         this.callback = callback;
