@@ -35,7 +35,12 @@ public class TFCGoatModel extends QuadrupedModel<DairyAnimal>
     {
         this.head.getChild("left_horn").visible = !goat.isBaby();
         this.head.getChild("right_horn").visible = !goat.isBaby();
-        super.setupAnim(goat, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
+        if (goat.displayFemaleCharacteristics())
+        {
+            this.head.getChild("left_horn").y = 2;
+            this.head.getChild("right_horn").y = 2;
+        }
+        super.setupAnim(goat, limbSwing, limbSwingAmount, ageInTicks, headYaw / 3, headPitch);
     }
 }
 
