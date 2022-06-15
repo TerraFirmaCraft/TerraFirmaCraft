@@ -81,6 +81,7 @@ public class TFCTags
         public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
         public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
         public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
+        public static final TagKey<Block> RABBIT_RAIDABLE = create("rabbit_raidable"); // rabbits will break it
 
         private static TagKey<Block> create(String id)
         {

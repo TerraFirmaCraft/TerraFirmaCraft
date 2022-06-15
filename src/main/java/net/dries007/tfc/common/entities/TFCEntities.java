@@ -33,6 +33,7 @@ import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -47,6 +48,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  * - Entity attributes, set in this class below
  * - In datagen, a json entry for fauna
  * - In datagen, an entry in biome spawners
+ * - In datagen, a loot table
  *
  * When making an entity, some rules:
  * - Each synced data parameter and any variable that needs to persist should be serialized
@@ -115,6 +117,8 @@ public class TFCEntities
     public static final RegistryObject<EntityType<OviparousAnimal>> DUCK = register("duck", EntityType.Builder.of(TFCEntities::makeDuck, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<OviparousAnimal>> QUAIL = register("quail", EntityType.Builder.of(TFCEntities::makeQuail, MobCategory.CREATURE).sized(0.4F, 0.7F).clientTrackingRange(10));
 
+    public static final RegistryObject<EntityType<TFCRabbit>> RABBIT = register("rabbit", EntityType.Builder.of(TFCRabbit::new, MobCategory.CREATURE).sized(0.4F, 0.5F).clientTrackingRange(8));
+
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
         return register(name, builder, true);
@@ -165,6 +169,7 @@ public class TFCEntities
         event.put(CHICKEN.get(), Chicken.createAttributes().build());
         event.put(DUCK.get(), Chicken.createAttributes().build());
         event.put(QUAIL.get(), Chicken.createAttributes().build());
+        event.put(RABBIT.get(), TFCRabbit.createAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)

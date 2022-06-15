@@ -57,6 +57,11 @@ public final class EntityHelpers
         selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
     }
 
+    public static void removeGoalOfPriority(GoalSelector selector, int priority)
+    {
+        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getPriority() == priority);
+    }
+
     public static void addCommonPreyGoals(TFCAnimal animal, GoalSelector goalSelector)
     {
         goalSelector.addGoal(0, new FloatGoal(animal));
