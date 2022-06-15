@@ -38,13 +38,11 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -71,19 +69,19 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     private final ForgeConfigSpec.IntValue usesToElderly;
     private final ForgeConfigSpec.BooleanValue eatsRottenFood;
 
-    public TFCAnimal(EntityType<? extends Animal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood)
+    public TFCAnimal(EntityType<? extends Animal> type, Level level, TFCSounds.EntitySound sounds, AnimalConfig config)
     {
         super(type, level);
         this.matingTime = Calendars.get(level).getTicks();
         this.lastFDecay = Calendars.get(level).getTotalDays();
-        this.ambient = ambient;
-        this.hurt = hurt;
-        this.death = death;
-        this.step = step;
-        this.adultFamiliarityCap = adultFamiliarityCap;
-        this.daysToAdulthood = daysToAdulthood;
-        this.usesToElderly = usesToElderly;
-        this.eatsRottenFood = eatsRottenFood;
+        this.ambient = sounds.ambient();
+        this.hurt = sounds.hurt();
+        this.death = sounds.death();
+        this.step = sounds.step();
+        this.adultFamiliarityCap = config.familiarityCap();
+        this.daysToAdulthood = config.adulthoodDays();
+        this.usesToElderly = config.uses();
+        this.eatsRottenFood = config.eatsRottenFood();
     }
 
     @Override

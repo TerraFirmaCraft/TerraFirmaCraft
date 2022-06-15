@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.common.entities.land;
 
-import java.util.function.Supplier;
-
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,22 +15,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public abstract class DairyAnimal extends ProducingMammal
 {
-    public DairyAnimal(EntityType<? extends DairyAnimal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue milkTicks, ForgeConfigSpec.DoubleValue milkingFamiliarity)
+    public DairyAnimal(EntityType<? extends DairyAnimal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
     {
-        super(animal, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, childCount, gestationDays, milkTicks, milkingFamiliarity);
+        super(animal, level, sounds, config);
     }
 
     @Override
