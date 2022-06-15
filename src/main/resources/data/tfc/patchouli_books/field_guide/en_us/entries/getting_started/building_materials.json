@@ -5,6 +5,13 @@
   "icon": "tfc:wattle/unstained",
   "pages": [
     {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    },
+    {
       "type": "patchouli:text",
       "text": "Intro to different building blocks during the early game"
     },

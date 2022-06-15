@@ -31,6 +31,13 @@
       "name": "A Charcoal Forge",
       "text": "",
       "enable_visualize": false
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
     }
   ],
   "read_by_default": true

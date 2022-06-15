@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Prospecting",
-  "category": "tfc:mechanics",
-  "icon": "tfc:metal/propick/wrought_iron",
+  "name": "Wild Animals",
+  "category": "tfc:the_world",
+  "icon": "",
   "pages": [
     {
       "type": "patchouli:image",
@@ -12,5 +12,6 @@
       "border": true
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "sortnum": 9
 }

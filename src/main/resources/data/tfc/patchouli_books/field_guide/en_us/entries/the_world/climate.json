@@ -49,6 +49,13 @@
       "text": "The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more."
     },
     {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    },
+    {
       "type": "patchouli:text",
       "anchor": "rainfall",
       "text": "Rainfall and stuff",

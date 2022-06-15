@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Prospecting",
+  "name": "Lamps",
   "category": "tfc:mechanics",
-  "icon": "tfc:metal/propick/wrought_iron",
+  "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
     {
       "type": "patchouli:image",

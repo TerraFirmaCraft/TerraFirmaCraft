@@ -158,6 +158,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth\'s crust. They can be found at $(thing)mid to low altitude$() rock layers. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro', title='Igneous Intrusive').anchor('igneous_intrusive'),
             # todo: Brief introduction to the fact ores are rock layer specific
             # todo: Some info about caves, possible things to find in caves
+            image('tfc:textures/gui/book/wip.png'),
         )),
         entry('ores_and_minerals', 'Ores and Minerals', 'tfc:ore/normal_hematite', pages=(
             text('Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for.'),
@@ -235,6 +236,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             image('tfc:textures/gui/book/gui/climate.png', text_contents='The Climate Screen', border=False),
             text('Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can also be different day-to-day, and even hourly.').anchor('temperature'),
             text('The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more.'),  # todo: more on temperature
+            image('tfc:textures/gui/book/wip.png'),
             text('Rainfall and stuff', title='Rainfall').anchor('rainfall'),  # todo: more on rainfall
             text('More about rainfall?'),
             text('Hydration', title='Hydration').anchor('hydration'),  # todo: more on hydration
@@ -269,22 +271,25 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:food/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat'),
             text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:food/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated.'),
         )),
-        # entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
-        # Berry bushes - how to find them, how to harvest and move them
-        # todo: info about berry bushes
-        # todo: listing of various berry bushes
-        # )),
-        # entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
-        # Fruit trees - how to find them, how to harvest and move them
-        # todo: info about fruit trees
-        # todo: listing of various fruit trees
-        # )),
-        # entry('wild_animals', 'Wild Animals', '', pages=(
-        # Wild animals - address both hostile and passive important animals
-        # todo: info about wild animals
-        # todo: predators
-        # todo: passive animals - link to another section about animal husbandry
-        # ))
+        entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
+            image('tfc:textures/gui/book/wip.png'),
+            # Berry bushes - how to find them, how to harvest and move them
+            # todo: info about berry bushes
+            # todo: listing of various berry bushes
+        )),
+        entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
+            image('tfc:textures/gui/book/wip.png'),
+            # Fruit trees - how to find them, how to harvest and move them
+            # todo: info about fruit trees
+            # todo: listing of various fruit trees
+        )),
+        entry('wild_animals', 'Wild Animals', '', pages=(
+            image('tfc:textures/gui/book/wip.png'),
+            # Wild animals - address both hostile and passive important animals
+            # todo: info about wild animals
+            # todo: predators
+            # todo: passive animals - link to another section about animal husbandry
+        ))
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
         # todo: need to work gravity, collapses, and water/freshwater/saltwater mechanics in here somehow
     ))
@@ -417,6 +422,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             # todo: mud bricks
             # todo: any other early game blocks?
             # todo: alabaster? (I know it's not early game but it would be a good mention)
+            image('tfc:textures/gui/book/wip.png'),
             text('Intro to different building blocks during the early game'),
             text('More intro or something'),
             text('Mud Bricks...', title='Mud Bricks').anchor('mud_bricks'),
@@ -450,12 +456,14 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         )),
         entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
             text('Forging and stuff idk'),
-            multiblock('A Charcoal Forge', '', False, (('   ', ' 0 ', '   '), ('XXX', 'XCX', 'XXX'),), {'X': 'tfc:rock/bricks/andesite', 'C': 'tfc:charcoal_forge[heat_level=7]'})
+            multiblock('A Charcoal Forge', '', False, (('   ', ' 0 ', '   '), ('XXX', 'XCX', 'XXX'),), {'X': 'tfc:rock/bricks/andesite', 'C': 'tfc:charcoal_forge[heat_level=7]'}),
+            image('tfc:textures/gui/book/wip.png'),
             # todo: chargoal forge
         )),
         entry('crucible', 'Crucible', 'tfc:crucible', pages=(
             text('Getting toasty in here'),
             block_spotlight('A Crucible', '', 'tfc:crucible'),
+            image('tfc:textures/gui/book/wip.png'),
             # todo: crucible and advanced alloying
         )),
         entry('grill', 'Firepit And Grill', 'tfc:grill', pages=(
@@ -483,9 +491,11 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(thing)collapse$().')  # todo: ref gravity
         )),
         entry('support_beams', 'Support Beams', 'tfc:wood/support/oak', pages=(
+            image('tfc:textures/gui/book/wip.png'),
             # todo: supports, more on collapses?
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
+            image('tfc:textures/gui/book/wip.png'),
             # todo: prospectors pick and prospecting
         )),
         entry('bloomery', 'Bloomery', 'tfc:bloomery', pages=(
@@ -495,12 +505,14 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
         )),
         entry('blast_furnace', 'Blast Furnace', 'tfc:blast_furnace', pages=(
             # todo: blast furnace and steel
+            image('tfc:textures/gui/book/wip.png'),
             text('Blast Furnaces are cool yo!'),
             multiblock('A Blast Furnace', '', True, multiblock_id='tfc:blast_furnace'),
         )),
         entry('anvils', 'Anvils', 'tfc:metal/anvil/copper', pages=(
             text('Anvils yay!'),
             block_spotlight('', 'A $(thing)Bronze Anvil$()', 'tfc:metal/anvil/bronze'),
+            image('tfc:textures/gui/book/wip.png'),
             text('', title='Working').anchor('working'),
             empty(),  # todo: working tutorial, anvil GUI
             text('', title='Welding').anchor('welding'),
@@ -532,7 +544,11 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             quern_recipe('tfc:quern/borax', 'The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()'),
             quern_recipe('tfc:quern/fluxstone', 'The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(thing)Shellfish$()') # todo: link to the shellfish page!
         )),
-        # todo: lamps
+        entry('lamps', 'Lamps', 'tfc:metal/lamp/bismuth_bronze', pages=(
+            image('tfc:textures/gui/book/wip.png'),
+            # todo: lamps
+        ))
+
     ))
 
     # todo: merge into mechanics + getting started? keeps us at three nice categories: world gen, tutorial, and "everything else"
