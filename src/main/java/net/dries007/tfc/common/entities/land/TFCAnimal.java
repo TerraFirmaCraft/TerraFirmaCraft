@@ -290,8 +290,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
         {
-            this.setFertilized(true);
-            this.resetLove();
             this.onFertilized(otherFertile);
         }
         else if (other == this)
