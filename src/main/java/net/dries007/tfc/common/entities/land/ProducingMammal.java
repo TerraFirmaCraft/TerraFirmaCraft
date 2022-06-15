@@ -6,17 +6,16 @@
 
 package net.dries007.tfc.common.entities.land;
 
-import java.util.function.Supplier;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class ProducingMammal extends Mammal
@@ -26,11 +25,11 @@ public abstract class ProducingMammal extends Mammal
     protected final ForgeConfigSpec.IntValue produceTicks;
     protected final ForgeConfigSpec.DoubleValue produceFamiliarity;
 
-    public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity)
+    public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
     {
-        super(animal, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, childCount, gestationDays);
-        this.produceTicks = produceTicks;
-        this.produceFamiliarity = produceFamiliarity;
+        super(animal, level, sounds, config.inner());
+        this.produceTicks = config.produceTicks();
+        this.produceFamiliarity = config.produceFamiliarity();
     }
 
     @Override
@@ -81,4 +80,5 @@ public abstract class ProducingMammal extends Mammal
     {
         entityData.set(DATA_PRODUCED, producedTick);
     }
+
 }

@@ -6,10 +6,7 @@
 
 package net.dries007.tfc.common.entities.land;
 
-import java.util.function.Supplier;
-
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -25,8 +22,9 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.Nullable;
@@ -43,10 +41,10 @@ public abstract class OviparousAnimal extends ProducingAnimal
     private float nextFlap = 1f;
     private final ForgeConfigSpec.IntValue hatchDays;
 
-    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity, ForgeConfigSpec.IntValue hatchDays)
+    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
     {
-        super(type, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, produceTicks, produceFamiliarity);
-        this.hatchDays = hatchDays;
+        super(type, level, sounds, config.inner());
+        this.hatchDays = config.hatchDays();
     }
 
     @Override
@@ -153,4 +151,5 @@ public abstract class OviparousAnimal extends ProducingAnimal
         }
         return event.getProduct();
     }
+
 }

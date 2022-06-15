@@ -6,8 +6,11 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.Random;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -26,6 +29,8 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.OverworldClimateModel;
 
 public class IcePileBlock extends IceBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -34,7 +39,7 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
         // Don't just check for water, check for water with plants that can freeze as well
         final FluidState fluid = groundState.getFluidState();
         final boolean icePileAtGround = Helpers.isBlock(groundState.getBlock(), TFCTags.Blocks.CAN_BE_ICE_PILED);
-        if (fluid.getType() == Fluids.WATER && (icePileAtGround || groundState.getBlock() == Blocks.WATER) && (skipEdgeCheck || EnvironmentHelpers.isWaterAtEdge(level, groundPos)))
+        if (fluid.getType() == Fluids.WATER && (icePileAtGround || groundState.getBlock() == Blocks.WATER) && (skipEdgeCheck || EnvironmentHelpers.isAdjacentToNotWater(level, groundPos)))
         {
             // Freeze block, handling possible plants *in* the block, and *above* the block
             final BlockPos surfacePos = groundPos.above();
@@ -132,6 +137,16 @@ public class IcePileBlock extends IceBlock implements IForgeBlockExtension, Enti
         playerWillDestroy(level, pos, state, player);
         removeIcePileOrIce(level, pos, state);
         return false; // Don't remove the block
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    {
+        // Heavily reduced chance, as most snow melting happens through EnvironmentHelpers, this is only really to account for overhangs and hidden snow
+        if (level.getRandom().nextInt(EnvironmentHelpers.ICE_MELT_RANDOM_TICK_CHANCE) == 0 && Climate.getTemperature(level, pos) > OverworldClimateModel.SNOW_MELT_TEMPERATURE)
+        {
+            removeIcePileOrIce(level, pos, state);
+        }
     }
 
     @Override
