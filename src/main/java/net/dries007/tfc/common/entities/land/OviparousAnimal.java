@@ -6,14 +6,13 @@
 
 package net.dries007.tfc.common.entities.land;
 
-import java.util.function.Supplier;
-
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -21,10 +20,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
+import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
-import net.dries007.tfc.common.entities.ai.FindNestGoal;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.Nullable;
@@ -41,17 +41,37 @@ public abstract class OviparousAnimal extends ProducingAnimal
     private float nextFlap = 1f;
     private final ForgeConfigSpec.IntValue hatchDays;
 
-    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue produceTicks, ForgeConfigSpec.DoubleValue produceFamiliarity, ForgeConfigSpec.IntValue hatchDays)
+    public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
     {
-        super(type, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood, produceTicks, produceFamiliarity);
-        this.hatchDays = hatchDays;
+        super(type, level, sounds, config.inner());
+        this.hatchDays = config.hatchDays();
     }
 
     @Override
-    public void registerGoals()
+    protected Brain.Provider<? extends OviparousAnimal> brainProvider()
     {
-        super.registerGoals();
-        goalSelector.addGoal(2, new FindNestGoal(this));
+        return Brain.provider(OviparousAi.MEMORY_TYPES, OviparousAi.SENSOR_TYPES);
+    }
+
+    @Override
+    protected Brain<?> makeBrain(Dynamic<?> dynamic)
+    {
+        return OviparousAi.makeBrain(brainProvider().makeBrain(dynamic));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Brain<? extends OviparousAnimal> getBrain()
+    {
+        return (Brain<OviparousAnimal>) super.getBrain();
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void tickBrain()
+    {
+        ((Brain<OviparousAnimal>) getBrain()).tick((ServerLevel) level, this);
+        // updateActivity function would go here
     }
 
     @Override
@@ -131,4 +151,5 @@ public abstract class OviparousAnimal extends ProducingAnimal
         }
         return event.getProduct();
     }
+
 }

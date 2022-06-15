@@ -11,21 +11,22 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.material.FluidState;
 
 import com.mojang.serialization.Codec;
-
-import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import org.jetbrains.annotations.NotNull;
 
 public class RivuletFeature extends Feature<BlockStateConfiguration>
 {
@@ -136,23 +137,17 @@ public class RivuletFeature extends Feature<BlockStateConfiguration>
             // We have found a path and can generate a magma rivulet
             for (BlockPos chosenPos : chosen)
             {
-                BlockState setState = Blocks.AIR.defaultBlockState();
                 // At each position, break the top block, and replace two blocks underneath with magma
                 // The recorded positions are one above the topmost block due to how getHeight works
-                mutablePos.setWithOffset(chosenPos, Direction.DOWN);
-                for (Direction d : Direction.Plane.HORIZONTAL)
+                mutablePos.set(chosenPos);
+                // EnvironmentHelpers#isWorldgenReplaceable will make this affect every fluid block above it
+                while (!FluidHelpers.isAirOrEmptyFluid(world.getBlockState(mutablePos)))
                 {
-                    mutablePos.move(d);
-                    FluidState fluidState = world.getFluidState(mutablePos);
-                    if (!fluidState.isEmpty())
-                    {
-                        setState = fluidState.createLegacyBlock();
-                        mutablePos.move(d.getOpposite());
-                        break;
-                    }
-                    mutablePos.move(d.getOpposite());
+                    setBlock(world, mutablePos, getReplaceState(world, mutablePos));
+                    mutablePos.move(Direction.UP);
                 }
-                setBlock(world, mutablePos, setState);
+                mutablePos.setWithOffset(chosenPos, Direction.DOWN);
+                setBlock(world, mutablePos, getReplaceState(world, mutablePos));
                 mutablePos.move(Direction.DOWN);
                 setBlock(world, mutablePos, config.state);
                 mutablePos.move(Direction.DOWN);
@@ -161,5 +156,22 @@ public class RivuletFeature extends Feature<BlockStateConfiguration>
             return true;
         }
         return false;
+    }
+
+    @NotNull
+    private BlockState getReplaceState(WorldGenLevel level, BlockPos.MutableBlockPos pos)
+    {
+        for (Direction d : Direction.Plane.HORIZONTAL)
+        {
+            pos.move(d);
+            FluidState fluidState = level.getFluidState(pos);
+            if (!fluidState.isEmpty())
+            {
+                pos.move(d.getOpposite());
+                return fluidState.createLegacyBlock();
+            }
+            pos.move(d.getOpposite());
+        }
+        return Blocks.AIR.defaultBlockState();
     }
 }

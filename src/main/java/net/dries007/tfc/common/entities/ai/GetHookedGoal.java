@@ -57,7 +57,7 @@ public class GetHookedGoal extends MoveToBlockGoal
     @Override
     public boolean canContinueToUse()
     {
-        return hook != null && !hook.isRemoved() && hook.getPlayerOwner() != null && hook.currentState != FishingHook.FishHookState.HOOKED_IN_ENTITY && super.canContinueToUse();
+        return hook != null && !hook.isRemoved() && hook.getPlayerOwner() != null && hook.getHookedIn() == null && super.canContinueToUse();
     }
 
     @Override

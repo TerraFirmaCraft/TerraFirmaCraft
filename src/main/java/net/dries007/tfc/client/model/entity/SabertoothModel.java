@@ -59,11 +59,11 @@ public class SabertoothModel extends EntityModel<FelinePredator>
 
         PartDefinition earR = head.addOrReplaceChild("earR", CubeListBuilder.create().texOffs(0, 0).addBox(0.0F, -1.5F, 0.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.0F, -4.0F, -3.0F, 0.0F, 0.1745F, 0.1745F));
 
-        PartDefinition legFR = body.addOrReplaceChild("legFR", CubeListBuilder.create().texOffs(52, 25).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legFR = body.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(52, 25).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(58, 38).addBox(-2.0F, 14.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(46, 12).addBox(-2.0F, -3.0F, -3.0F, 4.0F, 8.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(-4.0F, -12.0F, -4.0F));
 
-        PartDefinition legFL = body.addOrReplaceChild("legFL", CubeListBuilder.create().texOffs(38, 51).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legFL = body.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(38, 51).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 9.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(54, 58).addBox(-2.0F, 14.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(20, 45).addBox(-2.0F, -3.0F, -3.0F, 4.0F, 8.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(4.0F, -12.0F, -4.0F));
 
@@ -71,11 +71,11 @@ public class SabertoothModel extends EntityModel<FelinePredator>
 
         PartDefinition tail = rear.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(27, 59).addBox(-1.0F, -1.0F, 0.0F, 2.0F, 2.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 1.0F, 10.0F, -0.7854F, 0.0F, 0.0F));
 
-        PartDefinition legBL = rear.addOrReplaceChild("legBL", CubeListBuilder.create().texOffs(57, 0).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legBL = rear.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(57, 0).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(0, 45).addBox(-2.0F, -4.0F, -4.0F, 4.0F, 9.0F, 6.0F, new CubeDeformation(0.0F))
             .texOffs(0, 60).addBox(-2.0F, 12.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, 5.0F, 8.0F));
 
-        PartDefinition legBR = rear.addOrReplaceChild("legBR", CubeListBuilder.create().texOffs(54, 47).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
+        PartDefinition legBR = rear.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(54, 47).addBox(-2.0F, 5.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F))
             .texOffs(38, 36).addBox(-2.0F, -4.0F, -4.0F, 4.0F, 9.0F, 6.0F, new CubeDeformation(0.0F))
             .texOffs(15, 58).addBox(-2.0F, 12.0F, -3.0F, 4.0F, 2.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, 5.0F, 8.0F));
 
@@ -86,10 +86,10 @@ public class SabertoothModel extends EntityModel<FelinePredator>
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, -1F).rotation(0.5F, 0F, 0F, 1F).rotation(1.0F, 0F, 0F, -1F).build())
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30.0F, 0F, 0F).rotation(0.25F, -30.43855F, 7.05302F, -7.10708F).rotation(0.75F, -30.47002F, -6.45856F, 6.51352F).rotation(1.0F, -30.0F, 0F, 0F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, 1F).rotation(0.5F, 0F, 0F, -1F).rotation(1.0F, 0F, 0F, 1F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
         .build();
 
     //TODO: Add translations to body
@@ -97,23 +97,23 @@ public class SabertoothModel extends EntityModel<FelinePredator>
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -15F, 0F, 0F).noRotation(0.4F).build())
         .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
         .bone("jaw", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F).rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F).noRotation(0.4F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -17.5F, 0F, -20F).rotation(0.1667F, -65.625F, 0F, -15F).noRotation(0.4F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F).rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F).noRotation(0.4F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -17.5F, 0F, -20F).rotation(0.1667F, -65.625F, 0F, -15F).noRotation(0.4F).build())
         .bone("rear", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).noRotation(0.4F).build())
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 95F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 15F, 0F, 0F).noRotation(0.4F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
         .build();
 
     public static final Animation SLEEP = new Animation.Builder(3.0F)
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 2.5F, 0F, 0F).rotation(1.5F, 5F, 0F, 0F).rotation(3.0F, 2.5F, 0F, 0F).build())
         .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 10F, 0F, 0F).rotation(3.0F, 10F, 0F, 0F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 32.5F, 0F, 0F).rotation(3.0F, 32.5F, 0F, 0F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -82.49294F, -2.4786F, -0.32652F).rotation(1.5F, -84.99294F, -2.4786F, -0.32652F).rotation(3.0F, -82.49294F, -2.4786F, -0.32652F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -82.47168F, 4.95712F, 0.65426F).rotation(1.5F, -84.97168F, 4.95712F, 0.65426F).rotation(3.0F, -82.47168F, 4.95712F, 0.65426F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -82.49294F, -2.4786F, -0.32652F).rotation(1.5F, -84.99294F, -2.4786F, -0.32652F).rotation(3.0F, -82.49294F, -2.4786F, -0.32652F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -82.47168F, 4.95712F, 0.65426F).rotation(1.5F, -84.97168F, 4.95712F, 0.65426F).rotation(3.0F, -82.47168F, 4.95712F, 0.65426F).build())
         .bone("rear", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -17.5F, 0F, 0F).rotation(3.0F, -17.5F, 0F, 0F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -77.25431F, -12.26424F, -2.42F).rotation(1.5F, -79.75431F, -12.26424F, -2.42F).rotation(3.0F, -77.25431F, -12.26424F, -2.42F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -77.20638F, 12.19908F, 2.74715F).rotation(1.5F, -84.97168F, 4.95712F, 0.65426F).rotation(3.0F, -77.20638F, 12.19908F, 2.74715F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -77.25431F, -12.26424F, -2.42F).rotation(1.5F, -79.75431F, -12.26424F, -2.42F).rotation(3.0F, -77.25431F, -12.26424F, -2.42F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -77.20638F, 12.19908F, 2.74715F).rotation(1.5F, -84.97168F, 4.95712F, 0.65426F).rotation(3.0F, -77.20638F, 12.19908F, 2.74715F).build())
         .bone("earR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).noRotation(2.875F).rotation(2.9583F, 26.44409F, -5.44303F, 11.3489F).noRotation(3.0F).build())
         .build();
 
@@ -121,10 +121,10 @@ public class SabertoothModel extends EntityModel<FelinePredator>
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -7.5F, 0F, 0F).noRotation(0.3333F).rotation(0.4167F, 4.69F, 0F, 0F).noRotation(0.5F).build())
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 60F, 0F, 0F).noRotation(0.5F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 7.5F, 0F, 0F).noRotation(0.3333F).rotation(0.4167F, -4.69F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -32.5F, 0F, 0F).rotation(0.375F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, -32.5F, 0F, 0F).rotation(0.3333F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 40F, 0F, 0F).rotation(0.3333F, -30F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -32.5F, 0F, 0F).rotation(0.375F, 25.5F, 0F, 0F).noRotation(0.5F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, -32.5F, 0F, 0F).rotation(0.3333F, 25.5F, 0F, 0F).noRotation(0.5F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 40F, 0F, 0F).rotation(0.3333F, -30F, 0F, 0F).noRotation(0.5F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
         .build();
 
 
@@ -158,14 +158,14 @@ public class SabertoothModel extends EntityModel<FelinePredator>
         this.nose = head.getChild("nose");
         this.earL = head.getChild("earL");
         this.earR = head.getChild("earR");
-        this.legFR = body.getChild("legFR");
-        this.legFL = body.getChild("legFL");
-        this.legBR = rear.getChild("legBR");
-        this.legBL = rear.getChild("legBL");
+        this.legFR = body.getChild("right_front_leg");
+        this.legFL = body.getChild("left_front_leg");
+        this.legBR = rear.getChild("right_hind_leg");
+        this.legBL = rear.getChild("left_hind_leg");
 
         parts = new ImmutableMap.Builder<String, ModelPart>().put("body", body).put("tail", tail).put("head", head)
-            .put("jaw", jaw).put("earL", earL).put("earR", earR).put("legFR", legFR).put("legFL", legFL).put("legBR", legBR)
-            .put("legBL", legBL).put("nose", nose).put("neck", neck).put("rear", rear).build();
+            .put("jaw", jaw).put("earL", earL).put("earR", earR).put("right_front_leg", legFR).put("left_front_leg", legFL).put("right_hind_leg", legBR)
+            .put("left_hind_leg", legBL).put("nose", nose).put("neck", neck).put("rear", rear).build();
         defaults = Animation.initDefaults(parts);
     }
 

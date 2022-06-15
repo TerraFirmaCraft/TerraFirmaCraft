@@ -16,7 +16,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
@@ -54,7 +53,6 @@ public class Predator extends PathfinderMob
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> DATA_IS_MALE = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
-
     private final int attackAnimationLength;
     @Nullable
     public Vec3 location;
@@ -64,29 +62,22 @@ public class Predator extends PathfinderMob
     private float limbSwing = 1f;
     public final int walkAnimationLength;
 
-    private final Supplier<? extends SoundEvent> ambient;
-    private final Supplier<? extends SoundEvent> attack;
-    private final Supplier<? extends SoundEvent> death;
-    private final Supplier<? extends SoundEvent> hurt;
-    private final Supplier<? extends SoundEvent> sleeping;
-    private final Supplier<? extends SoundEvent> step;
-
+    private final Supplier<SoundEvent> ambient;
+    private final Supplier<SoundEvent> attack;
+    private final Supplier<SoundEvent> death;
+    private final Supplier<SoundEvent> hurt;
+    private final Supplier<SoundEvent> sleeping;
+    private final Supplier<SoundEvent> step;
 
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
 
     public static Predator createBear(EntityType<? extends Predator> type, Level level)
     {
-        return new Predator(type, level, true, 20, 20, () -> SoundEvents.POLAR_BEAR_AMBIENT, () -> SoundEvents.POLAR_BEAR_WARNING, () -> SoundEvents.POLAR_BEAR_DEATH, () -> SoundEvents.POLAR_BEAR_HURT, TFCSounds.PREDATOR_SLEEP, () -> SoundEvents.POLAR_BEAR_STEP);
+        return new Predator(type, level, true, 20, 20, TFCSounds.BEAR);
     }
 
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> attack, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> sleeping, Supplier<? extends SoundEvent> step)
-    {
-        this(type, level, diurnal, 20, 20, ambient, attack, death, hurt, sleeping, step);
-    }
-
-
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> attack, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> sleeping, Supplier<? extends SoundEvent> step)
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength, TFCSounds.EntitySound sounds)
     {
         super(type, level);
         attackAnimationLength = attackLength;
@@ -94,12 +85,12 @@ public class Predator extends PathfinderMob
         this.diurnal = diurnal;
         this.entityData.define(DATA_IS_MALE, random.nextBoolean());
         getNavigation().setCanFloat(true);
-        this.ambient = ambient;
-        this.attack = attack;
-        this.death = death;
-        this.hurt = hurt;
-        this.sleeping = sleeping;
-        this.step = step;
+        this.ambient = sounds.ambient();
+        this.death = sounds.death();
+        this.hurt = sounds.hurt();
+        this.step = sounds.step();
+        this.attack = sounds.attack().orElseThrow();
+        this.sleeping = sounds.sleep().orElseThrow();
     }
 
     @Override

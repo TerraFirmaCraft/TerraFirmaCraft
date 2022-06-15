@@ -122,7 +122,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
         this.matingTime = nbt.getLong("mating");
         this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.addUses(nbt.getInt("uses"));
+        this.setUses(nbt.getInt("uses"));
     }
 
     @Override
@@ -347,7 +347,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
                 }
                 this.setFamiliarity(familiarity);
             }
-            level.playSound(null, this.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.AMBIENT, 1.0F, 1.0F);
+            playSound(SoundEvents.PLAYER_BURP, 1f, 1f);
         }
         return InteractionResult.SUCCESS;
     }
@@ -413,6 +413,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     protected void playStepSound(BlockPos pos, BlockState block)
     {
         this.playSound(step.get(), 0.15F, 1.0F);
+    }
+
+    @Override
+    public void setMated()
+    {
+        matingTime = Calendars.get().getTicks();
     }
 
     // BEGIN HORSE SPECIFIC STUFF

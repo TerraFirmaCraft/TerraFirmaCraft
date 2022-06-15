@@ -148,8 +148,14 @@ public class TFCTags
         public static final TagKey<Item> USABLE_IN_SALAD = create("foods/usable_in_salad"); // Items that are valid ingredients for a salad
         public static final TagKey<Item> PIG_FOOD = create("pig_food");
         public static final TagKey<Item> COW_FOOD = create("cow_food");
+        public static final TagKey<Item> YAK_FOOD = create("yak_food");
+        public static final TagKey<Item> GOAT_FOOD = create("goat_food");
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
+        public static final TagKey<Item> SHEEP_FOOD = create("sheep_food");
+        public static final TagKey<Item> MUSK_OX_FOOD = create("musk_ox_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
+        public static final TagKey<Item> DUCK_FOOD = create("duck_food");
+        public static final TagKey<Item> QUAIL_FOOD = create("quail_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");

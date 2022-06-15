@@ -21,7 +21,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
@@ -31,6 +30,7 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,13 +38,15 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
+import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -71,26 +73,55 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     private final ForgeConfigSpec.IntValue usesToElderly;
     private final ForgeConfigSpec.BooleanValue eatsRottenFood;
 
-    public TFCAnimal(EntityType<? extends Animal> type, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood)
+    public TFCAnimal(EntityType<? extends Animal> type, Level level, TFCSounds.EntitySound sounds, AnimalConfig config)
     {
         super(type, level);
+        getNavigation().setCanFloat(true);
         this.matingTime = Calendars.get(level).getTicks();
         this.lastFDecay = Calendars.get(level).getTotalDays();
-        this.ambient = ambient;
-        this.hurt = hurt;
-        this.death = death;
-        this.step = step;
-        this.adultFamiliarityCap = adultFamiliarityCap;
-        this.daysToAdulthood = daysToAdulthood;
-        this.usesToElderly = usesToElderly;
-        this.eatsRottenFood = eatsRottenFood;
+        this.ambient = sounds.ambient();
+        this.hurt = sounds.hurt();
+        this.death = sounds.death();
+        this.step = sounds.step();
+        this.adultFamiliarityCap = config.familiarityCap();
+        this.daysToAdulthood = config.adulthoodDays();
+        this.usesToElderly = config.uses();
+        this.eatsRottenFood = config.eatsRottenFood();
+    }
+
+    // Next four overrides are the entire package needed to make Brain work
+
+    @Override
+    protected Brain.Provider<? extends TFCAnimal> brainProvider()
+    {
+        return Brain.provider(LivestockAi.MEMORY_TYPES, LivestockAi.SENSOR_TYPES);
     }
 
     @Override
-    public void registerGoals()
+    protected Brain<?> makeBrain(Dynamic<?> dynamic)
     {
-        super.registerGoals();
-        EntityHelpers.addCommonPreyGoals(this, goalSelector);
+        return LivestockAi.makeBrain(brainProvider().makeBrain(dynamic));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Brain<? extends TFCAnimal> getBrain()
+    {
+        return (Brain<TFCAnimal>) super.getBrain();
+    }
+
+    @Override
+    protected void customServerAiStep()
+    {
+        super.customServerAiStep();
+        tickBrain();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void tickBrain()
+    {
+        ((Brain<TFCAnimal>) getBrain()).tick((ServerLevel) level, this);
+        // updateActivity function would go here
     }
 
     @Override
@@ -205,6 +236,12 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     }
 
     @Override
+    public void setMated()
+    {
+        matingTime = Calendars.get().getTicks();
+    }
+
+    @Override
     public void addAdditionalSaveData(CompoundTag nbt)
     {
         super.addAdditionalSaveData(nbt);
@@ -229,7 +266,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         this.matingTime = nbt.getLong("mating");
         this.setFertilized(nbt.getBoolean("fertilized"));
         this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.addUses(nbt.getInt("uses"));
+        this.setUses(nbt.getInt("uses"));
     }
 
     @Override
@@ -252,8 +289,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
         {
-            this.setFertilized(true);
-            this.resetLove();
             this.onFertilized(otherFertile);
         }
         else if (other == this)
@@ -309,7 +344,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         if (!level.isClientSide() && level.getGameTime() % 20 == 0)
         {
             // Is it time to decay familiarity?
-            // If this entity was never fed(eg: new born, wild)
+            // If this entity was never fed(eg: newborn, wild)
             // or wasn't fed yesterday(this is the starting of the second day)
             if (this.lastFDecay > -1 && this.lastFDecay + 1 < Calendars.SERVER.getTotalDays())
             {
@@ -320,11 +355,6 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
                     this.lastFDecay = Calendars.SERVER.getTotalDays();
                     this.setFamiliarity(familiarity);
                 }
-            }
-            if (this.getGender() == Gender.MALE && this.isReadyToMate())
-            {
-                this.matingTime = Calendars.SERVER.getTicks();
-                EntityHelpers.findFemaleMate(this);
             }
             //todo unimplemented: despawning if left in the wild? dying when old?
         }
@@ -363,12 +393,13 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         return InteractionResult.PASS;
     }
 
+
     @Override
     public boolean canMate(Animal otherAnimal)
     {
         if (otherAnimal.getClass() != this.getClass()) return false;
         TFCAnimal other = (TFCAnimal) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+        return this.getGender() != other.getGender() && other.isReadyToMate();
     }
 
     /**
@@ -396,7 +427,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
                 }
                 this.setFamiliarity(familiarity);
             }
-            level.playSound(null, this.blockPosition(), SoundEvents.PLAYER_BURP, SoundSource.AMBIENT, 1.0F, 1.0F);
+            playSound(SoundEvents.PLAYER_BURP, 1f, 1f);
         }
         return InteractionResult.SUCCESS;
     }

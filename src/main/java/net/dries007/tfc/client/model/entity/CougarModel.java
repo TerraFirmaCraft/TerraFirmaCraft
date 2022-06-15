@@ -55,10 +55,10 @@ public class CougarModel extends EntityModel<FelinePredator>
 
         PartDefinition earR = head.addOrReplaceChild("earR", CubeListBuilder.create().texOffs(0, 21).addBox(-1.0F, -1.5F, 0.0F, 2.0F, 2.0F, 1.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(2.0F, -4.0F, -3.0F, 0.0F, 0.1745F, 0.1745F));
 
-        PartDefinition legFR = body.addOrReplaceChild("legFR", CubeListBuilder.create().texOffs(35, 35).addBox(-1.0F, -2.0F, 0.0F, 3.0F, 14.0F, 3.0F, new CubeDeformation(0.0F))
+        PartDefinition legFR = body.addOrReplaceChild("right_front_leg", CubeListBuilder.create().texOffs(35, 35).addBox(-1.0F, -2.0F, 0.0F, 3.0F, 14.0F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(47, 38).addBox(-1.0F, 12.0F, -1.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-3.0F, -14.0F, -7.0F));
 
-        PartDefinition legFL = body.addOrReplaceChild("legFL", CubeListBuilder.create().texOffs(26, 21).addBox(-2.0F, -2.0F, 0.0F, 3.0F, 14.0F, 3.0F, new CubeDeformation(0.0F))
+        PartDefinition legFL = body.addOrReplaceChild("left_front_leg", CubeListBuilder.create().texOffs(26, 21).addBox(-2.0F, -2.0F, 0.0F, 3.0F, 14.0F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(47, 44).addBox(-2.0F, 12.0F, -1.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(3.0F, -14.0F, -7.0F));
 
         PartDefinition rear = body.addOrReplaceChild("rear", CubeListBuilder.create().texOffs(0, 21).addBox(-2.5F, 0.0F, 0.0F, 5.0F, 7.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -15.0F, 4.0F));
@@ -67,11 +67,11 @@ public class CougarModel extends EntityModel<FelinePredator>
 
         PartDefinition tail1 = tail.addOrReplaceChild("tail1", CubeListBuilder.create().texOffs(0, 46).addBox(-1.0F, -0.5F, -0.366F, 2.0F, 2.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-1.0F, -1.0F, 7.0F, 1.0472F, 0.0F, 0.0F));
 
-        PartDefinition legBL = rear.addOrReplaceChild("legBL", CubeListBuilder.create().texOffs(49, 6).addBox(-1.0F, 5.0F, 1.0F, 3.0F, 5.0F, 3.0F, new CubeDeformation(0.0F))
+        PartDefinition legBL = rear.addOrReplaceChild("left_hind_leg", CubeListBuilder.create().texOffs(49, 6).addBox(-1.0F, 5.0F, 1.0F, 3.0F, 5.0F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(18, 38).addBox(-1.0F, -2.0F, -1.0F, 3.0F, 7.0F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(48, 0).addBox(-1.0F, 10.0F, 0.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, 3.0F, 3.0F));
 
-        PartDefinition legBR = rear.addOrReplaceChild("legBR", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, 5.0F, 2.0F, 3.0F, 5.0F, 3.0F, new CubeDeformation(0.0F))
+        PartDefinition legBR = rear.addOrReplaceChild("right_hind_leg", CubeListBuilder.create().texOffs(0, 0).addBox(-6.0F, 5.0F, 2.0F, 3.0F, 5.0F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(38, 11).addBox(-6.0F, -2.0F, 0.0F, 3.0F, 7.0F, 5.0F, new CubeDeformation(0.0F))
             .texOffs(44, 32).addBox(-6.0F, 10.0F, 1.0F, 3.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(2.0F, 3.0F, 2.0F));
 
@@ -83,10 +83,10 @@ public class CougarModel extends EntityModel<FelinePredator>
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30.0F, 0F, 0F).rotation(0.25F, -30.43855F, 7.05302F, -7.10708F).rotation(0.75F, -30.47002F, -6.45856F, 6.51352F).rotation(1.0F, -30.0F, 0F, 0F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 50.0F, 0F, 0F).rotation(0.375F, 51.16156F, 8.64738F, 15.27269F).rotation(0.875F, 67.99327F, -4.47045F, -7.80797F).rotation(1.0F, 50.0F, 0F, 0F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, 1F).rotation(0.5F, 0F, 0F, -1F).rotation(1.0F, 0F, 0F, 1F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
         .build();
 
     public static final Animation RUN = new Animation.Builder(0.5F)
@@ -94,10 +94,10 @@ public class CougarModel extends EntityModel<FelinePredator>
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 60F, 0F, 0F).noRotation(0.5F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -90F, 0F, 0F).rotation(0.4167F, -2.5F, 0F, 0F).noRotation(0.5F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 7.5F, 0F, 0F).noRotation(0.3333F).rotation(0.4167F, -4.69F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -32.5F, 0F, 0F).rotation(0.375F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, -32.5F, 0F, 0F).rotation(0.3333F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 40F, 0F, 0F).rotation(0.3333F, -30F, 0F, 0F).noRotation(0.5F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -32.5F, 0F, 0F).rotation(0.375F, 25.5F, 0F, 0F).noRotation(0.5F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, -32.5F, 0F, 0F).rotation(0.3333F, 25.5F, 0F, 0F).noRotation(0.5F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 40F, 0F, 0F).rotation(0.3333F, -30F, 0F, 0F).noRotation(0.5F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
         .build();
 
     //TODO: Add translations to body
@@ -105,13 +105,13 @@ public class CougarModel extends EntityModel<FelinePredator>
         .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -15F, 0F, 0F).noRotation(0.4F).build())
         .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
         .bone("jaw", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F).rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F).noRotation(0.4F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -17.5F, 0F, -20F).rotation(0.1667F, -65.625F, 0F, -15F).noRotation(0.4F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F).rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F).noRotation(0.4F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -17.5F, 0F, -20F).rotation(0.1667F, -65.625F, 0F, -15F).noRotation(0.4F).build())
         .bone("rear", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).noRotation(0.4F).build())
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 95F, 0F, 0F).noRotation(0.4F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -109.17912F, 0F, 0F).rotation(0.25F, -32.51868F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 15F, 0F, 0F).noRotation(0.4F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
         .build();
 
     public static final Animation SLEEP = new Animation.Builder(2.0F)
@@ -119,9 +119,9 @@ public class CougarModel extends EntityModel<FelinePredator>
         .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 90F, 0F, 0F).rotation(2.0F, 90F, 0F, 0F).build()) //.translation(0.0F,0F,-2F,0F).translation(1.0F,0F,-2F,0F)
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -35.17255F, 2.54237F, -1.37822F).rotation(0.0833F, -34.83923F, -11.59079F, 19.36245F).rotation(0.5F, -35.17255F, 2.54237F, -1.37822F).rotation(0.75F, -35.28937F, 4F, -3.43513F).rotation(2.0F, -35.17255F, 2.54237F, -1.37822F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 14F, -12.27659F, 12.56853F).rotation(0.0833F, -13F, 14F, -14.43276F).rotation(0.1667F, 11F, -16.87977F, 18.66145F).rotation(0.5F, -14F, -12.27659F, 12.56853F).rotation(0.75F, -15F, -8.80349F, 8.90928F).rotation(2.0F, -14F, -12.27659F, 12.56853F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0.22267F, 4.02155F, 6.33586F).rotation(0.5F, 0.22267F, 4.02155F, 6.33586F).rotation(2.0F, 0.22267F, 4.02155F, 6.33586F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 15F, 0F, 12.5F).rotation(0.5F, 15F, 0F, 12.5F).rotation(2.0F, 15F, 0F, 12.5F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 12.5F, 0F, 12.5F).rotation(0.5F, 12.5F, 0F, 12.5F).rotation(2.0F, 12.5F, 0F, 12.5F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0.22267F, 4.02155F, 6.33586F).rotation(0.5F, 0.22267F, 4.02155F, 6.33586F).rotation(2.0F, 0.22267F, 4.02155F, 6.33586F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 15F, 0F, 12.5F).rotation(0.5F, 15F, 0F, 12.5F).rotation(2.0F, 15F, 0F, 12.5F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 12.5F, 0F, 12.5F).rotation(0.5F, 12.5F, 0F, 12.5F).rotation(2.0F, 12.5F, 0F, 12.5F).build())
         .bone("rear", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -45F, 0F, 0F).rotation(0.5F, -45F, 0F, 0F).rotation(2.0F, -45F, 0F, 0F).build())
         .build();
 
@@ -130,10 +130,10 @@ public class CougarModel extends EntityModel<FelinePredator>
         .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -55F, 0F, 0F).rotation(0.25F, -45.4385F, 7.05302F, -7.10708F).rotation(0.75F, -45.47F, -6.45856F, 6.51352F).rotation(1.0F, -55F, 0F, 0F).build())
         .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 60F, 0F, 0F).rotation(0.375F, 61.1616F, 8.64738F, 15.27269F).rotation(0.875F, 77.9933F, -4.47045F, -7.80797F).rotation(1.0F, 60F, 0F, 0F).build())
         .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, 1F).rotation(0.5F, 0F, 0F, -1F).rotation(1.0F, 0F, 0F, 1F).build())
-        .bone("legFR", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -75F, 0F, 0F).rotation(0.25F, -65F, 0F, 0F).rotation(0.5F, -75F, 0F, 0F).rotation(0.75F, -80F, 0F, 0F).rotation(1.0F, -75F, 0F, 0F).build())
-        .bone("legFL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -75F, 0F, 0F).rotation(0.25F, -80F, 0F, 0F).rotation(0.5417F, -75F, 0F, 0F).rotation(0.75F, -65F, 0F, 0F).rotation(1.0F, -75F, 0F, 0F).build())
-        .bone("legBL", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -10F, 0F, 0F).rotation(0.1667F, -22.5F, 0F, 0F).rotation(0.4167F, -10F, 0F, 0F).rotation(0.75F, 2.5F, 0F, 0F).rotation(1.0F, -10F, 0F, 0F).build())
-        .bone("legBR", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -10F, 0F, 0F).rotation(0.25F, 2.5F, 0F, 0F).rotation(0.5F, -10F, 0F, 0F).rotation(0.75F, -22.5F, 0F, 0F).rotation(1.0F, -10F, 0F, 0F).build())
+        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -75F, 0F, 0F).rotation(0.25F, -65F, 0F, 0F).rotation(0.5F, -75F, 0F, 0F).rotation(0.75F, -80F, 0F, 0F).rotation(1.0F, -75F, 0F, 0F).build())
+        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -75F, 0F, 0F).rotation(0.25F, -80F, 0F, 0F).rotation(0.5417F, -75F, 0F, 0F).rotation(0.75F, -65F, 0F, 0F).rotation(1.0F, -75F, 0F, 0F).build())
+        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -10F, 0F, 0F).rotation(0.1667F, -22.5F, 0F, 0F).rotation(0.4167F, -10F, 0F, 0F).rotation(0.75F, 2.5F, 0F, 0F).rotation(1.0F, -10F, 0F, 0F).build())
+        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -10F, 0F, 0F).rotation(0.25F, 2.5F, 0F, 0F).rotation(0.5F, -10F, 0F, 0F).rotation(0.75F, -22.5F, 0F, 0F).rotation(1.0F, -10F, 0F, 0F).build())
         .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -7.5F, 0F, 0F).rotation(0.5F, -5.5F, 0F, 0F).rotation(1.0F, -7.5F, 0F, 0F).build())
         .build();
 
@@ -170,14 +170,14 @@ public class CougarModel extends EntityModel<FelinePredator>
         this.nose = head.getChild("nose");
         this.earL = head.getChild("earL");
         this.earR = head.getChild("earR");
-        this.legFR = body.getChild("legFR");
-        this.legFL = body.getChild("legFL");
-        this.legBR = rear.getChild("legBR");
-        this.legBL = rear.getChild("legBL");
+        this.legFR = body.getChild("right_front_leg");
+        this.legFL = body.getChild("left_front_leg");
+        this.legBR = rear.getChild("right_hind_leg");
+        this.legBL = rear.getChild("left_hind_leg");
 
         parts = new ImmutableMap.Builder<String, ModelPart>().put("body", body).put("tail", tail).put("tail1", tail1).put("head", head)
-            .put("jaw", jaw).put("earL", earL).put("earR", earR).put("legFR", legFR).put("legFL", legFL).put("legBR", legBR)
-            .put("legBL", legBL).put("nose", nose).put("neck", neck).put("rear", rear).build();
+            .put("jaw", jaw).put("earL", earL).put("earR", earR).put("right_front_leg", legFR).put("left_front_leg", legFL).put("right_hind_leg", legBR)
+            .put("left_hind_leg", legBL).put("nose", nose).put("neck", neck).put("rear", rear).build();
         defaults = Animation.initDefaults(parts);
     }
 

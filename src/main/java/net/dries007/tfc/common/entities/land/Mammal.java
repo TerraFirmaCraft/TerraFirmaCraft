@@ -6,14 +6,12 @@
 
 package net.dries007.tfc.common.entities.land;
 
-import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
@@ -22,10 +20,11 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class Mammal extends TFCAnimal
@@ -34,11 +33,11 @@ public abstract class Mammal extends TFCAnimal
     private final ForgeConfigSpec.IntValue childCount;
     private final ForgeConfigSpec.IntValue gestationDays;
 
-    public Mammal(EntityType<? extends TFCAnimal> animal, Level level, Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood, ForgeConfigSpec.IntValue childCount, ForgeConfigSpec.IntValue gestationDays)
+    public Mammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
-        super(animal, level, ambient, hurt, death, step, adultFamiliarityCap, daysToAdulthood, usesToElderly, eatsRottenFood);
-        this.childCount = childCount;
-        this.gestationDays = gestationDays;
+        super(animal, level, sounds, config.inner());
+        this.childCount = config.childCount();
+        this.gestationDays = config.gestationDays();
     }
 
     public long getPregnantTime()
@@ -105,7 +104,7 @@ public abstract class Mammal extends TFCAnimal
                 birthChildren();
                 setFertilized(false);
                 setPregnantTime(-1L);
-                addUses(1);
+                addUses(10);
             }
         }
     }
@@ -140,4 +139,5 @@ public abstract class Mammal extends TFCAnimal
     {
         return gestationDays.get();
     }
+
 }

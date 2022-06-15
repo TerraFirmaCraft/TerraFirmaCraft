@@ -54,8 +54,14 @@ public class Faunas
     public static final FaunaType<Octopoteuthis> OCTOPOTEUTHIS = registerFish(TFCEntities.OCTOPOTEUTHIS);
     public static final FaunaType<Mammal> PIG = registerAnimal(TFCEntities.PIG);
     public static final FaunaType<DairyAnimal> COW = registerAnimal(TFCEntities.COW);
+    public static final FaunaType<DairyAnimal> GOAT = registerAnimal(TFCEntities.GOAT);
+    public static final FaunaType<DairyAnimal> YAK = registerAnimal(TFCEntities.YAK);
     public static final FaunaType<WoolyAnimal> ALPACA = registerAnimal(TFCEntities.ALPACA);
+    public static final FaunaType<WoolyAnimal> SHEEP = registerAnimal(TFCEntities.SHEEP);
+    public static final FaunaType<WoolyAnimal> MUSK_OX = registerAnimal(TFCEntities.MUSK_OX);
     public static final FaunaType<OviparousAnimal> CHICKEN = registerAnimal(TFCEntities.CHICKEN);
+    public static final FaunaType<OviparousAnimal> DUCK = registerAnimal(TFCEntities.DUCK);
+    public static final FaunaType<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
 
     public static void registerSpawnPlacements()
     {
@@ -85,8 +91,14 @@ public class Faunas
         registerSpawnPlacement(OCTOPOTEUTHIS);
         registerSpawnPlacement(PIG);
         registerSpawnPlacement(COW);
+        registerSpawnPlacement(GOAT);
+        registerSpawnPlacement(YAK);
         registerSpawnPlacement(ALPACA);
+        registerSpawnPlacement(SHEEP);
+        registerSpawnPlacement(MUSK_OX);
         registerSpawnPlacement(CHICKEN);
+        registerSpawnPlacement(DUCK);
+        registerSpawnPlacement(QUAIL);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)

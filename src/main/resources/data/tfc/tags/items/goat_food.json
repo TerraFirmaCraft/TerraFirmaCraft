@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "#tfc:foods/grains",
+    "#tfc:foods/fruits",
+    "#tfc:foods/vegetables"
+  ]
+}
