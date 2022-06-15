@@ -72,7 +72,7 @@ public class BreedBehavior extends Behavior<TFCAnimal>
         BehaviorUtils.lockGazeAndWalkToEachOther(animal, target, this.speedModifier);
         if (animal.closerThan(target, 3.0D) && time >= this.spawnChildAtTime)
         {
-            animal.getBreedOffspring(level, target);
+            target.getBreedOffspring(level, animal);
             animal.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
             target.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
         }

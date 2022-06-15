@@ -56,7 +56,7 @@ public class LivestockAi
     /**
      * These activities are always active. So, expect them to run every tick.
      */
-    private static void initCoreActivity(Brain<? extends TFCAnimal> brain)
+    public static void initCoreActivity(Brain<? extends TFCAnimal> brain)
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new Swim(0.8F), // float in water
@@ -70,7 +70,7 @@ public class LivestockAi
     /**
      * These will run whenever we don't have something better to do. Essentially walk and swim randomly, or do nothing.
      */
-    private static void initIdleActivity(Brain<? extends TFCAnimal> brain)
+    public static void initIdleActivity(Brain<? extends TFCAnimal> brain)
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"

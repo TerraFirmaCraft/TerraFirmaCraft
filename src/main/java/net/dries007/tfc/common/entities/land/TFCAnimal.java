@@ -93,7 +93,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     // Next four overrides are the entire package needed to make Brain work
 
     @Override
-    protected Brain.Provider<TFCAnimal> brainProvider()
+    protected Brain.Provider<? extends TFCAnimal> brainProvider()
     {
         return Brain.provider(LivestockAi.MEMORY_TYPES, LivestockAi.SENSOR_TYPES);
     }
@@ -106,7 +106,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
 
     @Override
     @SuppressWarnings("unchecked")
-    public Brain<TFCAnimal> getBrain()
+    public Brain<? extends TFCAnimal> getBrain()
     {
         return (Brain<TFCAnimal>) super.getBrain();
     }
@@ -115,7 +115,13 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     protected void customServerAiStep()
     {
         super.customServerAiStep();
-        getBrain().tick((ServerLevel) level, this);
+        tickBrain();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void tickBrain()
+    {
+        ((Brain<TFCAnimal>) getBrain()).tick((ServerLevel) level, this);
         // updateActivity function would go here
     }
 
@@ -396,7 +402,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     {
         if (otherAnimal.getClass() != this.getClass()) return false;
         TFCAnimal other = (TFCAnimal) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+        return this.getGender() != other.getGender() && other.isReadyToMate();
     }
 
     /**
