@@ -160,11 +160,18 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (state.getValue(HEAT) > 0 && !isValid(world, pos))
+        if (state.getValue(HEAT) > 0)
         {
-            world.setBlockAndUpdate(pos, defaultBlockState().setValue(HEAT, 0));
+            if (isValid(level, pos))
+            {
+                Helpers.fireSpreaderTick(level, pos, rand, 3);
+            }
+            else
+            {
+                level.setBlockAndUpdate(pos, defaultBlockState().setValue(HEAT, 0));
+            }
         }
     }
 

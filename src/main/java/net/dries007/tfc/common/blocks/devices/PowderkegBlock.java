@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -66,7 +67,7 @@ public class PowderkegBlock extends SealableDeviceBlock
             {
                 if (state.getValue(LIT))
                 {
-                    powderkeg.setLit(false);
+                    powderkeg.setLit(false, player);
                     Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
                 }
                 else
@@ -85,6 +86,14 @@ public class PowderkegBlock extends SealableDeviceBlock
         }).orElse(InteractionResult.PASS);
     }
 
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion)
+    {
+        if (!state.getValue(LIT))
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(keg -> keg.setLit(true, explosion.getExploder()));
+        }
+    }
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, Random random)

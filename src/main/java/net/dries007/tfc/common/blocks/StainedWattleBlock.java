@@ -10,6 +10,8 @@ import java.util.Arrays;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -125,13 +127,19 @@ public class StainedWattleBlock extends ExtendedBlock implements IGhostBlockHand
         else
         {
             // can only dye filled unstained wattle blocks
-            if (Helpers.isBlock(state, TFCBlocks.WATTLE.get()))
-                return InteractionResult.PASS;
+            if (Helpers.isBlock(state, TFCBlocks.WATTLE.get())) return InteractionResult.PASS;
 
             BlockState dyed = getPossibleDyedState(item, state);
             if (dyed != null)
             {
-                // TODO could add dye particles
+                if (level.isClientSide)
+                {
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Vec3 loc = hit.getLocation();
+                        level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, item), loc.x, loc.y, loc.z, Helpers.triangle(level.random) / 3, Helpers.triangle(level.random) / 3, Helpers.triangle(level.random) / 3);
+                    }
+                }
                 Helpers.playSound(level, pos, TFCSounds.WATTLE_DYED.get());
                 dyed = dyed.setValue(BOTTOM, state.getValue(BOTTOM)).setValue(TOP, state.getValue(TOP)).setValue(LEFT, state.getValue(LEFT)).setValue(RIGHT, state.getValue(RIGHT));
                 return setState(level, pos, dyed, player, item, 1);
