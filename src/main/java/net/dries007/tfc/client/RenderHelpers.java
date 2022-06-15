@@ -39,8 +39,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.common.entities.land.TFCAnimal;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
 public final class RenderHelpers

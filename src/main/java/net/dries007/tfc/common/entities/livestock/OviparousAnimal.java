@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities.land;
+package net.dries007.tfc.common.entities.livestock;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;

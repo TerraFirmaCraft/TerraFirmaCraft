@@ -4,14 +4,11 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities.land;
+package net.dries007.tfc.common.entities.livestock;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 
-import net.minecraft.tags.Tag;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

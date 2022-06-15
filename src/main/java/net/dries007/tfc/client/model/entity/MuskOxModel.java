@@ -18,7 +18,7 @@ import net.minecraft.util.Mth;
 // Paste this class into your mod and generate all required imports
 
 
-import net.dries007.tfc.common.entities.land.WoolyAnimal;
+import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 
 public class MuskOxModel extends AgeableListModel<WoolyAnimal>
 {

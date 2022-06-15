@@ -19,7 +19,7 @@ import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
-import net.dries007.tfc.common.entities.land.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 
 public class LivestockAi
 {

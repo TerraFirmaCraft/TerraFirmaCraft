@@ -25,8 +25,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.entities.land.TFCAnimal;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.util.calendar.Calendars;
 

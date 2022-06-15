@@ -7,7 +7,7 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-package net.dries007.tfc.common.entities.land;
+package net.dries007.tfc.common.entities.livestock;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

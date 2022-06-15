@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.entities.land.TFCAnimal;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 

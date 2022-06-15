@@ -19,7 +19,7 @@ import net.minecraft.world.entity.ai.memory.WalkTarget;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.entities.Seat;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
-import net.dries007.tfc.common.entities.land.OviparousAnimal;
+import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 

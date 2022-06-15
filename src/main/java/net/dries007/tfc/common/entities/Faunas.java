@@ -18,10 +18,10 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.entities.aquatic.*;
-import net.dries007.tfc.common.entities.land.DairyAnimal;
-import net.dries007.tfc.common.entities.land.Mammal;
-import net.dries007.tfc.common.entities.land.OviparousAnimal;
-import net.dries007.tfc.common.entities.land.WoolyAnimal;
+import net.dries007.tfc.common.entities.livestock.DairyAnimal;
+import net.dries007.tfc.common.entities.livestock.Mammal;
+import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
+import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;

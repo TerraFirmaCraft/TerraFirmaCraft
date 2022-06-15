@@ -17,8 +17,8 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.animal.Animal;
 
-import net.dries007.tfc.common.entities.land.TFCAnimal;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 
 /**
  * {@link net.minecraft.world.entity.ai.behavior.AnimalMakeLove}

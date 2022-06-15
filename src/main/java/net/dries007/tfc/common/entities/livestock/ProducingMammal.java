@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities.land;
+package net.dries007.tfc.common.entities.livestock;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -15,19 +15,19 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
-import net.dries007.tfc.config.animals.ProducingAnimalConfig;
+import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class ProducingAnimal extends TFCAnimal
+public abstract class ProducingMammal extends Mammal
 {
-    public static final EntityDataAccessor<Long> DATA_PRODUCED = SynchedEntityData.defineId(ProducingAnimal.class, EntityHelpers.LONG_SERIALIZER);
+    public static final EntityDataAccessor<Long> DATA_PRODUCED = SynchedEntityData.defineId(ProducingMammal.class, EntityHelpers.LONG_SERIALIZER);
 
     protected final ForgeConfigSpec.IntValue produceTicks;
     protected final ForgeConfigSpec.DoubleValue produceFamiliarity;
 
-    public ProducingAnimal(EntityType<? extends TFCAnimal> type, Level level, TFCSounds.EntitySound sounds, ProducingAnimalConfig config)
+    public ProducingMammal(EntityType<? extends ProducingMammal> animal, Level level, TFCSounds.EntitySound sounds, ProducingMammalConfig config)
     {
-        super(type, level, sounds, config.inner());
+        super(animal, level, sounds, config.inner());
         this.produceTicks = config.produceTicks();
         this.produceFamiliarity = config.produceFamiliarity();
     }

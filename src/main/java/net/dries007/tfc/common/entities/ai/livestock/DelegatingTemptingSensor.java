@@ -21,7 +21,7 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import net.dries007.tfc.common.entities.land.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 
 /**
  * {@link net.minecraft.world.entity.ai.sensing.TemptingSensor} but it just uses the method in the animal class because why should it not...
