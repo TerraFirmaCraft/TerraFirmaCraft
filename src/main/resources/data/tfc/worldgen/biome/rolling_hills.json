@@ -1,0 +1,132 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "precipitation": "rain",
+  "category": "plains",
+  "temperature": 0.5,
+  "temperature_modifier": "none",
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 12638463,
+    "sky_color": 8709887,
+    "water_color": 4159204,
+    "water_fog_color": 329011
+  },
+  "carvers": {
+    "air": [
+      "tfc:cave",
+      "tfc:canyon"
+    ],
+    "liquid": []
+  },
+  "features": [
+    "#tfc:in_biome/erosion",
+    "#tfc:in_biome/all_lakes",
+    "#tfc:in_biome/soil_discs/rolling_hills",
+    "#tfc:in_biome/underground_structures",
+    "#tfc:in_biome/surface_structures",
+    "#tfc:in_biome/strongholds",
+    "#tfc:in_biome/veins",
+    "#tfc:in_biome/underground_decoration",
+    "#tfc:in_biome/large_features/rolling_hills",
+    "#tfc:in_biome/surface_decoration/rolling_hills",
+    "#tfc:in_biome/top_layer_modification"
+  ],
+  "starts": [],
+  "spawners": {
+    "creature": [
+      {
+        "type": "tfc:pig",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:cow",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:goat",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:yak",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:alpaca",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:sheep",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:musk_ox",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 4
+      },
+      {
+        "type": "tfc:chicken",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:duck",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:quail",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 6
+      },
+      {
+        "type": "tfc:polar_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:grizzly_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:black_bear",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      },
+      {
+        "type": "tfc:lion",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "tfc:sabertooth",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
+      }
+    ]
+  },
+  "player_spawn_friendly": true,
+  "creature_spawn_probability": 0.05,
+  "spawn_costs": {}
+}

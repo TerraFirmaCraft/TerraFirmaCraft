@@ -1,7 +1,6 @@
 # Handles generation of all world gen objects
 
 import typing
-from enum import IntEnum
 from typing import Union
 
 from mcresources import ResourceManager, utils
@@ -10,47 +9,87 @@ from mcresources.type_definitions import ResourceIdentifier, JsonObject, Json, V
 from constants import *
 
 
-class BiomeTemperature(NamedTuple):
-    id: str
-    temperature: float
-    water_color: float
-    water_fog_color: float
-
-
-class BiomeRainfall(NamedTuple):
-    id: str
-    downfall: float
-
-
-TEMPERATURES: Tuple[BiomeTemperature, ...] = (
-    BiomeTemperature('cold', 0, 3750089, 329011),
-    BiomeTemperature('normal', 0.5, 4159204, 329011),
-    BiomeTemperature('warm', 1.0, 4445678, 270131)
-)
-
-RAINFALLS: Tuple[BiomeRainfall, ...] = (
-    BiomeRainfall('dry', 0.1),
-    BiomeRainfall('normal', 0.5),
-    BiomeRainfall('wet', 0.9)
-)
-
-DEFAULT_FOG_COLOR = 12638463
-DEFAULT_SKY_COLOR = 0x84E6FF
-
-
-class Decoration(IntEnum):
-    EROSION = 0
-    LAKES = 1
-    SOIL_DISKS = 2
-    VEINS = 3
-    UNDERGROUND_DECORATION = 4
-    LARGE_FEATURES = 5
-    SURFACE_DECORATION = 6
-    ICE_AND_SNOW = 7
-    # unused - 8, 9
-
-
 def generate(rm: ResourceManager):
+    # Biome Feature Tags
+    # Biomes -> in_biome/<step>/<optional biome>
+    # in_biome/ -> other tags in the form feature/<name>s
+    # feature/ -> individual features
+
+    # Tags: in_biome/
+    placed_feature_tag(rm, 'in_biome/erosion', 'tfc:erosion')
+    placed_feature_tag(rm, 'in_biome/underground_lakes', 'tfc:underground_flood_fill_lake')
+    placed_feature_tag(rm, 'in_biome/all_lakes', 'tfc:underground_flood_fill_lake', 'tfc:flood_fill_lake')
+    placed_feature_tag(rm, 'in_biome/veins', *[
+        'tfc:vein/gravel',
+        *['tfc:vein/%s_dike' % rock for rock, data in ROCKS.items() if data.category == 'igneous_intrusive'],
+        *('tfc:vein/%s' % v for v in ORE_VEINS.keys()),
+        'tfc:geode'
+    ])
+    placed_feature_tag(rm, 'in_biome/underground_decoration', *UNDERGROUND_FEATURES)
+    placed_feature_tag(rm, 'in_biome/top_layer_modification', 'tfc:surface_loose_rocks', 'tfc:ice_and_snow')
+
+    placed_feature_tag(rm, 'in_biome/underground_structures')
+    placed_feature_tag(rm, 'in_biome/surface_structures')
+    placed_feature_tag(rm, 'in_biome/strongholds')
+
+    # Tags: feature/
+    placed_feature_tag(rm, 'feature/land_plants', *[
+        *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES],
+        '#tfc:feature/crops',
+        '#tfc:feature/forest_plants',
+        'tfc:surface_grasses',  # Special, because it uses noise to select which to place
+        *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay and data.type != 'short_grass'],
+        'tfc:berry_bushes',
+        '#tfc:feature/fruit_trees'
+    ])
+    placed_feature_tag(rm, 'feature/forest_plants', *['tfc:%s_patch' % d for d in FOREST_DECORATORS])
+    placed_feature_tag(rm, 'feature/ocean_plants', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
+    placed_feature_tag(rm, 'feature/shore_decorations', *['tfc:%s_patch' % v for v in SHORE_DECORATORS])
+    placed_feature_tag(rm, 'feature/ocean_decorations', 'tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp', 'tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch')
+    placed_feature_tag(rm, 'feature/clay_indicators', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
+    placed_feature_tag(rm, 'feature/clay_disc_with_indicator', 'tfc:clay_disc', '#tfc:feature/clay_indicators')
+    placed_feature_tag(rm, 'feature/water_clay_disc_with_indicator', 'tfc:water_clay_disc', '#tfc:feature/clay_indicators')
+    placed_feature_tag(rm, 'feature/surface_grasses', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
+    placed_feature_tag(rm, 'feature/icebergs', 'tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare')
+    placed_feature_tag(rm, 'feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder')
+    placed_feature_tag(rm, 'feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:peat_disc_in_mud', 'tfc:powder_snow')
+    placed_feature_tag(rm, 'feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure')
+
+    # Biomes
+    biome(rm, 'badlands', 'mesa', lake_features=False)
+    biome(rm, 'inverted_badlands', 'mesa', lake_features=False)
+    biome(rm, 'canyons', 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
+    biome(rm, 'low_canyons', 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
+    biome(rm, 'plains', 'plains')
+    biome(rm, 'plateau', 'extreme_hills', boulders=True, hot_spring_features='empty')
+    biome(rm, 'hills', 'plains')
+    biome(rm, 'rolling_hills', 'plains', boulders=True, hot_spring_features='empty')
+    biome(rm, 'lake', 'river', spawnable=False)
+    biome(rm, 'lowlands', 'swamp', lake_features=False)
+    biome(rm, 'mountains', 'extreme_hills')
+    biome(rm, 'volcanic_mountains', 'extreme_hills', volcano_features=True, hot_spring_features=True)
+    biome(rm, 'old_mountains', 'extreme_hills', hot_spring_features=True)
+    biome(rm, 'oceanic_mountains', 'extreme_hills', ocean_features='both')
+    biome(rm, 'volcanic_oceanic_mountains', 'extreme_hills', spawnable=False, ocean_features='both', volcano_features=True)
+    biome(rm, 'ocean', 'ocean', spawnable=False, ocean_features=True)
+    biome(rm, 'ocean_reef', 'ocean', spawnable=False, ocean_features=True, reef_features=True)
+    biome(rm, 'deep_ocean', 'ocean', spawnable=False, ocean_features=True)
+    biome(rm, 'deep_ocean_trench', 'ocean', spawnable=False, ocean_features=True)
+    biome(rm, 'river', 'river', spawnable=False)
+    biome(rm, 'shore', 'beach', spawnable=False, ocean_features=True)
+
+    biome(rm, 'mountain_river', 'extreme_hills', spawnable=False)
+    biome(rm, 'volcanic_mountain_river', 'extreme_hills', spawnable=False, volcano_features=True)
+    biome(rm, 'old_mountain_river', 'extreme_hills', spawnable=False)
+    biome(rm, 'oceanic_mountain_river', 'river', spawnable=False, ocean_features='both')
+    biome(rm, 'volcanic_oceanic_mountain_river', 'river', spawnable=False, ocean_features='both', volcano_features=True)
+    biome(rm, 'mountain_lake', 'extreme_hills', spawnable=False)
+    biome(rm, 'volcanic_mountain_lake', 'extreme_hills', spawnable=False, volcano_features=True)
+    biome(rm, 'old_mountain_lake', 'extreme_hills', spawnable=False)
+    biome(rm, 'oceanic_mountain_lake', 'river', spawnable=False, ocean_features='both')
+    biome(rm, 'volcanic_oceanic_mountain_lake', 'river', spawnable=False, ocean_features='both', volcano_features=True)
+    biome(rm, 'plateau_lake', 'extreme_hills', boulders=True, spawnable=False)
+
     # Carvers
     rm.configured_carver('cave', 'tfc:cave', {
         'probability': 0.3,
@@ -80,44 +119,12 @@ def generate(rm: ResourceManager):
         }
     })
 
-    # Biomes
-    for temp in TEMPERATURES:
-        for rain in RAINFALLS:
-            make_biome(rm, 'badlands', temp, rain, 'mesa', lake_features=False)
-            make_biome(rm, 'inverted_badlands', temp, rain, 'mesa', lake_features=False)
-            make_biome(rm, 'canyons', temp, rain, 'plains', boulders=True, lake_features=False, volcano_features=True, hot_spring_features=True)
-            make_biome(rm, 'low_canyons', temp, rain, 'swamp', boulders=True, lake_features=False, hot_spring_features='empty')
-            make_biome(rm, 'plains', temp, rain, 'plains')
-            make_biome(rm, 'plateau', temp, rain, 'extreme_hills', boulders=True, hot_spring_features='empty')
-            make_biome(rm, 'hills', temp, rain, 'plains')
-            make_biome(rm, 'rolling_hills', temp, rain, 'plains', boulders=True, hot_spring_features='empty')
-            make_biome(rm, 'lake', temp, rain, 'river', spawnable=False)
-            make_biome(rm, 'lowlands', temp, rain, 'swamp', lake_features=False)
-            make_biome(rm, 'mountains', temp, rain, 'extreme_hills')
-            make_biome(rm, 'volcanic_mountains', temp, rain, 'extreme_hills', volcano_features=True, hot_spring_features=True)
-            make_biome(rm, 'old_mountains', temp, rain, 'extreme_hills', hot_spring_features=True)
-            make_biome(rm, 'oceanic_mountains', temp, rain, 'extreme_hills', ocean_features='both')
-            make_biome(rm, 'volcanic_oceanic_mountains', temp, rain, 'extreme_hills', spawnable=False, ocean_features='both', volcano_features=True)
-            make_biome(rm, 'ocean', temp, rain, 'ocean', spawnable=False, ocean_features=True)
-            make_biome(rm, 'ocean_reef', temp, rain, 'ocean', spawnable=False, ocean_features=True, reef_features=True)
-            make_biome(rm, 'deep_ocean', temp, rain, 'ocean', spawnable=False, ocean_features=True)
-            make_biome(rm, 'deep_ocean_trench', temp, rain, 'ocean', spawnable=False, ocean_features=True)
-            make_biome(rm, 'river', temp, rain, 'river', spawnable=False)
-            make_biome(rm, 'shore', temp, rain, 'beach', spawnable=False, ocean_features=True)
-
-            make_biome(rm, 'mountain_river', temp, rain, 'extreme_hills', spawnable=False)
-            make_biome(rm, 'volcanic_mountain_river', temp, rain, 'extreme_hills', spawnable=False, volcano_features=True)
-            make_biome(rm, 'old_mountain_river', temp, rain, 'extreme_hills', spawnable=False)
-            make_biome(rm, 'oceanic_mountain_river', temp, rain, 'river', spawnable=False, ocean_features='both')
-            make_biome(rm, 'volcanic_oceanic_mountain_river', temp, rain, 'river', spawnable=False, ocean_features='both', volcano_features=True)
-            make_biome(rm, 'mountain_lake', temp, rain, 'extreme_hills', spawnable=False)
-            make_biome(rm, 'volcanic_mountain_lake', temp, rain, 'extreme_hills', spawnable=False, volcano_features=True)
-            make_biome(rm, 'old_mountain_lake', temp, rain, 'extreme_hills', spawnable=False)
-            make_biome(rm, 'oceanic_mountain_lake', temp, rain, 'river', spawnable=False, ocean_features='both')
-            make_biome(rm, 'volcanic_oceanic_mountain_lake', temp, rain, 'river', spawnable=False, ocean_features='both', volcano_features=True)
-            make_biome(rm, 'plateau_lake', temp, rain, 'extreme_hills', boulders=True, spawnable=False)
-
     # Configured and Placed Features
+
+    configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:feature/surface_grasses', 'biome_check': False})
+
+    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:clay_disc_with_indicator_features', 'biome_check': False}, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:water_clay_disc_with_indicator_features', 'biome_check': False}, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
 
     configured_placed_feature(rm, 'tfc:erosion')
     configured_placed_feature(rm, 'tfc:ice_and_snow')
@@ -188,19 +195,16 @@ def generate(rm: ResourceManager):
             'max_radius': 3,
             'height': 2,
             'states': [{'replace': 'tfc:rock/gravel/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        })
+        }, decorate_chance(60), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
 
         configured_placed_feature(rm, '%s_deep_deposit' % ore, 'tfc:soil_disc', {
             'min_radius': 3,
             'max_radius': 10,
             'height': 3,
             'states': [{'replace': 'tfc:rock/raw/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        })
+        }, decorate_chance(60), decorate_square(), decorate_range(40, 63), decorate_biome())
 
-    rm.tag('surface_deposit_features', 'worldgen/placed_feature', *['tfc:%s_deposit' % ore for ore in ORE_DEPOSITS])
-    rm.tag('deep_deposit_features', 'worldgen/placed_feature', *['tfc:%s_deep_deposit' % ore for ore in ORE_DEPOSITS])
-    configured_placed_feature(rm, 'surface_ore_deposits', 'minecraft:simple_random_selector', {'features': '#tfc:surface_deposit_features'}, decorate_chance(15), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
-    configured_placed_feature(rm, 'deep_ore_deposits', 'minecraft:simple_random_selector', {'features': '#tfc:deep_deposit_features'}, decorate_chance(15), decorate_square(), decorate_range(40, 63), decorate_biome())
+        placed_feature_tag(rm, 'feature/ore_deposits', 'tfc:%s_deposit' % ore, 'tfc:%s_deep_deposit' % ore)
 
     rm.configured_feature('cave_spike', 'tfc:cave_spike')
     rm.configured_feature('large_cave_spike', 'tfc:large_cave_spike')
@@ -223,10 +227,8 @@ def generate(rm: ResourceManager):
         'max_height': 9
     })
 
-    min_y = -56
-    rm.placed_feature('calcite', 'tfc:calcite', decorate_count(4), decorate_square(), decorate_range(min_y, 60, bias='biased_to_bottom'))
-    y1 = -56
-    rm.placed_feature('mega_calcite', 'tfc:mega_calcite', decorate_chance(20), decorate_square(), decorate_range(y1, 30, bias='biased_to_bottom'))
+    rm.placed_feature('calcite', 'tfc:calcite', decorate_count(4), decorate_square(), decorate_range(-56, 60, bias='biased_to_bottom'))
+    rm.placed_feature('mega_calcite', 'tfc:mega_calcite', decorate_chance(20), decorate_square(), decorate_range(-56, 30, bias='biased_to_bottom'))
 
     rm.configured_feature('icicle', 'tfc:thin_spike', {
         'state': 'tfc:icicle',
@@ -235,8 +237,7 @@ def generate(rm: ResourceManager):
         'min_height': 2,
         'max_height': 5
     })
-    y2 = -32
-    rm.placed_feature('icicle', 'tfc:icicle', decorate_count(3), decorate_square(), decorate_range(y2, 100, bias='biased_to_bottom'), decorate_climate(max_temp=-4))
+    rm.placed_feature('icicle', 'tfc:icicle', decorate_count(3), decorate_square(), decorate_range(-32, 100, bias='biased_to_bottom'), decorate_climate(max_temp=-4))
 
     for boulder_cfg in (('raw_boulder', 'raw'), ('cobble_boulder', 'raw', 'cobble'), ('mossy_boulder', 'cobble', 'mossy_cobble')):
         rm.configured_feature(boulder_cfg[0], 'tfc:boulder', {
@@ -388,7 +389,8 @@ def generate(rm: ResourceManager):
             }
         }
     })
-    rm.tag('forest_trees', 'worldgen/configured_feature', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys()])
+
+    configured_feature_tag(rm, 'forest_trees', *['tfc:tree/%s_entry' % tree for tree in WOODS.keys()])
 
     configured_placed_feature(rm, ('tree', 'acacia'), 'tfc:random_tree', random_config('acacia', 35, place=tree_placement_config(1, 3)))
     configured_placed_feature(rm, ('tree', 'acacia_large'), 'tfc:random_tree', random_config('acacia', 6, 2, '_large', place=tree_placement_config(2, 5)))
@@ -690,20 +692,13 @@ def generate(rm: ResourceManager):
         res = utils.resource_location(rm.domain, name_parts)
         patch_feature = res.join() + '_patch'
         singular_feature = utils.resource_location(rm.domain, name_parts)
-        rm.tag('crop_features', 'worldgen/placed_feature', patch_feature)
+
+        placed_feature_tag(rm, 'feature/crops', patch_feature)
 
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
-        rm.placed_feature(patch_feature, patch_feature)
+        rm.placed_feature(patch_feature, patch_feature, decorate_chance(60), decorate_square())  # todo: climate decorator for crops
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(name))
-
-    configured_placed_feature(rm, 'tfc:plant/wild_crops', 'minecraft:simple_random_selector', {'features': '#tfc:crop_features'}, decorate_chance(20), decorate_square(), decorate_climate(min_rain=125, min_temp=-15))
-
-    rm.tag('clay_plant_features', 'worldgen/placed_feature', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
-    rm.tag('clay_disc_with_indicator_features', 'worldgen/placed_feature', 'tfc:clay_disc', '#tfc:clay_plant_features')
-    rm.tag('water_clay_disc_with_indicator_features', 'worldgen/placed_feature', 'tfc:water_clay_disc', '#tfc:clay_plant_features')
-    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:clay_disc_with_indicator_features', 'biome_check': False}, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
-    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:water_clay_disc_with_indicator_features', 'biome_check': False}, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
 
     for berry, info in BERRIES.items():
         decorators = decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest),
@@ -711,8 +706,8 @@ def generate(rm: ResourceManager):
             configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0]' % berry, 1, 4, 4), *decorators, biome_check=False)
         elif info.type == 'waterlogged':
             configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0,fluid=empty]' % berry, 1, 4, 4, water=True), *decorators, biome_check=False)
-        rm.tag('berry_bush_features', 'worldgen/placed_feature', 'tfc:plant/%s_bush_patch' % berry)
-    configured_placed_feature(rm, 'berry_bushes', 'minecraft:simple_random_selector', {'features': '#tfc:berry_bush_features'}, decorate_square(), decorate_chance(20))
+        placed_feature_tag(rm, 'feature/berry_bushes', 'tfc:plant/%s_bush_patch' % berry)
+    configured_placed_feature(rm, 'berry_bushes', 'minecraft:simple_random_selector', {'features': '#tfc:feature/berry_bushes'}, decorate_square(), decorate_chance(20))
 
     for fruit, info in FRUITS.items():
         config = {
@@ -727,9 +722,9 @@ def generate(rm: ResourceManager):
         if fruit == 'banana':
             feature = 'tfc:bananas'
             state = 'tfc:plant/banana_plant'
-        configured_placed_feature(rm, ('plant', fruit), feature, {'state': state}, ('tfc:climate', config))
-        rm.tag('fruit_tree_features', 'worldgen/placed_feature', 'tfc:plant/%s' % fruit, 'tfc:plant/%s' % fruit)
-    configured_placed_feature(rm, 'fruit_trees', 'minecraft:simple_random_selector', {'features': '#tfc:fruit_tree_features'}, decorate_heightmap('world_surface_wg'), decorate_square(), decorate_chance(20))
+        configured_placed_feature(rm, ('plant', fruit), feature, {'state': state}, ('tfc:climate', config), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_chance(20))
+
+        placed_feature_tag(rm, 'feature/fruit_trees', 'tfc:plant/%s' % fruit, 'tfc:plant/%s' % fruit)
 
     configured_placed_feature(rm, 'bamboo', 'minecraft:bamboo', {'probability': 0.2}, decorate_chance(30), decorate_climate(18, 28, 300, 500, True, fuzzy=True), ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 160,
@@ -739,9 +734,10 @@ def generate(rm: ResourceManager):
 
     for coral in ('tree', 'mushroom', 'claw'):
         configured_placed_feature(rm, 'coral_%s' % coral, 'tfc:coral_%s' % coral, {})
-        rm.tag('coral_features', 'worldgen/placed_feature', 'tfc:coral_%s' % coral)
+        placed_feature_tag(rm, 'feature/corals', 'tfc:coral_%s' % coral)
+
     configured_placed_feature(rm, 'coral_reef', 'minecraft:simple_random_selector', {
-        'features': '#tfc:coral_features'
+        'features': '#tfc:feature/corals'
     }, ('minecraft:noise_based_count', {
         'noise_to_count_ratio': 20,
         'noise_factor': 200,
@@ -778,33 +774,6 @@ def generate(rm: ResourceManager):
     ]})
     rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(-48, 32), decorate_biome())
 
-    # Global Worldgen Tagged Features
-    rm.tag('land_plant_features', 'worldgen/placed_feature', *[
-        *['tfc:plant/%s' % plant for plant in MISC_PLANT_FEATURES],
-        'tfc:plant/wild_crops',
-        '#tfc:forest_patch_features',
-        'tfc:surface_grasses',
-        *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay and data.type != 'short_grass'],
-        'tfc:berry_bushes',
-        'tfc:fruit_trees'
-    ])
-    rm.tag('forest_patch_features', 'worldgen/placed_feature', *[
-        'tfc:%s_patch' % d for d in FOREST_DECORATORS
-    ])
-
-    configured_placed_feature(rm, 'land_plants', 'tfc:multiple', {'features': '#tfc:land_plant_features', 'biome_check': False})
-
-    rm.tag('surface_grass_features', 'worldgen/placed_feature', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
-    configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:surface_grass_features', 'biome_check': False})
-
-    rm.tag('ocean_plant_features', 'worldgen/placed_feature', *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type in OCEAN_PLANT_TYPES and not data.clay])
-    configured_placed_feature(rm, 'ocean_plants', 'tfc:multiple', {'features': '#tfc:ocean_plant_features', 'biome_check': False})
-
-    rm.tag('vein_features', 'worldgen/placed_feature', *['tfc:vein/gravel', *['tfc:vein/%s_dike' % rock for rock, data in ROCKS.items() if data.category == 'igneous_intrusive'], *('tfc:vein/%s' % v for v in ORE_VEINS.keys())])
-    configured_placed_feature(rm, 'veins', 'tfc:multiple', {'features': '#tfc:vein_features', 'biome_check': False})
-
-    rm.tag('underground_features', 'worldgen/placed_feature', *['tfc:%s' % f for f in UNDERGROUND_FEATURES])
-    configured_placed_feature(rm, 'underground_features', 'tfc:multiple', {'features': '#tfc:underground_features', 'biome_check': False})
 
 def configured_placed_feature(rm: ResourceManager, name_parts: ResourceIdentifier, feature: Optional[ResourceIdentifier] = None, config: JsonObject = None, *placements: Json):
     res = utils.resource_location(rm.domain, name_parts)
@@ -1266,22 +1235,11 @@ def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: H
     }
 
 
-def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: BiomeRainfall, category: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
-    true_name = '%s_%s_%s' % (name, temp.id, rain.id)
-    rm.tag('rain_%s' % rain.id, 'worldgen/biome', 'tfc:%s' % true_name)
-    rm.tag('temperature_%s' % temp.id, 'worldgen/biome', 'tfc:%s' % true_name)
-    rm.tag('type_%s' % name, 'worldgen/biome', 'tfc:%s' % true_name)
-    rm.tag('is_%s' % category, 'worldgen/biome', 'tfc:%s' % true_name)
-
-    # Temperature properties
-    if rain.id == 'arid':
-        rain_type = 'none'
-    elif temp.id in ('cold', 'frozen'):
-        rain_type = 'snow'
-    else:
-        rain_type = 'rain'
-
+def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False, spawnable: bool = True, ocean_features: Union[bool, Literal['both']] = False, lake_features: Union[bool, Literal['default']] = 'default', volcano_features: bool = False, reef_features: bool = False, hot_spring_features: Union[bool, Literal['empty']] = False):
     spawners = {}
+    soil_discs = []
+    large_features = []
+    surface_decorations = []
 
     if ocean_features == 'both':  # Both applies both ocean + land features. True or false applies only one
         land_features = True
@@ -1291,102 +1249,117 @@ def make_biome(rm: ResourceManager, name: str, temp: BiomeTemperature, rain: Bio
     if lake_features == 'default':  # Default = Lakes are on all non-ocean biomes. True/False to force either way
         lake_features = not ocean_features
 
-    # Features
-    features = [
-        ['tfc:erosion'],  # erosion
-        ['tfc:underground_flood_fill_lake'],  # lakes
-        [],  # soil disks
-        ['tfc:veins'],
-        ['tfc:underground_features'],  # underground decoration
-        ['tfc:geode'],  # large features
-        ['tfc:surface_loose_rocks'],  # surface decoration
-        [], []  # unused
-    ]
-
     if boulders:
-        features[Decoration.LARGE_FEATURES] += ['tfc:raw_boulder', 'tfc:cobble_boulder']
-        if rain.id in ('damp', 'wet'):
-            features[Decoration.LARGE_FEATURES].append('tfc:mossy_boulder')
+        large_features.append('#tfc:feature/boulders')
 
     # Oceans
     if ocean_features:
-        if temp.id in ('cold', 'frozen'):
-            features[Decoration.LARGE_FEATURES] += ['tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare']
-
-        features[Decoration.SURFACE_DECORATION] += ['tfc:ocean_plants']
+        large_features.append('#tfc:feature/icebergs')
+        surface_decorations.append('#tfc:feature/ocean_plants')
 
         if name == 'shore':
-            features[Decoration.SURFACE_DECORATION] += ['tfc:%s_patch' % v for v in SHORE_DECORATORS]
+            surface_decorations.append('#tfc:feature/shore_decorations')
             spawners['creature'] = [entity for entity in SHORE_CREATURES.values()]
         else:
-            features[Decoration.SURFACE_DECORATION] += ['tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp']  # Kelp
-            features[Decoration.SURFACE_DECORATION] += ['tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch']
+            surface_decorations.append('#tfc:feature/ocean_decorations')
 
         spawners['water_ambient'] = [entity for entity in OCEAN_AMBIENT.values()]
         spawners['water_creature'] = [entity for entity in OCEAN_CREATURES.values()]
         spawners['underground_water_creature'] = [entity for entity in UNDERGROUND_WATER_CREATURES.values()]
+
     if category == 'river':
         spawners['water_ambient'] = [entity for entity in LAKE_AMBIENT.values()]
-        features[Decoration.SOIL_DISKS] += ['tfc:surface_ore_deposits', 'tfc:deep_ore_deposits']
+        soil_discs.append('#tfc:feature/ore_deposits')
+
     if category in ('river', 'lake', 'swamp'):
-        features[Decoration.SURFACE_DECORATION] += ['tfc:plant/dry_phragmite']
+        surface_decorations.append('tfc:plant/dry_phragmite')
+
     if name == 'deep_ocean_trench':
-        features[Decoration.LARGE_FEATURES].append('tfc:lava_hot_spring')
-    if name.find('lake') != -1:
+        large_features.append('tfc:lava_hot_spring')
+
+    if 'lake' in name:
         spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
 
-    if reef_features and temp.id in ('lukewarm', 'warm'):
-        features[Decoration.LARGE_FEATURES].append('tfc:coral_reef')
+    if reef_features:
+        large_features.append('tfc:coral_reef')
 
     # Continental / Land Features
     if land_features:
-        features[Decoration.SOIL_DISKS] += ['tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:peat_disc_in_mud']
-        if temp.id in ('cold', 'frozen'):
-            features[Decoration.SOIL_DISKS] += ['tfc:powder_snow']
-        features[Decoration.LARGE_FEATURES] += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
-        features[Decoration.SURFACE_DECORATION] += ['tfc:land_plants']
+        soil_discs.append('#tfc:feature/soil_discs')
+        large_features += ['tfc:forest', 'tfc:bamboo', 'tfc:cave_vegetation']
+        surface_decorations.append('#tfc:feature/land_plants')
         spawners['creature'] = [entity for entity in LAND_CREATURES.values()]
 
     if volcano_features:
-        features[Decoration.LARGE_FEATURES] += ['tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure']
-        rm.tag('is_volcanic', 'worldgen/biome', 'tfc:%s' % true_name)
+        large_features.append('#tfc:feature/volcanoes')
 
     if hot_spring_features:  # can be True, 'empty'
         if hot_spring_features == 'empty':
-            features[Decoration.LARGE_FEATURES].append('tfc:random_empty_hot_spring')
+            large_features.append('tfc:random_empty_hot_spring')
         else:
-            features[Decoration.LARGE_FEATURES].append('tfc:random_active_hot_spring')
+            large_features.append('tfc:random_active_hot_spring')
 
-    if lake_features:
-        features[Decoration.LAKES] += ['tfc:flood_fill_lake']
+    # Feature Tags
+    # We don't directly use vanilla's generation step, but we line this up *approximately* with it, so that mods that add features add them in roughly the right location
+    feature_tags = [
+        '#tfc:in_biome/erosion',  # Raw Generation
+        '#tfc:in_biome/all_lakes' if lake_features else '#tfc:in_biome/underground_lakes',  # Lakes
+        '#tfc:in_biome/soil_discs/%s' % name,  # Local Modifications
+        '#tfc:in_biome/underground_structures',  # Underground Structures
+        '#tfc:in_biome/surface_structures',  # Surface Structures
+        '#tfc:in_biome/strongholds',  # Strongholds
+        '#tfc:in_biome/veins',  # Underground Ores
+        '#tfc:in_biome/underground_decoration',  # Underground Decoration
+        '#tfc:in_biome/large_features/%s' % name,  # Fluid Springs (we co-opt this as they likely won't interfere and it's in the right order)
+        '#tfc:in_biome/surface_decoration/%s' % name,  # Vegetal Decoration
+        '#tfc:in_biome/top_layer_modification'  # Top Layer Modification
+    ]
 
-    features[Decoration.ICE_AND_SNOW].append('tfc:ice_and_snow')  # This must go last
+    placed_feature_tag(rm, ('in_biome/soil_discs', name), *soil_discs)
+    placed_feature_tag(rm, ('in_biome/large_features', name), *large_features)
+    placed_feature_tag(rm, ('in_biome/surface_decoration', name), *surface_decorations)
 
-    # Carvers
-    air_carvers = ['tfc:cave', 'tfc:canyon']
-    water_carvers = []
+    if volcano_features:
+        biome_tag(rm, 'is_volcanic', name)
+    if 'lake' in name:
+        biome_tag(rm, 'is_lake', name)
+    if 'river' in name:
+        biome_tag(rm, 'is_river', name)
 
-    # Generate based on properties
-    rm.lang('biome.tfc.%s_%s_%s' % (name, temp.id, rain.id), '(%s / %s) %s' % (temp.id.title(), rain.id.title(), lang(name)))
+    rm.lang('biome.tfc.%s' % name, lang(name))
     rm.biome(
-        name_parts=true_name,
-        precipitation=rain_type,
+        name_parts=name,
+        precipitation='rain',  # Hardcode to rain to make some mixins redundant since they do a == rain check.
         category=category,
-        temperature=temp.temperature,
-        downfall=rain.downfall,
+        temperature=0.5,
+        downfall=0.5,
         effects={
-            'fog_color': DEFAULT_FOG_COLOR,
-            'sky_color': DEFAULT_SKY_COLOR,
-            'water_color': temp.water_color,
-            'water_fog_color': temp.water_fog_color
+            'fog_color': 0xC0D8FF,
+            'sky_color': 0x84E6FF,
+            'water_color': 0x3F76E4,
+            'water_fog_color': 0x050533
         },
         spawners=spawners,
-        air_carvers=air_carvers,
-        water_carvers=water_carvers,
-        features=features,
+        air_carvers=['tfc:cave', 'tfc:canyon'],
+        water_carvers=[],
+        features=feature_tags,
         player_spawn_friendly=spawnable,
         creature_spawn_probability=0.05
     )
+
+
+# Tags
+
+def placed_feature_tag(rm: ResourceManager, name_parts: ResourceIdentifier, *values: ResourceIdentifier):
+    return rm.tag(name_parts, 'worldgen/placed_feature', *values)
+
+
+def configured_feature_tag(rm: ResourceManager, name_parts: ResourceIdentifier, *values: ResourceIdentifier):
+    return rm.tag(name_parts, 'worldgen/configured_feature', *values)
+
+
+def biome_tag(rm: ResourceManager, name_parts: ResourceIdentifier, *values: ResourceIdentifier):
+    return rm.tag(name_parts, 'worldgen/biome', *values)
 
 
 def expand_rocks(rocks_list: List[str], path: Optional[str] = None) -> List[str]:

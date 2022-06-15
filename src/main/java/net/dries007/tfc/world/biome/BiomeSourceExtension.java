@@ -18,11 +18,9 @@ public interface BiomeSourceExtension
 {
     Holder<Biome> getNoiseBiome(int quartX, int quartZ);
 
-    Holder<Biome> getNoiseBiomeIgnoreClimate(int quartX, int quartZ);
+    BiomeExtension getNoiseBiomeVariants(int quartX, int quartZ);
 
-    BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ);
-
-    Holder<Biome> getClimateForBiome(BiomeVariants variants, int quartX, int quartZ);
+    Holder<Biome> getBiome(BiomeExtension variants);
 
     int getSpawnDistance();
 

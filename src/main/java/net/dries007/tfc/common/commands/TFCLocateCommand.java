@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.commands;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -23,7 +21,11 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
-import net.dries007.tfc.world.biome.*;
+import net.dries007.tfc.world.biome.BiomeExtension;
+import net.dries007.tfc.world.biome.BiomeSourceExtension;
+import net.dries007.tfc.world.biome.TFCBiomes;
+import net.dries007.tfc.world.biome.VolcanoNoise;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCLocateCommand
 {
@@ -54,7 +56,7 @@ public class TFCLocateCommand
             throw ERROR_INVALID_BIOME_SOURCE.create();
         }
 
-        final BiomeVariants variants = TFCBiomes.getById(id);
+        final BiomeExtension variants = TFCBiomes.getById(id);
         if (variants == null)
         {
             throw ERROR_INVALID_BIOME.create(id);
@@ -62,7 +64,7 @@ public class TFCLocateCommand
 
         final BlockPos center = new BlockPos(source.getPosition());
         final BlockPos result = radialSearch(QuartPos.fromBlock(center.getX()), QuartPos.fromBlock(center.getZ()), 1024, 16, (x, z) -> {
-            final BiomeVariants found = biomeSourceExtension.getNoiseBiomeVariants(x, z);
+            final BiomeExtension found = biomeSourceExtension.getNoiseBiomeVariants(x, z);
             if (found == variants)
             {
                 return new BlockPos(QuartPos.fromSection(x), 0, QuartPos.fromSection(z));
@@ -92,7 +94,7 @@ public class TFCLocateCommand
             if (volcanoPos != null)
             {
                 // Sample the biome at that volcano position and verify the center exists
-                final BiomeVariants found = biomeSourceExtension.getNoiseBiomeVariants(QuartPos.fromBlock(volcanoPos.getX()), QuartPos.fromBlock(volcanoPos.getZ()));
+                final BiomeExtension found = biomeSourceExtension.getNoiseBiomeVariants(QuartPos.fromBlock(volcanoPos.getX()), QuartPos.fromBlock(volcanoPos.getZ()));
                 final BlockPos newFound = volcanoNoise.calculateCenter(x, 0, z, found.getVolcanoRarity());
                 if (found.isVolcanic() && newFound != null)
                 {

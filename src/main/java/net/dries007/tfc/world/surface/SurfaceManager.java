@@ -9,7 +9,6 @@ package net.dries007.tfc.world.surface;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
@@ -17,22 +16,22 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomSource;
 
-import net.dries007.tfc.world.biome.*;
+import net.dries007.tfc.world.biome.BiomeExtension;
+import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
 public class SurfaceManager
 {
-    private static Map<BiomeVariants, SurfaceBuilder> collectSurfaceBuilders(long seed)
+    private static Map<BiomeExtension, SurfaceBuilder> collectSurfaceBuilders(long seed)
     {
-        final ImmutableMap.Builder<BiomeVariants, SurfaceBuilder> builder = ImmutableMap.builder();
-        for (BiomeVariants variant : TFCBiomes.getVariants())
+        final ImmutableMap.Builder<BiomeExtension, SurfaceBuilder> builder = ImmutableMap.builder();
+        for (BiomeExtension variant : TFCBiomes.getVariants())
         {
             builder.put(variant, variant.createSurfaceBuilder(seed));
         }
@@ -40,7 +39,7 @@ public class SurfaceManager
     }
 
     private final long seed;
-    private final Map<BiomeVariants, SurfaceBuilder> builders;
+    private final Map<BiomeExtension, SurfaceBuilder> builders;
 
     public SurfaceManager(long seed)
     {
@@ -70,8 +69,7 @@ public class SurfaceManager
 
                 final Biome biome = accurateChunkBiomes[x + 16 * z];
                 final double weight = accurateChunkBiomeWeights[x + 16 * z];
-                final BiomeExtension extension = TFCBiomes.getExtensionOrThrow(world, biome);
-                final BiomeVariants variants = extension.variants();
+                final BiomeExtension variants = TFCBiomes.getExtensionOrThrow(world, biome);
                 final SurfaceBuilder builder = builders.get(variants);
 
                 context.buildSurface(biome, weight, variants.isSalty(), builder, blockX + x, y, blockZ + z, slope);

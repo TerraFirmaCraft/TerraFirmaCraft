@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:raw_boulder",
+    "tfc:cobble_boulder",
+    "tfc:mossy_boulder"
+  ]
+}

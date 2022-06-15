@@ -18,11 +18,9 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.Codecs;
 
-public record ClimateSettings(float lowThreshold, float highThreshold, int scale, boolean endlessPoles)
+public record ClimateSettings(int scale, boolean endlessPoles)
 {
     public static final Codec<ClimateSettings> DIRECT_CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.FLOAT.fieldOf("low_threshold").forGetter(c -> c.lowThreshold),
-        Codec.FLOAT.fieldOf("high_threshold").forGetter(c -> c.highThreshold),
         Codec.INT.fieldOf("scale").forGetter(c -> c.scale),
         Codec.BOOL.fieldOf("endless_poles").forGetter(c -> c.endlessPoles)
     ).apply(instance, ClimateSettings::new));
@@ -40,8 +38,8 @@ public record ClimateSettings(float lowThreshold, float highThreshold, int scale
         Either::right
     );
 
-    public static final ClimateSettings DEFAULT_TEMPERATURE = register("default_temperature", new ClimateSettings(-10.5f, 16.5f, 20_000, false));
-    public static final ClimateSettings DEFAULT_RAINFALL = register("default_rainfall", new ClimateSettings(175, 325, 20_000, false));
+    public static final ClimateSettings DEFAULT_TEMPERATURE = register("default_temperature", new ClimateSettings(20_000, false));
+    public static final ClimateSettings DEFAULT_RAINFALL = register("default_rainfall", new ClimateSettings(20_000, false));
 
     /**
      * Register a climate settings preset. Used for both temperature and rainfall.

@@ -7,15 +7,19 @@
 package net.dries007.tfc.world.biome;
 
 import java.util.Objects;
-import java.util.function.*;
+import java.util.function.BiFunction;
+import java.util.function.DoubleUnaryOperator;
+import java.util.function.LongFunction;
 
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.biome.Biome;
 
 import net.dries007.tfc.world.BiomeNoiseSampler;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilderFactory;
 import net.dries007.tfc.world.surface.builder.VolcanoesSurfaceBuilder;
+import org.jetbrains.annotations.Nullable;
 
 public class BiomeBuilder
 {
@@ -29,7 +33,7 @@ public class BiomeBuilder
     @Nullable private SurfaceBuilderFactory surfaceBuilderFactory;
 
     private DoubleUnaryOperator aquiferSurfaceHeight;
-    private BiomeVariants.Group group;
+    private BiomeExtension.Group group;
     private boolean salty;
     private boolean volcanic;
     private int volcanoFrequency;
@@ -39,7 +43,7 @@ public class BiomeBuilder
     private BiomeBuilder()
     {
         aquiferSurfaceHeight = height -> height;
-        group = BiomeVariants.Group.LAND;
+        group = BiomeExtension.Group.LAND;
         salty = false;
         volcanic = false;
         volcanoFrequency = 0;
@@ -86,7 +90,7 @@ public class BiomeBuilder
         return this;
     }
 
-    public BiomeBuilder group(BiomeVariants.Group group)
+    public BiomeBuilder group(BiomeExtension.Group group)
     {
         this.group = group;
         return this;
@@ -123,11 +127,11 @@ public class BiomeBuilder
     }
 
 
-    public BiomeVariants build()
+    public BiomeExtension build(ResourceKey<Biome> key)
     {
         assert noiseFactory != null : "missing noise / heightmap";
         assert surfaceBuilderFactory != null : "missing surface builder";
 
-        return new BiomeVariants(noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable);
+        return new BiomeExtension(key, noiseFactory, surfaceBuilderFactory, aquiferSurfaceHeight, group, salty, volcanic, volcanoFrequency, volcanoBasaltHeight, spawnable);
     }
 }

@@ -7,8 +7,6 @@
 package net.dries007.tfc.world.chunkdata;
 
 import java.util.Objects;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +22,8 @@ import net.minecraftforge.common.util.LazyOptional;
 
 import net.dries007.tfc.network.ChunkWatchPacket;
 import net.dries007.tfc.world.settings.RockLayerSettings;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ChunkData implements ICapabilitySerializable<CompoundTag>
 {
@@ -78,7 +78,7 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     @Nullable private RockData rockData;
     @Nullable private LerpFloatLayer rainfallLayer;
     @Nullable private LerpFloatLayer temperatureLayer;
-    @Nullable private int[] aquiferSurfaceHeight;
+    private int @Nullable [] aquiferSurfaceHeight;
     private ForestType forestType;
     private float forestWeirdness;
     private float forestDensity;
