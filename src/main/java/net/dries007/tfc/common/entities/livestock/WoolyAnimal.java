@@ -52,7 +52,7 @@ public abstract class WoolyAnimal extends ProducingMammal implements IForgeShear
         AnimalProductEvent event = new AnimalProductEvent(level, pos, player, this, getWoolItem(), item, 1);
         if (!MinecraftForge.EVENT_BUS.post(event))
         {
-            addUses(1);
+            addUses(event.getUses());
         }
         return List.of(event.getProduct());
     }

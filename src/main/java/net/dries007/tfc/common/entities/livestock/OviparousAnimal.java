@@ -147,7 +147,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
         AnimalProductEvent event = new AnimalProductEvent(level, blockPosition(), null, this, stack, ItemStack.EMPTY, 1);
         if (!MinecraftForge.EVENT_BUS.post(event))
         {
-            addUses(1);
+            addUses(event.getUses());
         }
         return event.getProduct();
     }
