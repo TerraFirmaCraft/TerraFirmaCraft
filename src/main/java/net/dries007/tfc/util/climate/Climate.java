@@ -19,7 +19,6 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
-
 import net.minecraftforge.common.MinecraftForge;
 
 import net.dries007.tfc.mixin.accessor.BiomeAccessor;
@@ -97,11 +96,6 @@ public final class Climate
         return model(level).getRainfall(level, pos);
     }
 
-    public static Biome.Precipitation getPrecipitation(Level level, BlockPos pos)
-    {
-        return model(level).getPrecipitation(level, pos);
-    }
-
     public static float getFogginess(Level level, BlockPos pos)
     {
         return model(level).getFogginess(level, pos, Calendars.get(level).getTicks());
@@ -113,28 +107,11 @@ public final class Climate
     }
 
     /**
-     * @see Biome#coldEnoughToSnow(BlockPos)
-     */
-    public static boolean coldEnoughToSnow(Level level, BlockPos pos)
-    {
-        return !warmEnoughToRain(level, pos);
-    }
-
-    /**
      * @see Biome#warmEnoughToRain(BlockPos)
      */
     public static boolean warmEnoughToRain(Level level, BlockPos pos)
     {
         return getVanillaBiomeTemperature(level, pos) >= 0.15f;
-    }
-
-    /**
-     * Defensive version, when it's unknown if we're in world generation or not
-     * @see Biome#coldEnoughToSnow(BlockPos)
-     */
-    public static boolean coldEnoughToSnow(LevelReader level, BlockPos pos, Biome fallback)
-    {
-        return !warmEnoughToRain(level, pos, fallback);
     }
 
     /**

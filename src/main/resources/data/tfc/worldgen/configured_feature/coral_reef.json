@@ -2,6 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:simple_random_selector",
   "config": {
-    "features": "#tfc:coral_features"
+    "features": "#tfc:feature/corals"
   }
 }

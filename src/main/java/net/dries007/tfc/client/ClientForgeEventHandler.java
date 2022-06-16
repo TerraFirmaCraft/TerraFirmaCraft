@@ -30,8 +30,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ColorResolver;
@@ -80,6 +80,7 @@ import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.minecraft.ChatFormatting.*;
@@ -151,6 +152,8 @@ public class ClientForgeEventHandler
                 {
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_invalid_chunk_data"));
                 }
+
+                mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(list));
             }
         }
     }
