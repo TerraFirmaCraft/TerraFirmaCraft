@@ -26,6 +26,7 @@ import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
@@ -68,6 +69,7 @@ public class Faunas
     public static final FaunaType<OviparousAnimal> DUCK = registerAnimal(TFCEntities.DUCK);
     public static final FaunaType<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
     public static final FaunaType<TFCRabbit> RABBIT = registerAnimal(TFCEntities.RABBIT);
+    public static final FaunaType<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
 
     public static void registerSpawnPlacements()
     {
@@ -106,6 +108,7 @@ public class Faunas
         registerSpawnPlacement(DUCK);
         registerSpawnPlacement(QUAIL);
         registerSpawnPlacement(RABBIT);
+        registerSpawnPlacement(FOX);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)

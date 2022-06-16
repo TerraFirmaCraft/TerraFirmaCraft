@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,12 +24,17 @@ import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
 
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public final class EntityHelpers
 {
@@ -60,6 +66,18 @@ public final class EntityHelpers
     public static void removeGoalOfPriority(GoalSelector selector, int priority)
     {
         selector.getAvailableGoals().removeIf(wrapped -> wrapped.getPriority() == priority);
+    }
+
+    public static void removeGoalOfClass(GoalSelector selector, Class<?> clazz)
+    {
+        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal().getClass() == clazz);
+    }
+
+    public static ChunkData getChunkDataForSpawning(ServerLevelAccessor level, BlockPos pos)
+    {
+        return level instanceof WorldGenLevel worldGenLevel ?
+            ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
+            ChunkData.get(level, pos);
     }
 
     public static void addCommonPreyGoals(TFCAnimal animal, GoalSelector goalSelector)
