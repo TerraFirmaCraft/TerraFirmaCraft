@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:multiple",
   "config": {
-    "features": "#tfc:water_clay_disc_with_indicator_features",
+    "features": "#tfc:feature/water_clay_disc_with_indicator",
     "biome_check": false
   }
 }

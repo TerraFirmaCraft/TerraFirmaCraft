@@ -1,6 +1,5 @@
 # Handles generation of all world gen objects
 
-from enum import IntEnum
 from typing import Union, get_args
 
 from mcresources import ResourceManager, utils
@@ -123,8 +122,8 @@ def generate(rm: ResourceManager):
 
     configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:feature/surface_grasses', 'biome_check': False})
 
-    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:clay_disc_with_indicator_features', 'biome_check': False}, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
-    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:water_clay_disc_with_indicator_features', 'biome_check': False}, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
+    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_disc_with_indicator', 'biome_check': False}, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:feature/water_clay_disc_with_indicator', 'biome_check': False}, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
 
     configured_placed_feature(rm, 'tfc:erosion')
     configured_placed_feature(rm, 'tfc:ice_and_snow')
