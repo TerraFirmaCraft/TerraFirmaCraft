@@ -69,7 +69,7 @@ public final class FluidHelpers
                 }
                 else
                 {
-                    final boolean bucketTransfer = itemCap instanceof FluidBucketWrapper && preferredAmount < FluidAttributes.BUCKET_VOLUME; // todo: does this suck?
+                    final boolean bucketTransfer = itemCap instanceof FluidBucketWrapper && preferredAmount >= FluidAttributes.BUCKET_VOLUME; // todo: does this suck? Update: 6-16-2022: yes
                     return tryEmptyItem(player, itemCap, blockEntityCap, bucketTransfer ? FluidAttributes.BUCKET_VOLUME : preferredAmount, !bucketTransfer);
                 }
             }).orElse(false);
@@ -202,16 +202,6 @@ public final class FluidHelpers
     public static boolean isAirOrEmptyFluid(BlockState state)
     {
         return state.isAir() || state.getBlock() == state.getFluidState().getType().defaultFluidState().createLegacyBlock().getBlock();
-    }
-
-    /**
-     * Any fluid block, given that it's an empty one.
-     */
-    public static boolean isAnEmptyFluid(BlockState state)
-    {
-        final FluidState fluid = state.getFluidState();
-        if (fluid.isEmpty()) return false;
-        return state.getBlock() == fluid.getType().defaultFluidState().createLegacyBlock().getBlock();
     }
 
     /**
