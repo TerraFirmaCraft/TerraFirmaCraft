@@ -40,6 +40,11 @@ public class TFCGoatModel extends QuadrupedModel<DairyAnimal>
             this.head.getChild("left_horn").y = 2;
             this.head.getChild("right_horn").y = 2;
         }
+        else
+        {
+            this.head.getChild("left_horn").y = 0;
+            this.head.getChild("right_horn").y = 0;
+        }
         super.setupAnim(goat, limbSwing, limbSwingAmount, ageInTicks, headYaw / 3, headPitch);
     }
 }

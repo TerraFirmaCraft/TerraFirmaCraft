@@ -423,10 +423,7 @@
     "subtitle": "tfc.animal.duck.step",
     "sounds": [
       "minecraft:mob/chicken/step1",
-      "minecraft:mob/chicken/step2",
-      "minecraft:mob/chicken/step3",
-      "minecraft:mob/chicken/step4",
-      "minecraft:mob/chicken/step5"
+      "minecraft:mob/chicken/step2"
     ]
   },
   "animal.duck.death": {
@@ -457,10 +454,7 @@
     "subtitle": "tfc.animal.quail.step",
     "sounds": [
       "minecraft:mob/chicken/step1",
-      "minecraft:mob/chicken/step2",
-      "minecraft:mob/chicken/step3",
-      "minecraft:mob/chicken/step4",
-      "minecraft:mob/chicken/step5"
+      "minecraft:mob/chicken/step2"
     ]
   },
   "animal.quail.death": {
