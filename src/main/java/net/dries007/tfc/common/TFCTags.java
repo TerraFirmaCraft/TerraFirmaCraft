@@ -81,6 +81,7 @@ public class TFCTags
         public static final TagKey<Block> POWDER_SNOW_REPLACEABLE = create("powder_snow_replaceable"); // on feature gen, can be replaced by powder snow
         public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
         public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
+        public static final TagKey<Block> RABBIT_RAIDABLE = create("rabbit_raidable"); // rabbits will break it
 
         private static TagKey<Block> create(String id)
         {
@@ -95,6 +96,8 @@ public class TFCTags
         public static final TagKey<Fluid> USABLE_IN_POT = create("usable_in_pot");
         public static final TagKey<Fluid> USABLE_IN_JUG = create("usable_in_jug");
         public static final TagKey<Fluid> USABLE_IN_WOODEN_BUCKET = create("usable_in_wooden_bucket");
+        public static final TagKey<Fluid> USABLE_IN_RED_STEEL_BUCKET = create("usable_in_red_steel_bucket");
+        public static final TagKey<Fluid> USABLE_IN_BLUE_STEEL_BUCKET = create("usable_in_blue_steel_bucket");
         public static final TagKey<Fluid> USABLE_IN_BARREL = create("usable_in_barrel");
         public static final TagKey<Fluid> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Fluid> USABLE_IN_SLUICE = create("usable_in_sluice");
@@ -140,13 +143,20 @@ public class TFCTags
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
         public static final TagKey<Item> USABLE_ON_TOOL_RACK = create("usable_on_tool_rack");
+        public static final TagKey<Item> USABLE_IN_POWDER_KEG = create("usable_in_powder_keg");
         public static final TagKey<Item> SOUP_BOWLS = create("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
         public static final TagKey<Item> SALAD_BOWLS = create("salad_bowls"); // Bowls that when right clicked, open the salad UI
         public static final TagKey<Item> USABLE_IN_SALAD = create("foods/usable_in_salad"); // Items that are valid ingredients for a salad
         public static final TagKey<Item> PIG_FOOD = create("pig_food");
         public static final TagKey<Item> COW_FOOD = create("cow_food");
+        public static final TagKey<Item> YAK_FOOD = create("yak_food");
+        public static final TagKey<Item> GOAT_FOOD = create("goat_food");
         public static final TagKey<Item> ALPACA_FOOD = create("alpaca_food");
+        public static final TagKey<Item> SHEEP_FOOD = create("sheep_food");
+        public static final TagKey<Item> MUSK_OX_FOOD = create("musk_ox_food");
         public static final TagKey<Item> CHICKEN_FOOD = create("chicken_food");
+        public static final TagKey<Item> DUCK_FOOD = create("duck_food");
+        public static final TagKey<Item> QUAIL_FOOD = create("quail_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");

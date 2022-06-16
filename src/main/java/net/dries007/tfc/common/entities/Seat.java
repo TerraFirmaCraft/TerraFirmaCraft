@@ -14,13 +14,9 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.network.NetworkHooks;
 
-import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.entities.land.OviparousAnimal;
-import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class Seat extends Entity

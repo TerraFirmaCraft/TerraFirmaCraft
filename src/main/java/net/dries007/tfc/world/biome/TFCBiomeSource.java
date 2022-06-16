@@ -15,7 +15,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.QuartPos;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.RegistryOps;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
@@ -25,7 +24,6 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.TFCChunkDataGenerator;
 import net.dries007.tfc.world.layer.TFCLayers;
@@ -72,7 +70,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     private final ClimateSettings temperatureSettings, rainfallSettings;
     private final Registry<Biome> biomeRegistry;
 
-    private final ConcurrentArea<BiomeVariants> biomeLayer;
+    private final ConcurrentArea<BiomeExtension> biomeLayer;
     private final ChunkDataProvider chunkDataProvider;
     private final Watershed.Context watersheds;
 
@@ -158,30 +156,19 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     @Override
     public Holder<Biome> getNoiseBiome(int quartX, int quartZ)
     {
-        final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
-        final BiomeExtension extension = getBiomeExtension(variants, quartX, quartZ);
-        return biomeRegistry.getHolderOrThrow(extension.key());
+        return biomeRegistry.getHolderOrThrow(getNoiseBiomeVariants(quartX, quartZ).key());
     }
 
     @Override
-    public Holder<Biome> getNoiseBiomeIgnoreClimate(int quartX, int quartZ)
-    {
-        final BiomeVariants variants = getNoiseBiomeVariants(quartX, quartZ);
-        final BiomeExtension extension = variants.get(BiomeTemperature.NORMAL, BiomeRainfall.NORMAL);
-        return biomeRegistry.getHolderOrThrow(extension.key());
-    }
-
-    @Override
-    public BiomeVariants getNoiseBiomeVariants(int quartX, int quartZ)
+    public BiomeExtension getNoiseBiomeVariants(int quartX, int quartZ)
     {
         return biomeLayer.get(quartX, quartZ);
     }
 
     @Override
-    public Holder<Biome> getClimateForBiome(BiomeVariants variants, int quartX, int quartZ)
+    public Holder<Biome> getBiome(BiomeExtension variants)
     {
-        final BiomeExtension extension = getBiomeExtension(variants, quartX, quartZ);
-        return biomeRegistry.getHolderOrThrow(extension.key());
+        return biomeRegistry.getHolderOrThrow(variants.key());
     }
 
     @Override
@@ -242,50 +229,5 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
             }
         }
         return pair;
-    }
-
-    private BiomeExtension getBiomeExtension(BiomeVariants variants, int quartX, int quartZ)
-    {
-        final boolean debugNoiseBiomeQueriesWithInvalidClimate = false;
-
-        final ChunkPos chunkPos = new ChunkPos(QuartPos.toSection(quartX), QuartPos.toSection(quartZ));
-        final ChunkData data = chunkDataProvider.get(chunkPos);
-
-        // noinspection ConstantConditions
-        if (debugNoiseBiomeQueriesWithInvalidClimate && data == ChunkData.EMPTY)
-        {
-            System.out.println("getNoiseBiome() called but no climate data could be found at " + quartX + ", " + quartZ);
-            new Exception("Stacktrace").printStackTrace();
-        }
-
-        final BiomeTemperature temperature = calculateTemperature(data.getAverageTemp(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
-        final BiomeRainfall rainfall = calculateRainfall(data.getRainfall(QuartPos.toBlock(quartX), QuartPos.toBlock(quartZ)));
-        return variants.get(temperature, rainfall);
-    }
-
-    private BiomeRainfall calculateRainfall(float rainfall)
-    {
-        if (rainfall < rainfallSettings.lowThreshold())
-        {
-            return BiomeRainfall.DRY;
-        }
-        else if (rainfall > rainfallSettings.highThreshold())
-        {
-            return BiomeRainfall.WET;
-        }
-        return BiomeRainfall.NORMAL;
-    }
-
-    private BiomeTemperature calculateTemperature(float averageTemperature)
-    {
-        if (averageTemperature < temperatureSettings.lowThreshold())
-        {
-            return BiomeTemperature.COLD;
-        }
-        else if (averageTemperature > temperatureSettings.highThreshold())
-        {
-            return BiomeTemperature.WARM;
-        }
-        return BiomeTemperature.NORMAL;
     }
 }

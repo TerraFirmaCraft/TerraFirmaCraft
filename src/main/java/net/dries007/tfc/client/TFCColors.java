@@ -107,12 +107,12 @@ public final class TFCColors
 
     public static int getSkyColor(CommonLevelAccessor level, Biome biome, BlockPos pos)
     {
-        return TFCBiomes.getExtension(level, biome) != null ? getClimateColor(SKY_COLORS_CACHE, pos) : biome.getSkyColor();
+        return TFCBiomes.hasExtension(level, biome) ? getClimateColor(SKY_COLORS_CACHE, pos) : biome.getSkyColor();
     }
 
     public static int getFogColor(CommonLevelAccessor level, Biome biome, BlockPos pos)
     {
-        return TFCBiomes.getExtension(level, biome) != null ? getClimateColor(FOG_COLORS_CACHE, pos) : biome.getFogColor();
+        return TFCBiomes.hasExtension(level, biome) ? getClimateColor(FOG_COLORS_CACHE, pos) : biome.getFogColor();
     }
 
     public static int getWaterColor(@Nullable BlockPos pos)
@@ -122,7 +122,7 @@ public final class TFCColors
 
     public static int getWaterFogColor(CommonLevelAccessor level, Biome biome, BlockPos pos)
     {
-        return TFCBiomes.getExtension(level, biome) != null ? getClimateColor(WATER_FOG_COLORS_CACHE, pos) : biome.getWaterFogColor();
+        return TFCBiomes.hasExtension(level, biome) ? getClimateColor(WATER_FOG_COLORS_CACHE, pos) : biome.getWaterFogColor();
     }
 
     public static int getSeasonalFoliageColor(@Nullable BlockPos pos, int tintIndex)

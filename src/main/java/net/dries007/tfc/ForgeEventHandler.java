@@ -117,6 +117,7 @@ import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
 import net.dries007.tfc.util.events.StartFireEvent;
+import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.NoopClimateSampler;
@@ -196,7 +197,7 @@ public final class ForgeEventHandler
             final BiomeSourceExtension source = extension.getBiomeSource();
             final Random random = new Random(level.getSeed());
 
-            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).variants().isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
+            Pair<BlockPos, Holder<Biome>> posPair = generator.getBiomeSource().findBiomeHorizontal(source.getSpawnCenterX(), 0, source.getSpawnCenterZ(), source.getSpawnDistance(), source.getSpawnDistance() / 256, biome -> TFCBiomes.getExtensionOrThrow(level, biome.value()).isSpawnable(), random, false, NoopClimateSampler.INSTANCE);
             BlockPos pos;
             ChunkPos chunkPos;
             if (posPair == null)
@@ -507,9 +508,10 @@ public final class ForgeEventHandler
 
     public static void onWorldTick(TickEvent.WorldTickEvent event)
     {
-        if (event.phase == TickEvent.Phase.START)
+        if (event.phase == TickEvent.Phase.START && event.world instanceof ServerLevel level)
         {
-            event.world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(event.world));
+            WeatherHelpers.preAdvancedWeatherCycle(level);
+            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.tick(level));
         }
     }
 
@@ -627,6 +629,13 @@ public final class ForgeEventHandler
             {
                 event.setCanceled(true);
             }
+        }
+        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED))
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
+                entity.setLit(true, event.getPlayer());
+                event.setCanceled(true);
+            });
         }
         else if (block == TFCBlocks.BLAST_FURNACE.get() && !state.getValue(BlastFurnaceBlock.LIT))
         {

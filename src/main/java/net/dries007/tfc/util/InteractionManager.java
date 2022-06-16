@@ -241,7 +241,7 @@ public final class InteractionManager
                     {
                         stack.shrink(1);
                         level.setBlockAndUpdate(pos, stateAt.setValue(CharcoalPileBlock.LAYERS, layers + 1));
-                        Helpers.playSound(level, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                        Helpers.playSound(level, pos, TFCSounds.CHARCOAL.getPlaceSound());
                         return InteractionResult.SUCCESS;
                     }
                 }
@@ -249,7 +249,7 @@ public final class InteractionManager
                 {
                     stack.shrink(1);
                     level.setBlockAndUpdate(pos.above(), pile.defaultBlockState());
-                    Helpers.playSound(level, pos, TFCSounds.CHARCOAL_PILE_PLACE.get());
+                    Helpers.playSound(level, pos, TFCSounds.CHARCOAL.getPlaceSound());
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.FAIL;

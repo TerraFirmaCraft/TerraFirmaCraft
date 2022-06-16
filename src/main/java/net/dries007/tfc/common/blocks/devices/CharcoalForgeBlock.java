@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -159,11 +160,25 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, Random rand)
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (state.getValue(HEAT) > 0 && !isValid(world, pos))
+        if (state.getValue(HEAT) > 0)
         {
-            world.setBlockAndUpdate(pos, defaultBlockState().setValue(HEAT, 0));
+            if (isValid(level, pos))
+            {
+                Helpers.fireSpreaderTick(level, pos, rand, 3);
+            }
+            else
+            {
+                level.setBlockAndUpdate(pos, defaultBlockState().setValue(HEAT, 0));
+            }
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    {
+        return false;
     }
 }

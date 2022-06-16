@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -40,8 +41,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import net.dries007.tfc.common.entities.land.TFCAnimal;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
 
 public final class RenderHelpers
@@ -125,13 +126,35 @@ public final class RenderHelpers
      */
     public static void renderTexturedVertex(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float x, float y, float z, float u, float v, float normalX, float normalY, float normalZ)
     {
+        final float shade = getShade(normalX, normalY, normalZ);
         buffer.vertex(poseStack.last().pose(), x, y, z)
-            .color(1f, 1f, 1f, 1f)
+            .color(shade, shade, shade, 1f)
             .uv(u, v)
             .uv2(packedLight)
             .overlayCoords(packedOverlay)
             .normal(poseStack.last().normal(), normalX, normalY, normalZ)
             .endVertex();
+    }
+
+    /**
+     * Converts a potentially angled normal into the 'nearest' directional step. Could potentially be reimplemented as an inverse lerp.
+     */
+    public static float getShade(float normalX, float normalY, float normalZ)
+    {
+        return getShadeForStep(Math.round(normalX), Math.round(normalY), Math.round(normalZ));
+    }
+
+    /**
+     * Returns the static diffuse shade by MC for each directional face. The color value of a vertex should be multiplied by this.
+     * Reimplements {@link net.minecraft.client.multiplayer.ClientLevel#getShade(Direction, boolean)}
+     */
+    public static float getShadeForStep(int normalX, int normalY, int normalZ)
+    {
+        if (normalY == 1) return 1f;
+        if (normalY == -1) return 0.5f;
+        if (normalZ != 0) return 0.8f;
+        if (normalX != 0) return 0.6f;
+        return 1f;
     }
 
     /**

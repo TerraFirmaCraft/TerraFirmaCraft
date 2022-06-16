@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client.screen;
 
+import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
@@ -14,6 +15,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
@@ -83,7 +85,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (keyCode == 256)
+        if (keyCode == GLFW.GLFW_KEY_ESCAPE)
         {
             minecraft.player.closeContainer();
         }
@@ -94,7 +96,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     {
         if (!text.isEmpty())
         {
-            Slot slot = menu.getSlot(0);
+            Slot slot = menu.getSlot(ItemCombinerMenu.INPUT_SLOT);
             if (slot != null && slot.hasItem() && !slot.getItem().hasCustomHoverName() && text.equals(slot.getItem().getHoverName().getString()))
             {
                 text = "";

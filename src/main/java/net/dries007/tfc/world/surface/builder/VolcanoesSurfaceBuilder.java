@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
-import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 import net.dries007.tfc.world.noise.Noise2D;
@@ -40,7 +40,7 @@ public class VolcanoesSurfaceBuilder implements SurfaceBuilder
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(context.level(), context.biome()).variants();
+        final BiomeExtension variants = TFCBiomes.getExtensionOrThrow(context.level(), context.biome());
         if (variants.isVolcanic())
         {
             final float easing = volcanoNoise.calculateEasing(context.pos().getX(), context.pos().getZ(), variants.getVolcanoRarity());

@@ -1,7 +1,30 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "tfc:item/metal/javelin/bismuth_bronze"
+  "loader": "forge:separate-perspective",
+  "gui_light": "front",
+  "overrides": [
+    {
+      "predicate": {
+        "tfc:throwing": 1
+      },
+      "model": "tfc:item/metal/javelin/bismuth_bronze_throwing"
+    }
+  ],
+  "base": {
+    "parent": "tfc:item/metal/javelin/bismuth_bronze_in_hand"
+  },
+  "perspectives": {
+    "none": {
+      "parent": "tfc:item/metal/javelin/bismuth_bronze_gui"
+    },
+    "fixed": {
+      "parent": "tfc:item/metal/javelin/bismuth_bronze_gui"
+    },
+    "ground": {
+      "parent": "tfc:item/metal/javelin/bismuth_bronze_gui"
+    },
+    "gui": {
+      "parent": "tfc:item/metal/javelin/bismuth_bronze_gui"
+    }
   }
 }

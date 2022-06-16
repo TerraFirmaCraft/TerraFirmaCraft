@@ -7,6 +7,9 @@
 package net.dries007.tfc.common.items;
 
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+
+import net.dries007.tfc.common.TFCItemGroup;
 
 public enum Food
 {
@@ -56,8 +59,9 @@ public enum Food
     RICE,
     RICE_GRAIN,
     RICE_DOUGH,
-    RICE_FLOUR, // todo: remove rice flour, dough, and bread. Add cooked rice. Add a pot boiling recipe for rice grain -> cooked rice. Eventually, add a rice addon to soups maybe?
+    RICE_FLOUR,
     RICE_BREAD,
+    COOKED_RICE,
     WHEAT,
     WHEAT_GRAIN,
     WHEAT_DOUGH,
@@ -80,6 +84,7 @@ public enum Food
     YELLOW_BELL_PEPPER,
     CHEESE,
     COOKED_EGG,
+    BOILED_EGG,
     DRIED_SEAWEED,
     CATTAIL_ROOT,
     TARO_ROOT,
@@ -88,6 +93,7 @@ public enum Food
     BEEF(true, false),
     PORK(true, false),
     CHICKEN(true, false),
+    QUAIL(true, false),
     MUTTON(true, false),
     BEAR(true, false),
     HORSE_MEAT(true, false),
@@ -112,6 +118,7 @@ public enum Food
     COOKED_CALAMARI(true, false),
     COOKED_PORK(true, false),
     COOKED_CHICKEN(true, false),
+    COOKED_QUAIL(true, false),
     COOKED_MUTTON(true, false),
     COOKED_BEAR(true, false),
     COOKED_HORSE_MEAT(true, false),
@@ -150,5 +157,15 @@ public enum Food
         if (meat) builder.meat();
         if (fast) builder.fast();
         return builder.nutrition(4).saturationMod(0.3f).build();
+    }
+
+    public Item.Properties createProperties()
+    {
+        Item.Properties props = new Item.Properties().food(getFoodProperties());
+        if (this != RED_BELL_PEPPER && this != GREEN_BELL_PEPPER && this != YELLOW_BELL_PEPPER)
+        {
+            props.tab(TFCItemGroup.FOOD);
+        }
+        return props;
     }
 }

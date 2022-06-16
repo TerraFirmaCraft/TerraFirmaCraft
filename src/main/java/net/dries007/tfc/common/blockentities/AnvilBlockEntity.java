@@ -148,7 +148,11 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     {
                         // Update the recipe held by the forging item
                         recipe = all.iterator().next();
-                        forge.setRecipe(recipe, inventory);
+                        // todo: is this the correct guard?
+                        if (!level.isClientSide)
+                        {
+                            forge.setRecipe(recipe, inventory);
+                        }
                     }
                 }
             }

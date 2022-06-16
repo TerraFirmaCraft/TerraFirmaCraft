@@ -25,7 +25,7 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
 import net.dries007.tfc.common.container.NestBoxContainer;
 import net.dries007.tfc.common.entities.Seat;
-import net.dries007.tfc.common.entities.land.OviparousAnimal;
+import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.Nullable;

@@ -47,6 +47,7 @@ public final class PacketHandler
         register(ProspectedPacket.class, ProspectedPacket::encode, ProspectedPacket::new, ProspectedPacket::handle);
         register(EffectExpirePacket.class, EffectExpirePacket::encode, EffectExpirePacket::new, EffectExpirePacket::handle);
         register(UpdateClimateModelPacket.class, UpdateClimateModelPacket::encode, UpdateClimateModelPacket::decode, UpdateClimateModelPacket::handle);
+        register(RainfallUpdatePacket.class, RainfallUpdatePacket::encode, RainfallUpdatePacket::new, RainfallUpdatePacket::handle);
 
         registerDataManager(Metal.Packet.class, Metal.MANAGER);
         registerDataManager(Fuel.Packet.class, Fuel.MANAGER);

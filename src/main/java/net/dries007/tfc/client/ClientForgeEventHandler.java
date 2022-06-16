@@ -63,7 +63,7 @@ import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
@@ -81,6 +81,7 @@ import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
 import static net.minecraft.ChatFormatting.*;
@@ -152,6 +153,8 @@ public class ClientForgeEventHandler
                 {
                     list.add(GRAY + I18n.get("tfc.tooltip.f3_invalid_chunk_data"));
                 }
+
+                mc.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addDebugTooltip(list));
             }
         }
     }

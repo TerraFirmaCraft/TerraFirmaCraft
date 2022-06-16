@@ -33,7 +33,7 @@ public class ClimateSettingsTests extends TestHelper
     @Test
     public void testEncodeDecodeCustom()
     {
-        final ClimateSettings custom = new ClimateSettings(1, 2, 100, false);
+        final ClimateSettings custom = new ClimateSettings(100, false);
         final JsonElement encoded = ClimateSettings.CODEC.encodeStart(JsonOps.INSTANCE, custom).getOrThrow(false, Assertions::fail);
         final ClimateSettings decoded = ClimateSettings.CODEC.decode(JsonOps.INSTANCE, encoded).getOrThrow(false, Assertions::fail).getFirst();
 
@@ -60,7 +60,7 @@ public class ClimateSettingsTests extends TestHelper
         json.addProperty("endless_poles", false);
 
         final ClimateSettings decoded = ClimateSettings.CODEC.decode(JsonOps.INSTANCE, json).getOrThrow(false, Assertions::fail).getFirst();
-        final ClimateSettings expected = new ClimateSettings(1, 2, 100, false);
+        final ClimateSettings expected = new ClimateSettings(100, false);
 
         assertEquals(expected, decoded);
     }

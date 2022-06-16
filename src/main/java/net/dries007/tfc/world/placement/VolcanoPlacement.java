@@ -22,7 +22,7 @@ import net.minecraft.world.level.levelgen.placement.PlacementModifierType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
-import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.biome.VolcanoNoise;
 
@@ -65,7 +65,7 @@ public class VolcanoPlacement extends PlacementModifier
         }
 
         final Biome biome = level.getBiome(pos).value();
-        final BiomeVariants variants = TFCBiomes.getExtensionOrThrow(level, biome).variants();
+        final BiomeExtension variants = TFCBiomes.getExtensionOrThrow(level, biome);
         if (variants.isVolcanic())
         {
             if (center)

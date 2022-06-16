@@ -8,25 +8,22 @@ package net.dries007.tfc.util.tracker;
 
 import java.util.*;
 
-import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
-import net.dries007.tfc.util.climate.ClimateModel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import net.minecraft.nbt.Tag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongArrayTag;
-import net.minecraft.core.Direction;
+import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.network.PacketDistributor;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
@@ -34,9 +31,17 @@ import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.common.recipes.LandslideRecipe;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.RainfallUpdatePacket;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.climate.BiomeBasedClimateModel;
+import net.dries007.tfc.util.climate.Climate;
+import net.dries007.tfc.util.climate.ClimateModel;
 import net.dries007.tfc.util.collections.BufferedList;
 import net.dries007.tfc.util.loot.TFCLoot;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 {
@@ -49,6 +54,9 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 
     private final ClimateModel defaultClimateModel = new BiomeBasedClimateModel();
     @Nullable private ClimateModel climateModel;
+
+    private long rainStartTick, rainEndTick;
+    private float rainIntensity;
 
     public WorldTracker()
     {
@@ -104,65 +112,98 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         addCollapseData(new Collapse(centerPos, collapsePositions, maxRadiusSquared));
     }
 
-    public void tick(Level level)
+    public void setWeatherData(Level level, long rainDuration, float rainIntensity)
     {
+        final long tick = Calendars.get(level).getTicks();
+        setWeatherData(level, tick, tick + rainDuration, rainIntensity);
+    }
+
+    public void setWeatherData(Level level, long rainStartTick, long rainEndTick, float rainIntensity)
+    {
+        this.rainStartTick = rainStartTick;
+        this.rainEndTick = rainEndTick;
+        this.rainIntensity = rainIntensity;
+
         if (!level.isClientSide())
         {
-            if (!collapsesInProgress.isEmpty() && random.nextInt(10) == 0)
+            PacketHandler.send(PacketDistributor.DIMENSION.with(level::dimension), new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
+        }
+    }
+
+    public boolean isRaining(Level level, BlockPos pos)
+    {
+        return isRaining(Calendars.get(level).getTicks(), Climate.getRainfall(level, pos));
+    }
+
+    /**
+     * @return If it should be raining at a given tick and rainfall value
+     */
+    public boolean isRaining(long tick, float rainfall)
+    {
+        return exactRainfallIntensity(tick) > Mth.clampedMap(rainfall, ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL, 1, 0);
+    }
+
+    public void tick(ServerLevel level)
+    {
+        if (!collapsesInProgress.isEmpty() && random.nextInt(10) == 0)
+        {
+            for (Collapse collapse : collapsesInProgress)
             {
-                for (Collapse collapse : collapsesInProgress)
+                Set<BlockPos> updatedPositions = new HashSet<>();
+                for (BlockPos posAt : collapse.nextPositions)
                 {
-                    Set<BlockPos> updatedPositions = new HashSet<>();
-                    for (BlockPos posAt : collapse.nextPositions)
+                    // Check the current position for collapsing
+                    BlockState stateAt = level.getBlockState(posAt);
+                    if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallInDirection(level, posAt, Direction.DOWN) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                     {
-                        // Check the current position for collapsing
-                        BlockState stateAt = level.getBlockState(posAt);
-                        if (Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE) && TFCFallingBlockEntity.canFallInDirection(level, posAt, Direction.DOWN) && posAt.distSqr(collapse.centerPos) < collapse.radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
+                        if (CollapseRecipe.collapseBlock(level, posAt, stateAt))
                         {
-                            if (CollapseRecipe.collapseBlock(level, posAt, stateAt))
-                            {
-                                // This column has started to collapse. Mark the next block above as unstable for the "follow up"
-                                updatedPositions.add(posAt.above());
-                            }
+                            // This column has started to collapse. Mark the next block above as unstable for the "follow up"
+                            updatedPositions.add(posAt.above());
                         }
                     }
-                    collapse.nextPositions.clear();
-                    if (!updatedPositions.isEmpty())
-                    {
-                        level.playSound(null, collapse.centerPos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.6f, 1.0f);
-                        collapse.nextPositions.addAll(updatedPositions);
-                        collapse.radiusSquared *= 0.8; // lower radius each successive time
-                    }
                 }
-                collapsesInProgress.removeIf(collapse -> collapse.nextPositions.isEmpty());
-            }
-
-            landslideTicks.flush();
-            Iterator<TickEntry> tickIterator = landslideTicks.listIterator();
-            while (tickIterator.hasNext())
-            {
-                TickEntry entry = tickIterator.next();
-                if (entry.tick())
+                collapse.nextPositions.clear();
+                if (!updatedPositions.isEmpty())
                 {
-                    final BlockState currentState = level.getBlockState(entry.getPos());
-                    LandslideRecipe.tryLandslide(level, entry.getPos(), currentState);
-                    tickIterator.remove();
+                    level.playSound(null, collapse.centerPos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.6f, 1.0f);
+                    collapse.nextPositions.addAll(updatedPositions);
+                    collapse.radiusSquared *= 0.8; // lower radius each successive time
                 }
             }
+            collapsesInProgress.removeIf(collapse -> collapse.nextPositions.isEmpty());
+        }
 
-            isolatedPositions.flush();
-            Iterator<BlockPos> isolatedIterator = isolatedPositions.listIterator();
-            while (isolatedIterator.hasNext())
+        landslideTicks.flush();
+        Iterator<TickEntry> tickIterator = landslideTicks.listIterator();
+        while (tickIterator.hasNext())
+        {
+            TickEntry entry = tickIterator.next();
+            if (entry.tick())
             {
-                final BlockPos pos = isolatedIterator.next();
-                final BlockState currentState = level.getBlockState(pos);
-                if (Helpers.isBlock(currentState.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED) && isIsolated(level, pos))
-                {
-                    Helpers.destroyBlockAndDropBlocksManually((ServerLevel) level, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
-                }
-                isolatedIterator.remove();
+                final BlockState currentState = level.getBlockState(entry.getPos());
+                LandslideRecipe.tryLandslide(level, entry.getPos(), currentState);
+                tickIterator.remove();
             }
         }
+
+        isolatedPositions.flush();
+        Iterator<BlockPos> isolatedIterator = isolatedPositions.listIterator();
+        while (isolatedIterator.hasNext())
+        {
+            final BlockPos pos = isolatedIterator.next();
+            final BlockState currentState = level.getBlockState(pos);
+            if (Helpers.isBlock(currentState.getBlock(), TFCTags.Blocks.BREAKS_WHEN_ISOLATED) && isIsolated(level, pos))
+            {
+                Helpers.destroyBlockAndDropBlocksManually(level, pos, ctx -> ctx.withParameter(TFCLoot.ISOLATED, true));
+            }
+            isolatedIterator.remove();
+        }
+    }
+
+    public void addDebugTooltip(List<String> tooltips)
+    {
+        tooltips.add("R [%d, %d] I (%.2f) %.2f".formatted(rainStartTick, rainEndTick, rainIntensity, exactRainfallIntensity(Calendars.CLIENT.getTicks())));
     }
 
     @Override
@@ -188,6 +229,11 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             collapseNbt.add(collapse.serializeNBT());
         }
         nbt.put("collapsesInProgress", collapseNbt);
+
+        nbt.putLong("rainStartTick", rainStartTick);
+        nbt.putLong("rainEndTick", rainEndTick);
+        nbt.putFloat("rainIntensity", rainIntensity);
+
         return nbt;
     }
 
@@ -214,6 +260,10 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             {
                 collapsesInProgress.add(new Collapse(collapseNbt.getCompound(i)));
             }
+
+            rainStartTick = nbt.getLong("rainStartTick");
+            rainEndTick = nbt.getLong("rainEndTick");
+            rainIntensity = nbt.getFloat("rainIntensity");
         }
     }
 
@@ -224,11 +274,19 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
     }
 
-    private boolean isIsolated(LevelAccessor world, BlockPos pos)
+    private float exactRainfallIntensity(long tick)
+    {
+        final float progress = Mth.clamp(Helpers.inverseLerp(tick, rainStartTick, rainEndTick), 0, 1);
+        final float progressFactor = progress > 0.5f ? 1 - progress : progress;
+        return rainIntensity * 0.5f + progressFactor;
+    }
+
+    private boolean isIsolated(LevelAccessor level, BlockPos pos)
     {
         for (Direction direction : Helpers.DIRECTIONS)
         {
-            if (!world.isEmptyBlock(pos.relative(direction)))
+            BlockState state = level.getBlockState(pos.relative(direction));
+            if (!state.getCollisionShape(level, pos).isEmpty())
             {
                 return false;
             }

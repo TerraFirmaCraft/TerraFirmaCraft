@@ -11,36 +11,41 @@
           "name": "tfc:plant/orange_sapling",
           "conditions": [
             {
-              "condition": "minecraft:block_state_property",
-              "block": "tfc:plant/orange_branch",
-              "properties": {
-                "up": "true",
-                "west": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "tfc:plant/orange_branch",
-              "properties": {
-                "up": "true",
-                "east": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "tfc:plant/orange_branch",
-              "properties": {
-                "up": "true",
-                "north": "true"
-              }
-            },
-            {
-              "condition": "minecraft:block_state_property",
-              "block": "tfc:plant/orange_branch",
-              "properties": {
-                "up": "true",
-                "south": "true"
-              }
+              "condition": "minecraft:alternative",
+              "terms": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:plant/orange_branch",
+                  "properties": {
+                    "up": "true",
+                    "west": "true"
+                  }
+                },
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:plant/orange_branch",
+                  "properties": {
+                    "up": "true",
+                    "east": "true"
+                  }
+                },
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:plant/orange_branch",
+                  "properties": {
+                    "up": "true",
+                    "north": "true"
+                  }
+                },
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:plant/orange_branch",
+                  "properties": {
+                    "up": "true",
+                    "south": "true"
+                  }
+                }
+              ]
             },
             {
               "condition": "minecraft:match_tool",

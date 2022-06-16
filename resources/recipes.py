@@ -181,8 +181,9 @@ def generate(rm: ResourceManager):
     damage_shapeless(rm, 'crafting/wool_yarn', ('tfc:spindle', 'tfc:wool'), (8, 'tfc:wool_yarn')).with_advancement('tfc:wool')
     rm.crafting_shaped('crafting/wattle', ['X', 'X'], {'X': '#minecraft:logs'}, (6, 'tfc:wattle')).with_advancement('#minecraft:logs')
     rm.crafting_shapeless('crafting/daub', ('tfc:straw', 'minecraft:clay_ball', '#minecraft:dirt'), (2, 'tfc:daub')).with_advancement('tfc:straw')
-    rm.crafting_shapeless('crafting/daub_from_mud', ('tfc:straw', '#tfc:mud'), (2, 'tfc:daub')).with_advancement('#tfc:mud')
+    rm.crafting_shapeless('crafting/daub_from_mud', ('minecraft:clay_ball', '#tfc:mud'), (2, 'tfc:daub')).with_advancement('#tfc:mud')
     rm.crafting_shaped('crafting/composter', ['X X', 'XYX', 'XYX'], {'X': '#tfc:lumber', 'Y': '#minecraft:dirt'}, 'tfc:composter').with_advancement('#tfc:lumber')
+    rm.crafting_shapeless('crafting/powderkeg', ('#tfc:barrels', 'tfc:powder/hematite', 'minecraft:gunpowder'), 'tfc:powderkeg').with_advancement('#tfc:lumber')
     rm.crafting_shaped('crafting/bloomery', ['XXX', 'X X', 'XXX'], {'X': '#forge:double_sheets/any_bronze'}, 'tfc:bloomery').with_advancement('#forge:double_sheets/any_bronze')
     rm.crafting_shaped('crafting/glow_arrow', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:arrow', 'Y': 'minecraft:glow_ink_sac'}, (8, 'tfc:glow_arrow')).with_advancement('minecraft:glow_ink_sac')
     rm.crafting_shaped('crafting/wooden_bucket', ['X X', ' X '], {'X': '#tfc:lumber'}, 'tfc:wooden_bucket').with_advancement('#tfc:lumber')
@@ -193,8 +194,7 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/armor_stand', ['XXX', ' X ', 'XYX'], {'X': '#minecraft:planks', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/armor_stand_bulk', ['X', 'Y'], {'X': 'tfc:stick_bunch', 'Y': '#forge:smooth_stone_slab'}, 'minecraft:armor_stand').with_advancement('#forge:smooth_stone_slab')
     rm.crafting_shaped('crafting/vanilla/color/white_bed', ['XXX', 'YYY'], {'X': '#tfc:high_quality_cloth', 'Y': '#tfc:lumber'}, 'minecraft:white_bed').with_advancement('#tfc:high_quality_cloth')
-    # todo: this recipe is completely wrong
-    #rm.crafting_shaped('crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {'X': '#forge:ingots/wrought_iron', 'R': 'tfc:bucket/metal/red_steel', 'B': 'tfc:bucket/metal/blue_steel'}, 'minecraft:bucket').with_advancement('tfc:bucket/metal/red_steel')
+    rm.crafting_shaped('crafting/vanilla/bucket', ['XRX', 'XBX', ' X '], {'X': '#forge:ingots/wrought_iron', 'R': 'tfc:metal/bucket/red_steel', 'B': 'tfc:metal/bucket/blue_steel'}, 'minecraft:bucket').with_advancement('tfc:metal/bucket/red_steel')
     rm.crafting_shaped('crafting/vanilla/cauldron', ['X X', 'X X', 'XXX'], {'X': '#forge:sheets/wrought_iron'}, 'minecraft:cauldron').with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/compass', [' X ', 'XYX', ' X '], {'X': '#forge:sheets/wrought_iron', 'Y': '#forge:dusts/redstone'}, 'minecraft:compass').with_advancement('#forge:sheets/wrought_iron')
     rm.crafting_shaped('crafting/vanilla/clock', ['RXR', 'XYX', 'RXR'], {'X': '#forge:sheets/gold', 'Y': 'tfc:brass_mechanisms', 'R': '#forge:dusts/redstone'}, 'minecraft:clock').with_advancement('#forge:sheets/gold')
@@ -482,61 +482,22 @@ def generate(rm: ResourceManager):
         scraping_recipe(rm, '%s_soaked_hide' % size, 'tfc:%s_soaked_hide' % size, 'tfc:%s_scraped_hide' % size)
         damage_shapeless(rm, 'crafting/%s_sheepskin' % size, ('tfc:%s_sheepskin_hide' % size, '#tfc:knives'), (i + 1, 'tfc:wool')).with_advancement('tfc:%s_sheepskin_hide' % size)
 
-    paste = utils.ingredient('tfc:olive_paste')
-    rm.recipe(('pot', 'olive_oil_water'), 'tfc:pot_fluid', {
-        'ingredients': [paste, paste, paste, paste, paste],
-        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 2000,
-        'temperature': 300,
-        'fluid_output': fluid_stack('1000 tfc:olive_oil_water')
-    })
-
-    blubber = utils.ingredient('tfc:blubber')
-    rm.recipe(('pot', 'tallow'), 'tfc:pot_fluid', {
-        'ingredients': [blubber, blubber, blubber, blubber, blubber],
-        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 2000,
-        'temperature': 600,
-        'fluid_output': fluid_stack('1000 tfc:tallow')
-    })
-
-    ash = utils.ingredient('tfc:powder/wood_ash')
-    rm.recipe(('pot', 'lye'), 'tfc:pot_fluid', {
-        'ingredients': [ash, ash, ash, ash, ash],
-        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 2000,
-        'temperature': 600,
-        'fluid_output': fluid_stack('1000 tfc:lye')
-    })
-
+    simple_pot_recipe(rm, 'olive_oil_water', [utils.ingredient('tfc:olive_paste')] * 5, '1000 minecraft:water', '1000 tfc:olive_oil_water', None, 2000, 300)
+    simple_pot_recipe(rm, 'tallow', [utils.ingredient('tfc:blubber')] * 5, '1000 minecraft:water', '1000 tfc:tallow', None, 2000, 600)
+    simple_pot_recipe(rm, 'lye', [utils.ingredient('tfc:powder/wood_ash')] * 5, '1000 minecraft:water', '1000 tfc:lye', None, 2000, 600)
+    simple_pot_recipe(rm, 'cooked_rice', [not_rotten(utils.ingredient('tfc:food/rice_grain'))], '1000 minecraft:water', None, ['tfc:food/cooked_rice'], 1000, 300)
+    simple_pot_recipe(rm, 'boiled_egg', [utils.ingredient('minecraft:egg')], '1000 minecraft:water', None, ['tfc:food/boiled_egg'], 1000, 300)
     for color in COLORS:
-        rm.recipe(('pot', '%s_dye' % color), 'tfc:pot_fluid', {
-            'ingredients': [utils.ingredient('minecraft:%s_dye' % color)],
-            'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-            'duration': 2000,
-            'temperature': 600,
-            'fluid_output': fluid_stack('1000 tfc:%s_dye' % color)
-        })
+        simple_pot_recipe(rm, '%s_dye' % color, [utils.ingredient('minecraft:%s_dye' % color)], '1000 minecraft:water', '1000 tfc:%s_dye' % color, None, 2000, 600)
 
     soup_food = not_rotten(utils.ingredient('#tfc:foods/usable_in_soup'))
-    rm.recipe(('pot', 'soup_3'), 'tfc:pot_soup', {
-        'ingredients': [soup_food, soup_food, soup_food],
-        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 1000,
-        'temperature': 300
-    })
-    rm.recipe(('pot', 'soup_4'), 'tfc:pot_soup', {
-        'ingredients': [soup_food, soup_food, soup_food, soup_food],
-        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 1150,
-        'temperature': 300
-    })
-    rm.recipe(('pot', 'soup_5'), 'tfc:pot_soup', {
-        'ingredients': [soup_food, soup_food, soup_food, soup_food, soup_food],
-        'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
-        'duration': 1300,
-        'temperature': 300
-    })
+    for duration, count in ((1000, 3), (1150, 4), (1300, 5)):
+        rm.recipe(('pot', 'soup_%s' % count), 'tfc:pot_soup', {
+            'ingredients': [soup_food] * count,
+            'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
+            'duration': duration,
+            'temperature': 300
+        })
 
     clay_knapping(rm, 'vessel', [' XXX ', 'XXXXX', 'XXXXX', 'XXXXX', ' XXX '], 'tfc:ceramic/unfired_vessel')
     clay_knapping(rm, 'large_vessel', ['X   X', 'X   X', 'X   X', 'X   X', 'XXXXX'], 'tfc:ceramic/unfired_large_vessel')
@@ -785,6 +746,16 @@ def generate(rm: ResourceManager):
         ('weak_red_steel', 'black_steel', 'high_carbon_red_steel')
     ):
         welding_recipe(rm, '%s_ingot' % metal_out, 'tfc:metal/ingot/%s' % metal_in_1, 'tfc:metal/ingot/%s' % metal_in_2, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_out].tier - 1)
+
+def simple_pot_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: Json, fluid: str, output_fluid: str = None, output_items: Json = None, duration: int = 2000, temp: int = 300):
+    rm.recipe(('pot', name_parts), 'tfc:pot', {
+        'ingredients': ingredients,
+        'fluid_ingredient': fluid_stack_ingredient(fluid),
+        'duration': duration,
+        'temperature': temp,
+        'fluid_output': fluid_stack(output_fluid) if output_fluid is not None else None,
+        'item_output': [utils.item_stack(item) for item in output_items] if output_items is not None else None
+    })
 
 
 def disable_recipe(rm: ResourceManager, name_parts: ResourceIdentifier):

@@ -201,9 +201,9 @@ public enum Wood implements RegistryWood
             return needsItem() ? block -> blockItemFactory.apply(block, properties) : null;
         }
 
-        public String nameFor(Wood wood)
+        public String nameFor(RegistryWood wood)
         {
-            return (isPlanksVariant ? "wood/planks/" + wood.name() + "_" + name() : "wood/" + name() + "/" + wood.name()).toLowerCase(Locale.ROOT);
+            return (isPlanksVariant ? "wood/planks/" + wood.getSerializedName() + "_" + name() : "wood/" + name() + "/" + wood.getSerializedName()).toLowerCase(Locale.ROOT);
         }
 
         public boolean needsItem()

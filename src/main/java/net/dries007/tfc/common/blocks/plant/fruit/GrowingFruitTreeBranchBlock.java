@@ -184,7 +184,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     {
         //todo: include root water?
         final int hydration = (int) (Climate.getRainfall(level, pos) / 5f);
-        final float temp = Climate.getTemperature(level, pos);
+        final float temp = Climate.getAverageTemperature(level, pos);
         if (!climateRange.get().checkBoth(hydration, temp, false))
         {
             Helpers.resetCounter(level, pos);

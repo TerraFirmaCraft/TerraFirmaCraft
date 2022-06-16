@@ -13,7 +13,7 @@ import org.apache.commons.lang3.mutable.MutableInt;
 
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IArtist;
-import net.dries007.tfc.world.biome.BiomeVariants;
+import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
@@ -56,7 +56,7 @@ public class TFCLayers
 
     /**
      * These are the int IDs that are used for biome layer generation
-     * They are mapped to {@link BiomeVariants} through the internal registry
+     * They are mapped to {@link BiomeExtension} through the internal registry
      */
     public static final int OCEAN;
     public static final int OCEAN_REEF;
@@ -101,7 +101,7 @@ public class TFCLayers
     public static final int INLAND_MARKER;
     public static final int OCEAN_REEF_MARKER;
 
-    private static final BiomeVariants[] BIOME_LAYERS = new BiomeVariants[64];
+    private static final BiomeExtension[] BIOME_LAYERS = new BiomeExtension[64];
     private static final MutableInt BIOME_LAYER_INDEX = new MutableInt(0);
 
     static
@@ -147,9 +147,9 @@ public class TFCLayers
         OCEAN_REEF_MARKER = register();
     }
 
-    public static BiomeVariants getFromLayerId(int id)
+    public static BiomeExtension getFromLayerId(int id)
     {
-        final BiomeVariants v = BIOME_LAYERS[id];
+        final BiomeExtension v = BIOME_LAYERS[id];
         if (v == null)
         {
             throw new NullPointerException("Layer id = " + id + " returned null!");
@@ -455,7 +455,7 @@ public class TFCLayers
         return register(() -> null);
     }
 
-    public static int register(Supplier<BiomeVariants> variants)
+    public static int register(Supplier<BiomeExtension> variants)
     {
         final int index = BIOME_LAYER_INDEX.getAndIncrement();
         if (index >= BIOME_LAYERS.length)

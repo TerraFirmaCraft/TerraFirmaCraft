@@ -95,7 +95,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
             if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
             {
                 final int hydration = (int) Climate.getRainfall(level, pos) / 5;
-                final float temp = Climate.getTemperature(level, pos);
+                final float temp = Climate.getAverageTemperature(level, pos);
                 if (!climateRange.get().checkBoth(hydration, temp, false))
                 {
                     level.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());

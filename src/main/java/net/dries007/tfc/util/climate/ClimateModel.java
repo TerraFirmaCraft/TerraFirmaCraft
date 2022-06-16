@@ -14,11 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.settings.ClimateSettings;
 
 /**
  * Represents a model of the climate for a dimension.
@@ -47,13 +45,6 @@ public interface ClimateModel
      * @return A temperature, in degrees Celsius. Typically in the range [-25, 25]
      */
     float getAverageTemperature(LevelReader level, BlockPos pos);
-
-    /**
-     * Get the precipitation type for a given position, and the current time (Can obtain a timestamp via {@code Calendars.get(level)}).
-     *
-     * @return A precipitation.
-     */
-    Biome.Precipitation getPrecipitation(LevelReader level, BlockPos pos);
 
     /**
      * Get the average annual rainfall for a given position.

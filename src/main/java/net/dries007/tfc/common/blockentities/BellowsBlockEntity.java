@@ -126,7 +126,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
         if (!foundAnyReceivers || foundAnyAllowingReceivers)
         {
-            level.playSound(null, worldPosition, TFCSounds.BELLOWS.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+            level.playSound(null, worldPosition, TFCSounds.BELLOWS_BLOW.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
             level.addParticle(ParticleTypes.POOF, facingPos.getX() + 0.5f - 0.3f * direction.getStepX(), facingPos.getY() + 0.5f, facingPos.getZ() + 0.5f - 0.3f * direction.getStepZ(), 0, 0.005D, 0);
 
             lastPushed = level.getGameTime();

@@ -21,6 +21,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.BoatModel;
 import net.minecraft.client.model.ChickenModel;
+import net.minecraft.client.model.GoatModel;
 import net.minecraft.client.model.SquidModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -58,6 +59,7 @@ import net.dries007.tfc.common.blocks.ItemPropertyProviderBlock;
 import net.dries007.tfc.common.blocks.OreDeposit;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
+import net.dries007.tfc.common.blocks.rock.RockCategory;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
@@ -106,6 +108,7 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.FIREPIT.get(), FirepitScreen::new);
             MenuScreens.register(TFCContainerTypes.GRILL.get(), GrillScreen::new);
             MenuScreens.register(TFCContainerTypes.POT.get(), PotScreen::new);
+            MenuScreens.register(TFCContainerTypes.POWDERKEG.get(), PowderkegScreen::new);
             MenuScreens.register(TFCContainerTypes.CHARCOAL_FORGE.get(), CharcoalForgeScreen::new);
             MenuScreens.register(TFCContainerTypes.LOG_PILE.get(), LogPileScreen::new);
             MenuScreens.register(TFCContainerTypes.NEST_BOX.get(), NestBoxScreen::new);
@@ -142,16 +145,29 @@ public final class ClientEventHandler
 
                     Item shield = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.SHIELD).get();
                     ItemProperties.register(shield, new ResourceLocation("blocking"), (stack, level, entity, unused) -> {
-                        if(entity == null)
+                        if (entity == null)
                         {
                             return 0.0F;
-                        }else
+                        }
+                        else
                         {
                             return entity instanceof Player && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0f : 0.0f;
                         }
                     });
+
+                    Item javelin = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.JAVELIN).get();
+                    ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
+                        entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                    );
                 }
             }
+
+            TFCItems.ROCK_TOOLS.values().forEach(tool -> {
+                Item javelin = tool.get(RockCategory.ItemType.JAVELIN).get();
+                ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
+                    entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                );
+            });
 
             ItemProperties.register(TFCItems.FILLED_PAN.get(), Helpers.identifier("stage"), (stack, level, entity, unused) -> {
                 if (entity instanceof Player player && player.isUsingItem() && stack == player.getMainHandItem())
@@ -174,6 +190,8 @@ public final class ClientEventHandler
             ItemProperties.register(TFCItems.HANDSTONE.get(), Helpers.identifier("damaged"), (stack, level, entity, unused) -> stack.getDamageValue() > stack.getMaxDamage() - 10 ? 1F : 0F);
 
             TFCBlocks.WOODS.values().forEach(map -> ItemProperties.register(map.get(BARREL).get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
+
+            ItemProperties.register(TFCBlocks.POWDERKEG.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f);
 
             Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten).forEach(vessel -> ItemProperties.register(vessel.get().asItem(), Helpers.identifier("sealed"), (stack, level, entity, unused) -> stack.hasTag() ? 1.0f : 0f));
 
@@ -284,6 +302,7 @@ public final class ClientEventHandler
         // Entities
         event.registerEntityRenderer(TFCEntities.FALLING_BLOCK.get(), FallingBlockRenderer::new);
         event.registerEntityRenderer(TFCEntities.FISHING_BOBBER.get(), TFCFishingHookRenderer::new);
+        event.registerEntityRenderer(TFCEntities.THROWN_JAVELIN.get(), ThrownJavelinRenderer::new);
         event.registerEntityRenderer(TFCEntities.GLOW_ARROW.get(), GlowArrowRenderer::new);
         event.registerEntityRenderer(TFCEntities.SEAT.get(), NoopRenderer::new);
         for (Wood wood : Wood.VALUES)
@@ -316,8 +335,15 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
         event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
         event.registerEntityRenderer(TFCEntities.COW.get(), ctx -> new AnimalRenderer<>(ctx, new TFCCowModel(RenderHelpers.bakeSimple(ctx, "cow")), "cow"));
+        event.registerEntityRenderer(TFCEntities.GOAT.get(), ctx -> new AnimalRenderer<>(ctx, new TFCGoatModel(RenderHelpers.bakeSimple(ctx, "goat")), "goat"));
+        event.registerEntityRenderer(TFCEntities.YAK.get(), ctx -> new AnimalRenderer<>(ctx, new YakModel(RenderHelpers.bakeSimple(ctx, "yak")), "yak"));
         event.registerEntityRenderer(TFCEntities.ALPACA.get(), ctx -> new AnimalRenderer<>(ctx, new AlpacaModel(RenderHelpers.bakeSimple(ctx, "alpaca")), "alpaca"));
-        event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new OviparousRenderer<>(ctx, new ChickenModel<>(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken", "rooster", "chick"));
+        event.registerEntityRenderer(TFCEntities.SHEEP.get(), ctx -> new AnimalRenderer<>(ctx, new TFCSheepModel(RenderHelpers.bakeSimple(ctx, "sheep")), "sheep"));
+        event.registerEntityRenderer(TFCEntities.MUSK_OX.get(), ctx -> new AnimalRenderer<>(ctx, new MuskOxModel(RenderHelpers.bakeSimple(ctx, "musk_ox")), "musk_ox"));
+        event.registerEntityRenderer(TFCEntities.CHICKEN.get(), ctx -> new OviparousRenderer<>(ctx, new TFCChickenModel(RenderHelpers.bakeSimple(ctx, "chicken")), "chicken", "rooster", "chick"));
+        event.registerEntityRenderer(TFCEntities.DUCK.get(), ctx -> new OviparousRenderer<>(ctx, new DuckModel(RenderHelpers.bakeSimple(ctx, "duck")), "duck", "drake", "duckling"));
+        event.registerEntityRenderer(TFCEntities.QUAIL.get(), ctx -> new OviparousRenderer<>(ctx, new QuailModel(RenderHelpers.bakeSimple(ctx, "quail")), "quail", "quail_male", "quail_chick"));
+        event.registerEntityRenderer(TFCEntities.RABBIT.get(), RabbitRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -371,8 +397,15 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("glow_squid"), SquidModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("pig"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("cow"), TFCCowModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("goat"), GoatModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("yak"), YakModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("alpaca"), AlpacaModel::createBodyLayer);
-        event.registerLayerDefinition(RenderHelpers.modelIdentifier("chicken"), ChickenModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("sheep"), TFCSheepModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("musk_ox"), MuskOxModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("chicken"), TFCChickenModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("duck"), DuckModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("quail"), QuailModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)
@@ -416,6 +449,7 @@ public final class ClientEventHandler
                 registry.register(plant.isSeasonal() ? seasonalFoliageColor : grassColor, reg.get());
         });
         TFCBlocks.WOODS.forEach((key, value) -> registry.register(seasonalFoliageColor, value.get(Wood.BlockType.FALLEN_LEAVES).get(), value.get(LEAVES).get()));
+        TFCBlocks.WILD_CROPS.forEach((key, value) -> registry.register(grassColor, value.get().asItem()));
     }
 
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event)
@@ -448,6 +482,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
         particleEngine.register(TFCParticles.LEAF.get(), LeafParticle.Provider::new);
+        particleEngine.register(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

@@ -4,6 +4,7 @@
 import itertools
 
 from mcresources import ResourceManager, ItemContext, utils, block_states, loot_tables
+from mcresources.type_definitions import ResourceIdentifier
 
 from constants import *
 
@@ -397,6 +398,19 @@ def generate(rm: ResourceManager):
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
     rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
 
+    block = rm.blockstate('powderkeg', variants={
+        'lit=false,sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
+        'lit=false,sealed=false': {'model': 'tfc:block/powderkeg'},
+        'lit=true,sealed=true': {'model': 'tfc:block/powderkeg_lit'},
+        'lit=true,sealed=false': {'model': 'tfc:block/powderkeg'}  # cannot occur
+    }).with_lang(lang('Powderkeg')).with_tag('minecraft:mineable/axe')
+    block.with_block_loot(({
+        'name': 'tfc:powderkeg',
+        'functions': [loot_tables.copy_block_entity_name(), loot_tables.copy_block_entity_nbt()],
+        'conditions': [loot_tables.block_state_property('tfc:powderkeg[sealed=true]')]
+    }, 'tfc:powderkeg'))
+    item_model_property(rm, 'tfc:powderkeg', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/powderkeg_sealed'}], {'parent': 'tfc:block/powderkeg'})
+     
     states = [({'model': 'tfc:block/composter/composter'})]
     for i in range(1, 9):
         for age in ('normal', 'ready', 'rotten'):
@@ -602,7 +616,10 @@ def generate(rm: ResourceManager):
         for rock_item in ROCK_CATEGORY_ITEMS:
             for suffix in ('', '_head'):
                 rock_item = rock_item + suffix
-                item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
+                if suffix == '' and rock_item == 'javelin':
+                    item = make_javelin(rm, 'stone/%s/%s' % (rock_item, rock), 'tfc:item/stone/%s' % rock_item)
+                else:
+                    item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
                 item.with_lang(lang('stone %s', rock_item))
 
     # Rock Items
@@ -615,12 +632,13 @@ def generate(rm: ResourceManager):
             if metal_item_data.type in metal_data.types or metal_item_data.type == 'all':
                 texture = 'tfc:item/metal/%s/%s' % (metal_item, metal) if metal_item != 'shield' or metal in ('red_steel', 'blue_steel', 'wrought_iron') else 'tfc:item/metal/shield/%s_front' % metal
                 if metal_item == 'fishing_rod':
-                    item = item_model_property(rm, ('metal', metal_item,metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
+                    item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
                 elif metal_item == 'shield':
                     item = rm.item(('metal', metal_item, metal))  # Shields have a custom model for inventory and blocking
+                elif metal_item == 'javelin':
+                    item = make_javelin(rm, 'metal/%s/%s' % (metal_item, metal), 'tfc:item/metal/javelin/%s' % metal)
                 else:
                     item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
-
                 if metal_item == 'propick':
                     item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
                 elif metal_item == 'propick_head':
@@ -747,22 +765,12 @@ def generate(rm: ResourceManager):
     for pottery in SIMPLE_UNFIRED_POTTERY:  # just the unfired item (fired is a vanilla item)
         rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
 
-    rm.custom_item_model(('ceramic', 'jug'), 'tfc:contained_fluid', {
-        'parent': 'forge:item/default',
-        'textures': {
-            'base': 'tfc:item/ceramic/jug_empty',
-            'fluid': 'tfc:item/ceramic/jug_overlay'
-        }
-    }).with_lang(lang('Ceramic Jug'))
-    rm.custom_item_model('wooden_bucket', 'tfc:contained_fluid', {
-        'parent': 'forge:item/default',
-        'textures': {
-            'base': 'tfc:item/bucket/wooden_bucket_empty',
-            'fluid': 'tfc:item/bucket/wooden_bucket_overlay'
-        }
-    }).with_lang(lang('Wooden Bucket'))
+    contained_fluid(rm, ('ceramic', 'jug'), 'tfc:item/ceramic/jug_empty', 'tfc:item/ceramic/jug_overlay').with_lang(lang('Ceramic Jug'))
+    contained_fluid(rm, 'wooden_bucket', 'tfc:item/bucket/wooden_bucket_empty', 'tfc:item/bucket/wooden_bucket_overlay').with_lang(lang('Wooden Bucket'))
+    contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
+    contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
 
-    # Small Ceramic Vessels (colored)
+# Small Ceramic Vessels (colored)
     for color in COLORS:
         rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color))
         rm.item_model(('ceramic', color + '_glazed_vessel')).with_lang(lang('%s Glazed Vessel', color))
@@ -771,13 +779,7 @@ def generate(rm: ResourceManager):
     for variant, data in METAL_ITEMS.items():
         if data.mold:
             rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
-            rm.custom_item_model(('ceramic', '%s_mold' % variant), 'tfc:contained_fluid', {
-                'parent': 'forge:item/default',
-                'textures': {
-                    'base': 'tfc:item/ceramic/fired_mold/%s_empty' % variant,
-                    'fluid': 'tfc:item/ceramic/fired_mold/%s_overlay' % variant
-                }
-            }).with_lang(lang('%s mold', variant))
+            contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant))
 
     # Crops
     for crop, crop_data in CROPS.items():
@@ -1093,7 +1095,11 @@ def generate(rm: ResourceManager):
                 if prefix == '':
                     block.with_block_loot({
                         'name': 'tfc:plant/%s_sapling' % fruit,
-                        'conditions': [*[loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')], loot_tables.match_tag('tfc:axes')]
+                        'conditions': [{
+                            'condition': 'minecraft:alternative',
+                            'terms': [loot_tables.block_state_property('tfc:plant/%s_branch[up=true,%s=true]' % (fruit, direction)) for direction in ('west', 'east', 'north', 'south')]
+                        },
+                            loot_tables.match_tag('tfc:axes')]
                     }, {
                         'name': 'minecraft:stick',
                         'functions': [loot_tables.set_count(1, 4)]
@@ -1446,6 +1452,7 @@ def generate(rm: ResourceManager):
         rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
         rm.lang('fluid.tfc.metal.%s' % metal, lang('Molten %s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
+        rm.fluid_tag('molten_metals', 'tfc:metal/%s' % metal)
 
         item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
             'parent': 'forge:item/bucket',
@@ -1575,3 +1582,29 @@ def crop_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
             }
         }
     }
+
+def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemContext':
+    rm.item_model(name_parts + '_throwing', {'particle': texture}, parent='minecraft:item/trident_throwing')
+    rm.item_model(name_parts + '_in_hand', {'particle': texture}, parent='minecraft:item/trident_in_hand')
+    rm.item_model(name_parts + '_gui', texture)
+    model = rm.domain + ':item/' + name_parts
+    return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
+        'gui_light': 'front',
+        'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
+        'base': {'parent': model + '_in_hand'},
+        'perspectives': {
+            'none': {'parent': model + '_gui'},
+            'fixed': {'parent': model + '_gui'},
+            'ground': {'parent': model + '_gui'},
+            'gui': {'parent': model + '_gui'}
+        }
+    })
+
+def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, base: str, overlay: str) -> 'ItemContext':
+    return rm.custom_item_model(name_parts, 'tfc:contained_fluid', {
+        'parent': 'forge:item/default',
+        'textures': {
+            'base': base,
+            'fluid': overlay
+        }
+    })
