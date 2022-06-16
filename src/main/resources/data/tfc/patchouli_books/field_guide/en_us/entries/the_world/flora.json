@@ -1,0 +1,379 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Flora",
+  "category": "tfc:the_world",
+  "icon": "tfc:plant/goldenrod",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft. Some would say over nine thousand. Those people would be wrong.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/anthurium"
+        }
+      },
+      "name": "Standard",
+      "text": "Standard plants are like small flowers. They grow on grass, dirt, and farmland.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sagebrush"
+        }
+      },
+      "name": "Dry",
+      "text": "Dry plants are like standard plants, but they can grow on sand. These generally only spawn in areas with low rainfall.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/barrel_cactus[part=upper]",
+          "Y": "tfc:plant/barrel_cactus[part=lower]"
+        }
+      },
+      "name": "Cacti",
+      "text": "Cacti can grow two blocks high, and they will damage you!",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/moss[down=true]"
+        }
+      },
+      "name": "Creeping",
+      "text": "Creeping plants take the shape of the surrounding block faces. They spawn in blobs on the ground, mostly.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/wood/oak",
+          "Y": "tfc:plant/spanish_moss[hanging=true]"
+        }
+      },
+      "name": "Hanging",
+      "text": "Hanging plants are relatable, because they don't do work and mostly just hang out.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "XY"
+          ],
+          [
+            "0 "
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/wood/birch",
+          "Y": "tfc:plant/licorice_fern[facing=south]"
+        }
+      },
+      "name": "Epiphyte",
+      "text": "Epiphytes only live on the sides of logs.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/bluegrass"
+        }
+      },
+      "name": "Short Grass",
+      "text": "Short grass blocks grow taller with age. They also are able to grow on peat and mud.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/king_fern[part=upper]",
+          "Y": "tfc:plant/king_fern[part=lower]"
+        }
+      },
+      "name": "Tall Grass",
+      "text": "Tall grass blocks are just tall enough to block your field of view.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/ivy[up=true,north=true]"
+        }
+      },
+      "name": "Vines",
+      "text": "Vine blocks spread around the world on their own, if it's warm enough.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/liana_plant",
+          "Y": "tfc:plant/liana"
+        }
+      },
+      "name": "Weeping Vines",
+      "text": "Weeping vines grow downward from the an anchoring block.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/arundo",
+          "Y": "tfc:plant/arundo_plant"
+        }
+      },
+      "name": "Twisting Vines",
+      "text": "Twisting vines twist upward from the Earth. They can come in a solid variant.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Water plants are restricted to either spawn in fresh or salty water. Otherwise, they grow and act much like the plants you see on the surface. Some water plants can be cooked for food.",
+      "title": "Water Plants"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sago[fluid=water]"
+        }
+      },
+      "name": "Standard Water",
+      "text": "Standard water plants can be broken with a $(thing)$()knife$() to get $(thing)seaweed$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/manatee_grass[fluid=salt_water]"
+        }
+      },
+      "name": "Water Grass",
+      "text": "Water grasses are grasses that grow under the water.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/cattail[part=upper]",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "Tall Water Plant",
+      "text": "Tall water plants can grow with just the bottom block in water. $(thing)Water Taro$() and $()Cattail$() can be broken with a $(thing)knife$() for $(thing)roots$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/duckweed",
+          "Y": "minecraft:water"
+        }
+      },
+      "name": "Floating",
+      "text": "Floating plants sit on top of the water. Boats will break them on contact.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/winged_kelp[fluid=salt_water]",
+          "Y": "tfc:plant/winged_kelp_plant[fluid=salt_water]"
+        }
+      },
+      "name": "Kelp",
+      "text": "Kelp are twisting vines that grow underwater.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]",
+          "Y": "tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]"
+        }
+      },
+      "name": "Tree Kelp",
+      "text": "Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)knife$().",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

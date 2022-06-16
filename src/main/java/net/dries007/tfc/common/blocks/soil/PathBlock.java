@@ -16,22 +16,21 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirtPathBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 
 public class PathBlock extends DirtPathBlock implements ISoilBlock
 {
-    private final Supplier<Block> dirt;
+    private final Supplier<? extends Block> dirt;
 
-    public PathBlock(Properties properties, SoilBlockType soil, SoilBlockType.Variant variant)
-    {
-        this(properties, TFCBlocks.SOIL.get(soil).get(variant));
-    }
-
-    public PathBlock(Properties builder, Supplier<Block> dirt)
+    public PathBlock(Properties builder, Supplier<? extends Block> dirt)
     {
         super(builder);
-
         this.dirt = dirt;
+    }
+
+    PathBlock(Properties properties, SoilBlockType soil, RegistrySoilVariant variant)
+    {
+        this(properties, variant.getBlock(soil));
     }
 
     @Override

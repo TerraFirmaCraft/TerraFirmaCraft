@@ -1,0 +1,144 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Biomes",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/biomes.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The next few pages show a few (but not all) of the biomes that you might find in the world."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or they may be forested.",
+      "title": "Plains"
+    },
+    {
+      "type": "patchouli:image",
+      "anchor": "plains",
+      "images": [
+        "tfc:textures/gui/book/biomes/plains.png"
+      ],
+      "text": "A Plains.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hills",
+      "text": "Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.",
+      "title": "Hills & Rolling Hills"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rolling_hills_with_river.png"
+      ],
+      "text": "A Rolling Hills with a river winding through it.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "badlands",
+      "text": "Badlands are a mid elevation continental biome, often found near plateaus, mountains, or rolling hills. Ridges with layers of sand and sandstone are common. The types of sand vary, and badlands can either be red/brown, or yellow/white, or somewhere inbetween.",
+      "title": "Badlands"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/badlands.png"
+      ],
+      "text": "A Badlands.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "plateau",
+      "text": "Plateaus are a high elevation continental biome. They are similar to plains but at a higher altitude - flat, grassy areas. Plateaus can have frequent boulders dotted across them, and dry or empty hot springs are occasional sightings here.",
+      "title": "Plateaus"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/plateau.png"
+      ],
+      "text": "A Plateau with a deep river canyon running through it.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mountains",
+      "text": "In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.",
+      "title": "Mountains"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/old_mountains.png"
+      ],
+      "text": "An Old Mountains with a hot spring on the snowy slopes.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "lowlands",
+      "text": "In the opposite environment to towering mountains, a Lowlands can appear as a swampy, water filled biome. At or below sea level, with plenty of fresh water, they can also contain mud and plenty of vegetation.",
+      "title": "Lowlands"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/lowlands.png"
+      ],
+      "text": "A Lowlands.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "low_canyons",
+      "text": "The low canyons is another low elevation continental biome, often found bordering oceans or other low elevation biomes. It is a moderately hilly area with frequent twisting ponds. It is similar to a Geologic Shield, and empty inactive hot springs can appear here.",
+      "title": "Low Canyons"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/low_canyons.png"
+      ],
+      "text": "A Low Canyons.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "canyons",
+      "text": "Similar to the $(l:the_world/biomes#low_canyons)Low Canyons$(), the Canyons is a mid elevation continental biome with moderate hills and frequent twisting ponds and lakes. This is a very geologically active area, with frequent short and stubby volcanoes, boulders, and active hot springs",
+      "title": "Canyons"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/canyons.png"
+      ],
+      "text": "A Canyons, with a volcano in the distance.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ocean",
+      "text": "The vast oceans of TerraFirmaCraft separate continents from each other. Oceans are large featureless expanses of water on the surface, but underneath various plants, sea creatures, and kelp will be found. In colder climates, oceans can be occupied by towering icebergs and floating chunks of sea ice.",
+      "title": "Oceans"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/ocean.png"
+      ],
+      "text": "An ocean, pictured standing on the coast.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

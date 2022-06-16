@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Crucible",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Getting toasty in here"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:crucible"
+        }
+      },
+      "name": "A Crucible",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    }
+  ],
+  "read_by_default": true
+}

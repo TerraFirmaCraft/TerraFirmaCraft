@@ -1,0 +1,57 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Anvils",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/anvil/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Anvils yay!"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/anvil/bronze"
+        }
+      },
+      "name": "",
+      "text": "A $(thing)Bronze Anvil$()",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "working",
+      "text": "",
+      "title": "Working"
+    },
+    {
+      "type": "patchouli:empty"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "welding",
+      "text": "",
+      "title": "Welding"
+    },
+    {
+      "type": "patchouli:empty"
+    }
+  ],
+  "read_by_default": true
+}

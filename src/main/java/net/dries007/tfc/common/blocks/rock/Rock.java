@@ -75,15 +75,33 @@ public enum Rock implements RegistryRock
     }
 
     @Override
-    public Supplier<Block> getBlock(BlockType type)
+    public Supplier<? extends Block> getBlock(BlockType type)
     {
         return TFCBlocks.ROCK_BLOCKS.get(this).get(type);
     }
 
     @Override
-    public Supplier<Block> getAnvil()
+    public Supplier<? extends Block> getAnvil()
     {
         return TFCBlocks.ROCK_ANVILS.get(this);
+    }
+
+    @Override
+    public Supplier<? extends SlabBlock> getSlab(BlockType type)
+    {
+        return TFCBlocks.ROCK_DECORATIONS.get(this).get(type).slab();
+    }
+
+    @Override
+    public Supplier<? extends StairBlock> getStair(BlockType type)
+    {
+        return TFCBlocks.ROCK_DECORATIONS.get(this).get(type).stair();
+    }
+
+    @Override
+    public Supplier<? extends WallBlock> getWall(BlockType type)
+    {
+        return TFCBlocks.ROCK_DECORATIONS.get(this).get(type).wall();
     }
 
     @Override
@@ -140,45 +158,45 @@ public enum Rock implements RegistryRock
             return blockFactory.apply(rock, this);
         }
 
-        public SlabBlock createSlab(Rock rock)
+        public SlabBlock createSlab(RegistryRock rock)
         {
-            BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             if (mossy() == this)
             {
                 return new MossSpreadingSlabBlock(properties);
             }
             else if (mossy() != null)
             {
-                return new MossGrowingSlabBlock(properties, TFCBlocks.ROCK_DECORATIONS.get(rock).get(mossy()).slab());
+                return new MossGrowingSlabBlock(properties, rock.getSlab(mossy()));
             }
             return new SlabBlock(properties);
         }
 
-        public StairBlock createStairs(Rock rock)
+        public StairBlock createStairs(RegistryRock rock)
         {
-            Supplier<BlockState> state = () -> TFCBlocks.ROCK_BLOCKS.get(rock).get(this).get().defaultBlockState();
-            BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final Supplier<BlockState> state = () -> rock.getBlock(this).get().defaultBlockState();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             if (mossy() == this)
             {
                 return new MossSpreadingStairBlock(state, properties);
             }
             else if (mossy() != null)
             {
-                return new MossGrowingStairsBlock(state, properties, TFCBlocks.ROCK_DECORATIONS.get(rock).get(mossy()).stair());
+                return new MossGrowingStairsBlock(state, properties, rock.getStair(mossy()));
             }
             return new StairBlock(state, properties);
         }
 
-        public WallBlock createWall(Rock rock)
+        public WallBlock createWall(RegistryRock rock)
         {
-            BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
+            final BlockBehaviour.Properties properties = BlockBehaviour.Properties.of(Material.STONE).sound(SoundType.STONE).strength(1.5f, 10).requiresCorrectToolForDrops();
             if (mossy() == this)
             {
                 return new MossSpreadingWallBlock(properties);
             }
             else if (mossy() != null)
             {
-                return new MossGrowingWallBlock(properties, TFCBlocks.ROCK_DECORATIONS.get(rock).get(mossy()).wall());
+                return new MossGrowingWallBlock(properties, rock.getWall(mossy()));
             }
             return new WallBlock(properties);
         }

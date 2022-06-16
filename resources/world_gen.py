@@ -1,7 +1,7 @@
 # Handles generation of all world gen objects
 
-import typing
-from typing import Union
+from enum import IntEnum
+from typing import Union, get_args
 
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import ResourceIdentifier, JsonObject, Json, VerticalAnchor
@@ -1103,7 +1103,7 @@ def decorate_underground() -> Json:
     return 'tfc:underground'
 
 def decorate_heightmap(heightmap: Heightmap) -> Json:
-    assert heightmap in typing.get_args(Heightmap)
+    assert heightmap in get_args(Heightmap)
     return 'minecraft:heightmap', {'heightmap': heightmap.upper()}
 
 
@@ -1227,7 +1227,7 @@ def trapezoid_float(min_value: float, max_value: float, plateau: float) -> Dict[
 
 
 def height_provider(min_y: VerticalAnchor, max_y: VerticalAnchor, height_type: HeightProviderType = 'uniform') -> Dict[str, Any]:
-    assert height_type in typing.get_args(HeightProviderType)
+    assert height_type in get_args(HeightProviderType)
     return {
         'type': height_type,
         'min_inclusive': utils.as_vertical_anchor(min_y),

@@ -72,7 +72,13 @@ repositories {
     }
     maven {
         // Cyanide
-        url = 'https://alcatrazescapee.jfrog.io/artifactory/mods'
+        name = "AlcatrazEscapee"
+        url = "https://alcatrazescapee.jfrog.io/artifactory/mods"
+    }
+    maven {
+        // Patchouli
+        name = "BlameJared"
+        url = "https://maven.blamejared.com"
     }
     flatDir {
         dirs 'libs'
@@ -151,6 +157,11 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
+    // Patchouli
+    // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
+    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     }
@@ -168,6 +179,11 @@ test {
 }
 
 processResources {
+
+    filesMatching("book.json") {
+        expand "TFC_VERSION": project.version
+    }
+
     if (minifyResources) {
         doLast {
             def jsonMinifyStart = System.currentTimeMillis()
@@ -178,9 +194,9 @@ processResources {
                 def oldLength = file.length()
                 try {
                     file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-                        .replace('"__comment__":"This file was automatically created by mcresources",', '')
+                            .replace('"__comment__":"This file was automatically created by mcresources",', '')
                 }
-                catch(Exception e ){
+                catch (Exception e) {
                     System.out.println("Parsing JSON error in " + file.path)
                     throw e
                 }
@@ -214,7 +230,7 @@ jar {
     manifest {
         attributes ([
                 "Implementation-Version": "${project.version}",
-                "MixinConfigs": "${mod_id}.mixins.json"
+                "MixinConfigs"          : "${mod_id}.mixins.json"
         ])
     }
 }

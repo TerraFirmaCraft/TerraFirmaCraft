@@ -1,0 +1,94 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Ores, Metal, and Casting",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ore/normal_native_copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "In addition to sticks, twigs, and stones on the ground, in your travels you may encounter small pieces of ores scattered around the ground. These are important, as they are one of the only sources of ore and metal before obtaining a pickaxe."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "    ",
+            "  0 ",
+            "    "
+          ],
+          [
+            "ABCD",
+            "EFGH",
+            "IJKL"
+          ],
+          [
+            "XXXX",
+            "XXXX",
+            "XXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grass/loam",
+          "A": "tfc:ore/small_native_copper",
+          "B": "tfc:ore/small_native_gold",
+          "C": "tfc:ore/small_hematite",
+          "D": "tfc:ore/small_native_silver",
+          "E": "tfc:ore/small_cassiterite",
+          "F": "tfc:ore/small_bismuthinite",
+          "G": "tfc:ore/small_garnierite",
+          "H": "tfc:ore/small_malachite",
+          "I": "tfc:ore/small_magnetite",
+          "J": "tfc:ore/small_limonite",
+          "K": "tfc:ore/small_sphalerite",
+          "L": "tfc:ore/small_tetrahedrite"
+        }
+      },
+      "name": "",
+      "text": "All small ore pieces",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "These small ore pieces can serve two purposes: they can provide a source of metal, and more importantly, they indicate the presence of an underground, close to the surface, larger vein of ore somewhere nearby. Be sure to note where you find small ores, as the location of ore veins will be useful later.$(br2)The twelve types of small ores, and the metal they can be melted into are listed on the next page."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)Native Copper ($(thing)Copper$())$(li)Native Gold ($(thing)Gold$())$(li)Hematite ($(thing)Cast Iron$())$(li)Native Silver ($(thing)Silver$())$(li)Cassiterite ($(thing)Tin$())$(li)Bismuthinite ($(thing)Bismuth$())$(li)Garnierite ($(thing)Nickel$())$(li)Malachite ($(thing)Copper$())$(li)Magnetite ($(thing)Cast Iron$())$(li)Limonite ($(thing)Cast Iron$())$(li)Sphalerite ($(thing)Zinc$())$(li)Tetrahedrite ($(thing)Copper$())",
+      "title": "Small Ores"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "casting",
+      "text": "In TerraFirmaCraft, ores each contain a certain number of $(thing)units$(), or $(thing)mB (millibuckets)$() of actual metal which can be extracted. Small ores like this found on the surface are the lowest quality, and only provide $(thing)10 mB$() of metal. In order to extract this metal, it needs to be $(thing)melted$(), and made into tools using a process called $(thing)casting$().",
+      "title": "Casting"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "You will need:$(br)$(li)A $(l:getting_started/pottery#vessel)Small Vessel$()$(li)Enough materials for a $(l:getting_started/pit_kiln)Pit Kiln$().$(li)A $(l:getting_started/pottery#mold)Mold$(), or multiple to cast the molten metal.$(li)And finally, you will need at least 100 mB total of a metal which is suitable for casting: $(thing)Copper$(), in one of it's three ore forms.$(br2)$(br)$(italic)Note: Casting can also be done with $(l:getting_started/primitive_alloys)Alloys$()"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "First, open the $(thing)Small Vessel$() and put the ores inside. Count up the total amount of metal in the ores carefully! Then, you need to build a $(l:getting_started/pit_kiln)Pit Kiln$(), and this time, put the entire small vessel inside it. As the vessel heats, the ores inside it will melt, and you'll be left with a vessel of molten metal.$(br2)Take the vessel out and $(item)$(k:key.use)$() it, to open the $(thing)Casting$() interface."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/casting.png"
+      ],
+      "text": "The Casting Interface.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "With the casting interface open, place your empty fired mold in the center slot. It will fill up as long as the vessel remains liquid. (If the vessel solidifies, it can be reheated in another pit kiln.) Once the mold is full, it can be removed and left to cool. Once cool, the mold and it's contents can be extracted by using the mold, or putting it in the crafting grid."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/pickaxe/copper",
+      "text": "With a tool head in hand, you are now able to craft your first pickaxe! Find enough copper to make a single pickaxe head, cast it using a mold and a few pit kilns, and then slap it on a stick, and voila!"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

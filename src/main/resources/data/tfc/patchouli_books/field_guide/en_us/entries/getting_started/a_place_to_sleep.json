@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "A Place to Sleep",
+  "category": "tfc:getting_started",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " D ",
+            " 0 "
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:thatch_bed[part=head,facing=west]",
+          "D": "tfc:thatch_bed[part=foot,facing=east]"
+        }
+      },
+      "name": "Thatch Bed",
+      "text": "A constructed thatch bed.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8
+}

@@ -1,0 +1,2611 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Crops",
+  "category": "tfc:food",
+  "icon": "tfc:food/wheat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$()."
+    },
+    {
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hoe_head_sedimentary",
+        "tfc:rock_knapping/hoe_head_metamorphic",
+        "tfc:rock_knapping/hoe_head_igneous_extrusive",
+        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+      ],
+      "text": "In the stone age, a Hoe can be $(thing)knapped$() as seen above."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/stone/hoe_sedimentary",
+      "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to create $(thing)Path Blocks$(), and convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:compost",
+      "title": "Fertilizer",
+      "link_recipes": false,
+      "text": "To add nutrients to soil, try a $(l:mechanics/fertilizers)Fertilizer$(). See that page for more information on how they work and how to get them."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "barley",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
+      "title": "Barley"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/barley[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "oat",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Oat is a single block crop. Oat seeds can be planted on farmland to be grown, and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
+      "title": "Oat"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/oat[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rye",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Rye is a single block crop. Rye seeds can be planted on farmland to be grown, and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
+      "title": "Rye"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rye[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "maize",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Maize is a two block tall crop. Maize seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
+      "title": "Maize"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/maize[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/maize[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/maize[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/maize[age=3,part=top]",
+            "Y": "tfc:crop/maize[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/maize[age=4,part=top]",
+            "Y": "tfc:crop/maize[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/maize[age=5,part=top]",
+            "Y": "tfc:crop/maize[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "wheat",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Wheat is a single block crop. Wheat seeds can be planted on farmland to be grown, and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
+      "title": "Wheat"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/wheat[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rice",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.",
+      "title": "Rice"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Note: in order to grow, the rice block must be $(thing)Waterlogged$().",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=0,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=1,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=2,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=3,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=4,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=5,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=6,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/rice[age=7,fluid=water]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "beet",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Beets area a single block crop. Beet seeds can be planted on farmland to be grown, and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
+      "title": "Beet"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/beet[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cabbage",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Cabbage is a single block crop. Cabbage seeds can be planted on farmland to be grown, and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
+      "title": "Cabbage"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/cabbage[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "carrot",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Carrot is a single block crop. Carrot seeds can be planted on farmland to be grown, and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
+      "title": "Carrot"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/carrot[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garlic",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Garlic is a single block crop. Garlic seeds can be planted on farmland to be grown, and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
+      "title": "Garlic"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/garlic[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "green_bean",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
+      "title": "Green Beans"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The stick is required in order for the crop to fully grow.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=0,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=0,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=1,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=1,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=2,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=2,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=3,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=3,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=4,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=4,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=5,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=5,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=6,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=6,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/green_bean[age=7,part=top,stick=true]",
+            "Y": "tfc:crop/green_bean[age=7,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "potato",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Potatoes are a single block crop. Potato seeds can be planted on farmland to be grown, and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
+      "title": "Potatoes"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/potato[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "onion",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
+      "title": "Onions"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/onion[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "soybean",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Soybean is a single block crop. Soybean seeds can be planted on farmland to be grown, and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
+      "title": "Soybean"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/soybean[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "squash",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Squash is a single block crop. Squash seeds can be planted on farmland to be grown, and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
+      "title": "Squash"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/squash[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sugarcane",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
+      "title": "Sugarcane"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/sugarcane[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=4,part=top]",
+            "Y": "tfc:crop/sugarcane[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=5,part=top]",
+            "Y": "tfc:crop/sugarcane[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=6,part=top]",
+            "Y": "tfc:crop/sugarcane[age=6,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/sugarcane[age=7,part=top]",
+            "Y": "tfc:crop/sugarcane[age=7,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tomatoes",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
+      "title": "Tomatoes"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The stick is required in order for the crop to fully grow.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=0,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=0,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=1,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=1,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=2,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=2,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=3,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=3,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=4,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=4,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=5,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=5,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=6,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=6,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/tomato[age=7,part=top,stick=true]",
+            "Y": "tfc:crop/tomato[age=7,part=bottom,stick=true]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "jute",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:the_world/climate#hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Jute is a two block tall crop. Jute seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
+      "title": "Jute"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/jute[age=0,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/jute[age=1,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "minecraft:air",
+            "Y": "tfc:crop/jute[age=2,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/jute[age=3,part=top]",
+            "Y": "tfc:crop/jute[age=3,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/jute[age=4,part=top]",
+            "Y": "tfc:crop/jute[age=4,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "Z"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/jute[age=5,part=top]",
+            "Y": "tfc:crop/jute[age=5,part=bottom]",
+            "Z": "tfc:farmland/loam"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:seeds/barley": 8,
+    "tfc:food/barley": 8,
+    "tfc:seeds/oat": 10,
+    "tfc:food/oat": 10,
+    "tfc:seeds/rye": 12,
+    "tfc:food/rye": 12,
+    "tfc:seeds/maize": 14,
+    "tfc:food/maize": 14,
+    "tfc:seeds/wheat": 16,
+    "tfc:food/wheat": 16,
+    "tfc:seeds/rice": 18,
+    "tfc:food/rice": 18,
+    "tfc:seeds/beet": 20,
+    "tfc:food/beet": 20,
+    "tfc:seeds/cabbage": 22,
+    "tfc:food/cabbage": 22,
+    "tfc:seeds/carrot": 24,
+    "tfc:food/carrot": 24,
+    "tfc:seeds/garlic": 26,
+    "tfc:food/garlic": 26,
+    "tfc:seeds/green_bean": 28,
+    "tfc:food/green_bean": 28,
+    "tfc:seeds/potato": 30,
+    "tfc:food/potato": 30,
+    "tfc:seeds/onion": 32,
+    "tfc:food/onion": 32,
+    "tfc:seeds/soybean": 34,
+    "tfc:food/soybean": 34,
+    "tfc:seeds/squash": 36,
+    "tfc:food/squash": 36,
+    "tfc:seeds/sugarcane": 38,
+    "tfc:food/sugarcane": 38,
+    "tfc:seeds/tomato": 40,
+    "tfc:food/tomato": 40,
+    "tfc:seeds/jute": 42,
+    "tfc:jute": 42
+  }
+}

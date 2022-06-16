@@ -39,6 +39,8 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
     public final ForgeConfigSpec.BooleanValue displayFamiliarityAsPercent;
+    public final ForgeConfigSpec.BooleanValue showGuideBookLinksAlways;
+    public final ForgeConfigSpec.BooleanValue showGuideBookTabInInventory;
     // Compatibility
     public final ForgeConfigSpec.ConfigValue<List<? extends String>> additionalMetalSheetTextures;
 
@@ -94,6 +96,9 @@ public class ClientConfig
         showHoeOverlaysOnlyWhenShifting = builder.apply("showHoeOverlaysOnlyWhenShifting").comment("If hoe overlays (for hydration, nutrition, or temperature, shown when hovering over a plant or farmland while holding a hoe), should only be shown when the shift key is held down.").define("showHoeOverlaysOnlyWhenShifting", false);
 
         displayFamiliarityAsPercent = builder.apply("displayFamiliarityAsPercent").comment("If familiarity is displayed as a percent rather than a heart").define("displayFamiliarityAsPercent", false);
+
+        showGuideBookLinksAlways = builder.apply("showGuideBookLinksAlways").comment("If, when hovering over an item in the inventory, or looking at a block in the world that has a linked page in the guide book, should it display a tooltip along with allowing you to hold Ctrl/Cmd to quickly navigate to that page in the book.").define("showGuideBookLinksAlways", true);
+        showGuideBookTabInInventory = builder.apply("showGuideBookTabInInventory").comment("If a button linking to the TFC Field Guide should be added to the inventory, climate, nutrition, and calendar screens?").define("showGuideBookTabInInventory", true);
 
         innerBuilder.pop().push("compatibility");
 

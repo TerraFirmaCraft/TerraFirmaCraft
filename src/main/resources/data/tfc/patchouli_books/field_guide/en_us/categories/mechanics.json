@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Advanced Mechanics",
+  "description": "Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.",
+  "icon": "tfc:metal/axe/red_steel",
+  "sortnum": 2
+}

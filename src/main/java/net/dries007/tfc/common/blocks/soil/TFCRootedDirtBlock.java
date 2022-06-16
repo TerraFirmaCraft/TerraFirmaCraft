@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -25,17 +25,22 @@ public class TFCRootedDirtBlock extends Block
 {
     private final Supplier<? extends Block> dirt;
 
-    public TFCRootedDirtBlock(Properties properties, SoilBlockType dirtType, SoilBlockType.Variant variant)
+    public TFCRootedDirtBlock(Properties properties, Supplier<? extends Block> dirt)
     {
         super(properties);
-        this.dirt = TFCBlocks.SOIL.get(dirtType).get(variant);
+        this.dirt = dirt;
+    }
+
+    TFCRootedDirtBlock(Properties properties, SoilBlockType dirtType, RegistrySoilVariant variant)
+    {
+        this(properties, variant.getBlock(dirtType));
     }
 
     @Nullable
     @Override
     public BlockState getToolModifiedState(BlockState state, UseOnContext context, ToolAction action, boolean simulate)
     {
-        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.HOE_TILL && TFCConfig.SERVER.enableGrassPathCreation.get())
+        if (context.getItemInHand().canPerformAction(action) && action == ToolActions.HOE_TILL && TFCConfig.SERVER.enableRootedDirtToDirtCreation.get())
         {
             return dirt.get().defaultBlockState();
         }

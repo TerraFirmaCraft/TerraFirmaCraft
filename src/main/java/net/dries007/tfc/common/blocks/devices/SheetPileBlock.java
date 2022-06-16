@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
@@ -125,6 +126,19 @@ public class SheetPileBlock extends ExtendedBlock implements EntityBlockExtensio
     public static VoxelShape getShapeForSingleFace(Direction direction)
     {
         return SHAPES.get(DirectionPropertyBlock.getProperty(direction));
+    }
+
+    public static int countSheets(BlockState state, Predicate<Direction> onlyTheseDirections)
+    {
+        int count = 0;
+        for (Direction direction : Helpers.DIRECTIONS)
+        {
+            if (onlyTheseDirections.test(direction) && state.getValue(DirectionPropertyBlock.getProperty(direction)))
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
     public static boolean isEmpty(BlockState state)

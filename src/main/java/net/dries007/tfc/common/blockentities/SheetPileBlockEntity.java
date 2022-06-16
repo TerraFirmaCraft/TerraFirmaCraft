@@ -79,6 +79,14 @@ public class SheetPileBlockEntity extends TFCBlockEntity
         return metal;
     }
 
+    /**
+     * Sets the cached metals for a block entity that is not placed in the world
+     */
+    public void setAllMetalsFromOutsideWorld(Metal metal)
+    {
+        Arrays.fill(cachedMetals, metal);
+    }
+
     @Override
     protected void saveAdditional(CompoundTag tag)
     {

@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Primitive Alloys",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Alloys$() are a method of mixing two or more metals together, to create a new, stronger metal. During the early game, while copper is a useful metal for creating tools, the next tier of metal is one of three types of $(thing)Bronze$(). An alloy is made up of component $(thing)metals$(), which must each satisfy a specific percentage of the overall whole."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "One method through which alloys can be made during the early game is through the usage of a $(thing)Small Vessel$(). The process is very similar to $(l:getting_started/finding_ores#casting)Casting$(). However, instead of using just a single metal, inside the vessel, place enough ore pieces, in the correct ratio, to form a known alloy mix."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, armor, and other metal items, although each metal is slightly different, and tools will have different durability, efficiency, or attack damage."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bronze",
+      "title": "Bronze",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)88 - 92 % : $(thing)Copper$()$(li)8 - 12 % : $(thing)Tin$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bismuth_bronze",
+      "title": "Bismuth Bronze",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 65 % : $(thing)Copper$()$(li)20 - 30 % : $(thing)Zinc$()$(li)10 - 20 % : $(thing)Bismuth$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/black_bronze",
+      "title": "Black Bronze",
+      "link_recipes": false,
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 70 % : $(thing)Copper$()$(li)10 - 25 % : $(thing)Gold$()$(li)10 - 25 % : $(thing)Silver$()$(br2)"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

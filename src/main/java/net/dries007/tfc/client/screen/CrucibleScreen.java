@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
@@ -96,12 +97,12 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         AlloyView alloy = blockEntity.getAlloy();
         if (alloy.getAmount() > 0)
         {
-            final TextureAtlasSprite sprite = getAndBindFluidSprite(alloy.getResultAsFluidStack());
+            final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(alloy.getResultAsFluidStack());
             final int startY = 93;
             final int endY = 124;
             final int fillHeight = (int) Math.ceil((float) (endY - startY) * alloy.getAmount() / alloy.getMaxUnits());
 
-            fillAreaWithSprite(sprite, poseStack, 97, 133, endY, fillHeight);
+            RenderHelpers.fillAreaWithSprite(leftPos, topPos, sprite, poseStack, 97, 133, endY, fillHeight);
 
             resetToBackgroundSprite();
 

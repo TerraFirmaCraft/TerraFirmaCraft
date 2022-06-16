@@ -1,0 +1,44 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Charcoal Forge",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/block/devices/charcoal_forge/lit_static.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Forging and stuff idk"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "   ",
+            " 0 ",
+            "   "
+          ],
+          [
+            "XXX",
+            "XCX",
+            "XXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:rock/bricks/andesite",
+          "C": "tfc:charcoal_forge[heat_level=7]"
+        }
+      },
+      "name": "A Charcoal Forge",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    }
+  ],
+  "read_by_default": true
+}
