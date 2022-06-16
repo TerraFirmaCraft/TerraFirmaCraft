@@ -16,6 +16,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.dries007.tfc.world.Codecs;
+import org.jetbrains.annotations.Nullable;
 
 public record BoulderConfig(Map<Block, List<BlockState>> states) implements FeatureConfiguration
 {
@@ -25,4 +26,10 @@ public record BoulderConfig(Map<Block, List<BlockState>> states) implements Feat
             Codecs.BLOCK_STATE.listOf(), "blocks"
         )).fieldOf("states").forGetter(c -> c.states)
     ).apply(instance, BoulderConfig::new));
+
+    @Nullable
+    public List<BlockState> getStates(Block block)
+    {
+        return states.get(block);
+    }
 }
