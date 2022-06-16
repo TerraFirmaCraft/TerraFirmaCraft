@@ -51,6 +51,7 @@ public abstract class DairyAnimal extends ProducingMammal
                 if (filled)
                 {
                     // at this point we are guaranteeing milking will happen. The question is how?
+                    setProductsCooldown();
                     playSound(SoundEvents.COW_MILK, getSoundVolume(), getVoicePitch());
                     AnimalProductEvent event = new AnimalProductEvent(level, blockPosition(), player, this, bucket, held, 1);
                     // if the event is NOT cancelled
