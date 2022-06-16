@@ -906,7 +906,10 @@ DEFAULT_LANG = {
     'entity.tfc.duck.male': 'Drake',
     'entity.tfc.duck.female': 'Duck',
     'entity.tfc.quail': 'Quail',
+    'entity.tfc.quail.male': 'Male Quail',
+    'entity.tfc.quail.female': 'Female Quail',
     'entity.tfc.rabbit': 'Rabbit',
+    'entity.tfc.fox': 'Fox',
     **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums
