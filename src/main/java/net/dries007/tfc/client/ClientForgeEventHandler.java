@@ -63,6 +63,7 @@ import net.dries007.tfc.common.capabilities.forge.Forging;
 import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.items.EmptyPanItem;
 import net.dries007.tfc.common.items.PanItem;
@@ -499,8 +500,8 @@ public class ClientForgeEventHandler
                     if (TFCConfig.CLIENT.displayFamiliarityAsPercent.get())
                     {
                         String string = String.format("%.2f", familiarity * 100);
-                        stack.translate(0F, 40F, 0F);
-                        mc.font.draw(stack, string, 0, 0, fontColor);
+                        stack.translate(0F, 45F, 0F);
+                        mc.font.draw(stack, string, -mc.font.width(string) / 2f, 0, fontColor);
                     }
                     else
                     {
@@ -509,6 +510,13 @@ public class ClientForgeEventHandler
                         stack.translate(0F, 0F,-0.001F);
                         gui.blit(stack, -6, 14 - (int) (12 * familiarity), familiarity == 1.0F ? 114 : 94, 74 - (int) (12 * familiarity), 12, (int) (12 * familiarity));
                     }
+                    if (animal instanceof Mammal mammal && mammal.getPregnantTime() > 0 && mammal.isFertilized())
+                    {
+                        stack.translate(0, -15F, 0F);
+                        String string = new TranslatableComponent("tfc.tooltip.animal.pregnant", mammal.getTypeName().getString()).getString();
+                        mc.font.draw(stack, string, -mc.font.width(string) / 2f, 0, Color.WHITE.getRGB());
+                    }
+
                     stack.popPose();
                 }
             }

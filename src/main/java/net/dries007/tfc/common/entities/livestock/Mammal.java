@@ -63,6 +63,7 @@ public abstract class Mammal extends TFCAnimal
     public void onFertilized(TFCAnimalProperties male)
     {
         //Mark the day this female became pregnant
+        setFertilized(true);
         setPregnantTime(Calendars.get(male.getEntity().level).getTotalDays());
     }
 
@@ -99,7 +100,7 @@ public abstract class Mammal extends TFCAnimal
         super.tick();
         if (!level.isClientSide && level.getGameTime() % 20 == 0)
         {
-            if (Calendars.SERVER.getTotalDays() >= getPregnantTime() + getGestationDays() && isFertilized())
+            if (getPregnantTime() > 0 && Calendars.SERVER.getTotalDays() >= getPregnantTime() + getGestationDays() && isFertilized())
             {
                 birthChildren();
                 setFertilized(false);

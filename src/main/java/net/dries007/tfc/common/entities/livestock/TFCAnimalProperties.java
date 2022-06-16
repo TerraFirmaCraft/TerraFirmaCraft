@@ -9,7 +9,10 @@ package net.dries007.tfc.common.entities.livestock;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -17,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -28,9 +32,45 @@ public interface TFCAnimalProperties
         return (Entity) this;
     }
 
+    private SynchedEntityData entityData()
+    {
+        return getEntity().getEntityData();
+    }
+
     private ICalendar getCalendar()
     {
         return Calendars.get(getEntity().level);
+    }
+
+    CommonAnimalData animalData();
+
+    AnimalConfig animalConfig();
+
+    default void registerCommonData()
+    {
+        entityData().define(animalData().gender(), true);
+        entityData().define(animalData().birthday(), 0);
+        entityData().define(animalData().familiarity(), 0f);
+        entityData().define(animalData().uses(), 0);
+        entityData().define(animalData().fertilized(), false);
+    }
+
+    default void saveCommonAnimalData(CompoundTag nbt)
+    {
+        nbt.putBoolean("gender", getGender().toBool());
+        nbt.putInt("birth", getBirthDay());
+        nbt.putBoolean("fertilized", isFertilized());
+        nbt.putFloat("familiarity", getFamiliarity());
+        nbt.putInt("uses", getUses());
+    }
+
+    default void readCommonAnimalData(CompoundTag nbt)
+    {
+        setGender(Gender.valueOf(nbt.getBoolean("gender")));
+        setBirthDay(nbt.getInt("birth"));
+        setFertilized(nbt.getBoolean("fertilized"));
+        setFamiliarity(nbt.getFloat("familiarity"));
+        setUses(nbt.getInt("uses"));
     }
 
     /**
@@ -38,42 +78,60 @@ public interface TFCAnimalProperties
      *
      * @return Gender of this animal
      */
-    Gender getGender();
+    default Gender getGender()
+    {
+        return Gender.valueOf(entityData().get(animalData().gender()));
+    }
 
     /**
      * Set this animal gender, used on spawn/birth
      *
      * @param gender the Gender to set to
      */
-    void setGender(Gender gender);
+    default void setGender(Gender gender)
+    {
+        entityData().set(animalData().gender(), gender.toBool());
+    }
 
     /**
      * Returns the birth day of this animal. Determines how old this animal is
      *
      * @return returns the day this animal has been birth
      */
-    int getBirthDay();
+    default int getBirthDay()
+    {
+        return entityData().get(animalData().birthday());
+    }
 
     /**
      * Sets the birth day of this animal. Used to determine how old this animal is
      *
      * @param value the day this animal has been birth. Used when this animal spawns.
      */
-    void setBirthDay(int value);
+    default void setBirthDay(int value)
+    {
+        entityData().set(animalData().birthday(), value);
+    }
 
     /**
      * Returns the familiarity of this animal
      *
      * @return float value between 0-1.
      */
-    float getFamiliarity();
+    default float getFamiliarity()
+    {
+        return entityData().get(animalData().familiarity());
+    }
 
     /**
      * Set this animal familiarity
      *
      * @param value float value between 0-1.
      */
-    void setFamiliarity(float value);
+    default void setFamiliarity(float value)
+    {
+        entityData().set(animalData().familiarity(), Mth.clamp(value, 0f, 1f));
+    }
 
     /**
      * Add a 'use' to the animal
@@ -83,26 +141,38 @@ public interface TFCAnimalProperties
         setUses(getUses() + uses);
     }
 
-    void setUses(int uses);
+    default void setUses(int uses)
+    {
+        entityData().set(animalData().uses(), uses);
+    }
 
     /**
      * Get the uses this animal has
      */
-    int getUses();
+    default int getUses()
+    {
+        return entityData().get(animalData().uses());
+    }
 
     /**
      * Returns true if this female is pregnant, or the next time it ovulates, eggs are fertilized.
      *
      * @return true if this female has been fertilized.
      */
-    boolean isFertilized();
+    default boolean isFertilized()
+    {
+        return entityData().get(animalData().fertilized());
+    }
 
     /**
      * Set if this female is fertilized
      *
      * @param value true on fertilization (mating)
      */
-    void setFertilized(boolean value);
+    default void setFertilized(boolean value)
+    {
+        entityData().set(animalData().fertilized(), value);
+    }
 
     /**
      * Do things on fertilization of females (ie: save the male genes for some sort of genetic selection)
@@ -152,28 +222,42 @@ public interface TFCAnimalProperties
      *
      * @return 0 if not familiarizable at all, [0, 1] for a cap
      */
-    float getAdultFamiliarityCap();
+    default float getAdultFamiliarityCap()
+    {
+        return animalConfig().familiarityCap().get().floatValue();
+    }
 
     /**
      * Get the number of days needed for this animal to be adult
      *
      * @return number of days
      */
-    int getDaysToAdulthood();
+    default int getDaysToAdulthood()
+    {
+        return animalConfig().adulthoodDays().get();
+    }
 
     /**
      * Get the number of uses for this animal to become old
      *
      * @return number of uses, 0 to disable
      */
-    int getUsesToElderly();
+    default int getUsesToElderly()
+    {
+        return animalConfig().uses().get();
+    }
+
+    default boolean eatsRottenFood()
+    {
+        return animalConfig().eatsRottenFood().get();
+    }
+
 
     /**
      * Default tag checked by isFood (edible items)
      */
     TagKey<Item> getFoodTag();
 
-    boolean eatsRottenFood();
 
     void setMated();
 

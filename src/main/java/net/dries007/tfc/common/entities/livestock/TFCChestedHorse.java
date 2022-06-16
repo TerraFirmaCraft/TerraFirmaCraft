@@ -22,7 +22,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,9 +39,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-
+import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class TFCChestedHorse extends AbstractChestedHorse implements TFCAnimalProperties
@@ -52,6 +51,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
+    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED);
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
@@ -62,29 +62,35 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     private final Supplier<? extends SoundEvent> step;
     private final Supplier<? extends SoundEvent> eat;
     private final Supplier<? extends SoundEvent> angry;
-    private final ForgeConfigSpec.DoubleValue adultFamiliarityCap;
-    private final ForgeConfigSpec.IntValue daysToAdulthood;
-    private final ForgeConfigSpec.IntValue usesToElderly;
-    private final ForgeConfigSpec.BooleanValue eatsRottenFood;
+    private final AnimalConfig config;
 
-    public TFCChestedHorse(EntityType<? extends TFCChestedHorse> type, Level level, HorseSoundPackage sounds, ForgeConfigSpec.DoubleValue adultFamiliarityCap, ForgeConfigSpec.IntValue daysToAdulthood, ForgeConfigSpec.IntValue usesToElderly, ForgeConfigSpec.BooleanValue eatsRottenFood)
+    public TFCChestedHorse(EntityType<? extends TFCChestedHorse> type, Level level, TFCSounds.EntitySound sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, AnimalConfig config)
     {
         super(type, level);
         this.matingTime = Calendars.get(level).getTicks();
         this.lastFDecay = Calendars.get(level).getTotalDays();
-        this.ambient = sounds.ambient;
-        this.hurt = sounds.hurt;
-        this.death = sounds.death;
-        this.step = sounds.step;
-        this.eat = sounds.eat;
-        this.angry = sounds.angry;
-        this.adultFamiliarityCap = adultFamiliarityCap;
-        this.daysToAdulthood = daysToAdulthood;
-        this.usesToElderly = usesToElderly;
-        this.eatsRottenFood = eatsRottenFood;
+        this.ambient = sounds.ambient();
+        this.hurt = sounds.hurt();
+        this.death = sounds.death();
+        this.step = sounds.step();
+        this.eat = eatSound;
+        this.angry = angrySound;
+        this.config = config;
     }
 
     // BEGIN COPY-PASTE FROM TFC ANIMAL
+
+    @Override
+    public AnimalConfig animalConfig()
+    {
+        return config;
+    }
+
+    @Override
+    public CommonAnimalData animalData()
+    {
+        return ANIMAL_DATA;
+    }
 
     @Override
     public boolean isReadyToMate()
@@ -100,28 +106,20 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     public void addAdditionalSaveData(CompoundTag nbt)
     {
         super.addAdditionalSaveData(nbt);
-        nbt.putBoolean("gender", getGender().toBool());
-        nbt.putInt("birth", getBirthDay());
+        saveCommonAnimalData(nbt);
         nbt.putLong("fed", lastFed);
         nbt.putLong("decay", lastFDecay);
-        nbt.putBoolean("fertilized", isFertilized());
         nbt.putLong("mating", matingTime);
-        nbt.putFloat("familiarity", getFamiliarity());
-        nbt.putInt("uses", getUses());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt)
     {
         super.readAdditionalSaveData(nbt);
-        this.setGender(Gender.valueOf(nbt.getBoolean("gender")));
-        this.setBirthDay(nbt.getInt("birth"));
+        readCommonAnimalData(nbt);
         this.lastFed = nbt.getLong("fed");
         this.lastFDecay = nbt.getLong("decay");
         this.matingTime = nbt.getLong("mating");
-        this.setFertilized(nbt.getBoolean("fertilized"));
-        this.setFamiliarity(nbt.getFloat("familiarity"));
-        this.setUses(nbt.getInt("uses"));
     }
 
     @Override
@@ -187,7 +185,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
         }
     }
 
-
     @Override
     public boolean isFood(ItemStack stack)
     {
@@ -198,95 +195,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     protected void defineSynchedData()
     {
         super.defineSynchedData();
-        entityData.define(GENDER, true);
-        entityData.define(BIRTHDAY, 0);
-        entityData.define(FAMILIARITY, 0F);
-        entityData.define(USES, 0);
-        entityData.define(FERTILIZED, false);
-    }
-
-    @Override
-    public TFCAnimalProperties.Gender getGender()
-    {
-        return Gender.valueOf(entityData.get(GENDER));
-    }
-
-    @Override
-    public void setGender(Gender gender)
-    {
-        entityData.set(GENDER, gender.toBool());
-    }
-
-    @Override
-    public int getBirthDay()
-    {
-        return entityData.get(BIRTHDAY);
-    }
-
-    @Override
-    public void setBirthDay(int value)
-    {
-        entityData.set(BIRTHDAY, value);
-    }
-
-    @Override
-    public float getFamiliarity()
-    {
-        return entityData.get(FAMILIARITY);
-    }
-
-    @Override
-    public void setFamiliarity(float value)
-    {
-        entityData.set(FAMILIARITY, Mth.clamp(value, 0F, 1F));
-    }
-
-    @Override
-    public int getUses()
-    {
-        return entityData.get(USES);
-    }
-
-    @Override
-    public void setUses(int uses)
-    {
-        entityData.set(USES, uses);
-    }
-
-    @Override
-    public boolean isFertilized()
-    {
-        return entityData.get(FERTILIZED);
-    }
-
-    @Override
-    public void setFertilized(boolean fertilized)
-    {
-        entityData.set(FERTILIZED, fertilized);
-    }
-
-    @Override
-    public float getAdultFamiliarityCap()
-    {
-        return adultFamiliarityCap.get().floatValue();
-    }
-
-    @Override
-    public int getDaysToAdulthood()
-    {
-        return daysToAdulthood.get();
-    }
-
-    @Override
-    public int getUsesToElderly()
-    {
-        return usesToElderly.get();
-    }
-
-    @Override
-    public boolean eatsRottenFood()
-    {
-        return eatsRottenFood.get();
+        registerCommonData();
     }
 
     @Override
@@ -442,6 +351,4 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     {
         return angry.get();
     }
-
-    public record HorseSoundPackage(Supplier<? extends SoundEvent> ambient, Supplier<? extends SoundEvent> hurt, Supplier<? extends SoundEvent> death, Supplier<? extends SoundEvent> step, Supplier<? extends SoundEvent> angry, Supplier<? extends SoundEvent> eat) {}
 }

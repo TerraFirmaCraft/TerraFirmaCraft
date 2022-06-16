@@ -18,6 +18,7 @@ import net.minecraft.util.Mth;
 // Paste this class into your mod and generate all required imports
 
 
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 
 public class MuskOxModel extends AgeableListModel<WoolyAnimal>
@@ -104,7 +105,7 @@ public class MuskOxModel extends AgeableListModel<WoolyAnimal>
     @Override
     public void setupAnim(WoolyAnimal animal, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
-        hornL1.visible = hornR1.visible = !animal.isBaby();
+        hornL1.visible = hornR1.visible = animal.displayMaleCharacteristics();
         quiviut.visible = animal.hasProduct();
 
         head.xRot = headPitch * ((float) Math.PI / 480F) + 0.873F;

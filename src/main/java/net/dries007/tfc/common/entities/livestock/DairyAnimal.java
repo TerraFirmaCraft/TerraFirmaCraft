@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -45,7 +46,7 @@ public abstract class DairyAnimal extends ProducingMammal
                 // copy the stack because we do not know if we'll need to replace it or not yet
                 ItemStack bucket = held.copy();
                 boolean filled = bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(itemCap -> {
-                    FluidStack milk = new FluidStack(getMilkFluid(), 1000);
+                    FluidStack milk = new FluidStack(getMilkFluid(), FluidAttributes.BUCKET_VOLUME);
                     return itemCap.fill(milk, IFluidHandler.FluidAction.EXECUTE) > 0;
                 }).orElse(false);
                 if (filled)
