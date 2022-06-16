@@ -6,18 +6,12 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.GoatModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
 
-import net.dries007.tfc.common.entities.land.DairyAnimal;
+import net.dries007.tfc.common.entities.livestock.DairyAnimal;
 
 public class TFCGoatModel extends QuadrupedModel<DairyAnimal>
 {

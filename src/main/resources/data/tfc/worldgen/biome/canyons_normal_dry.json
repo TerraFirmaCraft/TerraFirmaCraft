@@ -150,10 +150,16 @@
         "weight": 1,
         "minCount": 1,
         "maxCount": 1
+      },
+      {
+        "type": "tfc:rabbit",
+        "weight": 2,
+        "minCount": 1,
+        "maxCount": 4
       }
     ]
   },
   "player_spawn_friendly": true,
-  "creature_spawn_probability": 0.5,
+  "creature_spawn_probability": 0.05,
   "spawn_costs": {}
 }

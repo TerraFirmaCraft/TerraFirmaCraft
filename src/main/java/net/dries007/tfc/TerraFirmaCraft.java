@@ -112,9 +112,7 @@ public final class TerraFirmaCraft
         TFCWorldType.WORLD_TYPES.register(bus);
         TFCStateProviders.BLOCK_STATE_PROVIDERS.register(bus);
         TFCEffects.EFFECTS.register(bus);
-        TFCBrain.ACTIVITIES.register(bus);
-        TFCBrain.MEMORY_TYPES.register(bus);
-        TFCBrain.SCHEDULES.register(bus);
+        TFCBrain.registerAll(bus);
 
         TFCConfig.init();
         PacketHandler.init();

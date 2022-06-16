@@ -36,7 +36,6 @@ public class PlayerData implements ICapabilitySerializable<CompoundTag>
 
     private long lastDrinkTick;
     private long intoxicationTick;
-    // todo: this desyncs when the player joins for the first time, until they press M
     private ChiselRecipe.Mode chiselMode = ChiselRecipe.Mode.SMOOTH;
 
     public PlayerData(Player player)

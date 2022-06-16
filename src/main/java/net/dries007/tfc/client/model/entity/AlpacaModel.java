@@ -13,7 +13,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.common.entities.land.WoolyAnimal;
+import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 
 public class AlpacaModel extends AgeableListModel<WoolyAnimal>
 {

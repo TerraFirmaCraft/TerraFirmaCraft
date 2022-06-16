@@ -48,6 +48,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -68,6 +69,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -570,6 +572,69 @@ public final class Helpers
             }
         }
         return true;
+    }
+
+    /**
+     * {@link net.minecraft.world.level.material.LavaFluid#randomTick(Level, BlockPos, FluidState, Random)}
+     */
+    public static void fireSpreaderTick(ServerLevel level, BlockPos spreaderPos, Random random, int horizontalRange)
+    {
+        if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
+        {
+            int tries = random.nextInt(3);
+            if (tries > 0)
+            {
+                BlockPos pos = spreaderPos;
+
+                for(int j = 0; j < tries; ++j)
+                {
+                    pos = pos.offset(random.nextInt(horizontalRange) - 1, 1, random.nextInt(horizontalRange) - 1);
+                    if (!level.isLoaded(pos)) return;
+
+                    BlockState state = level.getBlockState(pos);
+                    if (state.isAir())
+                    {
+                        if (hasFlammableNeighbours(level, pos))
+                        {
+                            level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, spreaderPos, Blocks.FIRE.defaultBlockState()));
+                            return;
+                        }
+                    }
+                    else if (state.getMaterial().blocksMotion())
+                    {
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                for(int i = 0; i < 3; ++i)
+                {
+                    BlockPos offsetPos = spreaderPos.offset(random.nextInt(horizontalRange) - 1, 0, random.nextInt(horizontalRange) - 1);
+                    if (!level.isLoaded(offsetPos)) return;
+
+                    BlockPos above = offsetPos.above();
+                    if (level.isEmptyBlock(above) && level.getBlockState(offsetPos).isFlammable(level, spreaderPos, Direction.UP))
+                    {
+                        level.setBlockAndUpdate(above, ForgeEventFactory.fireFluidPlaceBlockEvent(level, above, spreaderPos, Blocks.FIRE.defaultBlockState()));
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean hasFlammableNeighbours(LevelReader level, BlockPos pos)
+    {
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for(Direction direction : Helpers.DIRECTIONS)
+        {
+            mutable.setWithOffset(pos, direction);
+            if (level.getBlockState(mutable).isFlammable(level, mutable, direction.getOpposite()))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

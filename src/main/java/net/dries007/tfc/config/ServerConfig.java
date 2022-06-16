@@ -11,6 +11,9 @@ import java.util.function.Function;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.config.animals.MammalConfig;
+import net.dries007.tfc.config.animals.OviparousAnimalConfig;
+import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Alloy;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -125,100 +128,17 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
 
     // Animals
-    // Pig
-    public final ForgeConfigSpec.DoubleValue pigFamiliarityCap;
-    public final ForgeConfigSpec.IntValue pigAdulthoodDays;
-    public final ForgeConfigSpec.IntValue pigUses;
-    public final ForgeConfigSpec.BooleanValue pigEatsRottenFood;
-    public final ForgeConfigSpec.IntValue pigGestationDays;
-    public final ForgeConfigSpec.IntValue pigChildCount;
+    public final MammalConfig pigConfig;
+    public final ProducingMammalConfig cowConfig;
+    public final ProducingMammalConfig alpacaConfig;
+    public final OviparousAnimalConfig chickenConfig;
+    public final ProducingMammalConfig yakConfig;
+    public final ProducingMammalConfig goatConfig;
+    public final ProducingMammalConfig sheepConfig;
+    public final ProducingMammalConfig muskOxConfig;
+    public final OviparousAnimalConfig duckConfig;
+    public final OviparousAnimalConfig quailConfig;
 
-    // Cow
-    public final ForgeConfigSpec.DoubleValue cowFamiliarityCap;
-    public final ForgeConfigSpec.IntValue cowAdulthoodDays;
-    public final ForgeConfigSpec.IntValue cowUses;
-    public final ForgeConfigSpec.BooleanValue cowEatsRottenFood;
-    public final ForgeConfigSpec.IntValue cowGestationDays;
-    public final ForgeConfigSpec.IntValue cowChildCount;
-    public final ForgeConfigSpec.IntValue cowMilkTicks;
-    public final ForgeConfigSpec.DoubleValue cowMinMilkFamiliarity;
-
-    // Yak
-    public final ForgeConfigSpec.DoubleValue yakFamiliarityCap;
-    public final ForgeConfigSpec.IntValue yakAdulthoodDays;
-    public final ForgeConfigSpec.IntValue yakUses;
-    public final ForgeConfigSpec.BooleanValue yakEatsRottenFood;
-    public final ForgeConfigSpec.IntValue yakGestationDays;
-    public final ForgeConfigSpec.IntValue yakChildCount;
-    public final ForgeConfigSpec.IntValue yakMilkTicks;
-    public final ForgeConfigSpec.DoubleValue yakMinMilkFamiliarity;
-
-    // Goat
-    public final ForgeConfigSpec.DoubleValue goatFamiliarityCap;
-    public final ForgeConfigSpec.IntValue goatAdulthoodDays;
-    public final ForgeConfigSpec.IntValue goatUses;
-    public final ForgeConfigSpec.BooleanValue goatEatsRottenFood;
-    public final ForgeConfigSpec.IntValue goatGestationDays;
-    public final ForgeConfigSpec.IntValue goatChildCount;
-    public final ForgeConfigSpec.IntValue goatMilkTicks;
-    public final ForgeConfigSpec.DoubleValue goatMinMilkFamiliarity;
-
-    // Alpaca
-    public final ForgeConfigSpec.DoubleValue alpacaFamiliarityCap;
-    public final ForgeConfigSpec.IntValue alpacaAdulthoodDays;
-    public final ForgeConfigSpec.IntValue alpacaUses;
-    public final ForgeConfigSpec.BooleanValue alpacaEatsRottenFood;
-    public final ForgeConfigSpec.IntValue alpacaGestationDays;
-    public final ForgeConfigSpec.IntValue alpacaChildCount;
-    public final ForgeConfigSpec.IntValue alpacaWoolTicks;
-    public final ForgeConfigSpec.DoubleValue alpacaMinWoolFamiliarity;
-
-    // Sheep
-    public final ForgeConfigSpec.DoubleValue sheepFamiliarityCap;
-    public final ForgeConfigSpec.IntValue sheepAdulthoodDays;
-    public final ForgeConfigSpec.IntValue sheepUses;
-    public final ForgeConfigSpec.BooleanValue sheepEatsRottenFood;
-    public final ForgeConfigSpec.IntValue sheepGestationDays;
-    public final ForgeConfigSpec.IntValue sheepChildCount;
-    public final ForgeConfigSpec.IntValue sheepWoolTicks;
-    public final ForgeConfigSpec.DoubleValue sheepMinWoolFamiliarity;
-
-    // Musk Ox
-    public final ForgeConfigSpec.DoubleValue muskOxFamiliarityCap;
-    public final ForgeConfigSpec.IntValue muskOxAdulthoodDays;
-    public final ForgeConfigSpec.IntValue muskOxUses;
-    public final ForgeConfigSpec.BooleanValue muskOxEatsRottenFood;
-    public final ForgeConfigSpec.IntValue muskOxGestationDays;
-    public final ForgeConfigSpec.IntValue muskOxChildCount;
-    public final ForgeConfigSpec.IntValue muskOxWoolTicks;
-    public final ForgeConfigSpec.DoubleValue muskOxMinWoolFamiliarity;
-
-    // Chicken
-    public final ForgeConfigSpec.DoubleValue chickenFamiliarityCap;
-    public final ForgeConfigSpec.IntValue chickenAdulthoodDays;
-    public final ForgeConfigSpec.IntValue chickenUses;
-    public final ForgeConfigSpec.BooleanValue chickenEatsRottenFood;
-    public final ForgeConfigSpec.IntValue chickenEggTicks;
-    public final ForgeConfigSpec.DoubleValue chickenMinEggFamiliarity;
-    public final ForgeConfigSpec.IntValue chickenHatchDays;
-
-    // Duck
-    public final ForgeConfigSpec.DoubleValue duckFamiliarityCap;
-    public final ForgeConfigSpec.IntValue duckAdulthoodDays;
-    public final ForgeConfigSpec.IntValue duckUses;
-    public final ForgeConfigSpec.BooleanValue duckEatsRottenFood;
-    public final ForgeConfigSpec.IntValue duckEggTicks;
-    public final ForgeConfigSpec.DoubleValue duckMinEggFamiliarity;
-    public final ForgeConfigSpec.IntValue duckHatchDays;
-
-    // Quail
-    public final ForgeConfigSpec.DoubleValue quailFamiliarityCap;
-    public final ForgeConfigSpec.IntValue quailAdulthoodDays;
-    public final ForgeConfigSpec.IntValue quailUses;
-    public final ForgeConfigSpec.BooleanValue quailEatsRottenFood;
-    public final ForgeConfigSpec.IntValue quailEggTicks;
-    public final ForgeConfigSpec.DoubleValue quailMinEggFamiliarity;
-    public final ForgeConfigSpec.IntValue quailHatchDays;
 
     // Below Everything
     public final ForgeConfigSpec.BooleanValue farmlandMakesTheBestRaceTracks;
@@ -400,100 +320,34 @@ public class ServerConfig
         enableVanillaWeatherEffects = builder.apply("enableVanillaWeatherEffects").comment("If true, vanilla's snow and ice formation mechanics will be used, and none of the TFC mechanics (improved snow and ice placement, snow stacking, icicle formation, passive snow or ice melting) will exist.").define("enableVanillaWeatherEffects", false);
 
         innerBuilder.pop().push("animals").push("pig");
-        pigAdulthoodDays = builder.apply("pigAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("pigAdulthoodDays", 56, 0, Integer.MAX_VALUE);
-        pigChildCount = builder.apply("pigChildCount").comment("Max number of children born").defineInRange("pigChildCount", 10, 0, 100);
-        pigEatsRottenFood = builder.apply("pigEatsRottenFood").comment("Does the animal eat rotten food?").define("pigEatsRottenFood", true);
-        pigFamiliarityCap = builder.apply("pigFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("pigFamiliarityCap", 0.35, 0, 1);
-        pigUses = builder.apply("pigUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("pigUses", 40, 0, Integer.MAX_VALUE);
-        pigGestationDays = builder.apply("pigGestationDays").comment("Length of pregnancy in days").defineInRange("pigGestationDays", 20, 0, Integer.MAX_VALUE);
+        pigConfig = MammalConfig.build(builder, "pig", 0.35, 80, 5, true, 19, 10);
 
         innerBuilder.pop().push("cow");
-        cowAdulthoodDays = builder.apply("cowAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("cowAdulthoodDays", 124, 0, Integer.MAX_VALUE);
-        cowChildCount = builder.apply("cowChildCount").comment("Max number of children born").defineInRange("cowChildCount", 1, 0, 100);
-        cowEatsRottenFood = builder.apply("cowEatsRottenFood").comment("Does the animal eat rotten food?").define("cowEatsRottenFood", true);
-        cowFamiliarityCap = builder.apply("cowFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("cowFamiliarityCap", 0.35, 0, 1);
-        cowUses = builder.apply("cowUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("cowUses", 140, 0, Integer.MAX_VALUE);
-        cowGestationDays = builder.apply("cowGestationDays").comment("Length of pregnancy in days").defineInRange("cowGestationDays", 64, 0, Integer.MAX_VALUE);
-        cowMilkTicks = builder.apply("cowMilkTicks").comment("Ticks until milk is ready").defineInRange("cowMilkTicks", 23500, 0, Integer.MAX_VALUE);
-        cowMinMilkFamiliarity = builder.apply("cowMinMilkFamiliarity").comment("Minimum familiarity [0-1] needed to milk. Set above 1 to disable milking.").defineInRange("cowMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
+        cowConfig = ProducingMammalConfig.build(builder, "cow", 0.35, 192, 128, true, 58, 2, 24000, 0.15);
 
         innerBuilder.pop().push("goat");
-        goatAdulthoodDays = builder.apply("goatAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("goatAdulthoodDays", 96, 0, Integer.MAX_VALUE);
-        goatChildCount = builder.apply("goatChildCount").comment("Max number of children born").defineInRange("goatChildCount", 2, 0, 100);
-        goatEatsRottenFood = builder.apply("goatEatsRottenFood").comment("Does the animal eat rotten food?").define("goatEatsRottenFood", true);
-        goatFamiliarityCap = builder.apply("goatFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("goatFamiliarityCap", 0.35, 0, 1);
-        goatUses = builder.apply("goatUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("goatUses", 60, 0, Integer.MAX_VALUE);
-        goatGestationDays = builder.apply("goatGestationDays").comment("Length of pregnancy in days").defineInRange("goatGestationDays", 32, 0, Integer.MAX_VALUE);
-        goatMilkTicks = builder.apply("goatMilkTicks").comment("Ticks until milk is ready").defineInRange("goatMilkTicks", 72000, 0, Integer.MAX_VALUE);
-        goatMinMilkFamiliarity = builder.apply("goatMinMilkFamiliarity").comment("Minimum familiarity [0-1] needed to milk. Set above 1 to disable milking.").defineInRange("goatMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
+        goatConfig = ProducingMammalConfig.build(builder, "goat", 0.35, 96, 60, true, 32, 2, 72000, 0.15);
 
         innerBuilder.pop().push("yak");
-        yakAdulthoodDays = builder.apply("yakAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("yakAdulthoodDays", 180, 0, Integer.MAX_VALUE);
-        yakChildCount = builder.apply("yakChildCount").comment("Max number of children born").defineInRange("yakChildCount", 1, 0, 100);
-        yakEatsRottenFood = builder.apply("yakEatsRottenFood").comment("Does the animal eat rotten food?").define("yakEatsRottenFood", false);
-        yakFamiliarityCap = builder.apply("yakFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("yakFamiliarityCap", 0.35, 0, 1);
-        yakUses = builder.apply("yakUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("yakUses", 230, 0, Integer.MAX_VALUE);
-        yakGestationDays = builder.apply("yakGestationDays").comment("Length of pregnancy in days").defineInRange("yakGestationDays", 64, 0, Integer.MAX_VALUE);
-        yakMilkTicks = builder.apply("yakMilkTicks").comment("Ticks until milk is ready").defineInRange("yakMilkTicks", 23500, 0, Integer.MAX_VALUE);
-        yakMinMilkFamiliarity = builder.apply("yakMinMilkFamiliarity").comment("Minimum familiarity [0-1] needed to milk. Set above 1 to disable milking.").defineInRange("yakMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
+        yakConfig = ProducingMammalConfig.build(builder, "yak", 0.35, 180, 230, false, 64, 1, 23500, 0.15);
 
         innerBuilder.pop().push("alpaca");
-        alpacaAdulthoodDays = builder.apply("alpacaAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("alpacaAdulthoodDays", 88, 0, Integer.MAX_VALUE);
-        alpacaChildCount = builder.apply("alpacaChildCount").comment("Max number of children born").defineInRange("alpacaChildCount", 1, 0, 100);
-        alpacaEatsRottenFood = builder.apply("alpacaEatsRottenFood").comment("Does the animal eat rotten food?").define("alpacaEatsRottenFood", false);
-        alpacaFamiliarityCap = builder.apply("alpacaFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("alpacaFamiliarityCap", 0.35, 0, 1);
-        alpacaUses = builder.apply("alpacaUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("alpacaUses", 100, 0, Integer.MAX_VALUE);
-        alpacaGestationDays = builder.apply("alpacaGestationDays").comment("Length of pregnancy in days").defineInRange("alpacaGestationDays", 64, 0, Integer.MAX_VALUE);
-        alpacaWoolTicks = builder.apply("alpacaWoolTicks").comment("Ticks until wool is ready").defineInRange("alpacaWoolTicks", 120000, 0, Integer.MAX_VALUE);
-        alpacaMinWoolFamiliarity = builder.apply("alpacaMinWoolFamiliarity").comment("Minimum familiarity [0-1] needed to grow wool. Set above 1 to disable shearing.").defineInRange("alpacaMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
+        alpacaConfig = ProducingMammalConfig.build(builder, "alpaca", 0.35, 98, 128, false, 36, 2, 120000, 0.15);
 
         innerBuilder.pop().push("sheep");
-        sheepAdulthoodDays = builder.apply("sheepAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("sheepAdulthoodDays", 56, 0, Integer.MAX_VALUE);
-        sheepChildCount = builder.apply("sheepChildCount").comment("Max number of children born").defineInRange("sheepChildCount", 2, 0, 100);
-        sheepEatsRottenFood = builder.apply("sheepEatsRottenFood").comment("Does the animal eat rotten food?").define("sheepEatsRottenFood", false);
-        sheepFamiliarityCap = builder.apply("sheepFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("sheepFamiliarityCap", 0.35, 0, 1);
-        sheepUses = builder.apply("sheepUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("sheepUses", 60, 0, Integer.MAX_VALUE);
-        sheepGestationDays = builder.apply("sheepGestationDays").comment("Length of pregnancy in days").defineInRange("sheepGestationDays", 32, 0, Integer.MAX_VALUE);
-        sheepWoolTicks = builder.apply("sheepWoolTicks").comment("Ticks until wool is ready").defineInRange("sheepWoolTicks", 168000, 0, Integer.MAX_VALUE);
-        sheepMinWoolFamiliarity = builder.apply("sheepMinWoolFamiliarity").comment("Minimum familiarity [0-1] needed to grow wool. Set above 1 to disable shearing.").defineInRange("sheepMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
+        sheepConfig = ProducingMammalConfig.build(builder, "alpaca", 0.35, 56, 60, false, 32, 2, 168000, 0.15);
 
         innerBuilder.pop().push("muskOx");
-        muskOxAdulthoodDays = builder.apply("muskOxAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("muskOxAdulthoodDays", 168, 0, Integer.MAX_VALUE);
-        muskOxChildCount = builder.apply("muskOxChildCount").comment("Max number of children born").defineInRange("muskOxChildCount", 1, 0, 100);
-        muskOxEatsRottenFood = builder.apply("muskOxEatsRottenFood").comment("Does the animal eat rotten food?").define("muskOxEatsRottenFood", false);
-        muskOxFamiliarityCap = builder.apply("muskOxFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("muskOxFamiliarityCap", 0.35, 0, 1);
-        muskOxUses = builder.apply("muskOxUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("muskOxUses", 160, 0, Integer.MAX_VALUE);
-        muskOxGestationDays = builder.apply("muskOxGestationDays").comment("Length of pregnancy in days").defineInRange("muskOxGestationDays", 64, 0, Integer.MAX_VALUE);
-        muskOxWoolTicks = builder.apply("muskOxWoolTicks").comment("Ticks until wool is ready").defineInRange("muskOxWoolTicks", 96000, 0, Integer.MAX_VALUE);
-        muskOxMinWoolFamiliarity = builder.apply("muskOxMinWoolFamiliarity").comment("Minimum familiarity [0-1] needed to grow wool. Set above 1 to disable shearing.").defineInRange("muskOxMinMilkFamiliarity", 0.15d, 0, Float.MAX_VALUE);
+        muskOxConfig = ProducingMammalConfig.build(builder, "muskOx", 0.35, 168, 160, false, 64, 1, 96000, 0.15);
 
         innerBuilder.pop().push("chicken");
-        chickenAdulthoodDays = builder.apply("chickenAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("chickenAdulthoodDays", 24, 0, Integer.MAX_VALUE);
-        chickenEatsRottenFood = builder.apply("chickenEatsRottenFood").comment("Does the animal eat rotten food?").define("chickenEatsRottenFood", true);
-        chickenFamiliarityCap = builder.apply("chickenFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("chickenFamiliarityCap", 0.35, 0, 1);
-        chickenUses = builder.apply("chickenUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("chickenUses", 64, 0, Integer.MAX_VALUE);
-        chickenEggTicks = builder.apply("chickenEggTicks").comment("Ticks until an egg is ready for laying").defineInRange("chickenEggTicks", 30000, 0, Integer.MAX_VALUE);
-        chickenMinEggFamiliarity = builder.apply("chickenMinEggFamiliarity").comment("Minimum familiarity [0-1] needed to lay eggs. Set above 1 to disable egg laying.").defineInRange("chickenMinEggFamiliarity", 0.15d, 0, Float.MAX_VALUE);
-        chickenHatchDays = builder.apply("chickenHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("chickenHatchDays", 8, 0, Integer.MAX_VALUE);
+        chickenConfig = OviparousAnimalConfig.build(builder, "chicken", 0.35, 24, 100, true, 30000, 0.15, 8);
 
         innerBuilder.pop().push("duck");
-        duckAdulthoodDays = builder.apply("duckAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("duckAdulthoodDays", 32, 0, Integer.MAX_VALUE);
-        duckEatsRottenFood = builder.apply("duckEatsRottenFood").comment("Does the animal eat rotten food?").define("duckEatsRottenFood", false);
-        duckFamiliarityCap = builder.apply("duckFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("duckFamiliarityCap", 0.35, 0, 1);
-        duckUses = builder.apply("duckUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("duckUses", 72, 0, Integer.MAX_VALUE);
-        duckEggTicks = builder.apply("duckEggTicks").comment("Ticks until an egg is ready for laying").defineInRange("duckEggTicks", 32000, 0, Integer.MAX_VALUE);
-        duckMinEggFamiliarity = builder.apply("duckMinEggFamiliarity").comment("Minimum familiarity [0-1] needed to lay eggs. Set above 1 to disable egg laying.").defineInRange("duckMinEggFamiliarity", 0.15d, 0, Float.MAX_VALUE);
-        duckHatchDays = builder.apply("duckHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("duckHatchDays", 8, 0, Integer.MAX_VALUE);
+        duckConfig = OviparousAnimalConfig.build(builder, "duck", 0.35, 32, 72, false, 32000, 0.15, 8);
 
         innerBuilder.pop().push("quail");
-        quailAdulthoodDays = builder.apply("quailAdulthoodDays").comment("Days until animal reaches adulthood").defineInRange("quailAdulthoodDays", 22, 0, Integer.MAX_VALUE);
-        quailEatsRottenFood = builder.apply("quailEatsRottenFood").comment("Does the animal eat rotten food?").define("quailEatsRottenFood", true);
-        quailFamiliarityCap = builder.apply("quailFamiliarityCap").comment("Max familiarity an adult may reach").defineInRange("quailFamiliarityCap", 0.35, 0, 1);
-        quailUses = builder.apply("quailUses").comment("Uses before animal becomes old and can no longer be used").defineInRange("quailUses", 48, 0, Integer.MAX_VALUE);
-        quailEggTicks = builder.apply("quailEggTicks").comment("Ticks until an egg is ready for laying").defineInRange("quailEggTicks", 28000, 0, Integer.MAX_VALUE);
-        quailMinEggFamiliarity = builder.apply("quailMinEggFamiliarity").comment("Minimum familiarity [0-1] needed to lay eggs. Set above 1 to disable egg laying.").defineInRange("quailMinEggFamiliarity", 0.15d, 0, Float.MAX_VALUE);
-        quailHatchDays = builder.apply("quailHatchDays").comment("Ticks until egg is ready to hatch").defineInRange("quailHatchDays", 8, 0, Integer.MAX_VALUE);
-
+        quailConfig = OviparousAnimalConfig.build(builder, "quail", 0.35, 22, 48, true, 28000, 0.15, 8);
         innerBuilder.pop(3);
 
         farmlandMakesTheBestRaceTracks = builder.apply("farmlandMakesTheBestRaceTracks").define("farmlandMakesTheBestRaceTracks", false);

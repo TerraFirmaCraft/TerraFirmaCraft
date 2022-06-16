@@ -25,8 +25,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 
-import net.dries007.tfc.common.entities.land.TFCAnimal;
-import net.dries007.tfc.common.entities.land.TFCAnimalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -55,6 +55,11 @@ public final class EntityHelpers
     {
         selector.getAvailableGoals().removeIf(wrapped -> wrapped.getGoal() instanceof AvoidEntityGoal);
         selector.addGoal(priority, new TFCAvoidEntityGoal<>(mob, Player.class, 8.0F, 5.0D, 5.4D));
+    }
+
+    public static void removeGoalOfPriority(GoalSelector selector, int priority)
+    {
+        selector.getAvailableGoals().removeIf(wrapped -> wrapped.getPriority() == priority);
     }
 
     public static void addCommonPreyGoals(TFCAnimal animal, GoalSelector goalSelector)

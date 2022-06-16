@@ -10,7 +10,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.common.entities.land.OviparousAnimal;
+import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import org.jetbrains.annotations.Nullable;
 
 public class OviparousRenderer<T extends OviparousAnimal, M extends EntityModel<T>> extends GenderedRenderer<T, M>

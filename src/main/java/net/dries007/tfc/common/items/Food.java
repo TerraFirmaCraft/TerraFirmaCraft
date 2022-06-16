@@ -59,7 +59,7 @@ public enum Food
     RICE,
     RICE_GRAIN,
     RICE_DOUGH,
-    RICE_FLOUR, // todo: remove rice flour, dough, and bread. Add cooked rice. Add a pot boiling recipe for rice grain -> cooked rice. Eventually, add a rice addon to soups maybe?
+    RICE_FLOUR,
     RICE_BREAD,
     COOKED_RICE,
     WHEAT,
