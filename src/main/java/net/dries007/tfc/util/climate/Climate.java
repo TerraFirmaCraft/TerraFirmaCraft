@@ -14,7 +14,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraftforge.common.MinecraftForge;
@@ -180,13 +182,6 @@ public final class Climate
             }
         }
         return ((BiomeAccessor) (Object) fallback).invoke$getTemperature(pos);
-    }
-
-    public static ChunkData getSafe(LevelAccessor level, BlockPos pos)
-    {
-        return level instanceof WorldGenLevel worldGenLevel ?
-            ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
-            ChunkData.get(level, pos);
     }
 
     public static ClimateModel model(Level level)

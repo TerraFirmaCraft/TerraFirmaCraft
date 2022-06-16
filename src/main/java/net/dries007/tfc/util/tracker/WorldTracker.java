@@ -140,11 +140,7 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
      */
     public boolean isRaining(long tick, float rainfall)
     {
-        final float progress = Mth.clamp(Helpers.inverseLerp(tick, rainStartTick, rainEndTick), 0, 1);
-        final float progressFactor = 2 * (progress > 0.5f ? 1 - progress : progress);
-        final float rainfallFactor = Mth.clampedMap(rainfall, ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL, 1, 0);
-
-        return (rainIntensity + progressFactor) / 2f > rainfallFactor;
+        return exactRainfallIntensity(tick) > Mth.clampedMap(rainfall, ClimateModel.MINIMUM_RAINFALL, ClimateModel.MAXIMUM_RAINFALL, 1, 0);
     }
 
     public void tick(ServerLevel level)
@@ -205,6 +201,11 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         }
     }
 
+    public void addDebugTooltip(List<String> tooltips)
+    {
+        tooltips.add("R [%d, %d] I (%.2f) %.2f".formatted(rainStartTick, rainEndTick, rainIntensity, exactRainfallIntensity(Calendars.CLIENT.getTicks())));
+    }
+
     @Override
     public CompoundTag serializeNBT()
     {
@@ -262,6 +263,13 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         return WorldTrackerCapability.CAPABILITY.orEmpty(cap, capability);
+    }
+
+    private float exactRainfallIntensity(long tick)
+    {
+        final float progress = Mth.clamp(Helpers.inverseLerp(tick, rainStartTick, rainEndTick), 0, 1);
+        final float progressFactor = progress > 0.5f ? 1 - progress : progress;
+        return rainIntensity * 0.5f + progressFactor;
     }
 
     private boolean isIsolated(LevelAccessor level, BlockPos pos)
