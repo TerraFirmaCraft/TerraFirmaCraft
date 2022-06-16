@@ -59,7 +59,7 @@ public class DuckModel extends AgeableListModel<OviparousAnimal>
 
     public DuckModel(ModelPart root)
     {
-        super(false, 0F, 0F, 1.8F, 1.8F, 8F);
+        super(false, 0F, 0F, 1.8F, 1.8F, 18F);
         body = root.getChild("body");
         neck = body.getChild("neck");
         head = neck.getChild("head");

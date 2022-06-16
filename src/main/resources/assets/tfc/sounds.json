@@ -154,8 +154,7 @@
     "subtitle": "subtitles.entity.tfc.cougar.hurt",
     "sounds": [
       "tfc:entity/cougar/hurt1",
-      "tfc:entity/cougar/hurt2",
-      "tfc:entity/cougar/hurt3"
+      "tfc:entity/cougar/hurt2"
     ]
   },
   "entity.cougar.step": {
@@ -594,7 +593,7 @@
   "entity.rooster.cry": {
     "subtitle": "subtitles.entity.tfc.rooster.cry",
     "sounds": [
-      "tfc:rooster1"
+      "tfc:entity/rooster1"
     ]
   },
   "block.quern.drag": {
