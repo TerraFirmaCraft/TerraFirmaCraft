@@ -229,6 +229,11 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             collapseNbt.add(collapse.serializeNBT());
         }
         nbt.put("collapsesInProgress", collapseNbt);
+
+        nbt.putLong("rainStartTick", rainStartTick);
+        nbt.putLong("rainEndTick", rainEndTick);
+        nbt.putFloat("rainIntensity", rainIntensity);
+
         return nbt;
     }
 
@@ -255,6 +260,10 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
             {
                 collapsesInProgress.add(new Collapse(collapseNbt.getCompound(i)));
             }
+
+            rainStartTick = nbt.getLong("rainStartTick");
+            rainEndTick = nbt.getLong("rainEndTick");
+            rainIntensity = nbt.getFloat("rainIntensity");
         }
     }
 
