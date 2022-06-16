@@ -324,7 +324,10 @@ def generate(rm: ResourceManager):
                     rm.block('tfc:ore/%s_%s/%s/prospected' % (grade, ore, rock)).with_lang(lang(ore))
             else:
                 rm.block_tag('prospectable', 'tfc:ore/%s/%s' % (ore, rock))
-                rm.block('tfc:ore/%s/%s/prospected' % (ore, rock)).with_lang(lang(ore))
+                name = lang(ore)
+                if ore == 'diamond':
+                    name = lang('kimberlite')
+                rm.block('tfc:ore/%s/%s/prospected' % (ore, rock)).with_lang(name)
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
