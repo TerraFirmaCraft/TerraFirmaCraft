@@ -53,7 +53,11 @@
       "title": "Salting"
     },
     {
-      "type": "patchouli:empty"
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
     }
   ],
   "read_by_default": true

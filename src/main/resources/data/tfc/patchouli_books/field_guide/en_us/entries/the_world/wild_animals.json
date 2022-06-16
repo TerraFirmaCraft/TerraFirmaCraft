@@ -5,6 +5,12 @@
   "icon": "",
   "pages": [
     {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "name": "Turtle",
+      "text": "This is a turtle"
+    },
+    {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/wip.png"

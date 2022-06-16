@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Quern",
+  "name": "Barrels",
   "category": "tfc:mechanics",
-  "icon": "tfc:quern",
+  "icon": "tfc:wood/barrel/palm",
   "pages": [
     {
       "type": "patchouli:image",

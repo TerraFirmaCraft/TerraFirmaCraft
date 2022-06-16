@@ -284,6 +284,7 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             # todo: listing of various fruit trees
         )),
         entry('wild_animals', 'Wild Animals', '', pages=(
+            entity('tfc:turtle', 'This is a turtle', 'Turtle'),
             image('tfc:textures/gui/book/wip.png'),
             # Wild animals - address both hostile and passive important animals
             # todo: info about wild animals
@@ -525,7 +526,8 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.')
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
-
+            image('tfc:textures/gui/book/wip.png'),
+            # todo: quern
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)farmland$() or a $(thing)crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
@@ -544,10 +546,20 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             quern_recipe('tfc:quern/borax', 'The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()'),
             quern_recipe('tfc:quern/fluxstone', 'The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(thing)Shellfish$()') # todo: link to the shellfish page!
         )),
-        entry('lamps', 'Lamps', 'tfc:metal/lamp/bismuth_bronze', pages=(
+        entry('lamps', 'Lamps and Candles', 'tfc:metal/lamp/bismuth_bronze', pages=(
+            two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
+            text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(item)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
+            quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)olive oil$(). The first step in its production is to make olive paste.'),
+            crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
+            text('Seal the $(item)olive paste$() with $(item)water$() in a $(l:mechanics/barrels)Barrel$() to make $(thing)olive oil water$(). Seal that in with your $(item)jute net$() to produce $(thing)olive oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
+            text('Another lamp fuel is $(thing)tallow$(). To make it, cook 5 $(item)blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.'),
+            block_spotlight('Candles', text_content='The candle is made from sealing $(item)string$() in a bucket of $(thing)tallow$().', block='tfc:candle[candles=3,lit=true]'),
+            block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(thing)blue steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
+            anvil_recipe('tfc:anvil/black_steel_chain', '$(item)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().')
+        )),
+        entry('barrels', 'Barrels', 'tfc:wood/barrel/palm', pages=(
             image('tfc:textures/gui/book/wip.png'),
-            # todo: lamps
-        ))
+        )),
 
     ))
 
@@ -561,15 +573,17 @@ def make_book(rm: ResourceManager, local_instance: bool = False):
             text('One other way to preserve certain types of food easily, is to cook it. $(thing)Meats$() will all expire slower when they are cooked than when they are raw.$(br2)It is also important to use the correct device for cooking. Certain devices that heat very hot, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() or a $(l:mechanics/crucible)Crucible$() are $(bold)bad$() for cooking food, which will make them expire faster!', title='Cooking'),
             heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it\'s lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it\'s lifetime by 1.66x!'),
             text('Are you salty this page is blank?', title='Salting').anchor('salting'),  # todo: salting
-            empty(),
+            image('tfc:textures/gui/book/wip.png'),
         )),
         entry('crops', 'Crops', 'tfc:food/wheat', pages=(
             text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$().'),
             rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'In the stone age, a Hoe can be $(thing)knapped$() as seen above.'),
             crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to create $(thing)Path Blocks$(), and convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on.'),
-            # todo: crop nutrients overview
-            # todo: crop yield overview
+            text('Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.'),
+            text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
+            item_spotlight('tfc:compost', 'Fertilizer', text_contents='To add nutrients to soil, try a $(l:mechanics/fertilizers)Fertilizer$(). See that page for more information on how they work and how to get them.'),
+            image('tfc:textures/gui/book/wip.png'),
             # Listing of all crops, their growth conditions, and how to grow them
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
@@ -798,6 +812,17 @@ def image(*images: str, text_contents: str | None = None, border: bool = True) -
     """
     return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border})
 
+def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = None, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
+    """
+    :param entity_type: The entity type
+    :param text_contents: The text to display under the entity display
+    :param title: The title of the page
+    :param scale: The scale of the entity. Defaults to 1
+    :param offset: The vertical offset of the entity renderer. Defaults to 0
+    :param rotate: Whether the entity should rotate in the view. Defaults to true.
+    :param default_rotation: The rotation at which the entity is displayed. Only used if rotate is False.
+    """
+    return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents})
 
 def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:
     """
