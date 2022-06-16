@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Bloomery",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bloomery",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Bloomeries are cool yo!"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:bloomery",
+      "name": "A Bloomery",
+      "text": "",
+      "enable_visualize": true
+    }
+  ],
+  "read_by_default": true
+}

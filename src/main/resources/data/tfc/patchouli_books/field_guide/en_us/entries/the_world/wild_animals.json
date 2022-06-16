@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Wild Animals",
+  "category": "tfc:the_world",
+  "icon": "",
+  "pages": [
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "name": "Turtle",
+      "text": "This is a turtle"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 9
+}

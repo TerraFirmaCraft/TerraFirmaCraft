@@ -24,7 +24,6 @@ import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.container.LargeVesselContainer;
-import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,7 +62,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         }
     }
 
-    public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>, EmptyInventory
+    public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>
     {
         private final LargeVesselBlockEntity vessel;
 

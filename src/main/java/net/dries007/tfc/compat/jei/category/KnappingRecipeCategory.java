@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -21,7 +19,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.KnappingRecipe;
-
+import org.jetbrains.annotations.Nullable;
 
 public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipeCategory<T>
 {

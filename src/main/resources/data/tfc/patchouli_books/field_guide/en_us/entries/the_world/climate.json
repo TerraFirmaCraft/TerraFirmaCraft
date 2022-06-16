@@ -1,0 +1,81 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Calendar and Climate",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/thermometer.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "calendar",
+      "text": "In TerraFirmaCraft, the climate and the time are both very important factors. Let's start with the $(thing)Calendar$().$(br2)At any time, you can view the calendar by pressing $(item)$(k:key.inventory)$(), and clicking on the calendar tab. This will show the $(thing)Season$(), the $(thing)Day$(), and the $(thing)Date$()."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/calendar.png"
+      ],
+      "text": "The Calendar Screen",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "There are seasons, and the weather and climate will change along with them! There are four seasons in TerraFirmaCraft, each divided up into $(thing)Early$(), $(thing)Mid$() and $(thing)Late$() months. The four seasons are:$(br)$(li)$(bold)Spring$(): March - May$(li)$(bold)Summer$(): June - August$(li)$(bold)Autumn$(): September - November$(li)$(bold)Winter$(): December - February"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The current season can influence the temperature of the area, the precipitation (if it will rain or snow), among other things. Pay attention to the calendar tab, it will be useful!$(br2)Now, onto the climate..."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "climate",
+      "text": "Another tab on the main inventory screen is the $(thing)Climate$() screen. This one shows information about the current location$(br2)The first line shows the overall $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)Climate$() .$(br2)The second line shows the $(l:the_world/geology)Geologic Province$().$(br2)The third line shows the $(thing)Average Annual Temperature$().",
+      "title": "Climate"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/climate.png"
+      ],
+      "text": "The Climate Screen",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can also be different day-to-day, and even hourly."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "Rainfall and stuff",
+      "title": "Rainfall"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "More about rainfall?"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hydration",
+      "text": "Hydration",
+      "title": "Hydration"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "More about hydration!"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

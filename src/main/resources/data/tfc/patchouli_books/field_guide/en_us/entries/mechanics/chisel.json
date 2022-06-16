@@ -1,0 +1,40 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Chisel",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/chisel/wrought_iron",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Chisels are a tool for creating decorative forms of other blocks, including slabs and stairs. In order to get started, you will need a $(thing)Chisel$(), and any type of $(thing)Hammer$(). Chisels must be made from metals on an $(l:mechanics/anvils)Anvil$(). In order to start chiseling, hold the chisel in your main hand, and a hammer in your off hand, and target a block in the world."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "If you can chisel that block, a $(c)red outline$() of the block to be chiseled will be shown based on what $(thing)Mode$() you have selected.$(br2)The chisel has three modes that can be switched by using $(item)$(k:tfc.key.cycle_chisel_mode)$(): $(thing)Slab$(), $(thing)Stair$(), and $(thing)Smooth$(). An indicator of your chisel mode should show up next to the hotbar."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Press $(item)$(k:key.use)$() to convert the block to the shape that was highlighted in red. If you chiseled a slab, the half of the block you chiseled will pop off, and you can grab it. Change the orientation of your player and your mouse to change the orientation of the chiseled block. As a rule of thumb, the orientation of the chiseled block will be the same as if you placed it in that orientation yourself."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/chisel_block.png",
+        "tfc:textures/gui/book/tutorial/chisel_stair.png",
+        "tfc:textures/gui/book/tutorial/chisel_slab.png"
+      ],
+      "text": "The three chisel modes usable on a $(thing)Raw Limestone$() block.",
+      "border": true
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/marble_smooth",
+      "text": "The chisel can also be used in some crafting recipes as a shortcut for large quantities."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(thing)collapse$()."
+    }
+  ],
+  "read_by_default": true
+}

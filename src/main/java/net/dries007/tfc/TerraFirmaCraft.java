@@ -48,6 +48,8 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
+import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
+import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.DispenserBehaviors;
@@ -123,6 +125,7 @@ public final class TerraFirmaCraft
         {
             ClientEventHandler.init();
             ClientForgeEventHandler.init();
+            PatchouliClientEventHandler.init();
         }
 
         ForgeMod.enableMilkFluid();
@@ -153,6 +156,8 @@ public final class TerraFirmaCraft
             IBellowsConsumer.registerDefaultOffsets();
             FoodCapability.setCreativeTabsNonDecaying();
         });
+
+        PatchouliIntegration.registerMultiBlocks();
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event)

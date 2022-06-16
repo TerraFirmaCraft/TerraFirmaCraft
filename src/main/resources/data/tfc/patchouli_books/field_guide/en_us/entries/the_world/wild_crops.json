@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Wild Crops",
+  "category": "tfc:the_world",
+  "icon": "tfc:wild_crop/wheat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$()."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wild_crop/wheat"
+        }
+      },
+      "name": "Wild Wheat",
+      "text": "An example of a wild crop, in this case $(l:food/crops#wheat)Wheat$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:food/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6
+}

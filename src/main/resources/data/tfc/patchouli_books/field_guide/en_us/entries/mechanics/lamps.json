@@ -1,0 +1,97 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Lamps and Candles",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/lamp/bismuth_bronze",
+  "pages": [
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/chain/copper[axis=y]",
+          "Y": "tfc:metal/lamp/copper[hanging=true,lit=true]"
+        }
+      },
+      "name": "Lamps",
+      "text": "Lamps are a long term source of light. They burn liquid fuel.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(item)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/olive",
+      "text": "One lamp fuel is $(thing)olive oil$(). The first step in its production is to make olive paste."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/jute_net",
+      "text": "You will also need a jute net."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Seal the $(item)olive paste$() with $(item)water$() in a $(l:mechanics/barrels)Barrel$() to make $(thing)olive oil water$(). Seal that in with your $(item)jute net$() to produce $(thing)olive oil$(). Olive oil burns for 8 in-game hours for every unit of fluid."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Another lamp fuel is $(thing)tallow$(). To make it, cook 5 $(item)blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "Candles",
+      "text": "The candle is made from sealing $(item)string$() in a bucket of $(thing)tallow$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/lamp/blue_steel[lit=true]"
+        }
+      },
+      "name": "Lava Lamps",
+      "text": "Lava will keep burning forever, but can only be held in a $(thing)blue steel$() lamp.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/black_steel_chain",
+      "text": "$(item)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$()."
+    }
+  ],
+  "read_by_default": true
+}

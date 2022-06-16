@@ -1,0 +1,34 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Pit Kilns",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/block/molten.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat it's contents up to 1600 \u00b0C, or $(bold)$(f)$(t:Brilliant White)Brilliant White$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To build a pit kiln, you will need:$(br)$(li)Up to four items to be fired.$(li)Eight pieces of $(thing)Straw$()$(li)Eight $(thing)Logs$()$(li)An item capable of lighting fires, like a $(l:getting_started/firepit#firestarter)Firestarter$(), or a $(thing)Torch$().$(br2)$(bold)Note:$() Torches can start fires simply by tossing the torch on the pit kiln, and waiting a few seconds."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:mechanics/heating)heating$() the items inside up."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/pit_kiln_1.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_2.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_3.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_4.png",
+        "tfc:textures/gui/book/tutorial/pit_kiln_5.png"
+      ],
+      "text": "Tutorial: creating a pit kiln.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3
+}

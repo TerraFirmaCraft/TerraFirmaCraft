@@ -96,7 +96,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
 
     static
     {
-        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> level.getBlockState(pos).is(TFCTags.Blocks.BLOOMERY_INSULATION) && level.getBlockState(pos).isCollisionShapeFullBlock(level, pos);
+        BiPredicate<LevelAccessor, BlockPos> stoneMatcher = (level, pos) -> isBloomeryInsulationBlock(level.getBlockState(pos));
         Predicate<BlockState> insideChimney = state -> state.getBlock() == TFCBlocks.MOLTEN.get() || state.isAir();
         Predicate<BlockState> center = state -> state.is(TFCBlocks.MOLTEN.get()) || state.is(TFCBlocks.BLOOM.get()) || state.isAir();
         BlockPos origin = BlockPos.ZERO;
@@ -123,11 +123,16 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
         // Gate center is the bloomery gate block
         GATE_Z = new MultiBlock()
             .match(origin, state -> state.is(TFCBlocks.BLOOMERY.get()) || state.isAir())
-            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.WEST, Direction.EAST, Direction.UP, Direction.DOWN}, 1);
+            .matchEachDirection(origin, stoneMatcher, new Direction[] {Direction.WEST, Direction.EAST, Direction.UP, Direction.DOWN}, 1);
 
         GATE_X = new MultiBlock()
             .match(origin, state -> state.is(TFCBlocks.BLOOMERY.get()) || state.isAir())
-            .matchEachDirection(origin, stoneMatcher, new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN}, 1);
+            .matchEachDirection(origin, stoneMatcher, new Direction[] {Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN}, 1);
+    }
+
+    public static boolean isBloomeryInsulationBlock(BlockState state)
+    {
+        return state.is(TFCTags.Blocks.BLOOMERY_INSULATION);
     }
 
     /**

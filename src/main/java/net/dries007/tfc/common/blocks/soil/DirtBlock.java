@@ -19,6 +19,7 @@ import net.minecraftforge.common.ToolActions;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.registry.RegistrySoilVariant;
 import org.jetbrains.annotations.Nullable;
 
 public class DirtBlock extends Block implements IDirtBlock
@@ -32,11 +33,6 @@ public class DirtBlock extends Block implements IDirtBlock
     @Nullable private final Supplier<? extends Block> path;
     @Nullable private final Supplier<? extends Block> farmland;
 
-    public DirtBlock(Properties properties, SoilBlockType grassType, SoilBlockType.Variant variant)
-    {
-        this(properties, TFCBlocks.SOIL.get(grassType).get(variant), TFCBlocks.SOIL.get(SoilBlockType.GRASS_PATH).get(variant), TFCBlocks.SOIL.get(SoilBlockType.FARMLAND).get(variant));
-    }
-
     public DirtBlock(Properties properties, Supplier<? extends Block> grass, @Nullable Supplier<? extends Block> path, @Nullable Supplier<? extends Block> farmland)
     {
         super(properties);
@@ -44,6 +40,11 @@ public class DirtBlock extends Block implements IDirtBlock
         this.grass = grass;
         this.path = path;
         this.farmland = farmland;
+    }
+
+    DirtBlock(Properties properties, SoilBlockType grassType, RegistrySoilVariant variant)
+    {
+        this(properties, variant.getBlock(grassType), variant.getBlock(SoilBlockType.GRASS_PATH), variant.getBlock(SoilBlockType.FARMLAND));
     }
 
     public BlockState getGrass()

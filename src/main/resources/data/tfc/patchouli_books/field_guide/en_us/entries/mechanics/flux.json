@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Flux",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/flux",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$(), and is also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$()."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/borax",
+      "text": "The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(thing)Shellfish$()"
+    }
+  ],
+  "read_by_default": true
+}
