@@ -53,12 +53,12 @@ public class WoodenBucketItem extends TFCBucketItem
                 }
 
                 BlockState toPlace = fluid.defaultFluidState().createLegacyBlock();
-                if (!TFCConfig.SERVER.enableSourcesFromWoodenBucket.get())
+                if (!TFCConfig.SERVER.enableSourcesFromWoodenBucket.get() && toPlace.hasProperty(LiquidBlock.LEVEL))
                 {
                     toPlace = toPlace.setValue(LiquidBlock.LEVEL, 2);
                 }
 
-                if (!level.setBlock(pos, toPlace, 11))
+                if (toPlace.isAir() && !level.setBlock(pos, toPlace, 11))
                 {
                     return false;
                 }

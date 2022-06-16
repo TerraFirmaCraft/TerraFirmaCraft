@@ -146,7 +146,8 @@ public class TFCBucketItem extends Item
                 level.destroyBlock(pos, true);
             }
 
-            if (!level.setBlock(pos, content.defaultFluidState().createLegacyBlock(), 11) && !state.getFluidState().isSource())
+            BlockState toPlace = content.defaultFluidState().createLegacyBlock();
+            if (!toPlace.isAir() && !level.setBlock(pos, toPlace, 11) && !state.getFluidState().isSource())
             {
                 return false;
             }
