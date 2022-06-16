@@ -8,17 +8,16 @@ package net.dries007.tfc.util.climate;
 
 import java.util.Random;
 
-import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -37,9 +36,11 @@ import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.world.TFCChunkGenerator;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkGeneratorExtension;
 import net.dries007.tfc.world.noise.Noise2D;
 import net.dries007.tfc.world.noise.OpenSimplex2D;
 import net.dries007.tfc.world.settings.ClimateSettings;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The climate model for TFC's overworld. Provides a number of mechanics including:
@@ -145,19 +146,6 @@ public class OverworldClimateModel implements WorldGenClimateModel
     {
         final ChunkData data = ChunkData.get(level, pos);
         return data.getRainfall(pos);
-    }
-
-    @Override
-    public Biome.Precipitation getPrecipitation(LevelReader level, BlockPos pos)
-    {
-        final float rainfall = getRainfall(level, pos);
-        if (rainfall < 100)
-        {
-            return Biome.Precipitation.NONE;
-        }
-        final ICalendar calendar = Calendars.get(level);
-        final float temperature = getTemperature(level, pos, calendar.getCalendarTicks(), calendar.getCalendarDaysInMonth());
-        return temperature < 0 ? Biome.Precipitation.SNOW : Biome.Precipitation.RAIN;
     }
 
     @Override
@@ -323,8 +311,6 @@ public class OverworldClimateModel implements WorldGenClimateModel
     @Override
     public void onSyncToClient(FriendlyByteBuf buffer)
     {
-        buffer.writeFloat(temperatureSettings.lowThreshold());
-        buffer.writeFloat(temperatureSettings.highThreshold());
         buffer.writeInt(temperatureSettings.scale());
         buffer.writeBoolean(temperatureSettings.endlessPoles());
         buffer.writeLong(climateSeed);
@@ -333,12 +319,10 @@ public class OverworldClimateModel implements WorldGenClimateModel
     @Override
     public void onReceiveOnClient(FriendlyByteBuf buffer)
     {
-        final float lo = buffer.readFloat();
-        final float hi = buffer.readFloat();
         final int scale = buffer.readInt();
         final boolean endless = buffer.readBoolean();
 
-        temperatureSettings = new ClimateSettings(lo, hi, scale, endless);
+        temperatureSettings = new ClimateSettings(scale, endless);
         climateSeed = buffer.readLong();
     }
 

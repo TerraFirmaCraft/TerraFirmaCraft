@@ -52,8 +52,9 @@ public final class TFCCommands
         // For command modifications / replacements, we register directly
         // First, remove the vanilla command by the same name
         // This seems to work. It does leave the command still lying around, but it shouldn't matter as we replace it anyway
-        dispatcher.getRoot().getChildren().removeIf(node -> node.getName().equals("time"));
+        dispatcher.getRoot().getChildren().removeIf(node -> node.getName().equals("time") || node.getName().equals("weather"));
         dispatcher.register(TimeCommand.create());
+        dispatcher.register(WeatherCommand.create());
     }
 
     public static <S extends SharedSuggestionProvider> Supplier<SuggestionProvider<S>> register(String id, SuggestionProvider<SharedSuggestionProvider> provider)

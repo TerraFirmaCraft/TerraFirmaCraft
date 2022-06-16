@@ -1,5 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "feature": "tfc:plant/wild_crop/barley_patch",
-  "placement": []
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 60
+    },
+    {
+      "type": "minecraft:in_square"
+    }
+  ]
 }

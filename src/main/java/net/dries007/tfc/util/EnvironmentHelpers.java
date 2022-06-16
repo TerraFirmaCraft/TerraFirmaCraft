@@ -16,6 +16,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,6 +32,7 @@ import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
+import net.dries007.tfc.util.tracker.WorldTrackerCapability;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -59,12 +61,21 @@ public final class EnvironmentHelpers
         final BlockPos groundPos = surfacePos.below();
         final float temperature = Climate.getTemperature(level, surfacePos);
 
+        final boolean rainingOrSnowing = isRainingOrSnowing(level, surfacePos);
+
         profiler.push("tfcSnow");
-        doSnow(level, surfacePos, temperature);
+        if (rainingOrSnowing)
+        {
+            doSnow(level, surfacePos, temperature);
+        }
         profiler.popPush("tfcIce");
+        // Ice freezing doesn't require precipitation
         doIce(level, groundPos, temperature);
         profiler.popPush("tfcIcicles");
-        doIcicles(level, surfacePos, temperature);
+        if (rainingOrSnowing)
+        {
+            doIcicles(level, surfacePos, temperature);
+        }
         profiler.pop();
     }
 
@@ -127,6 +138,13 @@ public final class EnvironmentHelpers
         return level.getBlockState(pos).isFaceSturdy(level, pos, Direction.UP);
     }
 
+    public static boolean isRainingOrSnowing(Level level, BlockPos pos)
+    {
+        return level.isRaining() && level.getCapability(WorldTrackerCapability.CAPABILITY)
+            .map(cap -> cap.isRaining(level, pos))
+            .orElse(false);
+    }
+
     private static void doSnow(Level level, BlockPos surfacePos, float temperature)
     {
         final Random random = level.getRandom();
@@ -161,7 +179,7 @@ public final class EnvironmentHelpers
     /**
      * @return {@code true} if a snow block or snow pile was able to be placed.
      */
-    private static boolean placeSnowOrSnowPile(LevelAccessor level, BlockPos initialPos, Random random)
+    private static boolean placeSnowOrSnowPile(Level level, BlockPos initialPos, Random random)
     {
         // First, try and find an optimal position, to smoothen out snow accumulation
         final BlockPos pos = findOptimalSnowLocation(level, initialPos, level.getBlockState(initialPos), random);
@@ -188,6 +206,11 @@ public final class EnvironmentHelpers
             // Vanilla snow placement (single layers)
             level.setBlock(pos, Blocks.SNOW.defaultBlockState(), 3);
             return true;
+        }
+        else
+        {
+            // Fills cauldrons with snow
+            state.getBlock().handlePrecipitation(state, level, pos, Biome.Precipitation.SNOW);
         }
         return false;
     }
