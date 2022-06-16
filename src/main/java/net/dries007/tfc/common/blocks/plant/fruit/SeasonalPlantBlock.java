@@ -229,7 +229,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         builder.add(LIFECYCLE, STAGE);
     }
 
-    protected ItemStack getProductItem(Random random)
+    public ItemStack getProductItem(Random random)
     {
         return new ItemStack(productItem.get());
     }

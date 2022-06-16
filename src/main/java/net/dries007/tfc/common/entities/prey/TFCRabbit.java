@@ -30,7 +30,6 @@ import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class TFCRabbit extends Rabbit
 {
@@ -112,9 +111,7 @@ public class TFCRabbit extends Rabbit
     private int getRandomRabbitType(ServerLevelAccessor level, BlockPos pos)
     {
         final int i = random.nextInt(100);
-        final ChunkData data = level instanceof WorldGenLevel worldGenLevel ?
-            ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
-            ChunkData.get(level, pos);
+        final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
         final float rain = data.getRainfall(pos);
         final float temp = data.getAverageTemp(pos);
         if (temp < 0)

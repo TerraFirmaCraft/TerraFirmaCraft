@@ -1048,6 +1048,7 @@ def generate(rm: ResourceManager):
             rm.block_loot('plant/%s_bush' % berry, {'name': 'tfc:plant/%s_bush' % berry, 'conditions': [match_tag('tfc:sharp_tools')]})
             for lifecycle, stage in itertools.product(lifecycle_to_model.values(), range(0, 3)):
                 rm.block_model('plant/%s%s_bush_%d' % (lifecycle, berry, stage), parent='tfc:block/plant/stationary_bush_%d' % stage, textures={'bush': 'tfc:block/berry_bush/' + lifecycle + '%s_bush' % berry})
+            rm.block_tag('fox_raidable', 'tfc:plant/%s_bush' % berry)
         else:
             # Spreading uses a custom item model
             rm.item_model('plant/%s_bush' % berry, 'tfc:block/berry_bush/%s_cane' % berry)

@@ -34,7 +34,7 @@
     },
     {
       "type": "tfc:heat_recipe",
-      "recipe": "tfc:fired_pot",
+      "recipe": "tfc:heating/fired_pot",
       "text": "It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit."
     },
     {

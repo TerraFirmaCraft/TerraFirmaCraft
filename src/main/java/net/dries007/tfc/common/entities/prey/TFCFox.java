@@ -1,0 +1,146 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
+package net.dries007.tfc.common.entities.prey;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Fox;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
+
+import net.minecraftforge.event.ForgeEventFactory;
+
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
+import net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock;
+import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.world.chunkdata.ChunkData;
+
+public class TFCFox extends Fox
+{
+    private static final EntityDataAccessor<Integer> DATA_TYPE_ID_TFC = SynchedEntityData.defineId(TFCFox.class, EntityDataSerializers.INT);
+
+    public TFCFox(EntityType<? extends Fox> type, Level level)
+    {
+        super(type, level);
+    }
+
+    @Override
+    public Type getFoxType()
+    {
+        return Fox.Type.byId(entityData.get(DATA_TYPE_ID_TFC)); // overloads vanilla entity data so we can set it
+    }
+
+    public void setFoxType(Fox.Type id)
+    {
+        entityData.set(DATA_TYPE_ID_TFC, id.getId());
+    }
+
+    @Override
+    protected void defineSynchedData()
+    {
+        super.defineSynchedData();
+        entityData.define(DATA_TYPE_ID_TFC, 0);
+    }
+
+    @Override
+    protected void registerGoals()
+    {
+        super.registerGoals();
+        EntityHelpers.removeGoalOfPriority(goalSelector, 3); // breed goal
+        EntityHelpers.removeGoalOfClass(goalSelector, FoxEatBerriesGoal.class);
+        goalSelector.addGoal(10, new TFCFoxEatBerriesGoal());
+
+        // todo: prey update -- avoid predators, prey on others (fox have special impl for stalking, can we borrow it?)
+    }
+
+    @Override
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
+    {
+        final SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
+        final ChunkData chunkData = EntityHelpers.getChunkDataForSpawning(level, blockPosition());
+        setFoxType(chunkData.getAverageTemp(blockPosition()) < 0 ? Type.SNOW : Type.RED);
+        return spawnData;
+    }
+
+    @Override
+    public TFCFox getBreedOffspring(ServerLevel level, AgeableMob other)
+    {
+        TFCFox fox = TFCEntities.FOX.get().create(level);
+        setFoxType(this.random.nextBoolean() ? this.getFoxType() : ((TFCFox) other).getFoxType());
+        return fox;
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack)
+    {
+        return false;
+    }
+
+    public class TFCFoxEatBerriesGoal extends FoxEatBerriesGoal
+    {
+        public TFCFoxEatBerriesGoal()
+        {
+            super(1.2, 12, 1);
+        }
+
+        @Override
+        protected boolean isValidTarget(LevelReader level, BlockPos pos)
+        {
+            BlockState state = level.getBlockState(pos);
+            return Helpers.isBlock(state, TFCTags.Blocks.FOX_RAIDABLE) && isFruiting(state);
+        }
+
+        @Override
+        protected void onReachedTarget()
+        {
+            TFCFox fox = TFCFox.this;
+            Level level = fox.level;
+            if (ForgeEventFactory.getMobGriefingEvent(level, fox))
+            {
+                BlockState currentState = level.getBlockState(blockPos);
+                if (currentState.getBlock() instanceof SeasonalPlantBlock seasonal && fox.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty())
+                {
+                    ItemStack product = seasonal.getProductItem(fox.random);
+                    if (!product.isEmpty())
+                    {
+                        fox.playSound(SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, 1f, 1f);
+                        product.setCount(1);
+                        fox.setItemSlot(EquipmentSlot.MAINHAND, product);
+                        level.setBlockAndUpdate(blockPos, seasonal.stateAfterPicking(currentState));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public boolean canUse()
+        {
+            return super.canUse() && TFCFox.this.getItemBySlot(EquipmentSlot.MAINHAND).isEmpty();
+        }
+
+        private boolean isFruiting(BlockState state)
+        {
+            return state.hasProperty(SeasonalPlantBlock.LIFECYCLE) && state.getValue(SeasonalPlantBlock.LIFECYCLE) == Lifecycle.FRUITING;
+        }
+    }
+}

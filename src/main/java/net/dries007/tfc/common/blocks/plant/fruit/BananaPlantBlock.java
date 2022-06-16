@@ -97,7 +97,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     }
 
     @Override
-    protected ItemStack getProductItem(Random random)
+    public ItemStack getProductItem(Random random)
     {
         return new ItemStack(productItem.get(), Mth.nextInt(random, 3, 6));
     }

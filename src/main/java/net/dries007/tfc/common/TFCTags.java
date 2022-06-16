@@ -82,6 +82,7 @@ public class TFCTags
         public static final TagKey<Block> CREATES_UPWARD_BUBBLES = create("creates_upward_bubbles"); // bubble columns
         public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
         public static final TagKey<Block> RABBIT_RAIDABLE = create("rabbit_raidable"); // rabbits will break it
+        public static final TagKey<Block> FOX_RAIDABLE = create("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
 
         private static TagKey<Block> create(String id)
         {
