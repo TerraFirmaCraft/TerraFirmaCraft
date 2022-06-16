@@ -137,6 +137,12 @@
         "weight": 2,
         "minCount": 1,
         "maxCount": 4
+      },
+      {
+        "type": "tfc:fox",
+        "weight": 1,
+        "minCount": 1,
+        "maxCount": 1
       }
     ]
   },
