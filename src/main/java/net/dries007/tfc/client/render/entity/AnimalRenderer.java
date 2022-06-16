@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.common.entities.land.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.util.Helpers;
 
 public class AnimalRenderer<T extends TFCAnimal, M extends EntityModel<T>> extends MobRenderer<T, M>

@@ -14,17 +14,22 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
 
 import net.dries007.tfc.common.entities.aquatic.*;
-import net.dries007.tfc.common.entities.land.DairyAnimal;
-import net.dries007.tfc.common.entities.land.Mammal;
-import net.dries007.tfc.common.entities.land.OviparousAnimal;
-import net.dries007.tfc.common.entities.land.WoolyAnimal;
+import net.dries007.tfc.common.entities.livestock.DairyAnimal;
+import net.dries007.tfc.common.entities.livestock.Mammal;
+import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
+import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
+import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class Faunas
 {
@@ -62,6 +67,7 @@ public class Faunas
     public static final FaunaType<OviparousAnimal> CHICKEN = registerAnimal(TFCEntities.CHICKEN);
     public static final FaunaType<OviparousAnimal> DUCK = registerAnimal(TFCEntities.DUCK);
     public static final FaunaType<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
+    public static final FaunaType<TFCRabbit> RABBIT = registerAnimal(TFCEntities.RABBIT);
 
     public static void registerSpawnPlacements()
     {
@@ -99,6 +105,7 @@ public class Faunas
         registerSpawnPlacement(CHICKEN);
         registerSpawnPlacement(DUCK);
         registerSpawnPlacement(QUAIL);
+        registerSpawnPlacement(RABBIT);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
@@ -121,6 +128,7 @@ public class Faunas
     {
         SpawnPlacements.register(type.entity().get(), type.spawnPlacementType(), type.heightmapType(), (mob, level, heightmap, pos, rand) -> {
             final Fauna fauna = type.fauna().get();
+            final ChunkGenerator generator = level.getLevel().getChunkSource().getGenerator();
             if (rand.nextInt(fauna.getChance()) != 0)
             {
                 return false;
@@ -131,13 +139,15 @@ public class Faunas
                 return false;
             }
 
-            final int seaLevel = level.getLevel().getChunkSource().getGenerator().getSeaLevel();
+            final int seaLevel = generator.getSeaLevel();
             if (fauna.getDistanceBelowSeaLevel() != -1 && pos.getY() > (seaLevel - fauna.getDistanceBelowSeaLevel()))
             {
                 return false;
             }
 
-            final ChunkData data = ChunkData.get(level, pos);
+            final ChunkData data = level instanceof WorldGenLevel worldGenLevel ?
+                ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
+                ChunkData.get(level, pos);
             if (!fauna.getClimate().isValid(data, pos, rand))
             {
                 return false;

@@ -5,6 +5,7 @@
     "1": "tfc:block/plant/athyrium_fern/single",
     "particle": "tfc:block/plant/athyrium_fern/single"
   },
+  "ambientocclusion": false,
   "elements": [
     {
       "name": "cube",

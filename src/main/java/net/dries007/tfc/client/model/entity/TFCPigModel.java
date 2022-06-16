@@ -14,7 +14,7 @@ import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import net.dries007.tfc.common.entities.land.Mammal;
+import net.dries007.tfc.common.entities.livestock.Mammal;
 
 public class TFCPigModel extends PigModel<Mammal>
 {

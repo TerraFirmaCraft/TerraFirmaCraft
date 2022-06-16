@@ -17,7 +17,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.client.model.geom.builders.*;
 
-import net.dries007.tfc.common.entities.land.WoolyAnimal;
+import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 
 public class TFCSheepModel extends AgeableListModel<WoolyAnimal>
 {

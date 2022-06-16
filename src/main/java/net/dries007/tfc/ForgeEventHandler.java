@@ -632,7 +632,7 @@ public final class ForgeEventHandler
         else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED))
         {
             level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
-                entity.setLit(true);
+                entity.setLit(true, event.getPlayer());
                 event.setCanceled(true);
             });
         }
