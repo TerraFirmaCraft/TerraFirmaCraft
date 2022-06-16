@@ -180,8 +180,8 @@ test {
 
 processResources {
 
-    filesMatching("book.json") {
-        expand "TFC_VERSION": project.version
+    filesMatching("**/book.json") {
+        expand "version": project.version
     }
 
     if (minifyResources) {
