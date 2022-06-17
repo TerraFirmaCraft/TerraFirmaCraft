@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.livestock;
 
 import java.util.Random;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -27,8 +28,10 @@ public interface MammalProperties extends TFCAnimalProperties
 
     void setPregnantTime(long time);
 
-    default void tickPregnancy()
+    @Override
+    default void tickAnimalData()
     {
+        TFCAnimalProperties.super.tickAnimalData();
         Level level = getEntity().level;
         if (!level.isClientSide && level.getGameTime() % 20 == 0)
         {
@@ -85,6 +88,20 @@ public interface MammalProperties extends TFCAnimalProperties
         {
             player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getGenderedTypeName().getString()), true);
         }
+    }
+
+    @Override
+    default void saveCommonAnimalData(CompoundTag nbt)
+    {
+        TFCAnimalProperties.super.saveCommonAnimalData(nbt);
+        nbt.putLong("pregnant", getPregnantTime());
+    }
+
+    @Override
+    default void readCommonAnimalData(CompoundTag nbt)
+    {
+        TFCAnimalProperties.super.readCommonAnimalData(nbt);
+        setPregnantTime(nbt.getLong("pregnant"));
     }
 
     default int getChildCount()

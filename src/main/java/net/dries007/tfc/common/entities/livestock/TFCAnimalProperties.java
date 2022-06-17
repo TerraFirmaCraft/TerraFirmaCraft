@@ -91,20 +91,16 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      * Is it time to decay familiarity?
      * If this entity was never fed(eg: newborn, wild) or wasn't fed yesterday (this is the starting of the second day)
      */
-    default void tickFamiliarity()
+    default void tickAnimalData()
     {
-        Level level = getEntity().level;
-        if (!level.isClientSide() && level.getGameTime() % 20 == 0)
+        if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < Calendars.get().getTotalDays())
         {
-            if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < Calendars.get().getTotalDays())
+            float familiarity = getFamiliarity();
+            if (familiarity < FAMILIARITY_DECAY_LIMIT)
             {
-                float familiarity = getFamiliarity();
-                if (familiarity < FAMILIARITY_DECAY_LIMIT)
-                {
-                    familiarity -= 0.02 * (Calendars.get().getTotalDays() - getLastFamiliarityDecay());
-                    setLastFamiliarityDecay(Calendars.get().getTotalDays());
-                    this.setFamiliarity(familiarity);
-                }
+                familiarity -= 0.02 * (Calendars.get().getTotalDays() - getLastFamiliarityDecay());
+                setLastFamiliarityDecay(Calendars.get().getTotalDays());
+                this.setFamiliarity(familiarity);
             }
         }
     }
@@ -214,7 +210,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default boolean isReadyToMate()
     {
-        return getAgeType() == Age.ADULT && getFamiliarity() >= 0.3f && isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.SERVER.getTicks();
+        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.SERVER.getTicks();
     }
 
     /**

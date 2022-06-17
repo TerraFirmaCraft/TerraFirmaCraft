@@ -66,26 +66,4 @@ public abstract class Mammal extends TFCAnimal implements MammalProperties
         super.defineSynchedData();
         entityData.define(PREGNANT_TIME, -1L);
     }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag nbt)
-    {
-        super.addAdditionalSaveData(nbt);
-        nbt.putLong("pregnant", getPregnantTime());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag nbt)
-    {
-        super.readAdditionalSaveData(nbt);
-        setPregnantTime(nbt.getLong("pregnant"));
-    }
-
-    @Override
-    public void tick()
-    {
-        super.tick();
-        tickPregnancy();
-    }
-
 }

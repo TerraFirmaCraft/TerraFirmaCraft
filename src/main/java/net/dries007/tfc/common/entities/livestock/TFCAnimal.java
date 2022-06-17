@@ -237,7 +237,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     public void tick()
     {
         super.tick();
-        tickFamiliarity();
+        if (!level.isClientSide && level.getGameTime() % 20 == 0)
+        {
+            tickAnimalData();
+        }
     }
 
     @Override

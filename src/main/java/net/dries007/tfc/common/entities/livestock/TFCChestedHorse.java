@@ -35,10 +35,12 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.AnimalConfig;
+import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class TFCChestedHorse extends AbstractChestedHorse implements TFCAnimalProperties
+public abstract class TFCChestedHorse extends AbstractChestedHorse implements MammalProperties
 {
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BIRTHDAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
@@ -46,6 +48,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED);
+    private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
@@ -57,8 +60,9 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     private final Supplier<? extends SoundEvent> eat;
     private final Supplier<? extends SoundEvent> angry;
     private final AnimalConfig config;
+    private final MammalConfig mammalConfig;
 
-    public TFCChestedHorse(EntityType<? extends TFCChestedHorse> type, Level level, TFCSounds.EntitySound sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, AnimalConfig config)
+    public TFCChestedHorse(EntityType<? extends TFCChestedHorse> type, Level level, TFCSounds.EntitySound sounds, Supplier<? extends SoundEvent> eatSound, Supplier<? extends SoundEvent> angrySound, MammalConfig config)
     {
         super(type, level);
         this.matingTime = Calendars.get(level).getTicks();
@@ -69,10 +73,61 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
         this.step = sounds.step();
         this.eat = eatSound;
         this.angry = angrySound;
-        this.config = config;
+        this.config = config.inner();
+        this.mammalConfig = config;
+    }
+
+    // HORSE SPECIFIC STUFF
+
+    @Override
+    public boolean canMate(Animal otherAnimal)
+    {
+        // todo this is here because it should be implemented special for heritable traits
+        if (otherAnimal.getClass() != this.getClass()) return false;
+        TFCChestedHorse other = (TFCChestedHorse) otherAnimal;
+        return this.getGender() != other.getGender() && other.isReadyToMate();
+    }
+
+    @Override
+    protected SoundEvent getEatingSound()
+    {
+        return eat.get();
+    }
+
+    @Override
+    protected SoundEvent getAngrySound()
+    {
+        return angry.get();
     }
 
     // BEGIN COPY-PASTE FROM TFC ANIMAL
+
+    @Override
+    public MammalConfig getMammalConfig()
+    {
+        return mammalConfig;
+    }
+
+    @Override
+    public long getPregnantTime()
+    {
+        return entityData.get(PREGNANT_TIME);
+    }
+
+    @Override
+    public void setPregnantTime(long day)
+    {
+        entityData.set(PREGNANT_TIME, day);
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    {
+        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        setPregnantTime(-1L);
+        return spawnData;
+    }
 
     @Override
     public AnimalConfig animalConfig()
@@ -91,6 +146,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     {
         super.defineSynchedData();
         registerCommonData();
+        entityData.define(PREGNANT_TIME, -1L);
     }
 
     @Override
@@ -143,17 +199,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
         return null;
     }
 
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
-    {
-        if (reason != MobSpawnType.BREEDING)
-        {
-            initCommonAnimalData();
-        }
-        return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
-    }
-
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> data)
     {
@@ -204,20 +249,23 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     public void tick()
     {
         super.tick();
-        tickFamiliarity();
+        if (!level.isClientSide && level.getGameTime() % 20 == 0)
+        {
+            tickAnimalData();
+        }
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        InteractionResult result = TFCAnimalProperties.super.mobInteract(player, hand);
+        InteractionResult result = MammalProperties.super.mobInteract(player, hand);
         return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
     }
 
     @Override
     public boolean isFood(ItemStack stack)
     {
-        return TFCAnimalProperties.super.isFood(stack);
+        return MammalProperties.super.isFood(stack);
     }
 
     @Override
@@ -248,27 +296,5 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     protected void playStepSound(BlockPos pos, BlockState block)
     {
         this.playSound(step.get(), 0.15F, 1.0F);
-    }
-
-    // HORSE SPECIFIC STUFF
-
-    @Override
-    public boolean canMate(Animal otherAnimal)
-    {
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        TFCChestedHorse other = (TFCChestedHorse) otherAnimal;
-        return this.getGender() != other.getGender() && other.isReadyToMate();
-    }
-
-    @Override
-    protected SoundEvent getEatingSound()
-    {
-        return eat.get();
-    }
-
-    @Override
-    protected SoundEvent getAngrySound()
-    {
-        return angry.get();
     }
 }
