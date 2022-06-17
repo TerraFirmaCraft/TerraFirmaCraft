@@ -11,41 +11,42 @@ import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.MammalConfig;
-import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class Mammal extends TFCAnimal
+public abstract class Mammal extends TFCAnimal implements MammalProperties
 {
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(Mammal.class, EntityHelpers.LONG_SERIALIZER);
-    private final ForgeConfigSpec.IntValue childCount;
-    private final ForgeConfigSpec.IntValue gestationDays;
+    private final MammalConfig config;
 
     public Mammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
         super(animal, level, sounds, config.inner());
-        this.childCount = config.childCount();
-        this.gestationDays = config.gestationDays();
+        this.config = config;
     }
 
+    @Override
+    public MammalConfig getMammalConfig()
+    {
+        return config;
+    }
+
+    @Override
     public long getPregnantTime()
     {
         return entityData.get(PREGNANT_TIME);
     }
 
-    private void setPregnantTime(long day)
+    @Override
+    public void setPregnantTime(long day)
     {
         entityData.set(PREGNANT_TIME, day);
     }
@@ -57,14 +58,6 @@ public abstract class Mammal extends TFCAnimal
         spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
         setPregnantTime(-1L);
         return spawnData;
-    }
-
-    @Override
-    public void onFertilized(TFCAnimalProperties male)
-    {
-        //Mark the day this female became pregnant
-        setFertilized(true);
-        setPregnantTime(Calendars.get(male.getEntity().level).getTotalDays());
     }
 
     @Override
@@ -89,62 +82,10 @@ public abstract class Mammal extends TFCAnimal
     }
 
     @Override
-    public TFCAnimalProperties.Type getTFCAnimalType()
-    {
-        return TFCAnimalProperties.Type.MAMMAL;
-    }
-
-    @Override
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide && level.getGameTime() % 20 == 0)
-        {
-            if (getPregnantTime() > 0 && Calendars.SERVER.getTotalDays() >= getPregnantTime() + getGestationDays() && isFertilized())
-            {
-                birthChildren();
-                setFertilized(false);
-                setPregnantTime(-1L);
-                addUses(10);
-            }
-        }
-    }
-
-    @Override
-    public boolean isReadyToMate()
-    {
-        return getPregnantTime() <= 0 && super.isReadyToMate();
-    }
-
-    public void birthChildren()
-    {
-        final int kids = Mth.nextInt(random, 1, getChildCount());
-        for (int i = 0; i < kids; i++)
-        {
-            AgeableMob offspring = getBreedOffspring((ServerLevel) level, this);
-            if (offspring == null) continue;
-            if (offspring instanceof TFCAnimal animal)
-            {
-                animal.setPos(position());
-                animal.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
-                level.addFreshEntity(animal);
-            }
-        }
-    }
-
-    public int getChildCount()
-    {
-        return childCount.get();
-    }
-
-    /**
-     * Return the number of days for a full gestation
-     *
-     * @return long value in days
-     */
-    public long getGestationDays()
-    {
-        return gestationDays.get();
+        tickPregnancy();
     }
 
 }

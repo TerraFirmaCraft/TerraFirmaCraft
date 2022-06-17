@@ -83,12 +83,6 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     }
 
     /**
-     * Which animal type is this? Do this animal lay eggs or give birth to it's offspring?
-     * @return the enum Type of this animal.
-     */
-    Type getTFCAnimalType();
-
-    /**
      * Default tag checked by isFood (edible items)
      */
     TagKey<Item> getFoodTag();
@@ -135,17 +129,18 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                 {
                     if (!level.isClientSide())
                     {
-                        //Show tooltips
-                        if (this.isFertilized() && this.getTFCAnimalType() == Type.MAMMAL)
-                        {
-                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getGenderedTypeName().getString()), true);
-                        }
+                        showExtraClickInfo(player);
                     }
                 }
                 return InteractionResult.FAIL;
             }
         }
         return InteractionResult.PASS;
+    }
+
+    default void showExtraClickInfo(Player player)
+    {
+
     }
 
     private InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
@@ -492,10 +487,5 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         {
             return this == MALE;
         }
-    }
-
-    enum Type
-    {
-        MAMMAL, OVIPAROUS
     }
 }

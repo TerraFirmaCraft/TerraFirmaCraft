@@ -120,12 +120,6 @@ public abstract class OviparousAnimal extends ProducingAnimal
     }
 
     @Override
-    public Type getTFCAnimalType()
-    {
-        return Type.OVIPAROUS;
-    }
-
-    @Override
     public boolean causeFallDamage(float amount, float speed, DamageSource src)
     {
         return false;
