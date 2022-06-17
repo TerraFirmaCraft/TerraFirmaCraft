@@ -76,6 +76,11 @@ def generate(rm: ResourceManager):
     rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
     rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
     rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
+    rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
+    rm.entity_tag('land_prey', *['tfc:%s' % entity for entity in LAND_PREY], '#tfc:livestock')
+    rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
+    rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player')
+    rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
 
     # Item Heats
 
@@ -775,6 +780,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'quail'), fauna(climate=climate_config(min_temp=-15, max_temp=10, min_rain=200)))
     rm.data(('tfc', 'fauna', 'rabbit'), fauna(climate=climate_config(min_rain=15)))
     rm.data(('tfc', 'fauna', 'fox'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, min_forest='edge')))
+    rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, max_forest='normal')))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -816,6 +822,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
     mob_loot(rm, 'rabbit', 'tfc:food/rabbit', hide_size='small', hide_chance=0.5, bones=1, extra_pool={'name': 'minecraft:rabbit_foot', 'conditions': [loot_tables.random_chance(0.1)]})
     mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
+    mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
 
     global_loot_modifiers(rm, 'tfc:reset_decay')
     global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})

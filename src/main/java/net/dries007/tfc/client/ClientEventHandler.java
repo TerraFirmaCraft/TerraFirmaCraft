@@ -327,13 +327,13 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.POLAR_BEAR.get(), ctx -> new BearRenderer(ctx, 1.3F, "polar_bear"));
         event.registerEntityRenderer(TFCEntities.GRIZZLY_BEAR.get(), ctx -> new BearRenderer(ctx, 1.1F, "grizzly_bear"));
         event.registerEntityRenderer(TFCEntities.BLACK_BEAR.get(), ctx -> new BearRenderer(ctx, 0.9F, "black_bear"));
-        event.registerEntityRenderer(TFCEntities.COUGAR.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "cougar")), "cougar", 0.8F));
-        event.registerEntityRenderer(TFCEntities.PANTHER.get(), ctx -> new PredatorRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "panther")), "panther", 0.8F));
-        event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new PredatorRenderer<>(ctx, new LionModel(RenderHelpers.bakeSimple(ctx, "lion")), "lion", 0.8F));
-        event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new PredatorRenderer<>(ctx, new SabertoothModel(RenderHelpers.bakeSimple(ctx, "sabertooth")), "sabertooth", 0.8F));
+        event.registerEntityRenderer(TFCEntities.COUGAR.get(), ctx -> new SimpleMobRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "cougar")), "cougar", 0.8F));
+        event.registerEntityRenderer(TFCEntities.PANTHER.get(), ctx -> new SimpleMobRenderer<>(ctx, new CougarModel(RenderHelpers.bakeSimple(ctx, "panther")), "panther", 0.8F));
+        event.registerEntityRenderer(TFCEntities.LION.get(), ctx -> new SimpleMobRenderer<>(ctx, new LionModel(RenderHelpers.bakeSimple(ctx, "lion")), "lion", 0.8F));
+        event.registerEntityRenderer(TFCEntities.SABERTOOTH.get(), ctx -> new SimpleMobRenderer<>(ctx, new SabertoothModel(RenderHelpers.bakeSimple(ctx, "sabertooth")), "sabertooth", 0.8F));
         event.registerEntityRenderer(TFCEntities.SQUID.get(), ctx -> new TFCSquidRenderer<>(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "squid"))));
         event.registerEntityRenderer(TFCEntities.OCTOPOTEUTHIS.get(), ctx -> new OctopoteuthisRenderer(ctx, new SquidModel<>(RenderHelpers.bakeSimple(ctx, "glow_squid"))));
-        event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
+        event.registerEntityRenderer(TFCEntities.PIG.get(), ctx -> new AnimalRenderer<>(ctx, new TFCPigModel<>(RenderHelpers.bakeSimple(ctx, "pig")), "pig"));
         event.registerEntityRenderer(TFCEntities.COW.get(), ctx -> new AnimalRenderer<>(ctx, new TFCCowModel(RenderHelpers.bakeSimple(ctx, "cow")), "cow"));
         event.registerEntityRenderer(TFCEntities.GOAT.get(), ctx -> new AnimalRenderer<>(ctx, new TFCGoatModel(RenderHelpers.bakeSimple(ctx, "goat")), "goat"));
         event.registerEntityRenderer(TFCEntities.YAK.get(), ctx -> new AnimalRenderer<>(ctx, new YakModel(RenderHelpers.bakeSimple(ctx, "yak")), "yak"));
@@ -345,6 +345,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.QUAIL.get(), ctx -> new OviparousRenderer<>(ctx, new QuailModel(RenderHelpers.bakeSimple(ctx, "quail")), "quail", "quail_male", "quail_chick"));
         event.registerEntityRenderer(TFCEntities.RABBIT.get(), RabbitRenderer::new);
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
+        event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCPigModel<>(RenderHelpers.bakeSimple(ctx, "boar")), "boar", 0.3f, false, 0.6f));
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -406,6 +407,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chicken"), TFCChickenModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("duck"), DuckModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("quail"), QuailModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
     }
 

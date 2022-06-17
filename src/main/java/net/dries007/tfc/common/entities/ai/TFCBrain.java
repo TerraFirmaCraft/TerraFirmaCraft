@@ -43,7 +43,7 @@ public class TFCBrain
     public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal", () -> newSchedule().changeActivityAt(0, HUNT.get()).changeActivityAt(11000, Activity.REST).build());
     public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal", () -> newSchedule().changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT.get()).build());
 
-    public static final RegistryObject<SensorType<DelegatingTemptingSensor>> TEMPTATION = registerSensorType("tempt", DelegatingTemptingSensor::new);
+    public static final RegistryObject<SensorType<DelegatingTemptingSensor>> TEMPTATION_SENSOR = registerSensorType("tempt", DelegatingTemptingSensor::new);
     public static final RegistryObject<SensorType<NearestNestBoxSensor>> NEST_BOX_SENSOR = registerSensorType("nearest_nest_box", NearestNestBoxSensor::new);
 
     public static final RegistryObject<PoiType> NEST_BOX_POI = registerPoi("nest_box", () -> new PoiType("nest_box", PoiType.getBlockStates(TFCBlocks.NEST_BOX.get()), 1, 1));

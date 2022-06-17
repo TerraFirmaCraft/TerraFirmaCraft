@@ -14,8 +14,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.registries.RegistryObject;
@@ -26,11 +24,11 @@ import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
-import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 
 public class Faunas
 {
@@ -70,6 +68,7 @@ public class Faunas
     public static final FaunaType<OviparousAnimal> QUAIL = registerAnimal(TFCEntities.QUAIL);
     public static final FaunaType<TFCRabbit> RABBIT = registerAnimal(TFCEntities.RABBIT);
     public static final FaunaType<TFCFox> FOX = registerAnimal(TFCEntities.FOX);
+    public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
 
     public static void registerSpawnPlacements()
     {
@@ -109,6 +108,7 @@ public class Faunas
         registerSpawnPlacement(QUAIL);
         registerSpawnPlacement(RABBIT);
         registerSpawnPlacement(FOX);
+        registerSpawnPlacement(BOAR);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)
@@ -148,9 +148,7 @@ public class Faunas
                 return false;
             }
 
-            final ChunkData data = level instanceof WorldGenLevel worldGenLevel ?
-                ChunkDataProvider.get(worldGenLevel).get(new ChunkPos(pos)) :
-                ChunkData.get(level, pos);
+            final ChunkData data = EntityHelpers.getChunkDataForSpawning(level, pos);
             if (!fauna.getClimate().isValid(data, pos, rand))
             {
                 return false;

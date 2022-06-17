@@ -20,12 +20,13 @@ import net.minecraft.world.item.ItemStack;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
-public interface TFCAnimalProperties
+public interface TFCAnimalProperties extends GenderedRenderAnimal
 {
     default Entity getEntity()
     {
@@ -327,11 +328,14 @@ public interface TFCAnimalProperties
         return 0;
     }
 
+
+    @Override
     default boolean displayMaleCharacteristics()
     {
         return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.MALE;
     }
 
+    @Override
     default boolean displayFemaleCharacteristics()
     {
         return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.FEMALE;

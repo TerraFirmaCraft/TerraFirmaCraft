@@ -21,22 +21,29 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
 {
     private final ResourceLocation texture;
     private final boolean doesFlop;
+    private final float scale;
 
     public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name)
     {
-        this(ctx, model, name, 0.3F, false);
+        this(ctx, model, name, 0.3F, false, 1f);
+    }
+
+    public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow)
+    {
+        this(ctx, model, name, shadow, false, 1f);
     }
 
     public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, boolean flop)
     {
-        this(ctx, model, name, 0.3F, flop);
+        this(ctx, model, name, 0.3F, flop, 1f);
     }
 
-    public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow, boolean flop)
+    public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow, boolean flop, float scale)
     {
         super(ctx, model, shadow);
         doesFlop = flop;
         texture = Helpers.animalTexture(name);
+        this.scale = scale;
     }
 
     @Override
@@ -62,6 +69,13 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
                 stack.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
             }
         }
+    }
+
+    @Override
+    protected void scale(T entity, PoseStack poseStack, float scale)
+    {
+        poseStack.scale(this.scale, this.scale, this.scale);
+        super.scale(entity, poseStack, scale);
     }
 
     @Override

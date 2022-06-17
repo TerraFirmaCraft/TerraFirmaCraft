@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.predator;
 
 import java.util.function.Supplier;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -35,15 +34,13 @@ import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
 
 
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
-
 import org.jetbrains.annotations.Nullable;
 
-public class Predator extends PathfinderMob
+public class Predator extends WildAnimal
 {
     public static AttributeSupplier.Builder createAttributes()
     {
@@ -51,23 +48,11 @@ public class Predator extends PathfinderMob
     }
 
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Boolean> DATA_IS_MALE = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
     private final int attackAnimationLength;
-    @Nullable
-    public Vec3 location;
-    @Nullable
-    public Vec3 prevLocation;
-    public float walkProgress = 0f;
-    private float limbSwing = 1f;
-    public final int walkAnimationLength;
 
-    private final Supplier<SoundEvent> ambient;
     private final Supplier<SoundEvent> attack;
-    private final Supplier<SoundEvent> death;
-    private final Supplier<SoundEvent> hurt;
     private final Supplier<SoundEvent> sleeping;
-    private final Supplier<SoundEvent> step;
 
     public final boolean diurnal;
     private int attackAnimationRemainingTicks = 0;
@@ -79,16 +64,9 @@ public class Predator extends PathfinderMob
 
     public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength, TFCSounds.EntitySound sounds)
     {
-        super(type, level);
+        super(type, level, sounds, walkLength);
         attackAnimationLength = attackLength;
-        walkAnimationLength = walkLength;
         this.diurnal = diurnal;
-        this.entityData.define(DATA_IS_MALE, random.nextBoolean());
-        getNavigation().setCanFloat(true);
-        this.ambient = sounds.ambient();
-        this.death = sounds.death();
-        this.hurt = sounds.hurt();
-        this.step = sounds.step();
         this.attack = sounds.attack().orElseThrow();
         this.sleeping = sounds.sleep().orElseThrow();
     }
@@ -123,31 +101,11 @@ public class Predator extends PathfinderMob
     public void tick()
     {
         super.tick();
-        if (level.isClientSide && isSleeping() && getRandom().nextInt(5) == 0)
+        if (level.isClientSide && isSleeping() && getRandom().nextInt(10) == 0)
         {
-            level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.04, 0.2, 0.04);
-        }
-
-        //Variable for smooth walk animation
-        prevLocation = location;
-        location = this.position();
-        if (walkProgress >= (float) walkAnimationLength)
-        {
-            walkProgress = 0f;
-        }
-
-        else if (this.isMoving() || walkProgress > 0f)
-        {
-            walkProgress = Math.min(walkProgress + limbSwing, (float) walkAnimationLength);
-
+            level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
         }
     }
-
-    public boolean isMoving()
-    {
-        return !(location == prevLocation);
-    }
-
 
     @Override
     public boolean hurt(DamageSource source, float amount)
@@ -183,14 +141,12 @@ public class Predator extends PathfinderMob
     {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("sleeping", isSleeping());
-        tag.putBoolean("male", isMale());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag)
     {
         super.readAdditionalSaveData(tag);
-        setIsMale(tag.getBoolean("male"));
         setSleeping(tag.getBoolean("sleeping"));
     }
 
@@ -224,12 +180,6 @@ public class Predator extends PathfinderMob
     }
 
     @Override
-    public boolean removeWhenFarAway(double distance)
-    {
-        return false;
-    }
-
-    @Override
     public void defineSynchedData()
     {
         super.defineSynchedData();
@@ -240,16 +190,6 @@ public class Predator extends PathfinderMob
     public boolean isSleeping()
     {
         return entityData.get(DATA_SLEEPING);
-    }
-
-    public boolean isMale()
-    {
-        return entityData.get(DATA_IS_MALE);
-    }
-
-    public void setIsMale(boolean male)
-    {
-        entityData.set(DATA_IS_MALE, male);
     }
 
     public void setSleeping(boolean asleep)
@@ -270,32 +210,7 @@ public class Predator extends PathfinderMob
     @Override
     protected SoundEvent getAmbientSound()
     {
-        if (this.isSleeping())
-        {
-            return sleeping.get();
-        }
-        else
-        {
-            return ambient.get();
-        }
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource src)
-    {
-        return hurt.get();
-    }
-
-    @Override
-    protected SoundEvent getDeathSound()
-    {
-        return death.get();
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pPos, BlockState pBlock)
-    {
-        this.playSound(step.get(), 0.15F, 1.0F);
+        return isSleeping() ? sleeping.get() : super.getAmbientSound();
     }
 
     private void pinPlayer(Player player)
@@ -307,10 +222,5 @@ public class Predator extends PathfinderMob
                 player.addEffect(new MobEffectInstance(TFCEffects.PINNED.get(), 35, 0, false, false));
             }
         }
-    }
-
-    public void setLimbSwing(float swing)
-    {
-        limbSwing = swing;
     }
 }

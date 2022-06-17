@@ -16,6 +16,8 @@ import net.dries007.tfc.common.entities.predator.Predator;
 
 public class PredatorSleepBehavior extends Behavior<Predator>
 {
+    private static final int SLEEP_ACCEPTED_DISTANCE = 6 * 6;
+
     public PredatorSleepBehavior()
     {
         super(ImmutableMap.of(MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT));
@@ -32,6 +34,6 @@ public class PredatorSleepBehavior extends Behavior<Predator>
     @Override
     protected boolean checkExtraStartConditions(ServerLevel level, Predator entity)
     {
-        return PredatorAi.getDistanceFromHome(entity) < 36 && super.checkExtraStartConditions(level, entity);
+        return PredatorAi.getDistanceFromHome(entity) < SLEEP_ACCEPTED_DISTANCE && super.checkExtraStartConditions(level, entity);
     }
 }

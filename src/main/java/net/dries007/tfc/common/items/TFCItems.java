@@ -235,6 +235,7 @@ public final class TFCItems
     public static final RegistryObject<Item> QUAIL_EGG = registerSpawnEgg(TFCEntities.QUAIL, 0x8081a5, 0xDDDDDD);
     public static final RegistryObject<Item> RABBIT_EGG = registerSpawnEgg(TFCEntities.RABBIT, 10051392, 7555121);
     public static final RegistryObject<Item> FOX_EGG = registerSpawnEgg(TFCEntities.FOX, 14005919, 1339625);
+    public static final RegistryObject<Item> BOAR_EGG = registerSpawnEgg(TFCEntities.BOAR, 0x8081a5, 0x006633);
 
     // Pottery
 

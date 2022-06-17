@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:pig",
+    "tfc:cow",
+    "tfc:goat",
+    "tfc:yak",
+    "tfc:alpaca",
+    "tfc:sheep",
+    "tfc:musk_ox",
+    "tfc:chicken",
+    "tfc:duck",
+    "tfc:quail"
+  ]
+}

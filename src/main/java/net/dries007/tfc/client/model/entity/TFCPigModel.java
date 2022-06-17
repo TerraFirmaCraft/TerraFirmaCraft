@@ -13,10 +13,12 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Mob;
 
+import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.common.entities.livestock.Mammal;
 
-public class TFCPigModel extends PigModel<Mammal>
+public class TFCPigModel<T extends Mob & GenderedRenderAnimal> extends PigModel<T>
 {
     public static LayerDefinition createTFCBodyLayer(CubeDeformation def)
     {
@@ -49,7 +51,7 @@ public class TFCPigModel extends PigModel<Mammal>
     }
 
     @Override
-    public void setupAnim(Mammal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         tusk1.visible = tusk2.visible = entity.displayMaleCharacteristics();

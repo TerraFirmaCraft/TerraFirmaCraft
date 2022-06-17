@@ -16,13 +16,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.memory.NearestVisibleLivingEntities;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.util.Helpers;
 
 public class PredatorAi
 {
@@ -131,7 +134,21 @@ public class PredatorAi
 
     private static Optional<? extends LivingEntity> getAttackTarget(Predator predator)
     {
-        return isPacified(predator) ? Optional.empty() : predator.getBrain().getMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER);
+        if (isPacified(predator))
+        {
+            return Optional.empty();
+        }
+        Brain<Predator> brain = predator.getBrain();
+        if (brain.hasMemoryValue(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER))
+        {
+            return brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER);
+        }
+        if (brain.hasMemoryValue(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES))
+        {
+            NearestVisibleLivingEntities nearestEntities = brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).get();
+            return nearestEntities.findClosest(e -> Helpers.isEntity(e, TFCTags.Entities.HUNTED_BY_LAND_PREDATORS) && !e.isInWater());
+        }
+        return Optional.empty();
     }
 
     private static boolean isPacified(Predator predator)

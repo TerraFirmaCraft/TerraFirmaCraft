@@ -33,6 +33,7 @@ import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
 import net.dries007.tfc.common.items.TFCItems;
@@ -120,6 +121,7 @@ public class TFCEntities
 
     public static final RegistryObject<EntityType<TFCRabbit>> RABBIT = register("rabbit", EntityType.Builder.of(TFCRabbit::new, MobCategory.CREATURE).sized(0.4F, 0.5F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<TFCFox>> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<Prey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.5f, 0.5f).clientTrackingRange(10));
 
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
@@ -173,6 +175,7 @@ public class TFCEntities
         event.put(QUAIL.get(), Chicken.createAttributes().build());
         event.put(RABBIT.get(), TFCRabbit.createAttributes().build());
         event.put(FOX.get(), TFCFox.createAttributes().build());
+        event.put(BOAR.get(), Prey.createAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)
@@ -294,6 +297,11 @@ public class TFCEntities
                 return TFCTags.Items.QUAIL_FOOD;
             }
         };
+    }
+
+    public static Prey makeBoar(EntityType<? extends Prey> animal, Level level)
+    {
+        return new Prey(animal, level, TFCSounds.PIG, 20);
     }
 
 }

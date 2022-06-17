@@ -1,0 +1,149 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
+package net.dries007.tfc.common.entities.ai.prey;
+
+import java.util.Optional;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.util.TimeUtil;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.behavior.*;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.sensing.Sensor;
+import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.schedule.Activity;
+
+import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.common.entities.prey.Prey;
+
+public class PreyAi
+{
+    public static final int AVOID_RANGE = 20 * 20;
+
+    private static final UniformInt RETREAT_DURATION = TimeUtil.rangeOfSeconds(7, 22);
+
+    public static final ImmutableList<SensorType<? extends Sensor<? super Prey>>> SENSOR_TYPES = ImmutableList.of(
+        SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.HURT_BY
+    );
+
+    public static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
+        MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET,
+        MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.AVOID_TARGET
+    );
+
+    public static Brain<?> makeBrain(Brain<? extends Prey> brain)
+    {
+        initCoreActivity(brain);
+        initIdleActivity(brain);
+        initRetreatActivity(brain);
+
+        brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
+        brain.setDefaultActivity(Activity.IDLE);
+        brain.useDefaultActivity();
+
+        return brain;
+    }
+
+    public static void initCoreActivity(Brain<? extends Prey> brain)
+    {
+        brain.addActivity(Activity.CORE, 0, ImmutableList.of(
+            new Swim(0.8F), // float in water
+            new AnimalPanic(2.0F), // if memory of being hit, runs away
+            new LookAtTargetSink(45, 90), // if memory of look target, looks at that
+            new MoveToTargetSink() // tries to walk to its internal walk target. This could just be a random block.
+        ));
+    }
+
+    public static void initIdleActivity(Brain<? extends Prey> brain)
+    {
+        brain.addActivity(Activity.IDLE, ImmutableList.of(
+            Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
+            Pair.of(1, new AvoidPredatorBehavior()),
+            Pair.of(2, createIdleMovementBehaviors())
+        ));
+    }
+
+    /**
+     * Focuses on retreating from the avoiding target.
+     * What the name "addActivityAndRemoveMemoryWhenStopped" does not say is that the erased memory is REQUIRED to start this activity
+     * In other words, this is triggered automatically by updateActivity if AVOID_TARGET is present.
+     */
+    public static void initRetreatActivity(Brain<? extends Prey> brain)
+    {
+        brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
+                SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.3F, 15, false),
+                createIdleMovementBehaviors(),
+                new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
+                new EraseMemoryIf<>(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
+            ),
+            MemoryModuleType.AVOID_TARGET
+        );
+    }
+
+    public static RunOne<Prey> createIdleMovementBehaviors()
+    {
+        return new RunOne<>(ImmutableList.of(
+            // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
+            Pair.of(new RandomStroll(1.0F), 2), // picks a random place to walk to
+            Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
+            Pair.of(new DoNothing(30, 60), 1))
+        ); // do nothing for a certain period of time
+    }
+
+    public static void updateActivity(Prey prey)
+    {
+        prey.getBrain().setActiveActivityToFirstValid(ImmutableList.of(Activity.AVOID, Activity.IDLE));
+    }
+
+    public static Optional<LivingEntity> getAvoidTarget(Prey prey)
+    {
+        return prey.getBrain().hasMemoryValue(MemoryModuleType.AVOID_TARGET) ? prey.getBrain().getMemory(MemoryModuleType.AVOID_TARGET) : Optional.empty();
+    }
+
+    public static void wasHurtBy(Prey prey, LivingEntity attacker)
+    {
+        Brain<Prey> brain = prey.getBrain();
+        getAvoidTarget(prey).ifPresent(avoid -> {
+            if (avoid.getType() != attacker.getType())
+            {
+                brain.eraseMemory(MemoryModuleType.AVOID_TARGET);
+                brain.setMemoryWithExpiry(MemoryModuleType.AVOID_TARGET, attacker, RETREAT_DURATION.sample(prey.getRandom()));
+                broadcastAvoidTarget(prey, attacker);
+            }
+        });
+    }
+
+    public static void broadcastAvoidTarget(Prey prey, LivingEntity attacker)
+    {
+        Brain<Prey> brain = prey.getBrain();
+        brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).ifPresent(entities -> {
+            entities.findAll(e -> e.getType() == prey.getType()).forEach(friend -> {
+                LivingEntity closest = BehaviorUtils.getNearestTarget(friend, friend.getBrain().getMemory(MemoryModuleType.AVOID_TARGET), attacker);
+                setAvoidTarget(friend, closest);
+            });
+        });
+    }
+
+    public static void setAvoidTarget(LivingEntity prey, LivingEntity attacker)
+    {
+        Brain<?> brain = prey.getBrain();
+        brain.eraseMemory(MemoryModuleType.WALK_TARGET);
+        brain.eraseMemory(MemoryModuleType.LOOK_TARGET);
+        brain.setMemoryWithExpiry(MemoryModuleType.AVOID_TARGET, attacker, RETREAT_DURATION.sample(prey.getRandom()));
+    }
+
+    private static boolean wantsToStopFleeing(Prey prey)
+    {
+        final Brain<Prey> brain = prey.getBrain();
+        return !brain.hasMemoryValue(MemoryModuleType.AVOID_TARGET) || brain.getMemory(MemoryModuleType.AVOID_TARGET).get().distanceToSqr(prey) > AVOID_RANGE;
+    }
+}

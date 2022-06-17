@@ -25,7 +25,7 @@ public class LivestockAi
 {
     public static final ImmutableList<SensorType<? extends Sensor<? super TFCAnimal>>> SENSOR_TYPES = ImmutableList.of(
         SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_PLAYERS, SensorType.NEAREST_ITEMS,
-        SensorType.NEAREST_ADULT, SensorType.HURT_BY, TFCBrain.TEMPTATION.get()
+        SensorType.NEAREST_ADULT, SensorType.HURT_BY, TFCBrain.TEMPTATION_SENSOR.get()
     );
 
     public static final ImmutableList<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
