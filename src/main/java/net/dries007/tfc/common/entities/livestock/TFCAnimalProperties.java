@@ -20,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -139,7 +138,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                         //Show tooltips
                         if (this.isFertilized() && this.getTFCAnimalType() == Type.MAMMAL)
                         {
-                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getTypeName().getString()), true);
+                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getGenderedTypeName().getString()), true);
                         }
                     }
                 }
@@ -470,7 +469,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         return Helpers.isItem(stack, getFoodTag());
     }
 
-    default Component getTypeName()
+    default Component getGenderedTypeName()
     {
         return new TranslatableComponent(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
     }

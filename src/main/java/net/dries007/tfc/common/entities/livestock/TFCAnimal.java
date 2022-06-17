@@ -264,7 +264,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     @Override
     public Component getTypeName()
     {
-        return TFCAnimalProperties.super.getTypeName();
+        return getGenderedTypeName();
     }
 
     @Override

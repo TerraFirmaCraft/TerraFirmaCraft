@@ -223,7 +223,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     @Override
     public Component getTypeName()
     {
-        return TFCAnimalProperties.super.getTypeName();
+        return getGenderedTypeName();
     }
 
     @Override
