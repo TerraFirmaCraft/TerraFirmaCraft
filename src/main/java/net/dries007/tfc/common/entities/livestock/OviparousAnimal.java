@@ -27,13 +27,10 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class OviparousAnimal extends ProducingAnimal
 {
     public float flapping = 1f;
-    @Nullable
-    public Entity willSitOn = null;
     public float oFlap;
     public float flap;
     public float oFlapSpeed;
