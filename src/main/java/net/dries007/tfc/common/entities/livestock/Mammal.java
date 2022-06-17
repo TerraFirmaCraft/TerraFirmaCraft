@@ -110,6 +110,12 @@ public abstract class Mammal extends TFCAnimal
         }
     }
 
+    @Override
+    public boolean isReadyToMate()
+    {
+        return getPregnantTime() <= 0 && super.isReadyToMate();
+    }
+
     public void birthChildren()
     {
         final int kids = Mth.nextInt(random, 1, getChildCount());

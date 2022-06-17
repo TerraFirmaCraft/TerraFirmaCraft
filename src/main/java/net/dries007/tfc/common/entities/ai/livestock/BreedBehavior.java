@@ -19,6 +19,7 @@ import net.minecraft.world.entity.animal.Animal;
 
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
+import net.dries007.tfc.util.calendar.Calendars;
 
 /**
  * {@link net.minecraft.world.entity.ai.behavior.AnimalMakeLove}
@@ -78,11 +79,10 @@ public class BreedBehavior extends Behavior<TFCAnimal>
         }
     }
 
-
     @Override
     protected void stop(ServerLevel level, TFCAnimal animal, long speed)
     {
-        animal.setMated();
+        animal.setMated(Calendars.get().getTicks());
         animal.getBrain().eraseMemory(MemoryModuleType.BREED_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
         animal.getBrain().eraseMemory(MemoryModuleType.LOOK_TARGET);

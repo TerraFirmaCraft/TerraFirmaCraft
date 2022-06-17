@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.livestock;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -122,6 +123,12 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public Type getTFCAnimalType()
     {
         return Type.OVIPAROUS;
+    }
+
+    @Override
+    public boolean causeFallDamage(float amount, float speed, DamageSource src)
+    {
+        return false;
     }
 
     @SuppressWarnings("unchecked")

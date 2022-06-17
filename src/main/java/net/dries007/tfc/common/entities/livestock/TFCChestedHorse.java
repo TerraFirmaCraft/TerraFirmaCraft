@@ -6,22 +6,18 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
-import java.util.Locale;
 import java.util.function.Supplier;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -34,13 +30,11 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -93,13 +87,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     }
 
     @Override
-    public boolean isReadyToMate()
+    protected void defineSynchedData()
     {
-        if (this.getAgeType() != Age.ADULT || this.getFamiliarity() < 0.3f || this.isFertilized() || this.isHungry())
-        {
-            return false;
-        }
-        return this.matingTime + TFCAnimal.MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.SERVER.getTicks();
+        super.defineSynchedData();
+        registerCommonData();
     }
 
     @Override
@@ -107,9 +98,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     {
         super.addAdditionalSaveData(nbt);
         saveCommonAnimalData(nbt);
-        nbt.putLong("fed", lastFed);
-        nbt.putLong("decay", lastFDecay);
-        nbt.putLong("mating", matingTime);
     }
 
     @Override
@@ -117,9 +105,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     {
         super.readAdditionalSaveData(nbt);
         readCommonAnimalData(nbt);
-        this.lastFed = nbt.getLong("fed");
-        this.lastFDecay = nbt.getLong("decay");
-        this.matingTime = nbt.getLong("mating");
     }
 
     @Override
@@ -142,8 +127,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
         if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
         {
-            this.setFertilized(true);
-            this.resetLove();
             this.onFertilized(otherFertile);
         }
         else if (other == this)
@@ -166,11 +149,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     {
         if (reason != MobSpawnType.BREEDING)
         {
-            setGender(Gender.valueOf(random.nextBoolean()));
-            setAge(0);
-            setBirthDay(EntityHelpers.getRandomGrowth(this.level, getDaysToAdulthood()));
-            setFamiliarity(0);
-            setFertilized(false);
+            initCommonAnimalData();
         }
         return super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
     }
@@ -186,117 +165,65 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
     }
 
     @Override
-    public boolean isFood(ItemStack stack)
+    public long getLastFamiliarityDecay()
     {
-        return TFCAnimalProperties.super.isFood(stack);
+        return lastFDecay;
     }
 
     @Override
-    protected void defineSynchedData()
+    public void setLastFamiliarityDecay(long days)
     {
-        super.defineSynchedData();
-        registerCommonData();
+        lastFDecay = days;
     }
 
     @Override
-    public boolean isHungry()
+    public void setLastFed(long fed)
     {
-        return lastFed < Calendars.SERVER.getTotalDays();
+        lastFed = fed;
     }
 
     @Override
-    public Type getTFCAnimalType()
+    public long getLastFed()
     {
-        return Type.MAMMAL;
+        return lastFed;
+    }
+
+    @Override
+    public void setMated(long ticks)
+    {
+        matingTime = ticks;
+    }
+
+    @Override
+    public long getMated()
+    {
+        return matingTime;
     }
 
     @Override
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide())
-        {
-            // Is it time to decay familiarity?
-            // If this entity was never fed(eg: new born, wild)
-            // or wasn't fed yesterday(this is the starting of the second day)
-            if (this.lastFDecay > -1 && this.lastFDecay + 1 < Calendars.SERVER.getTotalDays())
-            {
-                float familiarity = getFamiliarity();
-                if (familiarity < 0.3f)
-                {
-                    familiarity -= 0.02 * (Calendars.SERVER.getTotalDays() - this.lastFDecay);
-                    this.lastFDecay = Calendars.SERVER.getTotalDays();
-                    this.setFamiliarity(familiarity);
-                }
-            }
-            if (this.getGender() == Gender.MALE && this.isReadyToMate())
-            {
-                this.matingTime = Calendars.SERVER.getTicks();
-                EntityHelpers.findFemaleMate(this);
-            }
-            //todo unimplemented: despawning if left in the wild? dying when old?
-        }
-    }
-
-    protected InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
-    {
-        heal(1f);
-        if (!this.level.isClientSide)
-        {
-            lastFed = Calendars.SERVER.getTotalDays();
-            lastFDecay = lastFed; //No decay needed
-            this.usePlayerItem(player, hand, stack);
-            if (this.getAgeType() == Age.CHILD || this.getFamiliarity() < getAdultFamiliarityCap())
-            {
-                float familiarity = this.getFamiliarity() + 0.06f;
-                if (this.getAgeType() != Age.CHILD)
-                {
-                    familiarity = Math.min(familiarity, getAdultFamiliarityCap());
-                }
-                this.setFamiliarity(familiarity);
-            }
-            playSound(SoundEvents.PLAYER_BURP, 1f, 1f);
-        }
-        return InteractionResult.SUCCESS;
+        tickFamiliarity();
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
-        ItemStack stack = player.getItemInHand(hand);
+        InteractionResult result = TFCAnimalProperties.super.mobInteract(player, hand);
+        return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
+    }
 
-        if (!stack.isEmpty())
-        {
-            if (stack.getItem() instanceof SpawnEggItem)
-            {
-                return super.mobInteract(player, hand); // Let vanilla spawn a baby
-            }
-            else if (this.isFood(stack) && player.isShiftKeyDown())
-            {
-                if (this.isHungry())
-                {
-                    return eatFood(stack, hand, player);
-                }
-                else
-                {
-                    if (!level.isClientSide())
-                    {
-                        //Show tooltips
-                        if (this.isFertilized() && this.getTFCAnimalType() == Type.MAMMAL)
-                        {
-                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getTypeName().getString()), true);
-                        }
-                    }
-                }
-            }
-        }
-        return InteractionResult.PASS;
+    @Override
+    public boolean isFood(ItemStack stack)
+    {
+        return TFCAnimalProperties.super.isFood(stack);
     }
 
     @Override
     public Component getTypeName()
     {
-        return new TranslatableComponent(getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
+        return TFCAnimalProperties.super.getTypeName();
     }
 
     @Override
@@ -323,21 +250,14 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements TF
         this.playSound(step.get(), 0.15F, 1.0F);
     }
 
-    @Override
-    public void setMated()
-    {
-        matingTime = Calendars.get().getTicks();
-    }
-
-    // BEGIN HORSE SPECIFIC STUFF
+    // HORSE SPECIFIC STUFF
 
     @Override
     public boolean canMate(Animal otherAnimal)
     {
-        // todo: special horse handling
-        if (otherAnimal.getClass() != getClass()) return false;
+        if (otherAnimal.getClass() != this.getClass()) return false;
         TFCChestedHorse other = (TFCChestedHorse) otherAnimal;
-        return this.getGender() != other.getGender() && this.isInLove() && other.isInLove();
+        return this.getGender() != other.getGender() && other.isReadyToMate();
     }
 
     @Override

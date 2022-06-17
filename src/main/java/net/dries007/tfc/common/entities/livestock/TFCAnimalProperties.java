@@ -6,20 +6,31 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import java.util.Locale;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.GenderedRenderAnimal;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
@@ -28,9 +39,13 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public interface TFCAnimalProperties extends GenderedRenderAnimal
 {
-    default Entity getEntity()
+    long MATING_COOLDOWN_DEFAULT_TICKS = ICalendar.TICKS_IN_HOUR * 2;
+    float READY_TO_MATE_FAMILIARITY = 0.3f;
+    float FAMILIARITY_DECAY_LIMIT = 0.3f;
+
+    default LivingEntity getEntity()
     {
-        return (Entity) this;
+        return (LivingEntity) this;
     }
 
     private SynchedEntityData entityData()
@@ -46,6 +61,118 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     CommonAnimalData animalData();
 
     AnimalConfig animalConfig();
+
+    long getLastFamiliarityDecay();
+
+    void setLastFamiliarityDecay(long days);
+
+    void setLastFed(long fed);
+
+    long getLastFed();
+
+    void setMated(long time);
+
+    long getMated();
+
+    /**
+     * Is this animal hungry?
+     * @return true if this animal can be fed by player
+     */
+    default boolean isHungry()
+    {
+        return getLastFed() < Calendars.get().getTotalDays();
+    }
+
+    /**
+     * Which animal type is this? Do this animal lay eggs or give birth to it's offspring?
+     * @return the enum Type of this animal.
+     */
+    Type getTFCAnimalType();
+
+    /**
+     * Default tag checked by isFood (edible items)
+     */
+    TagKey<Item> getFoodTag();
+
+    /**
+     * Is it time to decay familiarity?
+     * If this entity was never fed(eg: newborn, wild) or wasn't fed yesterday (this is the starting of the second day)
+     */
+    default void tickFamiliarity()
+    {
+        Level level = getEntity().level;
+        if (!level.isClientSide() && level.getGameTime() % 20 == 0)
+        {
+            if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < Calendars.get().getTotalDays())
+            {
+                float familiarity = getFamiliarity();
+                if (familiarity < FAMILIARITY_DECAY_LIMIT)
+                {
+                    familiarity -= 0.02 * (Calendars.get().getTotalDays() - getLastFamiliarityDecay());
+                    setLastFamiliarityDecay(Calendars.get().getTotalDays());
+                    this.setFamiliarity(familiarity);
+                }
+            }
+        }
+    }
+
+    default InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        Level level = player.level;
+        ItemStack stack = player.getItemInHand(hand);
+        if (!stack.isEmpty())
+        {
+            if (stack.getItem() instanceof SpawnEggItem)
+            {
+                return InteractionResult.PASS; // let vanilla spawn a baby
+            }
+            else if (this.isFood(stack) && player.isShiftKeyDown())
+            {
+                if (this.isHungry())
+                {
+                    return eatFood(stack, hand, player);
+                }
+                else
+                {
+                    if (!level.isClientSide())
+                    {
+                        //Show tooltips
+                        if (this.isFertilized() && this.getTFCAnimalType() == Type.MAMMAL)
+                        {
+                            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getTypeName().getString()), true);
+                        }
+                    }
+                }
+                return InteractionResult.FAIL;
+            }
+        }
+        return InteractionResult.PASS;
+    }
+
+    private InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
+    {
+        Level level = getEntity().level;
+        getEntity().heal(1f);
+        if (!level.isClientSide)
+        {
+            final long days = Calendars.get().getTotalDays();
+            setLastFed(days);
+            setLastFamiliarityDecay(days); // no decay today
+            if (!player.isCreative()) stack.shrink(1);
+            if (getAgeType() == Age.CHILD || getFamiliarity() < getAdultFamiliarityCap())
+            {
+                float familiarity = getFamiliarity() + 0.06f;
+                if (getAgeType() != Age.CHILD)
+                {
+                    familiarity = Math.min(familiarity, getAdultFamiliarityCap());
+                }
+                setFamiliarity(familiarity);
+            }
+            getEntity().playSound(SoundEvents.PLAYER_BURP, 1f, 1f);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
 
     default void registerCommonData()
     {
@@ -63,6 +190,9 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         nbt.putBoolean("fertilized", isFertilized());
         nbt.putFloat("familiarity", getFamiliarity());
         nbt.putInt("uses", getUses());
+        nbt.putLong("fed", getLastFed());
+        nbt.putLong("decay", getLastFamiliarityDecay());
+        nbt.putLong("mating", getMated());
     }
 
     default void readCommonAnimalData(CompoundTag nbt)
@@ -72,6 +202,25 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setFertilized(nbt.getBoolean("fertilized"));
         setFamiliarity(nbt.getFloat("familiarity"));
         setUses(nbt.getInt("uses"));
+        setLastFed(nbt.getLong("fed"));
+        setLastFamiliarityDecay(nbt.getLong("decay"));
+    }
+
+    default void initCommonAnimalData()
+    {
+        setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
+        setBirthDay(EntityHelpers.getRandomGrowth(getEntity().getRandom(), getDaysToAdulthood()));
+        setFamiliarity(0);
+        setFertilized(false);
+        if (getEntity() instanceof AgeableMob mob)
+        {
+            mob.setAge(0);
+        }
+    }
+
+    default boolean isReadyToMate()
+    {
+        return getAgeType() == Age.ADULT && getFamiliarity() >= 0.3f && isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.SERVER.getTicks();
     }
 
     /**
@@ -253,39 +402,6 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         return animalConfig().eatsRottenFood().get();
     }
 
-
-    /**
-     * Default tag checked by isFood (edible items)
-     */
-    TagKey<Item> getFoodTag();
-
-
-    void setMated();
-
-    /**
-     * Check if this animal is ready to mate
-     *
-     * @return true if ready
-     */
-    default boolean isReadyToMate()
-    {
-        return this.getAgeType() == Age.ADULT && !(this.getFamiliarity() < 0.3f) && !this.isFertilized() && !this.isHungry();
-    }
-
-    /**
-     * Is this animal hungry?
-     *
-     * @return true if this animal can be fed by player
-     */
-    boolean isHungry();
-
-    /**
-     * Which animal type is this? Do this animal lay eggs or give birth to it's offspring?
-     *
-     * @return the enum Type of this animal.
-     */
-    Type getTFCAnimalType();
-
     /**
      * Some animals can give products (eg: Milk, Wool and Eggs)
      * This function returns if said animal is ready to be worked upon
@@ -332,13 +448,13 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     @Override
     default boolean displayMaleCharacteristics()
     {
-        return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.MALE;
+        return !getEntity().isBaby() && getGender() == TFCAnimalProperties.Gender.MALE;
     }
 
     @Override
     default boolean displayFemaleCharacteristics()
     {
-        return !((LivingEntity) getEntity()).isBaby() && getGender() == TFCAnimalProperties.Gender.FEMALE;
+        return !getEntity().isBaby() && getGender() == TFCAnimalProperties.Gender.FEMALE;
     }
 
     default boolean isFood(ItemStack stack)
@@ -352,6 +468,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
             }
         }
         return Helpers.isItem(stack, getFoodTag());
+    }
+
+    default Component getTypeName()
+    {
+        return new TranslatableComponent(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
     }
 
     enum Age
