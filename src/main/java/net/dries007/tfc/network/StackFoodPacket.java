@@ -97,7 +97,7 @@ public class StackFoodPacket
                 targetStack.setCount(currentAmount);
                 targetCap.setCreationDate(minCreationDate);
 
-                menu.broadcastChanges();
+                menu.slotsChanged(menu.getCraftSlots());
             }
         });
     }

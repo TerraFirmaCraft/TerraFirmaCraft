@@ -7,6 +7,38 @@
     "height": 2,
     "states": [
       {
+        "replace": "tfc:dirt/silt",
+        "with": "tfc:clay/silt"
+      },
+      {
+        "replace": "tfc:dirt/loam",
+        "with": "tfc:clay/loam"
+      },
+      {
+        "replace": "tfc:dirt/sandy_loam",
+        "with": "tfc:clay/sandy_loam"
+      },
+      {
+        "replace": "tfc:dirt/silty_loam",
+        "with": "tfc:clay/silty_loam"
+      },
+      {
+        "replace": "tfc:grass/silt",
+        "with": "tfc:clay_grass/silt"
+      },
+      {
+        "replace": "tfc:grass/loam",
+        "with": "tfc:clay_grass/loam"
+      },
+      {
+        "replace": "tfc:grass/sandy_loam",
+        "with": "tfc:clay_grass/sandy_loam"
+      },
+      {
+        "replace": "tfc:grass/silty_loam",
+        "with": "tfc:clay_grass/silty_loam"
+      },
+      {
         "replace": "tfc:mud/silt",
         "with": "tfc:clay/silt"
       },

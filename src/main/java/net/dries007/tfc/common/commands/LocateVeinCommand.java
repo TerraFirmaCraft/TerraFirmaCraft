@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.ResourceOrTagLocationArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -36,6 +37,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
+import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.world.feature.vein.Vein;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
@@ -46,8 +48,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 // todo: subcommand of new TFCLocate command?
 public class LocateVeinCommand
 {
-    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.unknown_vein", args));
-    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locatevein.vein_not_found", args));
+    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locate.unknown_vein", args));
+    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locate.vein_not_found", args));
 
     @Nullable private static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> VEINS_CACHE = null;
 
@@ -69,7 +71,7 @@ public class LocateVeinCommand
     public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
         return Commands.literal("locatevein").requires(source -> source.hasPermission(2))
-            .then(Commands.argument("vein", new VeinArgumentType())
+            .then(Commands.argument("vein", new VeinFeatureArgument())
                 .executes(context -> locateVein(context, context.getArgument("vein", ResourceLocation.class)))
             );
     }
@@ -101,7 +103,7 @@ public class LocateVeinCommand
                         continue;
                     }
 
-                    ((VeinFeature) vein.feature()).getVeinsAtChunk(world, generationContext, pos.x + dx, pos.z + dz, veins, (VeinConfig) vein.config(), random, biomeQuery);
+                    ((VeinFeature) vein.feature()).getVeinsAtChunk(world, generationContext, pos.x + dx, pos.z + dz, veins, (VeinConfig) vein.config(), biomeQuery);
                     if (!veins.isEmpty())
                     {
                         final BlockPos veinPos = veins.get(0).getPos();
@@ -114,7 +116,7 @@ public class LocateVeinCommand
     }
 
     /**
-     * Modified from {@link LocateCommand#showLocateResult(CommandSourceStack, String, BlockPos, BlockPos, String)} in order to also show the y position
+     * Modified from {@link LocateCommand#showLocateResult(CommandSourceStack, ResourceOrTagLocationArgument.Result, BlockPos, Pair, String)} in order to also show the y position
      */
     private static int showLocateResult(CommandSourceStack context, String nameOfThing, BlockPos source, BlockPos dest, String translationKey)
     {

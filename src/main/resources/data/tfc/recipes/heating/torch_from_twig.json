@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:heating",
   "ingredient": {
-    "tag": "forge:sand"
+    "tag": "tfc:twigs"
   },
   "result_item": {
-    "item": "minecraft:glass"
+    "item": "tfc:torch"
   },
-  "temperature": 400
+  "temperature": 60
 }

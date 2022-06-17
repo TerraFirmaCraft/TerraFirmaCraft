@@ -85,6 +85,7 @@ def generate(rm: ResourceManager):
     # Item Heats
 
     item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 0.35, 1535)
+    item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
     item_heat(rm, 'stick', '#forge:rods/wooden', 0.3)
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
     item_heat(rm, 'glass_shard', 'tfc:glass_shard', 1)

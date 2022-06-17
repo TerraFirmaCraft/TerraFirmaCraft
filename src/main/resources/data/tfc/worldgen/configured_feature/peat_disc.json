@@ -37,6 +37,22 @@
       {
         "replace": "tfc:grass/silty_loam",
         "with": "tfc:peat_grass"
+      },
+      {
+        "replace": "tfc:mud/silt",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/loam",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/sandy_loam",
+        "with": "tfc:peat"
+      },
+      {
+        "replace": "tfc:mud/silty_loam",
+        "with": "tfc:peat"
       }
     ]
   }

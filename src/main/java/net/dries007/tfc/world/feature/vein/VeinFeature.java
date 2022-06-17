@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.util.LinearCongruentialGenerator;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
@@ -24,7 +22,6 @@ import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
@@ -32,6 +29,7 @@ import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.EnvironmentHelpers;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends Feature<C>
 {
@@ -70,13 +68,13 @@ public abstract class VeinFeature<C extends VeinConfig, V extends Vein> extends 
         {
             for (int z = pos.z - radius; z <= pos.z + radius; z++)
             {
-                getVeinsAtChunk(level, context, x, z, veins, config, random, biomeQuery);
+                getVeinsAtChunk(level, context, x, z, veins, config, biomeQuery);
             }
         }
         return veins;
     }
 
-    public final void getVeinsAtChunk(WorldGenLevel level, WorldGenerationContext context, int chunkPosX, int chunkPosZ, List<V> veins, C config, Random random, Function<BlockPos, Holder<Biome>> biomeQuery)
+    public final void getVeinsAtChunk(WorldGenLevel level, WorldGenerationContext context, int chunkPosX, int chunkPosZ, List<V> veins, C config, Function<BlockPos, Holder<Biome>> biomeQuery)
     {
         final RandomSource forkedRandom = config.random(level.getSeed(), chunkPosX, chunkPosZ);
         if (config.random(level.getSeed(), chunkPosX, chunkPosZ).nextInt(config.getRarity()) == 0)

@@ -16,7 +16,7 @@ Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=
 Wood = NamedTuple('Wood', temp=float, duration=int)
 Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=BerryBushType, min_forest=str, max_forest=str)
 Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
-Crop = NamedTuple('Crop', type=str, stages=int, nutrient=str, min_temp=int, max_temp=int, min_hydration=int, max_hydration=int)
+Crop = NamedTuple('Crop', type=str, stages=int, nutrient=str, min_temp=int, max_temp=int, min_rain=int, max_rain=int, min_hydration=int, max_hydration=int, min_forest=Optional[str], max_forest=Optional[str])
 
 # Melting Temps
 POTTERY_MELT = 1200 - 1
@@ -335,26 +335,29 @@ WOODS: Dict[str, Wood] = {
     'willow': Wood(603, 1000)
 }
 
-# todo: make the nutrients accurate, and make proper climate ranges for these
+# DO NOT EDIT DIRECTLY - Imported directly from spreadsheet
+# https://docs.google.com/spreadsheets/d/1Ghw3dCmVO5Gv0MMGBydUxox_nwLYmmcZkGSbbf0QSAE/
 CROPS: Dict[str, Crop] = {
-    'barley': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
-    'oat': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
-    'rye': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
-    'maize': Crop('double', 6, 'nitrogen', 5, 25, 40, 100),
-    'wheat': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
-    'rice': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
-    'beet': Crop('default', 6, 'nitrogen', 5, 25, 40, 100),
-    'cabbage': Crop('default', 6, 'nitrogen', 5, 25, 40, 100),
-    'carrot': Crop('default', 5, 'nitrogen', 5, 25, 40, 100),
-    'garlic': Crop('default', 5, 'nitrogen', 5, 25, 40, 100),
-    'green_bean': Crop('double_stick', 8, 'nitrogen', 5, 25, 40, 100),
-    'potato': Crop('default', 7, 'nitrogen', 5, 25, 40, 100),
-    'onion': Crop('default', 7, 'nitrogen', 5, 25, 40, 100),
-    'soybean': Crop('default', 7, 'nitrogen', 5, 25, 40, 100),
-    'squash': Crop('default', 8, 'nitrogen', 5, 25, 40, 100),
-    'sugarcane': Crop('double', 8, 'nitrogen', 5, 25, 40, 100),
-    'tomato': Crop('double_stick', 8, 'nitrogen', 5, 25, 40, 100),
-    'jute': Crop('double', 6, 'nitrogen', 5, 25, 40, 100)
+    # Grains
+    'barley': Crop('default', 8, 'nitrogen', -8, 26, 70, 310, 18, 75, None, 'edge'),
+    'oat': Crop('default', 8, 'phosphorus', 3, 40, 140, 400, 35, 100, None, 'edge'),
+    'rye': Crop('default', 8, 'phosphorus', -11, 30, 100, 350, 25, 85, None, 'edge'),
+    'maize': Crop('double', 6, 'phosphorus', 13, 40, 300, 500, 75, 100, None, 'edge'),
+    'wheat': Crop('default', 8, 'phosphorus', -4, 35, 100, 400, 25, 100, None, 'edge'),
+    'rice': Crop('default', 8, 'phosphorus', 15, 30, 100, 500, 25, 100, 'normal', None),
+    # Vegetables
+    'beet': Crop('default', 6, 'potassium', -5, 20, 70, 300, 18, 85, None, None),
+    'cabbage': Crop('default', 6, 'nitrogen', -10, 27, 60, 280, 15, 65, None, None),
+    'carrot': Crop('default', 5, 'potassium', 3, 30, 100, 400, 25, 100, None, None),
+    'garlic': Crop('default', 5, 'nitrogen', -20, 18, 60, 310, 15, 75, None, None),
+    'green_bean': Crop('double_stick', 8, 'nitrogen', 2, 35, 150, 410, 38, 100, 'normal', None),
+    'potato': Crop('default', 7, 'potassium', -1, 37, 200, 410, 50, 100, None, None),
+    'onion': Crop('default', 7, 'nitrogen', 0, 30, 100, 390, 25, 90, None, None),
+    'soybean': Crop('default', 7, 'nitrogen', 8, 30, 160, 410, 40, 100, 'normal', None),
+    'squash': Crop('default', 8, 'potassium', 5, 33, 90, 390, 23, 95, 'normal', None),
+    'sugarcane': Crop('double', 8, 'potassium', 12, 38, 160, 500, 40, 100, None, None),
+    'tomato': Crop('double_stick', 8, 'potassium', 0, 36, 120, 390, 30, 95, 'normal', None),
+    'jute': Crop('double', 6, 'potassium', 5, 37, 100, 410, 25, 100, None, None),
 }
 
 PLANTS: Dict[str, Plant] = {
@@ -845,8 +848,8 @@ DEFAULT_LANG = {
     'tfc.commands.player.query_water': 'Water is %s / 100',
     'tfc.commands.player.query_nutrition': 'Player nutrition:',
     'tfc.commands.player.fail_invalid_food_stats': 'Player does not have any TFC nutrition or hydration data',
-    'tfc.commands.locatevein.unknown_vein': 'Unknown vein: %s',
-    'tfc.commands.locatevein.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
+    'tfc.commands.locate.unknown_vein': 'Unknown vein: %s',
+    'tfc.commands.locate.vein_not_found': 'Unable to find vein %s within reasonable distance (16 chunks radius)',
     'tfc.commands.locate.invalid_biome': 'Invalid biome: \"%s\"',
     'tfc.commands.locate.invalid_biome_source': 'This world does not have a compatible biome source',
     'tfc.commands.locate.not_found': 'Could not find a biome of type \"%s\" within reasonable distance',

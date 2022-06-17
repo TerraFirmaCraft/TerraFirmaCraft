@@ -1,5 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "feature": "tfc:water_clay_disc_with_indicator",
-  "placement": []
+  "ingredient": {
+    "tag": "tfc:twigs"
+  },
+  "heat_capacity": 0.6
 }

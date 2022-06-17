@@ -67,7 +67,6 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -99,7 +98,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.commands.LocateVeinCommand;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
@@ -151,7 +149,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkUnload);
         bus.addListener(ForgeEventHandler::onChunkDataSave);
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
-        bus.addListener(ForgeEventHandler::onServerStart);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -402,11 +399,6 @@ public final class ForgeEventHandler
         {
             generator.getChunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
-    }
-
-    public static void onServerStart(ServerStartingEvent event)
-    {
-        LocateVeinCommand.reloadVeinsCache(event.getServer());
     }
 
     public static void registerCommands(RegisterCommandsEvent event)

@@ -5,8 +5,7 @@
     "tfc:dirt/silt",
     "tfc:grass/silt",
     "tfc:grass_path/silt",
-    "tfc:farmland/silt",
-    "tfc:rooted_dirt/silt"
+    "tfc:farmland/silt"
   ],
   "result": "tfc:dirt/silt"
 }

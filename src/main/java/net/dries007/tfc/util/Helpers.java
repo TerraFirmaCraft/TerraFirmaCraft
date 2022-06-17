@@ -69,7 +69,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -576,49 +575,36 @@ public final class Helpers
     }
 
     /**
-     * {@link net.minecraft.world.level.material.LavaFluid#randomTick(Level, BlockPos, FluidState, Random)}
+     * Attempts to spread fire, walking upwards up to {@code iterations} blocks tall.
+     * Walks upwards in a inverted cone, meaning a full layer of solid motion blocking blocks can prevent fire spread above it
+     *
+     * @see net.minecraft.world.level.material.LavaFluid#randomTick(Level, BlockPos, FluidState, Random)
      */
-    public static void fireSpreaderTick(ServerLevel level, BlockPos spreaderPos, Random random, int horizontalRange)
+    public static void fireSpreaderTick(ServerLevel level, BlockPos spreaderPos, Random random, int iterations)
     {
         if (level.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK))
         {
-            int tries = random.nextInt(3);
-            if (tries > 0)
+            BlockPos pos = spreaderPos;
+            for (int i = 0; i < iterations; ++i)
             {
-                BlockPos pos = spreaderPos;
-
-                for(int j = 0; j < tries; ++j)
+                pos = pos.offset(random.nextInt(3) - 1, 1, random.nextInt(3) - 1);
+                if (!level.isLoaded(pos))
                 {
-                    pos = pos.offset(random.nextInt(horizontalRange) - 1, 1, random.nextInt(horizontalRange) - 1);
-                    if (!level.isLoaded(pos)) return;
+                    return;
+                }
 
-                    BlockState state = level.getBlockState(pos);
-                    if (state.isAir())
+                final BlockState state = level.getBlockState(pos);
+                if (state.isAir())
+                {
+                    if (hasFlammableNeighbours(level, pos))
                     {
-                        if (hasFlammableNeighbours(level, pos))
-                        {
-                            level.setBlockAndUpdate(pos, ForgeEventFactory.fireFluidPlaceBlockEvent(level, pos, spreaderPos, Blocks.FIRE.defaultBlockState()));
-                            return;
-                        }
-                    }
-                    else if (state.getMaterial().blocksMotion())
-                    {
+                        level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                         return;
                     }
                 }
-            }
-            else
-            {
-                for(int i = 0; i < 3; ++i)
+                else if (state.getMaterial().blocksMotion())
                 {
-                    BlockPos offsetPos = spreaderPos.offset(random.nextInt(horizontalRange) - 1, 0, random.nextInt(horizontalRange) - 1);
-                    if (!level.isLoaded(offsetPos)) return;
-
-                    BlockPos above = offsetPos.above();
-                    if (level.isEmptyBlock(above) && level.getBlockState(offsetPos).isFlammable(level, spreaderPos, Direction.UP))
-                    {
-                        level.setBlockAndUpdate(above, ForgeEventFactory.fireFluidPlaceBlockEvent(level, above, spreaderPos, Blocks.FIRE.defaultBlockState()));
-                    }
+                    return;
                 }
             }
         }
