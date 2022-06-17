@@ -183,6 +183,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
+    rm.item_tag('fox_spawns_with', 'minecraft:rabbits_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')

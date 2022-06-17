@@ -25,6 +25,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
@@ -41,6 +42,15 @@ public class TFCFox extends Fox
     public TFCFox(EntityType<? extends Fox> type, Level level)
     {
         super(type, level);
+    }
+
+    @Override
+    protected void populateDefaultEquipmentSlots(DifficultyInstance instance)
+    {
+        if (random.nextFloat() < 0.15f)
+        {
+            Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.FOX_SPAWNS_WITH, random).ifPresent(item -> setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(item)));
+        }
     }
 
     @Override

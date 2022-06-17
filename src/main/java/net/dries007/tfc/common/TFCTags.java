@@ -167,6 +167,7 @@ public class TFCTags
         public static final TagKey<Item> CAN_BE_SALTED = create("foods/can_be_salted");
         public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
         public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
+        public static final TagKey<Item> FOX_SPAWNS_WITH = create("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
 
         private static TagKey<Item> create(String id)
         {
