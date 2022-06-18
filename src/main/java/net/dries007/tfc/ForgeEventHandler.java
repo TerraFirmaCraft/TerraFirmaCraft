@@ -74,6 +74,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
@@ -1051,6 +1052,11 @@ public final class ForgeEventHandler
         Metal.updateMetalFluidMap();
         ItemSizeManager.applyItemStackSizeOverrides();
         FoodCapability.markRecipeOutputsAsNonDecaying();
+
+        if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
+        {
+            ClientHelpers.updateSearchTrees();
+        }
     }
 
     /**

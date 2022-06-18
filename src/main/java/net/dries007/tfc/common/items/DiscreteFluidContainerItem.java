@@ -8,12 +8,14 @@ package net.dries007.tfc.common.items;
 
 import java.util.function.Supplier;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -24,6 +26,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.capabilities.DiscreteItemStackFluidHandler;
 import net.dries007.tfc.common.fluids.FluidHelpers;
@@ -107,6 +110,21 @@ public class DiscreteFluidContainerItem extends Item
             return fluid.getDisplayName().copy().append(" ").append(super.getName(stack));
         }
         return super.getName(stack);
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items)
+    {
+        if (allowdedIn(category))
+        {
+            items.add(new ItemStack(this)); // Empty
+            for (Fluid fluid : Helpers.getAllTagValues(whitelist, ForgeRegistries.FLUIDS))
+            {
+                final ItemStack stack = new ItemStack(this);
+                stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(c -> c.fill(new FluidStack(fluid, FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE));
+                items.add(stack);
+            }
+        }
     }
 
     @Override

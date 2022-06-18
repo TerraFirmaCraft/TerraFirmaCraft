@@ -1,44 +1,35 @@
 # Loader metadata
-modLoader = "javafml" # mandatory
-loaderVersion = "[40,)" # mandatory
+modLoader = "javafml"
+loaderVersion = "[40,)"
 license = "EUPL-1.2"
 issueTrackerURL = "https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues"
 
 # TFC
 [[mods]]
-    modId = "tfc" # mandatory
-    version = "${file.jarVersion}" #mandatory
-    displayName = "TerraFirmaCraft" #mandatory
-    # A URL to query for updates for this mod. See the JSON update specification <here>
-    #updateJSONURL="http://myurl.me/" #optional
-    # A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="http://example.com/" #optional
-# A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
-# A text field displayed in the mod UI
-credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty. Music by Mike \"Menoch\" Pelaez" #optional
-# A text field displayed in the mod UI
-authors = "AlcatrazEscapee" #optional
-# The description text for the mod (multi line!) (#mandatory)
-description = '''TerraFirmaCraft - The Next Generation'''
+    modId = "tfc"
+    version = "${file.jarVersion}"
+    displayName = "TerraFirmaCraft"
+    credits = "By AlcatrazEscapee, Disastermoo, Dries007, Bunsan, Claycorp, DavidTriphon, EERussianguy, Gaelmare, and many others. Based on the original work by Bioxx, Dunk, and Kitty. Music by Mike \"Menoch\" Pelaez"
+    authors = "AlcatrazEscapee"
+    description = '''TerraFirmaCraft - The Next Generation'''
 
 # Dependencies
 [[dependencies.tfc]]
-modId = "patchouli"
-mandatory = true
-versionRange = "[1.18.2-67,)"
-ordering = "NONE"
-side = "BOTH"
+    modId = "patchouli"
+    mandatory = true
+    versionRange = "[1.18.2-67,)"
+    ordering = "NONE"
+    side = "BOTH"
 
 [[dependencies.tfc]]
-modId = "forge"
-mandatory = true
-versionRange = "[40.1.0,)"
-ordering = "AFTER"
-side = "BOTH"
+    modId = "forge"
+    mandatory = true
+    versionRange = "[40.1.29,)"
+    ordering = "AFTER"
+    side = "BOTH"
 
 [[dependencies.tfc]]
-modId = "minecraft"
+    modId = "minecraft"
     mandatory = true
     versionRange = "[1.18.2,)"
     ordering = "AFTER"

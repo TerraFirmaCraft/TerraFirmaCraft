@@ -21,8 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -71,12 +69,6 @@ public class BarrelBlock extends SealableDeviceBlock
                 return InteractionResult.SUCCESS;
             }
             else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))
-            {
-                return InteractionResult.SUCCESS;
-            }
-            else if (barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                .map(cap -> FluidUtil.interactWithFluidHandler(player, hand, cap))
-                .orElse(false))
             {
                 return InteractionResult.SUCCESS;
             }
