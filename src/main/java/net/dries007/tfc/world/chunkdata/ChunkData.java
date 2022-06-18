@@ -32,22 +32,22 @@ public class ChunkData implements ICapabilitySerializable<CompoundTag>
     private static final float UNKNOWN_RAINFALL = 250;
     private static final float UNKNOWN_TEMPERATURE = 10;
 
-    public static ChunkData get(LevelReader world, BlockPos pos)
+    public static ChunkData get(LevelReader level, BlockPos pos)
     {
-        return get(world, new ChunkPos(pos));
+        return get(level, new ChunkPos(pos));
     }
 
     /**
      * Called to get chunk data when a world context is available.
      */
     @SuppressWarnings("deprecation")
-    public static ChunkData get(LevelReader world, ChunkPos pos)
+    public static ChunkData get(LevelReader level, ChunkPos pos)
     {
         // Query cache first, picking the correct cache for the current logical side
-        ChunkData data = ChunkDataCache.get(world).get(pos);
+        ChunkData data = ChunkDataCache.get(level).get(pos);
         if (data == null)
         {
-            return getCapability(world.hasChunk(pos.x, pos.z) ? world.getChunk(pos.getWorldPosition()) : null).orElse(ChunkData.EMPTY);
+            return getCapability(level.hasChunk(pos.x, pos.z) ? level.getChunk(pos.getWorldPosition()) : null).orElse(ChunkData.EMPTY);
         }
         return data;
     }

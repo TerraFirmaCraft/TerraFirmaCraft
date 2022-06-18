@@ -47,7 +47,7 @@ public class MountainSurfaceBuilder implements SurfaceBuilder
         }
         else
         {
-            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
+            surfaceBuilder.buildSurface(context, startY, endY, SurfaceStates.GRASS, SurfaceStates.DIRT, SurfaceStates.SANDSTONE_OR_GRAVEL);
         }
     }
 }

@@ -23,7 +23,7 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 
 public final class TFCCommands
 {
-    public static final Supplier<SuggestionProvider<CommandSourceStack>> TFC_BIOMES = register("available_biomes", (context, builder) -> SharedSuggestionProvider.suggestResource(TFCBiomes.getVariantsKeys(), builder));
+    public static final Supplier<SuggestionProvider<CommandSourceStack>> TFC_BIOMES = register("available_biomes", (context, builder) -> SharedSuggestionProvider.suggestResource(TFCBiomes.getExtensionKeys(), builder));
 
     public static void registerSuggestionProviders()
     {

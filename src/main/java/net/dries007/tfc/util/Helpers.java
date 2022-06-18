@@ -68,7 +68,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -135,6 +134,13 @@ public final class Helpers
     public static <T> Capability<T> capability(CapabilityToken<T> token)
     {
         return BOOTSTRAP_ENVIRONMENT ? null : CapabilityManager.get(token);
+    }
+
+    @Nullable
+    @SuppressWarnings("ConstantConditions")
+    public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability)
+    {
+        return provider.getCapability(capability).orElse(null);
     }
 
     /**
@@ -226,11 +232,6 @@ public final class Helpers
     public static void resetCounter(Level level, BlockPos pos)
     {
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
-    }
-
-    public static <T> LazyOptional<T> getCapability(@Nullable ICapabilityProvider provider, Capability<T> capability)
-    {
-        return provider == null ? LazyOptional.empty() : provider.getCapability(capability);
     }
 
     public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)

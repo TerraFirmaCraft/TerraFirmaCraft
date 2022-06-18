@@ -35,7 +35,7 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
         final HeatingRecipe heatRecipe = HeatingRecipe.getRecipe(stack);
         if (heatRecipe != null)
         {
-            final FluidStack moltenFluid = heatRecipe.getOutputFluid(inventory);
+            final FluidStack moltenFluid = heatRecipe.getOutputFluid();
             for (BlastFurnaceRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE).values())
             {
                 if (recipe.inputFluid.ingredient().test(moltenFluid.getFluid()))
@@ -98,7 +98,7 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
         if (heat != null)
         {
             // Ignore count, since the blast furnace will aggregate all inputs
-            final FluidStack fluid = heat.getOutputFluid(new ItemStackInventory(stack));
+            final FluidStack fluid = heat.getOutputFluid();
             return inputFluid.ingredient().test(fluid.getFluid());
         }
         return false;

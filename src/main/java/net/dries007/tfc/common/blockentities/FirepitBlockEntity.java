@@ -6,8 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -25,6 +23,7 @@ import net.dries007.tfc.common.container.FirepitContainer;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -70,7 +69,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
 
                     // Handle outputs
                     mergeOutputStack(recipe.assemble(wrapper));
-                    mergeOutputFluids(recipe.getOutputFluid(wrapper), cap.getTemperature());
+                    mergeOutputFluids(recipe.getOutputFluid(), cap.getTemperature());
                 }
             });
         }

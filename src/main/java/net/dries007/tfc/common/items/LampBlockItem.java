@@ -8,10 +8,6 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.util.loot.CopyFluidFunction;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,10 +22,13 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
+import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.LampFuel;
+import net.dries007.tfc.util.loot.CopyFluidFunction;
+import org.jetbrains.annotations.Nullable;
 
 public class LampBlockItem extends BlockItem
 {
@@ -63,7 +62,10 @@ public class LampBlockItem extends BlockItem
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag)
     {
         FluidStack fluid = getFluidInside(stack);
-        if (!fluid.isEmpty()) Helpers.addFluidStackTooltipInfo(fluid, tooltip);
+        if (!fluid.isEmpty())
+        {
+            Helpers.addFluidStackTooltipInfo(fluid, tooltip);
+        }
     }
 
     private FluidStack getFluidInside(ItemStack stack)

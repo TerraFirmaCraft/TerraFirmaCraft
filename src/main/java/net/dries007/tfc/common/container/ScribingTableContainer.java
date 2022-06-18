@@ -14,7 +14,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.ItemCombinerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -23,6 +22,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.wood.ScribingTableBlock;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +43,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
         for (int tank = 0; tank < handler.getTanks(); tank++)
         {
             FluidStack fluidStack = handler.getFluidInTank(tank);
-            if (Helpers.isFluid(fluidStack.getFluid(), TFCTags.Fluids.SCRIBING_INK) && fluidStack.getAmount() >= FluidAttributes.BUCKET_VOLUME)
+            if (Helpers.isFluid(fluidStack.getFluid(), TFCTags.Fluids.SCRIBING_INK) && fluidStack.getAmount() >= FluidHelpers.BUCKET_VOLUME)
                 return fluidStack;
         }
         return FluidStack.EMPTY;
@@ -73,7 +73,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
         inputSlots.setItem(0, ItemStack.EMPTY);
         ItemStack dye = inputSlots.getItem(1);
         inputSlots.setItem(1, dye.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(handler -> {
-            handler.drain(new FluidStack(getInkFluid(handler), FluidAttributes.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE);
+            handler.drain(new FluidStack(getInkFluid(handler), FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE);
             return handler.getContainer();
         }).orElseGet(() -> {
             ItemStack result = dye.copy();

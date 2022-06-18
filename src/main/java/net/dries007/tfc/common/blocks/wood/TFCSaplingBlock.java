@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Random;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -20,13 +19,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -47,13 +46,15 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         if (level.getMaxLocalRawBrightness(pos.above()) >= 9 && random.nextInt(7) == 0)
         {
-            //noinspection deprecation
             if (!level.isAreaLoaded(pos, 1))
-                return; // Forge: prevent loading unloaded chunks when checking neighbor's light
+            {
+                return;
+            }
             level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
                 long days = counter.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
                 if (days > daysToGrow)

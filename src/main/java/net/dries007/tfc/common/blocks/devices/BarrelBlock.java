@@ -29,6 +29,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -67,6 +68,10 @@ public class BarrelBlock extends SealableDeviceBlock
             {
                 toggleSeal(level, pos, state);
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
+                return InteractionResult.SUCCESS;
+            }
+            else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))
+            {
                 return InteractionResult.SUCCESS;
             }
             else if (barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)

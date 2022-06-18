@@ -19,7 +19,7 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
     @Override
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY)
     {
-        buildSurface(context, startY, endY, SurfaceStates.TOP_SOIL, SurfaceStates.MID_SOIL, SurfaceStates.LOW_SOIL);
+        buildSurface(context, startY, endY, SurfaceStates.GRASS, SurfaceStates.DIRT, SurfaceStates.SANDSTONE_OR_GRAVEL);
     }
 
     public void buildSurface(SurfaceBuilderContext context, int startY, int endY, SurfaceState topState, SurfaceState midState, SurfaceState underState)
@@ -49,13 +49,13 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                         {
                             // Place one subsurface layer, skipping the top layer entirely
                             surfaceDepth = 0;
-                            context.setBlockState(y, SurfaceStates.LOW_UNDERWATER);
+                            context.setBlockState(y, SurfaceStates.SANDSTONE_OR_GRAVEL);
                         }
                         else
                         {
-                            context.setBlockState(y, SurfaceStates.TOP_UNDERWATER);
+                            context.setBlockState(y, SurfaceStates.SAND_OR_GRAVEL);
                         }
-                        surfaceState = SurfaceStates.TOP_UNDERWATER;
+                        surfaceState = SurfaceStates.SAND_OR_GRAVEL;
                         underwaterLayer = true;
                     }
                     else
@@ -88,7 +88,7 @@ public enum NormalSurfaceBuilder implements SurfaceBuilderFactory.Invariant
                             if (underwaterLayer)
                             {
                                 surfaceDepth = context.calculateAltitudeSlopeSurfaceDepth(surfaceY, 4, 0.4, 0);
-                                surfaceState = SurfaceStates.LOW_UNDERWATER;
+                                surfaceState = SurfaceStates.SANDSTONE_OR_GRAVEL;
                             }
                             else
                             {

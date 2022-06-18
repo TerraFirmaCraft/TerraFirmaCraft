@@ -8,18 +8,17 @@ package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Random;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.server.level.ServerLevel;
 
 import net.dries007.tfc.config.TFCConfig;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public class MossSpreadingBlock extends Block
 {
+    @SuppressWarnings("deprecation")
     public static void spreadMoss(Level world, BlockPos pos, Random random)
     {
         if (world.isAreaLoaded(pos, 5) && TFCConfig.SERVER.enableMossyRockSpreading.get() && random.nextInt(TFCConfig.SERVER.mossyRockSpreadRate.get()) == 0)

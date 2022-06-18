@@ -21,12 +21,11 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.phys.AABB;
-
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
-import net.dries007.tfc.common.items.TFCBucketItem;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.TFCItems;
 
 public class DispenserBehaviors
@@ -58,11 +57,10 @@ public class DispenserBehaviors
         @Override
         public ItemStack execute(BlockSource source, ItemStack stack)
         {
-            TFCBucketItem bucket = (TFCBucketItem) stack.getItem();
             BlockPos dropPos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
             Level level = source.getLevel();
             return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(handler -> {
-                if (bucket.emptyContents(handler, null, level, dropPos, level.getBlockState(dropPos), null))
+                if (FluidHelpers.emptyFluidFrom(handler, level, dropPos, level.getBlockState(dropPos), null, true))
                 {
                     // if we wanted to check extra content, we would do that here.
                     return stack.getContainerItem();

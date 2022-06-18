@@ -187,7 +187,6 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
     @Nullable
     public Pair<BlockPos, Holder<Biome>> findBiomeHorizontal(int blockX, int blockY, int blockZ, int maxRadius, int step, Predicate<Holder<Biome>> biome, Random random, boolean findClosest, @Nullable Climate.Sampler sampler)
     {
-        // todo: can we avoid querying getNoiseBiome and instead query getNoiseBiomeIgnoreClimate ? as it causes a chunk data lookup which we don't have
         final int minQuartX = QuartPos.fromBlock(blockX);
         final int minQuartZ = QuartPos.fromBlock(blockZ);
         final int maxQuartRadius = QuartPos.fromBlock(maxRadius);

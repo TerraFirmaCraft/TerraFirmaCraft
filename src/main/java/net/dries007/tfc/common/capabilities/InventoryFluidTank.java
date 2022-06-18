@@ -30,6 +30,6 @@ public class InventoryFluidTank extends FluidTank
     @Override
     protected void onContentsChanged()
     {
-        callback.fluidTankChanged(this);
+        callback.fluidTankChanged();
     }
 }

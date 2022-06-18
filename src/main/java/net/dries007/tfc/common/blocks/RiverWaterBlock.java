@@ -17,11 +17,11 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.fluids.BucketPickupExtension;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.world.river.Flow;
 
@@ -46,7 +46,7 @@ public class RiverWaterBlock extends LiquidBlock implements BucketPickupExtensio
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
             }
             // Always pickup into water
-            return new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME);
+            return new FluidStack(Fluids.WATER, FluidHelpers.BUCKET_VOLUME);
         }
         else
         {

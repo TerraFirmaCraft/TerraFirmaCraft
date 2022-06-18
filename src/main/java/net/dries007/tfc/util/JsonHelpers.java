@@ -21,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -31,6 +30,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public final class JsonHelpers extends GsonHelper
 {
@@ -125,7 +125,7 @@ public final class JsonHelpers extends GsonHelper
 
     public static FluidStack getFluidStack(JsonObject json)
     {
-        final int amount = GsonHelper.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
+        final int amount = GsonHelper.getAsInt(json, "amount", FluidHelpers.BUCKET_VOLUME);
         final Fluid fluid = getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
         return new FluidStack(fluid, amount);
     }

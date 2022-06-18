@@ -8,13 +8,9 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 
-import net.dries007.tfc.util.loot.CopyFluidFunction;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -40,8 +36,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-
 import net.dries007.tfc.common.blockentities.LampBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
@@ -49,8 +43,8 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.loot.CopyFluidFunction;
+import org.jetbrains.annotations.Nullable;
 
 public class LampBlock extends ExtendedBlock implements EntityBlockExtension
 {
@@ -108,13 +102,8 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
             }
             else if (!state.getValue(LIT))
             {
-                if (stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent())
+                if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
                 {
-                    if (FluidHelpers.itemInteractsWithFluidHandler(stack, lamp, TFCConfig.SERVER.lampCapacity.get(), player))
-                    {
-                        Helpers.playSound(level, pos, SoundEvents.BUCKET_EMPTY);
-                        player.playSound(SoundEvents.BUCKET_EMPTY, 1.0F, 1.0F);
-                    }
                     lamp.markForSync();
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }

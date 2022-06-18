@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -21,6 +20,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.PotRecipe;
 
@@ -39,7 +39,7 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
         final FluidStack fluidStack = pot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             .map(cap -> cap.getFluidInTank(0))
             .filter(f -> !f.isEmpty())
-            .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidAttributes.BUCKET_VOLUME) : FluidStack.EMPTY);
+            .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidHelpers.BUCKET_VOLUME) : FluidStack.EMPTY);
         if (!fluidStack.isEmpty())
         {
             int color = useDefaultFluid ? TFCFluids.ALPHA_MASK | 0xA64214 : RenderHelpers.getFluidColor(fluidStack);

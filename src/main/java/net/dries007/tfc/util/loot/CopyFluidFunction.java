@@ -16,30 +16,38 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class CopyFluidFunction extends LootItemConditionalFunction
 {
-    public static void copyToItem(ItemStack stack, @Nullable BlockEntity be)
+    public static ItemStack copyToItem(ItemStack stack, @Nullable BlockEntity entity)
     {
-        if (be == null || stack.isEmpty()) return;
-        stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemCap -> {
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(cap -> {
-                FluidHelpers.transferUpTo(cap, itemCap, cap.getFluidInTank(0).getAmount());
-            });
-        });
+        return copy(stack, entity, true);
     }
 
-    public static void copyFromItem(ItemStack stack, @Nullable BlockEntity be)
+    public static ItemStack copyFromItem(ItemStack stack, @Nullable BlockEntity entity)
     {
-        if (be == null || stack.isEmpty()) return;
-        stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemCap -> {
-            be.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(cap -> {
-                FluidHelpers.transferUpTo(itemCap, cap, itemCap.getFluidInTank(0).getAmount());
-            });
-        });
+        return copy(stack, entity, false);
+    }
+
+    private static ItemStack copy(ItemStack stack, @Nullable BlockEntity entity, boolean toItem)
+    {
+        if (entity != null && !stack.isEmpty())
+        {
+            final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+            final IFluidHandler blockHandler = Helpers.getCapability(entity, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+            if (itemHandler != null && blockHandler != null)
+            {
+                FluidHelpers.transferUpTo(toItem ? blockHandler : itemHandler, toItem ? itemHandler : blockHandler, Integer.MAX_VALUE);
+                return itemHandler.getContainer();
+            }
+        }
+        return stack;
     }
 
     public CopyFluidFunction(LootItemCondition[] conditions)
@@ -58,7 +66,7 @@ public class CopyFluidFunction extends LootItemConditionalFunction
     {
         if (context.hasParam(LootContextParams.BLOCK_ENTITY))
         {
-            copyToItem(stack, context.getParam(LootContextParams.BLOCK_ENTITY));
+            return copyToItem(stack, context.getParam(LootContextParams.BLOCK_ENTITY));
         }
         return stack;
     }
@@ -66,7 +74,7 @@ public class CopyFluidFunction extends LootItemConditionalFunction
     public static class Serializer extends LootItemConditionalFunction.Serializer<CopyFluidFunction>
     {
         @Override
-        public CopyFluidFunction deserialize(JsonObject json, JsonDeserializationContext ctx, LootItemCondition[] conditions)
+        public CopyFluidFunction deserialize(JsonObject json, JsonDeserializationContext context, LootItemCondition[] conditions)
         {
             return new CopyFluidFunction(conditions);
         }

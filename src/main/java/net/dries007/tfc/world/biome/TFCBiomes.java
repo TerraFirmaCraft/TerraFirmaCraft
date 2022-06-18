@@ -34,7 +34,7 @@ public final class TFCBiomes
 {
     public static final DeferredRegister<Biome> BIOMES = DeferredRegister.create(ForgeRegistries.BIOMES, MOD_ID);
 
-    private static final Map<ResourceKey<Biome>, BiomeExtension> VARIANTS = new IdentityHashMap<>();
+    private static final Map<ResourceKey<Biome>, BiomeExtension> EXTENSIONS = new IdentityHashMap<>();
 
     // Aquatic biomes
     public static final BiomeExtension OCEAN = register("ocean", builder().heightmap(seed -> BiomeNoise.ocean(seed, -26, -12)).surface(OceanSurfaceBuilder.INSTANCE).aquiferHeightOffset(-24).salty().group(BiomeExtension.Group.OCEAN)); // Ocean biome found near continents.
@@ -96,6 +96,7 @@ public final class TFCBiomes
     }
 
     @Nullable
+    @SuppressWarnings("ConstantConditions")
     public static BiomeExtension getExtension(CommonLevelAccessor level, Biome biome)
     {
         return ((BiomeBridge) (Object) biome).tfc$getExtension(() -> findExtension(level, biome));
@@ -103,23 +104,23 @@ public final class TFCBiomes
 
     public static Collection<ResourceKey<Biome>> getAllKeys()
     {
-        return VARIANTS.keySet();
+        return EXTENSIONS.keySet();
     }
 
-    public static Collection<BiomeExtension> getVariants()
+    public static Collection<BiomeExtension> getExtensions()
     {
-        return VARIANTS.values();
+        return EXTENSIONS.values();
     }
 
-    public static Collection<ResourceLocation> getVariantsKeys()
+    public static Collection<ResourceLocation> getExtensionKeys()
     {
-        return VARIANTS.keySet().stream().map(ResourceKey::location).toList();
+        return EXTENSIONS.keySet().stream().map(ResourceKey::location).toList();
     }
 
     @Nullable
     public static BiomeExtension getById(ResourceLocation id)
     {
-        return VARIANTS.get(ResourceKey.create(Registry.BIOME_REGISTRY, id));
+        return EXTENSIONS.get(ResourceKey.create(Registry.BIOME_REGISTRY, id));
     }
 
     @Nullable
@@ -127,7 +128,7 @@ public final class TFCBiomes
     {
         final RegistryAccess registryAccess = level.registryAccess();
         final Registry<Biome> registry = registryAccess.registryOrThrow(Registry.BIOME_REGISTRY);
-        return registry.getResourceKey(biome).map(VARIANTS::get).orElse(null);
+        return registry.getResourceKey(biome).map(EXTENSIONS::get).orElse(null);
     }
 
     private static BiomeExtension register(String name, BiomeBuilder builder)
@@ -136,7 +137,7 @@ public final class TFCBiomes
         final ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, id);
         final BiomeExtension variants = builder.build(key);
 
-        VARIANTS.put(key, variants);
+        EXTENSIONS.put(key, variants);
         TFCBiomes.BIOMES.register(name, OverworldBiomes::theVoid);
 
         return variants;

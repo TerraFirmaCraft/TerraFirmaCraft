@@ -18,7 +18,6 @@ import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 
@@ -66,7 +65,7 @@ public interface IFluidLoggable extends SimpleWaterloggedBlock, LiquidBlockConta
         if (containedFluid != Fluids.EMPTY)
         {
             worldIn.setBlock(pos, state.setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)), 3);
-            return FluidUtil.getFilledBucket(new FluidStack(containedFluid, FluidAttributes.BUCKET_VOLUME));
+            return FluidUtil.getFilledBucket(new FluidStack(containedFluid, FluidHelpers.BUCKET_VOLUME));
         }
         return ItemStack.EMPTY;
     }

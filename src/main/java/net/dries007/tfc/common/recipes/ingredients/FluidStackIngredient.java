@@ -11,9 +11,9 @@ import java.util.function.Predicate;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.JsonHelpers;
 
 /**
@@ -27,7 +27,7 @@ public record FluidStackIngredient(FluidIngredient ingredient, int amount) imple
     public static FluidStackIngredient fromJson(JsonObject json)
     {
         final FluidIngredient fluid = FluidIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
-        final int amount = JsonHelpers.getAsInt(json, "amount", FluidAttributes.BUCKET_VOLUME);
+        final int amount = JsonHelpers.getAsInt(json, "amount", FluidHelpers.BUCKET_VOLUME);
         return new FluidStackIngredient(fluid, amount);
     }
 

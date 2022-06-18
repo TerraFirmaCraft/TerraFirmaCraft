@@ -26,12 +26,12 @@ import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.settings.RockLayerSettings;
 import net.dries007.tfc.world.surface.builder.SurfaceBuilder;
 
-public class SurfaceManager
+public final class SurfaceManager
 {
     private static Map<BiomeExtension, SurfaceBuilder> collectSurfaceBuilders(long seed)
     {
         final ImmutableMap.Builder<BiomeExtension, SurfaceBuilder> builder = ImmutableMap.builder();
-        for (BiomeExtension variant : TFCBiomes.getVariants())
+        for (BiomeExtension variant : TFCBiomes.getExtensions())
         {
             builder.put(variant, variant.createSurfaceBuilder(seed));
         }
