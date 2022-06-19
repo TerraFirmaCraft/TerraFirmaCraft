@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities.livestock;
+package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
 
@@ -28,6 +28,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -36,12 +37,19 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class TFCChestedHorse extends AbstractChestedHorse implements MammalProperties
+public abstract class TFCChestedHorse extends AbstractChestedHorse implements HorseProperties
 {
+    public static boolean vanillaParentingCheck(AbstractHorse horse)
+    {
+        return !horse.isVehicle() && !horse.isPassenger() && horse.isTamed() && !horse.isBaby() && horse.getHealth() >= horse.getMaxHealth() && horse.isInLove();
+    }
+
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BIRTHDAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.FLOAT);
@@ -82,21 +90,53 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     @Override
     public boolean canMate(Animal otherAnimal)
     {
-        // todo this is here because it should be implemented special for heritable traits
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        TFCChestedHorse other = (TFCChestedHorse) otherAnimal;
-        return this.getGender() != other.getGender() && other.isReadyToMate();
+        return otherAnimal instanceof TFCAnimalProperties other && this.getGender() != other.getGender() && other.isReadyToMate();
     }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        InteractionResult result = HorseProperties.super.mobInteract(player, hand);
+        return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
+    }
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    {
+        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        setPregnantTime(-1L);
+        return spawnData;
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
+        {
+            this.onFertilized(otherFertile);
+        }
+        else if (other == this)
+        {
+            return createBabyHorse(level);
+        }
+        return null;
+    }
+
 
     @Override
     protected SoundEvent getEatingSound()
     {
+        super.getEatingSound();
         return eat.get();
     }
 
     @Override
     protected SoundEvent getAngrySound()
     {
+        super.getAngrySound();
         return angry.get();
     }
 
@@ -118,15 +158,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     public void setPregnantTime(long day)
     {
         entityData.set(PREGNANT_TIME, day);
-    }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
-    {
-        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
-        setPregnantTime(-1L);
-        return spawnData;
     }
 
     @Override
@@ -173,30 +204,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     public void setAge(int age)
     {
         super.setAge(0); // no-op vanilla aging
-    }
-
-    @Nullable
-    @SuppressWarnings("unchecked")
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
-    {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
-        {
-            this.onFertilized(otherFertile);
-        }
-        else if (other == this)
-        {
-            TFCAnimal baby = ((EntityType<TFCAnimal>) getType()).create(level);
-            if (baby != null)
-            {
-                baby.setGender(Gender.valueOf(random.nextBoolean()));
-                baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
-                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
-                return baby;
-            }
-        }
-        return null;
     }
 
     @Override
@@ -256,16 +263,9 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand)
-    {
-        InteractionResult result = MammalProperties.super.mobInteract(player, hand);
-        return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
-    }
-
-    @Override
     public boolean isFood(ItemStack stack)
     {
-        return MammalProperties.super.isFood(stack);
+        return HorseProperties.super.isFood(stack);
     }
 
     @Override
@@ -277,24 +277,28 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     @Override
     protected SoundEvent getAmbientSound()
     {
+        super.getAmbientSound();
         return ambient.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource src)
     {
+        super.getHurtSound(src);
         return hurt.get();
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
+        super.getDeathSound();
         return death.get();
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState block)
     {
+        super.playStepSound(pos, block);
         this.playSound(step.get(), 0.15F, 1.0F);
     }
 }
