@@ -21,6 +21,8 @@ import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 
 public interface HorseProperties extends MammalProperties
 {
+    float TAMED_FAMILIARITY = 0.15f;
+
     @Override
     default AbstractHorse getEntity()
     {

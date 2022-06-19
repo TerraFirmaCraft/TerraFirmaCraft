@@ -171,7 +171,6 @@ public final class TFCItems
     public static final RegistryObject<Item> GLASS_SHARD = register("glass_shard", MISC);
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> GLUE = register("glue", MISC);
-    public static final RegistryObject<Item> HALTER = register("halter", MISC);
     public static final RegistryObject<Item> JUTE = register("jute", MISC);
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber", MISC);
     public static final RegistryObject<Item> JUTE_NET = register("jute_net", MISC);

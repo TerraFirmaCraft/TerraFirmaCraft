@@ -173,6 +173,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Override
+    public boolean isTamed()
+    {
+        return getFamiliarity() > TAMED_FAMILIARITY;
+    }
+
+    @Override
     public SlotAccess getSlot(int slot)
     {
         return slot == AbstractHorse.CHEST_SLOT_OFFSET ? new SlotAccess()
