@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -187,7 +189,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         final float temp = Climate.getAverageTemperature(level, pos);
         if (!climateRange.get().checkBoth(hydration, temp, false))
         {
-            Helpers.resetCounter(level, pos);
+            TickCounterBlockEntity.reset(level, pos);
         }
         super.randomTick(state, level, pos, random);
     }

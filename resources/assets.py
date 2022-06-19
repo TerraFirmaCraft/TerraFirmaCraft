@@ -467,7 +467,8 @@ def generate(rm: ResourceManager):
         mud_bricks = rm.block(('mud_bricks', soil))
         mud_bricks.make_slab()
         mud_bricks.make_stairs()
-        mud_bricks.make_wall().with_tag('minecraft:walls')
+        mud_bricks.make_wall()
+        rm.block_tag('minecraft:walls', ('mud_bricks', soil + '_wall'))
         for variant in ('_stairs', '_slab', '_wall'):
             rm.block_loot('mud_bricks/%s%s' % (soil, variant), 'tfc:mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
 

@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blocks.plant.fruit;
 
 import java.util.Random;
 import java.util.function.Supplier;
+
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -106,7 +108,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
                     int internalSapling = onBranch ? 3 : state.getValue(SAPLINGS);
                     if (internalSapling == 1 && random.nextBoolean()) internalSapling += 1;
                     level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, internalSapling).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
-                    Helpers.resetCounter(level, pos);
+                    TickCounterBlockEntity.reset(level, pos);
                 }
             }
         });
@@ -138,7 +140,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
-        Helpers.resetCounter(level, pos);
+        TickCounterBlockEntity.reset(level, pos);
         super.setPlacedBy(level, pos, state, placer, stack);
     }
 
