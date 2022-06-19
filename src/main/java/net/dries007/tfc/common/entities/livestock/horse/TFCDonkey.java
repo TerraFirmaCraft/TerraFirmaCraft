@@ -23,7 +23,7 @@ import net.dries007.tfc.config.TFCConfig;
 
 public class TFCDonkey extends TFCChestedHorse
 {
-    public TFCDonkey(EntityType<? extends TFCChestedHorse> type, Level level)
+    public TFCDonkey(EntityType<? extends TFCDonkey> type, Level level)
     {
         super(type, level, TFCSounds.DONKEY, () -> SoundEvents.DONKEY_EAT, () -> SoundEvents.DONKEY_ANGRY, TFCConfig.SERVER.donkeyConfig);
     }

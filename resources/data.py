@@ -783,6 +783,8 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'rabbit'), fauna(climate=climate_config(min_rain=15)))
     rm.data(('tfc', 'fauna', 'fox'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, max_forest='normal')))
+    rm.data(('tfc', 'fauna', 'donkey'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
+    rm.data(('tfc', 'fauna', 'mule'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -825,6 +827,8 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'rabbit', 'tfc:food/rabbit', hide_size='small', hide_chance=0.5, bones=1, extra_pool={'name': 'minecraft:rabbit_foot', 'conditions': [loot_tables.random_chance(0.1)]})
     mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
+    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
 
     global_loot_modifiers(rm, 'tfc:reset_decay')
     global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})

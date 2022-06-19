@@ -159,6 +159,8 @@ public class TFCTags
         public static final TagKey<Item> DUCK_FOOD = create("duck_food");
         public static final TagKey<Item> QUAIL_FOOD = create("quail_food");
         public static final TagKey<Item> DONKEY_FOOD = create("donkey_food");
+        public static final TagKey<Item> MULE_FOOD = create("mule_food");
+        public static final TagKey<Item> HORSE_FOOD = create("horse_food");
         public static final TagKey<Item> SCRIBING_INK = create("scribing_ink");
         public static final TagKey<Item> SANDWICH_BREAD = create("sandwich_bread");
         public static final TagKey<Item> SMALL_FISHING_BAIT = create("small_fishing_bait");

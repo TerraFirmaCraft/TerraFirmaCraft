@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.*;
+import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -31,6 +32,9 @@ import net.dries007.tfc.common.entities.livestock.DairyAnimal;
 import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
+import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
+import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
+import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.entities.prey.Prey;
@@ -123,6 +127,9 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCFox>> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<Prey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.5f, 0.5f).clientTrackingRange(10));
 
+    public static final RegistryObject<EntityType<TFCDonkey>> DONKEY = register("donkey", EntityType.Builder.of(TFCDonkey::new, MobCategory.CREATURE).sized(1.3964844F, 1.5F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<TFCMule>> MULE = register("mule", EntityType.Builder.of(TFCMule::new, MobCategory.CREATURE).sized(1.3964844F, 1.6F).clientTrackingRange(8));
+
     public static <E extends Entity> RegistryObject<EntityType<E>> register(String name, EntityType.Builder<E> builder)
     {
         return register(name, builder, true);
@@ -176,6 +183,8 @@ public class TFCEntities
         event.put(RABBIT.get(), TFCRabbit.createAttributes().build());
         event.put(FOX.get(), TFCFox.createAttributes().build());
         event.put(BOAR.get(), Prey.createAttributes().build());
+        event.put(MULE.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
+        event.put(DONKEY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)

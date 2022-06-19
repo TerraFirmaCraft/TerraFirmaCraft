@@ -91,7 +91,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
 
     // HORSE SPECIFIC STUFF
 
-
     @Override
     protected void registerGoals()
     {
@@ -254,6 +253,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
     {
         spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        if (reason != MobSpawnType.BREEDING)
+        {
+            initCommonAnimalData();
+        }
         setPregnantTime(-1L);
         return spawnData;
     }
