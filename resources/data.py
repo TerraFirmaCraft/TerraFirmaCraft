@@ -184,7 +184,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
-    rm.item_tag('fox_spawns_with', 'minecraft:rabbits_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
+    rm.item_tag('fox_spawns_with', 'minecraft:rabbit_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -195,6 +195,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('duck_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds', 'tfc:food/barley_bread', 'tfc:food/wheat_bread', 'tfc:food/rye_bread', 'tfc:food/maize_bread', 'tfc:food/oat_bread')
     rm.item_tag('quail_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds')
     rm.item_tag('alpaca_food', '#tfc:foods/grains', '#tfc:foods/fruits')
+    rm.item_tag('mule_food', '#tfc:horse_food')
+    rm.item_tag('donkey_food', '#tfc:horse_food')
+    rm.item_tag('horse_food', '#tfc:foods/grains', '#tfc:foods/fruits')
     rm.item_tag('musk_ox_food', '#tfc:foods/grains')
 
     rm.item_tag('foods/can_be_salted', '#tfc:foods/raw_meats')
@@ -219,6 +222,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
     rm.item_tag('ore_deposits', *['tfc:deposit/%s/%s' % (ore, rock) for ore in ORE_DEPOSITS for rock in ROCKS.keys()])
     block_and_item_tag(rm, 'tfc:barrels', *['tfc:wood/barrel/%s' % wood for wood in WOODS.keys()])
+    block_and_item_tag(rm, 'forge:chests/wooden', *['tfc:wood/chest/%s' % wood for wood in WOODS.keys()], *['tfc:wood/trapped_chest/%s' % wood for wood in WOODS.keys()])
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -573,7 +577,6 @@ def generate(rm: ResourceManager):
     item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.very_heavy)
     item_size(rm, 'doors', '#minecraft:doors', Size.very_large, Weight.heavy)
     item_size(rm, 'mortar', '#tfc:mortar', Size.tiny, Weight.very_light)
-    item_size(rm, 'halter', 'tfc:halter', Size.small, Weight.light)
     item_size(rm, 'stick_bunch', 'tfc:stick_bunch', Size.normal, Weight.light)
     item_size(rm, 'stick_bundle', 'tfc:stick_bundle', Size.very_large, Weight.medium)
     item_size(rm, 'jute_fiber', 'tfc:jute_fiber', Size.small, Weight.very_light)

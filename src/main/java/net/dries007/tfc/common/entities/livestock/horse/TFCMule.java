@@ -23,7 +23,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.config.animals.MammalConfig;
 import org.jetbrains.annotations.Nullable;
 
 public class TFCMule extends TFCChestedHorse
@@ -44,6 +43,15 @@ public class TFCMule extends TFCChestedHorse
     {
         return false;
     }
+
+    @Override
+    public Gender getGender()
+    {
+        return Gender.MALE;
+    }
+
+    @Override
+    public void setGender(Gender gender) { }
 
     @Nullable
     @Override

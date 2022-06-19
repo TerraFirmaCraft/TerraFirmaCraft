@@ -28,6 +28,7 @@ public abstract class Mammal extends TFCAnimal implements MammalProperties
 
     private final MammalConfig config;
     @Nullable private CompoundTag genes = null;
+    private Age lastAge = Age.CHILD;
 
     public Mammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
@@ -64,6 +65,18 @@ public abstract class Mammal extends TFCAnimal implements MammalProperties
     public CompoundTag getGenes()
     {
         return genes;
+    }
+
+    @Override
+    public Age getLastAge()
+    {
+        return lastAge;
+    }
+
+    @Override
+    public void setLastAge(Age lastAge)
+    {
+        this.lastAge = lastAge;
     }
 
     @Nullable

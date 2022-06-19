@@ -62,11 +62,11 @@ public interface MammalProperties extends TFCAnimalProperties
             {
                 AgeableMob offspring = ageable.getBreedOffspring(server, ageable);
                 if (offspring == null) continue;
-                if (offspring instanceof TFCAnimal animal)
+                if (offspring instanceof MammalProperties animal)
                 {
-                    animal.setPos(entity.position());
+                    offspring.setPos(entity.position());
                     animal.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
-                    server.addFreshEntity(animal);
+                    server.addFreshEntity(offspring);
                 }
             }
         }
@@ -115,7 +115,7 @@ public interface MammalProperties extends TFCAnimalProperties
     {
         if (isFertilized())
         {
-            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getGenderedTypeName().getString()), true);
+            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getEntity().getName().getString()), true);
         }
     }
 

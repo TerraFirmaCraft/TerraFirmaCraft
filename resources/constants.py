@@ -921,8 +921,14 @@ DEFAULT_LANG = {
     'entity.tfc.fox': 'Fox',
     'entity.tfc.boar': 'Boar',
     'entity.tfc.mule': 'Mule',
+    'entity.tfc.mule.male': 'Mule',
+    'entity.tfc.mule.female': 'Mule',
     'entity.tfc.donkey': 'Donkey',
+    'entity.tfc.donkey.male': 'Jack Donkey',
+    'entity.tfc.donkey.female': 'Jenny Donkey',
     'entity.tfc.horse': 'Horse',
+    'entity.tfc.horse.male': 'Stallion',
+    'entity.tfc.horse.female': 'Mare',
     **{'entity.tfc.boat.%s' % wood : lang('%s boat', wood) for wood in WOODS.keys()},
 
     # Enums

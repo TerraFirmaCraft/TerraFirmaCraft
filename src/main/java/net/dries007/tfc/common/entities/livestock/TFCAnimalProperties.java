@@ -74,6 +74,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     long getMated();
 
+    Age getLastAge();
+
+    void setLastAge(Age age);
+
     /**
      * Is this animal hungry?
      * @return true if this animal can be fed by player
@@ -103,6 +107,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                 setLastFamiliarityDecay(Calendars.get().getTotalDays());
                 this.setFamiliarity(familiarity);
             }
+        }
+        final Age age = getAgeType();
+        if (age != getLastAge())
+        {
+            setLastAge(age);
+            getEntity().refreshDimensions();
         }
     }
 
@@ -188,6 +198,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         nbt.putLong("fed", getLastFed());
         nbt.putLong("decay", getLastFamiliarityDecay());
         nbt.putLong("mating", getMated());
+        nbt.putInt("lastAge", getLastAge().ordinal());
     }
 
     default void readCommonAnimalData(CompoundTag nbt)
@@ -199,6 +210,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setUses(nbt.getInt("uses"));
         setLastFed(nbt.getLong("fed"));
         setLastFamiliarityDecay(nbt.getLong("decay"));
+        setLastAge(Age.valueOf(nbt.getInt("lastAge")));
     }
 
     default void initCommonAnimalData()
@@ -215,7 +227,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default boolean isReadyToMate()
     {
-        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.SERVER.getTicks();
+        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && !isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.SERVER.getTicks();
     }
 
     /**
@@ -488,7 +500,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     enum Age
     {
-        CHILD, ADULT, OLD
+        CHILD, ADULT, OLD;
+
+        public static Age valueOf(int value)
+        {
+            return value == 0 ? CHILD : value == 1 ? ADULT : OLD;
+        }
     }
 
     enum Gender

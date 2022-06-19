@@ -49,7 +49,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
 {
     public static boolean vanillaParentingCheck(AbstractHorse horse)
     {
-        return !horse.isVehicle() && !horse.isPassenger() && horse.isTamed() && !horse.isBaby() && horse.getHealth() >= horse.getMaxHealth() && horse.isInLove();
+        return !horse.isVehicle() && !horse.isPassenger() && horse.isTamed() && !horse.isBaby();
     }
 
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
@@ -65,6 +65,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
     @Nullable private CompoundTag genes;
+    private Age lastAge = Age.CHILD;
     private final Supplier<? extends SoundEvent> ambient;
     private final Supplier<? extends SoundEvent> hurt;
     private final Supplier<? extends SoundEvent> death;
@@ -164,6 +165,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
             }
             else
             {
+                if (getOwnerUUID() == null)
+                {
+                    setOwnerUUID(player.getUUID());
+                }
                 this.doPlayerRide(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
             }
@@ -247,6 +252,19 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     // BEGIN COPY-PASTE FROM TFC ANIMAL
+
+    @Override
+    public Age getLastAge()
+    {
+        return lastAge;
+    }
+
+    @Override
+    public void setLastAge(Age lastAge)
+    {
+        this.lastAge = lastAge;
+    }
+
 
     @Nullable
     @Override
@@ -351,10 +369,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         }
         else if (other == this)
         {
-            TFCAnimal baby = ((EntityType<TFCAnimal>) getType()).create(level);
-            if (baby != null)
+            AgeableMob baby = ((EntityType<AgeableMob>) getType()).create(level);
+            if (baby instanceof TFCAnimalProperties prop)
             {
-                setBabyTraits(baby);
+                setBabyTraits(prop);
                 return baby;
             }
         }

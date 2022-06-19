@@ -19,10 +19,7 @@ import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
-import net.minecraft.client.model.BoatModel;
-import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.GoatModel;
-import net.minecraft.client.model.SquidModel;
+import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -347,8 +344,8 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.RABBIT.get(), RabbitRenderer::new);
         event.registerEntityRenderer(TFCEntities.FOX.get(), FoxRenderer::new);
         event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCPigModel<>(RenderHelpers.bakeSimple(ctx, "boar")), "boar", 0.3f, false, 0.6f));
-        event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new ChestedHorseRenderer<>(ctx, 0.92F, ModelLayers.MULE));
-        event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new ChestedHorseRenderer<>(ctx, 0.87F, ModelLayers.DONKEY));
+        event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, ModelLayers.MULE, "mule"));
+        event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, ModelLayers.DONKEY, "donkey"));
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
