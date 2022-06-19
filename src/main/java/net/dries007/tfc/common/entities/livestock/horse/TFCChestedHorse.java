@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -22,25 +21,28 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public abstract class TFCChestedHorse extends AbstractChestedHorse implements HorseProperties
@@ -57,10 +59,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED);
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<ItemStack> CHEST_ITEM = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.ITEM_STACK);
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    @Nullable private CompoundTag genes;
     private final Supplier<? extends SoundEvent> ambient;
     private final Supplier<? extends SoundEvent> hurt;
     private final Supplier<? extends SoundEvent> death;
@@ -87,6 +91,15 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
 
     // HORSE SPECIFIC STUFF
 
+
+    @Override
+    protected void registerGoals()
+    {
+        super.registerGoals();
+        EntityHelpers.removeGoalOfPriority(goalSelector, 3);
+        goalSelector.addGoal(3, new TemptGoal(this, 1.25f, Ingredient.of(getFoodTag()), false));
+    }
+
     @Override
     public boolean canMate(Animal otherAnimal)
     {
@@ -96,35 +109,111 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
+        // triggers feeding actions
         InteractionResult result = HorseProperties.super.mobInteract(player, hand);
-        return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
-    }
-
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
-    {
-        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
-        setPregnantTime(-1L);
-        return spawnData;
-    }
-
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
-    {
-        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
+        if (result == InteractionResult.PASS)
         {
-            this.onFertilized(otherFertile);
+            ItemStack stack = player.getItemInHand(hand);
+            if (!this.isBaby())
+            {
+                if (this.isTamed() && player.isSecondaryUseActive())
+                {
+                    this.openInventory(player);
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+
+                if (this.isVehicle())
+                {
+                    return InteractionResult.PASS; // calls super in vanilla, we don't need to
+                }
+            }
+
+            if (!stack.isEmpty())
+            {
+                // food eating in vanilla is here we handled it in interface super
+
+                if (!this.isTamed())
+                {
+                    this.makeMad();
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+
+                if (!this.hasChest() && Helpers.isItem(stack, Tags.Items.CHESTS_WOODEN))
+                {
+                    this.setChestItem(stack.copy()); // set an explicit chest item
+                    this.setChest(true);
+                    this.playChestEquipsSound();
+                    if (!player.getAbilities().instabuild)
+                    {
+                        stack.shrink(1);
+                    }
+
+                    this.createInventory();
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+
+                if (!this.isBaby() && !this.isSaddled() && stack.is(Items.SADDLE))
+                {
+                    this.openInventory(player);
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+            }
+
+            if (this.isBaby())
+            {
+                return InteractionResult.PASS; // calls super in vanilla but we don't need to
+            }
+            else
+            {
+                this.doPlayerRide(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
         }
-        else if (other == this)
-        {
-            return createBabyHorse(level);
-        }
-        return null;
+        return result;
     }
 
+    @Override
+    public SlotAccess getSlot(int slot)
+    {
+        return slot == AbstractHorse.CHEST_SLOT_OFFSET ? new SlotAccess()
+        {
+            @Override
+            public ItemStack get()
+            {
+                return hasChest() ? getChestItem() : ItemStack.EMPTY;
+            }
+
+            @Override
+            public boolean set(ItemStack stack)
+            {
+                TFCChestedHorse horse = TFCChestedHorse.this;
+                if (stack.isEmpty())
+                {
+                    if (horse.hasChest())
+                    {
+                        horse.setChest(false);
+                        horse.setChestItem(ItemStack.EMPTY);
+                        horse.createInventory();
+                    }
+                    return true;
+                }
+                else if (Helpers.isItem(stack, Tags.Items.CHESTS_WOODEN))
+                {
+                    if (!horse.hasChest())
+                    {
+                        horse.setChest(true);
+                        horse.setChestItem(stack);
+                        horse.createInventory();
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        } : super.getSlot(slot);
+    }
 
     @Override
     protected SoundEvent getEatingSound()
@@ -140,7 +229,28 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         return angry.get();
     }
 
+    @Override
+    public ItemStack getChestItem()
+    {
+        return entityData.get(CHEST_ITEM);
+    }
+
+    @Override
+    public void setChestItem(ItemStack stack)
+    {
+        entityData.set(CHEST_ITEM, stack);
+    }
+
     // BEGIN COPY-PASTE FROM TFC ANIMAL
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    {
+        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        setPregnantTime(-1L);
+        return spawnData;
+    }
 
     @Override
     public MammalConfig getMammalConfig()
@@ -161,6 +271,19 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     @Override
+    public void setGenes(@Nullable CompoundTag tag)
+    {
+        genes = tag;
+    }
+
+    @Override
+    @Nullable
+    public CompoundTag getGenes()
+    {
+        return genes;
+    }
+
+    @Override
     public AnimalConfig animalConfig()
     {
         return config;
@@ -178,6 +301,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         super.defineSynchedData();
         registerCommonData();
         entityData.define(PREGNANT_TIME, -1L);
+        entityData.define(CHEST_ITEM, ItemStack.EMPTY);
     }
 
     @Override
@@ -204,6 +328,28 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public void setAge(int age)
     {
         super.setAge(0); // no-op vanilla aging
+    }
+
+    @Nullable
+    @SuppressWarnings("unchecked")
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
+    {
+        // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
+        {
+            this.onFertilized(otherFertile);
+        }
+        else if (other == this)
+        {
+            TFCAnimal baby = ((EntityType<TFCAnimal>) getType()).create(level);
+            if (baby != null)
+            {
+                setBabyTraits(baby);
+                return baby;
+            }
+        }
+        return null;
     }
 
     @Override

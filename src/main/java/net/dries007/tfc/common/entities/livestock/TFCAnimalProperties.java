@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -139,7 +140,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     }
 
-    private InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
+    default InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
     {
         Level level = getEntity().level;
         getEntity().heal(1f);
@@ -158,11 +159,15 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                 }
                 setFamiliarity(familiarity);
             }
-            getEntity().playSound(SoundEvents.PLAYER_BURP, 1f, 1f);
+            getEntity().playSound(eatingSound(stack), 1f, 1f);
         }
         return InteractionResult.SUCCESS;
     }
 
+    default SoundEvent eatingSound(ItemStack food)
+    {
+        return SoundEvents.PLAYER_BURP;
+    }
 
     default void registerCommonData()
     {
@@ -320,6 +325,22 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     default void onFertilized(@Nonnull TFCAnimalProperties male)
     {
         setFertilized(true);
+    }
+
+    default void setBabyTraits(TFCAnimalProperties baby)
+    {
+        baby.setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
+        baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
+        baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+    }
+
+    /**
+     * Used to check if breeding is possible without actually needing to be in love
+     * Used for animals like horses that can breed across entity types.
+     */
+    default boolean checkExtraBreedConditions(TFCAnimalProperties other)
+    {
+        return true;
     }
 
     /**

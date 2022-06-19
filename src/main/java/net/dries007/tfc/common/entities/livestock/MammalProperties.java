@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
+import org.jetbrains.annotations.Nullable;
 
 public interface MammalProperties extends TFCAnimalProperties
 {
@@ -27,6 +28,11 @@ public interface MammalProperties extends TFCAnimalProperties
     long getPregnantTime();
 
     void setPregnantTime(long time);
+
+    @Nullable
+    CompoundTag getGenes();
+
+    void setGenes(@Nullable CompoundTag tag);
 
     @Override
     default void tickAnimalData()
@@ -66,19 +72,42 @@ public interface MammalProperties extends TFCAnimalProperties
         }
     }
 
-
     @Override
     default boolean isReadyToMate()
     {
-        return getPregnantTime() <= 0 &&TFCAnimalProperties.super.isReadyToMate();
+        return getPregnantTime() <= 0 && TFCAnimalProperties.super.isReadyToMate();
     }
 
     @Override
     default void onFertilized(TFCAnimalProperties male)
     {
         //Mark the day this female became pregnant
-        setFertilized(true);
+        TFCAnimalProperties.super.onFertilized(male); // setFertilized(true)
         setPregnantTime(Calendars.get(male.getEntity().level).getTotalDays());
+
+        CompoundTag genes = new CompoundTag();
+        createGenes(genes, male);
+        setGenes(genes.isEmpty() ? null : genes);
+    }
+
+    default void createGenes(CompoundTag tag, TFCAnimalProperties male)
+    {
+
+    }
+
+    @Override
+    default void setBabyTraits(TFCAnimalProperties baby)
+    {
+        TFCAnimalProperties.super.setBabyTraits(baby);
+        if (getGenes() != null)
+        {
+            applyGenes(getGenes(), (MammalProperties) baby);
+        }
+    }
+
+    default void applyGenes(CompoundTag tag, MammalProperties baby)
+    {
+
     }
 
     @Override
@@ -94,7 +123,11 @@ public interface MammalProperties extends TFCAnimalProperties
     default void saveCommonAnimalData(CompoundTag nbt)
     {
         TFCAnimalProperties.super.saveCommonAnimalData(nbt);
-        nbt.putLong("pregnant", getPregnantTime());
+        nbt.putLong("genes", getPregnantTime());
+        if (getGenes() != null)
+        {
+            nbt.put("genes", getGenes());
+        }
     }
 
     @Override
@@ -102,6 +135,10 @@ public interface MammalProperties extends TFCAnimalProperties
     {
         TFCAnimalProperties.super.readCommonAnimalData(nbt);
         setPregnantTime(nbt.getLong("pregnant"));
+        if (nbt.contains("genes"))
+        {
+            setGenes(nbt.getCompound("genes"));
+        }
     }
 
     default int getChildCount()

@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.TFCConfig;
 
 public class TFCDonkey extends TFCChestedHorse
@@ -34,13 +35,19 @@ public class TFCDonkey extends TFCChestedHorse
     }
 
     @Override
-    public boolean canMate(Animal otherAnimal)
+    public boolean checkExtraBreedConditions(TFCAnimalProperties otherAnimal)
     {
-        if (super.canMate(otherAnimal) && (otherAnimal instanceof TFCDonkey || otherAnimal instanceof Horse))
+        if (super.checkExtraBreedConditions(otherAnimal) && (otherAnimal instanceof TFCDonkey || otherAnimal instanceof Horse))
         {
             AbstractHorse otherHorse = (AbstractHorse) otherAnimal;
             return TFCChestedHorse.vanillaParentingCheck(this) && TFCChestedHorse.vanillaParentingCheck(otherHorse);
         }
         return false;
+    }
+
+    @Override
+    public boolean canMate(Animal otherAnimal)
+    {
+        return super.canMate(otherAnimal) && otherAnimal instanceof TFCAnimalProperties props && checkExtraBreedConditions(props);
     }
 }

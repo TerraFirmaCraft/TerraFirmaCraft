@@ -167,9 +167,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
             TFCAnimal baby = ((EntityType<TFCAnimal>) getType()).create(level);
             if (baby != null)
             {
-                baby.setGender(Gender.valueOf(random.nextBoolean()));
-                baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
-                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                setBabyTraits(baby);
                 return baby;
             }
         }
