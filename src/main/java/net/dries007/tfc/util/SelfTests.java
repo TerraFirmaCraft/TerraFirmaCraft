@@ -31,10 +31,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
@@ -87,7 +84,8 @@ public final class SelfTests
             final Stopwatch tick = Stopwatch.createStarted();
             throwIfAny(
                 validateOwnBlockLootTables(),
-                validateOwnBlockMineableTags()
+                validateOwnBlockMineableTags(),
+                validateOwnWallsTags()
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
         }
@@ -152,6 +150,18 @@ public final class SelfTests
             .toList();
 
         return logRegistryErrors("{} blocks found with a non-existent loot table:", missingLootTables, logger);
+    }
+
+    /**
+     * Validates that all {@link WallBlock}s have the {@link BlockTags#WALLS} tag.
+     */
+    public static boolean validateWallBlockWallsTag(Stream<Block> blocks, Logger logger)
+    {
+        final List<Block> missingTag = blocks
+            .filter(b -> b instanceof WallBlock && !Helpers.isBlock(b, BlockTags.WALLS))
+            .toList();
+
+        return logRegistryErrors("{} wall blocks are missing the #minecraft:walls tag", missingTag, logger);
     }
 
     public static <T> boolean logErrors(String error, Collection<T> errors, Logger logger)
@@ -220,6 +230,11 @@ public final class SelfTests
             .toList();
 
         return logRegistryErrors("{} non-fluid blocks have no mineable_with_<tool> tag.", missingTag, LOGGER);
+    }
+
+    private static boolean validateOwnWallsTags()
+    {
+        return validateWallBlockWallsTag(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
     }
 
     /**

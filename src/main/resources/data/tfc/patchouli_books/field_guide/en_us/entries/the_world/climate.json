@@ -49,31 +49,14 @@
       "text": "The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more."
     },
     {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/wip.png"
-      ],
-      "border": true
-    },
-    {
       "type": "patchouli:text",
       "anchor": "rainfall",
-      "text": "Rainfall and stuff",
+      "text": "Rainfall is another climate value that can vary depending on where you are in the world. The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm. Rainfall affects the types of flora that are found in an area, and also the types of soil, from sand and cacti, to loam, to silt and kapok trees.",
       "title": "Rainfall"
     },
     {
       "type": "patchouli:text",
-      "text": "More about rainfall?"
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "hydration",
-      "text": "Hydration",
-      "title": "Hydration"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "More about hydration!"
+      "text": "Rainfall is also important as it affects what things can be grown in an area. Rainfall is one of the main contributors to $(l:food/hydration)Hydration$(), which is an exact measure of how wet the soil is in a given location, and is used by $(l:food/crops)Crops$(), $(l:the_world/fruit_trees)Fruit Trees$(), and $(l:the_world/berry_bushes)Berry Bushes$() to determine if they can grow."
     }
   ],
   "read_by_default": true,

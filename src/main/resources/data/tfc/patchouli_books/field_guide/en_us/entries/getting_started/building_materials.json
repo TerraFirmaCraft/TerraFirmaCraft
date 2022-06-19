@@ -5,25 +5,84 @@
   "icon": "tfc:wattle/unstained",
   "pages": [
     {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/wip.png"
-      ],
-      "border": true
+      "type": "patchouli:text",
+      "text": "In the early stages of the game building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a couple useful building blocks that can be accessed just with stone tools."
     },
     {
       "type": "patchouli:text",
-      "text": "Intro to different building blocks during the early game"
+      "text": "$(br)  1. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  3. $(l:getting_started/building_materials#alabaster)Alabaster$()",
+      "title": "Contents"
     },
     {
-      "type": "patchouli:text",
-      "text": "More intro or something"
-    },
-    {
-      "type": "patchouli:text",
+      "type": "patchouli:crafting",
       "anchor": "mud_bricks",
-      "text": "Mud Bricks...",
-      "title": "Mud Bricks"
+      "recipe": "tfc:crafting/soil/loam_drying_bricks",
+      "title": "Mud Bricks",
+      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into some $()Wet Mud Bricks$()."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "These can be placed on the ground in a dry location, and after a day they will harden into $(thing)Mud Bricks$().",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=false]",
+            "Y": "tfc:grass/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:drying_bricks/loam[count=4,dried=true]",
+            "Y": "tfc:grass/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "text": "These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can additionally be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:mud_bricks"
+        }
+      },
+      "name": "",
+      "text": "All different varieties of mud bricks",
+      "enable_visualize": false
     },
     {
       "type": "patchouli:empty"

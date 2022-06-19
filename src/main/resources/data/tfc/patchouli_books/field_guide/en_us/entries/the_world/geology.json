@@ -30,6 +30,15 @@
     },
     {
       "type": "patchouli:text",
+      "text": "The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.",
+      "title": "Rock Layers"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Rocks come in four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $()Igneous Intrusive$(). These categories determine at what depth the different rock layers can be found. A listing of all the different rock types and what category they belong to can be found on the following pages."
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "sedimentary",
       "text": "$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They can be found in $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk",
       "title": "Sedimentary"
@@ -51,13 +60,6 @@
       "anchor": "igneous_intrusive",
       "text": "$(l:https://en.wikipedia.org/wiki/Igneous_rock#Intrusive)Igneous Intrusive$() rocks are formed from magma which cooled under the Earth's crust. They can be found at $(thing)mid to low altitude$() rock layers. They are:$(br)$(li)Granite$(li)Diorite$(li)Gabbro",
       "title": "Igneous Intrusive"
-    },
-    {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/wip.png"
-      ],
-      "border": true
     }
   ],
   "read_by_default": true,

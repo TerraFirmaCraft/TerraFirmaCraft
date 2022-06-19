@@ -283,6 +283,20 @@ def generate(rm: ResourceManager):
     # BLOCK TAGS
     # ==========
 
+    rm.block_tag('minecraft:valid_spawn', *[
+        *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS],
+        *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES],
+        *['tfc:rock/raw/%s' % r for r in ROCKS.keys()]
+    ])  # Valid spawn tag - grass, sand, or raw rock
+    block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
+    rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
+    rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
+    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
+    rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
+
+    for color in COLORS:
+        rm.block_tag('minecraft:walls', 'tfc:alabaster/stained/%s_polished_alabaster_wall' % color, 'tfc:alabaster/stained/%s_alabaster_bricks_wall' % color)
+
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', *['tfc:grass_path/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:farmland/%s' % v for v in SOIL_BLOCK_VARIANTS])
     rm.block_tag('bush_plantable_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:farmland')
@@ -291,8 +305,6 @@ def generate(rm: ResourceManager):
     rm.block_tag('small_spike', 'tfc:calcite')
     rm.block_tag('sea_bush_plantable_on', '#minecraft:dirt', '#minecraft:sand', '#forge:gravel', '#tfc:mud')
     rm.block_tag('creeping_plantable_on', 'minecraft:grass_block', '#tfc:grass', '#minecraft:base_stone_overworld', '#minecraft:logs')
-    rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
-    rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
     rm.block_tag('kelp_tree', 'tfc:plant/giant_kelp_flower', 'tfc:plant/giant_kelp_plant')
     rm.block_tag('kelp_flower', 'tfc:plant/giant_kelp_flower')
     rm.block_tag('kelp_branch', 'tfc:plant/giant_kelp_plant')
@@ -310,9 +322,6 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:forge_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone')
     rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', 'minecraft:bricks', 'tfc:fire_bricks', '#forge:concrete')
     rm.block_tag('tfc:blast_furnace_insulation', 'tfc:fire_bricks')
-    rm.block_tag('minecraft:valid_spawn', *['tfc:grass/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:sand/%s' % c for c in SAND_BLOCK_TYPES], *['tfc:rock/raw/%s' % r for r in ROCKS.keys()])  # Valid spawn tag - grass, sand, or raw rock
-    block_and_item_tag(rm, 'minecraft:dirt', *['tfc:dirt/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:rooted_dirt/%s' % v for v in SOIL_BLOCK_VARIANTS])
-    rm.block_tag('minecraft:geode_invalid_blocks', 'tfc:sea_ice', 'tfc:fluid/salt_water', 'tfc:fluid/river_water', 'tfc:fluid/spring_water')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('rabbit_raidable', 'tfc:crop/carrot', 'tfc:crop/cabbage', 'minecraft:carrots')
@@ -320,8 +329,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('powder_snow_replaceable', '#minecraft:dirt', '#forge:gravel', '#tfc:grass', 'minecraft:snow')
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
-    rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
     block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
+    rm.block_tag('mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():
