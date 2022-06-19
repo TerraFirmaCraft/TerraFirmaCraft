@@ -256,7 +256,7 @@ public final class EnvironmentHelpers
             {
                 // First, since we want to handle water with a single block above, if we find no water, but we find one below, we choose that instead
                 // However, we have to also exclude ice here, since we don't intend to freeze two layers down
-                if (groundState.getBlock() == Blocks.ICE)
+                if (isIce(groundState))
                 {
                     return;
                 }
