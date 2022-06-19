@@ -290,7 +290,7 @@ public final class ForgeEventHandler
 
     public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event)
     {
-        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
+        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker(event.getObject()));
     }
 
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
@@ -869,26 +869,30 @@ public final class ForgeEventHandler
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer player)
-        {
-            TFCFoodData.replaceFoodStats(event.getPlayer());
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
-        }
+        onNewPlayerInWorld(event.getPlayer());
     }
 
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
-        {
-            TFCFoodData.replaceFoodStats(event.getPlayer());
-        }
+        onNewPlayerInWorld(event.getPlayer());
     }
 
     public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
+        onNewPlayerInWorld(event.getPlayer());
+    }
+
+    /**
+     * Common handling for creating new player entities. Called through logging in, changing dimension, and respawning.
+     */
+    private static void onNewPlayerInWorld(Player player)
+    {
+        if (player instanceof ServerPlayer serverPlayer)
         {
-            TFCFoodData.replaceFoodStats(event.getPlayer());
+            TFCFoodData.replaceFoodStats(serverPlayer);
+
+            serverPlayer.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
+            serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
         }
     }
 
