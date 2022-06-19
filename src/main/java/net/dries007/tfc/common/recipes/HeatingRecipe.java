@@ -109,14 +109,14 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         return outputStack;
     }
 
-    public FluidStack getOutputFluid(ItemStackInventory inventory)
+    public FluidStack getOutputFluid()
     {
-        return outputFluid.copy(); //todo remove inventory param?
+        return outputFluid.copy();
     }
 
     public FluidStack getDisplayOutputFluid()
     {
-        return outputFluid.copy(); //todo see above, maybe remove
+        return outputFluid;
     }
 
     public float getTemperature()

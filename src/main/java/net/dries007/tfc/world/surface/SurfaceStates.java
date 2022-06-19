@@ -18,7 +18,7 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.fluids.TFCFluids;
 
-public class SurfaceStates
+public final class SurfaceStates
 {
     public static final SurfaceState RAW = context -> context.getRock().raw().defaultBlockState();
     public static final SurfaceState COBBLE = context -> context.getRock().cobble().defaultBlockState();
@@ -27,13 +27,12 @@ public class SurfaceStates
     /**
      * Grass / Dirt / Gravel, or Sand / Sand / Sandstone
      */
-    public static final SurfaceState TOP_SOIL = new SoilSurfaceState(SoilBlockType.GRASS);
-    public static final SurfaceState MID_SOIL = new SoilSurfaceState(SoilBlockType.DIRT);
-    public static final SurfaceState LOW_SOIL = new DeepSoilSurfaceState();
-    public static final SurfaceState MUD = new SoilSurfaceState(SoilBlockType.MUD);
+    public static final SurfaceState GRASS = SoilSurfaceState.buildType(SoilBlockType.GRASS);
+    public static final SurfaceState DIRT = SoilSurfaceState.buildType(SoilBlockType.DIRT);
+    public static final SurfaceState MUD = SoilSurfaceState.buildType(SoilBlockType.MUD);
 
-    public static final SurfaceState TOP_UNDERWATER = new UnderwaterSurfaceState(false);
-    public static final SurfaceState LOW_UNDERWATER = new UnderwaterSurfaceState(true);
+    public static final SurfaceState SAND_OR_GRAVEL = SoilSurfaceState.buildSandOrGravel(false);
+    public static final SurfaceState SANDSTONE_OR_GRAVEL = SoilSurfaceState.buildSandOrGravel(true);
 
     public static final SurfaceState SHORE_SAND = context -> context.getBottomRock().sand().defaultBlockState();
     public static final SurfaceState SHORE_SANDSTONE = context -> context.getBottomRock().sandstone().defaultBlockState();

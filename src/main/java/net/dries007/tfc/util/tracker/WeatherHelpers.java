@@ -64,7 +64,7 @@ public final class WeatherHelpers
                     final long rainEndTick = rainStartTick + rainTime;
                     final float rainIntensity = level.random.nextFloat();
 
-                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(tracker -> tracker.setWeatherData(level, rainStartTick, rainEndTick, rainIntensity));
+                    level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(tracker -> tracker.setWeatherData(rainStartTick, rainEndTick, rainIntensity));
                 }
                 else
                 {

@@ -6,11 +6,10 @@
 
 package net.dries007.tfc.world.feature.tree;
 
-import java.util.*;
-
-import net.dries007.tfc.common.blocks.RiverWaterBlock;
-import net.dries007.tfc.common.blocks.wood.LogBlock;
-import org.jetbrains.annotations.Nullable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,8 +21,6 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.TFCTags;
@@ -35,6 +32,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 import net.dries007.tfc.world.chunkdata.ChunkDataProvider;
 import net.dries007.tfc.world.chunkdata.ForestType;
+import org.jetbrains.annotations.Nullable;
 
 public class ForestFeature extends Feature<ForestConfig>
 {
@@ -232,7 +230,7 @@ public class ForestFeature extends Feature<ForestConfig>
                     {
                         final Direction axis = Direction.Plane.HORIZONTAL.getRandomDirection(random);
 
-                        log = Helpers.setProperty(log, TFCBlockStateProperties.NATURAL, true);
+                        log = Helpers.setProperty(log, TFCBlockStateProperties.NATURAL, false);
                         log = Helpers.setProperty(log, BlockStateProperties.AXIS, axis.getAxis());
 
                         final int length = 4 + random.nextInt(10);

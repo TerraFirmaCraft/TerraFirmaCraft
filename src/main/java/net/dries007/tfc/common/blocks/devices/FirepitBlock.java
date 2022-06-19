@@ -97,7 +97,10 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        Helpers.fireSpreaderTick(level, pos, random, 2);
+        if (state.getValue(LIT))
+        {
+            Helpers.fireSpreaderTick(level, pos, random, 2);
+        }
     }
 
     @Override

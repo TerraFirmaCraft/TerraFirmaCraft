@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -21,13 +18,15 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
+import net.dries007.tfc.common.capabilities.FluidTankCallback;
+import net.dries007.tfc.common.capabilities.InventoryFluidTank;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.LampFuel;
-import net.dries007.tfc.util.calendar.ICalendar;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class LampBlockEntity extends TickCounterBlockEntity
+public class LampBlockEntity extends TickCounterBlockEntity implements FluidTankCallback
 {
     protected FluidTank tank;
 
@@ -36,7 +35,13 @@ public class LampBlockEntity extends TickCounterBlockEntity
     public LampBlockEntity(BlockPos pos, BlockState state)
     {
         super(TFCBlockEntities.LAMP.get(), pos, state);
-        this.tank = new FluidTank(TFCConfig.SERVER.lampCapacity.get(), stack -> LampFuel.get(stack.getFluid(), getBlockState()) != null);
+        this.tank = new InventoryFluidTank(TFCConfig.SERVER.lampCapacity.get(), stack -> LampFuel.get(stack.getFluid(), getBlockState()) != null, this);
+    }
+
+    @Override
+    public void fluidTankChanged()
+    {
+        markForSync();
     }
 
     @Nullable

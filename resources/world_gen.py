@@ -46,12 +46,10 @@ def generate(rm: ResourceManager):
     placed_feature_tag(rm, 'feature/shore_decorations', *['tfc:%s_patch' % v for v in SHORE_DECORATORS])
     placed_feature_tag(rm, 'feature/ocean_decorations', 'tfc:plant/giant_kelp_patch', 'tfc:plant/winged_kelp', 'tfc:plant/leafy_kelp', 'tfc:clam_patch', 'tfc:mollusk_patch', 'tfc:mussel_patch')
     placed_feature_tag(rm, 'feature/clay_indicators', 'tfc:plant/athyrium_fern_patch', 'tfc:plant/canna_patch', 'tfc:plant/goldenrod_patch', 'tfc:plant/pampas_grass_patch', 'tfc:plant/perovskia_patch', 'tfc:plant/water_canna_patch')
-    placed_feature_tag(rm, 'feature/clay_disc_with_indicator', 'tfc:clay_disc', '#tfc:feature/clay_indicators')
-    placed_feature_tag(rm, 'feature/water_clay_disc_with_indicator', 'tfc:water_clay_disc', '#tfc:feature/clay_indicators')
     placed_feature_tag(rm, 'feature/surface_grasses', *['tfc:plant/%s_patch' % p for p, data in PLANTS.items() if data.type == 'short_grass'])
     placed_feature_tag(rm, 'feature/icebergs', 'tfc:iceberg_packed', 'tfc:iceberg_blue', 'tfc:iceberg_packed_rare', 'tfc:iceberg_blue_rare')
     placed_feature_tag(rm, 'feature/boulders', 'tfc:raw_boulder', 'tfc:cobble_boulder', 'tfc:mossy_boulder')
-    placed_feature_tag(rm, 'feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:peat_disc_in_mud', 'tfc:powder_snow')
+    placed_feature_tag(rm, 'feature/soil_discs', 'tfc:clay_disc_with_indicator', 'tfc:water_clay_disc_with_indicator', 'tfc:peat_disc', 'tfc:powder_snow')
     placed_feature_tag(rm, 'feature/volcanoes', 'tfc:volcano_rivulet', 'tfc:volcano_caldera', 'tfc:random_volcano_fissure')
 
     # Biomes
@@ -122,8 +120,29 @@ def generate(rm: ResourceManager):
 
     configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:feature/surface_grasses', 'biome_check': False})
 
-    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_disc_with_indicator', 'biome_check': False}, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
-    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:multiple', {'features': '#tfc:feature/water_clay_disc_with_indicator', 'biome_check': False}, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
+    # Clay Discs
+    # []_with_indicator (PF) -> if_then (CF) -> if [] -> then clay_indicator
+    clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
+    water_clay = clay + [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
+
+    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:if_then', {'if': 'tfc:clay_disc', 'then': 'tfc:clay_indicator'})
+    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:if_then', {'if': 'tfc:water_clay_disc', 'then': 'tfc:clay_indicator'})
+
+    configured_placed_feature(rm, 'clay_disc', 'tfc:soil_disc', {
+        'min_radius': 3,
+        'max_radius': 5,
+        'height': 3,
+        'states': clay
+    }, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    configured_placed_feature(rm, 'water_clay_disc', 'tfc:soil_disc', {
+        'min_radius': 2,
+        'max_radius': 3,
+        'height': 2,
+        'states': water_clay
+    }, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
+
+    # Individual indicator plants are invoked through multiple, which has decorators attached already
+    configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators', 'biome_check': False})
 
     configured_placed_feature(rm, 'tfc:erosion')
     configured_placed_feature(rm, 'tfc:ice_and_snow')
@@ -154,39 +173,15 @@ def generate(rm: ResourceManager):
         y = -64
         rm.placed_feature('%s_spring' % spring_cfg[0], 'tfc:%s_spring' % spring_cfg[0], decorate_count(spring_cfg[1]), decorate_square(), decorate_range(y, 180, bias='biased_to_bottom'))
 
-    clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
-    water_clay = [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
-
-    # Clay discs have decorators added later, where they're paired with indicator plants
-    configured_placed_feature(rm, 'clay_disc', 'tfc:soil_disc', {
-        'min_radius': 3,
-        'max_radius': 5,
-        'height': 3,
-        'states': clay
-    })
-    configured_placed_feature(rm, 'water_clay_disc', 'tfc:soil_disc', {
-        'min_radius': 2,
-        'max_radius': 3,
-        'height': 2,
-        'states': water_clay
-    })
-
     rm.configured_feature('peat_disc', 'tfc:soil_disc', {
         'min_radius': 5,
         'max_radius': 9,
         'height': 7,
         'states': [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS] +
-                  [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS]
+                  [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:peat_grass'} for soil in SOIL_BLOCK_VARIANTS] +
+                  [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS]
     })
     rm.placed_feature('peat_disc', 'tfc:peat_disc', decorate_chance(40), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=350, min_temp=12))
-
-    rm.configured_feature('peat_disc_in_mud', 'tfc:soil_disc', {
-        'min_radius': 5,
-        'max_radius': 9,
-        'height': 2,
-        'states': [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:peat'} for soil in SOIL_BLOCK_VARIANTS]
-    })
-    rm.placed_feature('peat_disc_in_mud', 'tfc:peat_disc', decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'))
 
     for ore in ORE_DEPOSITS:
         configured_placed_feature(rm, '%s_deposit' % ore, 'tfc:soil_disc', {
@@ -696,7 +691,7 @@ def generate(rm: ResourceManager):
 
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
-        rm.placed_feature(patch_feature, patch_feature, decorate_chance(60), decorate_square())  # todo: climate decorator for crops
+        rm.placed_feature(patch_feature, patch_feature, decorate_chance(30), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(name))
 
     for berry, info in BERRIES.items():

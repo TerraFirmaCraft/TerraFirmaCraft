@@ -8,9 +8,11 @@ package net.dries007.tfc.world.feature;
 
 import java.util.function.Function;
 
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.world.Codecs;
@@ -23,9 +25,6 @@ import net.dries007.tfc.world.feature.tree.*;
 import net.dries007.tfc.world.feature.vein.*;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
-
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.*;
 
 @SuppressWarnings("unused")
 public class TFCFeatures
@@ -83,6 +82,7 @@ public class TFCFeatures
     public static final RegistryObject<TFCIcebergFeature> ICEBERG = register("iceberg", TFCIcebergFeature::new, BlockStateConfiguration.CODEC);
     public static final RegistryObject<PowderSnowFeature> POWDER_SNOW = register("powder_snow", PowderSnowFeature::new, BlockStateConfiguration.CODEC);
 
+    public static final RegistryObject<IfThenFeature> IF_THEN = register("if_then", IfThenFeature::new, IfThenConfig.CODEC);
     public static final RegistryObject<MultipleFeature> MULTIPLE = register("multiple", MultipleFeature::new, SimpleRandomFeatureConfiguration.CODEC);
     public static final RegistryObject<NoisyMultipleFeature> NOISY_MULTIPLE = register("noisy_multiple", NoisyMultipleFeature::new, SimpleRandomFeatureConfiguration.CODEC);
 

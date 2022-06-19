@@ -8,7 +8,6 @@ package net.dries007.tfc.common.items;
 
 import java.util.function.Supplier;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
@@ -18,24 +17,20 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Drinkable;
-import org.jetbrains.annotations.Nullable;
 
-public class JugItem extends WoodenBucketItem
+public class JugItem extends DiscreteFluidContainerItem
 {
     public JugItem(Item.Properties properties, Supplier<Integer> capacity, TagKey<Fluid> whitelist)
     {
-        super(properties, capacity, whitelist);
+        super(properties, capacity, whitelist, false, false);
     }
 
     @Override
@@ -58,7 +53,7 @@ public class JugItem extends WoodenBucketItem
             if (entity.getRandom().nextFloat() < TFCConfig.SERVER.jugBreakChance.get())
             {
                 stack.shrink(1);
-                level.playSound(player, entity.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
+                level.playSound(null, entity.blockPosition(), TFCSounds.CERAMIC_BREAK.get(), SoundSource.PLAYERS, 1.0f, 1.0f);
             }
         }
         return stack;
@@ -74,12 +69,6 @@ public class JugItem extends WoodenBucketItem
     public int getUseDuration(ItemStack stack)
     {
         return PotionItem.EAT_DURATION;
-    }
-
-    @Override
-    protected TagKey<Fluid> getWhitelistTag()
-    {
-        return TFCTags.Fluids.USABLE_IN_JUG;
     }
 
     @Override
@@ -104,11 +93,5 @@ public class JugItem extends WoodenBucketItem
             return ItemUtils.startUsingInstantly(level, player, hand);
         }
         return InteractionResultHolder.pass(stack);
-    }
-
-    @Override
-    public boolean emptyContents(IFluidHandler handler, Player player, Level level, BlockPos pos, BlockState state, @Nullable BlockHitResult result)
-    {
-        return false;
     }
 }

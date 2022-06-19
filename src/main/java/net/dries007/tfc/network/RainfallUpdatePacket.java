@@ -45,7 +45,7 @@ public class RainfallUpdatePacket
             final Level level = ClientHelpers.getLevel();
             if (level != null)
             {
-                level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(level, rainStartTick, rainEndTick, rainIntensity));
+                level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(rainStartTick, rainEndTick, rainIntensity));
             }
         });
     }

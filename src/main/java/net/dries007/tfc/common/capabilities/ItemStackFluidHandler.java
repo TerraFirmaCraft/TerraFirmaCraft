@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.capabilities;
 
 import java.util.function.Predicate;
-import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +23,7 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.items.VesselItem;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -35,15 +35,10 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     private final LazyOptional<IFluidHandlerItem> capability;
     private final ItemStack stack;
     private final Predicate<Fluid> allowedFluids;
-    private final int capacity;
+    protected final int capacity;
 
     private boolean initialized; // If the internal capability objects have loaded their data.
-    private FluidStack fluid;
-
-    public ItemStackFluidHandler(ItemStack stack, int capacity)
-    {
-        this(stack, f -> true, capacity);
-    }
+    protected FluidStack fluid;
 
     public ItemStackFluidHandler(ItemStack stack, TagKey<Fluid> allowedFluids, int capacity)
     {
@@ -138,7 +133,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     /**
      * @see VesselItem.VesselCapability#load()
      */
-    private void load()
+    protected void load()
     {
         if (!initialized)
         {
@@ -147,7 +142,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
         }
     }
 
-    private void save()
+    protected void save()
     {
         stack.getOrCreateTag().put("fluid", fluid.writeToNBT(new CompoundTag()));
     }

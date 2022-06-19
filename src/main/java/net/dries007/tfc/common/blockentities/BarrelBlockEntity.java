@@ -16,7 +16,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -24,13 +23,10 @@ import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -48,7 +44,8 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.*;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -310,27 +307,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     private void updateFluidIOSlots()
     {
         assert level != null;
-        ItemStack input = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
+        final ItemStack input = inventory.getStackInSlot(SLOT_FLUID_CONTAINER_IN);
         if (!input.isEmpty() && inventory.getStackInSlot(SLOT_FLUID_CONTAINER_OUT).isEmpty())
         {
-            input.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(itemCap -> {
-                final int amount = itemCap.getFluidInTank(0).getAmount();
-                if (amount > 0 && FluidHelpers.transferUpTo(itemCap, inventory.tank, amount))
-                {
-                    Helpers.playSound(level, getBlockPos(), SoundEvents.BUCKET_EMPTY);
-                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, itemCap.getContainer());
-                    inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
-                }
-                else
-                {
-                    FluidActionResult result = FluidUtil.tryFillContainer(input, inventory, TFCConfig.SERVER.barrelCapacity.get(), null, true);
-                    if (result.isSuccess())
-                    {
-                        Helpers.playSound(level, getBlockPos(), SoundEvents.BUCKET_FILL);
-                        inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, result.getResult());
-                        inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, ItemStack.EMPTY);
-                    }
-                }
+            FluidHelpers.transferBetweenBlockEntityAndItem(input, this, level, worldPosition, (newOriginalStack, newContainerStack) -> {
+                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_IN, newContainerStack); // And if we somehow had excess, we place it in the original slot
+                inventory.setStackInSlot(SLOT_FLUID_CONTAINER_OUT, newOriginalStack); // Original stack gets shoved in the output
             });
         }
     }
@@ -474,7 +456,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         }
 
         @Override
-        public void fluidTankChanged(InventoryFluidTank tank)
+        public void fluidTankChanged()
         {
             barrel.markForSync();
         }

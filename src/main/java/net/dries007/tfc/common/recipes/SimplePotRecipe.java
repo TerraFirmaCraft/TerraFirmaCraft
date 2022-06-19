@@ -18,12 +18,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.util.JsonHelpers;
 
@@ -75,7 +75,7 @@ public class SimplePotRecipe extends PotRecipe
             {
                 inventory.setStackInSlot(i, items.get(i).copy());
             }
-            inventory.drain(FluidAttributes.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
+            inventory.drain(FluidHelpers.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
             inventory.fill(stack.copy(), IFluidHandler.FluidAction.EXECUTE);
         }
     }

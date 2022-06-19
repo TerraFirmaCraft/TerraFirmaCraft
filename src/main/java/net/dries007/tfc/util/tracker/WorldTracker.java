@@ -15,6 +15,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.LongArrayTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -45,6 +46,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class WorldTracker implements ICapabilitySerializable<CompoundTag>
 {
+    private final Level level;
     private final Random random;
     private final LazyOptional<WorldTracker> capability;
 
@@ -58,8 +60,9 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     private long rainStartTick, rainEndTick;
     private float rainIntensity;
 
-    public WorldTracker()
+    public WorldTracker(Level level)
     {
+        this.level = level;
         this.random = new Random();
         this.capability = LazyOptional.of(() -> this);
         this.climateModel = null;
@@ -112,22 +115,18 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
         addCollapseData(new Collapse(centerPos, collapsePositions, maxRadiusSquared));
     }
 
-    public void setWeatherData(Level level, long rainDuration, float rainIntensity)
+    public void setWeatherData(long rainDuration, float rainIntensity)
     {
         final long tick = Calendars.get(level).getTicks();
-        setWeatherData(level, tick, tick + rainDuration, rainIntensity);
+        setWeatherData(tick, tick + rainDuration, rainIntensity);
     }
 
-    public void setWeatherData(Level level, long rainStartTick, long rainEndTick, float rainIntensity)
+    public void setWeatherData(long rainStartTick, long rainEndTick, float rainIntensity)
     {
         this.rainStartTick = rainStartTick;
         this.rainEndTick = rainEndTick;
         this.rainIntensity = rainIntensity;
-
-        if (!level.isClientSide())
-        {
-            PacketHandler.send(PacketDistributor.DIMENSION.with(level::dimension), new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
-        }
+        sync();
     }
 
     public boolean isRaining(Level level, BlockPos pos)
@@ -204,6 +203,19 @@ public class WorldTracker implements ICapabilitySerializable<CompoundTag>
     public void addDebugTooltip(List<String> tooltips)
     {
         tooltips.add("R [%d, %d] I (%.2f) %.2f".formatted(rainStartTick, rainEndTick, rainIntensity, exactRainfallIntensity(Calendars.CLIENT.getTicks())));
+    }
+
+    public void sync()
+    {
+        if (!level.isClientSide())
+        {
+            PacketHandler.send(PacketDistributor.DIMENSION.with(level::dimension), new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
+        }
+    }
+
+    public void syncTo(ServerPlayer player)
+    {
+        PacketHandler.send(PacketDistributor.PLAYER.with(() -> player), new RainfallUpdatePacket(rainStartTick, rainEndTick, rainIntensity));
     }
 
     @Override

@@ -229,7 +229,7 @@ public class ClientForgeEventHandler
             if (recipe != null)
             {
                 // Check what we would get if melted
-                final FluidStack fluid = recipe.getOutputFluid(wrapper);
+                final FluidStack fluid = recipe.getOutputFluid();
                 if (!fluid.isEmpty())
                 {
                     final Metal metal = Metal.get(fluid.getFluid());

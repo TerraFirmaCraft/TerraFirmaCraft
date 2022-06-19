@@ -153,7 +153,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     private static Map<BiomeExtension, Supplier<BiomeNoiseSampler>> collectBiomeNoiseSamplers(long seed)
     {
         final ImmutableMap.Builder<BiomeExtension, Supplier<BiomeNoiseSampler>> builder = ImmutableMap.builder();
-        for (BiomeExtension variant : TFCBiomes.getVariants())
+        for (BiomeExtension variant : TFCBiomes.getExtensions())
         {
             builder.put(variant, () -> variant.createNoiseSampler(seed));
         }

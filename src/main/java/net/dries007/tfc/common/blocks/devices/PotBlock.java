@@ -23,7 +23,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -33,6 +32,7 @@ import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
 
 
@@ -106,7 +106,7 @@ public class PotBlock extends FirepitBlock
                 pot.extinguish(state);
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
-            else if (!pot.isBoiling() && FluidUtil.interactWithFluidHandler(player, hand, level, pos, null))
+            else if (!pot.isBoiling() && FluidHelpers.transferBetweenBlockEntityAndItem(stack, pot, player, hand))
             {
                 pot.markForSync();
                 return InteractionResult.sidedSuccess(level.isClientSide);

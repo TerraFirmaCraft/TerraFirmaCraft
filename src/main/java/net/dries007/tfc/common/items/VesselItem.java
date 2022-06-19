@@ -379,7 +379,7 @@ public class VesselItem extends Item
                     {
                         // Melt item, add the contents to the alloy. Excess solids are placed into the inventory, more than can fit is voided.
                         final ItemStack outputStack = recipe.assemble(wrapper);
-                        final FluidStack outputFluid = recipe.getOutputFluid(wrapper);
+                        final FluidStack outputFluid = recipe.getOutputFluid();
 
                         if (!outputStack.isEmpty())
                         {

@@ -59,7 +59,7 @@ public class WeatherCommand
     private static int setRain(CommandSourceStack source, int time, float intensity)
     {
         source.getLevel().setWeatherParameters(0, time, true, false);
-        source.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(source.getLevel(), time, intensity));
+        source.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(time, intensity));
         source.sendSuccess(new TranslatableComponent("commands.weather.set.rain"), true);
         return time;
     }
@@ -67,7 +67,7 @@ public class WeatherCommand
     private static int setThunder(CommandSourceStack source, int time, float intensity)
     {
         source.getLevel().setWeatherParameters(0, time, true, true);
-        source.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(source.getLevel(), time, intensity));
+        source.getLevel().getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.setWeatherData(time, intensity));
         source.sendSuccess(new TranslatableComponent("commands.weather.set.thunder"), true);
         return time;
     }

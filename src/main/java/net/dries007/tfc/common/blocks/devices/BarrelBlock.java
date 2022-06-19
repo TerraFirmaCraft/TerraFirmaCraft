@@ -21,14 +21,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
@@ -69,9 +68,7 @@ public class BarrelBlock extends SealableDeviceBlock
                 level.playSound(null, pos, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0f, 0.85f);
                 return InteractionResult.SUCCESS;
             }
-            else if (barrel.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-                .map(cap -> FluidUtil.interactWithFluidHandler(player, hand, cap))
-                .orElse(false))
+            else if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, barrel, player, hand))
             {
                 return InteractionResult.SUCCESS;
             }

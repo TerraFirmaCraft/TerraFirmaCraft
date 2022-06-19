@@ -6,11 +6,12 @@
 
 package net.dries007.tfc.world.chunkdata;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
-import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.LevelReader;
@@ -18,6 +19,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Sided cache of chunk data instances, for when a world context is unavailable.
@@ -52,37 +54,13 @@ public final class ChunkDataCache
         return Helpers.isClientSide(world) ? CLIENT : SERVER;
     }
 
-    public static void clearCaches()
-    {
-        // The world gen cache should not be cleared, as it is both automatically cleared (as it uses weak keys), and is the only place where chunk data is stored between save operations (it is not a true cache, in that sense, as it's data cannot be generated from it's entirety)
-        CLIENT.cache.clear();
-        SERVER.cache.clear();
-        WATCH_QUEUE.queue.clear();
-    }
-
-    protected final Map<ChunkPos, ChunkData> cache;
+    private final Map<ChunkPos, ChunkData> cache;
     private final String name;
 
     private ChunkDataCache(String name)
     {
         this.name = name;
         this.cache = new HashMap<>();
-    }
-
-    public ChunkData getOrEmpty(BlockPos pos)
-    {
-        return getOrEmpty(new ChunkPos(pos));
-    }
-
-    public ChunkData getOrEmpty(ChunkPos pos)
-    {
-        return cache.getOrDefault(pos, ChunkData.EMPTY);
-    }
-
-    @Nullable
-    public ChunkData get(BlockPos pos)
-    {
-        return get(new ChunkPos(pos));
     }
 
     @Nullable

@@ -104,7 +104,7 @@ def generate(rm: ResourceManager):
     advanced_shapeless(rm, 'crafting/add_small_bait', ('#tfc:holds_small_fishing_bait', '#tfc:small_fishing_bait'), item_stack_provider(copy_input=True, other_modifier='tfc:add_bait_to_rod'), '#tfc:holds_small_fishing_bait').with_advancement('#tfc:holds_small_fishing_bait')
     advanced_shapeless(rm, 'crafting/add_large_bait', ('#tfc:holds_large_fishing_bait', '#tfc:large_fishing_bait'), item_stack_provider(copy_input=True, other_modifier='tfc:add_bait_to_rod'), '#tfc:holds_large_fishing_bait').with_advancement('#tfc:holds_large_fishing_bait')
 
-    rm.crafting_shaped('crafting/wood/stick_from_twigs', ['X', 'X'], {'X': '#tfc:twigs'}, 'minecraft:stick')  # todo: advancement?
+    rm.crafting_shaped('crafting/wood/stick_from_twigs', ['X', 'X'], {'X': '#tfc:twigs'}, 'minecraft:stick').with_advancement('#tfc:twigs')
 
     for wood in WOODS.keys():
         def item(thing: str):
@@ -287,13 +287,13 @@ def generate(rm: ResourceManager):
 
     # Soil Blocks
     for variant in SOIL_BLOCK_VARIANTS:
-        for block_type in SOIL_BLOCK_TYPES:
-            if block_type not in ('mud_bricks', 'drying_bricks'):
-                rm.block_tag('can_landslide', 'tfc:%s/%s' % (block_type, variant))
+        for block_type in ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt', 'mud'):
+            rm.block_tag('can_landslide', 'tfc:%s/%s' % (block_type, variant))
 
-        # Blocks that create normal dirt
-        landslide_recipe(rm, '%s_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('dirt', 'grass', 'grass_path', 'farmland', 'rooted_dirt')], 'tfc:dirt/%s' % variant)
-        landslide_recipe(rm, '%s_clay_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('clay', 'clay_grass')], 'tfc:dirt/%s' % variant)
+        landslide_recipe(rm, '%s_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('dirt', 'grass', 'grass_path', 'farmland')], 'tfc:dirt/%s' % variant)
+        landslide_recipe(rm, '%s_clay_dirt' % variant, ['tfc:%s/%s' % (block_type, variant) for block_type in ('clay', 'clay_grass')], 'tfc:clay/%s' % variant)
+        landslide_recipe(rm, '%s_rooted_dirt' % variant, 'tfc:rooted_dirt/%s' % variant, 'tfc:rooted_dirt/%s' % variant)
+        landslide_recipe(rm, '%s_mud' % variant, 'tfc:mud/%s' % variant, 'tfc:mud/%s' % variant)
 
     # Sand
     for variant in SAND_BLOCK_TYPES:
@@ -355,10 +355,11 @@ def generate(rm: ResourceManager):
     # Heat Recipes
     # ============
 
+    heat_recipe(rm, 'torch_from_twig', '#tfc:twigs', 60, result_item='tfc:torch')
     heat_recipe(rm, 'torch_from_stick', '#forge:rods/wooden', 60, result_item='2 tfc:torch')
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item='18 tfc:torch')
-    heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 180, result_item='minecraft:glass')
-    heat_recipe(rm, 'glass_from_sand', '#forge:sand', 180, result_item='minecraft:glass')
+    heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 400, result_item='minecraft:glass')
+    heat_recipe(rm, 'glass_from_sand', '#forge:sand', 400, result_item='minecraft:glass')
     heat_recipe(rm, 'brick', 'tfc:ceramic/unfired_brick', POTTERY_MELT, result_item='minecraft:brick')
     heat_recipe(rm, 'flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_MELT, result_item='minecraft:flower_pot')
     heat_recipe(rm, 'ceramic_jug', 'tfc:ceramic/unfired_jug', POTTERY_MELT, result_item='tfc:ceramic/jug')

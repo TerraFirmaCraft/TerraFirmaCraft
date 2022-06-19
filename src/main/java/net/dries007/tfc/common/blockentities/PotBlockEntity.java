@@ -6,10 +6,6 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import net.dries007.tfc.common.items.TFCItems;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -35,11 +30,15 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.container.PotContainer;
+import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -241,7 +240,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
         {
             this.pot = (PotBlockEntity) entity;
             this.inventory = new InventoryItemHandler(entity, 9);
-            this.tank = new FluidTank(FluidAttributes.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT));
+            this.tank = new FluidTank(FluidHelpers.BUCKET_VOLUME, fluid -> Helpers.isFluid(fluid.getFluid(), TFCTags.Fluids.USABLE_IN_POT));
         }
 
         @NotNull

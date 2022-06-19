@@ -67,7 +67,6 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -75,6 +74,7 @@ import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.*;
@@ -99,7 +99,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatDefinition;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
-import net.dries007.tfc.common.commands.LocateVeinCommand;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
@@ -151,7 +150,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onChunkUnload);
         bus.addListener(ForgeEventHandler::onChunkDataSave);
         bus.addListener(ForgeEventHandler::onChunkDataLoad);
-        bus.addListener(ForgeEventHandler::onServerStart);
         bus.addListener(ForgeEventHandler::registerCommands);
         bus.addListener(ForgeEventHandler::onBlockBroken);
         bus.addListener(ForgeEventHandler::onBlockPlace);
@@ -292,7 +290,7 @@ public final class ForgeEventHandler
 
     public static void attachWorldCapabilities(AttachCapabilitiesEvent<Level> event)
     {
-        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker());
+        event.addCapability(WorldTrackerCapability.KEY, new WorldTracker(event.getObject()));
     }
 
     public static void attachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event)
@@ -402,11 +400,6 @@ public final class ForgeEventHandler
         {
             generator.getChunkDataProvider().loadPartial(chunk, event.getData().getCompound("tfc_protochunk_data"));
         }
-    }
-
-    public static void onServerStart(ServerStartingEvent event)
-    {
-        LocateVeinCommand.reloadVeinsCache(event.getServer());
     }
 
     public static void registerCommands(RegisterCommandsEvent event)
@@ -876,26 +869,30 @@ public final class ForgeEventHandler
 
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer player)
-        {
-            TFCFoodData.replaceFoodStats(event.getPlayer());
-            player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
-        }
+        onNewPlayerInWorld(event.getPlayer());
     }
 
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
-        {
-            TFCFoodData.replaceFoodStats(event.getPlayer());
-        }
+        onNewPlayerInWorld(event.getPlayer());
     }
 
     public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event)
     {
-        if (event.getPlayer() instanceof ServerPlayer)
+        onNewPlayerInWorld(event.getPlayer());
+    }
+
+    /**
+     * Common handling for creating new player entities. Called through logging in, changing dimension, and respawning.
+     */
+    private static void onNewPlayerInWorld(Player player)
+    {
+        if (player instanceof ServerPlayer serverPlayer)
         {
-            TFCFoodData.replaceFoodStats(event.getPlayer());
+            TFCFoodData.replaceFoodStats(serverPlayer);
+
+            serverPlayer.level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(c -> c.syncTo(serverPlayer));
+            serverPlayer.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(PlayerData::sync);
         }
     }
 
@@ -1059,6 +1056,11 @@ public final class ForgeEventHandler
         Metal.updateMetalFluidMap();
         ItemSizeManager.applyItemStackSizeOverrides();
         FoodCapability.markRecipeOutputsAsNonDecaying();
+
+        if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.CLIENT_PACKET_RECEIVED)
+        {
+            ClientHelpers.updateSearchTrees();
+        }
     }
 
     /**

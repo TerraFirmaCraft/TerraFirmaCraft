@@ -8,5 +8,8 @@ package net.dries007.tfc.common.capabilities;
 
 public interface FluidTankCallback
 {
-    void fluidTankChanged(InventoryFluidTank tank);
+    /**
+     * Called when the internal fluid tank has changed.
+     */
+    default void fluidTankChanged() {}
 }

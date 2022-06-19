@@ -23,7 +23,7 @@ import net.dries007.tfc.world.biome.TFCBiomes;
 
 public final class TFCCommands
 {
-    public static final Supplier<SuggestionProvider<CommandSourceStack>> TFC_BIOMES = register("available_biomes", (context, builder) -> SharedSuggestionProvider.suggestResource(TFCBiomes.getVariantsKeys(), builder));
+    public static final Supplier<SuggestionProvider<CommandSourceStack>> TFC_BIOMES = register("available_biomes", (context, builder) -> SharedSuggestionProvider.suggestResource(TFCBiomes.getExtensionKeys(), builder));
 
     public static void registerSuggestionProviders()
     {
@@ -32,7 +32,7 @@ public final class TFCCommands
 
     public static void registerArgumentTypes()
     {
-        ArgumentTypes.register("tfc:vein", VeinArgumentType.class, new EmptyArgumentSerializer<>(VeinArgumentType::new));
+        ArgumentTypes.register("tfc:vein", VeinFeatureArgument.class, new EmptyArgumentSerializer<>(VeinFeatureArgument::new));
     }
 
     public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher)
@@ -44,9 +44,8 @@ public final class TFCCommands
             .then(HeatCommand.create())
             .then(PlayerCommand.create())
             .then(TreeCommand.create())
-            .then(LocateVeinCommand.create())
             .then(CountBlockCommand.create())
-            .then(TFCLocateCommand.create())
+            .then(LocateCommand.create())
         );
 
         // For command modifications / replacements, we register directly

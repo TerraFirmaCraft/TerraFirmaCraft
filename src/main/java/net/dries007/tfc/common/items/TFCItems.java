@@ -17,7 +17,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -35,6 +34,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.entities.TFCEntities;
 import net.dries007.tfc.common.fluids.Alcohol;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.config.TFCConfig;
@@ -187,7 +187,7 @@ public final class TFCItems
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle", MISC);
     public static final RegistryObject<Item> STRAW = register("straw", MISC);
-    public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new WoodenBucketItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.woodenBucketCapacity::get, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET));
+    public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new DiscreteFluidContainerItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.woodenBucketCapacity::get, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, false));
     public static final RegistryObject<Item> WOOL = register("wool", MISC);
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
@@ -301,8 +301,8 @@ public final class TFCItems
         register("bucket/" + fluid.getId(), () -> new BucketItem(TFCFluids.ALCOHOLS.get(fluid).source(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
     );
 
-    public static final RegistryObject<TFCBucketItem> RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new TFCBucketItem(new Item.Properties().stacksTo(1).tab(MISC), () -> FluidAttributes.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET) {});
-    public static final RegistryObject<TFCBucketItem> BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new TFCBucketItem(new Item.Properties().stacksTo(1).tab(MISC), () -> FluidAttributes.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET));
+    public static final RegistryObject<DiscreteFluidContainerItem> RED_STEEL_BUCKET = register("metal/bucket/red_steel", () -> new DiscreteFluidContainerItem(new Item.Properties().stacksTo(1).tab(MISC), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_RED_STEEL_BUCKET, true));
+    public static final RegistryObject<DiscreteFluidContainerItem> BLUE_STEEL_BUCKET = register("metal/bucket/blue_steel", () -> new DiscreteFluidContainerItem(new Item.Properties().stacksTo(1).tab(MISC), () -> FluidHelpers.BUCKET_VOLUME, TFCTags.Fluids.USABLE_IN_BLUE_STEEL_BUCKET, true));
 
     public static final RegistryObject<BucketItem> SALT_WATER_BUCKET = register("bucket/salt_water", () -> new BucketItem(TFCFluids.SALT_WATER.source(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
     public static final RegistryObject<BucketItem> SPRING_WATER_BUCKET = register("bucket/spring_water", () -> new BucketItem(TFCFluids.SPRING_WATER.source(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)));
