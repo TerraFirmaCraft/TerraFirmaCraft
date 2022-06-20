@@ -192,7 +192,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('yak_food', '#tfc:foods/grains')
     rm.item_tag('goat_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables')
     rm.item_tag('chicken_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds')
-    rm.item_tag('duck_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds', 'tfc:food/barley_bread', 'tfc:food/wheat_bread', 'tfc:food/rye_bread', 'tfc:food/maize_bread', 'tfc:food/oat_bread')
+    rm.item_tag('duck_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds', 'tfc:food/barley_bread', 'tfc:food/wheat_bread', 'tfc:food/rye_bread', 'tfc:food/maize_bread', 'tfc:food/oat_bread', 'tfc:food/oat_bread')
     rm.item_tag('quail_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds')
     rm.item_tag('alpaca_food', '#tfc:foods/grains', '#tfc:foods/fruits')
     rm.item_tag('mule_food', '#tfc:horse_food')
@@ -797,6 +797,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, max_forest='normal')))
     rm.data(('tfc', 'fauna', 'donkey'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'mule'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
+    rm.data(('tfc', 'fauna', 'horse'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -841,6 +842,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
     mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
 
     global_loot_modifiers(rm, 'tfc:reset_decay')
     global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})

@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.entities.livestock.horse.TFCDonkey;
+import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.minecraft.core.BlockPos;
@@ -73,6 +74,7 @@ public class Faunas
     public static final FaunaType<Prey> BOAR = registerAnimal(TFCEntities.BOAR);
     public static final FaunaType<TFCDonkey> DONKEY = registerAnimal(TFCEntities.DONKEY);
     public static final FaunaType<TFCMule> MULE = registerAnimal(TFCEntities.MULE);
+    public static final FaunaType<TFCHorse> HORSE = registerAnimal(TFCEntities.HORSE);
 
     public static void registerSpawnPlacements()
     {
@@ -115,6 +117,7 @@ public class Faunas
         registerSpawnPlacement(BOAR);
         registerSpawnPlacement(DONKEY);
         registerSpawnPlacement(MULE);
+        registerSpawnPlacement(HORSE);
     }
 
     private static <E extends Mob> FaunaType<E> registerAnimal(RegistryObject<EntityType<E>> entity)

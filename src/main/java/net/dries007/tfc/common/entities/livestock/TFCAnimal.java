@@ -164,7 +164,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         }
         else if (other == this)
         {
-            TFCAnimal baby = ((EntityType<TFCAnimal>) getType()).create(level);
+            TFCAnimal baby = ((EntityType<TFCAnimal>) getEntityTypeForBaby()).create(level);
             if (baby != null)
             {
                 setBabyTraits(baby);

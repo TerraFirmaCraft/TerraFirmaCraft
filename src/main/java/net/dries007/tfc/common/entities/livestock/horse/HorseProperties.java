@@ -29,24 +29,6 @@ public interface HorseProperties extends MammalProperties
         return (AbstractHorse) MammalProperties.super.getEntity();
     }
 
-    ItemStack getChestItem();
-
-    void setChestItem(ItemStack stack);
-
-    @Override
-    default void saveCommonAnimalData(CompoundTag nbt)
-    {
-        MammalProperties.super.saveCommonAnimalData(nbt);
-        nbt.put("chestItem", getChestItem().save(new CompoundTag()));
-    }
-
-    @Override
-    default void readCommonAnimalData(CompoundTag nbt)
-    {
-        MammalProperties.super.readCommonAnimalData(nbt);
-        setChestItem(ItemStack.of(nbt.getCompound("chestItem")));
-    }
-
     @Override
     default void createGenes(CompoundTag tag, TFCAnimalProperties maleProperties)
     {
@@ -54,8 +36,6 @@ public interface HorseProperties extends MammalProperties
         AbstractHorse female = getEntity();
         AbstractHorse male = (AbstractHorse) maleProperties;
         tag.putDouble("maxHealth", male.getAttributeBaseValue(Attributes.MAX_HEALTH) + female.getAttributeBaseValue(Attributes.MAX_HEALTH));
-        tag.putDouble("jumpStrength", male.getAttributeBaseValue(Attributes.JUMP_STRENGTH) + female.getAttributeBaseValue(Attributes.JUMP_STRENGTH));
-        tag.putDouble("movementSpeed", male.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) + female.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
     }
 
     @Override
@@ -64,8 +44,6 @@ public interface HorseProperties extends MammalProperties
         MammalProperties.super.applyGenes(tag, babyProperties);
         AbstractHorse baby = (AbstractHorse) babyProperties;
         EntityHelpers.setNullableAttribute(baby, Attributes.MAX_HEALTH, (tag.getDouble("maxHealth") + generateRandomMaxHealth()) / 3);
-        EntityHelpers.setNullableAttribute(baby, Attributes.JUMP_STRENGTH, (tag.getDouble("jumpStrength") + generateRandomJumpStrength()) / 3);
-        EntityHelpers.setNullableAttribute(baby, Attributes.MOVEMENT_SPEED, (tag.getDouble("movementSpeed") + generateRandomSpeed()) / 3);
     }
 
     @Override
@@ -90,17 +68,4 @@ public interface HorseProperties extends MammalProperties
         final Random random = getEntity().getRandom();
         return 15.0F + random.nextInt(8) + random.nextInt(9);
     }
-
-    private double generateRandomJumpStrength()
-    {
-        final Random random = getEntity().getRandom();
-        return 0.4F + random.nextDouble() * 0.2D + random.nextDouble() * 0.2D + random.nextDouble() * 0.2D;
-    }
-
-    private double generateRandomSpeed()
-    {
-        final Random random = getEntity().getRandom();
-        return (0.45F + random.nextDouble() * 0.3D + random.nextDouble() * 0.3D + random.nextDouble() * 0.3D) * 0.25D;
-    }
-
 }

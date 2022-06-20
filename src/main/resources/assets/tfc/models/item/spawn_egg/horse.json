@@ -1,7 +1,4 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "replace": false,
-  "values": [
-    "#tfc:horse_food"
-  ]
+  "parent": "item/template_spawn_egg"
 }

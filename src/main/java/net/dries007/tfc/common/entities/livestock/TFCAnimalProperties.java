@@ -21,6 +21,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -91,6 +92,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      * Default tag checked by isFood (edible items)
      */
     TagKey<Item> getFoodTag();
+
+    default EntityType<?> getEntityTypeForBaby()
+    {
+        return getEntity().getType();
+    }
 
     /**
      * Is it time to decay familiarity?

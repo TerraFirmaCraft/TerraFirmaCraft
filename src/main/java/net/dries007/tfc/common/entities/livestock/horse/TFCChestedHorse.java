@@ -38,7 +38,6 @@ import net.minecraftforge.common.Tags;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
-import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
@@ -91,6 +90,16 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     }
 
     // HORSE SPECIFIC STUFF
+
+    public ItemStack getChestItem()
+    {
+        return entityData.get(CHEST_ITEM);
+    }
+
+    public void setChestItem(ItemStack stack)
+    {
+        entityData.set(CHEST_ITEM, stack);
+    }
 
     @Override
     protected void registerGoals()
@@ -165,7 +174,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
             }
             else
             {
-                if (getOwnerUUID() == null)
+                if (getOwnerUUID() == null) // tfc: add an owner
                 {
                     setOwnerUUID(player.getUUID());
                 }
@@ -237,18 +246,6 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     {
         super.getAngrySound();
         return angry.get();
-    }
-
-    @Override
-    public ItemStack getChestItem()
-    {
-        return entityData.get(CHEST_ITEM);
-    }
-
-    @Override
-    public void setChestItem(ItemStack stack)
-    {
-        entityData.set(CHEST_ITEM, stack);
     }
 
     // BEGIN COPY-PASTE FROM TFC ANIMAL
@@ -336,6 +333,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     {
         super.addAdditionalSaveData(nbt);
         saveCommonAnimalData(nbt);
+        nbt.put("chestItem", getChestItem().save(new CompoundTag()));
     }
 
     @Override
@@ -343,6 +341,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     {
         super.readAdditionalSaveData(nbt);
         readCommonAnimalData(nbt);
+        setChestItem(ItemStack.of(nbt.getCompound("chestItem")));
     }
 
     @Override
@@ -369,7 +368,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         }
         else if (other == this)
         {
-            AgeableMob baby = ((EntityType<AgeableMob>) getType()).create(level);
+            AgeableMob baby = ((EntityType<AgeableMob>) getEntityTypeForBaby()).create(level);
             if (baby instanceof TFCAnimalProperties prop)
             {
                 setBabyTraits(prop);
