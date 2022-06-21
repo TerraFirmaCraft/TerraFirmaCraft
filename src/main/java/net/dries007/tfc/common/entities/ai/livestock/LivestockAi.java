@@ -19,7 +19,10 @@ import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.prey.AvoidPredatorBehavior;
+import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.prey.Prey;
 
 public class LivestockAi
 {
@@ -32,7 +35,7 @@ public class LivestockAi
         MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET,
         MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATE_RECENTLY,
         MemoryModuleType.BREED_TARGET, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ADULT,
-        MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED
+        MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.AVOID_TARGET
     );
 
     /**
@@ -44,6 +47,7 @@ public class LivestockAi
     {
         initCoreActivity(brain);
         initIdleActivity(brain);
+        initRetreatActivity(brain);
 
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE)); // core activities run all the time
         brain.setDefaultActivity(Activity.IDLE); // the default activity is a useful way to have a fallback activity
@@ -74,23 +78,41 @@ public class LivestockAi
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(0, new BreedBehavior(1.0F)), // custom TFC breed behavior
-            Pair.of(1, new FollowTemptation(e -> 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
-            Pair.of(2, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
-            Pair.of(3, new RunOne<>(ImmutableList.of(
-                // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
-                Pair.of(new RandomStroll(1.0F), 2), // picks a random place to walk to
-                Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
-                Pair.of(new DoNothing(30, 60), 1)))) // do nothing for a certain period of time
+            Pair.of(0, new AvoidPredatorBehavior(true)),
+            Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
+            Pair.of(2, new FollowTemptation(e -> 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
+            Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
+            Pair.of(4, createIdleMovementBehaviors())
         ));
     }
 
+    public static void initRetreatActivity(Brain<? extends TFCAnimal> brain)
+    {
+        brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
+                SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.3F, 15, false),
+                createIdleMovementBehaviors(),
+                new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
+                new EraseMemoryIf<>(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
+            ),
+            MemoryModuleType.AVOID_TARGET
+        );
+    }
+
+    public static RunOne<TFCAnimal> createIdleMovementBehaviors()
+    {
+        return new RunOne<>(ImmutableList.of(
+            // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
+            Pair.of(new RandomStroll(1.0F), 2), // picks a random place to walk to
+            Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
+            Pair.of(new DoNothing(30, 60), 1))
+        ); // do nothing for a certain period of time
+    }
+
     /**
-     * If we had other things to do, we would do them here. This is what lets you switch activities. For now this is unimplemented because we just idle forever.
-     * Predators have more complex things like schedules, so they handle that there.
+     * This is what lets you switch activities. It should be in reverse order of the importance of the activity.
      */
     public static void updateActivity(TFCAnimal animal)
     {
-        animal.getBrain().setActiveActivityToFirstValid(ImmutableList.of(Activity.IDLE));
+        animal.getBrain().setActiveActivityToFirstValid(ImmutableList.of(Activity.AVOID, Activity.IDLE));
     }
 }

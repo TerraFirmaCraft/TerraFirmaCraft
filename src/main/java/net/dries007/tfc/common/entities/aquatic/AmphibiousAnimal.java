@@ -22,6 +22,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.SmoothSwimmingLookControl;
@@ -31,10 +32,14 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.phys.Vec3;
+
+import net.minecraftforge.common.ForgeMod;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.entities.ai.amphibian.AmphibianAi;
@@ -54,9 +59,36 @@ public class AmphibiousAnimal extends PathfinderMob
     public AmphibiousAnimal(EntityType<? extends AmphibiousAnimal> type, Level level)
     {
         super(type, level);
+        setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);
         moveControl = new MoveControl(this, level);
         lookControl = new SmoothSwimmingLookControl(this, 20);
-        maxUpStep = 1.0F;
+    }
+
+    @Override
+    public void playAmbientSound()
+    {
+        if (!isPlayingDead())
+        {
+            playAmbientSound();
+        }
+    }
+
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level)
+    {
+        return 0.0F;
+    }
+
+    @Override
+    public float getStepHeight()
+    {
+        final float baseValue = isPlayingDead() ? 0f : 1f;
+        final AttributeInstance attribute = getAttribute(ForgeMod.STEP_HEIGHT_ADDITION.get());
+        if (attribute != null)
+        {
+            return (float) Math.max(0, baseValue + attribute.getValue());
+        }
+        return baseValue;
     }
 
     @Override
@@ -69,13 +101,6 @@ public class AmphibiousAnimal extends PathfinderMob
     protected Brain<?> makeBrain(Dynamic<?> dynamic)
     {
         return AmphibianAi.makeBrain(brainProvider().makeBrain(dynamic));
-    }
-
-    @Override
-    public void tick()
-    {
-        maxUpStep = isPlayingDead() ? 0.0F : 1.0F;
-        super.tick();
     }
 
     @Override

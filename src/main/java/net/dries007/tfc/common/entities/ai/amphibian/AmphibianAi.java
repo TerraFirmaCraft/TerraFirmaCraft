@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 /**
  * Reference implementation of {@link Brain} based on Axolotls.
@@ -116,7 +117,7 @@ public class AmphibianAi
 
     private static boolean isDayTime(Entity animal)
     {
-        return animal.level.getDayTime() < 12000;
+        return animal.level.getDayTime() % ICalendar.TICKS_IN_DAY < 12000;
     }
 
     private static boolean canSetWalkTargetFromLookTarget(LivingEntity entity)

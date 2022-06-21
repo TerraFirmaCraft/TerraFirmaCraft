@@ -60,7 +60,7 @@ public abstract class WoolyAnimal extends ProducingMammal implements IForgeShear
     @Override
     public boolean hasProduct()
     {
-        return getProducedTick() <= 0 || getProductsCooldown() <= 0;
+        return getProducedTick() <= 0 || getProductsCooldown() <= 0 && getAgeType() == Age.ADULT;
     }
 
     public ItemStack getWoolItem()

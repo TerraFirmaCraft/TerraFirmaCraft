@@ -41,6 +41,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -521,5 +522,12 @@ public class TFCHorse extends Horse implements HorseProperties
     {
         super.playStepSound(pos, block);
         this.playSound(step.get(), 0.15F, 1.0F);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public float getWalkTargetValue(BlockPos pos, LevelReader level)
+    {
+        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
     }
 }

@@ -30,10 +30,12 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Dynamic;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.animals.AnimalConfig;
@@ -104,7 +106,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     public void tickBrain()
     {
         ((Brain<TFCAnimal>) getBrain()).tick((ServerLevel) level, this);
-        // updateActivity function would go here
+        LivestockAi.updateActivity(this);
     }
 
     @Override
@@ -296,5 +298,12 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     protected void playStepSound(BlockPos pos, BlockState block)
     {
         this.playSound(step.get(), 0.15F, 1.0F);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public float getWalkTargetValue(BlockPos pos, LevelReader level)
+    {
+        return level.getBlockState(pos.below()).is(TFCTags.Blocks.BUSH_PLANTABLE_ON) ? 10.0F : level.getBrightness(pos) - 0.5F;
     }
 }

@@ -23,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -32,6 +33,7 @@ import net.dries007.tfc.common.blocks.plant.fruit.Lifecycle;
 import net.dries007.tfc.common.blocks.plant.fruit.SeasonalPlantBlock;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -77,9 +79,8 @@ public class TFCFox extends Fox
         super.registerGoals();
         EntityHelpers.removeGoalOfPriority(goalSelector, 3); // breed goal
         EntityHelpers.removeGoalOfClass(goalSelector, FoxEatBerriesGoal.class);
+        goalSelector.addGoal(4, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8f, 1.6f, 1.4f, TFCTags.Entities.HUNTS_LAND_PREY));
         goalSelector.addGoal(10, new TFCFoxEatBerriesGoal());
-
-        // todo: prey update -- avoid predators, prey on others (fox have special impl for stalking, can we borrow it?)
     }
 
     @Override

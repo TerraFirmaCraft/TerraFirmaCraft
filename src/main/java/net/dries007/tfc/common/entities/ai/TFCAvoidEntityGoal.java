@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.common.entities.ai;
 
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
@@ -16,10 +18,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.util.Helpers;
 
 public class TFCAvoidEntityGoal<T extends LivingEntity> extends AvoidEntityGoal<T>
 {
     private final TargetingConditions avoidEntityTargeting;
+
+    public TFCAvoidEntityGoal(PathfinderMob mob, Class<T> avoidClass, float dist, double farSpeed, double nearSpeed, TagKey<EntityType<?>> tag)
+    {
+        super(mob, avoidClass, dist, farSpeed, nearSpeed);
+        avoidEntityTargeting = TargetingConditions.forCombat().range(dist).selector(e -> Helpers.isEntity(e, tag));
+    }
 
     public TFCAvoidEntityGoal(PathfinderMob mob, Class<T> avoidClass, float dist, double farSpeed, double nearSpeed)
     {

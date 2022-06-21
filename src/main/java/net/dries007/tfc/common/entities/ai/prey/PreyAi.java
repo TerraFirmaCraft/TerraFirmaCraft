@@ -67,7 +67,7 @@ public class PreyAi
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(1, new AvoidPredatorBehavior()),
+            Pair.of(1, new AvoidPredatorBehavior(false)),
             Pair.of(2, createIdleMovementBehaviors())
         ));
     }
@@ -104,14 +104,14 @@ public class PreyAi
         prey.getBrain().setActiveActivityToFirstValid(ImmutableList.of(Activity.AVOID, Activity.IDLE));
     }
 
-    public static Optional<LivingEntity> getAvoidTarget(Prey prey)
+    public static Optional<LivingEntity> getAvoidTarget(LivingEntity prey)
     {
         return prey.getBrain().hasMemoryValue(MemoryModuleType.AVOID_TARGET) ? prey.getBrain().getMemory(MemoryModuleType.AVOID_TARGET) : Optional.empty();
     }
 
-    public static void wasHurtBy(Prey prey, LivingEntity attacker)
+    public static void wasHurtBy(LivingEntity prey, LivingEntity attacker)
     {
-        Brain<Prey> brain = prey.getBrain();
+        Brain<?> brain = prey.getBrain();
         getAvoidTarget(prey).ifPresent(avoid -> {
             if (avoid.getType() != attacker.getType())
             {
@@ -122,9 +122,9 @@ public class PreyAi
         });
     }
 
-    public static void broadcastAvoidTarget(Prey prey, LivingEntity attacker)
+    public static void broadcastAvoidTarget(LivingEntity prey, LivingEntity attacker)
     {
-        Brain<Prey> brain = prey.getBrain();
+        Brain<?> brain = prey.getBrain();
         brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).ifPresent(entities -> {
             entities.findAll(e -> e.getType() == prey.getType()).forEach(friend -> {
                 LivingEntity closest = BehaviorUtils.getNearestTarget(friend, friend.getBrain().getMemory(MemoryModuleType.AVOID_TARGET), attacker);
@@ -141,9 +141,9 @@ public class PreyAi
         brain.setMemoryWithExpiry(MemoryModuleType.AVOID_TARGET, attacker, RETREAT_DURATION.sample(prey.getRandom()));
     }
 
-    private static boolean wantsToStopFleeing(Prey prey)
+    public static boolean wantsToStopFleeing(LivingEntity prey)
     {
-        final Brain<Prey> brain = prey.getBrain();
+        final Brain<?> brain = prey.getBrain();
         return !brain.hasMemoryValue(MemoryModuleType.AVOID_TARGET) || brain.getMemory(MemoryModuleType.AVOID_TARGET).get().distanceToSqr(prey) > AVOID_RANGE;
     }
 }

@@ -12,10 +12,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.animal.Rabbit;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +25,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.chunkdata.ChunkData;
 
@@ -80,10 +78,10 @@ public class TFCRabbit extends Rabbit
         super.registerGoals();
         EntityHelpers.removeGoalOfPriority(goalSelector, 2); // breed
         EntityHelpers.removeGoalOfPriority(goalSelector, 3); // tempt
+        EntityHelpers.removeGoalOfPriority(goalSelector, 4); // avoid goals
         EntityHelpers.removeGoalOfPriority(goalSelector, 5); // vanilla raid garden
+        goalSelector.addGoal(4, new TFCAvoidEntityGoal<>(this, PathfinderMob.class, 8.0F, 2.2D, 2.2D, TFCTags.Entities.HUNTS_LAND_PREY));
         goalSelector.addGoal(5, new RaidGardenGoal(this));
-
-        // todo: prey update -- avoid enemies
     }
 
     @Override
