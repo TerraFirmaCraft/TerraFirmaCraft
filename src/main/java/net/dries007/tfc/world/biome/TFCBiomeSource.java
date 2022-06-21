@@ -40,7 +40,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension, RiverSource
 {
     public static final Codec<TFCBiomeSource> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-        Codec.LONG.fieldOf("seed").forGetter(c -> c.seed),
+        Codec.LONG.optionalFieldOf("seed", 0L).forGetter(c -> c.seed),
         Codec.INT.fieldOf("spawn_distance").forGetter(TFCBiomeSource::getSpawnDistance),
         Codec.INT.fieldOf("spawn_center_x").forGetter(c -> c.spawnCenterX),
         Codec.INT.fieldOf("spawn_center_z").forGetter(c -> c.spawnCenterZ),
@@ -59,7 +59,7 @@ public class TFCBiomeSource extends BiomeSource implements BiomeSourceExtension,
 
     public static TFCBiomeSource defaultBiomeSource(long seed, Registry<Biome> biomeRegistry)
     {
-        return new TFCBiomeSource(seed, 8_000, 0, 0, RockLayerSettings.getDefault(), ClimateSettings.DEFAULT_TEMPERATURE, ClimateSettings.DEFAULT_RAINFALL, biomeRegistry);
+        return new TFCBiomeSource(seed, 8_000, 0, 0, RockLayerSettings.getDefault(), ClimateSettings.DEFAULT, ClimateSettings.DEFAULT, biomeRegistry);
     }
 
     // Set from codec

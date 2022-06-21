@@ -38,8 +38,7 @@ public record ClimateSettings(int scale, boolean endlessPoles)
         Either::right
     );
 
-    public static final ClimateSettings DEFAULT_TEMPERATURE = register("default_temperature", new ClimateSettings(20_000, false));
-    public static final ClimateSettings DEFAULT_RAINFALL = register("default_rainfall", new ClimateSettings(20_000, false));
+    public static final ClimateSettings DEFAULT = register("default", new ClimateSettings(20_000, false));
 
     /**
      * Register a climate settings preset. Used for both temperature and rainfall.

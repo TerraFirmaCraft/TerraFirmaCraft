@@ -64,7 +64,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         BiomeSource.CODEC.comapFlatMap(TFCChunkGenerator::guardBiomeSource, Function.identity()).fieldOf("biome_source").forGetter(c -> c.customBiomeSource),
         NoiseGeneratorSettings.CODEC.fieldOf("noise_settings").forGetter(c -> c.settings),
         Codec.BOOL.fieldOf("flat_bedrock").forGetter(c -> c.flatBedrock),
-        Codec.LONG.fieldOf("seed").forGetter(c -> c.seed)
+        Codec.LONG.optionalFieldOf("seed", 0L).forGetter(c -> c.seed)
     ).apply(instance, TFCChunkGenerator::new));
 
     public static final DeferredRegister<Codec<? extends ChunkGenerator>> CHUNK_GENERATOR = DeferredRegister.create(Registry.CHUNK_GENERATOR_REGISTRY, MOD_ID);

@@ -23,7 +23,7 @@ public class ClimateSettingsTests extends TestHelper
     @Test
     public void testEncodeDecodePresets()
     {
-        final ClimateSettings preset = ClimateSettings.DEFAULT_TEMPERATURE;
+        final ClimateSettings preset = ClimateSettings.DEFAULT;
         final JsonElement encoded = ClimateSettings.CODEC.encodeStart(JsonOps.INSTANCE, preset).getOrThrow(false, Assertions::fail);
         final ClimateSettings decoded = ClimateSettings.CODEC.decode(JsonOps.INSTANCE, encoded).getOrThrow(false, Assertions::fail).getFirst();
 
@@ -43,10 +43,10 @@ public class ClimateSettingsTests extends TestHelper
     @Test
     public void testDecodePreset()
     {
-        final JsonElement json = new JsonPrimitive("tfc:default_rainfall");
+        final JsonElement json = new JsonPrimitive("tfc:default");
         final ClimateSettings decoded = ClimateSettings.CODEC.decode(JsonOps.INSTANCE, json).getOrThrow(false, Assertions::fail).getFirst();
 
-        assertEquals(decoded, ClimateSettings.DEFAULT_RAINFALL);
+        assertEquals(decoded, ClimateSettings.DEFAULT);
     }
 
     @Test
@@ -54,8 +54,6 @@ public class ClimateSettingsTests extends TestHelper
     {
         final JsonObject json = new JsonObject();
 
-        json.addProperty("low_threshold", 1);
-        json.addProperty("high_threshold", 2);
         json.addProperty("scale", 100);
         json.addProperty("endless_poles", false);
 
