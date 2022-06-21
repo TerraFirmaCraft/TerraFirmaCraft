@@ -171,7 +171,6 @@ public final class TFCItems
     public static final RegistryObject<Item> GLASS_SHARD = register("glass_shard", MISC);
     public static final RegistryObject<Item> GLOW_ARROW = register("glow_arrow", () -> new GlowArrowItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> GLUE = register("glue", MISC);
-    public static final RegistryObject<Item> HALTER = register("halter", MISC);
     public static final RegistryObject<Item> JUTE = register("jute", MISC);
     public static final RegistryObject<Item> JUTE_FIBER = register("jute_fiber", MISC);
     public static final RegistryObject<Item> JUTE_NET = register("jute_net", MISC);
@@ -236,6 +235,9 @@ public final class TFCItems
     public static final RegistryObject<Item> RABBIT_EGG = registerSpawnEgg(TFCEntities.RABBIT, 10051392, 7555121);
     public static final RegistryObject<Item> FOX_EGG = registerSpawnEgg(TFCEntities.FOX, 14005919, 1339625);
     public static final RegistryObject<Item> BOAR_EGG = registerSpawnEgg(TFCEntities.BOAR, 0x8081a5, 0x006633);
+    public static final RegistryObject<Item> DONKEY_EGG = registerSpawnEgg(TFCEntities.DONKEY, 5457209, 8811878);
+    public static final RegistryObject<Item> MULE_EGG = registerSpawnEgg(TFCEntities.MULE, 1769984, 5321501);
+    public static final RegistryObject<Item> HORSE_EGG = registerSpawnEgg(TFCEntities.HORSE, 12623485, 15656192);
 
     // Pottery
 

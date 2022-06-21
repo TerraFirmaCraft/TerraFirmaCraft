@@ -152,6 +152,12 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         super.setAge(0); // no-op vanilla aging
     }
 
+    @Override
+    public int getAge()
+    {
+        return isBaby() ? -24000 : 0;
+    }
+
     @Nullable
     @SuppressWarnings("unchecked")
     @Override
@@ -164,12 +170,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         }
         else if (other == this)
         {
-            TFCAnimal baby = ((EntityType<TFCAnimal>) getType()).create(level);
+            TFCAnimal baby = ((EntityType<TFCAnimal>) getEntityTypeForBaby()).create(level);
             if (baby != null)
             {
-                baby.setGender(Gender.valueOf(random.nextBoolean()));
-                baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
-                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                setBabyTraits(baby);
                 return baby;
             }
         }
@@ -237,7 +241,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide && level.getGameTime() % 20 == 0)
+        if (level.getGameTime() % 20 == 0)
         {
             tickAnimalData();
         }

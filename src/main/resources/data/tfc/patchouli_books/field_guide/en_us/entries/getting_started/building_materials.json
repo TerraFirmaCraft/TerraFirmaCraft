@@ -85,9 +85,6 @@
       "enable_visualize": false
     },
     {
-      "type": "patchouli:empty"
-    },
-    {
       "type": "patchouli:text",
       "anchor": "wattle_and_daub",
       "text": "Wattle and Daub... or something",

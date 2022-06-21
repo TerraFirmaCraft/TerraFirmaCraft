@@ -25,7 +25,10 @@ import net.dries007.tfc.config.animals.MammalConfig;
 public abstract class Mammal extends TFCAnimal implements MammalProperties
 {
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(Mammal.class, EntityHelpers.LONG_SERIALIZER);
+
     private final MammalConfig config;
+    @Nullable private CompoundTag genes = null;
+    private Age lastAge = Age.CHILD;
 
     public Mammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
@@ -49,6 +52,31 @@ public abstract class Mammal extends TFCAnimal implements MammalProperties
     public void setPregnantTime(long day)
     {
         entityData.set(PREGNANT_TIME, day);
+    }
+
+    @Override
+    public void setGenes(@Nullable CompoundTag tag)
+    {
+        genes = tag;
+    }
+
+    @Override
+    @Nullable
+    public CompoundTag getGenes()
+    {
+        return genes;
+    }
+
+    @Override
+    public Age getLastAge()
+    {
+        return lastAge;
+    }
+
+    @Override
+    public void setLastAge(Age lastAge)
+    {
+        this.lastAge = lastAge;
     }
 
     @Nullable

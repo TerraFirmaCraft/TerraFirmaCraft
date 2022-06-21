@@ -19,6 +19,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
@@ -136,17 +138,28 @@ public final class EntityHelpers
         return (int) Calendars.get().getTotalDays() - lifeTimeDays;
     }
 
+    public static void setNullableAttribute(LivingEntity entity, Attribute attribute, double baseValue)
+    {
+        AttributeInstance instance = entity.getAttribute(attribute);
+        if (instance != null)
+        {
+            instance.setBaseValue(baseValue);
+        }
+    }
+
     /**
      * Find and charms a near female animal of this animal
      * Used by males to try mating with females
+     *
+     * This MUST be implemented for animals that DO NOT use Brain AI, and need Goal AI (like horses)
+     * See also {@link TFCAnimalProperties#checkExtraBreedConditions(TFCAnimalProperties)}
      */
     public static <T extends Animal & TFCAnimalProperties> void findFemaleMate(T maleAnimal)
     {
-        List<? extends Animal> list = maleAnimal.level.getEntitiesOfClass(maleAnimal.getClass(), maleAnimal.getBoundingBox().inflate(8.0D));
+        List<? extends Animal> list = maleAnimal.level.getEntitiesOfClass(Animal.class, maleAnimal.getBoundingBox().inflate(8.0D));
         for (Animal femaleAnimal : list)
         {
-            TFCAnimalProperties female = (TFCAnimalProperties) femaleAnimal;
-            if (female.getGender() == TFCAnimalProperties.Gender.FEMALE && !femaleAnimal.isInLove() && female.isReadyToMate())
+            if (femaleAnimal instanceof TFCAnimalProperties femaleData && femaleData.getGender() == TFCAnimalProperties.Gender.FEMALE && !femaleAnimal.isInLove() && femaleData.isReadyToMate() && femaleData.checkExtraBreedConditions(maleAnimal))
             {
                 femaleAnimal.setInLove(null);
                 maleAnimal.setInLove(null);

@@ -4,10 +4,9 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.common.entities.livestock;
+package net.dries007.tfc.common.entities.livestock.horse;
 
 import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -22,26 +21,37 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.livestock.CommonAnimalData;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
-public abstract class TFCChestedHorse extends AbstractChestedHorse implements MammalProperties
+public abstract class TFCChestedHorse extends AbstractChestedHorse implements HorseProperties
 {
+    public static boolean vanillaParentingCheck(AbstractHorse horse)
+    {
+        return !horse.isVehicle() && !horse.isPassenger() && horse.isTamed() && !horse.isBaby();
+    }
+
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> BIRTHDAY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.FLOAT);
@@ -49,10 +59,13 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.BOOLEAN);
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED);
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<ItemStack> CHEST_ITEM = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.ITEM_STACK);
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
+    @Nullable private CompoundTag genes;
+    private Age lastAge = Age.CHILD;
     private final Supplier<? extends SoundEvent> ambient;
     private final Supplier<? extends SoundEvent> hurt;
     private final Supplier<? extends SoundEvent> death;
@@ -79,28 +92,196 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
 
     // HORSE SPECIFIC STUFF
 
+    public ItemStack getChestItem()
+    {
+        return entityData.get(CHEST_ITEM);
+    }
+
+    public void setChestItem(ItemStack stack)
+    {
+        entityData.set(CHEST_ITEM, stack);
+    }
+
+    @Override
+    protected void registerGoals()
+    {
+        super.registerGoals();
+        EntityHelpers.removeGoalOfPriority(goalSelector, 3);
+        goalSelector.addGoal(3, new TemptGoal(this, 1.25f, Ingredient.of(getFoodTag()), false));
+    }
+
     @Override
     public boolean canMate(Animal otherAnimal)
     {
-        // todo this is here because it should be implemented special for heritable traits
-        if (otherAnimal.getClass() != this.getClass()) return false;
-        TFCChestedHorse other = (TFCChestedHorse) otherAnimal;
-        return this.getGender() != other.getGender() && other.isReadyToMate();
+        return otherAnimal instanceof TFCAnimalProperties other && this.getGender() != other.getGender() && other.isReadyToMate();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        // triggers feeding actions
+        InteractionResult result = HorseProperties.super.mobInteract(player, hand);
+        if (result == InteractionResult.PASS)
+        {
+            ItemStack stack = player.getItemInHand(hand);
+            if (!this.isBaby())
+            {
+                if (this.isTamed() && player.isSecondaryUseActive())
+                {
+                    this.openInventory(player);
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+
+                if (this.isVehicle())
+                {
+                    return InteractionResult.PASS; // calls super in vanilla, we don't need to
+                }
+            }
+
+            if (!stack.isEmpty())
+            {
+                // food eating in vanilla is here we handled it in interface super
+
+                if (!this.isTamed())
+                {
+                    this.makeMad();
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+
+                if (!this.hasChest() && Helpers.isItem(stack, Tags.Items.CHESTS_WOODEN))
+                {
+                    this.setChestItem(stack.copy()); // set an explicit chest item
+                    this.setChest(true);
+                    this.playChestEquipsSound();
+                    if (!player.getAbilities().instabuild)
+                    {
+                        stack.shrink(1);
+                    }
+
+                    this.createInventory();
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+
+                if (!this.isBaby() && !this.isSaddled() && stack.is(Items.SADDLE))
+                {
+                    this.openInventory(player);
+                    return InteractionResult.sidedSuccess(this.level.isClientSide);
+                }
+            }
+
+            if (this.isBaby())
+            {
+                return InteractionResult.PASS; // calls super in vanilla but we don't need to
+            }
+            else
+            {
+                if (getOwnerUUID() == null) // tfc: add an owner
+                {
+                    setOwnerUUID(player.getUUID());
+                }
+                this.doPlayerRide(player);
+                return InteractionResult.sidedSuccess(this.level.isClientSide);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean isTamed()
+    {
+        return getFamiliarity() > TAMED_FAMILIARITY;
+    }
+
+    @Override
+    public SlotAccess getSlot(int slot)
+    {
+        return slot == AbstractHorse.CHEST_SLOT_OFFSET ? new SlotAccess()
+        {
+            @Override
+            public ItemStack get()
+            {
+                return hasChest() ? getChestItem() : ItemStack.EMPTY;
+            }
+
+            @Override
+            public boolean set(ItemStack stack)
+            {
+                TFCChestedHorse horse = TFCChestedHorse.this;
+                if (stack.isEmpty())
+                {
+                    if (horse.hasChest())
+                    {
+                        horse.setChest(false);
+                        horse.setChestItem(ItemStack.EMPTY);
+                        horse.createInventory();
+                    }
+                    return true;
+                }
+                else if (Helpers.isItem(stack, Tags.Items.CHESTS_WOODEN))
+                {
+                    if (!horse.hasChest())
+                    {
+                        horse.setChest(true);
+                        horse.setChestItem(stack);
+                        horse.createInventory();
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        } : super.getSlot(slot);
     }
 
     @Override
     protected SoundEvent getEatingSound()
     {
+        super.getEatingSound();
         return eat.get();
     }
 
     @Override
     protected SoundEvent getAngrySound()
     {
+        super.getAngrySound();
         return angry.get();
     }
 
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+    }
+
     // BEGIN COPY-PASTE FROM TFC ANIMAL
+
+    @Override
+    public Age getLastAge()
+    {
+        return lastAge;
+    }
+
+    @Override
+    public void setLastAge(Age lastAge)
+    {
+        this.lastAge = lastAge;
+    }
+
+
+    @Nullable
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    {
+        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
+        if (reason != MobSpawnType.BREEDING)
+        {
+            initCommonAnimalData();
+        }
+        setPregnantTime(-1L);
+        return spawnData;
+    }
 
     @Override
     public MammalConfig getMammalConfig()
@@ -120,13 +301,17 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
         entityData.set(PREGNANT_TIME, day);
     }
 
-    @Nullable
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag)
+    public void setGenes(@Nullable CompoundTag tag)
     {
-        spawnData = super.finalizeSpawn(level, difficulty, reason, spawnData, tag);
-        setPregnantTime(-1L);
-        return spawnData;
+        genes = tag;
+    }
+
+    @Override
+    @Nullable
+    public CompoundTag getGenes()
+    {
+        return genes;
     }
 
     @Override
@@ -147,6 +332,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
         super.defineSynchedData();
         registerCommonData();
         entityData.define(PREGNANT_TIME, -1L);
+        entityData.define(CHEST_ITEM, ItemStack.EMPTY);
     }
 
     @Override
@@ -154,6 +340,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     {
         super.addAdditionalSaveData(nbt);
         saveCommonAnimalData(nbt);
+        nbt.put("chestItem", getChestItem().save(new CompoundTag()));
     }
 
     @Override
@@ -161,6 +348,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     {
         super.readAdditionalSaveData(nbt);
         readCommonAnimalData(nbt);
+        setChestItem(ItemStack.of(nbt.getCompound("chestItem")));
     }
 
     @Override
@@ -175,6 +363,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
         super.setAge(0); // no-op vanilla aging
     }
 
+    @Override
+    public int getAge()
+    {
+        return isBaby() ? -24000 : 0;
+    }
+
     @Nullable
     @SuppressWarnings("unchecked")
     @Override
@@ -187,12 +381,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
         }
         else if (other == this)
         {
-            TFCAnimal baby = ((EntityType<TFCAnimal>) getType()).create(level);
-            if (baby != null)
+            AgeableMob baby = ((EntityType<AgeableMob>) getEntityTypeForBaby()).create(level);
+            if (baby instanceof TFCAnimalProperties prop)
             {
-                baby.setGender(Gender.valueOf(random.nextBoolean()));
-                baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
-                baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+                setBabyTraits(prop);
                 return baby;
             }
         }
@@ -249,23 +441,16 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide && level.getGameTime() % 20 == 0)
+        if (level.getGameTime() % 20 == 0)
         {
             tickAnimalData();
         }
     }
 
     @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand)
-    {
-        InteractionResult result = MammalProperties.super.mobInteract(player, hand);
-        return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
-    }
-
-    @Override
     public boolean isFood(ItemStack stack)
     {
-        return MammalProperties.super.isFood(stack);
+        return HorseProperties.super.isFood(stack);
     }
 
     @Override
@@ -277,24 +462,28 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ma
     @Override
     protected SoundEvent getAmbientSound()
     {
+        super.getAmbientSound();
         return ambient.get();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource src)
     {
+        super.getHurtSound(src);
         return hurt.get();
     }
 
     @Override
     protected SoundEvent getDeathSound()
     {
+        super.getDeathSound();
         return death.get();
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState block)
     {
+        super.playStepSound(pos, block);
         this.playSound(step.get(), 0.15F, 1.0F);
     }
 }

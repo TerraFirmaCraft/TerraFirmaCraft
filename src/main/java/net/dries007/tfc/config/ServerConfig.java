@@ -132,6 +132,9 @@ public class ServerConfig
 
     // Animals
     public final MammalConfig pigConfig;
+    public final MammalConfig donkeyConfig;
+    public final MammalConfig muleConfig;
+    public final MammalConfig horseConfig;
     public final ProducingMammalConfig cowConfig;
     public final ProducingMammalConfig alpacaConfig;
     public final OviparousAnimalConfig chickenConfig;
@@ -328,7 +331,16 @@ public class ServerConfig
         enableVanillaSkeletonHorseSpawning = builder.apply("enableVanillaSkeletonHorseSpawning").comment("If true, vanilla will attempt to spawn skeleton 'trap' horses during thunderstorms.").define("enableVanillaSkeletonHorseSpawning", false);
 
         innerBuilder.pop().push("animals").push("pig");
-        pigConfig = MammalConfig.build(builder, "pig", 0.35, 80, 5, true, 19, 10);
+        pigConfig = MammalConfig.build(builder, "pig", 0.35, 80, 60, true, 19, 10);
+
+        innerBuilder.pop().push("donkey");
+        donkeyConfig = MammalConfig.build(builder, "donkey", 0.35, 80, 60, false, 19, 1);
+
+        innerBuilder.pop().push("mule");
+        muleConfig = MammalConfig.build(builder, "mule", 0.35, 80, 60, false, 19, 1);
+
+        innerBuilder.pop().push("horse");
+        horseConfig = MammalConfig.build(builder, "horse", 0.35, 80, 60, false, 19, 1);
 
         innerBuilder.pop().push("cow");
         cowConfig = ProducingMammalConfig.build(builder, "cow", 0.35, 192, 128, true, 58, 2, 24000, 0.15);

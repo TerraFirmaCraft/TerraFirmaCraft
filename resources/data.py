@@ -184,7 +184,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.item_tag('usable_in_powder_keg', 'minecraft:gunpowder')
     rm.item_tag('buckets', 'tfc:wooden_bucket', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
-    rm.item_tag('fox_spawns_with', 'minecraft:rabbits_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
+    rm.item_tag('fox_spawns_with', 'minecraft:rabbit_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')
@@ -192,9 +192,12 @@ def generate(rm: ResourceManager):
     rm.item_tag('yak_food', '#tfc:foods/grains')
     rm.item_tag('goat_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables')
     rm.item_tag('chicken_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds')
-    rm.item_tag('duck_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds', 'tfc:food/barley_bread', 'tfc:food/wheat_bread', 'tfc:food/rye_bread', 'tfc:food/maize_bread', 'tfc:food/oat_bread')
+    rm.item_tag('duck_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds', 'tfc:food/barley_bread', 'tfc:food/wheat_bread', 'tfc:food/rye_bread', 'tfc:food/maize_bread', 'tfc:food/oat_bread', 'tfc:food/oat_bread')
     rm.item_tag('quail_food', '#tfc:foods/grains', '#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:seeds')
     rm.item_tag('alpaca_food', '#tfc:foods/grains', '#tfc:foods/fruits')
+    rm.item_tag('mule_food', '#tfc:horse_food')
+    rm.item_tag('donkey_food', '#tfc:horse_food')
+    rm.item_tag('horse_food', '#tfc:foods/grains', '#tfc:foods/fruits')
     rm.item_tag('musk_ox_food', '#tfc:foods/grains')
 
     rm.item_tag('foods/can_be_salted', '#tfc:foods/raw_meats')
@@ -219,6 +222,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('vessels', 'tfc:ceramic/unfired_vessel', 'tfc:ceramic/vessel')
     rm.item_tag('ore_deposits', *['tfc:deposit/%s/%s' % (ore, rock) for ore in ORE_DEPOSITS for rock in ROCKS.keys()])
     block_and_item_tag(rm, 'tfc:barrels', *['tfc:wood/barrel/%s' % wood for wood in WOODS.keys()])
+    block_and_item_tag(rm, 'forge:chests/wooden', *['tfc:wood/chest/%s' % wood for wood in WOODS.keys()], *['tfc:wood/trapped_chest/%s' % wood for wood in WOODS.keys()])
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -573,7 +577,6 @@ def generate(rm: ResourceManager):
     item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.very_heavy)
     item_size(rm, 'doors', '#minecraft:doors', Size.very_large, Weight.heavy)
     item_size(rm, 'mortar', '#tfc:mortar', Size.tiny, Weight.very_light)
-    item_size(rm, 'halter', 'tfc:halter', Size.small, Weight.light)
     item_size(rm, 'stick_bunch', 'tfc:stick_bunch', Size.normal, Weight.light)
     item_size(rm, 'stick_bundle', 'tfc:stick_bundle', Size.very_large, Weight.medium)
     item_size(rm, 'jute_fiber', 'tfc:jute_fiber', Size.small, Weight.very_light)
@@ -792,6 +795,9 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'rabbit'), fauna(climate=climate_config(min_rain=15)))
     rm.data(('tfc', 'fauna', 'fox'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, max_forest='normal')))
+    rm.data(('tfc', 'fauna', 'donkey'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
+    rm.data(('tfc', 'fauna', 'mule'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
+    rm.data(('tfc', 'fauna', 'horse'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
 
     # Lamp Fuel - burn rate = ticks / mB. 8000 ticks @ 250mB ~ 83 days ~ the 1.12 length of olive oil burning
     rm.data(('tfc', 'lamp_fuels', 'olive_oil'), lamp_fuel('tfc:olive_oil', 8000))
@@ -834,6 +840,9 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'rabbit', 'tfc:food/rabbit', hide_size='small', hide_chance=0.5, bones=1, extra_pool={'name': 'minecraft:rabbit_foot', 'conditions': [loot_tables.random_chance(0.1)]})
     mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
+    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
 
     global_loot_modifiers(rm, 'tfc:reset_decay')
     global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})

@@ -2,18 +2,19 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "minecraft:crafting_shaped",
   "pattern": [
+    "XXX",
     "XYX",
-    "X X"
+    "XXX"
   ],
   "key": {
     "X": {
-      "tag": "forge:leather"
+      "item": "minecraft:paper"
     },
     "Y": {
-      "item": "minecraft:lead"
+      "tag": "forge:leather"
     }
   },
   "result": {
-    "item": "tfc:halter"
+    "item": "minecraft:map"
   }
 }

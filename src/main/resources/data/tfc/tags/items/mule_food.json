@@ -2,7 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:clay_disc",
-    "#tfc:feature/clay_indicators"
+    "#tfc:horse_food"
   ]
 }

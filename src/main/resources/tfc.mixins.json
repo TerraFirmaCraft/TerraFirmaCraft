@@ -27,6 +27,7 @@
     "accessor.FlowingFluidAccessor",
     "accessor.GameRulesAccessor",
     "accessor.GameRulesTypeAccessor",
+    "accessor.HorseAccessor",
     "accessor.ItemAccessor",
     "accessor.PlayerAccessor",
     "accessor.RecipeManagerAccessor",

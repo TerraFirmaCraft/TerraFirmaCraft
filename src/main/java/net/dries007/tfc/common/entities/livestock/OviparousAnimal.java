@@ -37,6 +37,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public float oFlapSpeed;
     public float flapSpeed;
     private float nextFlap = 1f;
+    private Age lastAge = Age.CHILD;
     private final ForgeConfigSpec.IntValue hatchDays;
 
     public OviparousAnimal(EntityType<? extends OviparousAnimal> type, Level level, TFCSounds.EntitySound sounds, OviparousAnimalConfig config)
@@ -150,4 +151,15 @@ public abstract class OviparousAnimal extends ProducingAnimal
         return event.getProduct();
     }
 
+    @Override
+    public Age getLastAge()
+    {
+        return lastAge;
+    }
+
+    @Override
+    public void setLastAge(Age lastAge)
+    {
+        this.lastAge = lastAge;
+    }
 }

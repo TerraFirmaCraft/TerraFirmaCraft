@@ -14,12 +14,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -52,11 +54,6 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         return getEntity().getEntityData();
     }
 
-    private ICalendar getCalendar()
-    {
-        return Calendars.get(getEntity().level);
-    }
-
     CommonAnimalData animalData();
 
     AnimalConfig animalConfig();
@@ -73,6 +70,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     long getMated();
 
+    Age getLastAge();
+
+    void setLastAge(Age age);
+
     /**
      * Is this animal hungry?
      * @return true if this animal can be fed by player
@@ -86,6 +87,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      * Default tag checked by isFood (edible items)
      */
     TagKey<Item> getFoodTag();
+
+    default EntityType<?> getEntityTypeForBaby()
+    {
+        return getEntity().getType();
+    }
 
     /**
      * Is it time to decay familiarity?
@@ -102,6 +108,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                 setLastFamiliarityDecay(Calendars.get().getTotalDays());
                 this.setFamiliarity(familiarity);
             }
+        }
+        final Age age = getAgeType();
+        if (age != getLastAge())
+        {
+            setLastAge(age);
+            getEntity().refreshDimensions();
         }
     }
 
@@ -139,7 +151,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     }
 
-    private InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
+    default InteractionResult eatFood(@Nonnull ItemStack stack, InteractionHand hand, Player player)
     {
         Level level = getEntity().level;
         getEntity().heal(1f);
@@ -158,11 +170,15 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                 }
                 setFamiliarity(familiarity);
             }
-            getEntity().playSound(SoundEvents.PLAYER_BURP, 1f, 1f);
+            getEntity().playSound(eatingSound(stack), 1f, 1f);
         }
         return InteractionResult.SUCCESS;
     }
 
+    default SoundEvent eatingSound(ItemStack food)
+    {
+        return SoundEvents.PLAYER_BURP;
+    }
 
     default void registerCommonData()
     {
@@ -183,6 +199,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         nbt.putLong("fed", getLastFed());
         nbt.putLong("decay", getLastFamiliarityDecay());
         nbt.putLong("mating", getMated());
+        nbt.putInt("lastAge", getLastAge().ordinal());
     }
 
     default void readCommonAnimalData(CompoundTag nbt)
@@ -194,6 +211,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setUses(nbt.getInt("uses"));
         setLastFed(nbt.getLong("fed"));
         setLastFamiliarityDecay(nbt.getLong("decay"));
+        setLastAge(Age.valueOf(nbt.getInt("lastAge")));
     }
 
     default void initCommonAnimalData()
@@ -210,7 +228,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default boolean isReadyToMate()
     {
-        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.SERVER.getTicks();
+        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && !isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.get().getTicks();
     }
 
     /**
@@ -322,6 +340,22 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setFertilized(true);
     }
 
+    default void setBabyTraits(TFCAnimalProperties baby)
+    {
+        baby.setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
+        baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
+        baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
+    }
+
+    /**
+     * Used to check if breeding is possible without actually needing to be in love
+     * Used for animals like horses that can breed across entity types.
+     */
+    default boolean checkExtraBreedConditions(TFCAnimalProperties other)
+    {
+        return true;
+    }
+
     /**
      * //todo IMPLEMENT??? MIGHT NEED HACKS??? Used by model renderer to scale the size of the animal
      *
@@ -329,7 +363,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      */
     default double getPercentToAdulthood()
     {
-        long deltaDays = getCalendar().getTotalDays() - this.getBirthDay();
+        long deltaDays = Calendars.get().getTotalDays() - this.getBirthDay();
         long adulthoodDay = this.getDaysToAdulthood();
         return Math.max(0, Math.min(1, (double) deltaDays / adulthoodDay));
     }
@@ -341,13 +375,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      */
     default Age getAgeType()
     {
-        long deltaDays = getCalendar().getTotalDays() - this.getBirthDay();
-        long adulthoodDay = this.getDaysToAdulthood();
+        final long deltaDays = Calendars.get().getTotalDays() - this.getBirthDay();
         if (getUses() > getUsesToElderly())
         {
-            return Age.OLD; // if enabled, only for familiarizable animals
+            return Age.OLD;
         }
-        else if (deltaDays > adulthoodDay)
+        else if (deltaDays > getDaysToAdulthood())
         {
             return Age.ADULT;
         }
@@ -467,7 +500,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     enum Age
     {
-        CHILD, ADULT, OLD
+        CHILD, ADULT, OLD;
+
+        public static Age valueOf(int value)
+        {
+            return value == 0 ? CHILD : value == 1 ? ADULT : OLD;
+        }
     }
 
     enum Gender

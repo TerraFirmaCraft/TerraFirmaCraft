@@ -60,7 +60,7 @@ public enum RockCategory implements StringRepresentable
         HAMMER_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         HOE(rock -> new HoeItem(rock.getTier(), -1, -3.0f, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         HOE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        JAVELIN(rock -> new JavelinItem(rock.getTier(), 0.8F, -1.8F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS), "stone")),
+        JAVELIN(rock -> new JavelinItem(rock.getTier(), 1.0F, -1.8F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS), "stone")),
         JAVELIN_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         KNIFE(rock -> new ToolItem(rock.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
         KNIFE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
