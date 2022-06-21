@@ -83,7 +83,7 @@ public interface MammalProperties extends TFCAnimalProperties
     {
         //Mark the day this female became pregnant
         TFCAnimalProperties.super.onFertilized(male); // setFertilized(true)
-        setPregnantTime(Calendars.get(male.getEntity().level).getTotalDays());
+        setPregnantTime(Calendars.get().getTotalDays());
 
         CompoundTag genes = new CompoundTag();
         createGenes(genes, male);

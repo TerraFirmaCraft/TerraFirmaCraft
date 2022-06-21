@@ -126,11 +126,11 @@ public class TFCHorse extends Horse implements HorseProperties
     public void applyGenes(CompoundTag tag, MammalProperties babyProperties)
     {
         HorseProperties.super.applyGenes(tag, babyProperties);
-        TFCHorse baby = (TFCHorse) babyProperties;
-        EntityHelpers.setNullableAttribute(baby, Attributes.JUMP_STRENGTH, (tag.getDouble("jumpStrength") + generateRandomJumpStrength()) / 3);
-        EntityHelpers.setNullableAttribute(baby, Attributes.MOVEMENT_SPEED, (tag.getDouble("movementSpeed") + generateRandomSpeed()) / 3);
-        if (!tag.getBoolean("isMule") && tag.contains("markings1"))
+        if (babyProperties instanceof TFCHorse baby && tag.contains("markings1")) // if we actually set the genes, and we have a horse, set the traits.
         {
+            EntityHelpers.setNullableAttribute(baby, Attributes.JUMP_STRENGTH, (tag.getDouble("jumpStrength") + generateRandomJumpStrength()) / 3);
+            EntityHelpers.setNullableAttribute(baby, Attributes.MOVEMENT_SPEED, (tag.getDouble("movementSpeed") + generateRandomSpeed()) / 3);
+
             Variant variant;
             final int i = this.random.nextInt(9);
             if (i < 4)
@@ -398,13 +398,13 @@ public class TFCHorse extends Horse implements HorseProperties
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other)
     {
         // Cancel default vanilla behaviour (immediately spawns children of this animal) and set this female as fertilized
-        if (other != this && this.getGender() == TFCAnimalProperties.Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
+        if (other != this && this.getGender() == Gender.FEMALE && other instanceof TFCAnimalProperties otherFertile)
         {
             this.onFertilized(otherFertile);
         }
         else if (other == this)
         {
-            AgeableMob baby = ((EntityType<AgeableMob>) getType()).create(level);
+            AgeableMob baby = ((EntityType<AgeableMob>) getEntityTypeForBaby()).create(level);
             if (baby instanceof TFCAnimalProperties prop)
             {
                 setBabyTraits(prop);

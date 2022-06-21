@@ -156,7 +156,7 @@ public final class EntityHelpers
      */
     public static <T extends Animal & TFCAnimalProperties> void findFemaleMate(T maleAnimal)
     {
-        List<? extends Animal> list = maleAnimal.level.getEntitiesOfClass(maleAnimal.getClass(), maleAnimal.getBoundingBox().inflate(8.0D));
+        List<? extends Animal> list = maleAnimal.level.getEntitiesOfClass(Animal.class, maleAnimal.getBoundingBox().inflate(8.0D));
         for (Animal femaleAnimal : list)
         {
             if (femaleAnimal instanceof TFCAnimalProperties femaleData && femaleData.getGender() == TFCAnimalProperties.Gender.FEMALE && !femaleAnimal.isInLove() && femaleData.isReadyToMate() && femaleData.checkExtraBreedConditions(maleAnimal))

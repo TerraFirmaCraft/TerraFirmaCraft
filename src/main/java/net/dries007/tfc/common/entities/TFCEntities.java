@@ -16,6 +16,8 @@ import net.minecraft.world.entity.GlowSquid;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -187,6 +189,7 @@ public class TFCEntities
         event.put(BOAR.get(), Prey.createAttributes().build());
         event.put(MULE.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(DONKEY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
+        event.put(HORSE.get(), AbstractHorse.createBaseHorseAttributes().build());
     }
 
     public static Mammal makePig(EntityType<? extends Mammal> animal, Level level)

@@ -45,6 +45,12 @@ public class TFCMule extends TFCChestedHorse
     }
 
     @Override
+    public boolean isReadyToMate()
+    {
+        return false;
+    }
+
+    @Override
     public Gender getGender()
     {
         return Gender.MALE;
