@@ -55,6 +55,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.mixin.accessor.HorseAccessor;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class TFCHorse extends Horse implements HorseProperties
@@ -285,6 +286,12 @@ public class TFCHorse extends Horse implements HorseProperties
     {
         super.getAngrySound();
         return angry.get();
+    }
+
+    @Override
+    protected float getBlockSpeedFactor()
+    {
+        return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
     }
 
     // BEGIN COPY-PASTE FROM TFC ANIMAL
