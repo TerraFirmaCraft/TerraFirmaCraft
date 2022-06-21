@@ -103,7 +103,7 @@ METALS: Dict[str, Metal] = {
 }
 METAL_BLOCKS: Dict[str, MetalItem] = {
     'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False),
-    'chain': MetalItem('utility', 100, 'tfc:block/chain', None, False),
+    'chain': MetalItem('utility', 6, 'tfc:block/chain', None, False),
     'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False),
     'trapdoor': MetalItem('utility', 200, 'tfc:block/trapdoor', None, False)
 }
@@ -112,7 +112,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots', False),
     'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False),
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False),
-    'rod': MetalItem('part', 100, 'item/generated', 'forge:rods', False),
+    'rod': MetalItem('part', 50, 'item/generated', 'forge:rods', False),
 
     'tuyere': MetalItem('tool', 100, 'item/generated', None, False),
     'fish_hook': MetalItem('tool', 100, 'item/generated', None, False),
