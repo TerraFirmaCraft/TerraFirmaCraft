@@ -1,0 +1,14 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:leather_knapping",
+  "pattern": [
+    "    X",
+    " XXXX",
+    "XXX  ",
+    "XX X ",
+    "X   X"
+  ],
+  "result": {
+    "item": "minecraft:leather_horse_armor"
+  }
+}

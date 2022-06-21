@@ -152,6 +152,12 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
         super.setAge(0); // no-op vanilla aging
     }
 
+    @Override
+    public int getAge()
+    {
+        return isBaby() ? -24000 : 0;
+    }
+
     @Nullable
     @SuppressWarnings("unchecked")
     @Override
@@ -235,7 +241,7 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide && level.getGameTime() % 20 == 0)
+        if (level.getGameTime() % 20 == 0)
         {
             tickAnimalData();
         }

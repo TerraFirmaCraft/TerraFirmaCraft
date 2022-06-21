@@ -392,6 +392,12 @@ public class TFCHorse extends Horse implements HorseProperties
         super.setAge(0); // no-op vanilla aging
     }
 
+    @Override
+    public int getAge()
+    {
+        return isBaby() ? -24000 : 0;
+    }
+
     @Nullable
     @SuppressWarnings("unchecked")
     @Override
@@ -464,7 +470,7 @@ public class TFCHorse extends Horse implements HorseProperties
     public void tick()
     {
         super.tick();
-        if (!level.isClientSide && level.getGameTime() % 20 == 0)
+        if (level.getGameTime() % 20 == 0)
         {
             tickAnimalData();
         }
