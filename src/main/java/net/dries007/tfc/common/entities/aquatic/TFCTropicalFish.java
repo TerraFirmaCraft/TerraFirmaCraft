@@ -9,7 +9,9 @@ package net.dries007.tfc.common.entities.aquatic;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.TropicalFish;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -37,6 +39,7 @@ public class TFCTropicalFish extends TropicalFish implements AquaticMob
         super.registerGoals();
         goalSelector.addGoal(1, new GetHookedGoal(this));
         EntityHelpers.replaceAvoidEntityGoal(this, goalSelector, 2);
+        goalSelector.addGoal(2, new AvoidEntityGoal<>(this, WaterAnimal.class, 8f, 5f, 5.4f, e -> Helpers.isEntity(e, TFCTags.Entities.OCEAN_PREDATORS)));
     }
 
     @Override

@@ -9,7 +9,9 @@ package net.dries007.tfc.common.entities.aquatic;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Dolphin;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -45,8 +47,7 @@ public class TFCDolphin extends Dolphin implements AquaticMob
         goalSelector.addGoal(6, new MeleeAttackGoal(this, 1.2F, true));
         goalSelector.addGoal(8, new FollowBoatGoal(this));
 
-        //todo: define target/avoid interactions with undersea predators
-        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, TFCCod.class, true));
+        targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, WaterAnimal.class, true, e -> Helpers.isEntity(e, TFCTags.Entities.HUNTED_BY_OCEAN_PREDATORS)));
     }
 
     @Override

@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:isopod",
+    "tfc:lobster",
+    "tfc:crayfish",
+    "tfc:cod",
+    "tfc:tropical_fish",
+    "tfc:horseshoe_crab"
+  ]
+}

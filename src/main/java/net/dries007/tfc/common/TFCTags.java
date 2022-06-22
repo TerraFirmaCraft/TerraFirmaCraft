@@ -187,6 +187,8 @@ public class TFCTags
         public static final TagKey<EntityType<?>> NEEDS_LARGE_FISHING_BAIT = create("needs_large_fishing_bait");
         public static final TagKey<EntityType<?>> HUNTS_LAND_PREY = create("hunts_land_prey");
         public static final TagKey<EntityType<?>> HUNTED_BY_LAND_PREDATORS = create("hunted_by_land_predators");
+        public static final TagKey<EntityType<?>> OCEAN_PREDATORS = create("ocean_predators");
+        public static final TagKey<EntityType<?>> HUNTED_BY_OCEAN_PREDATORS = create("hunted_by_ocean_predators");
 
         private static TagKey<EntityType<?>> create(String id)
         {

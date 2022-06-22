@@ -29,6 +29,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
@@ -69,6 +70,8 @@ public class Predator extends WildAnimal
         this.diurnal = diurnal;
         this.attack = sounds.attack().orElseThrow();
         this.sleeping = sounds.sleep().orElseThrow();
+        this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
     }
 
     @Override
@@ -128,7 +131,7 @@ public class Predator extends WildAnimal
         level.broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
 
-        if (hurt && target instanceof Player player)
+        if (hurt && target instanceof Player player && random.nextInt(5) == 0)
         {
             pinPlayer(player);
         }
