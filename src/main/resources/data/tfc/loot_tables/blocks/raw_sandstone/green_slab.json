@@ -8,7 +8,23 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:raw_sandstone/green_slab"
+          "name": "tfc:raw_sandstone/green_slab",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:raw_sandstone/green_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ],
+              "count": 2,
+              "add": false
+            }
+          ]
         }
       ],
       "conditions": [

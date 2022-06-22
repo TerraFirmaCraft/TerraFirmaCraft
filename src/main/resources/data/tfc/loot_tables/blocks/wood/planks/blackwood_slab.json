@@ -8,7 +8,23 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/planks/blackwood_slab"
+          "name": "tfc:wood/planks/blackwood_slab",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:wood/planks/blackwood_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ],
+              "count": 2,
+              "add": false
+            }
+          ]
         }
       ],
       "conditions": [

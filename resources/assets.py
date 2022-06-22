@@ -73,14 +73,7 @@ def generate(rm: ResourceManager):
                     rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_stairs', lang('%s %s Stairs', rock, block_type))
                     # Slabs
                     rm.block('tfc:rock/' + block_type + '/' + rock).make_slab()
-                    slab_namespace = 'tfc:rock/' + block_type + '/' + rock + '_slab'
-                    rm.block_loot(slab_namespace, {
-                        'functions': [
-                            {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property(slab_namespace + '[type=double]')]},
-                            loot_tables.explosion_decay()
-                        ],
-                        'name': slab_namespace
-                    })
+                    slab_loot(rm, 'tfc:rock/' + block_type + '/' + rock + '_slab')
                     rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_slab', lang('%s %s Slab', rock, block_type))
                     # Walls
                     rm.block('tfc:rock/' + block_type + '/' + rock).make_wall()
@@ -208,7 +201,12 @@ def generate(rm: ResourceManager):
             rm.block_tag('minecraft:walls', 'tfc:%s_sandstone/%s_wall' % (variant, sand))
 
             for extra in ('', '_slab', '_stairs', '_wall'):
-                rm.block(('%s_sandstone' % variant, sand + extra)).with_lang(lang('%s %s sandstone' + extra, variant, sand)).with_block_loot('tfc:%s_sandstone/%s%s' % (variant, sand, extra))
+                block = rm.block(('%s_sandstone' % variant, sand + extra))
+                if extra == '_slab':
+                    slab_loot(rm, 'tfc:%s_sandstone/%s%s' % (variant, sand, extra))
+                else:
+                    block.with_block_loot('tfc:%s_sandstone/%s%s' % (variant, sand, extra))
+                block.with_lang(lang('%s %s sandstone' + extra, variant, sand))
 
     # Groundcover
     for misc in MISC_GROUNDCOVER:
@@ -241,8 +239,16 @@ def generate(rm: ResourceManager):
         bricks.make_slab().make_stairs().make_wall()
         polished.make_slab().make_stairs().make_wall()
         for extra in ('slab', 'stairs', 'wall'):
-            rm.block(('alabaster', 'stained', color + '_alabaster_bricks_' + extra)).with_lang(lang('%s Alabaster Bricks %s', color, extra)).with_block_loot('tfc:alabaster/stained/%s_alabaster_bricks_%s' % (color, extra))
-            rm.block(('alabaster', 'stained', color + '_polished_alabaster_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra)).with_block_loot('tfc:alabaster/stained/%s_polished_alabaster_%s' % (color, extra))
+            block = rm.block(('alabaster', 'stained', color + '_alabaster_bricks_' + extra)).with_lang(lang('%s Alabaster Bricks %s', color, extra))
+            if extra != 'slab':
+                block.with_block_loot('tfc:alabaster/stained/%s_alabaster_bricks_%s' % (color, extra))
+            else:
+                slab_loot(rm, 'tfc:alabaster/stained/%s_alabaster_bricks_%s' % (color, extra))
+            block = rm.block(('alabaster', 'stained', color + '_polished_alabaster_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra))
+            if extra != 'slab':
+                block.with_block_loot('tfc:alabaster/stained/%s_polished_alabaster_%s' % (color, extra))
+            else:
+                slab_loot(rm, 'tfc:alabaster/stained/%s_polished_alabaster_%s' % (color, extra))
 
     rm.item_model('torch', 'minecraft:block/torch')
     rm.item_model('dead_torch', 'tfc:block/torch_off')
@@ -470,7 +476,11 @@ def generate(rm: ResourceManager):
         mud_bricks.make_wall()
         rm.block_tag('minecraft:walls', ('mud_bricks', soil + '_wall'))
         for variant in ('_stairs', '_slab', '_wall'):
-            rm.block_loot('mud_bricks/%s%s' % (soil, variant), 'tfc:mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
+            block = rm.block('mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
+            if variant == '_slab':
+                slab_loot(rm, 'tfc:mud_bricks/%s%s' % (soil, variant))
+            else:
+               block.with_block_loot('tfc:mud_bricks/%s%s' % (soil, variant))
 
         for variant in ('dry', 'wet'):
             texture = {'mud': 'tfc:block/mud_bricks/%s' % soil if variant == 'dry' else 'tfc:block/mud/%s' % soil}
@@ -1259,8 +1269,9 @@ def generate(rm: ResourceManager):
         block.make_fence()
         block.make_fence_gate()
 
-        for block_type in ('bookshelf', 'button', 'fence', 'fence_gate', 'pressure_plate', 'slab', 'stairs', 'trapdoor'):
+        for block_type in ('bookshelf', 'button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
             rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
+        slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood)
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood
@@ -1609,4 +1620,15 @@ def contained_fluid(rm: ResourceManager, name_parts: utils.ResourceIdentifier, b
             'base': base,
             'fluid': overlay
         }
+    })
+
+def slab_loot(rm: ResourceManager, loot: str):
+    return rm.block_loot(loot, {
+        'name': loot,
+        'functions': [{
+            'function': 'minecraft:set_count',
+            'conditions': [loot_tables.block_state_property(loot + '[type=double]')],
+            'count': 2,
+            'add': False
+        }]
     })

@@ -8,7 +8,23 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:smooth_sandstone/black_slab"
+          "name": "tfc:smooth_sandstone/black_slab",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "tfc:smooth_sandstone/black_slab",
+                  "properties": {
+                    "type": "double"
+                  }
+                }
+              ],
+              "count": 2,
+              "add": false
+            }
+          ]
         }
       ],
       "conditions": [

@@ -12,7 +12,6 @@
           "functions": [
             {
               "function": "minecraft:set_count",
-              "count": 2,
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
@@ -21,10 +20,9 @@
                     "type": "double"
                   }
                 }
-              ]
-            },
-            {
-              "function": "minecraft:explosion_decay"
+              ],
+              "count": 2,
+              "add": false
             }
           ]
         }
