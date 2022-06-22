@@ -150,7 +150,7 @@ public final class JsonHelpers extends GsonHelper
 
     public static <T> T decodeCodecDefaulting(JsonObject json, Codec<T> codec, String key, T defaultValue)
     {
-        if (!json.has("key"))
+        if (!json.has(key))
         {
             return defaultValue;
         }
