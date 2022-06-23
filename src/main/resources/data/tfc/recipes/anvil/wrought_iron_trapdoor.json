@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "tag": "forge:sheetss/wrought_iron"
+    "tag": "forge:sheets/wrought_iron"
   },
   "result": {
     "item": "tfc:metal/trapdoor/wrought_iron"

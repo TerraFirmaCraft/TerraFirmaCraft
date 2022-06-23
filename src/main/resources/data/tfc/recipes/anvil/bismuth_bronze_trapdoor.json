@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "tag": "forge:sheetss/bismuth_bronze"
+    "tag": "forge:sheets/bismuth_bronze"
   },
   "result": {
     "item": "tfc:metal/trapdoor/bismuth_bronze"

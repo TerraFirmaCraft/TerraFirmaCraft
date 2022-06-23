@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "tag": "forge:sheetss/steel"
+    "tag": "forge:sheets/steel"
   },
   "result": {
     "item": "tfc:metal/trapdoor/steel"

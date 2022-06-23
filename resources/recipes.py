@@ -676,7 +676,7 @@ def generate(rm: ResourceManager):
 
         # Tools
         if 'tool' in metal_data.types:
-            anvil_recipe(rm, '%s_tuyere' % metal, '#forge:double_sheet/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
+            anvil_recipe(rm, '%s_tuyere' % metal, item_tag('forge', 'double_sheet'), 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
             anvil_recipe(rm, '%s_pickaxe_head' % metal, item_tag('forge', 'ingot'), item('pickaxe_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last, bonus=True)
             anvil_recipe(rm, '%s_shovel_head' % metal, item_tag('forge', 'ingot'), item('shovel_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, bonus=True)
 
@@ -703,7 +703,7 @@ def generate(rm: ResourceManager):
             anvil_recipe(rm, '%s_unfinished_boots' % metal, item_tag('forge', 'sheet'), item('unfinished_boots'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.shrink_third_last)
 
         if 'utility' in metal_data.types:
-            anvil_recipe(rm, '%s_trapdoor' % metal, item_tag("forge", "sheets"), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
+            anvil_recipe(rm, '%s_trapdoor' % metal, item_tag("forge", "sheet"), item('trapdoor'), metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
             anvil_recipe(rm, '%s_lamp' % metal, item_tag('forge', 'ingot'), item('lamp'), metal_data.tier, Rules.bend_last, Rules.bend_second_last, Rules.draw_third_last)
             anvil_recipe(rm, '%s_chain' % metal, item_tag('forge', 'ingot'), '16 tfc:metal/chain/%s' % metal, metal_data.tier, Rules.hit_any, Rules.hit_any, Rules.draw_last)
 
