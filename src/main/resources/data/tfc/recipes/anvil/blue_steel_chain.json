@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/ingot/blue_steel"
+    "tag": "forge:ingots/blue_steel"
   },
   "result": {
     "item": "tfc:metal/chain/blue_steel",

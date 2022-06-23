@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/double_ingot/tin"
+    "tag": "forge:double_ingots/tin"
   },
   "result": {
     "item": "tfc:metal/sheet/tin"

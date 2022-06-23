@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/ingot/steel"
+    "tag": "forge:ingots/steel"
   },
   "result": {
     "item": "tfc:metal/chisel_head/steel"

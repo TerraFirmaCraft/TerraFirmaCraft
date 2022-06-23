@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/double_sheet/wrought_iron"
+    "tag": "forge:double_sheets/wrought_iron"
   },
   "result": {
-    "item": "iron_bars",
+    "item": "minecraft:iron_bars",
     "count": 16
   },
   "tier": 3,

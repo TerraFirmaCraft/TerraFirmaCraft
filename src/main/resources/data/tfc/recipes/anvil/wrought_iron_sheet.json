@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/double_ingot/wrought_iron"
+    "tag": "forge:double_ingots/wrought_iron"
   },
   "result": {
     "item": "tfc:metal/sheet/wrought_iron"
