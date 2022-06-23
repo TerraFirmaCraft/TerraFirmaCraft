@@ -49,6 +49,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         return (LivingEntity) this;
     }
 
+    default ICalendar getCalendar()
+    {
+        return Calendars.get(getEntity().getLevel());
+    }
+
     private SynchedEntityData entityData()
     {
         return getEntity().getEntityData();
@@ -80,7 +85,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      */
     default boolean isHungry()
     {
-        return getLastFed() < Calendars.get().getTotalDays();
+        return getLastFed() < getCalendar().getTotalDays();
     }
 
     /**
@@ -99,13 +104,13 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      */
     default void tickAnimalData()
     {
-        if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < Calendars.get().getTotalDays())
+        if (getLastFamiliarityDecay() > -1 && getLastFamiliarityDecay() + 1 < getCalendar().getTotalDays())
         {
             float familiarity = getFamiliarity();
             if (familiarity < FAMILIARITY_DECAY_LIMIT)
             {
-                familiarity -= 0.02 * (Calendars.get().getTotalDays() - getLastFamiliarityDecay());
-                setLastFamiliarityDecay(Calendars.get().getTotalDays());
+                familiarity -= 0.02 * (getCalendar().getTotalDays() - getLastFamiliarityDecay());
+                setLastFamiliarityDecay(getCalendar().getTotalDays());
                 this.setFamiliarity(familiarity);
             }
         }
@@ -157,7 +162,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         getEntity().heal(1f);
         if (!level.isClientSide)
         {
-            final long days = Calendars.get().getTotalDays();
+            final long days = getCalendar().getTotalDays();
             setLastFed(days);
             setLastFamiliarityDecay(days); // no decay today
             if (!player.isCreative()) stack.shrink(1);
@@ -228,7 +233,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default boolean isReadyToMate()
     {
-        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && !isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= Calendars.get().getTicks();
+        return getAgeType() == Age.ADULT && getFamiliarity() >= READY_TO_MATE_FAMILIARITY && !isFertilized() && !isHungry() && getMated() + MATING_COOLDOWN_DEFAULT_TICKS <= getCalendar().getTicks();
     }
 
     /**
@@ -363,7 +368,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      */
     default double getPercentToAdulthood()
     {
-        long deltaDays = Calendars.get().getTotalDays() - this.getBirthDay();
+        long deltaDays = getCalendar().getTotalDays() - this.getBirthDay();
         long adulthoodDay = this.getDaysToAdulthood();
         return Math.max(0, Math.min(1, (double) deltaDays / adulthoodDay));
     }
@@ -375,7 +380,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      */
     default Age getAgeType()
     {
-        final long deltaDays = Calendars.get().getTotalDays() - this.getBirthDay();
+        final long deltaDays = getCalendar().getTotalDays() - this.getBirthDay();
         if (getUses() > getUsesToElderly())
         {
             return Age.OLD;
