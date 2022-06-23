@@ -63,10 +63,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         barrel.checkForLastTickSync();
         barrel.checkForCalendarUpdate();
 
-        if (barrel.needsRecipeUpdate)
-        {
-            barrel.updateRecipe();
-        }
         if (level.getGameTime() % 5 == 0) barrel.updateFluidIOSlots();
         List<ItemStack> excess = barrel.inventory.excess;
         if (!excess.isEmpty() && barrel.inventory.getStackInSlot(SLOT_ITEM).isEmpty())
@@ -163,8 +159,8 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     public void setAndUpdateSlots(int slot)
     {
         super.setAndUpdateSlots(slot);
-        needsRecipeUpdate = needsInstantRecipeUpdate = true;
-        if (level != null && level.isClientSide) updateRecipe();
+        needsInstantRecipeUpdate = true;
+        updateRecipe();
     }
 
     @Override
@@ -185,6 +181,10 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         if (level.isClientSide)
         {
             return;
+        }
+        if (recipe == null)
+        {
+            updateRecipe();
         }
         while (ticks > 0)
         {
@@ -300,8 +300,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 markForSync();
             }
         }
-
-        needsRecipeUpdate = false;
     }
 
     private void updateFluidIOSlots()

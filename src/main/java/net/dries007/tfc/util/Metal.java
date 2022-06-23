@@ -35,7 +35,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.dries007.tfc.common.TFCArmorMaterial;
+import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
@@ -296,11 +296,11 @@ public final class Metal
     public enum Default implements StringRepresentable, RegistryMetal
     {
         BISMUTH(0xFF486B72, Rarity.COMMON, true, false, false),
-        BISMUTH_BRONZE(0xFF418E4F, Rarity.COMMON, Tier.TIER_II, TFCTiers.BISMUTH_BRONZE, TFCArmorMaterial.BISMUTH_BRONZE, true, true, true),
-        BLACK_BRONZE(0xFF3B2636, Rarity.COMMON, Tier.TIER_II, TFCTiers.BLACK_BRONZE, TFCArmorMaterial.BLACK_BRONZE, true, true, true),
-        BRONZE(0xFF96892E, Rarity.COMMON, Tier.TIER_II, TFCTiers.BRONZE, TFCArmorMaterial.BRONZE, true, true, true),
+        BISMUTH_BRONZE(0xFF418E4F, Rarity.COMMON, Tier.TIER_II, TFCTiers.BISMUTH_BRONZE, TFCArmorMaterials.BISMUTH_BRONZE, true, true, true),
+        BLACK_BRONZE(0xFF3B2636, Rarity.COMMON, Tier.TIER_II, TFCTiers.BLACK_BRONZE, TFCArmorMaterials.BLACK_BRONZE, true, true, true),
+        BRONZE(0xFF96892E, Rarity.COMMON, Tier.TIER_II, TFCTiers.BRONZE, TFCArmorMaterials.BRONZE, true, true, true),
         BRASS(0xFF7C5E33, Rarity.COMMON, true, false, false),
-        COPPER(0xFFB64027, Rarity.COMMON, Tier.TIER_I, TFCTiers.COPPER, TFCArmorMaterial.COPPER, true, true, true),
+        COPPER(0xFFB64027, Rarity.COMMON, Tier.TIER_I, TFCTiers.COPPER, TFCArmorMaterials.COPPER, true, true, true),
         GOLD(0xFFDCBF1B, Rarity.COMMON, true, false, false),
         NICKEL(0xFF4E4E3C, Rarity.COMMON, true, false, false),
         ROSE_GOLD(0xFFEB7137, Rarity.COMMON, true, false, false),
@@ -308,13 +308,13 @@ public final class Metal
         TIN(0xFF90A4BB, Rarity.COMMON, true, false, false),
         ZINC(0xFFBBB9C4, Rarity.COMMON, true, false, false),
         STERLING_SILVER(0xFFAC927B, Rarity.COMMON, true, false, false),
-        WROUGHT_IRON(0xFF989897, Rarity.COMMON, Tier.TIER_III, TFCTiers.WROUGHT_IRON, TFCArmorMaterial.WROUGHT_IRON, true, true, true),
+        WROUGHT_IRON(0xFF989897, Rarity.COMMON, Tier.TIER_III, TFCTiers.WROUGHT_IRON, TFCArmorMaterials.WROUGHT_IRON, true, true, true),
         CAST_IRON(0xFF989897, Rarity.COMMON, true, false, false),
         PIG_IRON(0xFF6A595C, Rarity.COMMON, false, false, false),
-        STEEL(0xFF5F5F5F, Rarity.UNCOMMON, Tier.TIER_IV, TFCTiers.STEEL, TFCArmorMaterial.STEEL, true, true, true),
-        BLACK_STEEL(0xFF111111, Rarity.RARE, Tier.TIER_V, TFCTiers.BLACK_STEEL, TFCArmorMaterial.BLACK_STEEL, true, true, true),
-        BLUE_STEEL(0xFF2D5596, Rarity.EPIC, Tier.TIER_VI, TFCTiers.BLUE_STEEL, TFCArmorMaterial.BLUE_STEEL, true, true, true),
-        RED_STEEL(0xFF700503, Rarity.EPIC, Tier.TIER_VI, TFCTiers.RED_STEEL, TFCArmorMaterial.RED_STEEL, true, true, true),
+        STEEL(0xFF5F5F5F, Rarity.UNCOMMON, Tier.TIER_IV, TFCTiers.STEEL, TFCArmorMaterials.STEEL, true, true, true),
+        BLACK_STEEL(0xFF111111, Rarity.RARE, Tier.TIER_V, TFCTiers.BLACK_STEEL, TFCArmorMaterials.BLACK_STEEL, true, true, true),
+        BLUE_STEEL(0xFF2D5596, Rarity.EPIC, Tier.TIER_VI, TFCTiers.BLUE_STEEL, TFCArmorMaterials.BLUE_STEEL, true, true, true),
+        RED_STEEL(0xFF700503, Rarity.EPIC, Tier.TIER_VI, TFCTiers.RED_STEEL, TFCArmorMaterials.RED_STEEL, true, true, true),
         WEAK_STEEL(0xFF111111, Rarity.COMMON, false, false, false),
         WEAK_BLUE_STEEL(0xFF2D5596, Rarity.COMMON, false, false, false),
         WEAK_RED_STEEL(0xFF700503, Rarity.COMMON, false, false, false),

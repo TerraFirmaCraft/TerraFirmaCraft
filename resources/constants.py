@@ -667,6 +667,7 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.item.tfc.ceramic.break': 'Ceramics shattering',
     'subtitles.item.tfc.jug.blow': 'Jug whistles',
+    **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % metal.capitalize().replace('_', ' ')) for metal, data in METALS.items() if 'armor' in data.types),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
     'subtitles.entity.tfc.alpaca.hurt': 'Alpaca yelps',

@@ -131,7 +131,7 @@ public class Predator extends WildAnimal
         level.broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
 
-        if (hurt && target instanceof Player player && random.nextInt(5) == 0)
+        if (hurt && target instanceof Player player && random.nextInt(5) == 0 && player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE) <= 0)
         {
             pinPlayer(player);
         }

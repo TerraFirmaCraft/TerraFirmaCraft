@@ -66,9 +66,13 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 return;
             }
 
+            final long remainingTicks = TFCConfig.SERVER.pitKilnTicks.get() - (Calendars.SERVER.getTicks() - pitKiln.litTick);
+            if (remainingTicks <= 0)
+            {
+                pitKiln.updateCache();
+            }
             pitKiln.cookContents();
 
-            long remainingTicks = TFCConfig.SERVER.pitKilnTicks.get() - (Calendars.SERVER.getTicks() - pitKiln.litTick);
             if (remainingTicks <= 0)
             {
                 pitKiln.emptyFuelContents();

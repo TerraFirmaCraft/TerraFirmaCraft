@@ -973,7 +973,7 @@ def generate(rm: ResourceManager):
                 {'name': 'tfc:groundcover/seaweed', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3)]},
                 {'name': p, 'conditions': [match_tag('forge:shears')]}
             ))
-        elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh'):
+        elif plant_data.type in ('tall_plant', 'emergent', 'emergent_fresh', 'cactus'):
             if plant == 'cattail':
                 rm.block_loot(p, (
                     {'name': 'tfc:food/cattail_root', 'conditions': [match_tag('tfc:sharp_tools'), condition_chance(0.3), lower_only]},
@@ -986,8 +986,6 @@ def generate(rm: ResourceManager):
                 ))
             else:
                 rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools'), lower_only]})
-        elif plant_data.type == 'cactus':
-            rm.block_loot(p, p)
         else:
             rm.block_loot(p, {'name': p, 'conditions': [match_tag('tfc:sharp_tools')]})
     for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo'):

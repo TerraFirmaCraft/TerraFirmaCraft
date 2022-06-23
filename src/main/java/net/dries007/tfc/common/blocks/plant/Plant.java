@@ -301,7 +301,7 @@ public enum Plant implements IPlant
          */
         private static BlockBehaviour.Properties solid()
         {
-            return Block.Properties.of(Material.REPLACEABLE_PLANT).noOcclusion().strength(0).sound(SoundType.GRASS).randomTicks();
+            return Block.Properties.of(Material.REPLACEABLE_PLANT).noOcclusion().strength(0.25f).sound(SoundType.GRASS).randomTicks();
         }
 
         private static BlockBehaviour.Properties nonSolid(Plant plant)

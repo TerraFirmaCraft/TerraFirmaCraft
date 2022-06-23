@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.blocks.plant;
 
+import net.minecraft.core.Direction;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.tags.BlockTags;
@@ -14,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.Level;
@@ -36,6 +37,9 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
         };
     }
 
+    protected static final VoxelShape COLLISION_SHAPE = box(1, 0, 1, 15, 15, 15);
+    protected static final VoxelShape OUTLINE_SHAPE = box(1, 0, 1, 15, 16, 15);
+
     protected TFCCactusBlock(ExtendedProperties properties)
     {
         super(properties);
@@ -44,25 +48,44 @@ public abstract class TFCCactusBlock extends TFCTallGrassBlock
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState blockstate = level.getBlockState(pos.below());
+        final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            mutable.setWithOffset(pos, direction);
+            BlockState stateAt = level.getBlockState(mutable);
+            if (stateAt.getMaterial().isSolid() || Helpers.isFluid(level.getFluidState(mutable), FluidTags.LAVA))
+            {
+                return false;
+            }
+        }
+
+        mutable.setWithOffset(pos, 0, -1, 0);
+        BlockState belowState = level.getBlockState(mutable);
         if (state.getValue(PART) == Part.LOWER)
         {
-            return Helpers.isBlock(blockstate, BlockTags.SAND);
+            return Helpers.isBlock(belowState, BlockTags.SAND);
         }
         else
         {
             if (state.getBlock() != this)
             {
-                return Helpers.isBlock(blockstate, BlockTags.SAND);
+                return Helpers.isBlock(belowState, BlockTags.SAND);
             }
-            return blockstate.getBlock() == this && blockstate.getValue(PART) == Part.LOWER;
+            return belowState.getBlock() == this && belowState.getValue(PART) == Part.LOWER;
         }
     }
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        return Shapes.block();
+        return OUTLINE_SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return COLLISION_SHAPE;
     }
 
     @Override
