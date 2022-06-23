@@ -28,11 +28,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Drowned;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ItemStack;
@@ -50,6 +50,7 @@ import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.storage.ServerLevelData;
@@ -729,18 +730,18 @@ public final class ForgeEventHandler
     {
         final Level level = event.getWorld();
 
-        if (event.getEntity() instanceof ItemEntity entity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
+        Entity entity = event.getEntity();
+        if (entity instanceof ItemEntity itemEntity && !level.isClientSide && TFCConfig.SERVER.coolHotItemEntities.get())
         {
-            final ItemStack item = entity.getItem();
+            final ItemStack item = itemEntity.getItem();
             item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> {
                 if (cap.getTemperature() > 0f)
                 {
-                    entity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
+                    itemEntity.lifespan = TFCConfig.SERVER.ticksBeforeItemCool.get();
                 }
             });
         }
-
-        if (event.getEntity() instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
+        else if (entity instanceof LightningBolt lightning && !level.isClientSide && !event.isCanceled())
         {
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
             BlockPos pos = lightning.blockPosition();
@@ -764,8 +765,37 @@ public final class ForgeEventHandler
                 }
             }
         }
-
-        if (event.getEntity().getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
+        if (entity instanceof Monster monster && !TFCConfig.SERVER.enableVanillaMobsSpawningWithVanillaEquipment.get())
+        {
+            if (Helpers.isItem(monster.getItemInHand(InteractionHand.MAIN_HAND), TFCTags.Items.DISABLED_MONSTER_HELD_ITEMS))
+            {
+                monster.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+            }
+            if (Helpers.isItem(monster.getItemInHand(InteractionHand.OFF_HAND), TFCTags.Items.DISABLED_MONSTER_HELD_ITEMS))
+            {
+                monster.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
+            }
+        }
+        if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
+        {
+            if (!TFCConfig.SERVER.enableVanillaMonsters.get())
+            {
+                event.setCanceled(true);
+            }
+            else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
+            {
+                final BlockPos pos = entity.blockPosition();
+                if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                {
+                    event.setCanceled(true);
+                }
+            }
+        }
+        else if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
+        {
+            event.setCanceled(true); // not tolerating this crap again
+        }
+        else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
             event.setCanceled(true);
         }

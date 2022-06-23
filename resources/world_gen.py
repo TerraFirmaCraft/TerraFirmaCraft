@@ -1273,6 +1273,7 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
 
     if 'lake' in name:
         spawners['water_creature'] = [entity for entity in LAKE_CREATURES.values()]
+    spawners['monster'] = [entity for entity in VANILLA_MONSTERS.values()]
 
     if reef_features:
         large_features.append('tfc:coral_reef')
