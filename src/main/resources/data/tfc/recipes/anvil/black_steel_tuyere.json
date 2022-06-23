@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "tag": "forge:double_sheets/black_steel"
+    "tag": "forge:double_sheet/black_steel"
   },
   "result": {
     "item": "tfc:metal/tuyere/black_steel"

@@ -674,9 +674,9 @@ def generate(rm: ResourceManager):
             anvil_recipe(rm, '%s_sheet' % metal, item_tag('forge', 'double_ingot'), item('sheet'), metal_data.tier, Rules.hit_last, Rules.hit_second_last, Rules.hit_third_last)
             anvil_recipe(rm, '%s_rod' % metal, item_tag('forge', 'ingot'), '2 tfc:metal/rod/%s' % metal, metal_data.tier, Rules.bend_last, Rules.draw_second_last, Rules.draw_third_last)
 
-        # Toolss
+        # Tools
         if 'tool' in metal_data.types:
-            anvil_recipe(rm, '%s_tuyere' % metal, '#forge:double_sheets/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
+            anvil_recipe(rm, '%s_tuyere' % metal, '#forge:double_sheet/%s' % metal, 'tfc:metal/tuyere/%s' % metal, metal_data.tier, Rules.bend_last, Rules.bend_second_last)
             anvil_recipe(rm, '%s_pickaxe_head' % metal, item_tag('forge', 'ingot'), item('pickaxe_head'), metal_data.tier, Rules.punch_last, Rules.bend_not_last, Rules.draw_not_last, bonus=True)
             anvil_recipe(rm, '%s_shovel_head' % metal, item_tag('forge', 'ingot'), item('shovel_head'), metal_data.tier, Rules.punch_last, Rules.hit_not_last, bonus=True)
 
