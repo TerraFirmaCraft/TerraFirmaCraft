@@ -125,7 +125,6 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         Helpers.readItemStacksFromNbt(catalystStacks, nbt.getList("catalystStacks", Tag.TAG_COMPOUND));
         litTick = nbt.getLong("litTick");
         lastPlayerTick = nbt.getLong("lastTick");
-        updateCachedRecipe();
         super.loadAdditional(nbt);
     }
 
@@ -185,7 +184,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         assert level != null;
         if (Helpers.isBlock(level.getBlockState(getInternalBlockPos()), TFCBlocks.MOLTEN.get()) && cachedRecipe != null && cachedRecipe.matches(inventory, level))
         {
-            litTick = Calendars.SERVER.getTicks();
+            litTick = Calendars.get(level).getTicks();
             state = state.setValue(BloomeryBlock.LIT, true).setValue(BloomeryBlock.OPEN, false);
             level.setBlockAndUpdate(worldPosition, state);
             return true;
@@ -204,6 +203,10 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     public void onCalendarUpdate(long ticks)
     {
         assert level != null;
+        if (cachedRecipe == null)
+        {
+            updateCachedRecipe();
+        }
         if (level.isClientSide || cachedRecipe == null || !level.getBlockState(worldPosition).getValue(BloomeryBlock.LIT))
         {
             return;

@@ -590,6 +590,105 @@
       "tfc:itemthrow"
     ]
   },
+  "item.armor.equip_copper": {
+    "subtitle": "subtitles.item.armor.equip_copper",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_bronze": {
+    "subtitle": "subtitles.item.armor.equip_bronze",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_black_bronze": {
+    "subtitle": "subtitles.item.armor.equip_black_bronze",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_bismuth_bronze": {
+    "subtitle": "subtitles.item.armor.equip_bismuth_bronze",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_wrought_iron": {
+    "subtitle": "subtitles.item.armor.equip_wrought_iron",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_steel": {
+    "subtitle": "subtitles.item.armor.equip_steel",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_black_steel": {
+    "subtitle": "subtitles.item.armor.equip_black_steel",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_red_steel": {
+    "subtitle": "subtitles.item.armor.equip_red_steel",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
+  "item.armor.equip_blue_steel": {
+    "subtitle": "subtitles.item.armor.equip_blue_steel",
+    "sounds": [
+      "minecraft:item/armor/equip_iron1",
+      "minecraft:item/armor/equip_iron2",
+      "minecraft:item/armor/equip_iron3",
+      "minecraft:item/armor/equip_iron4",
+      "minecraft:item/armor/equip_iron5",
+      "minecraft:item/armor/equip_iron6"
+    ]
+  },
   "entity.rooster.cry": {
     "subtitle": "subtitles.entity.tfc.rooster.cry",
     "sounds": [

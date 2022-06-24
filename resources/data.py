@@ -83,6 +83,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
     rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
     rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
+    rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
 
     # Item Heats
 
@@ -225,6 +226,13 @@ def generate(rm: ResourceManager):
     rm.item_tag('ore_deposits', *['tfc:deposit/%s/%s' % (ore, rock) for ore in ORE_DEPOSITS for rock in ROCKS.keys()])
     block_and_item_tag(rm, 'tfc:barrels', *['tfc:wood/barrel/%s' % wood for wood in WOODS.keys()])
     block_and_item_tag(rm, 'forge:chests/wooden', *['tfc:wood/chest/%s' % wood for wood in WOODS.keys()], *['tfc:wood/trapped_chest/%s' % wood for wood in WOODS.keys()])
+    rm.item_tag('mob_feet_armor', *['tfc:metal/boots/%s' % metal for metal in MOB_ARMOR_METALS])
+    rm.item_tag('mob_leg_armor', *['tfc:metal/greaves/%s' % metal for metal in MOB_ARMOR_METALS])
+    rm.item_tag('mob_chest_armor', *['tfc:metal/chestplate/%s' % metal for metal in MOB_ARMOR_METALS])
+    rm.item_tag('mob_helmet_armor', *['tfc:metal/helmet/%s' % metal for metal in MOB_ARMOR_METALS])
+    rm.item_tag('mob_offhand_weapons', *['tfc:metal/shield/%s' % metal for metal in MOB_ARMOR_METALS])
+    rm.item_tag('mob_mainhand_weapons', *['tfc:metal/%s/%s' % (tool, metal) for metal in MOB_ARMOR_METALS for tool in MOB_TOOLS], *['tfc:stone/%s/%s' % (tool, stone) for stone in ROCK_CATEGORIES for tool in STONE_MOB_TOOLS], 'tfc:large_raw_hide', 'tfc:medium_raw_hide', 'tfc:small_raw_hide', 'tfc:handstone')
+    rm.item_tag('disabled_monster_held_items', 'minecraft:iron_sword', 'minecraft:iron_shovel', 'minecraft:fishing_rod', 'minecraft:nautilus_shell')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -845,6 +853,7 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
     global_loot_modifiers(rm, 'tfc:reset_decay')
     global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})

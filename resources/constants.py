@@ -622,10 +622,21 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
 }
 
+VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
+    'spider': spawner('minecraft:spider', weight=100, min_count=4, max_count=4),
+    'zombie': spawner('minecraft:zombie', weight=95, min_count=4, max_count=4),
+    'skeleton': spawner('minecraft:skeleton', weight=100, min_count=4, max_count=4),
+    'creeper': spawner('minecraft:creeper', weight=100, min_count=4, max_count=4),
+    'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
+}
+
 DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
 VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
+MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wrought_iron')
+MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
+STONE_MOB_TOOLS = ('axe', 'javelin')
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -667,6 +678,7 @@ DEFAULT_LANG = {
     'subtitles.item.tfc.pan.use': 'Pan sifting',
     'subtitles.item.tfc.ceramic.break': 'Ceramics shattering',
     'subtitles.item.tfc.jug.blow': 'Jug whistles',
+    **dict(('subtitles.item.armor.equip_%s' % metal, '%s armor equips' % metal.capitalize().replace('_', ' ')) for metal, data in METALS.items() if 'armor' in data.types),
     'subtitles.item.tfc.firestarter.use': 'Firestarter scratches',
     'subtitles.entity.tfc.alpaca.ambient': 'Alpaca bleats',
     'subtitles.entity.tfc.alpaca.hurt': 'Alpaca yelps',

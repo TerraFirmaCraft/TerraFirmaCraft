@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.client;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -16,6 +17,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -44,6 +46,9 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> WATTLE_DYED = create("block.wattle.dyed");
     public static final RegistryObject<SoundEvent> WATTLE_DAUBED = create("block.wattle.daubed");
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("block.wattle.woven");
+
+    // Armor
+    public static final Map<TFCArmorMaterials, RegistryObject<SoundEvent>> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> create("item.armor.equip_" + mat.getLocation().getPath()));
 
     public static final ForgeSoundType CHARCOAL = createBlock("charcoal");
     public static final ForgeSoundType THATCH = createBlock("thatch");

@@ -129,6 +129,11 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
     public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
     public final ForgeConfigSpec.BooleanValue enableVanillaSkeletonHorseSpawning;
+    public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithEnchantments;
+    public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithVanillaEquipment;
+    public final ForgeConfigSpec.BooleanValue enableVanillaMonsters;
+    public final ForgeConfigSpec.BooleanValue enableVanillaMonstersOnSurface;
+    public final ForgeConfigSpec.BooleanValue enableChickenJockies;
 
     // Animals
     public final MammalConfig pigConfig;
@@ -329,6 +334,11 @@ public class ServerConfig
         enableVanillaBonemeal = builder.apply("enableVanillaBonemeal").comment("If vanilla bonemeal's instant-growth effect should be enabled.").define("enableVanillaBonemeal", false);
         enableVanillaWeatherEffects = builder.apply("enableVanillaWeatherEffects").comment("If true, vanilla's snow and ice formation mechanics will be used, and none of the TFC mechanics (improved snow and ice placement, snow stacking, icicle formation, passive snow or ice melting) will exist.").define("enableVanillaWeatherEffects", false);
         enableVanillaSkeletonHorseSpawning = builder.apply("enableVanillaSkeletonHorseSpawning").comment("If true, vanilla will attempt to spawn skeleton 'trap' horses during thunderstorms.").define("enableVanillaSkeletonHorseSpawning", false);
+        enableVanillaMobsSpawningWithEnchantments = builder.apply("enableVanillaMobsSpawningWithEnchantments").comment("If true, enables the default vanilla behavior of mobs spawning with enchanted weapons sometimes.").define("enableVanillaMobsSpawningWithEnchantments", false);
+        enableVanillaMobsSpawningWithVanillaEquipment = builder.apply("enableVanillaMobsSpawningWithVanillaEquipment").comment("If true, enables the default behavior of mobs sapwning with vanilla armor and weapons").define("enableVanillaMobsSpawningWithVanillaEquipment", false);
+        enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters will spawn.").define("enableVanillaMonsters", true);
+        enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground.").define("enableVanillaMonstersOnSurface", false);
+        enableChickenJockies = builder.apply("enableChickenJockies").comment("If true, chicken jockies can spawn").define("enableChickenJockies", false);
 
         innerBuilder.pop().push("animals").push("pig");
         pigConfig = MammalConfig.build(builder, "pig", 0.35, 80, 60, true, 19, 10);

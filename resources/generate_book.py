@@ -1,5 +1,19 @@
 """
 
+=== Translation / Localization Tools ===
+
+Translating the book is difficult and annoying. This allows you to translate one file, keep it up to date when the book updates, and output the entire book without changing any of the content.
+
+In order to use, all you need to do is run
+
+> python generate_book.py --translate <lang>
+
+Where <lang> is your language, i.e. en_us. This will do several things
+- If a <lang>.json file does not already exist, create one
+- If a <lang>.json file already exists, it will read it and use it to translate text in the book
+- Finally, the <lang>.json will be updated with all text actually used by the book, and missing entries will be filled in.
+
+
 === Style Guide ===
 
 - Entries and categories are named in easy to understand resource location IDs, matching the actual in-game name wherever possible
@@ -48,12 +62,15 @@ In addition, here's some useful things for dev work, and also making standardize
 """
 
 import os
+
 from typing import NamedTuple, Tuple, List, Mapping
+from argparse import ArgumentParser
 
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import JsonObject, ResourceIdentifier, ResourceLocation
 
 from constants import CROPS, ROCK_CATEGORIES
+from i18n import I18n
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
@@ -74,20 +91,28 @@ class LocalInstance:
 
 
 def main():
+    parser = ArgumentParser('generate_book.py')
+    parser.add_argument('--translate', type=str, default='en_us')
+
+    args = parser.parse_args()
+
     rm = ResourceManager('tfc', '../src/main/resources')
+    i18n = I18n.create(args.translate)
 
     print('Writing book')
-    make_book(rm)
+    make_book(rm, i18n)
+
+    i18n.flush()
 
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        make_book(rm, local_instance=True)
+        make_book(rm, I18n.create('en_us'), local_instance=True)
 
     print('Done')
 
 
-def make_book(rm: ResourceManager, local_instance: bool = False):
-    book = Book(rm, 'field_guide', {}, local_instance)
+def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
+    book = Book(rm, 'field_guide', {}, i18n, local_instance)
 
     book.template('multimultiblock', custom_component(0, 0, 'MultiMultiBlockComponent', {'multiblocks': '#multiblocks'}), text_component(0, 115))
 
@@ -666,9 +691,10 @@ class Page(NamedTuple):
     custom: bool  # If this page is a custom template.
     anchor_id: str | None  # Anchor for referencing from other pages
     link_ids: List[str]  # Items that are linked to this page
+    translation_keys: Tuple[str, ...]  # Keys into 'data' that need to be passed through the Translation
 
     def anchor(self, anchor_id: str) -> 'Page':
-        return Page(self.type, self.data, self.custom, anchor_id, self.link_ids)
+        return Page(self.type, self.data, self.custom, anchor_id, self.link_ids, self.translation_keys)
 
     def link(self, *link_ids: str) -> 'Page':
         for link_id in link_ids:
@@ -676,6 +702,11 @@ class Page(NamedTuple):
                 link_id = 'tag:' + link_id[1:]
             self.link_ids.append(link_id)
         return self
+
+    def translate(self, i18n: I18n):
+        for key in self.translation_keys:
+            if key in self.data and self.data[key] is not None:
+                self.data[key] = i18n.translate(self.data[key])
 
 
 class Entry(NamedTuple):
@@ -688,22 +719,24 @@ class Entry(NamedTuple):
 
 class Book:
 
-    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject, local_instance: bool):
+    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject, i18n: I18n, local_instance: bool):
         self.rm: ResourceManager = rm
         self.root_name = root_name
         self.category_count = 0
+        self.i18n = i18n
         self.local_instance = local_instance
 
-        rm.data(('patchouli_books', self.root_name, 'book'), {
-            'name': 'tfc.field_guide.book_name',
-            'landing_text': 'tfc.field_guide.book_landing_text',
-            'subtitle': '${version}',
-            # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
-            # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
-            'dont_generate_book': False,
-            'show_progress': False,
-            'macros': macros
-        })
+        if self.i18n.lang == 'en_us':  # Only generate the book.json if we're in the root language
+            rm.data(('patchouli_books', self.root_name, 'book'), {
+                'name': 'tfc.field_guide.book_name',
+                'landing_text': 'tfc.field_guide.book_landing_text',
+                'subtitle': '${version}',
+                # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
+                # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
+                'dont_generate_book': False,
+                'show_progress': False,
+                'macros': macros
+            })
 
     def template(self, template_id: str, *components: Component):
         self.rm.data(('patchouli_books', self.root_name, 'en_us', 'templates', template_id), {
@@ -724,9 +757,9 @@ class Book:
 
         https://vazkiimods.github.io/Patchouli/docs/reference/category-json/
         """
-        self.rm.data(('patchouli_books', self.root_name, 'en_us', 'categories', category_id), {
-            'name': name,
-            'description': description,
+        self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'categories', category_id), {
+            'name': self.i18n.translate(name),
+            'description': self.i18n.translate(description),
             'icon': icon,
             'parent': parent,
             'sortnum': self.category_count
@@ -757,8 +790,13 @@ class Book:
                     assert link not in seen_links, 'Duplicate link "%s" on page %s' % (link, p)
                     seen_links.add(link)
 
-            self.rm.data(('patchouli_books', self.root_name, 'en_us', 'entries', category_res.path, e.entry_id), {
-                'name': e.name,
+            # Separately translate each page
+            entry_name = self.i18n.translate(e.name)
+            for p in e.pages:
+                p.translate(self.i18n)
+
+            self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'entries', category_res.path, e.entry_id), {
+                'name': entry_name,
                 'category': self.prefix(category_res.path),
                 'icon': e.icon,
                 'pages': [{
@@ -797,7 +835,7 @@ def text(text_contents: str, title: str | None = None) -> Page:
     :param title An optional title to display at the top of the page. If you set this, the rest of the text will be shifted down a bit. You can't use "title" in the first page of an entry.
     :return:
     """
-    return page('patchouli:text', {'text': text_contents, 'title': title})
+    return page('patchouli:text', {'text': text_contents, 'title': title}, translation_keys=('text', 'title'))
 
 
 def image(*images: str, text_contents: str | None = None, border: bool = True) -> Page:
@@ -807,7 +845,7 @@ def image(*images: str, text_contents: str | None = None, border: bool = True) -
     :param text_contents: The text to display on this page, under the image. This text can be formatted.
     :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
     """
-    return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border})
+    return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, translation_keys=('text',))
 
 def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = None, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
     """
@@ -829,7 +867,7 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: str | N
     :param text_contents: The text to display on this page, under the recipes. This text can be formatted.
     Note: the text will not display if there are two recipes with two different outputs, and "title" is not set. This is the case of the image displayed, in which both recipes have the output names displayed, and there's no space for text.
     """
-    return page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents})
+    return page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents}, translation_keys=('text', 'title'))
 
 
 # todo: other default page types: (smelting, entity, link) as we need them
@@ -841,7 +879,7 @@ def item_spotlight(item: str, title: str | None = None, link_recipe: bool = Fals
     :param link_recipe: Defaults to false. Set this to true to mark this spotlight page as the "recipe page" for the item being spotlighted. If you do so, when looking at pages that display the item, you can shift-click the item to be taken to this page. Highly recommended if the spotlight page has instructions on how to create an item by non-conventional means.
     :param text_contents: The text to display on this page, under the item. This text can be formatted.
     """
-    return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents})
+    return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, translation_keys=('title', 'text'))
 
 
 def block_spotlight(title: str, text_content: str, block: str, lower: str | None = None) -> Page:
@@ -867,13 +905,13 @@ def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: T
     """
     data = {'name': title, 'text': text_content, 'enable_visualize': enable_visualize}
     if multiblock_id is not None:
-        return page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data})
+        return page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data}, translation_keys=('name', 'text'))
     elif pattern is not None and mapping is not None:
         return page('patchouli:multiblock', {'multiblock': {
             'pattern': pattern,
             'mapping': mapping,
             'offset': offset,
-        }, **data})
+        }, **data}, translation_keys=('name', 'text'))
     else:
         raise ValueError('multiblock page must have either \'multiblock\' or \'pattern\' and \'mapping\' entries')
 
@@ -887,7 +925,7 @@ def empty() -> Page:
 # ==============
 
 def multimultiblock(text_content: str, *pages) -> Page:
-    return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True)
+    return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
 
 
 def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:
@@ -895,23 +933,23 @@ def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -
 
 
 def rock_knapping(*recipes: str, text_content: str) -> Page:
-    return page('rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, custom=True)
+    return page('rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def leather_knapping(recipe: str, text_content: str) -> Page:
-    return page('leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def fire_clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def heat_recipe(recipe: str, text_content: str) -> Page:
-    return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def quern_recipe(recipe: str, text_content: str) -> Page:
@@ -937,8 +975,8 @@ def fertilizer(item: str, text_contents: str, n: float = 0, p: float = 0, k: flo
         text_contents += '$(li)$(d)Potassium: %d$()' % (k * 100)
     return item_spotlight(item, text_contents=text_contents)
 
-def page(page_type: str, page_data: JsonObject, custom: bool = False) -> Page:
-    return Page(page_type, page_data, custom, None, [])
+def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:
+    return Page(page_type, page_data, custom, None, [], translation_keys)
 
 
 # Components
