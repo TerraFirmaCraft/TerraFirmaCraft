@@ -143,6 +143,29 @@ def generate(rm: ResourceManager):
     # ITEM TAGS
     # =========
 
+    #Wood Tags
+    for wood in WOODS.keys():
+
+        #Plank / Misc Stuff
+        rm.item_tag('minecraft:boats', 'tfc:wood/boat/%s' % wood)
+        rm.item_tag('minecraft:planks', 'tfc:wood/planks/%s' % wood)
+        rm.item_tag('minecraft:wooden_buttons', 'tfc:wood/planks/%s_button' % wood)
+        rm.item_tag('minecraft:wooden_fences', 'tfc:wood/planks/%s_fence' % wood)
+        rm.item_tag('minecraft:wooden_fences', 'tfc:wood/planks/%s_log_fence' % wood)
+        rm.item_tag('forge:fence_gates/wooden', 'tfc:wood/planks/%s_fence_gate' % wood)
+        rm.item_tag('minecraft:wooden_slabs', 'tfc:wood/planks/%s_slab' % wood)
+        rm.item_tag('minecraft:wooden_stairs', 'tfc:wood/planks/%s_stairs' % wood)
+        rm.item_tag('forge:bookshelves', 'tfc:wood/planks/%s_bookshelf' % wood)
+        rm.item_tag('minecraft:wooden_doors', 'tfc:wood/planks/%s_door' % wood)
+        rm.item_tag('minecraft:wooden_trapdoors', 'tfc:wood/planks/%s_trapdoor' % wood)
+        rm.item_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/%s_pressure_plate' % wood)
+        rm.item_tag('forge:workbenches', 'tfc:wood/planks/%s_workbench' % wood)
+        rm.item_tag('forge:lectern', 'tfc:wood/lectern/%s' % wood)
+
+        #Tree Stuffs
+        #TODO: Add to vanilla log tags, #minecraft:oak_log, etc.
+        rm.item_tag('minecraft:leaves', 'tfc:wood/leaves/%s' % wood)
+
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.item_tag('firepit_sticks', '#forge:rods/wooden')
     rm.item_tag('firepit_kindling', 'tfc:straw', 'minecraft:paper', 'minecraft:book', 'tfc:groundcover/pinecone')
