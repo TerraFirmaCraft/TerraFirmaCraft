@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/double_sheet/bismuth_bronze"
+    "tag": "forge:double_sheets/bismuth_bronze"
   },
   "result": {
     "item": "tfc:metal/unfinished_helmet/bismuth_bronze"

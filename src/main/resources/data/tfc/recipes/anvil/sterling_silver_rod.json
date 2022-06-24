@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/ingot/sterling_silver"
+    "tag": "forge:ingots/sterling_silver"
   },
   "result": {
     "item": "tfc:metal/rod/sterling_silver",

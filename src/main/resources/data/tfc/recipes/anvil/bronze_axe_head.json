@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:anvil",
   "input": {
-    "item": "tfc:metal/ingot/bronze"
+    "tag": "forge:ingots/bronze"
   },
   "result": {
     "item": "tfc:metal/axe_head/bronze"
