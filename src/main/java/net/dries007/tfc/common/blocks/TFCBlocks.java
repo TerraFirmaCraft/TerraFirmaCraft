@@ -229,33 +229,33 @@ public final class TFCBlocks
 
     // Decorations
 
-    public static final RegistryObject<Block> PLAIN_ALABASTER = register("alabaster/raw/alabaster", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
-    public static final RegistryObject<Block> PLAIN_ALABASTER_BRICKS = register("alabaster/raw/alabaster_bricks", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
-    public static final RegistryObject<Block> PLAIN_POLISHED_ALABASTER = register("alabaster/raw/polished_alabaster", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
+    public static final RegistryObject<Block> PLAIN_ALABASTER = register("alabaster/raw", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
+    public static final RegistryObject<Block> PLAIN_ALABASTER_BRICKS = register("alabaster/bricks", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
+    public static final RegistryObject<Block> PLAIN_POLISHED_ALABASTER = register("alabaster/polished", () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS);
 
     public static final RegistryObject<Block> AGGREGATE = register("aggregate", () -> new GravelBlock(Properties.of(Material.SAND, MaterialColor.STONE).strength(0.6F).sound(SoundType.GRAVEL)), DECORATIONS);
 
     public static final Map<DyeColor, RegistryObject<Block>> RAW_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
-        register(("alabaster/stained/" + color.getName()) + "_raw_alabaster", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.0F, 6.0F)), DECORATIONS)
+        register(("alabaster/raw/" + color.getName()), () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.0F, 6.0F)), DECORATIONS)
     );
     public static final Map<DyeColor, RegistryObject<Block>> ALABASTER_BRICKS = Helpers.mapOfKeys(DyeColor.class, color ->
-        register(("alabaster/stained/" + color.getName()) + "_alabaster_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+        register(("alabaster/bricks/" + color.getName()), () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
     );
     public static final Map<DyeColor, RegistryObject<Block>> POLISHED_ALABASTER = Helpers.mapOfKeys(DyeColor.class, color ->
-        register(("alabaster/stained/" + color.getName()) + "_polished_alabaster", () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+        register(("alabaster/polished/" + color.getName()), () -> new Block(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
     );
 
     public static final Map<DyeColor, DecorationBlockRegistryObject> ALABASTER_BRICK_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockRegistryObject(
-            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_slab"), () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_alabaster_bricks_wall"), () -> new WallBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+            register(("alabaster/bricks/" + color.getName() + "_slab"), () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/bricks/" + color.getName() + "_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/bricks/" + color.getName() + "_wall"), () -> new WallBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
         )
     );
 
     public static final Map<DyeColor, DecorationBlockRegistryObject> ALABASTER_POLISHED_DECORATIONS = Helpers.mapOfKeys(DyeColor.class, color -> new DecorationBlockRegistryObject(
-            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_slab"), () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
-            register(("alabaster/stained/" + color.getName() + "_polished_alabaster_wall"), () -> new WallBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
+            register(("alabaster/polished/" + color.getName() + "_slab"), () -> new SlabBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/polished/" + color.getName() + "_stairs"), () -> new StairBlock(() -> ALABASTER_BRICKS.get(color).get().defaultBlockState(), BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS),
+            register(("alabaster/polished/" + color.getName() + "_wall"), () -> new WallBlock(BlockBehaviour.Properties.of(Material.STONE, color.getMaterialColor()).requiresCorrectToolForDrops().strength(1.5F, 6.0F)), DECORATIONS)
         )
     );
 

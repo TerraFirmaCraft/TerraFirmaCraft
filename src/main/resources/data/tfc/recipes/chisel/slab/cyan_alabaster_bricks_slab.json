@@ -1,10 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:chisel",
-  "ingredient": "tfc:alabaster/stained/cyan_alabaster_bricks",
-  "result": "tfc:alabaster/stained/cyan_alabaster_bricks_slab",
+  "ingredient": "tfc:alabaster/bricks/cyan",
+  "result": "tfc:alabaster/bricks/cyan_slab",
   "mode": "slab",
   "extra_drop": {
-    "item": "tfc:alabaster/stained/cyan_alabaster_bricks_slab"
+    "item": "tfc:alabaster/bricks/cyan_slab"
   }
 }

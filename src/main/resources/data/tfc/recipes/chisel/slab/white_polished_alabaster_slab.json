@@ -1,10 +1,10 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:chisel",
-  "ingredient": "tfc:alabaster/stained/white_polished_alabaster",
-  "result": "tfc:alabaster/stained/white_polished_alabaster_slab",
+  "ingredient": "tfc:alabaster/polished/white",
+  "result": "tfc:alabaster/polished/white_slab",
   "mode": "slab",
   "extra_drop": {
-    "item": "tfc:alabaster/stained/white_polished_alabaster_slab"
+    "item": "tfc:alabaster/polished/white_slab"
   }
 }

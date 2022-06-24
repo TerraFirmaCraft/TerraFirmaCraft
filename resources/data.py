@@ -241,8 +241,8 @@ def generate(rm: ResourceManager):
         if color != 'white':
             for variant in VANILLA_DYED_ITEMS:
                 rm.item_tag('colored_%s' % variant, 'minecraft:%s_%s' % (color, variant))
-            for variant in ('raw_alabaster', 'alabaster_bricks', 'polished_alabaster'):
-                rm.item_tag('colored_%s' % variant, 'tfc:alabaster/stained/%s_%s' % (color, variant))
+        for variant in ('raw', 'bricks', 'polished'):
+            rm.item_tag('colored_%s_alabaster' % variant, 'tfc:alabaster/%s/%s' % (variant, color))
         rm.item_tag('colored_shulker_boxes', 'minecraft:%s_shulker_box' % color)
         rm.item_tag('colored_concrete_powder', 'minecraft:%s_concrete_powder' % color)
     for gem in GEMS:
@@ -309,7 +309,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
 
     for color in COLORS:
-        rm.block_tag('minecraft:walls', 'tfc:alabaster/stained/%s_polished_alabaster_wall' % color, 'tfc:alabaster/stained/%s_alabaster_bricks_wall' % color)
+        rm.block_tag('minecraft:walls', 'tfc:alabaster/polished/%s_wall' % color, 'tfc:alabaster/bricks/%s_wall' % color)
 
     rm.block_tag('tree_grows_on', 'minecraft:grass_block', '#minecraft:dirt', '#tfc:grass', '#tfc:mud')
     rm.block_tag('supports_landslide', 'minecraft:dirt_path', *['tfc:grass_path/%s' % v for v in SOIL_BLOCK_VARIANTS], *['tfc:farmland/%s' % v for v in SOIL_BLOCK_VARIANTS])
@@ -496,10 +496,11 @@ def generate(rm: ResourceManager):
         *['tfc:rock/magma/%s' % rock for rock, rock_data in ROCKS.items() if rock_data.category == 'igneous_intrusive' or rock_data.category == 'igneous_extrusive'],
         *['tfc:metal/%s/%s' % (variant, metal) for variant, variant_data in METAL_BLOCKS.items() for metal, metal_data in METALS.items() if variant_data.type in metal_data.types],
         *['tfc:coral/%s_%s' % (color, variant) for color in CORALS for variant in CORAL_BLOCKS],
-        'tfc:alabaster/raw/alabaster',
-        'tfc:alabaster/raw/alabaster_bricks',
-        'tfc:alabaster/raw/polished_alabaster',
-        *['tfc:alabaster/stained/%s%s' % (color, variant) for color in COLORS for variant in ('_raw_alabaster', '_alabaster_bricks', '_polished_alabaster', '_alabaster_bricks_slab', '_alabaster_bricks_stairs', '_alabaster_bricks_wall', '_polished_alabaster_slab', '_polished_alabaster_stairs', '_polished_alabaster_wall')],
+        'tfc:alabaster/raw',
+        'tfc:alabaster/bricks',
+        'tfc:alabaster/polished',
+        *['tfc:alabaster/%s/%s' % (variant, color) for color in COLORS for variant in ('raw', 'bricks', 'polished')],
+        *['tfc:alabaster/%s/%s_%s' % (variant, color, suffix) for color in COLORS for variant in ('bricks', 'polished') for suffix in ('wall', 'stairs', 'slab')],
         *['tfc:groundcover/%s' % gc for gc in MISC_GROUNDCOVER],
         'tfc:fire_bricks',
         'tfc:quern',

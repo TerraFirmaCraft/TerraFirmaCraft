@@ -156,7 +156,7 @@ def generate(rm: ResourceManager):
 
     rm.crafting_shaped('crafting/aggregate', ['XYX', 'Y Y', 'XYX'], {'X': '#forge:sand', 'Y': '#forge:gravel'}, (8, 'tfc:aggregate')).with_advancement('#forge:sand')
     damage_shapeless(rm, 'crafting/alabaster_brick', ('tfc:ore/gypsum', '#tfc:chisels'), (4, 'tfc:alabaster_brick')).with_advancement('tfc:ore/gypsum')
-    rm.crafting_shaped('crafting/alabaster_bricks', ['XYX', 'YXY', 'XYX'], {'X': 'tfc:alabaster_brick', 'Y': '#tfc:mortar'}, (4, 'tfc:alabaster/raw/alabaster_bricks')).with_advancement('tfc:alabaster_brick')
+    rm.crafting_shaped('crafting/alabaster_bricks', ['XYX', 'YXY', 'XYX'], {'X': 'tfc:alabaster_brick', 'Y': '#tfc:mortar'}, (4, 'tfc:alabaster/bricks')).with_advancement('tfc:alabaster_brick')
     rm.crafting_shaped('crafting/bellows', ['XXX', 'YYY', 'XXX'], {'X': '#tfc:lumber', 'Y': '#forge:leather'}, 'tfc:bellows').with_advancement('#forge:leather')
     rm.crafting_shaped('crafting/bricks', ['XYX', 'YXY', 'XYX'], {'X': 'minecraft:brick', 'Y': '#tfc:mortar'}, (2, 'minecraft:bricks')).with_advancement('minecraft:brick')
     rm.crafting_shaped('crafting/fire_bricks', ['XYX', 'YXY', 'XYX'], {'X': 'tfc:ceramic/fire_brick', 'Y': '#tfc:mortar'}, (2, 'tfc:fire_bricks')).with_advancement('minecraft:brick')
@@ -344,9 +344,9 @@ def generate(rm: ResourceManager):
         chisel_stair_slab(soil + '_brick', 'tfc:mud_bricks/%s' % soil)
 
     for color in COLORS:
-        chisel_stair_slab('%s_alabaster_bricks' % color, 'tfc:alabaster/stained/%s_alabaster_bricks' % color)
-        chisel_stair_slab('%s_polished_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color)
-        chisel_recipe(rm, '%s_alabaster_bricks_polished' % color, 'tfc:alabaster/stained/%s_raw_alabaster' % color, 'tfc:alabaster/stained/%s_polished_alabaster' % color, 'smooth')
+        chisel_stair_slab('%s_alabaster_bricks' % color, 'tfc:alabaster/bricks/%s' % color)
+        chisel_stair_slab('%s_polished_alabaster' % color, 'tfc:alabaster/polished/%s' % color)
+        chisel_recipe(rm, '%s_alabaster_bricks_polished' % color, 'tfc:alabaster/raw/%s' % color, 'tfc:alabaster/polished/%s' % color, 'smooth')
 
     for wood in WOODS.keys():
         chisel_stair_slab('%s_wood' % wood, 'tfc:wood/planks/%s' % wood)
@@ -612,7 +612,7 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'mortar', 'Mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
     barrel_sealed_recipe(rm, 'curdling', 'Curdling Milk', 8000, input_fluid='1 tfc:milk_vinegar', output_fluid='1 tfc:curdled_milk')
     barrel_sealed_recipe(rm, 'cheese', 'Cheese', 8000, input_fluid='625 tfc:curdled_milk', output_item=item_stack_provider('2 tfc:food/cheese'))
-    barrel_sealed_recipe(rm, 'raw_alabaster', 'Raw Alabaster', 1000, 'tfc:ore/gypsum', '100 tfc:limewater', output_item='tfc:alabaster/raw/alabaster')
+    barrel_sealed_recipe(rm, 'raw_alabaster', 'Raw Alabaster', 1000, 'tfc:ore/gypsum', '100 tfc:limewater', output_item='tfc:alabaster/raw')
     barrel_sealed_recipe(rm, 'clean_jute_net', 'Cleaning Jute Net', 1000, 'tfc:dirty_jute_net', '125 minecraft:water', output_item='tfc:jute_net')
     barrel_sealed_recipe(rm, 'candle', 'Candle', 4000, '#forge:string', '40 tfc:tallow', output_item='tfc:candle')
 
@@ -623,9 +623,8 @@ def generate(rm: ResourceManager):
     barrel_sealed_recipe(rm, 'dye/bleach_shulkers', 'Bleaching Shulker Box', 1000, '#tfc:colored_shulker_boxes', '125 tfc:lye', output_item='minecraft:shulker_box')
     barrel_sealed_recipe(rm, 'dye/bleach_concrete_powder', 'Bleaching Concrete Powder', 1000, '#tfc:colored_concrete_powder', '125 tfc:lye', output_item='tfc:aggregate')
     barrel_sealed_recipe(rm, 'dye/bleach_candles', 'Bleaching Candles', 1000, '#tfc:colored_candles', '125 tfc:lye', output_item='tfc:candle')
-    for variant in ('raw_alabaster', 'alabaster_bricks', 'polished_alabaster'):
-        result_name = 'tfc:alabaster/raw/%s' % variant if variant != 'raw_alabaster' else 'tfc:alabaster/raw/alabaster'
-        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s' % variant, 1000, '#tfc:colored_%s' % variant, '125 tfc:lye', output_item=result_name)
+    for variant in ('raw', 'bricks', 'polished'):
+        barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s Alabaster' % variant, 1000, '#tfc:colored_%s_alabaster' % variant, '125 tfc:lye', output_item='tfc:alabaster/%s' % variant)
 
     # Dyeing Items
     for color in COLORS:

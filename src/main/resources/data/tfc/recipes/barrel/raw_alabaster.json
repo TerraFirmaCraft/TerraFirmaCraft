@@ -11,7 +11,7 @@
     "amount": 100
   },
   "output_item": {
-    "item": "tfc:alabaster/raw/alabaster"
+    "item": "tfc:alabaster/raw"
   },
   "duration": 1000
 }

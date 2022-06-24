@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:chisel",
-  "ingredient": "tfc:alabaster/stained/white_raw_alabaster",
-  "result": "tfc:alabaster/stained/white_polished_alabaster",
+  "ingredient": "tfc:alabaster/raw/white",
+  "result": "tfc:alabaster/polished/white",
   "mode": "smooth"
 }

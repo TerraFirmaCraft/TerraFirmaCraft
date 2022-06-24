@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:chisel",
-  "ingredient": "tfc:alabaster/stained/gray_polished_alabaster",
-  "result": "tfc:alabaster/stained/gray_polished_alabaster_stairs",
+  "ingredient": "tfc:alabaster/polished/gray",
+  "result": "tfc:alabaster/polished/gray_stairs",
   "mode": "stair"
 }
