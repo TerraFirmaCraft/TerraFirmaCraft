@@ -171,6 +171,13 @@ public class TFCTags
         public static final TagKey<Item> PILEABLE_INGOTS = create("pileable_ingots"); // Ingots that can be added to piles
         public static final TagKey<Item> PILEABLE_SHEETS = create("pileable_sheets"); // Sheets that can be added to piles
         public static final TagKey<Item> FOX_SPAWNS_WITH = create("fox_spawns_with"); // fox has a chance to spawn with this in its mouth
+        public static final TagKey<Item> MOB_FEET_ARMOR = create("mob_feet_armor"); // armor that mobs can put on their feet
+        public static final TagKey<Item> MOB_LEG_ARMOR = create("mob_leg_armor"); // armor that mobs can put on their legs
+        public static final TagKey<Item> MOB_CHEST_ARMOR = create("mob_chest_armor"); // armor that mobs can put on their chest
+        public static final TagKey<Item> MOB_HEAD_ARMOR = create("mob_head_armor"); // armor that mobs can put on their head
+        public static final TagKey<Item> MOB_MAINHAND_WEAPONS = create("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
+        public static final TagKey<Item> MOB_OFFHAND_WEAPONS = create("mob_offhand_weapons"); // armor that mobs can put on their mainhand
+        public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = create("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
 
         private static TagKey<Item> create(String id)
         {
@@ -189,6 +196,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> HUNTED_BY_LAND_PREDATORS = create("hunted_by_land_predators");
         public static final TagKey<EntityType<?>> OCEAN_PREDATORS = create("ocean_predators");
         public static final TagKey<EntityType<?>> HUNTED_BY_OCEAN_PREDATORS = create("hunted_by_ocean_predators");
+        public static final TagKey<EntityType<?>> VANILLA_MONSTERS = create("vanilla_monsters");
 
         private static TagKey<EntityType<?>> create(String id)
         {
