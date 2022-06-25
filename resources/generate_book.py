@@ -619,8 +619,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # todo: quern
         )),
         entry('fishing', 'Fishing', 'tfc:metal/fishing_rod/copper', pages=(
-            image('tfc:textures/gui/book/wip.png'),
-            # todo: fishing
+            anvil_recipe('tfc:anvil/bismuth_bronze_fish_hook', 'Fishing is a little different in TFC. First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
+            crafting('tfc:crafting/metal/fishing_rod/bismuth_bronze', text_contents='The fishing rod is crafted with a fishing hook.', title='Fishing Rod'),
+            text('Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)seeds$() or $(thing)shellfish$(). To catch larger fish, such as $(thing)dolphins$() and $(thing)orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$().'),
+            text('To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then, $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool.'),
+            image('tfc:textures/gui/book/tutorial/fishing.png', text_contents='The fishing bar replaces the experience bar when active.'),
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)farmland$() or a $(thing)crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
