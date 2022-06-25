@@ -300,8 +300,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         )),
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
-            text('The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page.'),
-            text('$(thing)Predators$() are animals that can attack the player. They are either $(thing)nocturnal$(), only hunting at night$(), or $(thing)diurnal$(), only hunting during the day. When they get a kill, they will not hunt for 12 hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home.'),
+            text('The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page. For information on how rainfall and temperature work, see the $(l:the_world/climate#rainfall)rainfall$() and $(l:the_world/climate#temperature)temperature$() pages.'),
+            text('$(thing)Predators$() are animals that can attack the player. They are either $(thing)nocturnal$(), only hunting at night, or $(thing)diurnal$(), only hunting during the day. When they get a kill, they will not hunt for hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home.'),
             entity('tfc:polar_bear', 'The polar bear spawns in only the coldest regions, at most 10°C, with a rainfall of at least 100mm.', 'Polar Bear'),
             entity('tfc:grizzly_bear', 'The grizzly bear spawns in forests of moderate climates, with a range of -15 to 15°C and at least 200mm of rain.', 'Grizzly Bear'),
             entity('tfc:black_bear', 'The black bear spawns in forests of warmer, wetter climates, of temperatures 5 to 20°C and at least 250mm of rain.', 'Black Bear'),
@@ -323,12 +323,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             entity('tfc:tropical_fish', 'Tropical fish prefer warmer oceans, with a temperature of at least 18°C.', 'Tropical Fish'),
             entity('tfc:salmon', 'Salmon spawn in any river or lake with a temperature of at least -5°C.'),
             entity('tfc:bluegill', 'Bluegill spawn in any river or lake with a temperature of at least -10°C and at most 26°C.'),
-            text('$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$().').anchor('shellfish'),
+            text('$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish.').anchor('shellfish'),
             entity('tfc:isopod', 'Isopods spawn in deeper sections of oceans of at most 14°C.', 'Isopod'),
             entity('tfc:lobster', 'Lobster spawn in any ocean that is at most of a temperature of 21°C.', 'Lobster'),
             entity('tfc:crayfish', 'Crayfish are like lobster, but spawn in rivers and lakes. They need a temperature of at least 5°C and a rainfall of at least 125mm.', 'Crayfish'),
             entity('tfc:horseshoe_crab', 'Horseshoe crabs spawn in oceans of moderate climate, between 10 and 21°C and with a rainfall of at most 400mm.', 'Horseshoe Crab'),
-            text('$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps)blubber$(), which can be made into lamp fuel.'),
+            text('$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.'),
             entity('tfc:orca', 'Orca whales live in deep oceans with temperatures of at most 19°C and rainfalls of at least 100mm.', 'Orca', scale=0.25),
             entity('tfc:dolphin', 'Dolphins live in deep oceans with temperatures of at least 10°C and rainfalls of at least 200mm.', 'Dolphin', scale=0.4),
             entity('tfc:manatee', 'Manatees live in any warm lake, with temperatures of at least 20°C and rainfalls of at most 300mm.', 'Manatee', scale=0.25),
@@ -504,7 +504,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             crafting('tfc:crafting/nest_box', title='Nest Box', text_contents='$(thing)Oviparous Animals$() are not mammals, and instead produce children by laying $(item)eggs$(). They need a $(thing)nest box$() to lay eggs, which they are capable of locating on their own.'),
             heat_recipe('tfc:heating/cooked_egg', '$(item)Eggs$() can be cooked or boiled for food. Male oviparous animals can fertilize females, which causes the eggs in the nest box to be fertilized. The eggs will say how long until they are ready to hatch.'),
             leather_knapping('tfc:leather_knapping/saddle', '$(thing)Horses$() are mammals that can be ridden when tamed. Horses become rideable after reaching 15% familiarity. They need a $(thing)saddle$() to ride, which can be $(thing)knapped$()'),
-            empty(),
+            text('The next few pages will cover different types of animals.$(br)For information on how rainfall and temperature work, see the $(l:the_world/climate#rainfall)rainfall$() and $(l:the_world/climate#temperature)temperature$() pages.'),
             entity('tfc:pig', 'A pig.', 'Pig', scale=1),
             text('$(thing)Pigs$() spawn in mild forests of temperatures between -10 and 35°C, and rainfall of at least 200mm. They are $(thing)mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.'),
             entity('tfc:cow', 'A cow.', 'Cow', scale=1),
@@ -615,8 +615,17 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.')
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
-            image('tfc:textures/gui/book/wip.png'),
-            # todo: quern
+            crafting('tfc:crafting/quern', text_contents='The $(thing)quern$() is a device for grinding items into powder. The base of the quern can be crafted with 3 $(item)smooth stone$() and 3 of any other $(item)stone$() blocks.'),
+            crafting('tfc:crafting/handstone', text_contents='The quern needs a $(item)handstone$() to operate.'),
+            image('tfc:textures/gui/book/tutorial/quern_empty.png', text_contents='Select the quern at the top of the block and $(item)$(k:key.use)$() to place the handstone.'),
+            image('tfc:textures/gui/book/tutorial/quern_add_item.png', text_contents='Select the top of the handstone and $(item)$(k:key.use)$() to add an item to it.'),
+            image('tfc:textures/gui/book/tutorial/quern_handle.png', text_contents='Select the handle and $(item)$(k:key.use)$() to spin the handstone.'),
+            image('tfc:textures/gui/book/tutorial/quern_result.png', text_contents='The output should place on the base of the quern. $(item)$(k:key.use)$() anywhere on the base to retrieve it.'),
+            quern_recipe('tfc:quern/sulfur', 'The quern is used to make various $(item)powders$() from ores, like $(item)sulfur$().'),
+            quern_recipe('tfc:quern/plant/black_orchid', '$(item)Dye$() can be obtained from various flowers.'),
+            quern_recipe('tfc:quern/emerald', '$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder.'),
+            quern_recipe('tfc:quern/barley_grain', '$(item)Flour$() is also obtainable from the quern.'),
+            quern_recipe('tfc:quern/fluxstone', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),
         )),
         entry('fishing', 'Fishing', 'tfc:metal/fishing_rod/copper', pages=(
             anvil_recipe('tfc:anvil/bismuth_bronze_fish_hook', 'Fishing is a little different in TFC. First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
@@ -675,7 +684,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Then, simply look at any $(thing)Farmland$() block, or any crop which require hydration. You will see a tooltip which shows the current hydration as a percentage from 0% to 100%.$(br2)Hydration cannot be decreased except by moving to a area with less rainfall - however, it can be increased by the proximity to nearby $(thing)water$() blocks, much like Vanilla farmland.'),
         )),
         entry('crops', 'Crops', 'tfc:food/wheat', pages=(
-            text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$().'),
+            text('Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). Seeds are also useful as $(l:mechanics/fishing)bait$().'),
             rock_knapping_typical('tfc:rock_knapping/hoe_head_%s', 'In the stone age, a Hoe can be $(thing)knapped$() as seen above.'),
             crafting('tfc:crafting/stone/hoe_sedimentary', text_contents='Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to create $(thing)Path Blocks$(), and convert $(thing)Rooted Dirt$() into $(thing)Dirt$().'),
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on.'),

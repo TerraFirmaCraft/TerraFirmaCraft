@@ -77,7 +77,8 @@
       "text": "$(thing)Horses$() are mammals that can be ridden when tamed. Horses become rideable after reaching 15% familiarity. They need a $(thing)saddle$() to ride, which can be $(thing)knapped$()"
     },
     {
-      "type": "patchouli:empty"
+      "type": "patchouli:text",
+      "text": "The next few pages will cover different types of animals.$(br)For information on how rainfall and temperature work, see the $(l:the_world/climate#rainfall)rainfall$() and $(l:the_world/climate#temperature)temperature$() pages."
     },
     {
       "type": "patchouli:entity",

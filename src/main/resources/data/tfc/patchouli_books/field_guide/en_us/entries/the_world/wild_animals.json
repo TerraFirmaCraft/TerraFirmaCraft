@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page."
+      "text": "The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page. For information on how rainfall and temperature work, see the $(l:the_world/climate#rainfall)rainfall$() and $(l:the_world/climate#temperature)temperature$() pages."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Predators$() are animals that can attack the player. They are either $(thing)nocturnal$(), only hunting at night$(), or $(thing)diurnal$(), only hunting during the day. When they get a kill, they will not hunt for 12 hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home."
+      "text": "$(thing)Predators$() are animals that can attack the player. They are either $(thing)nocturnal$(), only hunting at night, or $(thing)diurnal$(), only hunting during the day. When they get a kill, they will not hunt for hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home."
     },
     {
       "type": "patchouli:entity",
@@ -151,7 +151,7 @@
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$()."
+      "text": "$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish."
     },
     {
       "type": "patchouli:entity",
@@ -183,7 +183,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps)blubber$(), which can be made into lamp fuel."
+      "text": "$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel."
     },
     {
       "type": "patchouli:entity",
