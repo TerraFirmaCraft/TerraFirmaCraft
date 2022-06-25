@@ -54,11 +54,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Wooly Animals$() are mammals that can be $(thing)sheared$() if they are adults and familiar enough to you. Shearing an animal makes it age, but not as much as breeding does."
+      "text": "$(thing)Wooly Animals$() are mammals that can be $(thing)sheared$() if they are adults and familiar enough to you."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Dairy Animals$() are mammals that make $(thing)milk$(). Female dairy animals can be clicked with a bucket to obtain milk. Milking makes an animal age, but not as much as breeding does."
+      "text": "$(thing)Dairy Animals$() are mammals that make $(thing)milk$(). Female dairy animals can be clicked with a bucket to obtain milk."
     },
     {
       "type": "patchouli:crafting",
