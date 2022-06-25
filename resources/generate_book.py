@@ -545,10 +545,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # todo: other just general heating recipes?
         )),
         entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
-            text('Forging and stuff idk'),
-            multiblock('A Charcoal Forge', '', False, (('   ', ' 0 ', '   '), ('XXX', 'XCX', 'XXX'),), {'X': 'tfc:rock/bricks/andesite', 'C': 'tfc:charcoal_forge[heat_level=7]'}),
-            image('tfc:textures/gui/book/wip.png'),
-            # todo: chargoal forge
+            multiblock('A Charcoal Forge', 'A complete forge multiblock, ready to be lit.', True, multiblock_id='tfc:charcoal_forge'),
+            text('The $(thing)charcoal forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for $(l:mechanics/anvils)anvils$(). $(br)It is constructed with 5 $(item)stone$() blocks surrounding a $(thing)charcoal pile$() of 7 or 8 layers, which is then lit.'),
+            image('tfc:textures/gui/book/tutorial/forge_chimney.png', text_contents='A forge with a valid chimney setup.'),
+            text('Forges need to be well-ventilated to work. Either they should be able to see the sky directly, or be connected horizontally to a block that can, as in the photo. Forges can reach higher temperatures with a $(thing)bellows$(), placed horizontally from the open block above the forge. Chimneys are useful, because forges will go out in the rain'),
+            image('tfc:textures/gui/book/gui/charcoal_forge.png', text_contents='The forge\'s interface.', border=False),
+            text('The five slots at the bottom of the forge are used for fuel. While the forge is running, it periodically consumes fuel, which can be $(item)Charcoal$() or $(l:the_world/ores_and_minerals#bituminous_coal)Bituminous Coal$(). The top five slots will heat items, up to the temperature shown in the indicator on the left. The right side slots are for containers that can contain liquid metal, like $(thing)Vessels$(). Items that melt in the forge will release their liquid into those containers.'),
+        )),
+        entry('charcoal_pit', 'Charcoal Pit', 'minecraft:charcoal', pages=(
+            image('tfc:textures/gui/book/wip.png'), # todo: charcoal pit
         )),
         entry('crucible', 'Crucible', 'tfc:crucible', pages=(
             text('Getting toasty in here'),
