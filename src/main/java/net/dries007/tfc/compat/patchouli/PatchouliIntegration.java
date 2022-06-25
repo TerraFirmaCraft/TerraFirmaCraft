@@ -17,13 +17,16 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockCategory;
@@ -65,6 +68,7 @@ public final class PatchouliIntegration
         registerMultiblock("bloomery", PatchouliIntegration::bloomery);
         registerMultiblock("blast_furnace", PatchouliIntegration::blastFurnace);
         registerMultiblock("rock_anvil", PatchouliIntegration::rockAnvil);
+        registerMultiblock("charcoal_forge", PatchouliIntegration::charcoalForge);
     }
 
     private static IMultiblock blastFurnace(PatchouliAPI.IPatchouliAPI api)
@@ -125,6 +129,21 @@ public final class PatchouliIntegration
             'S', bloomeryInsulation,
             'B', api.predicateMatcher(TFCBlocks.BLOOMERY.get().defaultBlockState().setValue(BloomeryBlock.FACING, Direction.NORTH), state -> Helpers.isBlock(state, TFCBlocks.BLOOMERY.get())),
             ' ', api.anyMatcher()
+        );
+    }
+
+    private static IMultiblock charcoalForge(PatchouliAPI.IPatchouliAPI api)
+    {
+        final IStateMatcher forgeInsulation = api.predicateMatcher(TFCBlocks.ROCK_BLOCKS.get(Rock.QUARTZITE).get(Rock.BlockType.COBBLE).get(), CharcoalForgeBlock::isForgeInsulationBlock);
+        final BlockState charcoalPile = TFCBlocks.CHARCOAL_PILE.get().defaultBlockState();
+
+        return api.makeMultiblock(new String[][] {
+            {" S ", "S0S", " S "},
+            {"   ", " S ", "   "}
+        },
+            '0', api.predicateMatcher(charcoalPile.setValue(CharcoalPileBlock.LAYERS, 7), state -> Helpers.isBlock(state, TFCBlocks.CHARCOAL_PILE.get()) && state.getValue(CharcoalPileBlock.LAYERS) >= 7),
+            ' ', api.anyMatcher(),
+            'S', forgeInsulation
         );
     }
 

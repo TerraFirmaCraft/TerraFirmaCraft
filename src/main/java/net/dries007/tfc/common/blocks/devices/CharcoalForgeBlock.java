@@ -54,7 +54,7 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     static
     {
         BiPredicate<LevelAccessor, BlockPos> skyMatcher = LevelAccessor::canSeeSky;
-        BiPredicate<LevelAccessor, BlockPos> isValidSide = (world, pos) -> Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.FORGE_INSULATION);
+        BiPredicate<LevelAccessor, BlockPos> isValidSide = (level, pos) -> isForgeInsulationBlock(level.getBlockState(pos));
         BlockPos origin = BlockPos.ZERO;
         FORGE_MULTIBLOCK = new MultiBlock()
             // Top block
@@ -72,6 +72,11 @@ public class CharcoalForgeBlock extends DeviceBlock implements IBellowsConsumer
     public static boolean isValid(LevelAccessor world, BlockPos pos)
     {
         return FORGE_MULTIBLOCK.test(world, pos);
+    }
+
+    public static boolean isForgeInsulationBlock(BlockState state)
+    {
+        return Helpers.isBlock(state, TFCTags.Blocks.FORGE_INSULATION);
     }
 
     public CharcoalForgeBlock(ExtendedProperties properties)
