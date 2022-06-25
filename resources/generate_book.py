@@ -298,13 +298,41 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # todo: info about fruit trees
             # todo: listing of various fruit trees
         )),
-        entry('wild_animals', 'Wild Animals', '', pages=(
-            entity('tfc:turtle', 'This is a turtle', 'Turtle'),
-            image('tfc:textures/gui/book/wip.png'),
+        entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
-            # todo: info about wild animals
-            # todo: predators
-            # todo: passive animals - link to another section about animal husbandry
+            text('The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page.'),
+            text('$(thing)Predators$() are animals that can attack the player. They are either $(thing)nocturnal$(), only hunting at night$(), or $(thing)diurnal$(), only hunting during the day. When they get a kill, they will not hunt for 12 hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home.'),
+            entity('tfc:polar_bear', 'The polar bear spawns in only the coldest regions, at most 10°C, with a rainfall of at least 100mm.', 'Polar Bear'),
+            entity('tfc:grizzly_bear', 'The grizzly bear spawns in forests of moderate climates, with a range of -15 to 15°C and at least 200mm of rain.', 'Grizzly Bear'),
+            entity('tfc:black_bear', 'The black bear spawns in forests of warmer, wetter climates, of temperatures 5 to 20°C and at least 250mm of rain.', 'Black Bear'),
+            entity('tfc:cougar', 'The cougar prefers most moderate climates, with temperatures from -10 to 21°C and at least 150mm of rain.', 'Cougar'),
+            entity('tfc:panther', 'The panther prefers most moderate climates, with temperatures from -10 to 21°C and at least 150mm of rain.', 'Panther'),
+            entity('tfc:lion', 'The lion spawns in plains with an average temperature of at least 16°C, and rainfalls between 50 and 300mm.', 'Lion'),
+            entity('tfc:sabertooth', 'The sabertooth spawns at any temperature above 0°C, and any rainfall above 250mm.', 'Sabertooth'),
+            text('$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.'),
+            entity('tfc:boar', 'The boar spawns in plains with temperatures below 25°C, and rainfalls between 130 and 400mm.', 'Boar'),
+            entity('tfc:rabbit', 'The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of rain to spawn.', 'Rabbit'),
+            entity('tfc:fox', 'The fox likes to eat the berries off of bushes. It can be found in forests with temperatures below 25°C, and rainfalls between 130 and 400mm.', 'Fox'),
+            text('$(thing)Shore Animals$() only spawn on sea shores and spend some of their day swimming, and some walking on the beach. They are curious creatures, and will follow the player around, but cannot be tamed.'),
+            entity('tfc:penguin', 'The penguin spawns in only the coldest beaches, with temperatures of at most -14°C and rainfalls of at least 75mm.', 'Penguin'),
+            entity('tfc:turtle', 'The sea turtle likes warm water. It spawns in temperatures of at least 21°C and rainfalls of at least 250mm.', 'Sea Turtle'),
+            text('$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes.'),
+            entity('tfc:cod', 'Cod prefer colder oceans, at most 18°C. They can be fished.', 'Cod'),
+            entity('tfc:pufferfish', 'Pufferfish live in any ocean with at least a temperature of 10°C.', 'Pufferfish'),
+            entity('tfc:jellyfish', 'Jellyfish live in warmer oceans, with a temperature of at least 18°C.', 'Jellyfish'),
+            entity('tfc:tropical_fish', 'Tropical fish prefer warmer oceans, with a temperature of at least 18°C.', 'Tropical Fish'),
+            entity('tfc:salmon', 'Salmon spawn in any river or lake with a temperature of at least -5°C.'),
+            entity('tfc:bluegill', 'Bluegill spawn in any river or lake with a temperature of at least -10°C and at most 26°C.'),
+            text('$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$().').anchor('shellfish'),
+            entity('tfc:isopod', 'Isopods spawn in deeper sections of oceans of at most 14°C.', 'Isopod'),
+            entity('tfc:lobster', 'Lobster spawn in any ocean that is at most of a temperature of 21°C.', 'Lobster'),
+            entity('tfc:crayfish', 'Crayfish are like lobster, but spawn in rivers and lakes. They need a temperature of at least 5°C and a rainfall of at least 125mm.', 'Crayfish'),
+            entity('tfc:horseshoe_crab', 'Horseshoe crabs spawn in oceans of moderate climate, between 10 and 21°C and with a rainfall of at most 400mm.', 'Horseshoe Crab'),
+            text('$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps)blubber$(), which can be made into lamp fuel.'),
+            entity('tfc:orca', 'Orca whales live in deep oceans with temperatures of at most 19°C and rainfalls of at least 100mm.', 'Orca', scale=0.25),
+            entity('tfc:dolphin', 'Dolphins live in deep oceans with temperatures of at least 10°C and rainfalls of at least 200mm.', 'Dolphin', scale=0.4),
+            entity('tfc:manatee', 'Manatees live in any warm lake, with temperatures of at least 20°C and rainfalls of at most 300mm.', 'Manatee', scale=0.25),
+            text('Squid can spawn in any deep ocean. They drop $(item)ink sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),  # todo: squid renderer does not work without proper context...
         ))
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
     ))
@@ -462,6 +490,48 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
     ))
 
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
+        entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
+            text('$(thing)Livestock() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
+            text('Livestock experience $(thing)aging$(). They are born as babies, which are smaller and cannot provide things for the player. After a certain amount of days, they grow into $(thing)adult$() animals, which are able to do things like breed or produce milk. After they breed or are used enough times, animals become $(thing)old$(), and are only useful for their meat.'),
+            image('tfc:textures/gui/book/tutorial/old_cow.png', text_contents='This bull is old and cannot breed, because of its faded coat and grey, unseeing eyes.'),
+            text('Livestock can be fed to raise $(thing)familiarity$(). Each animal has a set of food that it prefers to eat. To feed an animal, $(item)$(k:key.sneak)$() and $(item)$(k:key.use)$() with food in your hand.'),
+            image('tfc:textures/gui/book/tutorial/unfamiliarized_pig.png', text_contents='Livestock have a $(thing)familiarity indicator$() that shows how familiar they are with you. It is visible when holding $(item)$(k:key.sneak)$() and looking at the animal.'),
+            image('tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png', text_contents='Familiarity decays each day by a little, unless it reaches a certain amount, indicated by the heart being outlined in white.'),
+            image('tfc:textures/gui/book/tutorial/familiarity_limit_pig.png', text_contents='Adult livestock cannot be familiarized above a certain amount, indicated by the red outlined heart. Babies can reach up to 100% familiarity.'),
+            text('$(thing)Mammals$() are livestock that experience $(thing)pregnancy$(). Adult mammals that are above 30% familiarity and have been fed that day will mate, given that they are of opposite genders and near each other. The female animal will become $(thing)pregnant$(), which causes it to spawn children a set number of days after fertilization.'),
+            text('$(thing)Wooly Animals$() are mammals that can be $(thing)sheared$() if they are adults and familiar enough to you. Shearing an animal makes it age, but not as much as breeding does.'),
+            text('$(thing)Dairy Animals$() are mammals that make $(thing)milk$(). Female dairy animals can be clicked with a bucket to obtain milk. Milking makes an animal age, but not as much as breeding does.'),
+            crafting('tfc:crafting/nest_box', title='Nest Box', text_contents='$(thing)Oviparous Animals$() are not mammals, and instead produce children by laying $(item)eggs$(). They need a $(thing)nest box$() to lay eggs, which they are capable of locating on their own.'),
+            heat_recipe('tfc:heating/cooked_egg', '$(item)Eggs$() can be cooked or boiled for food. Male oviparous animals can fertilize females, which causes the eggs in the nest box to be fertilized. The eggs will say how long until they are ready to hatch.'),
+            leather_knapping('tfc:leather_knapping/saddle', '$(thing)Horses$() are mammals that can be ridden when tamed. Horses become rideable after reaching 15% familiarity. They need a $(thing)saddle$() to ride, which can be $(thing)knapped$()'),
+            empty(),
+            entity('tfc:pig', 'A pig.', 'Pig', scale=1),
+            text('$(thing)Pigs$() spawn in mild forests of temperatures between -10 and 35°C, and rainfall of at least 200mm. They are $(thing)mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.'),
+            entity('tfc:cow', 'A cow.', 'Cow', scale=1),
+            text('$(thing)Cows$() spawn in most climates, between -10 and 35°C, and with a rainfall of at least 250mm. They are $(thing)dairy animals$(). They only eat $(item)grains$(), which may be rotten. They can have 1-2 children, are pregnant for 58 days, and reach adulthood in 192 days. They can have children 13 times, if they are never milked, or be milked 128 times, if they are never bred. They produce milk every day.'),
+            entity('tfc:goat', 'A goat.', 'Goat', scale=1),
+            text('$(thing)Goats$() spawn in moderate climates, between -12 and 25°C, with a rainfall of at least 300mm. They are $(thing)dairy animals$(). They eat $(item)grains$(), $(item)fruits$(), and $(item)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.'),
+            entity('tfc:yak', 'A yak.', 'Yak', scale=1),
+            text('$(thing)Yaks$() spawn in cold climates, with temperatures of at most -11°C and at least 100mm of rain. They are $(thing)dairy animals$(). They eat only fresh $(item)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 180 days. They can have children 23 times, if they are never milked, or be milked 230 times, if they are never bred. They produce milk once a day.'),
+            entity('tfc:alpaca', 'An alpaca.', 'Alpaca', scale=1),
+            text('$(thing)Alpacas$() spawn in colder climates, between -8 and 20°C, with at least 250mm of rain. They are $(thing)wooly animals$(). They eat $(item)grains$() and $(item)fruits$(). They have 1-2 children, are pregnant for 36 days, and reach adulthood in 98 days. They can have children 13 times, if they are never sheared, or be sheared 128 times, if they are never bred. They grow wool every 6 days.'),
+            entity('tfc:sheep', 'A sheep.', 'Sheep', scale=1),
+            text('$(thing)Sheep$() spawn in drier climates, between 0 and 35°C, and 70 and 300mm of rain. They are $(thing)wooly animals$(). They eat $(item)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 9 days.'),
+            entity('tfc:musk_ox', 'A musk ox.', 'Musk Ox', scale=1),
+            text('$(thing)Musk Oxen$() spawn in moderate climates, between 0 and 25°C, and at least 100mm of rain. They are $(thing)wooly animals$(). They eat $(item)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared.'),
+            entity('tfc:chicken', 'A chicken.', 'Chicken', scale=1),
+            text('$(thing)Chickens$() spawn in warm forests, with temperatures of at least 14°C, and 225mm of rain. They are $(thing)oviparous animals$(). They eat $(item)grains$(), $(item)fruits$(), $(item)vegetables$(), and $(item)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 24 days. They can lay eggs 100 times. They produce eggs every 30 hours.'),
+            entity('tfc:duck', 'A duck.', 'Duck', scale=1),
+            text('$(thing)Ducks$() spawn in most plains, between -25 and 30°C, with rain of at least 100mm. They are $(thing)oviparous animals$(). They eat $(item)grains$(), $(item)fruits$(), $(item)vegetables$(), $(item)bread$(), and $(item)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.'),
+            entity('tfc:quail', 'A quail.', 'Quail', scale=1),
+            text('$(thing)Quails$() spawn in colder climates, between -15 and 15°C, with a rainfall of at least 200mm. They are $(thing)oviparous animals$(). They eat $(item)grains$(), $(item)fruits$(), $(item)vegetables$(), and $(item)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.'),
+            entity('tfc:donkey', 'A donkey.', 'Donkey', scale=1),
+            text('$(thing)Donkeys$() spawn in wetter plains, with a temperature of at least -15°C, and a rainfall of between 130 and 400mm. They are $(thing)horses() which can have a $(item)chest$(). They eat $(item)grains$() and $(item)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.'),
+            entity('tfc:mule', 'A mule.', 'Mule', scale=1),
+            text('$(thing)Mules$() spawn in plains with a temperature of at least -15°C, and a rainfall of between 130 and 400mm. They are $(thing)horses$() that can wear a chest, which are the always-male product of a $(thing)horse$() and a $()donkey$(). They can have $(item)grains$() and $(item)fruits$(). They reach adulthood in 80 days.'),
+            entity('tfc:horse', 'A horse.', 'Horse', scale=1),
+            text('$(thing)Horses$() spawn in plains with a temperature of at least -15°C, and a rainfall of between 130 and 400mm. They are $(thing)horses$(). They eat $(item)grains$() and $(item)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.')
+        )),
         entry('panning', 'Panning', 'tfc:pan/empty', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/rivers#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need a empty pan.').link('#tfc:ore_deposits'),
             clay_knapping('tfc:clay_knapping/pan', 'A clay pan can be $(l:getting_started/pottery)knapped$() into a pan as shown above.'),
@@ -548,6 +618,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image('tfc:textures/gui/book/wip.png'),
             # todo: quern
         )),
+        entry('fishing', 'Fishing', 'tfc:metal/fishing_rod/copper', pages=(
+            image('tfc:textures/gui/book/wip.png'),
+            # todo: fishing
+        )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)farmland$() or a $(thing)crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
             crafting('tfc:crafting/composter', text_contents='The composter is an essential tool for making fertilizer. It needs 4 $(2)green$() and 4 $(4)brown$() items to work. To add an item to it, $(item)$(k:key.use)$().'),
@@ -563,7 +637,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('flux', 'Flux', 'tfc:powder/flux', pages=(
             text('Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$(), and is also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().'),
             quern_recipe('tfc:quern/borax', 'The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()'),
-            quern_recipe('tfc:quern/fluxstone', 'The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(thing)Shellfish$()') # todo: link to the shellfish page!
+            quern_recipe('tfc:quern/fluxstone', 'The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$()'),
         )),
         entry('lamps', 'Lamps and Candles', 'tfc:metal/lamp/bismuth_bronze', pages=(
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
@@ -571,7 +645,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)olive oil$(). The first step in its production is to make olive paste.'),
             crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
             text('Seal the $(item)olive paste$() with $(item)water$() in a $(l:mechanics/barrels)Barrel$() to make $(thing)olive oil water$(). Seal that in with your $(item)jute net$() to produce $(thing)olive oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
-            text('Another lamp fuel is $(thing)tallow$(). To make it, cook 5 $(item)blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.'),
+            text('Another lamp fuel is $(thing)tallow$(). To make it, cook 5 $(item)blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.').anchor('tallow'),
             block_spotlight('Candles', text_content='The candle is made from sealing $(item)string$() in a bucket of $(thing)tallow$().', block='tfc:candle[candles=3,lit=true]'),
             block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(thing)blue steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
             anvil_recipe('tfc:anvil/black_steel_chain', '$(item)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().')
@@ -847,7 +921,7 @@ def image(*images: str, text_contents: str | None = None, border: bool = True) -
     """
     return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, translation_keys=('text',))
 
-def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = None, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
+def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = 0.7, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
     """
     :param entity_type: The entity type
     :param text_contents: The text to display under the entity display

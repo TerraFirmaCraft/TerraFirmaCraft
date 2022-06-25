@@ -47,6 +47,7 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "tallow",
       "text": "Another lamp fuel is $(thing)tallow$(). To make it, cook 5 $(item)blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit."
     },
     {

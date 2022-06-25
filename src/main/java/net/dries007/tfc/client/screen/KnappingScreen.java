@@ -30,7 +30,7 @@ public class KnappingScreen extends TFCContainerScreen<KnappingContainer>
     public static final ResourceLocation FIRE_CLAY = Helpers.identifier("textures/gui/knapping/fire_clay.png");
     public static final ResourceLocation FIRE_CLAY_DISABLED = Helpers.identifier("textures/gui/knapping/fire_clay_disabled.png");
 
-    public static final ResourceLocation LEATHER = Helpers.identifier("textures/gui/knapping/clay_ball.png");
+    public static final ResourceLocation LEATHER = Helpers.identifier("textures/gui/knapping/leather.png");
 
     private final ResourceLocation buttonLocation;
     @Nullable private final ResourceLocation buttonDisabledLocation;
