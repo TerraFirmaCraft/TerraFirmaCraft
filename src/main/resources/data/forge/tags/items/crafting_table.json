@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "minecraft:crafting_table",
     "tfc:wood/planks/acacia_workbench",
     "tfc:wood/planks/ash_workbench",
     "tfc:wood/planks/aspen_workbench",
@@ -20,7 +21,6 @@
     "tfc:wood/planks/spruce_workbench",
     "tfc:wood/planks/sycamore_workbench",
     "tfc:wood/planks/white_cedar_workbench",
-    "tfc:wood/planks/willow_workbench",
-    "minecraft:crafting_table"
+    "tfc:wood/planks/willow_workbench"
   ]
 }
