@@ -159,12 +159,15 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:wooden_doors', 'tfc:wood/planks/%s_door' % wood)
         rm.item_tag('minecraft:wooden_trapdoors', 'tfc:wood/planks/%s_trapdoor' % wood)
         rm.item_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/%s_pressure_plate' % wood)
-        rm.item_tag('forge:workbenches', 'tfc:wood/planks/%s_workbench' % wood)
+        rm.item_tag('forge:crafting_table', 'tfc:wood/planks/%s_workbench' % wood)
         rm.item_tag('forge:lectern', 'tfc:wood/lectern/%s' % wood)
 
         #Tree Stuffs
         #TODO: Add to vanilla log tags, #minecraft:oak_log, etc.
         rm.item_tag('minecraft:leaves', 'tfc:wood/leaves/%s' % wood)
+
+    rm.item_tag('forge:crafting_table', 'minecraft:crafting_table')
+    rm.item_tag('forge:lectern', 'minecraft:lectern')
 
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
     rm.item_tag('firepit_sticks', '#forge:rods/wooden')
