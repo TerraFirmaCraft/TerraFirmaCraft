@@ -269,7 +269,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('minecraft:wooden_trapdoors', 'tfc:wood/planks/%s_trapdoor' % wood)
         rm.item_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/%s_pressure_plate' % wood)
         rm.item_tag('forge:crafting_table', 'tfc:wood/planks/%s_workbench' % wood)
-        rm.item_tag('forge:lectern', 'tfc:wood/lectern/%s' % wood
+        rm.item_tag('forge:lectern', 'tfc:wood/lectern/%s' % wood)
         rm.item_tag('minecraft:leaves', 'tfc:wood/leaves/%s' % wood)
 
         if wood in TANNIN_WOOD_TYPES:
