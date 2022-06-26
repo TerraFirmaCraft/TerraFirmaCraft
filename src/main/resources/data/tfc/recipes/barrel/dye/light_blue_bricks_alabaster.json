@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": {
+      "item": "tfc:alabaster/bricks"
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:light_blue_dye",
+    "amount": 125
+  },
+  "output_item": {
+    "item": "tfc:alabaster/bricks/light_blue"
+  },
+  "duration": 1000
+}

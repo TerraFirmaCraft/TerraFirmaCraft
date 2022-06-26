@@ -474,14 +474,19 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             crafting('tfc:crafting/soil/loam_mud_bricks', text_contents='These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can additionally be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired.'),
             block_spotlight('', 'All different varieties of mud bricks', '#tfc:mud_bricks'),
             # Wattle and Daub
-            # todo: this needs to be way better
-            text('Wattle and Daub... or something', title='Wattle & Daub').anchor('wattle_and_daub'),
-            crafting('tfc:crafting/wattle', text_contents='$(thing)Wattle$() is a very versatile building material, which can be improved with $(thing)daub$().'),
-            crafting('tfc:crafting/daub', text_contents='To weave sticks into Wattle and make it solid, right-click on it with 4 $(thing)sticks$(). Optionally, add $(thing)daub$() to it in the same way.'),
-            text('Adding daub to $(thing)Woven Wattle$() makes it $(thing)Unstained Wattle$(). At this point, it can be right-clicked with $(thing)dye$() to stain it. At any point in this process, you can add framing to the wattle by right-clicking it with extra sticks on the sides and corners. See what you can come up with!'),
+            text('$(thing)Wattle$() is a versatile building block. On its own, it is transparent, and players and mobs can walk through it. However, with the addition of $(item)sticks$() and $(item)daub$(), it becomes something much more..', 'Wattle and Daub').anchor('wattle_and_daub'),
+            crafting('tfc:crafting/wattle', text_contents='The crafting recipe for Wattle.'),
+            crafting('tfc:crafting/daub', 'tfc:crafting/daub_from_mud', text_contents='Wattle\'s companion is daub.'),
+            image('tfc:textures/gui/book/tutorial/wattle_weave.png', text_contents='Holding at least four $(item)sticks$() in your hand, press $(item)$(k:key.use)$() to $(thing)weave$() it. This makes the block solid.'),
+            text('At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(item)stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you\'re adding the stick to by selecting a different side of the face..'),
+            image('tfc:textures/gui/book/tutorial/wattle_add_stick.png', text_contents='Adding sticks to wattle.'),
+            image('tfc:textures/gui/book/tutorial/wattle_add_daub.png', text_contents='Woven Wattle can be made into $(thing)Untained Wattle$() by adding $(item)daub$() with $(item)$(k:key.use)$().'),
+            image('tfc:textures/gui/book/tutorial/wattle_stained.png', text_contents='Unstained Wattle can be dyed into $(thing)Stained Wattle$() by adding any $(item)dye$() with $(item)$(k:key.use)$().'),
             # Alabaster
-            text('Alabaster! Not really early game but that\'s why it\'s at the end of the chapter', title='Alabaster').anchor('alabaster'),
-            empty(),
+            text('Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). To make it, seal 100mB of $(thing)Limewater$() in a barrel with gypsum. After an hour, one $(item)Raw Alabaster$() will be created.', title='Alabaster').anchor('alabaster'),
+            crafting('tfc:crafting/alabaster_brick', 'tfc:crafting/alabaster_bricks', title='Alabaster Bricks', text_contents='Alabaster bricks are also made from gypsum.'),
+            text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth() chisel mode.'),
+            crafting('tfc:crafting/alabaster/magenta_polished_stairs', text_contents='Polished Alabaster and Alabaster Bricks can be crafted or $(l:mechanics/chisel)chiseled$() into stairs, walls, and slabs.', title='Alabaster Decorations'),
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
             text('The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
