@@ -610,9 +610,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # todo: prospectors pick and prospecting
         )),
         entry('bloomery', 'Bloomery', 'tfc:bloomery', pages=(
-            # todo: bloomery and wrought iron
-            text('Bloomeries are cool yo!'),
-            multiblock('A Bloomery', '', True, multiblock_id='tfc:bloomery'),
+            crafting('tfc:crafting/bloomery', text_contents='The $(thing)Bloomery$() is a device used to smelt $(thing)iron ore$() into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)hematite$(), $(l:the_world/ores_and_minerals#limonite)limonite$(), and $(l:the_world/ores_and_minerals#magnetite)magnetite$(). You may notice that these ores seem to melt into $(thing)cast iron$(). This is where the bloomery comes in handy.'),
+            multiblock('A Bloomery', 'A minimum size bloomery. The bloomery block can be open and shut with $(item)$(k:key.use)$().', True, multiblock_id='tfc:bloomery'),
+            text('The bloomery can contain up to 24 $(thing)iron ore$() and 24 $(l:mechanics/charcoal_pit)charcoal$(), with 8 of each item per additional layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br)$(br)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form.'),
+            image('tfc:textures/gui/book/tutorial/bloomery_hole.png', text_contents='Adding items to the bloomery.'),
+            text('The bloomery must have an equal amount of charcoal and ore $(thing)items$(). Light the bloomery block, and wait most of a day. When the bloomery block shuts off, it is done. Each 100mB of iron ore that melts in the bloomery is transformed into a $(thing)Bloom Block$(). The bloom block contains $(thing)Raw Iron Blooms$(), which can be obtained by mining the Bloom Block repeatedly with a pickaxe.'),
+            block_spotlight('The Bloom Block', 'The bloom block, at full bloom.', 'tfc:bloom[layers=8]'),
+            anvil_recipe('tfc:anvil/refined_iron_bloom', 'The $(item)Raw Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(item)Refined Iron Bloom$().'),
+            anvil_recipe('tfc:anvil/wrought_iron_from_bloom', 'The $(item)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(item)Wrought Iron Ingots$().'),
+            text('$(li)If the bloomery finds itself with more items contained than it can handle based on its chimney, it will try to spit them out the front.$()$(li)To retrieve your items from a bloomery that is not lit, do not break the molten block tower. Break the bloomery block.$()$(li)Blooms will only melt into cast iron, not wrought iron. They must be worked!$()', 'Smith\'s Notes'),
+            text('$(li)The bloomery cares about the number of items thrown into it, not the quality. Using rich ore in the bloomery costs the same amount of charcoal as poor ore!$()$(li)Molten blocks will readily spread fire to their environment! Be careful.$()'),
         )),
         entry('blast_furnace', 'Blast Furnace', 'tfc:blast_furnace', pages=(
             # todo: blast furnace and steel

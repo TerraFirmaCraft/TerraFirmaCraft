@@ -151,7 +151,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
         return TFCConfig.SERVER.bloomeryMaxChimneyHeight.get();
     }
 
-    public static boolean canGateStayInPlace(Level level, BlockPos pos, Direction.Axis axis)
+    public static boolean canGateStayInPlace(LevelAccessor level, BlockPos pos, Direction.Axis axis)
     {
         if (axis == Direction.Axis.X)
         {
@@ -197,6 +197,13 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
+    {
+        return canGateStayInPlace(level, pos, state.getValue(FACING).getAxis()) ? state : Blocks.AIR.defaultBlockState();
     }
 
     @Nullable

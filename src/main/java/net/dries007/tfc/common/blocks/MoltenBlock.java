@@ -121,7 +121,7 @@ public class MoltenBlock extends ExtendedBlock
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (level.getBlockState(pos.above()).isAir())
+        if (level.getBlockState(pos.above()).isAir() && state.getValue(LIT))
         {
             Helpers.fireSpreaderTick(level, pos, rand, 2);
         }
