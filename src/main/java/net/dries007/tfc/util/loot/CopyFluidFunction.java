@@ -43,7 +43,9 @@ public class CopyFluidFunction extends LootItemConditionalFunction
             final IFluidHandler blockHandler = Helpers.getCapability(entity, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
             if (itemHandler != null && blockHandler != null)
             {
-                FluidHelpers.transferUpTo(toItem ? blockHandler : itemHandler, toItem ? itemHandler : blockHandler, Integer.MAX_VALUE);
+                final IFluidHandler fromHandler = toItem ? blockHandler : itemHandler;
+                final IFluidHandler toHandler = toItem ? itemHandler : blockHandler;
+                toHandler.fill(fromHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                 return itemHandler.getContainer();
             }
         }

@@ -20,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -66,7 +67,7 @@ public class DiscreteFluidContainerItem extends Item
         }
 
         final BlockHitResult hit = Helpers.rayTracePlayer(level, player, ClipContext.Fluid.SOURCE_ONLY);
-        if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, canPlaceLiquidsInWorld, canPlaceSourceBlocks))
+        if (FluidHelpers.transferBetweenWorldAndItem(stack, level, hit, player, hand, canPlaceLiquidsInWorld, canPlaceSourceBlocks, false))
         {
             return InteractionResultHolder.success(player.getItemInHand(hand));
         }
@@ -120,6 +121,12 @@ public class DiscreteFluidContainerItem extends Item
             items.add(new ItemStack(this)); // Empty
             for (Fluid fluid : Helpers.getAllTagValues(whitelist, ForgeRegistries.FLUIDS))
             {
+                if (fluid instanceof FlowingFluid flowing && flowing.getSource() != flowing)
+                {
+                    // Don't create buckets filled with flowing versions of fluids
+                    continue;
+                }
+
                 final ItemStack stack = new ItemStack(this);
                 stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(c -> c.fill(new FluidStack(fluid, FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE));
                 items.add(stack);

@@ -8,6 +8,7 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -49,7 +51,7 @@ import net.dries007.tfc.util.calendar.ICalendarTickable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockEntity.BarrelInventory> implements ICalendarTickable
+public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockEntity.BarrelInventory> implements ICalendarTickable, BarrelInventoryCallback
 {
     public static final int SLOT_FLUID_CONTAINER_IN = 0;
     public static final int SLOT_FLUID_CONTAINER_OUT = 1;
@@ -94,7 +96,10 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             barrel.needsInstantRecipeUpdate = false;
             if (barrel.inventory.excess.isEmpty()) // Excess must be empty for instant recipes to apply
             {
-                level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level)
+                final RecipeManager recipeManager = level.getRecipeManager();
+                Optional.<BarrelRecipe>empty() // For type erasure
+                    .or(() -> recipeManager.getRecipeFor(TFCRecipeTypes.BARREL_INSTANT.get(), barrel.inventory, level))
+                    .or(() -> recipeManager.getRecipeFor(TFCRecipeTypes.BARREL_INSTANT_FLUID.get(), barrel.inventory, level))
                     .ifPresent(instantRecipe -> {
                         instantRecipe.assembleOutputs(barrel.inventory);
                         if (barrel.soundCooldownTicks == 0)
@@ -284,6 +289,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         markForSync();
     }
 
+    @Override
+    public boolean canModify()
+    {
+        return !getBlockState().getValue(BarrelBlock.SEALED);
+    }
+
     protected void updateRecipe()
     {
         assert level != null;
@@ -328,7 +339,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
     public static class BarrelInventory implements DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>, EmptyInventory, FluidTankCallback
     {
-        private final BarrelBlockEntity barrel;
+        private final BarrelInventoryCallback callback;
         private final InventoryItemHandler inventory;
         private final List<ItemStack> excess;
         private final InventoryFluidTank tank;
@@ -336,8 +347,13 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
         BarrelInventory(InventoryBlockEntity<?> entity)
         {
-            barrel = (BarrelBlockEntity) entity;
-            inventory = new InventoryItemHandler(entity, SLOTS);
+            this((BarrelInventoryCallback) entity);
+        }
+
+        public BarrelInventory(BarrelInventoryCallback callback)
+        {
+            this.callback = callback;
+            inventory = new InventoryItemHandler(callback, SLOTS);
             excess = new ArrayList<>();
             tank = new InventoryFluidTank(TFCConfig.SERVER.barrelCapacity.get(), stack -> Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_BARREL), this);
         }
@@ -456,12 +472,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         @Override
         public void fluidTankChanged()
         {
-            barrel.markForSync();
+            callback.fluidTankChanged();
         }
 
         private boolean canModify()
         {
-            return mutable || !barrel.getBlockState().getValue(BarrelBlock.SEALED);
+            return mutable || callback.canModify();
         }
     }
 }

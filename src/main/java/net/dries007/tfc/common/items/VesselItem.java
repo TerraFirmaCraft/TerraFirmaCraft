@@ -108,8 +108,6 @@ public class VesselItem extends Item
 
         private final HeatingRecipe[] cachedRecipes; // Recipes for each of the four slots in the inventory
 
-        private boolean initialized; // If the internal capability objects have loaded their data.
-
         VesselCapability(ItemStack stack)
         {
             this.stack = stack;
@@ -121,7 +119,7 @@ public class VesselItem extends Item
 
             this.cachedRecipes = new HeatingRecipe[SLOTS];
 
-            // Cannot load from stack NBT in the constructor, as it's not set yet (since caps are initialized before stack tag is copied, notably, in ItemStack#copy)
+            load();
         }
 
         @Override
@@ -227,7 +225,6 @@ public class VesselItem extends Item
         {
             if (cap == HeatCapability.CAPABILITY || cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
             {
-                load();
                 return capability.cast();
             }
             return LazyOptional.empty();
@@ -414,39 +411,26 @@ public class VesselItem extends Item
             }
         }
 
-        /**
-         * Initialize the capability instance on first use.
-         * Before we access this capability, the implementation is black boxed by {@link ICapabilityProvider}. We can then initialize this during the {@link #getCapability(Capability, Direction)} method, which has a number of advantages:
-         * <ul>
-         * <li>We do not perform loading if we never need it (i.e. if the capability is never queried), it just exists as raw NBT data on the stack.</li>
-         * <li>The capability can load directly from the stack tag, and ignore the explicit capability NBT, as it's unreliable both w.r.t synchronization and the creative inventory.</li>
-         * </ul>
-         */
         private void load()
         {
-            if (!initialized)
+            final CompoundTag tag = stack.getOrCreateTag();
+            inventory.deserializeNBT(tag.getCompound("inventory"));
+            alloy.deserializeNBT(tag.getCompound("alloy"));
+
+            // Deserialize heat capacity before we deserialize heat
+            // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
+            // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
+            heat.setHeatCapacity(tag.getFloat("heat_capacity"));
+            heat.deserializeNBT(tag.getCompound("heat"));
+
+            // Additionally, we need to update the contents of our cached recipes. Since we can experience modification (copy) which will invalidate our cache, that would not trigger setAndUpdateSlots
+            for (int i = 0; i < inventory.getSlots(); i++)
             {
-                initialized = true;
-
-                final CompoundTag tag = stack.getOrCreateTag();
-                inventory.deserializeNBT(tag.getCompound("inventory"));
-                alloy.deserializeNBT(tag.getCompound("alloy"));
-
-                // Deserialize heat capacity before we deserialize heat
-                // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
-                // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
-                heat.setHeatCapacity(tag.getFloat("heat_capacity"));
-                heat.deserializeNBT(tag.getCompound("heat"));
-
-                // Additionally, we need to update the contents of our cached recipes. Since we can experience modification (copy) which will invalidate our cache, that would not trigger setAndUpdateSlots
-                for (int i = 0; i < inventory.getSlots(); i++)
-                {
-                    final ItemStack stack = inventory.getStackInSlot(i);
-                    cachedRecipes[i] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack);
-                }
-
-                updateHeatCapacity();
+                final ItemStack stack = inventory.getStackInSlot(i);
+                cachedRecipes[i] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack);
             }
+
+            updateHeatCapacity();
         }
 
         private void save()

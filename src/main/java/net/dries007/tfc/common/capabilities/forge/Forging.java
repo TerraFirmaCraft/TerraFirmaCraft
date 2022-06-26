@@ -54,8 +54,6 @@ public final class Forging implements ICapabilityProvider
     @Nullable private AnvilRecipe recipe;
     @Nullable private ResourceLocation uninitializedRecipe;
 
-    private boolean initialized;
-
     public Forging(ItemStack stack)
     {
         this.capability = LazyOptional.of(() -> this);
@@ -64,6 +62,8 @@ public final class Forging implements ICapabilityProvider
         this.work = 0;
         this.recipe = null;
         this.steps = new ForgeSteps();
+
+        load();
     }
 
     /**
@@ -162,15 +162,11 @@ public final class Forging implements ICapabilityProvider
         save();
     }
 
-    /**
-     * @see VesselItem.VesselCapability#load()
-     */
     @NotNull
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
         if (cap == ForgingCapability.CAPABILITY)
         {
-            load();
             return capability.cast();
         }
         return LazyOptional.empty();
@@ -178,21 +174,16 @@ public final class Forging implements ICapabilityProvider
 
     private void load()
     {
-        if (!initialized)
+        final CompoundTag tag = stack.getTagElement(KEY);
+        if (tag != null)
         {
-            initialized = true;
+            work = tag.getInt("work");
+            target = tag.getInt("target");
 
-            final CompoundTag tag = stack.getTagElement(KEY);
-            if (tag != null)
-            {
-                work = tag.getInt("work");
-                target = tag.getInt("target");
+            steps.read(tag);
 
-                steps.read(tag);
-
-                uninitializedRecipe = tag.contains("recipe", Tag.TAG_STRING) ? new ResourceLocation(tag.getString("recipe")) : null;
-                recipe = null;
-            }
+            uninitializedRecipe = tag.contains("recipe", Tag.TAG_STRING) ? new ResourceLocation(tag.getString("recipe")) : null;
+            recipe = null;
         }
     }
 

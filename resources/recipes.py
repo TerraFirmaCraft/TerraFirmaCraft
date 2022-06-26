@@ -647,8 +647,8 @@ def generate(rm: ResourceManager):
     barrel_instant_recipe(rm, 'cooling_freshwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 minecraft:water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'cooling_saltwater', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 tfc:salt_water', output_item=item_stack_provider(copy_input=True, add_heat=-5), sound='minecraft:block.fire.extinguish')
     barrel_instant_recipe(rm, 'cooling_olive_oil', {'ingredient': {'type': 'tfc:heatable', 'min_temp': 1}}, '1 tfc:olive_oil', output_item=item_stack_provider(copy_input=True, add_heat=-40), sound='minecraft:block.fire.extinguish')
-    barrel_instant_recipe(rm, 'brine', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 tfc:salt_water', output_fluid='10000 tfc:brine')
-    barrel_instant_recipe(rm, 'milk_vinegar', {'ingredient': fluid_item_ingredient('1000 tfc:vinegar')}, '9000 minecraft:milk', output_fluid='10000 tfc:milk_vinegar')
+    barrel_instant_fluid_recipe(rm, 'brine', '9 tfc:salt_water', '1 tfc:vinegar', output_fluid='10 tfc:brine')
+    barrel_instant_fluid_recipe(rm, 'milk_vinegar', '9 minecraft:milk', '1 tfc:vinegar', output_fluid='10 tfc:milk_vinegar')
     barrel_instant_recipe(rm, 'clean_soup_bowl', '#tfc:soup_bowls', '100 minecraft:water', output_item=item_stack_provider(empty_bowl=True))
 
     # Loom Recipes
@@ -974,6 +974,15 @@ def barrel_instant_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentif
         'input_item': item_stack_ingredient(input_item) if input_item is not None else None,
         'input_fluid': fluid_stack_ingredient(input_fluid) if input_fluid is not None else None,
         'output_item': item_stack_provider(output_item) if output_item is not None else None,
+        'output_fluid': fluid_stack(output_fluid) if output_fluid is not None else None,
+        'sound': sound
+    })
+
+
+def barrel_instant_fluid_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, primary_fluid: Optional[Json] = None, added_fluid: Optional[Json] = None, output_fluid: Optional[Json] = None, sound: Optional[str] = None):
+    rm.recipe(('barrel', name_parts), 'tfc:barrel_instant_fluid', {
+        'primary_fluid': fluid_stack_ingredient(primary_fluid) if primary_fluid is not None else None,
+        'added_fluid': fluid_stack_ingredient(added_fluid) if added_fluid is not None else None,
         'output_fluid': fluid_stack(output_fluid) if output_fluid is not None else None,
         'sound': sound
     })
