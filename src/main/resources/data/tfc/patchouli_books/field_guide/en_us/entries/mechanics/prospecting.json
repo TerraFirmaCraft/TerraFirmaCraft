@@ -5,11 +5,31 @@
   "icon": "tfc:metal/propick/wrought_iron",
   "pages": [
     {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/wip.png"
-      ],
-      "border": true
+      "type": "patchouli:text",
+      "text": "You remembered where you picked up those $(l:getting_started/finding_ores)small metal nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with the $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in, either under your feet or across the world."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "When picking up small nuggets or mining exposed ore becomes unsatisfying, it is time to consider prospecting to find concealed ore veins.$(br2)The small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically.$(br2)If you find the center of a group of nuggets, it's likely that the vein is beneath you."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/propick/copper",
+      "title": "Prospector's Pick",
+      "link_recipes": false,
+      "text": "If you're looking for minerals, which have no metal nuggets, or you can't find the vein by guessing, it's time to pull out the $(thing)Prospector's Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The Prospector's Pick can give false negatives, but will never give a false positive. Higher tier tools can reduce or eliminate false negatives.$(br2)A propick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector's Pick finds multiple ores nearby, it will select only one to report."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The possible results of using a propick are$(li)nothing (may be false)$(li)traces$(li)small$(li)medium$(li)large$(li)very large$(br2)Very Large results indicate eighty or more blocks."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Remember that the ores can be in any direction from the block clicked, including up and down.$(br2)If you place markers like torches or straw where changes occur in propick results in multiple directions, the vein will be near the middle of your markers."
     }
   ],
   "read_by_default": true

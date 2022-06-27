@@ -11,7 +11,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/pan",
-      "text": "A clay pan can be $(l:getting_started/pottery)knapped$() into a pan as shown above."
+      "text": "Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above."
     },
     {
       "type": "tfc:heat_recipe",
