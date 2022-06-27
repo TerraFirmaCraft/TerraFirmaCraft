@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.fluids;
 
+import java.util.function.Consumer;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -52,9 +54,9 @@ public final class FluidHelpers
     public static final int BUCKET_VOLUME = FluidAttributes.BUCKET_VOLUME;
 
 
-    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, @Nullable Player player, @Nullable InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks)
+    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, @Nullable Player player, @Nullable InteractionHand hand, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
     {
-        return transferBetweenWorldAndItem(originalStack, level, target, new AfterTransferWithPlayer(player, hand), allowPlacingAnyLiquidBlocks, allowPlacingSourceBlocks);
+        return transferBetweenWorldAndItem(originalStack, level, target, new AfterTransferWithPlayer(player, hand), allowPlacingAnyLiquidBlocks, allowPlacingSourceBlocks, allowInfiniteSourceFilling);
     }
 
     /**
@@ -68,9 +70,10 @@ public final class FluidHelpers
      * @param target                      should be ray traced with {@link ClipContext.Fluid#SOURCE_ONLY}
      * @param allowPlacingAnyLiquidBlocks If {@code false}, when the fluid container is full, the empty-into-world attempt will be completely bypassed.
      * @param allowPlacingSourceBlocks    If {@code true}, when interacting directly with the world, this will be able to place source blocks, as opposed to transient flowing water blocks.
+     * @param allowInfiniteSourceFilling  If {@code true}, when interacting directly with the world on a fluid source block, this will attempt to fill with {@code Integer.MAX_VALUE} fluid, if the fluid source block supports infinite sources.
      * @return {@code true} if a transfer occurred.
      */
-    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks)
+    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
     {
         if (target.getType() != HitResult.Type.BLOCK)
         {
@@ -92,7 +95,7 @@ public final class FluidHelpers
         {
             // Transfer block -> item
             // This will play a pickup sound, but we need to handle updating the container ourselves
-            if (pickupFluidInto(level, pos, state, handler))
+            if (pickupFluidInto(level, pos, state, handler, allowInfiniteSourceFilling))
             {
                 updateContainerItem(originalStack, handler, after);
                 return true;
@@ -156,13 +159,23 @@ public final class FluidHelpers
         }
     }
 
+    public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, AfterTransfer after)
+    {
+        return transferBetweenItemAndOther(originalStack, itemHandler, from, to, fluid -> {}, after);
+    }
+
+    public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, Transfer type, Level level, BlockPos pos, AfterTransfer after)
+    {
+        return transferBetweenItemAndOther(originalStack, itemHandler, from, to, fluid -> playTransferSound(level, pos, fluid, type), after);
+    }
+
     /**
      * Transfers one way between two fluid handlers, where one of them is an item handler.
      * Handles updating the container item and optimistic / pessimistic transfer amounts.
      *
      * @return {@code true} if a transfer occurred.
      */
-    public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, Transfer type, Level level, BlockPos pos, AfterTransfer after)
+    public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, Consumer<FluidStack> sound, AfterTransfer after)
     {
         final FluidStack aggressiveDrained = from.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
 
@@ -183,7 +196,7 @@ public final class FluidHelpers
                 // Transaction complete
                 to.fill(from.drain(optimisticDrained, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
                 updateContainerItem(originalStack, itemHandler, after);
-                playTransferSound(level, pos, optimisticDrained, type);
+                sound.accept(optimisticDrained);
                 return true;
             }
             // We drained an optimistic amount, but for some reason, our destination fluid handler won't accept that amount.
@@ -195,7 +208,7 @@ public final class FluidHelpers
         // We have already simulated both transactions here, so we just proceed to execution
         to.fill(from.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
         updateContainerItem(originalStack, itemHandler, after);
-        playTransferSound(level, pos, aggressiveDrained, type);
+        sound.accept(aggressiveDrained);
         return true;
     }
 
@@ -226,23 +239,6 @@ public final class FluidHelpers
     }
 
     /**
-     * Transfer an amount up to and inclusive of {@code amount} between two fluid handlers.
-     */
-    public static boolean transferUpTo(IFluidHandler from, IFluidHandler to, int amount)
-    {
-        final FluidStack drained = from.drain(amount, IFluidHandler.FluidAction.SIMULATE);
-        if (!drained.isEmpty())
-        {
-            final int filled = to.fill(drained, IFluidHandler.FluidAction.SIMULATE);
-            if (filled > 0)
-            {
-                return transferExact(from, to, filled);
-            }
-        }
-        return false;
-    }
-
-    /**
      * Transfer exactly {@code amount} between two fluid handlers.
      */
     public static boolean transferExact(IFluidHandler from, IFluidHandler to, int amount)
@@ -260,11 +256,15 @@ public final class FluidHelpers
         return false;
     }
 
-    public static boolean pickupFluidInto(Level level, BlockPos pos, BlockState state, IFluidHandler to)
+    public static boolean pickupFluidInto(Level level, BlockPos pos, BlockState state, IFluidHandler to, boolean allowInfiniteSourceFilling)
     {
         final FluidStack fluid = pickupFluid(level, pos, state, IFluidHandler.FluidAction.SIMULATE);
         if (fluid != null && !fluid.isEmpty())
         {
+            if (allowInfiniteSourceFilling && fluid.getFluid() instanceof FlowingFluid flowing && ForgeEventFactory.canCreateFluidSource(level, pos, state, ((FlowingFluidAccessor) flowing).invoke$canConvertToSource()))
+            {
+                fluid.setAmount(Integer.MAX_VALUE);
+            }
             final int filled = to.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
             if (filled > 0)
             {
@@ -295,9 +295,9 @@ public final class FluidHelpers
             {
                 // Directly execute, assuming that we can pickup into a bucket, then empty the bucket to obtain the contents
                 final ItemStack stack = pickup.pickupBlock(level, pos, state);
-                FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE)).orElse(FluidStack.EMPTY);
-                final IFluidHandlerItem cap = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).resolve().orElse(null);
-                fluid = cap == null ? FluidStack.EMPTY : cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                final FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+                    .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE))
+                    .orElse(FluidStack.EMPTY);
                 playTransferSound(level, pos, fluid, Transfer.FILL);
                 return fluid;
             }

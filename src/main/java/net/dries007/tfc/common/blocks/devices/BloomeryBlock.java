@@ -132,7 +132,7 @@ public class BloomeryBlock extends DeviceBlock implements EntityBlockExtension
 
     public static boolean isBloomeryInsulationBlock(BlockState state)
     {
-        return state.is(TFCTags.Blocks.BLOOMERY_INSULATION);
+        return Helpers.isBlock(state, TFCTags.Blocks.BLOOMERY_INSULATION);
     }
 
     /**

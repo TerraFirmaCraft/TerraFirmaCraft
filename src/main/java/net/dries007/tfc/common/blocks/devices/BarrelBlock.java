@@ -91,5 +91,4 @@ public class BarrelBlock extends SealableDeviceBlock
             Helpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
         }
     }
-
 }

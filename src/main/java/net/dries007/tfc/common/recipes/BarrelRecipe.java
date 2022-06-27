@@ -187,11 +187,25 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
             return new Builder(inputItem, inputFluid, outputItem, outputFluid, sound);
         }
 
+        public static Builder fromNetworkFluidsOnly(FriendlyByteBuf buffer)
+        {
+            final FluidStackIngredient inputFluid = FluidStackIngredient.fromNetwork(buffer);
+            final FluidStack outputFluid = FluidStack.readFromPacket(buffer);
+            final SoundEvent sound = buffer.readRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS);
+
+            return new Builder(ItemStackIngredient.EMPTY, inputFluid, ItemStackProvider.empty(), outputFluid, sound);
+        }
+
         public static void toNetwork(BarrelRecipe recipe, FriendlyByteBuf buffer)
         {
             recipe.inputItem.toNetwork(buffer);
-            recipe.inputFluid.toNetwork(buffer);
             recipe.outputItem.toNetwork(buffer);
+            toNetworkFluidsOnly(recipe, buffer);
+        }
+
+        public static void toNetworkFluidsOnly(BarrelRecipe recipe, FriendlyByteBuf buffer)
+        {
+            recipe.inputFluid.toNetwork(buffer);
             recipe.outputFluid.writeToPacket(buffer);
             buffer.writeRegistryIdUnsafe(ForgeRegistries.SOUND_EVENTS, recipe.sound);
         }

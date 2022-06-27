@@ -157,8 +157,6 @@ public class MoldItem extends Item
         private final HeatHandler heat;
         private final FluidTank tank;
 
-        private boolean initialized; // If the internal capability objects have loaded their data.
-
         MoldCapability(ItemStack stack, int capacity)
         {
             this.stack = stack;
@@ -166,6 +164,8 @@ public class MoldItem extends Item
 
             this.heat = new HeatHandler(1, 0, 0);
             this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null); // Must be a metal
+
+            load();
         }
 
         @Override
@@ -208,7 +208,6 @@ public class MoldItem extends Item
         {
             if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY || cap == HeatCapability.CAPABILITY)
             {
-                load();
                 return capability.cast();
             }
             return LazyOptional.empty();
@@ -295,24 +294,16 @@ public class MoldItem extends Item
         @Override
         public void deserializeNBT(CompoundTag nbt) {}
 
-        /**
-         * @see VesselItem.VesselCapability#load()
-         */
         private void load()
         {
-            if (!initialized)
-            {
-                initialized = true;
+            final CompoundTag tag = stack.getOrCreateTag();
+            tank.readFromNBT(tag.getCompound("tank"));
 
-                final CompoundTag tag = stack.getOrCreateTag();
-                tank.readFromNBT(tag.getCompound("tank"));
-
-                // Deserialize heat capacity before we deserialize heat
-                // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
-                // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
-                heat.setHeatCapacity(tag.getFloat("heat_capacity"));
-                heat.deserializeNBT(tag.getCompound("heat"));
-            }
+            // Deserialize heat capacity before we deserialize heat
+            // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
+            // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
+            heat.setHeatCapacity(tag.getFloat("heat_capacity"));
+            heat.deserializeNBT(tag.getCompound("heat"));
         }
 
         private void save()
