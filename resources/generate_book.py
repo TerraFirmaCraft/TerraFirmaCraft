@@ -691,7 +691,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             anvil_recipe('tfc:anvil/black_steel_chain', '$(item)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().')
         )),
         entry('barrels', 'Barrels', 'tfc:wood/barrel/palm', pages=(
-            image('tfc:textures/gui/book/wip.png'),
+            text('The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(item)bucket$() or $(item)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works.'),
+            image('tfc:textures/gui/book/gui/barrel.png', text_contents='The barrel interface.', border=False),
+            text('Barrels can be $(thing)sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand also toggles the seal.'),
+            text('$(li)Barrels can be filled by clicking an empty one on a fluid block in the world.$()$(li)Barrels will slowly fill up with water in the rain$()$(li)Icicles melting above barrels also adds water to them$()$(li)Sealing a barrel will eject items that are not in the center slot.$()', 'Barrel Tips'),
+            text('Barrels are mostly known for their ability to execute $(thing)Barrel Recipe$(). The simplest kind of barrel recipe is an $(thing)Instant Recipe$(). Barrel recipes are based on ratios of fluids to items. For example, 500mB of water is needed for each $(l:mechanics/flux)flux$() item to create 500mB of $(thing)Limewater$(). Since making Limewater is an instant recipe, having at least enough flux to convert all the present water will instantly create limewater.'),
+            text('Some barrel recipes require the barrel to be $(thing)Sealed$() for a period of time. For example, sealing $(thing)Barley Flour$() in 500mB of water for three days will make $(thing)Beer$().'),
+            text('A couple barrel recipes operate by mixing two fluids at a certain ratio. This is done by taking a filled bucket of one of the ingredients, and putting it in the fluid addition slot of a barrel that has the required amount of the other fluid. This is done for making $(thing)Milk Vinegar$(), where $(thing)Vinegar$() is added to $(thing)Milk$() at a 9:1 ratio. Vinegar is also added in the same ratio to $(thing)Salt Water$() to make $(thing)Brine$().'),
+            text('Barrels have the ability to cool $(l:mechanics/heating)hot$() items. Put a hot item in a barrel of $(thing)Water$(), $(thing)Olive Oil$(), or $(thing)Salt Water$(), and it will quickly bring its temperature lower.'),
+            text('Barrels have the ability to $(thing)Dye$() and $(thing)Bleach$() items. Dye fluids are made by boiling a single dye item in a $(l:mechanics/pot)Pot$(). Most color-able things, like carpet, candles, and $(l:getting_started/building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye. Dyed items can also be bleached by sealing them in a barrel of $(thing)Lye$(). Lye is made by boiling $(thing)Wood Ash$(), a product of breaking $(l:getting_started/firepit)Firepits$(), in a $(l:mechanics/pot)Pot$() of Water.'),
+            text('Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:food/decay#vinegar)page$().')
         )),
     ))
 
@@ -706,8 +715,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it\'s lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it\'s lifetime by 1.66x!'),
             text('Are you salty this page is blank?', title='Salting').anchor('salting'),  # todo: salting
             image('tfc:textures/gui/book/wip.png'),
+            text('vinegar').anchor('vinegar'),# todo: vinegar
         )),
-        entry('hydration', 'Keeping Hydrated', 'tfc:wooden_bucket{tank:{"Amount":100,"FluidName":"tfc:metal/copper"}}', pages=(
+        entry('hydration', 'Keeping Hydrated', 'tfc:wooden_bucket{tank:{"Amount":100,"FluidName":"minecraft:water"}}', pages=(
             text('One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground may have some latent moisture, however this may not be enough, especially for particularly water-intensive crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand.'),
             text('Then, simply look at any $(thing)Farmland$() block, or any crop which require hydration. You will see a tooltip which shows the current hydration as a percentage from 0% to 100%.$(br2)Hydration cannot be decreased except by moving to a area with less rainfall - however, it can be increased by the proximity to nearby $(thing)water$() blocks, much like Vanilla farmland.'),
         )),
@@ -719,7 +729,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.'),
             text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
             item_spotlight('tfc:compost', 'Fertilizer', text_contents='To add nutrients to soil, try a $(l:mechanics/fertilizers)Fertilizer$(). See that page for more information on how they work and how to get them.'),
-            image('tfc:textures/gui/book/wip.png'),
             # Listing of all crops, their growth conditions, and how to grow them
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
