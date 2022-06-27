@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(item)bucket$() or $(item)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works."
+      "text": "The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(thing)bucket$() or $(thing)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works."
     },
     {
       "type": "patchouli:image",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels can be $(thing)sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand also toggles the seal."
+      "text": "Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand also toggles the seal."
     },
     {
       "type": "patchouli:text",

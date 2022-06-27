@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)seeds$() or $(thing)shellfish$(). To catch larger fish, such as $(thing)dolphins$() and $(thing)orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$()."
+      "text": "Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$()."
     },
     {
       "type": "patchouli:text",

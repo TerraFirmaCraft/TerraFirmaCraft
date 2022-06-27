@@ -7,7 +7,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/bloomery",
-      "text": "The $(thing)Bloomery$() is a device used to smelt $(thing)iron ore$() into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)hematite$(), $(l:the_world/ores_and_minerals#limonite)limonite$(), and $(l:the_world/ores_and_minerals#magnetite)magnetite$(). You may notice that these ores seem to melt into $(thing)cast iron$(). This is where the bloomery comes in handy."
+      "text": "The $(thing)Bloomery$() is a device used to smelt $(thing)Iron Ore$() into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)hematite$(), $(l:the_world/ores_and_minerals#limonite)limonite$(), and $(l:the_world/ores_and_minerals#magnetite)magnetite$(). You may notice that these ores seem to melt into $(thing)cast iron$(). This is where the bloomery comes in handy."
     },
     {
       "type": "patchouli:multiblock",
@@ -54,12 +54,12 @@
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/refined_iron_bloom",
-      "text": "The $(item)Raw Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(item)Refined Iron Bloom$()."
+      "text": "The $(thing)Raw Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Refined Iron Bloom$()."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/wrought_iron_from_bloom",
-      "text": "The $(item)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(item)Wrought Iron Ingots$()."
+      "text": "The $(thing)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Wrought Iron Ingots$()."
     },
     {
       "type": "patchouli:text",
@@ -68,7 +68,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)The bloomery cares about the number of items thrown into it, not the quality. Using rich ore in the bloomery costs the same amount of charcoal as poor ore!$()$(li)Molten blocks will readily spread fire to their environment! Be careful.$()"
+      "text": "$(li)The bloomery cares about the quantity of items thrown into it, not the quality. Using rich ore in the bloomery consumes the same amount of charcoal as poor ore!$()$(li)Molten blocks will readily spread fire to their environment! Be careful.$()"
     }
   ],
   "read_by_default": true

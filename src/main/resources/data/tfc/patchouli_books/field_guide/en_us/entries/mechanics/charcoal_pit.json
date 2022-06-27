@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)charcoal pit$() is a way of obtaining $(item)charcoal$(). Charcoal pits are made with $(thing)log piles$(). To place a log pile, $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$() while holding a $(item)log$(). More logs can be inserted by either pressing $(item)$(k:key.use)$() directly while holding a log, or by pressing $(item)$(k:key.use)$() with something else to open the interface."
+      "text": "The $(thing)Charcoal Pit$() is a way of obtaining $(thing)Charcoal$(). Charcoal pits are made with $(thing)Log Piles$(). To place a log pile, $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$() while holding a $(thing)Log$(). More logs can be inserted by either pressing $(item)$(k:key.use)$() directly while holding a log, or by pressing $(item)$(k:key.use)$() with something else to open the interface."
     },
     {
       "type": "patchouli:multiblock",
@@ -189,7 +189,7 @@
     {
       "type": "patchouli:text",
       "anchor": "charcoal_pile",
-      "text": "After the charcoal pile burns, you will be left with $(thing)charcola piles$(). The charcoal pile contains up 8 layers of $(item)charcoal$(). Dig it with a shovel to obtain the charcoal items. Charcoal piles can be added to or placed with $(item)$(k:key.use)$()."
+      "text": "After the charcoal pile burns, you will be left with $(thing)Charcoal piles$(). The charcoal pile contains up 8 layers of $(thing)Charcoal$(). Dig it with a shovel to obtain the charcoal items. Charcoal piles can be added to or placed with $(item)$(k:key.use)$()."
     },
     {
       "type": "tfc:multimultiblock",

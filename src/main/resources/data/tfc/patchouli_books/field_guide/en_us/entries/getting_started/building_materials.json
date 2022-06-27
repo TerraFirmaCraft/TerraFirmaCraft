@@ -87,7 +87,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wattle_and_daub",
-      "text": "$(thing)Wattle$() is a versatile building block. On its own, it is transparent, and players and mobs can walk through it. However, with the addition of $(item)sticks$() and $(item)daub$(), it becomes something much more..",
+      "text": "$(thing)Wattle$() is a versatile building block. On its own, it is transparent, and players and mobs can walk through it. However, with the addition of $(thing)Sticks$() and $(thing)Daub$(), it becomes something much more..",
       "title": "Wattle and Daub"
     },
     {
@@ -106,12 +106,12 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_weave.png"
       ],
-      "text": "Holding at least four $(item)sticks$() in your hand, press $(item)$(k:key.use)$() to $(thing)weave$() it. This makes the block solid.",
+      "text": "Holding at least four $(thing)Sticks$() in your hand, press $(item)$(k:key.use)$() to $(thing)weave$() it. This makes the block solid.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(item)stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face.."
+      "text": "At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face.."
     },
     {
       "type": "patchouli:image",
@@ -126,7 +126,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
       ],
-      "text": "Woven Wattle can be made into $(thing)Untained Wattle$() by adding $(item)daub$() with $(item)$(k:key.use)$().",
+      "text": "Woven Wattle can be made into $(thing)Unstained Wattle$() by adding $(thing)Daub$() with $(item)$(k:key.use)$().",
       "border": true
     },
     {
@@ -134,13 +134,13 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "Unstained Wattle can be dyed into $(thing)Stained Wattle$() by adding any $(item)dye$() with $(item)$(k:key.use)$().",
+      "text": "Unstained Wattle can be dyed into $(thing)Stained Wattle$() by adding any $(thing)Dye$() with $(item)$(k:key.use)$().",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). To make it, seal 100mB of $(thing)Limewater$() in a barrel with gypsum. After an hour, one $(item)Raw Alabaster$() will be created.",
+      "text": "Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). To make it, seal 100mB of $(thing)Limewater$() in a barrel with gypsum. After an hour, one $(thing)Raw Alabaster$() will be created.",
       "title": "Alabaster"
     },
     {

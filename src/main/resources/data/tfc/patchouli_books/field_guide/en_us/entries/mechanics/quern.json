@@ -7,12 +7,12 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/quern",
-      "text": "The $(thing)quern$() is a device for grinding items into powder. The base of the quern can be crafted with 3 $(item)smooth stone$() and 3 of any other $(item)stone$() blocks."
+      "text": "The $(thing)Quern$() is a device for grinding items into powder. The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/handstone",
-      "text": "The quern needs a $(item)handstone$() to operate."
+      "text": "The quern needs a $(thing)Handstone$() to operate."
     },
     {
       "type": "patchouli:image",
@@ -49,12 +49,12 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/sulfur",
-      "text": "The quern is used to make various $(item)powders$() from ores, like $(item)sulfur$()."
+      "text": "The quern is used to make various $(thing)Powders$() from ores, like $(thing)Sulfur$()."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/plant/black_orchid",
-      "text": "$(item)Dye$() can be obtained from various flowers."
+      "text": "$(thing)Dye$() can be obtained from various flowers."
     },
     {
       "type": "tfc:quern_recipe",
@@ -64,7 +64,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/barley_grain",
-      "text": "$(item)Flour$() is also obtainable from the quern."
+      "text": "$(thing)Flour$() is also obtainable from the quern."
     },
     {
       "type": "tfc:quern_recipe",

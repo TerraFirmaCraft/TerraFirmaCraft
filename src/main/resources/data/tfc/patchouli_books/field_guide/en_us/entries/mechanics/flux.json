@@ -16,7 +16,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/fluxstone",
-      "text": "The second way of getting flux is through $(thing)fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$()"
+      "text": "The second way of getting flux is through $(thing)Fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$()"
     }
   ],
   "read_by_default": true
