@@ -6,31 +6,42 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "You remembered where you picked up those $(l:getting_started/finding_ores)small metal nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with the $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in, either under your feet or across the world."
+      "text": "You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in, either under your feet or across the world."
     },
     {
       "type": "patchouli:text",
-      "text": "When picking up small nuggets or mining exposed ore becomes unsatisfying, it is time to consider prospecting to find concealed ore veins.$(br2)The small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically.$(br2)If you find the center of a group of nuggets, it's likely that the vein is beneath you."
+      "text": "When picking up small nuggets becomes unsatisfying, it is time to start prospecting to find ore veins:$(br)$(li)Small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically.If you find the center of a group of nuggets, it's likely that the vein is beneath you.$(li)Exposed ore can occur in cliffs and water bodies, which may be seen from farther away."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/propick/copper",
       "title": "Prospector's Pick",
       "link_recipes": false,
-      "text": "If you're looking for minerals, which have no metal nuggets, or you can't find the vein by guessing, it's time to pull out the $(thing)Prospector's Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located."
+      "text": "If you're looking for metal ores or mineral veins (which have no nuggets), and you can't find the vein by guessing, it's time to pull out the $(thing)Prospector's Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located."
     },
     {
       "type": "patchouli:text",
-      "text": "The Prospector's Pick can give false negatives, but will never give a false positive. Higher tier tools can reduce or eliminate false negatives.$(br2)A propick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector's Pick finds multiple ores nearby, it will select only one to report."
+      "text": "The Prospector's Pick may incorrectly say nothing is there. It will never report finding something when nothing is actually there. Higher tier tools will reduce or eliminate false reports.$(br2)A propick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector's Pick finds multiple ores nearby, it will select only one to report."
     },
     {
       "type": "patchouli:text",
-      "text": "The possible results of using a propick are$(li)nothing (may be false)$(li)traces$(li)small$(li)medium$(li)large$(li)very large$(br2)Very Large results indicate eighty or more blocks."
+      "text": "Right-clicking a propick on a block will report finding one of these possible results:$(br)$(li)nothing (may be false)$(li)traces$(li)small sample$(li)medium sample$(li)large sample$(li)very large sample$(br2)Very large samples indicate at least eighty and potentially many more blocks."
     },
     {
       "type": "patchouli:text",
-      "text": "Remember that the ores can be in any direction from the block clicked, including up and down.$(br2)If you place markers like torches or straw where changes occur in propick results in multiple directions, the vein will be near the middle of your markers."
+      "text": "Remember that the ores can be in any direction from the block clicked, including up and down.$(br2)You can place markers like torches or straw where propick results change. If you do so in multiple directions, the vein will be between and near the middle of your markers."
     }
   ],
-  "read_by_default": true
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:metal/propick/bismuth_bronze": 2,
+    "tfc:metal/propick/black_bronze": 2,
+    "tfc:metal/propick/bronze": 2,
+    "tfc:metal/propick/copper": 2,
+    "tfc:metal/propick/wrought_iron": 2,
+    "tfc:metal/propick/steel": 2,
+    "tfc:metal/propick/black_steel": 2,
+    "tfc:metal/propick/blue_steel": 2,
+    "tfc:metal/propick/red_steel": 2
+  }
 }

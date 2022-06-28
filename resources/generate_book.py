@@ -69,12 +69,12 @@ from argparse import ArgumentParser
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import JsonObject, ResourceIdentifier, ResourceLocation
 
-from constants import CROPS, ROCK_CATEGORIES
+from constants import CROPS, ROCK_CATEGORIES, METALS
 from i18n import I18n
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
-
+TOOL_METALS = [key for key, val in METALS.items() if 'tool' in val.types]
 
 class LocalInstance:
     INSTANCE_DIR = os.getenv('LOCAL_MINECRAFT_INSTANCE')  # The location of a local .minecraft directory, for testing in external minecraft instance (as hot reloading works much better)
@@ -515,14 +515,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # todo: supports, more on collapses?
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
-            text('You remembered where you picked up those $(l:getting_started/finding_ores)small metal nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with the $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in, either under your feet or across the world.'),
-            # todo: reference configuration values rather than defaults?
-            text('When picking up small nuggets or mining exposed ore becomes unsatisfying, it is time to consider prospecting to find concealed ore veins.$(br2)The small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically.$(br2)If you find the center of a group of nuggets, it\'s likely that the vein is beneath you.'),
-            item_spotlight('tfc:metal/propick/copper', 'Prospector\'s Pick', text_contents='If you\'re looking for minerals, which have no metal nuggets, or you can\'t find the vein by guessing, it\'s time to pull out the $(thing)Prospector\'s Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located.'),
-            text('The Prospector\'s Pick can give false negatives, but will never give a false positive. Higher tier tools can reduce or eliminate false negatives.$(br2)A propick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector\'s Pick finds multiple ores nearby, it will select only one to report.'),
-            text('The possible results of using a propick are$(li)nothing (may be false)$(li)traces$(li)small$(li)medium$(li)large$(li)very large$(br2)Very Large results indicate eighty or more blocks.'),
-            text('Remember that the ores can be in any direction from the block clicked, including up and down.$(br2)If you place markers like torches or straw where changes occur in propick results in multiple directions, the vein will be near the middle of your markers.'),
-            # todo: prospectors pick and prospecting
+            text('You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in, either under your feet or across the world.'),
+            text('When picking up small nuggets becomes unsatisfying, it is time to start prospecting to find ore veins:$(br)$(li)Small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically.If you find the center of a group of nuggets, it\'s likely that the vein is beneath you.$(li)Exposed ore can occur in cliffs and water bodies, which may be seen from farther away.'),
+            item_spotlight('tfc:metal/propick/copper', 'Prospector\'s Pick', text_contents='If you\'re looking for metal ores or mineral veins (which have no nuggets), and you can\'t find the vein by guessing, it\'s time to pull out the $(thing)Prospector\'s Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located.').link(*['tfc:metal/propick/%s' % m for m in TOOL_METALS]),
+            text('The Prospector\'s Pick may incorrectly say nothing is there. It will never report finding something when nothing is actually there. Higher tier tools will reduce or eliminate false reports.$(br2)A propick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector\'s Pick finds multiple ores nearby, it will select only one to report.'),
+            text('Right-clicking a propick on a block will report finding one of these possible results:$(br)$(li)nothing (may be false)$(li)traces$(li)small sample$(li)medium sample$(li)large sample$(li)very large sample$(br2)Very large samples indicate at least eighty and potentially many more blocks.'),
+            text('Remember that the ores can be in any direction from the block clicked, including up and down.$(br2)You can place markers like torches or straw where propick results change. If you do so in multiple directions, the vein will be between and near the middle of your markers.'),
         )),
         entry('bloomery', 'Bloomery', 'tfc:bloomery', pages=(
             # todo: bloomery and wrought iron
