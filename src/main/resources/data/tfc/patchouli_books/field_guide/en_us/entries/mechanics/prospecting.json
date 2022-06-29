@@ -14,22 +14,34 @@
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "propick",
       "item": "tfc:metal/propick/copper",
       "title": "Prospector's Pick",
       "link_recipes": false,
       "text": "If you're looking for metal ores or mineral veins (which have no nuggets), and you can't find the vein by guessing, it's time to pull out the $(thing)Prospector's Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located."
     },
     {
-      "type": "patchouli:text",
-      "text": "The Prospector's Pick may incorrectly say nothing is there. It will never report finding something when nothing is actually there. Higher tier tools will reduce or eliminate false reports.$(br2)A propick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector's Pick finds multiple ores nearby, it will select only one to report."
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/propick_head_mold",
+      "text": "To make a Prospector's Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/propick_head_mold",
+      "text": "Once the mold has been $(l:getting_started/pottery)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Propick Head Mold.$()$(br2)To create the tool head, $(l:getting_started/finding_ores#casting)cast$() liquid metal into the mold."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_propick_head",
+      "text": "A Prospector's Pick Head can also be $(l:mechanics/anvils#working)smithed$() out of an $(thing)ingot$() of any tool metal on an $(l:mechanics/anvils)Anvil$().$(br2)The Prospector's Pick is then created by crafting the tool head with a stick."
     },
     {
       "type": "patchouli:text",
-      "text": "Right-clicking a propick on a block will report finding one of these possible results:$(br)$(li)nothing (may be false)$(li)traces$(li)small sample$(li)medium sample$(li)large sample$(li)very large sample$(br2)Very large samples indicate at least eighty and potentially many more blocks."
+      "text": "The Prospector's Pick may incorrectly say nothing is there. It will never report finding something when nothing is actually there. Higher tier tools will reduce or eliminate these false negatives.$(br2)A Prospector's Pick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector's Pick finds multiple ores nearby, it will select only one to report."
     },
     {
       "type": "patchouli:text",
-      "text": "Remember that the ores can be in any direction from the block clicked, including up and down.$(br2)You can place markers like torches or straw where propick results change. If you do so in multiple directions, the vein will be between and near the middle of your markers."
+      "text": "Right-clicking a Prospector's Pick on a block will report finding one of these possible results:$(br)$(li)Nothing (may be false)$(li)Traces$(li)A Small Sample$(li)A Medium Sample$(li)A Large Sample$(li)A Very Large Sample$(br2)Very large samples indicate at least eighty and potentially many more blocks."
     }
   ],
   "read_by_default": true,
