@@ -157,7 +157,7 @@
   "tfc.tooltip.temperature_celsius": "%s\u00b0C",
   "tfc.tooltip.temperature_fahrenheit": "%s\u00b0F",
   "tfc.tooltip.fluid_units": "%s mB",
-  "tfc.tooltip.fluid_units_of": "%s mB of ",
+  "tfc.tooltip.fluid_units_of": "%s mB的",
   "tfc.tooltip.less_than_one_fluid_units": "< 1 mB",
   "tfc.tooltip.farmland.mature": "\u00a7a成熟",
   "tfc.tooltip.farmland.hydration": "\u00a71湿度：\u00a7r%s%%",
