@@ -9,6 +9,7 @@ package net.dries007.tfc.compat.jei.category;
 import java.util.List;
 
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import net.minecraftforge.fluids.FluidStack;
 
@@ -26,47 +27,87 @@ import net.dries007.tfc.common.recipes.PotRecipe;
 
 public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
+    private static final int[] INPUT_X = {15, 5, 25, 5, 25};
+    private static final int[] INPUT_Y = {5, 25, 25, 45, 45};
+    private static final int[] OUTPUT_X = {75, 65, 85, 65, 85};
+    private static final int[] OUTPUT_Y = {5, 25, 25, 45, 45};
+
     public SimplePotRecipeCategory(RecipeType<PotRecipe> type, IGuiHelper helper)
     {
-        super(type, helper, helper.createBlankDrawable(154, 63));
+        super(type, helper, helper.createBlankDrawable(110, 100));
     }
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, PotRecipe potRecipe, IFocusGroup focuses)
     {
-        super.setRecipe(builder, potRecipe, focuses);
         SimplePotRecipe recipe = (SimplePotRecipe) potRecipe;
-
-        FluidStack displayFluid = recipe.getDisplayFluid();
-        if (!displayFluid.isEmpty())
+        int i = 0;
+        for (Ingredient ingredient : recipe.getItemIngredients())
         {
-            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 132, 26);
-            fluidOutput.addIngredient(VanillaTypes.FLUID, displayFluid);
-            fluidOutput.setFluidRenderer(1, false, 16, 16);
-            fluidOutput.setSlotName("fluidOutput");
+            if (!ingredient.isEmpty())
+            {
+                IRecipeSlotBuilder input = builder.addSlot(RecipeIngredientRole.INPUT, INPUT_X[i] + 1, INPUT_Y[i] + 1);
+                input.addIngredients(ingredient);
+                i++;
+            }
         }
 
-        List<ItemStack> outputStacks = recipe.getOutputStacks();
-        if (!outputStacks.isEmpty())
+        final List<FluidStack> inputFluids = collapse(recipe.getFluidIngredient());
+        if (!inputFluids.isEmpty())
         {
-            // todo:  temporarily just adding the first output so JEI picks up the output stuff, we need to show up to all 5
-            IRecipeSlotBuilder itemOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 132, 6);
-            itemOutput.addItemStack(outputStacks.get(0));
-            itemOutput.setSlotName("output1");
+            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
+            fluidOutput.addIngredients(VanillaTypes.FLUID, inputFluids);
+            fluidOutput.setFluidRenderer(1, false, 16, 16);
+        }
+
+        int j = 0;
+        for (ItemStack stack : recipe.getOutputStacks())
+        {
+            if (!stack.isEmpty())
+            {
+                IRecipeSlotBuilder output = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X[j] + 1, OUTPUT_Y[j] + 1);
+                output.addItemStack(stack);
+                j++;
+            }
+        }
+
+        final FluidStack outputFluid = recipe.getDisplayFluid();
+        if (!outputFluid.isEmpty())
+        {
+            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
+            fluidOutput.addIngredient(VanillaTypes.FLUID, outputFluid);
+            fluidOutput.setFluidRenderer(1, false, 16, 16);
         }
     }
 
+    /**             y
+     *  X      X    5
+     * X X -> X X   25
+     * X X    X X   45
+     *  X      X    65
+     */
     @Override
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        super.draw(recipe, recipeSlots, stack, mouseX, mouseY);
-        if (recipeSlots.findSlotByName("fluidOutput").isPresent())
-        {
-            slot.draw(stack, 131, 25);
-        }
-        if (recipeSlots.findSlotByName("output1").isPresent())
-        {
-            slot.draw(stack, 131, 5);
-        }
+        // Item Input
+        drawFive(stack, INPUT_X, INPUT_Y);
+        // Water Input
+        slot.draw(stack, 15, 65);
+        // fire
+        fire.draw(stack, 47, 45);
+        fireAnimated.draw(stack, 47, 45);
+        // Item Output
+        drawFive(stack, OUTPUT_X, OUTPUT_Y);
+        // Water Output
+        slot.draw(stack, 75, 65);
+    }
+
+    private void drawFive(PoseStack stack, int[] x, int[] y)
+    {
+        slot.draw(stack, x[0], y[0]);
+        slot.draw(stack, x[1], y[1]);
+        slot.draw(stack, x[2], y[2]);
+        slot.draw(stack, x[3], y[3]);
+        slot.draw(stack, x[4], y[4]);
     }
 }

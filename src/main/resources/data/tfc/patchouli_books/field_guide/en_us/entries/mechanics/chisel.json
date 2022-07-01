@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Chisels are a tool for creating decorative forms of other blocks, including slabs and stairs. In order to get started, you will need a $(thing)Chisel$(), and any type of $(thing)Hammer$(). Chisels must be made from metals on an $(l:mechanics/anvils)Anvil$(). In order to start chiseling, hold the chisel in your main hand, and a hammer in your off hand, and target a block in the world."
+      "text": "Chisels are a tool for creating decorative forms of other blocks, including slabs and stairs. In order to get started, you will need a $(thing)Chisel$() and any type of $(thing)Hammer$(). Chisels must be made from metals on an $(l:mechanics/anvils)Anvil$(). In order to start chiseling, hold the chisel in your main hand, and a hammer in your off hand, and target a block in the world."
     },
     {
       "type": "patchouli:text",

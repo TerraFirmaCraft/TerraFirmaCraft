@@ -69,7 +69,7 @@ public class AmphibiousAnimal extends PathfinderMob
     {
         if (!isPlayingDead())
         {
-            playAmbientSound();
+            super.playAmbientSound();
         }
     }
 
