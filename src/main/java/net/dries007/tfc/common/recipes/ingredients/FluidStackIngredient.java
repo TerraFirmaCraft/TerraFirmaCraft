@@ -9,6 +9,7 @@ package net.dries007.tfc.common.recipes.ingredients;
 import java.util.function.Predicate;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,6 +29,10 @@ public record FluidStackIngredient(FluidIngredient ingredient, int amount) imple
     {
         final FluidIngredient fluid = FluidIngredient.fromJson(JsonHelpers.get(json, "ingredient"));
         final int amount = JsonHelpers.getAsInt(json, "amount", FluidHelpers.BUCKET_VOLUME);
+        if (amount <= 0)
+        {
+            throw new JsonParseException("FluidStackIngredient 'amount' must be positive.");
+        }
         return new FluidStackIngredient(fluid, amount);
     }
 

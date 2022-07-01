@@ -93,7 +93,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/propick_head_mold",
-      "text": "A $(l:mechanics/prospecting)Prospector's Pick$() is an essential tool for locating large quantities of ore, other than surface prospecting."
+      "text": "A $(l:mechanics/prospecting#propick)Prospector's Pick$() is an essential tool for locating large quantities of ore, other than surface prospecting."
     },
     {
       "type": "tfc:clay_knapping_recipe",

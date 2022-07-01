@@ -1,21 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:barrel_instant",
-  "input_item": {
-    "ingredient": {
-      "type": "tfc:fluid_item",
-      "fluid_ingredient": {
-        "ingredient": "tfc:vinegar",
-        "amount": 1000
-      }
-    }
-  },
-  "input_fluid": {
+  "type": "tfc:barrel_instant_fluid",
+  "primary_fluid": {
     "ingredient": "tfc:salt_water",
-    "amount": 9000
+    "amount": 9
+  },
+  "added_fluid": {
+    "ingredient": "tfc:vinegar",
+    "amount": 1
   },
   "output_fluid": {
     "fluid": "tfc:brine",
-    "amount": 10000
+    "amount": 10
   }
 }
