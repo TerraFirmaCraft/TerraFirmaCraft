@@ -58,6 +58,11 @@
         "tfc:textures/gui/book/wip.png"
       ],
       "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vinegar",
+      "text": "vinegar"
     }
   ],
   "read_by_default": true

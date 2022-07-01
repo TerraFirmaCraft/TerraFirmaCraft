@@ -85,7 +85,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/thatch",
-      "text": "Straw can be used to craft one of the first building materials: $(thing)thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it!"
+      "text": "Straw can be used to craft one of the first building materials: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it!"
     },
     {
       "type": "patchouli:text",
