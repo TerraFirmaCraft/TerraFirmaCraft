@@ -9,14 +9,17 @@ package net.dries007.tfc.compat.jei.category;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.RegistryObject;
 
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -55,6 +58,11 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         // Setting this to 1000 makes the liquid amount on the tooltip to display incorrectly
         // use IRecipeSlotBuilder.setFluidRenderer(1, false, 16, 16)} to make the liquid display in the whole slot
         return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).collect(Collectors.toList());
+    }
+
+    protected static <T extends Item> List<ItemStack> collapse(Map<?, RegistryObject<T>> map)
+    {
+        return map.values().stream().map(reg -> new ItemStack(reg.get())).toList();
     }
 
     protected static Ingredient collapse(BlockIngredient ingredient)

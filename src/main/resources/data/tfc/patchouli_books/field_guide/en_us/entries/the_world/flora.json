@@ -259,7 +259,7 @@
         }
       },
       "name": "Standard Water",
-      "text": "Standard water plants can be broken with a $(thing)$()knife$() to get $(thing)seaweed$().",
+      "text": "Standard water plants can be broken with a $(thing)$()Knife$() to get $(thing)Seaweed$().",
       "enable_visualize": false
     },
     {
@@ -301,7 +301,7 @@
         }
       },
       "name": "Tall Water Plant",
-      "text": "Tall water plants can grow with just the bottom block in water. $(thing)Water Taro$() and $()Cattail$() can be broken with a $(thing)knife$() for $(thing)roots$().",
+      "text": "Tall water plants can grow with just the bottom block in water. $(thing)Water Taro$() and $()Cattail$() can be broken with a $(thing)Knife$() for $(thing)Roots$().",
       "enable_visualize": false
     },
     {
@@ -370,7 +370,7 @@
         }
       },
       "name": "Tree Kelp",
-      "text": "Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)knife$().",
+      "text": "Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().",
       "enable_visualize": false
     }
   ],
