@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractContainerMenuMixin",
     "BiomeMixin",
+    "ClientboundUpdateRecipesPacketMixin",
     "DedicatedServerPropertiesMixin",
     "FallingBlockMixin",
     "FlowingFluidMixin",

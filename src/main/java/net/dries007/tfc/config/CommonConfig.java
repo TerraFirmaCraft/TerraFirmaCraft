@@ -9,6 +9,7 @@ package net.dries007.tfc.config;
 import java.util.function.Function;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -25,6 +26,9 @@ public class CommonConfig
     // Calendar
     public final ForgeConfigSpec.IntValue defaultMonthLength;
     public final ForgeConfigSpec.IntValue defaultCalendarStartDay;
+
+    // Debug
+    public final ForgeConfigSpec.BooleanValue enableNetworkDebugging;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -52,6 +56,11 @@ public class CommonConfig
             " The default is (5 * daysInMonth) = 40, which starts at June 1, 1000 (with the default daysInMonth = 8)"
         ).defineInRange("defaultCalendarStartTick", (5 * 8), -1, Integer.MAX_VALUE);
 
-        innerBuilder.pop();
+        innerBuilder.pop().push("debug");
+
+        enableNetworkDebugging = builder.apply("enableNetworkDebugging").comment(
+            " Enables a series of network fail-safes that are used to debug network connections between client and servers.",
+            " Important: this MUST BE THE SAME as what the server has set, otherwise you are liable to see even stranger errors."
+        ).define("enableNetworkDebugging", () -> !FMLEnvironment.production);
     }
 }
