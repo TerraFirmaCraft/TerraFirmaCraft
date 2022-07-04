@@ -132,10 +132,10 @@ public final class EntityHelpers
      * @return a random long value containing the days of growth for this animal to spawn
      * **Always spawn adults** (so vanilla respawn mechanics only creates adults of this animal)
      */
-    public static int getRandomGrowth(Random random, int daysToAdult)
+    public static long getRandomGrowth(Random random, int daysToAdult)
     {
         int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult * 4);
-        return (int) Calendars.get().getTotalDays() - lifeTimeDays;
+        return Calendars.get().getTotalDays() - lifeTimeDays;
     }
 
     public static void setNullableAttribute(LivingEntity entity, Attribute attribute, double baseValue)

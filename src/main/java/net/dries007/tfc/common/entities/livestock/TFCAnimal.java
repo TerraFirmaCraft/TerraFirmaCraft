@@ -36,6 +36,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.animals.AnimalConfig;
@@ -44,13 +45,14 @@ import net.dries007.tfc.util.calendar.Calendars;
 public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
 {
     private static final EntityDataAccessor<Boolean> GENDER = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> BIRTHDAY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Long> BIRTHDAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
     private static final EntityDataAccessor<Float> FAMILIARITY = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
     //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
 
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED);
+    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY);
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed

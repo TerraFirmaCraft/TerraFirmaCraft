@@ -120,6 +120,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
             setLastAge(age);
             getEntity().refreshDimensions();
         }
+        // because this is a random value it's not deterministic, we will allow the entity to sync it on its own
+        if (!getEntity().level.isClientSide && age == Age.ADULT && getUses() > getUsesToElderly() && getOldDay() != -1L)
+        {
+            final long oldDay = getCalendar().getTotalDays() + 1 + getEntity().getRandom().nextInt(5);
+            setOldDay(oldDay);
+        }
     }
 
     default InteractionResult mobInteract(Player player, InteractionHand hand)
@@ -188,16 +194,17 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     default void registerCommonData()
     {
         entityData().define(animalData().gender(), true);
-        entityData().define(animalData().birthday(), 0);
+        entityData().define(animalData().birthday(), 0L);
         entityData().define(animalData().familiarity(), 0f);
         entityData().define(animalData().uses(), 0);
         entityData().define(animalData().fertilized(), false);
+        entityData().define(animalData().oldDay(), -1L);
     }
 
     default void saveCommonAnimalData(CompoundTag nbt)
     {
         nbt.putBoolean("gender", getGender().toBool());
-        nbt.putInt("birth", getBirthDay());
+        nbt.putLong("birth", getBirthDay());
         nbt.putBoolean("fertilized", isFertilized());
         nbt.putFloat("familiarity", getFamiliarity());
         nbt.putInt("uses", getUses());
@@ -205,18 +212,20 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         nbt.putLong("decay", getLastFamiliarityDecay());
         nbt.putLong("mating", getMated());
         nbt.putInt("lastAge", getLastAge().ordinal());
+        nbt.putLong("oldDay", getOldDay());
     }
 
     default void readCommonAnimalData(CompoundTag nbt)
     {
         setGender(Gender.valueOf(nbt.getBoolean("gender")));
-        setBirthDay(nbt.getInt("birth"));
+        setBirthDay(nbt.getLong("birth"));
         setFertilized(nbt.getBoolean("fertilized"));
         setFamiliarity(nbt.getFloat("familiarity"));
         setUses(nbt.getInt("uses"));
         setLastFed(nbt.getLong("fed"));
         setLastFamiliarityDecay(nbt.getLong("decay"));
         setLastAge(Age.valueOf(nbt.getInt("lastAge")));
+        setOldDay(nbt.getLong("oldDay"));
     }
 
     default void initCommonAnimalData()
@@ -261,7 +270,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      *
      * @return returns the day this animal has been birth
      */
-    default int getBirthDay()
+    default long getBirthDay()
     {
         return entityData().get(animalData().birthday());
     }
@@ -271,9 +280,19 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
      *
      * @param value the day this animal has been birth. Used when this animal spawns.
      */
-    default void setBirthDay(int value)
+    default void setBirthDay(long value)
     {
         entityData().set(animalData().birthday(), value);
+    }
+
+    default long getOldDay()
+    {
+        return entityData().get(animalData().oldDay());
+    }
+
+    default void setOldDay(long day)
+    {
+        entityData().set(animalData().oldDay(), day);
     }
 
     /**
@@ -348,7 +367,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     default void setBabyTraits(TFCAnimalProperties baby)
     {
         baby.setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
-        baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
+        baby.setBirthDay(Calendars.SERVER.getTotalDays());
         baby.setFamiliarity(this.getFamiliarity() < 0.9F ? this.getFamiliarity() / 2.0F : this.getFamiliarity() * 0.9F);
     }
 
@@ -374,25 +393,23 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     }
 
     /**
-     * Get this entity age, based on birth
-     *
+     * Get this entity's age, based on birthday and old day. Old Day is set in the animal data tick.
      * @return the Age enum of this entity
      */
     default Age getAgeType()
     {
-        final long deltaDays = getCalendar().getTotalDays() - this.getBirthDay();
-        if (getUses() > getUsesToElderly())
+        final long totalDays = getCalendar().getTotalDays();
+        final long oldDay = getOldDay();
+        if (oldDay != -1L && totalDays > oldDay)
         {
             return Age.OLD;
         }
-        else if (deltaDays > getDaysToAdulthood())
+        final long adulthoodDays = totalDays - this.getBirthDay();
+        if (adulthoodDays > getDaysToAdulthood())
         {
             return Age.ADULT;
         }
-        else
-        {
-            return Age.CHILD;
-        }
+        return Age.CHILD;
     }
 
     /**

@@ -137,7 +137,7 @@ public abstract class OviparousAnimal extends ProducingAnimal
                 if (baby != null)
                 {
                     baby.setGender(Gender.valueOf(random.nextBoolean()));
-                    baby.setBirthDay((int) Calendars.SERVER.getTotalDays());
+                    baby.setBirthDay(Calendars.SERVER.getTotalDays());
                     baby.setFamiliarity(getFamiliarity() < 0.9F ? getFamiliarity() / 2.0F : getFamiliarity() * 0.9F);
                     egg.setFertilized(baby, Calendars.SERVER.getTotalDays() + hatchDays.get());
                 }
