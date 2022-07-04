@@ -313,6 +313,8 @@ COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
 ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
 
+VANILLA_WOODS = ['oak', 'spruce', 'acacia', 'birch', 'jungle', 'dark_oak', 'crimson', 'warped']
+
 WOODS: Dict[str, Wood] = {
     'acacia': Wood(650, 1000),
     'ash': Wood(696, 1250),

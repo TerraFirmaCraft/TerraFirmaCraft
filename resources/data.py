@@ -249,13 +249,26 @@ def generate(rm: ResourceManager):
         rm.item_tag('forge:gems', 'tfc:gem/' + gem)
 
     for wood in WOODS.keys():
-        rm.item_tag('minecraft:logs', 'tfc:wood/log/%s' % wood, 'tfc:wood/wood/%s' % wood, 'tfc:wood/stripped_log/%s' % wood, 'tfc:wood/stripped_wood/%s' % wood)
-        rm.item_tag('twigs', 'tfc:wood/twig/%s' % wood)
-        rm.item_tag('lumber', 'tfc:wood/lumber/%s' % wood)
-        rm.item_tag('sluices', 'tfc:wood/sluice/%s' % wood)
-        rm.item_tag('looms', 'tfc:wood/planks/%s_loom' % wood)
+        def item(wood_variant: str) -> str:
+            return 'tfc:wood/%s/%s' % (wood_variant, wood)
+
+        def plank(wood_variant: str) -> str:
+            return 'tfc:wood/planks/%s_%s' % (wood, wood_variant)
+
+        for tag_name, wood_variant in (('twigs', 'twig'), ('lumber', 'lumber'), ('sluices', 'sluice'), ('workbenches', 'workbench'), ('minecraft:boats', 'boat'), ('minecraft:planks', 'planks')):
+            block_and_item_tag(rm, tag_name, item(wood_variant))
+        for tag_name, wood_variant in (('buttons', 'button'), ('fences', 'fence'), ('fences', 'log_fence'), ('slabs', 'slab'), ('stairs', 'stairs'), ('doors', 'door'), ('trapdoors', 'trapdoor'), ('pressure_plates', 'pressure_plate')):
+            block_and_item_tag(rm, 'minecraft:wooden_%s' % tag_name, plank(wood_variant))
+        block_and_item_tag(rm, 'looms', plank('loom'))
+        block_and_item_tag(rm, 'minecraft:logs', '#tfc:%s_logs' % wood)
+        block_and_item_tag(rm, '%s_logs' % wood, item('log'), item('wood'), item('stripped_log'), item('stripped_wood'))
+        block_and_item_tag(rm, 'forge:fence_gates/wooden', plank('fence_gate'))
+        block_and_item_tag(rm, 'bookshelves', plank('bookshelf'))
+        block_and_item_tag(rm, 'lecterns', item('lectern'))
+        block_and_item_tag(rm, 'minecraft:leaves', item('leaves'))
+
         if wood in TANNIN_WOOD_TYPES:
-            rm.item_tag('makes_tannin', 'tfc:wood/log/%s' % wood, 'tfc:wood/wood/%s' % wood)
+            rm.item_tag('makes_tannin', item('log'), item('wood'))
 
     for category in ROCK_CATEGORIES:  # Rock (Category) Tools
         for tool in ROCK_CATEGORY_ITEMS:
@@ -307,6 +320,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:bamboo_plantable_on', '#tfc:grass')
     rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
     rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
+    rm.block_tag('creeping_plantable_on', 'minecraft:logs')
 
     for color in COLORS:
         rm.block_tag('minecraft:walls', 'tfc:alabaster/polished/%s_wall' % color, 'tfc:alabaster/bricks/%s_wall' % color)

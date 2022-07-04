@@ -37,6 +37,6 @@ public class TFCWorkbenchContainer extends CraftingMenu
     @Override
     public boolean stillValid(Player playerIn)
     {
-        return access.evaluate((world, pos) -> Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.WORKBENCH) && playerIn.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D, true);
+        return access.evaluate((world, pos) -> Helpers.isBlock(world.getBlockState(pos), TFCTags.Blocks.WORKBENCHES) && playerIn.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) <= 64.0D, true);
     }
 }
