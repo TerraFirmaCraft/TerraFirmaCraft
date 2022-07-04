@@ -91,8 +91,6 @@ public class Jellyfish extends AbstractSchoolingFish implements AquaticMob
         super.playerTouch(player);
     }
 
-    //todo avoid predators
-
     @Override
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance diff, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)

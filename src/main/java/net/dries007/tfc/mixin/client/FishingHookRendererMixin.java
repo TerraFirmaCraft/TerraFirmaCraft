@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * https://github.com/MinecraftForge/MinecraftForge/pull/8168
+ * todo: 1.19. remove this
  */
 @Mixin(FishingHookRenderer.class)
 public abstract class FishingHookRendererMixin

@@ -111,7 +111,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
     }
 
     @Override
-    public boolean shouldStopFishing(Player player)//todo: remove after forge PR ~#8168, #8424
+    public boolean shouldStopFishing(Player player)// todo: 1.19. remove this
     {
         boolean main = player.getMainHandItem().getItem() instanceof TFCFishingRodItem;
         boolean off = player.getOffhandItem().getItem() instanceof TFCFishingRodItem;
