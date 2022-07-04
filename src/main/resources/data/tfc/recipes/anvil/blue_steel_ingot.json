@@ -7,7 +7,7 @@
   "result": {
     "item": "tfc:metal/ingot/blue_steel"
   },
-  "tier": 6,
+  "tier": 5,
   "rules": [
     "hit_last",
     "hit_second_last",
