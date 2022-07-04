@@ -3,8 +3,8 @@
   "replace": false,
   "values": [
     "tfc:wood/log/spruce",
-    "tfc:wood/stripped_log/spruce",
     "tfc:wood/wood/spruce",
+    "tfc:wood/stripped_log/spruce",
     "tfc:wood/stripped_wood/spruce"
   ]
 }

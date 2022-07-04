@@ -3,8 +3,8 @@
   "replace": false,
   "values": [
     "tfc:wood/log/sycamore",
-    "tfc:wood/stripped_log/sycamore",
     "tfc:wood/wood/sycamore",
+    "tfc:wood/stripped_log/sycamore",
     "tfc:wood/stripped_wood/sycamore"
   ]
 }

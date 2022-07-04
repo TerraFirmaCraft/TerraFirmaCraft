@@ -3,8 +3,8 @@
   "replace": false,
   "values": [
     "tfc:wood/log/ash",
-    "tfc:wood/stripped_log/ash",
     "tfc:wood/wood/ash",
+    "tfc:wood/stripped_log/ash",
     "tfc:wood/stripped_wood/ash"
   ]
 }

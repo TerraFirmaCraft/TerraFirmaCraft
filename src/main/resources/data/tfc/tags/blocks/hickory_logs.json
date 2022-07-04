@@ -3,8 +3,8 @@
   "replace": false,
   "values": [
     "tfc:wood/log/hickory",
-    "tfc:wood/stripped_log/hickory",
     "tfc:wood/wood/hickory",
+    "tfc:wood/stripped_log/hickory",
     "tfc:wood/stripped_wood/hickory"
   ]
 }

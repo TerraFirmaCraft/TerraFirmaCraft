@@ -3,8 +3,8 @@
   "replace": false,
   "values": [
     "tfc:wood/log/acacia",
-    "tfc:wood/stripped_log/acacia",
     "tfc:wood/wood/acacia",
+    "tfc:wood/stripped_log/acacia",
     "tfc:wood/stripped_wood/acacia"
   ]
 }

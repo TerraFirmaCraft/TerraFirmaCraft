@@ -46,7 +46,7 @@ public class TFCTags
         public static final TagKey<Block> FRUIT_TREE_LEAVES = create("fruit_tree_leaves");
         public static final TagKey<Block> FRUIT_TREE_SAPLING = create("fruit_tree_sapling");
         public static final TagKey<Block> SUPPORT_BEAM = create("support_beam");
-        public static final TagKey<Block> WORKBENCH = create("workbench");
+        public static final TagKey<Block> WORKBENCHES = create("workbenches");
         public static final TagKey<Block> THATCH_BED_THATCH = create("thatch_bed_thatch");
         public static final TagKey<Block> SNOW = create("snow"); // Blocks that cover grass with snow.
         public static final TagKey<Block> CAN_BE_SNOW_PILED = create("can_be_snow_piled"); // Blocks that can be replaced with snow piles

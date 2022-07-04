@@ -3,8 +3,8 @@
   "replace": false,
   "values": [
     "tfc:wood/log/sequoia",
-    "tfc:wood/stripped_log/sequoia",
     "tfc:wood/wood/sequoia",
+    "tfc:wood/stripped_log/sequoia",
     "tfc:wood/stripped_wood/sequoia"
   ]
 }

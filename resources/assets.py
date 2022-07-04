@@ -1196,8 +1196,6 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
             else:
                 block.with_lang(lang('%s %s', wood, variant))
-            if variant == 'log':
-                block.with_tag('minecraft:logs')
         rm.item_model(('wood', 'lumber', wood)).with_lang(lang('%s Lumber', wood))
         rm.item_model(('wood', 'sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:signs')
         rm.item_model(('wood', 'boat', wood)).with_lang(lang('%s Boat', wood))
@@ -1291,7 +1289,7 @@ def generate(rm: ResourceManager):
             'west': 'tfc:block/wood/planks/%s_workbench_front' % wood,
             'up': 'tfc:block/wood/planks/%s_workbench_top' % wood,
             'down': 'tfc:block/wood/planks/%s' % wood
-        }).with_item_model().with_lang(lang('%s Workbench', wood)).with_tag('tfc:workbench').with_block_loot('tfc:wood/planks/%s_workbench' % wood)
+        }).with_item_model().with_lang(lang('%s Workbench', wood)).with_tag('tfc:workbenches').with_block_loot('tfc:wood/planks/%s_workbench' % wood)
 
         # Doors
         rm.item_model('tfc:wood/planks/%s_door' % wood, 'tfc:item/wood/planks/%s_door' % wood)
@@ -1396,29 +1394,6 @@ def generate(rm: ResourceManager):
             block.with_block_loot(*[{'name': namespace, 'functions': [loot_tables.set_count(i)], 'conditions': [loot_tables.block_state_property('%s[candles=%s]' % (namespace, i))]} for i in range(1,5)])
             rm.item_model(namespace, parent='minecraft:item/%s' % candle, no_textures=True)
             if color: rm.item_tag('tfc:colored_candles', namespace)
-
-        # Tags
-        for fence_namespace in ('tfc:wood/planks/' + wood + '_fence', log_fence_namespace):
-            rm.block_tag('minecraft:wooden_fences', fence_namespace)
-            rm.block_tag('minecraft:fences', fence_namespace)
-            rm.block_tag('forge:fences', fence_namespace)
-            rm.block_tag('forge:fences/wooden', fence_namespace)
-
-        fence_gate_namespace = 'tfc:wood/planks/' + wood + '_fence_gate'
-        rm.block_tag('forge:fence_gates/wooden', fence_gate_namespace)
-        rm.block_tag('forge:fence_gates', fence_gate_namespace)
-        rm.block_tag('minecraft:doors', 'tfc:wood/planks/' + wood + '_door')
-        rm.block_tag('minecraft:buttons', 'tfc:wood/planks/' + wood + '_button')
-        rm.block_tag('minecraft:wooden_buttons', 'tfc:wood/planks/' + wood + '_button')
-        rm.block_tag('minecraft:wooden_pressure_plates', 'tfc:wood/planks/' + wood + '_pressure_plate')
-        rm.block_tag('minecraft:wooden_slabs', 'tfc:wood/planks/' + wood + '_slab')
-        rm.block_tag('minecraft:wooden_stairs', 'tfc:wood/planks/' + wood + '_stairs')
-
-        for variant in ('log', 'stripped_log', 'wood', 'stripped_wood'):
-            if variant != 'log':
-                rm.block_tag('minecraft:logs', 'tfc:wood/' + variant + '/' + wood)
-            rm.block_tag('tfc:' + wood + '_logs', 'tfc:wood/' + variant + '/' + wood)
-            rm.block_tag('tfc:creeping_plantable_on', 'tfc:wood/' + variant + '/' + wood)
 
         # Lang
         for variant in ('door', 'trapdoor', 'fence', 'log_fence', 'fence_gate', 'button', 'pressure_plate', 'slab', 'stairs'):

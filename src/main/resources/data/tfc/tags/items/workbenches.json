@@ -1,0 +1,25 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:wood/workbench/acacia",
+    "tfc:wood/workbench/ash",
+    "tfc:wood/workbench/aspen",
+    "tfc:wood/workbench/birch",
+    "tfc:wood/workbench/blackwood",
+    "tfc:wood/workbench/chestnut",
+    "tfc:wood/workbench/douglas_fir",
+    "tfc:wood/workbench/hickory",
+    "tfc:wood/workbench/kapok",
+    "tfc:wood/workbench/maple",
+    "tfc:wood/workbench/oak",
+    "tfc:wood/workbench/palm",
+    "tfc:wood/workbench/pine",
+    "tfc:wood/workbench/rosewood",
+    "tfc:wood/workbench/sequoia",
+    "tfc:wood/workbench/spruce",
+    "tfc:wood/workbench/sycamore",
+    "tfc:wood/workbench/white_cedar",
+    "tfc:wood/workbench/willow"
+  ]
+}

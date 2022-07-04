@@ -2,7 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "minecraft:lectern",
     "tfc:wood/lectern/acacia",
     "tfc:wood/lectern/ash",
     "tfc:wood/lectern/aspen",
