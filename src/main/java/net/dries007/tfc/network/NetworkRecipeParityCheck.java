@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.dries007.tfc.TerraFirmaCraft;
 import org.jetbrains.annotations.Nullable;
 
 public final class NetworkRecipeParityCheck
@@ -55,7 +56,17 @@ public final class NetworkRecipeParityCheck
         final RecipeSerializer<?> serializer = Registry.RECIPE_SERIALIZER.getOptional(serializerId).orElseThrow(() -> new IllegalStateException("Unknown recipe serializer '" + serializerId + "' when decoding recipe '" + recipeId + "'. [Parity: Expected " + expected + " bytes | Read 0 bytes]"));
 
         final int before = buffer.readableBytes();
-        final Recipe<?> recipe = serializer.fromNetwork(recipeId, buffer);
+        final Recipe<?> recipe;
+        try
+        {
+            recipe = serializer.fromNetwork(recipeId, buffer);
+        }
+        catch (RuntimeException e)
+        {
+            TerraFirmaCraft.LOGGER.error("Trace", e);
+            throw new IllegalStateException("Recipe '" + recipeId + "' with serializer '" + serializerId + "' threw an exception trying to decode: " + e.getMessage(), e);
+        }
+
         final int after = buffer.readableBytes();
         final int actual = before - after;
 

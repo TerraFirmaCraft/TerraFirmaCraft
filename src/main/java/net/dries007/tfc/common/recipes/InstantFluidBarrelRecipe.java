@@ -148,7 +148,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
         @Override
         public InstantFluidBarrelRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            final Builder builder = Builder.fromNetwork(buffer);
+            final Builder builder = Builder.fromNetworkFluidsOnly(buffer);
             final FluidStackIngredient addedFluid = FluidStackIngredient.fromNetwork(buffer);
             return new InstantFluidBarrelRecipe(recipeId, builder, addedFluid);
         }
@@ -156,7 +156,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
         @Override
         public void toNetwork(FriendlyByteBuf buffer, InstantFluidBarrelRecipe recipe)
         {
-            Builder.toNetwork(recipe, buffer);
+            Builder.toNetworkFluidsOnly(recipe, buffer);
             recipe.addedFluid.toNetwork(buffer);
         }
     }
