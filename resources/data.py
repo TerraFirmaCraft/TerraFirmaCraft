@@ -768,7 +768,7 @@ def generate(rm: ResourceManager):
 
     # Crops
     for crop, data in CROPS.items():
-        climate_range(rm, 'crop/%s' % crop, hydration=(hydration_from_rainfall(data.min_rain), hydration_from_rainfall(data.max_rain), 30), temperature=(data.min_temp, data.max_temp, 5))
+        climate_range(rm, 'crop/%s' % crop, hydration=(data.min_hydration, data.max_hydration, 0), temperature=(data.min_temp, data.max_temp, 5))
 
     # Fertilizer
     rm.data(('tfc', 'fertilizers', 'sylvite'), fertilizer('tfc:powder/sylvite', p=0.5))
