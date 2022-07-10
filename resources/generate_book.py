@@ -106,7 +106,7 @@ def main():
 
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        make_book(rm, I18n.create('en_us'), local_instance=True)
+        make_book(rm, i18n, local_instance=True)
 
     print('Done')
 
@@ -485,7 +485,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # Alabaster
             text('Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). To make it, seal 100mB of $(thing)Limewater$() in a barrel with gypsum. After an hour, one $(thing)Raw Alabaster$() will be created.', title='Alabaster').anchor('alabaster'),
             crafting('tfc:crafting/alabaster_brick', 'tfc:crafting/alabaster_bricks', title='Alabaster Bricks', text_contents='Alabaster bricks are also made from gypsum.'),
-            text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth() chisel mode.'),
+            text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode.'),
             crafting('tfc:crafting/alabaster/magenta_polished_stairs', text_contents='Polished Alabaster and Alabaster Bricks can be crafted or $(l:mechanics/chisel)chiseled$() into stairs, walls, and slabs.', title='Alabaster Decorations'),
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
@@ -545,7 +545,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Then, you can begin panning!$(br2)$(bold)1.$() With the pan in hand, $(thing)use$() it on the ore deposit block.$(br2)$(bold)2.$() While standing in water with the pan in your hand, hold down $(item)$(k:key.use)$(), and you will start panning.$(br2)$(bold)3.$() After a few moments, if you are lucky, you may be rewarded with a small piece of ore in your inventory.'),
         )),
         entry('heating', 'Heating', 'tfc:firestarter', pages=(
-            text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
+            text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
             text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
             # todo: other just general heating recipes?
         )),
@@ -584,7 +584,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image('tfc:textures/gui/book/gui/grill.png', text_contents='The grill interface.', border=False),
         )),
         entry('pot', 'Firepit And Pot', 'tfc:pot', pages=(
-            text('A $(thing)Pot$() is an item that can be added to the firepit, in order to both cook new types of food, and produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(l:mechanics/pot#ceramic_pot)Ceramic Pot$() on the firepit.'),
+            text('A $(thing)Pot$() is an item that can be added to the firepit, in order to both cook new types of food, and produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(thing)Ceramic Pot$() on the firepit.'),
             block_spotlight('', 'A firepit with a pot attached.', 'tfc:pot'),
             clay_knapping('tfc:clay_knapping/pot', 'A ceramic pot must be $(l:getting_started/pottery)Knapped$() out of clay first.'),
             heat_recipe('tfc:heating/fired_pot', 'It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit.'),
@@ -986,7 +986,7 @@ def entity(entity_type: str, text_contents: str = None, title: str = None, scale
     :param rotate: Whether the entity should rotate in the view. Defaults to true.
     :param default_rotation: The rotation at which the entity is displayed. Only used if rotate is False.
     """
-    return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents})
+    return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents}, translation_keys=('name', 'text'))
 
 def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:
     """
@@ -1082,11 +1082,11 @@ def heat_recipe(recipe: str, text_content: str) -> Page:
 
 
 def quern_recipe(recipe: str, text_content: str) -> Page:
-    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def anvil_recipe(recipe: str, text_content: str) -> Page:
-    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def alloy_recipe(title: str, ingot: str, *components: Tuple[str, int, int], text_content: str) -> Page:

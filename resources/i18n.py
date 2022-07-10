@@ -57,5 +57,5 @@ class ForLanguage(I18n):
     def flush(self):
         with open(self.lang + '.json', 'w', encoding='utf-8') as f:
             print('Writing updated translation for language %s' % self.lang)
-            json.dump(self.after, f, indent=2)
+            json.dump(self.after, f, indent=2,ensure_ascii=False)
 
