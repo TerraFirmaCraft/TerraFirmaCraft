@@ -1,0 +1,76 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "手推磨",
+  "category": "tfc:mechanics",
+  "icon": "tfc:quern",
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/quern",
+      "text": "$(thing)手推磨$()是一种将物品磨成粉末的装置。可以用三个$(thing)平滑的石头$()和三个任何类型的$(thing)石块$()来制作手推磨的底座。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/handstone",
+      "text": "手推磨需要一个$(thing)手推磨磨盘$()来操作"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_empty.png"
+      ],
+      "text": "使用$(item)$(k:key.use)$()将手推磨磨盘放置在方块顶部",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_add_item.png"
+      ],
+      "text": "对着手推磨磨盘的顶部按下$(item)$(k:key.use)$()来向手推磨添加物品",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_handle.png"
+      ],
+      "text": "对着手推磨磨盘的把手按下$(item)$(k:key.use)$()来旋转手推磨",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_result.png"
+      ],
+      "text": "产物应该输出在手推磨的底部。 对着底座点击$(item)$(k:key.use)$()来获得产物。",
+      "border": true
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/sulfur",
+      "text": "手推磨用于从矿石中制造各种$(thing)粉末$()，例如$(thing)硫磺$()。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/plant/black_orchid",
+      "text": "$(thing)染料$()可以从各种花中获得。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/emerald",
+      "text": "$(l:the_world/waterways#gemstones)宝石$()也可以磨成粉末。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/barley_grain",
+      "text": "$(thing)面粉$()也可以从手推磨那里获得。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "$(l:mechanics/flux)助焊剂$()也可以从手推磨那里获得。"
+    }
+  ],
+  "read_by_default": true
+}

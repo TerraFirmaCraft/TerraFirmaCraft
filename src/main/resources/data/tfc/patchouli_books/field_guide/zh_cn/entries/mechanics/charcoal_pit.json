@@ -1,0 +1,306 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "木炭坑",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:charcoal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)木炭坑$()是一种获取$(thing)木炭$()的方式。 木炭坑是用$(thing)原木堆$()制成的。按$(item)$(k:key.use)$()和$(item)$(k:key.sneak)$()放置一个原木堆，同时持有一个 $(thing)Log$()。 可以通过在按住日志的同时直接按 $(item)$(k:key.use)$() 或通过按$(item)$(k:key.use)$()来打开界面放入更多原木。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:log_pile"
+        }
+      },
+      "name": "原木堆",
+      "text": "原木堆需要在其下方放置一个实心块。 它们是高度易燃的。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "木炭坑是由实心、不易燃的木块围绕的原木堆形成的。生产的木炭量与原木堆内的原木量成正比。要开始燃烧过程，请点燃其中一个原木堆，然后将其覆盖。 如果有效，您应该会看到$(thing)烟雾$()粒子从结构中升起。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "分层建造一个可能的木炭坑",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:burning_log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              " XXX ",
+              " XXX ",
+              " XXX ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:charcoal_pile[layers=7]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "charcoal_pile",
+      "text": "木炭堆燃烧后，你会留下$(thing)炭堆$()。 木炭堆包含8层$(thing)木炭$()。用铲子挖掘它以获得木炭物品。可以使用$(item)$(k:key.use)$()添加或放置木炭堆。"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "木炭堆。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=3]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=4]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=5]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=6]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=7]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=8]"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true
+}

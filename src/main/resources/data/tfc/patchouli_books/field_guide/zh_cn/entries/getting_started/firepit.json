@@ -1,0 +1,115 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "生火",
+  "category": "tfc:getting_started",
+  "icon": "tfc:firepit",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "firestarter",
+      "text": "$(thing)火$()是一项重要的技术进步。 为了生火，您将需要一个$(thing)起火器$()。对准需要生火的目标按住$(item)$(k:key.use)$()。片刻之后，会产生烟雾，然后会产生火焰。可能需要几次尝试才能成功点亮。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/firestarter",
+      "text": "可以用两根棍子制作起火器。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用$(thing)起火器$()，现在可以制作$(thing)篝火$()。 为了制作一个$(thing)篝火$()，您将需要一个$(thing)原木$()、三个 $(thing)木棍$()，以及最多三个可选的$(thing)引火物$()。 引火物可以是纸、稻草或其他物品，会增加成功创建篝火的机会。按$(item)$(k:key.drop)$()将所需要的物品扔到地面上的同一个方块上。然后在方块上使用起火器引燃漂浮的物品。",
+      "title": "篝火"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:firepit[lit=true]"
+        }
+      },
+      "name": "",
+      "text": "如果您成功点燃，将产生一个篝火。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "再次使用篝火现在将打开篝火屏幕。 左侧是四个燃料槽。原木、泥炭和木棍捆都可以用作篝火的燃料，只需将它们放在最顶部的槽中即可。燃料将从最底部的槽消耗。有一个仪表显示篝火的当前温度，右侧有一个用于加热物品的槽。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/firepit.png"
+      ],
+      "text": "篝火界面",
+      "border": false
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "许多有用的物品可以在篝火中加热制作。例如加热棍子用于制作两个$(thing)火把$()。注意！火把最终会燃尽，你可以在$(thing)苟活$()重新点燃它，或者使用其他$(thing)火把$()重新点燃。"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/cod",
+      "text": "篝火也是$(thing)烹饪食物$()的好设备。所有生肉和面团都可以在篝火中烹制，这将延长它们的保质期。（$(l:food/decay)点击查看更多$()）"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "篝火可以随时通过在其上使用$(thing)铲子$()来熄灭。篝火可以使用也可以添加其他设备以扩展其功能。使用$(thing)锻铁烤架$()会将篝火变成$(thing)烤架$()，使用$(thing)陶瓷锅$()会将篝火变成$(thing)锅$()。要移除篝火上的其他设备，可以按住$(item)$(k:key.sneak)$()并按下$(item)$(k:key.use)$()。千万注意不要移除还未冷却的烤架和锅！"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "一个篝火，添加了烤架或锅。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:firepit"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:grill"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:pot"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

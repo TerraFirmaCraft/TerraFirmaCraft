@@ -1,0 +1,379 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "植物",
+  "category": "tfc:the_world",
+  "icon": "tfc:plant/goldenrod",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "群峦传说中有很多$(italic)很多$()不同类型的植物。有人说超过九千种，其实并没有那么多。$(br2)不同的植物出现在不同的$(l:the_world/climate)气候$()下，它们的外观可能会在当前季节发生变化——经历开花和休眠的周期，五颜六色的花朵通常可以在$(l:mechanics/quern)手推磨$()磨碎用于染料。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/anthurium"
+        }
+      },
+      "name": "普通",
+      "text": "普通植物就像小花。 它们生长在草地、泥土和农田上。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sagebrush"
+        }
+      },
+      "name": "干燥",
+      "text": "干燥植物与普通植物一样，但它们可以在沙地上生长。这些植物一般只在降雨量低的地区出生。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/barrel_cactus[part=upper]",
+          "Y": "tfc:plant/barrel_cactus[part=lower]"
+        }
+      },
+      "name": "仙人掌",
+      "text": "仙人掌可以长到两个方块的高度，而且会对你造成伤害!",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/moss[down=true]"
+        }
+      },
+      "name": "匍匐",
+      "text": "匍匐植物的形状与周围的方块面相同。它们主要是在地面上以方块形式生成。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/wood/oak",
+          "Y": "tfc:plant/spanish_moss[hanging=true]"
+        }
+      },
+      "name": "悬挂",
+      "text": "悬挂的植物是相连，因为它们不会工作，而喜欢出去走走。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "XY"
+          ],
+          [
+            "0 "
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/wood/birch",
+          "Y": "tfc:plant/licorice_fern[facing=south]"
+        }
+      },
+      "name": "附生",
+      "text": "附生植物只生活在原木的侧面。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/bluegrass"
+        }
+      },
+      "name": "矮草",
+      "text": "低矮的草块会随着年龄增长而变得更高。 它们也能够在泥炭和泥土上生长。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/king_fern[part=upper]",
+          "Y": "tfc:plant/king_fern[part=lower]"
+        }
+      },
+      "name": "高草",
+      "text": "高大的草块刚好够挡住你的视野。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/ivy[up=true,north=true]"
+        }
+      },
+      "name": "藤蔓",
+      "text": "如果足够温暖，藤蔓块会自行散布到世界各地。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/liana_plant",
+          "Y": "tfc:plant/liana"
+        }
+      },
+      "name": "垂垂的藤蔓",
+      "text": "垂垂的藤蔓从锚块向下生长。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/arundo",
+          "Y": "tfc:plant/arundo_plant"
+        }
+      },
+      "name": "扭曲的藤蔓",
+      "text": "扭曲的藤蔓从地面向上扭曲生长。 他们可以有一个坚实的变体。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "水生植物只能在淡水或咸水中生成。 否则，它们的生长和行为就像您在表面上看到的植物一样。 一些水生植物可以煮熟作为食物。",
+      "title": "水生植物"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sago[fluid=water]"
+        }
+      },
+      "name": "普通水草",
+      "text": "普通水草可以用$(thing)$()刀$()割获得$(thing)海藻$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/manatee_grass[fluid=salt_water]"
+        }
+      },
+      "name": "水草",
+      "text": "水草是生长在水下的草。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/cattail[part=upper]",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "高大的水生植物",
+      "text": "高大的水生植物可以生活在只有最底下有水的地方。$(thing)水生芋头$()和$()阔叶香蒲$()可以用$(thing)刀$()割获得它们的$(thing)根$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/duckweed",
+          "Y": "minecraft:water"
+        }
+      },
+      "name": "漂浮",
+      "text": "漂浮的植物坐在水面上。 船会在接触时破坏它们。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/winged_kelp[fluid=salt_water]",
+          "Y": "tfc:plant/winged_kelp_plant[fluid=salt_water]"
+        }
+      },
+      "name": "海带",
+      "text": "海带是生长在水下的扭曲藤蔓。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]",
+          "Y": "tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]"
+        }
+      },
+      "name": "树海带",
+      "text": "树海带在水下长成错综复杂的树木。 可以用$(thing)刀$()来收获花朵。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

@@ -1,0 +1,44 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "木炭炉",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/block/devices/charcoal_forge/lit_static.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)木炭炉$()是一种用于$(l:mechanics/heating)加热和熔化物品的设备。 锻造是制作$(l:mechanics/crucible)坩埚$()工作所必需的。 它们通常用于加热物品以准备用于$(l:mechanics/anvils)砧$()。$(br)它由 5 个$(thing)石头$()块围绕一个 7 或 8 层的$(l:mechanics/charcoal_pit#charcoal_pile)木炭堆$()块构成，然后点燃即可得到木炭炉。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:charcoal_forge",
+      "name": "一个木炭炉",
+      "text": "一个完整的木炭炉方块组，准备点燃。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "木炭炉需要通风良好才能工作。 要么他们应该能够直接看到天空，要么像照片中那样水平连接到可以看到天空的方块。木炭炉可以通过$(thing)风箱$()达到更高的温度，从木炭炉上方横向连接到可以直达天空的烟囱很有用，因为木炭炉会在雨中熄灭"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/forge_chimney.png"
+      ],
+      "text": "具有有效烟囱设置的木炭炉。",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/charcoal_forge.png"
+      ],
+      "text": "木炭炉界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "木炭炉底部的五个槽用于燃料。在木炭炉运行时，它会定期消耗燃料，燃料可以是$(thing)木炭$()或$()$(l:the_world/ores_and_minerals#bituminous_coal)煤炭$()。 前五个插槽将加热物品，直至达到左侧指示器中显示的温度。右侧插槽用于可容纳液态金属的容器，例如$(thing)大缸$()。在熔炉中熔化的物品将填满这些容器。"
+    }
+  ],
+  "read_by_default": true
+}

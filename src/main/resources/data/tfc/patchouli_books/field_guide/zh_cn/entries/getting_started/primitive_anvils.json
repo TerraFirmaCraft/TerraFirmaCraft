@@ -1,0 +1,218 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "原始砧",
+  "category": "tfc:getting_started",
+  "icon": "tfc:rock/anvil/granite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在早期游戏中直接铸造工具模具的替代方法以及对更高等级金属的要求是使用$(thing)砧$()。铁砧是可用于两种不同过程的方块：$(l:mechanics/anvils#working)加工$()和$(l:mechanics/anvils#welding)焊接$()。本章将向您展示如何获得您的第一个原始石砧。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "首先，你需要获得一块$(thing)原始岩石$()，即 $(thing)深成岩$()（流纹岩、玄武岩、安山岩或英安岩），或$(thing)喷发岩$()（花岗岩、闪长岩或辉长岩）。你可以在世界上找到并使用一个暴露的岩石，或者你可以从周围的岩石中$(l:getting_started/primitive_anvils#raw_rock)提取$()一个。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "stone_anvils",
+      "text": "您还需要一把任何材质的$(thing)锤子$()。为了制作砧，只需用你的 $(thing)锤子$()右键单击上述原石之一的$(thing)上$()面，瞧！将形成一个砧。$(br2)每个砧都有$(thing)等级$()，而石砧是第 0 级 - 最低级。它只能 $(l:mechanics/anvils#welding)焊接$()一级钢锭。",
+      "title": "岩砧"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "将中心指示器指示的原石转换为铁砧",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              " 0 "
+            ],
+            [
+              "RRR"
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        "tfc:rock_anvil"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "raw_rock",
+      "text": "为了在不破碎成更小的岩石的情况下获得原石，需要对其进行提取。 您必须在原石方块的所有六个面上挖掘块 - 一旦它的四面都被空气包围，它将作为物品掉落，然后您可以把它带到想去的地方。",
+      "title": "获得原石"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "挖掘一块原石的所有六个面 - 一旦完成，中心块将作为物品掉落。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6
+}

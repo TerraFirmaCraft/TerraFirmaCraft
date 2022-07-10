@@ -1,0 +1,1100 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "矿石和矿物",
+  "category": "tfc:the_world",
+  "icon": "tfc:ore/normal_hematite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在群峦传说中的矿石和矿物是稀有的 - 与原版不同的是，矿石是在大量、稀疏但稀有的矿脉中发现的，需要进行一些$(l:mechanics/prospecting)勘探$()才能定位。不同的矿石也会出现在不同的岩石类型和不同的海拔高度，这意味着在正确的高度找到正确的岩石类型是定位您正在寻找的矿石的关键。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "此外，部分矿石是$(thing)分等级的$()。 矿石可能是贫瘠的、普通的或富集的，不同的矿脉中每种类型的矿物的浓度也会不同。 更丰富的矿脉更$(thing)有利可图$(thing)。$(br2)接下来的几页展示了不同类型的矿石，以及在哪里可以找到它们。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_copper",
+      "text": "原生铜是一种$(thing)铜$()金属矿石。 它可以在任何海拔找到，但更深的静脉通常更丰富。 它可以在$(l:the_world/geology#igneous_extrusive)火成岩$()中找到。",
+      "title": "原生铜"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "英安岩中的原生铜矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_copper/dacite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_gold",
+      "text": "原生金是一种$(thing)金$()金属矿石。 它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#igneous_extrusive)火成岩$()和$(l:the_world/geology#igneous_intrusive)深成岩$()中找到。",
+      "title": "原生金"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "闪长岩中的原生金矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_gold/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_gold/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_gold/dacite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_silver",
+      "text": "原生银是一种$(thing)银$()金属矿石。 它可以在 y=-32 和 y=100 之间的海拔处找到。 它主要存在于$(thing)花岗岩$()和$(thing)片麻岩$()中，但是在任何$(l:the_world/geology#metamorphic)变质岩$()中都可以找到较小的贫瘠矿脉。",
+      "title": "原生金"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "花岗岩中的原生银矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_silver/granite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hematite",
+      "text": "赤铁矿是一种$(thing)铁$()金属矿石。 它可以在 y=75 以下的海拔处找到。 它可以在$(l:the_world/geology#igneous_extrusive)喷发岩$()中找到。",
+      "title": "赤铁矿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "安山岩中的赤铁矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_hematite/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cassiterite",
+      "text": "锡石是一种$(thing)锡$()金属矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()中找到。$(br2)在$(thing)花岗岩$()中发现时，锡石矿脉也可能含有$(thing)黄玉$()的痕迹。",
+      "title": "锡石"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "闪长岩中的锡石矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_cassiterite/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bismuthinite",
+      "text": "铋矿是一种$(thing)铋$()金属矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()和$(l:the_world/geology#sedimentary)沉积岩$()中找到。",
+      "title": "铋矿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "页岩中的铋矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_bismuthinite/shale"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garnierite",
+      "text": "绿镍矿是一种$(thing)镍$()金属矿石。 它可以在 y=-32 和 y=100 之间的海拔处找到。 它主要存在于$(thing)辉长岩$()中，但在任何$(l:the_world/geology#igneous_intrusive)深成岩$()中都可以找到较小的贫瘠矿脉。",
+      "title": "绿镍矿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "辉长岩中的绿镍矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_garnierite/gabbro"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "malachite",
+      "text": "孔雀石是一种$(thing)铜$()金属矿石。 它可以在 y=-32 和 y=100 之间的海拔处找到。 它主要存在$(thing)于大理石或$(thing)石灰石中，但也可以在$(thing)千枚岩$()、$(thing)白垩岩$()和$(thing)白云石$()中发现较小的贫脉。$(br2)当在$(thing)石灰石$()中发现时，孔雀石脉也可能含有$(thing)石膏$()的痕迹。",
+      "title": "孔雀石"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "大理石中的孔雀石矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_malachite/marble"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "magnetite",
+      "text": "磁铁矿是一种$(thing)铁$()金属矿石。 它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。",
+      "title": "磁铁矿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "石灰石中的磁铁矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_magnetite/limestone"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "limonite",
+      "text": "褐铁矿是一种$(thing)铁$()金属矿石。 它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。$(br2)当在$(thing)石灰石$()或$(thing)页岩$()中发现时，孔雀石脉也可能含有$(thing)红宝石$()的痕迹。",
+      "title": "褐铁矿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "白垩岩中的褐铁矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_limonite/chalk"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sphalerite",
+      "text": "闪锌矿是一种$(thing)锌$()金属矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#metamorphic)变质岩$()中找到。",
+      "title": "闪锌矿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "石英岩中的闪锌矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_sphalerite/quartzite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tetrahedrite",
+      "text": "黝铜矿是$(thing)铜$()金属的矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#metamorphic)变质岩$()中找到。",
+      "title": "黝铜矿"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "片岩中的黝铜矿。",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_tetrahedrite/schist"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "bituminous_coal",
+      "item": "tfc:ore/bituminous_coal",
+      "title": "烟煤",
+      "link_recipes": false,
+      "text": "烟煤是$(thing)煤$()矿石的一种。 它可以在 y=0 以上的海拔处找到。 它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/bituminous_coal/chert"
+        }
+      },
+      "name": "",
+      "text": "燧石中的烟煤。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lignite",
+      "item": "tfc:ore/lignite",
+      "title": "褐煤",
+      "link_recipes": false,
+      "text": "褐煤是$(thing)煤$()矿石的一种。 它可以在 y=100 以上的海拔处找到。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lignite/dolomite"
+        }
+      },
+      "name": "",
+      "text": "白云石中的褐煤。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "kaolinite",
+      "item": "tfc:ore/kaolinite",
+      "title": "高岭石",
+      "link_recipes": false,
+      "text": "高岭石是一种用于制造$(l:mechanics/fire_clay)耐火粘土$()的$(thing)矿物$()。它可以在 y=0 以上的海拔处找到。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/kaolinite/claystone"
+        }
+      },
+      "name": "",
+      "text": "粘土中的高岭石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "graphite",
+      "item": "tfc:ore/graphite",
+      "title": "石墨",
+      "link_recipes": false,
+      "text": "石墨是一种用于制造$(l:mechanics/fire_clay)耐火粘土$()的$(thing)矿物$()。它可以在 y=100 以上的海拔处找到。它可以$(thing)片麻岩$()、$(thing)大理岩$()、$(thing)石英岩$()和$(thing)片岩$()找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/graphite/gneiss"
+        }
+      },
+      "name": "",
+      "text": "片麻岩中的石墨。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cinnabar",
+      "item": "tfc:ore/cinnabar",
+      "title": "朱砂",
+      "link_recipes": false,
+      "text": "朱砂是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎以获得$(thing)红石粉$()。 它可以在 y=100 以下的海拔处找到。它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()、$(thing)石英岩$()和$(thing)片岩$()中找到。$(br2)当在$(thing)石英岩$()中发现时，朱砂脉也可能含有$(thing)蛋白石$()的痕迹。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cinnabar/quartzite"
+        }
+      },
+      "name": "",
+      "text": "石英石中的朱砂。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cryolite",
+      "item": "tfc:ore/cryolite",
+      "title": "冰晶石",
+      "link_recipes": false,
+      "text": "冰晶石是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎以获得$(thing)红石粉$()。 它可以在 y=100 以下的海拔处找到。它只能在$(thing)花岗岩$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cryolite/granite"
+        }
+      },
+      "name": "",
+      "text": "花岗岩中的冰晶石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "saltpeter",
+      "item": "tfc:ore/saltpeter",
+      "title": "硝石",
+      "link_recipes": false,
+      "text": "硝石$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎，然后用于制作$(thing)火药$()。它可以在 y=100 以下的海拔处找到。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。$(br2)当在$(thing)石灰石$()中发现时，硝石矿脉也可能含有$(thing)石膏$()的痕迹。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/saltpeter/shale"
+        }
+      },
+      "name": "",
+      "text": "页岩中的硝石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sulfur",
+      "item": "tfc:ore/sulfur",
+      "title": "硫磺",
+      "link_recipes": false,
+      "text": "硫磺是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎，然后用于制作$(thing)火药$()。它可以在 y=0 以上的海拔处找到。它可以在$(l:the_world/geology#igneous_extrusive)喷发岩$()中找到。在较高海拔的$(l:the_world/geology#igneous_extrusive)喷发岩$()和$(l:the_world/geology#igneous_extrusive)深成岩$()的$(thing)火山$()地区中更为常见。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sulfur/basalt"
+        }
+      },
+      "name": "",
+      "text": "玄武岩中的硫磺。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sylvite",
+      "item": "tfc:ore/sylvite",
+      "title": "钾盐",
+      "link_recipes": false,
+      "text": "钾盐是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎，然后用于制作$(thing)堆肥$()。它可以在 y=0 以上的海拔处找到。它可以在$(thing)页岩$()、$(thing)粘土岩$()和$(thing)燧石$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sylvite/chert"
+        }
+      },
+      "name": "",
+      "text": "燧石中的钾盐",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "borax",
+      "item": "tfc:ore/borax",
+      "title": "硼砂",
+      "link_recipes": false,
+      "text": "硼砂是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎以获得$(thing)助焊剂$()。它可以在 y=0 以上的海拔处找到。它可以在$(thing)粘土石$()、$(thing)石灰石$()和$(thing)页岩$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/borax/shale"
+        }
+      },
+      "name": "",
+      "text": "页岩中的硼砂。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lapis_lazuli",
+      "item": "tfc:ore/lapis_lazuli",
+      "title": "青金石",
+      "link_recipes": false,
+      "text": "青金石是一种装饰性的$(thing)矿物$()，可以用来制作$(thing)染料$()。它可以在 y=100 以下的海拔处找到。它可以在$(thing)石灰石$()和$(thing)大理石$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lapis_lazuli/limestone"
+        }
+      },
+      "name": "",
+      "text": "石灰石中的青金石。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "gypsum",
+      "item": "tfc:ore/gypsum",
+      "title": "石膏",
+      "link_recipes": false,
+      "text": "石膏是一种装饰性的$(thing)矿物$()，可以用来制作$(l:getting_started/building_materials#alabaster)雪花石膏$()。它出现在 y=30 和 y=90 之间的密集盘状地层中。它可以在$(l:the_world/geology#metamorphic)变质岩$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/gypsum/phyllite"
+        }
+      },
+      "name": "",
+      "text": "千枚岩中的石膏。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "halite",
+      "item": "tfc:ore/halite",
+      "title": "石盐",
+      "link_recipes": false,
+      "text": "石盐是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中研磨成$(thing)盐$()。这是一种重要的$(l:food/decay#salting)防腐剂$()。它出现在 y=30 和 y=90 之间的密集盘状地层中。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/halite/chalk"
+        }
+      },
+      "name": "",
+      "text": "白垩岩中的石盐。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "emerald",
+      "item": "tfc:ore/emerald",
+      "title": "祖母绿",
+      "link_recipes": false,
+      "text": "祖母绿是一种装饰性的$(thing)宝石$()。它看起来很漂亮，如果你能在这个令人难以置信的孤独世界中找到其他人，你可以和他们交易……$(br2)它出现在最高可达 60 块的薄的垂直矿层中。它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/emerald/diorite"
+        }
+      },
+      "name": "",
+      "text": "闪长岩中的祖母绿。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "diamond",
+      "item": "tfc:ore/diamond",
+      "title": "金伯利岩",
+      "link_recipes": false,
+      "text": "金伯利岩是一种装饰性无价的$(thing)宝石$()。它出现在称为$(l:https://baike.baidu.com/item/%E7%81%AB%E5%B1%B1%E7%AD%92/5067954)火山筒$()的可达 60 块的薄的垂直矿层。它只能在$(thing)辉长岩$()中找到。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/diamond/gabbro"
+        }
+      },
+      "name": "",
+      "text": "辉长岩中的金伯利岩。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3,
+  "extra_recipe_mappings": {
+    "tfc:ore/small_native_copper": 2,
+    "tfc:ore/poor_native_copper": 2,
+    "tfc:ore/normal_native_copper": 2,
+    "tfc:ore/rich_native_copper": 2,
+    "tfc:ore/small_native_gold": 4,
+    "tfc:ore/poor_native_gold": 4,
+    "tfc:ore/normal_native_gold": 4,
+    "tfc:ore/rich_native_gold": 4,
+    "tfc:ore/small_native_silver": 6,
+    "tfc:ore/poor_native_silver": 6,
+    "tfc:ore/normal_native_silver": 6,
+    "tfc:ore/rich_native_silver": 6,
+    "tfc:ore/small_hematite": 8,
+    "tfc:ore/poor_hematite": 8,
+    "tfc:ore/normal_hematite": 8,
+    "tfc:ore/rich_hematite": 8,
+    "tfc:ore/small_cassiterite": 10,
+    "tfc:ore/poor_cassiterite": 10,
+    "tfc:ore/normal_cassiterite": 10,
+    "tfc:ore/rich_cassiterite": 10,
+    "tfc:ore/small_bismuthinite": 12,
+    "tfc:ore/poor_bismuthinite": 12,
+    "tfc:ore/normal_bismuthinite": 12,
+    "tfc:ore/rich_bismuthinite": 12,
+    "tfc:ore/small_garnierite": 14,
+    "tfc:ore/poor_garnierite": 14,
+    "tfc:ore/normal_garnierite": 14,
+    "tfc:ore/rich_garnierite": 14,
+    "tfc:ore/small_malachite": 16,
+    "tfc:ore/poor_malachite": 16,
+    "tfc:ore/normal_malachite": 16,
+    "tfc:ore/rich_malachite": 16,
+    "tfc:ore/small_magnetite": 18,
+    "tfc:ore/poor_magnetite": 18,
+    "tfc:ore/normal_magnetite": 18,
+    "tfc:ore/rich_magnetite": 18,
+    "tfc:ore/small_limonite": 20,
+    "tfc:ore/poor_limonite": 20,
+    "tfc:ore/normal_limonite": 20,
+    "tfc:ore/rich_limonite": 20,
+    "tfc:ore/small_sphalerite": 22,
+    "tfc:ore/poor_sphalerite": 22,
+    "tfc:ore/normal_sphalerite": 22,
+    "tfc:ore/rich_sphalerite": 22,
+    "tfc:ore/small_tetrahedrite": 24,
+    "tfc:ore/poor_tetrahedrite": 24,
+    "tfc:ore/normal_tetrahedrite": 24,
+    "tfc:ore/rich_tetrahedrite": 24,
+    "tfc:ore/bituminous_coal": 26,
+    "tfc:ore/lignite": 28,
+    "tfc:ore/kaolinite": 30,
+    "tfc:ore/graphite": 32,
+    "tfc:ore/cinnabar": 34,
+    "tfc:ore/cryolite": 36,
+    "tfc:ore/saltpeter": 38,
+    "tfc:ore/sulfur": 40,
+    "tfc:ore/sylvite": 42,
+    "tfc:ore/borax": 44,
+    "tfc:ore/lapis_lazuli": 46,
+    "tfc:ore/gypsum": 48,
+    "tfc:ore/halite": 50,
+    "tfc:ore/emerald": 52,
+    "tfc:ore/diamond": 54
+  }
+}

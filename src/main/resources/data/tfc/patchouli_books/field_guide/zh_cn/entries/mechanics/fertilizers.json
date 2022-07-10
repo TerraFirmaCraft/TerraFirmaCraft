@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "堆肥",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/sylvite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "堆肥用于向$(l:food/crops)农作物$() 添加养分。拿着堆肥对$(thing)农田$()或$(thing)农作物$()上按下$(item)$(k:key.use)$()以添加养分。这时会出现一些粒子。",
+      "title": "施肥"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/composter",
+      "text": "堆肥桶是制作堆肥的必备工具。 它需要4个$(2)绿色物品$()和4个$(4)棕色物品$()才能工作。按下$(item)$(k:key.use)$()可向其中添加项目。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "绿色物品包括$(2)蹄盖蕨$()、$(2)水果$()、$(2)蔬菜$() 和$(2)谷物$()。棕色物品包括 $(4)腐殖质$()、$(4)纸$()、$(4)枯萎的草()、$(4)浮木$()和$(4)松果$()。准备好堆肥后，堆肥桶将开始在视觉上冒烟。"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:rotten_compost",
+      "link_recipes": false,
+      "text": "有些物品会$(c)毒化$()你的堆肥。这些包括$(c)肉$()和$(c)骨头$()。有毒堆肥用于农作物时，会立即杀死它"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:compost",
+      "link_recipes": false,
+      "text": "堆肥是堆肥桶的产物。 $(br)$(li)$(b)$(bold)氮$()：40$()$(li)$(6)$(bold)磷$()：20$()$(li)$(d)$(bold)钾$()：40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:bone_meal",
+      "link_recipes": false,
+      "text": "骨粉是由骨头制成的。 $(br)$(li)$(6)$(bold)磷$()：10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/saltpeter",
+      "link_recipes": false,
+      "text": "硝石是由它的矿石制成的。 $(br)$(li)$(b)$(bold)氮$()：10$()$(li)$(d)$(bold)钾$()：40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:groundcover/guano",
+      "link_recipes": false,
+      "text": "鸟粪存在于地下深处和砾石海岸。 $(br)$(li)$(b)$(bold)氮$()：80$()$(li)$(6)$(bold)磷$()：50$()$(li)$(d)$(bold)钾$()：10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/wood_ash",
+      "link_recipes": false,
+      "text": "草木灰是由破碎的火坑制成的。 $(br)$(li)$(6)$(bold)磷$()：10$()$(li)$(d)$(bold)钾$()：30$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/sylvite",
+      "link_recipes": false,
+      "text": "钾盐是由它的矿石制成的。 $(br)$(li)$(6)$(bold)磷$()：50$()"
+    }
+  ],
+  "read_by_default": true
+}

@@ -1,0 +1,27 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "高炉",
+  "category": "tfc:mechanics",
+  "icon": "tfc:blast_furnace",
+  "pages": [
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "高炉很酷哟！"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:blast_furnace",
+      "name": "高炉",
+      "text": "",
+      "enable_visualize": true
+    }
+  ],
+  "read_by_default": true
+}

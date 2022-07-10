@@ -1,0 +1,144 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "生物群落",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/biomes.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "世界是由$(thing)生物群落$()。生物群落决定了景观的大致形状、地表材料和其他一些特征。 有几种不同类型的生物群落，从海洋到平原到丘陵再到山脉。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "接下来的几页展示了您可能在世界上找到的一些（但不是全部）生物群落。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "平原是一个低海拔的生物群系，类似于丘陵，略高于海平面。 它们是平坦的，可以包含草地和鲜花，或者它们可能被森林覆盖。",
+      "title": "平原"
+    },
+    {
+      "type": "patchouli:image",
+      "anchor": "plains",
+      "images": [
+        "tfc:textures/gui/book/biomes/plains.png"
+      ],
+      "text": "一片平原。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hills",
+      "text": "丘陵和连绵起伏的丘陵都是低海拔到中海拔的生物群系，通常与平原或海拔较高的地区接壤。在这里可以找到大块的巨石，很少有枯萎的火山温泉的。",
+      "title": "丘陵和连绵起伏的丘陵"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rolling_hills_with_river.png"
+      ],
+      "text": "连绵起伏的山丘，河流蜿蜒穿过它。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "badlands",
+      "text": "荒地是中海拔大陆生物群系，通常在高原、山脉或连绵起伏的丘陵附近发现。 带有沙子和砂岩层的山脊很常见。 沙子的类型各不相同，荒地可以是红色/棕色，也可以是黄色/白色，或者介于两者之间。",
+      "title": "荒地"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/badlands.png"
+      ],
+      "text": "一片荒地。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "plateau",
+      "text": "高原是高海拔大陆生物群落。 它们与平原相似，但海拔较高——平坦的草地。高原上经常有巨石点缀，这里偶尔会看到干涸或空荡荡的温泉。",
+      "title": "高原"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/plateau.png"
+      ],
+      "text": "一片有着深河峡谷的高原。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mountains",
+      "text": "在高海拔地区，可能会发现多种类型的山脉。旧山更短更平滑，而山高耸，悬崖峭壁。在构造活动高的地区形成的山脉也可以产生温泉和罕见的火山。",
+      "title": "山脉"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/old_mountains.png"
+      ],
+      "text": "一座古老的山脉，雪坡上有温泉。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "lowlands",
+      "text": "在与高耸的山脉相反的环境中，低地可以显示为沼泽、充满水的生物群系。 在海平面或海平面以下，有大量淡水，它们也可能含有泥土和大量植被。",
+      "title": "低地"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/lowlands.png"
+      ],
+      "text": "一片低地。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "low_canyons",
+      "text": "低地峡谷是另一个低海拔大陆生物群系，通常与海洋或其他低海拔生物群系接壤。 这是一个中等丘陵地区，经常有扭曲的池塘。 它类似于地质盾构，这里可以出现空的不活跃温泉。",
+      "title": "低地峡谷"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/low_canyons.png"
+      ],
+      "text": "一个低地峡谷。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "canyons",
+      "text": "与$(l:the_world/biomes#low_canyons)低地峡谷$()类似，峡谷是一个中等海拔的大陆生物群系，有中等丘陵和频繁弯曲的池塘和湖泊。 这是一个地质非常活跃的地区，经常有短而粗的火山、巨石和活跃的温泉",
+      "title": "峡谷"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/canyons.png"
+      ],
+      "text": "一片峡谷，远处有一座火山。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ocean",
+      "text": "群峦传说的浩瀚海洋将各个大陆分隔开来。海洋是表面上毫无特色的大片水域，但在各种植物、海洋生物和海带下面会发现。在较冷的气候中，海洋可能被高耸的冰山和漂浮的海冰块占据。",
+      "title": "海洋"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/ocean.png"
+      ],
+      "text": "一片海洋，此图是海岸上看去。",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

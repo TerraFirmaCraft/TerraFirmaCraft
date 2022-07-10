@@ -1,0 +1,54 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "桶",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/barrel/palm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)桶$()是一种可以容纳物品和液体的设备。 中央插槽用于存放物品。 液体显示在左侧的水槽中，可以通过在左上角的插槽中将$(thing)桶$()或$(thing)水壶$()中的液体添加到桶中。它们可以通过在同一插槽中放置一个空的液体容器来取出桶内的液体。 拿着容器对着在装有液体桶的块按下$(item)$(k:key.use)$()也可以。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/barrel.png"
+      ],
+      "text": "桶界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "桶可以是$(thing)密封$()的。 密封的桶将会在桶被破坏的情况下保留内容物并掉落。它还允许合成一些配方。 在界面中，可以使用右侧的灰色按钮切换密封。 空手按住$(item)$(k:key.sneak)$()的同时按下$(item)$(k:key.use)$()也会切换密封状态。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)桶可以通过点击世界流体方块上的空桶来填充。$()$(li)桶会在雨中慢慢地装满水$()$(li)冰柱也会在桶上方融化到桶中$()$(li)密封桶会弹出不在中心槽的物品。$()",
+      "title": "用桶小贴士"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "桶以执行 $(thing)桶的合成配方$() 的能力而闻名。 最简单的桶配方是$(thing)瞬时桶类配方$()。此配方基于液体与物品的比例。 例如，每个$(l:mechanics/flux)助焊剂$()项目需要 500mB 的水来创建 500mB 的$(thing)石灰水$()。由于制作石灰水是一种即时配方，因此必须有足够的物质可以完全溶于的桶内的水时，桶内的水才会立即转化为石灰水。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一些桶配方要求桶在一段时间内被$(thing)密封$()。 例如，将一份$(thing)大麦面粉$()密封在500mB的水中三天将制成$(thing)啤酒$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一些桶的合成配方通过以一定比例混合两种流体来操作。这是通过取一桶装满其中一种成分的桶，并将其放入具有所需量的另一种流体的桶的流体添加槽中来完成的。 例如可以以 1:9 的比例将一份$(thing)醋$()与九份$(thing)奶$()混合制作$(thing)醋奶$()，醋也以相同的比例加入到$(thing)盐水$()中制成$(thing)卤水$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "桶具有冷却$(l:mechanics/heating)高温$()物品的能力。 把热的东西放在一桶$(thing)水$()、$(thing)橄榄油$()或$(thing)盐水$()中，将会很快冷却下来。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "桶具有$(thing)染色$()和$(thing)漂白$()物品的能力。染料液是通过在$(l:mechanics/pot)锅$()中煮沸单个染料物品制成的。 大多数可着色的东西，如地毯、蜡烛和 $(l:getting_started/building_materials#alabaster)雪花石膏$()都可以通过将它们密封在一桶染料中来染色。染色的物品也可以通过将它们密封在一桶$(thing)碱液$()中来漂白。碱液是通过在 $(l:mechanics/pot)锅$()水中煮沸 $(thing)草木灰$()制成的，它是破坏$(l:getting_started/firepit)篝火$()的产物."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "桶具有$(thing)酸渍$()物品的能力.醋是通过将$(thing)水果$()密封在一桶$(thing)酒$()中制成的。 有关该过程如何工作的信息，请参阅相关的$(l:food/decay#vinegar)页面$()。"
+    }
+  ],
+  "read_by_default": true
+}

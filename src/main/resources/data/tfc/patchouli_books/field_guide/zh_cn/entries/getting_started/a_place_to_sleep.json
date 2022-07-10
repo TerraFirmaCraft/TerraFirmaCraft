@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "睡觉的地方",
+  "category": "tfc:getting_started",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)干草床$()是一张原始的床，可以用来设置你的复活点，但不能用来在晚上睡觉。要制作茅草床，请将两个彼此相邻的$(thing)干草块$()放置在一起。 然后，右键单击$(thing)大块未加工皮革$()。大型动物会掉落大型兽皮，例如$(thing)熊$()和$(thing)牛$()"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " D ",
+            " 0 "
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:thatch_bed[part=head,facing=west]",
+          "D": "tfc:thatch_bed[part=foot,facing=east]"
+        }
+      },
+      "name": "干草床",
+      "text": "一张茅草床。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8
+}

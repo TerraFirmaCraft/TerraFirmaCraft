@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "坩埚",
+  "category": "tfc:mechanics",
+  "icon": "tfc:crucible",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在这里烤面包"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:crucible"
+        }
+      },
+      "name": "坩埚",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    }
+  ],
+  "read_by_default": true
+}

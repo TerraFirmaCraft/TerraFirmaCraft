@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "浆果灌木",
+  "category": "tfc:the_world",
+  "icon": "tfc:food/elderberry",
+  "pages": [
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/wip.png"
+      ],
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

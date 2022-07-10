@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "日历和气候",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/thermometer.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "calendar",
+      "text": "在群峦传说中，气候和时间都是非常重要的因素。那我们就从$(thing)日历$()开始。$(br2)在任何时候，您都可以通过按 $(item)$(k:key.inventory)$()并单击$(thing)日历$()选项卡来查看日历。这里将会显示$(thing)季节$()、$(thing)星期$()和$(thing)日期$()."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/calendar.png"
+      ],
+      "text": "日历界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "有季节，天气和气候也会随之变化！群峦传说有四个季节，每个季节根据月份分为$(thing)早期$()、$(thing)中期$()和$(thing)晚期$()。四个季节是：$(br)$(li)$(bold)春季$(): 三月——五月$(li)$(bold)夏季$(): 六月——八月$(li)$(bold)秋季$(): 九月——十一月$(li)$(bold)冬季$(): 十二月——二月"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "当前季节会影响该地区的温度、降水（如果会下雨或下雪）等。所以日历选项卡将会很有用！$(br2)现在，进入气候..."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "climate",
+      "text": "主背包界面上的另一个选项卡是$(thing)气候$()界面。 这个显示有关当前位置的信息。$(br2)第一行显示整体$(l:https://baike.baidu.com/item/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB)气候$()。$(br2)第二行显示$(l:the_world/geology)地区$().$(br2)第三行显示$(thing)年平均温度$().",
+      "title": "气候"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/climate.png"
+      ],
+      "text": "气候界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "群峦传说中的温度受多种因素影响：$(br)$(li)首先，地区，尤其是纬度（Z坐标）将发挥最大的作用。$(li)其次，当前季节会影响温度——夏季最热，冬季最冷。$(li)最后，温度也可以每天不同，甚至每小时不同。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最后一行显示当前温度，包括所有上述因素。$(br2)温度会影响很多事情：作物和植物是否会生长，冰雪是否会形成或融化等等。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "降雨量是另一个气候值，可能会因您在世界上的位置而异。 年降雨量以毫米 (mm) 为单位，可以在 0mm - 500mm 之间。 降雨会影响一个地区的植物群类型，以及土壤的类型，从沙子和仙人掌到壤土，再到淤泥和木棉树。",
+      "title": "降雨"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "降雨也很重要，因为它会影响一个地区可以种植的东西。降雨是$(l:food/hydration)湿度$()的主要计算条件之一，湿度是对给定位置土壤湿润程度的精确测量，并被$(l:food/crops)农作物$(), $(l:the_world/fruit_trees)果树$()和$(l:the_world/berry_bushes)浆果灌木$()用来确定它们是否可以生长。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

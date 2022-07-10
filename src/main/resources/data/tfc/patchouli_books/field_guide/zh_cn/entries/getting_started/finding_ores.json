@@ -1,0 +1,94 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "矿石、金属和铸造",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ore/normal_native_copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "除了地上的木棍、树枝和石头，在你的旅行中你可能会遇到散落在地上的小块矿石。 这些很重要，因为它们是获得镐之前唯一的矿石和金属来源之一。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "    ",
+            "  0 ",
+            "    "
+          ],
+          [
+            "ABCD",
+            "EFGH",
+            "IJKL"
+          ],
+          [
+            "XXXX",
+            "XXXX",
+            "XXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grass/loam",
+          "A": "tfc:ore/small_native_copper",
+          "B": "tfc:ore/small_native_gold",
+          "C": "tfc:ore/small_hematite",
+          "D": "tfc:ore/small_native_silver",
+          "E": "tfc:ore/small_cassiterite",
+          "F": "tfc:ore/small_bismuthinite",
+          "G": "tfc:ore/small_garnierite",
+          "H": "tfc:ore/small_malachite",
+          "I": "tfc:ore/small_magnetite",
+          "J": "tfc:ore/small_limonite",
+          "K": "tfc:ore/small_sphalerite",
+          "L": "tfc:ore/small_tetrahedrite"
+        }
+      },
+      "name": "",
+      "text": "所有小矿块",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "这些小矿石粒有两个用途：它们可以提供金属来源，更重要的是，它们表明附近存在靠近地表的地下、较大的矿脉。 一定要注意你在哪里找到小矿石，因为矿脉的位置将在以后的$(l:mechanics/prospecting)勘探$()过程中有用。12 种小矿石，以及它们可以熔化成的金属在下一页列出。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)原生铜粒 ($(thing)铜$())$(li)原生金粒 ($(thing)金$())$(li)赤铁矿粒 ($(thing)铸铁$())$(li)原生银粒 ($(thing)银$())$(li)锡石粒 ($(thing)锡$())$(li)辉铋矿粒 ($(thing)铋$())$(li)绿镍矿粒 ($(thing)镍$())$(li)孔雀石粒 ($(thing)铜$())$(li)磁铁矿粒 ($(thing)铸铁$())$(li)褐铁矿粒 ($(thing)铸铁$())$(li)闪锌矿粒 ($(thing)锌$())$(li)黝铜矿粒 ($(thing)铜$())",
+      "title": "小矿石粒"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "casting",
+      "text": "在群峦传说中，每个矿石都包含一定数量的$(thing)单位$()或可以提取多少$(thing)mB（毫桶）的实际金属$()。 像这样在地表发现的小矿石质量最低，只能提供 $(thing)10 mB$() 的金属。 为了提取这种金属，需要将其熔化，并使用称为$(thing)铸造$()的工艺制成工具。",
+      "title": "铸造"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "您将需要：$(br)$(li)一个$(l:getting_started/pottery#vessel)小缸$()$(li)足够用于$(l:getting_started/pit_kiln)坑窑$()的材料$(li)一个或多个$(l:getting_started/pottery#mold)模具$()用于铸造熔融金属。$(li)最后，您将需要至少 100 mB 的适合铸造的金属 ：$(thing)铜$()的三种矿石形式之一。$(br2)$(br)$(italic)注意：铸造也可以用$(l:getting_started/primitive_alloys)合金$()来完成。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "首先，打开$(thing)小缸$()，将矿石放入里面。仔细计算矿石中金属的总量！ 然后，您需要建造一个$(l:getting_started/pit_kiln)坑窑$()，这一次，将整个小缸放入其中。当小缸加热时，里面的矿石会融化，你会留下一个装有熔融金属的容器。$(br2)加热结束把容器拿出来点击$(item)$(k:key.use)$()打开$(thing)铸造$()界面"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/casting.png"
+      ],
+      "text": "铸造界面。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "打开铸造界面，将空的烧制模具放在中心槽中。 只要小缸内的金属保持液体状态，它就会充满。 （如果小缸内的金属凝固了，可以在另一个坑窑中重新加热。）一旦模具满了，就可以取出并冷却。 冷却后，可以使用模具提取模具及其内容物，或将其放入制作网格中。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/pickaxe/copper",
+      "text": "有了镐头，您现在就可以制作您的第一把镐了！ 找到足够的铜，用模具和几个坑窑铸造来制作一个铜镐头，然后把它放在棍子上，瞧！"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

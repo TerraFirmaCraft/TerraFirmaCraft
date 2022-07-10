@@ -1,0 +1,98 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "灯和蜡烛",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/lamp/bismuth_bronze",
+  "pages": [
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/chain/copper[axis=y]",
+          "Y": "tfc:metal/lamp/copper[hanging=true,lit=true]"
+        }
+      },
+      "name": "灯",
+      "text": "灯是一种长期的光源。 他们燃烧液体燃料。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "使用桶，对着灯按下$(item)$(k:key.use)$()以添加燃料。 然后可以用 $(thing)起火器$()或任何能够生火的东西来点燃它。灯在拆除时会保留内部的燃料。"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/olive",
+      "text": "一种灯燃料是$(thing)橄榄油$()。其生产的第一步是制作橄榄糊。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/jute_net",
+      "text": "您还需要一张黄麻网。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "在$(thing)桶$()中用$(thing)水$()密封$(thing)橄榄糊$()，制成$(thing)橄榄油水$()。 用您的$(thing)黄麻网$() 将其密封以生产$(thing)橄榄油$()。 每单位液体的橄榄油在游戏中燃烧 8 小时。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tallow",
+      "text": "另一种灯燃料是$(thing)蜡脂$()。 要做到这一点，在$(l:mechanics/pot)锅$()中用水中煮5份$(thing)鲸油$()。每个单位的蜡脂燃烧时间少于2小时。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "蜡烛",
+      "text": "蜡烛是将$(thing)线$()密封一桶$(thing)蜡脂$()中制成的。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/lamp/blue_steel[lit=true]"
+        }
+      },
+      "name": "熔岩灯",
+      "text": "熔岩将永远燃烧，但只能放在$(thing)蓝钢$()灯中。",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/black_steel_chain",
+      "text": "$(thing)链子$()是挂灯的好方法，可以在$(l:mechanics/anvils)砧$()中锻造。"
+    }
+  ],
+  "read_by_default": true
+}
