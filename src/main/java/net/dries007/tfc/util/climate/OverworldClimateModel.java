@@ -50,10 +50,10 @@ import org.jetbrains.annotations.Nullable;
  */
 public class OverworldClimateModel implements WorldGenClimateModel
 {
-    public static final float SNOW_FREEZE_TEMPERATURE = 0f;
-    public static final float SNOW_MELT_TEMPERATURE = 4f;
+    public static final float SNOW_FREEZE_TEMPERATURE = -2f;
+    public static final float SNOW_MELT_TEMPERATURE = 2f;
 
-    public static final float ICE_FREEZE_TEMPERATURE = -2f;
+    public static final float ICE_FREEZE_TEMPERATURE = -4f;
     public static final float ICE_MELT_TEMPERATURE = 2f;
 
     public static final float ICICLE_MIN_FREEZE_TEMPERATURE = -10f;

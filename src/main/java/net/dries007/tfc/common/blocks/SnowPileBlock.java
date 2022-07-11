@@ -103,20 +103,23 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
             level.getBlockEntity(pos, TFCBlockEntities.PILE.get()).ifPresent(pile -> {
                 if (!level.isClientSide())
                 {
+                    final BlockPos above = pos.above();
+
                     level.setBlock(pos, pile.getInternalState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
-                    if (pile.getAboveState() != null)
+                    if (pile.getAboveState() != null && level.isEmptyBlock(above))
                     {
-                        level.setBlock(pos.above(), pile.getAboveState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+                        level.setBlock(above, pile.getAboveState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
                     }
 
                     // Update neighbors shapes from the bottom block (this is important to get grass blocks to adjust to snowy/non-snowy states)
                     pile.getInternalState().updateNeighbourShapes(level, pos, Block.UPDATE_CLIENTS);
+                    level.getBlockState(above).updateNeighbourShapes(level, above, Block.UPDATE_CLIENTS);
 
                     // Block ticks after both blocks are placed
                     level.blockUpdated(pos, pile.getInternalState().getBlock());
                     if (pile.getAboveState() != null)
                     {
-                        level.blockUpdated(pos.above(), pile.getAboveState().getBlock());
+                        level.blockUpdated(above, pile.getAboveState().getBlock());
                     }
                 }
             });
