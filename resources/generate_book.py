@@ -106,7 +106,7 @@ def main():
 
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        make_book(rm, i18n, local_instance=True)
+        make_book(rm, I18n.create(args.translate), local_instance=True)
 
     print('Done')
 

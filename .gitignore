@@ -13,6 +13,7 @@
 
 # Resource generation
 !resources/**/*.py
+!resources/lang/*.json
 !/resources/texture_templates/**/*.png
 !resources/structure_templates/**/*.nbt
 
