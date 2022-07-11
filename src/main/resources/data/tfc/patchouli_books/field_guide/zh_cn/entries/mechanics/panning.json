@@ -16,7 +16,7 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/ceramic_pan",
-      "text": "一旦淘金盆$(thing)塑形$()完成，它需要被$(l:mechanics/heating)烧制$()成一个$(thing)陶瓷淘金盆$().$(br2)接下来你需要找到某种$(thing)矿床$()。 矿床可以有几种不同的矿石：原生铜、原生银、原生金和锡石。"
+      "text": "一旦淘金盆$(thing)塑形$()完成，它需要被$(l:mechanics/heating)烧制$()成一个$(thing)陶瓷淘金盆$().$(br2)接下来你需要找到某种$(thing)矿床$()。矿床可以有几种不同的矿石：原生铜、原生银、原生金和锡石。"
     },
     {
       "type": "patchouli:multiblock",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "坑窑是一种早期的$(l:mechanics/heating)加热$()物品的方式。例如，它可以用来将粘土$(thing)烧$()成陶瓷。 坑窑在大约 8 小时的时间内将其内容物加热到 1600 °C，或$(bold)$(f)$(t:炽白)炽白$()."
+      "text": "坑窑是一种早期的$(l:mechanics/heating)加热$()物品的方式。例如，它可以用来将粘土$(thing)烧$()成陶瓷。坑窑在大约 8 小时的时间内将其内容物加热到 1600°C，或$(bold)$(f)$(t:炽白)炽白$()."
     },
     {
       "type": "patchouli:text",

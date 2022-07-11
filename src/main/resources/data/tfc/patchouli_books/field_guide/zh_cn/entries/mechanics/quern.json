@@ -43,7 +43,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_result.png"
       ],
-      "text": "产物应该输出在手推磨的底部。 对着底座点击$(item)$(k:key.use)$()来获得产物。",
+      "text": "产物应该输出在手推磨的底部。对着底座点击$(item)$(k:key.use)$()来获得产物。",
       "border": true
     },
     {

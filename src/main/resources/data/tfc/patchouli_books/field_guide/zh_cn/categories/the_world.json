@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "这个世界",
-  "description": "关于你周围自然世界的知识$(br2)本书由$(l:https://github.com/VisoTC)@VisoTC$()初步翻译，由于水平有限本文可能含有表达不准确的内容，若您希望参与到本书的翻译，请在$(l:https://github.com/TerraFirmaCraft/TerraFirmaCraft/)Github$()提交您修改后翻译文档。",
+  "description": "关于你周围自然世界的知识$(br2)本书由$(l:https://github.com/VisoTC)@VisoTC$()初步翻译，由于水平有限本文可能含有表达不准确的内容。若您希望参与到本书的翻译，请在$(l:https://github.com/TerraFirmaCraft/TerraFirmaCraft/)Github$()提交您修改后翻译文档。",
   "icon": "tfc:grass/loam",
   "sortnum": 0
 }

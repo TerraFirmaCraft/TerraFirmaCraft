@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在游戏的早期阶段，建筑可能是一个挑战，因为许多坚固的建筑方块需要金属工具才能获得。 但是，有几个有用的建筑方在石器时代就可以获得。"
+      "text": "在游戏的早期阶段，建筑可能是一个挑战，因为许多坚固的建筑方块需要金属工具才能获得。但是，有几个有用的建筑方在石器时代就可以获得。"
     },
     {
       "type": "patchouli:text",
@@ -63,7 +63,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
-      "text": "然后可以将这些干泥砖制作成$(thing)淤泥砖块$()。 如果需要，它们还可以制成$(thing)楼梯$()、$(thing)台阶$() 或 $(thing)岩墙$()。"
+      "text": "然后可以将这些干泥砖制作成$(thing)淤泥砖块$()。如果需要，它们还可以制成$(thing)楼梯$()、$(thing)台阶$() 或 $(thing)岩墙$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -87,7 +87,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wattle_and_daub",
-      "text": "$(thing)板条$()是一种多功能的建筑方块。 就其本身而言，它是透明的，玩家和生物可以穿过它。然而，随着$(thing)木棍$()和$(thing)涂料$()的加入，它变得更加丰富了……",
+      "text": "$(thing)板条$()是一种多功能的建筑方块。就其本身而言，它是透明的，玩家和生物可以穿过它。然而，随着$(thing)木棍$()和$(thing)涂料$()的加入，它变得更加丰富了……",
       "title": "板条与涂料"
     },
     {
@@ -111,7 +111,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "在任何时候，都可以在每条对角线、顶部和底部添加$(thing)木棍$()。 手里拿着一根$(thing)木棍$()，然后用 $(item)$(k:key.use)$() 添加一根$(thing)木棍$()。通过移动视角到其他部分来进行添加木棍"
+      "text": "在任何时候，都可以在每条对角线、顶部和底部添加$(thing)木棍$()。手里拿着一根$(thing)木棍$()，然后用 $(item)$(k:key.use)$() 添加一根$(thing)木棍$()。通过移动视角到其他部分来进行添加木棍"
     },
     {
       "type": "patchouli:image",
@@ -152,7 +152,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "雪花石膏可以在一$(l:mechanics/barrels)桶$()染料中染成任何颜色。 原始雪花石膏块也可以使用$(l:mechanics/chisel)凿$()在$(thing)平滑$()模式雕刻成平滑雪花石膏。"
+      "text": "雪花石膏可以在一$(l:mechanics/barrels)桶$()染料中染成任何颜色。原始雪花石膏块也可以使用$(l:mechanics/chisel)凿$()在$(thing)平滑$()模式雕刻成平滑雪花石膏。"
     },
     {
       "type": "patchouli:crafting",

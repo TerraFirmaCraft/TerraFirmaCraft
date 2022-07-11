@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "农作物是食物和其他一些材料的来源。虽然每种作物都略有不同，但作物都有一些类似的原则。为了开始种植农作物，你需要一些$(thing)种子$()，这些种子可以在地面上寻找并采集$(l:the_world/wild_crops)野生农作物$()来获得。$(br2)一旦你获得了种子，你还需要一把$(thing)锄头$()。 种子也可以作为$(l:mechanics/fishing)诱饵$()。"
+      "text": "农作物是食物和其他一些材料的来源。虽然每种作物都略有不同，但作物都有一些类似的原则。为了开始种植农作物，你需要一些$(thing)种子$()，这些种子可以在地面上寻找并采集$(l:the_world/wild_crops)野生农作物$()来获得。$(br2)一旦你获得了种子，你还需要一把$(thing)锄头$()。种子也可以作为$(l:mechanics/fishing)诱饵$()。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -25,11 +25,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "所有的农作物都需要种植在农田里才能生长。 有些作物有额外的要求，例如淹没或需要一根棍子才能生长。"
+      "text": "所有的农作物都需要种植在农田里才能生长。有些作物有额外的要求，例如淹没或需要一根棍子才能生长。"
     },
     {
       "type": "patchouli:text",
-      "text": "作物不需要$(thing)营养素$()来生长，但它们确实有帮助。 共有三种营养素：$(b)$(bold)氮$()$()、$(6)$(bold)磷$()$()和$(d)$(bold)钾$()$()。每种作物都有一种最喜欢的营养素。"
+      "text": "作物不需要$(thing)营养素$()来生长，但它们确实有帮助。共有三种营养素：$(b)$(bold)氮$()$()、$(6)$(bold)磷$()$()和$(d)$(bold)钾$()$()。每种作物都有一种最喜欢的营养素。"
     },
     {
       "type": "patchouli:text",
@@ -40,12 +40,12 @@
       "item": "tfc:compost",
       "title": "堆肥",
       "link_recipes": false,
-      "text": "要向土壤中添加养分，请尝试使用$(l:mechanics/fertilizers)堆肥$()。 有关它们如何工作以及如何获取它们的更多信息，请参阅该页面。"
+      "text": "要向土壤中添加养分，请尝试使用$(l:mechanics/fertilizers)堆肥$()。有关它们如何工作以及如何获取它们的更多信息，请参阅该页面。"
     },
     {
       "type": "patchouli:text",
       "anchor": "barley",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -8 - 26 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 18 - 75 % $(br)$(bold)喜爱的营养素$()：$(bold)氮$()$(br2)大麦是一种一格高的农作物。 大麦种子可以种植在农田上进行种植，并会产生 $(thing)大麦$() 和 $(thing)大麦种子$() 作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -8 - 26 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 18 - 75 % $(br)$(bold)喜爱的营养素$()：$(bold)氮$()$(br2)大麦是一种一格高的农作物。大麦种子可以种植在农田上进行种植，并会产生 $(thing)大麦$() 和 $(thing)大麦种子$() 作为产品。",
       "title": "大麦"
     },
     {
@@ -193,7 +193,7 @@
     {
       "type": "patchouli:text",
       "anchor": "oat",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 3 - 40 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 35 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)燕麦是一种一格高的农作物。 燕麦种子可以种植在农田上种植，并且会产生$(thing)燕麦$()和$(thing)燕麦种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 3 - 40 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 35 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)燕麦是一种一格高的农作物。燕麦种子可以种植在农田上种植，并且会产生$(thing)燕麦$()和$(thing)燕麦种子$()作为产品。",
       "title": "燕麦"
     },
     {
@@ -341,7 +341,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rye",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -11 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 85 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)黑麦是一种一格高的农作物。 黑麦种子可以种植在农田上种植，并且会产生$(thing)黑麦$()和$(thing)黑麦种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -11 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 85 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)黑麦是一种一格高的农作物。黑麦种子可以种植在农田上种植，并且会产生$(thing)黑麦$()和$(thing)黑麦种子$()作为产品。",
       "title": "黑麦"
     },
     {
@@ -489,7 +489,7 @@
     {
       "type": "patchouli:text",
       "anchor": "maize",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 13 - 40 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 75 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)玉米是一种两格高的作物。 玉米种子可以种植在农田上种植，会长出两个方块高，并且会产生 $(thing)玉米$() 和 $(thing)玉米种子$() 作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 13 - 40 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 75 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)玉米是一种两格高的作物。玉米种子可以种植在农田上种植，会长出两个方块高，并且会产生 $(thing)玉米$() 和 $(thing)玉米种子$() 作为产品。",
       "title": "玉米"
     },
     {
@@ -627,7 +627,7 @@
     {
       "type": "patchouli:text",
       "anchor": "wheat",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -4 - 35 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)小麦是一种一格高的农作物。 小麦种子可以种植在农田上种植，并且会产生$(thing)小麦$()和$(thing)小麦种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -4 - 35 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)小麦是一种一格高的农作物。小麦种子可以种植在农田上种植，并且会产生$(thing)小麦$()和$(thing)小麦种子$()作为产品。",
       "title": "小麦"
     },
     {
@@ -775,7 +775,7 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 15 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)水稻是一种一格高的农作物。 水稻必须种植在淹没在一格深的淡水中的农田。 它将生产$(thing)水稻$()和$(thing)水稻种子$()作为产品",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 15 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)磷$()$(br2)水稻是一种一格高的农作物。水稻必须种植在淹没在一格深的淡水中的农田。它将生产$(thing)水稻$()和$(thing)水稻种子$()作为产品",
       "title": "水稻"
     },
     {
@@ -923,7 +923,7 @@
     {
       "type": "patchouli:text",
       "anchor": "beet",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -5 - 20 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 18 - 85 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)甜菜是一种一格高的农作物。 甜菜种子可以种植在农田上进行种植，并会产生$(thing)甜菜$()和$(thing)甜菜种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -5 - 20 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 18 - 85 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)甜菜是一种一格高的农作物。甜菜种子可以种植在农田上进行种植，并会产生$(thing)甜菜$()和$(thing)甜菜种子$()作为产品。",
       "title": "甜菜"
     },
     {
@@ -1151,7 +1151,7 @@
     {
       "type": "patchouli:text",
       "anchor": "carrot",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 3 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)胡萝卜是一种一格高的农作物。 胡萝卜种子可以种植在农田上种植，并且会产生$(thing)胡萝卜$()和$(thing)胡萝卜种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 3 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)胡萝卜是一种一格高的农作物。胡萝卜种子可以种植在农田上种植，并且会产生$(thing)胡萝卜$()和$(thing)胡萝卜种子$()作为产品。",
       "title": "胡萝卜"
     },
     {
@@ -1345,7 +1345,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_bean",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 2 - 35 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 38 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)氮$()$(br2)青豆是一种攀爬的两格高的作物。 绿豆种子可以种植在农田上种植，如果有一根棍子，它会长出两个方块高，并且会产生$(thing)青豆$()和$(thing)青豆种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 2 - 35 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 38 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)氮$()$(br2)青豆是一种攀爬的两格高的作物。绿豆种子可以种植在农田上种植，如果有一根棍子，它会长出两个方块高，并且会产生$(thing)青豆$()和$(thing)青豆种子$()作为产品。",
       "title": "青豆"
     },
     {
@@ -1525,7 +1525,7 @@
     {
       "type": "patchouli:text",
       "anchor": "potato",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -1 - 37 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 50 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)马铃薯是一种一格高的农作物。 马铃薯种子可以种植在农田上种植，并且会产生$(thing)马铃薯$()和$(thing)马铃薯种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): -1 - 37 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 50 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)马铃薯是一种一格高的农作物。马铃薯种子可以种植在农田上种植，并且会产生$(thing)马铃薯$()和$(thing)马铃薯种子$()作为产品。",
       "title": "马铃薯"
     },
     {
@@ -1656,7 +1656,7 @@
     {
       "type": "patchouli:text",
       "anchor": "onion",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 0 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 90 %$(br)$(bold)喜爱的营养素$(): $(bold)氮$()$(br2)洋葱是一种一格高的农作物。 洋葱种子可以种植在农田上进行种植，并会产生$(thing)洋葱$()和$(thing)洋葱种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 0 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 90 %$(br)$(bold)喜爱的营养素$(): $(bold)氮$()$(br2)洋葱是一种一格高的农作物。洋葱种子可以种植在农田上进行种植，并会产生$(thing)洋葱$()和$(thing)洋葱种子$()作为产品。",
       "title": "洋葱"
     },
     {
@@ -1787,7 +1787,7 @@
     {
       "type": "patchouli:text",
       "anchor": "soybean",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 8 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 40 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)氮$()$(br2)大豆是一种一格高的农作物。 大豆种子可以种植在农田上种植，并且会产生$(thing)大豆$()和$(thing)大豆种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 8 - 30 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 40 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)氮$()$(br2)大豆是一种一格高的农作物。大豆种子可以种植在农田上种植，并且会产生$(thing)大豆$()和$(thing)大豆种子$()作为产品。",
       "title": "大豆"
     },
     {
@@ -1918,7 +1918,7 @@
     {
       "type": "patchouli:text",
       "anchor": "squash",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 5 - 33 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 23 - 95 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)南瓜是一种一格高的农作物。 南瓜种子可以种植在农田上种植，并且会产生$(thing)南瓜$()和$(thing)南瓜种子$()作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 5 - 33 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 23 - 95 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)南瓜是一种一格高的农作物。南瓜种子可以种植在农田上种植，并且会产生$(thing)南瓜$()和$(thing)南瓜种子$()作为产品。",
       "title": "南瓜"
     },
     {
@@ -2066,7 +2066,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 12 - 38 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 40 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)甘蔗是一种两格高的作物。 甘蔗种子可以种植在农田上种植，会长出两个方块高，并且会产生$(thing)甘蔗$()和$(thing)甘蔗种子$()作为产品。 甘蔗可以用来制作$(thing)糖$()。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 12 - 38 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 40 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)甘蔗是一种两格高的作物。甘蔗种子可以种植在农田上种植，会长出两个方块高，并且会产生$(thing)甘蔗$()和$(thing)甘蔗种子$()作为产品。甘蔗可以用来制作$(thing)糖$()。",
       "title": "甘蔗"
     },
     {
@@ -2246,7 +2246,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tomatoes",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 0 - 36 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 30 - 95 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)西红柿是一种攀爬的两块高的作物。 番茄种子可以在农田上种植，如果有一根棍子，番茄种子会长出两个方块高，并且会产生$(thing)番茄$()和 $(thing)番茄种子() 作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 0 - 36 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 30 - 95 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)西红柿是一种攀爬的两块高的作物。番茄种子可以在农田上种植，如果有一根棍子，番茄种子会长出两个方块高，并且会产生$(thing)番茄$()和 $(thing)番茄种子() 作为产品。",
       "title": "番茄"
     },
     {
@@ -2426,7 +2426,7 @@
     {
       "type": "patchouli:text",
       "anchor": "jute",
-      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 5 - 37 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)黄麻是一种两格高的作物。 黄麻种子可以种植在农田上种植，会长出两个方块高，并且会产生 $(thing)黄麻$() 和 $(thing)黄麻种子$() 作为产品。",
+      "text": "$(bold)$(l:the_world/climate#temperature)需求温度$(): 5 - 37 °C$(br)$(bold)$(l:food/hydration)需求湿度$(): 25 - 100 %$(br)$(bold)喜爱的营养素$(): $(bold)钾$()$(br2)黄麻是一种两格高的作物。黄麻种子可以种植在农田上种植，会长出两个方块高，并且会产生 $(thing)黄麻$() 和 $(thing)黄麻种子$() 作为产品。",
       "title": "黄麻"
     },
     {

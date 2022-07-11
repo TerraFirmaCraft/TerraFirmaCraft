@@ -16,7 +16,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/fluxstone",
-      "text": "获得助焊剂的第二种方法是通过$(thing)助熔剂$()。 这些可以是岩石（包括：$(thing)石灰石$()、$(thing)白云石$()、$(thing)白垩岩$() 或 $(thing)大理石$()），或贝壳（包括 $(thing)鳞甲$()、$(thing)蛤蜊$()、$(thing)软体动物$() 和 $(l:the_world/wild_animals#shellfish)贝类$()的可食用物品）"
+      "text": "获得助焊剂的第二种方法是通过$(thing)助熔剂$()。这些可以是岩石（包括：$(thing)石灰石$()、$(thing)白云石$()、$(thing)白垩岩$() 或 $(thing)大理石$()），或贝壳（包括 $(thing)鳞甲$()、$(thing)蛤蜊$()、$(thing)软体动物$() 和 $(l:the_world/wild_animals#shellfish)贝类$()的可食用物品）"
     }
   ],
   "read_by_default": true

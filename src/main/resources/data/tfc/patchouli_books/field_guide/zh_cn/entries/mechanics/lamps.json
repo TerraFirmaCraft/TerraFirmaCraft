@@ -24,12 +24,12 @@
         }
       },
       "name": "灯",
-      "text": "灯是一种长期的光源。 他们燃烧液体燃料。",
+      "text": "灯是一种长期的光源。他们燃烧液体燃料。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "使用桶，对着灯按下$(item)$(k:key.use)$()以添加燃料。 然后可以用 $(thing)起火器$()或任何能够生火的东西来点燃它。灯在拆除时会保留内部的燃料。"
+      "text": "使用桶，对着灯按下$(item)$(k:key.use)$()以添加燃料。然后可以用 $(thing)起火器$()或任何能够生火的东西来点燃它。灯在拆除时会保留内部的燃料。"
     },
     {
       "type": "tfc:quern_recipe",
@@ -43,12 +43,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "在$(thing)桶$()中用$(thing)水$()密封$(thing)橄榄糊$()，制成$(thing)橄榄油水$()。 用您的$(thing)黄麻网$() 将其密封以生产$(thing)橄榄油$()。 每单位液体的橄榄油在游戏中燃烧 8 小时。"
+      "text": "在$(thing)桶$()中用$(thing)水$()密封$(thing)橄榄糊$()，制成$(thing)橄榄油水$()。用您的$(thing)黄麻网$() 将其密封以生产$(thing)橄榄油$()。每单位液体的橄榄油在游戏中燃烧 8 小时。"
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一种灯燃料是$(thing)蜡脂$()。 要做到这一点，在$(l:mechanics/pot)锅$()中用水中煮5份$(thing)鲸油$()。每个单位的蜡脂燃烧时间少于2小时。"
+      "text": "另一种灯燃料是$(thing)蜡脂$()。要做到这一点，在$(l:mechanics/pot)锅$()中用水中煮 5 份$(thing)鲸油$()。每个单位的蜡脂燃烧时间少于 2 小时。"
     },
     {
       "type": "patchouli:multiblock",

@@ -10,12 +10,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "此外，部分矿石是$(thing)分等级的$()。 矿石可能是贫瘠的、普通的或富集的，不同的矿脉中每种类型的矿物的浓度也会不同。 更丰富的矿脉更$(thing)有利可图$(thing)。$(br2)接下来的几页展示了不同类型的矿石，以及在哪里可以找到它们。"
+      "text": "此外，部分矿石是$(thing)分等级的$()。矿石可能是贫瘠的、普通的或富集的，不同的矿脉中每种类型的矿物的浓度也会不同。更丰富的矿脉更$(thing)有利可图$(thing)。$(br2)接下来的几页展示了不同类型的矿石，以及在哪里可以找到它们。"
     },
     {
       "type": "patchouli:text",
       "anchor": "native_copper",
-      "text": "原生铜是一种$(thing)铜$()金属矿石。 它可以在任何海拔找到，但更深的静脉通常更丰富。 它可以在$(l:the_world/geology#igneous_extrusive)火成岩$()中找到。",
+      "text": "原生铜是一种$(thing)铜$()金属矿石。它可以在任何海拔找到，但更深的静脉通常更丰富。它可以在$(l:the_world/geology#igneous_extrusive)火成岩$()中找到。",
       "title": "原生铜"
     },
     {
@@ -66,7 +66,7 @@
     {
       "type": "patchouli:text",
       "anchor": "native_gold",
-      "text": "原生金是一种$(thing)金$()金属矿石。 它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#igneous_extrusive)火成岩$()和$(l:the_world/geology#igneous_intrusive)深成岩$()中找到。",
+      "text": "原生金是一种$(thing)金$()金属矿石。它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。它可以在$(l:the_world/geology#igneous_extrusive)火成岩$()和$(l:the_world/geology#igneous_intrusive)深成岩$()中找到。",
       "title": "原生金"
     },
     {
@@ -117,7 +117,7 @@
     {
       "type": "patchouli:text",
       "anchor": "native_silver",
-      "text": "原生银是一种$(thing)银$()金属矿石。 它可以在 y=-32 和 y=100 之间的海拔处找到。 它主要存在于$(thing)花岗岩$()和$(thing)片麻岩$()中，但是在任何$(l:the_world/geology#metamorphic)变质岩$()中都可以找到较小的贫瘠矿脉。",
+      "text": "原生银是一种$(thing)银$()金属矿石。它可以在 y=-32 和 y=100 之间的海拔处找到。它主要存在于$(thing)花岗岩$()和$(thing)片麻岩$()中，但是在任何$(l:the_world/geology#metamorphic)变质岩$()中都可以找到较小的贫瘠矿脉。",
       "title": "原生金"
     },
     {
@@ -168,7 +168,7 @@
     {
       "type": "patchouli:text",
       "anchor": "hematite",
-      "text": "赤铁矿是一种$(thing)铁$()金属矿石。 它可以在 y=75 以下的海拔处找到。 它可以在$(l:the_world/geology#igneous_extrusive)喷发岩$()中找到。",
+      "text": "赤铁矿是一种$(thing)铁$()金属矿石。它可以在 y=75 以下的海拔处找到。它可以在$(l:the_world/geology#igneous_extrusive)喷发岩$()中找到。",
       "title": "赤铁矿"
     },
     {
@@ -219,7 +219,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cassiterite",
-      "text": "锡石是一种$(thing)锡$()金属矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()中找到。$(br2)在$(thing)花岗岩$()中发现时，锡石矿脉也可能含有$(thing)黄玉$()的痕迹。",
+      "text": "锡石是一种$(thing)锡$()金属矿石。它可以在任何海拔找到，但更深的矿脉通常更丰富。它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()中找到。$(br2)在$(thing)花岗岩$()中发现时，锡石矿脉也可能含有$(thing)黄玉$()的痕迹。",
       "title": "锡石"
     },
     {
@@ -270,7 +270,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bismuthinite",
-      "text": "铋矿是一种$(thing)铋$()金属矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()和$(l:the_world/geology#sedimentary)沉积岩$()中找到。",
+      "text": "铋矿是一种$(thing)铋$()金属矿石。它可以在任何海拔找到，但更深的矿脉通常更丰富。它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()和$(l:the_world/geology#sedimentary)沉积岩$()中找到。",
       "title": "铋矿"
     },
     {
@@ -321,7 +321,7 @@
     {
       "type": "patchouli:text",
       "anchor": "garnierite",
-      "text": "绿镍矿是一种$(thing)镍$()金属矿石。 它可以在 y=-32 和 y=100 之间的海拔处找到。 它主要存在于$(thing)辉长岩$()中，但在任何$(l:the_world/geology#igneous_intrusive)深成岩$()中都可以找到较小的贫瘠矿脉。",
+      "text": "绿镍矿是一种$(thing)镍$()金属矿石。它可以在 y=-32 和 y=100 之间的海拔处找到。它主要存在于$(thing)辉长岩$()中，但在任何$(l:the_world/geology#igneous_intrusive)深成岩$()中都可以找到较小的贫瘠矿脉。",
       "title": "绿镍矿"
     },
     {
@@ -372,7 +372,7 @@
     {
       "type": "patchouli:text",
       "anchor": "malachite",
-      "text": "孔雀石是一种$(thing)铜$()金属矿石。 它可以在 y=-32 和 y=100 之间的海拔处找到。 它主要存在$(thing)于大理石或$(thing)石灰石中，但也可以在$(thing)千枚岩$()、$(thing)白垩岩$()和$(thing)白云石$()中发现较小的贫脉。$(br2)当在$(thing)石灰石$()中发现时，孔雀石脉也可能含有$(thing)石膏$()的痕迹。",
+      "text": "孔雀石是一种$(thing)铜$()金属矿石。它可以在 y=-32 和 y=100 之间的海拔处找到。它主要存在$(thing)于大理石或$(thing)石灰石中，但也可以在$(thing)千枚岩$()、$(thing)白垩岩$()和$(thing)白云石$()中发现较小的贫脉。$(br2)当在$(thing)石灰石$()中发现时，孔雀石脉也可能含有$(thing)石膏$()的痕迹。",
       "title": "孔雀石"
     },
     {
@@ -423,7 +423,7 @@
     {
       "type": "patchouli:text",
       "anchor": "magnetite",
-      "text": "磁铁矿是一种$(thing)铁$()金属矿石。 它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。",
+      "text": "磁铁矿是一种$(thing)铁$()金属矿石。它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。",
       "title": "磁铁矿"
     },
     {
@@ -474,7 +474,7 @@
     {
       "type": "patchouli:text",
       "anchor": "limonite",
-      "text": "褐铁矿是一种$(thing)铁$()金属矿石。 它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。$(br2)当在$(thing)石灰石$()或$(thing)页岩$()中发现时，孔雀石脉也可能含有$(thing)红宝石$()的痕迹。",
+      "text": "褐铁矿是一种$(thing)铁$()金属矿石。它可以在 y=60 以下的海拔处找到，但更深的矿脉通常更丰富。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。$(br2)当在$(thing)石灰石$()或$(thing)页岩$()中发现时，孔雀石脉也可能含有$(thing)红宝石$()的痕迹。",
       "title": "褐铁矿"
     },
     {
@@ -525,7 +525,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sphalerite",
-      "text": "闪锌矿是一种$(thing)锌$()金属矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#metamorphic)变质岩$()中找到。",
+      "text": "闪锌矿是一种$(thing)锌$()金属矿石。它可以在任何海拔找到，但更深的矿脉通常更丰富。它可以在$(l:the_world/geology#metamorphic)变质岩$()中找到。",
       "title": "闪锌矿"
     },
     {
@@ -576,7 +576,7 @@
     {
       "type": "patchouli:text",
       "anchor": "tetrahedrite",
-      "text": "黝铜矿是$(thing)铜$()金属的矿石。 它可以在任何海拔找到，但更深的矿脉通常更丰富。 它可以在$(l:the_world/geology#metamorphic)变质岩$()中找到。",
+      "text": "黝铜矿是$(thing)铜$()金属的矿石。它可以在任何海拔找到，但更深的矿脉通常更丰富。它可以在$(l:the_world/geology#metamorphic)变质岩$()中找到。",
       "title": "黝铜矿"
     },
     {
@@ -630,7 +630,7 @@
       "item": "tfc:ore/bituminous_coal",
       "title": "烟煤",
       "link_recipes": false,
-      "text": "烟煤是$(thing)煤$()矿石的一种。 它可以在 y=0 以上的海拔处找到。 它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。"
+      "text": "烟煤是$(thing)煤$()矿石的一种。它可以在 y=0 以上的海拔处找到。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到。"
     },
     {
       "type": "patchouli:multiblock",
@@ -657,7 +657,7 @@
       "item": "tfc:ore/lignite",
       "title": "褐煤",
       "link_recipes": false,
-      "text": "褐煤是$(thing)煤$()矿石的一种。 它可以在 y=100 以上的海拔处找到。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到."
+      "text": "褐煤是$(thing)煤$()矿石的一种。它可以在 y=100 以上的海拔处找到。它可以在$(l:the_world/geology#sedimentary)沉积岩$()中找到."
     },
     {
       "type": "patchouli:multiblock",
@@ -738,7 +738,7 @@
       "item": "tfc:ore/cinnabar",
       "title": "朱砂",
       "link_recipes": false,
-      "text": "朱砂是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎以获得$(thing)红石粉$()。 它可以在 y=100 以下的海拔处找到。它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()、$(thing)石英岩$()和$(thing)片岩$()中找到。$(br2)当在$(thing)石英岩$()中发现时，朱砂脉也可能含有$(thing)蛋白石$()的痕迹。"
+      "text": "朱砂是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎以获得$(thing)红石粉$()。它可以在 y=100 以下的海拔处找到。它可以在$(l:the_world/geology#igneous_intrusive)深成岩$()、$(thing)石英岩$()和$(thing)片岩$()中找到。$(br2)当在$(thing)石英岩$()中发现时，朱砂脉也可能含有$(thing)蛋白石$()的痕迹。"
     },
     {
       "type": "patchouli:multiblock",
@@ -765,7 +765,7 @@
       "item": "tfc:ore/cryolite",
       "title": "冰晶石",
       "link_recipes": false,
-      "text": "冰晶石是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎以获得$(thing)红石粉$()。 它可以在 y=100 以下的海拔处找到。它只能在$(thing)花岗岩$()中找到。"
+      "text": "冰晶石是一种$(thing)矿物$()，可以在$(l:mechanics/quern)手推磨$()中磨碎以获得$(thing)红石粉$()。它可以在 y=100 以下的海拔处找到。它只能在$(thing)花岗岩$()中找到。"
     },
     {
       "type": "patchouli:multiblock",

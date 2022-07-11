@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "群峦传说的世界是由$(l:https://baike.baidu.com/item/%E6%9D%BF%E5%9D%97%E6%9E%84%E9%80%A0%E8%AE%BA/7059287)板块构造运动$()形成的, 你可以看到目前所处的区域。按下$(item)$(k:key.inventory)$(), 然后点击右侧的$(thing)气候$()选项卡，$(thing)地区$()标签将会显示当前的构造区。构造区的不同会导致可出现的生物群落的不同，以及该区域存在什么样的特征。"
+      "text": "群峦传说的世界是由$(l:https://baike.baidu.com/item/%E6%9D%BF%E5%9D%97%E6%9E%84%E9%80%A0%E8%AE%BA)板块构造运动$()形成的, 你可以看到目前所处的区域。按下$(item)$(k:key.inventory)$(), 然后点击右侧的$(thing)气候$()选项卡，$(thing)地区$()标签将会显示当前的构造区。构造区的不同会导致可出现的生物群落的不同，以及该区域存在什么样的特征。"
     },
     {
       "type": "patchouli:text",
-      "text": "以下是不同类型区域及其主要特征的列表$(br2)$(bold)海洋$()$(br)覆盖大部分海洋的构造板块，大多覆盖着$(l:the_world/biomes#ocean)正常海洋和深海$()。 $(br2)$(bold)低海拔大陆$()$(br)三大大陆地区之一。比较常见的低海拔生物群系是$(l:the_world/biomes#lowlands)低地$()、$(l:the_world/biomes#low_canyons)低地峡谷$()和$(l:biomes#plains)平原$()。"
+      "text": "以下是不同类型区域及其主要特征的列表$(br2)$(bold)海洋$()$(br)覆盖大部分海洋的构造板块，大多覆盖着$(l:the_world/biomes#ocean)正常海洋和深海$()。$(br2)$(bold)低海拔大陆$()$(br)三大大陆地区之一。比较常见的低海拔生物群系是$(l:the_world/biomes#lowlands)低地$()、$(l:the_world/biomes#low_canyons)低地峡谷$()和$(l:biomes#plains)平原$()。"
     },
     {
       "type": "patchouli:text",
@@ -18,47 +18,47 @@
     },
     {
       "type": "patchouli:text",
-      "text": "它可以产生罕见的火山活动和一些火山山脉。$(br2)$(bold)海洋俯冲带$()$(br)俯冲带是一个板块滑到另一个板块之下的地方。 在海洋中，这可以形成许多火山山脉、岛链和深海脊。$(br2)$(bold)大陆俯冲带$()$(br)大陆俯冲带是火山活动频繁的地区，以及巨大的沿海山脉。 活跃的温泉和火山很常见。"
+      "text": "它可以产生罕见的火山活动和一些火山山脉。$(br2)$(bold)海洋俯冲带$()$(br)俯冲带是一个板块滑到另一个板块之下的地方。在海洋中，这可以形成许多火山山脉、岛链和深海脊。$(br2)$(bold)大陆俯冲带$()$(br)大陆俯冲带是火山活动频繁的地区，以及巨大的沿海山脉。活跃的温泉和火山很常见。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)大陆裂谷$()$(br)大陆裂谷是两个大陆分流的地方，比如$(l:https://baike.baidu.com/item/%E5%86%B0%E5%B2%9B/26889#2_4)冰岛$()。它是$(l:the_world/biomes#canyons)峡谷$()生物群落。是较短的不太活跃的火山以及其他一些高海拔生物群落的所在地。$(br2)$(bold)造山带$()$(br)$(l:https://en.wikipedia.org/wiki/Orogeny)造山运动$()是主要山地建筑的所在地。 它形成于两个大陆板块碰撞并产生$(l:the_world/biomes#mountains)高山$()和$(l:the_world/biomes#plateau)高原$()的地方。"
+      "text": "$(bold)大陆裂谷$()$(br)大陆裂谷是两个大陆分流的地方，比如$(l:https://baike.baidu.com/item/%E5%86%B0%E5%B2%9B)冰岛$()。它是$(l:the_world/biomes#canyons)峡谷$()生物群落。是较短的不太活跃的火山以及其他一些高海拔生物群落的所在地。$(br2)$(bold)造山带$()$(br)$(l:https://en.wikipedia.org/wiki/Orogeny)造山运动$()是主要山地建筑的所在地。它形成于两个大陆板块碰撞并产生$(l:the_world/biomes#mountains)高山$()和$(l:the_world/biomes#plateau)高原$()的地方。"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)大陆架$()$(br)最后，大陆架是大陆沿岸的一段浅海。 这是珊瑚礁出现在温暖气候中的地方。"
+      "text": "$(bold)大陆架$()$(br)最后，大陆架是大陆沿岸的一段浅海。这是珊瑚礁出现在温暖气候中的地方。"
     },
     {
       "type": "patchouli:text",
-      "text": "世界也有不同类型的$(thing)岩石$()。 岩石区域可以超过一公里，通常在你的脚下总是有两到三个不同的岩石层。 由于不同的岩石类型中包含了不同的$(l:the_world/ores_and_minerals)矿石$()，因此寻找特定的岩石类型对于寻找诸如矿石等资源非常重要，而矿石通常只会出现在某些岩石类型中。",
+      "text": "世界也有不同类型的$(thing)岩石$()。岩石区域可以超过一公里，通常在你的脚下总是有两到三个不同的岩石层。由于不同的岩石类型中包含了不同的$(l:the_world/ores_and_minerals)矿石$()，因此寻找特定的岩石类型对于寻找诸如矿石等资源非常重要，而矿石通常只会出现在某些岩石类型中。",
       "title": "岩层"
     },
     {
       "type": "patchouli:text",
-      "text": "岩石分为四类：$(thing)沉积岩$()、$(thing)变质岩$()、$(thing)喷出岩$()和$(thing)深成岩$()。 这些类别决定了可以找到不同岩层的深度。 所有不同岩石类型及其所属类别的列表可在后面的页面中找到。"
+      "text": "岩石分为四类：$(thing)沉积岩$()、$(thing)变质岩$()、$(thing)喷出岩$()和$(thing)深成岩$()。这些类别决定了可以找到不同岩层的深度。所有不同岩石类型及其所属类别的列表可在后面的页面中找到。"
     },
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://baike.baidu.com/item/%E6%B2%89%E7%A7%AF%E5%B2%A9)沉积岩$()是由矿物或有机颗粒的堆积或沉积形成的。 它们可以在中高海拔岩层中找到。 他们是：$(br)$(li)页岩$(li)粘土$(li)石灰石$(li)砾岩$(li)白云岩$(li)硅质岩$(li)白垩岩",
+      "text": "$(l:https://baike.baidu.com/item/%E6%B2%89%E7%A7%AF%E5%B2%A9)沉积岩$()是由矿物或有机颗粒的堆积或沉积形成的。它们可以在中高海拔岩层中找到。他们是：$(br)$(li)页岩$(li)粘土$(li)石灰石$(li)砾岩$(li)白云岩$(li)硅质岩$(li)白垩岩",
       "title": "沉积岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "metamorphic",
-      "text": "$(l:https://baike.baidu.com/item/%E5%8F%98%E8%B4%A8%E5%B2%A9)变质岩$()是通过称为变质作用的过程产生的。 它们可以在$(thing)任何高度n$()找到。 他们是：$(br)$(li)石英岩$(li)板岩$(li)千枚岩$(li)片岩$(li)片麻岩$(li)大理岩",
+      "text": "$(l:https://baike.baidu.com/item/%E5%8F%98%E8%B4%A8%E5%B2%A9)变质岩$()是通过称为变质作用的过程产生的。它们可以在$(thing)任何高度n$()找到。他们是：$(br)$(li)石英岩$(li)板岩$(li)千枚岩$(li)片岩$(li)片麻岩$(li)大理岩",
       "title": "变质岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://baike.baidu.com/item/%E5%96%B7%E5%8F%91%E5%B2%A9)喷出岩$()是由地球表面的岩浆冷却形成的。 它们可以在$(thing)中高海拔$()岩层中找到。 它们是：$(br)$(li)流纹岩$(li)玄武岩$(li)安山岩$(li)英安岩",
+      "text": "$(l:https://baike.baidu.com/item/%E5%96%B7%E5%8F%91%E5%B2%A9)喷出岩$()是由地球表面的岩浆冷却形成的。它们可以在$(thing)中高海拔$()岩层中找到。它们是：$(br)$(li)流纹岩$(li)玄武岩$(li)安山岩$(li)英安岩",
       "title": "喷出岩"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://baike.baidu.com/item/%E6%B7%B1%E6%88%90%E5%B2%A9)深成岩$()岩石是由地壳下冷却的岩浆形成的。 它们可以在$(thing)中低海拔$()岩层中找到。 它们是：$(br)$(li)花岗岩$(li)闪长岩$(li)辉长岩",
+      "text": "$(l:https://baike.baidu.com/item/%E6%B7%B1%E6%88%90%E5%B2%A9)深成岩$()岩石是由地壳下冷却的岩浆形成的。它们可以在$(thing)中低海拔$()岩层中找到。它们是：$(br)$(li)花岗岩$(li)闪长岩$(li)辉长岩",
       "title": "深成岩"
     }
   ],
