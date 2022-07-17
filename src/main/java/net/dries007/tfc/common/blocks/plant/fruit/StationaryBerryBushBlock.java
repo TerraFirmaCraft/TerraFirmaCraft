@@ -37,13 +37,16 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 {
     private static final VoxelShape HALF_PLANT = box(2, 0, 2, 14, 8, 14);
 
-    protected final Supplier<ClimateRange> climateRange; // todo: move this field to SeasonalPlantBlock
+    /**
+     * Any bush that spends four consecutive months dormant when it shouldn't be, should die.
+     * Since most bushes have a 7 month non-dormant cycle, this means that it just needs to be in valid conditions for about 1 month a year in order to not die.
+     * It won't produce (it needs more months to properly advance the cycle from dormant -> healthy -> flowering -> fruiting, requiring 4 months at least), but it won't outright die.
+     */
+    private static final int MONTHS_SPENT_DORMANT_TO_DIE = 4;
 
     public StationaryBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle, Supplier<ClimateRange> climateRange)
     {
-        super(properties, productItem, lifecycle);
-
-        this.climateRange = climateRange;
+        super(properties, climateRange, productItem, lifecycle);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        IBushBlock.super.randomTick(state, level, pos, random);
+        IBushBlock.randomTick(this, state, level, pos, random);
     }
 
     @Override
@@ -139,9 +142,8 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 
                 BlockState newState;
 
-                if (monthsSpentDying > 0 && level.getRandom().nextInt(getDeathChance()) < monthsSpentDying && specialDeathCondition(level, pos, state))
+                if (mayDie(level, pos, state, monthsSpentDying))
                 {
-                    // It may have died, as it spent too many consecutive months where it should've been healthy, in invalid conditions.
                     newState = getDeadState(state);
                 }
                 else
@@ -163,18 +165,15 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                     level.setBlock(pos, newState, 3);
                 }
             }
-            bush.afterUpdate();
         });
     }
 
-    protected boolean specialDeathCondition(Level level, BlockPos pos, BlockState state)
+    /**
+     * Can this bush die, given that it spent {@code monthsSpentDying} consecutive months in a dormant state, when it should've been in a non-dormant state.
+     */
+    protected boolean mayDie(Level level, BlockPos pos, BlockState state, int monthsSpentDying)
     {
-        return true;
-    }
-
-    protected int getDeathChance()
-    {
-        return 6;
+        return monthsSpentDying >= MONTHS_SPENT_DORMANT_TO_DIE;
     }
 
     protected BlockState getNewState(Level level, BlockPos pos)

@@ -512,6 +512,8 @@ MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vin
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
 
+# todo: add bush specific rainfall ranges, and also add here bush specific hydration requirements (these should be in general quite lenient) Mirror how crops does it (spreadsheet generation would be nice here). Then update the book data on bushes, the climate ranges, and the world gen (all THREE locations) that use this data
+# For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
 BERRIES: Dict[str, Berry] = {
     'blackberry': Berry(7, 24, 100, 500, 'spreading', 'edge', 'edge'),
     'raspberry': Berry(5, 25, 100, 500, 'spreading', 'edge', 'edge'),

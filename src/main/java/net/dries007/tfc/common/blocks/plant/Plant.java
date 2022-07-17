@@ -24,16 +24,16 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.registry.RegistryPlant;
 import org.jetbrains.annotations.Nullable;
 
-public enum Plant implements IPlant
+public enum Plant implements RegistryPlant
 {
     // Clay Indicators
     ATHYRIUM_FERN(BlockType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
@@ -156,7 +156,6 @@ public enum Plant implements IPlant
     IVY(BlockType.VINE, 1.0F, null),
     JUNGLE_VINES(BlockType.VINE, 1.0F, null);
 
-
     private final float speedFactor;
     @Nullable private final IntegerProperty property;
     private final int @Nullable[] stagesByMonth;
@@ -233,13 +232,11 @@ public enum Plant implements IPlant
     }
 
     /**
-     * This is a way for paired blocks to reference each other as suppliers
-     *
-     * @return The paired plant
+     * Compiler hack to allow forward references to paired plants.
      */
-    private Plant transform()
+    private Supplier<? extends Block> transform()
     {
-        return switch (this)
+        final Plant other = switch (this)
             {
                 case HANGING_VINES -> HANGING_VINES_PLANT;
                 case HANGING_VINES_PLANT -> HANGING_VINES;
@@ -258,6 +255,7 @@ public enum Plant implements IPlant
                 case LIANA_PLANT -> LIANA;
                 default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
             };
+        return TFCBlocks.PLANTS.get(other);
     }
 
     public enum BlockType
@@ -271,17 +269,17 @@ public enum Plant implements IPlant
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, fire(nonSolid(plant)))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, fire(nonSolid(plant)))),
         VINE((plant, type) -> new TFCVineBlock(fire(nonSolid(plant)))),
-        WEEPING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), getBodyShape(), Direction.DOWN)),
-        WEEPING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), Direction.DOWN, getWeepingShape())),
-        TWISTING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), getBodyShape(), Direction.UP)),
-        TWISTING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), transform(plant), Direction.UP, getTwistingShape())),
-        TWISTING_SOLID((plant, type) -> new BodyPlantBlock(fire(solidTallPlant()), transform(plant), getBodyShape(), Direction.UP)),
-        TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(fire(solidTallPlant()), transform(plant), Direction.UP, getTwistingShape())),
-        //Water
-        KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant).lootFrom(transform(plant)), transform(plant), Direction.UP, getThinBodyShape(), TFCBlockStateProperties.SALT_WATER)),
-        KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), transform(plant), Direction.UP, getTwistingThinShape(), TFCBlockStateProperties.SALT_WATER))),
+        WEEPING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.DOWN)),
+        WEEPING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.DOWN, BodyPlantBlock.WEEPING_SHAPE)),
+        TWISTING((plant, type) -> new BodyPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.UP)),
+        TWISTING_TOP((plant, type) -> new TopPlantBlock(fire(nonSolidTallPlant(plant)), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE)),
+        TWISTING_SOLID((plant, type) -> new BodyPlantBlock(fire(solidTallPlant()), plant.transform(), BodyPlantBlock.BODY_SHAPE, Direction.UP)),
+        TWISTING_SOLID_TOP((plant, type) -> new TopPlantBlock(fire(solidTallPlant()), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_SHAPE)),
+        // Water
+        KELP((plant, type) -> TFCKelpBlock.create(nonSolidTallPlant(plant).lootFrom(plant.transform()), plant.transform(), Direction.UP, BodyPlantBlock.THIN_BODY_SHAPE, TFCBlockStateProperties.SALT_WATER)),
+        KELP_TOP(((plant, type) -> TFCKelpTopBlock.create(nonSolidTallPlant(plant), plant.transform(), Direction.UP, BodyPlantBlock.TWISTING_THIN_SHAPE, TFCBlockStateProperties.SALT_WATER))),
         KELP_TREE((plant, type) -> KelpTreeBlock.create(kelp(plant), TFCBlockStateProperties.SALT_WATER)),
-        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), transform(plant))),
+        KELP_TREE_FLOWER((plant, type) -> KelpTreeFlowerBlock.create(kelp(plant), plant.transform())),
         FLOATING((plant, type) -> FloatingWaterPlantBlock.create(plant, TFCFluids.SALT_WATER.source(), nonSolid(plant)), WaterLilyBlockItem::new),
         FLOATING_FRESH((plant, type) -> FloatingWaterPlantBlock.create(plant, () -> Fluids.WATER, nonSolid(plant)), WaterLilyBlockItem::new),
         TALL_WATER((plant, type) -> TallWaterPlantBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
@@ -291,32 +289,27 @@ public enum Plant implements IPlant
         GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant)));
 
-        private static Supplier<? extends Block> transform(Plant plant)
-        {
-            return TFCBlocks.PLANTS.get(plant.transform());
-        }
-
         /**
          * Default properties to avoid rewriting them out every time
          */
         private static BlockBehaviour.Properties solid()
         {
-            return Block.Properties.of(Material.REPLACEABLE_PLANT).noOcclusion().strength(0.25f).sound(SoundType.GRASS).randomTicks();
+            return Block.Properties.of(Material.REPLACEABLE_PLANT).noOcclusion().sound(SoundType.GRASS).randomTicks();
         }
 
         private static BlockBehaviour.Properties nonSolid(Plant plant)
         {
-            return solid().speedFactor(plant.speedFactor).noCollission();
+            return solid().instabreak().speedFactor(plant.speedFactor).noCollission();
         }
 
         private static BlockBehaviour.Properties solidTallPlant()
         {
-            return BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().instabreak().sound(SoundType.WEEPING_VINES);
+            return BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.PLANT).randomTicks().sound(SoundType.WEEPING_VINES);
         }
 
         private static BlockBehaviour.Properties nonSolidTallPlant(Plant plant)
         {
-            return solidTallPlant().noCollission().speedFactor(plant.speedFactor);
+            return solidTallPlant().instabreak().noCollission().speedFactor(plant.speedFactor);
         }
 
         private static BlockBehaviour.Properties kelp(Plant plant)
@@ -327,31 +320,6 @@ public enum Plant implements IPlant
         private static ExtendedProperties fire(BlockBehaviour.Properties properties)
         {
             return ExtendedProperties.of(properties).flammable(60, 30);
-        }
-
-        private static VoxelShape getBodyShape()
-        {
-            return Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
-        }
-
-        private static VoxelShape getThinBodyShape()
-        {
-            return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 16.0D, 11.0D);
-        }
-
-        private static VoxelShape getWeepingShape()
-        {
-            return Block.box(4.0D, 9.0D, 4.0D, 12.0D, 16.0D, 12.0D);
-        }
-
-        private static VoxelShape getTwistingShape()
-        {
-            return Block.box(4.0D, 0.0D, 4.0D, 12.0D, 15.0D, 12.0D);
-        }
-
-        private static VoxelShape getTwistingThinShape()
-        {
-            return Block.box(5.0D, 0.0D, 5.0D, 11.0D, 12.0D, 11.0D);
         }
 
         private final BiFunction<Plant, BlockType, ? extends Block> factory;

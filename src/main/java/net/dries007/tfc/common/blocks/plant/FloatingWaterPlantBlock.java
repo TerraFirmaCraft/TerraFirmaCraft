@@ -23,17 +23,18 @@ import net.minecraft.server.level.ServerLevel;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class FloatingWaterPlantBlock extends PlantBlock
 {
     protected static final VoxelShape SHAPE = Block.box(1.0D, 1.0D, 1.0D, 15.0D, 1.5D, 15.0D);
 
-    public static FloatingWaterPlantBlock create(IPlant plant, Supplier<? extends Fluid> fluid, Properties properties)
+    public static FloatingWaterPlantBlock create(RegistryPlant plant, Supplier<? extends Fluid> fluid, Properties properties)
     {
         return new FloatingWaterPlantBlock(ExtendedProperties.of(properties), fluid)
         {
             @Override
-            public IPlant getPlant()
+            public RegistryPlant getPlant()
             {
                 return plant;
             }

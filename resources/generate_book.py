@@ -42,7 +42,7 @@ This enables hot reloading of book content and assets.
     /give @p patchouli:guide_book{"patchouli:book":"tfc:field_guide"}  // This is the TFC book, used by the inventory screen
     /give @p patchouli:guide_book{"patchouli:book":"patchouli:field_guide"} // This it the Patchouli namespaced book, which is hot reloadable. It is loaded from /.minecraft/patchouli_books/
 4. The latter book can be hot reloaded at any time:
-    4.1. Run generate_book.py with the above environment varialbe
+    4.1. Run generate_book.py with the above environment variable
     4.2. While in creative, go to the book main landing page, and shift-right-click the little pen/pencil icon.
 
 Reloading assets - tips for creating a custom resource pack. The following command just zips up two files and places the zip in the resource pack directory, ready to be enabled:
@@ -63,18 +63,19 @@ In addition, here's some useful things for dev work, and also making standardize
 
 import os
 
-from typing import NamedTuple, Tuple, List, Mapping
 from argparse import ArgumentParser
 
 from mcresources import ResourceManager, utils
-from mcresources.type_definitions import JsonObject, ResourceIdentifier, ResourceLocation
+from mcresources.type_definitions import JsonObject, ResourceIdentifier
 
-from constants import CROPS, ROCK_CATEGORIES, METALS
+from constants import CROPS, METALS
+from patchouli import *
 from i18n import I18n
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
 TOOL_METALS = [key for key, val in METALS.items() if 'tool' in val.types]
+
 
 class LocalInstance:
     INSTANCE_DIR = os.getenv('LOCAL_MINECRAFT_INSTANCE')  # The location of a local .minecraft directory, for testing in external minecraft instance (as hot reloading works much better)
@@ -132,6 +133,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # Previews of most/all biomes in a showcase mode
             text('The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found.'),
             text('The next few pages show a few (but not all) of the biomes that you might find in the world.'),
+            page_break(),
             text('Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or they may be forested.', title='Plains'),
             image('tfc:textures/gui/book/biomes/plains.png', text_contents='A Plains.').anchor('plains'),
             text('Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.', title='Hills & Rolling Hills').anchor('hills'),
@@ -169,11 +171,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # Explanation of volcanoes with pictures and how to find them, and what resources they hold in fissures
             # Hot springs, empty hot springs, and what resources they hold
             text('The world of TerraFirmaCraft is formed by the movement of $(l:https://en.wikipedia.org/wiki/Plate_tectonics)plate tectonics$(), and some of that is still visible in the ground around you. By pressing $(item)$(k:key.inventory)$(), and clicking on the $(thing)Climate$() tab, the current tectonic area will be listed under $(thing)Region$(). There are several regions, and they will influence what kinds of biomes, and also what kind of features are present in the area.'),
-            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:the_world/biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:the_world/biomes#lowlands)Lowlands$(), $(l:the_world/biomes#low_canyons)Low Canyons$(), or $(l:biomes#plains)Plains$() are common.'),
+            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:the_world/biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:the_world/biomes#lowlands)Lowlands$(), $(l:the_world/biomes#low_canyons)Low Canyons$(), or $(l:the_world/biomes#plains)Plains$() are common.'),
             text('$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with $(l:the_world/biomes#hills)Rolling Hills$(), $(l:the_world/biomes#plateau)Plateaus$(), and $(l:the_world/biomes#mountains)Old Mountains$().$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other.'),
             text('It can generate rare volcanism and some volcanic mountains.$(br2)$(bold)Oceanic Subduction$()$(br)A subduction zone is where one plate slips under the other. In the ocean, this can form lots of volcanic mountains, island chains, and deep ocean ridges.$(br2)$(bold)Continental Subduction$()$(br)A continental subduction zone is a area of frequent volcanic activity, and huge coastal mountains. Active hot springs and volcanoes are common.'),
             text('$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of $(l:the_world/biomes#canyons)Canyons$() biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall $(l:the_world/biomes#mountains)Mountains$() and $(l:the_world/biomes#plateau)Plateaus$().'),
             text('$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates.'),
+            page_break(),
             text('The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.', title='Rock Layers'),
             text('Rocks come in four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine at what depth the different rock layers can be found. A listing of all the different rock types and what category they belong to can be found on the following pages.'),
             text('$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They can be found in $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk', title='Sedimentary').anchor('sedimentary'),
@@ -185,6 +188,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for.'),
             text('In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, and where to find them.'),
             # === Metal Ores Listing ===
+            page_break(),
             text('Native Copper is a ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Native Copper').link(*['tfc:ore/%s_%s' % (g, 'native_copper') for g in GRADES_ALL]).anchor('native_copper'),
             multimultiblock('Native Copper Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_copper', 'dacite')) for g in GRADES]),
             text('Native Gold is a ore of $(thing)Gold$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
@@ -250,17 +254,19 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image('tfc:textures/gui/book/gui/calendar.png', text_contents='The Calendar Screen', border=False),
             text('There are seasons, and the weather and climate will change along with them! There are four seasons in TerraFirmaCraft, each divided up into $(thing)Early$(), $(thing)Mid$() and $(thing)Late$() months. The four seasons are:$(br)$(li)$(bold)Spring$(): March - May$(li)$(bold)Summer$(): June - August$(li)$(bold)Autumn$(): September - November$(li)$(bold)Winter$(): December - February'),
             text('The current season can influence the temperature of the area, the precipitation (if it will rain or snow), among other things. Pay attention to the calendar tab, it will be useful!$(br2)Now, onto the climate...'),
+            page_break(),
             text('Another tab on the main inventory screen is the $(thing)Climate$() screen. This one shows information about the current location$(br2)The first line shows the overall $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)Climate$() .$(br2)The second line shows the $(l:the_world/geology)Geologic Province$().$(br2)The third line shows the $(thing)Average Annual Temperature$().', title='Climate').anchor('climate'),
             image('tfc:textures/gui/book/gui/climate.png', text_contents='The Climate Screen', border=False),
             text('Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can also be different day-to-day, and even hourly.').anchor('temperature'),
             text('The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more.'),
+            page_break(),
             text('Rainfall is another climate value that can vary depending on where you are in the world. The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm. Rainfall affects the types of flora that are found in an area, and also the types of soil, from sand and cacti, to loam, to silt and kapok trees.', title='Rainfall').anchor('rainfall'),
             text('Rainfall is also important as it affects what things can be grown in an area. Rainfall is one of the main contributors to $(l:food/hydration)Hydration$(), which is an exact measure of how wet the soil is in a given location, and is used by $(l:food/crops)Crops$(), $(l:the_world/fruit_trees)Fruit Trees$(), and $(l:the_world/berry_bushes)Berry Bushes$() to determine if they can grow.'),
         )),
         entry('flora', 'Flora', 'tfc:plant/goldenrod', pages=(
             # Overview of various plants
             # Mention some usages (dyes)
-            text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft. Some would say over nine thousand. Those people would be wrong.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye.'),
+            text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye.'),
             block_spotlight('Standard', 'Standard plants are like small flowers. They grow on grass, dirt, and farmland.', 'tfc:plant/anthurium'),
             block_spotlight('Dry', 'Dry plants are like standard plants, but they can grow on sand. These generally only spawn in areas with low rainfall.', 'tfc:plant/sagebrush'),
             two_tall_block_spotlight('Cacti', 'Cacti can grow two blocks high, and they will damage you!', 'tfc:plant/barrel_cactus[part=lower]', 'tfc:plant/barrel_cactus[part=upper]'),
@@ -279,21 +285,44 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             two_tall_block_spotlight('Floating', 'Floating plants sit on top of the water. Boats will break them on contact.', 'minecraft:water', 'tfc:plant/duckweed'),
             two_tall_block_spotlight('Kelp', 'Kelp are twisting vines that grow underwater.', 'tfc:plant/winged_kelp_plant[fluid=salt_water]', 'tfc:plant/winged_kelp[fluid=salt_water]'),
             two_tall_block_spotlight('Tree Kelp', 'Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().', 'tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]', 'tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]'),  # note: anyone want to make a nice multiblock for this?
+            empty_last_page(),
         )),
         entry('wild_crops', 'Wild Crops', 'tfc:wild_crop/wheat', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
             text('$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$().'),
             block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:food/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat'),
             text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:food/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated.'),
+            multimultiblock('All different varieties of wild crop', *(
+                block_spotlight('', '', 'tfc:wild_crop/barley'),
+                block_spotlight('', '', 'tfc:wild_crop/oat'),
+                block_spotlight('', '', 'tfc:wild_crop/rye'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/maize[part=bottom]', 'tfc:wild_crop/maize[part=top]'),
+                block_spotlight('', '', 'tfc:wild_crop/barley'),
+                block_spotlight('', '', 'tfc:wild_crop/rice'),  # todo: change to waterlogged when the rice block itself is capable of that
+                block_spotlight('', '', 'tfc:wild_crop/beet'),
+                block_spotlight('', '', 'tfc:wild_crop/cabbage'),
+                block_spotlight('', '', 'tfc:wild_crop/carrot'),
+                block_spotlight('', '', 'tfc:wild_crop/garlic'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/green_bean[part=bottom]', 'tfc:wild_crop/green_bean[part=top]'),
+                block_spotlight('', '', 'tfc:wild_crop/potato'),
+                block_spotlight('', '', 'tfc:wild_crop/onion'),
+                block_spotlight('', '', 'tfc:wild_crop/soybean'),
+                block_spotlight('', '', 'tfc:wild_crop/squash'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/sugarcane[part=bottom]', 'tfc:wild_crop/sugarcane[part=top]'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/tomato[part=bottom]', 'tfc:wild_crop/tomato[part=top]'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
+            ))
         )),
         entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
             image('tfc:textures/gui/book/wip.png'),
+            empty_last_page(),
             # Berry bushes - how to find them, how to harvest and move them
             # todo: info about berry bushes
             # todo: listing of various berry bushes
         )),
         entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
             image('tfc:textures/gui/book/wip.png'),
+            empty_last_page(),
             # Fruit trees - how to find them, how to harvest and move them
             # todo: info about fruit trees
             # todo: listing of various fruit trees
@@ -301,38 +330,46 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
             text('The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page.'),
-            text('$(thing)Predators$() are animals that can attack the player. They are either $(thing)Nocturnal$(), only hunting at night, or $(thing)Diurnal$(), only hunting during the day. When they get a kill, they will not hunt for hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home.'),
-            entity('tfc:polar_bear', 'The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm.', 'Polar Bear'),
-            entity('tfc:grizzly_bear', 'The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$().', 'Grizzly Bear'),
-            entity('tfc:black_bear', 'The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$().', 'Black Bear'),
-            entity('tfc:cougar', 'The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Cougar'),
-            entity('tfc:panther', 'The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Panther'),
-            entity('tfc:lion', 'The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm.', 'Lion'),
-            entity('tfc:sabertooth', 'The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm.', 'Sabertooth'),
-            text('$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.'),
+            text('Animals can be grouped into a couple different categories: $(l:the_world/wild_animals#predators)Predators$(), $(l:the_world/wild_animals#prey)Prey$(), and $(l:the_world/wild_animals#aquatic)Aquatic$() animals.$(br2)The next few pages will detail each of these categories of animals.'),
+            page_break(),
+            text('$(thing)Predators$() are animals that can attack the player. They are either $(thing)Nocturnal$(), only hunting at night, or $(thing)Diurnal$(), only hunting during the day. Predators can be neutral or hostile, depending on if they have killed a target recently. Predators have a home territory that they will defend - if you run far enough away, the predator will stop chasing and return home.', title='Predators').anchor('predators'),
+            entity('tfc:polar_bear', 'The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm.', 'Polar Bear', 0.55),
+            entity('tfc:grizzly_bear', 'The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$().', 'Grizzly Bear', 0.55),
+            entity('tfc:black_bear', 'The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$().', 'Black Bear', 0.55),
+            entity('tfc:cougar', 'The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Cougar', 0.6),
+            entity('tfc:panther', 'The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Panther', 0.6),
+            entity('tfc:lion', 'The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm.', 'Lion', 0.55),
+            entity('tfc:sabertooth', 'The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm.', 'Sabertooth', 0.6),
+            page_break(),
+            text('$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.', title='Prey').anchor('prey'),
             entity('tfc:boar', 'The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.', 'Boar'),
             entity('tfc:rabbit', 'The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn.', 'Rabbit'),
             entity('tfc:fox', 'The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.', 'Fox'),
+            page_break(),
+            text('$(thing)Aquatic Animals$() are a broad category which covers a number of different behaviors. They may be $(thing)Shore Dwellers$(), $(thing)Fish$(), $(thing)Shellfish$(), or $(thing)Large Aquatic Creatures$()', title='Aquatic Animals').anchor('aquatic'),
             text('$(thing)Shore Animals$() only spawn on sea shores and spend some of their day swimming, and some walking on the beach. They are curious creatures, and will follow the player around, but cannot be tamed.'),
             entity('tfc:penguin', 'The penguin spawns in only the coldest beaches, with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm.', 'Penguin'),
             entity('tfc:turtle', 'The sea turtle likes warm water. It spawns in $(l:the_world/climate#temperature)temperature$() of at least 21°C and $(l:the_world/climate#rainfall)rainfall$() of at least 250mm.', 'Sea Turtle'),
-            text('$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes.'),
+            page_break(),
+            text('$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes.', title='Fish'),
             entity('tfc:cod', 'Cod prefer colder oceans, $(l:the_world/climate#temperature)temperature$() at most 18°C. They can be fished.', 'Cod'),
             entity('tfc:pufferfish', 'Pufferfish live in any ocean with at least a $(l:the_world/climate#temperature)temperature$() of 10°C.', 'Pufferfish'),
             entity('tfc:jellyfish', 'Jellyfish live in warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C.', 'Jellyfish'),
             entity('tfc:tropical_fish', 'Tropical fish prefer warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C.', 'Tropical Fish'),
             entity('tfc:salmon', 'Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C.'),
             entity('tfc:bluegill', 'Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C.'),
-            text('$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish.').anchor('shellfish'),
+            text('$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish.', title='Shellfish').anchor('shellfish'),
             entity('tfc:isopod', 'Isopods spawn in deeper sections of oceans of $(l:the_world/climate#temperature)temperature$() at most 14°C.', 'Isopod'),
             entity('tfc:lobster', 'Lobster spawn in any ocean that is at most of a $(l:the_world/climate#temperature)temperature$() of 21°C.', 'Lobster'),
             entity('tfc:crayfish', 'Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:the_world/climate#temperature)temperature$() of at least 5°C and a $(l:the_world/climate#rainfall)rainfall$() of at least 125mm.', 'Crayfish'),
             entity('tfc:horseshoe_crab', 'Horseshoe crabs spawn in oceans of moderate climate, $(l:the_world/climate#temperature)temperature$() between 10 and 21°C and with a $(l:the_world/climate#rainfall)rainfall$() of at most 400mm.', 'Horseshoe Crab'),
-            text('$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.'),
+            page_break(),
+            text('$(thing)Large Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.', title='Large Water Creatures'),
             entity('tfc:orca', 'Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm.', 'Orca', scale=0.25),
             entity('tfc:dolphin', 'Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm.', 'Dolphin', scale=0.4),
             entity('tfc:manatee', 'Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm.', 'Manatee', scale=0.25),
             text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),  # todo: squid renderer does not work without proper context...
+            empty_last_page(),
         ))
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
     ))
@@ -543,6 +580,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             heat_recipe('tfc:heating/ceramic_pan', 'Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite.'),
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
             text('Then, you can begin panning!$(br2)$(bold)1.$() With the pan in hand, $(thing)use$() it on the ore deposit block.$(br2)$(bold)2.$() While standing in water with the pan in your hand, hold down $(item)$(k:key.use)$(), and you will start panning.$(br2)$(bold)3.$() After a few moments, if you are lucky, you may be rewarded with a small piece of ore in your inventory.'),
+            empty_last_page(),  # todo: image of panning (in the player's hand) to replace this page
         )),
         entry('heating', 'Heating', 'tfc:firestarter', pages=(
             text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
@@ -575,6 +613,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Getting toasty in here'),
             block_spotlight('A Crucible', '', 'tfc:crucible'),
             image('tfc:textures/gui/book/wip.png'),
+            empty_last_page(),
             # todo: crucible and advanced alloying
         )),
         entry('grill', 'Firepit And Grill', 'tfc:grill', pages=(
@@ -603,6 +642,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         )),
         entry('support_beams', 'Support Beams', 'tfc:wood/support/oak', pages=(
             image('tfc:textures/gui/book/wip.png'),
+            empty_last_page(),
             # todo: supports, more on collapses?
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
@@ -632,6 +672,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image('tfc:textures/gui/book/wip.png'),
             text('Blast Furnaces are cool yo!'),
             multiblock('A Blast Furnace', '', True, multiblock_id='tfc:blast_furnace'),
+            empty_last_page(),
         )),
         entry('anvils', 'Anvils', 'tfc:metal/anvil/copper', pages=(
             text('Anvils yay!'),
@@ -641,6 +682,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             empty(),  # todo: working tutorial, anvil GUI
             text('', title='Welding').anchor('welding'),
             empty(),  # todo: welding tutorial
+            empty_last_page(),
         )),
         entry('fire_clay', 'Fire Clay', 'tfc:fire_clay', pages=(
             text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay, that has better heat resistance. It is used to make things that have to get very hot!'),
@@ -649,6 +691,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.')
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
+            # todo: add a bit of text here to add one page at the start
             crafting('tfc:crafting/quern', text_contents='The $(thing)Quern$() is a device for grinding items into powder. The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks.'),
             crafting('tfc:crafting/handstone', text_contents='The quern needs a $(thing)Handstone$() to operate.'),
             image('tfc:textures/gui/book/tutorial/quern_empty.png', text_contents='Select the quern at the top of the block and $(item)$(k:key.use)$() to place the handstone.'),
@@ -660,13 +703,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             quern_recipe('tfc:quern/emerald', '$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder.'),
             quern_recipe('tfc:quern/barley_grain', '$(thing)Flour$() is also obtainable from the quern.'),
             quern_recipe('tfc:quern/fluxstone', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),
+            empty_last_page(),
         )),
         entry('fishing', 'Fishing', 'tfc:metal/fishing_rod/copper', pages=(
+            # todo: add a text page here to start
             anvil_recipe('tfc:anvil/bismuth_bronze_fish_hook', 'Fishing is a little different in TFC. First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
             crafting('tfc:crafting/metal/fishing_rod/bismuth_bronze', text_contents='The fishing rod is crafted with a fishing hook.', title='Fishing Rod'),
             text('Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$().'),
             text('To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then, $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool.'),
             image('tfc:textures/gui/book/tutorial/fishing.png', text_contents='The fishing bar replaces the experience bar when active.'),
+            empty_last_page(),
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
@@ -681,11 +727,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', p=0.5)
         )),
         entry('flux', 'Flux', 'tfc:powder/flux', pages=(
-            text('Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$(), and is also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().'),
-            quern_recipe('tfc:quern/borax', 'The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()'),
-            quern_recipe('tfc:quern/fluxstone', 'The second way of getting flux is through $(thing)Fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$()'),
+            text('Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$(), and is also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().$(br2)Flux can be obtained in a number of ways, one of which is from it\'s native ore, $(l:the_world/ores_and_minerals#borax)Borax$().'),
+            quern_recipe('tfc:quern/fluxstone', 'Some rocks - $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$() - can also be used as flux, after being ground in a $(l:mechanics/quern)Quern$(). Other items, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$(), can all also be used to create flux.'),
         )),
         entry('lamps', 'Lamps and Candles', 'tfc:metal/lamp/bismuth_bronze', pages=(
+            # add a text page at the start
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
             text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.'),
@@ -694,7 +740,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.').anchor('tallow'),
             block_spotlight('Candles', text_content='The candle is made from sealing $(thing)String$() in a bucket of $(thing)Tallow$().', block='tfc:candle[candles=3,lit=true]'),
             block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(thing)Blue Steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
-            anvil_recipe('tfc:anvil/black_steel_chain', '$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().')
+            anvil_recipe('tfc:anvil/black_steel_chain', '$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().'),
+            empty_last_page(),
         )),
         entry('barrels', 'Barrels', 'tfc:wood/barrel/palm', pages=(
             text('The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(thing)bucket$() or $(thing)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works.'),
@@ -722,6 +769,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Are you salty this page is blank?', title='Salting').anchor('salting'),  # todo: salting
             image('tfc:textures/gui/book/wip.png'),
             text('vinegar').anchor('vinegar'),# todo: vinegar
+            empty_last_page(),
         )),
         entry('hydration', 'Keeping Hydrated', 'tfc:wooden_bucket{tank:{"Amount":100,"FluidName":"minecraft:water"}}', pages=(
             text('One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground may have some latent moisture, however this may not be enough, especially for particularly water-intensive crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand.'),
@@ -734,8 +782,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on.'),
             text('Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.'),
             text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
-            item_spotlight('tfc:compost', 'Fertilizer', text_contents='To add nutrients to soil, try a $(l:mechanics/fertilizers)Fertilizer$(). See that page for more information on how they work and how to get them.'),
             # Listing of all crops, their growth conditions, and how to grow them
+            page_break(),
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
             text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland to be grown, and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),
@@ -802,328 +850,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:food/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
-
-
-# ==================== Book Resource Generation API Functions =============================
-
-
-class Component(NamedTuple):
-    type: str
-    x: int
-    y: int
-    data: JsonObject
-
-
-class Page(NamedTuple):
-    type: str
-    data: JsonObject
-    custom: bool  # If this page is a custom template.
-    anchor_id: str | None  # Anchor for referencing from other pages
-    link_ids: List[str]  # Items that are linked to this page
-    translation_keys: Tuple[str, ...]  # Keys into 'data' that need to be passed through the Translation
-
-    def anchor(self, anchor_id: str) -> 'Page':
-        return Page(self.type, self.data, self.custom, anchor_id, self.link_ids, self.translation_keys)
-
-    def link(self, *link_ids: str) -> 'Page':
-        for link_id in link_ids:
-            if link_id.startswith('#'):  # Patchouli format for linking tags
-                link_id = 'tag:' + link_id[1:]
-            self.link_ids.append(link_id)
-        return self
-
-    def translate(self, i18n: I18n):
-        for key in self.translation_keys:
-            if key in self.data and self.data[key] is not None:
-                self.data[key] = i18n.translate(self.data[key])
-
-
-class Entry(NamedTuple):
-    entry_id: str
-    name: str
-    icon: str
-    pages: Tuple[Page]
-    advancement: str | None
-
-
-class Book:
-
-    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject, i18n: I18n, local_instance: bool):
-        self.rm: ResourceManager = rm
-        self.root_name = root_name
-        self.category_count = 0
-        self.i18n = i18n
-        self.local_instance = local_instance
-
-        if self.i18n.lang == 'en_us':  # Only generate the book.json if we're in the root language
-            rm.data(('patchouli_books', self.root_name, 'book'), {
-                'name': 'tfc.field_guide.book_name',
-                'landing_text': 'tfc.field_guide.book_landing_text',
-                'subtitle': '${version}',
-                # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
-                # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
-                'dont_generate_book': False,
-                'show_progress': False,
-                'macros': macros
-            })
-
-    def template(self, template_id: str, *components: Component):
-        self.rm.data(('patchouli_books', self.root_name, 'en_us', 'templates', template_id), {
-            'components': [{
-                'type': c.type, 'x': c.x, 'y': c.y, **c.data
-            } for c in components]
-        })
-
-    def category(self, category_id: str, name: str, description: str, icon: str, parent: str | None = None, is_sorted: bool = False, entries: Tuple[Entry, ...] = ()):
-        """
-        :param category_id: The id of this category.
-        :param name: The name of this category.
-        :param description: The description for this category. This displays in the category's main page, and can be formatted.
-        :param icon: The icon for this category. This can either be an ItemStack String, if you want an item to be the icon, or a resource location pointing to a square texture. If you want to use a resource location, make sure to end it with .png.
-        :param parent: The parent category to this one. If this is a sub-category, simply put the name of the category this is a child to here. If not, don't define it. This should be fully-qualified and of the form domain:name where domain is the same as the domain of your Book ID.
-        :param is_sorted: If the entries within this category are sorted
-        :param entries: A list of entries (call entry() for each)
-
-        https://vazkiimods.github.io/Patchouli/docs/reference/category-json/
-        """
-        self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'categories', category_id), {
-            'name': self.i18n.translate(name),
-            'description': self.i18n.translate(description),
-            'icon': icon,
-            'parent': parent,
-            'sortnum': self.category_count
-        })
-        self.category_count += 1
-
-        category_res: ResourceLocation = utils.resource_location(self.rm.domain, category_id)
-
-        assert not isinstance(entries, Entry), 'One entry in singleton entries, did you forget a comma after entry(), ?\n  at: %s' % str(entries)
-        for i, e in enumerate(entries):
-            assert not isinstance(e.pages, Page), 'One entry in singleton pages, did you forget a comma after page(), ?\n  at: %s' % str(e.pages)
-
-            extra_recipe_mappings = {}
-            for index, p in enumerate(e.pages):
-                for link in p.link_ids:
-                    extra_recipe_mappings[link] = index
-            if not extra_recipe_mappings:  # Exclude if there's nothing here
-                extra_recipe_mappings = None
-
-            # Validate no duplicate anchors or links
-            seen_anchors = set()
-            seen_links = set()
-            for p in e.pages:
-                if p.anchor_id:
-                    assert p.anchor_id not in seen_anchors, 'Duplicate anchor "%s" on page %s' % (p.anchor_id, p)
-                    seen_anchors.add(p.anchor_id)
-                for link in p.link_ids:
-                    assert link not in seen_links, 'Duplicate link "%s" on page %s' % (link, p)
-                    seen_links.add(link)
-
-            # Separately translate each page
-            entry_name = self.i18n.translate(e.name)
-            for p in e.pages:
-                p.translate(self.i18n)
-
-            self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'entries', category_res.path, e.entry_id), {
-                'name': entry_name,
-                'category': self.prefix(category_res.path),
-                'icon': e.icon,
-                'pages': [{
-                    'type': self.prefix(p.type) if p.custom else p.type,
-                    'anchor': p.anchor_id,
-                    **p.data
-                } for p in e.pages],
-                'advancement': e.advancement,
-                'read_by_default': True,
-                'sortnum': i if is_sorted else None,
-                'extra_recipe_mappings': extra_recipe_mappings
-            })
-
-    def prefix(self, path: str) -> str:
-        """ In a local instance, domains are all under patchouli, otherwise under tfc """
-        return ('patchouli' if self.local_instance else 'tfc') + ':' + path
-
-
-def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, pages: Tuple[Page, ...] = ()) -> Entry:
-    """
-    :param entry_id: The id of this entry.
-    :param name: The name of this entry.
-    :param icon: The icon for this entry. This can either be an ItemStack String, if you want an item to be the icon, or a resource location pointing to a square texture. If you want to use a resource location, make sure to end it with .png
-    :param advancement: The name of the advancement you want this entry to be locked behind. See Locking Content with Advancements for more info on locking content.
-    :param pages: The array of pages for this entry.
-
-    https://vazkiimods.github.io/Patchouli/docs/reference/entry-json/
-    """
-    return Entry(entry_id, name, icon, pages, advancement)
-
-
-def text(text_contents: str, title: str | None = None) -> Page:
-    """
-    Text pages should always be the first page in any entry. If a text page is the first page in an entry, it'll display the header you see in the left page. For all other pages, it'll display as you can see in the right one.
-    :param text_contents: The text to display on this page. This text can be formatted.
-    :param title An optional title to display at the top of the page. If you set this, the rest of the text will be shifted down a bit. You can't use "title" in the first page of an entry.
-    :return:
-    """
-    return page('patchouli:text', {'text': text_contents, 'title': title}, translation_keys=('text', 'title'))
-
-
-def image(*images: str, text_contents: str | None = None, border: bool = True) -> Page:
-    """
-    :param images: An array with images to display. Images should be in resource location format. For example, the value botania:textures/gui/entries/banners.png will point to /assets/botania/textures/gui/entries/banners.png in the resource pack. For best results, make your image file 256 by 256, but only place content in the upper left 200 by 200 area. This area is then rendered at a 0.5x scale compared to the rest of the book in pixel size.
-    If there's more than one image in this array, arrow buttons are shown like in the picture, allowing the viewer to switch between images.
-    :param text_contents: The text to display on this page, under the image. This text can be formatted.
-    :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
-    """
-    return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, translation_keys=('text',))
-
-def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = 0.7, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
-    """
-    :param entity_type: The entity type
-    :param text_contents: The text to display under the entity display
-    :param title: The title of the page
-    :param scale: The scale of the entity. Defaults to 1
-    :param offset: The vertical offset of the entity renderer. Defaults to 0
-    :param rotate: Whether the entity should rotate in the view. Defaults to true.
-    :param default_rotation: The rotation at which the entity is displayed. Only used if rotate is False.
-    """
-    return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents})
-
-def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:
-    """
-    :param first_recipe: The ID of the first recipe you want to show.
-    :param second_recipe: The ID of the second recipe you want to show. Displaying two recipes is optional.
-    :param title: The title of the page, to be displayed above both recipes. This is optional, but if you include it, only this title will be displayed, rather than the names of both recipe output items.
-    :param text_contents: The text to display on this page, under the recipes. This text can be formatted.
-    Note: the text will not display if there are two recipes with two different outputs, and "title" is not set. This is the case of the image displayed, in which both recipes have the output names displayed, and there's no space for text.
-    """
-    return page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents}, translation_keys=('text', 'title'))
-
-
-# todo: other default page types: (smelting, entity, link) as we need them
-
-def item_spotlight(item: str, title: str | None = None, link_recipe: bool = False, text_contents: str | None = None) -> Page:
-    """
-    :param item: An ItemStack String representing the item to be spotlighted.
-    :param title: A custom title to show instead on top of the item. If this is empty or not defined, it'll use the item's name instead.
-    :param link_recipe: Defaults to false. Set this to true to mark this spotlight page as the "recipe page" for the item being spotlighted. If you do so, when looking at pages that display the item, you can shift-click the item to be taken to this page. Highly recommended if the spotlight page has instructions on how to create an item by non-conventional means.
-    :param text_contents: The text to display on this page, under the item. This text can be formatted.
-    """
-    return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, translation_keys=('title', 'text'))
-
-
-def block_spotlight(title: str, text_content: str, block: str, lower: str | None = None) -> Page:
-    """ A shortcut for making a single block multiblock that is meant to act the same as item_spotlight() but for blocks """
-    return multiblock(title, text_content, False, pattern=(('X',), ('0',)), mapping={'X': block, '0': lower})
-
-
-def two_tall_block_spotlight(title: str, text_content: str, lower: str, upper: str) -> Page:
-    """ A shortcut for making a single block multiblock for a double tall block, such as crops or tall grass """
-    return multiblock(title, text_content, False, pattern=(('X',), ('Y',), ('0',)), mapping={'X': upper, 'Y': lower})
-
-def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> Page:
-    """
-    Page type: "patchouli:multiblock"
-
-    :param title: The name of the multiblock you're displaying. Shows as a header above the multiblock display.
-    :param text_content: The text to display on this page, under the multiblock. This text can be formatted.
-    :param enable_visualize: Set this to false to disable the "Visualize" button.
-    :param pattern: Terse explanation of the format: the pattern attribute is an array of array of strings. It is indexed in the following order: y (top to bottom), x (west to east), then z (north to south).
-    :param mapping: Patchouli already provides built in characters for Air and (Any Block), which are respectively a space, and an underscore, so we don't have to account for those. Patchouli uses the same vanilla logic to parse blockstate predicate as, for example, the /execute if block ~ ~ ~ <PREDICATE> command. This means you can use block ID's, tags, as well as specify blockstate properties you want to constraint. Therefore, we have:
-    :param offset: An int array of 3 values ([X, Y, Z]) to offset the multiblock relative to its center.
-    :param multiblock_id: For modders only. The ID of the multiblock you want to display.
-    """
-    data = {'name': title, 'text': text_content, 'enable_visualize': enable_visualize}
-    if multiblock_id is not None:
-        return page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data}, translation_keys=('name', 'text'))
-    elif pattern is not None and mapping is not None:
-        return page('patchouli:multiblock', {'multiblock': {
-            'pattern': pattern,
-            'mapping': mapping,
-            'offset': offset,
-        }, **data}, translation_keys=('name', 'text'))
-    else:
-        raise ValueError('multiblock page must have either \'multiblock\' or \'pattern\' and \'mapping\' entries')
-
-
-def empty() -> Page:
-    return page('patchouli:empty', {})
-
-
-# ==============
-# TFC Page Types
-# ==============
-
-def multimultiblock(text_content: str, *pages) -> Page:
-    return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
-
-
-def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:
-    return rock_knapping(*[recipe_with_category_format % c for c in ROCK_CATEGORIES], text_content=text_content)
-
-
-def rock_knapping(*recipes: str, text_content: str) -> Page:
-    return page('rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def leather_knapping(recipe: str, text_content: str) -> Page:
-    return page('leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def fire_clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def heat_recipe(recipe: str, text_content: str) -> Page:
-    return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def quern_recipe(recipe: str, text_content: str) -> Page:
-    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
-
-
-def anvil_recipe(recipe: str, text_content: str) -> Page:
-    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
-
-
-def alloy_recipe(title: str, ingot: str, *components: Tuple[str, int, int], text_content: str) -> Page:
-    recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (lo, hi, alloy) for (alloy, lo, hi) in components])
-    return item_spotlight(ingot, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
-
-
-def fertilizer(item: str, text_contents: str, n: float = 0, p: float = 0, k: float = 0) -> Page:
-    text_contents += ' $(br)'
-    if n > 0:
-        text_contents += '$(li)$(b)Nitrogen: %d$()' % (n * 100)
-    if p > 0:
-        text_contents += '$(li)$(6)Phosphorous: %d$()' % (p * 100)
-    if k > 0:
-        text_contents += '$(li)$(d)Potassium: %d$()' % (k * 100)
-    return item_spotlight(item, text_contents=text_contents)
-
-def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:
-    return Page(page_type, page_data, custom, None, [], translation_keys)
-
-
-# Components
-
-def text_component(x: int, y: int) -> Component:
-    return Component('patchouli:text', x, y, {'text': '#text'})
-
-
-def header_component(x: int, y: int) -> Component:
-    return Component('patchouli:header', x, y, {'text': '#header'})
-
-
-def seperator_component(x: int, y: int) -> Component:
-    return Component('patchouli:separator', x, y, {})
-
-
-def custom_component(x: int, y: int, class_name: str, data: JsonObject) -> Component:
-    return Component('patchouli:custom', x, y, {'class': 'net.dries007.tfc.compat.patchouli.component.' + class_name, **data})
 
 
 if __name__ == '__main__':

@@ -35,9 +35,10 @@ localProperties.createNewFile()
 apply from: 'dev.gradle'
 
 // These properties can all be customized from dev.gradle
-def mappingsChannel = project.hasProperty('mappings_channel') ? mappings_channel : 'official'
-def mappingsVersion = project.hasProperty('mappings_version') ? mappings_version : minecraft_version
-def minifyResources = project.hasProperty("minify_resources") ? minify_resources : true
+String mappingsChannel = project.hasProperty('mappings_channel') ? mappings_channel : 'official'
+String mappingsVersion = project.hasProperty('mappings_version') ? mappings_version : minecraft_version
+boolean minifyResources = project.hasProperty("minify_resources") ? minify_resources : true
+boolean advancedClassRedef = project.hasProperty('use_advanced_class_redefinition') ? use_advanced_class_redefinition : false
 
 println "Using mappings: " + mappingsChannel + " / " + mappingsVersion
 
@@ -97,7 +98,10 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.enabledGameTestNamespaces', mod_id
-            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
+            jvmArgs('-ea', '-Xmx4G', '-Xms4G')
+            if (advancedClassRedef) {
+                jvmArg('-XX:+AllowEnhancedClassRedefinition')
+            }
 
             mods {
                 tfc {
@@ -114,7 +118,10 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.enabledGameTestNamespaces', mod_id
-            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
+            jvmArgs('-ea', '-Xmx4G', '-Xms4G')
+            if (advancedClassRedef) {
+                jvmArg('-XX:+AllowEnhancedClassRedefinition')
+            }
 
             mods {
                 tfc {
@@ -132,7 +139,10 @@ minecraft {
             property 'mixin.env.remapRefMap', 'true'
             property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.enabledGameTestNamespaces', mod_id
-            jvmArgs '-ea', '-Xmx4G', '-Xms4G'
+            jvmArgs('-ea', '-Xmx4G', '-Xms4G')
+            if (advancedClassRedef) {
+                jvmArg('-XX:+AllowEnhancedClassRedefinition')
+            }
 
             forceExit false
 

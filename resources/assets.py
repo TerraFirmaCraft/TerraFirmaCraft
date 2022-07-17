@@ -1408,12 +1408,18 @@ def generate(rm: ResourceManager):
     water_based_fluid(rm, 'salt_water')
     water_based_fluid(rm, 'spring_water')
 
+    cauldron(rm, 'salt water', 'salt_water')
+    cauldron(rm, 'spring water', 'spring_water')
+
     for fluid in SIMPLE_FLUIDS:
         water_based_fluid(rm, fluid)
+        cauldron(rm, fluid, fluid)
     for fluid in ALCOHOLS:
         water_based_fluid(rm, fluid)
+        cauldron(rm, fluid, fluid)
     for color in COLORS:
         water_based_fluid(rm, color + '_dye')
+        cauldron(rm, color + ' dye', color + '_dye')
 
     # River water, since it doesn't have a bucket
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
@@ -1434,6 +1440,7 @@ def generate(rm: ResourceManager):
             'fluid': 'tfc:metal/%s' % metal
         })
         item.with_lang(lang('molten %s bucket', metal))
+        cauldron(rm, 'molten %s' % metal, 'metal/%s' % metal, False)
 
     # Thin Spikes: Calcite + Icicles
     for variant, texture in (('calcite', 'tfc:block/calcite'), ('icicle', 'minecraft:block/ice')):
@@ -1481,6 +1488,21 @@ def water_based_fluid(rm: ResourceManager, name: str):
     })
     item.with_lang(lang('%s bucket', name))
     rm.lang('fluid.tfc.%s' % name, lang(name))
+
+
+def cauldron(rm: ResourceManager, name: str, fluid: str, water: bool = True):
+    block = rm.blockstate(('cauldron', fluid))
+    block.with_block_model({
+        'content': 'block/water_still' if water else 'tfc:block/molten_still',
+        'inside': 'block/cauldron_inner',
+        'particle': 'block/cauldron_side',
+        'top': 'block/cauldron_top',
+        'bottom': 'block/cauldron_bottom',
+        'side': 'block/cauldron_side'
+    }, parent='minecraft:block/template_cauldron_full')
+    block.with_block_loot('minecraft:cauldron')
+    block.with_lang(lang('%s cauldron', name))
+    block.with_tag('minecraft:mineable/pickaxe')
 
 
 def corals(rm: ResourceManager, color: str, dead: bool):

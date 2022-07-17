@@ -52,6 +52,7 @@ import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.util.CauldronInteractions;
 import net.dries007.tfc.util.DispenserBehaviors;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.InteractionManager;
@@ -155,6 +156,7 @@ public final class TerraFirmaCraft
             Faunas.registerSpawnPlacements();
             IBellowsConsumer.registerDefaultOffsets();
             FoodCapability.setCreativeTabsNonDecaying();
+            CauldronInteractions.registerCauldronInteractions();
         });
 
         PatchouliIntegration.registerMultiBlocks();

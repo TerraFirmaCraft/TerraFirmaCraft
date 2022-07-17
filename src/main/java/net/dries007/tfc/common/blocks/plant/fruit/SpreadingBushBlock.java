@@ -55,12 +55,6 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
     }
 
     @Override
-    protected int getDeathChance()
-    {
-        return 14;
-    }
-
-    @Override
     protected boolean mayPropagate(BlockState newState, Level level, BlockPos pos)
     {
         return newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0;
@@ -91,7 +85,6 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
                 if (level.isEmptyBlock(offsetPos))
                 {
                     level.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, offset).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
-                    level.getBlockEntity(offsetPos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * bush.getTicksSinceUpdate()));
                 }
             }
         }

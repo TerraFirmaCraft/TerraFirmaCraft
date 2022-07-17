@@ -45,13 +45,10 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
 
-    private final Supplier<ClimateRange> climateRange;
-
     public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange)
     {
-        super(properties, productItem, stages);
+        super(properties, climateRange, productItem, stages);
 
-        this.climateRange = climateRange;
         registerDefaultState(getStateDefinition().any().setValue(PERSISTENT, false).setValue(LIFECYCLE, Lifecycle.HEALTHY));
     }
 
@@ -139,7 +136,6 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
                     level.setBlock(pos, newState, 3);
                 }
             }
-            leaves.afterUpdate();
         });
     }
 

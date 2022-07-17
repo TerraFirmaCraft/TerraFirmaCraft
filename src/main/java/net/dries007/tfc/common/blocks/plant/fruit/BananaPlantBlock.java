@@ -50,11 +50,9 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
 
-    private final Supplier<ClimateRange> climateRange = ClimateRanges.BANANA_PLANT;
-
     public BananaPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
-        super(properties, productItem, stages);
+        super(properties, ClimateRanges.BANANA_PLANT, productItem, stages);
     }
 
     @Override
@@ -206,7 +204,6 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                     level.setBlockAndUpdate(pos, newState);
                 }
             }
-            bush.afterUpdate();
         });
     }
 

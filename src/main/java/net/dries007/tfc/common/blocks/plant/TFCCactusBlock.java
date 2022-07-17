@@ -22,15 +22,16 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class TFCCactusBlock extends TFCTallGrassBlock
 {
-    public static TFCCactusBlock create(IPlant plant, ExtendedProperties properties)
+    public static TFCCactusBlock create(RegistryPlant plant, ExtendedProperties properties)
     {
         return new TFCCactusBlock(properties)
         {
             @Override
-            public IPlant getPlant()
+            public RegistryPlant getPlant()
             {
                 return plant;
             }

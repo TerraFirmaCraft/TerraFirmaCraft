@@ -85,20 +85,18 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
         if (stage == 2 && placeState.canSurvive(level, pos))
         {
             level.setBlockAndUpdate(pos, placeState);
-            level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * bush.getTicksSinceUpdate()));
         }
     }
 
     @Override
-    protected boolean specialDeathCondition(Level level, BlockPos pos, BlockState state)
+    protected boolean mayDie(Level level, BlockPos pos, BlockState state, int monthsSpentDying)
     {
         BlockState parent = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        // if the parent is alive we shouldn't die
         if (Helpers.isBlock(parent, TFCTags.Blocks.SPREADING_BUSH))
         {
-            return false;
+            return false; // if the parent is alive we shouldn't die
         }
-        return super.specialDeathCondition(level, pos, state);
+        return super.mayDie(level, pos, state, monthsSpentDying);
     }
 
     @Override
