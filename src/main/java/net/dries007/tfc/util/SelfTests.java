@@ -62,6 +62,8 @@ public final class SelfTests
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
+    private static boolean EXTERNAL_TAG_LOADING_ERROR = false;
+
     public static void runClientSelfTests()
     {
         if (Helpers.ASSERTIONS_ENABLED)
@@ -85,7 +87,8 @@ public final class SelfTests
             throwIfAny(
                 validateOwnBlockLootTables(),
                 validateOwnBlockMineableTags(),
-                validateOwnWallsTags()
+                validateOwnWallsTags(),
+                EXTERNAL_TAG_LOADING_ERROR
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
         }
@@ -198,6 +201,11 @@ public final class SelfTests
     }
 
     // Private TFC Self Tests
+
+    public static void reportExternalTagLoadingErrors()
+    {
+        EXTERNAL_TAG_LOADING_ERROR = true;
+    }
 
     private static boolean validateOwnBlockEntities()
     {

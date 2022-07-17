@@ -38,6 +38,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableRootedDirtToDirtCreation;
     // Blocks - Snow
     public final ForgeConfigSpec.BooleanValue enableSnowSlowEntities;
+    public final ForgeConfigSpec.IntValue snowAccumulateChance;
+    public final ForgeConfigSpec.IntValue snowMeltChance;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
@@ -186,6 +188,8 @@ public class ServerConfig
         innerBuilder.pop().push("snow");
 
         enableSnowSlowEntities = builder.apply("enableSnowSlowEntities").comment("[Requires MC Restart] If snow will slow players that move on top of it similar to soul sand or honey.").define("enableSnowSlowEntities", true);
+        snowAccumulateChance = builder.apply("snowAccumulateChance").comment("The chance that snow will accumulate during a storm. Lower values = faster snow accumulation, but also more block updates (aka lag).").defineInRange("snowAccumulateChance", 20, 1, Integer.MAX_VALUE);
+        snowMeltChance = builder.apply("snowMeltChance").comment("The chance that snow will melt during a storm. Lower values = faster snow melting, but also more block updates (aka lag).").defineInRange("snowMeltChance", 36, 1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("plants");
 

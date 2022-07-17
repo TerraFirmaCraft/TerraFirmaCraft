@@ -21,6 +21,7 @@
     "ServerLevelMixin",
     "ServerPlayerGameModeMixin",
     "SnowLayerBlockMixin",
+    "TagLoaderMixin",
     "WorldgenRandomMixin",
     "accessor.BiomeAccessor",
     "accessor.BiomeGenerationSettingsAccessor",

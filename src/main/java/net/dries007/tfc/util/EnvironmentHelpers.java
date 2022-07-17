@@ -30,6 +30,7 @@ import net.dries007.tfc.common.blocks.SnowPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.ThinSpikeBlock;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.tracker.WorldTrackerCapability;
@@ -41,9 +42,9 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class EnvironmentHelpers
 {
-    public static final int ICICLE_MELT_RANDOM_TICK_CHANCE = 120; // Icicles don't melt naturally well at all, since they form under overhangs
-    public static final int SNOW_MELT_RANDOM_TICK_CHANCE = 150; // Snow and ice melt naturally, but snow naturally gets placed under overhangs due to smoothing
-    public static final int ICE_MELT_RANDOM_TICK_CHANCE = 400; // Ice practically never should form under overhangs, so this can be very low chance
+    public static final int ICICLE_MELT_RANDOM_TICK_CHANCE = 60; // Icicles don't melt naturally well at all, since they form under overhangs
+    public static final int SNOW_MELT_RANDOM_TICK_CHANCE = 75; // Snow and ice melt naturally, but snow naturally gets placed under overhangs due to smoothing
+    public static final int ICE_MELT_RANDOM_TICK_CHANCE = 200; // Ice practically never should form under overhangs, so this can be very low chance
 
     /**
      * Ticks a chunk for environment specific effects.
@@ -147,11 +148,11 @@ public final class EnvironmentHelpers
 
     private static void doSnow(Level level, BlockPos surfacePos, float temperature)
     {
-        final Random random = level.getRandom();
-        if (random.nextInt(16) == 0)
+        // Snow only accumulates during rain
+        final Random random = level.random;
+        if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE)
         {
-            // Snow only accumulates during rain
-            if (temperature < OverworldClimateModel.SNOW_FREEZE_TEMPERATURE && level.isRaining())
+            if (level.isRaining() && random.nextInt(TFCConfig.SERVER.snowAccumulateChance.get()) == 0)
             {
                 // Handle smoother snow placement: if there's an adjacent position with less snow, switch to that position instead
                 // Additionally, handle up to two block tall plants if they can be piled
@@ -164,7 +165,10 @@ public final class EnvironmentHelpers
                     }
                 }
             }
-            else if (temperature > OverworldClimateModel.SNOW_MELT_TEMPERATURE && random.nextInt(3) == 0)
+        }
+        else if (temperature > OverworldClimateModel.SNOW_MELT_TEMPERATURE)
+        {
+            if (random.nextInt(TFCConfig.SERVER.snowMeltChance.get()) == 0)
             {
                 // Snow melting - both snow and snow piles
                 final BlockState state = level.getBlockState(surfacePos);
@@ -177,7 +181,7 @@ public final class EnvironmentHelpers
     }
 
     /**
-     * @return {@code true} if a snow block or snow pile was able to be placed.
+     * @return {@code true} if a snow block or snow pile was placed.
      */
     private static boolean placeSnowOrSnowPile(Level level, BlockPos initialPos, Random random)
     {
