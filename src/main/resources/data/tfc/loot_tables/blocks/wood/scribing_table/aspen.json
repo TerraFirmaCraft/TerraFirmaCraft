@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/lectern/aspen"
+          "name": "tfc:wood/scribing_table/aspen"
         }
       ],
       "conditions": [
