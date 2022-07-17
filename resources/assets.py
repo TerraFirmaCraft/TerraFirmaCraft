@@ -225,6 +225,10 @@ def generate(rm: ResourceManager):
     for block in SIMPLE_BLOCKS:
         rm.blockstate(block).with_block_model().with_item_model().with_block_loot('tfc:%s' % block).with_lang(lang(block))
 
+    for name in ('pumpkin', 'melon'):
+        rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
+        rm.blockstate(name, model='minecraft:block/%s' % name).with_item_model().with_lang(lang(name)).with_block_loot('tfc:%s' % name).with_tag('tfc:mineable_with_sharp_tool')
+
     rm.blockstate('freshwater_bubble_column', model='minecraft:block/water').with_lang(lang('bubble column'))
     rm.blockstate('saltwater_bubble_column', model='tfc:block/fluid/salt_water').with_lang(lang('bubble column'))
 
@@ -791,19 +795,22 @@ def generate(rm: ResourceManager):
     # Crops
     for crop, crop_data in CROPS.items():
         name = 'tfc:jute' if crop == 'jute' else 'tfc:food/%s' % crop
-        if crop_data.type == 'default':
+        if crop_data.type == 'default' or crop_data.type == 'spreading':
             block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
             block.with_lang(lang(crop))
             for i in range(crop_data.stages):
                 rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
 
-            block.with_block_loot({
-                'name': name,
-                'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s]' % (crop, crop_data.stages - 1)),
-                'functions': crop_yield(0, (6, 10))
-            }, {
-                'name': 'tfc:seeds/%s' % crop
-            })
+            if crop_data.type == 'spreading':
+                block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
+            else:
+                block.with_block_loot({
+                    'name': name,
+                    'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s]' % (crop, crop_data.stages - 1)),
+                    'functions': crop_yield(0, (6, 10))
+                }, {
+                    'name': 'tfc:seeds/%s' % crop
+                })
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=true': {'model': 'tfc:block/dead_crop/%s' % crop},
@@ -824,12 +831,16 @@ def generate(rm: ResourceManager):
 
             block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop)).with_item_model().with_tag('can_be_snow_piled')
             block.with_block_model(textures={'crop': 'tfc:block/crop/%s_wild' % crop}, parent='tfc:block/wild_crop/crop')
-            block.with_block_loot({
-                'name': name,
-                'functions': loot_tables.set_count(1, 3)
-            }, {
-                'name': 'tfc:seeds/%s' % crop
-            })
+
+            if crop_data.type == 'spreading':
+                block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
+            else:
+                block.with_block_loot({
+                    'name': name,
+                    'functions': loot_tables.set_count(1, 3)
+                }, {
+                    'name': 'tfc:seeds/%s' % crop
+                })
 
         elif crop_data.type == 'double':
             half = crop_data.stages // 2

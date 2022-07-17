@@ -26,7 +26,7 @@ public interface ICropBlock
      */
     default float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
-        return CropHelpers.GROWTH_LIMIT;
+        return level.canSeeSky(pos) ? CropHelpers.GROWTH_LIMIT : 0f;
     }
 
     void die(Level level, BlockPos pos, BlockState state, boolean fullyGrown);

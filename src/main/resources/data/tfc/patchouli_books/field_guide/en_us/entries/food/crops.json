@@ -44,6 +44,10 @@
     },
     {
       "type": "patchouli:text",
+      "text": "Descriptions of each crop start on the next page."
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "barley",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -8 - 26 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 18 - 75 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
       "title": "Barley"
@@ -1655,6 +1659,300 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "pumpkin",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 30 - 80 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland to be grown, and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, if the pumpkin plant matures again, it can grow more pumpkins."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "melon",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 37 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 75 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Melons are a spreading crop. Melon seeds can be planted on farmland to be grown, and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, if the pumpkin plant matures again, it can grow more melon."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=0]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=1]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=2]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=3]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=4]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=5]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=6]",
+            "Y": "tfc:farmland/loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:crop/pumpkin[age=7]",
+            "Y": "tfc:farmland/loam"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "onion",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
       "title": "Onions"
@@ -2564,41 +2862,43 @@
   ],
   "read_by_default": true,
   "extra_recipe_mappings": {
-    "tfc:seeds/barley": 7,
-    "tfc:food/barley": 7,
-    "tfc:seeds/oat": 9,
-    "tfc:food/oat": 9,
-    "tfc:seeds/rye": 11,
-    "tfc:food/rye": 11,
-    "tfc:seeds/maize": 13,
-    "tfc:food/maize": 13,
-    "tfc:seeds/wheat": 15,
-    "tfc:food/wheat": 15,
-    "tfc:seeds/rice": 17,
-    "tfc:food/rice": 17,
-    "tfc:seeds/beet": 19,
-    "tfc:food/beet": 19,
-    "tfc:seeds/cabbage": 21,
-    "tfc:food/cabbage": 21,
-    "tfc:seeds/carrot": 23,
-    "tfc:food/carrot": 23,
-    "tfc:seeds/garlic": 25,
-    "tfc:food/garlic": 25,
-    "tfc:seeds/green_bean": 27,
-    "tfc:food/green_bean": 27,
-    "tfc:seeds/potato": 29,
-    "tfc:food/potato": 29,
-    "tfc:seeds/onion": 31,
-    "tfc:food/onion": 31,
-    "tfc:seeds/soybean": 33,
-    "tfc:food/soybean": 33,
-    "tfc:seeds/squash": 35,
-    "tfc:food/squash": 35,
-    "tfc:seeds/sugarcane": 37,
-    "tfc:food/sugarcane": 37,
-    "tfc:seeds/tomato": 39,
-    "tfc:food/tomato": 39,
-    "tfc:seeds/jute": 41,
-    "tfc:jute": 41
+    "tfc:seeds/barley": 8,
+    "tfc:food/barley": 8,
+    "tfc:seeds/oat": 10,
+    "tfc:food/oat": 10,
+    "tfc:seeds/rye": 12,
+    "tfc:food/rye": 12,
+    "tfc:seeds/maize": 14,
+    "tfc:food/maize": 14,
+    "tfc:seeds/wheat": 16,
+    "tfc:food/wheat": 16,
+    "tfc:seeds/rice": 18,
+    "tfc:food/rice": 18,
+    "tfc:seeds/beet": 20,
+    "tfc:food/beet": 20,
+    "tfc:seeds/cabbage": 22,
+    "tfc:food/cabbage": 22,
+    "tfc:seeds/carrot": 24,
+    "tfc:food/carrot": 24,
+    "tfc:seeds/garlic": 26,
+    "tfc:food/garlic": 26,
+    "tfc:seeds/green_bean": 28,
+    "tfc:food/green_bean": 28,
+    "tfc:seeds/potato": 30,
+    "tfc:food/potato": 30,
+    "tfc:seeds/pumpkin": 32,
+    "tfc:seeds/melon": 34,
+    "tfc:seeds/onion": 36,
+    "tfc:food/onion": 36,
+    "tfc:seeds/soybean": 38,
+    "tfc:food/soybean": 38,
+    "tfc:seeds/squash": 40,
+    "tfc:food/squash": 40,
+    "tfc:seeds/sugarcane": 42,
+    "tfc:food/sugarcane": 42,
+    "tfc:seeds/tomato": 44,
+    "tfc:food/tomato": 44,
+    "tfc:seeds/jute": 46,
+    "tfc:jute": 46
   }
 }
