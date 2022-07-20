@@ -4,7 +4,9 @@ from mcresources import ResourceManager, utils
 from mcresources.type_definitions import JsonObject, ResourceLocation
 
 from i18n import I18n
-from constants import ROCK_CATEGORIES, ALLOYS
+from constants import ROCK_CATEGORIES, ALLOYS, lang
+
+import re
 
 
 class Component(NamedTuple):
@@ -189,6 +191,7 @@ def image(*images: str, text_contents: str | None = None, border: bool = True) -
     :param text_contents: The text to display on this page, under the image. This text can be formatted.
     :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
     """
+    assert all(re.match('[a-z_/.]+', i) for i in images), ('Invalid images: %s, did you mean to declare one as \'text_contents=\' ?' % str(images))
     return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, translation_keys=('text',))
 
 
@@ -316,7 +319,7 @@ def welding_recipe(recipe: str, text_content: str) -> Page:
 def alloy_recipe(title: str, alloy_name: str, text_content: str) -> Page:
     # Components can be copied from alloy_recipe() declarations in
     alloy_components = ALLOYS[alloy_name]
-    recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (round(100 * lo), round(100 * hi), alloy.title()) for (alloy, lo, hi) in alloy_components])
+    recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (round(100 * lo), round(100 * hi), lang(alloy)) for (alloy, lo, hi) in alloy_components])
     return item_spotlight('tfc:metal/ingot/%s' % alloy_name, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
 
 
