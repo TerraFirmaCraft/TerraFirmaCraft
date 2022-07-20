@@ -15,11 +15,13 @@
     },
     {
       "type": "tfc:fire_clay_knapping_recipe",
+      "anchor": "crucible",
       "recipe": "tfc:fire_clay_knapping/crucible",
       "text": "The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay."
     },
     {
       "type": "tfc:fire_clay_knapping_recipe",
+      "anchor": "fire_bricks",
       "recipe": "tfc:fire_clay_knapping/brick",
       "text": "The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation."
     }

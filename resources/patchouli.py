@@ -4,7 +4,7 @@ from mcresources import ResourceManager, utils
 from mcresources.type_definitions import JsonObject, ResourceLocation
 
 from i18n import I18n
-from constants import ROCK_CATEGORIES
+from constants import ROCK_CATEGORIES, ALLOYS
 
 
 class Component(NamedTuple):
@@ -202,6 +202,8 @@ def entity(entity_type: str, text_contents: str = None, title: str = None, scale
     :param rotate: Whether the entity should rotate in the view. Defaults to true.
     :param default_rotation: The rotation at which the entity is displayed. Only used if rotate is False.
     """
+    if title == '':
+        title = ' '  # Patchy will draw a title on name == null || name.isEmpty() which is dumb
     return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents})
 
 
@@ -300,16 +302,22 @@ def heat_recipe(recipe: str, text_content: str) -> Page:
 
 
 def quern_recipe(recipe: str, text_content: str) -> Page:
-    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def anvil_recipe(recipe: str, text_content: str) -> Page:
-    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
+    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
-def alloy_recipe(title: str, ingot: str, *components: Tuple[str, int, int], text_content: str) -> Page:
-    recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (lo, hi, alloy) for (alloy, lo, hi) in components])
-    return item_spotlight(ingot, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
+def welding_recipe(recipe: str, text_content: str) -> Page:
+    return page('welding_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
+
+
+def alloy_recipe(title: str, alloy_name: str, text_content: str) -> Page:
+    # Components can be copied from alloy_recipe() declarations in
+    alloy_components = ALLOYS[alloy_name]
+    recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (round(100 * lo), round(100 * hi), alloy.title()) for (alloy, lo, hi) in alloy_components])
+    return item_spotlight('tfc:metal/ingot/%s' % alloy_name, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
 
 
 def fertilizer(item: str, text_contents: str, n: float = 0, p: float = 0, k: float = 0) -> Page:

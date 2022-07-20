@@ -112,12 +112,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             forge.temperature = HeatCapability.adjustDeviceTemp(forge.temperature, forge.burnTemperature, forge.airTicks, isRaining);
 
-            // Provide heat to blocks above
-            final BlockEntity above = level.getBlockEntity(pos.above());
-            if (above != null)
-            {
-                above.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(forge.temperature));
-            }
+            HeatCapability.provideHeatTo(level, pos.above(), forge.temperature);
 
             for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
             {

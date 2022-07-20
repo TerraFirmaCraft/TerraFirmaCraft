@@ -642,6 +642,18 @@ MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wroug
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
 
+ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
+    'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
+    'black_bronze': (('copper', 0.5, 0.7), ('silver', 0.1, 0.25), ('gold', 0.1, 0.25)),
+    'bronze': (('copper', 0.88, 0.92), ('tin', 0.08, 0.12)),
+    'brass': (('copper', 0.88, 0.92), ('zinc', 0.08, 0.12)),
+    'rose_gold': (('copper', 0.15, 0.3), ('gold', 0.7, 0.85)),
+    'sterling_silver': (('copper', 0.2, 0.4), ('silver', 0.6, 0.8)),
+    'weak_steel': (('steel', 0.5, 0.7), ('nickel', 0.15, 0.25), ('black_bronze', 0.15, 0.25)),
+    'weak_blue_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15)),
+    'weak_red_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
+}
+
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
     return ((key % args) if len(args) > 0 else key).replace('_', ' ').replace('/', ' ').title()

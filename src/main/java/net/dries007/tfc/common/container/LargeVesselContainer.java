@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
@@ -29,12 +30,13 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onButtonPress(int buttonID, @Nullable CompoundTag extraNBT)
     {
         Level level = blockEntity.getLevel();
         if (level != null)
         {
-            LargeVesselBlock.toggleSeal(level, blockEntity.getBlockPos(), blockEntity.getBlockState());
+            LargeVesselBlock.toggleSeal(level, blockEntity.getBlockPos(), blockEntity.getBlockState(), (BlockEntityType<? extends LargeVesselBlockEntity>) blockEntity.getType());
         }
     }
 
