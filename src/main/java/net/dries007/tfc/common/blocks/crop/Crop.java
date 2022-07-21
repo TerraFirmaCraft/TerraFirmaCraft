@@ -27,27 +27,27 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 public enum Crop implements StringRepresentable
 {
     // Grains
-    BARLEY(FarmlandBlockEntity.NutrientType.NITROGEN, 8), // Default, 8
-    OAT(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8), // Default, 8
-    RYE(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8), // Default, 8
-    MAIZE(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 3, 3, false), // Double, 3 -> 3
-    WHEAT(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8), // Default, 8
-    RICE(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8, true), // Default, Waterlogged, 8
+    BARLEY(NutrientType.NITROGEN, 8), // Default, 8
+    OAT(NutrientType.PHOSPHOROUS, 8), // Default, 8
+    RYE(NutrientType.PHOSPHOROUS, 8), // Default, 8
+    MAIZE(NutrientType.PHOSPHOROUS, 3, 3, false), // Double, 3 -> 3
+    WHEAT(NutrientType.PHOSPHOROUS, 8), // Default, 8
+    RICE(NutrientType.PHOSPHOROUS, 8, true), // Default, Waterlogged, 8
     // Vegetables
-    BEET(FarmlandBlockEntity.NutrientType.POTASSIUM, 6), // Default, 6
-    CABBAGE(FarmlandBlockEntity.NutrientType.NITROGEN, 6), // Default, 6
-    CARROT(FarmlandBlockEntity.NutrientType.POTASSIUM, 5), // Default, 5
-    GARLIC(FarmlandBlockEntity.NutrientType.NITROGEN, 5), // Default, 5
-    GREEN_BEAN(FarmlandBlockEntity.NutrientType.NITROGEN, 4, 4, true), // Double, Stick, 4 -> 4
-    POTATO(FarmlandBlockEntity.NutrientType.POTASSIUM, 7), // Default, 7
-    ONION(FarmlandBlockEntity.NutrientType.NITROGEN, 7), // Default, 7
-    SOYBEAN(FarmlandBlockEntity.NutrientType.NITROGEN, 7), // Default, 7
-    SQUASH(FarmlandBlockEntity.NutrientType.POTASSIUM, 8), // Default , 8
-    SUGARCANE(FarmlandBlockEntity.NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
-    TOMATO(FarmlandBlockEntity.NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
-    JUTE(FarmlandBlockEntity.NutrientType.POTASSIUM, 2, 4, true), // Double, 2 -> 4
-    PUMPKIN(NutrientType.PHOSPHOROUS, 8, TFCBlocks.PUMPKIN),
-    MELON(NutrientType.PHOSPHOROUS, 8, TFCBlocks.MELON);
+    BEET(NutrientType.POTASSIUM, 6), // Default, 6
+    CABBAGE(NutrientType.NITROGEN, 6), // Default, 6
+    CARROT(NutrientType.POTASSIUM, 5), // Default, 5
+    GARLIC(NutrientType.NITROGEN, 5), // Default, 5
+    GREEN_BEAN(NutrientType.NITROGEN, 4, 4, true), // Double, Stick, 4 -> 4
+    POTATO(NutrientType.POTASSIUM, 7), // Default, 7
+    ONION(NutrientType.NITROGEN, 7), // Default, 7
+    SOYBEAN(NutrientType.NITROGEN, 7), // Default, 7
+    SQUASH(NutrientType.POTASSIUM, 8), // Default , 8
+    SUGARCANE(NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
+    TOMATO(NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
+    JUTE(NutrientType.POTASSIUM, 2, 4, true), // Double, 2 -> 4
+    PUMPKIN(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN),
+    MELON(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
     // todo: pickable crops
 
     private static ExtendedProperties crop()
@@ -61,28 +61,28 @@ public enum Crop implements StringRepresentable
     }
 
     private final String serializedName;
-    private final FarmlandBlockEntity.NutrientType primaryNutrient;
+    private final NutrientType primaryNutrient;
     private final Supplier<Block> factory;
     private final Supplier<Block> deadFactory;
     private final Supplier<Block> wildFactory;
 
-    Crop(FarmlandBlockEntity.NutrientType primaryNutrient, int singleBlockStages)
+    Crop(NutrientType primaryNutrient, int singleBlockStages)
     {
         this(primaryNutrient, self -> DefaultCropBlock.create(crop(), singleBlockStages, self), self -> new DeadCropBlock(dead(), self), self -> new WildCropBlock(dead()));
     }
 
-    Crop(FarmlandBlockEntity.NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<? extends Block> fruit)
+    Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<Supplier<? extends Block>> fruit)
     {
         this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self), self -> new WildCropBlock(dead()));
     }
 
-    Crop(FarmlandBlockEntity.NutrientType primaryNutrient, int floodedSingleBlockStages, boolean flooded)
+    Crop(NutrientType primaryNutrient, int floodedSingleBlockStages, boolean flooded)
     {
         this(primaryNutrient, self -> FloodedCropBlock.create(crop(), floodedSingleBlockStages, self), self -> new FloodedDeadCropBlock(dead(), self), self -> new FloodedWildCropBlock(dead()));
         assert flooded;
     }
 
-    Crop(FarmlandBlockEntity.NutrientType primaryNutrient, int doubleBlockBottomStages, int doubleBlockTopStages, boolean requiresStick)
+    Crop(NutrientType primaryNutrient, int doubleBlockBottomStages, int doubleBlockTopStages, boolean requiresStick)
     {
         this(primaryNutrient, requiresStick ?
             self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), doubleBlockBottomStages, doubleBlockTopStages, self) :
@@ -90,7 +90,7 @@ public enum Crop implements StringRepresentable
             self -> new DeadClimbingCropBlock(dead(), self), self -> new WildDoubleCropBlock(dead()));
     }
 
-    Crop(FarmlandBlockEntity.NutrientType primaryNutrient, Function<Crop, Block> factory, Function<Crop, Block> deadFactory, Function<Crop, Block> wildFactory)
+    Crop(NutrientType primaryNutrient, Function<Crop, Block> factory, Function<Crop, Block> deadFactory, Function<Crop, Block> wildFactory)
     {
         this.serializedName = name().toLowerCase(Locale.ROOT);
         this.primaryNutrient = primaryNutrient;

@@ -19,17 +19,20 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
 public abstract class SpreadingCropBlock extends DefaultCropBlock
 {
-    public static SpreadingCropBlock create(ExtendedProperties properties, int stages, Crop crop, Supplier<? extends Block> fruit)
+    public static SpreadingCropBlock create(ExtendedProperties properties, int stages, Crop crop, Supplier<Supplier<? extends Block>> fruit)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(stages - 1);
         return new SpreadingCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop), fruit)
@@ -42,9 +45,11 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
         };
     }
 
-    private final Supplier<? extends Block> fruit;
+    private static final int DECAY_PERIOD = ICalendar.TICKS_IN_DAY * 32;
 
-    protected SpreadingCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange, Supplier<? extends Block> fruit)
+    private final Supplier<Supplier<? extends Block>> fruit;
+
+    protected SpreadingCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange, Supplier<Supplier<? extends Block>> fruit)
     {
         super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
         this.fruit = fruit;
@@ -55,7 +60,7 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
     {
         int fruitAround = 0;
         BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        Block fruit = this.fruit.get();
+        Block fruit = this.fruit.get().get();
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             mutable.setWithOffset(pos, d);
@@ -80,10 +85,14 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
         {
             Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(level.getRandom());
             BlockPos fruitPos = pos.relative(offset);
-            BlockState fruitState = fruit.get().defaultBlockState();
+            BlockState fruitState = fruit.get().get().defaultBlockState();
             if (fruitState.canSurvive(level, fruitPos) && level.getBlockState(fruitPos).getMaterial().isReplaceable())
             {
                 level.setBlockAndUpdate(fruitPos, fruitState);
+                if (level.getBlockEntity(fruitPos) instanceof TickCounterBlockEntity counter)
+                {
+                    counter.setLastUpdateTick(Calendars.get(level).getTicks() + DECAY_PERIOD);
+                }
                 crop.setGrowth(Mth.nextFloat(level.getRandom(), 0.8f, 0.9f));
             }
         }

@@ -1,24 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "ingredient": [
-    {
-      "item": "tfc:food/barley_dough"
-    },
-    {
-      "item": "tfc:food/maize_dough"
-    },
-    {
-      "item": "tfc:food/oat_dough"
-    },
-    {
-      "item": "tfc:food/rice_dough"
-    },
-    {
-      "item": "tfc:food/rye_dough"
-    },
-    {
-      "item": "tfc:food/wheat_dough"
-    }
-  ],
+  "ingredient": {
+    "tag": "tfc:foods/dough"
+  },
   "heat_capacity": 1
 }

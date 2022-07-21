@@ -1,0 +1,12 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:food/melon_slice"
+  },
+  "category": "fruit",
+  "hunger": 4,
+  "saturation": 0.2,
+  "water": 5,
+  "decay": 2.5,
+  "fruit": 0.75
+}

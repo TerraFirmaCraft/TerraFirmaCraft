@@ -23,11 +23,12 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public class JackOLanternBlock extends CarvedPumpkinBlock implements EntityBlockExtension
+public class JackOLanternBlock extends CarvedPumpkinBlock implements EntityBlockExtension, IForgeBlockExtension
 {
     private final ExtendedProperties properties;
     private final Supplier<? extends Block> dead;

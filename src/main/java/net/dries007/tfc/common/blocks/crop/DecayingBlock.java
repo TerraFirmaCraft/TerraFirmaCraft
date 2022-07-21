@@ -19,19 +19,29 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.dries007.tfc.common.blockentities.RottingBlockEntity;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.loot.TFCLoot;
 import org.jetbrains.annotations.Nullable;
 
-public class RottingBlock extends ExtendedBlock implements EntityBlockExtension
+public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
 {
+    public static boolean isRotten(Level level, BlockPos pos)
+    {
+        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter && level.getBlockState(pos).getBlock() instanceof DecayingBlock)
+        {
+            return counter.getLastUpdateTick() > Calendars.get(level).getTicks();
+        }
+        return false;
+    }
+
     private final Supplier<? extends Block> rotted;
 
-    public RottingBlock(ExtendedProperties properties, Supplier<? extends Block> rotted)
+    public DecayingBlock(ExtendedProperties properties, Supplier<? extends Block> rotted)
     {
         super(properties);
         this.rotted = rotted;
@@ -41,9 +51,9 @@ public class RottingBlock extends ExtendedBlock implements EntityBlockExtension
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack)
     {
         super.setPlacedBy(level, pos, state, entity, stack);
-        if (level.getBlockEntity(pos) instanceof RottingBlockEntity rotting)
+        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
         {
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> rotting.setRottenTick(food.getRottenDate()));
+            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> counter.setLastUpdateTick(food.getRottenDate()));
         }
     }
 
@@ -51,12 +61,9 @@ public class RottingBlock extends ExtendedBlock implements EntityBlockExtension
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
-        if (level.getBlockEntity(pos) instanceof RottingBlockEntity rotting)
+        if (isRotten(level, pos))
         {
-            if (rotting.isRotten())
-            {
-                level.setBlockAndUpdate(pos, rotted.get().defaultBlockState());
-            }
+            level.setBlockAndUpdate(pos, rotted.get().defaultBlockState());
         }
     }
 

@@ -25,13 +25,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 
+import net.minecraftforge.common.Tags;
+
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.RottingBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
-public class TFCPumpkinBlock extends RottingBlock
+public class TFCPumpkinBlock extends DecayingBlock
 {
     public TFCPumpkinBlock(ExtendedProperties properties, Supplier<? extends Block> rotted)
     {
@@ -43,9 +44,9 @@ public class TFCPumpkinBlock extends RottingBlock
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
         ItemStack held = player.getItemInHand(hand);
-        if (Helpers.isItem(held, TFCTags.Items.KNIVES) && TFCConfig.SERVER.enablePumpkinCarving.get())
+        if ((Helpers.isItem(held, TFCTags.Items.KNIVES) || Helpers.isItem(held, Tags.Items.SHEARS)) && TFCConfig.SERVER.enablePumpkinCarving.get())
         {
-            if (!level.isClientSide && level.getBlockEntity(pos) instanceof RottingBlockEntity rotting && !rotting.isRotten())
+            if (!level.isClientSide && !isRotten(level, pos))
             {
                 Direction hitDir = hit.getDirection();
                 Direction facing = hitDir.getAxis() == Direction.Axis.Y ? player.getDirection().getOpposite() : hitDir;
