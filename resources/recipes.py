@@ -569,15 +569,8 @@ def generate(rm: ResourceManager):
 
     # Alloy Recipes
 
-    alloy_recipe(rm, 'bismuth_bronze', 'bismuth_bronze', ('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2))
-    alloy_recipe(rm, 'black_bronze', 'black_bronze', ('copper', 0.5, 0.7), ('silver', 0.1, 0.25), ('gold', 0.1, 0.25))
-    alloy_recipe(rm, 'bronze', 'bronze', ('copper', 0.88, 0.92), ('tin', 0.08, 0.12))
-    alloy_recipe(rm, 'brass', 'brass', ('copper', 0.88, 0.92), ('zinc', 0.08, 0.12))
-    alloy_recipe(rm, 'rose_gold', 'rose_gold', ('copper', 0.15, 0.3), ('gold', 0.7, 0.85))
-    alloy_recipe(rm, 'sterling_silver', 'sterling_silver', ('copper', 0.2, 0.4), ('silver', 0.6, 0.8))
-    alloy_recipe(rm, 'weak_steel', 'weak_steel', ('steel', 0.5, 0.7), ('nickel', 0.15, 0.25), ('black_bronze', 0.15, 0.25))
-    alloy_recipe(rm, 'weak_blue_steel', 'weak_blue_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15))
-    alloy_recipe(rm, 'weak_red_steel', 'weak_red_steel', ('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
+    for alloy_name, alloy_components in ALLOYS.items():
+        alloy_recipe(rm, alloy_name, alloy_name, *alloy_components)
 
     # Bloomery Recipes
     bloomery_recipe(rm, 'raw_iron_bloom', 'tfc:raw_iron_bloom', '100 tfc:metal/cast_iron', 'minecraft:charcoal', 15000)
@@ -754,6 +747,7 @@ def generate(rm: ResourceManager):
         ('weak_red_steel', 'black_steel', 'high_carbon_red_steel')
     ):
         welding_recipe(rm, '%s_ingot' % metal_out, 'tfc:metal/ingot/%s' % metal_in_1, 'tfc:metal/ingot/%s' % metal_in_2, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_out].tier - 1)
+
 
 def simple_pot_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: Json, fluid: str, output_fluid: str = None, output_items: Json = None, duration: int = 2000, temp: int = 300):
     rm.recipe(('pot', name_parts), 'tfc:pot', {

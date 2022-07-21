@@ -23,16 +23,17 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryPlant;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class WaterPlantBlock extends PlantBlock implements IFluidLoggable
 {
-    public static WaterPlantBlock create(IPlant plant, FluidProperty fluid, Properties properties)
+    public static WaterPlantBlock create(RegistryPlant plant, FluidProperty fluid, Properties properties)
     {
         return new WaterPlantBlock(ExtendedProperties.of(properties))
         {
             @Override
-            public IPlant getPlant()
+            public RegistryPlant getPlant()
             {
                 return plant;
             }

@@ -17,15 +17,15 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 
-// todo: don't extend tick counter anymore
-public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICalendarTickable
+public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTickable
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, BerryBushBlockEntity bush)
     {
         bush.checkForCalendarUpdate();
     }
 
-    private long lastTick, lastUpdateTick;
+    private long lastTick; // The last tick this bush was ticked via the block entity's serverTick() method. A delta of > 1 is used to detect time skips
+    private long lastUpdateTick; // The last tick the bush block was ticked via IBushBlock#onUpdate()
 
     public BerryBushBlockEntity(BlockPos pos, BlockState state)
     {
@@ -38,11 +38,9 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
         lastTick = lastUpdateTick = Calendars.SERVER.getTicks();
     }
 
-    public void afterUpdate()
-    {
-        lastUpdateTick = Calendars.SERVER.getTicks();
-    }
-
+    /**
+     * @return The number of ticks since this bush block was ticked in {@link IBushBlock#onUpdate(Level, BlockPos, BlockState)}
+     */
     public long getTicksSinceBushUpdate()
     {
         return Calendars.SERVER.getTicks() - lastUpdateTick;
@@ -72,7 +70,9 @@ public class BerryBushBlockEntity extends TickCounterBlockEntity implements ICal
             final BlockState state = level.getBlockState(worldPosition);
             if (state.getBlock() instanceof IBushBlock bush)
             {
-                bush.onUpdate(level, worldPosition, state);
+                bush.onUpdate(level, worldPosition, state); // Update the bush
+                lastUpdateTick = Calendars.SERVER.getTicks(); // And the current time
+                setChanged();
             }
         }
     }

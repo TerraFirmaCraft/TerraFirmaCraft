@@ -25,6 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
@@ -65,15 +66,20 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         barrel.checkForLastTickSync();
         barrel.checkForCalendarUpdate();
 
-        if (level.getGameTime() % 5 == 0) barrel.updateFluidIOSlots();
-        List<ItemStack> excess = barrel.inventory.excess;
+        if (level.getGameTime() % 5 == 0)
+        {
+            barrel.updateFluidIOSlots();
+        }
+
+        final List<ItemStack> excess = barrel.inventory.excess;
         if (!excess.isEmpty() && barrel.inventory.getStackInSlot(SLOT_ITEM).isEmpty())
         {
             barrel.inventory.setStackInSlot(SLOT_ITEM, excess.remove(0));
         }
 
         final SealedBarrelRecipe recipe = barrel.recipe;
-        if (recipe != null && state.getValue(BarrelBlock.SEALED))
+        final boolean sealed = state.getValue(BarrelBlock.SEALED);
+        if (recipe != null && sealed)
         {
             final int durationSealed = (int) (Calendars.SERVER.getTicks() - barrel.recipeTick);
             if (!recipe.isInfinite() && durationSealed > recipe.getDuration())
@@ -111,9 +117,17 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 barrel.markForSync();
             }
         }
+
         if (barrel.soundCooldownTicks > 0)
         {
             barrel.soundCooldownTicks--;
+        }
+
+        if (!sealed && level.isRainingAt(pos.above()) && level.getGameTime() % 4 == 0)
+        {
+            // Fill with water from rain
+            barrel.inventory.fill(new FluidStack(Fluids.WATER, 1), IFluidHandler.FluidAction.EXECUTE);
+            barrel.markForSync();
         }
     }
 
@@ -125,7 +139,6 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     private long recipeTick; // The tick this barrel started working on the current recipe
     private int soundCooldownTicks = 0;
 
-    private boolean needsRecipeUpdate;
     private boolean needsInstantRecipeUpdate; // If the instant recipe needs to be checked again
 
     public BarrelBlockEntity(BlockPos pos, BlockState state)

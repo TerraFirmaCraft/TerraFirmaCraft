@@ -514,6 +514,8 @@ MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vin
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
 
+# todo: add bush specific rainfall ranges, and also add here bush specific hydration requirements (these should be in general quite lenient) Mirror how crops does it (spreadsheet generation would be nice here). Then update the book data on bushes, the climate ranges, and the world gen (all THREE locations) that use this data
+# For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
 BERRIES: Dict[str, Berry] = {
     'blackberry': Berry(7, 24, 100, 500, 'spreading', 'edge', 'edge'),
     'raspberry': Berry(5, 25, 100, 500, 'spreading', 'edge', 'edge'),
@@ -641,6 +643,18 @@ VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wrought_iron')
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
+
+ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
+    'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
+    'black_bronze': (('copper', 0.5, 0.7), ('silver', 0.1, 0.25), ('gold', 0.1, 0.25)),
+    'bronze': (('copper', 0.88, 0.92), ('tin', 0.08, 0.12)),
+    'brass': (('copper', 0.88, 0.92), ('zinc', 0.08, 0.12)),
+    'rose_gold': (('copper', 0.15, 0.3), ('gold', 0.7, 0.85)),
+    'sterling_silver': (('copper', 0.2, 0.4), ('silver', 0.6, 0.8)),
+    'weak_steel': (('steel', 0.5, 0.7), ('nickel', 0.15, 0.25), ('black_bronze', 0.15, 0.25)),
+    'weak_blue_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15)),
+    'weak_red_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
+}
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:

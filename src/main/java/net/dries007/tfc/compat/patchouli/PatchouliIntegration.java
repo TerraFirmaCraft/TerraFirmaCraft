@@ -66,12 +66,13 @@ public final class PatchouliIntegration
     public static void registerMultiBlocks()
     {
         registerMultiblock("bloomery", PatchouliIntegration::bloomery);
-        registerMultiblock("blast_furnace", PatchouliIntegration::blastFurnace);
+        registerMultiblock("blast_furnace", api -> blastFurnace(api, false));
+        registerMultiblock("full_blast_furnace", api -> blastFurnace(api, true));
         registerMultiblock("rock_anvil", PatchouliIntegration::rockAnvil);
         registerMultiblock("charcoal_forge", PatchouliIntegration::charcoalForge);
     }
 
-    private static IMultiblock blastFurnace(PatchouliAPI.IPatchouliAPI api)
+    private static IMultiblock blastFurnace(PatchouliAPI.IPatchouliAPI api, boolean fullSize)
     {
         final Block sheetPile = TFCBlocks.SHEET_PILE.get();
         final Function<Direction, IStateMatcher> oneSheet = face -> api.predicateMatcher(sheetPile.defaultBlockState().setValue(DirectionPropertyBlock.getProperty(face), true), state -> Helpers.isBlock(state, sheetPile) && SheetPileBlock.countSheets(state, Direction.Plane.HORIZONTAL) >= 1);
@@ -83,14 +84,26 @@ public final class PatchouliIntegration
         // 4...5
         //  6.7
         //   8
-        final IMultiblock multiblock = api.makeMultiblock(new String[][] {
+        final String[][] pattern = fullSize ?
+            new String[][] {
+                {"  1  ", " 2S3 ", "4SAS5", " 6S7 ", "  8  "},
+                {"  1  ", " 2S3 ", "4SAS5", " 6S7 ", "  8  "},
+                {"  1  ", " 2S3 ", "4SAS5", " 6S7 ", "  8  "},
+                {"  1  ", " 2S3 ", "4SAS5", " 6S7 ", "  8  "},
+                {"  1  ", " 2S3 ", "4SAS5", " 6S7 ", "  8  "},
+                {"     ", "     ", "  0B ", "     ", "     "},
+                {"     ", "     ", "  C  ", "     ", "     "},
+            } :
+            new String[][] {
                 {"  1  ", " 2S3 ", "4SAS5", " 6S7 ", "  8  "},
                 {"     ", "     ", "  0  ", "     ", "     "},
-            },
+            };
+
+        final IMultiblock multiblock = api.makeMultiblock(pattern,
             '0', api.looseBlockMatcher(TFCBlocks.BLAST_FURNACE.get()),
             ' ', api.anyMatcher(),
             'A', api.airMatcher(),
-            'S', api.predicateMatcher(TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.BRICKS).get(), BlastFurnaceBlock::isBlastFurnaceInsulationBlock),
+            'S', api.predicateMatcher(TFCBlocks.FIRE_BRICKS.get(), BlastFurnaceBlock::isBlastFurnaceInsulationBlock),
             '1', oneSheet.apply(Direction.EAST),
             '2', twoSheets.apply(Direction.EAST, Direction.SOUTH),
             '3', twoSheets.apply(Direction.EAST, Direction.NORTH),
@@ -98,7 +111,9 @@ public final class PatchouliIntegration
             '5', oneSheet.apply(Direction.NORTH),
             '6', twoSheets.apply(Direction.WEST, Direction.SOUTH),
             '7', twoSheets.apply(Direction.WEST, Direction.NORTH),
-            '8', oneSheet.apply(Direction.WEST)
+            '8', oneSheet.apply(Direction.WEST),
+            'B', api.looseBlockMatcher(TFCBlocks.BELLOWS.get()),
+            'C', api.looseBlockMatcher(TFCBlocks.CRUCIBLE.get())
         );
 
         sneakIntoMultiblock(multiblock).ifPresent(access -> {
@@ -107,7 +122,7 @@ public final class PatchouliIntegration
             {
                 for (int z = 0; z < 5; z++)
                 {
-                    access.getBlockEntity(new BlockPos(x, 1, z), TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.setAllMetalsFromOutsideWorld(wroughtIron));
+                    access.getBlockEntity(new BlockPos(x, fullSize ? 2 : 1, z), TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.setAllMetalsFromOutsideWorld(wroughtIron));
                 }
             }
         });

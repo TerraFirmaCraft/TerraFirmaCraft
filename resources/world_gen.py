@@ -665,7 +665,7 @@ def generate(rm: ResourceManager):
     configured_noise_plant_feature(rm, ('plant', 'reindeer_lichen_cover'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-20, -10, 220, 310, True, fuzzy=True), decorate_square(), water=False)
 
     # Clay Indicator Plants
-    # These piggy back on the clay disc feature, and so have limited decorators
+    # These piggyback on the clay disc feature, and so have limited decorators
     configured_plant_patch_feature(rm, ('plant', 'athyrium_fern'), plant_config('tfc:plant/athyrium_fern[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(-10, 14, 270, 500))
     configured_plant_patch_feature(rm, ('plant', 'canna'), plant_config('tfc:plant/canna[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(10, 40, 270, 500))
     configured_plant_patch_feature(rm, ('plant', 'goldenrod'), plant_config('tfc:plant/goldenrod[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(-16, 6, 75, 310))
@@ -695,12 +695,10 @@ def generate(rm: ResourceManager):
         rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(name))
 
     for berry, info in BERRIES.items():
-        decorators = decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest),
-        if info.type == 'stationary' or info.type == 'spreading':
-            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0]' % berry, 1, 4, 4), *decorators, biome_check=False)
-        elif info.type == 'waterlogged':
-            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0,fluid=empty]' % berry, 1, 4, 4, water=True), *decorators, biome_check=False)
+        bush_block = 'tfc:plant/%s_bush[lifecycle=healthy,stage=0%s]' % (berry, ',fluid=empty' if info.type == 'waterlogged' else '')
+        configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config(bush_block, 1, 4, 4, 'fresh' if info.type == 'waterlogged' else False), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), biome_check=False)
         placed_feature_tag(rm, 'feature/berry_bushes', 'tfc:plant/%s_bush_patch' % berry)
+
     configured_placed_feature(rm, 'berry_bushes', 'minecraft:simple_random_selector', {'features': '#tfc:feature/berry_bushes'}, decorate_square(), decorate_chance(20))
 
     for fruit, info in FRUITS.items():

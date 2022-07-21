@@ -36,13 +36,6 @@
       "text": "Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount."
     },
     {
-      "type": "patchouli:spotlight",
-      "item": "tfc:compost",
-      "title": "Fertilizer",
-      "link_recipes": false,
-      "text": "To add nutrients to soil, try a $(l:mechanics/fertilizers)Fertilizer$(). See that page for more information on how they work and how to get them."
-    },
-    {
       "type": "patchouli:text",
       "text": "Descriptions of each crop start on the next page."
     },

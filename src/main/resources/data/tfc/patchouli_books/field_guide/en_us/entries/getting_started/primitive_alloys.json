@@ -28,14 +28,14 @@
       "item": "tfc:metal/ingot/bismuth_bronze",
       "title": "Bismuth Bronze",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 65 % : $(thing)Copper$()$(li)20 - 30 % : $(thing)Zinc$()$(li)10 - 20 % : $(thing)Bismuth$()$(br2)"
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)20 - 30 % : $(thing)Zinc$()$(li)50 - 65 % : $(thing)Copper$()$(li)10 - 20 % : $(thing)Bismuth$()$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/black_bronze",
       "title": "Black Bronze",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 70 % : $(thing)Copper$()$(li)10 - 25 % : $(thing)Gold$()$(li)10 - 25 % : $(thing)Silver$()$(br2)"
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 70 % : $(thing)Copper$()$(li)10 - 25 % : $(thing)Silver$()$(li)10 - 25 % : $(thing)Gold$()$(br2)"
     }
   ],
   "read_by_default": true,

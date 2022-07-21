@@ -133,13 +133,20 @@ public final class FluidHelpers
      * <br>
      * If the item is empty, it will attempt to fill the item from the fluid tank. If the item contains any fluid, it will attempt to fill the fluid block entity from the item.
      *
-     * @return A number of mB that were transferred. < 0 indicates a transfer <strong>out of</strong> the block entity, > 0 indicates a transfer <strong>into</strong> the block entity.
+     * @return {@code true} if a transfer occurred.
      */
     public static boolean transferBetweenBlockEntityAndItem(ItemStack originalStack, BlockEntity entity, Level level, BlockPos pos, AfterTransfer after)
     {
+        return transferBetweenBlockHandlerAndItem(originalStack, Helpers.getCapability(entity, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY), level, pos, after);
+    }
+
+    /**
+     * A variant of {@link #transferBetweenBlockEntityAndItem(ItemStack, BlockEntity, Level, BlockPos, AfterTransfer)} that doesn't require a block entity - the block handler can be from an explicit block based handler, for example.
+     */
+    public static boolean transferBetweenBlockHandlerAndItem(ItemStack originalStack, @Nullable IFluidHandler blockHandler, Level level, BlockPos pos, AfterTransfer after)
+    {
         final ItemStack stack = originalStack.copy(); // Copy here, because the semantics of item fluid handlers require us to carefully manage the container
         final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
-        final IFluidHandler blockHandler = Helpers.getCapability(entity, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
 
         if (itemHandler == null || blockHandler == null)
         {
@@ -157,11 +164,6 @@ public final class FluidHelpers
             // Transfer item -> block
             return transferBetweenItemAndOther(originalStack, itemHandler, itemHandler, blockHandler, Transfer.DRAIN, level, pos, after);
         }
-    }
-
-    public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, AfterTransfer after)
-    {
-        return transferBetweenItemAndOther(originalStack, itemHandler, from, to, fluid -> {}, after);
     }
 
     public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, Transfer type, Level level, BlockPos pos, AfterTransfer after)

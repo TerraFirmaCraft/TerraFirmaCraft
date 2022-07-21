@@ -34,6 +34,8 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLoggable, EntityBlockExtension
 {
@@ -41,7 +43,7 @@ public class DeadBerryBushBlock extends SeasonalPlantBlock implements IFluidLogg
 
     public DeadBerryBushBlock(ExtendedProperties properties)
     {
-        super(properties, () -> Items.AIR, new Lifecycle[12]);
+        super(properties, () -> ClimateRange.NOOP, () -> Items.AIR, new Lifecycle[12]);
 
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)).setValue(STAGE, 0));
     }

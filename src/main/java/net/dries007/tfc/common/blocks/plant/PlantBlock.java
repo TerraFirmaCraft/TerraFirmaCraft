@@ -23,8 +23,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.calendar.Calendars;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class PlantBlock extends TFCBushBlock
 {
@@ -32,13 +31,13 @@ public abstract class PlantBlock extends TFCBushBlock
 
     protected static final VoxelShape PLANT_SHAPE = box(2.0, 0.0, 2.0, 14.0, 16.0, 14.0);
 
-    public static PlantBlock create(IPlant plant, ExtendedProperties properties)
+    public static PlantBlock create(RegistryPlant plant, ExtendedProperties properties)
     {
         return new PlantBlock(properties)
         {
 
             @Override
-            public IPlant getPlant()
+            public RegistryPlant getPlant()
             {
                 return plant;
             }
@@ -75,9 +74,9 @@ public abstract class PlantBlock extends TFCBushBlock
      *
      * The stage property is isolated and referenced via this as it is needed in the {@link Block} constructor - which builds the state container, and requires all property references to be computed in {@link Block#createBlockStateDefinition(StateDefinition.Builder)}.
      *
-     * See the various {@link PlantBlock#create(IPlant, Properties)} methods and subclass versions for how to use.
+     * See the various {@link PlantBlock#create(RegistryPlant, ExtendedProperties)} methods and subclass versions for how to use.
      */
-    public abstract IPlant getPlant();
+    public abstract RegistryPlant getPlant();
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)

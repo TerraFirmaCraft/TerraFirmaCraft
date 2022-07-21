@@ -101,6 +101,13 @@ public class ExtendedProperties
         return blockEntityType != null;
     }
 
+    @SuppressWarnings("unchecked")
+    public <T extends BlockEntity> BlockEntityType<T> blockEntity()
+    {
+        assert blockEntityType != null;
+        return (BlockEntityType<T>) blockEntityType.get();
+    }
+
     // Internal methods
 
     @Nullable

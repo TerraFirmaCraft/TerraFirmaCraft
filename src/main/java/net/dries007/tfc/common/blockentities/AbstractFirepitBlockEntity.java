@@ -87,6 +87,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         {
             firepit.temperature = HeatCapability.adjustDeviceTemp(firepit.temperature, firepit.burnTemperature, firepit.airTicks, isRaining);
         }
+        HeatCapability.provideHeatTo(level, pos.above(), firepit.temperature);
         firepit.handleCooking();
         if (firepit.needsSlotUpdate)
         {

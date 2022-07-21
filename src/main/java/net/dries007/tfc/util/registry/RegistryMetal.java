@@ -8,6 +8,7 @@ package net.dries007.tfc.util.registry;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.Tier;
 
 import net.dries007.tfc.util.Metal;
 
@@ -16,7 +17,7 @@ import net.dries007.tfc.util.Metal;
  */
 public interface RegistryMetal extends StringRepresentable
 {
-    net.minecraft.world.item.Tier toolTier();
+    Tier toolTier();
 
     ArmorMaterial armorTier();
 

@@ -29,6 +29,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryPlant;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class CreepingPlantBlock extends PlantBlock implements DirectionPropertyBlock
@@ -49,12 +50,12 @@ public abstract class CreepingPlantBlock extends PlantBlock implements Direction
         .put(WEST, WEST_SHAPE)
         .build();
 
-    public static CreepingPlantBlock create(IPlant plant, ExtendedProperties properties)
+    public static CreepingPlantBlock create(RegistryPlant plant, ExtendedProperties properties)
     {
         return new CreepingPlantBlock(properties)
         {
             @Override
-            public IPlant getPlant()
+            public RegistryPlant getPlant()
             {
                 return plant;
             }

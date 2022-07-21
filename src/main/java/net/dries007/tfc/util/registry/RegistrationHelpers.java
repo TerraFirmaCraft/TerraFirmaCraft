@@ -88,8 +88,8 @@ public final class RegistrationHelpers
      */
     public static <F extends FlowingFluid> FlowingFluidRegistryObject<F> registerFluid(DeferredRegister<Fluid> fluids, String sourceName, String flowingName, Consumer<ForgeFlowingFluid.Properties> builder, FluidAttributes.Builder attributes, Function<ForgeFlowingFluid.Properties, F> sourceFactory, Function<ForgeFlowingFluid.Properties, F> flowingFactory)
     {
-        // The properties needs a reference to both source and flowing
-        // In addition, the properties builder cannot be invoked statically, as it has hard references to registry objects, which may not be populated based on class load order - it must be invoked at registration time.
+        // The properties need a reference to both source and flowing
+        // In addition, the properties' builder cannot be invoked statically, as it has hard references to registry objects, which may not be populated based on class load order - it must be invoked at registration time.
         // So, first we prepare the source and flowing registry objects, referring to the properties box (which will be opened during registration, which is ok)
         // Then, we populate the properties box lazily, (since it's a mutable lazy), so the properties inside are only constructed when the box is opened (again, during registration)
         final Mutable<Lazy<ForgeFlowingFluid.Properties>> propertiesBox = new MutableObject<>();

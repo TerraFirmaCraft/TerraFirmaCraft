@@ -28,7 +28,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.TFCItems;
 
-public class DispenserBehaviors
+public final class DispenserBehaviors
 {
     public static final DispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
 
@@ -76,9 +76,9 @@ public class DispenserBehaviors
         public ItemStack execute(BlockSource level, ItemStack stack)
         {
             final BlockPos blockpos = level.getPos().relative(level.getBlockState().getValue(DispenserBlock.FACING));
-            for (AbstractChestedHorse abstractchestedhorse : level.getLevel().getEntitiesOfClass(AbstractChestedHorse.class, new AABB(blockpos), horse -> horse.isAlive() && !horse.hasChest()))
+            for (AbstractChestedHorse horse : level.getLevel().getEntitiesOfClass(AbstractChestedHorse.class, new AABB(blockpos), horse -> horse.isAlive() && !horse.hasChest()))
             {
-                if (abstractchestedhorse.isTamed() && abstractchestedhorse.getSlot(499).set(stack))
+                if (horse.isTamed() && horse.getSlot(499).set(stack))
                 {
                     stack.shrink(1);
                     this.setSuccess(true);
@@ -98,12 +98,9 @@ public class DispenserBehaviors
         Stream.of(TFCItems.BLUE_STEEL_BUCKET, TFCItems.RED_STEEL_BUCKET, TFCItems.JUG, TFCItems.WOODEN_BUCKET)
             .forEach(reg -> DispenserBlock.registerBehavior(reg.get(), TFC_BUCKET_BEHAVIOR));
 
-        Stream.of(TFCItems.SALT_WATER_BUCKET, TFCItems.SPRING_WATER_BUCKET, TFCItems.BLUEGILL_BUCKET, TFCItems.COD_BUCKET, TFCItems.JELLYFISH_BUCKET,TFCItems.SALMON_BUCKET, TFCItems.TROPICAL_FISH_BUCKET, TFCItems.PUFFERFISH_BUCKET)
+        Stream.of(TFCItems.BLUEGILL_BUCKET, TFCItems.COD_BUCKET, TFCItems.JELLYFISH_BUCKET,TFCItems.SALMON_BUCKET, TFCItems.TROPICAL_FISH_BUCKET, TFCItems.PUFFERFISH_BUCKET)
             .forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
-        TFCItems.METAL_FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
-        TFCItems.ALCOHOL_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
-        TFCItems.SIMPLE_FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
-        TFCItems.COLORED_FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
+        TFCItems.FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
 
         // chest
         TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.CHEST).get()).forEach(chest -> DispenserBlock.registerBehavior(chest, CHEST_BEHAVIOR));

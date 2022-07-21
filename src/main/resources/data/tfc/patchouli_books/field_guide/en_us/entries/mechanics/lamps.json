@@ -85,7 +85,7 @@
         }
       },
       "name": "Lava Lamps",
-      "text": "Lava will keep burning forever, but can only be held in a $(thing)Blue Steel$() lamp.",
+      "text": "Lava will keep burning forever, but can only be held in a $(l:mechanics/steel#blue_steel)Blue Steel$() lamp.",
       "enable_visualize": false
     },
     {

@@ -8,7 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:wood/lectern/spruce"
+          "name": "tfc:wood/scribing_table/spruce"
         }
       ],
       "conditions": [

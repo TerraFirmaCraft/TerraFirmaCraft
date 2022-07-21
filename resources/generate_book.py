@@ -42,7 +42,7 @@ This enables hot reloading of book content and assets.
     /give @p patchouli:guide_book{"patchouli:book":"tfc:field_guide"}  // This is the TFC book, used by the inventory screen
     /give @p patchouli:guide_book{"patchouli:book":"patchouli:field_guide"} // This it the Patchouli namespaced book, which is hot reloadable. It is loaded from /.minecraft/patchouli_books/
 4. The latter book can be hot reloaded at any time:
-    4.1. Run generate_book.py with the above environment varialbe
+    4.1. Run generate_book.py with the above environment variable
     4.2. While in creative, go to the book main landing page, and shift-right-click the little pen/pencil icon.
 
 Reloading assets - tips for creating a custom resource pack. The following command just zips up two files and places the zip in the resource pack directory, ready to be enabled:
@@ -63,18 +63,19 @@ In addition, here's some useful things for dev work, and also making standardize
 
 import os
 
-from typing import NamedTuple, Tuple, List, Mapping
 from argparse import ArgumentParser
 
 from mcresources import ResourceManager, utils
-from mcresources.type_definitions import JsonObject, ResourceIdentifier, ResourceLocation
+from mcresources.type_definitions import JsonObject, ResourceIdentifier
 
-from constants import CROPS, ROCK_CATEGORIES, METALS
+from constants import CROPS, METALS
+from patchouli import *
 from i18n import I18n
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
 TOOL_METALS = [key for key, val in METALS.items() if 'tool' in val.types]
+
 
 class LocalInstance:
     INSTANCE_DIR = os.getenv('LOCAL_MINECRAFT_INSTANCE')  # The location of a local .minecraft directory, for testing in external minecraft instance (as hot reloading works much better)
@@ -124,6 +125,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
     book.template('quern_recipe', custom_component(0, 0, 'QuernComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('heat_recipe', custom_component(0, 0, 'HeatingComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('anvil_recipe', custom_component(0, 0, 'AnvilComponent', {'recipe': '#recipe'}), text_component(0, 45))
+    book.template('welding_recipe', custom_component(0, 0, 'WeldingComponent', {'recipe': '#recipe'}), text_component(0, 45))
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('biomes', 'Biomes', 'tfc:textures/gui/book/icons/biomes.png', pages=(
@@ -132,6 +134,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # Previews of most/all biomes in a showcase mode
             text('The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found.'),
             text('The next few pages show a few (but not all) of the biomes that you might find in the world.'),
+            page_break(),
             text('Plains are a low elevation biome, similar to hills, just above sea level. They are flat, and can contain fields of grasses and flowers, or they may be forested.', title='Plains'),
             image('tfc:textures/gui/book/biomes/plains.png', text_contents='A Plains.').anchor('plains'),
             text('Both Hills and Rolling Hills are low to mid elevation biomes often bordering plains or higher elevation regions. Large boulders can be found here, and rarely the empty remains of volcanic hot springs.', title='Hills & Rolling Hills').anchor('hills'),
@@ -169,11 +172,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             # Explanation of volcanoes with pictures and how to find them, and what resources they hold in fissures
             # Hot springs, empty hot springs, and what resources they hold
             text('The world of TerraFirmaCraft is formed by the movement of $(l:https://en.wikipedia.org/wiki/Plate_tectonics)plate tectonics$(), and some of that is still visible in the ground around you. By pressing $(item)$(k:key.inventory)$(), and clicking on the $(thing)Climate$() tab, the current tectonic area will be listed under $(thing)Region$(). There are several regions, and they will influence what kinds of biomes, and also what kind of features are present in the area.'),
-            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:the_world/biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:the_world/biomes#lowlands)Lowlands$(), $(l:the_world/biomes#low_canyons)Low Canyons$(), or $(l:biomes#plains)Plains$() are common.'),
+            text('Below is a list of the different types of regions, and their primary features$(br2)$(bold)Oceanic$()$(br)The tectonic plate covering most oceans, mostly covered with normal and deep $(l:the_world/biomes#ocean)Oceans$().$(br2)$(bold)Low Altitude Continental$()$(br)One of three main continental areas. Low altitude biomes such as $(l:the_world/biomes#lowlands)Lowlands$(), $(l:the_world/biomes#low_canyons)Low Canyons$(), or $(l:the_world/biomes#plains)Plains$() are common.'),
             text('$(bold)Mid Altitude Continental$()$(br)A mid elevation continental area, can contain many biomes and usually borders low or high altitude continental areas.$(br2)$(bold)High Altitude Continental$()$(br)A high altitude area with $(l:the_world/biomes#hills)Rolling Hills$(), $(l:the_world/biomes#plateau)Plateaus$(), and $(l:the_world/biomes#mountains)Old Mountains$().$(br2)$(bold)Mid-Ocean Ridge$()$(br)A mid ocean ridge forms when two oceanic plates diverge away from each other.'),
             text('It can generate rare volcanism and some volcanic mountains.$(br2)$(bold)Oceanic Subduction$()$(br)A subduction zone is where one plate slips under the other. In the ocean, this can form lots of volcanic mountains, island chains, and deep ocean ridges.$(br2)$(bold)Continental Subduction$()$(br)A continental subduction zone is a area of frequent volcanic activity, and huge coastal mountains. Active hot springs and volcanoes are common.'),
             text('$(bold)Continental Rift$()$(br)A continental rift is the site where two continents diverge, like $(l:https://en.wikipedia.org/wiki/Geology_of_Iceland)Iceland$(). It is the location of $(l:the_world/biomes#canyons)Canyons$() biomes, and shorter less active volcanoes, along with some other high altitude biomes.$(br2)$(bold)Orogenic Belt$()$(br)An $(l:https://en.wikipedia.org/wiki/Orogeny)Orogeny$() is the site of major mountain building. It forms where two continental plates collide and produces tall $(l:the_world/biomes#mountains)Mountains$() and $(l:the_world/biomes#plateau)Plateaus$().'),
             text('$(bold)Continental Shelf$()$(br)Finally, a continental shelf is a section of shallow ocean off the coast of a continent. It is where coral reefs appear in warmer climates.'),
+            page_break(),
             text('The world is also divided up into different types of $(thing)Rock$(). Rock regions can be over a kilometer across, and there will usually be two or three different rock layers under your feet at all times. As different ores are found in different rock types, locating specific rock types can be very important for finding resources such as $(l:the_world/ores_and_minerals)Ores$(), which will often only appear in certain rock types.', title='Rock Layers'),
             text('Rocks come in four categories: $(thing)Sedimentary$(), $(thing)Metamorphic$(), $(thing)Igneous Extrusive$(), and $(thing)Igneous Intrusive$(). These categories determine at what depth the different rock layers can be found. A listing of all the different rock types and what category they belong to can be found on the following pages.'),
             text('$(l:https://en.wikipedia.org/wiki/Sedimentary_rock)Sedimentary$() rocks are formed by the accumulation or deposition of mineral or organic particles. They can be found in $(thing)mid to high altitude$() rock layers. They are:$(br)$(li)Shale$(li)Claystone$(li)Limestone$(li)Conglomerate$(li)Dolomite$(li)Chert$(li)Chalk', title='Sedimentary').anchor('sedimentary'),
@@ -185,6 +189,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Ores and Minerals in TerraFirmaCraft are rare - unlike Vanilla, ores are found in massive, sparse, yet rare veins that require some $(l:mechanics/prospecting)prospecting$() to locate. Different ores will also appear in different rock types, and at different elevations, meaning finding the right rock type at the right altitude is key to locating the ore you are looking for.'),
             text('In addition, some ores are $(thing)Graded$(). Ore blocks may be Poor, Normal, or Rich, and different veins will have different concentrations of each type of block. Veins that are $(thing)richer$() are more lucrative.$(br2)The next several pages show the different types of ores, and where to find them.'),
             # === Metal Ores Listing ===
+            page_break(),
             text('Native Copper is a ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Native Copper').link(*['tfc:ore/%s_%s' % (g, 'native_copper') for g in GRADES_ALL]).anchor('native_copper'),
             multimultiblock('Native Copper Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_copper', 'dacite')) for g in GRADES]),
             text('Native Gold is a ore of $(thing)Gold$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
@@ -250,17 +255,19 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image('tfc:textures/gui/book/gui/calendar.png', text_contents='The Calendar Screen', border=False),
             text('There are seasons, and the weather and climate will change along with them! There are four seasons in TerraFirmaCraft, each divided up into $(thing)Early$(), $(thing)Mid$() and $(thing)Late$() months. The four seasons are:$(br)$(li)$(bold)Spring$(): March - May$(li)$(bold)Summer$(): June - August$(li)$(bold)Autumn$(): September - November$(li)$(bold)Winter$(): December - February'),
             text('The current season can influence the temperature of the area, the precipitation (if it will rain or snow), among other things. Pay attention to the calendar tab, it will be useful!$(br2)Now, onto the climate...'),
+            page_break(),
             text('Another tab on the main inventory screen is the $(thing)Climate$() screen. This one shows information about the current location$(br2)The first line shows the overall $(l:https://en.wikipedia.org/wiki/K%C3%B6ppen_climate_classification)Climate$() .$(br2)The second line shows the $(l:the_world/geology)Geologic Province$().$(br2)The third line shows the $(thing)Average Annual Temperature$().', title='Climate').anchor('climate'),
             image('tfc:textures/gui/book/gui/climate.png', text_contents='The Climate Screen', border=False),
             text('Temperature in TerraFirmaCraft is influenced by a number of factors:$(br)$(li)Firstly, the region, especially the latitude (Z coordinate) will play the largest role.$(li)Secondly, the current season will influence the temperature - it will be hottest during Summer, and coldest during Winter.$(li)Finally, the temperature can also be different day-to-day, and even hourly.').anchor('temperature'),
             text('The last line shows the current temperature, including all these aforementioned factors.$(br2)Temperature can influence many things: if crops and plants will grow, if snow and ice will form or melt, and more.'),
+            page_break(),
             text('Rainfall is another climate value that can vary depending on where you are in the world. The annual rainfall is measured in millimeters (mm) and can be between 0mm - 500mm. Rainfall affects the types of flora that are found in an area, and also the types of soil, from sand and cacti, to loam, to silt and kapok trees.', title='Rainfall').anchor('rainfall'),
             text('Rainfall is also important as it affects what things can be grown in an area. Rainfall is one of the main contributors to $(l:food/hydration)Hydration$(), which is an exact measure of how wet the soil is in a given location, and is used by $(l:food/crops)Crops$(), $(l:the_world/fruit_trees)Fruit Trees$(), and $(l:the_world/berry_bushes)Berry Bushes$() to determine if they can grow.'),
         )),
         entry('flora', 'Flora', 'tfc:plant/goldenrod', pages=(
             # Overview of various plants
             # Mention some usages (dyes)
-            text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft. Some would say over nine thousand. Those people would be wrong.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye.'),
+            text('There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye.'),
             block_spotlight('Standard', 'Standard plants are like small flowers. They grow on grass, dirt, and farmland.', 'tfc:plant/anthurium'),
             block_spotlight('Dry', 'Dry plants are like standard plants, but they can grow on sand. These generally only spawn in areas with low rainfall.', 'tfc:plant/sagebrush'),
             two_tall_block_spotlight('Cacti', 'Cacti can grow two blocks high, and they will damage you!', 'tfc:plant/barrel_cactus[part=lower]', 'tfc:plant/barrel_cactus[part=upper]'),
@@ -279,21 +286,44 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             two_tall_block_spotlight('Floating', 'Floating plants sit on top of the water. Boats will break them on contact.', 'minecraft:water', 'tfc:plant/duckweed'),
             two_tall_block_spotlight('Kelp', 'Kelp are twisting vines that grow underwater.', 'tfc:plant/winged_kelp_plant[fluid=salt_water]', 'tfc:plant/winged_kelp[fluid=salt_water]'),
             two_tall_block_spotlight('Tree Kelp', 'Tree kelp grow into intricate trees underwater. The flowers can be harvested with a $(thing)Knife$().', 'tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]', 'tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]'),  # note: anyone want to make a nice multiblock for this?
+            empty_last_page(),
         )),
         entry('wild_crops', 'Wild Crops', 'tfc:wild_crop/wheat', pages=(
             # Wild crops - how to find them, why you'd want to, what they drop
             text('$(thing)Wild Crops$() can be found scattered around the world, growing in small patches. They can be harvested for food and seeds, which can then be cultivated themselves in the not-wild form.$(br2)Harvesting wild crops can be done with your fists, or with a $(thing)Knife$() or other sharp tool. When broken, they will drop $(thing)Seeds$() and some $(thing)Products$().'),
             block_spotlight('Wild Wheat', 'An example of a wild crop, in this case $(l:food/crops#wheat)Wheat$().', 'tfc:wild_crop/wheat'),
             text('There are many different types of wild crop - every crop that can be cultivated has a wild variant that can be found in the world somewhere. See the list of $(l:food/crops)Crops$() for all different crops that can be grown. Wild crops will look similar to their cultivated counterparts, but are more hidden within the grass. Wild crops will spawn in climates near where the crop itself can be cultivated, so if looking for a specific crop, look in the climate where the crop can be cultivated.'),
+            multimultiblock('All different varieties of wild crop', *(
+                block_spotlight('', '', 'tfc:wild_crop/barley'),
+                block_spotlight('', '', 'tfc:wild_crop/oat'),
+                block_spotlight('', '', 'tfc:wild_crop/rye'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/maize[part=bottom]', 'tfc:wild_crop/maize[part=top]'),
+                block_spotlight('', '', 'tfc:wild_crop/barley'),
+                block_spotlight('', '', 'tfc:wild_crop/rice'),  # todo: change to waterlogged when the rice block itself is capable of that
+                block_spotlight('', '', 'tfc:wild_crop/beet'),
+                block_spotlight('', '', 'tfc:wild_crop/cabbage'),
+                block_spotlight('', '', 'tfc:wild_crop/carrot'),
+                block_spotlight('', '', 'tfc:wild_crop/garlic'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/green_bean[part=bottom]', 'tfc:wild_crop/green_bean[part=top]'),
+                block_spotlight('', '', 'tfc:wild_crop/potato'),
+                block_spotlight('', '', 'tfc:wild_crop/onion'),
+                block_spotlight('', '', 'tfc:wild_crop/soybean'),
+                block_spotlight('', '', 'tfc:wild_crop/squash'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/sugarcane[part=bottom]', 'tfc:wild_crop/sugarcane[part=top]'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/tomato[part=bottom]', 'tfc:wild_crop/tomato[part=top]'),
+                two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
+            ))
         )),
         entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
             image('tfc:textures/gui/book/wip.png'),
+            empty_last_page(),
             # Berry bushes - how to find them, how to harvest and move them
             # todo: info about berry bushes
             # todo: listing of various berry bushes
         )),
         entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
             image('tfc:textures/gui/book/wip.png'),
+            empty_last_page(),
             # Fruit trees - how to find them, how to harvest and move them
             # todo: info about fruit trees
             # todo: listing of various fruit trees
@@ -301,38 +331,46 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
             text('The world of TFC is full of animal life. Some animals are here to help, and some are incredibly dangerous. This section is about wild animals. For information on livestock, animals that can give you items you need, see the $(l:mechanics/animal_husbandry)Animal Husbandry$() page.'),
-            text('$(thing)Predators$() are animals that can attack the player. They are either $(thing)Nocturnal$(), only hunting at night, or $(thing)Diurnal$(), only hunting during the day. When they get a kill, they will not hunt for hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home.'),
-            entity('tfc:polar_bear', 'The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm.', 'Polar Bear'),
-            entity('tfc:grizzly_bear', 'The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$().', 'Grizzly Bear'),
-            entity('tfc:black_bear', 'The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$().', 'Black Bear'),
-            entity('tfc:cougar', 'The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Cougar'),
-            entity('tfc:panther', 'The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Panther'),
-            entity('tfc:lion', 'The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm.', 'Lion'),
-            entity('tfc:sabertooth', 'The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm.', 'Sabertooth'),
-            text('$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.'),
+            text('Animals can be grouped into a couple different categories: $(l:the_world/wild_animals#predators)Predators$(), $(l:the_world/wild_animals#prey)Prey$(), and $(l:the_world/wild_animals#aquatic)Aquatic$() animals.$(br2)The next few pages will detail each of these categories of animals.'),
+            page_break(),
+            text('$(thing)Predators$() are animals that can attack the player. They are either $(thing)Nocturnal$(), only hunting at night, or $(thing)Diurnal$(), only hunting during the day. Predators can be neutral or hostile, depending on if they have killed a target recently. Predators have a home territory that they will defend - if you run far enough away, the predator will stop chasing and return home.', title='Predators').anchor('predators'),
+            entity('tfc:polar_bear', 'The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm.', 'Polar Bear', 0.55),
+            entity('tfc:grizzly_bear', 'The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$().', 'Grizzly Bear', 0.55),
+            entity('tfc:black_bear', 'The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$().', 'Black Bear', 0.55),
+            entity('tfc:cougar', 'The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Cougar', 0.6),
+            entity('tfc:panther', 'The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$().', 'Panther', 0.6),
+            entity('tfc:lion', 'The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm.', 'Lion', 0.55),
+            entity('tfc:sabertooth', 'The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm.', 'Sabertooth', 0.6),
+            page_break(),
+            text('$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.', title='Prey').anchor('prey'),
             entity('tfc:boar', 'The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.', 'Boar'),
             entity('tfc:rabbit', 'The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn.', 'Rabbit'),
             entity('tfc:fox', 'The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm.', 'Fox'),
+            page_break(),
+            text('$(thing)Aquatic Animals$() are a broad category which covers a number of different behaviors. They may be $(thing)Shore Dwellers$(), $(thing)Fish$(), $(thing)Shellfish$(), or $(thing)Large Aquatic Creatures$()', title='Aquatic Animals').anchor('aquatic'),
             text('$(thing)Shore Animals$() only spawn on sea shores and spend some of their day swimming, and some walking on the beach. They are curious creatures, and will follow the player around, but cannot be tamed.'),
             entity('tfc:penguin', 'The penguin spawns in only the coldest beaches, with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm.', 'Penguin'),
             entity('tfc:turtle', 'The sea turtle likes warm water. It spawns in $(l:the_world/climate#temperature)temperature$() of at least 21°C and $(l:the_world/climate#rainfall)rainfall$() of at least 250mm.', 'Sea Turtle'),
-            text('$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes.'),
+            page_break(),
+            text('$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes.', title='Fish'),
             entity('tfc:cod', 'Cod prefer colder oceans, $(l:the_world/climate#temperature)temperature$() at most 18°C. They can be fished.', 'Cod'),
             entity('tfc:pufferfish', 'Pufferfish live in any ocean with at least a $(l:the_world/climate#temperature)temperature$() of 10°C.', 'Pufferfish'),
             entity('tfc:jellyfish', 'Jellyfish live in warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C.', 'Jellyfish'),
             entity('tfc:tropical_fish', 'Tropical fish prefer warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C.', 'Tropical Fish'),
             entity('tfc:salmon', 'Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C.'),
             entity('tfc:bluegill', 'Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C.'),
-            text('$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish.').anchor('shellfish'),
+            text('$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish.', title='Shellfish').anchor('shellfish'),
             entity('tfc:isopod', 'Isopods spawn in deeper sections of oceans of $(l:the_world/climate#temperature)temperature$() at most 14°C.', 'Isopod'),
             entity('tfc:lobster', 'Lobster spawn in any ocean that is at most of a $(l:the_world/climate#temperature)temperature$() of 21°C.', 'Lobster'),
             entity('tfc:crayfish', 'Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:the_world/climate#temperature)temperature$() of at least 5°C and a $(l:the_world/climate#rainfall)rainfall$() of at least 125mm.', 'Crayfish'),
             entity('tfc:horseshoe_crab', 'Horseshoe crabs spawn in oceans of moderate climate, $(l:the_world/climate#temperature)temperature$() between 10 and 21°C and with a $(l:the_world/climate#rainfall)rainfall$() of at most 400mm.', 'Horseshoe Crab'),
-            text('$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.'),
+            page_break(),
+            text('$(thing)Large Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.', title='Large Water Creatures'),
             entity('tfc:orca', 'Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm.', 'Orca', scale=0.25),
             entity('tfc:dolphin', 'Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm.', 'Dolphin', scale=0.4),
             entity('tfc:manatee', 'Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm.', 'Manatee', scale=0.25),
             text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),  # todo: squid renderer does not work without proper context...
+            empty_last_page(),
         ))
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
     ))
@@ -436,14 +474,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('$(thing)Alloys$() are a method of mixing two or more metals together, to create a new, stronger metal. During the early game, while copper is a useful metal for creating tools, the next tier of metal is one of three types of $(thing)Bronze$(). An alloy is made up of component $(thing)metals$(), which must each satisfy a specific percentage of the overall whole.'),
             text('One method through which alloys can be made during the early game is through the usage of a $(thing)Small Vessel$(). The process is very similar to $(l:getting_started/finding_ores#casting)Casting$(). However, instead of using just a single metal, inside the vessel, place enough ore pieces, in the correct ratio, to form a known alloy mix.'),
             text('For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, armor, and other metal items, although each metal is slightly different, and tools will have different durability, efficiency, or attack damage.'),
-            alloy_recipe('Bronze', 'tfc:metal/ingot/bronze', ('Copper', 88, 92), ('Tin', 8, 12), text_content=''),
-            alloy_recipe('Bismuth Bronze', 'tfc:metal/ingot/bismuth_bronze', ('Copper', 50, 65), ('Zinc', 20, 30), ('Bismuth', 10, 20), text_content=''),
-            alloy_recipe('Black Bronze', 'tfc:metal/ingot/black_bronze', ('Copper', 50, 70), ('Gold', 10, 25), ('Silver', 10, 25), text_content=''),
+            alloy_recipe('Bronze', 'bronze', ''),
+            alloy_recipe('Bismuth Bronze', 'bismuth_bronze', ''),
+            alloy_recipe('Black Bronze', 'black_bronze', ''),
         )),
         entry('primitive_anvils', 'Primitive Anvils', 'tfc:rock/anvil/granite', pages=(
             text('An alternative to casting tool molds directly in the early game, and a requirement for higher tier metals, is to use an $(thing)Anvil$(). An anvil is a block which can be used for two different processes: $(l:mechanics/anvils#working)Working$(), ad $(l:mechanics/anvils#welding)Welding$(). This chapter is just going to show you how to obtain your first, primitive stone anvil.'),
             text('First, you need to acquire a block of $(thing)Raw Rock$(), that is $(thing)Igneous Intrusive$() (Rhyolite, Basalt, Andesite, or Dacite), or $(thing)Igneous Extrusive$() (Granite, Diorite, or Gabbro). You could find and use an exposed block in the world, or you could $(l:getting_started/primitive_anvils#raw_rock)extract one$() from the surrounding rock.'),
-            text('You will also need any material of $(thing)Hammer$(). In order to make the anvil, simply right click the exposed $(thing)top$() face of one of the aforementioned raw rocks with your $(thing)hammer$(), and voila! An anvil will be formed.$(br2)Anvils each have $(thing)tiers$(), and the rock anvil is a Tier 0 - the lowest tier. It is only able to $(l:mechanics/anvils#welding)Weld$() Tier I ingots.', title='Rock Anvil').anchor('stone_anvils'),
+            text('You will also need any material of $(thing)Hammer$(). In order to make the anvil, simply right click the exposed $(thing)top$() face of one of the aforementioned raw rocks with your $(thing)hammer$(), and voila! An anvil will be formed.$(br2)Anvils each have $(l:mechanics/anvils#tiers)tiers$(), and the rock anvil is a Tier 0 - the lowest tier. It is only able to $(l:mechanics/anvils#welding)Weld$() Tier I ingots.', title='Rock Anvil').anchor('stone_anvils'),
             multimultiblock(
                 'Converting the center raw rock to an anvil',
                 multiblock('', '', False, ((' 0 ',), ('RRR',)), {'0': 'AIR', 'R': 'tfc:rock/raw/gabbro'}),
@@ -494,6 +532,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         )),
     ))
 
+
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
@@ -508,34 +547,35 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('$(thing)Dairy Animals$() are mammals that make $(thing)Milk$(). Female dairy animals can be clicked with a bucket to obtain milk. Some examples are $(l:mechanics/animal_husbandry#goat)Goats$(), $(l:mechanics/animal_husbandry#cow)Cows$(), and $(l:mechanics/animal_husbandry#yak)Yaks$().').anchor('dairy_animals'),
             crafting('tfc:crafting/nest_box', title='Nest Box', text_contents='$(thing)Oviparous Animals$() are not $(l:mechanics/animal_husbandry#mammals)Mammals$(), and instead produce children by laying $(thing)Eggs$(). They need a $(thing)Nest Box$() to lay eggs, which they are capable of locating on their own.$(br)Some examples are $(l:mechanics/animal_husbandry#duck)Ducks$(), $(l:mechanics/animal_husbandry#quail)Quails$(), and $(l:mechanics/animal_husbandry#chicken)Chickens$().').anchor('oviparous_animals'),
             heat_recipe('tfc:heating/cooked_egg', '$(thing)Eggs$() can be cooked or boiled for food. Male oviparous animals can fertilize females, which causes the eggs in the nest box to be fertilized. The eggs will say how long until they are ready to hatch.'),
-            leather_knapping('tfc:leather_knapping/saddle', '$(thing)Horses$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. Horses become rideable after reaching 15% familiarity. They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#Horses)Horses$().').anchor('horses'),
-            text('The next few pages will cover different types of animals.'),
-            entity('tfc:pig', 'A pig.', 'Pig', scale=1),
-            text('$(thing)Pigs$() spawn in mild forests of $(l:the_world/climate#temperature)temperature$() between -10 and 35°C, and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm. They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.').anchor('pig'),
-            entity('tfc:cow', 'A cow.', 'Cow', scale=1),
-            text('$(thing)Cows$() spawn in most climates, between $(l:the_world/climate#temperature)temperature$() -10 and 35°C, and with a $(l:the_world/climate#rainfall)rainfall$() of at least 250mm. They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They only eat $(thing)grains$(), which may be rotten. They can have 1-2 children, are pregnant for 58 days, and reach adulthood in 192 days. They can have children 13 times, if they are never milked, or be milked 128 times, if they are never bred. They produce milk every day.').anchor('cow'),
-            entity('tfc:goat', 'A goat.', 'Goat', scale=1),
-            text('$(thing)Goats$() spawn in moderate climates, $(l:the_world/climate#temperature)temperature$() between -12 and 25°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm. They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.').anchor('goat'),
-            entity('tfc:yak', 'A yak.', 'Yak', scale=1),
-            text('$(thing)Yaks$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() of at most -11°C and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat only fresh $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 180 days. They can have children 23 times, if they are never milked, or be milked 230 times, if they are never bred. They produce milk once a day.').anchor('yak'),
-            entity('tfc:alpaca', 'An alpaca.', 'Alpaca', scale=1),
-            text('$(thing)Alpacas$() spawn in colder climates, $(l:the_world/climate#temperature)temperature$() between -8 and 20°C, with at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1-2 children, are pregnant for 36 days, and reach adulthood in 98 days. They can have children 13 times, if they are never sheared, or be sheared 128 times, if they are never bred. They grow wool every 6 days.').anchor('alpaca'),
-            entity('tfc:sheep', 'A sheep.', 'Sheep', scale=1),
-            text('$(thing)Sheep$() spawn in drier climates, $(l:the_world/climate#temperature)temperature$() between 0 and 35°C, and 70 and 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 9 days.').anchor('sheep'),
-            entity('tfc:musk_ox', 'A musk ox.', 'Musk Ox', scale=1),
-            text('$(thing)Musk Oxen$() spawn in moderate climates, $(l:the_world/climate#temperature)temperature$() between 0 and 25°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared.').anchor('musk_ox'),
-            entity('tfc:chicken', 'A chicken.', 'Chicken', scale=1),
-            text('$(thing)Chickens$() spawn in warm forests, with $(l:the_world/climate#temperature)temperature$() of at least 14°C, and 225mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 24 days. They can lay eggs 100 times. They produce eggs every 30 hours.').anchor('chicken'),
-            entity('tfc:duck', 'A duck.', 'Duck', scale=1),
-            text('$(thing)Ducks$() spawn in most plains, $(l:the_world/climate#temperature)temperature$() between -25 and 30°C, with $(l:the_world/climate#rainfall)rainfall$() of at least 100mm. They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.').anchor('duck'),
-            entity('tfc:quail', 'A quail.', 'Quail', scale=1),
-            text('$(thing)Quails$() spawn in colder climates, $(l:the_world/climate#temperature)temperature$() between -15 and 15°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 200mm. They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.').anchor('quail'),
-            entity('tfc:donkey', 'A donkey.', 'Donkey', scale=1),
-            text('$(thing)Donkeys$() spawn in wetter plains, with a $(l:the_world/climate#temperature)temperature$() of at least -15°C, and a $(l:the_world/climate#rainfall)rainfall$() of between 130 and 400mm. They are a kind of $(l:mechanics/animal_husbandry#horses)Horse() which can have a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.').anchor('donkey'),
-            entity('tfc:mule', 'A mule.', 'Mule', scale=1),
-            text('$(thing)Mules$() spawn in plains with a $(l:the_world/climate#temperature)temperature$() of at least -15°C, and a $(l:the_world/climate#rainfall)rainfall$() of between 130 and 400mm. They are a kind of $(l:mechanics/animal_husbandry#horses)Horse() that can wear a chest, which are the always-male product of a $(thing)horse$() and a $()donkey$(). They can have $(thing)grains$() and $(thing)fruits$(). They reach adulthood in 80 days.').anchor('mule'),
-            entity('tfc:horse', 'A horse.', 'Horse', scale=1),
-            text('$(thing)Horses$() spawn in plains with a $(l:the_world/climate#temperature)temperature$() of at least -15°C, and a $(l:the_world/climate#rainfall)rainfall$() of between 130 and 400mm. They are a kind of $(l:mechanics/animal_husbandry#horses)Horse(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.').anchor('horse'),
+            leather_knapping('tfc:leather_knapping/saddle', '$(thing)Horses$() are $(l:mechanics/animal_husbandry#mammals)Mammals$() that can be ridden when tamed. Horses become rideable after reaching 15% familiarity.').anchor('horses'),
+            text(' They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#Horses)Horses$().$(br2)The next few pages will go over the different types of domesticatable animals.'),
+            page_break(),
+            text('$(thing)Pigs$() spawn in mild forests of $(l:the_world/climate#temperature)temperature$() between -10 and 35°C, and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm. They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Pigs').anchor('pig'),
+            entity('tfc:pig', 'A pig.', '', scale=1),
+            text('$(thing)Cows$() spawn in most climates, between $(l:the_world/climate#temperature)temperature$() -10 and 35°C, and with a $(l:the_world/climate#rainfall)rainfall$() of at least 250mm. They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They only eat $(thing)grains$(), which may be rotten. They can have 1-2 children, are pregnant for 58 days, and reach adulthood in 192 days. They can have children 13 times, if they are never milked, or be milked 128 times, if they are never bred. They produce milk every day.', title='Cows').anchor('cow'),
+            entity('tfc:cow', 'A cow.', '', scale=1),
+            text('$(thing)Goats$() spawn in moderate climates, $(l:the_world/climate#temperature)temperature$() between -12 and 25°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 300mm. They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.', title='Goats').anchor('goat'),
+            entity('tfc:goat', 'A goat.', '', scale=1),
+            text('$(thing)Yaks$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() of at most -11°C and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat only fresh $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 180 days. They can have children 23 times, if they are never milked, or be milked 230 times, if they are never bred. They produce milk once a day.', title='Yak').anchor('yak'),
+            entity('tfc:yak', 'A yak.', '', scale=1),
+            text('$(thing)Alpacas$() spawn in colder climates, $(l:the_world/climate#temperature)temperature$() between -8 and 20°C, with at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1-2 children, are pregnant for 36 days, and reach adulthood in 98 days. They can have children 13 times, if they are never sheared, or be sheared 128 times, if they are never bred. They grow wool every 6 days.', title='Alpaca').anchor('alpaca'),
+            entity('tfc:alpaca', 'An alpaca.', '', scale=1),
+            text('$(thing)Sheep$() spawn in drier climates, $(l:the_world/climate#temperature)temperature$() between 0 and 35°C, and 70 and 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 9 days.', title='Sheep').anchor('sheep'),
+            entity('tfc:sheep', 'A sheep.', '', scale=1),
+            text('$(thing)Musk Oxen$() spawn in moderate climates, $(l:the_world/climate#temperature)temperature$() between 0 and 25°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared.', title='Musk Ox').anchor('musk_ox'),
+            entity('tfc:musk_ox', 'A musk ox.', '', scale=1),
+            text('$(thing)Chickens$() spawn in warm forests, with $(l:the_world/climate#temperature)temperature$() of at least 14°C, and 225mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 24 days. They can lay eggs 100 times. They produce eggs every 30 hours.', title='Chickens').anchor('chicken'),
+            entity('tfc:chicken', 'A chicken.', '', scale=1),
+            text('$(thing)Ducks$() spawn in most plains, $(l:the_world/climate#temperature)temperature$() between -25 and 30°C, with $(l:the_world/climate#rainfall)rainfall$() of at least 100mm. They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.', title='Ducks').anchor('duck'),
+            entity('tfc:duck', 'A duck.', '', scale=1),
+            text('$(thing)Quails$() spawn in colder climates, $(l:the_world/climate#temperature)temperature$() between -15 and 15°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 200mm. They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.', title='Quail').anchor('quail'),
+            entity('tfc:quail', 'A quail.', '', scale=1),
+            text('$(thing)Donkeys$() spawn in wetter plains, with a $(l:the_world/climate#temperature)temperature$() of at least -15°C, and a $(l:the_world/climate#rainfall)rainfall$() of between 130 and 400mm. They are a kind of $(l:mechanics/animal_husbandry#horses)Horse() which can have a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Donkeys').anchor('donkey'),
+            entity('tfc:donkey', 'A donkey.', '', scale=1),
+            text('$(thing)Mules$() spawn in plains with a $(l:the_world/climate#temperature)temperature$() of at least -15°C, and a $(l:the_world/climate#rainfall)rainfall$() of between 130 and 400mm. They are a kind of $(l:mechanics/animal_husbandry#horses)Horse() that can wear a chest, which are the always-male product of a $(thing)horse$() and a $()donkey$(). They can have $(thing)grains$() and $(thing)fruits$(). They reach adulthood in 80 days.', title='Mules').anchor('mule'),
+            entity('tfc:mule', 'A mule.', '', scale=1),
+            text('$(thing)Horses$() spawn in plains with a $(l:the_world/climate#temperature)temperature$() of at least -15°C, and a $(l:the_world/climate#rainfall)rainfall$() of between 130 and 400mm. They are a kind of $(l:mechanics/animal_husbandry#horses)Horse(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Horses').anchor('horse'),
+            entity('tfc:horse', 'A horse.', '', scale=1),
         )),
         entry('panning', 'Panning', 'tfc:pan/empty', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need a empty pan.').link('#tfc:ore_deposits'),
@@ -543,16 +583,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             heat_recipe('tfc:heating/ceramic_pan', 'Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite.'),
             block_spotlight('Example', 'A native gold deposit in some slate.', 'tfc:deposit/native_gold/slate'),
             text('Then, you can begin panning!$(br2)$(bold)1.$() With the pan in hand, $(thing)use$() it on the ore deposit block.$(br2)$(bold)2.$() While standing in water with the pan in your hand, hold down $(item)$(k:key.use)$(), and you will start panning.$(br2)$(bold)3.$() After a few moments, if you are lucky, you may be rewarded with a small piece of ore in your inventory.'),
+            image('tfc:textures/gui/book/tutorial/panning.png'),
         )),
         entry('heating', 'Heating', 'tfc:firestarter', pages=(
             text('Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item\'s tooltip.'),
             text('The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C'),
-            # todo: other just general heating recipes?
         )),
         entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
             text('The $(thing)Charcoal Forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for $(l:mechanics/anvils)anvils$(). $(br)It is constructed with 5 $(thing)stone$() blocks surrounding a $(l:mechanics/charcoal_pit#charcoal_pile)charcoal pile$() of 7 or 8 layers, which is then lit.'),
             multiblock('A Charcoal Forge', 'A complete forge multiblock, ready to be lit.', True, multiblock_id='tfc:charcoal_forge'),
-            text('Forges need to be well-ventilated to work. Either they should be able to see the sky directly, or be connected horizontally to a block that can, as in the photo. Forges can reach higher temperatures with a $(thing)bellows$(), placed horizontally from the open block above the forge. Chimneys are useful, because forges will go out in the rain'),
+            text('Forges need to be well-ventilated to work. Either they should be able to see the sky directly, or be connected horizontally to a block that can, as in the photo. Forges can reach higher temperatures with a $(l:mechanics/bellows)bellows$(), placed horizontally from the open block above the forge. Chimneys are useful, because forges will go out in the rain'),
             image('tfc:textures/gui/book/tutorial/forge_chimney.png', text_contents='A forge with a valid chimney setup.'),
             image('tfc:textures/gui/book/gui/charcoal_forge.png', text_contents='The forge\'s interface.', border=False),
             text('The five slots at the bottom of the forge are used for fuel. While the forge is running, it periodically consumes fuel, which can be $(thing)Charcoal$() or $(l:the_world/ores_and_minerals#bituminous_coal)Coal$(). The top five slots will heat items, up to the temperature shown in the indicator on the left. The right side slots are for containers that can contain liquid metal, like $(thing)Vessels$(). Items that melt in the forge will fill those containers.'),
@@ -561,21 +601,34 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('The $(thing)Charcoal Pit$() is a way of obtaining $(thing)Charcoal$(). Charcoal pits are made with $(thing)Log Piles$(). To place a log pile, $(item)$(k:key.use)$() and $(item)$(k:key.sneak)$() while holding a $(thing)Log$(). More logs can be inserted by either pressing $(item)$(k:key.use)$() directly while holding a log, or by pressing $(item)$(k:key.use)$() with something else to open the interface.'),
             block_spotlight('The Log Pile', 'Log piles need a solid block under them to be placed. They are highly flammable.', 'tfc:log_pile'),
             text('The charcoal pit is formed by surrounding log piles with solid, non-flammable blocks. The amount of charcoal produced is proportional to the amount of logs contained inside the log piles. To start the burning process, light one of the log piles, and then cover it. If it worked, you should see $(thing)smoke$() particles rise up from the structure.'),
-            multimultiblock('The building of one possible charcoal pit, in layers.',
-                            multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam'}),
-                            multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:log_pile'}),
-                            multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:burning_log_pile'}),
-                            multiblock('', '', False, (('     ', ' XXX ', ' XXX ', ' XXX ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:log_pile'}),
-                            multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:charcoal_pile[layers=7]'}),
-                            ),
+            multimultiblock('The building of one possible charcoal pit, in layers.', *(
+                multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam'}),
+                multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:log_pile'}),
+                multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:burning_log_pile'}),
+                multiblock('', '', False, (('     ', ' XXX ', ' XXX ', ' XXX ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:log_pile'}),
+                multiblock('', '', False, (('     ', '     ', '     ', '     ', '     '), ('XXXXX', 'XYYYX', 'XYYYX', 'XYYYX', 'XXXXX'), ('XXXXX', 'XXXXX', 'XX0XX', 'XXXXX', 'XXXXX'),), {'X': 'tfc:dirt/sandy_loam', '0': 'tfc:dirt/sandy_loam', 'Y': 'tfc:charcoal_pile[layers=7]'}),
+            )),
             text('After the charcoal pile burns, you will be left with $(thing)Charcoal piles$(). The charcoal pile contains up 8 layers of $(thing)Charcoal$(). Dig it with a shovel to obtain the charcoal items. Charcoal piles can be added to or placed with $(item)$(k:key.use)$().').anchor('charcoal_pile'),
             multimultiblock('The charcoal pile.', *[block_spotlight('', '', 'tfc:charcoal_pile[layers=%s]' % i) for i in range(1, 9)])
         )),
         entry('crucible', 'Crucible', 'tfc:crucible', pages=(
-            text('Getting toasty in here'),
-            block_spotlight('A Crucible', '', 'tfc:crucible'),
-            image('tfc:textures/gui/book/wip.png'),
-            # todo: crucible and advanced alloying
+            text('A $(thing)Crucible$() is an advanced device used for the creation of $(l:)Alloys$(). It is a more precise method than using a $(l:getting_started/primitive_alloys)Small Vessel$() to make alloys.$(br2)To obtain a crucible, you will first need to obtain some $(l:mechanics/fire_clay)Fire Clay$(), which is a stronger material than clay. This fire clay can then be knapped to shape it into and $()Unfired Crucible$().'),
+            fire_clay_knapping('tfc:fire_clay_knapping/crucible', 'Knapping an $(thing)Unfired Crucible$().'),
+            heat_recipe('tfc:heating/crucible', 'After the crucible is knapped, it will need to be $(thing)fired$(), like any piece of pottery - a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$() would do.$(br2)n order to use the crucible, it needs a source of heat. The crucible can be heated by any heatable block below, for instance a $(l:mechanics/charcoal_forge)Charcoal Forge$()'),
+            multiblock('', 'A crucible powered by a charcoal forge below it.', False, (('   ', ' C ', '   '), ('GGG', 'G0G', 'GGG')), {
+                'C': 'tfc:crucible',
+                '0': 'tfc:charcoal_forge[heat_level=7]',
+                'G': 'tfc:rock/bricks/granite'
+            }),
+            page_break(),
+            text('Now, you are ready to use the crucible. When you use it, you will see the $(thing)Crucible Interface$(), shown to the right. The top region shows the current metal content of the crucible. The first metal shown is what would be produced, if it were to be extracted right now. Other metals shown are the makeup of the current alloy in the crucible.', title='Advanced Alloying').anchor('advanced_alloying'),
+            image('tfc:textures/gui/book/gui/crucible.png', text_contents='The Crucible Interface', border=False),
+            text('The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here, and they will be slowly drained into the crucible, allowing for precise control over your alloy\'s content.$(br2)Molds, or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible.'),
+            text('The temperature indicator on the left will rise based on external sources of heat, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() below, or heat from a $(l:mechanics/blast_furnace)Blast Furnace$() from above. Metal can be extracted from the crucible as long as it is hot enough.$(br2)Finally, the crucible will keep it\'s content when broken, allowing you to transport the alloy container around if you wish.'),
+        )),
+        entry('bellows', 'Bellows', 'tfc:bellows', pages=(
+            text('A $(thing)Bellows$() is a device which can be used to increase the air flow through other device, which lets them burn at a hotter temperature. However, by burning at a hotter temperature, they will also consume fuel faster. The bellows can provide heat to a device that is directly in front of it, or in front and one block down. This allows it to heat a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), for example.'),
+            crafting('tfc:crafting/bellows', title='', text_contents='To use the bellows, simply place it facing the targeted heating device, and use it. The bellows will pump air into the device, raising the maximum temperature for a short time.')
         )),
         entry('grill', 'Firepit And Grill', 'tfc:grill', pages=(
             text('A $(thing)Grill$() is an item that can be added to a firepit to cook foods more efficiently. The grill is able to cook five items at once, and it also gives these items the $(thing)Wood Grilled$() trait when cooking food, which provides a minor buff to the item\'s $(l:food/preservation)expiration date$(). In order to create a firepit with grill, first create a $(l:getting_started/firepit)Firepit$(), then use a $(thing)Wrought Iron Grill$() on the firepit.').link('tfc:wrought_iron_grill'),
@@ -603,6 +656,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         )),
         entry('support_beams', 'Support Beams', 'tfc:wood/support/oak', pages=(
             image('tfc:textures/gui/book/wip.png'),
+            empty_last_page(),
             # todo: supports, more on collapses?
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
@@ -628,27 +682,67 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('$(li)The bloomery cares about the quantity of items thrown into it, not the quality. Using rich ore in the bloomery consumes the same amount of charcoal as poor ore!$()$(li)Molten blocks will readily spread fire to their environment! Be careful.$()'),
         )),
         entry('blast_furnace', 'Blast Furnace', 'tfc:blast_furnace', pages=(
-            # todo: blast furnace and steel
-            image('tfc:textures/gui/book/wip.png'),
-            text('Blast Furnaces are cool yo!'),
-            multiblock('A Blast Furnace', '', True, multiblock_id='tfc:blast_furnace'),
+            text('A $(thing)Blast Furnace$() is an advanced device which is used in the creation of $(thing)Steel$(). By mixing $(thing)Iron Ores$(), $(thing)Charcoal$(), and $(thing)Flux$() in a controlled, hot environment, you can create a stronger metal than cast or wrought iron.$(br2)To obtain a blast furnace, you will first need a $(l:mechanics/crucible)Crucible$(), and a lot of $(thing)Wrought Iron Sheets$().'),
+            crafting('tfc:crafting/blast_furnace', text_contents='Crafting a blast furnace itself requires a $(thing)Crucible$(), along with some of the $(thing)Wrought Iron Sheets$() you will need.'),
+            text('You will then need to construct the blast furnace, along with it\'s $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Fire Bricks$(), as they are strong enough to withstand the intense heat. It must then be lined with $(thing)Wrought Iron Sheets$(), for extra reinforcement. Stronger metals such as $(thing)Steel$() can also be used for the sheets, if desired.'),
+            multiblock('A Blast Furnace', 'A blast furnace with a minimum height chimney.', True, multiblock_id='tfc:blast_furnace'),
+            text('The blast furnace\'s chimney can be up to five layers - each layer requiring four $(thing)Fire Bricks$(), and twelve $(thing)Wrought Iron Sheets$() to complete. Having more layers increases the total capacity of the blast furnace, allowing it to smelt more steel at a time. Each chimney layer, up to a maximum of five, allows the blast furnace to hold four ore items at a time.'),
+            text('In order to use the blast furnace, you must drop items in the top of the chimney - for steel production, you must add an equal number of items of $(thing)Iron Ores$(), and $(l:mechanics/flux)Flux$(). Any iron ores, or items that are able to melt into $(thing)Cast Iron$() will do. You will also need to add $(l:mechanics/charcoal_pit)Charcoal$(), which will be consumed as the blast furnace works.'),
+            page_break(),
+            text('Using the blast furnace will open the blast furnace interface, seen to the right. In this interface, you will see meters for both the ore, and the fuel content of the blast furnace. The top right slot must have a $(thing)Tuyere$(), which is a metal pipe used to funnel air into the blast furnace, required to reach the hottest temperatures to smelt steel. A tuyere can be crafted with an $(l:mechanics/anvils)Anvil$().'),
+            image('tfc:textures/gui/book/gui/blast_furnace.png', text_contents='The Blast Furnace Interface', border=False),
+            text('You will also need a $(l:mechanics/bellows)Bellows$() in order for the Blast Furnace to reach it\'s maximum temperature. This can be placed on any of the four sides of the blast furnace.'),
+            multiblock('', 'A full size blast furnace, with bellows and crucible attached.', True, multiblock_id='tfc:full_blast_furnace'),
+            text('Finally, to get started, light the blast furnace with a $(l:getting_started/firepit#firestarter)Fire Starter$(), or a $(thing)Flint and Steel$(). It will begin to heat the ores inside. Make sure that the blast furnace has enough fuel, and that it\'s internal temperature is at a maximum, and after a while, it\'s contents will liquify and convert into $(l:mechanics/steel)Pig Iron$().'),
+            text('This liquid metal will drip into any fluid container placed immediately below the blast furnace, such as a $(l:mechanics/crucible)Crucible$(). This can then be collected from the output slot of the crucible and then worked into $(l:mechanics/steel)Steel$().'),
+        )),
+        entry('steel', 'Steel', 'tfc:metal/ingot/steel', pages=(
+            text('Steel is an advanced material which can be used to create tools and armor, and comes in a few different varieties: $(thing)Steel$(), $(thing)Black Steel$(), $(thing)Red Steel$(), and $(thing)Blue Steel$().$(br2)In order to create steel, you must first create $(thing)Pig Iron$() in a $(l:mechanics/blast_furnace)Blast Furnace$(), and cast it into $(thing)Ingots$().'),
+            anvil_recipe('tfc:anvil/high_carbon_steel_ingot', 'A $(thing)Pig Iron Ingot$() can then be worked in an anvil to create a $(thing)High Carbon Steel$() ingot, which can be worked again to create a $(thing)Steel Ingot$()'),
+            page_break(),
+            text('$(thing)Black Steel$() is an advanced form of steel formed from an alloy of steel, along with some other metals. In order to create it, you will need to create an alloy called $(thing)Weak Steel$() in a $(l:mechanics/crucible)Crucible$().', title='Black Steel').anchor('black_steel'),
+            alloy_recipe('Weak Steel', 'weak_steel', 'Molten $(thing)Weak Steel$() can then be cast into ingots.'),
+            welding_recipe('tfc:welding/high_carbon_black_steel_ingot', '$(thing)Weak Steel Ingots$() can then be welded with $(thing)Pig Iron Ingots$() to create $(thing)High Carbon Black Steel Ingots$(). Finally, these can then be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Black Steel Ingots$().'),
+            text('$(thing)Black Steel$() can be used to craft tools and armor, and also is used as a key ingredient in the creation of $(l:mechanics/steel#blue_steel)Blue Steel$() and $(l:mechanics/steel#red_steel)Red Steel$().'),
+            page_break(),
+            text('$(thing)Blue Steel$() is one of the two highest forms of steel able to be created, along with $(l:mechanics/steel#red_steel)Red Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Blue Steel$() $(l:mechanics/crucible)Crucible$().', title='Blue Steel').anchor('blue_steel'),
+            alloy_recipe('Weak Blue Steel', 'weak_blue_steel', ''),
+            welding_recipe('tfc:welding/high_carbon_blue_steel_ingot', '$(thing)Weak Blue Steel Ingots$() can then be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Blue Steel Ingots$(). Finally, these can then be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Blue Steel Ingots$().'),
+            text('$(thing)Blue Steel$() is one of the two strongest tier metals in TerraFirmaCraft, along with $(l:mechanics/steel#red_steel)Red Steel$(). It can be used to create tools and armor, and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket able of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most rare after items in the game... a $(thing)Bucket$().'),
+            page_break(),
+            text('$(thing)Red Steel$() is one of the two highest forms of steel able to be created, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Red Steel$() $(l:mechanics/crucible)Crucible$().', title='Red Steel').anchor('red_steel'),
+            alloy_recipe('Weak Red Steel', 'weak_red_steel', ''),
+            welding_recipe('tfc:welding/high_carbon_red_steel_ingot', '$(thing)Weak Red Steel Ingots$() can then be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Red Steel Ingots$(). Finally, these can then be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Red Steel Ingots$().'),
+            text('$(thing)Red Steel$() is one of the two strongest tier metals in TerraFirmaCraft, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). It can be used to create tools and armor, and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket able of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most rare after items in the game... a $(thing)Bucket$().'),
         )),
         entry('anvils', 'Anvils', 'tfc:metal/anvil/copper', pages=(
-            text('Anvils yay!'),
-            block_spotlight('', 'A $(thing)Bronze Anvil$()', 'tfc:metal/anvil/bronze'),
-            image('tfc:textures/gui/book/wip.png'),
-            text('', title='Working').anchor('working'),
-            empty(),  # todo: working tutorial, anvil GUI
-            text('', title='Welding').anchor('welding'),
-            empty(),  # todo: welding tutorial
+            text('Anvils are a important tool required for metalworking, as they allow you to work and weld metal ingots into various different forms.$(br2)Anvils can be useful for both $(l:mechanics/anvils#working)Working$(), which is used to form one piece of metal into another, or $(l:mechanics/anvils#welding)Welding$(), which is used to fuse two metal items into one solid piece.'),
+            block_spotlight('', 'All types of metal anvils.', '#tfc:anvils'),
+            crafting('tfc:crafting/metal/anvil/copper', text_contents='Anvils can be crafted with $(thing)Double Ingots$() of their respective metal. For your first anvil, you must $(l:mechanics/anvils#welding)weld$() double ingots first on a $(l:getting_started/primitive_anvils)Stone Anvil$().'),
+            text('Anvils each have a $(thing)Tier$(), which defines what types of material they can work and weld. An anvil can work metals of it\'s current tier, and it can weld metals that are one tier higher.$(br)$(li)$(bold)Tier 0$(): Stone Anvils$(li)$(bold)Tier I$(): Copper$(li)$(bold)Tier II$(): Bismuth Bronze, Black Bronze, Bronze$(li)$(bold)Tier III$(): Wrought Iron$(li)$(bold)Tier IV$(): Steel$(li)$(bold)Tier V$(): Black Steel$(li)$(bold)Tier VI$(): Red Steel, Blue Steel').anchor('tiers'),
+            page_break(),
+            text('In order to work an item on the anvil, you will need to use the anvil, to open up the anvil interface, seen to the right. On the left, there are two input slots for items - for working, the target item must be in the right hand slot. You will also need a hammer while working, either in the hammer slot, on the right of the anvil $(bold)or$(), in your main hand. The hammer will gradually take damage as you work the item.', title='Working').anchor('working'),
+            image('tfc:textures/gui/book/gui/anvil_empty.png', text_contents='The anvil interface.', border=False),
+            text('You will then need to select the $(thing)Plan$(), which chooses which item you want to create. $(item)$(k:key.attack)$() on the the scroll button, and then pick one of the items to create. The anvil interface will return, but now you will have selected a plan - the scroll will show the item you are working to create, and the $(thing)Rules$(), and $(thing)Target$() will now be populated.'),
+            image('tfc:textures/gui/book/gui/anvil_in_use.png', text_contents='After selecting to create a pickaxe.', border=False),
+            text('In the middle of the anvil screen, there is a bar with two colored indicators. The $(2)green$() pointer, is your current working progress. The $(4)red$() pointer, is the target. Your goal is to line up the current progress, with the target.$(br2)In order do this, you can use the $(2)green$() and $(4)red$() action buttons, which move your current progress a certain amount, depending on the action taken.', title='Targets'),
+            text('$(2)Green$() actions will always move your target $(bold)right$(), and $(4)Red$() actions will always move your progress $(bold)left$(). Note that if you move your target off of the progress bar, you will have overworked your item - you will lose the ingot. However, while working, you must also obey the $(thing)rules$()...'),
+            text('The $(thing)rules$(), are the two or three icons shown on the top of the anvil interface. They represent specific actions that must be taken, at specific times, in order for your working to be a success. For example, you have have to $(2)Bend Second Last$(), meaning the second last action you take $(bold)must$(), be a $(2)Bend$() action.', title='Working Rules'),
+            text('Your last three actions are shown right underneath your the rules, for convenience. When a rule is satisfied, it\'s outline will change to green.$(br2)Finally, you have to be mindful of your item\'s $(l:mechanics/heating)temperature$(). Metals can only be worked when they are above a certain temperature, when the tooltip will show "Can Work". You may take an item out and re-heat it during the working process.'),
+            text('Working can be tedious, and take many steps to get correct. However, there is a reward for being efficient. Some items, such as tool heads, when they are worked in a low or minimal amount of steps, receive a Forging Bonus, based on how efficiently they were forged. This bonus can then be applied to tools that the item is used in, for example, a pickaxe head used to make a pickaxe.', title='Forging Bonuses'),
+            item_spotlight('tfc:metal/pickaxe/wrought_iron{"tfc:forging_bonus":4}', 'Perfectly Forged', False, 'There are four tiers of forging bonus:$(li)Poorly Forged$(li)Well Forged$(li)Expertly Forged$(li)Perfectly Forged$(br2)These bonuses increase the power of your tool - making it break less often, mine faster, or do more damage in combat, depending on the tool.'),
+            page_break(),
+            text('Welding is a process through which two items are fused together to create a new item. Welding works the same as it does on a $(l:getting_started/primitive_anvils)Stone Anvil$(), on a metal anvil.$(br2)First, you must place the two items you want to weld, on the anvil. You can do this either by using the items on the anvil, or by opening the anvil interface, and inserting them in the two leftmost slots.', title='Welding').anchor('welding'),
+            text('You also need to place one $(l:mechanics/flux)Flux$() in the anvil, to aid the welding process. Then, while both items are $(l:mechanics/heating)hot enough$() to weld - the tooltip will say "Can Weld" - you must use any $(thing)Hammer$() on the anvil. You will hear a hammering sound, and the items will be welded together. They can then be extracted by using $(item)$(k:key.use)$() on the anvil with an empty hand.'),
         )),
         entry('fire_clay', 'Fire Clay', 'tfc:fire_clay', pages=(
             text('The list of uses of fire clay is small, but all of them are important. Fire clay is a stronger variant of clay, that has better heat resistance. It is used to make things that have to get very hot!'),
             crafting('tfc:crafting/fire_clay', text_contents='Fire clay is made from the remnants of $(l:the_world/ores_and_minerals#kaolinite)kaolinite$() and $(l:the_world/ores_and_minerals#graphite)graphite$() crushed in a $(l:mechanics/quern)quern$().'),
-            fire_clay_knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.'),
-            fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.')
+            fire_clay_knapping('tfc:fire_clay_knapping/crucible', 'The $(l:mechanics/crucible)Crucible$() in its unfired state is made from fire clay.').anchor('crucible'),
+            fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks')
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
+            # todo: add a bit of text here to add one page at the start
             crafting('tfc:crafting/quern', text_contents='The $(thing)Quern$() is a device for grinding items into powder. The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks.'),
             crafting('tfc:crafting/handstone', text_contents='The quern needs a $(thing)Handstone$() to operate.'),
             image('tfc:textures/gui/book/tutorial/quern_empty.png', text_contents='Select the quern at the top of the block and $(item)$(k:key.use)$() to place the handstone.'),
@@ -660,13 +754,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             quern_recipe('tfc:quern/emerald', '$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder.'),
             quern_recipe('tfc:quern/barley_grain', '$(thing)Flour$() is also obtainable from the quern.'),
             quern_recipe('tfc:quern/fluxstone', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),
+            empty_last_page(),
         )),
         entry('fishing', 'Fishing', 'tfc:metal/fishing_rod/copper', pages=(
+            # todo: add a text page here to start
             anvil_recipe('tfc:anvil/bismuth_bronze_fish_hook', 'Fishing is a little different in TFC. First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
             crafting('tfc:crafting/metal/fishing_rod/bismuth_bronze', text_contents='The fishing rod is crafted with a fishing hook.', title='Fishing Rod'),
             text('Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$().'),
             text('To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then, $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool.'),
             image('tfc:textures/gui/book/tutorial/fishing.png', text_contents='The fishing bar replaces the experience bar when active.'),
+            empty_last_page(),
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
@@ -681,11 +778,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', p=0.5)
         )),
         entry('flux', 'Flux', 'tfc:powder/flux', pages=(
-            text('Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$(), and is also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().'),
-            quern_recipe('tfc:quern/borax', 'The most productive means of obtaining flux is with by finding $(l:the_world/ores_and_minerals#borax)borax$()'),
-            quern_recipe('tfc:quern/fluxstone', 'The second way of getting flux is through $(thing)Fluxstone$(). These can be the rocks $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$(), or shells, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$()'),
+            text('Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$(), and is also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().$(br2)Flux can be obtained in a number of ways, one of which is from it\'s native ore, $(l:the_world/ores_and_minerals#borax)Borax$().'),
+            quern_recipe('tfc:quern/fluxstone', 'Some rocks - $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$() - can also be used as flux, after being ground in a $(l:mechanics/quern)Quern$(). Other items, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$(), can all also be used to create flux.'),
         )),
         entry('lamps', 'Lamps and Candles', 'tfc:metal/lamp/bismuth_bronze', pages=(
+            # add a text page at the start
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
             text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.'),
@@ -693,8 +790,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Seal the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/barrels)Barrel$() to make $(thing)Olive Oil Water$(). Seal that in with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
             text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.').anchor('tallow'),
             block_spotlight('Candles', text_content='The candle is made from sealing $(thing)String$() in a bucket of $(thing)Tallow$().', block='tfc:candle[candles=3,lit=true]'),
-            block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(thing)Blue Steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
-            anvil_recipe('tfc:anvil/black_steel_chain', '$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().')
+            block_spotlight('Lava Lamps', text_content='Lava will keep burning forever, but can only be held in a $(l:mechanics/steel#blue_steel)Blue Steel$() lamp.', block='tfc:metal/lamp/blue_steel[lit=true]'),
+            anvil_recipe('tfc:anvil/black_steel_chain', '$(thing)Chains$() are a great way to hang your lamps, and can be smithed in an $(l:mechanics/anvils)Anvil$().'),
+            empty_last_page(),
         )),
         entry('barrels', 'Barrels', 'tfc:wood/barrel/palm', pages=(
             text('The $(thing)Barrel$() is a device that can hold both items and fluids. The central slot is used to hold items. Fluids are shown in the tank on the left side, and can be added to the barrel by placing a filled $(thing)bucket$() or $(thing)jug$() in the top left slot. They can be removed by placing an empty fluid container in the same slot. Using $(item)$(k:key.use)$() on the block with a bucket also works.'),
@@ -709,7 +807,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:food/decay#vinegar)page$().')
         )),
     ))
-
     # todo: merge into mechanics + getting started? keeps us at three nice categories: world gen, tutorial, and "everything else"
     book.category('food', 'Food', 'How to find, harvest, and cook food.', 'tfc:food/wheat', entries=(
         entry('decay', 'Preservation', 'minecraft:rotten_flesh', pages=(
@@ -722,8 +819,9 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Are you salty this page is blank?', title='Salting').anchor('salting'),  # todo: salting
             image('tfc:textures/gui/book/wip.png'),
             text('vinegar').anchor('vinegar'),# todo: vinegar
+            empty_last_page(),
         )),
-        entry('hydration', 'Keeping Hydrated', 'tfc:wooden_bucket{tank:{"Amount":100,"FluidName":"minecraft:water"}}', pages=(
+        entry('hydration', 'Keeping Hydrated', 'tfc:wooden_bucket{fluid:{"Amount":100,"FluidName":"minecraft:water"}}', pages=(
             text('One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground may have some latent moisture, however this may not be enough, especially for particularly water-intensive crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand.'),
             text('Then, simply look at any $(thing)Farmland$() block, or any crop which require hydration. You will see a tooltip which shows the current hydration as a percentage from 0% to 100%.$(br2)Hydration cannot be decreased except by moving to a area with less rainfall - however, it can be increased by the proximity to nearby $(thing)water$() blocks, much like Vanilla farmland.'),
         )),
@@ -734,9 +832,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on.'),
             text('Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient.'),
             text('Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount.'),
-            item_spotlight('tfc:compost', 'Fertilizer', text_contents='To add nutrients to soil, try a $(l:mechanics/fertilizers)Fertilizer$(). See that page for more information on how they work and how to get them.'),
-            text('Descriptions of each crop start on the next page.'),
             # Listing of all crops, their growth conditions, and how to grow them
+            page_break(),
             text(f'{detail_crop("barley")}Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.', title='Barley').link('tfc:seeds/barley').link('tfc:food/barley').anchor('barley'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/barley[age=%d]' % i) for i in range(8)]),
             text(f'{detail_crop("oat")}Oat is a single block crop. Oat seeds can be planted on farmland to be grown, and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.', title='Oat').link('tfc:seeds/oat').link('tfc:food/oat').anchor('oat'),
@@ -807,328 +904,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:food/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
-
-
-# ==================== Book Resource Generation API Functions =============================
-
-
-class Component(NamedTuple):
-    type: str
-    x: int
-    y: int
-    data: JsonObject
-
-
-class Page(NamedTuple):
-    type: str
-    data: JsonObject
-    custom: bool  # If this page is a custom template.
-    anchor_id: str | None  # Anchor for referencing from other pages
-    link_ids: List[str]  # Items that are linked to this page
-    translation_keys: Tuple[str, ...]  # Keys into 'data' that need to be passed through the Translation
-
-    def anchor(self, anchor_id: str) -> 'Page':
-        return Page(self.type, self.data, self.custom, anchor_id, self.link_ids, self.translation_keys)
-
-    def link(self, *link_ids: str) -> 'Page':
-        for link_id in link_ids:
-            if link_id.startswith('#'):  # Patchouli format for linking tags
-                link_id = 'tag:' + link_id[1:]
-            self.link_ids.append(link_id)
-        return self
-
-    def translate(self, i18n: I18n):
-        for key in self.translation_keys:
-            if key in self.data and self.data[key] is not None:
-                self.data[key] = i18n.translate(self.data[key])
-
-
-class Entry(NamedTuple):
-    entry_id: str
-    name: str
-    icon: str
-    pages: Tuple[Page]
-    advancement: str | None
-
-
-class Book:
-
-    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject, i18n: I18n, local_instance: bool):
-        self.rm: ResourceManager = rm
-        self.root_name = root_name
-        self.category_count = 0
-        self.i18n = i18n
-        self.local_instance = local_instance
-
-        if self.i18n.lang == 'en_us':  # Only generate the book.json if we're in the root language
-            rm.data(('patchouli_books', self.root_name, 'book'), {
-                'name': 'tfc.field_guide.book_name',
-                'landing_text': 'tfc.field_guide.book_landing_text',
-                'subtitle': '${version}',
-                # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
-                # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
-                'dont_generate_book': False,
-                'show_progress': False,
-                'macros': macros
-            })
-
-    def template(self, template_id: str, *components: Component):
-        self.rm.data(('patchouli_books', self.root_name, 'en_us', 'templates', template_id), {
-            'components': [{
-                'type': c.type, 'x': c.x, 'y': c.y, **c.data
-            } for c in components]
-        })
-
-    def category(self, category_id: str, name: str, description: str, icon: str, parent: str | None = None, is_sorted: bool = False, entries: Tuple[Entry, ...] = ()):
-        """
-        :param category_id: The id of this category.
-        :param name: The name of this category.
-        :param description: The description for this category. This displays in the category's main page, and can be formatted.
-        :param icon: The icon for this category. This can either be an ItemStack String, if you want an item to be the icon, or a resource location pointing to a square texture. If you want to use a resource location, make sure to end it with .png.
-        :param parent: The parent category to this one. If this is a sub-category, simply put the name of the category this is a child to here. If not, don't define it. This should be fully-qualified and of the form domain:name where domain is the same as the domain of your Book ID.
-        :param is_sorted: If the entries within this category are sorted
-        :param entries: A list of entries (call entry() for each)
-
-        https://vazkiimods.github.io/Patchouli/docs/reference/category-json/
-        """
-        self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'categories', category_id), {
-            'name': self.i18n.translate(name),
-            'description': self.i18n.translate(description),
-            'icon': icon,
-            'parent': parent,
-            'sortnum': self.category_count
-        })
-        self.category_count += 1
-
-        category_res: ResourceLocation = utils.resource_location(self.rm.domain, category_id)
-
-        assert not isinstance(entries, Entry), 'One entry in singleton entries, did you forget a comma after entry(), ?\n  at: %s' % str(entries)
-        for i, e in enumerate(entries):
-            assert not isinstance(e.pages, Page), 'One entry in singleton pages, did you forget a comma after page(), ?\n  at: %s' % str(e.pages)
-
-            extra_recipe_mappings = {}
-            for index, p in enumerate(e.pages):
-                for link in p.link_ids:
-                    extra_recipe_mappings[link] = index
-            if not extra_recipe_mappings:  # Exclude if there's nothing here
-                extra_recipe_mappings = None
-
-            # Validate no duplicate anchors or links
-            seen_anchors = set()
-            seen_links = set()
-            for p in e.pages:
-                if p.anchor_id:
-                    assert p.anchor_id not in seen_anchors, 'Duplicate anchor "%s" on page %s' % (p.anchor_id, p)
-                    seen_anchors.add(p.anchor_id)
-                for link in p.link_ids:
-                    assert link not in seen_links, 'Duplicate link "%s" on page %s' % (link, p)
-                    seen_links.add(link)
-
-            # Separately translate each page
-            entry_name = self.i18n.translate(e.name)
-            for p in e.pages:
-                p.translate(self.i18n)
-
-            self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'entries', category_res.path, e.entry_id), {
-                'name': entry_name,
-                'category': self.prefix(category_res.path),
-                'icon': e.icon,
-                'pages': [{
-                    'type': self.prefix(p.type) if p.custom else p.type,
-                    'anchor': p.anchor_id,
-                    **p.data
-                } for p in e.pages],
-                'advancement': e.advancement,
-                'read_by_default': True,
-                'sortnum': i if is_sorted else None,
-                'extra_recipe_mappings': extra_recipe_mappings
-            })
-
-    def prefix(self, path: str) -> str:
-        """ In a local instance, domains are all under patchouli, otherwise under tfc """
-        return ('patchouli' if self.local_instance else 'tfc') + ':' + path
-
-
-def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, pages: Tuple[Page, ...] = ()) -> Entry:
-    """
-    :param entry_id: The id of this entry.
-    :param name: The name of this entry.
-    :param icon: The icon for this entry. This can either be an ItemStack String, if you want an item to be the icon, or a resource location pointing to a square texture. If you want to use a resource location, make sure to end it with .png
-    :param advancement: The name of the advancement you want this entry to be locked behind. See Locking Content with Advancements for more info on locking content.
-    :param pages: The array of pages for this entry.
-
-    https://vazkiimods.github.io/Patchouli/docs/reference/entry-json/
-    """
-    return Entry(entry_id, name, icon, pages, advancement)
-
-
-def text(text_contents: str, title: str | None = None) -> Page:
-    """
-    Text pages should always be the first page in any entry. If a text page is the first page in an entry, it'll display the header you see in the left page. For all other pages, it'll display as you can see in the right one.
-    :param text_contents: The text to display on this page. This text can be formatted.
-    :param title An optional title to display at the top of the page. If you set this, the rest of the text will be shifted down a bit. You can't use "title" in the first page of an entry.
-    :return:
-    """
-    return page('patchouli:text', {'text': text_contents, 'title': title}, translation_keys=('text', 'title'))
-
-
-def image(*images: str, text_contents: str | None = None, border: bool = True) -> Page:
-    """
-    :param images: An array with images to display. Images should be in resource location format. For example, the value botania:textures/gui/entries/banners.png will point to /assets/botania/textures/gui/entries/banners.png in the resource pack. For best results, make your image file 256 by 256, but only place content in the upper left 200 by 200 area. This area is then rendered at a 0.5x scale compared to the rest of the book in pixel size.
-    If there's more than one image in this array, arrow buttons are shown like in the picture, allowing the viewer to switch between images.
-    :param text_contents: The text to display on this page, under the image. This text can be formatted.
-    :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
-    """
-    return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, translation_keys=('text',))
-
-def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = 0.7, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
-    """
-    :param entity_type: The entity type
-    :param text_contents: The text to display under the entity display
-    :param title: The title of the page
-    :param scale: The scale of the entity. Defaults to 1
-    :param offset: The vertical offset of the entity renderer. Defaults to 0
-    :param rotate: Whether the entity should rotate in the view. Defaults to true.
-    :param default_rotation: The rotation at which the entity is displayed. Only used if rotate is False.
-    """
-    return page('patchouli:entity', {'entity': entity_type, 'scale': scale, 'offset': offset, 'rotate': rotate, 'default_rotation': default_rotation, 'name': title, 'text': text_contents})
-
-def crafting(first_recipe: str, second_recipe: str | None = None, title: str | None = None, text_contents: str | None = None) -> Page:
-    """
-    :param first_recipe: The ID of the first recipe you want to show.
-    :param second_recipe: The ID of the second recipe you want to show. Displaying two recipes is optional.
-    :param title: The title of the page, to be displayed above both recipes. This is optional, but if you include it, only this title will be displayed, rather than the names of both recipe output items.
-    :param text_contents: The text to display on this page, under the recipes. This text can be formatted.
-    Note: the text will not display if there are two recipes with two different outputs, and "title" is not set. This is the case of the image displayed, in which both recipes have the output names displayed, and there's no space for text.
-    """
-    return page('patchouli:crafting', {'recipe': first_recipe, 'recipe2': second_recipe, 'title': title, 'text': text_contents}, translation_keys=('text', 'title'))
-
-
-# todo: other default page types: (smelting, entity, link) as we need them
-
-def item_spotlight(item: str, title: str | None = None, link_recipe: bool = False, text_contents: str | None = None) -> Page:
-    """
-    :param item: An ItemStack String representing the item to be spotlighted.
-    :param title: A custom title to show instead on top of the item. If this is empty or not defined, it'll use the item's name instead.
-    :param link_recipe: Defaults to false. Set this to true to mark this spotlight page as the "recipe page" for the item being spotlighted. If you do so, when looking at pages that display the item, you can shift-click the item to be taken to this page. Highly recommended if the spotlight page has instructions on how to create an item by non-conventional means.
-    :param text_contents: The text to display on this page, under the item. This text can be formatted.
-    """
-    return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, translation_keys=('title', 'text'))
-
-
-def block_spotlight(title: str, text_content: str, block: str, lower: str | None = None) -> Page:
-    """ A shortcut for making a single block multiblock that is meant to act the same as item_spotlight() but for blocks """
-    return multiblock(title, text_content, False, pattern=(('X',), ('0',)), mapping={'X': block, '0': lower})
-
-
-def two_tall_block_spotlight(title: str, text_content: str, lower: str, upper: str) -> Page:
-    """ A shortcut for making a single block multiblock for a double tall block, such as crops or tall grass """
-    return multiblock(title, text_content, False, pattern=(('X',), ('Y',), ('0',)), mapping={'X': upper, 'Y': lower})
-
-def multiblock(title: str, text_content: str, enable_visualize: bool, pattern: Tuple[Tuple[str, ...], ...] | None = None, mapping: Mapping[str, str] | None = None, offset: Tuple[int, int, int] | None = None, multiblock_id: str | None = None) -> Page:
-    """
-    Page type: "patchouli:multiblock"
-
-    :param title: The name of the multiblock you're displaying. Shows as a header above the multiblock display.
-    :param text_content: The text to display on this page, under the multiblock. This text can be formatted.
-    :param enable_visualize: Set this to false to disable the "Visualize" button.
-    :param pattern: Terse explanation of the format: the pattern attribute is an array of array of strings. It is indexed in the following order: y (top to bottom), x (west to east), then z (north to south).
-    :param mapping: Patchouli already provides built in characters for Air and (Any Block), which are respectively a space, and an underscore, so we don't have to account for those. Patchouli uses the same vanilla logic to parse blockstate predicate as, for example, the /execute if block ~ ~ ~ <PREDICATE> command. This means you can use block ID's, tags, as well as specify blockstate properties you want to constraint. Therefore, we have:
-    :param offset: An int array of 3 values ([X, Y, Z]) to offset the multiblock relative to its center.
-    :param multiblock_id: For modders only. The ID of the multiblock you want to display.
-    """
-    data = {'name': title, 'text': text_content, 'enable_visualize': enable_visualize}
-    if multiblock_id is not None:
-        return page('patchouli:multiblock', {'multiblock_id': multiblock_id, **data}, translation_keys=('name', 'text'))
-    elif pattern is not None and mapping is not None:
-        return page('patchouli:multiblock', {'multiblock': {
-            'pattern': pattern,
-            'mapping': mapping,
-            'offset': offset,
-        }, **data}, translation_keys=('name', 'text'))
-    else:
-        raise ValueError('multiblock page must have either \'multiblock\' or \'pattern\' and \'mapping\' entries')
-
-
-def empty() -> Page:
-    return page('patchouli:empty', {})
-
-
-# ==============
-# TFC Page Types
-# ==============
-
-def multimultiblock(text_content: str, *pages) -> Page:
-    return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
-
-
-def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:
-    return rock_knapping(*[recipe_with_category_format % c for c in ROCK_CATEGORIES], text_content=text_content)
-
-
-def rock_knapping(*recipes: str, text_content: str) -> Page:
-    return page('rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def leather_knapping(recipe: str, text_content: str) -> Page:
-    return page('leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def fire_clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def heat_recipe(recipe: str, text_content: str) -> Page:
-    return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def quern_recipe(recipe: str, text_content: str) -> Page:
-    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
-
-
-def anvil_recipe(recipe: str, text_content: str) -> Page:
-    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True)
-
-
-def alloy_recipe(title: str, ingot: str, *components: Tuple[str, int, int], text_content: str) -> Page:
-    recipe = ''.join(['$(li)%d - %d %% : $(thing)%s$()' % (lo, hi, alloy) for (alloy, lo, hi) in components])
-    return item_spotlight(ingot, title, False, '$(br)$(bold)Requirements:$()$(br)' + recipe + '$(br2)' + text_content)
-
-
-def fertilizer(item: str, text_contents: str, n: float = 0, p: float = 0, k: float = 0) -> Page:
-    text_contents += ' $(br)'
-    if n > 0:
-        text_contents += '$(li)$(b)Nitrogen: %d$()' % (n * 100)
-    if p > 0:
-        text_contents += '$(li)$(6)Phosphorous: %d$()' % (p * 100)
-    if k > 0:
-        text_contents += '$(li)$(d)Potassium: %d$()' % (k * 100)
-    return item_spotlight(item, text_contents=text_contents)
-
-def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:
-    return Page(page_type, page_data, custom, None, [], translation_keys)
-
-
-# Components
-
-def text_component(x: int, y: int) -> Component:
-    return Component('patchouli:text', x, y, {'text': '#text'})
-
-
-def header_component(x: int, y: int) -> Component:
-    return Component('patchouli:header', x, y, {'text': '#header'})
-
-
-def seperator_component(x: int, y: int) -> Component:
-    return Component('patchouli:separator', x, y, {})
-
-
-def custom_component(x: int, y: int, class_name: str, data: JsonObject) -> Component:
-    return Component('patchouli:custom', x, y, {'class': 'net.dries007.tfc.compat.patchouli.component.' + class_name, **data})
 
 
 if __name__ == '__main__':

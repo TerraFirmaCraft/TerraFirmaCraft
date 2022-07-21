@@ -130,9 +130,9 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
 
                 // Draw the content, format:
                 // Metal name:
-                //   XXX units(YY.Y)%
+                //   XXX units (YY.Y%)
                 // Metal 2 name:
-                //   ZZZ units(WW.W)%
+                //   ZZZ units (WW.W%)
 
                 String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().getTranslationKey()), 141);
                 metalName += ":";
@@ -145,7 +145,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 {
                     units = I18n.get("tfc.tooltip.less_than_one_fluid_units");
                 }
-                String content = String.format("  %s(%s%2.1f%%%s)", units, ChatFormatting.DARK_GREEN, Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f, ChatFormatting.RESET);
+                String content = String.format("  %s (%s%2.1f%%%s)", units, ChatFormatting.DARK_GREEN, Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f, ChatFormatting.RESET);
                 font.draw(poseStack, metalName, leftPos + 10, yPos, 0x404040);
                 font.draw(poseStack, content, leftPos + 10, yPos + 9, 0x404040);
                 yPos += 18;

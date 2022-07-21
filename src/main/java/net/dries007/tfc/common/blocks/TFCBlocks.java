@@ -14,10 +14,7 @@ import java.util.function.ToIntFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -56,6 +53,7 @@ import net.dries007.tfc.common.blocks.soil.SandBlockType;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.Alcohol;
+import net.dries007.tfc.common.fluids.FluidType;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
@@ -178,6 +176,10 @@ public final class TFCBlocks
         Helpers.mapOfKeys(Metal.BlockType.class, type -> type.has(metal), type ->
             register(("metal/" + type.name() + "/" + metal.name()), type.create(metal), type.createBlockItem(new Item.Properties().tab(METAL)))
         )
+    );
+
+    public static final Map<FluidType, RegistryObject<FluidCauldronBlock>> CAULDRONS = FluidType.mapOf(fluid ->
+        register("cauldron/" + fluid.name(), () -> new FluidCauldronBlock(BlockBehaviour.Properties.copy(Blocks.CAULDRON)))
     );
 
     // Wood

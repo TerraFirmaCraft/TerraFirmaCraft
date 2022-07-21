@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -34,7 +35,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.TFCSounds;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SealableDeviceBlock;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
@@ -48,9 +49,9 @@ public class LargeVesselBlock extends SealableDeviceBlock
         box(7D, 11D, 7D, 9D, 12D, 9D)
     );
 
-    public static void toggleSeal(Level level, BlockPos pos, BlockState state)
+    public static <T extends LargeVesselBlockEntity> void toggleSeal(Level level, BlockPos pos, BlockState state, BlockEntityType<T> type)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(barrel -> {
+        level.getBlockEntity(pos, type).ifPresent(barrel -> {
             final boolean previousSealed = state.getValue(SEALED);
             level.setBlockAndUpdate(pos, state.setValue(SEALED, !previousSealed));
             if (previousSealed)
@@ -120,11 +121,11 @@ public class LargeVesselBlock extends SealableDeviceBlock
     {
         if (player.isShiftKeyDown())
         {
-            toggleSeal(level, pos, state);
+            toggleSeal(level, pos, state, getExtendedProperties().blockEntity());
         }
         else
         {
-            level.getBlockEntity(pos, TFCBlockEntities.LARGE_VESSEL.get()).ifPresent(vessel -> {
+            level.getBlockEntity(pos, getExtendedProperties().<LargeVesselBlockEntity>blockEntity()).ifPresent(vessel -> {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
                     NetworkHooks.openGui(serverPlayer, vessel, pos);

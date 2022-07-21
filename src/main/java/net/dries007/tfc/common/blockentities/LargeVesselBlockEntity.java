@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -36,7 +37,12 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
 
     public LargeVesselBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.LARGE_VESSEL.get(), pos, state, VesselInventory::new, NAME);
+        this(TFCBlockEntities.LARGE_VESSEL.get(), pos, state);
+    }
+
+    public LargeVesselBlockEntity(BlockEntityType<? extends LargeVesselBlockEntity> type, BlockPos pos, BlockState state)
+    {
+        super(type, pos, state, VesselInventory::new, NAME);
     }
 
     @Nullable

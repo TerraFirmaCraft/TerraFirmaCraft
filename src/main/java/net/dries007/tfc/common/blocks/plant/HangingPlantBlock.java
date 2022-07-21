@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.blocks.plant;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.util.registry.RegistryPlant;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.level.block.Block;
@@ -25,19 +26,17 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 public abstract class HangingPlantBlock extends PlantBlock
 {
     protected static final BooleanProperty HANGING = BlockStateProperties.HANGING;
     protected static final VoxelShape NOT_HANGING_SHAPE = box(0.0, 0.0, 0.0, 16.0, 2.0, 16.0);
 
-    public static HangingPlantBlock create(IPlant plant, ExtendedProperties properties)
+    public static HangingPlantBlock create(RegistryPlant plant, ExtendedProperties properties)
     {
         return new HangingPlantBlock(properties)
         {
             @Override
-            public IPlant getPlant()
+            public RegistryPlant getPlant()
             {
                 return plant;
             }

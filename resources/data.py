@@ -598,7 +598,7 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkable_ingredients')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
     rm.fluid_tag('usable_in_red_steel_bucket', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_blue_steel_bucket', '#tfc:ingredients', '#minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('usable_in_blue_steel_bucket', '#minecraft:lava', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
     rm.fluid_tag('scribing_ink', 'tfc:black_dye')
@@ -774,11 +774,12 @@ def generate(rm: ResourceManager):
     # Climate Ranges
 
     for berry, data in BERRIES.items():
-        climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
+        # todo: see comment in BERRIES about adding actual hydration ranges
+        climate_range(rm, 'plant/%s_bush' % berry, temperature=(data.min_temp, data.max_temp, 0))
+
     for fruit, data in FRUITS.items():
         climate_range(rm, 'plant/%s_tree' % fruit, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp - 7, data.max_temp + 7, 0))
 
-    # Crops
     for crop, data in CROPS.items():
         climate_range(rm, 'crop/%s' % crop, hydration=(data.min_hydration, data.max_hydration, 0), temperature=(data.min_temp, data.max_temp, 5))
 
