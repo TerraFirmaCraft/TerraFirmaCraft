@@ -38,9 +38,9 @@ public class TorchItem extends StandingAndWallBlockItem
     @Override
     public InteractionResult useOn(UseOnContext context)
     {
-        final Level world = context.getLevel();
+        final Level level = context.getLevel();
         final BlockPos pos = context.getClickedPos();
-        if (StartFireEvent.startFire(world, pos, world.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), false))
+        if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), false))
         {
             return InteractionResult.SUCCESS;
         }
@@ -50,39 +50,39 @@ public class TorchItem extends StandingAndWallBlockItem
     @Override
     public boolean onEntityItemUpdate(ItemStack stack, ItemEntity itemEntity)
     {
-        final Level world = itemEntity.level;
+        final Level level = itemEntity.level;
         final BlockPos pos = itemEntity.blockPosition();
-        final BlockState stateAt = world.getBlockState(pos);
+        final BlockState stateAt = level.getBlockState(pos);
         if (Helpers.isFluid(stateAt.getFluidState(), FluidTags.WATER))
         {
             itemEntity.setItem(new ItemStack(Items.STICK, stack.getCount()));
             int ash = (int) Mth.clamp(stack.getCount() * 0.5 - 4, 0, 8);
             if (ash > 0)
             {
-                Helpers.spawnItem(world, pos, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));
+                Helpers.spawnItem(level, pos, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));
             }
-            Helpers.playSound(world, pos, SoundEvents.FIRE_EXTINGUISH);
+            Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
             return true;
         }
 
         final BlockPos downPos = itemEntity.blockPosition().below();
-        final boolean isNotInBlock = world.isEmptyBlock(pos);
-        final BlockState checkState = isNotInBlock ? world.getBlockState(downPos) : stateAt;
+        final boolean isNotInBlock = level.isEmptyBlock(pos);
+        final BlockState checkState = isNotInBlock ? level.getBlockState(downPos) : stateAt;
         final int ageRequirement = isNotInBlock ? 20 : 160;
 
         if (Helpers.isBlock(checkState, TFCTags.Blocks.LIT_BY_DROPPED_TORCH))
         {
-            if (itemEntity.getAge() > ageRequirement && world.random.nextFloat() < 0.01f)
+            if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f)
             {
-                StartFireEvent.startFire(world, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null, false);
+                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null, false);
                 itemEntity.kill();
             }
             else
             {
-                Random rand = world.getRandom();
+                Random rand = level.getRandom();
                 if (rand.nextDouble() <= 0.1)
                 {
-                    world.addParticle(ParticleTypes.LAVA, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble());
+                    level.addParticle(ParticleTypes.LAVA, itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble(), -0.5F + rand.nextDouble());
                 }
             }
         }

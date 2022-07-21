@@ -72,6 +72,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue sluiceTicks;
     // Blocks - Lamp
     public final ForgeConfigSpec.IntValue lampCapacity;
+    // Blocks - Pumpkin
+    public final ForgeConfigSpec.BooleanValue enablePumpkinCarving;
+    public final ForgeConfigSpec.IntValue jackOLanternTicks;
     // Blocks - Bloomery
     public final ForgeConfigSpec.IntValue bloomeryCapacity;
     public final ForgeConfigSpec.IntValue bloomeryMaxChimneyHeight;
@@ -248,6 +251,11 @@ public class ServerConfig
         innerBuilder.pop().push("lamp");
 
         lampCapacity = builder.apply("lampCapacity").comment("Tank capacity of a lamp (in mB).").defineInRange("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
+
+        innerBuilder.pop().push("pumpkin");
+
+        enablePumpkinCarving = builder.apply("enablePumpkinCarving").comment("Enables the knifing of pumpkins to carve them.").define("enablePumpkinCarving", true);
+        jackOLanternTicks = builder.apply("jackOLanternTicks").comment("Number of ticks required for a jack 'o lantern to burn out (1000 = 1 in game hour = 50 seconds), default is 108 hours. Set to -1 to disable burnout.").defineInRange("jackOLanternTicks", 108000, -1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("bloomery");
 

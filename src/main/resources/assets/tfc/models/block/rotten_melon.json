@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/melon",
+  "textures": {
+    "side": "tfc:block/crop/rotten_melon_side",
+    "end": "tfc:block/crop/rotten_melon_top"
+  }
+}

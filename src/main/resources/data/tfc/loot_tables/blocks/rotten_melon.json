@@ -8,12 +8,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:melon",
-          "functions": [
-            {
-              "function": "tfc:rotting_block"
-            }
-          ]
+          "name": "tfc:rotten_melon"
         }
       ],
       "conditions": [

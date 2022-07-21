@@ -227,7 +227,12 @@ def generate(rm: ResourceManager):
 
     for name in ('pumpkin', 'melon'):
         rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
-        rm.blockstate(name, model='minecraft:block/%s' % name).with_item_model().with_lang(lang(name)).with_block_loot('tfc:%s' % name).with_tag('tfc:mineable_with_sharp_tool')
+        rm.blockstate(name, model='tfc:block/%s' % name).with_item_model().with_lang(lang(name)).with_block_loot({'name': 'tfc:%s' % name, 'functions': [{'function': 'tfc:rotting_block'}]}).with_tag('tfc:mineable_with_sharp_tool')
+        rm.block_model('rotten_' + name, parent='minecraft:block/%s' % name, textures={'side': 'tfc:block/crop/rotten_%s_side' % name, 'end': 'tfc:block/crop/rotten_%s_top' % name})
+        rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_item_model().with_lang(lang('rotten %s', name)).with_block_loot('tfc:rotten_%s' % name).with_tag('tfc:mineable_with_sharp_tool')
+
+    rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('tfc:jack_o_lantern').with_lang(lang('Jack o\'Lantern'))
+    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern')
 
     rm.blockstate('freshwater_bubble_column', model='minecraft:block/water').with_lang(lang('bubble column'))
     rm.blockstate('saltwater_bubble_column', model='tfc:block/fluid/salt_water').with_lang(lang('bubble column'))

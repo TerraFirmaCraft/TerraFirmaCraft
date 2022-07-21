@@ -21,16 +21,19 @@ import org.jetbrains.annotations.NotNull;
 
 public class ResetDecayLootModifier extends LootModifier
 {
-    protected ResetDecayLootModifier(LootItemCondition[] conditionsIn)
+    protected ResetDecayLootModifier(LootItemCondition[] conditions)
     {
-        super(conditionsIn);
+        super(conditions);
     }
 
     @NotNull
     @Override
     protected List<ItemStack> doApply(List<ItemStack> loot, LootContext context)
     {
-        loot.forEach(FoodCapability::updateFoodDecayOnCreate);
+        if (!context.hasParam(TFCLoot.DECAY_HANDLED))
+        {
+            loot.forEach(FoodCapability::updateFoodDecayOnCreate);
+        }
         return loot;
     }
 

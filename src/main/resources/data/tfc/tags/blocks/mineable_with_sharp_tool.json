@@ -3,7 +3,10 @@
   "replace": false,
   "values": [
     "tfc:pumpkin",
+    "tfc:rotten_pumpkin",
     "tfc:melon",
+    "tfc:rotten_melon",
+    "tfc:jack_o_lantern",
     "tfc:wood/leaves/acacia",
     "tfc:wood/leaves/ash",
     "tfc:wood/leaves/aspen",
