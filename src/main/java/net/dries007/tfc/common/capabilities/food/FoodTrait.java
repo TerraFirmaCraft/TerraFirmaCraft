@@ -80,7 +80,7 @@ public class FoodTrait
     {
         if (translationKey != null)
         {
-            text.add(new TranslatableComponent(translationKey));
+            text.add(Helpers.translatable(translationKey));
         }
     }
 }

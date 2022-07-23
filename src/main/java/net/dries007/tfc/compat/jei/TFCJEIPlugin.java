@@ -187,11 +187,11 @@ public class TFCJEIPlugin implements IModPlugin
     private void addIngredientInfo(IRecipeRegistration r)
     {
         //todo: 1.12 parity
-        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_GREENS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_greens"));
-        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_BROWNS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_browns"));
-        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_POISONS), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost_poisons"));
-        r.addIngredientInfo(new ItemStack(TFCItems.COMPOST.get()), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.compost"));
-        r.addIngredientInfo(new ItemStack(TFCItems.ROTTEN_COMPOST.get()), VanillaTypes.ITEM, new TranslatableComponent("tfc.jei.rotten_compost"));
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_GREENS), VanillaTypes.ITEM, Helpers.translatable("tfc.jei.compost_greens"));
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_BROWNS), VanillaTypes.ITEM, Helpers.translatable("tfc.jei.compost_browns"));
+        r.addIngredientInfo(tagToItemList(TFCTags.Items.COMPOST_POISONS), VanillaTypes.ITEM, Helpers.translatable("tfc.jei.compost_poisons"));
+        r.addIngredientInfo(new ItemStack(TFCItems.COMPOST.get()), VanillaTypes.ITEM, Helpers.translatable("tfc.jei.compost"));
+        r.addIngredientInfo(new ItemStack(TFCItems.ROTTEN_COMPOST.get()), VanillaTypes.ITEM, Helpers.translatable("tfc.jei.rotten_compost"));
 
     }
 

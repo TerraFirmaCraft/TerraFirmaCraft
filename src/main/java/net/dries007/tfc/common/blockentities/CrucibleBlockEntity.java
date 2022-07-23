@@ -48,7 +48,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     public static final int SLOT_INPUT_END = 8;
     public static final int SLOT_OUTPUT = 9;
 
-    private static final Component NAME = new TranslatableComponent("tfc.tile_entity.crucible");
+    private static final Component NAME = Helpers.translatable("tfc.tile_entity.crucible");
     private static final int TARGET_TEMPERATURE_STABILITY_TICKS = 5;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CrucibleBlockEntity crucible)

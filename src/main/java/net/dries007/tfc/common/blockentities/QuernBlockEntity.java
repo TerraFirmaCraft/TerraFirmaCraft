@@ -33,7 +33,7 @@ public class QuernBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     public static final int SLOT_INPUT = 1;
     public static final int SLOT_OUTPUT = 2;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.quern");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.quern");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, QuernBlockEntity quern)
     {

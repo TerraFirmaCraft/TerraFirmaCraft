@@ -6,14 +6,12 @@
 
 package net.dries007.tfc.compat.jei.category;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,48 +30,32 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
-import org.jetbrains.annotations.NotNull;
+import net.dries007.tfc.util.Helpers;
 
 public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
 {
-    protected static final ResourceLocation ICONS = new ResourceLocation(TerraFirmaCraft.MOD_ID, "textures/gui/jei/icons.png");
+    public static final ResourceLocation ICONS = new ResourceLocation(TerraFirmaCraft.MOD_ID, "textures/gui/jei/icons.png");
 
-    protected static <R> List<R> collapse(List<List<R>> list) //todo: this sucks. We think of ingredients much differently than JEI does, so this has to do
-    {
-        List<R> returnList = new ArrayList<>(7);
-        for (List<R> usuallySingletonList : list)
-        {
-            returnList.addAll(usuallySingletonList);
-        }
-        return returnList;
-    }
-
-    protected static List<ItemStack> collapseWithAmount(Ingredient ingredient, int amount)
-    {
-        return Arrays.stream(ingredient.getItems()).map(stack -> new ItemStack(stack.getItem(), amount).copy()).collect(Collectors.toList());
-    }
-
-    protected static List<FluidStack> collapse(FluidStackIngredient ingredient)
+    public static List<FluidStack> collapse(FluidStackIngredient ingredient)
     {
         // Setting this to 1000 makes the liquid amount on the tooltip to display incorrectly
         // use IRecipeSlotBuilder.setFluidRenderer(1, false, 16, 16)} to make the liquid display in the whole slot
-        return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).collect(Collectors.toList());
+        return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).toList();
     }
 
-    protected static <T extends Item> List<ItemStack> collapse(Map<?, RegistryObject<T>> map)
+    public static <T extends Item> List<ItemStack> collapse(Map<?, RegistryObject<T>> map)
     {
         return map.values().stream().map(reg -> new ItemStack(reg.get())).toList();
     }
 
-    protected static Ingredient collapse(BlockIngredient ingredient)
+    public static List<ItemStack> collapse(ItemStackIngredient input)
     {
-        return Ingredient.of(ingredient.getValidBlocks().stream().map(ItemStack::new).filter(item -> !item.isEmpty()));
+        return Arrays.stream(input.ingredient().getItems()).map(stack -> Helpers.copyWithSize(stack, input.count())).toList();
     }
 
-    @NotNull
-    protected static List<ItemStack> collapse(ItemStackIngredient input)
+    public static Ingredient collapse(BlockIngredient ingredient)
     {
-        return Arrays.stream(input.ingredient().getItems()).peek(stack -> stack.setCount(input.count())).toList();
+        return Ingredient.of(ingredient.getValidBlocks().stream().map(ItemStack::new).filter(item -> !item.isEmpty()));
     }
 
     protected final IDrawableStatic slot;
@@ -90,7 +72,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
     public BaseRecipeCategory(RecipeType<T> type, IGuiHelper helper, IDrawable background, ItemStack icon)
     {
         this.type = type;
-        this.title = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".jei." + type.getUid().getPath());
+        this.title = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".jei." + type.getUid().getPath());
         this.background = background;
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, icon);
         this.slot = helper.getSlotDrawable();

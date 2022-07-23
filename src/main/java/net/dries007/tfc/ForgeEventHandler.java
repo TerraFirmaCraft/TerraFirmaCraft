@@ -1008,7 +1008,7 @@ public final class ForgeEventHandler
 
                 words[i] = word;
             }
-            event.setComponent(new TranslatableComponent("<" + event.getUsername() + "> " + String.join(" ", words)));
+            event.setComponent(Helpers.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
         }
     }
 

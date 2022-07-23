@@ -22,6 +22,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -174,7 +175,7 @@ public final class Helpers
 
     public static TranslatableComponent translateEnum(Enum<?> anEnum)
     {
-        return new TranslatableComponent(getEnumTranslationKey(anEnum));
+        return Helpers.translatable(getEnumTranslationKey(anEnum));
     }
 
     /**
@@ -183,6 +184,30 @@ public final class Helpers
     public static String getEnumTranslationKey(Enum<?> anEnum)
     {
         return getEnumTranslationKey(anEnum, anEnum.getDeclaringClass().getSimpleName());
+    }
+
+    /**
+     * Use over invoking the constructor, as Mojang refactors this in 1.19
+     */
+    public static TranslatableComponent translatable(String key)
+    {
+        return new TranslatableComponent(key);
+    }
+
+    /**
+     * Use over invoking the constructor, as Mojang refactors this in 1.19
+     */
+    public static TranslatableComponent translatable(String key, Object... args)
+    {
+        return new TranslatableComponent(key, args);
+    }
+
+    /**
+     * Use over invoking the constructor, as Mojang refactors this in 1.19
+     */
+    public static TextComponent literal(String literalText)
+    {
+        return new TextComponent(literalText);
     }
 
     /**
@@ -1039,7 +1064,7 @@ public final class Helpers
 
         if (totalItems - maximumItems > 0)
         {
-            tooltips.add(new TranslatableComponent("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
+            tooltips.add(Helpers.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
     }
 
@@ -1050,7 +1075,7 @@ public final class Helpers
     {
         if (!fluid.isEmpty())
         {
-            tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
+            tooltips.add(Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount())
                 .append(fluid.getDisplayName()));
         }
     }

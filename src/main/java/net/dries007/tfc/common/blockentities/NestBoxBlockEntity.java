@@ -77,7 +77,7 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     }
 
     public static final int SLOTS = 4;
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.nest_box");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.nest_box");
 
     public NestBoxBlockEntity(BlockPos pos, BlockState state)
     {

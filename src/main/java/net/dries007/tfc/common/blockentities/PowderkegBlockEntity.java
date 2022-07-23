@@ -39,7 +39,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
 {
     public static final int SLOTS = 12;
 
-    private static final Component NAME = new TranslatableComponent("tfc.block_entity.powderkeg");
+    private static final Component NAME = Helpers.translatable("tfc.block_entity.powderkeg");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, PowderkegBlockEntity powderkeg)
     {

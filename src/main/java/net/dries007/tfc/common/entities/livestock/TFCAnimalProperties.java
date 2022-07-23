@@ -517,7 +517,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default Component getGenderedTypeName()
     {
-        return new TranslatableComponent(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
+        return Helpers.translatable(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
     }
 
     enum Age

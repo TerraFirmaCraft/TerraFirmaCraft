@@ -122,7 +122,7 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
             alloy.deserializeNBT(inventoryTag.getCompound("alloy"));
             inventory.deserializeNBT(inventoryTag.getCompound("inventory"));
 
-            tooltip.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+            tooltip.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
             Helpers.addInventoryTooltipInfo(inventory, tooltip);
             Helpers.addFluidStackTooltipInfo(alloy.getResultAsFluidStack(), tooltip);
         }

@@ -154,7 +154,7 @@ public abstract class BarrelRecipe implements ISimpleRecipe<BarrelBlockEntity.Ba
 
     public TranslatableComponent getTranslationComponent()
     {
-        return new TranslatableComponent("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
+        return Helpers.translatable("tfc.recipe.barrel." + id.getNamespace() + "." + id.getPath().replace('/', '.'));
     }
 
     public record Builder(ItemStackIngredient inputItem, FluidStackIngredient inputFluid, ItemStackProvider outputItem, FluidStack outputFluid, SoundEvent sound)

@@ -32,12 +32,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.container.ScribingTableContainer;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class ScribingTableBlock extends HorizontalDirectionalBlock implements IForgeBlockExtension
 {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
-    private static final Component CONTAINER_TITLE = new TranslatableComponent("tfc.screen.scribing_table");
+    private static final Component CONTAINER_TITLE = Helpers.translatable("tfc.screen.scribing_table");
     private static final VoxelShape BASE_SHAPE = Shapes.or(
         // Top
         box(0, 12, 0, 16, 16, 16),

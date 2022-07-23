@@ -42,7 +42,7 @@ public enum PhysicalDamageType implements StringRepresentable
         final PhysicalDamageType type = getTypeForItem(stack);
         if (type != null)
         {
-            tooltips.add(new TranslatableComponent("tfc.tooltip.deals_damage." + type.getSerializedName()));
+            tooltips.add(Helpers.translatable("tfc.tooltip.deals_damage." + type.getSerializedName()));
         }
     }
 

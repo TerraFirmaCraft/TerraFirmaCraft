@@ -38,6 +38,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.vein.Vein;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
@@ -48,8 +49,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 // todo: subcommand of new TFCLocate command?
 public class LocateVeinCommand
 {
-    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locate.unknown_vein", args));
-    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> new TranslatableComponent(MOD_ID + ".commands.locate.vein_not_found", args));
+    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> Helpers.translatable(MOD_ID + ".commands.locate.unknown_vein", args));
+    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> Helpers.translatable(MOD_ID + ".commands.locate.vein_not_found", args));
 
     @Nullable private static Map<ResourceLocation, ConfiguredFeature<?, ? extends VeinFeature<?, ?>>> VEINS_CACHE = null;
 
@@ -121,9 +122,9 @@ public class LocateVeinCommand
     private static int showLocateResult(CommandSourceStack context, String nameOfThing, BlockPos source, BlockPos dest, String translationKey)
     {
         final int distance = (int) Math.sqrt(source.distSqr(dest));
-        final Component text = ComponentUtils.wrapInSquareBrackets(new TranslatableComponent("chat.coordinates", dest.getX(), dest.getY(), dest.getZ()))
-            .withStyle(styleIn -> styleIn.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + dest.getX() + " " + dest.getY() + " " + dest.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.coordinates.tooltip"))));
-        context.sendSuccess(new TranslatableComponent(translationKey, nameOfThing, text, distance), false);
+        final Component text = ComponentUtils.wrapInSquareBrackets(Helpers.translatable("chat.coordinates", dest.getX(), dest.getY(), dest.getZ()))
+            .withStyle(styleIn -> styleIn.withColor(ChatFormatting.GREEN).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + dest.getX() + " " + dest.getY() + " " + dest.getZ())).withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Helpers.translatable("chat.coordinates.tooltip"))));
+        context.sendSuccess(Helpers.translatable(translationKey, nameOfThing, text, distance), false);
         return distance;
     }
 }

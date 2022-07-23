@@ -11,6 +11,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 
+import net.dries007.tfc.util.Helpers;
+
 public enum ProspectResult
 {
     VERY_LARGE("tfc.tooltip.propick.found_very_large"),
@@ -39,11 +41,11 @@ public enum ProspectResult
 
     public Component getText(Block block)
     {
-        MutableComponent text = new TranslatableComponent(translationKey);
+        MutableComponent text = Helpers.translatable(translationKey);
         if (this != NOTHING && this != NOTHING_FALSE_NEGATIVE)
         {
             // Use a custom translation for prospecting blocks
-            text = text.append(" ").append(new TranslatableComponent(block.getDescriptionId() + ".prospected"));
+            text = text.append(" ").append(Helpers.translatable(block.getDescriptionId() + ".prospected"));
         }
         return text;
     }

@@ -45,7 +45,7 @@ public class AnvilScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilContai
     {
         super.init();
 
-        addRenderableWidget(new AnvilPlanButton(blockEntity, getGuiLeft(), getGuiTop(), RenderHelpers.makeButtonTooltip(this, new TranslatableComponent("tfc.tooltip.anvil_plan"))));
+        addRenderableWidget(new AnvilPlanButton(blockEntity, getGuiLeft(), getGuiTop(), RenderHelpers.makeButtonTooltip(this, Helpers.translatable("tfc.tooltip.anvil_plan"))));
 
         for (ForgeStep step : ForgeStep.values())
         {

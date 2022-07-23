@@ -27,6 +27,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
 import net.dries007.tfc.util.Alloy;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
 public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
@@ -73,7 +74,7 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
             int x = (iteration % 2 == 0 ? firstColumnX : secondColumnX) + slot.getWidth() + 2;
             // Vertically centers the text on the slot
             int y = positions[Math.floorDiv(iteration, 2)] + slot.getHeight() / 2 - Math.floorDiv(font.lineHeight, 2);
-            font.draw(stack, new TextComponent(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF);
+            font.draw(stack, Helpers.literal(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF);
             iteration++;
         }
         for (int y : positions)

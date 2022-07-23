@@ -75,7 +75,7 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
 
             if (!Helpers.isEmpty(inventory))
             {
-                tooltip.add(new TranslatableComponent("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
+                tooltip.add(Helpers.translatable("tfc.tooltip.contents").withStyle(ChatFormatting.DARK_GREEN));
                 Helpers.addInventoryTooltipInfo(inventory, tooltip);
             }
             addExtraInfo(tooltip, inventoryTag);

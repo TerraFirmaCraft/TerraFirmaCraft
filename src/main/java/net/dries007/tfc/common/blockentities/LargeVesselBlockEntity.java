@@ -25,6 +25,7 @@ import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.container.LargeVesselContainer;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +34,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBlockEntity.VesselInventory>
 {
     public static final int SLOTS = 9;
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.large_vessel");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.large_vessel");
 
     public LargeVesselBlockEntity(BlockPos pos, BlockState state)
     {

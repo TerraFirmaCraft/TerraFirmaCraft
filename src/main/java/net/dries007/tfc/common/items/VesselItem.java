@@ -70,7 +70,7 @@ public class VesselItem extends Item
                 {
                     if (vessel.getTemperature() > 0)
                     {
-                        player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.inventory_too_hot"), true);
+                        player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.inventory_too_hot"), true);
                     }
                     else
                     {
@@ -83,7 +83,7 @@ public class VesselItem extends Item
                 }
                 else
                 {
-                    player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_solid"), true);
+                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.alloy_solid"), true);
                 }
             }
         }
@@ -185,7 +185,7 @@ public class VesselItem extends Item
             heat.addTooltipInfo(stack, text);
             if (!Helpers.isEmpty(inventory) || !alloy.isEmpty()) // Only show the 'contents' label if we actually have contents
             {
-                text.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
 
                 final Mode mode = mode();
                 switch (mode)
@@ -194,12 +194,12 @@ public class VesselItem extends Item
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
                         text.add(alloy.getResult().getDisplayName()
                             .append(" ")
-                            .append(new TranslatableComponent("tfc.tooltip.fluid_units", alloy.getAmount()))
+                            .append(Helpers.translatable("tfc.tooltip.fluid_units", alloy.getAmount()))
                             .append(" ")
-                            .append(new TranslatableComponent(mode == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
+                            .append(Helpers.translatable(mode == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
                         if (!Helpers.isEmpty(inventory))
                         {
-                            text.add(new TranslatableComponent("tfc.tooltip.small_vessel.still_has_unmelted_items").withStyle(ChatFormatting.RED));
+                            text.add(Helpers.translatable("tfc.tooltip.small_vessel.still_has_unmelted_items").withStyle(ChatFormatting.RED));
                         }
                     }
                 }

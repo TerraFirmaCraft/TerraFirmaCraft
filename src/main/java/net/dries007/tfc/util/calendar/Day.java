@@ -55,7 +55,7 @@ public enum Day
         String birthday = BIRTHDAYS.get(month.name() + dayOfMonth);
         if (birthday != null)
         {
-            return new TranslatableComponent("tfc.tooltip.calendar_birthday", birthday);
+            return Helpers.translatable("tfc.tooltip.calendar_birthday", birthday);
         }
         Day day = Day.valueOf((int) totalDays % 7);
         return Helpers.translateEnum(day);
