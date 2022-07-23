@@ -1,16 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:simple_block",
+  "type": "tfc:spreading_bush",
   "config": {
-    "to_place": {
-      "type": "minecraft:simple_state_provider",
-      "state": {
-        "Name": "tfc:plant/elderberry_bush",
-        "Properties": {
-          "lifecycle": "healthy",
-          "stage": "0"
-        }
-      }
-    }
+    "block": "tfc:plant/elderberry_bush"
   }
 }

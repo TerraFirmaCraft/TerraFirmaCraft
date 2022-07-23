@@ -35,6 +35,20 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRange;
 
+/**
+ * Spreading bushes have two parts: a bush block, which is a full block which can grow up to three blocks tall, and a cane block, which is a horizontal protrusion that can output from the sides of a bush block.
+ * The cane can then turn into more bush blocks, spreading the plant and allowing it to climb up hills.
+ * Both the cane and the bush block use the "stage" property from {@link SeasonalPlantBlock} to determine and limit their growth.
+ * <p>
+ * Spreading:
+ * <ul>
+ *   <li>Cane blocks always convert to bush blocks, if they can.</li>
+ *   <li>Bush blocks can grow up to three blocks upwards, but can only spread canes to adjacent blocks, meaning a single berry bush has four directions to spread in.</li>
+ *   <li>Stage 0 is for newly planted bushes. Stage 1 is for all bush blocks that are bushes and grown naturally. Advancing to stage 2 means the bush is mature, and won't spread anymore.</li>
+ *   <li>This means an individual horizontal position can spread up to three blocks adjacent, *but* unless the bush is climbing a hill, most of those canes won't be able to grow into bushes, because they're on solid ground. Meaning natural bush spreading will eventually stop, as the bush will reach all stage 2, where it is unable to spread.</li>
+ * </ul>
+ * The player can harvest bush blocks, stage 2 for a guaranteed drop, all other stages for 1/2 chance.
+ */
 public class SpreadingBushBlock extends StationaryBerryBushBlock implements IForgeBlockExtension, IBushBlock, HoeOverlayBlock
 {
     protected final Supplier<? extends Block> companion;
@@ -48,16 +62,15 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
         registerDefaultState(getStateDefinition().any().setValue(STAGE, 0));
     }
 
+    public Block getCane()
+    {
+        return companion.get();
+    }
+
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return state.getValue(STAGE) == 2 ? Shapes.block() : PLANT_SHAPE;
-    }
-
-    @Override
-    protected boolean mayPropagate(BlockState newState, Level level, BlockPos pos)
-    {
-        return newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0;
     }
 
     @Override
@@ -67,19 +80,37 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
     }
 
     @Override
-    protected void propagate(Level level, BlockPos pos, Random random, BlockState state)
+    protected BlockState growAndPropagate(Level level, BlockPos pos, Random random, BlockState state)
     {
-        final int stage = state.getValue(STAGE);
-        final BlockPos abovePos = pos.above();
-        if ((stage == 1 || (stage == 2 && level.random.nextInt(3) == 0)) && level.isEmptyBlock(abovePos) && distanceToGround(level, pos, maxHeight) < maxHeight)
+        if (!state.getValue(LIFECYCLE).active())
         {
-            level.setBlockAndUpdate(abovePos, state.setValue(STAGE, 1).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
+            // Only grow when active
+            return state;
         }
-        else if (stage == 2)
+
+        // Increment stage by one
+        final int originalStage = state.getValue(STAGE);
+
+        if (originalStage == 0)
         {
-            final int count = Mth.nextInt(random, 1, 3);
-            for (int i = 0; i < count; i++)
+            // Stage 0 -> grow into stage 1
+            return state.setValue(STAGE, 1);
+        }
+        if (originalStage == 1)
+        {
+            // Stage 1: either grow upwards, or attempt to grow a cane and move to stage 2
+            // Grow a bush upwards
+            final BlockPos abovePos = pos.above();
+            if (level.isEmptyBlock(abovePos) && distanceToGround(level, pos, maxHeight) < maxHeight)
             {
+                // Growing upwards grows at stage = 1, because stage = 0 is just newly planted bushes.
+                level.setBlockAndUpdate(abovePos, state.setValue(STAGE, 1).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
+                return state; // Stay in stage 1, if we only grew upwards.
+            }
+
+            if (random.nextBoolean())
+            {
+                // Optionally cause a cane to grow on an adjacent block
                 final Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(random);
                 final BlockPos offsetPos = pos.relative(offset);
                 if (level.isEmptyBlock(offsetPos))
@@ -87,7 +118,10 @@ public class SpreadingBushBlock extends StationaryBerryBushBlock implements IFor
                     level.setBlockAndUpdate(offsetPos, companion.get().defaultBlockState().setValue(SpreadingCaneBlock.FACING, offset).setValue(LIFECYCLE, state.getValue(LIFECYCLE)));
                 }
             }
+
+            return state.setValue(STAGE, 2);
         }
+        return state; // Stay at stage 2, and don't grow
     }
 
     @Override
