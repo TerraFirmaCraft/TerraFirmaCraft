@@ -16,7 +16,7 @@ import net.dries007.tfc.util.ItemDefinition;
 
 public class FoodDefinition extends ItemDefinition
 {
-    private final FoodRecord data;
+    private final FoodData data;
 
     public FoodDefinition(ResourceLocation id, JsonObject json)
     {
@@ -33,7 +33,7 @@ public class FoodDefinition extends ItemDefinition
             nutrition[nutrient.ordinal()] = GsonHelper.getAsFloat(json, nutrient.getSerializedName(), 0);
         }
 
-        this.data = new FoodRecord(hunger, water, saturation, nutrition, decayModifier);
+        this.data = FoodData.create(hunger, water, saturation, nutrition, decayModifier);
     }
 
     public FoodDefinition(ResourceLocation id, FriendlyByteBuf buffer)
@@ -51,25 +51,25 @@ public class FoodDefinition extends ItemDefinition
             nutrition[nutrient.ordinal()] = buffer.readFloat();
         }
 
-        this.data = new FoodRecord(hunger, water, saturation, nutrition, decayModifier);
+        this.data = FoodData.create(hunger, water, saturation, nutrition, decayModifier);
     }
 
     public void encode(FriendlyByteBuf buffer)
     {
         ingredient.toNetwork(buffer);
 
-        buffer.writeVarInt(data.getHunger());
-        buffer.writeFloat(data.getSaturation());
-        buffer.writeFloat(data.getWater());
-        buffer.writeFloat(data.getDecayModifier());
+        buffer.writeVarInt(data.hunger());
+        buffer.writeFloat(data.saturation());
+        buffer.writeFloat(data.water());
+        buffer.writeFloat(data.decayModifier());
 
         for (Nutrient nutrient : Nutrient.VALUES)
         {
-            buffer.writeFloat(data.getNutrient(nutrient));
+            buffer.writeFloat(data.nutrient(nutrient));
         }
     }
 
-    public FoodRecord getData()
+    public FoodData getData()
     {
         return data;
     }

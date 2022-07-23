@@ -864,6 +864,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
     'tfc.tooltip.scribing_table.missingink': 'Ink is missing!',
     'tfc.tooltip.scribing_table.invalidink': 'Item isn\'t ink!',
+    'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§r Damage',
+    'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§r Damage',
+    'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§r Damage',
 
     # Commands
 

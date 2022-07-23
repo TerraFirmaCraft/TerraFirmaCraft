@@ -69,9 +69,9 @@ public interface IFood extends INBTSerializable<CompoundTag>
      * - Hunger / Saturation
      * - Water (Thirst)
      *
-     * @see FoodRecord
+     * @see FoodData
      */
-    FoodRecord getData();
+    FoodData getData();
 
     /**
      * Gets the current decay date modifier, including traits
@@ -156,16 +156,16 @@ public interface IFood extends INBTSerializable<CompoundTag>
             boolean any = false;
             if (!isRotten())
             {
-                final FoodRecord data = getData();
+                final FoodData data = getData();
 
-                float saturation = data.getSaturation();
+                float saturation = data.saturation();
                 if (saturation > 0)
                 {
                     // This display makes it so 100% saturation means a full hunger bar worth of saturation.
                     text.add(new TranslatableComponent("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(ChatFormatting.GRAY));
                     any = true;
                 }
-                float water = data.getWater();
+                float water = data.water();
                 if (water > 0)
                 {
                     text.add(new TranslatableComponent("tfc.tooltip.nutrition_water", String.format("%d", (int) water)).withStyle(ChatFormatting.GRAY));
@@ -174,7 +174,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
 
                 for (Nutrient nutrient : Nutrient.VALUES)
                 {
-                    float value = data.getNutrient(nutrient);
+                    float value = data.nutrient(nutrient);
                     if (value > 0)
                     {
                         text.add(new TextComponent(" - ")

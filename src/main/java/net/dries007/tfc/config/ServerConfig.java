@@ -118,7 +118,7 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
-    // Mechanics - Food / Nutrition
+    // Mechanics - Player
     public final ForgeConfigSpec.BooleanValue enablePeacefulDifficultyPassiveRegeneration;
     public final ForgeConfigSpec.DoubleValue passiveExhaustionModifier;
     public final ForgeConfigSpec.DoubleValue thirstModifier;

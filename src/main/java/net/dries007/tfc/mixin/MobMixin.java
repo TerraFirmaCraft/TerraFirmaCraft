@@ -26,24 +26,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Mob.class)
-public class MobMixin
+public abstract class MobMixin
 {
-    @Inject(method="getEquipmentForSlot", at=@At("HEAD"), cancellable = true)
+    @Inject(method = "getEquipmentForSlot", at = @At("HEAD"), cancellable = true)
     private static void inject$getEquipmentForSlot(EquipmentSlot slot, int multiplier, CallbackInfoReturnable<Item> cir)
     {
         if (!TFCConfig.SERVER.enableVanillaMobsSpawningWithVanillaEquipment.get())
         {
-            final TagKey<Item> tag = switch (slot)
-                {
-                    case MAINHAND -> TFCTags.Items.MOB_MAINHAND_WEAPONS;
-                    case OFFHAND -> TFCTags.Items.MOB_OFFHAND_WEAPONS;
-                    case FEET -> TFCTags.Items.MOB_FEET_ARMOR;
-                    case LEGS -> TFCTags.Items.MOB_LEG_ARMOR;
-                    case CHEST -> TFCTags.Items.MOB_CHEST_ARMOR;
-                    case HEAD -> TFCTags.Items.MOB_HEAD_ARMOR;
-                };
-            Helpers.getRandomElement(ForgeRegistries.ITEMS, tag, new Random()).ifPresent(cir::setReturnValue);
-            cir.cancel();
+            Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.mobEquipmentSlotTag(slot), new Random()).ifPresent(cir::setReturnValue);
         }
     }
 

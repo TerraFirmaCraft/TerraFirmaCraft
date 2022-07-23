@@ -76,10 +76,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
 import net.dries007.tfc.network.*;
-import net.dries007.tfc.util.Fertilizer;
-import net.dries007.tfc.util.Fuel;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -193,6 +190,7 @@ public class ClientForgeEventHandler
             ItemSizeManager.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
             Forging.addTooltipInfo(stack, text);
+            PhysicalDamageType.addTooltipInfo(stack, text);
 
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));

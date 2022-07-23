@@ -773,15 +773,6 @@ public final class Helpers
     }
 
     /**
-     * This returns the previous result of {@link ServerLevel#getBlockRandomPos(int, int, int, int)}.
-     */
-    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
-    {
-        int i = randValue >> 2;
-        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
-    }
-
-    /**
      * @see net.minecraft.core.QuartPos#toBlock(int)
      */
     public static BlockPos quartToBlock(int x, int y, int z)

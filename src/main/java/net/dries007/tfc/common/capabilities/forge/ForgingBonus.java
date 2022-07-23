@@ -20,11 +20,11 @@ import net.dries007.tfc.util.Helpers;
 
 public enum ForgingBonus
 {
-    NONE(Float.POSITIVE_INFINITY, 1.0f, 0f),
-    POORLY_FORGED(10.0f, 1.2f, 0.125f),
-    WELL_FORGED(5.0f, 1.4f, 0.25f),
-    EXPERTLY_FORGED(2.0f, 1.6f, 0.375f),
-    PERFECTLY_FORGED(1.5f, 1.8f, 0.5f);
+    NONE(Float.POSITIVE_INFINITY, 1.0f, 0f, 1.0f),
+    POORLY_FORGED(10.0f, 1.2f, 0.125f, 1.125f),
+    WELL_FORGED(5.0f, 1.4f, 0.25f, 1.25f),
+    EXPERTLY_FORGED(2.0f, 1.6f, 0.375f, 1.375f),
+    PERFECTLY_FORGED(1.5f, 1.8f, 0.5f, 1.5f);
 
     private static final String KEY = "tfc:forging_bonus";
     private static final ForgingBonus[] VALUES = values();
@@ -109,12 +109,14 @@ public enum ForgingBonus
     private final float maxRatio;
     private final float efficiency;
     private final float durability;
+    private final float damage;
 
-    ForgingBonus(float maxRatio, float efficiency, float durability)
+    ForgingBonus(float maxRatio, float efficiency, float durability, float damage)
     {
         this.maxRatio = maxRatio;
         this.efficiency = efficiency;
         this.durability = durability;
+        this.damage = damage;
     }
 
     public float efficiency()
@@ -125,5 +127,10 @@ public enum ForgingBonus
     public float durability()
     {
         return durability;
+    }
+
+    public float damage()
+    {
+        return damage;
     }
 }
