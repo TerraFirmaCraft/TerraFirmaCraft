@@ -15,7 +15,7 @@
       }
     ],
     "result": {
-      "item": "tfc:melon_slice",
+      "item": "tfc:food/melon_slice",
       "count": 4
     }
   }

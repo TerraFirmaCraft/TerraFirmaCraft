@@ -28,13 +28,16 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.loot.TFCLoot;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Uses a tick counter, the 'last update tick' of the counter == the rotten date.
+ */
 public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static boolean isRotten(Level level, BlockPos pos)
     {
         if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter && level.getBlockState(pos).getBlock() instanceof DecayingBlock)
         {
-            return counter.getLastUpdateTick() > Calendars.get(level).getTicks();
+            return counter.getLastUpdateTick() < Calendars.get(level).getTicks();
         }
         return false;
     }

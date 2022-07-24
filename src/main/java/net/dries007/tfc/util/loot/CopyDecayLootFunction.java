@@ -19,6 +19,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
+import net.dries007.tfc.common.capabilities.food.FoodHandler;
 
 public class CopyDecayLootFunction extends LootItemConditionalFunction
 {
@@ -41,7 +42,8 @@ public class CopyDecayLootFunction extends LootItemConditionalFunction
             BlockState state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
             if (state != null && state.getBlock() instanceof DecayingBlock)
             {
-                stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(counter.getLastUpdateTick()));
+                // ignores modifiers
+                stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> food.setCreationDate(counter.getLastUpdateTick() - FoodHandler.DEFAULT_DECAY_TICKS));
             }
         }
         return stack;

@@ -216,8 +216,8 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> ROTTEN_PUMPKIN = register("rotten_pumpkin", () -> new Block(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD)), FLORA);
     public static final RegistryObject<Block> ROTTEN_MELON = register("rotten_melon", () -> new Block(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD)), FLORA);
-    public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD)).blockEntity(TFCBlockEntities.TICK_COUNTER), ROTTEN_PUMPKIN), FLORA);
-    public static final RegistryObject<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD)).blockEntity(TFCBlockEntities.TICK_COUNTER), ROTTEN_MELON), FLORA);
+    public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER), ROTTEN_PUMPKIN), FLORA);
+    public static final RegistryObject<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER), ROTTEN_MELON), FLORA);
 
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(BlockBehaviour.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
 
