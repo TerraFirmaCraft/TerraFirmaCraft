@@ -7,37 +7,36 @@
 package net.dries007.tfc.common.blocks.crop;
 
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.util.calendar.Calendars;
+import net.dries007.tfc.common.capabilities.food.IFood;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.loot.TFCLoot;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Uses a tick counter, the 'last update tick' of the counter == the rotten date.
- */
 public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
 {
     public static boolean isRotten(Level level, BlockPos pos)
     {
-        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter && level.getBlockState(pos).getBlock() instanceof DecayingBlock)
+        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying)
         {
-            return counter.getLastUpdateTick() < Calendars.get(level).getTicks();
+            final ItemStack stack = decaying.getStack();
+            return stack.isEmpty() || stack.getCapability(FoodCapability.CAPABILITY).map(IFood::isRotten).orElse(false);
         }
         return false;
     }
@@ -54,20 +53,31 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack)
     {
         super.setPlacedBy(level, pos, state, entity, stack);
-        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+        if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying)
         {
-            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(food -> counter.setLastUpdateTick(food.getRottenDate()));
+            decaying.setStack(stack);
         }
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        if (isRotten(level, pos))
+        final BlockEntity entity = level.getBlockEntity(pos);
+        if (entity instanceof DecayingBlockEntity decaying && !(Helpers.isBlock(state, newState.getBlock())))
         {
-            level.setBlockAndUpdate(pos, rotted.get().defaultBlockState());
+            Helpers.spawnItem(level, pos, decaying.getStack());
         }
+        super.onRemove(state, level, pos, newState, isMoving);
+    }
+
+    @Nullable
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context)
+    {
+        return context.getItemInHand().getCapability(FoodCapability.CAPABILITY).map(cap ->
+            cap.isRotten() ? getRottedBlock().defaultBlockState() : defaultBlockState()
+        ).orElse(defaultBlockState());
     }
 
     @Override
@@ -76,5 +86,10 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
     {
         builder = builder.withParameter(TFCLoot.DECAY_HANDLED, true);
         return super.getDrops(state, builder);
+    }
+
+    public Block getRottedBlock()
+    {
+        return rotted.get();
     }
 }

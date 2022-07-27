@@ -227,7 +227,7 @@ def generate(rm: ResourceManager):
 
     for name in ('pumpkin', 'melon'):
         rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
-        rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name)).with_block_loot({'name': 'tfc:%s' % name, 'functions': [{'function': 'tfc:copy_decay'}]}).with_tag('tfc:mineable_with_sharp_tool')
+        rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name)).with_tag('tfc:mineable_with_sharp_tool')
         rm.item_model(name, 'tfc:item/food/%s' % name)
         rm.block_model('rotten_' + name, parent='minecraft:block/%s' % name, textures={'side': 'tfc:block/crop/rotten_%s_side' % name, 'end': 'tfc:block/crop/rotten_%s_top' % name})
         rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_item_model().with_lang(lang('rotten %s', name)).with_block_loot('tfc:rotten_%s' % name).with_tag('tfc:mineable_with_sharp_tool')

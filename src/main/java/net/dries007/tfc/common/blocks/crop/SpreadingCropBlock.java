@@ -12,21 +12,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
+import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
-import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
@@ -44,8 +43,6 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
             }
         };
     }
-
-    private static final int DECAY_PERIOD = ICalendar.TICKS_IN_DAY * 32;
 
     private final Supplier<Supplier<? extends Block>> fruit;
 
@@ -85,15 +82,16 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
         {
             Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(level.getRandom());
             BlockPos fruitPos = pos.relative(offset);
-            BlockState fruitState = fruit.get().get().defaultBlockState();
+            Block fruitBlock = fruit.get().get();
+            BlockState fruitState = fruitBlock.defaultBlockState();
             if (fruitState.canSurvive(level, fruitPos) && level.getBlockState(fruitPos).getMaterial().isReplaceable())
             {
                 level.setBlockAndUpdate(fruitPos, fruitState);
-                if (level.getBlockEntity(fruitPos) instanceof TickCounterBlockEntity counter)
+                if (level.getBlockEntity(fruitPos) instanceof DecayingBlockEntity decaying)
                 {
-                    counter.setLastUpdateTick(Calendars.get(level).getTicks() + DECAY_PERIOD);
+                    decaying.setStack(new ItemStack(fruitBlock));
                 }
-                crop.setGrowth(Mth.nextFloat(level.getRandom(), 0.8f, 0.9f));
+                crop.setGrowth(Mth.nextFloat(level.getRandom(), 0.8f, 0.87f));
             }
         }
     }

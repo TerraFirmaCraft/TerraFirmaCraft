@@ -224,6 +224,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setUses(nbt.getInt("uses"));
         setLastFed(nbt.getLong("fed"));
         setLastFamiliarityDecay(nbt.getLong("decay"));
+        setMated(nbt.getLong("mating"));
         setLastAge(Age.valueOf(nbt.getInt("lastAge")));
         setOldDay(nbt.getLong("oldDay"));
     }

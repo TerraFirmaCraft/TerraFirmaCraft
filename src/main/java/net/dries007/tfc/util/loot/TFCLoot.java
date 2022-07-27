@@ -44,7 +44,6 @@ public class TFCLoot
     public static final RegistryObject<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", new AlwaysTrueCondition.Serializer());
     public static final RegistryObject<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new CropYieldProvider.Serializer());
     public static final RegistryObject<LootItemFunctionType> COPY_FLUID = lootFunction("copy_fluid", new CopyFluidFunction.Serializer());
-    public static final RegistryObject<LootItemFunctionType> COPY_DECAY = lootFunction("copy_decay", new CopyDecayLootFunction.Serializer());
 
     public static final RegistryObject<ResetDecayLootModifier.Serializer> RESET_DECAY = glmSerializer("reset_decay", ResetDecayLootModifier.Serializer::new);
 

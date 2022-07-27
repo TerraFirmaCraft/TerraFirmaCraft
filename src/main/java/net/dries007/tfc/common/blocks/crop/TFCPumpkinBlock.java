@@ -28,6 +28,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.Tags;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -51,6 +52,10 @@ public class TFCPumpkinBlock extends DecayingBlock
                 Direction hitDir = hit.getDirection();
                 Direction facing = hitDir.getAxis() == Direction.Axis.Y ? player.getDirection().getOpposite() : hitDir;
                 level.playSound(null, pos, SoundEvents.PUMPKIN_CARVE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                if (level.getBlockEntity(pos) instanceof DecayingBlockEntity decaying)
+                {
+                    decaying.setStack(ItemStack.EMPTY);
+                }
                 level.setBlock(pos, Blocks.CARVED_PUMPKIN.defaultBlockState().setValue(CarvedPumpkinBlock.FACING, facing), 11);
 
                 held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(hand));
