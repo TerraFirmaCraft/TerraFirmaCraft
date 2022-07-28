@@ -60,6 +60,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -164,8 +165,10 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerTick);
         bus.addListener(ForgeEventHandler::onEffectRemove);
         bus.addListener(ForgeEventHandler::onEffectExpire);
-        bus.addListener(ForgeEventHandler::onItemExpire);
+        bus.addListener(ForgeEventHandler::onLivingJump);
+        bus.addListener(ForgeEventHandler::onLivingHurt);
         bus.addListener(ForgeEventHandler::onEntityJoinWorld);
+        bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
@@ -177,7 +180,6 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
-        bus.addListener(ForgeEventHandler::onLivingJump);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
     }
 
@@ -723,6 +725,32 @@ public final class ForgeEventHandler
     }
 
     /**
+     * Apply modifications from damage types, player health, and forging bonus, before armor and absorption and other resources are consumed.
+     */
+    public static void onLivingHurt(LivingHurtEvent event)
+    {
+        float amount = event.getAmount();
+
+        // Forging bonus
+        final Entity entity = event.getSource().getEntity();
+        if (entity instanceof LivingEntity livingEntity)
+        {
+            amount *= ForgingBonus.get(livingEntity.getMainHandItem()).damage();
+        }
+
+        // Physical damage type
+        amount *= PhysicalDamageType.calculateMultiplier(event.getSource(), event.getEntity());
+
+        // Player health modifier
+        if (event.getEntityLiving() instanceof Player player && player.getFoodData() instanceof TFCFoodData foodData)
+        {
+            amount /= foodData.getHealthModifier();
+        }
+
+        event.setAmount(amount);
+    }
+
+    /**
      * Applies multiple effect for entities joining the world:
      *
      * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
@@ -731,6 +759,12 @@ public final class ForgeEventHandler
      */
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
+        if (event.loadedFromDisk())
+        {
+            // This event is used for modifications to entity spawning, so we shouldn't apply any effects for entities that already exist in the world.
+            return;
+        }
+
         final Level level = event.getWorld();
 
         Entity entity = event.getEntity();
@@ -977,7 +1011,7 @@ public final class ForgeEventHandler
 
                 words[i] = word;
             }
-            event.setComponent(new TranslatableComponent("<" + event.getUsername() + "> " + String.join(" ", words)));
+            event.setComponent(Helpers.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
         }
     }
 
@@ -1052,6 +1086,7 @@ public final class ForgeEventHandler
         event.addListener(Fauna.MANAGER);
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
+        event.addListener(EntityDamageResistance.MANAGER);
 
         // In addition, we capture the recipe manager here
         Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());

@@ -50,11 +50,11 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
 
     protected final List<FoodTrait> foodTraits;
     private final LazyOptional<IFood> capability;
-    protected FoodRecord data;
+    protected FoodData data;
     protected long creationDate;
     protected boolean isNonDecaying; // This is intentionally not serialized, as we don't want it to preserve over `ItemStack.copy()` operations
 
-    public FoodHandler(FoodRecord data)
+    public FoodHandler(FoodData data)
     {
         this.foodTraits = new ArrayList<>(2);
         this.data = data;
@@ -108,7 +108,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     }
 
     @Override
-    public FoodRecord getData()
+    public FoodData getData()
     {
         return data;
     }
@@ -117,7 +117,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     public float getDecayDateModifier()
     {
         // Decay modifiers are higher = shorter
-        float mod = data.getDecayModifier() * TFCConfig.SERVER.foodDecayModifier.get().floatValue();
+        float mod = data.decayModifier() * TFCConfig.SERVER.foodDecayModifier.get().floatValue();
         for (FoodTrait trait : foodTraits)
         {
             mod *= trait.getDecayModifier();
@@ -175,7 +175,7 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
         foodTraits.clear();
         if (isDynamic())
         {
-            data = new FoodRecord(nbt.getCompound("foodData"));
+            data = FoodData.read(nbt.getCompound("foodData"));
         }
         ListTag traitList = nbt.getList("traits", Tag.TAG_STRING);
         for (int i = 0; i < traitList.size(); i++)
@@ -215,10 +215,10 @@ public class FoodHandler implements ICapabilitySerializable<CompoundTag>, IFood
     {
         public Dynamic()
         {
-            super(FoodRecord.EMPTY);
+            super(FoodData.EMPTY);
         }
 
-        public void setFood(FoodRecord data)
+        public void setFood(FoodData data)
         {
             this.data = data;
         }

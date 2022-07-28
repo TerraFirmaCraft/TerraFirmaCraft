@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.dries007.tfc.util.Helpers;
 
 public final class CountBlockCommand
 {
@@ -58,7 +59,7 @@ public final class CountBlockCommand
                 }
             }
         }
-        source.sendSuccess(new TranslatableComponent(DONE, found, block.getState().getBlock().getRegistryName()), true);
+        source.sendSuccess(Helpers.translatable(DONE, found, block.getState().getBlock().getRegistryName()), true);
         return Command.SINGLE_SUCCESS;
     }
 }

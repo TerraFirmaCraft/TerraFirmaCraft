@@ -25,6 +25,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.container.ScribingTableContainer;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScribingTablePacket;
+import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -49,7 +50,7 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
     protected void subInit()
     {
         minecraft.keyboardHandler.setSendRepeatsToGui(true);
-        name = new EditBox(font, leftPos + 62, topPos + 24, 103, 12, new TranslatableComponent("container.repair"));
+        name = new EditBox(font, leftPos + 62, topPos + 24, 103, 12, Helpers.translatable("container.repair"));
         name.setCanLoseFocus(false);
         name.setTextColor(-1);
         name.setTextColorUneditable(-1);
@@ -117,11 +118,11 @@ public class ScribingTableScreen extends ItemCombinerScreen<ScribingTableContain
             Component component = null;
             if (!menu.getSlot(1).hasItem())
             {
-                component = new TranslatableComponent("tfc.tooltip.scribing_table.missingink");
+                component = Helpers.translatable("tfc.tooltip.scribing_table.missingink");
             }
             else if (!ScribingTableContainer.isInkInput(menu.getSlot(1).getItem()))
             {
-                component = new TranslatableComponent("tfc.tooltip.scribing_table.invalidink");
+                component = Helpers.translatable("tfc.tooltip.scribing_table.invalidink");
             }
             if (component != null)
             {

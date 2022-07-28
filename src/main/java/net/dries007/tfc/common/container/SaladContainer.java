@@ -17,7 +17,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodRecord;
+import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.items.DynamicBowlFood;
@@ -154,13 +154,12 @@ public class SaladContainer extends Container implements ISlotCallback
                             break;
                         }
 
-                        water += food.getData().getWater();
-                        saturation += food.getData().getSaturation();
+                        water += food.getData().water();
+                        saturation += food.getData().saturation();
 
-                        final float[] ingredientNutrition = food.getData().getNutrients();
-                        for (Nutrient nutrient : Nutrient.values())
+                        for (Nutrient nutrient : Nutrient.VALUES)
                         {
-                            nutrition[nutrient.ordinal()] += ingredientNutrition[nutrient.ordinal()];
+                            nutrition[nutrient.ordinal()] += food.getData().nutrient(nutrient);
                         }
 
                         ingredientCount++;
@@ -202,7 +201,7 @@ public class SaladContainer extends Container implements ISlotCallback
                         {
                             handler.setCreationDate(FoodCapability.getRoundedCreationDate());
                             handler.setBowl(bowlStack.copy().split(1));
-                            handler.setFood(new FoodRecord(4, water, saturation, nutrition, 4.0f));
+                            handler.setFood(FoodData.create(4, water, saturation, nutrition, 4.0f));
                         }
                         inventory.setStackInSlot(SLOT_OUTPUT, salad);
                         return;

@@ -22,6 +22,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import vazkii.patchouli.client.RenderHelper;
 import vazkii.patchouli.client.base.ClientTicker;
 import vazkii.patchouli.client.book.BookEntry;
@@ -132,7 +133,7 @@ public final class PatchouliClientEventHandler
 
             poseStack.scale(0.5F, 0.5F, 1F);
             boolean mac = Minecraft.ON_OSX;
-            Component key = new TextComponent(PatchouliConfig.get().useShiftForQuickLookup().get() ? "Shift" : mac ? "Cmd" : "Ctrl")
+            Component key = Helpers.literal(PatchouliConfig.get().useShiftForQuickLookup().get() ? "Shift" : mac ? "Cmd" : "Ctrl")
                 .withStyle(ChatFormatting.BOLD);
             minecraft.font.drawShadow(poseStack, key, (x + 10) * 2 - 16, (tooltipY + 8) * 2 + 20, 0xFFFFFFFF);
             poseStack.popPose();

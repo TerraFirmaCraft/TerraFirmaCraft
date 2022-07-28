@@ -4,6 +4,7 @@
 from enum import Enum, auto
 
 from mcresources import ResourceManager, utils, loot_tables
+from mcresources.type_definitions import ResourceIdentifier
 
 from constants import *
 from recipes import fluid_ingredient
@@ -234,6 +235,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('mob_offhand_weapons', *['tfc:metal/shield/%s' % metal for metal in MOB_ARMOR_METALS])
     rm.item_tag('mob_mainhand_weapons', *['tfc:metal/%s/%s' % (tool, metal) for metal in MOB_ARMOR_METALS for tool in MOB_TOOLS], *['tfc:stone/%s/%s' % (tool, stone) for stone in ROCK_CATEGORIES for tool in STONE_MOB_TOOLS], 'tfc:large_raw_hide', 'tfc:medium_raw_hide', 'tfc:small_raw_hide', 'tfc:handstone')
     rm.item_tag('disabled_monster_held_items', 'minecraft:iron_sword', 'minecraft:iron_shovel', 'minecraft:fishing_rod', 'minecraft:nautilus_shell')
+    rm.item_tag('deals_piercing_damage', '#tfc:javelins', '#tfc:knives')
+    rm.item_tag('deals_slashing_damage', '#tfc:swords', '#tfc:axes')
+    rm.item_tag('deals_crushing_damage', '#tfc:hammers', '#tfc:maces')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -604,6 +608,14 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
     rm.fluid_tag('scribing_ink', 'tfc:black_dye')
 
+    # Entity Tags
+
+    # Note, for all of these, weapons take priority over entity type
+    # So, this is the damage the entity would do, if somehow they attacked you *without* a weapon.
+    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar')
+    rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
+    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
+
     # Item Sizes
 
     item_size(rm, 'logs', '#minecraft:logs', Size.very_large, Weight.medium)
@@ -853,6 +865,15 @@ def generate(rm: ResourceManager):
     # Misc Block Loot
     rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
 
+    # Entity Damage Resistance
+    rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')
+    rm.entity_tag('creepers', 'minecraft:creeper')
+    rm.entity_tag('zombies', 'minecraft:zombie', 'minecraft:husk', 'minecraft:zombie_villager')
+
+    entity_damage_resistance(rm, 'skeletons', 'tfc:skeletons', piercing=1000000000, crushing=-50)
+    entity_damage_resistance(rm, 'creeper', 'tfc:creepers', slashing=-25, crushing=50)
+    entity_damage_resistance(rm, 'zombies', 'tfc:zombies', piercing=-25, crushing=50)
+
     # Entity Loot
 
     for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
@@ -891,6 +912,15 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
+
+def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, entity_tag: str, piercing: int = 0, slashing: int = 0, crushing: int = 0):
+    rm.data(('tfc', 'entity_damage_resistances', name_parts), {
+        'entity': entity_tag,
+        'piercing': piercing,
+        'slashing': slashing,
+        'crushing': crushing
+    })
+
 def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
     pools = [{'name': drop, 'functions': func}]
@@ -923,6 +953,7 @@ def fertilizer(ingredient: str, n: float = None, p: float = None, k: float = Non
         'potassium': k,
         'phosphorus': p
     }
+
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Dict[str, Any]:
     return {

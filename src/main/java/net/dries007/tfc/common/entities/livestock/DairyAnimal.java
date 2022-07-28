@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -83,23 +84,23 @@ public abstract class DairyAnimal extends ProducingMammal
         TranslatableComponent component = null;
         if (getGender() == Gender.MALE)
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());
         }
         else if (getAgeType() == Age.OLD)
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.old", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.old", getTypeName().getString());
         }
         else if (getAgeType() == Age.CHILD)
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.young", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.young", getTypeName().getString());
         }
         else if (getFamiliarity() <= produceFamiliarity.get())
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.low_familiarity", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.low_familiarity", getTypeName().getString());
         }
         else if (!hasProduct())
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.no_milk", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.no_milk", getTypeName().getString());
         }
         if (component != null && level.isClientSide)
         {

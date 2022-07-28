@@ -75,7 +75,7 @@ public class PanItem extends Item
         }
         if (!level.isClientSide)
         {
-            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.pan.water"), true);
+            player.displayClientMessage(Helpers.translatable("tfc.tooltip.pan.water"), true);
         }
         return super.use(level, player, hand);
     }
@@ -112,7 +112,7 @@ public class PanItem extends Item
         final BlockState state = readState(stack);
         if (state != null)
         {
-            text.add(new TranslatableComponent("tfc.tooltip.pan.contents").append(state.getBlock().getName()));
+            text.add(Helpers.translatable("tfc.tooltip.pan.contents").append(state.getBlock().getName()));
         }
     }
 }

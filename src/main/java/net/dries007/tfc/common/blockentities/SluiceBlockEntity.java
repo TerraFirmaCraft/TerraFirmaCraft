@@ -43,7 +43,7 @@ public class SluiceBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
     public static final int MAX_SOIL = 32;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.sluice");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.sluice");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, SluiceBlockEntity sluice)
     {

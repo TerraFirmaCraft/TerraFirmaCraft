@@ -517,16 +517,16 @@ UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_
 # todo: add bush specific rainfall ranges, and also add here bush specific hydration requirements (these should be in general quite lenient) Mirror how crops does it (spreadsheet generation would be nice here). Then update the book data on bushes, the climate ranges, and the world gen (all THREE locations) that use this data
 # For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
 BERRIES: Dict[str, Berry] = {
-    'blackberry': Berry(7, 24, 100, 500, 'spreading', 'edge', 'edge'),
-    'raspberry': Berry(5, 25, 100, 500, 'spreading', 'edge', 'edge'),
-    'blueberry': Berry(7, 29, 100, 500, 'spreading', 'edge', 'edge'),
-    'elderberry': Berry(10, 33, 100, 500, 'spreading', 'edge', 'edge'),
-    'bunchberry': Berry(15, 35, 100, 500, 'stationary', 'edge', 'normal'),
-    'gooseberry': Berry(5, 27, 100, 500, 'stationary', 'none', 'sparse'),
-    'snowberry': Berry(-5, 18, 100, 500, 'stationary', 'normal', 'old_growth'),
-    'cloudberry': Berry(3, 17, 80, 500, 'stationary', 'normal', 'old_growth'),
-    'strawberry': Berry(5, 28, 100, 500, 'stationary', 'none', 'sparse'),
-    'wintergreen_berry': Berry(-5, 17, 100, 500, 'stationary', 'old_growth', 'old_growth'),
+    'blackberry': Berry(7, 24, 100, 500, 'spreading', 'none', 'edge'),
+    'raspberry': Berry(5, 25, 100, 500, 'spreading', 'none', 'edge'),
+    'blueberry': Berry(7, 29, 100, 500, 'spreading', 'none', 'edge'),
+    'elderberry': Berry(10, 33, 100, 500, 'spreading', 'none', 'edge'),
+    'bunchberry': Berry(15, 35, 100, 500, 'stationary', 'edge', 'old_growth'),
+    'gooseberry': Berry(5, 27, 100, 500, 'stationary', 'edge', 'old_growth'),
+    'snowberry': Berry(-5, 18, 100, 500, 'stationary', 'edge', 'old_growth'),
+    'cloudberry': Berry(3, 17, 80, 500, 'stationary', 'edge', 'old_growth'),
+    'strawberry': Berry(5, 28, 100, 500, 'stationary', 'edge', 'old_growth'),
+    'wintergreen_berry': Berry(-5, 17, 100, 500, 'stationary', 'edge', 'old_growth'),
     'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
 }
 
@@ -866,6 +866,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
     'tfc.tooltip.scribing_table.missingink': 'Ink is missing!',
     'tfc.tooltip.scribing_table.invalidink': 'Item isn\'t ink!',
+    'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§r Damage',
+    'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§r Damage',
+    'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§r Damage',
 
     # Commands
 

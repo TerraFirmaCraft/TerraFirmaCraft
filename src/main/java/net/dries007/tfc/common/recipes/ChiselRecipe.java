@@ -90,7 +90,7 @@ public class ChiselRecipe extends SimpleBlockRecipe
 
     private static void complain(Player player, String message)
     {
-        player.displayClientMessage(new TranslatableComponent("tfc.chisel." + message), true);
+        player.displayClientMessage(Helpers.translatable("tfc.chisel." + message), true);
     }
 
     public static final IndirectHashCollection<Block, ChiselRecipe> CACHE = IndirectHashCollection.createForRecipe(recipe -> recipe.getBlockIngredient().getValidBlocks(), TFCRecipeTypes.CHISEL);

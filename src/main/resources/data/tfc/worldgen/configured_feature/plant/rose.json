@@ -2,13 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:tall_plant",
   "config": {
-    "state": {
-      "Name": "tfc:plant/rose",
-      "Properties": {
-        "age": "1",
-        "stage": "1",
-        "part": "lower"
-      }
-    }
+    "block": "tfc:plant/rose"
   }
 }

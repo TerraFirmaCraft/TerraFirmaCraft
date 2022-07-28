@@ -61,7 +61,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastFurnaceBlockEntity.BlastFurnaceInventory> implements ICalendarTickable
 {
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.blast_furnace");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.blast_furnace");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BlastFurnaceBlockEntity entity)
     {

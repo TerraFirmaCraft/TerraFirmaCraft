@@ -225,7 +225,7 @@ public final class Metal
 
     public MutableComponent getDisplayName()
     {
-        return new TranslatableComponent(translationKey);
+        return Helpers.translatable(translationKey);
     }
 
     public String getTranslationKey()
@@ -283,7 +283,7 @@ public final class Metal
 
         public Component getDisplayName()
         {
-            return new TranslatableComponent(translationKey);
+            return Helpers.translatable(translationKey);
         }
     }
 

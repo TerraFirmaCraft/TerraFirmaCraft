@@ -16,7 +16,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodData;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.PacketDistributor;
@@ -35,18 +34,18 @@ import org.jetbrains.annotations.Nullable;
  * A note on the reason why {@link TFCFoodData} serializes to an external capability (player data):
  *
  * We don't use the vanilla read/add save data methods.
- * Why? Because we replace the {@link FoodData} instance way after it has been already deserialized in vanilla.
+ * Why? Because we replace the {@link net.minecraft.world.food.FoodData} instance way after it has been already deserialized in vanilla.
  * - {@link net.minecraftforge.event.entity.EntityEvent.EntityConstructing} is too early as {@link Player} constructor would overwrite our food data
  * - {@link net.minecraftforge.event.AttachCapabilitiesEvent} fires just after, and is where we attach the player data capability
  * - {@link net.minecraftforge.event.entity.player.PlayerEvent.LoadFromFile} fires later, and has access to the save data, but is too early as the player's connection is not yet set, so we can't properly sync that change to client.
- * - {@link net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent} is where we can reliably update the {@link FoodData} instance on server, and then sync that change to client.
+ * - {@link net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent} is where we can reliably update the {@link net.minecraft.world.food.FoodData} instance on server, and then sync that change to client.
  *
  * Saving is then just written to the capability NBT at point of writing
  * The capability is deserialized in  {@link net.minecraft.world.entity.Entity#load(CompoundTag)}, but the food stats doesn't exist yet, so the saved data is cached on the capability and copied over in the food data constructor
  * Now, at this point, we can actually read directly from our capability, as it has been deserialized much earlier in Entity#load.
  * Reading is a bit different: we read from the capability data early, store the NBT, and then copy it to the food stats on the instantiation of the custom food stats.
  */
-public class TFCFoodData extends FoodData
+public class TFCFoodData extends net.minecraft.world.food.FoodData
 {
     // Vanilla constants
     public static final int MAX_HUNGER = 20;
@@ -63,7 +62,7 @@ public class TFCFoodData extends FoodData
     public static void replaceFoodStats(Player player)
     {
         // Only replace the server player's stats if they aren't already
-        final FoodData foodStats = player.getFoodData();
+        final net.minecraft.world.food.FoodData foodStats = player.getFoodData();
         if (!(foodStats instanceof TFCFoodData))
         {
             // Replace, and then read from the cached data on the player capability
@@ -79,12 +78,12 @@ public class TFCFoodData extends FoodData
     }
 
     private final Player sourcePlayer;
-    private final FoodData delegate; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
+    private final net.minecraft.world.food.FoodData delegate; // We keep this here to do normal vanilla tracking (rather than using super). This is also friendlier to other mods if they replace this
     private final NutritionData nutritionData; // Separate handler for nutrition, because it's a bit complex
     private long lastDrinkTick;
     private float thirst;
 
-    public TFCFoodData(Player sourcePlayer, FoodData delegate)
+    public TFCFoodData(Player sourcePlayer, net.minecraft.world.food.FoodData delegate)
     {
         this.sourcePlayer = sourcePlayer;
         this.delegate = delegate;
@@ -257,7 +256,7 @@ public class TFCFoodData extends FoodData
     public void eat(IFood food)
     {
         // Eating items has nutritional benefits
-        final FoodRecord data = food.getData();
+        final FoodData data = food.getData();
         if (!food.isRotten())
         {
             eat(data);
@@ -277,13 +276,13 @@ public class TFCFoodData extends FoodData
         }
     }
 
-    public void eat(FoodRecord data)
+    public void eat(FoodData data)
     {
-        addThirst(data.getWater());
+        addThirst(data.water());
         nutritionData.addNutrients(data);
 
         // In order to get the exact saturation we want, apply this scaling factor here
-        delegate.eat(data.getHunger(), data.getSaturation() / (2f * data.getHunger()));
+        delegate.eat(data.hunger(), data.saturation() / (2f * data.hunger()));
     }
 
     public CompoundTag serializeToPlayerData()
@@ -292,7 +291,7 @@ public class TFCFoodData extends FoodData
 
         nbt.putFloat("thirst", thirst);
         nbt.putFloat("lastDrinkTick", lastDrinkTick);
-        nbt.put("nutrients", nutritionData.serializeNBT());
+        nbt.put("nutrients", nutritionData.writeToNbt());
 
         return nbt;
     }
@@ -301,7 +300,7 @@ public class TFCFoodData extends FoodData
     {
         thirst = nbt.getFloat("thirst");
         lastDrinkTick = nbt.getLong("lastDrinkTick");
-        nutritionData.deserializeNBT(nbt.getCompound("nutrients"));
+        nutritionData.readFromNbt(nbt.getCompound("nutrients"));
     }
 
     /**
@@ -315,7 +314,7 @@ public class TFCFoodData extends FoodData
 
     public float getHealthModifier()
     {
-        return 0.25f + 1.5f * nutritionData.getAverageNutrition();
+        return Mth.clamp(0.25f + 1.5f * nutritionData.getAverageNutrition(), 0.2f, 3f);
     }
 
     public float getThirst()

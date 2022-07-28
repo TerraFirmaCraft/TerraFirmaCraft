@@ -109,7 +109,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
         }
         else if (!this.itemName.equals(input.getHoverName().getString()))
         {
-            output.setHoverName(new TextComponent(this.itemName));
+            output.setHoverName(Helpers.literal(this.itemName));
         }
         else
         {
@@ -132,7 +132,7 @@ public class ScribingTableContainer extends ItemCombinerMenu
             }
             else
             {
-                itemstack.setHoverName(new TextComponent(this.itemName));
+                itemstack.setHoverName(Helpers.literal(this.itemName));
             }
         }
         this.createResult();

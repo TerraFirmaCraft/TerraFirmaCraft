@@ -34,8 +34,8 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelContainer>
 {
-    private static final Component SEAL = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
-    private static final Component UNSEAL = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
+    private static final Component SEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
+    private static final Component UNSEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
     private static final int MAX_RECIPE_NAME_LENGTH = 100;
 
     public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/barrel.png");
@@ -134,7 +134,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 FluidStack fluid = fluidHandler.getFluidInTank(0);
                 if (!fluid.isEmpty())
                 {
-                    Component units = new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName());
+                    Component units = Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName());
                     renderTooltip(poseStack, units, mouseX, mouseY);
                 }
             });

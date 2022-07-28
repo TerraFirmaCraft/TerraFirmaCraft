@@ -82,7 +82,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
         {
             if (!level.isThundering())
             {
-                player.displayClientMessage(new TranslatableComponent("tfc.thatch_bed.use"), true);
+                player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use"), true);
                 if (!level.isClientSide && player instanceof ServerPlayer serverPlayer && (serverPlayer.getRespawnDimension() != level.dimension() || !pos.equals(serverPlayer.getRespawnPosition())))
                 {
                     serverPlayer.setRespawnPosition(level.dimension(), pos, 0, false, false);
@@ -90,7 +90,7 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
             }
             else
             {
-                player.displayClientMessage(new TranslatableComponent("tfc.thatch_bed.thundering"), true);
+                player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.thundering"), true);
             }
         }
         else if (!level.isClientSide)

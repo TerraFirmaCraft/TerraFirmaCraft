@@ -8,25 +8,24 @@ package net.dries007.tfc.world.feature.plant;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.crop.WildDoubleCropBlock;
-import net.dries007.tfc.world.Codecs;
+import net.dries007.tfc.world.feature.BlockConfig;
 
-public class TallWildCropFeature extends Feature<BlockStateConfiguration>
+public class TallWildCropFeature extends Feature<BlockConfig<WildDoubleCropBlock>>
 {
-    public static final Codec<BlockStateConfiguration> CODEC = Codecs.blockStateConfigCodec(b -> b instanceof WildDoubleCropBlock, "Must be a WildDoubleCropBlock");
+    public static final Codec<BlockConfig<WildDoubleCropBlock>> CODEC = BlockConfig.codec(b -> b instanceof WildDoubleCropBlock t ? t : null, "Must be a " + WildDoubleCropBlock.class.getSimpleName());
 
-    public TallWildCropFeature(Codec<BlockStateConfiguration> codec)
+    public TallWildCropFeature(Codec<BlockConfig<WildDoubleCropBlock>> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
+    public boolean place(FeaturePlaceContext<BlockConfig<WildDoubleCropBlock>> context)
     {
-        ((WildDoubleCropBlock) context.config().state.getBlock()).placeTwoHalves(context.level(), context.origin(), 2);
+        context.config().block().placeTwoHalves(context.level(), context.origin(), 2);
         return true;
     }
 }

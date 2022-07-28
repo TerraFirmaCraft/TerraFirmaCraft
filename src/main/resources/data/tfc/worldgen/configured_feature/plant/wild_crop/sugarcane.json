@@ -2,11 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:tall_wild_crop",
   "config": {
-    "state": {
-      "Name": "tfc:wild_crop/sugarcane",
-      "Properties": {
-        "part": "bottom"
-      }
-    }
+    "block": "tfc:wild_crop/sugarcane"
   }
 }

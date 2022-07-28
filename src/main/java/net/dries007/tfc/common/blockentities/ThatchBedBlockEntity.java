@@ -23,7 +23,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class ThatchBedBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".tile_entity.thatch_bed");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".tile_entity.thatch_bed");
 
     private BlockState headState;
     private BlockState footState;

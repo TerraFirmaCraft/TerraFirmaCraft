@@ -18,6 +18,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.config.animals.MammalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.Nullable;
 
@@ -115,7 +116,7 @@ public interface MammalProperties extends TFCAnimalProperties
     {
         if (isFertilized())
         {
-            player.displayClientMessage(new TranslatableComponent("tfc.tooltip.animal.pregnant", getEntity().getName().getString()), true);
+            player.displayClientMessage(Helpers.translatable("tfc.tooltip.animal.pregnant", getEntity().getName().getString()), true);
         }
     }
 

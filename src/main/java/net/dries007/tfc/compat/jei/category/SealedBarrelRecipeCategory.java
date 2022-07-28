@@ -26,6 +26,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.recipes.SealedBarrelRecipe;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import org.jetbrains.annotations.NotNull;
@@ -46,7 +47,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             RecipeResult<List<ItemStack>> intermediateItem = itemStackProviderIngredient(recipe.getOnSeal(), recipe.getInputItem());
             IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5);
             intermediateSlot.addItemStacks(intermediateItem.result());
-            intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, new TranslatableComponent("tfc.tooltip.while_sealed_description").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
+            intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, Helpers.translatable("tfc.tooltip.while_sealed_description").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
             if (!intermediateItem.transforms())
             {
                 builder.createFocusLink(intermediateSlot, inputItemSlot, outputItemSlot);
@@ -99,7 +100,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
     {
         if (recipe.isInfinite())
         {
-            return new TranslatableComponent("tfc.tooltip.while_sealed");
+            return Helpers.translatable("tfc.tooltip.while_sealed");
         }
         return ICalendar.getTimeDelta(recipe.getDuration(), Calendars.CLIENT.getCalendarDaysInMonth());
     }

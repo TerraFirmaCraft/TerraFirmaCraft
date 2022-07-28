@@ -114,10 +114,10 @@ public interface ICalendar
 
     static MutableComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
-        return new TextComponent(String.format("%d:%02d ", hour, minute))
+        return Helpers.literal(String.format("%d:%02d ", hour, minute))
             .append(Helpers.translateEnum(month))
             .append(" ")
-            .append(new TranslatableComponent("tfc.tooltip.calendar_days_years", day, years));
+            .append(Helpers.translatable("tfc.tooltip.calendar_days_years", day, years));
     }
 
     static MutableComponent getTimeDelta(long ticks, int daysInMonth)
@@ -125,24 +125,24 @@ public interface ICalendar
         final long hours = getTotalHours(ticks);
         if (hours < 1)
         {
-            return new TranslatableComponent("tfc.tooltip.time_delta_hours_minutes", "00", String.format("%02d", getMinuteOfHour(ticks)));
+            return Helpers.translatable("tfc.tooltip.time_delta_hours_minutes", "00", String.format("%02d", getMinuteOfHour(ticks)));
         }
         final long days = getTotalDays(ticks);
         if (days < 1)
         {
-            return new TranslatableComponent("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(ticks)));
+            return Helpers.translatable("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(ticks)));
         }
         final long months = getTotalMonths(ticks, daysInMonth);
         if (months < 1)
         {
-            return new TranslatableComponent("tfc.tooltip.time_delta_days", days);
+            return Helpers.translatable("tfc.tooltip.time_delta_days", days);
         }
         final long years = getTotalYears(ticks, daysInMonth) - 1000; // Since years starts at 1k
         if (years < 1)
         {
-            return new TranslatableComponent("tfc.tooltip.time_delta_months_days", months, days % daysInMonth);
+            return Helpers.translatable("tfc.tooltip.time_delta_months_days", months, days % daysInMonth);
         }
-        return new TranslatableComponent("tfc.tooltip.time_delta_years_months_days", years, months % MONTHS_IN_YEAR, days % daysInMonth);
+        return Helpers.translatable("tfc.tooltip.time_delta_years_months_days", years, months % MONTHS_IN_YEAR, days % daysInMonth);
     }
 
     /**

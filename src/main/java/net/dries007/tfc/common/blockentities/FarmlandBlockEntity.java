@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
 import java.util.function.IntFunction;
+
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -60,7 +62,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity
     public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, @Nullable IntFunction<Component> hydrationValidity, boolean includeNutrients)
     {
         final int value = FarmlandBlock.getHydration(level, pos);
-        final MutableComponent hydration = new TranslatableComponent("tfc.tooltip.farmland.hydration", value);
+        final MutableComponent hydration = Helpers.translatable("tfc.tooltip.farmland.hydration", value);
         if (hydrationValidity != null)
         {
             hydration.append(hydrationValidity.apply(value));
@@ -69,7 +71,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         text.add(hydration);
         if (includeNutrients)
         {
-            text.add(new TranslatableComponent("tfc.tooltip.farmland.nutrients", format(nitrogen), format(phosphorous), format(potassium)));
+            text.add(Helpers.translatable("tfc.tooltip.farmland.nutrients", format(nitrogen), format(phosphorous), format(potassium)));
         }
     }
 

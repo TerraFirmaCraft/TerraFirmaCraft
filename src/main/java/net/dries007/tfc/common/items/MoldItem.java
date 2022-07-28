@@ -43,6 +43,7 @@ import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -101,7 +102,7 @@ public class MoldItem extends Item
                 {
                     if (mold.isMolten())
                     {
-                        player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_molten"), true);
+                        player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.alloy_molten"), true);
                         return InteractionResultHolder.consume(stack);
                     }
                     else
@@ -134,7 +135,7 @@ public class MoldItem extends Item
                 }
                 else if (!mold.getFluidInTank(0).isEmpty())
                 {
-                    player.displayClientMessage(new TranslatableComponent("tfc.tooltip.small_vessel.alloy_solid"), true);
+                    player.displayClientMessage(Helpers.translatable("tfc.tooltip.small_vessel.alloy_solid"), true);
                 }
                 return InteractionResultHolder.success(stack);
             }
@@ -185,12 +186,12 @@ public class MoldItem extends Item
                 final Metal metal = Metal.get(fluid.getFluid());
                 if (metal != null)
                 {
-                    text.add(new TranslatableComponent("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
+                    text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                     text.add(metal.getDisplayName()
                         .append(" ")
-                        .append(new TranslatableComponent("tfc.tooltip.fluid_units", fluid.getAmount()))
+                        .append(Helpers.translatable("tfc.tooltip.fluid_units", fluid.getAmount()))
                         .append(" ")
-                        .append(new TranslatableComponent(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
+                        .append(Helpers.translatable(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
                 }
             }
         }

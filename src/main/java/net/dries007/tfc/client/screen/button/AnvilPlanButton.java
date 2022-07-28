@@ -22,6 +22,7 @@ import net.dries007.tfc.common.container.AnvilContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.network.ScreenButtonPacket;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 public class AnvilPlanButton extends Button
@@ -30,7 +31,7 @@ public class AnvilPlanButton extends Button
 
     public AnvilPlanButton(AnvilBlockEntity anvil, int guiLeft, int guiTop, OnTooltip tooltip)
     {
-        super(guiLeft + 21, guiTop + 40, 18, 18, new TranslatableComponent("tfc.tooltip.anvil_plan_button"), button -> {
+        super(guiLeft + 21, guiTop + 40, 18, 18, Helpers.translatable("tfc.tooltip.anvil_plan_button"), button -> {
             PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(AnvilContainer.PLAN_ID, null));
         }, tooltip);
 

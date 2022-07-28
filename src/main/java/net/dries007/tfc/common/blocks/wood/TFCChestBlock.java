@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -66,7 +68,7 @@ public class TFCChestBlock extends ChestBlock implements IForgeBlockExtension, E
                     {
                         return chest1.getDisplayName();
                     }
-                    return chest2.hasCustomName() ? chest2.getDisplayName() : new TranslatableComponent("container.chestDouble");
+                    return chest2.hasCustomName() ? chest2.getDisplayName() : Helpers.translatable("container.chestDouble");
                 }
             });
         }

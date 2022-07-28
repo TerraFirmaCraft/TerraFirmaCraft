@@ -76,10 +76,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.ClientLevelAccessor;
 import net.dries007.tfc.mixin.client.accessor.LocalPlayerAccessor;
 import net.dries007.tfc.network.*;
-import net.dries007.tfc.util.Fertilizer;
-import net.dries007.tfc.util.Fuel;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
@@ -193,6 +190,7 @@ public class ClientForgeEventHandler
             ItemSizeManager.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
             Forging.addTooltipInfo(stack, text);
+            PhysicalDamageType.addTooltipInfo(stack, text);
 
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
@@ -205,9 +203,9 @@ public class ClientForgeEventHandler
                 final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
                 if (heat != null)
                 {
-                    text.add(new TranslatableComponent("tfc.tooltip.fuel_burns_at")
+                    text.add(Helpers.translatable("tfc.tooltip.fuel_burns_at")
                         .append(heat)
-                        .append(new TranslatableComponent("tfc.tooltip.fuel_burns_at_duration"))
+                        .append(Helpers.translatable("tfc.tooltip.fuel_burns_at_duration"))
                         .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
@@ -217,11 +215,11 @@ public class ClientForgeEventHandler
             {
                 final float n = fertilizer.getNitrogen(), p = fertilizer.getPhosphorus(), k = fertilizer.getPotassium();
                 if (n != 0)
-                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
+                    text.add(Helpers.translatable("tfc.tooltip.fertilizer.nitrogen", String.format("%.1f", n * 100)));
                 if (p != 0)
-                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
+                    text.add(Helpers.translatable("tfc.tooltip.fertilizer.phosphorus", String.format("%.1f", p * 100)));
                 if (k != 0)
-                    text.add(new TranslatableComponent("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
+                    text.add(Helpers.translatable("tfc.tooltip.fertilizer.potassium", String.format("%.1f", k * 100)));
             }
 
             // Metal content, inferred from a matching heat recipe.
@@ -236,14 +234,14 @@ public class ClientForgeEventHandler
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
-                        final MutableComponent line = new TranslatableComponent("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
-                            .append(new TranslatableComponent(metal.getTranslationKey()));
+                        final MutableComponent line = Helpers.translatable("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
+                            .append(Helpers.translatable(metal.getTranslationKey()));
                         final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
                         if (heat != null)
                         {
-                            line.append(new TranslatableComponent("tfc.tooltip.item_melts_into_open"))
+                            line.append(Helpers.translatable("tfc.tooltip.item_melts_into_open"))
                                 .append(heat)
-                                .append(new TranslatableComponent("tfc.tooltip.item_melts_into_close"));
+                                .append(Helpers.translatable("tfc.tooltip.item_melts_into_close"));
                         }
                         text.add(line);
                     }
@@ -255,21 +253,21 @@ public class ClientForgeEventHandler
                 final CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)
                 {
-                    text.add(new TextComponent(DARK_GRAY + "[Debug] NBT: " + stackTag));
+                    text.add(Helpers.literal(DARK_GRAY + "[Debug] NBT: " + stackTag));
                 }
 
                 final CompoundTag capTag = Helpers.uncheck(() -> CAP_NBT_FIELD.get(stack));
                 if (capTag != null && !capTag.isEmpty())
                 {
-                    text.add(new TextComponent(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
+                    text.add(Helpers.literal(DARK_GRAY + "[Debug] Cap NBT: " + capTag));
                 }
 
-                text.add(new TextComponent(DARK_GRAY + "[Debug] Item Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                text.add(Helpers.literal(DARK_GRAY + "[Debug] Item Tags: " + Helpers.getHolder(ForgeRegistries.ITEMS, stack.getItem()).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
 
                 if (stack.getItem() instanceof BlockItem blockItem)
                 {
                     final Block block = blockItem.getBlock();
-                    text.add(new TextComponent(DARK_GRAY + "[Debug] Block Tags: " + Helpers.getHolder(ForgeRegistries.BLOCKS, block).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
+                    text.add(Helpers.literal(DARK_GRAY + "[Debug] Block Tags: " + Helpers.getHolder(ForgeRegistries.BLOCKS, block).tags().map(t -> "#" + t.location()).collect(Collectors.joining(", "))));
                 }
             }
         }
@@ -514,7 +512,7 @@ public class ClientForgeEventHandler
                     if (animal instanceof MammalProperties mammal && mammal.getPregnantTime() > 0 && mammal.isFertilized())
                     {
                         stack.translate(0, -15F, 0F);
-                        String string = new TranslatableComponent("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
+                        String string = Helpers.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()).getString();
                         mc.font.draw(stack, string, -mc.font.width(string) / 2f, 0, Color.WHITE.getRGB());
                     }
 

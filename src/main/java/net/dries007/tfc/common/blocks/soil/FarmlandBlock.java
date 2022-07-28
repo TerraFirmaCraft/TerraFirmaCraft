@@ -53,13 +53,13 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
         final int hydration = getHydration(level, pos);
-        final MutableComponent tooltip = new TranslatableComponent("tfc.tooltip.farmland.hydration", hydration);
+        final MutableComponent tooltip = Helpers.translatable("tfc.tooltip.farmland.hydration", hydration);
 
         tooltip.append(switch (validRange.checkHydration(hydration, allowWiggle))
             {
-                case VALID -> new TranslatableComponent("tfc.tooltip.farmland.just_right");
-                case LOW -> new TranslatableComponent("tfc.tooltip.farmland.hydration_too_low", validRange.getMinHydration(allowWiggle));
-                case HIGH -> new TranslatableComponent("tfc.tooltip.farmland.hydration_too_high", validRange.getMaxHydration(allowWiggle));
+                case VALID -> Helpers.translatable("tfc.tooltip.farmland.just_right");
+                case LOW -> Helpers.translatable("tfc.tooltip.farmland.hydration_too_low", validRange.getMinHydration(allowWiggle));
+                case HIGH -> Helpers.translatable("tfc.tooltip.farmland.hydration_too_high", validRange.getMaxHydration(allowWiggle));
             });
         return tooltip;
     }
@@ -67,13 +67,13 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
         final float temperature = Climate.getTemperature(level, pos);
-        final MutableComponent tooltip = new TranslatableComponent("tfc.tooltip.farmland.temperature", String.format("%.1f", temperature));
+        final MutableComponent tooltip = Helpers.translatable("tfc.tooltip.farmland.temperature", String.format("%.1f", temperature));
 
         tooltip.append(switch (validRange.checkTemperature(temperature, allowWiggle))
             {
-                case VALID -> new TranslatableComponent("tfc.tooltip.farmland.just_right");
-                case LOW -> new TranslatableComponent("tfc.tooltip.farmland.temperature_too_low", validRange.getMinTemperature(allowWiggle));
-                case HIGH -> new TranslatableComponent("tfc.tooltip.farmland.temperature_too_high", validRange.getMaxTemperature(allowWiggle));
+                case VALID -> Helpers.translatable("tfc.tooltip.farmland.just_right");
+                case LOW -> Helpers.translatable("tfc.tooltip.farmland.temperature_too_low", validRange.getMinTemperature(allowWiggle));
+                case HIGH -> Helpers.translatable("tfc.tooltip.farmland.temperature_too_high", validRange.getMaxTemperature(allowWiggle));
             });
         return tooltip;
     }

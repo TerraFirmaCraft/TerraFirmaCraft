@@ -23,13 +23,14 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
 {
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.loom");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.loom");
     private static final int SLOT_RECIPE = 0;
     private static final int SLOT_OUTPUT = 1;
 

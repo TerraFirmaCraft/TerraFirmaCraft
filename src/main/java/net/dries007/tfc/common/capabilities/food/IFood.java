@@ -69,9 +69,9 @@ public interface IFood extends INBTSerializable<CompoundTag>
      * - Hunger / Saturation
      * - Water (Thirst)
      *
-     * @see FoodRecord
+     * @see FoodData
      */
-    FoodRecord getData();
+    FoodData getData();
 
     /**
      * Gets the current decay date modifier, including traits
@@ -106,10 +106,10 @@ public interface IFood extends INBTSerializable<CompoundTag>
         // Expiration dates
         if (isRotten())
         {
-            text.add(new TranslatableComponent("tfc.tooltip.food_rotten").withStyle(ChatFormatting.RED));
+            text.add(Helpers.translatable("tfc.tooltip.food_rotten").withStyle(ChatFormatting.RED));
             if (((stack.hashCode() * 1928634918231L) & 0xFF) == 0)
             {
-                text.add(new TranslatableComponent("tfc.tooltip.food_rotten_special").withStyle(ChatFormatting.RED));
+                text.add(Helpers.translatable("tfc.tooltip.food_rotten_special").withStyle(ChatFormatting.RED));
             }
         }
         else
@@ -117,7 +117,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
             long rottenDate = getRottenDate();
             if (rottenDate == Long.MAX_VALUE)
             {
-                text.add(new TranslatableComponent("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
+                text.add(Helpers.translatable("tfc.tooltip.food_infinite_expiry").withStyle(ChatFormatting.GOLD));
             }
             else
             {
@@ -126,17 +126,17 @@ public interface IFood extends INBTSerializable<CompoundTag>
 
                 final Component tooltip = switch (TFCConfig.CLIENT.foodExpiryTooltipStyle.get())
                     {
-                        case EXPIRY -> new TranslatableComponent("tfc.tooltip.food_expiry_date")
+                        case EXPIRY -> Helpers.translatable("tfc.tooltip.food_expiry_date")
                             .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
                             .withStyle(ChatFormatting.DARK_GREEN);
-                        case TIME_LEFT -> new TranslatableComponent("tfc.tooltip.food_expiry_left")
+                        case TIME_LEFT -> Helpers.translatable("tfc.tooltip.food_expiry_left")
                             .append(Calendars.CLIENT.getTimeDelta(ticksRemaining))
                             .withStyle(ChatFormatting.DARK_GREEN);
-                        case BOTH -> new TranslatableComponent("tfc.tooltip.food_expiry_date")
+                        case BOTH -> Helpers.translatable("tfc.tooltip.food_expiry_date")
                             .append(ICalendar.getTimeAndDate(rottenCalendarTime, Calendars.CLIENT.getCalendarDaysInMonth()))
-                            .append(new TranslatableComponent("tfc.tooltip.food_expiry_and_days_left"))
+                            .append(Helpers.translatable("tfc.tooltip.food_expiry_and_days_left"))
                             .append(Calendars.CLIENT.getTimeDelta(ticksRemaining))
-                            .append(new TranslatableComponent("tfc.tooltip.food_expiry_and_days_left_close"))
+                            .append(Helpers.translatable("tfc.tooltip.food_expiry_and_days_left_close"))
                             .withStyle(ChatFormatting.DARK_GREEN);
                         default -> null;
                     };
@@ -151,33 +151,33 @@ public interface IFood extends INBTSerializable<CompoundTag>
         // Hide this based on the shift key (because it's a lot of into)
         if (ClientHelpers.hasShiftDown())
         {
-            text.add(new TranslatableComponent("tfc.tooltip.nutrition").withStyle(ChatFormatting.GRAY));
+            text.add(Helpers.translatable("tfc.tooltip.nutrition").withStyle(ChatFormatting.GRAY));
 
             boolean any = false;
             if (!isRotten())
             {
-                final FoodRecord data = getData();
+                final FoodData data = getData();
 
-                float saturation = data.getSaturation();
+                float saturation = data.saturation();
                 if (saturation > 0)
                 {
                     // This display makes it so 100% saturation means a full hunger bar worth of saturation.
-                    text.add(new TranslatableComponent("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(ChatFormatting.GRAY));
+                    text.add(Helpers.translatable("tfc.tooltip.nutrition_saturation", String.format("%d", (int) (saturation * 5))).withStyle(ChatFormatting.GRAY));
                     any = true;
                 }
-                float water = data.getWater();
+                float water = data.water();
                 if (water > 0)
                 {
-                    text.add(new TranslatableComponent("tfc.tooltip.nutrition_water", String.format("%d", (int) water)).withStyle(ChatFormatting.GRAY));
+                    text.add(Helpers.translatable("tfc.tooltip.nutrition_water", String.format("%d", (int) water)).withStyle(ChatFormatting.GRAY));
                     any = true;
                 }
 
                 for (Nutrient nutrient : Nutrient.VALUES)
                 {
-                    float value = data.getNutrient(nutrient);
+                    float value = data.nutrient(nutrient);
                     if (value > 0)
                     {
-                        text.add(new TextComponent(" - ")
+                        text.add(Helpers.literal(" - ")
                             .append(Helpers.translateEnum(nutrient))
                             .append(": " + String.format("%.1f", value))
                             .withStyle(nutrient.getColor()));
@@ -187,12 +187,12 @@ public interface IFood extends INBTSerializable<CompoundTag>
             }
             if (!any)
             {
-                text.add(new TranslatableComponent("tfc.tooltip.nutrition_none").withStyle(ChatFormatting.GRAY));
+                text.add(Helpers.translatable("tfc.tooltip.nutrition_none").withStyle(ChatFormatting.GRAY));
             }
         }
         else
         {
-            text.add(new TranslatableComponent("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
+            text.add(Helpers.translatable("tfc.tooltip.hold_shift_for_nutrition_info").withStyle(ChatFormatting.ITALIC, ChatFormatting.GRAY));
         }
 
         // Add info for each trait
@@ -203,7 +203,7 @@ public interface IFood extends INBTSerializable<CompoundTag>
 
         if (TFCConfig.CLIENT.enableDebug.get())
         {
-            text.add(new TextComponent(ChatFormatting.DARK_GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
+            text.add(Helpers.literal(ChatFormatting.DARK_GRAY + "[Debug] Created at: " + getCreationDate() + " rots at: " + getRottenDate()));
         }
     }
 }

@@ -55,7 +55,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public static final int SLOT_EXTRA_MIN = 10;
     public static final int SLOT_EXTRA_MAX = 13;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.charcoal_forge");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.charcoal_forge");
 
     public static void createFromCharcoalPile(Level level, BlockPos pos)
     {

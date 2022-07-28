@@ -59,7 +59,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     public static final int SLOT_ITEM = 2;
     public static final int SLOTS = 3;
 
-    private static final Component NAME = new TranslatableComponent("tfc.block_entity.barrel");
+    private static final Component NAME = Helpers.translatable("tfc.block_entity.barrel");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BarrelBlockEntity barrel)
     {

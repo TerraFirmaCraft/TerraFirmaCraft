@@ -17,6 +17,7 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.util.Helpers;
 
 public final class HeatCommand
 {
@@ -39,7 +40,7 @@ public final class HeatCommand
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(heat ->
             {
                 heat.setTemperature(value);
-                source.sendSuccess(new TranslatableComponent(QUERY_HEAT, value), true);
+                source.sendSuccess(Helpers.translatable(QUERY_HEAT, value), true);
             });
         }
         return Command.SINGLE_SUCCESS;

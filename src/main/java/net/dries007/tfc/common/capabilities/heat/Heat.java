@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
@@ -82,6 +83,6 @@ public enum Heat
 
     public MutableComponent getDisplayName()
     {
-        return new TranslatableComponent(translationKey);
+        return Helpers.translatable(translationKey);
     }
 }

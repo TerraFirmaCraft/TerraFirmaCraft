@@ -91,15 +91,15 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
 
         if (isMouseIn(42, 22, 10, 66, mouseX, mouseY))
         {
-            renderTooltip(poseStack, new TranslatableComponent("tfc.tooltip.blast_furnace_ore", inputCount, capacity), mouseX, mouseY);
+            renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.blast_furnace_ore", inputCount, capacity), mouseX, mouseY);
         }
         if (isMouseIn(124, 22, 10, 66, mouseX, mouseY))
         {
-            renderTooltip(poseStack, new TranslatableComponent("tfc.tooltip.blast_furnace_fuel", fuelCount, capacity), mouseX, mouseY);
+            renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.blast_furnace_fuel", fuelCount, capacity), mouseX, mouseY);
         }
         if (isMouseIn(70, 54, 36, 31, mouseX, mouseY) && !fluid.isEmpty())
         {
-            renderTooltip(poseStack, new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName()), mouseX, mouseY);
+            renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName()), mouseX, mouseY);
         }
     }
 

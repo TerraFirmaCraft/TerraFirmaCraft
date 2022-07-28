@@ -181,11 +181,11 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
             .ifPresent(crop -> {
                 if (isDebug)
                 {
-                    text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield())));
+                    text.add(Helpers.literal(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield())));
                 }
                 if (crop.getGrowth() >= 1)
                 {
-                    text.add(new TranslatableComponent("tfc.tooltip.farmland.mature"));
+                    text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
                 }
             });
     }

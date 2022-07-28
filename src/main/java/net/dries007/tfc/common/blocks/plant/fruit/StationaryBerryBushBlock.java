@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -53,12 +52,6 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return defaultBlockState().setValue(LIFECYCLE, getLifecycleForCurrentMonth().active() ? Lifecycle.HEALTHY : Lifecycle.DORMANT);
-    }
-
-    @Override
-    protected ItemStack getTrimItemStack()
-    {
-        return new ItemStack(this);
     }
 
     @Override
@@ -149,14 +142,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 else
                 {
                     // It's not dead! Now, perform the actual update over the time taken.
-                    newState = state.setValue(STAGE, Math.min(2, state.getValue(STAGE) + stagesGrown))
-                        .setValue(LIFECYCLE, currentLifecycle);
-
-                    // Finally, possibly, cause a propagation event - this is based on the current time.
-                    if (mayPropagate(newState, level, pos))
-                    {
-                        propagate(level, pos, level.getRandom(), newState);
-                    }
+                    newState = growAndPropagate(level, pos, level.getRandom(), state.setValue(LIFECYCLE, currentLifecycle));
                 }
 
                 // And update the block
@@ -191,16 +177,29 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         return TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, state.getValue(STAGE));
     }
 
-    protected boolean mayPropagate(BlockState newState, Level level, BlockPos pos)
+    /**
+     * Performs growth and (optional) propagation of the bush.
+     * Propagation should be naturally limited to not cause runaway generation.
+     * @return The new state of the bush at {@code pos}. This will be set by the caller.
+     */
+    protected BlockState growAndPropagate(Level level, BlockPos pos, Random random, BlockState state)
     {
-        return newState.getValue(STAGE) == 2 && newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0;
-    }
+        if (state.getValue(LIFECYCLE).active())
+        {
+            return state; // Only grow when active
+        }
 
-    protected void propagate(Level level, BlockPos pos, Random random, BlockState newState)
-    {
+        // Increment stage by one
+        final BlockState newState = state.setValue(STAGE, Math.min(2, state.getValue(STAGE) + 1));
+
         // Conditions:
         // 1. Must be in max growth stage, and an active lifecycle
         // 2. Must not have more than 3 other bushes within the expansion radius
+        if (newState.getValue(STAGE) != 2)
+        {
+            return newState;
+        }
+
         int count = 0;
         for (BlockPos target : BlockPos.betweenClosed(pos.offset(-2, -1, -2), pos.offset(2, 1, 2)))
         {
@@ -209,7 +208,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 count++;
                 if (count > 3)
                 {
-                    return;
+                    return newState;
                 }
             }
         }
@@ -223,8 +222,9 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
             if (canPlaceNewBushAt(level, pos, placementState))
             {
                 level.setBlockAndUpdate(cursor, placementState);
-                return;
+                return newState;
             }
         }
+        return newState;
     }
 }

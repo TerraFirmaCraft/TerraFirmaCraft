@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.test.world;
 
+import java.util.function.Supplier;
+
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
@@ -32,13 +34,13 @@ public class WatershedTests extends TestHelper
                 Watershed shed = Watershed.create(plates, x, z, seed, 0, 0, 0, 0);
                 final Plate plate = shed.getPlate();
 
-                assertEquals(plate, plates.get(x, z));
+                assertEquals(plate, plates.get(x, z), message(seed, x, z));
 
                 if (shed instanceof Watershed.Rivers rv)
                 {
-                    assertFalse(plate.oceanic());
-                    assertFalse(rv.getSources().isEmpty());
-                    assertFalse(rv.getSources().contains(RiverHelpers.pack(x, z)));
+                    assertFalse(plate.oceanic(), message(seed, x, z));
+                    assertFalse(rv.getSources().isEmpty(), message(seed, x, z));
+                    assertFalse(rv.getSources().contains(RiverHelpers.pack(x, z)), message(seed, x, z));
                 }
             }
         }
@@ -73,12 +75,17 @@ public class WatershedTests extends TestHelper
                 {
                     // Watersheds belong to the same plate. We need to ensure they (would) generate identically
                     // What this practically means, is that the iteration order of their sources are identical
-                    assertTrue(offset instanceof Watershed.Rivers);
+                    assertTrue(offset instanceof Watershed.Rivers, message(seed, x, z));
 
                     Watershed.Rivers other = (Watershed.Rivers) offset;
-                    assertIterableEquals(rivers.getRivers(), other.getRivers());
+                    assertIterableEquals(rivers.getRivers(), other.getRivers(), message(seed, x, z));
                 }
             }
         }
+    }
+
+    private Supplier<String> message(long seed, int x, int z)
+    {
+        return () -> " at seed = " + seed + ", x = " + x + ", z = " + z;
     }
 }

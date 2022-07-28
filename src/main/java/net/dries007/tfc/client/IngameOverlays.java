@@ -245,7 +245,10 @@ public class IngameOverlays
         }
         stack.popPose();
 
-        String text = style.format(currentHealth, maxHealth);
+        // Health modifier affects both max and current health equally. All we do is draw different numbers as a result.
+        final float healthModifier = entity instanceof Player player && player.getFoodData() instanceof TFCFoodData data ? data.getHealthModifier() : 1f;
+
+        String text = style.format(currentHealth * healthModifier, maxHealth * healthModifier);
         stack.pushPose();
         stack.translate(centerX - 45, y + 2.5, 0);
         stack.scale(0.8f, 0.8f, 1.0f);
