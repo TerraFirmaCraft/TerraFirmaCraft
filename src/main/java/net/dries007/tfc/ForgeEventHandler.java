@@ -30,6 +30,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -833,6 +835,10 @@ public final class ForgeEventHandler
             event.setCanceled(true); // not tolerating this crap again
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
+        {
+            event.setCanceled(true);
+        }
+        else if (entity instanceof IronGolem || entity instanceof SnowGolem && TFCConfig.SERVER.enableVanillaGolems.get())
         {
             event.setCanceled(true);
         }

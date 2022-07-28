@@ -61,12 +61,6 @@ public class JackOLanternBlock extends CarvedPumpkinBlock implements EntityBlock
     }
 
     @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState old, boolean moving)
-    {
-        // no golems
-    }
-
-    @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack)
     {
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
