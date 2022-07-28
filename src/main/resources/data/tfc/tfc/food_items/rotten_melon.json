@@ -6,5 +6,5 @@
   "category": "other",
   "hunger": 0,
   "saturation": 0,
-  "decay": 999999
+  "decay_modifier": 99999
 }

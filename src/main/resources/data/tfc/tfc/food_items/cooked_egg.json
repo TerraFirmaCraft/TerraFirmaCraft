@@ -6,7 +6,7 @@
   "category": "other",
   "hunger": 4,
   "saturation": 0.5,
-  "decay": 4,
+  "decay_modifier": 4,
   "protein": 1.5,
   "dairy": 0.25
 }

@@ -6,6 +6,6 @@
   "category": "cooked_meat",
   "hunger": 2,
   "saturation": 2,
-  "decay": 2.25,
+  "decay_modifier": 2.25,
   "protein": 1.5
 }

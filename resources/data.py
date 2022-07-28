@@ -769,9 +769,9 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     # Always Rotten
-    food_item(rm, 'rotten_flesh', 'minecraft:rotten_flesh', Category.other, 0, 0, 0, 999999)
-    food_item(rm, 'rotten_pumpkin', 'tfc:rotten_pumpkin', Category.other, 0, 0, 0, 999999)
-    food_item(rm, 'rotten_melon', 'tfc:rotten_melon', Category.other, 0, 0, 0, 999999)
+    food_item(rm, 'rotten_flesh', 'minecraft:rotten_flesh', Category.other, 0, 0, 0, 99999)
+    food_item(rm, 'rotten_pumpkin', 'tfc:rotten_pumpkin', Category.other, 0, 0, 0, 99999)
+    food_item(rm, 'rotten_melon', 'tfc:rotten_melon', Category.other, 0, 0, 0, 99999)
 
     # Drinkables
 
@@ -970,7 +970,7 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'hunger': hunger,
         'saturation': saturation,
         'water': water if water != 0 else None,
-        'decay': decay,
+        'decay_modifier': decay,
         'fruit': fruit,
         'vegetables': veg,
         'protein': protein,
