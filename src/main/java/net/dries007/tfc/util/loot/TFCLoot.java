@@ -37,15 +37,12 @@ public class TFCLoot
 
     public static final LootContextParam<Boolean> ISOLATED = new LootContextParam<>(Helpers.identifier("isolated"));
     public static final LootContextParam<Boolean> PANNED = new LootContextParam<>(Helpers.identifier("panned"));
-    public static final LootContextParam<Boolean> DECAY_HANDLED = new LootContextParam<>(Helpers.identifier("decay_handled"));
 
     public static final RegistryObject<LootItemConditionType> IS_PANNED = lootCondition("is_panned", new PannedCondition.Serializer());
     public static final RegistryObject<LootItemConditionType> IS_ISOLATED = lootCondition("is_isolated", new IsIsolatedCondition.Serializer());
     public static final RegistryObject<LootItemConditionType> ALWAYS_TRUE = lootCondition("always_true", new AlwaysTrueCondition.Serializer());
     public static final RegistryObject<LootNumberProviderType> CROP_YIELD = numberProvider("crop_yield_uniform", new CropYieldProvider.Serializer());
     public static final RegistryObject<LootItemFunctionType> COPY_FLUID = lootFunction("copy_fluid", new CopyFluidFunction.Serializer());
-
-    public static final RegistryObject<ResetDecayLootModifier.Serializer> RESET_DECAY = glmSerializer("reset_decay", ResetDecayLootModifier.Serializer::new);
 
     private static RegistryObject<LootItemFunctionType> lootFunction(String id, Serializer<? extends LootItemFunction> serializer)
     {

@@ -134,7 +134,7 @@ public final class EntityHelpers
      */
     public static long getRandomGrowth(Random random, int daysToAdult)
     {
-        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult * 4);
+        int lifeTimeDays = daysToAdult + random.nextInt(daysToAdult);
         return Calendars.get().getTotalDays() - lifeTimeDays;
     }
 

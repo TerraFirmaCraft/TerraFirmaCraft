@@ -891,9 +891,6 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
-    #global_loot_modifiers(rm, 'tfc:reset_decay')
-    #global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})
-
 def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
     pools = [{'name': drop, 'functions': func}]
@@ -911,19 +908,6 @@ def loot_invert(condition: utils.JsonObject):
         'condition': 'minecraft:inverted',
         'term': condition
     }
-
-def global_loot_modifier(rm: ResourceManager, name: str, mod_type: str, *conditions: utils.Json):
-    rm.write((*rm.resource_dir, 'data', rm.domain, 'loot_modifiers', name), {
-        'type': mod_type,
-        'conditions': [c for c in conditions]
-    })
-
-# note for the mcresources dev: these work exactly the same as tags so if you implement this, do it like that
-def global_loot_modifiers(rm: ResourceManager, *modifiers: str):
-    rm.write((*rm.resource_dir, 'data', 'forge', 'loot_modifiers', 'global_loot_modifiers'), {
-        'replace': False,
-        'entries': [m for m in modifiers]
-    })
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {

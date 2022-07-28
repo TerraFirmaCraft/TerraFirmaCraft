@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
 
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -26,7 +24,6 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.loot.TFCLoot;
 import org.jetbrains.annotations.Nullable;
 
 public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
@@ -78,14 +75,6 @@ public class DecayingBlock extends ExtendedBlock implements EntityBlockExtension
         return context.getItemInHand().getCapability(FoodCapability.CAPABILITY).map(cap ->
             cap.isRotten() ? getRottedBlock().defaultBlockState() : defaultBlockState()
         ).orElse(defaultBlockState());
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder)
-    {
-        builder = builder.withParameter(TFCLoot.DECAY_HANDLED, true);
-        return super.getDrops(state, builder);
     }
 
     public Block getRottedBlock()

@@ -234,6 +234,8 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
         setBirthDay(EntityHelpers.getRandomGrowth(getEntity().getRandom(), getDaysToAdulthood()));
         setFamiliarity(0);
+        setOldDay(-1L);
+        setUses(0);
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {
