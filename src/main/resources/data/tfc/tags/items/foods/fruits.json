@@ -22,7 +22,7 @@
     "tfc:food/snowberry",
     "tfc:food/strawberry",
     "tfc:food/wintergreen_berry",
-    "tfc:food/melon_slice",
-    "tfc:food/pumpkin_pie"
+    "minecraft:melon_slice",
+    "minecraft:pumpkin_pie"
   ]
 }

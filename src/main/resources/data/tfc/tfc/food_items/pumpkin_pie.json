@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:food/pumpkin_pie"
+    "item": "minecraft:pumpkin_pie"
   },
   "category": "fruit",
   "hunger": 4,

@@ -89,8 +89,6 @@ public enum Food
     CATTAIL_ROOT,
     TARO_ROOT,
     DRIED_KELP,
-    PUMPKIN_PIE,
-    MELON_SLICE,
     // Meats
     BEEF(true, false),
     PORK(true, false),

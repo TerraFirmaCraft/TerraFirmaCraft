@@ -85,7 +85,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
     @Override
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
-        if (!level.canSeeSky(pos))
+        if (!CropHelpers.lightValid(level, pos))
         {
             return 0f;
         }

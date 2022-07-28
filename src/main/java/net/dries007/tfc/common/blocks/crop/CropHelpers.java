@@ -44,6 +44,11 @@ public final class CropHelpers
     public static final float YIELD_MIN = 0.2f;
     public static final float YIELD_LIMIT = 1f;
 
+    public static boolean lightValid(Level level, BlockPos pos)
+    {
+        return level.getRawBrightness(pos, 0) >= 12;
+    }
+
     /**
      * @return {@code true} if the crop survived.
      */

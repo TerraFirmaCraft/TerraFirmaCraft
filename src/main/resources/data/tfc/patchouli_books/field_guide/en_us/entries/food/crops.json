@@ -1658,137 +1658,153 @@
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=0]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=0]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=1]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=1]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=2]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=2]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=3]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=3]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=4]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=4]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=5]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=5]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=6]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=6]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=7]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=7]",
+            "P": "tfc:pumpkin"
           }
         }
       ]
@@ -1805,137 +1821,153 @@
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=0]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=0]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=1]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=1]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=2]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=2]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=3]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=3]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=4]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=4]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=5]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=5]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=6]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=6]",
+            "P": "minecraft:air"
           }
         },
         {
           "pattern": [
             [
-              "X"
+              "  ",
+              " CP",
+              "   "
             ],
             [
-              "Y"
-            ],
-            [
-              "0"
+              "GGG",
+              "GGG",
+              "GGG"
             ]
           ],
           "mapping": {
-            "X": "tfc:crop/pumpkin[age=7]",
-            "Y": "tfc:farmland/loam"
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=7]",
+            "P": "tfc:melon"
           }
         }
       ]

@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.crop.DecayingBlock;
+import net.dries007.tfc.util.Helpers;
 
 public class DecayingBlockEntity extends TFCBlockEntity
 {
@@ -59,8 +60,6 @@ public class DecayingBlockEntity extends TFCBlockEntity
 
     public void setStack(ItemStack stack)
     {
-        stack = stack.copy();
-        stack = stack.split(1);
-        this.stack = stack;
+        this.stack = Helpers.copyWithSize(stack, 1);
     }
 }
