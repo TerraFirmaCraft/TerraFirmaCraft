@@ -35,7 +35,6 @@ public abstract class PlantBlock extends TFCBushBlock
     {
         return new PlantBlock(properties)
         {
-
             @Override
             public RegistryPlant getPlant()
             {

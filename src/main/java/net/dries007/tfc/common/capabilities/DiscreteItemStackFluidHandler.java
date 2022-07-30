@@ -35,7 +35,7 @@ public class DiscreteItemStackFluidHandler extends ItemStackFluidHandler
     @Override
     public int fill(FluidStack fill, FluidAction action)
     {
-        if (fluid.isEmpty() && fill.getAmount() >= capacity)
+        if (fluid.isEmpty() && fill.getAmount() >= capacity && isFluidValid(0, fill))
         {
             if (action.execute())
             {

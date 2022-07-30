@@ -274,7 +274,7 @@ public final class SelfTests
         final Set<String> missingTranslations = Bootstrap.getMissingTranslations();
         final NonNullList<ItemStack> items = NonNullList.create();
 
-        ForgeRegistries.ITEMS.getValues().forEach(item -> {
+        stream(ForgeRegistries.ITEMS, MOD_ID).forEach(item -> {
             items.clear();
             item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
             items.forEach(stack -> validateTranslation(missingTranslations, stack.getHoverName()));

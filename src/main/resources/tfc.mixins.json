@@ -10,7 +10,6 @@
     "DedicatedServerPropertiesMixin",
     "FallingBlockMixin",
     "FlowingFluidMixin",
-    "ForgeHooksMixin",
     "FriendlyByteBufMixin",
     "IceBlockMixin",
     "ItemStackMixin",

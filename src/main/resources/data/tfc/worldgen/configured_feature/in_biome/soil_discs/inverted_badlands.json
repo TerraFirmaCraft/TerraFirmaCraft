@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:multiple",
+  "config": {
+    "features": "#tfc:in_biome/soil_discs/inverted_badlands"
+  }
+}

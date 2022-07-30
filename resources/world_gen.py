@@ -15,21 +15,21 @@ def generate(rm: ResourceManager):
     # feature/ -> individual features
 
     # Tags: in_biome/
-    placed_feature_tag(rm, 'in_biome/erosion', 'tfc:erosion')
-    placed_feature_tag(rm, 'in_biome/underground_lakes', 'tfc:underground_flood_fill_lake')
-    placed_feature_tag(rm, 'in_biome/all_lakes', 'tfc:underground_flood_fill_lake', 'tfc:flood_fill_lake')
-    placed_feature_tag(rm, 'in_biome/veins', *[
+    placed_feature_118_hack(rm, 'in_biome/erosion', 'tfc:erosion')
+    placed_feature_118_hack(rm, 'in_biome/underground_lakes', 'tfc:underground_flood_fill_lake')
+    placed_feature_118_hack(rm, 'in_biome/all_lakes', 'tfc:underground_flood_fill_lake', 'tfc:flood_fill_lake')
+    placed_feature_118_hack(rm, 'in_biome/veins', *[
         'tfc:vein/gravel',
         *['tfc:vein/%s_dike' % rock for rock, data in ROCKS.items() if data.category == 'igneous_intrusive'],
         *('tfc:vein/%s' % v for v in ORE_VEINS.keys()),
         'tfc:geode'
     ])
-    placed_feature_tag(rm, 'in_biome/underground_decoration', *UNDERGROUND_FEATURES)
-    placed_feature_tag(rm, 'in_biome/top_layer_modification', 'tfc:surface_loose_rocks', 'tfc:ice_and_snow')
+    placed_feature_118_hack(rm, 'in_biome/underground_decoration', *UNDERGROUND_FEATURES)
+    placed_feature_118_hack(rm, 'in_biome/top_layer_modification', 'tfc:surface_loose_rocks', 'tfc:ice_and_snow')
 
-    placed_feature_tag(rm, 'in_biome/underground_structures')
-    placed_feature_tag(rm, 'in_biome/surface_structures')
-    placed_feature_tag(rm, 'in_biome/strongholds')
+    placed_feature_118_hack(rm, 'in_biome/underground_structures')
+    placed_feature_118_hack(rm, 'in_biome/surface_structures')
+    placed_feature_118_hack(rm, 'in_biome/strongholds')
 
     # Tags: feature/
     placed_feature_tag(rm, 'feature/land_plants', *[
@@ -1032,7 +1032,7 @@ def random_config(tree: str, structure_count: int, radius: int = 1, suffix: str 
     return cfg
 
 
-def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, suffix: str = '', place = None):
+def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, suffix: str = '', place: Json = None) -> JsonObject:
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     tree += suffix
@@ -1048,7 +1048,7 @@ def stacked_config(tree: str, min_height: int, max_height: int, width: int, laye
     }
 
 
-def trunk_config(block: str, min_height: int, max_height: int, width: int):
+def trunk_config(block: str, min_height: int, max_height: int, width: int) -> JsonObject:
     return {
         'state': utils.block_state(block),
         'min_height': min_height,
@@ -1057,7 +1057,7 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
     }
 
 
-def tree_placement_config(width: int, height: int, allow_submerged: bool = False):
+def tree_placement_config(width: int, height: int, allow_submerged: bool = False) -> JsonObject:
     return {
         'width': width,
         'height': height,
@@ -1310,9 +1310,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         '#tfc:in_biome/top_layer_modification'  # Top Layer Modification
     ]
 
-    placed_feature_tag(rm, ('in_biome/soil_discs', name), *soil_discs)
-    placed_feature_tag(rm, ('in_biome/large_features', name), *large_features)
-    placed_feature_tag(rm, ('in_biome/surface_decoration', name), *surface_decorations)
+    placed_feature_118_hack(rm, ('in_biome/soil_discs', name), *soil_discs)
+    placed_feature_118_hack(rm, ('in_biome/large_features', name), *large_features)
+    placed_feature_118_hack(rm, ('in_biome/surface_decoration', name), *surface_decorations)
 
     if volcano_features:
         biome_tag(rm, 'is_volcanic', name)
@@ -1320,6 +1320,12 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         biome_tag(rm, 'is_lake', name)
     if 'river' in name:
         biome_tag(rm, 'is_river', name)
+
+    # todo: remove in 1.19
+    feature_tags = [
+        [tag[1:]]
+        for tag in feature_tags
+    ]
 
     rm.lang('biome.tfc.%s' % name, lang(name))
     rm.biome(
@@ -1347,6 +1353,11 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
 
 def placed_feature_tag(rm: ResourceManager, name_parts: ResourceIdentifier, *values: ResourceIdentifier):
     return rm.tag(name_parts, 'worldgen/placed_feature', *values)
+
+
+def placed_feature_118_hack(rm, name_parts: ResourceIdentifier, *values: ResourceIdentifier):
+    placed_feature_tag(rm, name_parts, *values)
+    configured_placed_feature(rm, name_parts, 'tfc:multiple', {'features': '#' + utils.resource_location(rm.domain, name_parts).join()})
 
 
 def configured_feature_tag(rm: ResourceManager, name_parts: ResourceIdentifier, *values: ResourceIdentifier):

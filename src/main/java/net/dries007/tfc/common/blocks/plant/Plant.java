@@ -161,8 +161,6 @@ public enum Plant implements RegistryPlant
     private final int @Nullable[] stagesByMonth;
     private final BlockType type;
 
-    private static final Set<Plant> TINTED_ITEMS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, KANGAROO_PAW, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
-
     Plant(BlockType type, float speedFactor, int @Nullable[] stagesByMonth)
     {
         this.type = type;
@@ -228,7 +226,7 @@ public enum Plant implements RegistryPlant
 
     public boolean isItemTinted()
     {
-        return TINTED_ITEMS.contains(this);
+        return this == BLUEGRASS || this == BROMEGRASS || this == FOUNTAIN_GRASS || this == ORCHARD_GRASS || this == RYEGRASS || this == SCUTCH_GRASS || this == TIMOTHY_GRASS || this == KANGAROO_PAW || this == KING_FERN || this == MOSS || this == SAGO || this == SWITCHGRASS || this == TALL_FESCUE_GRASS || this == IVY || this == JUNGLE_VINES || this == HANGING_VINES || this == GUTWEED;
     }
 
     /**
@@ -236,7 +234,7 @@ public enum Plant implements RegistryPlant
      */
     private Supplier<? extends Block> transform()
     {
-        final Plant other = switch (this)
+        return TFCBlocks.PLANTS.get(switch (this)
             {
                 case HANGING_VINES -> HANGING_VINES_PLANT;
                 case HANGING_VINES_PLANT -> HANGING_VINES;
@@ -254,11 +252,10 @@ public enum Plant implements RegistryPlant
                 case LIANA -> LIANA_PLANT;
                 case LIANA_PLANT -> LIANA;
                 default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
-            };
-        return TFCBlocks.PLANTS.get(other);
+            });
     }
 
-    public enum BlockType
+    enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, fire(nonSolid(plant)))),
         CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)))),

@@ -11,6 +11,9 @@ import java.util.function.Function;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
+
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 /**
@@ -20,6 +23,8 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
  */
 public class CommonConfig
 {
+    private static final Logger LOGGER = LogUtils.getLogger();
+
     // General
     public final ForgeConfigSpec.BooleanValue setTFCWorldTypeAsDefault;
 
@@ -28,7 +33,8 @@ public class CommonConfig
     public final ForgeConfigSpec.IntValue defaultCalendarStartDay;
 
     // Debug
-    public final ForgeConfigSpec.BooleanValue enableNetworkDebugging;
+    private final ForgeConfigSpec.BooleanValue enableNetworkDebugging;
+    private boolean hasLoggedNetworkDebugInfoMessage = false;
 
     CommonConfig(ForgeConfigSpec.Builder innerBuilder)
     {
@@ -50,11 +56,11 @@ public class CommonConfig
             " The number of days in a month, for newly created worlds.",
             " This can be modified in existing worlds using the /time command"
         ).defineInRange("defaultMonthLength", 8, 1, Integer.MAX_VALUE);
-        defaultCalendarStartDay = builder.apply("defaultCalendarStartTick").comment(
+        defaultCalendarStartDay = builder.apply("defaultCalendarStartDay").comment(
             " The start date for newly created worlds, in a number of ticks, for newly created worlds",
             " This represents a number of days offset from January 1, 1000",
             " The default is (5 * daysInMonth) = 40, which starts at June 1, 1000 (with the default daysInMonth = 8)"
-        ).defineInRange("defaultCalendarStartTick", (5 * 8), -1, Integer.MAX_VALUE);
+        ).defineInRange("defaultCalendarStartDay", (5 * 8), -1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("debug");
 
@@ -62,5 +68,15 @@ public class CommonConfig
             " Enables a series of network fail-safes that are used to debug network connections between client and servers.",
             " Important: this MUST BE THE SAME as what the server has set, otherwise you are liable to see even stranger errors."
         ).define("enableNetworkDebugging", () -> !FMLEnvironment.production);
+    }
+
+    public boolean enableNetworkDebugging()
+    {
+        if (!hasLoggedNetworkDebugInfoMessage)
+        {
+            hasLoggedNetworkDebugInfoMessage = true;
+            LOGGER.info("TFC Network Debugging is enabled.");
+        }
+        return enableNetworkDebugging.get();
     }
 }
