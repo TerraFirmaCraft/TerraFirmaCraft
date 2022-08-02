@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
+        //maven { url = 'https://maven.parchmentmc.org' }
         maven {
             url "https://repo.spongepowered.org/repository/maven-public/"
             content { includeGroup "org.spongepowered" }
@@ -14,7 +14,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-        classpath 'org.parchmentmc:librarian:1.+'
+        //classpath 'org.parchmentmc:librarian:1.+'
 
         classpath 'org.codehaus.groovy:groovy-json:3.0.10'
     }
@@ -26,7 +26,7 @@ plugins {
 }
 
 apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
+//apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
 
 def localProperties = new File('./dev.gradle')

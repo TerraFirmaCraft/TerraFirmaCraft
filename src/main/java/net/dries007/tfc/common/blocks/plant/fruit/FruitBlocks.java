@@ -116,12 +116,12 @@ public final class FruitBlocks
 
         public Block createSapling()
         {
-            return new FruitTreeSaplingBlock(ExtendedProperties.of(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), 8, ClimateRanges.FRUIT_TREES.get(this));
+            return new FruitTreeSaplingBlock(ExtendedProperties.of(Block.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS)).blockEntity(TFCBlockEntities.TICK_COUNTER).flammable(60, 30), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), 8, ClimateRanges.FRUIT_TREES.get(this), stages);
         }
 
         public Block createLeaves()
         {
-            return new FruitTreeLeavesBlock(ExtendedProperties.of(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).noOcclusion()).blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammable(90, 60), TFCItems.FOOD.get(product), stages, ClimateRanges.FRUIT_TREES.get(this));
+            return new FruitTreeLeavesBlock(ExtendedProperties.of(Block.Properties.of(Material.LEAVES).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion()).blockEntity(TFCBlockEntities.BERRY_BUSH).serverTicks(BerryBushBlockEntity::serverTick).flammable(90, 60), TFCItems.FOOD.get(product), stages, ClimateRanges.FRUIT_TREES.get(this));
         }
 
         public Block createBranch()

@@ -4,7 +4,7 @@
   "placement": [
     {
       "type": "tfc:climate",
-      "min_temperature": 8,
+      "min_temperature": 1,
       "max_temperature": 25,
       "min_rainfall": 110,
       "max_rainfall": 280,

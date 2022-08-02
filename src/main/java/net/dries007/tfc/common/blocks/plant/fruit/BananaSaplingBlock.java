@@ -10,7 +10,6 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -22,22 +21,15 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
 public class BananaSaplingBlock extends FruitTreeSaplingBlock
 {
-    private final Lifecycle[] stages;
-
     public BananaSaplingBlock(ExtendedProperties properties, Lifecycle[] stages, Supplier<? extends Block> block, int treeGrowthDays)
     {
-        super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT);
-
-        this.stages = stages;
+        super(properties, block, treeGrowthDays, ClimateRanges.BANANA_PLANT, stages);
     }
 
     @Override
@@ -47,17 +39,9 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    public void createTree(Level level, BlockPos pos, BlockState state, Random random)
     {
-        if (stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()] == Lifecycle.HEALTHY)
-        {
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(sapling -> {
-                if (sapling.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
-                {
-                    level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY));
-                }
-            });
-        }
+        level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(SeasonalPlantBlock.LIFECYCLE, Lifecycle.HEALTHY));
     }
 
     @Override

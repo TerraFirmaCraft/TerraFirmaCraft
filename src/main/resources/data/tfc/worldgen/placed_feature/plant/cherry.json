@@ -5,7 +5,7 @@
     {
       "type": "tfc:climate",
       "min_temperature": 5,
-      "max_temperature": 21,
+      "max_temperature": 25,
       "min_rainfall": 100,
       "max_rainfall": 350,
       "max_forest": "normal"

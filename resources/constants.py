@@ -529,15 +529,15 @@ BERRIES: Dict[str, Berry] = {
 }
 
 FRUITS: Dict[str, Fruit] = {
-    'banana': Fruit(23, 35, 280, 480),
-    'cherry': Fruit(5, 21, 100, 350),
-    'green_apple': Fruit(8, 25, 110, 280),
+    'banana': Fruit(17, 35, 280, 500),
+    'cherry': Fruit(5, 25, 100, 350),
+    'green_apple': Fruit(1, 25, 110, 280),
     'lemon': Fruit(10, 30, 180, 470),
-    'olive': Fruit(13, 30, 150, 380),
-    'orange': Fruit(23, 36, 250, 480),
-    'peach': Fruit(9, 27, 60, 230),
-    'plum': Fruit(18, 31, 250, 400),
-    'red_apple': Fruit(9, 25, 100, 280)
+    'olive': Fruit(5, 30, 150, 500),
+    'orange': Fruit(15, 36, 250, 500),
+    'peach': Fruit(4, 27, 60, 230),
+    'plum': Fruit(15, 31, 250, 400),
+    'red_apple': Fruit(1, 25, 100, 280)
 }
 NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 

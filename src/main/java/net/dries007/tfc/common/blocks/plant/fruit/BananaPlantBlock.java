@@ -62,7 +62,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
 
         // picking bananas kills the plant. this propagates death to the whole stalk.
         Block deadBlock = TFCBlocks.DEAD_BANANA_PLANT.get();
-        if (!level.isClientSide && level.getBlockState(pos).is(deadBlock))
+        if (!level.isClientSide && Helpers.isBlock(level.getBlockState(pos), deadBlock))
         {
             BlockState deadState = deadBlock.defaultBlockState();
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos().set(pos.below());

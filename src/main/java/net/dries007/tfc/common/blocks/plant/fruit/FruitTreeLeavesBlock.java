@@ -42,8 +42,23 @@ import net.dries007.tfc.util.climate.ClimateRange;
 
 public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBlockExtension, ILeavesBlock, IBushBlock
 {
+    /**
+     * Taking into account only environment rainfall, on a scale [0, 100]
+     */
+    public static int getHydration(Level level, BlockPos pos)
+    {
+        return (int) (Climate.getRainfall(level, pos) / 5);
+    }
+
     public static final BooleanProperty PERSISTENT = BlockStateProperties.PERSISTENT;
     public static final EnumProperty<Lifecycle> LIFECYCLE = TFCBlockStateProperties.LIFECYCLE;
+
+    /**
+     * Any leaf block that spends four consecutive months dormant when it shouldn't be, should die.
+     * Since most bushes have a 7 month non-dormant cycle, this means that it just needs to be in valid conditions for about 1 month a year in order to not die.
+     * It won't produce (it needs more months to properly advance the cycle from dormant -> healthy -> flowering -> fruiting, requiring 4 months at least), but it won't outright die.
+     */
+    private static final int MONTHS_SPENT_DORMANT_TO_DIE = 4;
 
     public FruitTreeLeavesBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<ClimateRange> climateRange)
     {
@@ -65,6 +80,14 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
+    {
+        IBushBlock.randomTick(this, state, level, pos, random);
+    }
+
+    // this is superficially the same as the StationaryBerryBushBlock onUpdate, we can condense them
+    @Override
     public void onUpdate(Level level, BlockPos pos, BlockState state)
     {
         // Fruit tree leaves work like berry bushes, but don't have propagation or growth functionality.
@@ -83,8 +106,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
                 long nextCalendarTick = currentCalendarTick - deltaTicks;
 
                 final ClimateRange range = climateRange.get();
-                // todo: include root water?
-                final int hydration = (int) Climate.getRainfall(level, pos) / 5;
+                final int hydration = getHydration(level, pos);
 
                 int monthsSpentDying = 0;
                 do
@@ -120,9 +142,8 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
 
                 BlockState newState;
 
-                if (monthsSpentDying > 0 && level.getRandom().nextInt(16) < monthsSpentDying)
+                if (mayDie(level, pos, state, monthsSpentDying))
                 {
-                    // It may have died, as it spent too many consecutive months when it should've been healthy, in invalid conditions.
                     newState = Blocks.AIR.defaultBlockState();
                 }
                 else
@@ -137,6 +158,14 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
                 }
             }
         });
+    }
+
+    /**
+     * Can this leaf block die, given that it spent {@code monthsSpentDying} consecutive months in a dormant state, when it should've been in a non-dormant state.
+     */
+    protected boolean mayDie(Level level, BlockPos pos, BlockState state, int monthsSpentDying)
+    {
+        return monthsSpentDying >= MONTHS_SPENT_DORMANT_TO_DIE;
     }
 
     @Override

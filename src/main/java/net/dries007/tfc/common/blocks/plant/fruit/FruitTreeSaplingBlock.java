@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.function.Supplier;
 
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
+import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -49,14 +50,16 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     protected final int treeGrowthDays;
     private final ExtendedProperties properties;
     private final Supplier<ClimateRange> climateRange;
+    private final Lifecycle[] stages;
 
-    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays, Supplier<ClimateRange> climateRange)
+    public FruitTreeSaplingBlock(ExtendedProperties properties, Supplier<? extends Block> block, int treeGrowthDays, Supplier<ClimateRange> climateRange, Lifecycle[] stages)
     {
         super(properties.properties());
         this.properties = properties;
         this.block = block;
         this.treeGrowthDays = treeGrowthDays;
         this.climateRange = climateRange;
+        this.stages = stages;
     }
 
     @Override
@@ -93,26 +96,36 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
-            if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
-            {
-                final int hydration = (int) Climate.getRainfall(level, pos) / 5;
-                final float temp = Climate.getAverageTemperature(level, pos);
-                if (!climateRange.get().checkBoth(hydration, temp, false))
+        // only go through this check if we are reasonably sure the plant would actually live
+        if (stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
+        {
+            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+                if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
                 {
-                    level.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
+                    final int hydration = (int) Climate.getRainfall(level, pos) / 5;
+                    final float temp = Climate.getAverageTemperature(level, pos);
+                    if (!climateRange.get().checkBoth(hydration, temp, false))
+                    {
+                        level.setBlockAndUpdate(pos, TFCBlocks.PLANTS.get(Plant.DEAD_BUSH).get().defaultBlockState());
+                    }
+                    else
+                    {
+                        createTree(level, pos, state, random);
+                    }
                 }
-                else
-                {
-                    final boolean onBranch = Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
-                    int internalSapling = onBranch ? 3 : state.getValue(SAPLINGS);
-                    if (internalSapling == 1 && random.nextBoolean()) internalSapling += 1;
-                    level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, internalSapling).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
-                    TickCounterBlockEntity.reset(level, pos);
-                }
-            }
-        });
+            });
+        }
     }
+
+    public void createTree(Level level, BlockPos pos, BlockState state, Random random)
+    {
+        final boolean onBranch = Helpers.isBlock(level.getBlockState(pos.below()), TFCTags.Blocks.FRUIT_TREE_BRANCH);
+        int internalSapling = onBranch ? 3 : state.getValue(SAPLINGS);
+        if (internalSapling == 1 && random.nextBoolean()) internalSapling += 1;
+        level.setBlockAndUpdate(pos, block.get().defaultBlockState().setValue(PipeBlock.DOWN, true).setValue(TFCBlockStateProperties.SAPLINGS, internalSapling).setValue(TFCBlockStateProperties.STAGE_3, onBranch ? 1 : 0));
+        TickCounterBlockEntity.reset(level, pos);
+    }
+
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)

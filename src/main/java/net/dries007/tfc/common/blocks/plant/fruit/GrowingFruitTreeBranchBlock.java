@@ -184,9 +184,8 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        //todo: include root water?
-        final int hydration = (int) (Climate.getRainfall(level, pos) / 5f);
-        final float temp = Climate.getAverageTemperature(level, pos);
+        final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
+        final float temp = Climate.getTemperature(level, pos);
         if (!climateRange.get().checkBoth(hydration, temp, false))
         {
             TickCounterBlockEntity.reset(level, pos);
@@ -238,7 +237,9 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         final BlockState leaves = this.leaves.get().defaultBlockState();
         BlockState downState = level.getBlockState(pos.below(2));
         if (!(downState.isAir() || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_LEAVES) || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH)))
+        {
             return;
+        }
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : NOT_DOWN)
         {

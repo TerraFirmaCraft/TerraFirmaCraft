@@ -96,7 +96,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 final ClimateRange range = climateRange.get();
                 final int hydration = FarmlandBlock.getHydration(level, sourcePos);
 
-                int stagesGrown = 0, monthsSpentDying = 0;
+                int monthsSpentDying = 0;
                 do
                 {
                     // This always runs at least once. It is called through random ticks, and calendar updates - although calendar updates will only call this if they've waited at least a day, or the average delta between random ticks.
@@ -106,10 +106,6 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                     // Advance both the stage (randomly, if the previous month was healthy), and lifecycle (if the at-the-time conditions were valid)
                     nextCalendarTick = Math.min(nextCalendarTick + Calendars.SERVER.getCalendarTicksInMonth(), currentCalendarTick);
 
-                    if (currentLifecycle.active() && level.getRandom().nextInt(3) == 0)
-                    {
-                        stagesGrown++;
-                    }
 
                     float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
                     Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
