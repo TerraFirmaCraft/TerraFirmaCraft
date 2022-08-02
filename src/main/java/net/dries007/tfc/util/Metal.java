@@ -474,7 +474,7 @@ public final class Metal
         HAMMER_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SAW(Type.TOOL, metal -> new AxeItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.5F, metal.toolTier()), -3, new Item.Properties().tab(TFCItemGroup.METAL))),
         SAW_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
-        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), 1.0F, -1.8F, new Item.Properties().tab(TFCItemGroup.METAL), metal.getSerializedName())),
+        JAVELIN(Type.TOOL, metal -> new JavelinItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(1.0F, metal.toolTier()), -1.8F, new Item.Properties().tab(TFCItemGroup.METAL), metal.getSerializedName())),
         JAVELIN_HEAD(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
         SWORD(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1.0F, metal.toolTier()), -2.4F, new Item.Properties().tab(TFCItemGroup.METAL))),
         SWORD_BLADE(Type.TOOL, true, metal -> new Item(new Item.Properties().tab(TFCItemGroup.METAL))),
