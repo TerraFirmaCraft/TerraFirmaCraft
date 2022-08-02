@@ -655,9 +655,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(thing)collapse$().')  # todo: ref gravity
         )),
         entry('support_beams', 'Support Beams', 'tfc:wood/support/oak', pages=(
-            image('tfc:textures/gui/book/wip.png'),
-            empty_last_page(),
-            # todo: supports, more on collapses?
+            text('$(thing)Support Beams$() are a means of preventing block collapses. They are most often used during mining, when rocky blocks are susceptible to falling on your head.', title='Support Beams'),
+            crafting('tfc:crafting/wood/oak_support', text_contents='Supports can be crafted with a $(thing)Saw$() and some $(thing)Logs$()'),
+            text('Supports can come in horizontal and vertical variations. Placing supports on top of a block places a column of up to three support beams. These vertical supports will be destroyed if they lose their base of support. Horizontal supports are automatically placed by pressing $(item)$(k:key.use)$() on the side of a vertical support beam. If there is a direct path to another vertical support beam, and enough items, the horizontal support will be formed.', title='Supporting Supports'),
+            multiblock('Basic Structure', '', False, (('CRD',), ('V V',), ('V0V',)), {'C': 'tfc:wood/vertical_support/oak[south=true]', 'R': 'tfc:wood/horizontal_support/oak[north=true,south=true]', 'D': 'tfc:wood/vertical_support/oak[north=true]', 'V': 'tfc:wood/vertical_support/oak'}),
+            text('Only horizontal support beams, the kind that have no \'elbow\' components, can support blocks. The range that block supports is 4 blocks horizontal in each direction, and one block above and below. Blocks in this area are protected from collapsing. However, be warned! Mining outside of this range can easily cause collapses that end up in (and potentially destroy) your safe zone.'),
+            empty_last_page(), # todo: in 1.12, we had a support visualization. and also i'm sure more info about gravity, collapses is wanted.
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
             text('You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in, either under your feet or across the world.'),
@@ -742,8 +745,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             fire_clay_knapping('tfc:fire_clay_knapping/brick', 'The $(l:mechanics/blast_furnace)Blast Furnace$() only accepts fire bricks as insulation.').anchor('fire_bricks')
         )),
         entry('quern', 'Quern', 'tfc:quern', pages=(
-            # todo: add a bit of text here to add one page at the start
-            crafting('tfc:crafting/quern', text_contents='The $(thing)Quern$() is a device for grinding items into powder. The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks.'),
+            text('The $(thing)Quern$() is a device for grinding items. It can make powder, dye, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$().'),
+            crafting('tfc:crafting/quern', text_contents='The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks.'),
             crafting('tfc:crafting/handstone', text_contents='The quern needs a $(thing)Handstone$() to operate.'),
             image('tfc:textures/gui/book/tutorial/quern_empty.png', text_contents='Select the quern at the top of the block and $(item)$(k:key.use)$() to place the handstone.'),
             image('tfc:textures/gui/book/tutorial/quern_add_item.png', text_contents='Select the top of the handstone and $(item)$(k:key.use)$() to add an item to it.'),
@@ -754,16 +757,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             quern_recipe('tfc:quern/emerald', '$(l:the_world/waterways#gemstones)Gems$() can also be ground into powder.'),
             quern_recipe('tfc:quern/barley_grain', '$(thing)Flour$() is also obtainable from the quern.'),
             quern_recipe('tfc:quern/fluxstone', '$(l:mechanics/flux)Flux$() is also obtainable from the quern.'),
-            empty_last_page(),
         )),
         entry('fishing', 'Fishing', 'tfc:metal/fishing_rod/copper', pages=(
-            # todo: add a text page here to start
-            anvil_recipe('tfc:anvil/bismuth_bronze_fish_hook', 'Fishing is a little different in TFC. First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
+            text('$(thing)Fishing$() is a way of hunting the fish entities that swim around in rivers, lakes, and oceans. Fishing rods must be baited and cast. Fish entities attempt to eat the bait, and sometimes succeed. Reeling in a fish takes work, and becomes easier with higher level hooks.'),
+            anvil_recipe('tfc:anvil/bismuth_bronze_fish_hook', 'First, you have to forge a fishing hook in an $(l:mechanics/anvils)Anvil$().'),
             crafting('tfc:crafting/metal/fishing_rod/bismuth_bronze', text_contents='The fishing rod is crafted with a fishing hook.', title='Fishing Rod'),
             text('Fishing rods are not useful without bait. Bait can be added to rods in a crafting table. To catch normal fish, you need $(thing)Seeds$() or $(thing)Shellfish$(). To catch larger fish, such as $(thing)Dolphins$() and $(thing)Orcas$(), you need $(item)cod$(), $(item)salmon$(), $(item)tropical fish$(), or $(item)bluegills$().'),
-            text('To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then, $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool.'),
+            text('To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then, $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier.'),
             image('tfc:textures/gui/book/tutorial/fishing.png', text_contents='The fishing bar replaces the experience bar when active.'),
-            empty_last_page(),
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:food/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
@@ -816,9 +817,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             block_spotlight('', 'A Sealed Large Vessel.', 'tfc:ceramic/large_vessel[sealed=true]'),
             text('One other way to preserve certain types of food easily, is to cook it. $(thing)Meats$() will all expire slower when they are cooked than when they are raw.$(br2)It is also important to use the correct device for cooking. Certain devices that heat very hot, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() or a $(l:mechanics/crucible)Crucible$() are $(bold)bad$() for cooking food, which will make them expire faster!', title='Cooking'),
             heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it\'s lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it\'s lifetime by 1.66x!'),
-            text('Are you salty this page is blank?', title='Salting').anchor('salting'),  # todo: salting
-            image('tfc:textures/gui/book/wip.png'),
-            text('vinegar').anchor('vinegar'),# todo: vinegar
+            text('$(thing)Salting$() is a way to make meat last longer. To salt meat, it must be crafted with $(thing)Salt$() in a crafting grid. Only uncooked, raw meat can be salted. Cooking or otherwise changing meat does not take away the salted properly.', title='Salting').anchor('salting'),
+            quern_recipe('tfc:quern/salt', 'One way of getting salt is through $(l:mechanics/quern)grinding$() $(l:the_world/ores_and_minerals#halite)Halite$(), which is a mineral.'),
+            block_spotlight('Salt Licks', 'Salt can be found naturally in forests. It can be placed and picked back up.', 'tfc:groundcover/salt_lick'),
+            text('$(thing)Vinegar Preservation$() is a way of making fruits, veggies, and meat last longer.$(br2)$(thing)Vinegar$() is made in a $(l:mechanics/barrel)Barrel$(), by sealing a fruit with 250mB of Alcohol. To preserve food in vinegar it must first be $(thing)Pickled$() in $(thing)Brine$(). Brine is made in a Barrel 1 part $(thing)Vinegar$() with 9 parts $(thing)Salt Water$().').anchor('vinegar'),
+            text('Once food is pickled, it can be sealed in a Barrel of Vinegar. If there is 125mB of Vinegar per pickled food item, the food will last longer.'),
             empty_last_page(),
         )),
         entry('hydration', 'Keeping Hydrated', 'tfc:wooden_bucket{fluid:{"Amount":100,"FluidName":"minecraft:water"}}', pages=(
@@ -869,10 +872,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             }) for i in range(8)]),
             text(f'{detail_crop("potato")}Potatoes are a single block crop. Potato seeds can be planted on farmland to be grown, and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.', title='Potatoes').link('tfc:seeds/potato').link('tfc:food/potato').anchor('potato'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/potato[age=%d]' % i) for i in range(7)]),
-            text(f'{detail_crop("pumpkin")}Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland to be grown, and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, if the pumpkin plant matures again, it can grow more pumpkins.').link('tfc:seeds/pumpkin').anchor('pumpkin'),
-            multimultiblock('', *[multiblock('', '', False, pattern=(('  ', ' CP', '   '), ('GGG', 'GGG', 'GGG')), mapping={'G': 'tfc:farmland/loam', 'C': 'tfc:crop/pumpkin[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:pumpkin'}) for i in range(8)]),
-            text(f'{detail_crop("melon")}Melons are a spreading crop. Melon seeds can be planted on farmland to be grown, and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, if the pumpkin plant matures again, it can grow more melon.').link('tfc:seeds/melon').anchor('melon'),
-            multimultiblock('', *[multiblock('', '', False, pattern=(('  ', ' CP', '   '), ('GGG', 'GGG', 'GGG')), mapping={'G': 'tfc:farmland/loam', 'C': 'tfc:crop/melon[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:melon'}) for i in range(8)]),
+            text(f'{detail_crop("pumpkin")}Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland to be grown, and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, if the pumpkin plant matures again, it can grow more pumpkins.', title='Pumpkins').link('tfc:seeds/pumpkin').anchor('pumpkin'),
+            multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/loam', '0': 'tfc:farmland/loam', 'C': 'tfc:crop/pumpkin[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:pumpkin'}) for i in range(8)]),
+            text(f'{detail_crop("melon")}Melons are a spreading crop. Melon seeds can be planted on farmland to be grown, and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, if the pumpkin plant matures again, it can grow more melon.', title='Melons').link('tfc:seeds/melon').anchor('melon'),
+            multimultiblock('', *[multiblock('', '', False, pattern=(('   ', ' CP', '   '), ('GGG', 'G0G', 'GGG')), mapping={'G': 'tfc:farmland/loam', '0': 'tfc:farmland/loam', 'C': 'tfc:crop/melon[age=%d]' % i, 'P': 'minecraft:air' if i != 7 else 'tfc:melon'}) for i in range(8)]),
             text(f'{detail_crop("onion")}Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.', title='Onions').link('tfc:seeds/onion').link('tfc:food/onion').anchor('onion'),
             multimultiblock('', *[two_tall_block_spotlight('', '', 'tfc:farmland/loam', 'tfc:crop/onion[age=%d]' % i) for i in range(7)]),
             text(f'{detail_crop("soybean")}Soybean is a single block crop. Soybean seeds can be planted on farmland to be grown, and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.', title='Soybean').link('tfc:seeds/soybean').link('tfc:food/soybean').anchor('soybean'),

@@ -49,20 +49,41 @@
     {
       "type": "patchouli:text",
       "anchor": "salting",
-      "text": "Are you salty this page is blank?",
+      "text": "$(thing)Salting$() is a way to make meat last longer. To salt meat, it must be crafted with $(thing)Salt$() in a crafting grid. Only uncooked, raw meat can be salted. Cooking or otherwise changing meat does not take away the salted properly.",
       "title": "Salting"
     },
     {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/wip.png"
-      ],
-      "border": true
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/salt",
+      "text": "One way of getting salt is through $(l:mechanics/quern)grinding$() $(l:the_world/ores_and_minerals#halite)Halite$(), which is a mineral."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:groundcover/salt_lick"
+        }
+      },
+      "name": "Salt Licks",
+      "text": "Salt can be found naturally in forests. It can be placed and picked back up.",
+      "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "vinegar",
-      "text": "vinegar"
+      "text": "$(thing)Vinegar Preservation$() is a way of making fruits, veggies, and meat last longer.$(br2)$(thing)Vinegar$() is made in a $(l:mechanics/barrel)Barrel$(), by sealing a fruit with 250mB of Alcohol. To preserve food in vinegar it must first be $(thing)Pickled$() in $(thing)Brine$(). Brine is made in a Barrel 1 part $(thing)Vinegar$() with 9 parts $(thing)Salt Water$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Once food is pickled, it can be sealed in a Barrel of Vinegar. If there is 125mB of Vinegar per pickled food item, the food will last longer."
     }
   ],
   "read_by_default": true

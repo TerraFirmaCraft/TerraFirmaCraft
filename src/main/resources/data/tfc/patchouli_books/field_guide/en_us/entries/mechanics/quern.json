@@ -5,9 +5,13 @@
   "icon": "tfc:quern",
   "pages": [
     {
+      "type": "patchouli:text",
+      "text": "The $(thing)Quern$() is a device for grinding items. It can make powder, dye, and some other items. It is assembled from a $(thing)Base$() and $(thing)Handstone$()."
+    },
+    {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/quern",
-      "text": "The $(thing)Quern$() is a device for grinding items into powder. The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks."
+      "text": "The base of the quern can be crafted with three $(thing)smooth stone$() and three of any other $(thing)Stone$() blocks."
     },
     {
       "type": "patchouli:crafting",

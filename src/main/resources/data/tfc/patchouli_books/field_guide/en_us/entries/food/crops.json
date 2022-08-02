@@ -1649,7 +1649,8 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 30 - 80 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland to be grown, and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, if the pumpkin plant matures again, it can grow more pumpkins."
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 30 - 80 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland to be grown, and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, if the pumpkin plant matures again, it can grow more pumpkins.",
+      "title": "Pumpkins"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1658,18 +1659,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=0]",
             "P": "minecraft:air"
           }
@@ -1677,18 +1679,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=1]",
             "P": "minecraft:air"
           }
@@ -1696,18 +1699,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=2]",
             "P": "minecraft:air"
           }
@@ -1715,18 +1719,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=3]",
             "P": "minecraft:air"
           }
@@ -1734,18 +1739,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=4]",
             "P": "minecraft:air"
           }
@@ -1753,18 +1759,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=5]",
             "P": "minecraft:air"
           }
@@ -1772,18 +1779,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=6]",
             "P": "minecraft:air"
           }
@@ -1791,18 +1799,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/pumpkin[age=7]",
             "P": "tfc:pumpkin"
           }
@@ -1812,7 +1821,8 @@
     {
       "type": "patchouli:text",
       "anchor": "melon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 37 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 75 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Melons are a spreading crop. Melon seeds can be planted on farmland to be grown, and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, if the pumpkin plant matures again, it can grow more melon."
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 37 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 75 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Melons are a spreading crop. Melon seeds can be planted on farmland to be grown, and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, if the pumpkin plant matures again, it can grow more melon.",
+      "title": "Melons"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1821,18 +1831,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=0]",
             "P": "minecraft:air"
           }
@@ -1840,18 +1851,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=1]",
             "P": "minecraft:air"
           }
@@ -1859,18 +1871,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=2]",
             "P": "minecraft:air"
           }
@@ -1878,18 +1891,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=3]",
             "P": "minecraft:air"
           }
@@ -1897,18 +1911,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=4]",
             "P": "minecraft:air"
           }
@@ -1916,18 +1931,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=5]",
             "P": "minecraft:air"
           }
@@ -1935,18 +1951,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=6]",
             "P": "minecraft:air"
           }
@@ -1954,18 +1971,19 @@
         {
           "pattern": [
             [
-              "  ",
+              "   ",
               " CP",
               "   "
             ],
             [
               "GGG",
-              "GGG",
+              "G0G",
               "GGG"
             ]
           ],
           "mapping": {
             "G": "tfc:farmland/loam",
+            "0": "tfc:farmland/loam",
             "C": "tfc:crop/melon[age=7]",
             "P": "tfc:melon"
           }
