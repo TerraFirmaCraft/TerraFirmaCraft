@@ -6,6 +6,6 @@
   "category": "meat",
   "hunger": 4,
   "saturation": 0,
-  "decay": 3,
+  "decay_modifier": 3,
   "protein": 0.5
 }

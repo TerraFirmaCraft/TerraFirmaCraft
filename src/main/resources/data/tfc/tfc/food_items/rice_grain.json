@@ -6,5 +6,5 @@
   "category": "grain",
   "hunger": 4,
   "saturation": 0.5,
-  "decay": 0.25
+  "decay_modifier": 0.25
 }

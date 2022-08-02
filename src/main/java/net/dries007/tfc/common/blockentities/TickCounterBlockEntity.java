@@ -38,6 +38,17 @@ public class TickCounterBlockEntity extends TFCBlockEntity
         return Calendars.SERVER.getTicks() - lastUpdateTick;
     }
 
+    public void setLastUpdateTick(long tick)
+    {
+        lastUpdateTick = tick;
+        setChanged();
+    }
+
+    public long getLastUpdateTick()
+    {
+        return lastUpdateTick;
+    }
+
     public void resetCounter()
     {
         lastUpdateTick = Calendars.SERVER.getTicks();

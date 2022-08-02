@@ -72,6 +72,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue sluiceTicks;
     // Blocks - Lamp
     public final ForgeConfigSpec.IntValue lampCapacity;
+    // Blocks - Pumpkin
+    public final ForgeConfigSpec.BooleanValue enablePumpkinCarving;
+    public final ForgeConfigSpec.IntValue jackOLanternTicks;
     // Blocks - Bloomery
     public final ForgeConfigSpec.IntValue bloomeryCapacity;
     public final ForgeConfigSpec.IntValue bloomeryMaxChimneyHeight;
@@ -133,6 +136,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableVanillaSkeletonHorseSpawning;
     public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithEnchantments;
     public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithVanillaEquipment;
+    public final ForgeConfigSpec.BooleanValue enableVanillaGolems;
     public final ForgeConfigSpec.BooleanValue enableVanillaMonsters;
     public final ForgeConfigSpec.BooleanValue enableVanillaMonstersOnSurface;
     public final ForgeConfigSpec.BooleanValue enableChickenJockies;
@@ -249,6 +253,11 @@ public class ServerConfig
 
         lampCapacity = builder.apply("lampCapacity").comment("Tank capacity of a lamp (in mB).").defineInRange("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
 
+        innerBuilder.pop().push("pumpkin");
+
+        enablePumpkinCarving = builder.apply("enablePumpkinCarving").comment("Enables the knifing of pumpkins to carve them.").define("enablePumpkinCarving", true);
+        jackOLanternTicks = builder.apply("jackOLanternTicks").comment("Number of ticks required for a jack 'o lantern to burn out (1000 = 1 in game hour = 50 seconds), default is 108 hours. Set to -1 to disable burnout.").defineInRange("jackOLanternTicks", 108000, -1, Integer.MAX_VALUE);
+
         innerBuilder.pop().push("bloomery");
 
         bloomeryCapacity = builder.apply("bloomeryCapacity").comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").defineInRange("bloomeryCapacity", 8, 1, Integer.MAX_VALUE);
@@ -340,6 +349,7 @@ public class ServerConfig
         enableVanillaSkeletonHorseSpawning = builder.apply("enableVanillaSkeletonHorseSpawning").comment("If true, vanilla will attempt to spawn skeleton 'trap' horses during thunderstorms.").define("enableVanillaSkeletonHorseSpawning", false);
         enableVanillaMobsSpawningWithEnchantments = builder.apply("enableVanillaMobsSpawningWithEnchantments").comment("If true, enables the default vanilla behavior of mobs spawning with enchanted weapons sometimes.").define("enableVanillaMobsSpawningWithEnchantments", false);
         enableVanillaMobsSpawningWithVanillaEquipment = builder.apply("enableVanillaMobsSpawningWithVanillaEquipment").comment("If true, enables the default behavior of mobs sapwning with vanilla armor and weapons").define("enableVanillaMobsSpawningWithVanillaEquipment", false);
+        enableVanillaGolems = builder.apply("enableVanillaGolems").comment("If true, golems can be built").define("enableVanillaGolems", false);
         enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters will spawn.").define("enableVanillaMonsters", true);
         enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground.").define("enableVanillaMonstersOnSurface", false);
         enableChickenJockies = builder.apply("enableChickenJockies").comment("If true, chicken jockies can spawn").define("enableChickenJockies", false);

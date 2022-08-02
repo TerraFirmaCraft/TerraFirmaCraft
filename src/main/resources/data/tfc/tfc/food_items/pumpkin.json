@@ -1,0 +1,10 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": {
+    "item": "tfc:pumpkin"
+  },
+  "category": "vegetable",
+  "hunger": 4,
+  "saturation": 0,
+  "decay_modifier": 0.5
+}

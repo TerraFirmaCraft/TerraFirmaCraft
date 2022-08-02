@@ -100,7 +100,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HC)
     item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HC)
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
-    item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
+    item_heat(rm, 'dough', '#tfc:foods/dough', 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
     item_heat(rm, 'egg', 'minecraft:egg', 1)
@@ -204,10 +204,11 @@ def generate(rm: ResourceManager):
     rm.item_tag('horse_food', '#tfc:foods/grains', '#tfc:foods/fruits')
     rm.item_tag('musk_ox_food', '#tfc:foods/grains')
 
+    rm.item_tag('tfc:foods/dough', *['tfc:food/%s_dough' % g for g in GRAINS])
     rm.item_tag('foods/can_be_salted', '#tfc:foods/raw_meats')
     rm.item_tag('tfc:foods/grains', *['tfc:food/%s_grain' % grain for grain in GRAINS])
-    rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
-    rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
+    rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in MISC_FOODS], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
+    rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:rotten_melon', 'tfc:rotten_pumpkin')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
     rm.item_tag('forge:double_sheets/any_bronze', *['#forge:double_sheets/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('tfc:bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
@@ -724,6 +725,10 @@ def generate(rm: ResourceManager):
     food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.vegetable, 4, 0, 0, 0.5)
     food_item(rm, 'tomato', 'tfc:food/tomato', Category.vegetable, 4, 0.5, 5, 3.5, veg=1.5)
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
+    food_item(rm, 'pumpkin', 'tfc:pumpkin', Category.vegetable, 4, 0, 0, 0.5)
+    food_item(rm, 'melon', 'tfc:melon', Category.vegetable, 4, 0, 0, 0.5)
+    food_item(rm, 'melon_slice', 'minecraft:melon_slice', Category.fruit, 4, 0.2, 5, 2.5, fruit=0.75)
+    food_item(rm, 'pumpkin_pie', 'minecraft:pumpkin_pie', Category.fruit, 4, 2, 5, 2.5, fruit=1.5, grain=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
     food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=1.5, dairy=0.25)
     food_item(rm, 'boiled_egg', 'tfc:food/boiled_egg', Category.other, 4, 2, 10, 4, protein=1.5, dairy=0.25)
@@ -775,6 +780,10 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_chevon', 'tfc:food/cooked_chevon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
+    # Always Rotten
+    food_item(rm, 'rotten_flesh', 'minecraft:rotten_flesh', Category.other, 0, 0, 0, 99999)
+    food_item(rm, 'rotten_pumpkin', 'tfc:rotten_pumpkin', Category.other, 0, 0, 0, 99999)
+    food_item(rm, 'rotten_melon', 'tfc:rotten_melon', Category.other, 0, 0, 0, 99999)
 
     # Drinkables
 
@@ -903,9 +912,6 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
-    global_loot_modifiers(rm, 'tfc:reset_decay')
-    global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})
-
 
 def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, entity_tag: str, piercing: int = 0, slashing: int = 0, crushing: int = 0):
     rm.data(('tfc', 'entity_damage_resistances', name_parts), {
@@ -914,7 +920,6 @@ def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier
         'slashing': slashing,
         'crushing': crushing
     })
-
 
 def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
@@ -928,28 +933,11 @@ def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max
         pools.append(extra_pool)
     rm.entity_loot(name, *pools)
 
-
 def loot_invert(condition: utils.JsonObject):
     return {
         'condition': 'minecraft:inverted',
         'term': condition
     }
-
-
-def global_loot_modifier(rm: ResourceManager, name: str, mod_type: str, *conditions: utils.Json):
-    rm.write((*rm.resource_dir, 'data', rm.domain, 'loot_modifiers', name), {
-        'type': mod_type,
-        'conditions': [c for c in conditions]
-    })
-
-
-# note for the mcresources dev: these work exactly the same as tags so if you implement this, do it like that
-def global_loot_modifiers(rm: ResourceManager, *modifiers: str):
-    rm.write((*rm.resource_dir, 'data', 'forge', 'loot_modifiers', 'global_loot_modifiers'), {
-        'replace': False,
-        'entries': [m for m in modifiers]
-    })
-
 
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {
@@ -997,7 +985,7 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'hunger': hunger,
         'saturation': saturation,
         'water': water if water != 0 else None,
-        'decay': decay,
+        'decay_modifier': decay,
         'fruit': fruit,
         'vegetables': veg,
         'protein': protein,

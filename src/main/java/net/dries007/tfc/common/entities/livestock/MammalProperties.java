@@ -124,6 +124,7 @@ public interface MammalProperties extends TFCAnimalProperties
     default void saveCommonAnimalData(CompoundTag nbt)
     {
         TFCAnimalProperties.super.saveCommonAnimalData(nbt);
+        nbt.putLong("pregnant", getPregnantTime());
         nbt.putLong("genes", getPregnantTime());
         if (getGenes() != null)
         {

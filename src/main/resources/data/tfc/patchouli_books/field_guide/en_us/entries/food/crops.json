@@ -1648,6 +1648,332 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "pumpkin",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 30 - 80 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland to be grown, and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, if the pumpkin plant matures again, it can grow more pumpkins."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=0]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=1]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=2]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=3]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=4]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=5]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=6]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/pumpkin[age=7]",
+            "P": "tfc:pumpkin"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "melon",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 37 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 75 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Melons are a spreading crop. Melon seeds can be planted on farmland to be grown, and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, if the pumpkin plant matures again, it can grow more melon."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=0]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=1]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=2]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=3]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=4]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=5]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=6]",
+            "P": "minecraft:air"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "  ",
+              " CP",
+              "   "
+            ],
+            [
+              "GGG",
+              "GGG",
+              "GGG"
+            ]
+          ],
+          "mapping": {
+            "G": "tfc:farmland/loam",
+            "C": "tfc:crop/melon[age=7]",
+            "P": "tfc:melon"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "onion",
       "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 \u00b0C$(br)$(bold)$(l:food/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
       "title": "Onions"
@@ -2581,17 +2907,19 @@
     "tfc:food/green_bean": 27,
     "tfc:seeds/potato": 29,
     "tfc:food/potato": 29,
-    "tfc:seeds/onion": 31,
-    "tfc:food/onion": 31,
-    "tfc:seeds/soybean": 33,
-    "tfc:food/soybean": 33,
-    "tfc:seeds/squash": 35,
-    "tfc:food/squash": 35,
-    "tfc:seeds/sugarcane": 37,
-    "tfc:food/sugarcane": 37,
-    "tfc:seeds/tomato": 39,
-    "tfc:food/tomato": 39,
-    "tfc:seeds/jute": 41,
-    "tfc:jute": 41
+    "tfc:seeds/pumpkin": 31,
+    "tfc:seeds/melon": 33,
+    "tfc:seeds/onion": 35,
+    "tfc:food/onion": 35,
+    "tfc:seeds/soybean": 37,
+    "tfc:food/soybean": 37,
+    "tfc:seeds/squash": 39,
+    "tfc:food/squash": 39,
+    "tfc:seeds/sugarcane": 41,
+    "tfc:food/sugarcane": 41,
+    "tfc:seeds/tomato": 43,
+    "tfc:food/tomato": 43,
+    "tfc:seeds/jute": 45,
+    "tfc:jute": 45
   }
 }

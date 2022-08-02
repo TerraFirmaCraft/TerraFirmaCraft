@@ -21,6 +21,8 @@
     "tfc:food/red_apple",
     "tfc:food/snowberry",
     "tfc:food/strawberry",
-    "tfc:food/wintergreen_berry"
+    "tfc:food/wintergreen_berry",
+    "minecraft:melon_slice",
+    "minecraft:pumpkin_pie"
   ]
 }

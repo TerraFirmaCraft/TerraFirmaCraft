@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "feature": "tfc:plant/wild_crop/melon_patch",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 30
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 5,
+      "max_temperature": 37,
+      "min_rainfall": 200,
+      "max_rainfall": 500,
+      "min_forest": "normal"
+    }
+  ]
+}

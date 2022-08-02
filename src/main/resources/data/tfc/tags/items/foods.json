@@ -77,6 +77,10 @@
     "tfc:food/sugarcane",
     "tfc:food/tomato",
     "tfc:food/yellow_bell_pepper",
+    "tfc:pumpkin",
+    "tfc:melon",
+    "minecraft:melon_slice",
+    "minecraft:pumpkin_pie",
     "tfc:food/cheese",
     "tfc:food/cooked_egg",
     "tfc:food/boiled_egg",
@@ -125,6 +129,9 @@
     "tfc:food/cooked_quail",
     "tfc:food/cooked_chevon",
     "tfc:food/cooked_gran_feline",
-    "tfc:food/cooked_camelidae"
+    "tfc:food/cooked_camelidae",
+    "minecraft:rotten_flesh",
+    "tfc:rotten_pumpkin",
+    "tfc:rotten_melon"
   ]
 }

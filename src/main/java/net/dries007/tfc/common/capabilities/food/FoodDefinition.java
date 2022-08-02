@@ -13,6 +13,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.util.ItemDefinition;
+import net.dries007.tfc.util.JsonHelpers;
 
 public class FoodDefinition extends ItemDefinition
 {
@@ -22,15 +23,15 @@ public class FoodDefinition extends ItemDefinition
     {
         super(id, json);
 
-        final int hunger = GsonHelper.getAsInt(json, "hunger", 4);
-        final float saturation = GsonHelper.getAsFloat(json, "saturation", 0);
-        final float water = GsonHelper.getAsFloat(json, "water", 0);
-        final float decayModifier = GsonHelper.getAsFloat(json, "decay_modifier", 1);
+        final int hunger = JsonHelpers.getAsInt(json, "hunger", 4);
+        final float saturation = JsonHelpers.getAsFloat(json, "saturation", 0);
+        final float water = JsonHelpers.getAsFloat(json, "water", 0);
+        final float decayModifier = JsonHelpers.getAsFloat(json, "decay_modifier", 1);
 
         final float[] nutrition = new float[Nutrient.TOTAL];
         for (Nutrient nutrient : Nutrient.VALUES)
         {
-            nutrition[nutrient.ordinal()] = GsonHelper.getAsFloat(json, nutrient.getSerializedName(), 0);
+            nutrition[nutrient.ordinal()] = JsonHelpers.getAsFloat(json, nutrient.getSerializedName(), 0);
         }
 
         this.data = FoodData.create(hunger, water, saturation, nutrition, decayModifier);

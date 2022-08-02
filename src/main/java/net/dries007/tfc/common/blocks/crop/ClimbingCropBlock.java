@@ -85,6 +85,10 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
     @Override
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
+        if (!CropHelpers.lightValid(level, pos))
+        {
+            return 0f;
+        }
         final BlockState stateAbove = level.getBlockState(pos.above());
         return stateAbove.getBlock() == this && stateAbove.getValue(STICK) && stateAbove.getValue(PART) == Part.TOP ? CropHelpers.GROWTH_LIMIT : maxSingleGrowth;
     }

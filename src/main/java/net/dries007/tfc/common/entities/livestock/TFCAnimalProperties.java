@@ -224,6 +224,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setUses(nbt.getInt("uses"));
         setLastFed(nbt.getLong("fed"));
         setLastFamiliarityDecay(nbt.getLong("decay"));
+        setMated(nbt.getLong("mating"));
         setLastAge(Age.valueOf(nbt.getInt("lastAge")));
         setOldDay(nbt.getLong("oldDay"));
     }
@@ -233,6 +234,8 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
         setBirthDay(EntityHelpers.getRandomGrowth(getEntity().getRandom(), getDaysToAdulthood()));
         setFamiliarity(0);
+        setOldDay(-1L);
+        setUses(0);
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {

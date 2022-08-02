@@ -48,6 +48,7 @@ public final class TFCBlockEntities
             TFCBlocks.DEAD_CANE,
             TFCBlocks.BANANA_SAPLING,
             TFCBlocks.DEAD_BANANA_PLANT,
+            TFCBlocks.JACK_O_LANTERN,
             TFCBlocks.SOIL.get(SoilBlockType.DRYING_BRICKS).values()
         ).<Supplier<? extends Block>>flatMap(Helpers::flatten)
     );
@@ -76,6 +77,7 @@ public final class TFCBlockEntities
     public static final RegistryObject<BlockEntityType<ThatchBedBlockEntity>> THATCH_BED = register("thatch_bed", ThatchBedBlockEntity::new, TFCBlocks.THATCH_BED);
     public static final RegistryObject<BlockEntityType<BerryBushBlockEntity>> BERRY_BUSH = register("berry_bush", BerryBushBlockEntity::new, Stream.of(TFCBlocks.BANANA_PLANT, TFCBlocks.CRANBERRY_BUSH, TFCBlocks.SPREADING_BUSHES.values(), TFCBlocks.SPREADING_CANES.values(), TFCBlocks.STATIONARY_BUSHES.values(), TFCBlocks.FRUIT_TREE_LEAVES.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
     public static final RegistryObject<BlockEntityType<CropBlockEntity>> CROP = register("crop", CropBlockEntity::new, TFCBlocks.CROPS.values().stream());
+    public static final RegistryObject<BlockEntityType<DecayingBlockEntity>> DECAYING = register("decaying", DecayingBlockEntity::new, Stream.of(TFCBlocks.MELON, TFCBlocks.PUMPKIN));
     public static final RegistryObject<BlockEntityType<NestBoxBlockEntity>> NEST_BOX = register("nest_box", NestBoxBlockEntity::new, TFCBlocks.NEST_BOX);
     public static final RegistryObject<BlockEntityType<LargeVesselBlockEntity>> LARGE_VESSEL = register("large_vessel", LargeVesselBlockEntity::new, Stream.of(TFCBlocks.LARGE_VESSEL, TFCBlocks.GLAZED_LARGE_VESSELS.values()).<Supplier<? extends Block>>flatMap(Helpers::flatten));
     public static final RegistryObject<BlockEntityType<LecternBlockEntity>> LECTERN = register("lectern", TFCLecternBlockEntity::new, TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.LECTERN)));

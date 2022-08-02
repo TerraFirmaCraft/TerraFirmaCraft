@@ -224,6 +224,17 @@ def generate(rm: ResourceManager):
     for block in SIMPLE_BLOCKS:
         rm.blockstate(block).with_block_model().with_item_model().with_block_loot('tfc:%s' % block).with_lang(lang(block))
 
+    for name in ('pumpkin', 'melon'):
+        rm.block_model(name, parent='minecraft:block/%s' % name, no_textures=True)
+        rm.blockstate(name, model='tfc:block/%s' % name).with_lang(lang(name)).with_tag('tfc:mineable_with_sharp_tool')
+        rm.item_model(name, 'tfc:item/food/%s' % name)
+        rm.block_model('rotten_' + name, parent='minecraft:block/%s' % name, textures={'side': 'tfc:block/crop/rotten_%s_side' % name, 'end': 'tfc:block/crop/rotten_%s_top' % name})
+        rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_lang(lang('rotten %s', name)).with_block_loot('tfc:rotten_%s' % name).with_tag('tfc:mineable_with_sharp_tool')
+        rm.item_model('rotten_' + name, 'tfc:item/food/%s' % name)
+
+    rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('tfc:jack_o_lantern').with_lang(lang('Jack o\'Lantern'))
+    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern')
+
     rm.blockstate('freshwater_bubble_column', model='minecraft:block/water').with_lang(lang('bubble column'))
     rm.blockstate('saltwater_bubble_column', model='tfc:block/fluid/salt_water').with_lang(lang('bubble column'))
 
@@ -790,19 +801,22 @@ def generate(rm: ResourceManager):
     # Crops
     for crop, crop_data in CROPS.items():
         name = 'tfc:jute' if crop == 'jute' else 'tfc:food/%s' % crop
-        if crop_data.type == 'default':
+        if crop_data.type == 'default' or crop_data.type == 'spreading':
             block = rm.blockstate(('crop', crop), variants=dict(('age=%d' % i, {'model': 'tfc:block/crop/%s_age_%d' % (crop, i)}) for i in range(crop_data.stages)))
             block.with_lang(lang(crop))
             for i in range(crop_data.stages):
                 rm.block_model(('crop', crop + '_age_%d' % i), textures={'crop': 'tfc:block/crop/%s_%d' % (crop, i)}, parent='block/crop')
 
-            block.with_block_loot({
-                'name': name,
-                'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s]' % (crop, crop_data.stages - 1)),
-                'functions': crop_yield(0, (6, 10))
-            }, {
-                'name': 'tfc:seeds/%s' % crop
-            })
+            if crop_data.type == 'spreading':
+                block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
+            else:
+                block.with_block_loot({
+                    'name': name,
+                    'conditions': loot_tables.block_state_property('tfc:crop/%s[age=%s]' % (crop, crop_data.stages - 1)),
+                    'functions': crop_yield(0, (6, 10))
+                }, {
+                    'name': 'tfc:seeds/%s' % crop
+                })
 
             block = rm.blockstate(('dead_crop', crop), variants={
                 'mature=true': {'model': 'tfc:block/dead_crop/%s' % crop},
@@ -823,12 +837,16 @@ def generate(rm: ResourceManager):
 
             block = rm.blockstate(('wild_crop', crop), model='tfc:block/wild_crop/%s' % crop).with_lang(lang('Wild %s', crop)).with_item_model().with_tag('can_be_snow_piled')
             block.with_block_model(textures={'crop': 'tfc:block/crop/%s_wild' % crop}, parent='tfc:block/wild_crop/crop')
-            block.with_block_loot({
-                'name': name,
-                'functions': loot_tables.set_count(1, 3)
-            }, {
-                'name': 'tfc:seeds/%s' % crop
-            })
+
+            if crop_data.type == 'spreading':
+                block.with_block_loot({'name': 'tfc:seeds/%s' % crop})
+            else:
+                block.with_block_loot({
+                    'name': name,
+                    'functions': loot_tables.set_count(1, 3)
+                }, {
+                    'name': 'tfc:seeds/%s' % crop
+                })
 
         elif crop_data.type == 'double':
             half = crop_data.stages // 2
@@ -1017,7 +1035,7 @@ def generate(rm: ResourceManager):
     for meat in MEATS:
         rm.item_model(('food', meat)).with_lang(lang('raw %s', meat))
         rm.item_model(('food', 'cooked_' + meat)).with_lang(lang('cooked %s', meat))
-    for veg in VEGETABLES:
+    for veg in MISC_FOODS:
         rm.item_model(('food', veg)).with_lang(lang(veg))
 
     funny_names = {  # Dict[nutrient, (soup, salad)]

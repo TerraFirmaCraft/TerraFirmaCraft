@@ -1,9 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "tfc:reset_decay",
   "conditions": [
     {
-      "condition": "tfc:always_true"
+      "type": "forge:false"
     }
   ]
 }
