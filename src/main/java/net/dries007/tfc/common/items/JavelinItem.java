@@ -42,12 +42,12 @@ public class JavelinItem extends SwordItem
 
     public JavelinItem(Tier tier, float attackDamage, float attackSpeed, Properties properties, String name)
     {
-        this(tier, (int) ToolItem.calculateVanillaAttackDamage(attackDamage, tier), attackSpeed, properties, Helpers.identifier("textures/entity/projectiles/" + name + "_javelin.png"));
+        this(tier, (int) attackDamage, attackSpeed, properties, Helpers.identifier("textures/entity/projectiles/" + name + "_javelin.png"));
     }
 
     public JavelinItem(Tier tier, float attackDamage, float attackSpeed, Properties properties, ResourceLocation name)
     {
-        super(tier, (int) ToolItem.calculateVanillaAttackDamage(attackDamage, tier), attackSpeed, properties);
+        super(tier, (int) attackDamage, attackSpeed, properties);
         this.textureLocation = name;
     }
 

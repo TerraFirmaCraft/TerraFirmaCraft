@@ -35,7 +35,7 @@ public class ToolItem extends DiggerItem
 
     public ToolItem(Tier tier, float attackDamage, float attackSpeed, TagKey<Block> mineableBlocks, Properties properties)
     {
-        super(calculateVanillaAttackDamage(attackDamage, tier), attackSpeed, tier, mineableBlocks, properties);
+        super(attackDamage, attackSpeed, tier, mineableBlocks, properties);
     }
 
     @Override
