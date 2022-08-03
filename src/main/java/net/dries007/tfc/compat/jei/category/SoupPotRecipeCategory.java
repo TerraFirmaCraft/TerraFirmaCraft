@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -18,9 +17,9 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 
 public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
@@ -44,11 +43,11 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
         }
 
         IRecipeSlotBuilder inputFluid = builder.addSlot(RecipeIngredientRole.INPUT, 46, 26);
-        inputFluid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getFluidIngredient()));
+        inputFluid.addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getFluidIngredient()));
         inputFluid.setFluidRenderer(1, false, 16, 16);
 
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 126, 6);
-        outputItem.addItemStacks(collapse(TFCItems.SOUPS));
+        outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get())).toList());
     }
 
     @Override

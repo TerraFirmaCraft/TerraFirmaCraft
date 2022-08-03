@@ -24,6 +24,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 
 public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
@@ -56,7 +57,7 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         if (!inputFluids.isEmpty())
         {
             IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
-            fluidOutput.addIngredients(VanillaTypes.FLUID, inputFluids);
+            fluidOutput.addIngredients(JEIIntegration.FLUID_STACK, inputFluids);
             fluidOutput.setFluidRenderer(1, false, 16, 16);
         }
 
@@ -75,7 +76,7 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         if (!outputFluid.isEmpty())
         {
             IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
-            fluidOutput.addIngredient(VanillaTypes.FLUID, outputFluid);
+            fluidOutput.addIngredient(JEIIntegration.FLUID_STACK, outputFluid);
             fluidOutput.setFluidRenderer(1, false, 16, 16);
         }
     }

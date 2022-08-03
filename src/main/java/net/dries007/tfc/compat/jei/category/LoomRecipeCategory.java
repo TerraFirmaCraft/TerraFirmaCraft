@@ -20,6 +20,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 
 public class LoomRecipeCategory extends BaseRecipeCategory<LoomRecipe>
 {
@@ -35,7 +36,7 @@ public class LoomRecipeCategory extends BaseRecipeCategory<LoomRecipe>
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 56, 5);
 
         // The ingredient doesn't come with an amount, but recipes take more than one
-        inputItem.addIngredients(VanillaTypes.ITEM, collapse(new ItemStackIngredient(recipe.getIngredient(), recipe.getInputCount())));
+        inputItem.addIngredients(JEIIntegration.ITEM_STACK, collapse(new ItemStackIngredient(recipe.getIngredient(), recipe.getInputCount())));
         outputItem.addItemStack(recipe.getResultItem());
     }
 

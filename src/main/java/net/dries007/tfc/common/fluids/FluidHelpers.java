@@ -279,7 +279,7 @@ public final class FluidHelpers
     }
 
     /**
-     * Pickup a fluid fluid from a block in the world, leaving the block empty.
+     * Pickup a fluid from a block in the world, leaving the block empty.
      */
     @Nullable
     public static FluidStack pickupFluid(Level level, BlockPos pos, BlockState state, IFluidHandler.FluidAction action)

@@ -305,11 +305,18 @@ public interface ICalendar
         return ICalendar.getCalendarTicksInYear(getCalendarDaysInMonth());
     }
 
+    /**
+     * @return A formatted component for displaying an exact time stamp. Like "00:00 January 1, 1000"
+     */
     default MutableComponent getCalendarTimeAndDate()
     {
         return ICalendar.getTimeAndDate(getCalendarTicks(), getCalendarDaysInMonth());
     }
 
+    /**
+     * @param ticks An amount of ticks
+     * @return A formatted component for displaying a length of time. Exact format depends on the length of time, using a dynamic precision. May display minutes, hours, days, months, or years.
+     */
     default MutableComponent getTimeDelta(long ticks)
     {
         return ICalendar.getTimeDelta(ticks, getCalendarDaysInMonth());

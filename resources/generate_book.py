@@ -127,6 +127,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
     book.template('anvil_recipe', custom_component(0, 0, 'AnvilComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('welding_recipe', custom_component(0, 0, 'WeldingComponent', {'recipe': '#recipe'}), text_component(0, 45))
 
+
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('biomes', 'Biomes', 'tfc:textures/gui/book/icons/biomes.png', pages=(
             # Overview of biomes and what they are, and what they affect
@@ -314,19 +315,25 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
             ))
         )),
-        entry('berry_bushes', 'Berry Bushes', 'tfc:food/elderberry', pages=(
-            image('tfc:textures/gui/book/wip.png'),
-            empty_last_page(),
-            # Berry bushes - how to find them, how to harvest and move them
-            # todo: info about berry bushes
-            # todo: listing of various berry bushes
-        )),
-        entry('fruit_trees', 'Fruit Trees', 'tfc:food/red_apple', pages=(
-            image('tfc:textures/gui/book/wip.png'),
-            empty_last_page(),
-            # Fruit trees - how to find them, how to harvest and move them
-            # todo: info about fruit trees
-            # todo: listing of various fruit trees
+        entry('wild_fruits', 'Berry Bushes', 'tfc:food/elderberry', pages=(
+            # Wild fruits
+            text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$()Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
+            text('Different fruit plants will grow, flower, and fruit in a differ'),  # todo: finish
+            page_break(),
+            text('', title='Fruit Trees').anchor('fruit_trees'),
+            image(),  # todo: image of fruit tree in the world
+            # todo: blurb on how to harvest and farm fruit trees in general
+            # todo: blurb on all fruit tree species
+            page_break(),
+            text('', title='Tall Bushes').anchor('tall_bushes'),
+            text(),
+            # todo: blurb on how to harvest and farm tall bushes in general
+            # todo: blurb on all tall bush species
+            page_break(),
+            text('$(thing)Small Bushes$() are a type of low lying plant which sp', title='Small Bushes').anchor('small_bushes'),
+            text('$(thing)Bunchberry$()', title='Bunchberry'),
+            # todo: blurb on all small bushes in general
+            # todo: blurb on all small bush species
         )),
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
@@ -371,10 +378,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             entity('tfc:manatee', 'Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm.', 'Manatee', scale=0.25),
             text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),  # todo: squid renderer does not work without proper context...
             empty_last_page(),
-        ))
-        # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on one page
+        )),
+        entry('food_and_water', 'Food and Water', '', pages=(
+            # todo: overview of how hunger and saturation works in tfc page
+            # todo: overview of water, thirst and drinking
+            # todo: overview of player nutrition and it's effects
+            # todo: introduction to different food sources, links to preservation
+        )),
+        # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on a single page
     ))
-
     book.category('getting_started', 'Getting Started', 'An introduction to surviving in the world of TerraFirmaCraft. How to survive the stone age and obtain your first pickaxe.', 'tfc:stone/axe/sedimentary', is_sorted=True, entries=(
         entry('introduction', 'Introduction', 'tfc:rock/loose/granite', pages=(
             text('In TerraFirmaCraft, the first things you can obtain are sticks, twigs, and loose rocks. They can be found in almost every climate, lying scattered on the ground. $(item)$(k:key.use)$() or break these to pick them up.'),
@@ -807,9 +819,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Barrels have the ability to $(thing)Dye$() and $(thing)Bleach$() items. Dye fluids are made by boiling a single dye item in a $(l:mechanics/pot)Pot$(). Most color-able things, like carpet, candles, and $(l:getting_started/building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye. Dyed items can also be bleached by sealing them in a barrel of $(thing)Lye$(). Lye is made by boiling $(thing)Wood Ash$(), a product of breaking $(l:getting_started/firepit)Firepits$(), in a $(l:mechanics/pot)Pot$() of Water.'),
             text('Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:food/decay#vinegar)page$().')
         )),
-    ))
-    # todo: merge into mechanics + getting started? keeps us at three nice categories: world gen, tutorial, and "everything else"
-    book.category('food', 'Food', 'How to find, harvest, and cook food.', 'tfc:food/wheat', entries=(
         entry('decay', 'Preservation', 'minecraft:rotten_flesh', pages=(
             text('In TerraFirmaCraft, no food will last forever! Food will $(thing)expire$() over time, turning rotten. Rotten food will not restore any hunger, and has the potential to give you unhelpful effects such as $(thing)Hunger$() or $(thing)Poison$()!$(br2)Fortunately, there are a number of ways to make your food last longer by $(thing)Preserving$() it.'),
             text('When you hover over a piece of food, you will see a tooltip which shows how long the food has until it will rot. It might look something like:$(br2)$(bold)$(2)Expires on: 5:30 July 5, 1000 (in 5 day(s))$()$(br2)By using various preservation mechanics, that date can be extended, giving you more time before your food roots.'),
