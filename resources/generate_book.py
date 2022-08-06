@@ -64,9 +64,8 @@ In addition, here's some useful things for dev work, and also making standardize
 import os
 
 from argparse import ArgumentParser
-
-from mcresources import ResourceManager, utils
-from mcresources.type_definitions import JsonObject, ResourceIdentifier
+from typing import Tuple
+from mcresources.type_definitions import ResourceIdentifier
 
 from constants import CROPS, METALS
 from patchouli import *
@@ -91,14 +90,17 @@ class LocalInstance:
         return None
 
 
-def main():
+def parse_args() -> Tuple[str]:
     parser = ArgumentParser('generate_book.py')
     parser.add_argument('--translate', type=str, default='en_us')
 
     args = parser.parse_args()
+    return args.translate,
 
+
+def main(translate_lang: str):
     rm = ResourceManager('tfc', '../src/main/resources')
-    i18n = I18n.create(args.translate)
+    i18n = I18n.create(translate_lang)
 
     print('Writing book')
     make_book(rm, i18n)
@@ -107,7 +109,7 @@ def main():
 
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        make_book(rm, I18n.create('en_us'), local_instance=True)
+        make_book(rm, I18n.create(translate_lang), local_instance=True)
 
     print('Done')
 
@@ -919,4 +921,4 @@ def detail_crop(crop: str) -> str:
 
 
 if __name__ == '__main__':
-    main()
+    main(*parse_args())
