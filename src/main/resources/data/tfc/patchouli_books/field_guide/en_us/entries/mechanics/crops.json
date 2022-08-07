@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "Crops",
-  "category": "tfc:food",
+  "category": "tfc:mechanics",
   "icon": "tfc:food/wheat",
   "pages": [
     {

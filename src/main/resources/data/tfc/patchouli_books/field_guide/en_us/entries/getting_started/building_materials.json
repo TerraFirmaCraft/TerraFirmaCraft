@@ -87,31 +87,31 @@
     {
       "type": "patchouli:text",
       "anchor": "wattle_and_daub",
-      "text": "$(thing)Wattle$() is a versatile building block. On its own, it is transparent, and players and mobs can walk through it. However, with the addition of $(thing)Sticks$() and $(thing)Daub$(), it becomes something much more..",
+      "text": "$(thing)Wattle$() and $(thing)Daub$() is a versatile building and decoration block.$(br2)$(thing)Wattle$() can be crafted and placed, however it is breakable and allows players and mobs to walk through it. It can be augmented with $(thing)Daub$(), to make it solid.",
       "title": "Wattle and Daub"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wattle",
-      "text": "The crafting recipe for Wattle."
+      "text": "In order to make $(thing)Wattle$() solid, it first must be woven, which requires adding sticks to the structure."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/daub",
       "recipe2": "tfc:crafting/daub_from_mud",
-      "text": "Wattle's companion is daub."
+      "text": ""
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_weave.png"
       ],
-      "text": "Holding at least four $(thing)Sticks$() in your hand, press $(item)$(k:key.use)$() to $(thing)weave$() it. This makes the block solid.",
+      "text": "Four sticks are required to $(thing)weave$() wattle.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face.."
+      "text": "At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face."
     },
     {
       "type": "patchouli:image",
@@ -126,7 +126,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
       ],
-      "text": "Woven Wattle can be made into $(thing)Unstained Wattle$() by adding $(thing)Daub$() with $(item)$(k:key.use)$().",
+      "text": "Using $(thing)Daub on $(thing)Woven Wattle$() creates a solid block.",
       "border": true
     },
     {
@@ -134,25 +134,24 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "Unstained Wattle can be dyed into $(thing)Stained Wattle$() by adding any $(thing)Dye$() with $(item)$(k:key.use)$().",
+      "text": "It can then be $(thing)stained$() by using dye on it.",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). To make it, seal 100mB of $(thing)Limewater$() in a barrel with gypsum. After an hour, one $(thing)Raw Alabaster$() will be created.",
+      "text": "Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). It can be made by directly crafting with $(l:the_world/ores_and_minerals#gypsum)Gypsum$(), however it can be made more efficiently by sealing some $(l:the_world/ores_and_minerals#gypsum)Gypsum$() with 100 mB of $(thing)Limewater$().",
       "title": "Alabaster"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster_brick",
       "recipe2": "tfc:crafting/alabaster_bricks",
-      "title": "Alabaster Bricks",
-      "text": "Alabaster bricks are also made from gypsum."
+      "title": "Alabaster Bricks"
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth() chisel mode."
+      "text": "Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode."
     },
     {
       "type": "patchouli:crafting",

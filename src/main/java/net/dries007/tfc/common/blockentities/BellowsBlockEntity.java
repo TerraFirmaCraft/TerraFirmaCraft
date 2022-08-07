@@ -77,7 +77,10 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
     public float getExtensionLength()
     {
-        assert level != null;
+        if (level == null)
+        {
+            return 0.125f;
+        }
         final int time = (int) (level.getGameTime() - lastPushed);
         if (time < 10)
         {

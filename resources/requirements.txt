@@ -1,0 +1,3 @@
+mcresources==1.5.9
+nbtlib==2.0.4
+Pillow==9.2.0

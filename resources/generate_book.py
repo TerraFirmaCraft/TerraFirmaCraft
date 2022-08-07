@@ -6,7 +6,7 @@ Translating the book is difficult and annoying. This allows you to translate one
 
 In order to use, all you need to do is run
 
-> python generate_book.py --translate <lang>
+> python resources book --translate <lang>
 
 Where <lang> is your language, i.e. en_us. This will do several things
 - If a <lang>.json file does not already exist, create one
@@ -36,7 +36,7 @@ https://vazkiimods.github.io/Patchouli/docs/reference/overview
 
 This enables hot reloading of book content and assets.
 
-1. Run generate_book.py with the environment variable LOCAL_MINECRAFT_INSTANCE set to the .minecraft/ directory of a local minecraft instance. It should say "copying into local instance at <path>"
+1. Run 'python resources book --local <.minecraft directory>' with the parameter --local set to the .minecraft/ directory of a local minecraft instance. It should say "copying into local instance at <path>"
 2. Compile TFC (gradlew build) and run in this local instance
 3. There will now be two books:
     /give @p patchouli:guide_book{"patchouli:book":"tfc:field_guide"}  // This is the TFC book, used by the inventory screen
@@ -77,7 +77,7 @@ TOOL_METALS = [key for key, val in METALS.items() if 'tool' in val.types]
 
 
 class LocalInstance:
-    INSTANCE_DIR = os.getenv('LOCAL_MINECRAFT_INSTANCE')  # The location of a local .minecraft directory, for testing in external minecraft instance (as hot reloading works much better)
+    INSTANCE_DIR = None
 
     @staticmethod
     def wrap(rm: ResourceManager):
@@ -90,16 +90,19 @@ class LocalInstance:
         return None
 
 
-def parse_args() -> Tuple[str]:
+def main_with_args():
     parser = ArgumentParser('generate_book.py')
-    parser.add_argument('--translate', type=str, default='en_us')
+    parser.add_argument('--translate', type=str, default='en_us', help='The language to translate to')
+    parser.add_argument('--local', type=str, default=None, help='The directory of a local .minecraft to copy into')
 
     args = parser.parse_args()
-    return args.translate,
+    main(args.translate, args.local)
 
 
-def main(translate_lang: str):
-    rm = ResourceManager('tfc', '../src/main/resources')
+def main(translate_lang: str, local_minecraft_dir: str):
+    LocalInstance.INSTANCE_DIR = local_minecraft_dir
+
+    rm = ResourceManager('tfc', './src/main/resources')
     i18n = I18n.create(translate_lang)
 
     print('Writing book')
@@ -109,6 +112,7 @@ def main(translate_lang: str):
 
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
+        utils.clean_generated_resources(LocalInstance.INSTANCE_DIR + '/patchouli_books')
         make_book(rm, I18n.create(translate_lang), local_instance=True)
 
     print('Done')
@@ -217,6 +221,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             multimultiblock('Sphalerite Ores in Quartzite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'sphalerite', 'quartzite')) for g in GRADES]),
             text('Tetrahedrite is a ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Tetrahedrite').link(*['tfc:ore/%s_%s' % (g, 'tetrahedrite') for g in GRADES_ALL]).anchor('tetrahedrite'),
             multimultiblock('Tetrahedrite Ores in Schist.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'tetrahedrite', 'schist')) for g in GRADES]),
+            page_break(),
             # === Non-Metal / Mineral Ores Listing ===
             item_spotlight('tfc:ore/bituminous_coal', 'Bituminous Coal', text_contents='Bituminous Coal is a type of $(thing)Coal$() ore. It can be found at elevations above y=0. It can be found in $(l:the_world/geology#sedimentary)Sedimentary$() rocks.').link('tfc:ore/%s' % 'bituminous_coal').anchor('bituminous_coal'),
             block_spotlight('', 'Bituminous Coal in Chert.', 'tfc:ore/%s/%s' % ('bituminous_coal', 'chert')),
@@ -302,7 +307,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
                 block_spotlight('', '', 'tfc:wild_crop/rye'),
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/maize[part=bottom]', 'tfc:wild_crop/maize[part=top]'),
                 block_spotlight('', '', 'tfc:wild_crop/barley'),
-                block_spotlight('', '', 'tfc:wild_crop/rice'),  # todo: change to waterlogged when the rice block itself is capable of that
+                block_spotlight('', '', 'tfc:wild_crop/rice[fluid=water]'),
                 block_spotlight('', '', 'tfc:wild_crop/beet'),
                 block_spotlight('', '', 'tfc:wild_crop/cabbage'),
                 block_spotlight('', '', 'tfc:wild_crop/carrot'),
@@ -323,16 +328,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Different fruit plants will grow, flower, and fruit in a differ'),  # todo: finish
             page_break(),
             text('', title='Fruit Trees').anchor('fruit_trees'),
-            image(),  # todo: image of fruit tree in the world
+            image(),  # todo: image of fruit tree in the world, or a sophisticated multiblock
             # todo: blurb on how to harvest and farm fruit trees in general
             # todo: blurb on all fruit tree species
             page_break(),
             text('', title='Tall Bushes').anchor('tall_bushes'),
-            text(),
+            text(''),
             # todo: blurb on how to harvest and farm tall bushes in general
             # todo: blurb on all tall bush species
             page_break(),
-            text('$(thing)Small Bushes$() are a type of low lying plant which sp', title='Small Bushes').anchor('small_bushes'),
+            text('$(thing)Small Bushes$() are a type of low lying plant which spawn...', title='Small Bushes').anchor('small_bushes'),
             text('$(thing)Bunchberry$()', title='Bunchberry'),
             # todo: blurb on all small bushes in general
             # todo: blurb on all small bush species
@@ -516,6 +521,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('building_materials', 'Building Materials', 'tfc:wattle/unstained', pages=(
             text('In the early stages of the game building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a couple useful building blocks that can be accessed just with stone tools.'),
             text('$(br)  1. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  3. $(l:getting_started/building_materials#alabaster)Alabaster$()', title='Contents'),
+            page_break(),
             # Mud Bricks
             crafting('tfc:crafting/soil/loam_drying_bricks', text_contents='$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into some $()Wet Mud Bricks$().', title='Mud Bricks').anchor('mud_bricks'),
             multimultiblock(
@@ -525,19 +531,21 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             ),
             crafting('tfc:crafting/soil/loam_mud_bricks', text_contents='These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can additionally be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired.'),
             block_spotlight('', 'All different varieties of mud bricks', '#tfc:mud_bricks'),
+            page_break(),
             # Wattle and Daub
-            text('$(thing)Wattle$() is a versatile building block. On its own, it is transparent, and players and mobs can walk through it. However, with the addition of $(thing)Sticks$() and $(thing)Daub$(), it becomes something much more..', 'Wattle and Daub').anchor('wattle_and_daub'),
-            crafting('tfc:crafting/wattle', text_contents='The crafting recipe for Wattle.'),
-            crafting('tfc:crafting/daub', 'tfc:crafting/daub_from_mud', text_contents='Wattle\'s companion is daub.'),
-            image('tfc:textures/gui/book/tutorial/wattle_weave.png', text_contents='Holding at least four $(thing)Sticks$() in your hand, press $(item)$(k:key.use)$() to $(thing)weave$() it. This makes the block solid.'),
-            text('At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you\'re adding the stick to by selecting a different side of the face..'),
+            text('$(thing)Wattle$() and $(thing)Daub$() is a versatile building and decoration block.$(br2)$(thing)Wattle$() can be crafted and placed, however it is breakable and allows players and mobs to walk through it. It can be augmented with $(thing)Daub$(), to make it solid.', 'Wattle and Daub').anchor('wattle_and_daub'),
+            crafting('tfc:crafting/wattle', text_contents='In order to make $(thing)Wattle$() solid, it first must be woven, which requires adding sticks to the structure.'),
+            crafting('tfc:crafting/daub', 'tfc:crafting/daub_from_mud', text_contents=''),
+            image('tfc:textures/gui/book/tutorial/wattle_weave.png', text_contents='Four sticks are required to $(thing)weave$() wattle.'),
+            text('At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you\'re adding the stick to by selecting a different side of the face.'),
             image('tfc:textures/gui/book/tutorial/wattle_add_stick.png', text_contents='Adding sticks to wattle.'),
-            image('tfc:textures/gui/book/tutorial/wattle_add_daub.png', text_contents='Woven Wattle can be made into $(thing)Unstained Wattle$() by adding $(thing)Daub$() with $(item)$(k:key.use)$().'),
-            image('tfc:textures/gui/book/tutorial/wattle_stained.png', text_contents='Unstained Wattle can be dyed into $(thing)Stained Wattle$() by adding any $(thing)Dye$() with $(item)$(k:key.use)$().'),
+            image('tfc:textures/gui/book/tutorial/wattle_add_daub.png', text_contents='Using $(thing)Daub on $(thing)Woven Wattle$() creates a solid block.'),
+            image('tfc:textures/gui/book/tutorial/wattle_stained.png', text_contents='It can then be $(thing)stained$() by using dye on it.'),
             # Alabaster
-            text('Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). To make it, seal 100mB of $(thing)Limewater$() in a barrel with gypsum. After an hour, one $(thing)Raw Alabaster$() will be created.', title='Alabaster').anchor('alabaster'),
-            crafting('tfc:crafting/alabaster_brick', 'tfc:crafting/alabaster_bricks', title='Alabaster Bricks', text_contents='Alabaster bricks are also made from gypsum.'),
-            text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth() chisel mode.'),
+            page_break(),
+            text('Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). It can be made by directly crafting with $(l:the_world/ores_and_minerals#gypsum)Gypsum$(), however it can be made more efficiently by sealing some $(l:the_world/ores_and_minerals#gypsum)Gypsum$() with 100 mB of $(thing)Limewater$().', title='Alabaster').anchor('alabaster'),
+            crafting('tfc:crafting/alabaster_brick', 'tfc:crafting/alabaster_bricks', title='Alabaster Bricks'),
+            text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode.'),
             crafting('tfc:crafting/alabaster/magenta_polished_stairs', text_contents='Polished Alabaster and Alabaster Bricks can be crafted or $(l:mechanics/chisel)chiseled$() into stairs, walls, and slabs.', title='Alabaster Decorations'),
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
@@ -606,8 +614,17 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('charcoal_forge', 'Charcoal Forge', 'tfc:textures/block/devices/charcoal_forge/lit_static.png', pages=(
             text('The $(thing)Charcoal Forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for $(l:mechanics/anvils)anvils$(). $(br)It is constructed with 5 $(thing)stone$() blocks surrounding a $(l:mechanics/charcoal_pit#charcoal_pile)charcoal pile$() of 7 or 8 layers, which is then lit.'),
             multiblock('A Charcoal Forge', 'A complete forge multiblock, ready to be lit.', True, multiblock_id='tfc:charcoal_forge'),
-            text('Forges need to be well-ventilated to work. Either they should be able to see the sky directly, or be connected horizontally to a block that can, as in the photo. Forges can reach higher temperatures with a $(l:mechanics/bellows)bellows$(), placed horizontally from the open block above the forge. Chimneys are useful, because forges will go out in the rain'),
-            image('tfc:textures/gui/book/tutorial/forge_chimney.png', text_contents='A forge with a valid chimney setup.'),
+            text('A Forge needs a chimney in order to work. The block directly above the Forge must be air, or a $(l:mechanics/crucible)Crucible$(). In addition, either the block directly above, or one of eight nearby blocks must be able to see the sky - the blue stained glass in the visualization to the right.$(br2)A $(l:mechanics/bellows)Bellows$() can be placed on one block up and adjacent to the Forge, in order to increase the maximum temperature it can reach.'),
+            multiblock('', '', False, (
+                ('  G  ', '  G  ', 'GGCGG', '  G  ', '  G  '),
+                ('XXXXX', 'XXXXX', 'XX0XX', 'XXBXX', 'XXXXX'),
+            ), {
+                'X': 'tfc:rock/smooth/gabbro',
+                'G': 'minecraft:light_blue_stained_glass',
+                '0': 'tfc:charcoal_forge[heat_level=7]',
+                'C': 'tfc:crucible',
+                'B': 'tfc:bellows'
+            }),
             image('tfc:textures/gui/book/gui/charcoal_forge.png', text_contents='The forge\'s interface.', border=False),
             text('The five slots at the bottom of the forge are used for fuel. While the forge is running, it periodically consumes fuel, which can be $(thing)Charcoal$() or $(l:the_world/ores_and_minerals#bituminous_coal)Coal$(). The top five slots will heat items, up to the temperature shown in the indicator on the left. The right side slots are for containers that can contain liquid metal, like $(thing)Vessels$(). Items that melt in the forge will fill those containers.'),
         )),
@@ -921,4 +938,4 @@ def detail_crop(crop: str) -> str:
 
 
 if __name__ == '__main__':
-    main(*parse_args())
+    main_with_args()

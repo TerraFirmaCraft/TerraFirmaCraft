@@ -4,13 +4,11 @@
   "placement": [
     {
       "type": "minecraft:heightmap",
-      "heightmap": "WORLD_SURFACE_WG"
+      "heightmap": "OCEAN_FLOOR_WG"
     },
     {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "tfc:air_or_empty_fluid"
-      }
+      "type": "tfc:shallow_water",
+      "max_depth": 1
     },
     {
       "type": "block_predicate_filter",

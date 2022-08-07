@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -13,6 +15,7 @@ import net.minecraft.world.level.material.FluidState;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 
@@ -34,6 +37,14 @@ public class FloodedWildCropBlock extends WildCropBlock implements IFluidLoggabl
     public FluidState getFluidState(BlockState state)
     {
         return IFluidLoggable.super.getFluidState(state);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        // Flooded wild crops need to have a non-fluid block above.
+        final BlockPos above = pos.above();
+        return super.canSurvive(state, level, pos) && level.getFluidState(above).isEmpty();
     }
 
     @Override
