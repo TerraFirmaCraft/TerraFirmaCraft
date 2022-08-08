@@ -8,6 +8,7 @@ package net.dries007.tfc.mixin.client;
 
 import net.minecraft.client.gui.components.toasts.Toast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.client.gui.components.toasts.TutorialToast;
 
 import net.dries007.tfc.config.TFCConfig;
 import org.spongepowered.asm.mixin.Mixin;
@@ -21,7 +22,7 @@ public abstract class ToastComponentMixin
     @Inject(method = "addToast", at = @At(value = "HEAD"), cancellable = true)
     private void inject$addToast(Toast toast, CallbackInfo ci)
     {
-        if (!TFCConfig.CLIENT.enableVanillaToasts.get())
+        if (!TFCConfig.CLIENT.enableVanillaTutorialToasts.get() && toast instanceof TutorialToast)
         {
             ci.cancel();
         }
