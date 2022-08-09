@@ -18,6 +18,7 @@ import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.inventory.ContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CraftingScreen;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -119,6 +120,8 @@ public final class ClientEventHandler
             MenuScreens.register(TFCContainerTypes.ANVIL.get(), AnvilScreen::new);
             MenuScreens.register(TFCContainerTypes.ANVIL_PLAN.get(), AnvilPlanScreen::new);
             MenuScreens.register(TFCContainerTypes.BLAST_FURNACE.get(), BlastFurnaceScreen::new);
+            MenuScreens.register(TFCContainerTypes.CHEST_9x2.get(), ContainerScreen::new);
+            MenuScreens.register(TFCContainerTypes.CHEST_9x4.get(), ContainerScreen::new);
 
             MenuScreens.register(TFCContainerTypes.CLAY_KNAPPING.get(), KnappingScreen::new);
             MenuScreens.register(TFCContainerTypes.FIRE_CLAY_KNAPPING.get(), KnappingScreen::new);
