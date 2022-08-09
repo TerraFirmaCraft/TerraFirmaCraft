@@ -37,6 +37,7 @@
   ],
   "client": [
     "client.ClientLevelMixin",
+    "client.EffectRenderingInventoryScreenMixin",
     "client.FishingHookRendererMixin",
     "client.FogRendererMixin",
     "client.ItemColorsMixin",

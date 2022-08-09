@@ -32,6 +32,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
     public final ForgeConfigSpec.BooleanValue enableInkSplatter;
     public final ForgeConfigSpec.BooleanValue enableVanillaTutorialToasts;
+    public final ForgeConfigSpec.IntValue effectHorizontalAdjustment;
     public final ForgeConfigSpec.EnumValue<HealthDisplayStyle> healthDisplayStyle;
     public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
@@ -66,6 +67,8 @@ public class ClientConfig
         enableThirstBar = builder.apply("enableThirstBar").comment("Adds a TFC thirst bar over the hotbar.").define("enableThirstBar", true);
         enableInkSplatter = builder.apply("enableInkSplatter").comment("Enables squids inking your screen.").define("enableInkSplatter", true);
         enableVanillaTutorialToasts = builder.apply("enableVanillaTutorialToasts").comment("Enables the vanilla tutorial toasts that appear during gameplay. These can be difficult to make disappear in modded environments, so they are disabled by default.").define("enableVanillaTutorialToasts", false);
+
+        effectHorizontalAdjustment = builder.apply("effectHorizontalAdjustment").comment("Adjusts the position where potion effects render in the X direction. By default, this moves them to the right of the inventory tabs. Negative values shift them to the left.").defineInRange("effectHorizontalAdjustment", 20, -128, 128);
 
         healthDisplayStyle = builder.apply("healthDisplayStyle").comment(
             "Health display format. This affects what number is displayed on top of the tfc-style health bar",
