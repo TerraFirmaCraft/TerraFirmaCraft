@@ -678,6 +678,8 @@ DEFAULT_LANG = {
     'effect.tfc.pinned': 'Pinned',
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',
+    'effect.tfc.overburdened': 'Overburdened',
+    'effect.tfc.thirst': 'Thirst',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',

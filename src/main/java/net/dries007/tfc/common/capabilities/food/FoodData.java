@@ -6,7 +6,11 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
+import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+
+import net.dries007.tfc.util.JsonHelpers;
 
 /**
  * An immutable collection of data about a certain piece of food.
@@ -23,6 +27,38 @@ public record FoodData(int hunger, float water, float saturation, float grain, f
     public static FoodData create(int hunger, float water, float saturation, float[] nutrients, float decayModifier)
     {
         return new FoodData(hunger, water, saturation, nutrients[0], nutrients[1], nutrients[2], nutrients[3], nutrients[4], decayModifier);
+    }
+
+    public static FoodData decode(FriendlyByteBuf buffer)
+    {
+        final int hunger = buffer.readVarInt();
+        final float saturation = buffer.readFloat();
+        final float water = buffer.readFloat();
+        final float decayModifier = buffer.readFloat();
+
+        final float[] nutrition = new float[Nutrient.TOTAL];
+        for (Nutrient nutrient : Nutrient.VALUES)
+        {
+            nutrition[nutrient.ordinal()] = buffer.readFloat();
+        }
+
+        return FoodData.create(hunger, water, saturation, nutrition, decayModifier);
+    }
+
+    public static FoodData read(JsonObject json)
+    {
+        final int hunger = JsonHelpers.getAsInt(json, "hunger", 4);
+        final float saturation = JsonHelpers.getAsFloat(json, "saturation", 0);
+        final float water = JsonHelpers.getAsFloat(json, "water", 0);
+        final float decayModifier = JsonHelpers.getAsFloat(json, "decay_modifier", 1);
+
+        final float[] nutrition = new float[Nutrient.TOTAL];
+        for (Nutrient nutrient : Nutrient.VALUES)
+        {
+            nutrition[nutrient.ordinal()] = JsonHelpers.getAsFloat(json, nutrient.getSerializedName(), 0);
+        }
+
+        return FoodData.create(hunger, water, saturation, nutrition, decayModifier);
     }
 
     public static FoodData read(CompoundTag nbt)
@@ -65,5 +101,18 @@ public record FoodData(int hunger, float water, float saturation, float grain, f
         nbt.putFloat("meat", protein);
         nbt.putFloat("dairy", dairy);
         return nbt;
+    }
+
+    public void encode(FriendlyByteBuf buffer)
+    {
+        buffer.writeVarInt(hunger);
+        buffer.writeFloat(saturation);
+        buffer.writeFloat(water);
+        buffer.writeFloat(decayModifier);
+
+        for (Nutrient nutrient : Nutrient.VALUES)
+        {
+            buffer.writeFloat(nutrient(nutrient));
+        }
     }
 }

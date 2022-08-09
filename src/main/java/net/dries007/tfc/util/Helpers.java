@@ -34,6 +34,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,6 +42,7 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
@@ -83,8 +85,13 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.IItemSize;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import org.jetbrains.annotations.Nullable;
@@ -383,6 +390,36 @@ public final class Helpers
     public static Iterable<ItemStack> iterate(IItemHandler inventory)
     {
         return iterate(inventory, 0, inventory.getSlots());
+    }
+
+    /**
+     * @return 0 (well-burdened), 1 (exhausted), 2 (overburdened, add potion effect)
+     */
+    public static int countOverburdened(Container container)
+    {
+        int count = 0;
+        for (int i = 0; i < container.getContainerSize(); i++)
+        {
+            final ItemStack stack = container.getItem(i);
+            if (!stack.isEmpty())
+            {
+                IItemSize size = ItemSizeManager.get(stack);
+                if (size.getWeight(stack) == Weight.VERY_HEAVY && size.getSize(stack) == Size.HUGE)
+                {
+                    count++;
+                    if (count == 2)
+                    {
+                        return count;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public static MobEffectInstance getOverburdened(boolean visible)
+    {
+        return new MobEffectInstance(TFCEffects.OVERBURDENED.get(), 25, 0, false, visible);
     }
 
     /**

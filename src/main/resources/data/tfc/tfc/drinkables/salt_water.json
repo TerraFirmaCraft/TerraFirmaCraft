@@ -1,5 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": "tfc:salt_water",
-  "thirst": -1
+  "thirst": -1,
+  "effects": [
+    {
+      "type": "tfc:thirst",
+      "duration": 600,
+      "chance": 0.25
+    }
+  ]
 }

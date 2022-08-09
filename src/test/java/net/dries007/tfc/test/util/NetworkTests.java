@@ -141,7 +141,7 @@ public class NetworkTests extends TestHelper
     @Test
     public void testResetFoodModifier()
     {
-        final ItemStackModifier before = EmptyBowlModifier.INSTANCE;
+        final ItemStackModifier before = ResetFoodModifier.INSTANCE;
         final ItemStackModifier after = encodeAndDecode(before, ItemStackModifier::toNetwork, ItemStackModifiers::fromNetwork);
         assertEquals(before, after);
     }

@@ -650,6 +650,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.very_heavy)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
+    item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
 
     # unimplemented
     # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
@@ -788,9 +789,9 @@ def generate(rm: ResourceManager):
     # Drinkables
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
-    drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
+    drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1, effects=[{'type': 'tfc:thirst', 'duration': 600, 'chance': 0.25}])
     drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
-    drinkable(rm, 'milk', '#tfc:milks', thirst=10)
+    drinkable(rm, 'milk', '#tfc:milks', thirst=10, food={'category': 'dairy', 'hunger': 0, 'saturation': 0, 'dairy': 1.0})
 
     # Climate Ranges
 
@@ -1005,13 +1006,13 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         rm.item_tag('foods/dairy', ingredient)
 
 
-def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):
+def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None, effects: Optional[utils.Json] = None, food: Optional[utils.Json] = None):
     rm.data(('tfc', 'drinkables', name_parts), {
         'ingredient': fluid_ingredient(fluid),
         'thirst': thirst,
-        'intoxication': intoxication
-        # todo: effects
-        # todo: milk effects
+        'intoxication': intoxication,
+        'effects': effects,
+        'food': food
     })
 
 

@@ -58,6 +58,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     public static final float PASSIVE_HEALING_PER_TEN_TICKS = 20 * 0.0002f; // On the display: 1 HP / 5 seconds
     public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for all sources of exhaustion. Vanilla sources get reduced, while passive exhaustion factors in this multiplier.
     public static final float PASSIVE_EXHAUSTION_PER_TICK = MAX_HUNGER * EXHAUSTION_PER_HUNGER / (2.5f * ICalendar.TICKS_IN_DAY * EXHAUSTION_MULTIPLIER); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
+    public static final float PASSIVE_EXHAUSTION_PER_SECOND = 20 * PASSIVE_EXHAUSTION_PER_TICK;
 
     public static void replaceFoodStats(Player player)
     {

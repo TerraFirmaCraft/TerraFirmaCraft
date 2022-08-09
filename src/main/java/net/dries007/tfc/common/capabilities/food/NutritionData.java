@@ -75,10 +75,18 @@ public class NutritionData
         updateAverageNutrients(); // Only need to update the average
     }
 
+    /**
+     * Applies nutrients to the food data
+     * If the last meal you ate had hunger, and this one didn't have hunger, we will apply the meal
+     * Use case: Milk drinking. We add milk as a meal if and only if you just ate something
+     */
     public void addNutrients(FoodData data)
     {
-        records.addFirst(data);
-        calculateNutrition();
+        if (data.hunger() > 0 || records.getFirst().hunger() > 0)
+        {
+            records.addFirst(data);
+            calculateNutrition();
+        }
     }
 
     public CompoundTag writeToNbt()
@@ -119,7 +127,7 @@ public class NutritionData
             if (nextHunger < this.hungerWindow)
             {
                 // Add weighted nutrition, keep moving
-                updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] + record.nutrient(j) * record.hunger());
+                updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] + record.nutrient(j) * Math.max(record.hunger(), 1));
                 runningHungerTotal = nextHunger;
             }
             else

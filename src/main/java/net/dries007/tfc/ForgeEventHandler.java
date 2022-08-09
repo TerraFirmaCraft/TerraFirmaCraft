@@ -15,7 +15,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.level.PlayerRespawnLogic;
@@ -688,6 +687,19 @@ public final class ForgeEventHandler
         if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
+        }
+        if (!level.isClientSide() && !player.isCreative() && TFCConfig.SERVER.enableOverburdening.get() && level.getGameTime() % 20 == 0)
+        {
+            final int hugeHeavyCount = Helpers.countOverburdened(player.getInventory());
+            if (hugeHeavyCount >= 1)
+            {
+                // 25% on top of normal exhaustion
+                player.causeFoodExhaustion(TFCFoodData.PASSIVE_EXHAUSTION_PER_SECOND * 20 * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue() * 0.25f);
+            }
+            if (hugeHeavyCount == 2)
+            {
+                player.addEffect(Helpers.getOverburdened(false));
+            }
         }
     }
 

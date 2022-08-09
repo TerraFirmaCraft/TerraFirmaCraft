@@ -3,5 +3,11 @@
   "ingredient": {
     "tag": "tfc:milks"
   },
-  "thirst": 10
+  "thirst": 10,
+  "food": {
+    "category": "dairy",
+    "hunger": 0,
+    "saturation": 0,
+    "dairy": 1.0
+  }
 }
