@@ -30,8 +30,8 @@ public class TFCBushBlock extends BushBlock implements IForgeBlockExtension
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockPos blockpos = pos.below();
-        return mayPlaceOn(level.getBlockState(blockpos), level, blockpos);
+        final BlockPos below = pos.below();
+        return mayPlaceOn(level.getBlockState(below), level, below);
     }
 
     @Override

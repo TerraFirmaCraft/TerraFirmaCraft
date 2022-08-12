@@ -11,12 +11,10 @@ import java.util.Map;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -26,6 +24,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.AlloyRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -54,11 +53,11 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
             int x = (iteration % 2 == 0 ? firstColumnX : secondColumnX) + 1;
             int y = positions[Math.floorDiv(iteration, 2)] + 1;
             IRecipeSlotBuilder liquidSlot = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
-            liquidSlot.addIngredient(VanillaTypes.FLUID, new FluidStack(metal.getFluid(), 1000));
+            liquidSlot.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(metal.getFluid(), 1000));
             iteration++;
         }
 
-        fluidOutput.addIngredient(VanillaTypes.FLUID, new FluidStack(recipe.getResult().getFluid(), 1000));
+        fluidOutput.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(recipe.getResult().getFluid(), 1000));
     }
 
     @Override

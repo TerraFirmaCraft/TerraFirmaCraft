@@ -6,18 +6,17 @@
 
 package net.dries007.tfc.compat.jei.category;
 
+import net.dries007.tfc.compat.jei.JEIIntegration;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
-import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -51,14 +50,15 @@ public class RockKnappingRecipeCategory extends KnappingRecipeCategory<RockKnapp
 
     @Nullable
     @Override
-    public IDrawable getHigh(RockKnappingRecipe recipe, IRecipeSlotsView recipeSlots)
+    public IDrawable getHigh(RockKnappingRecipe recipe, IRecipeSlotsView slots)
     {
-        IRecipeSlotView inputSlot = recipeSlots.findSlotByName(ROCK_SLOT_NAME).get();
-        ItemStack displayed = inputSlot.getDisplayedIngredient(VanillaTypes.ITEM).orElse(null);
-        if (displayed == null) return blank;
-
-        ResourceLocation high = KnappingScreen.getButtonLocation(displayed.getItem(), false);
-        return helper.drawableBuilder(high, 0, 0, 16, 16).setTextureSize(16, 16).build();
+        return slots.findSlotByName(ROCK_SLOT_NAME)
+            .flatMap(slot -> slot.getDisplayedIngredient(JEIIntegration.ITEM_STACK))
+            .map(displayed -> {
+                final ResourceLocation high = KnappingScreen.getButtonLocation(displayed.getItem(), false);
+                return helper.drawableBuilder(high, 0, 0, 16, 16).setTextureSize(16, 16).build();
+            })
+            .orElse(blank);
     }
 
     @Override

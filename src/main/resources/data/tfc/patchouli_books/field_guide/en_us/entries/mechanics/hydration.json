@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "Keeping Hydrated",
-  "category": "tfc:food",
+  "category": "tfc:mechanics",
   "icon": "tfc:wooden_bucket{fluid:{\"Amount\":100,\"FluidName\":\"minecraft:water\"}}",
   "pages": [
     {

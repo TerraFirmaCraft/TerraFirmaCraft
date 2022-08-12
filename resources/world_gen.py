@@ -677,10 +677,16 @@ def generate(rm: ResourceManager):
     for crop, crop_data in CROPS.items():
         name_parts = ('plant', 'wild_crop', crop)
         name = 'tfc:wild_crop/%s' % crop
+        heightmap: Heightmap = 'world_surface_wg'
+        replaceable = decorate_replaceable()
 
         if crop_data.type == 'double' or crop_data.type == 'double_stick':
             feature = 'tfc:tall_wild_crop', {'block': name}
             name += '[part=bottom]'
+        elif crop == 'rice':  # waterlogged
+            feature = 'tfc:block_with_fluid', {'to_place': simple_state_provider(name)}
+            heightmap = 'ocean_floor_wg'
+            replaceable = decorate_shallow(1)
         else:
             feature = 'simple_block', {'to_place': simple_state_provider(name)}
 
@@ -693,7 +699,7 @@ def generate(rm: ResourceManager):
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
         rm.placed_feature(patch_feature, patch_feature, decorate_chance(30), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
-        rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(name))
+        rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), replaceable, decorate_would_survive(name))
 
     for berry, info in BERRIES.items():
         if info.type == 'spreading':

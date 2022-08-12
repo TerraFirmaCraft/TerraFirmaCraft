@@ -44,7 +44,7 @@ import static net.dries007.tfc.common.TFCItemGroup.*;
 /**
  * Collection of all TFC items.
  * Organized by {@link TFCItemGroup}
- * Unused is as the registry object fields themselves may be unused but they are required to register each item.
+ * Unused is as the registry object fields themselves may be unused, but they are required to register each item.
  * Whenever possible, avoid using hardcoded references to these, prefer tags or recipes.
  */
 @SuppressWarnings("unused")

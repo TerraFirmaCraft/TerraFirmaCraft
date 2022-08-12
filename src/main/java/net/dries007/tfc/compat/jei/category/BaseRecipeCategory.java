@@ -8,18 +8,13 @@ package net.dries007.tfc.compat.jei.category;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.RegistryObject;
 
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
@@ -30,6 +25,8 @@ import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
+import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.util.Helpers;
 
 public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
@@ -43,14 +40,18 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         return ingredient.ingredient().getMatchingFluids().stream().map(fluid -> new FluidStack(fluid, ingredient.amount())).toList();
     }
 
-    public static <T extends Item> List<ItemStack> collapse(Map<?, RegistryObject<T>> map)
-    {
-        return map.values().stream().map(reg -> new ItemStack(reg.get())).toList();
-    }
-
     public static List<ItemStack> collapse(ItemStackIngredient input)
     {
-        return Arrays.stream(input.ingredient().getItems()).map(stack -> Helpers.copyWithSize(stack, input.count())).toList();
+        return Arrays.stream(input.ingredient().getItems())
+            .map(stack -> Helpers.copyWithSize(stack, input.count()))
+            .toList();
+    }
+
+    public static List<ItemStack> collapse(List<ItemStack> inputs, ItemStackProvider output)
+    {
+        return inputs.stream()
+            .map(output::getStack)
+            .toList();
     }
 
     public static Ingredient collapse(BlockIngredient ingredient)
@@ -74,7 +75,7 @@ public abstract class BaseRecipeCategory<T> implements IRecipeCategory<T>
         this.type = type;
         this.title = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".jei." + type.getUid().getPath());
         this.background = background;
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, icon);
+        this.icon = helper.createDrawableIngredient(JEIIntegration.ITEM_STACK, icon);
         this.slot = helper.getSlotDrawable();
 
         this.fire = helper.createDrawable(ICONS, 0, 0, 14, 14);

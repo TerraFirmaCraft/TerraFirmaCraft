@@ -45,6 +45,11 @@ public final class ClientHelpers
         return Minecraft.getInstance().level;
     }
 
+    public static Level getLevelOrThrow()
+    {
+        return Objects.requireNonNull(getLevel());
+    }
+
     @Nullable
     public static Player getPlayer()
     {

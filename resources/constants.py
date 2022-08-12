@@ -1072,13 +1072,6 @@ DEFAULT_LANG = {
     'tfc.jei.anvil': 'Anvil',
     'tfc.jei.chisel': 'Chisel',
 
-    # jei tooltips
-    'tfc.jei.compost_greens': 'This item can be added to the Composter as a green item. Composters need four green and four brown items to work.',
-    'tfc.jei.compost_browns': 'This item can be added to the Composter as a brown item. Composters need four green and four brown items to work.',
-    'tfc.jei.compost_poisons': 'This item poisons compost in the Composter. This causes it to produce rotten compost.',
-    'tfc.jei.compost': 'This fertilizer is made by adding four green items and four brown items to the Composter, and waiting for a while.',
-    'tfc.jei.rotten_compost': 'This kills plants. It is made by adding compost poisons to the Composter.',
-
     'tfc.field_guide.book_name': 'TerraFirmaCraft',
     'tfc.field_guide.book_landing_text': 'Welcome traveller! This book will be the source of all you need to know as you explore the world of TerraFirmaCraft (TFC).'
 }

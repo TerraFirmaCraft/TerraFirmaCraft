@@ -9,6 +9,11 @@ from constants import ROCK_CATEGORIES, ALLOYS, lang
 import re
 
 
+NON_TEXT_FIRST_PAGE = 'NON_TEXT_FIRST_PAGE'
+PAGE_BREAK = 'PAGE_BREAK'
+EMPTY_LAST_PAGE = 'EMPTY_LAST_PAGE'
+
+
 class Component(NamedTuple):
     type: str
     x: int
@@ -102,24 +107,30 @@ class Book:
         assert not isinstance(entries, Entry), 'One entry in singleton entries, did you forget a comma after entry(), ?\n  at: %s' % str(entries)
         for i, e in enumerate(entries):
             assert not isinstance(e.pages, Page), 'One entry in singleton pages, did you forget a comma after page(), ?\n  at: %s' % str(e.pages)
+            assert len(e.pages) > 0, 'Entry must have at least one page!\n  at: %s' % str(e.name)
 
-            # Iterate through and assert that all page boundaries are enforced
-            pages = []
+            # First page must be either text or a marker that it's not
+            if e.pages[0].type == NON_TEXT_FIRST_PAGE:
+                pages = e.pages[1:]
+            else:
+                assert e.pages[0].type == 'patchouli:text', 'An entry starts with a non text() page: Patchouli uses a standard title page with text() pages when used first for each entry which should be kept.\nIf this is intentional, add a non_text_first_page() as the first page in this entry!\n  at: entry \'%s\'' % str(e.name)
+                pages = e.pages
+
             allow_empty_last_page = False
-
-            for j, p in enumerate(e.pages):
-                if p.type == 'PAGE_BREAK':
-                    assert len(pages) % 2 == 0, 'A page_break() required that the next entry must start on a new page, a page has been added that breaks this!\n  at: entry \'%s\', page break at index %d' % (str(e.name), j)
-                elif p.type == 'EMPTY_LAST_PAGE':
+            real_pages = []
+            for j, p in enumerate(pages):
+                if p.type == PAGE_BREAK:
+                    assert len(real_pages) % 2 == 0, 'A page_break() required that the next entry must start on a new page, a page has been added that breaks this!\n  at: entry \'%s\', page break at index %d' % (str(e.name), j)
+                elif p.type == EMPTY_LAST_PAGE:
                     allow_empty_last_page = True
-                    assert j == len(e.pages) - 1, 'An empty_last_page() was used but it was not the last page?\n  at: %s' % str(e.name)
+                    assert j == len(pages) - 1, 'An empty_last_page() was used but it was not the last page?\n  at: %s' % str(e.name)
                 else:
-                    pages.append(p)
+                    real_pages.append(p)
 
-            assert allow_empty_last_page or len(pages) % 2 == 0, 'An entry has an odd number of pages: this leaves a implicit empty() page at the end.\nIf this is intentional, add an empty_last_page() as the last page in this entry!\n  at: entry \'%s\'' % str(e.name)
+            assert allow_empty_last_page or len(real_pages) % 2 == 0, 'An entry has an odd number of pages: this leaves a implicit empty() page at the end.\nIf this is intentional, add an empty_last_page() as the last page in this entry!\n  at: entry \'%s\'' % str(e.name)
 
             extra_recipe_mappings = {}
-            for index, p in enumerate(e.pages):
+            for index, p in enumerate(real_pages):
                 for link in p.link_ids:
                     extra_recipe_mappings[link] = index
             if not extra_recipe_mappings:  # Exclude if there's nothing here
@@ -128,7 +139,7 @@ class Book:
             # Validate no duplicate anchors or links
             seen_anchors = set()
             seen_links = set()
-            for p in e.pages:
+            for p in real_pages:
                 if p.anchor_id:
                     assert p.anchor_id not in seen_anchors, 'Duplicate anchor "%s" on page %s' % (p.anchor_id, p)
                     seen_anchors.add(p.anchor_id)
@@ -138,7 +149,7 @@ class Book:
 
             # Separately translate each page
             entry_name = self.i18n.translate(e.name)
-            for p in pages:
+            for p in real_pages:
                 p.translate(self.i18n)
 
             self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'entries', category_res.path, e.entry_id), {
@@ -149,7 +160,7 @@ class Book:
                     'type': self.prefix(p.type) if p.custom else p.type,
                     'anchor': p.anchor_id,
                     **p.data
-                } for p in pages],
+                } for p in real_pages],
                 'advancement': e.advancement,
                 'read_by_default': True,
                 'sortnum': i if is_sorted else None,
@@ -334,12 +345,16 @@ def fertilizer(item: str, text_contents: str, n: float = 0, p: float = 0, k: flo
     return item_spotlight(item, text_contents=text_contents)
 
 
+def non_text_first_page() -> Page:
+    return page(NON_TEXT_FIRST_PAGE, {})
+
+
 def page_break() -> Page:
-    return page('PAGE_BREAK', {})
+    return page(PAGE_BREAK, {})
 
 
 def empty_last_page() -> Page:
-    return page('EMPTY_LAST_PAGE', {})
+    return page(EMPTY_LAST_PAGE, {})
 
 
 def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:

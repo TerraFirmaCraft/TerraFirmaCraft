@@ -23,6 +23,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.config.TFCConfig;
 
 public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
@@ -48,7 +49,7 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
         }
         else if (!resultFluid.isEmpty())
         {
-            outputSlot.addIngredient(VanillaTypes.FLUID, resultFluid);
+            outputSlot.addIngredient(JEIIntegration.FLUID_STACK, resultFluid);
             outputSlot.setFluidRenderer(1, false, 16, 16);
         }
     }

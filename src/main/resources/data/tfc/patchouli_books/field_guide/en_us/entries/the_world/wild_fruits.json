@@ -1,0 +1,50 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Berry Bushes",
+  "category": "tfc:the_world",
+  "icon": "tfc:food/elderberry",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$()Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Different fruit plants will grow, flower, and fruit at different times of year."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "fruit_trees",
+      "text": "",
+      "title": "Fruit Trees"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [],
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tall_bushes",
+      "text": "",
+      "title": "Tall Bushes"
+    },
+    {
+      "type": "patchouli:text",
+      "text": ""
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "small_bushes",
+      "text": "$(thing)Small Bushes$() are a type of low lying plant which spawn...",
+      "title": "Small Bushes"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Bunchberry$()",
+      "title": "Bunchberry"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 7
+}

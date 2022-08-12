@@ -19,6 +19,7 @@ class I18n:
 
     def flush(self):
         """ Updates the local translation file, if needed """
+        pass
 
 
 class ForLanguage(I18n):
@@ -26,16 +27,17 @@ class ForLanguage(I18n):
         super().__init__(lang)
         self.before = {}
         self.after = {}
-
+        self.lang_path = './lang/%s.json' % lang
+        
         # Default translation
-        if not os.path.isfile(self.lang + '.json'):
-            print('Writing default translation for language %s' % self.lang)
-            with open(self.lang + '.json', 'w', encoding='utf-8') as f:
+        if not os.path.isfile(self.lang_path):
+            print('Writing default translation for language %s to %s' % (self.lang, self.lang_path))
+            with open(self.lang_path, 'w', encoding='utf-8') as f:
                 f.write('{}\n')
 
         # Read the existing translation
-        with open(self.lang + '.json', 'r', encoding='utf-8') as f:
-            print('Reading translation for language %s' % self.lang)
+        with open(self.lang_path, 'r', encoding='utf-8') as f:
+            print('Reading translation for language %s to %s' % (self.lang, self.lang_path))
             j = json.load(f)
 
         # Parse json
@@ -55,7 +57,7 @@ class ForLanguage(I18n):
         return translated
 
     def flush(self):
-        with open(self.lang + '.json', 'w', encoding='utf-8') as f:
+        with open(self.lang_path, 'w', encoding='utf-8') as f:
             print('Writing updated translation for language %s' % self.lang)
-            json.dump(self.after, f, indent=2)
+            json.dump(self.after, f, indent=2, ensure_ascii=False)
 

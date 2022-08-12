@@ -9,7 +9,6 @@ package net.dries007.tfc.compat.jei.category;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -19,6 +18,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.CastingRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 import net.dries007.tfc.util.Metal;
 
 public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
@@ -36,7 +36,7 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
         inputItem.addIngredients(recipe.getIngredient());
-        inputLiquid.addIngredients(VanillaTypes.FLUID, collapse(recipe.getFluidIngredient()));
+        inputLiquid.addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getFluidIngredient()));
         inputLiquid.setFluidRenderer(1, false, 16, 16);
         outputItem.addItemStack(recipe.getResultItem());
     }
