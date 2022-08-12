@@ -149,51 +149,19 @@ public class TestHelper
         }
     }
 
-    public static <T> void assertCustomArrayEquals(T[] expected, T[] actual, BiConsumer<T, T> assertion)
-    {
-        assertCustomListEquals(Arrays.asList(expected), Arrays.asList(actual), assertion);
-    }
-
-    public static <T> void assertCustomListEquals(List<? extends T> expected, List<? extends T> actual, BiConsumer<T, T> assertion)
-    {
-        for (int i = 0; i < Math.min(expected.size(), actual.size()); i++)
-        {
-            assertion.accept(expected.get(i), actual.get(i));
-        }
-        if (expected.size() > actual.size())
-        {
-            fail("List is missing " + (expected.size() - actual.size()) + " expected elements");
-        }
-        if (actual.size() > expected.size())
-        {
-            fail("List contains " + (actual.size() - expected.size()) + " unexpected elements");
-        }
-    }
-
     public static void assertIngredientEquals(Ingredient expected, Ingredient actual)
     {
-        assertEquals(expected.getClass(), actual.getClass());
-        assertEquals(expected.getSerializer(), actual.getSerializer());
-        assertEquals(expected.toJson(), actual.toJson());
-
-        assertCustomArrayEquals(expected.getItems(), actual.getItems(), TestHelper::assertItemStackEquals);
+        TestAssertions.assertEquals(expected, actual);
     }
 
     public static void assertItemStackEquals(ItemStack expected, ItemStack actual)
     {
-        assertEquals(expected.getItem(), actual.getItem());
-        assertEquals(expected.getCount(), actual.getCount());
-        assertEquals(expected.getTag(), actual.getTag());
-        assertEquals(expected.toString(), actual.toString());
+        TestAssertions.assertEquals(expected, actual);
     }
 
     public static void assertRecipeEquals(Recipe<?> expected, Recipe<?> actual)
     {
-        assertEquals(expected.getClass(), actual.getClass());
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getGroup(), actual.getGroup());
-        assertItemStackEquals(expected.getResultItem(), actual.getResultItem());
-        assertCustomListEquals(expected.getIngredients(), actual.getIngredients(), TestHelper::assertIngredientEquals);
+        TestAssertions.assertEquals(expected, actual);
     }
 
     public static <R extends Recipe<?>, S extends RecipeSerializer<R>> R encodeAndDecode(R recipe, S serializer)
