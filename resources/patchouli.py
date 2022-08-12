@@ -184,7 +184,7 @@ def text(text_contents: str, title: str | None = None) -> Page:
     return page('patchouli:text', {'text': text_contents, 'title': title}, translation_keys=('text', 'title'))
 
 
-def image(*images: str, text_contents: str | None = None, border: bool = True) -> Page:
+def image(*images: str, text_contents: str | None = None, title: str = None, border: bool = True) -> Page:
     """
     :param images: An array with images to display. Images should be in resource location format. For example, the value botania:textures/gui/entries/banners.png will point to /assets/botania/textures/gui/entries/banners.png in the resource pack. For best results, make your image file 256 by 256, but only place content in the upper left 200 by 200 area. This area is then rendered at a 0.5x scale compared to the rest of the book in pixel size.
     If there's more than one image in this array, arrow buttons are shown like in the picture, allowing the viewer to switch between images.
@@ -192,7 +192,7 @@ def image(*images: str, text_contents: str | None = None, border: bool = True) -
     :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
     """
     assert all(re.match('[a-z_/.]+', i) for i in images), ('Invalid images: %s, did you mean to declare one as \'text_contents=\' ?' % str(images))
-    return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, translation_keys=('text',))
+    return page('patchouli:image', {'images': images, 'text': text_contents, 'title': title, 'border': border}, translation_keys=('text',))
 
 
 def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = 0.7, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
