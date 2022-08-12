@@ -195,15 +195,16 @@ def text(text_contents: str, title: str | None = None) -> Page:
     return page('patchouli:text', {'text': text_contents, 'title': title}, translation_keys=('text', 'title'))
 
 
-def image(*images: str, text_contents: str | None = None, border: bool = True) -> Page:
+def image(*images: str, text_contents: str | None = None, title: str = None, border: bool = True) -> Page:
     """
     :param images: An array with images to display. Images should be in resource location format. For example, the value botania:textures/gui/entries/banners.png will point to /assets/botania/textures/gui/entries/banners.png in the resource pack. For best results, make your image file 256 by 256, but only place content in the upper left 200 by 200 area. This area is then rendered at a 0.5x scale compared to the rest of the book in pixel size.
     If there's more than one image in this array, arrow buttons are shown like in the picture, allowing the viewer to switch between images.
     :param text_contents: The text to display on this page, under the image. This text can be formatted.
+    :param title: The title of the page, shown above the image.
     :param border: Defaults to false. Set to true if you want the image to be bordered, like in the picture. It's suggested that border is set to true for images that use the entire canvas, whereas images that don't touch the corners shouldn't have it.
     """
     assert all(re.match('[a-z_/.]+', i) for i in images), ('Invalid images: %s, did you mean to declare one as \'text_contents=\' ?' % str(images))
-    return page('patchouli:image', {'images': images, 'text': text_contents, 'border': border}, translation_keys=('text',))
+    return page('patchouli:image', {'images': images, 'text': text_contents, 'title': title, 'border': border}, translation_keys=('text', 'title'))
 
 
 def entity(entity_type: str, text_contents: str = None, title: str = None, scale: float = 0.7, offset: float = None, rotate: bool = None, default_rotation: float = None) -> Page:
@@ -234,13 +235,15 @@ def crafting(first_recipe: str, second_recipe: str | None = None, title: str | N
 
 # todo: other default page types: (smelting, entity, link) as we need them
 
-def item_spotlight(item: str, title: str | None = None, link_recipe: bool = False, text_contents: str | None = None) -> Page:
+def item_spotlight(item: str | Tuple[str, ...], title: str | None = None, link_recipe: bool = False, text_contents: str | None = None) -> Page:
     """
     :param item: An ItemStack String representing the item to be spotlighted.
     :param title: A custom title to show instead on top of the item. If this is empty or not defined, it'll use the item's name instead.
     :param link_recipe: Defaults to false. Set this to true to mark this spotlight page as the "recipe page" for the item being spotlighted. If you do so, when looking at pages that display the item, you can shift-click the item to be taken to this page. Highly recommended if the spotlight page has instructions on how to create an item by non-conventional means.
     :param text_contents: The text to display on this page, under the item. This text can be formatted.
     """
+    if isinstance(item, tuple):
+        item = ','.join(item)
     return page('patchouli:spotlight', {'item': item, 'title': title, 'link_recipes': link_recipe, 'text': text_contents}, translation_keys=('title', 'text'))
 
 
@@ -291,40 +294,19 @@ def multimultiblock(text_content: str, *pages) -> Page:
     return page('multimultiblock', {'text': text_content, 'multiblocks': [p.data['multiblock'] if 'multiblock' in p.data else p.data['multiblock_id'] for p in pages]}, custom=True, translation_keys=('text',))
 
 
+def leather_knapping(recipe: str, text_content: str) -> Page: return recipe_page('leather_knapping_recipe', recipe, text_content)
+def clay_knapping(recipe: str, text_content: str) -> Page: return recipe_page('clay_knapping_recipe', recipe, text_content)
+def fire_clay_knapping(recipe: str, text_content: str) -> Page: return recipe_page('fire_clay_knapping_recipe', recipe, text_content)
+def heat_recipe(recipe: str, text_content: str) -> Page: return recipe_page('heat_recipe', recipe, text_content)
+def quern_recipe(recipe: str, text_content: str) -> Page: return recipe_page('quern_recipe', recipe, text_content)
+def anvil_recipe(recipe: str, text_content: str) -> Page: return recipe_page('anvil_recipe', recipe, text_content)
+def welding_recipe(recipe: str, text_content: str) -> Page: return recipe_page('welding_recipe', recipe, text_content)
+def sealed_barrel_recipe(recipe: str, text_content: str) -> Page: return recipe_page('sealed_barrel_recipe', recipe, text_content)
+def instant_barrel_recipe(recipe: str, text_content: str) -> Page: return recipe_page('instant_barrel_recipe', recipe, text_content)
+
+
 def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:
-    return rock_knapping(*[recipe_with_category_format % c for c in ROCK_CATEGORIES], text_content=text_content)
-
-
-def rock_knapping(*recipes: str, text_content: str) -> Page:
-    return page('rock_knapping_recipe', {'recipes': recipes, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def leather_knapping(recipe: str, text_content: str) -> Page:
-    return page('leather_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def fire_clay_knapping(recipe: str, text_content: str) -> Page:
-    return page('fire_clay_knapping_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def heat_recipe(recipe: str, text_content: str) -> Page:
-    return page('heat_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def quern_recipe(recipe: str, text_content: str) -> Page:
-    return page('quern_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def anvil_recipe(recipe: str, text_content: str) -> Page:
-    return page('anvil_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
-
-
-def welding_recipe(recipe: str, text_content: str) -> Page:
-    return page('welding_recipe', {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
+    return page('rock_knapping_recipe', {'recipes': [recipe_with_category_format % c for c in ROCK_CATEGORIES], 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def alloy_recipe(title: str, alloy_name: str, text_content: str) -> Page:
@@ -355,6 +337,10 @@ def page_break() -> Page:
 
 def empty_last_page() -> Page:
     return page(EMPTY_LAST_PAGE, {})
+
+
+def recipe_page(recipe_type: str, recipe: str, text_content: str) -> Page:
+    return page(recipe_type, {'recipe': recipe, 'text': text_content}, custom=True, translation_keys=('text',))
 
 
 def page(page_type: str, page_data: JsonObject, custom: bool = False, translation_keys: Tuple[str, ...] = ()) -> Page:

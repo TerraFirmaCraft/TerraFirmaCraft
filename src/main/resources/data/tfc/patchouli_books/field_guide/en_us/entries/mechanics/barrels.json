@@ -27,15 +27,29 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels are mostly known for their ability to execute $(thing)Barrel Recipe$(). The simplest kind of barrel recipe is an $(thing)Instant Recipe$(). Barrel recipes are based on ratios of fluids to items. For example, 500mB of water is needed for each $(l:mechanics/flux)flux$() item to create 500mB of $(thing)Limewater$(). Since making Limewater is an instant recipe, having at least enough flux to convert all the present water will instantly create limewater."
+      "text": "Barrels are an important device used for mixing various fluids and items together. In order to use a $(thing)Barrel$() to craft, the barrel must be filled with the correct ratio of fluid and items required for the recipe. Depending on the recipe, it may need to be $(thing)Sealed$() for a period of time to allow the contents to transform.",
+      "title": "Crafting"
     },
     {
       "type": "patchouli:text",
-      "text": "Some barrel recipes require the barrel to be $(thing)Sealed$() for a period of time. For example, sealing $(thing)Barley Flour$() in 500mB of water for three days will make $(thing)Beer$()."
+      "text": "If the contents of a barrel does not match the ratio required for the recipe, any excess fluid or items will be lost. If the recipe is one which converts instantly, however, you will always need at least enough items to fully convert the fluid, according to the recipe."
     },
     {
-      "type": "patchouli:text",
-      "text": "A couple barrel recipes operate by mixing two fluids at a certain ratio. This is done by taking a filled bucket of one of the ingredients, and putting it in the fluid addition slot of a barrel that has the required amount of the other fluid. This is done for making $(thing)Milk Vinegar$(), where $(thing)Vinegar$() is added to $(thing)Milk$() at a 9:1 ratio. Vinegar is also added in the same ratio to $(thing)Salt Water$() to make $(thing)Brine$()."
+      "type": "tfc:instant_barrel_recipe",
+      "anchor": "limewater",
+      "recipe": "tfc:barrel/limewater",
+      "text": "$(bold)Limewater$() is made by adding $(l:mechanics/flux)Flux$() to a barrel of $(thing)Water$(). A single $(l:mechanics/flux)Flux$() is required for every $(thing) 500 mB$() of $(thing)Water$(). $(thing)Limewater$() is a reagent used in $(l:mechanics/leather_making)Leather Making$()."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tannin",
+      "recipe": "tfc:barrel/tannin",
+      "text": "$(bold)Tannin$() is an acidic fluid, made by dissolving bark from certain $(thing)Logs$() in a barrel of $(thing)Water$(). $(thing)Oak$(), $(thing)Birch$(), $(thing)Chestnut$(), $(thing)Douglas Fir$(), $(thing)Hickory$(), $(thing)Maple$(), and $()Sequoia$() are all able to be used to create $(thing)Tannin$()."
+    },
+    {
+      "type": "tfc:instant_barrel_recipe",
+      "recipe": "tfc:barrel/milk_vinegar",
+      "text": ""
     },
     {
       "type": "patchouli:text",
