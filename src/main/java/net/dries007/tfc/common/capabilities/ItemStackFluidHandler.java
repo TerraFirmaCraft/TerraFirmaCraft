@@ -84,7 +84,7 @@ public class ItemStackFluidHandler implements SimpleFluidHandler, IFluidHandlerI
     @Override
     public int fill(FluidStack fill, FluidAction action)
     {
-        if ((fluid.isEmpty() && isFluidValid(0, fill)) || fluid.isFluidEqual(fill))
+        if (isFluidValid(0, fill) && (fluid.isFluidEqual(fill) || fluid.isEmpty()))
         {
             final int filled = Math.min(capacity - fluid.getAmount(), fill.getAmount());
             final int total = fluid.getAmount() + filled;
