@@ -560,6 +560,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
             multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),)),
         )),
+        entry('size_and_weight', 'Size and Weight', 'tfc:wood/chest/kapok', pages=(
+            text('Every item has a $(thing)Size ⇲$() and $(thing)Weight \u2696$(). An item\'s size and wieght is shown on the item\'s $(thing)tooltip$(), which appears when you hover over it with your mouse.'),
+            text('Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().', title='Size ⇲'),
+            text('$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() or Placed Items can hold four.$(li)$(thing)Very Large$() items are stored alone in Pit Kilns and Placed Items.$(li)$(thing)Huge$() items do not fit in any normal storage device. They count towards overburdening.'),
+            text('$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() are Huge. $(l:mechanics/animal_husbandry#horses)Horses$() can be overburdened.', title='Overburdening'),
+            text('Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br)$(br)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().', title='Weight \u2696'),
+            empty_last_page()
+        ))
     ))
 
 
@@ -576,7 +584,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         # todo: dyes (both items, and fluids)
         # todo: loom, spindle, how to get cloth -> wool.
         # todo: scribing table, what it is, what it does
-        # todo: page on item sizes, weights, and overburdening mechanics (what does size and weight mean)
         # todo: page on milking, how to obtain milk, what drinking milk does (nutrition wise, since it's special)
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
@@ -866,7 +873,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('decay', 'Preservation', 'minecraft:rotten_flesh', pages=(
             text('In TerraFirmaCraft, no food will last forever! Food will $(thing)expire$() over time, turning rotten. Rotten food will not restore any hunger, and has the potential to give you unhelpful effects such as $(thing)Hunger$() or $(thing)Poison$()!$(br2)Fortunately, there are a number of ways to make your food last longer by $(thing)Preserving$() it.'),
             text('When you hover over a piece of food, you will see a tooltip which shows how long the food has until it will rot. It might look something like:$(br2)$(bold)$(2)Expires on: 5:30 July 5, 1000 (in 5 day(s))$()$(br2)By using various preservation mechanics, that date can be extended, giving you more time before your food roots.'),
-            text('One of the easiest ways to preserve food, is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$(), the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.', title='Vessels'),
+            text('One of the easiest ways to preserve food, is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$(), the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.', title='Vessels').anchor('small_vessels'),
             block_spotlight('', 'A Sealed Large Vessel.', 'tfc:ceramic/large_vessel[sealed=true]'),
             text('One other way to preserve certain types of food easily, is to cook it. $(thing)Meats$() will all expire slower when they are cooked than when they are raw.$(br2)It is also important to use the correct device for cooking. Certain devices that heat very hot, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() or a $(l:mechanics/crucible)Crucible$() are $(bold)bad$() for cooking food, which will make them expire faster!', title='Cooking'),
             heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it\'s lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it\'s lifetime by 1.66x!'),
