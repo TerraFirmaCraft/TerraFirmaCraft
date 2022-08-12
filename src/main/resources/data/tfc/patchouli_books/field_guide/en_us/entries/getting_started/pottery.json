@@ -133,7 +133,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/hoe_head_mold",
-      "text": "A $(thing)Hoe$(), used for planting and maintaining $(l:food/crops)Crops$()."
+      "text": "A $(thing)Hoe$(), used for planting and maintaining $(l:mechanics/crops)Crops$()."
     },
     {
       "type": "tfc:clay_knapping_recipe",
