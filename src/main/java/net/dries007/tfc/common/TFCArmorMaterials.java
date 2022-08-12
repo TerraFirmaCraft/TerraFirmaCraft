@@ -8,12 +8,14 @@ package net.dries007.tfc.common;
 
 import java.util.Locale;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PhysicalDamageType;
 
 public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multiplier
@@ -28,7 +30,7 @@ public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multi
     BLUE_STEEL(860, 960, 1088, 748, 3, 6, 8, 3, 23, 3f, 0.1f, 62.5f, 50, 50),
     RED_STEEL(884, 1020, 1010, 715, 3, 6, 8, 3, 23, 3f, 0.1f, 50, 62.5f, 50);
 
-    private final String serializedName;
+    private final ResourceLocation serializedName;
     private final int feetDamage;
     private final int legDamage;
     private final int chestDamage;
@@ -46,7 +48,7 @@ public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multi
 
     TFCArmorMaterials(int feetDamage, int legDamage, int chestDamage, int headDamage, int feetReduction, int legReduction, int chestReduction, int headReduction, int enchantability, float toughness, float knockbackResistance, float crushingModifier, float piercingModifier, float slashingModifier)
     {
-        this.serializedName = name().toLowerCase(Locale.ROOT);
+        this.serializedName = Helpers.identifier(name().toLowerCase(Locale.ROOT));
         this.feetDamage = feetDamage;
         this.legDamage = legDamage;
         this.chestDamage = chestDamage;
@@ -119,8 +121,19 @@ public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multi
         return TFCSounds.ARMOR_EQUIP.get(this).get();
     }
 
+    /**
+     * Use {@link #getId()} because it doesn't have weird namespaced side effects.
+     */
     @Override
+    @Deprecated
     public String getName()
+    {
+        // Note that in HumanoidArmorLayer, the result of getName() is used directly in order to infer the armor texture location
+        // So, this needs to be properly namespaced despite being a string.
+        return serializedName.toString();
+    }
+
+    public ResourceLocation getId()
     {
         return serializedName;
     }
