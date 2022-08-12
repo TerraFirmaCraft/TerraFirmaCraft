@@ -174,8 +174,12 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         final ClimateRange range = climateRange.get();
         final BlockPos sourcePos = pos.below();
 
-        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+
+        level.getBlockEntity(sourcePos, TFCBlockEntities.FARMLAND.get())
+            .or(() -> level.getBlockEntity(sourcePos.below(), TFCBlockEntities.FARMLAND.get())) // For 2-tall crops
+            .ifPresent(farmland -> farmland.addHoeOverlayInfo(level, farmland.getBlockPos(), text, false, true));
 
         level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
             .ifPresent(crop -> {

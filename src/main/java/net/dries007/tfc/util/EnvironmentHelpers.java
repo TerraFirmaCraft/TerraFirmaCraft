@@ -193,8 +193,10 @@ public final class EnvironmentHelpers
         if (isSnow(state) && state.getValue(SnowLayerBlock.LAYERS) < 7)
         {
             // Snow and snow layers can accumulate snow
-            final BlockState newState = state.setValue(SnowLayerBlock.LAYERS, state.getValue(SnowLayerBlock.LAYERS) + 1);
-            if (newState.canSurvive(level, pos))
+            // The chance that this works is reduced the higher the pile is
+            final int currentLayers = state.getValue(SnowLayerBlock.LAYERS);
+            final BlockState newState = state.setValue(SnowLayerBlock.LAYERS, currentLayers + 1);
+            if (newState.canSurvive(level, pos) && random.nextInt(1 + 3 * currentLayers) == 0)
             {
                 level.setBlock(pos, newState, 3);
             }
