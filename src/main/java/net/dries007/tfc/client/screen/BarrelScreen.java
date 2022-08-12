@@ -94,7 +94,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                     font.draw(poseStack, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040);
                 }
             }
-            String date = ICalendar.getTimeAndDate(blockEntity.getSealedTick(), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
+            String date = ICalendar.getTimeAndDate(Calendars.CLIENT.ticksToCalendarTicks(blockEntity.getSealedTick()), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
             font.draw(poseStack, date, imageWidth / 2f - font.width(date) / 2f, 74, 0x404040);
         }
     }
