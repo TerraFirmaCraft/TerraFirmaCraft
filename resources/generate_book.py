@@ -29,6 +29,12 @@ Where <lang> is your language, i.e. en_us. This will do several things
 - It SHOULD NOT document bugs, unintentional features, exploits, or ANYTHING that might be resolved at a later date (i.e. 'Dont let a glow squid escape water, or your game may crash')
 - It SHOULD NOT make explicit or implicit reference to other mod or addon mechanics (i.e. 'Food preservation can be done with ... or if you have TFC Tech, with a freezer')
 
+Other writing guides (these are enforced by resource generation):
+
+- All entries SHOULD begin with a text() page, as Patchouli creates a standardized title page for the entry when done this way.
+- All entries SHOULD have an even number of pages, as it prevents adding additional implicit empty() pages at the end of the entry.
+- It MAY use page_break() to enforce that specific pages are grouped together
+
 All the documentation on entry(), category(), all the book page functions, are copied from the Patchouli documentation, found here:
 https://vazkiimods.github.io/Patchouli/docs/reference/overview
 
@@ -325,7 +331,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('wild_fruits', 'Berry Bushes', 'tfc:food/elderberry', pages=(
             # Wild fruits
             text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$()Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
-            text('Different fruit plants will grow, flower, and fruit in a differ'),  # todo: finish
+            text('Different fruit plants will grow, flower, and fruit at different times of year.'),  # todo: finish
             page_break(),
             text('', title='Fruit Trees').anchor('fruit_trees'),
             image(),  # todo: image of fruit tree in the world, or a sophisticated multiblock
@@ -387,6 +393,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             empty_last_page(),
         )),
         entry('food_and_water', 'Food and Water', '', pages=(
+            text('Food and water...'),
+            empty_last_page(),
             # todo: overview of how hunger and saturation works in tfc page
             # todo: overview of water, thirst and drinking
             # todo: overview of player nutrition and it's effects
@@ -556,6 +564,20 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
 
 
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
+        # Possible new entries
+        # todo: page about scraping, tanning, leatherworking.
+        # todo: page about bricks, mortar, limewater, basically a "advanced building materials" page
+        # todo: tutorial page about how to make sandwiches, and their nutrients
+        # todo: tutorial page about how to make salads, and their nutrients
+        # todo: page about wooden buckets
+        # todo: grains, grain preservation, and breadmaking page.
+        # todo: armor page - both leather and metal
+        # todo: weapons and damage types (crushing, slashing, piercing), mention entity resistances.
+        # todo: dyes (both items, and fluids)
+        # todo: loom, spindle, how to get cloth -> wool.
+        # todo: scribing table, what it is, what it does
+        # todo: page on item sizes, weights, and overburdening mechanics (what does size and weight mean)
+        # todo: page on milking, how to obtain milk, what drinking milk does (nutrition wise, since it's special)
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
             text('Livestock experience $(thing)aging$(). They are born as babies, which are smaller and cannot provide things for the player. After a certain amount of days, they grow into $(thing)adult$() animals, which are able to do things like breed or produce milk. After they breed or are used enough times, animals become $(thing)old$(), and are only useful for their meat.'),
@@ -704,6 +726,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Right-clicking a Prospector\'s Pick on a block will report finding one of these possible results:$(br)$(li)Nothing (may be false)$(li)Traces$(li)A Small Sample$(li)A Medium Sample$(li)A Large Sample$(li)A Very Large Sample$(br2)Very large samples indicate at least eighty and potentially many more blocks.'),
         )),
         entry('bloomery', 'Bloomery', 'tfc:bloomery', pages=(
+            # todo: make this start with a text page overview.
+            non_text_first_page(),
             crafting('tfc:crafting/bloomery', text_contents='The $(thing)Bloomery$() is a device used to smelt $(thing)Iron Ore$() into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)hematite$(), $(l:the_world/ores_and_minerals#limonite)limonite$(), and $(l:the_world/ores_and_minerals#magnetite)magnetite$(). You may notice that these ores seem to melt into $(thing)cast iron$(). This is where the bloomery comes in handy.'),
             multiblock('A Bloomery', 'A minimum size bloomery. The bloomery block can be open and shut with $(item)$(k:key.use)$().', True, multiblock_id='tfc:bloomery'),
             text('The bloomery can contain up to 24 $(thing)iron ore$() and 24 $(l:mechanics/charcoal_pit)charcoal$(), with 8 of each item per additional layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br)$(br)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form.'),
@@ -814,7 +838,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             quern_recipe('tfc:quern/fluxstone', 'Some rocks - $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$() - can also be used as flux, after being ground in a $(l:mechanics/quern)Quern$(). Other items, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$(), can all also be used to create flux.'),
         )),
         entry('lamps', 'Lamps and Candles', 'tfc:metal/lamp/bismuth_bronze', pages=(
-            # add a text page at the start
+            # todo: add a text page at the start
+            non_text_first_page(),
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
             text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
             quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.'),

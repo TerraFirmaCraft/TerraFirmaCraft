@@ -46,6 +46,10 @@ public abstract class DelegateIngredient extends Ingredient
             if (delegate != null)
             {
                 cachedItemStacks = Arrays.stream(delegate.getItems())
+                    // When these item stacks get initialized, they tend to lack capabilities, since they are created during resource loading
+                    // We force them to copy here which *should*, if this is called late enough, cause the capabilities to be present
+                    // This is needed for almost all delegate ingredients, which are querying a capability underneath the hood.
+                    .map(ItemStack::copy)
                     .map(this::testDefaultItem)
                     .filter(Objects::nonNull)
                     .toArray(ItemStack[]::new);

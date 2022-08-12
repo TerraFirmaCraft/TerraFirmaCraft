@@ -3,7 +3,7 @@
   "type": "tfc:barrel_instant",
   "input_item": {
     "ingredient": {
-      "tag": "tfc:soup_bowls"
+      "tag": "tfc:soups"
     }
   },
   "input_fluid": {

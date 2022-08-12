@@ -14,6 +14,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
@@ -45,13 +47,29 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             // Assumes that input -> onSeal -> onUnseal apply and reverse a transformation, so we only need to show the intermediate, sealed, state.
             final List<ItemStack> inputItem = collapse(recipe.getInputItem());
             final List<ItemStack> intermediateItem = collapse(inputItem, recipe.getOnSeal());
+            final List<ItemStack> outputItem = collapse(inputItem, recipe.getOutputItem());
 
             final IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5);
             intermediateSlot.addItemStacks(intermediateItem);
             intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, Helpers.translatable("tfc.tooltip.while_sealed_description").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
 
+            // Note that the output item might be empty as parsed by the super() call, so we need to re-check it.
+            if ((outputItem.isEmpty() || outputItem.stream().allMatch(ItemStack::isEmpty)) && recipe.getOnUnseal() != null)
+            {
+                // Re-do the output items, but this time collapsing from the intermediate slot
+                if (outputItemSlot == null)
+                {
+                    final int[] positions = slotPositions(recipe);
+                    final FluidStack outputFluid = recipe.getOutputFluid();
+                    outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.isEmpty() ? positions[2] : positions[3], 5).setSlotName(ITEM_OUTPUT);
+                }
+
+                final List<ItemStack> outputFromIntermediate = collapse(intermediateItem, recipe.getOnUnseal());
+                outputItemSlot.addItemStacks(outputFromIntermediate);
+            }
+
             // Create a link between all item slots if the seal behavior depends on the input
-            if (recipe.getOnSeal().dependsOnInput())
+            if (recipe.getOnSeal().dependsOnInput() && inputItemSlot != null && outputItemSlot != null)
             {
                 builder.createFocusLink(intermediateSlot, inputItemSlot, outputItemSlot);
             }

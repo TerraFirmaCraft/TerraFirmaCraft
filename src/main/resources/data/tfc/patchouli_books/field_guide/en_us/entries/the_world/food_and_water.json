@@ -3,7 +3,12 @@
   "name": "Food and Water",
   "category": "tfc:the_world",
   "icon": "",
-  "pages": [],
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Food and water..."
+    }
+  ],
   "read_by_default": true,
   "sortnum": 9
 }

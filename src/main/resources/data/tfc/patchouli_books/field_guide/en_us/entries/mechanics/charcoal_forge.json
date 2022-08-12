@@ -51,18 +51,6 @@
       "enable_visualize": false
     },
     {
-      "type": "patchouli:text",
-      "text": "Forges need to be well-ventilated to work. Either they should be able to see the sky directly, or be connected horizontally to a block that can, as in the photo. Forges can reach higher temperatures with a $(l:mechanics/bellows)bellows$(), placed horizontally from the open block above the forge. Chimneys are useful, because forges will go out in the rain"
-    },
-    {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/tutorial/forge_chimney.png"
-      ],
-      "text": "A forge with a valid chimney setup.",
-      "border": true
-    },
-    {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/charcoal_forge.png"

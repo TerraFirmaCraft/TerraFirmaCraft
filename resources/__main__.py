@@ -19,32 +19,31 @@ def main():
         'data',  # only data.py
         'recipes',  # only recipes.py
         'worldgen',  # only world gen data (excluding tags)
-        'hotswap',  # generate and hotswap all resources (assets / data)
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Used for \'book\'')
     parser.add_argument('--local', type=str, default=None, help='Used for \'book\'')
-    parser.add_argument('--hotswap', type=str, default='./out/production/resources', help='Used for \'hotswap\'')
+    parser.add_argument('--hotswap', action='store_true', dest='hotswap', help='Causes resource generation to also generate to --hotswap-dir')
+    parser.add_argument('--hotswap-dir', type=str, default='./out/production/resources', help='Used for \'--hotswap\'')
 
     args = parser.parse_args()
+    hotswap = args.hotswap_dir if args.hotswap else None
 
     for action in args.actions:
         if action == 'clean':
             clean()
         elif action == 'all':
-            resources(do_assets=True, do_data=True, do_recipes=True, do_worldgen=True)
+            resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True)
         elif action == 'assets':
-            resources(do_assets=True)
+            resources(hotswap=hotswap, do_assets=True)
         elif action == 'data':
-            resources(do_data=True)
+            resources(hotswap=hotswap, do_data=True)
         elif action == 'recipes':
-            resources(do_recipes=True)
+            resources(hotswap=hotswap, do_recipes=True)
         elif action == 'worldgen':
-            resources(do_worldgen=True)
-        elif action == 'hotswap':
-            resources(dest=args.hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True)
+            resources(hotswap=hotswap, do_worldgen=True)
         elif action == 'book':
             import generate_book
             generate_book.main(translate_lang=args.translate, local_minecraft_dir=args.local)
@@ -68,9 +67,14 @@ def clean():
     print('Clean Aborted')
 
 
-def resources(dest: str = './src/main/resources', do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False):
+def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False):
     """ Generates resource files, or a subset of them """
+    resources_at('./src/main/resources', do_assets, do_data, do_recipes, do_worldgen)
+    if hotswap:
+        resources_at(hotswap, do_assets, do_data, do_recipes, do_worldgen)
 
+
+def resources_at(dest: str, do_assets: bool, do_data: bool, do_recipes: bool, do_worldgen: bool):
     rm = ResourceManager('tfc', resource_dir=dest)
 
     # do simple lang keys first, because it's ordered intentionally

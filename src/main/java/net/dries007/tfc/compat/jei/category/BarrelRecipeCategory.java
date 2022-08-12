@@ -81,7 +81,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
             outputFluidSlot.setFluidRenderer(1, false, 16, 16);
         }
 
-        if (!outputItem.isEmpty())
+        if (!outputItem.isEmpty() && !outputItem.stream().allMatch(ItemStack::isEmpty))
         {
             outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.isEmpty() ? positions[2] : positions[3], 5).setSlotName(ITEM_OUTPUT);
             outputItemSlot.addItemStacks(outputItem);
@@ -89,7 +89,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
 
         // Link inputs and outputs when focused
         // Only dependent if the item stack provider output internally depends on the input
-        if (recipe.getOutputItem().dependsOnInput())
+        if (recipe.getOutputItem().dependsOnInput() && inputItemSlot != null && outputItemSlot != null)
         {
             builder.createFocusLink(inputItemSlot, outputItemSlot);
         }
