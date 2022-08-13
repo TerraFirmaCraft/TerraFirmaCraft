@@ -328,14 +328,16 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
             ))
         )),
-        entry('wild_fruits', 'Berry Bushes', 'tfc:food/elderberry', pages=(
+        entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
             # Wild fruits
             text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$()Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
-            text('Different fruit plants will grow, flower, and fruit at different times of year.'),  # todo: finish
+            text('Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit, with no two being the same. Fruit plants can die, as well: of old age, and of improper climate conditions.'),
             page_break(),
-            text('', title='Fruit Trees').anchor('fruit_trees'),
-            image(),  # todo: image of fruit tree in the world, or a sophisticated multiblock
-            # todo: blurb on how to harvest and farm fruit trees in general
+            text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
+            image('tfc:textures/gui/book/tutorial/fruit_tree.png', text_contents='A typical fruit tree.'),
+            text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
+            multimultiblock('Harvesting a fruiting leaf is as simple as $(item)$(k:key.use)$().', *[block_spotlight('', '', 'tfc:plant/lemon_leaves[lifecycle=%s]' % life) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]),
+            page_break(),
             # todo: blurb on all fruit tree species
             page_break(),
             text('', title='Tall Bushes').anchor('tall_bushes'),

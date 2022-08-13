@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -86,13 +87,19 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
 
     public GrowingFruitTreeBranchBlock(ExtendedProperties properties, Supplier<? extends Block> body, Supplier<? extends Block> leaves, Supplier<ClimateRange> climateRange)
     {
-        super(properties);
+        super(properties, climateRange);
 
         this.body = body;
         this.leaves = leaves;
         this.climateRange = climateRange;
 
         registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, true).setValue(STAGE, 0));
+    }
+
+    @Override
+    public void addExtraInfo(List<Component> text)
+    {
+        text.add(Helpers.translatable("tfc.tooltip.fruit_tree.growing"));
     }
 
     public void grow(BlockState state, ServerLevel level, BlockPos pos, Random random, int cyclesLeft)

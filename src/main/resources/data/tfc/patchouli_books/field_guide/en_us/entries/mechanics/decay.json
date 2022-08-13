@@ -14,6 +14,7 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "small_vessels",
       "text": "One of the easiest ways to preserve food, is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$(), the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.",
       "title": "Vessels"
     },

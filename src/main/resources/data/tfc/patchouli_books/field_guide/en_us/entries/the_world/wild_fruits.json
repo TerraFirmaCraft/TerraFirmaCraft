@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Berry Bushes",
+  "name": "Wild Fruits",
   "category": "tfc:the_world",
   "icon": "tfc:food/elderberry",
   "pages": [
@@ -10,18 +10,83 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Different fruit plants will grow, flower, and fruit at different times of year."
+      "text": "Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit, with no two being the same. Fruit plants can die, as well: of old age, and of improper climate conditions."
     },
     {
       "type": "patchouli:text",
       "anchor": "fruit_trees",
-      "text": "",
+      "text": "$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.",
       "title": "Fruit Trees"
     },
     {
       "type": "patchouli:image",
-      "images": [],
+      "images": [
+        "tfc:textures/gui/book/tutorial/fruit_tree.png"
+      ],
+      "text": "A typical fruit tree.",
       "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "Harvesting a fruiting leaf is as simple as $(item)$(k:key.use)$().",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=dormant]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=healthy]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=flowering]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=fruiting]"
+          }
+        }
+      ]
     },
     {
       "type": "patchouli:text",
