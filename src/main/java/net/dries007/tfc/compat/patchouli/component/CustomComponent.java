@@ -7,6 +7,9 @@
 package net.dries007.tfc.compat.patchouli.component;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
@@ -17,10 +20,12 @@ import net.minecraft.ResourceLocationException;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Registry;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -28,6 +33,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
+import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -78,36 +85,75 @@ public abstract class CustomComponent implements ICustomComponent
         RenderSystem.setShaderTexture(0, PatchouliIntegration.TEXTURE);
     }
 
-    protected void renderFluidStack(PoseStack stack, FluidStack fluid, int x, int y)
+    /**
+     * Same code flow as {@link IComponentRenderContext#renderIngredient(PoseStack, int, int, int, int, Ingredient)} but with
+     */
+    protected void renderItemStacks(IComponentRenderContext context, PoseStack stack, int x, int y, int mouseX, int mouseY, List<ItemStack> stacks)
+    {
+        if (stacks.size() > 0)
+        {
+            context.renderItemStack(stack, x, y, mouseX, mouseY, stacks.get((context.getTicksInBook() / 20) % stacks.size()));
+        }
+    }
+
+    protected void renderFluidStacks(IComponentRenderContext context, PoseStack stack, int x, int y, int mouseX, int mouseY, List<FluidStack> fluids)
+    {
+        if (fluids.size() > 0)
+        {
+            renderFluidStack(context, stack, x, y, mouseX, mouseY, fluids.get((context.getTicksInBook() / 20) % fluids.size()));
+        }
+    }
+
+    protected void renderFluidStack(IComponentRenderContext context, PoseStack stack, int x, int y, int mouseX, int mouseY, FluidStack fluid)
     {
         if (!fluid.isEmpty())
         {
             final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(fluid);
             GuiComponent.blit(stack, x, y, 0, 16, 16, sprite);
+
+            if (context.isAreaHovered(mouseX, mouseY, x, y, 16, 16))
+            {
+                final List<Component> tooltip = new ArrayList<>(1);
+                Helpers.addFluidStackTooltipInfo(fluid, tooltip);
+                context.setHoverTooltipComponents(tooltip);
+            }
         }
+    }
+
+    protected List<ItemStack> unpackItemStackIngredient(ItemStackIngredient ingredient)
+    {
+        return Arrays.stream(ingredient.ingredient().getItems())
+            .map(stack -> Helpers.copyWithSize(stack, ingredient.count()))
+            .toList();
+    }
+
+    protected List<FluidStack> unpackFluidStackIngredient(FluidStackIngredient ingredient)
+    {
+        return ingredient.ingredient().getMatchingFluids()
+            .stream()
+            .map(fluid -> new FluidStack(fluid, ingredient.amount()))
+            .toList();
     }
 
     @SuppressWarnings("unchecked")
     protected <T extends Recipe<?>> Optional<T> asRecipe(String variable, RecipeType<T> type)
     {
         return asResourceLocation(variable)
-            .flatMap(e -> {
-                final Level level = ClientHelpers.getLevel();
-                assert level != null;
-                return level.getRecipeManager().byKey(e)
-                    .flatMap(recipe -> {
-                        if (recipe.getType() != type)
-                        {
-                            LOGGER.error("The recipe {} of type {} is not of type {}", e, Registry.RECIPE_TYPE.getKey(recipe.getType()), type);
-                            return Optional.empty();
-                        }
-                        return Optional.of((T) recipe);
-                    })
-                    .or(() -> {
-                        LOGGER.error("No recipe of type {} named {} ", Registry.RECIPE_TYPE.getKey(type), e);
+            .flatMap(e -> ClientHelpers.getLevelOrThrow()
+                .getRecipeManager()
+                .byKey(e)
+                .flatMap(recipe -> {
+                    if (recipe.getType() != type)
+                    {
+                        LOGGER.error("The recipe {} of type {} is not of type {}", e, Registry.RECIPE_TYPE.getKey(recipe.getType()), type);
                         return Optional.empty();
-                    });
-            });
+                    }
+                    return Optional.of((T) recipe);
+                })
+                .or(() -> {
+                    LOGGER.error("No recipe of type {} named {} ", Registry.RECIPE_TYPE.getKey(type), e);
+                    return Optional.empty();
+                }));
     }
 
     protected Optional<ResourceLocation> asResourceLocation(String variable)

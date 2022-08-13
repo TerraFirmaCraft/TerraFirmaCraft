@@ -62,20 +62,19 @@ Simply copy the /assets/tfc/textures/gui/book directory from /src/ into a differ
 In addition, here's some useful things for dev work, and also making standardized images:
 
 - Images of scenery are taken in screenshots, a square section is copied and downsized to 400 x 400, and then placed in the top left corner of a 512 x 512 image
-- Images of guis are taken in screenshots, then JUST THE GUI (so erase all those little pixels in the corner) is copied out. A 256 x 256 image is used, and the gui is placed horizontally centered on the FIRST 200 PIXELS (so a 176 pixel wide gui image is placed with 12 blank pixels to it's left). Make the inventory clean, but also believable (i.e. if you were just talking about items X, Y, Z, have those items in your inventory. Don't make the inventory a focal point of the image.
+- Images of guis are taken in screenshots, then JUST THE GUI (so erase all those little pixels in the corner) is copied out. A 256 x 256 image is used, and the gui is placed horizontally centered on the FIRST 200 PIXELS (so a 176 pixel wide gui image is placed with 12 blank pixels to it's left).
+- Make the inventory clean, but also believable (i.e. if you were just talking about items X, Y, Z, have those items in your inventory. Don't make the inventory a focal point of the image.
+- DO NOT include the book item in your inventory in screenshots! It is unobtainable in survival!
 - For multiple images in the same location, i.e. to show a sort of 'animated' style, use /tp @p x y z pitch yaw to get an exact positioning before taking screenshots.
 
 """
 
-import os
-
 from argparse import ArgumentParser
-from typing import Tuple
+
 from mcresources.type_definitions import ResourceIdentifier
 
 from constants import CROPS, METALS, FRUITS, BERRIES
 from patchouli import *
-from i18n import I18n
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
@@ -138,6 +137,8 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
     book.template('heat_recipe', custom_component(0, 0, 'HeatingComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('anvil_recipe', custom_component(0, 0, 'AnvilComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('welding_recipe', custom_component(0, 0, 'WeldingComponent', {'recipe': '#recipe'}), text_component(0, 45))
+    book.template('sealed_barrel_recipe', custom_component(0, 0, 'SealedBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
+    book.template('instant_barrel_recipe', custom_component(0, 0, 'InstantBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
 
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
@@ -604,7 +605,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
 
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
         # Possible new entries
-        # todo: page about scraping, tanning, leatherworking.
         # todo: page about bricks, mortar, limewater, basically a "advanced building materials" page
         # todo: tutorial page about how to make sandwiches, and their nutrients
         # todo: tutorial page about how to make salads, and their nutrients
@@ -612,7 +612,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         # todo: grains, grain preservation, and breadmaking page.
         # todo: armor page - both leather and metal
         # todo: weapons and damage types (crushing, slashing, piercing), mention entity resistances.
-        # todo: dyes (both items, and fluids)
+        # todo: dyes (both items, and fluids) - just add on to the barrels page maybe? or link?
         # todo: loom, spindle, how to get cloth -> wool.
         # todo: scribing table, what it is, what it does
         # todo: page on milking, how to obtain milk, what drinking milk does (nutrition wise, since it's special)
@@ -658,6 +658,17 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             entity('tfc:mule', 'A mule.', '', scale=1),
             text('$(thing)Horses$() spawn in plains with a $(l:the_world/climate#temperature)temperature$() of at least -15°C, and a $(l:the_world/climate#rainfall)rainfall$() of between 130 and 400mm. They are a kind of $(l:mechanics/animal_husbandry#horses)Horse(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Horses').anchor('horse'),
             entity('tfc:horse', 'A horse.', '', scale=1),
+        )),
+        entry('leather_making', 'Leather Making', 'minecraft:leather', pages=(
+            # todo: link to armor page
+            text('$(thing)Leather$() is a sturdy material formed from animal hides. It is required to craft $(thing)Leather Armor$(), $(thing)Saddles$(), or a $(l:mechanics/bellows)Bellows$(). $()Raw Hides$() must be treated through several processes: $(l:mechanics/leather_making#soaking)soaking$(), $(l:mechanics/leather_making#scraping)scraping$(), $(l:mechanics/leather_making#preparing)preparing$(), and $(l:mechanics/leather_making#tanning)tanning$(), in order to turn them into durable and sturdy $(thing)Leather$().'),
+            item_spotlight(('tfc:small_raw_hide', 'tfc:medium_raw_hide', 'tfc:large_raw_hide'), title='Raw Hide', text_contents='To get started you will first need to obtain $(thing)Raw Hide$(), which is dropped when slaughtering many different $(l:the_world/wild_animals)Animals$(). Different animals will drop different sizes of $(thing)Raw Hide$().'),
+            text('Leather making will require several materials and tools. You will need:$(br)$(li)$(l:mechanics/barrels#limewater)Limewater$(), a solution of $(l:mechanics/flux)Flux$() in $(thing)Water$()$(li)Water$(li)$(l:mechanics/barrels#tannin)Tannin$(), an acidic solution made from the bark of some trees.$(li)And some $(thing)Raw Hides$()$(br2)With all that ready, you are ready to begin the leather working process.'),
+            sealed_barrel_recipe('tfc:barrel/medium_soaked_hide', 'First, raw hides must be $(thing)soaked$(), in order to clean them, and remove any unwanted material before processing. This can be done by sealing some $(thing)Raw Hide$() in a $(l:mechanics/barrels#limewater)Barrel of Limewater$(), for at least eight hours.').anchor('soaking'),
+            item_spotlight(('tfc:small_scraped_hide', 'tfc:medium_scraped_hide', 'tfc:large_scraped_hide'), link_recipe=True, title='Scraping', text_contents='After soaking, $(thing)Soaked Hides$() must be scraped, which removes any excess material that was loosened up during the soaking. In order to scrape hides, place the hide on the side of a $(thing)Log$(). Then, with a $(thing)Knife$(), $(item)$(k:key.use)$() on each part of the hide, and you will see it start to change texture.').anchor('scraping'),
+            image(*['tfc:textures/gui/book/tutorial/soaked_hide_%d.png' % i for i in range(1, 1 + 4)], text_contents='Once the hide is fully scraped, it can be broken to pick up a $(thing)Scraped Hide$()'),
+            sealed_barrel_recipe('tfc:barrel/medium_prepared_hide', 'After scraping, $(thing)Scraped Hides$() must be sealed in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$(), for at least eight hours, for one final cleaning before tanning.').anchor('preparing'),
+            sealed_barrel_recipe('tfc:barrel/medium_leather', 'Finally, $(thing)Prepared Hides$() must be sealed in a $(l:mechanics/barrels#tannin)Barrel of Tannin$(), which is an acidic chemical compound that helps to convert the hide to $(thing)Leather$(). After another eight hours, you will be able to remove the $(thing)Leather$() from the barrel.').anchor('tanning'),
         )),
         entry('panning', 'Panning', 'tfc:pan/empty', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need a empty pan.').link('#tfc:ore_deposits'),
@@ -894,8 +905,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image('tfc:textures/gui/book/gui/barrel.png', text_contents='The barrel interface.', border=False),
             text('Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand also toggles the seal.'),
             text('$(li)Barrels can be filled by clicking an empty one on a fluid block in the world.$()$(li)Barrels will slowly fill up with water in the rain$()$(li)Icicles melting above barrels also adds water to them$()$(li)Sealing a barrel will eject items that are not in the center slot.$()', 'Barrel Tips'),
-            text('Barrels are mostly known for their ability to execute $(thing)Barrel Recipe$(). The simplest kind of barrel recipe is an $(thing)Instant Recipe$(). Barrel recipes are based on ratios of fluids to items. For example, 500mB of water is needed for each $(l:mechanics/flux)flux$() item to create 500mB of $(thing)Limewater$(). Since making Limewater is an instant recipe, having at least enough flux to convert all the present water will instantly create limewater.'),
-            text('Some barrel recipes require the barrel to be $(thing)Sealed$() for a period of time. For example, sealing $(thing)Barley Flour$() in 500mB of water for three days will make $(thing)Beer$().'),
+            text('Barrels are an important device used for mixing various fluids and items together. In order to use a $(thing)Barrel$() to craft, the barrel must be filled with the correct ratio of fluid and items required for the recipe. Depending on the recipe, it may need to be $(thing)Sealed$() for a period of time to allow the contents to transform.', title='Crafting'),
+            text('If the contents of a barrel does not match the ratio required for the recipe, any excess fluid or items will be lost. If the recipe is one which converts instantly, however, you will always need at least enough items to fully convert the fluid, according to the recipe.'),
+            instant_barrel_recipe('tfc:barrel/limewater', '$(bold)Limewater$() is made by adding $(l:mechanics/flux)Flux$() to a barrel of $(thing)Water$(). A single $(l:mechanics/flux)Flux$() is required for every $(thing) 500 mB$() of $(thing)Water$(). $(thing)Limewater$() is a reagent used in $(l:mechanics/leather_making)Leather Making$(), and is used to make $(thing)Mortar$().').anchor('limewater'),
+            sealed_barrel_recipe('tfc:barrel/tannin', '$(bold)Tannin$() is an acidic fluid, made by dissolving bark from certain $(thing)Logs$() in a barrel of $(thing)Water$(). $(thing)Oak$(), $(thing)Birch$(), $(thing)Chestnut$(), $(thing)Douglas Fir$(), $(thing)Hickory$(), $(thing)Maple$(), and $()Sequoia$() are all able to be used to create $(thing)Tannin$().').anchor('tannin'),
             text('A couple barrel recipes operate by mixing two fluids at a certain ratio. This is done by taking a filled bucket of one of the ingredients, and putting it in the fluid addition slot of a barrel that has the required amount of the other fluid. This is done for making $(thing)Milk Vinegar$(), where $(thing)Vinegar$() is added to $(thing)Milk$() at a 9:1 ratio. Vinegar is also added in the same ratio to $(thing)Salt Water$() to make $(thing)Brine$().'),
             text('Barrels have the ability to cool $(l:mechanics/heating)hot$() items. Put a hot item in a barrel of $(thing)Water$(), $(thing)Olive Oil$(), or $(thing)Salt Water$(), and it will quickly bring its temperature lower.'),
             text('Barrels have the ability to $(thing)Dye$() and $(thing)Bleach$() items. Dye fluids are made by boiling a single dye item in a $(l:mechanics/pot)Pot$(). Most color-able things, like carpet, candles, and $(l:getting_started/building_materials#alabaster)Alabaster$() can be dyed by sealing them in a barrel of dye. Dyed items can also be bleached by sealing them in a barrel of $(thing)Lye$(). Lye is made by boiling $(thing)Wood Ash$(), a product of breaking $(l:getting_started/firepit)Firepits$(), in a $(l:mechanics/pot)Pot$() of Water.'),
