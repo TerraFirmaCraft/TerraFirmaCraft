@@ -31,8 +31,18 @@
       "text": "Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand."
     },
     {
+      "type": "patchouli:text",
+      "text": "Saplings can also be placed on the first 'elbow' sections a fruit tree produces, places where the branch is attached to one side and upwards. This allows one fruit tree to grow multiple fruits. Breaking these elbows with a $(thing)Axe$() also yields saplings. Harvesting a fruit tree leaf is done with $(item)$(k:key.use)$() when the fruit tree is at its fruiting stage. This will give one fruit, and revert the plant back to its growing stage, until it is time for it to become dormant."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cherry",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 25 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 350mm$(br)$(br)",
+      "title": "Cherry Tree"
+    },
+    {
       "type": "tfc:multimultiblock",
-      "text": "Harvesting a fruiting leaf is as simple as $(item)$(k:key.use)$().",
+      "text": "The monthly stages of a Cherry tree",
       "multiblocks": [
         {
           "pattern": [
@@ -40,11 +50,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:plant/lemon_leaves[lifecycle=dormant]"
+            "X": "tfc:plant/cherry_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
           }
         },
         {
@@ -53,11 +67,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:plant/lemon_leaves[lifecycle=healthy]"
+            "X": "tfc:plant/cherry_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
           }
         },
         {
@@ -66,11 +84,15 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:plant/lemon_leaves[lifecycle=flowering]"
+            "X": "tfc:plant/cherry_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
           }
         },
         {
@@ -79,11 +101,683 @@
               "X"
             ],
             [
+              "Y"
+            ],
+            [
               "0"
             ]
           ],
           "mapping": {
-            "X": "tfc:plant/lemon_leaves[lifecycle=fruiting]"
+            "X": "tfc:plant/cherry_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/cherry_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "green_apple",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 110 - 280mm$(br)$(br)",
+      "title": "Green Apple Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The monthly stages of a Green Apple tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/green_apple_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/green_apple_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "lemon",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 30 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 180 - 470mm$(br)$(br)",
+      "title": "Lemon Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The monthly stages of a Lemon tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/lemon_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/lemon_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "olive",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 30 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 150 - 500mm$(br)$(br)The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().",
+      "title": "Olive Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The monthly stages of a Olive tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/olive_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/olive_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "orange",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 36 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 500mm$(br)$(br)",
+      "title": "Orange Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The monthly stages of a Orange tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/orange_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/orange_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "peach",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 4 - 27 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 60 - 230mm$(br)$(br)",
+      "title": "Peach Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The monthly stages of a Peach tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/peach_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/peach_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "plum",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 31 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 250 - 400mm$(br)$(br)",
+      "title": "Plum Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The monthly stages of a Plum tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/plum_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/plum_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_apple",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 1 - 25 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 100 - 280mm$(br)$(br)",
+      "title": "Red Apple Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "The monthly stages of a Red Apple tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=dormant]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=healthy]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=flowering]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:plant/red_apple_leaves[lifecycle=fruiting]",
+            "Y": "tfc:plant/red_apple_branch[up=true,down=true]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "banana",
+      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 17 - 35 \u00b0C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): 280 - 500mm$(br)$(br)Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.",
+      "title": "Banana Tree"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "A representative banana tree",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=dormant]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=healthy]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=flowering]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "Y"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "Y": "tfc:plant/banana_plant[stage=2,lifecycle=fruiting]",
+            "X": "tfc:plant/banana_plant[stage=1]",
+            "0": "tfc:plant/banana_plant[stage=0]"
           }
         }
       ]

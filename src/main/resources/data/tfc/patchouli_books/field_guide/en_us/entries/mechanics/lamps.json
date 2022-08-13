@@ -33,6 +33,7 @@
     },
     {
       "type": "tfc:quern_recipe",
+      "anchor": "olives",
       "recipe": "tfc:quern/olive",
       "text": "One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste."
     },

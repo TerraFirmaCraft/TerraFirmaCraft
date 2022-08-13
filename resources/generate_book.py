@@ -73,7 +73,7 @@ from argparse import ArgumentParser
 from typing import Tuple
 from mcresources.type_definitions import ResourceIdentifier
 
-from constants import CROPS, METALS
+from constants import CROPS, METALS, FRUITS
 from patchouli import *
 from i18n import I18n
 
@@ -336,9 +336,26 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
             image('tfc:textures/gui/book/tutorial/fruit_tree.png', text_contents='A typical fruit tree.'),
             text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
-            multimultiblock('Harvesting a fruiting leaf is as simple as $(item)$(k:key.use)$().', *[block_spotlight('', '', 'tfc:plant/lemon_leaves[lifecycle=%s]' % life) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]),
+            text('Saplings can also be placed on the first \'elbow\' sections a fruit tree produces, places where the branch is attached to one side and upwards. This allows one fruit tree to grow multiple fruits. Breaking these elbows with a $(thing)Axe$() also yields saplings. Harvesting a fruit tree leaf is done with $(item)$(k:key.use)$() when the fruit tree is at its fruiting stage. This will give one fruit, and revert the plant back to its growing stage, until it is time for it to become dormant.'),
             page_break(),
-            # todo: blurb on all fruit tree species
+            detail_fruit_tree_left('cherry'),
+            detail_fruit_tree_right('cherry'),
+            detail_fruit_tree_left('green_apple'),
+            detail_fruit_tree_right('green_apple'),
+            detail_fruit_tree_left('lemon'),
+            detail_fruit_tree_right('lemon'),
+            detail_fruit_tree_left('olive', 'The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().'),
+            detail_fruit_tree_right('olive'),
+            detail_fruit_tree_left('orange'),
+            detail_fruit_tree_right('orange'),
+            detail_fruit_tree_left('peach'),
+            detail_fruit_tree_right('peach'),
+            detail_fruit_tree_left('plum'),
+            detail_fruit_tree_right('plum'),
+            detail_fruit_tree_left('red_apple'),
+            detail_fruit_tree_right('red_apple'),
+            detail_fruit_tree_left('banana', 'Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.'),
+            multimultiblock('A representative banana tree', *[multiblock('', '', False, pattern=(('Y',), ('X',), ('X',), ('X',), ('0',)), mapping={'Y': 'tfc:plant/banana_plant[stage=2,lifecycle=%s]' % life, 'X': 'tfc:plant/banana_plant[stage=1]', '0': 'tfc:plant/banana_plant[stage=0]'}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]),
             page_break(),
             text('', title='Tall Bushes').anchor('tall_bushes'),
             text(''),
@@ -851,7 +868,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             non_text_first_page(),
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
             text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
-            quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.'),
+            quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.').anchor('olives'),
             crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
             text('Seal the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/barrels)Barrel$() to make $(thing)Olive Oil Water$(). Seal that in with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
             text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.').anchor('tallow'),
@@ -969,6 +986,13 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
+
+def detail_fruit_tree_left(fruit: str, text_contents: str = '') -> Page:
+    data = FRUITS[fruit]
+    return text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): %d - %dmm$(br)$(br)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s tree' % fruit).replace('_', ' ').title()).anchor(fruit)
+
+def detail_fruit_tree_right(fruit: str) -> Page:
+    return multimultiblock('The monthly stages of a %s tree' % (fruit.replace('_', ' ').title()), *[two_tall_block_spotlight('', '', 'tfc:plant/%s_branch[up=true,down=true]' % fruit, 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, life)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
 
 if __name__ == '__main__':
