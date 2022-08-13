@@ -514,19 +514,18 @@ MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vin
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
 
-# todo: add bush specific rainfall ranges, and also add here bush specific hydration requirements (these should be in general quite lenient) Mirror how crops does it (spreadsheet generation would be nice here). Then update the book data on bushes, the climate ranges, and the world gen (all THREE locations) that use this data
 # For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
 BERRIES: Dict[str, Berry] = {
-    'blackberry': Berry(7, 24, 100, 500, 'spreading', 'none', 'edge'),
-    'raspberry': Berry(5, 25, 100, 500, 'spreading', 'none', 'edge'),
-    'blueberry': Berry(7, 29, 100, 500, 'spreading', 'none', 'edge'),
-    'elderberry': Berry(10, 33, 100, 500, 'spreading', 'none', 'edge'),
-    'bunchberry': Berry(15, 35, 100, 500, 'stationary', 'edge', 'old_growth'),
-    'gooseberry': Berry(5, 27, 100, 500, 'stationary', 'edge', 'old_growth'),
-    'snowberry': Berry(-5, 18, 100, 500, 'stationary', 'edge', 'old_growth'),
-    'cloudberry': Berry(3, 17, 80, 500, 'stationary', 'edge', 'old_growth'),
-    'strawberry': Berry(5, 28, 100, 500, 'stationary', 'edge', 'old_growth'),
-    'wintergreen_berry': Berry(-5, 17, 100, 500, 'stationary', 'edge', 'old_growth'),
+    'blackberry': Berry(7, 24, 200, 500, 'spreading', 'none', 'edge'),
+    'raspberry': Berry(5, 25, 200, 500, 'spreading', 'none', 'edge'),
+    'blueberry': Berry(7, 29, 100, 400, 'spreading', 'none', 'edge'),
+    'elderberry': Berry(10, 33, 100, 400, 'spreading', 'none', 'edge'),
+    'bunchberry': Berry(15, 35, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'gooseberry': Berry(5, 27, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'snowberry': Berry(-7, 18, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'cloudberry': Berry(-2, 17, 80, 380, 'stationary', 'edge', 'old_growth'),
+    'strawberry': Berry(5, 28, 100, 400, 'stationary', 'edge', 'old_growth'),
+    'wintergreen_berry': Berry(-6, 17, 100, 400, 'stationary', 'edge', 'old_growth'),
     'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
 }
 

@@ -4,10 +4,10 @@
   "placement": [
     {
       "type": "tfc:climate",
-      "min_temperature": -5,
+      "min_temperature": -6,
       "max_temperature": 17,
       "min_rainfall": 100,
-      "max_rainfall": 500,
+      "max_rainfall": 400,
       "min_forest": "edge",
       "max_forest": "old_growth"
     },
