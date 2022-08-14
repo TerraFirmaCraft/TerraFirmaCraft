@@ -25,6 +25,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.TFCDamageSources;
@@ -33,6 +34,7 @@ import net.dries007.tfc.common.blockentities.AbstractFirepitBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
 import static net.dries007.tfc.common.blockentities.GrillBlockEntity.SLOT_EXTRA_INPUT_END;
@@ -96,6 +98,7 @@ public class GrillBlock extends FirepitBlock
                     }
                     else
                     {
+                        ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
                         AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, TFCBlocks.FIREPIT.get());
                     }
                 }

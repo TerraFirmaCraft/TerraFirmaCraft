@@ -339,37 +339,24 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
             text('Saplings can also be placed on the first \'elbow\' sections a fruit tree produces, places where the branch is attached to one side and upwards. This allows one fruit tree to grow multiple fruits. Breaking these elbows with a $(thing)Axe$() also yields saplings. Harvesting a fruit tree leaf is done with $(item)$(k:key.use)$() when the fruit tree is at its fruiting stage. This will give one fruit, and revert the plant back to its growing stage, until it is time for it to become dormant.'),
             page_break(),
-            detail_fruit_tree_left('cherry'),  # todo: fancy tree vis?
-            detail_fruit_tree_right('cherry'),
-            detail_fruit_tree_left('green_apple'),
-            detail_fruit_tree_right('green_apple'),
-            detail_fruit_tree_left('lemon'),
-            detail_fruit_tree_right('lemon'),
-            detail_fruit_tree_left('olive', 'The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().'),
-            detail_fruit_tree_right('olive'),
-            detail_fruit_tree_left('orange'),
-            detail_fruit_tree_right('orange'),
-            detail_fruit_tree_left('peach'),
-            detail_fruit_tree_right('peach'),
-            detail_fruit_tree_left('plum'),
-            detail_fruit_tree_right('plum'),
-            detail_fruit_tree_left('red_apple'),
-            detail_fruit_tree_right('red_apple'),
-            detail_fruit_tree_left('banana', 'Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.'),
-            multimultiblock('A representative banana tree', *[multiblock('', '', False, pattern=(('Y',), ('X',), ('X',), ('X',), ('0',)), mapping={'Y': 'tfc:plant/banana_plant[stage=2,lifecycle=%s]' % life, 'X': 'tfc:plant/banana_plant[stage=1]', '0': 'tfc:plant/banana_plant[stage=0]'}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')]),
+            *detail_fruit_tree('cherry'),  # todo: fancy tree vis?
+            *detail_fruit_tree('green_apple'),
+            *detail_fruit_tree('lemon'),
+            *detail_fruit_tree('olive', 'The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().'),
+            *detail_fruit_tree('orange'),
+            *detail_fruit_tree('peach'),
+            *detail_fruit_tree('plum'),
+            *detail_fruit_tree('red_apple'),
+            *detail_fruit_tree('banana', 'Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.', right=multimultiblock('A representative banana tree', *[multiblock('', '', False, pattern=(('Y',), ('X',), ('X',), ('X',), ('0',)), mapping={'Y': 'tfc:plant/banana_plant[stage=2,lifecycle=%s]' % life, 'X': 'tfc:plant/banana_plant[stage=1]', '0': 'tfc:plant/banana_plant[stage=0]'}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])),
             page_break(),
             text('$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.', title='Tall Bushes').anchor('tall_bushes'),
             image('tfc:textures/gui/book/tutorial/berry_bush.png', text_contents='A wild bush.'),
             text('Tall bushes are able to spread when their canes have somewhere to take root. Practically, this means that they need a solid block under them to place a new bush on. Providing a flat, open area free of grass or other debris gives them the best chance to grow.'),
             text('Bushes, unlike fruit trees, take into account surrounding water blocks to determine their $(l:mechanics/hydration)Hydration$(), unlike fruit trees, which only care about rainfall.$(br)Any full bush block can grow berries, which are harvestable with $(item)$(k:key.use)$().'),
-            detail_tall_bush_left('blackberry', 'Blackberry bushes only spawn in areas with few trees.'),
-            detail_tall_bush_right('blackberry'),
-            detail_tall_bush_left('raspberry', 'Raspberry bushes only spawn in areas with few trees.'),
-            detail_tall_bush_right('raspberry'),
-            detail_tall_bush_left('blueberry', 'Blueberry bushes only spawn in areas with few trees.'),
-            detail_tall_bush_right('blueberry'),
-            detail_tall_bush_left('elderberry', 'Elderberry bushes only spawn in areas with few trees.'),
-            detail_tall_bush_right('elderberry'),
+            *detail_tall_bush('blackberry', 'Blackberry bushes only spawn in areas with few trees.'),
+            *detail_tall_bush('raspberry', 'Raspberry bushes only spawn in areas with few trees.'),
+            *detail_tall_bush('blueberry', 'Blueberry bushes only spawn in areas with few trees.'),
+            *detail_tall_bush('elderberry', 'Elderberry bushes only spawn in areas with few trees.'),
             page_break(),
             text('$(thing)Small Bushes$() are a kind of low lying fruit block that spawns in forests. Small bushes occasionally will spread to surrounding blocks, placing duplicates of themselves. They are harvested just with $(item)$(k:key.use)$().', title='Small Bushes').anchor('small_bushes'),
             detail_small_bush('bunchberry'),
@@ -1012,19 +999,18 @@ def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
 
-def detail_fruit_tree_left(fruit: str, text_contents: str = '') -> Page:
+def detail_fruit_tree(fruit: str, text_contents: str = '', right: Page = None) -> Tuple[Page, Page, Page]:
     data = FRUITS[fruit]
-    return text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): %d - %dmm$(br)$(br)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s tree' % fruit).replace('_', ' ').title()).anchor(fruit)
+    left = text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): %d - %dmm$(br)$(br)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s tree' % fruit).replace('_', ' ').title()).anchor(fruit)
+    if right is None:
+        right = multimultiblock('The monthly stages of a %s tree' % (fruit.replace('_', ' ').title()), *[two_tall_block_spotlight('', '', 'tfc:plant/%s_branch[up=true,down=true]' % fruit, 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, life)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return left, right, page_break()
 
-def detail_fruit_tree_right(fruit: str) -> Page:
-    return multimultiblock('The monthly stages of a %s tree' % (fruit.replace('_', ' ').title()), *[two_tall_block_spotlight('', '', 'tfc:plant/%s_branch[up=true,down=true]' % fruit, 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, life)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
-
-def detail_tall_bush_left(fruit: str, text_contents: str = '') -> Page:
+def detail_tall_bush(fruit: str, text_contents: str = '') -> Tuple[Page, Page, Page]:
     data = BERRIES[fruit]
-    return text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(br)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit)
-
-def detail_tall_bush_right(fruit: str) -> Page:
-    return multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    left = text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(br)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit)
+    right = multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return left, right, page_break()
 
 def detail_waterlogged(fruit: str, text_contents: str = ''):
     data = BERRIES[fruit]

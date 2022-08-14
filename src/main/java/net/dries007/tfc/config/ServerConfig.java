@@ -352,7 +352,7 @@ public class ServerConfig
         enableVanillaMobsSpawningWithEnchantments = builder.apply("enableVanillaMobsSpawningWithEnchantments").comment("If true, enables the default vanilla behavior of mobs spawning with enchanted weapons sometimes.").define("enableVanillaMobsSpawningWithEnchantments", false);
         enableVanillaMobsSpawningWithVanillaEquipment = builder.apply("enableVanillaMobsSpawningWithVanillaEquipment").comment("If true, enables the default behavior of mobs sapwning with vanilla armor and weapons").define("enableVanillaMobsSpawningWithVanillaEquipment", false);
         enableVanillaGolems = builder.apply("enableVanillaGolems").comment("If true, golems can be built").define("enableVanillaGolems", false);
-        enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters will spawn.").define("enableVanillaMonsters", true);
+        enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters will spawn everywhere. This overrides the 'enableVanillaMonstersOnSurface' config option.").define("enableVanillaMonsters", true);
         enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground.").define("enableVanillaMonstersOnSurface", false);
         enableChickenJockies = builder.apply("enableChickenJockies").comment("If true, chicken jockies can spawn").define("enableChickenJockies", false);
 

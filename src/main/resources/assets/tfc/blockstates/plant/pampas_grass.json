@@ -11,8 +11,7 @@
     {
       "when": {
         "part": "upper",
-        "age": "0|1",
-        "stage": "0"
+        "age": "0|1"
       },
       "apply": {
         "model": "tfc:block/plant/pampas_grass_short"
@@ -21,8 +20,7 @@
     {
       "when": {
         "part": "upper",
-        "age": "2|3",
-        "stage": "0"
+        "age": "2|3"
       },
       "apply": {
         "model": "tfc:block/plant/pampas_grass_top"

@@ -23,6 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.particle.TFCParticles;
@@ -33,6 +34,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 
 
@@ -97,6 +99,7 @@ public class PotBlock extends FirepitBlock
                 }
                 else
                 {
+                    ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(TFCItems.POT.get()));
                     AbstractFirepitBlockEntity.convertTo(level, pos, state, pot, TFCBlocks.FIREPIT.get());
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);

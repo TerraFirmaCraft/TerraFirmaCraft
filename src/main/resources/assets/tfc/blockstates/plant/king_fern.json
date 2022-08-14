@@ -2,8 +2,7 @@
   "multipart": [
     {
       "when": {
-        "part": "lower",
-        "stage": "0"
+        "part": "lower"
       },
       "apply": [
         {
@@ -13,8 +12,7 @@
     },
     {
       "when": {
-        "part": "upper",
-        "stage": "0"
+        "part": "upper"
       },
       "apply": [
 		  {"model": "tfc:block/plant/king_fern_upper_0a", "weight": 16 },
