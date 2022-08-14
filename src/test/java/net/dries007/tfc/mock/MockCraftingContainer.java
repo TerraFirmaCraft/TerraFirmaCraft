@@ -26,10 +26,7 @@ public class MockCraftingContainer extends CraftingContainer
             }
 
             @Override
-            public void slotsChanged(@NotNull Container inventory)
-            {
-
-            }
+            public void slotsChanged(@NotNull Container inventory) {}
         }, width, height);
     }
 }

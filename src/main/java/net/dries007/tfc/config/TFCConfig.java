@@ -13,6 +13,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
+import net.dries007.tfc.util.Helpers;
+
 /**
  * Central point for all configuration options
  * - Common is used for options which need to be world-agnostic, or are independent of side
@@ -30,7 +32,7 @@ public final class TFCConfig
     private static <C> C register(ModConfig.Type type, Function<ForgeConfigSpec.Builder, C> factory)
     {
         Pair<C, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(factory);
-        ModLoadingContext.get().registerConfig(type, specPair.getRight());
+        if (!Helpers.BOOTSTRAP_ENVIRONMENT) ModLoadingContext.get().registerConfig(type, specPair.getRight());
         return specPair.getLeft();
     }
 }

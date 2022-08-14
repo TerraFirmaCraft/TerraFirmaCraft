@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 import static net.dries007.tfc.TestAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DiscreteItemStackFluidHandlerTest extends TestHelper
+public class DiscreteItemStackFluidHandlerTests extends TestHelper
 {
     @Test
     public void testFill()
@@ -121,11 +121,9 @@ public class DiscreteItemStackFluidHandlerTest extends TestHelper
     {
         final ItemStackFluidHandler handler0 = createFilled();
         final ItemStackFluidHandler handler1 = new ItemStackFluidHandler(handler0.getContainer().copy(), fluid -> fluid == Fluids.WATER, 1000)
-        {
-            {
-                load();
-            }
-        };
+        {{
+            load();
+        }};
 
         assertEquals(handler0.getFluidInTank(), handler1.getFluidInTank());
     }

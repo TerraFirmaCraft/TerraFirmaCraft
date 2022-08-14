@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.test.util;
+package net.dries007.tfc.test.recipes;
 
 import java.util.function.Function;
 import java.util.stream.IntStream;
@@ -26,8 +26,8 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+import static net.dries007.tfc.TestAssertions.*;
 
 public class AdvancedShapedRecipeTest extends TestHelper
 {
@@ -41,7 +41,7 @@ public class AdvancedShapedRecipeTest extends TestHelper
         return IntStream.range(0, 9)
             .mapToObj(i -> IntStream.range(0, 9)
                 .filter(j -> i != j)
-                .mapToObj(j -> DynamicTest.dynamicTest("apple=" + i + ",gold=" + j, () -> {
+                .mapToObj(j -> DynamicTest.dynamicTest("apple = " + i + ", gold = " + j, () -> {
                     final AdvancedShapedRecipe recipe = exampleRecipe();
 
                     // Assemble the recipe
@@ -52,7 +52,7 @@ public class AdvancedShapedRecipeTest extends TestHelper
                     if (recipe.matches(inventory, null))
                     {
                         assertEquals(i, RecipeHelpers.translateMatch(recipe, 1, inventory));
-                        assertItemStackEquals(new ItemStack(Items.APPLE), recipe.assemble(inventory));
+                        assertEquals(new ItemStack(Items.APPLE), recipe.assemble(inventory));
                     }
                     else
                     {
@@ -73,15 +73,7 @@ public class AdvancedShapedRecipeTest extends TestHelper
         inventory.setItem(1, new ItemStack(Items.GOLD_INGOT, 16));
 
         assertTrue(recipe.matches(inventory, null));
-        assertItemStackEquals(recipe.assemble(inventory), new ItemStack(Items.APPLE));
-    }
-
-    @Test
-    public void testNetworkEncodeDecode()
-    {
-        final AdvancedShapedRecipe before = exampleRecipe();
-        final AdvancedShapedRecipe after = encodeAndDecode(before, new AdvancedShapedRecipe.Serializer());
-        assertRecipeEquals(before, after);
+        assertEquals(recipe.assemble(inventory), new ItemStack(Items.APPLE));
     }
 
     private AdvancedShapedRecipe exampleRecipe()

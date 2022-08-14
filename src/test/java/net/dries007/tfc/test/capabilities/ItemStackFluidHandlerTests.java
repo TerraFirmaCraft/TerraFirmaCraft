@@ -9,7 +9,6 @@ package net.dries007.tfc.test.capabilities;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
-
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
@@ -20,7 +19,7 @@ import org.junit.jupiter.api.Test;
 import static net.dries007.tfc.TestAssertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ItemStackFluidHandlerTest extends TestHelper
+public class ItemStackFluidHandlerTests extends TestHelper
 {
     @Test
     public void testFill()
@@ -103,11 +102,9 @@ public class ItemStackFluidHandlerTest extends TestHelper
     {
         final ItemStackFluidHandler handler0 = createFilled();
         final ItemStackFluidHandler handler1 = new ItemStackFluidHandler(handler0.getContainer().copy(), fluid -> fluid == Fluids.WATER, 1000)
-        {
-            {
-                load();
-            }
-        };
+        {{
+            load();
+        }};
 
         assertEquals(handler0.getFluidInTank(), handler1.getFluidInTank());
     }

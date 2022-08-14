@@ -17,6 +17,8 @@ import net.dries007.tfc.world.layer.Plate;
 import net.dries007.tfc.world.layer.TFCLayers;
 import net.dries007.tfc.world.layer.framework.Area;
 import net.dries007.tfc.world.layer.framework.AreaFactory;
+import net.dries007.tfc.world.layer.framework.TypedArea;
+import net.dries007.tfc.world.layer.framework.TypedAreaFactory;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,16 @@ import static net.dries007.tfc.world.layer.TFCLayers.*;
 @Disabled
 public class TFCLayersVisualizations extends TestHelper
 {
+    public static final Artist.Typed<TypedAreaFactory<Plate>, Plate> PLATES = Artist.forMap(factory -> {
+        final TypedArea<Plate> area = factory.get();
+        return Artist.Pixel.coerceInt(area::get);
+    });
+    public static final Artist.Typed<AreaFactory, Integer> AREA = Artist.forMap(factory -> {
+        final Area area = factory.get();
+        return Artist.Pixel.coerceInt(area::get);
+    });
+    public static final Artist.Raw RAW = Artist.raw();
+
     @Test
     public void testCreateOverworldBiomeLayer()
     {
