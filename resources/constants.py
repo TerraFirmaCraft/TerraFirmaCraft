@@ -512,7 +512,7 @@ FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'hu
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
-UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
+UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
 
 # For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
 BERRIES: Dict[str, Berry] = {
