@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,8 +28,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
+import net.dries007.tfc.util.Helpers;
 
 public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBlockEntity>
 {
@@ -100,7 +103,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         FluidAttributes attributes = fluid.getAttributes();
         ResourceLocation texture = attributes.getStillTexture();
         TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(RenderHelpers.BLOCKS_ATLAS).apply(texture);
-        final int color = RenderHelpers.getFluidColor(fluid);
+        final int color = Helpers.isFluid(fluid, FluidTags.WATER) ? TFCColors.getWaterColor(sluice.getBlockPos()) : RenderHelpers.getFluidColor(fluid);
 
         VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucentCull(RenderHelpers.BLOCKS_ATLAS));
         Matrix4f matrix4f = poseStack.last().pose();

@@ -88,9 +88,8 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
-        final BlockPos sourcePos = pos.below();
 
-        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+        text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
     }
 
@@ -142,9 +141,8 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                 long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
                 long nextCalendarTick = currentCalendarTick - deltaTicks;
 
-                final BlockPos sourcePos = pos.below();
                 final ClimateRange range = climateRange.get();
-                final int hydration = FarmlandBlock.getHydration(level, sourcePos);
+                final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
 
                 int stage = state.getValue(STAGE);
 

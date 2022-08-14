@@ -73,7 +73,7 @@ from argparse import ArgumentParser
 
 from mcresources.type_definitions import ResourceIdentifier
 
-from constants import CROPS, METALS
+from constants import CROPS, METALS, FRUITS, BERRIES
 from patchouli import *
 
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
@@ -329,25 +329,43 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
                 two_tall_block_spotlight('', '', 'tfc:wild_crop/jute[part=bottom]', 'tfc:wild_crop/jute[part=top]'),
             ))
         )),
-        entry('wild_fruits', 'Berry Bushes', 'tfc:food/elderberry', pages=(
+        entry('wild_fruits', 'Wild Fruits', 'tfc:food/elderberry', pages=(
             # Wild fruits
             text('Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$()Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle.'),
-            text('Different fruit plants will grow, flower, and fruit at different times of year.'),  # todo: finish
+            text('Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit, with no two being the same. Fruit plants can die, as well: of old age, and of improper climate conditions.'),
             page_break(),
-            text('', title='Fruit Trees').anchor('fruit_trees'),
-            image(),  # todo: image of fruit tree in the world, or a sophisticated multiblock
-            # todo: blurb on how to harvest and farm fruit trees in general
-            # todo: blurb on all fruit tree species
+            text('$(thing)Fruit trees$() grow from tiny saplings into large, flowering trees. The branches of fruit trees are their heart, and they will grow as long as the climate conditions are right. As fruit trees mature, they will grow $(thing)leaves$() all around their branches. The leaves can flower and fruit depending on the season.', title='Fruit Trees').anchor('fruit_trees'),
+            image('tfc:textures/gui/book/tutorial/fruit_tree.png', text_contents='A typical fruit tree.'),
+            text('Fruit trees start out at $(thing)Saplings$(). Saplings will only start growing, placing their first piece of the tree, if it is not the dormant season for that fruit. The size of the finished tree is loosely determined by how many saplings are in the original sapling block. More saplings means a bigger tree.$(br)More saplings can be added to a single block through $(thing)Splicing$(). To splice a sapling into another, just $(item)$(k:key.use)$() on it while holding a sapling and a $(thing)Knife$() in your off hand.'),
+            text('Saplings can also be placed on the first \'elbow\' sections a fruit tree produces, places where the branch is attached to one side and upwards. This allows one fruit tree to grow multiple fruits. Breaking these elbows with a $(thing)Axe$() also yields saplings. Harvesting a fruit tree leaf is done with $(item)$(k:key.use)$() when the fruit tree is at its fruiting stage. This will give one fruit, and revert the plant back to its growing stage, until it is time for it to become dormant.'),
             page_break(),
-            text('', title='Tall Bushes').anchor('tall_bushes'),
-            text(''),
-            # todo: blurb on how to harvest and farm tall bushes in general
-            # todo: blurb on all tall bush species
+            *detail_fruit_tree('cherry'),  # todo: fancy tree vis?
+            *detail_fruit_tree('green_apple'),
+            *detail_fruit_tree('lemon'),
+            *detail_fruit_tree('olive', 'The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().'),
+            *detail_fruit_tree('orange'),
+            *detail_fruit_tree('peach'),
+            *detail_fruit_tree('plum'),
+            *detail_fruit_tree('red_apple'),
+            *detail_fruit_tree('banana', 'Bananas are a special kind of fruit tree. They grow only vertically, lack leaves, and only fruit at the topmost block. Saplings are dropped from the flowering part of the plant. Once a banana plant is harvested, it dies, and will not produce any more fruit. It must be replanted in the spring.', right=multimultiblock('A representative banana tree', *[multiblock('', '', False, pattern=(('Y',), ('X',), ('X',), ('X',), ('0',)), mapping={'Y': 'tfc:plant/banana_plant[stage=2,lifecycle=%s]' % life, 'X': 'tfc:plant/banana_plant[stage=1]', '0': 'tfc:plant/banana_plant[stage=0]'}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])),
             page_break(),
-            text('$(thing)Small Bushes$() are a type of low lying plant which spawn...', title='Small Bushes').anchor('small_bushes'),
-            text('$(thing)Bunchberry$()', title='Bunchberry'),
-            # todo: blurb on all small bushes in general
-            # todo: blurb on all small bush species
+            text('$(thing)Tall Bushes$() are fruit blocks that are able to grow in all directions, and spread. They do this by either growing directly upwards, up to three high, or placing $(thing)canes$() on their sides, which can mature into full bush blocks. After a while, the bushes will stop spreading, and reach maturity. Harvesting these bushes with a sharp tool has a chance to drop a new bush. Bushes that are fully mature will always drop themselves.', title='Tall Bushes').anchor('tall_bushes'),
+            image('tfc:textures/gui/book/tutorial/berry_bush.png', text_contents='A wild bush.'),
+            text('Tall bushes are able to spread when their canes have somewhere to take root. Practically, this means that they need a solid block under them to place a new bush on. Providing a flat, open area free of grass or other debris gives them the best chance to grow.'),
+            text('Bushes, unlike fruit trees, take into account surrounding water blocks to determine their $(l:mechanics/hydration)Hydration$(), unlike fruit trees, which only care about rainfall.$(br)Any full bush block can grow berries, which are harvestable with $(item)$(k:key.use)$().'),
+            *detail_tall_bush('blackberry', 'Blackberry bushes only spawn in areas with few trees.'),
+            *detail_tall_bush('raspberry', 'Raspberry bushes only spawn in areas with few trees.'),
+            *detail_tall_bush('blueberry', 'Blueberry bushes only spawn in areas with few trees.'),
+            *detail_tall_bush('elderberry', 'Elderberry bushes only spawn in areas with few trees.'),
+            page_break(),
+            text('$(thing)Small Bushes$() are a kind of low lying fruit block that spawns in forests. Small bushes occasionally will spread to surrounding blocks, placing duplicates of themselves. They are harvested just with $(item)$(k:key.use)$().', title='Small Bushes').anchor('small_bushes'),
+            detail_small_bush('bunchberry'),
+            detail_small_bush('gooseberry'),
+            detail_small_bush('snowberry'),
+            detail_small_bush('cloudberry'),
+            detail_small_bush('strawberry'),
+            detail_small_bush('wintergreen_berry'),
+            detail_waterlogged('cranberry'),  # todo: better cranberry page(s)
         )),
         entry('wild_animals', 'Wild Animals', 'tfc:medium_raw_hide', pages=(
             # Wild animals - address both hostile and passive important animals
@@ -561,6 +579,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
             multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),)),
         )),
+        entry('size_and_weight', 'Size and Weight', 'tfc:wood/chest/kapok', pages=(
+            text('Every item has a $(thing)Size ⇲$() and $(thing)Weight \u2696$(). An item\'s size and wieght is shown on the item\'s $(thing)tooltip$(), which appears when you hover over it with your mouse.'),
+            text('Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().', title='Size ⇲'),
+            text('$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are stored alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They count towards overburdening.'),
+            text('$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() turn from $(thing)Very Heavy$() to $(thing)Huge$() when they are sealed. $(l:mechanics/animal_husbandry#horses)Horses$() can be overburdened.', title='Overburdening'),
+            text('Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br)$(br)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().', title='Weight \u2696'),
+            empty_last_page()
+        ))
     ))
 
 
@@ -576,7 +602,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         # todo: dyes (both items, and fluids) - just add on to the barrels page maybe? or link?
         # todo: loom, spindle, how to get cloth -> wool.
         # todo: scribing table, what it is, what it does
-        # todo: page on item sizes, weights, and overburdening mechanics (what does size and weight mean)
         # todo: page on milking, how to obtain milk, what drinking milk does (nutrition wise, since it's special)
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
@@ -853,7 +878,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             non_text_first_page(),
             two_tall_block_spotlight('Lamps', 'Lamps are a long term source of light. They burn liquid fuel.', 'tfc:metal/lamp/copper[hanging=true,lit=true]', 'tfc:metal/chain/copper[axis=y]'),
             text('Using a bucket, $(item)$(k:key.use)$() on a lamp to add fuel to it. It can then be lit with a $(thing)firestarter$() or anything capable of lighting fires. Lamps retain their fuel content when broken.'),
-            quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.'),
+            quern_recipe('tfc:quern/olive', 'One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste.').anchor('olives'),
             crafting('tfc:crafting/jute_net', text_contents='You will also need a jute net.'),
             text('Seal the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/barrels)Barrel$() to make $(thing)Olive Oil Water$(). Seal that in with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid.'),
             text('Another lamp fuel is $(thing)Tallow$(). To make it, cook 5 $(thing)Blubber$(), in a $(l:mechanics/pot)Pot$() of water. Tallow burns for less than 2 in-game hours per unit.').anchor('tallow'),
@@ -879,7 +904,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
         entry('decay', 'Preservation', 'minecraft:rotten_flesh', pages=(
             text('In TerraFirmaCraft, no food will last forever! Food will $(thing)expire$() over time, turning rotten. Rotten food will not restore any hunger, and has the potential to give you unhelpful effects such as $(thing)Hunger$() or $(thing)Poison$()!$(br2)Fortunately, there are a number of ways to make your food last longer by $(thing)Preserving$() it.'),
             text('When you hover over a piece of food, you will see a tooltip which shows how long the food has until it will rot. It might look something like:$(br2)$(bold)$(2)Expires on: 5:30 July 5, 1000 (in 5 day(s))$()$(br2)By using various preservation mechanics, that date can be extended, giving you more time before your food roots.'),
-            text('One of the easiest ways to preserve food, is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$(), the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.', title='Vessels'),
+            text('One of the easiest ways to preserve food, is to use a $(thing)Vessel$(). $(thing)Large Vessels$() are a block which can store up to nine items, and when $(thing)sealed$(), the items inside will gain the $(5)$(bold)Preserved$() status, which extends their remaining lifetime by 2x.$(br2)$(thing)Small Vessels$() are a item which can store up to four other items, and will also apply the $(5)$(bold)Preserved$() status to their contents.', title='Vessels').anchor('small_vessels'),
             block_spotlight('', 'A Sealed Large Vessel.', 'tfc:ceramic/large_vessel[sealed=true]'),
             text('One other way to preserve certain types of food easily, is to cook it. $(thing)Meats$() will all expire slower when they are cooked than when they are raw.$(br2)It is also important to use the correct device for cooking. Certain devices that heat very hot, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() or a $(l:mechanics/crucible)Crucible$() are $(bold)bad$() for cooking food, which will make them expire faster!', title='Cooking'),
             heat_recipe('tfc:heating/mutton', 'Instead, a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/grill)Grill$() can even provide a buff for using it! For example, cooking mutton (pictured above) in a $(thing)Firepit$() will increase it\'s lifetime by 1.33x, and cooking in a $(thing)Grill$() will increase it\'s lifetime by 1.66x!'),
@@ -973,6 +998,29 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
 def detail_crop(crop: str) -> str:
     data = CROPS[crop]
     return '$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(bold)Nutrient$(): %s$(br2)' % (data.min_temp, data.max_temp, data.min_hydration, data.max_hydration, data.nutrient.title())
+
+def detail_fruit_tree(fruit: str, text_contents: str = '', right: Page = None) -> Tuple[Page, Page, Page]:
+    data = FRUITS[fruit]
+    left = text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Rainfall$(): %d - %dmm$(br)$(br)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s tree' % fruit).replace('_', ' ').title()).anchor(fruit)
+    if right is None:
+        right = multimultiblock('The monthly stages of a %s tree' % (fruit.replace('_', ' ').title()), *[two_tall_block_spotlight('', '', 'tfc:plant/%s_branch[up=true,down=true]' % fruit, 'tfc:plant/%s_leaves[lifecycle=%s]' % (fruit, life)) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return left, right, page_break()
+
+def detail_tall_bush(fruit: str, text_contents: str = '') -> Tuple[Page, Page, Page]:
+    data = BERRIES[fruit]
+    left = text('$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(br)%s' % (data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), title=('%s bush' % fruit).replace('_', ' ').title()).anchor(fruit)
+    right = multimultiblock('The monthly stages of a %s spreading bush' % (fruit.replace('_', ' ').title()), *[multiblock('', '', False, pattern=(('X ',), ('YZ',), ('AZ',), ('0 ',),), mapping={'X': 'tfc:plant/%s_bush[stage=0,lifecycle=%s]' % (fruit, life), 'Y': 'tfc:plant/%s_bush[stage=1,lifecycle=%s]' % (fruit, life), 'Z': 'tfc:plant/%s_bush_cane[stage=0,lifecycle=%s,facing=south]' % (fruit, life), 'A': 'tfc:plant/%s_bush[stage=2,lifecycle=%s]' % (fruit, life)}) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+    return left, right, page_break()
+
+def detail_waterlogged(fruit: str, text_contents: str = ''):
+    data = BERRIES[fruit]
+    title_text = fruit.replace('_', ' ').title()
+    text_contents = text_contents.join('%s bushes can only be grown underwater.' % title_text)
+    return multimultiblock('$(bold)%s$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)%s' % (title_text, data.min_temp, data.max_temp, text_contents), *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
+
+def detail_small_bush(fruit: str, text_contents: str = '') -> Page:
+    data = BERRIES[fruit]
+    return multimultiblock('$(bold)%s Bush$()$(br)$(bold)$(l:the_world/climate#temperature)Temperature$(): %d - %d °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): %d - %d %%$(br)$(br)%s' % (fruit.replace('_', ' ').title(), data.min_temp, data.max_temp, data.min_rain, data.max_rain, text_contents), *[block_spotlight('', '', 'tfc:plant/%s_bush[lifecycle=%s,stage=%s]' % (fruit, life, stage)) for stage in range(0, 3) for life in ('dormant', 'healthy', 'flowering', 'fruiting')])
 
 
 if __name__ == '__main__':

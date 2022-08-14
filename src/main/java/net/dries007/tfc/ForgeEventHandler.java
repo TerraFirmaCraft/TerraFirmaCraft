@@ -62,6 +62,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -168,6 +169,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onEffectExpire);
         bus.addListener(ForgeEventHandler::onLivingJump);
         bus.addListener(ForgeEventHandler::onLivingHurt);
+        bus.addListener(ForgeEventHandler::onLivingSpawnCheck);
         bus.addListener(ForgeEventHandler::onEntityJoinWorld);
         bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
@@ -765,11 +767,41 @@ public final class ForgeEventHandler
     }
 
     /**
+     * This prevents vanilla mobs from spawning either at all or on the surface.
+     */
+    public static void onLivingSpawnCheck(LivingSpawnEvent.CheckSpawn event)
+    {
+        final LivingEntity entity = event.getEntityLiving();
+        final LevelAccessor level = event.getWorld();
+        final MobSpawnType spawn = event.getSpawnReason();
+        // we only care about "natural" spawns
+        if (spawn == MobSpawnType.NATURAL || spawn == MobSpawnType.CHUNK_GENERATION || spawn == MobSpawnType.REINFORCEMENT)
+        {
+            if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
+            {
+                if (!TFCConfig.SERVER.enableVanillaMonsters.get())
+                {
+                    event.setResult(Event.Result.DENY);
+                }
+                else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
+                {
+                    final BlockPos pos = entity.blockPosition();
+                    if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                    {
+                        event.setResult(Event.Result.DENY);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Applies multiple effect for entities joining the world:
      *
      * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
      * - Causes lightning bolts to strip nearby logs
      * - Prevents skeleton trap horses from spawning (see {@link ServerLevel#tickChunk(LevelChunk, int)}
+     * - Prevents some categories of mobs from spawning. Some can't be done in {@link LivingSpawnEvent.CheckSpawn} because Forge does not always fire it.
      */
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
@@ -827,22 +859,7 @@ public final class ForgeEventHandler
                 monster.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
         }
-        if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
-        {
-            if (!TFCConfig.SERVER.enableVanillaMonsters.get())
-            {
-                event.setCanceled(true);
-            }
-            else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
-            {
-                final BlockPos pos = entity.blockPosition();
-                if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
-                {
-                    event.setCanceled(true);
-                }
-            }
-        }
-        else if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
+        if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
         {
             event.setCanceled(true); // not tolerating this crap again
         }

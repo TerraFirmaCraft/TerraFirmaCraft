@@ -126,7 +126,7 @@ public final class FruitBlocks
 
         public Block createBranch()
         {
-            return new FruitTreeBranchBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).flammable(60, 30));
+            return new FruitTreeBranchBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.WOOD).sound(SoundType.SCAFFOLDING).randomTicks().strength(1.0f)).flammable(60, 30), ClimateRanges.FRUIT_TREES.get(this));
         }
 
         public Block createGrowingBranch()

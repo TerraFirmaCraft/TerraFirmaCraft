@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +30,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
@@ -220,14 +218,6 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
         return PotContainer.create(this, playerInv, windowID);
-    }
-
-    @Override
-    public void ejectInventory()
-    {
-        super.ejectInventory();
-        assert level != null;
-        Helpers.spawnItem(level, worldPosition, new ItemStack(TFCItems.POT.get()));
     }
 
     public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>

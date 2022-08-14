@@ -51,7 +51,11 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
-        final int hydration = getHydration(level, pos);
+        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos));
+    }
+
+    public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle, int hydration)
+    {
         final MutableComponent tooltip = Helpers.translatable("tfc.tooltip.farmland.hydration", hydration);
 
         tooltip.append(switch (validRange.checkHydration(hydration, allowWiggle))

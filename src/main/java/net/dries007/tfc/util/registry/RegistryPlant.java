@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.blocks.plant.PlantBlock;
 import net.dries007.tfc.util.calendar.Month;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Properties to create a {@link PlantBlock} subclass. The {@link #getStageProperty()} method is required in order to implement block dependent property initialization, as setting a property in the constructor is too late.
@@ -24,5 +25,6 @@ public interface RegistryPlant
     /**
      * Get the stage property used for the growth of this plant
      */
+    @Nullable
     IntegerProperty getStageProperty();
 }

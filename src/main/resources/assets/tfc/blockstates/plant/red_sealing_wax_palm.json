@@ -2,8 +2,7 @@
   "multipart": [
     {
       "when": {
-        "part": "lower",
-        "stage": "0"
+        "part": "lower"
       },
       "apply": [
         {
@@ -13,8 +12,7 @@
     },
     {
       "when": {
-        "part": "upper",
-        "stage": "0"
+        "part": "upper"
       },
       "apply": [
 		  {"model": "tfc:block/plant/red_sealing_wax_palm_upper_0a", "weight": 16 },
