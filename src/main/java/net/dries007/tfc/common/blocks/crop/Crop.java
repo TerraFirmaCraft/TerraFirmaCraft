@@ -45,7 +45,7 @@ public enum Crop implements StringRepresentable
     SQUASH(NutrientType.POTASSIUM, 8), // Default , 8
     SUGARCANE(NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
     TOMATO(NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
-    JUTE(NutrientType.POTASSIUM, 2, 4, true), // Double, 2 -> 4
+    JUTE(NutrientType.POTASSIUM, 3, 3, false), // Double, 3 -> 3
     PUMPKIN(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN),
     MELON(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
     // todo: pickable crops
