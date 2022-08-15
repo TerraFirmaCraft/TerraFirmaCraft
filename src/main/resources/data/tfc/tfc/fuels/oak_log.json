@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/oak"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/oak"
+    },
+    {
+      "item": "tfc:wood/stripped_log/oak"
     }
   ],
   "duration": 2250,

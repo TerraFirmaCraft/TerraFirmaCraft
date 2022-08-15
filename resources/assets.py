@@ -1210,10 +1210,8 @@ def generate(rm: ResourceManager):
                     'tfc:wood/%s/%s' % (variant, wood)  # logs drop themselves always
                 ))
 
-            if variant != 'log':
-                block.with_item_model()
-            else:
-                rm.item_model(('wood', variant, wood), 'tfc:item/wood/log/' + wood)
+            rm.item_model(('wood', variant, wood), 'tfc:item/wood/log/' + wood)
+
             end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
             side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
             block.with_block_model({'end': end, 'side': side}, parent='block/cube_column')
@@ -1221,9 +1219,10 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
             else:
                 block.with_lang(lang('%s %s', wood, variant))
-        rm.item_model(('wood', 'lumber', wood)).with_lang(lang('%s Lumber', wood))
-        rm.item_model(('wood', 'sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:signs')
-        rm.item_model(('wood', 'boat', wood)).with_lang(lang('%s Boat', wood))
+        for item_type in ('lumber', 'sign', 'chest_minecart', 'boat'):
+            rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
+        rm.item_tag('minecraft:signs', 'tfc:wood/sign/' + wood)
+        rm.item_tag('tfc:minecarts', 'tfc:wood/chest_minecart/' + wood)
 
         # Groundcover
         for variant in ('twig', 'fallen_leaves'):
@@ -1286,8 +1285,12 @@ def generate(rm: ResourceManager):
         block.make_fence()
         block.make_fence_gate()
 
-        for block_type in ('bookshelf', 'button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
+        for block_type in ('button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
             rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
+        rm.block_loot('wood/planks/%s_bookshelf' % wood, loot_tables.alternatives({
+            'name': 'tfc:wood/planks/%s_bookshelf' % wood,
+            'conditions': [loot_tables.silk_touch()]
+        }, '3 minecraft:book'))
         slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood)
 
         # Tool Rack

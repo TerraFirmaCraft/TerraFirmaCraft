@@ -310,6 +310,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.THROWN_JAVELIN.get(), ThrownJavelinRenderer::new);
         event.registerEntityRenderer(TFCEntities.GLOW_ARROW.get(), GlowArrowRenderer::new);
         event.registerEntityRenderer(TFCEntities.SEAT.get(), NoopRenderer::new);
+        event.registerEntityRenderer(TFCEntities.CHEST_MINECART.get(), ctx -> new MinecartRenderer<>(ctx, RenderHelpers.modelIdentifier("chest_minecart")));
         for (Wood wood : Wood.VALUES)
         {
             event.registerEntityRenderer(TFCEntities.BOATS.get(wood).get(), ctx -> new TFCBoatRenderer(ctx, wood.getSerializedName()));
@@ -417,6 +418,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("quail"), QuailModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);
     }
 
     public static void onConfigReload(ModConfigEvent.Reloading event)

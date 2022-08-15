@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/pine"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/pine"
+    },
+    {
+      "item": "tfc:wood/stripped_log/pine"
     }
   ],
   "duration": 1250,

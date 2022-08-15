@@ -27,6 +27,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.common.items.TFCMinecartItem;
 
 public final class DispenserBehaviors
 {
@@ -105,5 +106,12 @@ public final class DispenserBehaviors
         // chest
         TFCBlocks.WOODS.values().stream().map(map -> map.get(Wood.BlockType.CHEST).get()).forEach(chest -> DispenserBlock.registerBehavior(chest, CHEST_BEHAVIOR));
 
+        // minecart chest
+        TFCItems.CHEST_MINECARTS.values().forEach(reg -> {
+            if (reg.get() instanceof TFCMinecartItem item)
+            {
+                DispenserBlock.registerBehavior(reg.get(), item.makeDispenserBehavior());
+            }
+        });
     }
 }

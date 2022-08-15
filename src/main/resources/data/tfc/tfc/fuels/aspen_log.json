@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/aspen"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/aspen"
+    },
+    {
+      "item": "tfc:wood/stripped_log/aspen"
     }
   ],
   "duration": 1000,

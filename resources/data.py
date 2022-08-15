@@ -132,7 +132,7 @@ def generate(rm: ResourceManager):
     # Fuels
 
     for wood, wood_data in WOODS.items():
-        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood], wood_data.duration, wood_data.temp)
+        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood, 'tfc:wood/stripped_wood/' + wood, 'tfc:wood/stripped_log/' + wood], wood_data.duration, wood_data.temp)
 
     fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
     fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)
@@ -651,9 +651,8 @@ def generate(rm: ResourceManager):
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
-
-    # unimplemented
-    # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
+    item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.very_heavy)
+    item_size(rm, 'looms', '#tfc:looms', Size.large, Weight.very_heavy)
 
     # Food
 

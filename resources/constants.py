@@ -635,7 +635,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
 VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
@@ -944,6 +944,7 @@ DEFAULT_LANG = {
     'entity.tfc.sabertooth': 'Sabertooth',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
+    'entity.tfc.chest_minecart': 'Chest Minecart',
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',

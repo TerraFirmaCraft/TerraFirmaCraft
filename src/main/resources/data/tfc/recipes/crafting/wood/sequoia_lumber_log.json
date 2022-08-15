@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:wood/log/sequoia"
+        "tag": "tfc:sequoia_logs"
       },
       {
         "tag": "tfc:saws"
