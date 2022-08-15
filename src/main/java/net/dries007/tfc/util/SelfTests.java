@@ -48,6 +48,17 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.util.calendar.Day;
+import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.climate.KoppenClimateClassification;
+import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 import org.slf4j.Logger;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -140,6 +151,39 @@ public final class SelfTests
         return logRegistryErrors("{} blocks found that declare a block entity in IForgeBlockExtension but do not implement EntityBlockExtension", fbeButNoEbe, logger)
             | logRegistryErrors("{} blocks found that implement EntityBlockExtension but do not declare a block entity in IForgeBlockExtension", ebeButNoFbe, logger)
             | logRegistryErrors("{} blocks found that implement EntityBlock but do not implement EntityBlockExtension", ebButNoEbe, logger);
+    }
+
+    /**
+     * Validates that a translation exists for all enum constants in the style of {@link Helpers#getEnumTranslationKey(Enum)}
+     */
+    public static <T extends Enum<?>> boolean validateTranslations(Logger logger, Set<String> missingTranslations, Class<? extends T> enumClass)
+    {
+        boolean errors = false;
+        for (T enumConstant : enumClass.getEnumConstants())
+        {
+            errors |= validateTranslation(logger, missingTranslations, Helpers.translateEnum(enumConstant));
+        }
+        return errors;
+    }
+
+    /**
+     * Validates that a translation exists for a component.
+     */
+    public static boolean validateTranslation(Logger logger, Set<String> missingTranslations, Component component)
+    {
+        if (component instanceof TranslatableComponent translatable)
+        {
+            if (!Language.getInstance().has(translatable.getKey()))
+            {
+                missingTranslations.add(translatable.getKey());
+            }
+        }
+        else
+        {
+            logger.error("Tried to check the translation key of a non-translatable-component, this is almost certainly a bug, {}", component);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -277,36 +321,22 @@ public final class SelfTests
         stream(ForgeRegistries.ITEMS, MOD_ID).forEach(item -> {
             items.clear();
             item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
-            items.forEach(stack -> validateTranslation(missingTranslations, stack.getHoverName()));
+            items.forEach(stack -> validateTranslation(LOGGER, missingTranslations, stack.getHoverName()));
         });
 
-        SoundManager soundManager = Minecraft.getInstance().getSoundManager();
-        ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(missingTranslations, subtitle)));
+        final SoundManager soundManager = Minecraft.getInstance().getSoundManager();
+        ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
 
-        boolean metaError = false;
+        boolean error = false;
         for (CreativeModeTab tab : CreativeModeTab.TABS)
         {
-            metaError |= validateTranslation(missingTranslations, tab.getDisplayName());
+            error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
         }
 
-        return metaError | logErrors("{} missing translation keys:", missingTranslations, LOGGER);
-    }
+        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, PlateTectonicsClassification.class, KoppenClimateClassification.class, ForestType.class)
+            .anyMatch(clazz -> validateTranslations(LOGGER, missingTranslations, clazz));
 
-    private static boolean validateTranslation(Set<String> missingTranslations, Component component)
-    {
-        if (component instanceof TranslatableComponent translatable)
-        {
-            if (!Language.getInstance().has(translatable.getKey()))
-            {
-                missingTranslations.add(translatable.getKey());
-            }
-        }
-        else
-        {
-            LOGGER.error("Tried to check the translation key of a non-translatable-component, this is almost certainly a bug, {}", component);
-            return true;
-        }
-        return false;
+        return error | logErrors("{} missing translation keys:", missingTranslations, LOGGER);
     }
 
     public static class ClientSelfTestEvent extends Event {}
