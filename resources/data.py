@@ -153,6 +153,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('high_quality_cloth', 'tfc:silk_cloth', 'tfc:wool_cloth')
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('axes_that_log', '#tfc:axes')
+    rm.item_tag('inefficient_logging_axes', *['tfc:stone/axe/%s' % cat for cat in ROCK_CATEGORIES])
     rm.item_tag('extinguisher', '#tfc:shovels')
     rm.item_tag('forge:shears', '#tfc:shears')  # forge tag includes TFC shears
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')

@@ -125,6 +125,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enablePeacefulDifficultyPassiveRegeneration;
     public final ForgeConfigSpec.DoubleValue passiveExhaustionModifier;
     public final ForgeConfigSpec.DoubleValue thirstModifier;
+    public final ForgeConfigSpec.BooleanValue enableThirstOverheating;
     public final ForgeConfigSpec.DoubleValue thirstGainedFromDrinkingInTheRain;
     public final ForgeConfigSpec.DoubleValue naturalRegenerationModifier;
     public final ForgeConfigSpec.IntValue nutritionRotationHungerWindow;
@@ -331,6 +332,7 @@ public class ServerConfig
         thirstModifier = builder.apply("thirstModifier").comment(
             "A multiplier for how quickly the player gets thirsty.",
             "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier", 8d, 0d, 100d);
+        enableThirstOverheating = builder.apply("enableThirstOverheating").comment("Enables the player losing more thirst in hotter environments.").define("enableThirstOverheating", true);
         thirstGainedFromDrinkingInTheRain = builder.apply("thirstGainedFromDrinkingInTheRain").comment("How much thirst the player gains from drinking in the rain (standing outside in the rain and looking up) per tick.").defineInRange("thirstGainedFromDrinkingInTheRain", 5d / 24d, 0d, 100d);
         naturalRegenerationModifier = builder.apply("naturalRegenerationModifier").comment(
             "A multiplier for how quickly the player regenerates health, under TFC's passive regeneration.",
