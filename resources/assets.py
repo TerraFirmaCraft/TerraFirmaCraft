@@ -1463,6 +1463,7 @@ def generate(rm: ResourceManager):
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
         rm.fluid_tag('molten_metals', 'tfc:metal/%s' % metal)
 
+        # todo: 1.19 rename to forge:fluid_container due to deprecation
         item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
             'parent': 'forge:item/bucket',
             'fluid': 'tfc:metal/%s' % metal
@@ -1510,6 +1511,7 @@ def water_based_fluid(rm: ResourceManager, name: str):
     rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
     rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
+    # todo: 1.19 rename to forge:fluid_container due to deprecation
     item = rm.custom_item_model(('bucket', name), 'forge:bucket', {
         'parent': 'forge:item/bucket',
         'fluid': 'tfc:%s' % name
@@ -1593,6 +1595,7 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
     rm.item_model(name_parts + '_in_hand', {'particle': texture}, parent='minecraft:item/trident_in_hand')
     rm.item_model(name_parts + '_gui', texture)
     model = rm.domain + ':item/' + name_parts
+    # todo: 1.19 rename to forge:separate_transforms due to deprecation
     return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
         'gui_light': 'front',
         'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],
