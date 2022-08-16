@@ -118,7 +118,7 @@ def generate(rm: ResourceManager):
 
     # Configured and Placed Features
 
-    configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:feature/surface_grasses', 'biome_check': False})
+    configured_placed_feature(rm, 'surface_grasses', 'tfc:noisy_multiple', {'features': '#tfc:feature/surface_grasses'})
 
     # Clay Discs
     # []_with_indicator (PF) -> if_then (CF) -> if [] -> then clay_indicator
@@ -142,7 +142,7 @@ def generate(rm: ResourceManager):
     }, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
 
     # Individual indicator plants are invoked through multiple, which has decorators attached already
-    configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators', 'biome_check': False})
+    configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators'})
 
     configured_placed_feature(rm, 'tfc:erosion')
     configured_placed_feature(rm, 'tfc:ice_and_snow')
@@ -189,14 +189,14 @@ def generate(rm: ResourceManager):
             'max_radius': 3,
             'height': 2,
             'states': [{'replace': 'tfc:rock/gravel/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        }, decorate_chance(60), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+        }, decorate_chance(60), decorate_square(), decorate_heightmap('ocean_floor_wg'))
 
         configured_placed_feature(rm, '%s_deep_deposit' % ore, 'tfc:soil_disc', {
             'min_radius': 3,
             'max_radius': 10,
             'height': 3,
             'states': [{'replace': 'tfc:rock/raw/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        }, decorate_chance(60), decorate_square(), decorate_range(40, 63), decorate_biome())
+        }, decorate_chance(60), decorate_square(), decorate_range(40, 63))
 
         placed_feature_tag(rm, 'feature/ore_deposits', 'tfc:%s_deposit' % ore, 'tfc:%s_deep_deposit' % ore)
 
@@ -533,6 +533,7 @@ def generate(rm: ResourceManager):
     })
     rm.placed_feature('cave_vegetation', 'tfc:cave_vegetation', decorate_climate(16, 32, 150, 470, fuzzy=True), decorate_carving_mask(15, 100), decorate_chance(0.01))
 
+    # todo: better implementation for this feature. we should not place dirt on ceilings.
     rm.configured_feature('hanging_roots', 'minecraft:simple_block', {'to_place': simple_state_provider('minecraft:hanging_roots[waterlogged=false]')})
     rm.placed_feature('hanging_roots', 'tfc:hanging_roots', decorate_air_or_empty_fluid(), decorate_would_survive('minecraft:hanging_roots[waterlogged=false]'))
     rm.configured_feature('hanging_roots_patch', 'minecraft:vegetation_patch', {
@@ -548,7 +549,7 @@ def generate(rm: ResourceManager):
         'replaceable': '#minecraft:base_stone_overworld',
         'ground_state': simple_state_provider('tfc:rooted_dirt/silt')
     })
-    rm.placed_feature('hanging_roots_patch', 'tfc:hanging_roots_patch', decorate_count(10), decorate_square(), decorate_range(40, 72), decorate_scanner('up', 12), decorate_random_offset(0, -1), decorate_climate(min_rain=300, min_temp=0), decorate_biome())
+    rm.placed_feature('hanging_roots_patch', 'tfc:hanging_roots_patch', decorate_count(10), decorate_square(), decorate_range(40, 72), decorate_scanner('up', 12), decorate_random_offset(0, -1), decorate_climate(min_rain=300, min_temp=0))
 
     # Plants
     configured_plant_patch_feature(rm, ('plant', 'allium'), plant_config('tfc:plant/allium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, -2, 150, 400, min_forest='edge', max_forest='normal'))
@@ -707,7 +708,7 @@ def generate(rm: ResourceManager):
             placed_feature_tag(rm, 'feature/berry_bushes', 'tfc:plant/%s_bush' % berry)
         else:
             bush_block = 'tfc:plant/%s_bush[lifecycle=healthy,stage=0%s]' % (berry, ',fluid=empty' if info.type == 'waterlogged' else '')
-            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config(bush_block, 1, 4, 4, 'fresh' if info.type == 'waterlogged' else False), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_square(), decorate_chance(30), biome_check=False)
+            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config(bush_block, 1, 4, 4, 'fresh' if info.type == 'waterlogged' else False), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_square(), decorate_chance(30))
             placed_feature_tag(rm, 'feature/berry_bushes', 'tfc:plant/%s_bush_patch' % berry)
 
     for fruit, info in FRUITS.items():
@@ -755,13 +756,13 @@ def generate(rm: ResourceManager):
     configured_patch_feature(rm, 'seaweed', patch_config('tfc:groundcover/seaweed[fluid=empty]', 1, 15, 10, True), decorate_chance(5), decorate_square(), decorate_climate(-20, 50, 150, 500))
 
     # Forest Only
-    configured_patch_feature(rm, 'sticks_forest', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), decorate_square(), decorate_climate(-20, 50, 70, 500, True), biome_check=False)
-    configured_patch_feature(rm, 'pinecone', patch_config('tfc:groundcover/pinecone[fluid=empty]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-14, 0, 60, 320, True), biome_check=False)
-    configured_patch_feature(rm, 'humus', patch_config('tfc:groundcover/humus[fluid=empty]', 1, 5, 100), decorate_chance(5), decorate_square(), decorate_climate(8, 20, 180, 420, True, fuzzy=True), biome_check=False)
-    configured_patch_feature(rm, 'salt_lick', patch_config('tfc:groundcover/salt_lick[fluid=empty]', 1, 5, 100), decorate_chance(110), decorate_square(), decorate_climate(5, 33, 100, 500, True), biome_check=False)
-    configured_patch_feature(rm, 'dead_grass', patch_config('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100), decorate_chance(70), decorate_square(), decorate_climate(10, 20, 0, 150, True, fuzzy=True), biome_check=False)
-    configured_patch_feature(rm, 'rotten_flesh', patch_config('tfc:groundcover/rotten_flesh[fluid=empty]', 1, 10, 10), decorate_chance(100), decorate_square(), decorate_climate(-30, 30, 0, 400), biome_check=False)
-    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 10, 10), decorate_chance(200), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('forge:gravel'), biome_check=False)
+    configured_patch_feature(rm, 'sticks_forest', patch_config('tfc:groundcover/stick[fluid=empty]', 1, 15, 20), decorate_chance(3), decorate_square(), decorate_climate(-20, 50, 70, 500, True))
+    configured_patch_feature(rm, 'pinecone', patch_config('tfc:groundcover/pinecone[fluid=empty]', 1, 15, 10), decorate_chance(5), decorate_square(), decorate_climate(-14, 0, 60, 320, True))
+    configured_patch_feature(rm, 'humus', patch_config('tfc:groundcover/humus[fluid=empty]', 1, 5, 100), decorate_chance(5), decorate_square(), decorate_climate(8, 20, 180, 420, True, fuzzy=True))
+    configured_patch_feature(rm, 'salt_lick', patch_config('tfc:groundcover/salt_lick[fluid=empty]', 1, 5, 100), decorate_chance(110), decorate_square(), decorate_climate(5, 33, 100, 500, True))
+    configured_patch_feature(rm, 'dead_grass', patch_config('tfc:groundcover/dead_grass[fluid=empty]', 1, 5, 100), decorate_chance(70), decorate_square(), decorate_climate(10, 20, 0, 150, True, fuzzy=True))
+    configured_patch_feature(rm, 'rotten_flesh', patch_config('tfc:groundcover/rotten_flesh[fluid=empty]', 1, 10, 10), decorate_chance(100), decorate_square(), decorate_climate(-30, 30, 0, 400))
+    configured_patch_feature(rm, 'guano', patch_config('tfc:groundcover/guano[fluid=empty]', 1, 10, 10), decorate_chance(200), decorate_square(), decorate_climate(-30, 10, 100, 500), decorate_on_top_of('forge:gravel'))
 
     # Loose Rocks - Both Surface + Underground
     configured_placed_feature(rm, 'loose_rock', 'tfc:loose_rock', {}, decorate_heightmap('ocean_floor_wg'))
@@ -773,7 +774,7 @@ def generate(rm: ResourceManager):
     rm.configured_feature('geode', 'tfc:geode', {'outer': 'tfc:rock/hardened/basalt', 'middle': 'tfc:rock/raw/quartzite', 'inner': [
         {'data': 'tfc:ore/amethyst/quartzite', 'weight': 1}, {'data': 'tfc:rock/raw/quartzite', 'weight': 5}
     ]})
-    rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(-48, 32), decorate_biome())
+    rm.placed_feature('geode', 'tfc:geode', decorate_chance(500), decorate_square(), decorate_range(-48, 32))
 
 
 def configured_placed_feature(rm: ResourceManager, name_parts: ResourceIdentifier, feature: Optional[ResourceIdentifier] = None, config: JsonObject = None, *placements: Json):
@@ -870,7 +871,7 @@ class PatchConfig(NamedTuple):
 def patch_config(block: str, y_spread: int, xz_spread: int, tries: int = 64, water: Union[bool, Literal['salt']] = False, custom_feature: Optional[str] = None, custom_config: Json = None) -> PatchConfig:
     return PatchConfig(block, y_spread, xz_spread, tries, water == 'salt' or water == True, water == 'salt', custom_feature, custom_config)
 
-def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, patch: PatchConfig, *patch_decorators: Json, extra_singular_decorators: Optional[List[Json]] = None, biome_check: bool = True):
+def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier, patch: PatchConfig, *patch_decorators: Json, extra_singular_decorators: Optional[List[Json]] = None):
     feature = 'minecraft:simple_block'
     config = {'to_place': {'type': 'minecraft:simple_state_provider', 'state': utils.block_state(patch.block)}}
     singular_decorators = []
@@ -898,8 +899,6 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
 
     if extra_singular_decorators is not None:
         singular_decorators += extra_singular_decorators
-    if biome_check:
-        patch_decorators = [*patch_decorators, decorate_biome()]
 
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'

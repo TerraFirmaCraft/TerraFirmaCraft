@@ -113,8 +113,7 @@ def generate(rm: ResourceManager):
         def plank(thing: str):
             return 'tfc:wood/planks/%s_%s' % (wood, thing)
 
-        def log_tag():
-            return '#tfc:%s_logs' % wood
+        log_tag = '#tfc:%s_logs' % wood
 
         rm.crafting_shaped('crafting/wood/%s_bookshelf' % wood, ['XXX', 'YYY', 'XXX'], {'X': item('lumber'), 'Y': 'minecraft:book'}, plank('bookshelf')).with_advancement('minecraft:book')
         rm.crafting_shapeless('crafting/wood/%s_button' % wood, item('planks'), plank('button')).with_advancement(item('planks'))
@@ -122,7 +121,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_fence' % wood, ['XYX', 'XYX'], {'X': item('planks'), 'Y': item('lumber')}, (8, plank('fence'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_log_fence' % wood, ['XYX', 'XYX'], {'X': item('log'), 'Y': item('lumber')}, (8, plank('log_fence'))).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_fence_gate' % wood, ['YXY', 'YXY'], {'X': item('planks'), 'Y': item('lumber')}, (2, plank('fence_gate'))).with_advancement(item('lumber'))
-        damage_shapeless(rm, 'crafting/wood/%s_lumber_log' % wood, (log_tag(), '#tfc:saws'), (8, item('lumber'))).with_advancement(item('log'))
+        damage_shapeless(rm, 'crafting/wood/%s_lumber_log' % wood, (log_tag, '#tfc:saws'), (8, item('lumber'))).with_advancement(item('log'))
         damage_shapeless(rm, 'crafting/wood/%s_lumber_planks' % wood, (item('planks'), '#tfc:saws'), (4, item('lumber'))).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_stairs' % wood, ['X  ', 'XX ', 'XXX'], {'X': item('planks')}, (8, plank('stairs'))).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_slab' % wood, ['XXX'], {'X': item('planks')}, (6, plank('slab'))).with_advancement(item('planks'))
@@ -134,7 +133,7 @@ def generate(rm: ResourceManager):
         rm.crafting_shaped('crafting/wood/%s_boat' % wood, ['X X', 'XXX'], {'X': item('planks')}, item('boat')).with_advancement(item('planks'))
         rm.crafting_shaped('crafting/wood/%s_chest' % wood, ['XXX', 'X X', 'XXX'], {'X': item('lumber')}, item('chest')).with_advancement(item('lumber'))
         rm.crafting_shapeless('crafting/wood/%s_trapped_chest' % wood, (item('chest'), 'minecraft:tripwire_hook'), (1, item('trapped_chest'))).with_advancement(item('chest'))
-        damage_shapeless(rm, 'crafting/wood/%s_support' % wood, (log_tag(), log_tag(), '#tfc:saws'), (8, item('support'))).with_advancement('#tfc:saws')
+        damage_shapeless(rm, 'crafting/wood/%s_support' % wood, (log_tag, log_tag, '#tfc:saws'), (8, item('support'))).with_advancement('#tfc:saws')
         rm.crafting_shaped('crafting/wood/%s_loom' % wood, ['XXX', 'XSX', 'X X'], {'X': item('lumber'), 'S': 'minecraft:stick'}, plank('loom')).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_sluice' % wood, ['  X', ' XY', 'XYY'], {'X': '#forge:rods/wooden', 'Y': item('lumber')}, item('sluice')).with_advancement(item('lumber'))
         rm.crafting_shaped('crafting/wood/%s_sign' % wood, ['XXX', 'XXX', ' Y '], {'X': item('lumber'), 'Y': '#forge:rods/wooden'}, (3, item('sign'))).with_advancement(item('lumber'))

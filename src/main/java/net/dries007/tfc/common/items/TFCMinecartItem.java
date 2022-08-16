@@ -9,10 +9,6 @@ package net.dries007.tfc.common.items;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.BlockSource;
-import net.minecraft.core.Direction;
-import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
-import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -22,8 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseRailBlock;
-import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -114,53 +108,5 @@ public class TFCMinecartItem extends Item
             chest.setPickResult(stack);
             chest.setChestItem(new ItemStack(containedItem.get()));
         }
-    }
-
-    public DispenseItemBehavior makeDispenserBehavior()
-    {
-        return new DefaultDispenseItemBehavior()
-        {
-            private final DefaultDispenseItemBehavior defaultBehavior = new DefaultDispenseItemBehavior();
-
-            public ItemStack execute(BlockSource source, ItemStack stack)
-            {
-                final Direction direction = source.getBlockState().getValue(DispenserBlock.FACING);
-                final Level level = source.getLevel();
-
-                final double x = source.x() + (double) direction.getStepX() * 1.125D;
-                final double y = Math.floor(source.y()) + (double) direction.getStepY();
-                final double z = source.z() + (double) direction.getStepZ() * 1.125D;
-
-                final BlockPos offsetPos = source.getPos().relative(direction);
-                final BlockState state = level.getBlockState(offsetPos);
-                final RailShape railshape = state.getBlock() instanceof BaseRailBlock ? ((BaseRailBlock) state.getBlock()).getRailDirection(state, level, offsetPos, null) : RailShape.NORTH_SOUTH;
-
-                double offset;
-                if (Helpers.isBlock(state, BlockTags.RAILS))
-                {
-                    offset = railshape.isAscending() ? 0.6 : 0.1;
-                }
-                else
-                {
-                    if (!state.isAir() || !Helpers.isBlock(level.getBlockState(offsetPos.below()), BlockTags.RAILS))
-                    {
-                        return this.defaultBehavior.dispense(source, stack);
-                    }
-
-                    BlockState offsetState = level.getBlockState(offsetPos.below());
-                    // noinspection deprecation
-                    RailShape offsetShape = offsetState.getBlock() instanceof BaseRailBlock ? offsetState.getValue(((BaseRailBlock) offsetState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
-                    offset = direction != Direction.DOWN && offsetShape.isAscending() ? -0.4 : -0.9;
-                }
-                createMinecartEntity(level, stack, x, y + offset, z);
-                return stack;
-            }
-
-            @Override
-            protected void playSound(BlockSource source)
-            {
-                source.getLevel().levelEvent(LevelEvent.SOUND_DISPENSER_DISPENSE, source.getPos(), 0);
-            }
-        };
     }
 }
