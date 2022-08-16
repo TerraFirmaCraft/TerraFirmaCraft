@@ -189,14 +189,14 @@ def generate(rm: ResourceManager):
             'max_radius': 3,
             'height': 2,
             'states': [{'replace': 'tfc:rock/gravel/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        }, decorate_chance(60), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+        }, decorate_chance(12), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
 
         configured_placed_feature(rm, '%s_deep_deposit' % ore, 'tfc:soil_disc', {
             'min_radius': 3,
             'max_radius': 10,
             'height': 3,
             'states': [{'replace': 'tfc:rock/raw/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        }, decorate_chance(60), decorate_square(), decorate_range(40, 63), decorate_biome())
+        }, decorate_chance(24), decorate_square(), decorate_range(40, 63), decorate_biome())
 
         placed_feature_tag(rm, 'feature/ore_deposits', 'tfc:%s_deposit' % ore, 'tfc:%s_deep_deposit' % ore)
 
@@ -1082,7 +1082,7 @@ def decorate_square() -> Json:
 
 
 def decorate_biome() -> Json:
-    return 'minecraft:biome'
+    return 'tfc:biome'
 
 
 def decorate_chance(rarity_or_probability: Union[int, float]) -> Json:
