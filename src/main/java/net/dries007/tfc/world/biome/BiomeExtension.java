@@ -45,6 +45,7 @@ public class BiomeExtension
 
     @Nullable private List<HolderSet<PlacedFeature>> flattenedFeatures;
     @Nullable private Set<PlacedFeature> flattenedFeatureSet;
+    @Nullable private Biome prevBiome;
 
     BiomeExtension(ResourceKey<Biome> key, LongFunction<BiomeNoiseSampler> noiseFactory, SurfaceBuilderFactory surfaceBuilderFactory, DoubleUnaryOperator aquiferSurfaceHeight, Group group, boolean salty, boolean volcanic, int volcanoRarity, int volcanoBasaltHeight, boolean spawnable)
     {
@@ -122,6 +123,14 @@ public class BiomeExtension
 
     public List<HolderSet<PlacedFeature>> getFlattenedFeatures(Biome biome)
     {
+        if (biome != prevBiome)
+        {
+            // These fields are cached on a per-biome-instance (aka per registry) basis
+            // But extensions are globally instanced.
+            // So we need to invalidate when we're querying from a different biome instance.
+            prevBiome = biome;
+            flattenedFeatures = null;
+        }
         if (flattenedFeatures == null)
         {
             flattenedFeatures = Helpers.flattenTopLevelMultipleFeature(biome.getGenerationSettings());
