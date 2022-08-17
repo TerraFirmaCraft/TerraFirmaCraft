@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
 
 public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntity> implements ButtonHandlerContainer

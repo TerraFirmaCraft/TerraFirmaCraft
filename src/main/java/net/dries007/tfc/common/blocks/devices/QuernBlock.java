@@ -32,6 +32,7 @@ import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.capabilities.Capabilities;
 
 import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
 

@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.common.blockentities.QuernBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockEntity>
 {

@@ -21,6 +21,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<ScrapingBlockEntity>
 {

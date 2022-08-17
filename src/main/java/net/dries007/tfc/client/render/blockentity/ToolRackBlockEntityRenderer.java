@@ -16,6 +16,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.common.blockentities.ToolRackBlockEntity;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRackBlockEntity>
 {
