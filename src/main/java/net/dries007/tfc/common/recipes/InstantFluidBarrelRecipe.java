@@ -15,14 +15,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.ingredients.FluidStackIngredient;
 import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
@@ -52,7 +51,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
     public boolean matches(ItemStack inputStack, FluidStack fluidStack)
     {
         // As with instant recipes, we must have enough added input to fully convert the existing fluid.
-        final FluidStack extractableFluid = inputStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+        final FluidStack extractableFluid = inputStack.getCapability(Capabilities.FLUID_ITEM)
             .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE))
             .orElse(FluidStack.EMPTY);
         return inputFluid.test(fluidStack) && addedFluid.test(extractableFluid);
@@ -71,7 +70,7 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
             // If we match a slot in the input slot, we continue, otherwise we assume matching the fluid IO slots
             final boolean inputIsItemSlot = matches(inventory.getStackInSlot(BarrelBlockEntity.SLOT_ITEM), primaryFluid);
             final ItemStack originalStack = Helpers.removeStack(inventory, inputIsItemSlot ? BarrelBlockEntity.SLOT_ITEM : BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN);
-            final IFluidHandlerItem fluidHandler = Helpers.getCapability(originalStack.copy(), CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+            final IFluidHandlerItem fluidHandler = Helpers.getCapability(originalStack.copy(), Capabilities.FLUID_ITEM);
 
             if (fluidHandler == null)
             {

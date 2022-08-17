@@ -12,12 +12,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -25,6 +23,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.BarrelSealButton;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -103,7 +102,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
-        blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(fluidHandler -> {
+        blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty())
             {
@@ -130,7 +129,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
 
         if (relX >= 7 && relY >= 19 && relX < 25 && relY < 71)
         {
-            blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(fluidHandler -> {
+            blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
                 FluidStack fluid = fluidHandler.getFluidInTank(0);
                 if (!fluid.isEmpty())
                 {

@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -31,7 +30,7 @@ public class AnvilBlockEntityRenderer implements BlockEntityRenderer<AnvilBlockE
         }
 
         final BlockState state = anvil.getLevel().getBlockState(anvil.getBlockPos());
-        anvil.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        anvil.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             final int rotation = state.hasProperty(BlockStateProperties.HORIZONTAL_FACING) ? state.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue() : 0;
             final float yOffset = anvil.getTier() == 0 ? 0.875f : 0.6875f;
 

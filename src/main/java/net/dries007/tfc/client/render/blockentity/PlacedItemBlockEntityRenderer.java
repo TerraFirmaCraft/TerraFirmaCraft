@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -25,7 +24,7 @@ public class PlacedItemBlockEntityRenderer<T extends PlacedItemBlockEntity> impl
     public void render(T placedItem, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        placedItem.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        placedItem.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             float timeD = RenderHelpers.itemTimeRotation();
             poseStack.translate(0.25D, 0.25D, 0.25D);
             if (placedItem.holdingLargeItem())

@@ -9,7 +9,6 @@ package net.dries007.tfc.client.screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -34,7 +33,7 @@ public class BlockEntityScreen<T extends InventoryBlockEntity<?>, C extends Bloc
 
     public void drawDisabled(PoseStack poseStack, int start, int end)
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
             // draw disabled texture over the slots
             menu.slots.stream().filter(slot -> slot.index <= end && slot.index >= start).forEach(slot -> fillGradient(poseStack, slot.x, slot.y, slot.x + 16, slot.y + 16, 0x75FFFFFF, 0x75FFFFFF));
         });

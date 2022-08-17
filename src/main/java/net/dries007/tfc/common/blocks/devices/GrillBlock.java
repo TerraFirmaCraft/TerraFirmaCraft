@@ -24,7 +24,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -62,7 +61,7 @@ public class GrillBlock extends FirepitBlock
         if (state.getValue(LIT))
         {
             level.getBlockEntity(pos, TFCBlockEntities.GRILL.get())
-                .flatMap(grill -> grill.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
+                .flatMap(grill -> grill.getCapability(Capabilities.ITEM).resolve())
                 .ifPresent(cap -> {
                     for (int i = SLOT_EXTRA_INPUT_START; i <= SLOT_EXTRA_INPUT_END; i++)
                     {

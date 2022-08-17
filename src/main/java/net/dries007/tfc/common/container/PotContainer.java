@@ -8,7 +8,6 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
@@ -55,7 +54,7 @@ public class PotContainer extends BlockEntityContainer<PotBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
             for (int i = 0; i < 4; i++) // Fuel
             {
                 addSlot(new CallbackSlot(blockEntity, handler, i, 8, 70 - 18 * i));

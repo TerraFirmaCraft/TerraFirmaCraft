@@ -20,9 +20,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -70,6 +70,6 @@ public class LampBlockItem extends BlockItem
 
     private FluidStack getFluidInside(ItemStack stack)
     {
-        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(cap -> cap.getFluidInTank(0)).orElse(FluidStack.EMPTY);
+        return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> cap.getFluidInTank(0)).orElse(FluidStack.EMPTY);
     }
 }

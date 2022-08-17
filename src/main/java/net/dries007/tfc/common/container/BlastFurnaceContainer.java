@@ -8,7 +8,6 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 
@@ -39,7 +38,7 @@ public class BlastFurnaceContainer extends BlockEntityContainer<BlastFurnaceBloc
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
             addSlot(new CallbackSlot(blockEntity, handler, 0, 152, 17));
         });
     }

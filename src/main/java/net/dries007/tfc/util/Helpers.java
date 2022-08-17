@@ -39,7 +39,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Recipe;
@@ -73,10 +72,8 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -87,6 +84,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.size.IItemSize;
@@ -580,7 +578,7 @@ public final class Helpers
     public static boolean insertOne(Optional<? extends BlockEntity> blockEntity, ItemStack stack)
     {
         ItemStack toInsert = stack.copy();
-        return blockEntity.flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
+        return blockEntity.flatMap(entity -> entity.getCapability(Capabilities.ITEM).resolve())
             .map(cap -> {
                 toInsert.setCount(1);
                 return insertAllSlots(cap, toInsert).isEmpty();
@@ -760,7 +758,7 @@ public final class Helpers
         if (!fluidStack.isEmpty())
         {
             final ItemStack mergeStack = inventory.getStackInSlot(slot);
-            return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
+            return mergeStack.getCapability(Capabilities.FLUID).map(fluidCap -> {
                 int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (filled > 0)
                 {

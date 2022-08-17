@@ -10,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
 import net.dries007.tfc.common.blocks.devices.PowderkegBlock;
@@ -52,7 +51,7 @@ public class PowderkegContainer extends BlockEntityContainer<PowderkegBlockEntit
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
             for (int y = 0; y < 3; y++)
             {
                 for (int x = 0; x < 4; x++)

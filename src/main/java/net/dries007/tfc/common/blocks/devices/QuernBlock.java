@@ -23,7 +23,6 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 
@@ -54,7 +53,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     private static SelectionPlace getPlayerSelection(BlockGetter level, BlockPos pos, Player player, BlockHitResult result)
     {
         return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get())
-            .flatMap(quern -> quern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            .flatMap(quern -> quern.getCapability(Capabilities.ITEM)
                 .map(inventory -> {
                     final ItemStack held = player.getItemInHand(InteractionHand.MAIN_HAND);
                     final Vec3 hit = result.getLocation();
@@ -111,7 +110,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
         {
             final ItemStack heldStack = player.getItemInHand(hand);
             final SelectionPlace selection = getPlayerSelection(level, pos, player, hit);
-            return quern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(inventory -> switch (selection)
+            return quern.getCapability(Capabilities.ITEM).map(inventory -> switch (selection)
                     {
                         case HANDLE -> {
                             if (quern.startGrinding())

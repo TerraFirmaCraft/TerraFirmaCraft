@@ -34,7 +34,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -42,6 +41,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
@@ -84,7 +84,7 @@ public final class FluidHelpers
         final BlockState state = level.getBlockState(pos);
 
         final ItemStack stack = originalStack.copy();
-        final IFluidHandlerItem handler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+        final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
         if (handler == null)
         {
             return false;
@@ -137,7 +137,7 @@ public final class FluidHelpers
      */
     public static boolean transferBetweenBlockEntityAndItem(ItemStack originalStack, BlockEntity entity, Level level, BlockPos pos, AfterTransfer after)
     {
-        return transferBetweenBlockHandlerAndItem(originalStack, Helpers.getCapability(entity, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY), level, pos, after);
+        return transferBetweenBlockHandlerAndItem(originalStack, Helpers.getCapability(entity, Capabilities.FLUID), level, pos, after);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class FluidHelpers
     public static boolean transferBetweenBlockHandlerAndItem(ItemStack originalStack, @Nullable IFluidHandler blockHandler, Level level, BlockPos pos, AfterTransfer after)
     {
         final ItemStack stack = originalStack.copy(); // Copy here, because the semantics of item fluid handlers require us to carefully manage the container
-        final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+        final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
 
         if (itemHandler == null || blockHandler == null)
         {
@@ -297,7 +297,7 @@ public final class FluidHelpers
             {
                 // Directly execute, assuming that we can pickup into a bucket, then empty the bucket to obtain the contents
                 final ItemStack stack = pickup.pickupBlock(level, pos, state);
-                final FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+                final FluidStack fluid = stack.getCapability(Capabilities.FLUID_ITEM)
                     .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE))
                     .orElse(FluidStack.EMPTY);
                 playTransferSound(level, pos, fluid, Transfer.FILL);

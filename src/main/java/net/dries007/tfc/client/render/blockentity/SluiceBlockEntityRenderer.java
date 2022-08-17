@@ -21,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidAttributes;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -77,7 +76,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
 
         final float rotation = RenderHelpers.itemTimeRotation();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
-        sluice.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inv -> {
+        sluice.getCapability(Capabilities.ITEM).ifPresent(inv -> {
             for (int i = 0; i < inv.getSlots(); i++)
             {
                 ItemStack stack = inv.getStackInSlot(i);

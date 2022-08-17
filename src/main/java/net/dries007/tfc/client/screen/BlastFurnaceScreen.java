@@ -8,16 +8,15 @@ package net.dries007.tfc.client.screen;
 
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.BlastFurnaceContainer;
 import net.dries007.tfc.config.TFCConfig;
@@ -60,7 +59,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         }
 
         // Render output fluid tank
-        final FluidStack fluid = blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        final FluidStack fluid = blockEntity.getCapability(Capabilities.FLUID)
             .map(c -> c.getFluidInTank(0))
             .orElse(FluidStack.EMPTY);
         if (!fluid.isEmpty())
@@ -85,7 +84,7 @@ public class BlastFurnaceScreen extends BlockEntityScreen<BlastFurnaceBlockEntit
         final int fuelCount = blockEntity.getFuelCount();
         final int inputCount = blockEntity.getInputCount();
 
-        final FluidStack fluid = blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        final FluidStack fluid = blockEntity.getCapability(Capabilities.FLUID)
             .map(c -> c.getFluidInTank(0))
             .orElse(FluidStack.EMPTY);
 

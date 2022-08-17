@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -276,7 +275,7 @@ public final class InteractionManager
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
                     return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
-                        .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(t -> t))
+                        .flatMap(entity -> entity.getCapability(Capabilities.ITEM).map(t -> t))
                         .map(cap -> {
                             ItemStack insertStack = stack.copy();
                             insertStack = Helpers.insertAllSlots(cap, insertStack);
@@ -327,7 +326,7 @@ public final class InteractionManager
                 {
                     level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
                     level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
-                        .map(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                        .map(entity -> entity.getCapability(Capabilities.ITEM).map(cap -> {
                             if (!level.isClientSide)
                             {
                                 ItemStack insertStack = stack.split(1);

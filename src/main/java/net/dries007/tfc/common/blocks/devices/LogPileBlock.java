@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -110,7 +109,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
     public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
         level.getBlockEntity(pos, TFCBlockEntities.LOG_PILE.get())
-            .ifPresent(pile -> pile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            .ifPresent(pile -> pile.getCapability(Capabilities.ITEM)
             .map(cap -> {
                 for (int i = 0; i < cap.getSlots(); i++)
                 {

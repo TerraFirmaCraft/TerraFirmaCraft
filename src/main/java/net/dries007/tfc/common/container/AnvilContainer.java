@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
@@ -64,7 +63,7 @@ public class AnvilContainer extends BlockEntityContainer<AnvilBlockEntity> imple
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
             addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_INPUT_MAIN, 31, 68));
             addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_INPUT_SECOND, 13, 68));
             addSlot(new CallbackSlot(blockEntity, handler, AnvilBlockEntity.SLOT_HAMMER, 129, 68));

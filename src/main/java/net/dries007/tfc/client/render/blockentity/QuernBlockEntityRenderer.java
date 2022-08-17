@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -23,7 +22,7 @@ public class QuernBlockEntityRenderer implements BlockEntityRenderer<QuernBlockE
     public void render(QuernBlockEntity quern, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (quern.getLevel() == null) return;
-        quern.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        quern.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             ItemStack input = cap.getStackInSlot(QuernBlockEntity.SLOT_INPUT);
             ItemStack output = cap.getStackInSlot(QuernBlockEntity.SLOT_OUTPUT);
             ItemStack handstone = cap.getStackInSlot(QuernBlockEntity.SLOT_HANDSTONE);

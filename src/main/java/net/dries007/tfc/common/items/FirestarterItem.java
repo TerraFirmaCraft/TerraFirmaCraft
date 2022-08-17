@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -111,7 +110,7 @@ public class FirestarterItem extends Item
 
                             final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState();
                             world.setBlock(abovePos, state, 3);
-                            world.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+                            world.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.getCapability(Capabilities.ITEM).ifPresent(cap -> {
                                 if (cap instanceof IItemHandlerModifiable modifiableInventory)
                                 {
                                     modifiableInventory.setStackInSlot(AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME, initialLog);

@@ -27,10 +27,10 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
@@ -66,7 +66,7 @@ public final class DispenserBehaviors
         {
             BlockPos dropPos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
             Level level = source.getLevel();
-            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(handler -> {
+            return stack.getCapability(Capabilities.FLUID_ITEM).map(handler -> {
                 if (FluidHelpers.emptyFluidFrom(handler, level, dropPos, level.getBlockState(dropPos), null, true))
                 {
                     // if we wanted to check extra content, we would do that here.

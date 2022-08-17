@@ -8,7 +8,6 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.FirepitBlockEntity;
 
@@ -41,7 +40,7 @@ public class FirepitContainer extends BlockEntityContainer<FirepitBlockEntity>
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
             // fuel slots
             for (int i = 0; i < 4; i++)
             {
