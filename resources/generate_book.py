@@ -99,12 +99,13 @@ def main_with_args():
     parser = ArgumentParser('generate_book.py')
     parser.add_argument('--translate', type=str, default='en_us', help='The language to translate to')
     parser.add_argument('--local', type=str, default=None, help='The directory of a local .minecraft to copy into')
+    parser.add_argument('--local-overwrite', action='store_true', dest='local_overwrite', help='Overwrite existing files in the provided local .minecraft directory')
 
     args = parser.parse_args()
-    main(args.translate, args.local)
+    main(args.translate, args.local, args.local_overwrite)
 
 
-def main(translate_lang: str, local_minecraft_dir: str):
+def main(translate_lang: str, local_minecraft_dir: str, local_overwrite: bool):
     LocalInstance.INSTANCE_DIR = local_minecraft_dir
 
     rm = ResourceManager('tfc', './src/main/resources')
@@ -117,7 +118,8 @@ def main(translate_lang: str, local_minecraft_dir: str):
 
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        utils.clean_generated_resources(LocalInstance.INSTANCE_DIR + '/patchouli_books')
+        if local_overwrite:
+            utils.clean_generated_resources(LocalInstance.INSTANCE_DIR + '/patchouli_books')
         make_book(rm, I18n.create(translate_lang), local_instance=True)
 
     print('Done')
