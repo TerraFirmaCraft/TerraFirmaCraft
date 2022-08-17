@@ -27,6 +27,9 @@
 !/README.md
 !/CodeStyle.xml
 
+# Splash / Logo Images
+!/img/**/*.png
+
 # Other exclusions
 __pycache__/
 *.pyc

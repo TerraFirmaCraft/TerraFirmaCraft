@@ -635,7 +635,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
 VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
@@ -979,17 +979,16 @@ DEFAULT_LANG = {
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'edge', 'none')),
-    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
+    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'humid_subarctic', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
     **dict(('tfc.enum.platetectonicsclassification.%s' % k, v) for k, v in {
         'oceanic': 'Oceanic',
         'continental_low': 'Low Altitude Continental',
         'continental_mid': 'Mid Altitude Continental',
         'continental_high': 'High Altitude Continental',
         'ocean_ocean_diverging': 'Mid-Ocean Ridge',
-        'ocean_ocean_converging_lower': 'Oceanic Subduction',
-        'ocean_ocean_converging_upper': 'Oceanic Subduction',
-        'ocean_continent_converging_lower': 'Continental Subduction',
-        'ocean_continent_converging_upper': 'Continental Subduction',
+        'ocean_ocean_converging': 'Oceanic Subduction',
+        'ocean_continent_diverging': 'Continental Subduction',
+        'ocean_continent_converging': 'Continental Subduction',
         'continent_continent_diverging': 'Continental Rift',
         'continent_continent_converging': 'Orogenic Belt',
         'continental_shelf': 'Continental Shelf'
