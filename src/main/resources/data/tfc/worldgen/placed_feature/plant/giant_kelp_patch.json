@@ -14,7 +14,7 @@
       "fuzzy": true
     },
     {
-      "type": "minecraft:biome"
+      "type": "tfc:biome"
     }
   ]
 }

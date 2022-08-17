@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
@@ -65,8 +63,6 @@ public final class Codecs
 
     public static final Codec<BlockStateConfiguration> BLOCK_STATE_CONFIG = BLOCK_STATE.fieldOf("state").xmap(BlockStateConfiguration::new, c -> c.state).codec();
 
-    public static final Codec<IntProvider> INT_OR_RANGE = Codec.either(Codec.INT, IntProvider.CODEC).xmap(either -> either.map(ConstantInt::of, uniform -> uniform), Either::right);
-
     /**
      * Creates a codec for a given registry which does not default
      */
@@ -76,23 +72,6 @@ public final class Codecs
             id -> registry.getOptional(id).map(DataResult::success).orElseGet(() -> DataResult.error("Unknown registry entry: " + id + " for registry: " + registry.key())),
             value -> DataResult.success(registry.getKey(value))
         );
-    }
-
-    public static Codec<BlockStateConfiguration> blockStateConfigCodec(Predicate<Block> predicate, String onError)
-    {
-        return blockStateCodec(predicate, onError).fieldOf("state")
-            .xmap(BlockStateConfiguration::new, c -> c.state).codec();
-    }
-
-    public static Codec<BlockState> blockStateCodec(Predicate<Block> predicate, String onError)
-    {
-        return BLOCK_STATE.comapFlatMap(state -> {
-            if (predicate.test(state.getBlock()))
-            {
-                return DataResult.success(state);
-            }
-            return DataResult.error(onError + ": " + state.getBlock().getRegistryName());
-        }, Function.identity());
     }
 
     /**

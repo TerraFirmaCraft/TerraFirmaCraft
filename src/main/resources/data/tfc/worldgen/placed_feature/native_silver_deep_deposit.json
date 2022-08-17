@@ -4,7 +4,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 60
+      "chance": 24
     },
     {
       "type": "minecraft:in_square"
@@ -22,7 +22,7 @@
       }
     },
     {
-      "type": "minecraft:biome"
+      "type": "tfc:biome"
     }
   ]
 }
