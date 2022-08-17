@@ -22,6 +22,7 @@ buildscript {
 
 plugins {
     id 'org.cadixdev.licenser' version '0.6.1'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
     id 'idea'
 }
 
@@ -249,4 +250,26 @@ jar {
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
     add sourceSets.test, "${mod_id}.refmap.json"
+}
+
+curseforge {
+    final String envApiKey = System.getenv('CURSEFORGE_API_KEY');
+    final String versionType = project.version.contains('beta') ? 'beta' : (project.version.contains('alpha') ? 'alpha' : 'release')
+
+    apiKey = envApiKey == null ? 'nope' : envApiKey
+
+    project {
+        id = '302973'
+        changelog = "[Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${project.version})"
+        changelogType = "markdown"
+
+        releaseType = versionType
+        addGameVersion "${minecraft_version}"
+
+        mainArtifact jar
+
+        relations {
+            requiredDependency 'patchouli'
+        }
+    }
 }
