@@ -93,10 +93,10 @@ public record ForestConfig(HolderSet<ConfiguredFeature<?, ?>> entries, Map<Fores
     public record Type(IntProvider treeCount, IntProvider groundcoverCount, float perChunkChance, Optional<IntProvider> bushCount, boolean hasSpoilers, boolean allowOldGrowth)
     {
         public static final Codec<Type> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-            Codecs.INT_OR_RANGE.fieldOf("tree_count").orElse(UniformInt.of(0, 0)).forGetter(c -> c.treeCount),
-            Codecs.INT_OR_RANGE.fieldOf("groundcover_count").orElse(UniformInt.of(0, 0)).forGetter(c -> c.groundcoverCount),
+            IntProvider.CODEC.fieldOf("tree_count").orElse(UniformInt.of(0, 0)).forGetter(c -> c.treeCount),
+            IntProvider.CODEC.fieldOf("groundcover_count").orElse(UniformInt.of(0, 0)).forGetter(c -> c.groundcoverCount),
             Codec.FLOAT.fieldOf("per_chunk_chance").orElse(1f).forGetter(c -> c.perChunkChance),
-            Codecs.INT_OR_RANGE.optionalFieldOf("bush_count").forGetter(c -> c.bushCount),
+            IntProvider.CODEC.optionalFieldOf("bush_count").forGetter(c -> c.bushCount),
             Codec.BOOL.fieldOf("has_spoiler_old_growth").orElse(false).forGetter(c -> c.hasSpoilers),
             Codec.BOOL.fieldOf("allows_old_growth").orElse(false).forGetter(c -> c.allowOldGrowth)
         ).apply(instance, Type::new));
