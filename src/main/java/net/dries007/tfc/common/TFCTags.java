@@ -140,6 +140,7 @@ public class TFCTags
         public static final TagKey<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
         public static final TagKey<Item> LEATHER_KNAPPING = create("leather_knapping");
         public static final TagKey<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
+        public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
         public static final TagKey<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");

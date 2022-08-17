@@ -132,7 +132,7 @@ def generate(rm: ResourceManager):
     # Fuels
 
     for wood, wood_data in WOODS.items():
-        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood], wood_data.duration, wood_data.temp)
+        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood, 'tfc:wood/stripped_wood/' + wood, 'tfc:wood/stripped_log/' + wood], wood_data.duration, wood_data.temp)
 
     fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
     fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)
@@ -153,6 +153,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('high_quality_cloth', 'tfc:silk_cloth', 'tfc:wool_cloth')
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('axes_that_log', '#tfc:axes')
+    rm.item_tag('inefficient_logging_axes', *['tfc:stone/axe/%s' % cat for cat in ROCK_CATEGORIES])
     rm.item_tag('extinguisher', '#tfc:shovels')
     rm.item_tag('forge:shears', '#tfc:shears')  # forge tag includes TFC shears
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
@@ -651,9 +652,8 @@ def generate(rm: ResourceManager):
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
-
-    # unimplemented
-    # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
+    item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.very_heavy)
+    item_size(rm, 'looms', '#tfc:looms', Size.large, Weight.very_heavy)
 
     # Food
 

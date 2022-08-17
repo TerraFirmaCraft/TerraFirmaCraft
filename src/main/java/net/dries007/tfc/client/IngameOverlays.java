@@ -132,12 +132,24 @@ public class IngameOverlays
 
             int x = width / 2;
             int y = height - gui.right_height;
-            float percentThirst = (player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : 0) / TFCFoodData.MAX_THIRST;
+            float percentThirst = 0;
+            float overheat = 0;
+            if (player.getFoodData() instanceof TFCFoodData data)
+            {
+                percentThirst = data.getThirst() / TFCFoodData.MAX_THIRST;
+                overheat = data.getThirstContributionFromTemperature(player);
+            }
 
             stack.pushPose();
             stack.translate(x + 1, y + 4, 0);
             gui.blit(stack, 0, 0, 90, 20, 90, 5);
             gui.blit(stack, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
+            if (overheat > 0)
+            {
+                RenderSystem.setShaderColor(1f, 1f, 1f, overheat / TFCFoodData.MAX_TEMPERATURE_THIRST_DECAY);
+                gui.blit(stack, 0, 0, 90, 30, 90, 5);
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            }
             stack.popPose();
 
             gui.right_height += 6;

@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/hickory"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/hickory"
+    },
+    {
+      "item": "tfc:wood/stripped_log/hickory"
     }
   ],
   "duration": 2000,

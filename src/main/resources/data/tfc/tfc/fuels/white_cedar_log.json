@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/white_cedar"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/white_cedar"
+    },
+    {
+      "item": "tfc:wood/stripped_log/white_cedar"
     }
   ],
   "duration": 1500,

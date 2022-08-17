@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/rosewood"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/rosewood"
+    },
+    {
+      "item": "tfc:wood/stripped_log/rosewood"
     }
   ],
   "duration": 1500,
