@@ -38,6 +38,7 @@ public class TFCFeatures
     public static final RegistryObject<FissureFeature> FISSURE = register("fissure", FissureFeature::new, FissureConfig.CODEC);
     public static final RegistryObject<HotSpringFeature> HOT_SPRING = register("hot_spring", HotSpringFeature::new, HotSpringConfig.CODEC);
     public static final RegistryObject<TFCGeodeFeature> GEODE = register("geode", TFCGeodeFeature::new, TFCGeodeConfig.CODEC);
+    public static final RegistryObject<CaveColumnFeature> CAVE_COLUMN = register("cave_column", CaveColumnFeature::new, NoneFeatureConfiguration.CODEC);
 
     public static final RegistryObject<ClusterVeinFeature> CLUSTER_VEIN = register("cluster_vein", ClusterVeinFeature::new, VeinConfig.CODEC);
     public static final RegistryObject<DiscVeinFeature> DISC_VEIN = register("disc_vein", DiscVeinFeature::new, DiscVeinConfig.CODEC);
