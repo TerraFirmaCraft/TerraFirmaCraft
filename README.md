@@ -1,17 +1,27 @@
-# TerraFirmaCraft: The Next Generation
-*TFC: TNG*
+![TerraFirmaCraft Splash Image](./img/splash-1.png)
 
-This project is the official port of TerraFirmaCraft (the original, also called classic) to Minecraft 1.12 and beyond.
+*Survival Mode As It Should've Been*
 
-You can find the mod on [Curseforge](https://www.curseforge.com/minecraft/mc-mods/tfcraft), or stay updated by joining our [Discord](https://invite.gg/terrafirmacraft), and see documentation on the [Wiki](https://tng.terrafirmacraft.com/Main_Page), or our [API Documentation](https://terrafirmacraft.github.io/Documentation/) for pack makers and addon developers.
+### About
 
-## Goal
+TerraFirmaCraft (TFC) is a total conversion mod that overhauls and reinvents survival mode. The goal of the mod is to create a believable, challenging survival experience, in a brand new immersive setting. It completely overhauls Minecraft world generation - from adding plate tectonics, to flowing rivers, to mountain ranges, to varied and diverse forests, flora, and fauna. Below is a list of some of the features of this mod:
 
-- The ultimate goal of this project is to be **the** TerraFirmaCraft for 1.12+, not a mere partial imitation.
-- The idea is to stay faithful to the original where possible, but also improve the various systems and allow for better cross-mod compatibility and integration.
-- Starting with 1.14+, we've taken the opportunity to rewrite and re-imagine a number of core systems, such as world generation, to better fit our vision of what this mod can be.
+- The underground has been completely reimagined, with layers of different types of rock, and massive sparse ore deposits of several different types.
+- A fully fledged technology tree, from pottery and pit kilns, to charcoal production, producing iron with a bloomery, steel making and more.
+- Seasons, weather, and a realistic climate and calendar model cause the player to need to stockpile food for winter to survive.
+- The world is alive, with many different plants, wild crops, wild fruits, animals - both passive and predators - to find
+- The player must manage their food's expiration, nutrition, and thirst using our detailed food and cooking mechanics.
 
-## Contributing
+In order to understand all of these new features, TerraFirmaCraft comes with a detailed in-game Field Guide, which is available from the moment you spawn in, and will guide you through the art of surviving in this brand-new world.
+
+### Links
+
+- [Download on CurseForge](https://www.curseforge.com/minecraft/mc-mods/terrafirmacraft)
+- [Discuss on Discord](https://invite.gg/terrafirmacraft)
+- [Read the Field Guide (Players)](https://terrafirmacraft.github.io/Field-Guide/en_us/)
+- [Read the API Documentation (Pack Makers / Addons)](https://terrafirmacraft.github.io/Documentation/)
+
+### Contributing
 
  - Firstly, join our [Discord](https://invite.gg/terrafirmacraft), as it's where all discussion surrounding development, tasks, and decisions happens.
  - As per the Github terms of service, you grant us the right to use your contribution under the same license as this project.
@@ -20,7 +30,7 @@ You can find the mod on [Curseforge](https://www.curseforge.com/minecraft/mc-mod
 - Before creating a Pull Request, run `gradlew updateLicenses`. This will apply the correct license header to all project files.
 - We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, and `nbtlib`.
 
-## License / Copyright / Credit
+### Copyright
 
 Primarily Copyright (c) Dries007, AlcatrazEscapee 2018 - ...
 

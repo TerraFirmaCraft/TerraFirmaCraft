@@ -118,7 +118,7 @@
       "type": "patchouli:text",
       "anchor": "native_silver",
       "text": "Native Silver is a ore of $(thing)Silver$() metal. It can be found at elevations between y=-32 and y=100. It can be found in $(thing)Granite$(), and $(thing)Gneiss$() primarily, however smaller poorer veins can be found in any $(l:the_world/geology#metamorphic)Metamorphic$() rocks.",
-      "title": "Native Gold"
+      "title": "Native Silver"
     },
     {
       "type": "tfc:multimultiblock",

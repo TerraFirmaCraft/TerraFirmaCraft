@@ -41,6 +41,13 @@ public class NotIngredient extends DelegateIngredient
         return !super.test(stack);
     }
 
+    @Nullable
+    @Override
+    protected ItemStack testDefaultItem(ItemStack stack)
+    {
+        return test(stack) ? stack : null;
+    }
+
     @Override
     public IIngredientSerializer<? extends DelegateIngredient> getSerializer()
     {

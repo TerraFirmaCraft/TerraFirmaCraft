@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
+    "tfc:cave_column",
     "tfc:cave_spike",
     "tfc:large_cave_spike",
     "tfc:water_spring",

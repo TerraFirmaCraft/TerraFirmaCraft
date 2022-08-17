@@ -48,9 +48,6 @@ public class NoiseSampler
 
     private final NoiseSettings noiseSettings;
 
-    private final NormalNoise pillarNoiseSource;
-    private final NormalNoise pillarRarenessModulator;
-    private final NormalNoise pillarThicknessModulator;
     private final NormalNoise spaghetti2DNoiseSource;
     private final NormalNoise spaghetti2DElevationModulator;
     private final NormalNoise spaghetti2DRarityModulator;
@@ -72,9 +69,6 @@ public class NoiseSampler
 
         // Noise Caves
         this.noiseCaves = this::calculateNoiseCaves;
-        this.pillarNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR);
-        this.pillarRarenessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR_RARENESS);
-        this.pillarThicknessModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.PILLAR_THICKNESS);
         this.spaghetti2DNoiseSource = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_2D);
         this.spaghetti2DElevationModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_2D_ELEVATION);
         this.spaghetti2DRarityModulator = Noises.instantiate(parameters, positionalRandomFactory, Noises.SPAGHETTI_2D_MODULATOR);
@@ -115,16 +109,10 @@ public class NoiseSampler
         final double spaghetti3D = getSpaghetti3D(x, y, z);
         final double spaghetti = spaghettiRoughness + Math.min(spaghetti2D, spaghetti3D);
 
-        final double pillars = getPillars(x, y, z);
         final double cheese = Mth.clamp(cheeseNoiseSource.getValue(x, y / 1.5, z) + 0.27, -1, 1);
         final double layerizedCaverns = getLayerizedCaverns(x, y, z);
 
-        // todo: remove pillar noise and replace with a feature that does this but better, without perlerp
-        double noise = Math.min(cheese + layerizedCaverns, Math.min(spaghetti, bigEntrances));
-        if (pillars > 0 && noise < 0)
-        {
-            noise = 0.1;
-        }
+        final double noise = Math.min(cheese + layerizedCaverns, Math.min(spaghetti, bigEntrances));
 
         final double clamped = Mth.clamp(noise, -1, 1);
         return applySlide(clamped, y);
@@ -145,18 +133,6 @@ public class NoiseSampler
         double d3 = bigEntranceNoiseSource.getValue(x * 0.75, y * 0.5, z * 0.75) + 0.37;
         double d4 = (y + 10) / 40d;
         return d3 + Mth.clampedLerp(0.3, 0, d4);
-    }
-
-    private double getPillars(int x, int y, int z)
-    {
-        double rarityMod = Helpers.sampleNoiseAndMapToRange(pillarRarenessModulator, x, y, z, 0, 2);
-        double thicknessMod = Helpers.sampleNoiseAndMapToRange(pillarThicknessModulator, x, y, z, 0, 1.1);
-
-        thicknessMod *= thicknessMod * thicknessMod;
-
-        double pillarNoise = pillarNoiseSource.getValue(x * 25, y * 0.3, z * 25);
-        pillarNoise = thicknessMod * (pillarNoise * 2 - rarityMod);
-        return pillarNoise > 0.03 ? pillarNoise : Double.NEGATIVE_INFINITY;
     }
 
     private double getLayerizedCaverns(int x, int y, int z)
