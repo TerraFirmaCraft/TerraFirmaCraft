@@ -15,6 +15,9 @@
       "max_temperature": 30,
       "min_rainfall": 150,
       "max_rainfall": 500
+    },
+    {
+      "type": "tfc:biome"
     }
   ]
 }

@@ -2,6 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:noisy_multiple",
   "config": {
-    "features": "#tfc:feature/surface_grasses"
+    "features": "#tfc:feature/surface_grasses",
+    "biome_check": false
   }
 }

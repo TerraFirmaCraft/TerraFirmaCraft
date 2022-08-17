@@ -20,6 +20,9 @@
           "absolute": 100
         }
       }
+    },
+    {
+      "type": "tfc:biome"
     }
   ]
 }

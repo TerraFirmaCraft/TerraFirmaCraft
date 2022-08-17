@@ -37,6 +37,9 @@ public class TFCMinecartItem extends Item
         this.containedItem = containedItem;
     }
 
+    /**
+     * Based on {@link net.minecraft.world.item.MinecartItem}
+     */
     @Override
     public InteractionResult useOn(UseOnContext context)
     {
