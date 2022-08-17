@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -110,7 +110,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             // Try and grab the item
             if (!current.isEmpty())
             {
-                player.addItem(current.split(1));
+                ItemHandlerHelper.giveItemToPlayer(player, current.split(1));
                 inventory.setStackInSlot(slot, ItemStack.EMPTY);
 
                 // This is set to false no matter what happens earlier

@@ -410,7 +410,7 @@ public class ClientForgeEventHandler
                 if (fog != 0)
                 {
                     final float renderDistance = mc.gameRenderer.getRenderDistance();
-                    final float density = renderDistance * (1 - fog);
+                    final float density = renderDistance * (1 - Math.min(0.86f, fog));
 
                     // let's just do this the same way MC does because the FogDensityEvent is crap
                     event.setNearPlaneDistance(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));

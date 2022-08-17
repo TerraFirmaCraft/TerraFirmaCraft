@@ -218,11 +218,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
-                    PitKilnBlockEntity pitKiln = level.getBlockEntity(pitPos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
-                    if (pitKiln != null)
-                    {
-                        pitKiln.tryLight();
-                    }
+                    level.getBlockEntity(pitPos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
                 }
                 return true;
             }
@@ -260,7 +256,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     {
         assert level != null;
 
-        final float progress = (float) Mth.inverseLerp(Calendars.SERVER.getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
+        final float progress = Mth.inverseLerp(Calendars.SERVER.getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
         final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach just above max temperature just before the end
         final float targetTemperature = Mth.lerp(eagerProgress, 0, TFCConfig.SERVER.pitKilnTemperature.get());
 
