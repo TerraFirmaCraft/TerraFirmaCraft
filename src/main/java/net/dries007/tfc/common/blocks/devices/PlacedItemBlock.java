@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -171,5 +172,15 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(ITEM_0, ITEM_1, ITEM_2, ITEM_3);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter level, BlockPos pos, Player player)
+    {
+        if (result instanceof BlockHitResult blockResult)
+        {
+           return level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
+        }
+        return ItemStack.EMPTY;
     }
 }

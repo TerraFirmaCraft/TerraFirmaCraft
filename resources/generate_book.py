@@ -141,7 +141,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
     book.template('welding_recipe', custom_component(0, 0, 'WeldingComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('sealed_barrel_recipe', custom_component(0, 0, 'SealedBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
     book.template('instant_barrel_recipe', custom_component(0, 0, 'InstantBarrelComponent', {'recipe': '#recipe'}), text_component(0, 45))
-
+    book.template('loom_recipe', custom_component(0, 0, 'LoomComponent', {'recipe': '#recipe'}), text_component(0, 45))
 
     book.category('the_world', 'The World', 'All about the natural world around you.', 'tfc:grass/loam', is_sorted=True, entries=(
         entry('biomes', 'Biomes', 'tfc:textures/gui/book/icons/biomes.png', pages=(
@@ -413,13 +413,19 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),  # todo: squid renderer does not work without proper context...
             empty_last_page(),
         )),
-        entry('food_and_water', 'Food and Water', '', pages=(
-            text('Food and water...'),
-            empty_last_page(),
-            # todo: overview of how hunger and saturation works in tfc page
-            # todo: overview of water, thirst and drinking
-            # todo: overview of player nutrition and it's effects
-            # todo: introduction to different food sources, links to preservation
+        entry('food_and_water', 'Food and Water', 'tfc:food/orange', pages=(
+            text('In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are. Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.'),
+            text('You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:mechanics/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip.'),
+            image('tfc:textures/gui/book/tutorial/food_tooltip.png', text_contents='How to display a food information tooltip.'),
+            text('All foods have a tooltip with this information. The tooltip includes the $(l:mechanics/decay)Decay Date$() of the food, which may be extended with preservation. When viewing this information, it\'s important to realize that not all foods are good to eat! For example, $(thing)Dough$() is a food, but it has no Nutrition, Saturation, or Water value. Eating it would not do much good.'),
+            image('tfc:textures/gui/book/gui/nutrition.png', text_contents='The nutrition screen, with bars showing the levels of each nutrient.'),
+            text('There are five nutrients, all obtainable from food: Fruit, Vegetables, Protein, Grain, and Dairy. Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating a food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don\'t count towards your nutrition.', title='Nutrients').anchor('nutrients'),
+            text('$(thing)Fruit$(): Fruit nutrients are mostly found from $(l:the_world/wild_fruits)Fruiting Plants$(), like berry bushes, and fruit trees. A notable exception to this is $(l:mechanics/crops#pumpkin)Pumpkins$() and $(l:mechanics/crops#pumpkin)Melons$(), which nutritionally are fruits.$(br)$(br)$(thing)Vegetables$(): Found in nearly every $(l:mechanics/crops)Crop$().$(br)$(br)$(thing)Protein$(): Protein can be gotten from killing $(l:the_world/wild_animals)Animals$() for meat. It can also be obtained from $(l:mechanics/crops#soybean)Soybeans$(), which have protein and vegetable nutrients.'),
+            text('$(thing)Grain$(): Grain is found in grain crops, such as $(l:mechanics/crops#barley)Barley$(). The processing of grain is on the $(l:mechanics/bread)Bread$() page. $(thing)Cattail$() and $(thing)Taro$() Roots are also grains.$(br)$(br)$(thing)Dairy$(): All dairy comes from $(thing)Milk$(), which comes from $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). Processing and drinking milk is covered on the $(l:mechanics/dairy)Dairy$() page.$(br)$(br)All the food in the world is not useful if it rots. See the $(l:mechanics/decay)Preservation$() page for information on preventing that.'),
+            text('Thirst is the level of water in your body. It depletes at a similar rate to hunger. At high temperatures or levels of high hunger usage, your thirst will deplete fastter. Luckily, drinking $(thing)Fresh Water$() replenishes thirst. This can be done by clicking $(item)$(k:key.use)$() on a water block. Drinking saltwater causes you to lose thirst, and even has a chance of giving you the $(thing)Thirst$() effect, which will drain you even more.', title='Thirst').anchor('thirst'),
+            block_spotlight('Water Safety', 'To avoid saltwater, look for rivers, lakes, and freshwater plants like $(thing)Cattails$().', 'tfc:plant/cattail[part=lower,fluid=water]'),
+            clay_knapping('tfc:clay_knapping/jug', 'Knapping a jug a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water.'),
+            text('Depleting food or water completely results in sluggish movement and mining, and begin to take damage. If you die, your nutrition resets.'),
         )),
         # DON'T ADD MORE ENTRIES. If possible, because this list fits neatly on a single page
     ))
@@ -585,7 +591,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Every item has a $(thing)Size ⇲$() and $(thing)Weight \u2696$(). An item\'s size and wieght is shown on the item\'s $(thing)tooltip$(), which appears when you hover over it with your mouse.'),
             text('Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().', title='Size ⇲'),
             text('$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are stored alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They count towards overburdening.'),
-            text('$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() turn from $(thing)Very Heavy$() to $(thing)Huge$() when they are sealed. $(l:mechanics/animal_husbandry#horses)Horses$() can be overburdened.', title='Overburdening'),
+            text('$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() turn from $(thing)Very Heavy$() to $(thing)Huge$() when they are sealed. $(l:mechanics/animal_husbandry#horses)Horses$() can be overburdened.', title='Overburdening').anchor('overburdening'),
             text('Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br)$(br)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().', title='Weight \u2696'),
             empty_last_page()
         ))
@@ -594,17 +600,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
 
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
         # Possible new entries
-        # todo: page about bricks, mortar, limewater, basically a "advanced building materials" page
-        # todo: tutorial page about how to make sandwiches, and their nutrients
         # todo: tutorial page about how to make salads, and their nutrients
         # todo: page about wooden buckets
-        # todo: grains, grain preservation, and breadmaking page.
         # todo: armor page - both leather and metal
         # todo: weapons and damage types (crushing, slashing, piercing), mention entity resistances.
         # todo: dyes (both items, and fluids) - just add on to the barrels page maybe? or link?
-        # todo: loom, spindle, how to get cloth -> wool.
-        # todo: scribing table, what it is, what it does
-        # todo: page on milking, how to obtain milk, what drinking milk does (nutrition wise, since it's special)
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
             text('Livestock experience $(thing)aging$(). They are born as babies, which are smaller and cannot provide things for the player. After a certain amount of days, they grow into $(thing)adult$() animals, which are able to do things like breed or produce milk. After they breed or are used enough times, animals become $(thing)old$(), and are only useful for their meat.'),
@@ -658,6 +658,62 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image(*['tfc:textures/gui/book/tutorial/soaked_hide_%d.png' % i for i in range(1, 1 + 4)], text_contents='Once the hide is fully scraped, it can be broken to pick up a $(thing)Scraped Hide$()'),
             sealed_barrel_recipe('tfc:barrel/medium_prepared_hide', 'After scraping, $(thing)Scraped Hides$() must be sealed in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$(), for at least eight hours, for one final cleaning before tanning.').anchor('preparing'),
             sealed_barrel_recipe('tfc:barrel/medium_leather', 'Finally, $(thing)Prepared Hides$() must be sealed in a $(l:mechanics/barrels#tannin)Barrel of Tannin$(), which is an acidic chemical compound that helps to convert the hide to $(thing)Leather$(). After another eight hours, you will be able to remove the $(thing)Leather$() from the barrel.').anchor('tanning'),
+        )),
+        entry('weaving', 'Weaving', 'tfc:spindle', pages=(
+            text('$(thing)Weaving$() is the process of combining different kinds of string into $(thing)Cloth$(). While the last step of weaving is done in a $(thing)Loom$(), some cloths such as $(thing)Wool$(), obtained from $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(), requires a $(thing)Spindle$() to obtain $(thing)Wool Yarn$() in order to be woven.'),
+            clay_knapping('tfc:clay_knapping/spindle_head', 'The $(thing)Unfired Spindle Head$() is knapped from clay. It can then be $(l:mechanics/heating)fired$() to make a $(thing)Spindle Head$(). To complete the spindle, craft it with a $(thing)Stick$().'),
+            crafting('tfc:crafting/wool_yarn', text_contents='Crafting $(thing)Wool$() with a Spindle yields $(thing)Wool Yarn$().'),
+            crafting('tfc:crafting/wood/acacia_loom', text_contents='The loom is crafted from just $(thing)Lumber$() and a $(thing)Stick$().'),
+            loom_recipe('tfc:loom/wool_cloth', 'The recipe for $(thing)Wool Cloth$() takes 16 $(thing)Wool Yarn$(). Adding to the loom is done with $(item)$(k:key.use)$(). Then, hold down $(item)$(k:key.use)$() to begin working the loom.'),
+            image('tfc:textures/gui/book/tutorial/loom_full.png', text_contents='The loom after being filled with $(thing)Wool Yarn$().'),
+            image('tfc:textures/gui/book/tutorial/loom_working.png', text_contents='The filled loom being worked by holding $(item)$(k:key.use)$(). When complete, $(item)$(k:key.use)$() retrieves the item.'),
+            loom_recipe('tfc:loom/wool_block', '$(thing)Wool Cloth$() can be re-woven into $(thing)Wool Blocks$(). Wool blocks can be dyed.'),  # todo: ref dyeing page
+            loom_recipe('tfc:loom/silk_cloth', '$(thing)Silk Cloth$() can be made in the loom out of $(thing)String$(). It can be used as a wool cloth substitute in some cases.'),
+            loom_recipe('tfc:loom/burlap_cloth', '$(thing)Burlap Cloth$() does not have a use, but it can be made from $(l:mechanics/crops#jute)Jute Fiber$().'),
+            text('There are two main uses for cloth: $(thing)Beds$() and $(thing)Paintings$().'),
+            crafting('tfc:crafting/vanilla/color/light_blue_bed', 'tfc:crafting/vanilla/painting'),
+        )),
+        entry('bread', 'Bread', 'tfc:food/barley_bread', pages=(
+            text('Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop just drops an item similar to vanilla wheat, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$().'),
+            crafting('tfc:crafting/barley_cutting', text_contents='First, cut the straw off of the food with a $(thing)Knife$().'),
+            item_spotlight('tfc:food/rye_grain', text_contents='Grains are the longest-lasting stage of the process, decaying much slower than most foods. Preserving grain is best done by leaving them in this state until it is time to proceed!'),
+            quern_recipe('tfc:quern/oat_grain', 'Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour.'),
+            crafting('tfc:crafting/barley_dough', text_contents='Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour.'),
+            heat_recipe('tfc:heating/barley_dough', 'Dough is then able to be $(l:mechanics/heating)heated$() to make bread. At this point it can also be used in $(l:mechanics/sandwiches)Sandwiches$().'),
+        )),
+        entry('sandwiches', 'Sandwiches', 'tfc:food/barley_bread_sandwich', pages=(
+            text('$(thing)Sandwiches$() are a meal allowing the combination of two $(l:mechanics/bread)Bread$() items and three sandwich foods, which can be any combination of $(l:mechanics/bread)Vegetables$(), $(thing)Cooked Meats$(), and $(l:mechanics/dairy)Cheeses$().'),
+            crafting('tfc:crafting/wheat_sandwich', text_contents='The sandwich recipe, which is executed in a $(thing)Workbench$().'),
+            text('The nutrients, water, and saturation of the food items are all combined into the sandwich\'s nutritional content. The breads are weighted at 50% of their values, whereas the ingredient foods are weighted at 80%. Sandwich ingredients may not be rotten, but once the sandwich is created, it is considered fresh, and decays like it is new.'),
+            empty_last_page()
+        )),
+        entry('dairy', 'Dairy Products', 'tfc:food/cheese', pages=(
+            text('$(thing)Dairy$() is a $(l:the_world/food_and_water#nutrients)Nutrient$() obtained from the milk produced by $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). It can be drank, or processed into $(thing)Cheese$(). Drinking can be done out of a jug, and always restores $(l:the_world/food_and_water#thirst)Thirst$(). However, it only adds to nutrition when drank after eating a food. Practically, this means that drinking milk twice in a row is ineffectual. A meal must precede it.', title='Dairy'),
+            text('To start the $(thing)Cheesemaking$() process, add $(thing)Milk$() and $(thing)Vinegar$() in a $(l:mechanics/barrel)Barrel$() at a ratio of 9:1. This is easiest done by filling 9 buckets of milk in a barrel, and adding a single bucket of vinegar. This produces $(thing)Milk Vinegar$().'),
+            sealed_barrel_recipe('tfc:barrel/curdling', 'Once milk and vinegar are mixed, it will curdle if it is sealed in a barrel for 8 hours. This requires no extra ingredients, except time.'),
+            sealed_barrel_recipe('tfc:barrel/cheese', 'Cheese is then made by once again sealing the curdled milk in a barrel. Cheese is a long-lasting dairy product, and can be used in some meals to add dairy to them, such as $(l:mechanics/sandwiches)Sandwiches$().')
+        )),
+        entry('scribing_table', 'Scribing Table', 'minecraft:black_dye', pages=(
+            text('The $(thing)Scribing Table$() is used to rename items. It requires $(thing)Black Dye$() to rename items, which can be supplied as the traditional dye item or as a bucket of dye fluid.'),
+            crafting('tfc:crafting/wood/birch_scribing_table', text_contents='The scribing table crafting recipe.'),
+            image('tfc:textures/gui/book/gui/scribing.png', text_contents='The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot.'),
+            block_spotlight('', 'The scribing table.', 'tfc:wood/scribing_table/kapok')
+        )),
+        entry('advanced_building_materials', 'Advanced Materials', 'tfc:brick/rhyolite', pages=(
+            text('As you progress in TFC, you may want for stronger and prettier building materials, as well as some devices you may remember from vanilla. One such material is $(thing)Stone Bricks$(), which are made with $(thing)Bricks$() and $(thing)Mortar$()'),
+            instant_barrel_recipe('tfc:barrel/limewater', 'To make mortar, $(thing)Limewater$() must first be made with $(thing)Water$() and $(l:mechanics/flux)Flux$() in a $(l:mechanics/barrel)Barrel$().'),
+            sealed_barrel_recipe('tfc:barrel/mortar', 'Then, combine it with $(thing)Sand$() to make mortar.'),
+            crafting('tfc:crafting/rock/gneiss_brick', text_contents='Bricks can be crafted from loose rocks in bulk with a $(l:mechanics/chisel)Chisel$(). These rocks can be made into $(thing)Pressure Plates$() and $(thing)Buttons$()'),
+            crafting('tfc:crafting/rock/gneiss_pressure_plate', 'tfc:crafting/rock/gneiss_button'),
+            crafting('tfc:crafting/rock/gneiss_bricks', text_contents='Finally, bricks and mortar can be combined into bricks. Bricks can be made into slabs, stairs, and walls.'),
+            crafting('tfc:crafting/rock/gneiss_cracked', text_contents='Bricks can turned into cracked bricks with a $(thing)Hammer$().'),
+            crafting('tfc:crafting/rock/quartzite_hardened', text_contents='Mortar can be used to make $(thing)Hardened Stone$(), a kind of raw stone that does not collapse.'),
+        )),
+        entry('salad', 'Salads', 'tfc:food/protein_salad', pages=(
+            text('$(thing)Salads$() are a meal prepared in a $(thing)Bowl$() from up to five $(thing)Fruits$(), $(thing)Vegetables$(), or $(thing)Cooked Meats$(). Salads are made in a special salad screen, created with a $(thing)Bowl$().'),
+            clay_knapping('tfc:clay_knapping/bowl_4', 'Ceramic bowls are made through the knapping and firing of clay.'),
+            image('tfc:textures/gui/book/gui/salad.png', text_contents='The salad screen is opened by pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$().'),
+            text('When you are ready, take your salad out of the slot on the right side.$(br)$(br)The $(l:the_world/food_and_water)Nutrients$(), Water, and Saturation of a salad are 75% of the total of all nutrients of its ingredients. When a salad is made, its decay refreshes.')
         )),
         entry('panning', 'Panning', 'tfc:pan/empty', pages=(
             text('$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need a empty pan.').link('#tfc:ore_deposits'),
@@ -734,7 +790,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             heat_recipe('tfc:heating/fired_pot', 'It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit.'),
             text('Like the firepit, the pot has four slots for fuel which must be added in the top slot, and a temperature indicator. The pot also contains five item slots and holds up to $(thing)1000 mB$() of any fluid.$(br2)In order to cook something in the pot, first the fluid must be added by using any type of fluid container, such as a bucket, on the pot. Then add items, and light the pot. It will start boiling for a while until the recipe is completed.'),
             image('tfc:textures/gui/book/gui/pot.png', text_contents='The pot interface, actively boiling and making a type of soup.', border=False),
-            item_spotlight('tfc:food/fruit_soup', 'Soup Recipes', text_contents='Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(item)$(k:key.use)$() with a $(thing)bowl$() to retrieve it. Soup combines multiple nutrients into a single meal.'),
+            item_spotlight('tfc:food/fruit_soup', 'Soup Recipes', text_contents='Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(item)$(k:key.use)$() with a $(thing)bowl$() to retrieve it. Soup combines multiple nutrients into a single meal.').anchor('soup'),
             item_spotlight('tfc:bucket/red_dye', 'Simple Recipes', text_contents='Other pot recipes transform the items and fluid in the pot into something else. For example, boiling 5 $(thing)ash$() in $(thing)water$() makes $(thing)lye$().')  # todo: better recipe page for the pot
         )),
         entry('chisel', 'Chisel', 'tfc:metal/chisel/wrought_iron', pages=(

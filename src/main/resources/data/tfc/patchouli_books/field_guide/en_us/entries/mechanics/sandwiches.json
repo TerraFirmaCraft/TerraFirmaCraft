@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Sandwiches",
+  "category": "tfc:mechanics",
+  "icon": "tfc:food/barley_bread_sandwich",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Sandwiches$() are a meal allowing the combination of two $(l:mechanics/bread)Bread$() items and three sandwich foods, which can be any combination of $(l:mechanics/bread)Vegetables$(), $(thing)Cooked Meats$(), and $(l:mechanics/dairy)Cheeses$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wheat_sandwich",
+      "text": "The sandwich recipe, which is executed in a $(thing)Workbench$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The nutrients, water, and saturation of the food items are all combined into the sandwich's nutritional content. The breads are weighted at 50% of their values, whereas the ingredient foods are weighted at 80%. Sandwich ingredients may not be rotten, but once the sandwich is created, it is considered fresh, and decays like it is new."
+    }
+  ],
+  "read_by_default": true
+}
