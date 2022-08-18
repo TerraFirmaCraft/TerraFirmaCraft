@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop just drops an item similar to vanilla wheat, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$()."
+      "text": "Bread is the processed form of the various grain crops, such as $(l:mechanics/crops#barley)Barley$(). Breaking a grain crop drops a raw, unprocessed grain item, which is not useful on its own. It must be processed into $(thing)Bread$(), which can then be eaten or used in $(l:mechanics/sandwiches)Sandwiches$()."
     },
     {
       "type": "patchouli:crafting",
@@ -17,7 +17,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:food/rye_grain",
       "link_recipes": false,
-      "text": "Grains are the longest-lasting stage of the process, decaying much slower than most foods. Preserving grain is best done by leaving them in this state until it is time to proceed!"
+      "text": "Grains are the longest-lasting stage of the process, decaying much slower than most foods. On its own, a fresh piece of grain lasts 10 months and 7 days. In a small vessel, it lasts 1 year, 9 months, and 7 days."
     },
     {
       "type": "tfc:quern_recipe",

@@ -9,19 +9,6 @@
       "text": "The $(thing)Scribing Table$() is used to rename items. It requires $(thing)Black Dye$() to rename items, which can be supplied as the traditional dye item or as a bucket of dye fluid."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/birch_scribing_table",
-      "text": "The scribing table crafting recipe."
-    },
-    {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/gui/scribing.png"
-      ],
-      "text": "The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot.",
-      "border": true
-    },
-    {
       "type": "patchouli:multiblock",
       "multiblock": {
         "pattern": [
@@ -39,6 +26,19 @@
       "name": "",
       "text": "The scribing table.",
       "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/birch_scribing_table",
+      "text": "The scribing table crafting recipe."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/scribing.png"
+      ],
+      "text": "The scribing screen takes text entry at the top, an input on the left, a dye in the center. The output is taken from the right slot.",
+      "border": false
     }
   ],
   "read_by_default": true

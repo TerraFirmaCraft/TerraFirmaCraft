@@ -13,16 +13,12 @@
       "text": "You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:mechanics/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
     },
     {
-      "type": "patchouli:image",
-      "images": [
-        "tfc:textures/gui/book/tutorial/food_tooltip.png"
-      ],
-      "text": "How to display a food information tooltip.",
-      "border": true
+      "type": "patchouli:text",
+      "text": "All foods have a tooltip with this information. The tooltip includes the $(l:mechanics/decay)Decay Date$() of the food, which may be extended with preservation. When viewing this information, it's important to realize that not all foods have nutritional value. For example, $(l:mechanics/bread)Dough$() is a food, but it has no Nutrition, Saturation, or Water value. Eating it would not do much good."
     },
     {
       "type": "patchouli:text",
-      "text": "All foods have a tooltip with this information. The tooltip includes the $(l:mechanics/decay)Decay Date$() of the food, which may be extended with preservation. When viewing this information, it's important to realize that not all foods are good to eat! For example, $(thing)Dough$() is a food, but it has no Nutrition, Saturation, or Water value. Eating it would not do much good."
+      "text": "A food tooltip may look like:$(br2)Orange$(br)$(2)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)Nutrition:$(br)- Saturation: 2%%$(br)- Water: 2%%$(br)$(a)- Fruit: 0.5"
     },
     {
       "type": "patchouli:image",
@@ -30,21 +26,21 @@
         "tfc:textures/gui/book/gui/nutrition.png"
       ],
       "text": "The nutrition screen, with bars showing the levels of each nutrient.",
-      "border": true
+      "border": false
     },
     {
       "type": "patchouli:text",
       "anchor": "nutrients",
-      "text": "There are five nutrients, all obtainable from food: Fruit, Vegetables, Protein, Grain, and Dairy. Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating a food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don't count towards your nutrition.",
+      "text": "There are five nutrients, all obtainable from food: $(l)$(a)Fruit$()$(), $(l)$(2)Vegetables$()$(), $(l)$(c)Protein$()$(), $(l)$(6)Grain$()$(), and $(l)$(5)Dairy$()$(). Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating a food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don't count towards your nutrition.",
       "title": "Nutrients"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Fruit$(): Fruit nutrients are mostly found from $(l:the_world/wild_fruits)Fruiting Plants$(), like berry bushes, and fruit trees. A notable exception to this is $(l:mechanics/crops#pumpkin)Pumpkins$() and $(l:mechanics/crops#pumpkin)Melons$(), which nutritionally are fruits.$(br)$(br)$(thing)Vegetables$(): Found in nearly every $(l:mechanics/crops)Crop$().$(br)$(br)$(thing)Protein$(): Protein can be gotten from killing $(l:the_world/wild_animals)Animals$() for meat. It can also be obtained from $(l:mechanics/crops#soybean)Soybeans$(), which have protein and vegetable nutrients."
+      "text": "$(l)$(a)Fruit$()$(): Fruit nutrients are mostly found from $(l:the_world/wild_fruits)Fruiting Plants$(), like berry bushes, and fruit trees. A notable exception to this is $(l:mechanics/crops#pumpkin)Pumpkins$() and $(l:mechanics/crops#pumpkin)Melons$(), which nutritionally are fruits.$(br2)$(l)$(2)Vegetables$()$(): Found in nearly every $(l:mechanics/crops)Crop$().$(br2)$(l)$(c)Protein$()$(): Protein can be gotten from the meat of $(l:the_world/wild_animals)Animals$(). It can also be obtained from $(l:mechanics/crops#soybean)Soybeans$(), which have protein and vegetable nutrients."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Grain$(): Grain is found in grain crops, such as $(l:mechanics/crops#barley)Barley$(). The processing of grain is on the $(l:mechanics/bread)Bread$() page. $(thing)Cattail$() and $(thing)Taro$() Roots are also grains.$(br)$(br)$(thing)Dairy$(): All dairy comes from $(thing)Milk$(), which comes from $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). Processing and drinking milk is covered on the $(l:mechanics/dairy)Dairy$() page.$(br)$(br)All the food in the world is not useful if it rots. See the $(l:mechanics/decay)Preservation$() page for information on preventing that."
+      "text": "$(l)$(6)Grain$()$(): Grain is found in grain crops, such as $(l:mechanics/crops#barley)Barley$(). The processing of grain is on the $(l:mechanics/bread)Bread$() page. $(thing)Cattail$() and $(thing)Taro$() Roots are also grains.$(br2)$(l)$(5)Dairy$()$(): All dairy comes from $(thing)Milk$(), which comes from $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). Processing and drinking milk is covered on the $(l:mechanics/dairy)Dairy$() page.$(br2)All the food in the world is not useful if it rots. See the $(l:mechanics/decay)Preservation$() page for information on preventing that."
     },
     {
       "type": "patchouli:text",

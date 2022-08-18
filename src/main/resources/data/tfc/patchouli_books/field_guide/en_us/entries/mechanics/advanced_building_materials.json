@@ -6,32 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "As you progress in TFC, you may want for stronger and prettier building materials, as well as some devices you may remember from vanilla. One such material is $(thing)Stone Bricks$(), which are made with $(thing)Bricks$() and $(thing)Mortar$()"
-    },
-    {
-      "type": "tfc:instant_barrel_recipe",
-      "recipe": "tfc:barrel/limewater",
-      "text": "To make mortar, $(thing)Limewater$() must first be made with $(thing)Water$() and $(l:mechanics/flux)Flux$() in a $(l:mechanics/barrel)Barrel$()."
+      "text": "As you progress in TFC, you may want for stronger and prettier building materials, as well as some devices you may remember from vanilla. One such material is $(thing)Stone Bricks$(), which are made with $(thing)Bricks$() and $(thing)Mortar$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/mortar",
-      "text": "Then, combine it with $(thing)Sand$() to make mortar."
+      "text": "Combine $(l:mechanics/barrels#limewater)Limewater$() with $(thing)Sand$() to make mortar."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/gneiss_brick",
-      "text": "Bricks can be crafted from loose rocks in bulk with a $(l:mechanics/chisel)Chisel$(). These rocks can be made into $(thing)Pressure Plates$() and $(thing)Buttons$()"
+      "recipe2": "tfc:crafting/rock/gneiss_bricks"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/gneiss_pressure_plate",
       "recipe2": "tfc:crafting/rock/gneiss_button"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/rock/gneiss_bricks",
-      "text": "Finally, bricks and mortar can be combined into bricks. Bricks can be made into slabs, stairs, and walls."
     },
     {
       "type": "patchouli:crafting",

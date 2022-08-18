@@ -25,7 +25,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br)$(br)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().",
+      "text": "Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br2)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().",
       "title": "Weight \u2696"
     }
   ],
