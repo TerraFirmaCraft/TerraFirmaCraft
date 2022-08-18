@@ -21,10 +21,10 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
 {
     public static LargeVesselContainer create(LargeVesselBlockEntity vessel, Inventory playerInventory, int windowId)
     {
-        return new LargeVesselContainer(vessel, playerInventory, windowId).init(playerInventory);
+        return new LargeVesselContainer(vessel, windowId).init(playerInventory);
     }
 
-    public LargeVesselContainer(LargeVesselBlockEntity vessel, Inventory playerInventory, int windowId)
+    public LargeVesselContainer(LargeVesselBlockEntity vessel, int windowId)
     {
         super(TFCContainerTypes.LARGE_VESSEL.get(), windowId, vessel);
     }
@@ -43,7 +43,10 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        if (blockEntity.getBlockState().getValue(LargeVesselBlock.SEALED)) return true;
+        if (blockEntity.getBlockState().getValue(LargeVesselBlock.SEALED))
+        {
+            return true;
+        }
         return switch (typeOf(slotIndex))
             {
                 case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, 0, LargeVesselBlockEntity.SLOTS, false);
