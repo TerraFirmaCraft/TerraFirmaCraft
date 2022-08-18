@@ -164,6 +164,8 @@ dependencies {
     // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
     // runtimeOnly fg.deobf("libs:panorama:1.2.0") // File: libs/panorama-1.2.0.jar
     // runtimeOnly fg.deobf("libs:ImmersiveEngineering-1.18.2:8.1.0-150") // File: libs/ImmersiveEngineering-1.18.2-8.1.0-150.jar
+    //runtimeOnly fg.deobf("libs:FastWorkbench-1.18.2:6.1.0") // File: libs/FastWorkbench-1.18.2-6.1.0.jar
+    //runtimeOnly fg.deobf("libs:Placebo-1.18.2:6.5.3") // File: libs/Placebo-1.18.2-6.5.3.jar
 
     // JEI
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
@@ -178,8 +180,8 @@ dependencies {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     }
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 }
 
 test {
