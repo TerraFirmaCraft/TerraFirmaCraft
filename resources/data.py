@@ -412,7 +412,7 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
         block_and_item_tag(rm, 'forge:stone', block('raw'))
         rm.block_tag('forge:stone', block('hardened'))
-        block_and_item_tag(rm, 'forge:cobblestone', block('cobble'), block('mossy_cobble'))
+        block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
         block_and_item_tag(rm, 'forge:smooth_stone', block('smooth'))
