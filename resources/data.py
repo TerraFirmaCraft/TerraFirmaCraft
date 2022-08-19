@@ -626,7 +626,6 @@ def generate(rm: ResourceManager):
     item_size(rm, 'quern', 'tfc:quern', Size.very_large, Weight.very_heavy)
     item_size(rm, 'tool_racks', '#tfc:tool_racks', Size.large, Weight.very_heavy)
     item_size(rm, 'chests', '#forge:chests', Size.large, Weight.light)
-    # todo: add tfc (non-wooden) slabs to minecraft slab tag
     item_size(rm, 'slabs', '#minecraft:slabs', Size.small, Weight.very_light)
     item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.very_heavy)
     item_size(rm, 'doors', '#minecraft:doors', Size.very_large, Weight.heavy)
