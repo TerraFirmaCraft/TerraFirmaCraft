@@ -613,7 +613,7 @@ def generate(rm: ResourceManager):
     snow_block_loot_table('minecraft:snow')
 
     # Sea Ice
-    block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
+    block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice')).with_tag('minecraft:ice')
     block.with_block_loot({
         'name': 'minecraft:ice',
         'conditions': [loot_tables.silk_touch()]
@@ -1063,7 +1063,7 @@ def generate(rm: ResourceManager):
                 'lifecycle=%s,stage=%d' % (lifecycle, stage),
                 {'model': 'tfc:block/plant/%s%s_bush_%d' % (lifecycle_to_model[lifecycle], berry, stage)}
             ) for lifecycle, stage in itertools.product(lifecycles, range(0, 3))
-        )).with_lang(lang('%s Bush', berry))
+        )).with_lang(lang('%s Bush', berry)).with_tag('berry_bushes')
 
         if data.type == 'stationary' or data.type == 'waterlogged':
             rm.item_model('plant/%s_bush' % berry, parent='tfc:block/plant/%s_bush_2' % berry, no_textures=True)

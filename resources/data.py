@@ -340,6 +340,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
     rm.block_tag('creeping_plantable_on', '#minecraft:logs')
     rm.block_tag('minecraft:prevent_mob_spawning_inside', 'tfc:thatch', '#minecraft:leaves')
+    rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
+    rm.block_tag('minecraft:fall_damage_resetting', 'tfc:thatch', '#tfc:berry_bushes')
 
     for color in COLORS:
         rm.block_tag('minecraft:walls', 'tfc:alabaster/polished/%s_wall' % color, 'tfc:alabaster/bricks/%s_wall' % color)
