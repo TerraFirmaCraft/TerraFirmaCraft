@@ -313,7 +313,8 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         public boolean isMolten()
         {
-            return crucible.temperature > alloy.getResult().getMeltTemperature();
+            assert crucible.level != null;
+            return crucible.temperature > alloy.getResult(crucible.level).getMeltTemperature();
         }
 
         @Override
@@ -374,7 +375,8 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         {
             if (isMolten())
             {
-                final Metal result = alloy.getResult();
+                assert crucible.level != null;
+                final Metal result = alloy.getResult(crucible.level);
                 final int amount = alloy.removeAlloy(maxDrain, action.simulate());
                 if (action.execute())
                 {

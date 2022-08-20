@@ -7,21 +7,19 @@
 package net.dries007.tfc.util;
 
 import java.util.Map;
+
+import net.dries007.tfc.common.recipes.AlloyRecipe;
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Sets;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.server.ServerLifecycleHooks;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
-import net.dries007.tfc.common.recipes.AlloyRecipe;
-import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.AlloyInventory;
 
-public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
+public class Alloy implements AlloyView
 {
     /**
      * This is the maximum safe value for an alloy.
@@ -119,7 +117,7 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
     }
 
     @Override
-    public Metal getResult()
+    public Metal getResult(RecipeManager recipes)
     {
         if (cachedResult == null)
         {
@@ -129,13 +127,9 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
             }
             else
             {
-                final MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-                if (server != null)
-                {
-                    cachedResult = server.getRecipeManager().getRecipeFor(TFCRecipeTypes.ALLOY.get(), getWrapper(), server.overworld())
-                        .map(AlloyRecipe::getResult)
-                        .orElseGet(Metal::unknown);
-                }
+                cachedResult = AlloyRecipe.get(recipes, getWrapper())
+                    .map(AlloyRecipe::getResult)
+                    .orElseGet(Metal::unknown);
             }
         }
         if (cachedResult == null)
@@ -197,23 +191,12 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
         return maxUnits;
     }
 
-    public void setMaxUnits(int value)
-    {
-        int surplus = getAmount() - value;
-        if (surplus > 0)
-        {
-            removeAlloy(surplus, false);
-        }
-        maxUnits = value;
-    }
-
     @Override
     public Object2DoubleMap<Metal> getMetals()
     {
         return sanitizedMetalMap;
     }
 
-    @Override
     public CompoundTag serializeNBT()
     {
         CompoundTag nbt = new CompoundTag();
@@ -228,7 +211,6 @@ public class Alloy implements INBTSerializable<CompoundTag>, AlloyView
         return nbt;
     }
 
-    @Override
     public void deserializeNBT(CompoundTag nbt)
     {
         clear();
