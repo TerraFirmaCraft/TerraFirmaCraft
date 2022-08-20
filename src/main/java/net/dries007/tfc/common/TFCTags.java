@@ -218,6 +218,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
         public static final TagKey<EntityType<?>> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
         public static final TagKey<EntityType<?>> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
+        public static final TagKey<EntityType<?>> HORSES = create("horses");
 
         private static TagKey<EntityType<?>> create(String id)
         {

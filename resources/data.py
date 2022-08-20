@@ -85,6 +85,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
     rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
     rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
+    rm.entity_tag('horses', 'tfc:horse', 'tfc:mule', 'tfc:donkey')
 
     # Item Heats
 
