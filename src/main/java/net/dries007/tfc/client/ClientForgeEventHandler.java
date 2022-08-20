@@ -249,7 +249,7 @@ public class ClientForgeEventHandler
                 }
             }
 
-            if (TFCConfig.CLIENT.enableDebug.get())
+            if (TFCConfig.CLIENT.enableDebug.get() && event.getFlags().isAdvanced())
             {
                 final CompoundTag stackTag = stack.getTag();
                 if (stackTag != null)

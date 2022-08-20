@@ -1211,7 +1211,7 @@ def generate(rm: ResourceManager):
                     'tfc:wood/%s/%s' % (variant, wood)  # logs drop themselves always
                 ))
 
-            rm.item_model(('wood', variant, wood), 'tfc:item/wood/log/' + wood)
+            rm.item_model(('wood', variant, wood), 'tfc:item/wood/%s/%s' % (variant, wood))
 
             end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
             side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
