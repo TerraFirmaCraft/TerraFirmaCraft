@@ -767,7 +767,7 @@ public final class Helpers
                 FluidStack remainder = fluidStack.copy();
                 remainder.shrink(filled);
                 return remainder;
-            }).orElse(FluidStack.EMPTY);
+            }).orElse(fluidStack);
         }
         return FluidStack.EMPTY;
     }
