@@ -6,6 +6,7 @@
   "mixins": [
     "AbstractContainerMenuMixin",
     "BiomeMixin",
+    "BiomeSourceMixin",
     "ClientboundUpdateRecipesPacketMixin",
     "DedicatedServerPropertiesMixin",
     "FallingBlockMixin",
@@ -21,7 +22,6 @@
     "ServerPlayerGameModeMixin",
     "SnowLayerBlockMixin",
     "TagLoaderMixin",
-    "WorldgenRandomMixin",
     "accessor.BiomeAccessor",
     "accessor.BiomeGenerationSettingsAccessor",
     "accessor.ChunkAccessAccessor",

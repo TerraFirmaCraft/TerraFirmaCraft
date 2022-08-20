@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.aquatic;
 
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -22,6 +23,7 @@ import net.dries007.tfc.common.entities.ai.GetHookedGoal;
 import net.dries007.tfc.common.entities.ai.TFCFishMoveControl;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import org.jetbrains.annotations.Nullable;
 
 public class TFCSalmon extends Salmon implements AquaticMob
 {
@@ -61,5 +63,12 @@ public class TFCSalmon extends Salmon implements AquaticMob
     protected float getBlockSpeedFactor()
     {
         return Helpers.isBlock(level.getBlockState(blockPosition()), TFCTags.Blocks.PLANTS) ? 1.0F : super.getBlockSpeedFactor();
+    }
+
+    @Override
+    @Nullable
+    protected SoundEvent getAmbientSound()
+    {
+        return null; // this sound does not exist and logs errors
     }
 }

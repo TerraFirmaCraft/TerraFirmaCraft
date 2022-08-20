@@ -13,13 +13,12 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.recipes.PotRecipe;
@@ -36,7 +35,7 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
 
         final PotRecipe.Output output = pot.getOutput();
         final boolean useDefaultFluid = output != null && output.renderDefaultFluid();
-        final FluidStack fluidStack = pot.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        final FluidStack fluidStack = pot.getCapability(Capabilities.FLUID)
             .map(cap -> cap.getFluidInTank(0))
             .filter(f -> !f.isEmpty())
             .orElseGet(() -> useDefaultFluid ? new FluidStack(Fluids.WATER, FluidHelpers.BUCKET_VOLUME) : FluidStack.EMPTY);
@@ -46,7 +45,7 @@ public class PotBlockEntityRenderer implements BlockEntityRenderer<PotBlockEntit
             RenderHelpers.renderFluidFace(poseStack, fluidStack, buffer, color, 0.3125F, 0.3125F, 0.6875F, 0.6875F, 0.625F, combinedOverlay, combinedLight);
         }
 
-        pot.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        pot.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             int ordinal = 0;
             for (int slot = SLOT_EXTRA_INPUT_START; slot <= SLOT_EXTRA_INPUT_END; slot++)
             {

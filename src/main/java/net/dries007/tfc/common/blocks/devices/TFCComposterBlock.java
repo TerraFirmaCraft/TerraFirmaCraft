@@ -6,15 +6,20 @@
 
 package net.dries007.tfc.common.blocks.devices;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
@@ -48,7 +53,7 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 
-public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExtension
+public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExtension, HoeOverlayBlock
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_8;
     public static final EnumProperty<CompostType> TYPE = TFCBlockStateProperties.COMPOST_TYPE;
@@ -117,6 +122,16 @@ public class TFCComposterBlock extends ExtendedBlock implements EntityBlockExten
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        if (level.getBlockEntity(pos) instanceof ComposterBlockEntity composter && state.getValue(TYPE) != CompostType.ROTTEN)
+        {
+            text.add(Helpers.translatable("tfc.composter.green_items", composter.getGreen()).withStyle(ChatFormatting.GREEN));
+            text.add(Helpers.translatable("tfc.composter.brown_items", composter.getBrown()).withStyle(ChatFormatting.GOLD));
+        }
     }
 
     @Override

@@ -11,12 +11,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.common.blockentities.ToolRackBlockEntity;
 import net.dries007.tfc.common.blocks.wood.ToolRackBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRackBlockEntity>
 {
@@ -85,7 +85,7 @@ public class ToolRackBlockEntityRenderer implements BlockEntityRenderer<ToolRack
     public void render(ToolRackBlockEntity toolRack, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
         if (toolRack.getLevel() == null) return;
-        toolRack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        toolRack.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             int meta = toolRack.getBlockState().getValue(ToolRackBlock.FACING).get2DDataValue();
 
             for (int i = 0; i < 4; i++)

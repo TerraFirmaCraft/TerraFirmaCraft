@@ -27,7 +27,7 @@ public class Manatee extends Cod implements AquaticMob
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        return AbstractFish.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D);
+        return AbstractFish.createAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.MAX_HEALTH, 20d);
     }
 
     public Manatee(EntityType<? extends Cod> type, Level level)

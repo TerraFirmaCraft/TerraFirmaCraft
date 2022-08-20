@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+// todo: 1.19 remove this and use event
 @Mixin(EffectRenderingInventoryScreen.class)
 public abstract class EffectRenderingInventoryScreenMixin
 {

@@ -30,6 +30,10 @@ public class RestrictedChestContainer extends ChestMenu
         return new RestrictedChestContainer(TFCContainerTypes.CHEST_9x4.get(), windowId, inv, 4);
     }
 
+    // Default value of false when checked via super(), which calls addSlot()
+    // Only set to true to allow this constructor to add slots.
+    private final boolean allowAddSlot;
+
     public RestrictedChestContainer(MenuType<?> type, int id, Inventory inv, int rows)
     {
         this(type, id, inv, new SimpleContainer(9 * rows), rows);
@@ -40,8 +44,10 @@ public class RestrictedChestContainer extends ChestMenu
         super(type, id, inv, container, rows);
         checkContainerSize(container, rows * 9);
         container.startOpen(inv.player);
-        int i = (rows - 4) * 18;
 
+        allowAddSlot = true;
+
+        // Container
         for (int row = 0; row < rows; ++row)
         {
             for (int col = 0; col < 9; ++col)
@@ -50,17 +56,19 @@ public class RestrictedChestContainer extends ChestMenu
             }
         }
 
+        // Player Inventory + Hotbar
+        final int yOffset = (rows - 4) * 18;
         for (int row = 0; row < 3; ++row)
         {
             for (int col = 0; col < 9; ++col)
             {
-                this.addSlot(new RestrictedSlot(inv, col + row * 9 + 9, 8 + col * 18, 103 + row * 18 + i));
+                this.addSlot(new Slot(inv, col + row * 9 + 9, 8 + col * 18, 103 + row * 18 + yOffset));
             }
         }
 
         for (int col = 0; col < 9; ++col)
         {
-            this.addSlot(new RestrictedSlot(inv, col, 8 + col * 18, 161 + i));
+            this.addSlot(new Slot(inv, col, 8 + col * 18, 161 + yOffset));
         }
     }
 
@@ -79,17 +87,10 @@ public class RestrictedChestContainer extends ChestMenu
         return super.quickMoveStack(player, index);
     }
 
-    /**
-     * No-ops the constructor
-     */
     @Override
     protected Slot addSlot(Slot slot)
     {
-        if (slot instanceof RestrictedSlot)
-        {
-            return super.addSlot(slot);
-        }
-        return slot;
+        return allowAddSlot ? super.addSlot(slot) : slot;
     }
 
     private static class RestrictedSlot extends Slot

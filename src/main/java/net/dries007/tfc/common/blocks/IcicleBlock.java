@@ -19,11 +19,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
@@ -72,7 +71,7 @@ public class IcicleBlock extends ThinSpikeBlock
                     BlockEntity blockEntity = level.getBlockEntity(mutable);
                     if (blockEntity != null)
                     {
-                        blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, Direction.UP).ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE));
+                        blockEntity.getCapability(Capabilities.FLUID, Direction.UP).ifPresent(cap -> cap.fill(new FluidStack(Fluids.WATER, 100), IFluidHandler.FluidAction.EXECUTE));
                     }
                     return;
                 }

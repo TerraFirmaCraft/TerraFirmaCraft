@@ -10,11 +10,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +42,7 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(inventory -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(inventory -> {
             addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN, 35, 20));
             addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_FLUID_CONTAINER_OUT, 35, 54));
             addSlot(new CallbackSlot(blockEntity, inventory, BarrelBlockEntity.SLOT_ITEM, 89, 37));
@@ -54,7 +53,7 @@ public class BarrelContainer extends BlockEntityContainer<BarrelBlockEntity> imp
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
         if (blockEntity.getBlockState().getValue(BarrelBlock.SEALED)) return true;
-        final int containerSlot = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() == 0f).orElse(false) ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
+        final int containerSlot = stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).map(cap -> cap.getTemperature() == 0f).orElse(false) ? BarrelBlockEntity.SLOT_FLUID_CONTAINER_IN : BarrelBlockEntity.SLOT_ITEM;
 
         return switch (typeOf(slotIndex))
             {

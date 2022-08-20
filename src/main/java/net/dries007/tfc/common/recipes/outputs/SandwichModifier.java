@@ -90,7 +90,7 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
             water += 0.8f * ingredient.water();
         }
 
-        handler.setFood(FoodData.create(4, water, saturation, nutrition, 1f / handler.getDecayDateModifier()));
+        handler.setFood(FoodData.create(4, water, saturation, nutrition, 4.5f));
         handler.setCreationDate(FoodCapability.getRoundedCreationDate());
     }
 

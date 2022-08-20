@@ -28,6 +28,7 @@ import net.dries007.tfc.network.FoodDataReplacePacket;
 import net.dries007.tfc.network.FoodDataUpdatePacket;
 import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.climate.Climate;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -59,6 +60,8 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     public static final float EXHAUSTION_MULTIPLIER = 0.4f; // Multiplier for all sources of exhaustion. Vanilla sources get reduced, while passive exhaustion factors in this multiplier.
     public static final float PASSIVE_EXHAUSTION_PER_TICK = MAX_HUNGER * EXHAUSTION_PER_HUNGER / (2.5f * ICalendar.TICKS_IN_DAY * EXHAUSTION_MULTIPLIER); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
     public static final float PASSIVE_EXHAUSTION_PER_SECOND = 20 * PASSIVE_EXHAUSTION_PER_TICK;
+
+    public static final float MAX_TEMPERATURE_THIRST_DECAY = 6f;
 
     public static void replaceFoodStats(Player player)
     {
@@ -142,7 +145,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
             // Same check as the original food stats, so hunger and thirst loss are synced
             if (delegate.getExhaustionLevel() >= 4.0F)
             {
-                addThirst(-TFCConfig.SERVER.thirstModifier.get().floatValue());
+                addThirst(-getThirstModifier(player));
 
                 // Vanilla will consume exhaustion and saturation in peaceful, but won't modify hunger.
                 // We mimic the same checks that are about to happen in tick(), and if needed, consume hunger in advance
@@ -317,6 +320,28 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     {
         return Mth.clamp(0.25f + 1.5f * nutritionData.getAverageNutrition(), 0.2f, 3f);
     }
+
+    /**
+     * @return The total thirst loss per tick, on a scale of [0, 100], 100 being the entire thirst bar
+     */
+    public float getThirstModifier(Player player)
+    {
+        return TFCConfig.SERVER.thirstModifier.get().floatValue() + getThirstContributionFromTemperature(player);
+    }
+
+    /**
+     * @return The thirst loss from the ambient temperature on top of regular loss
+     */
+    public float getThirstContributionFromTemperature(Player player)
+    {
+        if (TFCConfig.SERVER.enableThirstOverheating.get())
+        {
+            final float temp = Climate.getTemperature(player.level, player.blockPosition());
+            return Mth.clampedMap(temp, 22f, 34f, 0f, MAX_TEMPERATURE_THIRST_DECAY);
+        }
+        return 0;
+    }
+
 
     public float getThirst()
     {

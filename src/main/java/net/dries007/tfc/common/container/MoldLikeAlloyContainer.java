@@ -11,11 +11,11 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
 import net.dries007.tfc.common.capabilities.MoldLike;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -47,7 +47,7 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
         if (mold != null && mold.isMolten())
         {
             final ItemStack outputStack = inventory.getStackInSlot(0);
-            outputStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(outputFluidCap -> {
+            outputStack.getCapability(Capabilities.FLUID).ifPresent(outputFluidCap -> {
                 final FluidStack drained = mold.drain(1, IFluidHandler.FluidAction.SIMULATE);
                 if (!drained.isEmpty())
                 {
@@ -102,6 +102,6 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
-        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent();
+        return stack.getCapability(Capabilities.FLUID).isPresent();
     }
 }

@@ -11,20 +11,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.LargeVesselBlockEntity;
 import net.dries007.tfc.common.blocks.LargeVesselBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import org.jetbrains.annotations.Nullable;
 
 public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockEntity> implements ButtonHandlerContainer
 {
     public static LargeVesselContainer create(LargeVesselBlockEntity vessel, Inventory playerInventory, int windowId)
     {
-        return new LargeVesselContainer(vessel, playerInventory, windowId).init(playerInventory);
+        return new LargeVesselContainer(vessel, windowId).init(playerInventory);
     }
 
-    public LargeVesselContainer(LargeVesselBlockEntity vessel, Inventory playerInventory, int windowId)
+    public LargeVesselContainer(LargeVesselBlockEntity vessel, int windowId)
     {
         super(TFCContainerTypes.LARGE_VESSEL.get(), windowId, vessel);
     }
@@ -43,7 +43,10 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
     @Override
     protected boolean moveStack(ItemStack stack, int slotIndex)
     {
-        if (blockEntity.getBlockState().getValue(LargeVesselBlock.SEALED)) return true;
+        if (blockEntity.getBlockState().getValue(LargeVesselBlock.SEALED))
+        {
+            return true;
+        }
         return switch (typeOf(slotIndex))
             {
                 case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, 0, LargeVesselBlockEntity.SLOTS, false);
@@ -54,7 +57,7 @@ public class LargeVesselContainer extends BlockEntityContainer<LargeVesselBlockE
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
             addSlot(new CallbackSlot(blockEntity, handler, 0, 62, 19));
             addSlot(new CallbackSlot(blockEntity, handler, 1, 80, 19));
             addSlot(new CallbackSlot(blockEntity, handler, 2, 98, 19));

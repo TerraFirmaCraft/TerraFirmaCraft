@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -260,7 +261,7 @@ public enum Plant implements RegistryPlant
     enum BlockType
     {
         STANDARD((plant, type) -> PlantBlock.create(plant, fire(nonSolid(plant)))),
-        CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)))),
+        CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)).pathType(BlockPathTypes.DAMAGE_CACTUS))),
         DRY((plant, type) -> DryPlantBlock.create(plant, fire(nonSolid(plant)))),
         CREEPING((plant, type) -> CreepingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))), // Post process ensures shape is updated after world gen
         HANGING((plant, type) -> HangingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),

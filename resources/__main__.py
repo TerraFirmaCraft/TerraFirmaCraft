@@ -22,9 +22,11 @@ def main():
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files
+        'textures', # generate textures
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Used for \'book\'')
     parser.add_argument('--local', type=str, default=None, help='Used for \'book\'')
+    parser.add_argument('--local-overwrite', action='store_true', dest='local_overwrite', help='Used for \'book\'')
     parser.add_argument('--hotswap', action='store_true', dest='hotswap', help='Causes resource generation to also generate to --hotswap-dir')
     parser.add_argument('--hotswap-dir', type=str, default='./out/production/resources', help='Used for \'--hotswap\'')
 
@@ -44,9 +46,12 @@ def main():
             resources(hotswap=hotswap, do_recipes=True)
         elif action == 'worldgen':
             resources(hotswap=hotswap, do_worldgen=True)
+        elif action == 'textures':
+            import generate_textures
+            generate_textures.main()
         elif action == 'book':
             import generate_book
-            generate_book.main(translate_lang=args.translate, local_minecraft_dir=args.local)
+            generate_book.main(translate_lang=args.translate, local_minecraft_dir=args.local, local_overwrite=args.local_overwrite)
         elif action == 'trees':
             import generate_trees
             generate_trees.main()

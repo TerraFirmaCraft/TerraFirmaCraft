@@ -16,7 +16,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -30,7 +29,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -166,7 +164,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (cap == Capabilities.FLUID)
         {
             return sidedFluidInventory.getSidedHandler(side).cast();
         }
@@ -186,7 +184,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     {
         return switch (slot)
             {
-                case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).isPresent() || stack.getItem() instanceof BucketItem;
+                case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(Capabilities.FLUID).isPresent() || stack.getItem() instanceof BucketItem;
                 case SLOT_ITEM -> ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.HUGE);
                 default -> true;
             };

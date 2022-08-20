@@ -46,7 +46,7 @@
       "min_rainfall": 300
     },
     {
-      "type": "minecraft:biome"
+      "type": "tfc:biome"
     }
   ]
 }

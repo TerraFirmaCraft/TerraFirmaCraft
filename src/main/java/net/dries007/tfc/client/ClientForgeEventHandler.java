@@ -28,6 +28,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -409,7 +410,7 @@ public class ClientForgeEventHandler
                 if (fog != 0)
                 {
                     final float renderDistance = mc.gameRenderer.getRenderDistance();
-                    final float density = renderDistance * (1 - fog);
+                    final float density = renderDistance * (1 - Math.min(0.86f, fog));
 
                     // let's just do this the same way MC does because the FogDensityEvent is crap
                     event.setNearPlaneDistance(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
@@ -419,10 +420,11 @@ public class ClientForgeEventHandler
             }
             else if (fluid == FogType.WATER)
             {
+                final Player player = mc.player;
                 final float fog = Climate.getWaterFogginess(mc.level, pos);
                 if (fog != 1f)
                 {
-                    waterFogLevel = Mth.lerp(0.01f, waterFogLevel, fog);
+                    waterFogLevel = player != null && player.hasEffect(MobEffects.NIGHT_VISION) ? 1f : Mth.lerp(0.01f, waterFogLevel, fog);
                     event.scaleFarPlaneDistance(waterFogLevel);
                     event.setCanceled(true);
                 }

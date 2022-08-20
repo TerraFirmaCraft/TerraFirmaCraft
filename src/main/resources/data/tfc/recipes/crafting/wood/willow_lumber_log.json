@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:wood/log/willow"
+        "tag": "tfc:willow_logs"
       },
       {
         "tag": "tfc:saws"

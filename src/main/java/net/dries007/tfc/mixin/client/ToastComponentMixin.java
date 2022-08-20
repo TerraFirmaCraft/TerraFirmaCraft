@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+// todo: 1.19 remove this and use event
 @Mixin(ToastComponent.class)
 public abstract class ToastComponentMixin
 {

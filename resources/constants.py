@@ -512,7 +512,7 @@ FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'hu
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
-UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
+UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
 # For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
 BERRIES: Dict[str, Berry] = {
@@ -635,7 +635,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
 VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
@@ -944,6 +944,7 @@ DEFAULT_LANG = {
     'entity.tfc.sabertooth': 'Sabertooth',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
+    'entity.tfc.chest_minecart': 'Chest Minecart',
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',
@@ -979,17 +980,16 @@ DEFAULT_LANG = {
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'edge', 'none')),
-    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
+    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'humid_subarctic', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
     **dict(('tfc.enum.platetectonicsclassification.%s' % k, v) for k, v in {
         'oceanic': 'Oceanic',
         'continental_low': 'Low Altitude Continental',
         'continental_mid': 'Mid Altitude Continental',
         'continental_high': 'High Altitude Continental',
         'ocean_ocean_diverging': 'Mid-Ocean Ridge',
-        'ocean_ocean_converging_lower': 'Oceanic Subduction',
-        'ocean_ocean_converging_upper': 'Oceanic Subduction',
-        'ocean_continent_converging_lower': 'Continental Subduction',
-        'ocean_continent_converging_upper': 'Continental Subduction',
+        'ocean_ocean_converging': 'Oceanic Subduction',
+        'ocean_continent_diverging': 'Continental Subduction',
+        'ocean_continent_converging': 'Continental Subduction',
         'continent_continent_diverging': 'Continental Rift',
         'continent_continent_converging': 'Orogenic Belt',
         'continental_shelf': 'Continental Shelf'
@@ -1048,6 +1048,8 @@ DEFAULT_LANG = {
     'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
     'tfc.composter.too_many_greens': 'This composter has enough green items',
     'tfc.composter.too_many_browns': 'This composter has enough brown items',
+    'tfc.composter.green_items': '%s Green Items',
+    'tfc.composter.brown_items': '%s Brown Items',
     'tfc.chisel.cannot_place': 'The chiseled version of this block cannot exist here',
     'tfc.chisel.no_recipe': 'This block cannot be chiseled',
     'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',

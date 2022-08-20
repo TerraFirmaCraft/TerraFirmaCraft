@@ -54,15 +54,18 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
         return true;
     }
 
-    private static final BooleanProperty ITEM_0 = TFCBlockStateProperties.ITEM_0;
-    private static final BooleanProperty ITEM_1 = TFCBlockStateProperties.ITEM_1;
-    private static final BooleanProperty ITEM_2 = TFCBlockStateProperties.ITEM_2;
-    private static final BooleanProperty ITEM_3 = TFCBlockStateProperties.ITEM_3;
+    public static final BooleanProperty ITEM_0 = TFCBlockStateProperties.ITEM_0;
+    public static final BooleanProperty ITEM_1 = TFCBlockStateProperties.ITEM_1;
+    public static final BooleanProperty ITEM_2 = TFCBlockStateProperties.ITEM_2;
+    public static final BooleanProperty ITEM_3 = TFCBlockStateProperties.ITEM_3;
+
     public static final BooleanProperty[] ITEM_PROPERTIES = new BooleanProperty[] {ITEM_0, ITEM_1, ITEM_2, ITEM_3};
+
     private static final VoxelShape SHAPE_0 = box(0, 0, 0, 8.0D, 1.0D, 8.0D);
     private static final VoxelShape SHAPE_1 = box(8.0D, 0, 0, 16.0D, 1.0D, 8.0D); // x
     private static final VoxelShape SHAPE_2 = box(0, 0, 8.0D, 8.0D, 1.0D, 16.0D); // z
     private static final VoxelShape SHAPE_3 = box(8.0D, 0, 8.0D, 16.0D, 1.0D, 16.0D); // xz
+
     private static final VoxelShape[] SHAPES = new VoxelShape[] {SHAPE_0, SHAPE_1, SHAPE_2, SHAPE_3};
 
     /**

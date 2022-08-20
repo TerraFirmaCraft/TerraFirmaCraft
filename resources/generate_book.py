@@ -99,12 +99,13 @@ def main_with_args():
     parser = ArgumentParser('generate_book.py')
     parser.add_argument('--translate', type=str, default='en_us', help='The language to translate to')
     parser.add_argument('--local', type=str, default=None, help='The directory of a local .minecraft to copy into')
+    parser.add_argument('--local-overwrite', action='store_true', dest='local_overwrite', help='Overwrite existing files in the provided local .minecraft directory')
 
     args = parser.parse_args()
-    main(args.translate, args.local)
+    main(args.translate, args.local, args.local_overwrite)
 
 
-def main(translate_lang: str, local_minecraft_dir: str):
+def main(translate_lang: str, local_minecraft_dir: str, local_overwrite: bool):
     LocalInstance.INSTANCE_DIR = local_minecraft_dir
 
     rm = ResourceManager('tfc', './src/main/resources')
@@ -117,7 +118,8 @@ def main(translate_lang: str, local_minecraft_dir: str):
 
     if LocalInstance.wrap(rm):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        utils.clean_generated_resources(LocalInstance.INSTANCE_DIR + '/patchouli_books')
+        if local_overwrite:
+            utils.clean_generated_resources(LocalInstance.INSTANCE_DIR + '/patchouli_books')
         make_book(rm, I18n.create(translate_lang), local_instance=True)
 
     print('Done')
@@ -208,7 +210,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             multimultiblock('Native Copper Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_copper', 'dacite')) for g in GRADES]),
             text('Native Gold is a ore of $(thing)Gold$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
             multimultiblock('Native Gold Ores in Diorite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_gold', 'dacite')) for g in GRADES]),
-            text('Native Silver is a ore of $(thing)Silver$() metal. It can be found at elevations between y=-32 and y=100. It can be found in $(thing)Granite$(), and $(thing)Gneiss$() primarily, however smaller poorer veins can be found in any $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
+            text('Native Silver is a ore of $(thing)Silver$() metal. It can be found at elevations between y=-32 and y=100. It can be found in $(thing)Granite$(), and $(thing)Gneiss$() primarily, however smaller poorer veins can be found in any $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Native Silver').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
             multimultiblock('Native Silver Ores in Granite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_silver', 'granite')) for g in GRADES]),
             text('Hematite is a ore of $(thing)Iron$() metal. It can be found at elevations below y=75. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Hematite').link(*['tfc:ore/%s_%s' % (g, 'hematite') for g in GRADES_ALL]).anchor('hematite'),
             multimultiblock('Hematite Ores in Andesite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'hematite', 'andesite')) for g in GRADES]),

@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:wood/log/rosewood"
+        "tag": "tfc:rosewood_logs"
       },
       {
         "tag": "tfc:saws"

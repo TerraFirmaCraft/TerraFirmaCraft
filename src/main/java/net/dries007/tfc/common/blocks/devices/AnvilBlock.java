@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -37,6 +36,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 
@@ -54,7 +54,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
         {
             return InteractionResult.PASS;
         }
-        final IItemHandler inventory = anvil.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve().orElse(null);
+        final IItemHandler inventory = anvil.getCapability(Capabilities.ITEM).resolve().orElse(null);
         if (inventory == null)
         {
             return InteractionResult.PASS;

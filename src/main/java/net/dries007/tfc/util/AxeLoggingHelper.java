@@ -25,9 +25,10 @@ public class AxeLoggingHelper
 
     public static void doLogging(LevelAccessor level, BlockPos pos, Player player, ItemStack axe)
     {
+        final boolean inefficient = Helpers.isItem(axe, TFCTags.Items.INEFFICIENT_LOGGING_AXES);
         for (BlockPos log : findLogs(level, pos))
         {
-            level.destroyBlock(log, true, player);
+            level.destroyBlock(log, !inefficient || level.getRandom().nextFloat() < 0.6f, player);
             axe.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
             if (axe.isEmpty())
             {

@@ -18,10 +18,10 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Helpers;
@@ -40,13 +40,13 @@ public abstract class DairyAnimal extends ProducingMammal
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         ItemStack held = player.getItemInHand(hand);
-        if (!held.isEmpty() && held.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent())
+        if (!held.isEmpty() && held.getCapability(Capabilities.FLUID_ITEM).isPresent())
         {
             if (getFamiliarity() > produceFamiliarity.get() && isReadyForAnimalProduct())
             {
                 // copy the stack because we do not know if we'll need to replace it or not yet
                 ItemStack bucket = held.copy();
-                boolean filled = bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(itemCap -> {
+                boolean filled = bucket.getCapability(Capabilities.FLUID_ITEM).map(itemCap -> {
                     FluidStack milk = new FluidStack(getMilkFluid(), FluidHelpers.BUCKET_VOLUME);
                     return itemCap.fill(milk, IFluidHandler.FluidAction.EXECUTE) > 0;
                 }).orElse(false);

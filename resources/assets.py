@@ -67,18 +67,15 @@ def generate(rm: ResourceManager):
 
                 if block_type in CUTTABLE_ROCKS:
                     # Stairs
-                    rm.block('tfc:rock/' + block_type + '/' + rock).make_stairs()
-                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_stairs', 'tfc:rock/' + block_type + '/' + rock + '_stairs')
-                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_stairs', lang('%s %s Stairs', rock, block_type))
+                    rm.block(('rock', block_type, rock)).make_stairs()
+                    rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', rock, block_type)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
                     # Slabs
-                    rm.block('tfc:rock/' + block_type + '/' + rock).make_slab()
-                    slab_loot(rm, 'tfc:rock/' + block_type + '/' + rock + '_slab')
-                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_slab', lang('%s %s Slab', rock, block_type))
+                    rm.block(('rock', block_type, rock)).make_slab()
+                    rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', rock, block_type)).with_tag('minecraft:slabs')
+                    slab_loot(rm, 'tfc:rock/%s/%s_slab' % (block_type, rock))
                     # Walls
-                    rm.block('tfc:rock/' + block_type + '/' + rock).make_wall()
-                    rm.block_loot('tfc:rock/' + block_type + '/' + rock + '_wall', 'tfc:rock/' + block_type + '/' + rock + '_wall')
-                    rm.lang('block.tfc.rock.' + block_type + '.' + rock + '_wall', lang('%s %s Wall', rock, block_type))
-                    rm.block_tag('minecraft:walls', 'tfc:rock/' + block_type + '/' + rock + '_wall')
+                    rm.block(('rock', block_type, rock)).make_wall()
+                    rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', rock, block_type)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock)).with_tag('minecraft:walls')
                 # Loot
                 if block_type == 'raw' or block_type == 'hardened':
                     block.with_block_loot(({
@@ -203,6 +200,7 @@ def generate(rm: ResourceManager):
                 block = rm.block(('%s_sandstone' % variant, sand + extra))
                 if extra == '_slab':
                     slab_loot(rm, 'tfc:%s_sandstone/%s%s' % (variant, sand, extra))
+                    rm.block_tag('minecraft:slabs', 'tfc:%s_sandstone/%s%s' % (variant, sand, extra))
                 else:
                     block.with_block_loot('tfc:%s_sandstone/%s%s' % (variant, sand, extra))
                 block.with_lang(lang('%s %s sandstone' + extra, variant, sand))
@@ -253,11 +251,13 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:alabaster/bricks/%s_%s' % (color, extra))
             else:
                 slab_loot(rm, 'tfc:alabaster/bricks/%s_%s' % (color, extra))
+                rm.block_tag('minecraft:slabs', 'tfc:alabaster/bricks/%s_%s' % (color, extra))
             block = rm.block(('alabaster', 'polished', color + '_' + extra)).with_lang(lang('%s Polished Alabaster %s', color, extra))
             if extra != 'slab':
                 block.with_block_loot('tfc:alabaster/polished/%s_%s' % (color, extra))
             else:
                 slab_loot(rm, 'tfc:alabaster/polished/%s_%s' % (color, extra))
+                rm.block_tag('minecraft:slabs', 'tfc:alabaster/polished/%s_%s' % (color, extra))
 
     rm.item_model('torch', 'minecraft:block/torch')
     rm.item_model('dead_torch', 'tfc:block/torch_off')
@@ -488,6 +488,7 @@ def generate(rm: ResourceManager):
             block = rm.block('mud_bricks/%s%s' % (soil, variant)).with_lang(lang('%s mud bricks%s', soil, variant)).with_tag('minecraft:mineable/shovel')
             if variant == '_slab':
                 slab_loot(rm, 'tfc:mud_bricks/%s%s' % (soil, variant))
+                rm.block_tag('minecraft:slabs', 'tfc:mud_bricks/%s%s' % (soil, variant))
             else:
                block.with_block_loot('tfc:mud_bricks/%s%s' % (soil, variant))
 
@@ -613,7 +614,7 @@ def generate(rm: ResourceManager):
     snow_block_loot_table('minecraft:snow')
 
     # Sea Ice
-    block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice'))
+    block = rm.blockstate('sea_ice').with_block_model().with_item_model().with_lang(lang('sea ice')).with_tag('minecraft:ice')
     block.with_block_loot({
         'name': 'minecraft:ice',
         'conditions': [loot_tables.silk_touch()]
@@ -1063,7 +1064,7 @@ def generate(rm: ResourceManager):
                 'lifecycle=%s,stage=%d' % (lifecycle, stage),
                 {'model': 'tfc:block/plant/%s%s_bush_%d' % (lifecycle_to_model[lifecycle], berry, stage)}
             ) for lifecycle, stage in itertools.product(lifecycles, range(0, 3))
-        )).with_lang(lang('%s Bush', berry))
+        )).with_lang(lang('%s Bush', berry)).with_tag('berry_bushes')
 
         if data.type == 'stationary' or data.type == 'waterlogged':
             rm.item_model('plant/%s_bush' % berry, parent='tfc:block/plant/%s_bush_2' % berry, no_textures=True)
@@ -1210,10 +1211,8 @@ def generate(rm: ResourceManager):
                     'tfc:wood/%s/%s' % (variant, wood)  # logs drop themselves always
                 ))
 
-            if variant != 'log':
-                block.with_item_model()
-            else:
-                rm.item_model(('wood', variant, wood), 'tfc:item/wood/log/' + wood)
+            rm.item_model(('wood', variant, wood), 'tfc:item/wood/log/' + wood)
+
             end = 'tfc:block/wood/%s/%s' % (variant.replace('log', 'log_top').replace('wood', 'log'), wood)
             side = 'tfc:block/wood/%s/%s' % (variant.replace('wood', 'log'), wood)
             block.with_block_model({'end': end, 'side': side}, parent='block/cube_column')
@@ -1221,9 +1220,10 @@ def generate(rm: ResourceManager):
                 block.with_lang(lang(variant.replace('_', ' ' + wood + ' ')))
             else:
                 block.with_lang(lang('%s %s', wood, variant))
-        rm.item_model(('wood', 'lumber', wood)).with_lang(lang('%s Lumber', wood))
-        rm.item_model(('wood', 'sign', wood)).with_lang(lang('%s Sign', wood)).with_tag('minecraft:signs')
-        rm.item_model(('wood', 'boat', wood)).with_lang(lang('%s Boat', wood))
+        for item_type in ('lumber', 'sign', 'chest_minecart', 'boat'):
+            rm.item_model(('wood', item_type, wood)).with_lang(lang('%s %s', wood, item_type))
+        rm.item_tag('minecraft:signs', 'tfc:wood/sign/' + wood)
+        rm.item_tag('tfc:minecarts', 'tfc:wood/chest_minecart/' + wood)
 
         # Groundcover
         for variant in ('twig', 'fallen_leaves'):
@@ -1286,9 +1286,14 @@ def generate(rm: ResourceManager):
         block.make_fence()
         block.make_fence_gate()
 
-        for block_type in ('bookshelf', 'button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
+        for block_type in ('button', 'fence', 'fence_gate', 'pressure_plate', 'stairs', 'trapdoor'):
             rm.block_loot('wood/planks/%s_%s' % (wood, block_type), 'tfc:wood/planks/%s_%s' % (wood, block_type))
+        rm.block_loot('wood/planks/%s_bookshelf' % wood, loot_tables.alternatives({
+            'name': 'tfc:wood/planks/%s_bookshelf' % wood,
+            'conditions': [loot_tables.silk_touch()]
+        }, '3 minecraft:book'))
         slab_loot(rm, 'tfc:wood/planks/%s_slab' % wood)
+        rm.block_tag('minecraft:slabs', 'tfc:wood/planks/%s_slab' % wood)
 
         # Tool Rack
         rack_namespace = 'tfc:wood/planks/%s_tool_rack' % wood
@@ -1460,6 +1465,7 @@ def generate(rm: ResourceManager):
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
         rm.fluid_tag('molten_metals', 'tfc:metal/%s' % metal)
 
+        # todo: 1.19 rename to forge:fluid_container due to deprecation
         item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
             'parent': 'forge:item/bucket',
             'fluid': 'tfc:metal/%s' % metal
@@ -1507,6 +1513,7 @@ def water_based_fluid(rm: ResourceManager, name: str):
     rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
     rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
+    # todo: 1.19 rename to forge:fluid_container due to deprecation
     item = rm.custom_item_model(('bucket', name), 'forge:bucket', {
         'parent': 'forge:item/bucket',
         'fluid': 'tfc:%s' % name
@@ -1590,6 +1597,7 @@ def make_javelin(rm: ResourceManager, name_parts: str, texture: str) -> 'ItemCon
     rm.item_model(name_parts + '_in_hand', {'particle': texture}, parent='minecraft:item/trident_in_hand')
     rm.item_model(name_parts + '_gui', texture)
     model = rm.domain + ':item/' + name_parts
+    # todo: 1.19 rename to forge:separate_transforms due to deprecation
     return rm.custom_item_model(name_parts, 'forge:separate-perspective', {
         'gui_light': 'front',
         'overrides': [{'predicate': {'tfc:throwing': 1}, 'model': model + '_throwing'}],

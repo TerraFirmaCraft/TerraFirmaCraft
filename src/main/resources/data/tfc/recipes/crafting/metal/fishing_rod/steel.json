@@ -2,9 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:advanced_shaped_crafting",
   "pattern": [
-    "X  ",
-    "YX ",
-    "YZX"
+    "  X",
+    " XY",
+    "XZY"
   ],
   "key": {
     "X": {

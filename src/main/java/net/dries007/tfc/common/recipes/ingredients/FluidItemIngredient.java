@@ -11,8 +11,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ public class FluidItemIngredient extends DelegateIngredient
     {
         if (super.test(stack) && stack != null && !stack.isEmpty())
         {
-            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+            return stack.getCapability(Capabilities.FLUID_ITEM)
                 .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE))
                 .filter(fluid)
                 .isPresent();

@@ -8,6 +8,8 @@ package net.dries007.tfc.common.blocks;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+
+import net.dries007.tfc.common.blocks.wood.TFCChestBlock;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +19,17 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
+/**
+ * An extension of {@link BlockBehaviour.Properties} to allow setting properties in a constructor that normally require an override.
+ *
+ * BlockEntity related overrides occur only when the block implements {@link EntityBlockExtension}
+ * This means that vanilla blocks often need explicit overrides to use the interface, due to already overriding the default methods.
+ * For an example, see {@link TFCChestBlock#newBlockEntity(BlockPos, BlockState)}
+ *
+ * Some block related overrides are provided in {@link IForgeBlockExtension}
+ */
 public class ExtendedProperties
 {
     public static ExtendedProperties of(BlockBehaviour.Properties properties)
@@ -36,6 +48,7 @@ public class ExtendedProperties
     // Forge methods
     private int flammability;
     private int fireSpreadSpeed;
+    @Nullable private BlockPathTypes pathType;
 
     private ExtendedProperties(BlockBehaviour.Properties properties)
     {
@@ -48,6 +61,7 @@ public class ExtendedProperties
 
         flammability = 0;
         fireSpreadSpeed = 0;
+        pathType = null;
     }
 
     public ExtendedProperties blockEntity(Supplier<? extends BlockEntityType<?>> blockEntityType)
@@ -57,6 +71,9 @@ public class ExtendedProperties
         return this;
     }
 
+    /**
+     * In order to tick on both sides, you must use this method. Calling client and server ticks successively sets one to null!
+     */
     public <T extends BlockEntity> ExtendedProperties ticks(BlockEntityTicker<T> ticker)
     {
         return ticks(ticker, ticker);
@@ -88,6 +105,12 @@ public class ExtendedProperties
     {
         this.flammability = flammability;
         this.fireSpreadSpeed = fireSpreadSpeed;
+        return this;
+    }
+
+    public ExtendedProperties pathType(BlockPathTypes type)
+    {
+        pathType = type;
         return this;
     }
 
@@ -136,5 +159,11 @@ public class ExtendedProperties
     int getFireSpreadSpeed()
     {
         return fireSpreadSpeed;
+    }
+
+    @Nullable
+    BlockPathTypes getPathType()
+    {
+        return pathType;
     }
 }

@@ -42,7 +42,12 @@ public class ThrownJavelin extends AbstractArrow
 
     public ThrownJavelin(Level level, LivingEntity entity, ItemStack stack)
     {
-        super(TFCEntities.THROWN_JAVELIN.get(), entity, level);
+        this(TFCEntities.THROWN_JAVELIN.get(), level, entity, stack);
+    }
+
+    public ThrownJavelin(EntityType<? extends ThrownJavelin> type, Level level, LivingEntity entity, ItemStack stack)
+    {
+        super(type, entity, level);
         setItem(stack);
         setIsEnchantGlowing(stack.hasFoil());
     }

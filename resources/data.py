@@ -132,7 +132,7 @@ def generate(rm: ResourceManager):
     # Fuels
 
     for wood, wood_data in WOODS.items():
-        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood], wood_data.duration, wood_data.temp)
+        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood, 'tfc:wood/stripped_wood/' + wood, 'tfc:wood/stripped_log/' + wood], wood_data.duration, wood_data.temp)
 
     fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
     fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)
@@ -153,6 +153,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('high_quality_cloth', 'tfc:silk_cloth', 'tfc:wool_cloth')
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('axes_that_log', '#tfc:axes')
+    rm.item_tag('inefficient_logging_axes', *['tfc:stone/axe/%s' % cat for cat in ROCK_CATEGORIES])
     rm.item_tag('extinguisher', '#tfc:shovels')
     rm.item_tag('forge:shears', '#tfc:shears')  # forge tag includes TFC shears
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
@@ -338,6 +339,9 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
     rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
     rm.block_tag('creeping_plantable_on', '#minecraft:logs')
+    rm.block_tag('minecraft:prevent_mob_spawning_inside', 'tfc:thatch', '#minecraft:leaves')
+    rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
+    rm.block_tag('minecraft:fall_damage_resetting', 'tfc:thatch', '#tfc:berry_bushes')
 
     for color in COLORS:
         rm.block_tag('minecraft:walls', 'tfc:alabaster/polished/%s_wall' % color, 'tfc:alabaster/bricks/%s_wall' % color)
@@ -411,7 +415,7 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
         block_and_item_tag(rm, 'forge:stone', block('raw'))
         rm.block_tag('forge:stone', block('hardened'))
-        block_and_item_tag(rm, 'forge:cobblestone', block('cobble'), block('mossy_cobble'))
+        block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
         block_and_item_tag(rm, 'forge:smooth_stone', block('smooth'))
@@ -622,7 +626,6 @@ def generate(rm: ResourceManager):
     item_size(rm, 'quern', 'tfc:quern', Size.very_large, Weight.very_heavy)
     item_size(rm, 'tool_racks', '#tfc:tool_racks', Size.large, Weight.very_heavy)
     item_size(rm, 'chests', '#forge:chests', Size.large, Weight.light)
-    # todo: add tfc (non-wooden) slabs to minecraft slab tag
     item_size(rm, 'slabs', '#minecraft:slabs', Size.small, Weight.very_light)
     item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.very_heavy)
     item_size(rm, 'doors', '#minecraft:doors', Size.very_large, Weight.heavy)
@@ -651,9 +654,8 @@ def generate(rm: ResourceManager):
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
-
-    # unimplemented
-    # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
+    item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.very_heavy)
+    item_size(rm, 'looms', '#tfc:looms', Size.large, Weight.very_heavy)
 
     # Food
 

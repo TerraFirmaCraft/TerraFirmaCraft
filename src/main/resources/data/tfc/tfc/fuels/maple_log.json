@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/maple"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/maple"
+    },
+    {
+      "item": "tfc:wood/stripped_log/maple"
     }
   ],
   "duration": 2000,

@@ -14,13 +14,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.AnvilPlanSelectButton;
 import net.dries007.tfc.client.screen.button.NextPageButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -52,7 +52,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
         final int guiLeft = getGuiLeft(), guiTop = getGuiTop();
 
         final ItemStack inputStack = blockEntity
-            .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+            .getCapability(Capabilities.ITEM, null)
             .map(t -> t.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN))
             .orElse(ItemStack.EMPTY);
         final List<AnvilRecipe> recipes = AnvilRecipe.getAll(playerInventory.player.level, inputStack, blockEntity.getTier());

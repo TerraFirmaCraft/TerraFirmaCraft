@@ -4,7 +4,7 @@
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 60
+      "chance": 12
     },
     {
       "type": "minecraft:in_square"
@@ -14,7 +14,7 @@
       "heightmap": "OCEAN_FLOOR_WG"
     },
     {
-      "type": "minecraft:biome"
+      "type": "tfc:biome"
     }
   ]
 }
