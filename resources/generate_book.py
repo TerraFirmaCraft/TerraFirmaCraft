@@ -62,7 +62,7 @@ Simply copy the /assets/tfc/textures/gui/book directory from /src/ into a differ
 In addition, here's some useful things for dev work, and also making standardized images:
 
 - Images of scenery are taken in screenshots, a square section is copied and downsized to 400 x 400, and then placed in the top left corner of a 512 x 512 image
-- Images of guis are taken in screenshots, then JUST THE GUI (so erase all those little pixels in the corner) is copied out. A 256 x 256 image is used, and the gui is placed horizontally centered on the FIRST 200 PIXELS (so a 176 pixel wide gui image is placed with 12 blank pixels to it's left).
+- Images of guis are taken in screenshots, then JUST THE GUI (so erase all those little pixels in the corner) is copied out. A 256 x 256 image is used, and the gui is placed horizontally centered on the FIRST 200 PIXELS (so a 176 pixel wide gui image is placed with 12 blank pixels to its left).
 - Make the inventory clean, but also believable (i.e. if you were just talking about items X, Y, Z, have those items in your inventory. Don't make the inventory a focal point of the image.
 - DO NOT include the book item in your inventory in screenshots! It is unobtainable in survival!
 - For multiple images in the same location, i.e. to show a sort of 'animated' style, use /tp @p x y z pitch yaw to get an exact positioning before taking screenshots.
@@ -807,7 +807,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             crafting('tfc:crafting/wood/oak_support', text_contents='Supports can be crafted with a $(thing)Saw$() and some $(thing)Logs$()'),
             text('Supports can come in horizontal and vertical variations. Placing supports on top of a block places a column of up to three support beams. These vertical supports will be destroyed if they lose their base of support. Horizontal supports are placed by pressing $(item)$(k:key.use)$() on the side of a vertical support beam. If there is a direct path to another vertical support beam and enough beams available, the horizontal support will be formed.', title='Supporting Supports'),
             multiblock('Basic Structure', '', False, (('CRD',), ('V V',), ('V0V',)), {'C': 'tfc:wood/vertical_support/oak[south=true]', 'R': 'tfc:wood/horizontal_support/oak[north=true,south=true]', 'D': 'tfc:wood/vertical_support/oak[north=true]', 'V': 'tfc:wood/vertical_support/oak'}),
-            text('Only horizontal support beams, the kind that have no \'elbow\' components, support blocks. Horizonal beams support 4 blocks in each direction horizontally, and one block above and below. Blocks in this area are protected from collapsing. However, be warned! Mining outside of this range can easily cause collapses that end up in (and potentially destroy) your safe zone.'),
+            text('Only horizontal support beams, the kind that have no \'elbow\' components, support blocks. They beams support 4 blocks in each direction horizontally, and one block above and below. Blocks in this area are protected from collapsing. However, be warned! Mining outside of this range can easily cause collapses that end up in (and potentially destroy) your safe zone.'),
             empty_last_page(), # todo: in 1.12, we had a support visualization. and also i'm sure more info about gravity, collapses is wanted.
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
@@ -842,13 +842,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('The blast furnace\'s chimney can be up to five layers - each layer requiring four $(thing)Fire Bricks$() and twelve $(thing)Wrought Iron Sheets$() to complete. Having more layers increases the total capacity of the blast furnace, allowing it to smelt more steel at once. Each chimney layer, up to a maximum of five, allows the blast furnace to hold four additional ore items.'),
             text('In order to use the blast furnace, you must drop items in the top of the chimney - for steel production, you must add an equal number of items of $(thing)Iron Ores$() and $(l:mechanics/flux)Flux$(). Any iron ores or items that are able to melt into $(thing)Cast Iron$() will do. You will also need to add $(l:mechanics/charcoal_pit)Charcoal$(), which will be consumed as the blast furnace works.'),
             page_break(),
-            text('Using the blast furnace will open the blast furnace interface, seen to the right. In this interface, you will see meters for both ore and fuel content of the blast furnace. The top right slot must have a $(thing)Tuyere$(), which is a metal pipe used to funnel air into the blast furnace, required to reach the hottest temperatures to smelt steel. A tuyere can be smithed on an $(l:mechanics/anvils)Anvil$().'),
+            text('Using the blast furnace will open the blast furnace interface, seen to the right. In this interface, you will see meters for both ore and fuel contents of the blast furnace. The top right slot must have a $(thing)Tuyere$(), which is a metal pipe used to funnel air into the blast furnace, required to reach the hottest temperatures to smelt steel. A tuyere can be smithed on an $(l:mechanics/anvils)Anvil$().'),
             image('tfc:textures/gui/book/gui/blast_furnace.png', text_contents='The Blast Furnace Interface', border=False),
             text('You will also need a $(l:mechanics/bellows)Bellows$() in order for the Blast Furnace to reach a temperature which will melt iron. This can be placed on any of the four sides of the blast furnace.'),
             multiblock('', 'A full size blast furnace with bellows and crucible attached.', True, multiblock_id='tfc:full_blast_furnace'),
             text('Finally, to get started, light the blast furnace with a $(l:getting_started/firepit#firestarter)Fire Starter$() or a $(thing)Flint and Steel$(). It will begin to heat the ores inside. Make sure that the blast furnace continues to have fuel, and use the bellows to add air to the blast furnace after its internal temperature has reached the maximum for charcoal. After the ores inside heat up, they will melt and convert into $(l:mechanics/steel)Pig Iron$().'),
-            #todo: this sounds like pig iron will drip into a barrel ("fluid container") below a BF?
-            text('This liquid metal will drip into any fluid container placed immediately below the blast furnace, such as a $(l:mechanics/crucible)Crucible$(). It can be cast into ingot molds from the output slot of the crucible and worked into $(l:mechanics/steel)Steel$().'),
+            text('This liquid metal will drip into any metal fluid container placed immediately below the blast furnace, such as a $(l:mechanics/crucible)Crucible$(). It can be cast into ingot molds from the output slot of the crucible and worked into $(l:mechanics/steel)Steel$().'),
         )),
         entry('steel', 'Steel', 'tfc:metal/ingot/steel', pages=(
             text('Steel is an advanced material which can be used to create tools and armor, and comes in a few different varieties: $(thing)Steel$(), $(thing)Black Steel$(), $(thing)Red Steel$(), and $(thing)Blue Steel$().$(br2)In order to create steel, you must first create $(thing)Pig Iron$() in a $(l:mechanics/blast_furnace)Blast Furnace$(), and cast it into $(thing)Ingots$().'),
@@ -926,7 +925,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             fertilizer('minecraft:bone_meal', 'Bonemeal is made of crushed bones.', p=0.1),
             fertilizer('tfc:powder/saltpeter', 'Saltpeter is made from its ore.', n=0.1, k=0.4),
             fertilizer('tfc:groundcover/guano', 'Guano is found deep underground and on gravelly shores.', 0.8, 0.5, 0.1),
-            fertilizer('tfc:powder/wood_ash', 'Wood ash comes from from broken firepits.', p=0.1, k=0.3),
+            fertilizer('tfc:powder/wood_ash', 'Wood ash is produced by breaking firepits.', p=0.1, k=0.3),
             fertilizer('tfc:powder/sylvite', 'Sylvite is made from its ore.', p=0.5)
         )),
         entry('flux', 'Flux', 'tfc:powder/flux', pages=(
