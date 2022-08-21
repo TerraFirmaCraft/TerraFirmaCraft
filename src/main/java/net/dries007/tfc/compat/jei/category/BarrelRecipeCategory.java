@@ -27,11 +27,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCategory<T>
 {
-    public static final String FLUID_INPUT = "fluidInput";
-    public static final String ITEM_INPUT = "itemInput";
-    public static final String FLUID_OUTPUT = "fluidOutput";
-    public static final String ITEM_OUTPUT = "itemOutput";
-
     protected @Nullable IRecipeSlotBuilder inputFluidSlot;
     protected @Nullable IRecipeSlotBuilder inputItemSlot;
     protected @Nullable IRecipeSlotBuilder outputFluidSlot;
@@ -63,28 +58,32 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
 
         if (!inputFluid.isEmpty())
         {
-            inputFluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, inputItem.isEmpty() ? positions[1] : positions[0], 5).setSlotName(FLUID_INPUT);
+            inputFluidSlot = builder.addSlot(RecipeIngredientRole.INPUT, inputItem.isEmpty() ? positions[1] : positions[0], 5);
             inputFluidSlot.addIngredients(JEIIntegration.FLUID_STACK, inputFluid);
             inputFluidSlot.setFluidRenderer(1, false, 16, 16);
+            inputFluidSlot.setBackground(slot, -1, -1);
         }
 
         if (!inputItem.isEmpty())
         {
-            inputItemSlot = builder.addSlot(RecipeIngredientRole.INPUT, positions[1], 5).setSlotName(ITEM_INPUT);
+            inputItemSlot = builder.addSlot(RecipeIngredientRole.INPUT, positions[1], 5);
             inputItemSlot.addItemStacks(inputItem);
+            inputItemSlot.setBackground(slot, -1, -1);
         }
 
         if (!outputFluid.isEmpty())
         {
-            outputFluidSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, positions[2], 5).setSlotName(FLUID_OUTPUT);
+            outputFluidSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, positions[2], 5);
             outputFluidSlot.addIngredient(JEIIntegration.FLUID_STACK, outputFluid);
             outputFluidSlot.setFluidRenderer(1, false, 16, 16);
+            outputFluidSlot.setBackground(slot, -1, -1);
         }
 
         if (!outputItem.isEmpty() && !outputItem.stream().allMatch(ItemStack::isEmpty))
         {
-            outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.isEmpty() ? positions[2] : positions[3], 5).setSlotName(ITEM_OUTPUT);
+            outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.isEmpty() ? positions[2] : positions[3], 5);
             outputItemSlot.addItemStacks(outputItem);
+            outputItemSlot.setBackground(slot, -1, -1);
         }
 
         // Link inputs and outputs when focused
@@ -98,20 +97,7 @@ public class BarrelRecipeCategory<T extends BarrelRecipe> extends BaseRecipeCate
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        final int[] positions = slotPositions(recipe);
         final int arrowPosition = arrowPosition(recipe);
-
-        slot.draw(stack, positions[1] - 1, 4);
-        if (recipeSlots.findSlotByName(FLUID_INPUT).isPresent() && recipeSlots.findSlotByName(ITEM_INPUT).isPresent())
-        {
-            slot.draw(stack, positions[0] - 1, 4);
-        }
-        slot.draw(stack, positions[2] - 1, 4);
-        if (recipeSlots.findSlotByName(FLUID_OUTPUT).isPresent() && recipeSlots.findSlotByName(ITEM_OUTPUT).isPresent())
-        {
-            slot.draw(stack, positions[3] - 1, 4);
-        }
-
         arrow.draw(stack, arrowPosition, 5);
         arrowAnimated.draw(stack, arrowPosition, 5);
     }

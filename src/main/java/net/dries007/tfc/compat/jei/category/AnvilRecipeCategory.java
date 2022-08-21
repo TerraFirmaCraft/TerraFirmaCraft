@@ -34,14 +34,14 @@ public class AnvilRecipeCategory extends BaseRecipeCategory<AnvilRecipe>
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
         inputSlot.addIngredients(recipe.getInput());
+        inputSlot.setBackground(slot, -1, -1);
         outputSlot.addItemStack(recipe.getResultItem());
+        outputSlot.setBackground(slot, -1, -1);
     }
 
     @Override
     public void draw(AnvilRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 5, 4);
-        slot.draw(stack, 75, 4);
         arrow.draw(stack, 48, 5);
         arrowAnimated.draw(stack, 48, 5);
     }
