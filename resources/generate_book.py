@@ -778,7 +778,6 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             crafting('tfc:crafting/bellows', title='', text_contents='To use the bellows, simply place it facing the targeted heating device, and use it. The bellows will pump air into the device, raising the maximum temperature for a short time.')
         )),
         entry('grill', 'Firepit And Grill', 'tfc:grill', pages=(
-            #todo: what's this .link() syntax?
             text('A $(thing)Grill$() is an item that can be added to a firepit to cook foods more efficiently. The grill is able to cook five items at once, and also gives these items the $(thing)Wood Grilled$() trait when cooking food, which provides a minor buff to the item\'s $(l:mechanics/preservation)expiration date$(). In order to create a firepit with grill, first create a $(l:getting_started/firepit)Firepit$(), then use a $(thing)Wrought Iron Grill$() on the firepit.').link('tfc:wrought_iron_grill'),
             block_spotlight('A Firepit with Grill', '', 'tfc:grill'),
             anvil_recipe('tfc:anvil/wrought_iron_grill', 'The grill is created by working a $(thing)Wrought Iron Double Sheet$() on an $(l:mechanics/anvils)Anvil$().$(br2)On the next page, you can see the grill interface. Like the firepit, it has four slots for fuel which must be added in the top slot, a temperature indicator, and five slots for heating items instead of one.'),
