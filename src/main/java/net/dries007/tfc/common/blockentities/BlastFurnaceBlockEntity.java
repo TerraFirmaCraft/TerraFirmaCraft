@@ -230,7 +230,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private int burnTicks; // Ticks remaining on the current item of fuel
     private float burnTemperature; // Temperature provided from the current item of fuel
     private int airTicks; // Ticks of air provided by bellows
-    private long lastPlayerTick; // Last player tick this device was ticked (for purposes of catching up)
+    private long lastPlayerTick = Integer.MIN_VALUE; // Last player tick this device was ticked (for purposes of catching up)
     private int lastKnownCapacity; // Last calculation of capacity (happens every 20 ticks), used by the gui
 
     public BlastFurnaceBlockEntity(BlockPos pos, BlockState state)
@@ -372,12 +372,14 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastPlayerTick = tick;
