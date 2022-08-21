@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "black_steel",
-      "text": "$(thing)Black Steel$() is an advanced form of steel formed from an alloy of steel, along with some other metals. In order to create it, you will need to create an alloy called $(thing)Weak Steel$() in a $(l:mechanics/crucible)Crucible$().",
+      "text": "$(thing)Black Steel$() is an advanced form of steel formed from an alloy of steel and some other metals. In order to create it, you will need to create an alloy called $(thing)Weak Steel$() in a $(l:mechanics/crucible)Crucible$().",
       "title": "Black Steel"
     },
     {
@@ -24,12 +24,12 @@
       "item": "tfc:metal/ingot/weak_steel",
       "title": "Weak Steel",
       "link_recipes": false,
-      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 70 % : $(thing)Steel$()$(li)15 - 25 % : $(thing)Nickel$()$(li)15 - 25 % : $(thing)Black Bronze$()$(br2)Molten $(thing)Weak Steel$() can then be cast into ingots."
+      "text": "$(br)$(bold)Requirements:$()$(br)$(li)50 - 70 % : $(thing)Steel$()$(li)15 - 25 % : $(thing)Nickel$()$(li)15 - 25 % : $(thing)Black Bronze$()$(br2)Molten $(thing)Weak Steel$() can be cast into ingots."
     },
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/high_carbon_black_steel_ingot",
-      "text": "$(thing)Weak Steel Ingots$() can then be welded with $(thing)Pig Iron Ingots$() to create $(thing)High Carbon Black Steel Ingots$(). Finally, these can then be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Black Steel Ingots$()."
+      "text": "$(thing)Weak Steel Ingots$() can then be welded with $(thing)Pig Iron Ingots$() to create $(thing)High Carbon Black Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Black Steel Ingots$()."
     },
     {
       "type": "patchouli:text",
@@ -38,7 +38,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blue_steel",
-      "text": "$(thing)Blue Steel$() is one of the two highest forms of steel able to be created, along with $(l:mechanics/steel#red_steel)Red Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Blue Steel$() $(l:mechanics/crucible)Crucible$().",
+      "text": "$(thing)Blue Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#red_steel)Red Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Blue Steel$() $(l:mechanics/crucible)Crucible$().",
       "title": "Blue Steel"
     },
     {
@@ -51,16 +51,16 @@
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
-      "text": "$(thing)Weak Blue Steel Ingots$() can then be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Blue Steel Ingots$(). Finally, these can then be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Blue Steel Ingots$()."
+      "text": "$(thing)Weak Blue Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Blue Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Blue Steel Ingots$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Blue Steel$() is one of the two strongest tier metals in TerraFirmaCraft, along with $(l:mechanics/steel#red_steel)Red Steel$(). It can be used to create tools and armor, and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket able of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most rare after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)Blue Steel$() can be used to create tools and armor, and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket able of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
     },
     {
       "type": "patchouli:text",
       "anchor": "red_steel",
-      "text": "$(thing)Red Steel$() is one of the two highest forms of steel able to be created, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Red Steel$() $(l:mechanics/crucible)Crucible$().",
+      "text": "$(thing)Red Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Red Steel$() $(l:mechanics/crucible)Crucible$().",
       "title": "Red Steel"
     },
     {
@@ -73,11 +73,11 @@
     {
       "type": "tfc:welding_recipe",
       "recipe": "tfc:welding/high_carbon_red_steel_ingot",
-      "text": "$(thing)Weak Red Steel Ingots$() can then be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Red Steel Ingots$(). Finally, these can then be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Red Steel Ingots$()."
+      "text": "$(thing)Weak Red Steel Ingots$() can be welded with $(l:mechanics/steel#black_steel)Black Steel Ingots$() to create $(thing)High Carbon Red Steel Ingots$(). Finally, these can be worked on an $(l:mechanics/anvils)Anvil$() to create $(thing)Red Steel Ingots$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Red Steel$() is one of the two strongest tier metals in TerraFirmaCraft, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). It can be used to create tools and armor, and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket able of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most rare after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)Red Steel$() can be used to create tools and armor, and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket able of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
     }
   ],
   "read_by_default": true

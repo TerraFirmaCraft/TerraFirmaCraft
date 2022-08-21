@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Leather$() is a sturdy material formed from animal hides. It is required to craft $(thing)Leather Armor$(), $(thing)Saddles$(), or a $(l:mechanics/bellows)Bellows$(). $()Raw Hides$() must be treated through several processes: $(l:mechanics/leather_making#soaking)soaking$(), $(l:mechanics/leather_making#scraping)scraping$(), $(l:mechanics/leather_making#preparing)preparing$(), and $(l:mechanics/leather_making#tanning)tanning$(), in order to turn them into durable and sturdy $(thing)Leather$()."
+      "text": "$(thing)Leather$() is a sturdy material formed from animal hides. It is required to craft $(thing)Leather Armor$(), $(thing)Saddles$(), or a $(l:mechanics/bellows)Bellows$(). $()Raw Hides$() must be treated through several processes: $(l:mechanics/leather_making#soaking)soaking$(), $(l:mechanics/leather_making#scraping)scraping$(), $(l:mechanics/leather_making#preparing)preparing$(), and $(l:mechanics/leather_making#tanning)tanning$() to turn them into $(thing)Leather$()."
     },
     {
       "type": "patchouli:spotlight",
@@ -17,13 +17,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Leather making will require several materials and tools. You will need:$(br)$(li)$(l:mechanics/barrels#limewater)Limewater$(), a solution of $(l:mechanics/flux)Flux$() in $(thing)Water$()$(li)Water$(li)$(l:mechanics/barrels#tannin)Tannin$(), an acidic solution made from the bark of some trees.$(li)And some $(thing)Raw Hides$()$(br2)With all that ready, you are ready to begin the leather working process."
+      "text": "Leather making will require several materials and tools. You will need:$(br)$(li)$(l:mechanics/barrels#limewater)Limewater$() - a solution of $(l:mechanics/flux)Flux$() in $(thing)Water$()$(li)Water$(li)$(l:mechanics/barrels#tannin)Tannin$() - an acidic solution made from the bark of some trees.$(li)$(thing)Raw Hides$()$(br2)With all that on hand, you are ready to begin the leather working process."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "soaking",
       "recipe": "tfc:barrel/medium_soaked_hide",
-      "text": "First, raw hides must be $(thing)soaked$(), in order to clean them, and remove any unwanted material before processing. This can be done by sealing some $(thing)Raw Hide$() in a $(l:mechanics/barrels#limewater)Barrel of Limewater$(), for at least eight hours."
+      "text": "First, raw hides must be $(thing)soaked$() to clean them and loosen unwanted material before processing. This can be done by sealing some $(thing)Raw Hide$() in a $(l:mechanics/barrels#limewater)Barrel of Limewater$() for at least eight hours."
     },
     {
       "type": "patchouli:spotlight",
@@ -31,7 +31,7 @@
       "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
       "title": "Scraping",
       "link_recipes": true,
-      "text": "After soaking, $(thing)Soaked Hides$() must be scraped, which removes any excess material that was loosened up during the soaking. In order to scrape hides, place the hide on the side of a $(thing)Log$(). Then, with a $(thing)Knife$(), $(item)$(k:key.use)$() on each part of the hide, and you will see it start to change texture."
+      "text": "After soaking, $(thing)Soaked Hides$() must be scraped which removes any excess material. In order to scrape hides, place the hide on the side of a $(thing)Log$(). With a $(thing)Knife$(), $(item)$(k:key.use)$() on each part of the hide and it will start to change texture."
     },
     {
       "type": "patchouli:image",
@@ -48,13 +48,13 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "preparing",
       "recipe": "tfc:barrel/medium_prepared_hide",
-      "text": "After scraping, $(thing)Scraped Hides$() must be sealed in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$(), for at least eight hours, for one final cleaning before tanning."
+      "text": "After scraping, $(thing)Scraped Hides$() must be sealed in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$() for at least eight hours, for one final cleaning before tanning."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tanning",
       "recipe": "tfc:barrel/medium_leather",
-      "text": "Finally, $(thing)Prepared Hides$() must be sealed in a $(l:mechanics/barrels#tannin)Barrel of Tannin$(), which is an acidic chemical compound that helps to convert the hide to $(thing)Leather$(). After another eight hours, you will be able to remove the $(thing)Leather$() from the barrel."
+      "text": "Finally, $(thing)Prepared Hides$() must be sealed in a $(l:mechanics/barrels#tannin)Barrel of Tannin$(), which is an acidic chemical compound that helps to convert the hide to $(thing)Leather$(). After another eight hours, you can remove the $(thing)Leather$() from the barrel."
     }
   ],
   "read_by_default": true

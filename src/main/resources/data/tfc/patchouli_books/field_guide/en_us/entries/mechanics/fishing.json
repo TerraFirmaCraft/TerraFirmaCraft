@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Fishing$() is a way of hunting the fish entities that swim around in rivers, lakes, and oceans. Fishing rods must be baited and cast. Fish entities attempt to eat the bait, and sometimes succeed. Reeling in a fish takes work, and becomes easier with higher level hooks."
+      "text": "$(thing)Fishing$() is a way of hunting the fish that swim around in rivers, lakes, and oceans. Fishing rods must be baited and cast. Fish attempt to eat the bait, and sometimes succeed. Reeling in a fish takes work, and becomes easier with higher level hooks."
     },
     {
       "type": "tfc:anvil_recipe",
@@ -25,7 +25,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then, $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier."
+      "text": "To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier."
     },
     {
       "type": "patchouli:image",
