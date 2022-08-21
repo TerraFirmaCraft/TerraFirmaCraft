@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.util;
 
+import net.minecraft.world.item.crafting.RecipeManager;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -15,12 +17,22 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
  */
 public interface AlloyView
 {
+    default Metal getResult()
+    {
+        return getResult(Helpers.getUnsafeRecipeManager());
+    }
+
+    default Metal getResult(Level level)
+    {
+        return getResult(level.getRecipeManager());
+    }
+
     /**
      * Gets the result of mixing the alloy right now
      *
      * @return the result metal. Unknown if it doesn't match any recipe
      */
-    Metal getResult();
+    Metal getResult(RecipeManager recipes);
 
     /**
      * Gets the total amount of alloy created

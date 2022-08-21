@@ -11,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -59,6 +58,14 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
         });
     }
 
+    public static int getSlotSelected(BlockHitResult rayTrace)
+    {
+        Vec3 location = rayTrace.getLocation();
+        boolean x = Math.round(location.x) < location.x;
+        boolean z = Math.round(location.z) < location.z;
+        return (x ? 1 : 0) + (z ? 2 : 0);
+    }
+
     public static final int SLOT_LARGE_ITEM = 0;
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.placed_item");
     public boolean isHoldingLargeItem;
@@ -82,11 +89,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
 
     public boolean insertItem(Player player, ItemStack stack, BlockHitResult rayTrace)
     {
-        Vec3 location = rayTrace.getLocation();
-        boolean x = Math.round(location.x) < location.x;
-        boolean z = Math.round(location.z) < location.z;
-        final int slot = (x ? 1 : 0) + (z ? 2 : 0);
-        return insertItem(player, stack, slot);
+        return insertItem(player, stack, getSlotSelected(rayTrace));
     }
 
     /**
@@ -174,6 +177,11 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             }
         }
         return false;
+    }
+
+    public ItemStack getCloneItemStack(BlockState state, BlockHitResult hit)
+    {
+        return inventory.getStackInSlot(getSlotSelected(hit)).copy();
     }
 
     public boolean holdingLargeItem()

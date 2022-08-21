@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
@@ -166,6 +167,29 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         int z = worldPosition.getZ();
         strawItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
         logItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, BlockHitResult hit)
+    {
+        if (state.hasProperty(PitKilnBlock.STAGE) && state.getValue(PitKilnBlock.STAGE) > 0)
+        {
+            for (ItemStack item : logItems)
+            {
+                if (!item.isEmpty())
+                {
+                    return item.copy();
+                }
+            }
+            for (ItemStack item : strawItems)
+            {
+                if (!item.isEmpty())
+                {
+                    return item.copy();
+                }
+            }
+        }
+        return super.getCloneItemStack(state, hit);
     }
 
     public void deleteStraw(int slot)

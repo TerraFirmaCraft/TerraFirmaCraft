@@ -303,6 +303,7 @@ def anvil_recipe(recipe: str, text_content: str) -> Page: return recipe_page('an
 def welding_recipe(recipe: str, text_content: str) -> Page: return recipe_page('welding_recipe', recipe, text_content)
 def sealed_barrel_recipe(recipe: str, text_content: str) -> Page: return recipe_page('sealed_barrel_recipe', recipe, text_content)
 def instant_barrel_recipe(recipe: str, text_content: str) -> Page: return recipe_page('instant_barrel_recipe', recipe, text_content)
+def loom_recipe(recipe: str, text_content: str) -> Page: return recipe_page('loom_recipe', recipe, text_content)
 
 
 def rock_knapping_typical(recipe_with_category_format: str, text_content: str) -> Page:

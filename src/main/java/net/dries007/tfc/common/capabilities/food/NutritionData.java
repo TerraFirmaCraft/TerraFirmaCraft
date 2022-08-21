@@ -82,7 +82,7 @@ public class NutritionData
      */
     public void addNutrients(FoodData data)
     {
-        if (data.hunger() > 0 || records.getFirst().hunger() > 0)
+        if (data.hunger() > 0 || records.isEmpty() || records.getFirst().hunger() > 0)
         {
             records.addFirst(data);
             calculateNutrition();

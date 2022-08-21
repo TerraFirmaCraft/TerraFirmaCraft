@@ -186,9 +186,9 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
             }
             else
             {
-                if (getOwnerUUID() == null) // tfc: add an owner
+                if (isTamed() && getOwnerUUID() == null) // tfc: add an owner
                 {
-                    setOwnerUUID(player.getUUID());
+                    tameWithName(player);
                 }
                 this.doPlayerRide(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
