@@ -1,4 +1,4 @@
-from typing import NamedTuple, Tuple, List, Mapping
+from typing import NamedTuple, Tuple, List, Mapping, Set
 
 from mcresources import ResourceManager, utils
 from mcresources.type_definitions import JsonObject, ResourceLocation
@@ -44,6 +44,11 @@ class Page(NamedTuple):
             if key in self.data and self.data[key] is not None:
                 self.data[key] = i18n.translate(self.data[key])
 
+    def iter_all_text(self):
+        for key in self.translation_keys:
+            if key in self.data and self.data[key] is not None:
+                yield self.data[key]
+
 
 class Entry(NamedTuple):
     entry_id: str
@@ -51,6 +56,16 @@ class Entry(NamedTuple):
     icon: str
     pages: Tuple[Page]
     advancement: str | None
+
+
+class Category(NamedTuple):
+    category_id: str
+    name: str
+    description: str
+    icon: str
+    parent: str | None
+    is_sorted: bool
+    entries: Tuple[Entry, ...]
 
 
 class Book:
@@ -62,17 +77,8 @@ class Book:
         self.i18n = i18n
         self.local_instance = local_instance
 
-        if self.i18n.lang == 'en_us':  # Only generate the book.json if we're in the root language
-            rm.data(('patchouli_books', self.root_name, 'book'), {
-                'name': 'tfc.field_guide.book_name',
-                'landing_text': 'tfc.field_guide.book_landing_text',
-                'subtitle': '${version}',
-                # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
-                # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
-                'dont_generate_book': False,
-                'show_progress': False,
-                'macros': macros
-            })
+        self.categories: List[Category] = []
+        self.macros = macros
 
     def template(self, template_id: str, *components: Component):
         self.rm.data(('patchouli_books', self.root_name, 'en_us', 'templates', template_id), {
@@ -93,6 +99,32 @@ class Book:
 
         https://vazkiimods.github.io/Patchouli/docs/reference/category-json/
         """
+        self.categories.append(Category(category_id, name, description, icon, parent, is_sorted, entries))
+
+    def build(self):
+        # Only generate the book.json if we're in the root language
+        if self.i18n.lang == 'en_us':
+            self.rm.data(('patchouli_books', self.root_name, 'book'), {
+                'name': 'tfc.field_guide.book_name',
+                'landing_text': 'tfc.field_guide.book_landing_text',
+                'subtitle': '${version}',
+                # Even though we don't use the book item, we still need patchy to make a book item for us, as it controls the title
+                # If neither we nor patchy make a book item, this will show up as 'Air'. So we make one to allow the title to work properly.
+                'dont_generate_book': False,
+                'show_progress': False,
+                'macros': self.macros
+            })
+
+        # Find all valid link targets
+        link_targets = {}
+        for c in self.categories:
+            for e in c.entries:
+                link_targets['%s/%s' % (c.category_id, e.entry_id)] = {p.anchor_id for p in e.pages if p.anchor_id is not None}
+
+        for c in self.categories:
+            self.build_category(link_targets, c.category_id, c.name, c.description, c.icon, c.parent, c.is_sorted, c.entries)
+
+    def build_category(self, link_targets: Mapping[str, Set[str]], category_id: str, name: str, description: str, icon: str, parent: str | None, is_sorted: bool, entries: Tuple[Entry, ...]):
         self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'categories', category_id), {
             'name': self.i18n.translate(name),
             'description': self.i18n.translate(description),
@@ -146,6 +178,21 @@ class Book:
                 for link in p.link_ids:
                     assert link not in seen_links, 'Duplicate link "%s" on page %s' % (link, p)
                     seen_links.add(link)
+
+            # Validate all internal links of the form $(l:...)
+            for p in real_pages:
+                for page_text in p.iter_all_text():
+                    for match in re.finditer(r'\$\(l:([^)]*)\)', page_text):
+                        key = match.group(1)
+                        if key.startswith('http'):
+                            continue  # Don't validate external links
+                        if '#' in key:
+                            target, anchor = key.split('#')
+                        else:
+                            target, anchor = key, None
+                        assert target in link_targets, 'Link target \'%s\' not found for link \'%s\'\n  at page: %s\n  at entry: \'%s\'' % (target, key, p, e.entry_id)
+                        if anchor is not None:
+                            assert anchor in link_targets[target], 'Link anchor \'%s\' not found for link \'%s\'\n  at page: %s\n  at entry: \'%s\'' % (anchor, key, p, e.entry_id)
 
             # Separately translate each page
             entry_name = self.i18n.translate(e.name)
