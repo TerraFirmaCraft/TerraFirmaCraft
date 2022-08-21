@@ -578,7 +578,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             image('tfc:textures/gui/book/tutorial/wattle_stained.png', text_contents='It can then be $(thing)stained$() by using dye on it.'),
             page_break(),
             # Clay Blocks and Peat
-            # todo: Clay block recipe and peat spawning details/screenshot
+            # todo: Peat spawning details, screenshot?
             text('Clay obtained from the ground can be crafted into clay blocks. When placed and dug again, they\'ll turn back into clay. While unattractive, they are easy to obtain.$(br2)Peat spawns in the world in patches along water bodies and is mineable with stone tools. Some plants will grow on it.$(br2)However, peat is quite flammable.', title='Clay Blocks and Peat').anchor('clay_and_peat'),
             crafting("minecraft:clay", title="Clay Blocks"),
             page_break(),
