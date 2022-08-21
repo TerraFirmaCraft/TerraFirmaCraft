@@ -1,6 +1,6 @@
 {
     "__comment1__": "This file was created by PERIOT, a.k.a papertoy1127",
-    "__comment2__": "TFC Korean translation based on English lang file of version 2.0.34-alpha",
+    "__comment2__": "TFC Korean translation based on English lang file of version 2.1.0-beta",
     "__comment3__": "If finding any issue, contact me with discord PERIOT#5492",
     "generator.tfc.tng": "TerraFirmaCraft",
     "death.attack.tfc.grill": "%1$s이(가) 그릴에 구워졌습니다.",
@@ -440,6 +440,8 @@
     "tfc.composter.rotten": "이 퇴비통에서는 냄새가 나고 동물들을 끌어들일 수도 있습니다. 비워야 합니다.",
     "tfc.composter.too_many_greens": "이 퇴비통에는 초록색 아이템이 충분히 많습니다",
     "tfc.composter.too_many_browns": "이 퇴비통에는 갈색 아이템이 충분히 많습니다",
+    "tfc.composter.green_items": "초록색 아이템 %s개",
+    "tfc.composter.brown_items": "갈색 아이템 %s개",
     "tfc.chisel.cannot_place": "이 블록을 여기서 조각할 수 없습니다",
     "tfc.chisel.no_recipe": "이 블록은 조각할 수 없습니다",
     "tfc.chisel.bad_fluid": "이 블록을 조각하면 액체를 담을 수 없습니다",
