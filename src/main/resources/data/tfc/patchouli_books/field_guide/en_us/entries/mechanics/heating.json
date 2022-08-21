@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 \u00b0C$(br)$(7)$(bold)Hot$(): 80 - 210 \u00b0C$(br)$(7)$(bold)Very Hot$(): 210 - 480 \u00b0C$(br)$(4)$(bold)Faint Red$(): 480 - 580 \u00b0C$(br)$(bold)$(4)Dark Red$(): 580 - 730 \u00b0C$(br)$(c)$(bold)Bright Red$(): 730 - 930 \u00b0C$(br)$(6)$(bold)Orange$(): 930 - 1100 \u00b0C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 \u00b0C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 \u00b0C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 \u00b0C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 \u00b0C"
+      "text": "The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 \u00b0C$(br)$(7)$(bold)Hot$(): 80 - 210 \u00b0C$(br)$(7)$(bold)Very Hot$(): 210 - 480 \u00b0C$(br)$(4)$(bold)Faint Red$(): 480 - 580 \u00b0C$(br)$(bold)$(4)Dark Red$(): 580 - 730 \u00b0C$(br)$(c)$(bold)Bright Red$(): 730 - 930 \u00b0C$(br)$(6)$(bold)Orange$(): 930 - 1100 \u00b0C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 \u00b0C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 \u00b0C$(br)$(d)$(bold)$(t:White)White$(): 1400 - 1500 \u00b0C$(br)$(d)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 \u00b0C"
     }
   ],
   "read_by_default": true

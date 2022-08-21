@@ -15,6 +15,7 @@
 !/resources/**/*.py
 !/resources/texture_templates/**/*.png
 !/resources/structure_templates/**/*.nbt
+!/resources/lang/**/*.json
 !/resources/requirements.txt
 
 # Metadata

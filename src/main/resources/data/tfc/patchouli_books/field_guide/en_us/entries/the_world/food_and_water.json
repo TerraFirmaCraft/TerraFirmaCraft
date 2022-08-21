@@ -56,11 +56,15 @@
             "X"
           ],
           [
+            "Y"
+          ],
+          [
             "0"
           ]
         ],
         "mapping": {
-          "X": "tfc:plant/cattail[part=lower,fluid=water]"
+          "X": "minecraft:air",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
         }
       },
       "name": "Water Safety",
