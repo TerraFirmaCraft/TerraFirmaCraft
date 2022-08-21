@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l달력과 기후",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/thermometer.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "calendar",
+      "text": "TerraFirmaCraft에서, 기후와 시간은 모두 매우 중요한 요소입니다. $(thing)달력$()부터 시작해봅시다.$(br2)당신은 아무 때나 $(item)$(k:key.inventory)$() 키를 누르고 달력 탭으로 들어가 달력을 확인할 수 있습니다. 달력은 $(thing)계절$(), $(thing)요일$(), 그리고 $(thing)날짜$()를 보여줍니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/calendar.png"
+      ],
+      "text": "달력 화면",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "날씨와 기후는 계절을 따라 변합니다! TerraFirmaCraft에는 사계절이 있고, 각각은 $(thing)초XX$(), $(thing)XX$() $(thing)늦XX$()로 나누어져 있습니다. 사계절은 다음과 같습니다:$(br)$(li)$(bold)봄$(): 3월 - 5월$(li)$(bold)여름$(): 6월 - 8월$(li)$(bold)가을$(): 7월 - 11월$(li)$(bold)겨울$(): 12월 - 2월"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "계절은 지역의 기후, 강수량 (비가 올지/눈이 올지) 등에 영향을 줍니다. 달력에 관심을 가지면 꽤나 유용할 겁니다!$(br2)다음은 기후입니다..."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "climate",
+      "text": "인벤토리의 또다른 탭은 $(thing)기후$() 화면입니다. 이 탭에서는 자신의 위치에 대한 정보를 보여줍니다.$(br2)첫 번째 줄은 대략적인 $(l:https://ko.wikipedia.org/wiki/%EC%BE%A8%ED%8E%9C%EC%9D%98_%EA%B8%B0%ED%9B%84_%EA%B5%AC%EB%B6%84)기후$()를 나타냅니다.$(br2)두 번째 줄은 $(l:the_world/geology)지질학적 지역$()을 나타냅니다.$(br2)세 번째 줄은 $(thing)연평균 기온$()을 나타냅니다.",
+      "title": "§l기후"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/climate.png"
+      ],
+      "text": "기후 화면",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "TerraFirmaCraft의 기온은 많은 요인에 의해 결정됩니다:$(br)$(li)첫째로는 지역, 그 중에서도 특히 위도 (Z 좌표)가 가장 큰 영향을 미칩니다.$(li)다음으로, 계절 또한 기온에 영향을 줍니다. 여름에는 더워지며, 겨울에는 추워집니다.$(li)마지막으로, 기온은 매일 달라질 수 있으며 심지어 시간마다 달라질 수도 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "마지막 줄은 앞서 말한 모든 요인을 포함한 현재 기온을 나타냅니다.$(br2)기온은 식물과 작물이 자랄지, 눈이나 얼음이 녹을지 얼지 등의 많은 것들에 영향을 미칩니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "강수량은 당신이 어디에 있는지에 따라 달라지는 또 다른 기후입니다. 연강수량은 0mm - 500mm 사이의 밀리리터 (mm) 단위로 측정됩니다. 강수량은 특정 지역에서 발견되는 식물들 과 모래, 실트나 양토 등의 흙의 종류, 그리고 케이폭나무에 이르기까지 영향을 미칩니다.",
+      "title": "§l강수량"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "강수량은 또한 특정 지역에서 어떤 식물이 자랄 수 있는지에도 영향을 미칩니다. 강수량은 $(l:mechanics/hydration)수화$()의 주요 요인입니다. 수화는 어떤 위치의 땅이 얼마나 젖었는지에 대한 값으로 $(l:mechanics/crops)작물$()이나, $(l:the_world/fruit_trees)과일 나무$(), $(l:the_world/berry_bushes)베리 덤불$()이 자랄 수 있는지를 결정합니다."
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

@@ -1,0 +1,297 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l야생 작물",
+  "category": "tfc:the_world",
+  "icon": "tfc:wild_crop/wheat",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "세계 곳곳에서 흩어져 자라고 있는 $(thing)야생 작물$()을 발견할 수 있습니다. 야생 작물들을 수확하여 음식과 씨앗을 얻을 수 있으며, 그로써 야생이 아닌 작물을 재배할 수도 있습니다.$(br2)야생 작물을 수확하기 위해서 맨손이나 $(thing)칼$(), 또는 다른 날카로운 도구들을 사용할 수 있습니다. 파괴되면 $(thing)씨앗$()과 다른 아이템들을 떨어뜨립니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wild_crop/wheat"
+        }
+      },
+      "name": "야생 밀",
+      "text": "야생 작물의 예시 - $(l:mechanics/crops#wheat)밀$().",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "세계에는 많은 야생 작물들이 있으며, 모든 작물들은 세계 어디선가 자라는 야생종이 있습니다. 모든 $(l:mechanics/crops)작물$()의 목록을 확인해서 무엇을 기를 수 있는지 알아보세요. 야생 작물들은 일반 작물과 비슷하지만, 풀 속에 숨겨져 있습니다. 야생 작물은 해당 작물이 재배가 가능한 기후 근처에 생성됩니다. 그러므로 어떤 작물을 찾고 있다면, 그 작물이 자랄 수 있는 기후를 찾아보세요."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "모든 야생 작물의 종류",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/barley"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/oat"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/rye"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/maize[part=top]",
+            "Y": "tfc:wild_crop/maize[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/barley"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/rice[fluid=water]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/beet"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/cabbage"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/carrot"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/garlic"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/green_bean[part=top]",
+            "Y": "tfc:wild_crop/green_bean[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/potato"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/onion"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/soybean"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/squash"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/sugarcane[part=top]",
+            "Y": "tfc:wild_crop/sugarcane[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/tomato[part=top]",
+            "Y": "tfc:wild_crop/tomato[part=bottom]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "Y"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:wild_crop/jute[part=top]",
+            "Y": "tfc:wild_crop/jute[part=bottom]"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6
+}

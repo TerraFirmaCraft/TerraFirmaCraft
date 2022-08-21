@@ -1,0 +1,234 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l야생동물",
+  "category": "tfc:the_world",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft의 세상은 동물들로 가득합니다. 몇몇 동물들은 도움이 되지만, 다른 동물들은 매우 위험합니다. 이 단락은 야생동물에 관한 것입니다. 당신에게 도움을 줄 수 있는 생물과 동물들에 대해서는 $(l:mechanics/animal_husbandry)축산업$() 페이지를 확인하세요."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "동물들은 $(l:the_world/wild_animals#predators)포식자$(), $(l:the_world/wild_animals#prey)피식자$(), 그리고 $(l:the_world/wild_animals#aquatic)수생 동물$()들로 분류될 수 있습니다.$(br2)다음 페이지에서는 각각의 동물 분류에 대해서 설명합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "predators",
+      "text": "$(thing)포식자$()는 플레이어를 공격할 수 있는 동물입니다. 그들은 밤에만 사냥하는 $(thing)야행성$()이거나, 낮에만 사냥하는 $(thing)주행성$()입니다. 포식자들은 최근에 먹잇감을 사냥했는지에 따라 중립적이거나 공격적입니다. 포식자들은 방어하는 자신의 영역이 있으므로 충분히 멀리 도망친다면 그들은 당신을 쫓는 대신 자신의 영역으로 돌아갈 것입니다.",
+      "title": "§l포식자"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:polar_bear",
+      "scale": 0.55,
+      "name": "Polar Bear",
+      "text": "The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grizzly_bear",
+      "scale": 0.55,
+      "name": "Grizzly Bear",
+      "text": "The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:black_bear",
+      "scale": 0.55,
+      "name": "Black Bear",
+      "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cougar",
+      "scale": 0.6,
+      "name": "Cougar",
+      "text": "The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:panther",
+      "scale": 0.6,
+      "name": "Panther",
+      "text": "The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lion",
+      "scale": 0.55,
+      "name": "Lion",
+      "text": "The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sabertooth",
+      "scale": 0.6,
+      "name": "Sabertooth",
+      "text": "The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)피식자$() 동물들은 플레이어와 포식자 동물들을 두려워합니다. 그들은 위험을 잘 피하지만, 반격하지는 못합니다. 일부 피식자 동물들은 농작물 먹기를 좋아합니다.",
+      "title": "§l피식자"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:boar",
+      "scale": 0.7,
+      "name": "Boar",
+      "text": "The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit",
+      "scale": 0.7,
+      "name": "Rabbit",
+      "text": "The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:fox",
+      "scale": 0.7,
+      "name": "Fox",
+      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "aquatic",
+      "text": "$(thing)수생 동물$()들은 여러 다른 종류를 포함하는 넓은 분류입니다. 수생 동물에는 $(thing)해안 생물$(), $(thing)물고기$(), $(thing)갑각류$(), 또는 $(thing)거대 해양 생물$() 등이 있습니다.",
+      "title": "§l수생 동물"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)해안 생물$()은 해안에만 생성되며 낮에는 잠시 물에서 지내고, 다시 해안으로 돌아오기도 합니다. 해안 생물들은 호기심이 많아서 플레이어를 따라다니지만, 길들일 수는 없습니다."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:penguin",
+      "scale": 0.7,
+      "name": "Penguin",
+      "text": "The penguin spawns in only the coldest beaches, with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "scale": 0.7,
+      "name": "Sea Turtle",
+      "text": "The sea turtle likes warm water. It spawns in $(l:the_world/climate#temperature)temperature$() of at least 21°C and $(l:the_world/climate#rainfall)rainfall$() of at least 250mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)물고기$()는 물에서 헤엄치는 작은 생물입니다. 대부분은 $(l:mechanics/fishing)낚시$()할 수 있습니다. 각각 바다, 강, 호수를 사는 종류가 있습니다.",
+      "title": "§l물고기"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cod",
+      "scale": 0.7,
+      "name": "Cod",
+      "text": "Cod prefer colder oceans, $(l:the_world/climate#temperature)temperature$() at most 18°C. They can be fished."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pufferfish",
+      "scale": 0.7,
+      "name": "Pufferfish",
+      "text": "Pufferfish live in any ocean with at least a $(l:the_world/climate#temperature)temperature$() of 10°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:jellyfish",
+      "scale": 0.7,
+      "name": "Jellyfish",
+      "text": "Jellyfish live in warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tropical_fish",
+      "scale": 0.7,
+      "name": "Tropical Fish",
+      "text": "Tropical fish prefer warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:salmon",
+      "scale": 0.7,
+      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bluegill",
+      "scale": 0.7,
+      "text": "Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "shellfish",
+      "text": "$(thing)갑각류$()는 물 속 바닥에 사는 동물들입니다. 낚시할 수는 없지만, 먹거나 $(l:mechanics/flux)플럭스$()를 만들 수 있는 껍데기를 떨어뜨립니다. 갑각류는 낚시용 $(l:mechanics/fishing)미끼$()가 될 수 있습니다.",
+      "title": "§l갑각류"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:isopod",
+      "scale": 0.7,
+      "name": "Isopod",
+      "text": "Isopods spawn in deeper sections of oceans of $(l:the_world/climate#temperature)temperature$() at most 14°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lobster",
+      "scale": 0.7,
+      "name": "Lobster",
+      "text": "Lobster spawn in any ocean that is at most of a $(l:the_world/climate#temperature)temperature$() of 21°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crayfish",
+      "scale": 0.7,
+      "name": "Crayfish",
+      "text": "Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:the_world/climate#temperature)temperature$() of at least 5°C and a $(l:the_world/climate#rainfall)rainfall$() of at least 125mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horseshoe_crab",
+      "scale": 0.7,
+      "name": "Horseshoe Crab",
+      "text": "Horseshoe crabs spawn in oceans of moderate climate, $(l:the_world/climate#temperature)temperature$() between 10 and 21°C and with a $(l:the_world/climate#rainfall)rainfall$() of at most 400mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)거대 해양 생물$()은 더 넓은 물에 사는 큰 동물입닏. 그 중 일부는 물고기를 먹기도 합니다. 이들은 등불의 연료로 쓰일 수 있는 $(l:mechanics/lamps#tallow)고래기름$()을 떨어뜨립니다.",
+      "title": "§l거대 해양 생물"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:orca",
+      "scale": 0.25,
+      "name": "Orca",
+      "text": "Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dolphin",
+      "scale": 0.4,
+      "name": "Dolphin",
+      "text": "Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:manatee",
+      "scale": 0.25,
+      "name": "Manatee",
+      "text": "Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "오징어는 깊은 바다에 생성됩니다. 오징어는 $(thing)먹물 주머니$()를 떨어뜨리고 플레이어가 가까이 접근하면 먹물을 뿜습니다. 누군가는 깊고 험한 동굴에 사는 오징어는 특이한 특징을 가진다고 합니다.",
+      "title": "§l오징어"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8
+}

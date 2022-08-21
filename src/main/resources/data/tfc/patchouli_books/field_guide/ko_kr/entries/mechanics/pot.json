@@ -1,0 +1,68 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Firepit And Pot",
+  "category": "tfc:mechanics",
+  "icon": "tfc:pot",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A $(thing)Pot$() is an item that can be added to the firepit, in order to both cook new types of food, and produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(l:mechanics/pot#ceramic_pot)Ceramic Pot$() on the firepit."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:pot"
+        }
+      },
+      "name": "",
+      "text": "A firepit with a pot attached.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/pot",
+      "text": "A ceramic pot must be $(l:getting_started/pottery)Knapped$() out of clay first."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/fired_pot",
+      "text": "It then must be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pot$() which can be used on the firepit."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Like the firepit, the pot has four slots for fuel which must be added in the top slot, and a temperature indicator. The pot also contains five item slots and holds up to $(thing)1000 mB$() of any fluid.$(br2)In order to cook something in the pot, first the fluid must be added by using any type of fluid container, such as a bucket, on the pot. Then add items, and light the pot. It will start boiling for a while until the recipe is completed."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/pot.png"
+      ],
+      "text": "The pot interface, actively boiling and making a type of soup.",
+      "border": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/fruit_soup",
+      "title": "Soup Recipes",
+      "link_recipes": false,
+      "text": "Soup is made from 3-5 $(thing)fruits$(), $(thing)vegetables$(), or $(thing)meats$() in a pot of $(thing)water$(). When the recipe is done, the water in the pot will turn red. $(item)$(k:key.use)$() with a $(thing)bowl$() to retrieve it. Soup combines multiple nutrients into a single meal."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:bucket/red_dye",
+      "title": "Simple Recipes",
+      "link_recipes": false,
+      "text": "Other pot recipes transform the items and fluid in the pot into something else. For example, boiling 5 $(thing)ash$() in $(thing)water$() makes $(thing)lye$()."
+    }
+  ],
+  "read_by_default": true
+}

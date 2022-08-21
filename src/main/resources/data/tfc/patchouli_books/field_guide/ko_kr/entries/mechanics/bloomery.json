@@ -1,0 +1,75 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "Bloomery",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bloomery",
+  "pages": [
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/bloomery",
+      "text": "The $(thing)Bloomery$() is a device used to smelt $(thing)Iron Ore$() into $(thing)Wrought Iron$(). The iron ores are $(l:the_world/ores_and_minerals#hematite)hematite$(), $(l:the_world/ores_and_minerals#limonite)limonite$(), and $(l:the_world/ores_and_minerals#magnetite)magnetite$(). You may notice that these ores seem to melt into $(thing)cast iron$(). This is where the bloomery comes in handy."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:bloomery",
+      "name": "A Bloomery",
+      "text": "A minimum size bloomery. The bloomery block can be open and shut with $(item)$(k:key.use)$().",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The bloomery can contain up to 24 $(thing)iron ore$() and 24 $(l:mechanics/charcoal_pit)charcoal$(), with 8 of each item per additional layer of the chimney. To add layers to the chimney, stack up two more layers of stone blocks.$(br)$(br)To add items to the bloomery, climb up to the top and throw items inside. A tower of grey ore should form."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/bloomery_hole.png"
+      ],
+      "text": "Adding items to the bloomery.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The bloomery must have an equal amount of charcoal and ore $(thing)items$(). Light the bloomery block, and wait most of a day. When the bloomery block shuts off, it is done. Each 100mB of iron ore that melts in the bloomery is transformed into a $(thing)Bloom Block$(). The bloom block contains $(thing)Raw Iron Blooms$(), which can be obtained by mining the Bloom Block repeatedly with a pickaxe."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:bloom[layers=8]"
+        }
+      },
+      "name": "The Bloom Block",
+      "text": "The bloom block, at full bloom.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/refined_iron_bloom",
+      "text": "The $(thing)Raw Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Refined Iron Bloom$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_from_bloom",
+      "text": "The $(thing)Refined Iron Bloom$() must be worked in a $(l:mechanics/anvils)anvil$() to make $(thing)Wrought Iron Ingots$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)If the bloomery finds itself with more items contained than it can handle based on its chimney, it will try to spit them out the front.$()$(li)To retrieve your items from a bloomery that is not lit, do not break the molten block tower. Break the bloomery block.$()$(li)Blooms will only melt into cast iron, not wrought iron. They must be worked!$()",
+      "title": "Smith's Notes"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)The bloomery cares about the quantity of items thrown into it, not the quality. Using rich ore in the bloomery consumes the same amount of charcoal as poor ore!$()$(li)Molten blocks will readily spread fire to their environment! Be careful.$()"
+    }
+  ],
+  "read_by_default": true
+}

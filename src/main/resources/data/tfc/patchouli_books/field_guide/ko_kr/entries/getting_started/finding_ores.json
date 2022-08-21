@@ -1,0 +1,94 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l광석§r, §l금속 그리고 주조",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ore/normal_native_copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "당신은 막대기, 잔가지나 돌멩이 말고도 땅에 굴러다니는 작은 광석 조각들을 마주칠 지도 모릅니다. 이 광석들은 당신이 곡괭이를 만들기 전까지는 유일하게 얻을 수 있는 금속과 광석이기 때문에 중요합니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "    ",
+            "  0 ",
+            "    "
+          ],
+          [
+            "ABCD",
+            "EFGH",
+            "IJKL"
+          ],
+          [
+            "XXXX",
+            "XXXX",
+            "XXXX"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grass/loam",
+          "A": "tfc:ore/small_native_copper",
+          "B": "tfc:ore/small_native_gold",
+          "C": "tfc:ore/small_hematite",
+          "D": "tfc:ore/small_native_silver",
+          "E": "tfc:ore/small_cassiterite",
+          "F": "tfc:ore/small_bismuthinite",
+          "G": "tfc:ore/small_garnierite",
+          "H": "tfc:ore/small_malachite",
+          "I": "tfc:ore/small_magnetite",
+          "J": "tfc:ore/small_limonite",
+          "K": "tfc:ore/small_sphalerite",
+          "L": "tfc:ore/small_tetrahedrite"
+        }
+      },
+      "name": "",
+      "text": "모든 작은 광석 조각",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "이 작은 광석 조각들은 두 가지 역할을 합니다: 금속을 만들 수 있고, 더 중요하게는 땅 아래 어딘가에 큰 광맥이 어딘가 있다는 것을 나타냅니다. 광석을 찾은 곳을 메모해두면 나중에 광맥을 $(l:mechanics/prospecting)탐사$()할 때 분명 도움이 될 것입니다.$(br2)다음 페이지에는 12가지 종류의 작은 광석과 광석을 녹여서 만들 수 있는 금속이 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)자연동 ($(thing)구리$())$(li)자연금 ($(thing)금$())$(li)적철석 ($(thing)주철$())$(li)자연은 ($(thing)은$())$(li)주석석 ($(thing)주석$())$(li)휘창연석 ($(thing)비스무트$())$(li)규니켈석 ($(thing)니켈$())$(li)공작석 ($(thing)구리$())$(li)자철석 ($(thing)주철$())$(li)갈철석 ($(thing)주철$())$(li)섬아연석 ($(thing)아연$())$(li)사면동석 ($(thing)구리$())",
+      "title": "작은 광석들"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "casting",
+      "text": "TerraFirmaCraft에서, 광석들은 각각 실제로 금속을 추출할 수 있는 $(thing)유닛$() ($(thing)mB: 밀리버킷$())을 가지고 있습니다. 이와 같은 작은 광석들은 지표면에서 찾을 수 있고 품질이 가장 나빠 $(thing)10 mB$()의 금속밖에 얻을 수 없습니다. 이 금속을 추출하기 위해서는 광석을 $(thing)녹여$()야 하며, $(thing)주조$()를 통해 도구로 만들 수 있습니다.",
+      "title": "§l주조"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "주조에 필요한 것:$(br)$(li)$(l:getting_started/pottery#vessel)항아리$()$(li)$(l:getting_started/pit_kiln)구덩이 가마$()를 만들 충분한 재료.$(li)녹은 금속을 부을 $(l:getting_started/pottery#mold)금형$().$(li)주조에 적합한 금속인 $(thing)구리$()의 아무 광석 100 mb.$(br2)$(br)$(italic)참고: 주조는 $(l:getting_started/primitive_alloys)합금$()으로도 할 수 있습니다"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "일단, $(thing)항아리$()를 열어 광석을 안에 넣으세요. 광석 속의 금속의 총량을 신중하게 세세요! 그리고, 당신은 $(l:getting_started/pit_kiln)구덩이 가마$()를 만들고 안에 항아리를 넣어야 합니다. 항아리가 데워지면, 그 안의 광석들은 녹고 녹은 금속으로 채워진 항아리가 나옵니다.$(br2)항아리를 꺼내고 $(item)$(k:key.use)$()를 눌러 $(thing)주조$() 인터페이스를 열 수 있습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/casting.png"
+      ],
+      "text": "주조 인터페이스.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "주조 인터페이스를 열고, 빈 금형을 중앙의 슬롯에 놓으세요. 항아리가 비어 있지 않다면 금형이 차오릅니다. (만약 항아리가 굳어 버린다면, 다시 구덩이 가마를 사용할 수 있습니다.) 금형이 가득 차면, 슬롯에서 제거하고 식혀야 합니다. 금형이 식은 후에는 금형을 사용하거나 조합창에 올려놓아 내용물을 빼낼 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/pickaxe/copper",
+      "text": "With a tool head in hand, you are now able to craft your first pickaxe! Find enough copper to make a single pickaxe head, cast it using a mold and a few pit kilns, and then slap it on a stick, and voila!"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}
