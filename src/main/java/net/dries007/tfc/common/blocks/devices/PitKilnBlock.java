@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -70,7 +71,7 @@ public class PitKilnBlock extends DeviceBlock
     }
 
     @Override
-    public void animateTick(BlockState stateIn, Level worldIn, BlockPos pos, Random rand)
+    public void animateTick(BlockState stateIn, Level level, BlockPos pos, Random rand)
     {
         if (stateIn.getValue(STAGE) == LIT)
         {
@@ -79,7 +80,7 @@ public class PitKilnBlock extends DeviceBlock
             double z = pos.getZ() + rand.nextFloat();
             for (int i = 0; i < rand.nextInt(3); i++)
             {
-                worldIn.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, x, y, z, 0, 0.1f + rand.nextFloat() / 8, 0);
+                level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, x, y, z, 0, 0.1f + rand.nextFloat() / 8, 0);
             }
         }
     }
@@ -92,9 +93,9 @@ public class PitKilnBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
-        return !stateIn.canSurvive(worldIn, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
+        return !state.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, facing, facingState, level, currentPos, facingPos);
     }
 
     @Override
@@ -106,7 +107,6 @@ public class PitKilnBlock extends DeviceBlock
             PitKilnBlockEntity te = level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
             if (te != null)
             {
-
                 ItemStack held = player.getItemInHand(hand);
                 Item item = held.getItem();
                 int stage = state.getValue(STAGE);
@@ -167,30 +167,40 @@ public class PitKilnBlock extends DeviceBlock
 
     @Override
     @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos)
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
-        BlockState blockstate = worldIn.getBlockState(pos.below());
-        return Block.isFaceFull(blockstate.getCollisionShape(worldIn, pos.below()), Direction.UP);
+        BlockState blockstate = level.getBlockState(pos.below());
+        return Block.isFaceFull(blockstate.getCollisionShape(level, pos.below()), Direction.UP);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getShape(BlockState state, BlockGetter levle, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getCollisionShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context)
+    public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public VoxelShape getVisualShape(BlockState state, BlockGetter reader, BlockPos pos, CollisionContext context)
+    public VoxelShape getVisualShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return SHAPE_BY_LAYER[state.getValue(STAGE)];
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter level, BlockPos pos, Player player)
+    {
+        if (result instanceof BlockHitResult blockResult)
+        {
+            return level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
+        }
+        return ItemStack.EMPTY;
     }
 }

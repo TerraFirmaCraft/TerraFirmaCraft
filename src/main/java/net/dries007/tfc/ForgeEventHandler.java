@@ -60,10 +60,7 @@ import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -184,6 +181,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
+        bus.addListener(ForgeEventHandler::onAnimalTame);
     }
 
     /**
@@ -1186,6 +1184,14 @@ public final class ForgeEventHandler
         {
             // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
             event.setModel(new OverworldClimateModel());
+        }
+    }
+
+    public static void onAnimalTame(AnimalTameEvent event)
+    {
+        if (Helpers.isEntity(event.getEntity(), TFCTags.Entities.HORSES))
+        {
+            event.setCanceled(true); // cancel vanilla taming methods
         }
     }
 }

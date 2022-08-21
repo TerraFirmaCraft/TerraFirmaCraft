@@ -51,6 +51,7 @@
     },
     {
       "type": "patchouli:spotlight",
+      "anchor": "soup",
       "item": "tfc:food/fruit_soup",
       "title": "Soup Recipes",
       "link_recipes": false,

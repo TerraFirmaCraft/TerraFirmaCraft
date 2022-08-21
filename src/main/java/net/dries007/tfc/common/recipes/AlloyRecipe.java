@@ -8,6 +8,7 @@ package net.dries007.tfc.common.recipes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -19,6 +20,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -30,6 +32,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
 {
+    @SuppressWarnings("ConstantConditions")
+    public static Optional<AlloyRecipe> get(RecipeManager recipes, AlloyInventory inventory)
+    {
+        return recipes.getRecipeFor(TFCRecipeTypes.ALLOY.get(), inventory, null);
+    }
+
     private final ResourceLocation id;
     private final Supplier<Map<Metal, Range>> metals;
     private final Supplier<Metal> result;
@@ -52,7 +60,7 @@ public class AlloyRecipe implements ISimpleRecipe<AlloyInventory>
     }
 
     @Override
-    public boolean matches(AlloyInventory wrapper, Level level)
+    public boolean matches(AlloyInventory wrapper, @Nullable Level level)
     {
         return wrapper.getAlloy().matches(this);
     }

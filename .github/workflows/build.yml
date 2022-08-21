@@ -86,7 +86,7 @@ jobs:
       if: ${{ steps.version_type.outputs.result != 'alpha' && success() }}
       uses: gradle/gradle-build-action@v2
       with:
-        arguments: build
+        arguments: curseforge
       env:
         VERSION: ${{ steps.version.outputs.result }}
         CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}

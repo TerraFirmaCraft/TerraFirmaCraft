@@ -3,6 +3,7 @@
 
 from enum import Enum
 from typing import Union
+from itertools import repeat
 
 from mcresources import ResourceManager, RecipeContext, utils
 from mcresources.type_definitions import ResourceIdentifier, Json
@@ -455,7 +456,9 @@ def generate(rm: ResourceManager):
                 }
             }
         })
-        rm.crafting_shapeless('crafting/%s_dough' % grain, (not_rotten('tfc:food/%s_flour' % grain), fluid_item_ingredient('100 minecraft:water')), (2, 'tfc:food/%s_dough' % grain)).with_advancement('tfc:food/%s_grain' % grain)
+        for i in range(1, 9):
+            items = (fluid_item_ingredient('100 minecraft:water'), *repeat(not_rotten('tfc:food/%s_flour' % grain), i))
+            rm.crafting_shapeless('crafting/dough/%s_dough_%s' % (grain, i), items, (2 * i, 'tfc:food/%s_dough' % grain)).with_advancement('tfc:food/%s_grain' % grain)
 
         sandwich_pattern = ['ZX ', 'YYY', ' X ']
         sandwich_ingredients = {'X': not_rotten('tfc:food/%s_bread' % grain), 'Y': not_rotten('#tfc:foods/usable_in_sandwich'), 'Z': '#tfc:knives'}

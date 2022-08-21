@@ -15,10 +15,12 @@ import net.minecraft.world.entity.player.Inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
+import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.AlloyView;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -107,7 +109,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
             resetToBackgroundSprite();
 
             // Draw Title:
-            final Metal result = alloy.getResult();
+            final Metal result = ((Alloy) alloy).getResult(ClientHelpers.getLevelOrThrow());
             final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.getTranslationKey());
             font.draw(poseStack, resultText, leftPos + 10, topPos + 11, 0x000000);
 

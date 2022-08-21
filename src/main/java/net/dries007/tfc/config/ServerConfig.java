@@ -142,6 +142,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableVanillaMonsters;
     public final ForgeConfigSpec.BooleanValue enableVanillaMonstersOnSurface;
     public final ForgeConfigSpec.BooleanValue enableChickenJockies;
+    public final ForgeConfigSpec.BooleanValue enableVanillaEggThrowing;
+    public final ForgeConfigSpec.BooleanValue enableVanillaDrinkingMilkClearsPotionEffects;
 
     // Animals
     public final MammalConfig pigConfig;
@@ -357,6 +359,8 @@ public class ServerConfig
         enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters will spawn everywhere. This overrides the 'enableVanillaMonstersOnSurface' config option.").define("enableVanillaMonsters", true);
         enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground.").define("enableVanillaMonstersOnSurface", false);
         enableChickenJockies = builder.apply("enableChickenJockies").comment("If true, chicken jockies can spawn").define("enableChickenJockies", false);
+        enableVanillaEggThrowing = builder.apply("enableVanillaEggThrowing").comment("If true, eggs can be thrown.").define("enableVanillaEggThrowing", false);
+        enableVanillaDrinkingMilkClearsPotionEffects = builder.apply("enableVanillaDrinkingMilkClearsPotionEffects").comment("If true, drinking milk will clear potion effects and restore no nutrition, as in vanilla.").define("enableVanillaDrinkingMilkClearsPotionEffects", false);
 
         innerBuilder.pop().push("animals").push("pig");
         pigConfig = MammalConfig.build(builder, "pig", 0.35, 80, 60, true, 19, 10);
