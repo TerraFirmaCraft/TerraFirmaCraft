@@ -10,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -31,22 +30,23 @@ public class CastingRecipeCategory extends BaseRecipeCategory<CastingRecipe>
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, CastingRecipe recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder inputItem = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
-        IRecipeSlotBuilder inputLiquid = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
-        IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
+        builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
+            .addIngredients(recipe.getIngredient())
+            .setBackground(slot, -1, -1);
 
-        inputItem.addIngredients(recipe.getIngredient());
-        inputLiquid.addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getFluidIngredient()));
-        inputLiquid.setFluidRenderer(1, false, 16, 16);
-        outputItem.addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.INPUT, 26, 5)
+            .addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getFluidIngredient()))
+            .setFluidRenderer(1, false, 16, 16)
+            .setBackground(slot, -1, -1);
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5)
+            .addItemStack(recipe.getResultItem())
+            .setBackground(slot, -1, -1);
     }
 
     @Override
     public void draw(CastingRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 5, 4);
-        slot.draw(stack, 25, 4);
-        slot.draw(stack, 75, 4);
         arrow.draw(stack, 48, 5);
         arrowAnimated.draw(stack, 48, 5);
     }

@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -40,6 +39,7 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 85, 17);
 
         inputSlot.addIngredients(recipe.getIngredient());
+        inputSlot.setBackground(slot, -1,-1);
 
         ItemStack resultItem = recipe.getResultItem();
         FluidStack resultFluid = recipe.getDisplayOutputFluid();
@@ -52,6 +52,7 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
             outputSlot.addIngredient(JEIIntegration.FLUID_STACK, resultFluid);
             outputSlot.setFluidRenderer(1, false, 16, 16);
         }
+        outputSlot.setBackground(slot, -1,-1);
     }
 
     @Override
@@ -59,13 +60,6 @@ public class HeatingCategory extends BaseRecipeCategory<HeatingRecipe>
     {
         fire.draw(stack, 54, 16);
         fireAnimated.draw(stack, 54, 16);
-        slot.draw(stack, 20, 16);
-        slot.draw(stack, 84, 16);
-
-        if (!recipe.getDisplayOutputFluid().isEmpty() && !recipe.getResultItem().isEmpty())
-        {
-            slot.draw(stack, 104, 16);
-        }
 
         MutableComponent color = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
         if (color != null)

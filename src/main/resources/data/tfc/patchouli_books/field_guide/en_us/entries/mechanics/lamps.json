@@ -67,7 +67,7 @@
         }
       },
       "name": "Candles",
-      "text": "The candle is made from sealing $(thing)String$() in a bucket of $(thing)Tallow$().",
+      "text": "The candle is made from sealing $(thing)String$() in a barrel of $(thing)Tallow$().",
       "enable_visualize": false
     },
     {

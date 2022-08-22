@@ -106,7 +106,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     protected final List<ItemStack> inputStacks;
     protected final List<ItemStack> catalystStacks;
 
-    private long lastPlayerTick;
+    private long lastPlayerTick = Integer.MIN_VALUE;
     private long litTick;
     @Nullable protected BloomeryRecipe cachedRecipe;
 
@@ -220,12 +220,14 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastPlayerTick = tick;

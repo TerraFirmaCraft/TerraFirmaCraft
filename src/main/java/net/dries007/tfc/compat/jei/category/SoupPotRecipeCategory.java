@@ -38,6 +38,7 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
             {
                 IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6 + 20 * i, 6);
                 inputSlot.addIngredients(ingredient);
+                inputSlot.setBackground(slot, -1, -1);
                 i++;
             }
         }
@@ -45,29 +46,21 @@ public class SoupPotRecipeCategory extends PotRecipeCategory<PotRecipe>
         IRecipeSlotBuilder inputFluid = builder.addSlot(RecipeIngredientRole.INPUT, 46, 26);
         inputFluid.addIngredients(JEIIntegration.FLUID_STACK, collapse(recipe.getFluidIngredient()));
         inputFluid.setFluidRenderer(1, false, 16, 16);
+        inputFluid.setBackground(slot, -1, -1);
 
         IRecipeSlotBuilder outputItem = builder.addSlot(RecipeIngredientRole.OUTPUT, 126, 6);
         outputItem.addItemStacks(TFCItems.SOUPS.values().stream().map(reg -> new ItemStack(reg.get())).toList());
+        outputItem.setBackground(slot, -1, -1);
     }
 
     @Override
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        // Water Input
-        slot.draw(stack, 45, 25);
-        // Input Items
-        slot.draw(stack, 5, 5);
-        slot.draw(stack, 25, 5);
-        slot.draw(stack, 45, 5);
-        slot.draw(stack, 65, 5);
-        slot.draw(stack, 85, 5);
         // fire
         fire.draw(stack, 47, 45);
         fireAnimated.draw(stack, 47, 45);
         // arrow
         arrow.draw(stack, 103, 26);
         arrowAnimated.draw(stack, 103, 26);
-        // Output Item
-        slot.draw(stack, 125, 5);
     }
 }

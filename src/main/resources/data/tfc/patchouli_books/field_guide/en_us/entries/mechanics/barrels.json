@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand also toggles the seal."
+      "text": "Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Using $(item)$(k:key.use)$() on the barrel with an empty hand while holding $(item)$(k:key.sneak)$() also toggles the seal."
     },
     {
       "type": "patchouli:text",
@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels are an important device used for mixing various fluids and items together. In order to use a $(thing)Barrel$() to craft, the barrel must be filled with the correct ratio of fluid and items required for the recipe. Depending on the recipe, it may need to be $(thing)Sealed$() for a period of time to allow the contents to transform.",
+      "text": "Barrels are an important device used for mixing various fluids and items together. To use a $(thing)Barrel$() recipe, the barrel must be filled with the correct ratio of fluid and items required. Depending on the recipe, it may need to be $(thing)Sealed$() for a period of time to allow the contents to transform.",
       "title": "Crafting"
     },
     {

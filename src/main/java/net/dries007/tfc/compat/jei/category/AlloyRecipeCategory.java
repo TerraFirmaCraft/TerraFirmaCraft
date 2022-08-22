@@ -54,10 +54,12 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
             int y = positions[Math.floorDiv(iteration, 2)] + 1;
             IRecipeSlotBuilder liquidSlot = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
             liquidSlot.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(metal.getFluid(), 1000));
+            liquidSlot.setBackground(slot, -1, -1);
             iteration++;
         }
 
         fluidOutput.addIngredient(JEIIntegration.FLUID_STACK, new FluidStack(recipe.getResult().getFluid(), 1000));
+        fluidOutput.setBackground(slot, -1, -1);
     }
 
     @Override
@@ -76,15 +78,8 @@ public class AlloyRecipeCategory extends BaseRecipeCategory<AlloyRecipe>
             font.draw(stack, Helpers.literal(formatRange(range)).withStyle(ChatFormatting.BLACK), x, y, 0xFFFFFF);
             iteration++;
         }
-        for (int y : positions)
-        {
-            slot.draw(stack, firstColumnX, y);
-            slot.draw(stack, secondColumnX, y);
-        }
-        slot.draw(stack, 148, maxHeight / 2 - slot.getHeight() / 2);
         fire.draw(stack, 130, maxHeight / 2 - fire.getHeight() / 2);
         fireAnimated.draw(stack, 130, maxHeight / 2 - fireAnimated.getHeight() / 2);
-
     }
 
     protected int[] getPositions(Map<Metal, AlloyRecipe.Range> ranges)

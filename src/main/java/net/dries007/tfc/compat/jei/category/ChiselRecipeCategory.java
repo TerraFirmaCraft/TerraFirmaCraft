@@ -14,7 +14,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -44,32 +43,32 @@ public class ChiselRecipeCategory extends BaseRecipeCategory<ChiselRecipe>
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ChiselRecipe recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
-        IRecipeSlotBuilder chiselSlot = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
-
-        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
-        IRecipeSlotBuilder dropSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5);
-
-        inputSlot.addIngredients(collapse(recipe.getBlockIngredient()));
-        if (recipe.getItemIngredient() == null)
+        Ingredient chiselIngredient = recipe.getItemIngredient();
+        if (chiselIngredient == null)
         {
-            chiselSlot.addIngredients(Ingredient.of(TFCTags.Items.CHISELS));
+            chiselIngredient = Ingredient.of(TFCTags.Items.CHISELS);
         }
-        else
-        {
-            chiselSlot.addIngredients(recipe.getItemIngredient());
-        }
-        outputSlot.addItemStack(new ItemStack(recipe.getBlockRecipeOutput()));
-        dropSlot.addItemStack(recipe.getExtraDrop(ItemStack.EMPTY));
+
+        builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
+            .addIngredients(collapse(recipe.getBlockIngredient()))
+            .setBackground(slot, -1, -1);
+
+        builder.addSlot(RecipeIngredientRole.INPUT, 26, 5)
+            .addIngredients(chiselIngredient)
+            .setBackground(slot, -1, -1);
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5)
+            .addItemStack(new ItemStack(recipe.getBlockRecipeOutput()))
+            .setBackground(slot, -1, -1);
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5)
+            .addItemStack(recipe.getExtraDrop(ItemStack.EMPTY))
+            .setBackground(slot, -1, -1);
     }
 
     @Override
     public void draw(ChiselRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 5, 4);
-        slot.draw(stack, 25, 4);
-        slot.draw(stack, 75, 4);
-        slot.draw(stack, 95, 4);
-        modes.get(recipe.getMode()).draw(stack, 45, 2);
+        modes.get(recipe.getMode()).draw(stack, 48, 3);
     }
 }

@@ -172,7 +172,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         needsRecipeUpdate = true;
         temperature = targetTemperature = 0;
         lastFillTicks = 0;
-        lastUpdateTick = 0;
+        lastUpdateTick = Integer.MIN_VALUE;
 
         // Inputs in top, the output slot is accessed via the sides
         sidedInventory
@@ -226,12 +226,14 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastUpdateTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastUpdateTick = tick;
@@ -250,6 +252,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         temperature = nbt.getFloat("temperature");
         targetTemperature = nbt.getFloat("targetTemperature");
         targetTemperatureStabilityTicks = nbt.getInt("targetTemperatureStabilityTicks");
+        lastUpdateTick = nbt.getLong("lastUpdateTick");
         needsRecipeUpdate = true;
         super.loadAdditional(nbt);
     }
@@ -261,6 +264,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         nbt.putFloat("targetTemperature", targetTemperature);
         nbt.putInt("targetTemperatureStabilityTicks", targetTemperatureStabilityTicks);
         nbt.putBoolean("empty", Helpers.isEmpty(inventory) && inventory.alloy.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
+        nbt.putLong("lastUpdateTick", lastUpdateTick);
         super.saveAdditional(nbt);
     }
 

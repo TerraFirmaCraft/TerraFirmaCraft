@@ -12,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -41,13 +40,6 @@ public class RockKnappingRecipeCategory extends KnappingRecipeCategory<RockKnapp
         this.blank = helper.createBlankDrawable(1, 1);
     }
 
-    @Override
-    public void draw(RockKnappingRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
-    {
-        slot.draw(stack, 88, 60);
-        super.draw(recipe, recipeSlots, stack, mouseX, mouseY);
-    }
-
     @Nullable
     @Override
     public IDrawable getHigh(RockKnappingRecipe recipe, IRecipeSlotsView slots)
@@ -67,6 +59,7 @@ public class RockKnappingRecipeCategory extends KnappingRecipeCategory<RockKnapp
         IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 89, 61);
         inputSlot.addIngredients(recipe.getIngredient());
         inputSlot.setSlotName(ROCK_SLOT_NAME);
+        inputSlot.setBackground(slot, -1, -1);
         super.setRecipe(builder, recipe, focuses);
     }
 }

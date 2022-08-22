@@ -189,7 +189,7 @@
     {
       "type": "patchouli:text",
       "anchor": "charcoal_pile",
-      "text": "After the charcoal pile burns, you will be left with $(thing)Charcoal piles$(). The charcoal pile contains up 8 layers of $(thing)Charcoal$(). Dig it with a shovel to obtain the charcoal items. Charcoal piles can be added to or placed with $(item)$(k:key.use)$()."
+      "text": "After the charcoal pit burns out and stops smoking, you will be left with $(thing)Charcoal piles$(). The charcoal pile contains up 8 layers of $(thing)Charcoal$(). Dig it with a shovel to obtain the charcoal items. Charcoal piles can be added to or placed with $(item)$(k:key.use)$()."
     },
     {
       "type": "tfc:multimultiblock",

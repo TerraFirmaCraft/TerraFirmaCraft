@@ -156,7 +156,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         burnTemperature = 0;
         burnTicks = 0;
         airTicks = 0;
-        lastPlayerTick = Calendars.SERVER.getTicks();
+        lastPlayerTick = Integer.MIN_VALUE;
         syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
 
         Arrays.fill(cachedRecipes, null);
@@ -198,12 +198,14 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastPlayerTick = tick;

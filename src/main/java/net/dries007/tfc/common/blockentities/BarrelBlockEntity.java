@@ -132,7 +132,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
 
     @Nullable private SealedBarrelRecipe recipe;
-    private long lastUpdateTick; // The last tick this barrel was updated in serverTick()
+    private long lastUpdateTick = Integer.MIN_VALUE; // The last tick this barrel was updated in serverTick()
     private long sealedTick; // The tick this barrel was sealed
     private long recipeTick; // The tick this barrel started working on the current recipe
     private int soundCooldownTicks = 0;
@@ -247,12 +247,14 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastUpdateTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastUpdateTick = tick;

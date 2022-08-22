@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Animals can be grouped into a couple different categories: $(l:the_world/wild_animals#predators)Predators$(), $(l:the_world/wild_animals#prey)Prey$(), and $(l:the_world/wild_animals#aquatic)Aquatic$() animals.$(br2)The next few pages will detail each of these categories of animals."
+      "text": "Animals can be grouped into a few different categories: $(l:the_world/wild_animals#predators)Predators$(), $(l:the_world/wild_animals#prey)Prey$(), and $(l:the_world/wild_animals#aquatic)Aquatic$() animals.$(br2)The next few pages will detail each of these categories of animals."
     },
     {
       "type": "patchouli:text",
@@ -155,12 +155,14 @@
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
+      "name": "Salmon",
       "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5\u00b0C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
+      "name": "Bluegill",
       "text": "Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10\u00b0C and at most 26\u00b0C."
     },
     {
@@ -199,7 +201,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Large Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.",
+      "text": "$(thing)Large Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them hunt fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.",
       "title": "Large Water Creatures"
     },
     {
