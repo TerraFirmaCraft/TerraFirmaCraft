@@ -54,7 +54,7 @@ public final class CropHelpers
      */
     public static boolean growthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)
     {
-        final long firstTick = crop.getLastUpdateTick(), thisTick = Calendars.SERVER.getTicks();
+        final long firstTick = crop.getLastGrowthTick(), thisTick = Calendars.SERVER.getTicks();
         long tick = firstTick + CropHelpers.UPDATE_INTERVAL, lastTick = firstTick;
         for (; tick < thisTick; tick += CropHelpers.UPDATE_INTERVAL)
         {
@@ -141,7 +141,7 @@ public final class CropHelpers
         crop.setGrowth(growth);
         crop.setYield(actualYield);
         crop.setExpiry(expiry);
-        crop.setLastUpdateTick(calendar.getTicks());
+        crop.setLastGrowthTick(calendar.getTicks());
 
         return true;
     }

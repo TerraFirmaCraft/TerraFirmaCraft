@@ -9,8 +9,11 @@ package net.dries007.tfc.util.calendar;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**
- * This is implemented on TileEntities that need to receive updates whenever the calendar changes drastically
- * Note: the default {@code update()} casts the implementor to {@link BlockEntity}
+ * This is implemented on {@link BlockEntity}s that need to receive special updates when the calendar skips/jumps ahead.
+ * In order to implement this, a field `lastUpdateTick` should be added and serialized. Nothing else should access this field, or the provided accessors. Doing so is almost certainly a bug, as this field just represents the last tick the block entity has been actively ticked.
+ * The default value of this field should be initialized to {@link Integer#MIN_VALUE}.
+ *
+ * Note: the default {@link #checkForCalendarUpdate()} casts the implementor to {@link BlockEntity}.
  */
 public interface ICalendarTickable
 {
@@ -21,8 +24,8 @@ public interface ICalendarTickable
      */
     default void checkForCalendarUpdate()
     {
-        BlockEntity te = ((BlockEntity) this);
-        if (te.getLevel() != null && !te.getLevel().isClientSide())
+        final BlockEntity entity = ((BlockEntity) this);
+        if (entity.getLevel() != null && !entity.getLevel().isClientSide())
         {
             final long thisTick = Calendars.SERVER.getTicks();
             final long lastTick = getLastUpdateTick();
@@ -36,21 +39,23 @@ public interface ICalendarTickable
     }
 
     /**
-     * Called when the calendar updates (either player or calendar time)
+     * Called when the calendar jumps forward by a tick amount > 1.
      *
-     * @param ticks the difference in player ticks observed between last tick and this tick
+     * @param ticks the difference in player ticks observed between last tick and this tick.
      */
     void onCalendarUpdate(long ticks);
 
     /**
-     * Gets the last update tick.
-     * This should use a locally cached value. No need for serialization
+     * @return The last tick this {@code BlockEntity} was ticked.
+     * @deprecated Do not call.
      */
+    @Deprecated
     long getLastUpdateTick();
 
     /**
-     * Sets the last update tick
-     * This should cache the value locally. No need for serialization
+     * Set the last tick this {@code BlockEntity} was ticked.
+     * @deprecated Do not call.
      */
+    @Deprecated
     void setLastUpdateTick(long tick);
 }

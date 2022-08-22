@@ -35,7 +35,8 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
     protected BerryBushBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
-        lastTick = lastUpdateTick = Calendars.SERVER.getTicks();
+        lastTick = Integer.MIN_VALUE;
+        lastUpdateTick = Calendars.SERVER.getTicks();
     }
 
     /**
@@ -78,12 +79,14 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastTick = tick;

@@ -14,9 +14,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blocks.crop.DoubleCropBlock;
 import net.dries007.tfc.common.blocks.crop.ICropBlock;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 
-public class CropBlockEntity extends TickCounterBlockEntity implements ICalendarTickable
+public class CropBlockEntity extends TFCBlockEntity implements ICalendarTickable
 {
     public static void serverTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)
     {
@@ -35,6 +36,9 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
     private float yield;
     private float expiry;
 
+    private long lastUpdateTick; // The last tick this crop was ticked via the block entity's tick() method. A delta of > 1 is used to detect time skips
+    private long lastGrowthTick; // The last tick the crop block was ticked via ICropBlock#growthTick()
+
     public CropBlockEntity(BlockPos pos, BlockState state)
     {
         this(TFCBlockEntities.CROP.get(), pos, state);
@@ -43,6 +47,9 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
     public CropBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
         super(type, pos, state);
+
+        lastUpdateTick = Integer.MIN_VALUE;
+        lastGrowthTick = Calendars.SERVER.getTicks();
     }
 
     @Override
@@ -89,13 +96,26 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
         markForSync();
     }
 
+    public long getLastGrowthTick()
+    {
+        return lastGrowthTick;
+    }
+
+    public void setLastGrowthTick(long lastGrowthTick)
+    {
+        this.lastGrowthTick = lastGrowthTick;
+        markForSync();
+    }
+
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastUpdateTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastUpdateTick = tick;
@@ -108,6 +128,8 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
         growth = nbt.getFloat("growth");
         yield = nbt.getFloat("yield");
         expiry = nbt.getFloat("expiry");
+        lastUpdateTick = nbt.getLong("tick");
+        lastGrowthTick = nbt.getLong("lastGrowthTick");
         super.loadAdditional(nbt);
     }
 
@@ -117,6 +139,8 @@ public class CropBlockEntity extends TickCounterBlockEntity implements ICalendar
         nbt.putFloat("growth", growth);
         nbt.putFloat("yield", yield);
         nbt.putFloat("expiry", expiry);
+        nbt.putLong("tick", lastUpdateTick);
+        nbt.putLong("lastGrowthTick", lastGrowthTick);
         super.saveAdditional(nbt);
     }
 }

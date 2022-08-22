@@ -77,7 +77,7 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         final FluidStack outputFluid = recipe.getDisplayFluid();
         if (!outputFluid.isEmpty())
         {
-            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
+            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 66);
             fluidOutput.addIngredient(JEIIntegration.FLUID_STACK, outputFluid);
             fluidOutput.setFluidRenderer(1, false, 16, 16);
             fluidOutput.setBackground(slot, -1, -1);

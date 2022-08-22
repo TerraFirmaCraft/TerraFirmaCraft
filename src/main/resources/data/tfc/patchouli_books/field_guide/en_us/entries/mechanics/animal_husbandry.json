@@ -83,7 +83,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": " They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#Horses)Horses$().$(br2)The next few pages will go over the different types of domesticatable animals."
+      "text": " They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$().$(br2)The next few pages will go over the different types of domesticatable animals."
     },
     {
       "type": "patchouli:text",
