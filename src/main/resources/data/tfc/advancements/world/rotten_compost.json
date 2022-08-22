@@ -3,10 +3,7 @@
   "parent": "tfc:world/compost",
   "criteria": {
     "special_condition": {
-      "trigger": "tfc:plant_killed",
-      "conditions": {
-        "tag": "tfc:plants"
-      }
+      "trigger": "tfc:rotten_compost_kill"
     }
   },
   "display": {
@@ -23,7 +20,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/item/mud/silt.png"
+    "background": "tfc:textures/block/mud/silt.png"
   },
   "requirements": [
     [

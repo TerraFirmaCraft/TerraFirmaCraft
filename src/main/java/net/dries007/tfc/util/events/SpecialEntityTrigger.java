@@ -47,7 +47,7 @@ public class SpecialEntityTrigger extends SimpleCriterionTrigger<SpecialEntityTr
     @Override
     protected SpecialEntityTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context)
     {
-        EntityPredicate ingredient = EntityPredicate.fromJson(json.get("entity"));
+        EntityPredicate ingredient = EntityPredicate.fromJson(json);
         return new SpecialEntityTrigger.TriggerInstance(predicate, ingredient);
     }
 

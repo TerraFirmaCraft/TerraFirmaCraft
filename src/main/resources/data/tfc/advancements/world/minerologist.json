@@ -221,26 +221,61 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/item/mud/silt.png"
+    "background": "tfc:textures/block/mud/silt.png"
   },
   "requirements": [
     [
-      "bituminous_coal",
-      "lignite",
-      "kaolinite",
-      "graphite",
-      "cinnabar",
-      "cryolite",
-      "saltpeter",
-      "sulfur",
-      "sylvite",
-      "borax",
-      "gypsum",
-      "lapis_lazuli",
-      "halite",
-      "diamond",
-      "emerald",
-      "amethyst",
+      "bituminous_coal"
+    ],
+    [
+      "lignite"
+    ],
+    [
+      "kaolinite"
+    ],
+    [
+      "graphite"
+    ],
+    [
+      "cinnabar"
+    ],
+    [
+      "cryolite"
+    ],
+    [
+      "saltpeter"
+    ],
+    [
+      "sulfur"
+    ],
+    [
+      "sylvite"
+    ],
+    [
+      "borax"
+    ],
+    [
+      "gypsum"
+    ],
+    [
+      "lapis_lazuli"
+    ],
+    [
+      "halite"
+    ],
+    [
+      "diamond"
+    ],
+    [
+      "emerald"
+    ],
+    [
+      "sulfur"
+    ],
+    [
+      "amethyst"
+    ],
+    [
       "opal"
     ]
   ]

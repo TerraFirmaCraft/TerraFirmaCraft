@@ -5,7 +5,7 @@
     "special_condition": {
       "trigger": "tfc:lit",
       "conditions": {
-        "block": "tfc:pit_kiln"
+        "block": "tfc:charcoal_forge"
       }
     }
   },
@@ -23,7 +23,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/rock/mossy_cobble/diorite.png"
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
   },
   "requirements": [
     [

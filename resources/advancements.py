@@ -6,7 +6,7 @@ from constants import *
 
 
 def main(rm: ResourceManager):
-    story = adv.AdvancementCategory(rm, 'story', 'tfc:textures/rock/mossy_cobble/diorite.png')
+    story = adv.AdvancementCategory(rm, 'story', 'tfc:textures/block/rock/mossy_cobble/diorite.png')
 
     story.advancement('root', icon('tfc:metal/hammer/wrought_iron'), 'TerraFirmaCraft Story', 'TFC\'s main progression line.', None, root_trigger(), chat=False)
     story.advancement('find_rock', icon('tfc:rock/loose/schist'), 'Just a Rock', 'Pick up a stone from the ground.', 'root', inventory_changed('#tfc:rock_knapping'))
@@ -19,7 +19,7 @@ def main(rm: ResourceManager):
     story.advancement('grill', icon('tfc:grill'), 'Grilling Time!', 'Add a wrought iron grill to the firepit.', 'firepit', generic('tfc:firepit_created', {'block': 'tfc:grill'}))
     # Parented to firestarter
     story.advancement('charcoal', icon('minecraft:charcoal'), 'A Better Fuel', 'Get some charcoal from a charcoal pit.', 'firestarter', inventory_changed('minecraft:charcoal'))
-    story.advancement('forge', icon('tfc:rock/cobble/andesite'), 'Forging', 'Light a charcoal forge.', 'charcoal', generic('tfc:lit', {'block': 'tfc:pit_kiln'}))
+    story.advancement('forge', icon('tfc:rock/cobble/andesite'), 'Forging', 'Light a charcoal forge.', 'charcoal', generic('tfc:lit', {'block': 'tfc:charcoal_forge'}))
     story.advancement('stone_anvil', icon('tfc:stone/hammer/sedimentary'), 'Hammer Time', 'Create a stone anvil with a hammer.', 'forge', generic('tfc:rock_anvil', {'tag': 'tfc:rock_anvils'}))
     story.advancement('metal_anvil', icon('tfc:metal/anvil/copper'), 'Dropping the Anvil', 'Create a copper anvil out of double ingots.', 'stone_anvil', inventory_changed('tfc:metal/anvil/copper'))
     story.advancement('fire_clay', icon('tfc:fire_clay'), 'Fireproof', 'Craft some fire clay.', 'metal_anvil', inventory_changed('tfc:fire_clay'))
@@ -66,7 +66,7 @@ def main(rm: ResourceManager):
     story.advancement('iron_armor', icon('tfc:metal/chestplate/wrought_iron'), 'Knight in Shining Armor', 'Create a full set of wrought iron armor, a sword, and a shield.', 'iron_age', multiple(inventory_changed('tfc:metal/sword/wrought_iron'), inventory_changed('tfc:metal/shield/wrought_iron'), *[inventory_changed('tfc:metal/%s/wrought_iron' % piece) for piece in TFC_ARMOR_SECTIONS]), requirements=[['metal/%s/wrought_iron' % item] for item in ('chestplate', 'helmet', 'greaves', 'boots', 'sword', 'shield')])
     story.advancement('cast_iron', icon('tfc:metal/ingot/cast_iron'), 'I Can\'t Believe it\'s not Wrought!', 'Make a cast iron ingot.', 'pit_kiln', inventory_changed('tfc:metal/ingot/cast_iron'))
 
-    world = adv.AdvancementCategory(rm, 'world', 'tfc:textures/item/mud/silt.png')
+    world = adv.AdvancementCategory(rm, 'world', 'tfc:textures/block/mud/silt.png')
     world.advancement('root', icon('tfc:plant/morning_glory'), 'TerraFirmaCraft World', 'Exploring the world of TFC.', None, root_trigger(), chat=False)
     world.advancement('seeds', icon('tfc:seeds/tomato'), 'Gatherer', 'Get seeds from a wild crop.', 'root', inventory_changed('#tfc:seeds'))
     world.advancement('all_crops', icon('tfc:metal/hoe/black_steel'), 'True Farmer', 'Gather every seed in TFC.', 'seeds', multiple(*[inventory_changed('tfc:seeds/%s' % c, name=c) for c in CROPS]), requirements=[[c] for c in CROPS])
@@ -94,28 +94,38 @@ def main(rm: ResourceManager):
     world.advancement('nickel', icon('tfc:ore/small_garnierite'), 'Nickels and Dimes', 'Find Garnierite.', 'nugget', inventory_changed('tfc:ore/small_garnierite'), frame='goal')
     world.advancement('iron', icon('tfc:ore/small_hematite'), 'Pretty Ironic', 'Find Hematite, Liminote, and Magnetite nuggets.', 'nugget', multiple(*[inventory_changed('tfc:ore/small_%s' % o, name=o) for o in ('hematite', 'limonite', 'magnetite')]), requirements=[[o] for o in ('hematite', 'limonite', 'magnetite')])
     world.advancement('compost', icon('tfc:compost'), 'Reduce Reuse Recycle', 'Make compost in a composter.', 'root', inventory_changed('tfc:compost'))
-    world.advancement('rotten_compost', icon('tfc:rotten_compost'), 'Wasteful', 'Kill a plant with rotten compost.', 'compost', generic('tfc:plant_killed', {'tag': 'tfc:plants'}))
+    world.advancement('rotten_compost', icon('tfc:rotten_compost'), 'Wasteful', 'Kill a plant with rotten compost.', 'compost', generic('tfc:rotten_compost_kill', None))
     world.advancement('guano', icon('tfc:groundcover/guano'), 'Gift from the Birds', 'Find guano.', 'root', inventory_changed('tfc:groundcover/guano'))
-    world.advancement('full_fertilizer', icon('tfc:pure_nitrogen'), 'Fully Fertile', 'Raise a crop to 10/10/10 nutrient levels.', 'seeds', generic('tfc:full_fertilizer', None))
+    world.advancement('full_fertilizer', icon('tfc:pure_nitrogen'), 'Fully Fertile', 'Raise a block of farmland to 10/10/10 nutrient levels.', 'seeds', generic('tfc:full_fertilizer', None))
     world.advancement('hunter', icon('tfc:food/chevon'), 'Hunter', 'Kill an animal.', 'root', kill_mob('#tfc:animals'))
     world.advancement('glow_hunter', icon('minecraft:glow_ink_sac'), 'Mystery of the Depths', 'Kill the Octopoteuthis', 'hunter', kill_mob('tfc:octopoteuthis'), hidden=True, frame='goal')
     world.advancement('bear_hunter', icon('tfc:large_raw_hide'), 'Bear Attack', 'Kill a Bear.', 'hunter', kill_mob('#tfc:bears'))
-    world.advancement('fishing', icon('tfc:metal/fishing_rod/copper'), 'Fisherman', 'Hook a fish with a fishing rod.', 'hunter', generic('tfc:hooked_entity', {'entity': entity_predicate('#tfc:small_fish')}))
-    world.advancement('advanced_fishing', icon('tfc:metal/fishing_rod/red_steel'), 'Master Fisherman', 'Hook a dolphin or an orca with a fishing rod.', 'fishing', generic('tfc:hooked_entity', {'entity': entity_predicate('#tfc:needs_large_fishing_bait')}), frame='goal')
-    world.advancement('greatest_hunter', icon('tfc:metal/javelin/red_steel'), 'Greatest Hunter', 'Hit a rabbit from 50m away with a javelin.', 'hunter', generic('tfc:stab_entity', {'entity': entity_predicate('tfc:rabbit', {'distance': {'horizontal': {'min': 50}}})}))
+    world.advancement('fishing', icon('tfc:metal/fishing_rod/copper'), 'Fisherman', 'Hook a fish with a fishing rod.', 'hunter', generic('tfc:hooked_entity', {'entity': {'type': '#tfc:small_fish'}}))
+    world.advancement('advanced_fishing', icon('tfc:metal/fishing_rod/red_steel'), 'Master Fisherman', 'Hook a dolphin or an orca with a fishing rod.', 'fishing', generic('tfc:hooked_entity', {'entity': {'type': '#tfc:needs_large_fishing_bait'}}), frame='goal')
+    world.advancement('greatest_hunter', icon('tfc:metal/javelin/red_steel'), 'Greatest Hunter', 'Hit a rabbit from 50m away with a javelin.', 'hunter', generic('tfc:stab_entity', {'entity': {'type': 'tfc:rabbit', 'distance': {'horizontal': {'min': 50}}}}))
     world.advancement('artist', icon('minecraft:red_dye'), 'Artist', 'Procure all 16 colors of dye.', 'root', multiple(*[inventory_changed('minecraft:%s_dye' % c, name=c) for c in COLORS]), requirements=[[c] for c in COLORS], frame='goal')
-    world.advancement('familiarity', icon('tfc:food/wheat_grain'), 'A New Friend', 'Feed an animal some food to familiarize it.', 'root', generic('tfc:fed_animal', {'entity': entity_predicate('#tfc:animals')}))
-    world.advancement('tame_horse', icon('minecraft:saddle'), 'Horsing Around', 'Raise a horse\'s familiarity enough to tame it.', 'familiarity', generic('minecraft:tame_animal', {'entity': [entity_predicate('#tfc:horses')]}))
+    world.advancement('familiarity', icon('tfc:food/wheat_grain'), 'A New Friend', 'Feed an animal some food to familiarize it.', 'root', generic('tfc:fed_animal', {'entity': {'type': '#tfc:animals'}}))
     world.advancement('powderkeg', icon('tfc:powderkeg'), 'Big Boom', 'Light a powderkeg.', 'root', generic('tfc:lit', {'block': 'tfc:powderkeg'}))
-    world.advancement('full_powderkeg', icon('minecraft:gunpowder'), 'Demolitions Expert', 'Light a fully loaded powderkeg.', 'powderkeg', generic('tfc:full_powderkeg', None))
+    world.advancement('full_powderkeg', icon('minecraft:gunpowder'), 'Pakratt', 'Light a fully loaded powderkeg.', 'powderkeg', generic('tfc:full_powderkeg', None))
     world.advancement('gemologist', icon('tfc:gem/amethyst'), 'Gemologist', 'Find every gem ore in TFC.', 'nugget', multiple(*[inventory_changed('tfc:ore/%s' % g, name=g) for g in GEMS]), requirements=[[g] for g in GEMS], frame='goal')
-    world.advancement('minerologist', icon('tfc:ore/halite'), 'Minerologist', 'Find every non-metal mineral in TFC.', 'gemologist', multiple(*[inventory_changed('tfc:ore/%s' % g, name=g) for g in ALL_MINERALS]), frame='goal')
-    world.advancement('metallurgist', icon('tfc:metal/ingot/gold'), 'Metallurgist', 'Obtain a metal-bearing specimen for every metal in TFC.', 'nugget', multiple(*[inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:%s' % m}, name=m) for m in METALS.keys()]), requirements=[[m] for m in METALS], frame='goal')
+    world.advancement('minerologist', icon('tfc:ore/halite'), 'Minerologist', 'Find every non-metal mineral in TFC.', 'gemologist', multiple(*[inventory_changed('tfc:ore/%s' % g, name=g) for g in ALL_MINERALS]), frame='goal', requirements=[[g] for g in ALL_MINERALS])
+    world.advancement('metallurgist', icon('tfc:metal/ingot/gold'), 'Metallurgist', 'Obtain a metal-bearing specimen for every metal in TFC.', 'nugget', metal_criteria(), requirements=[[m] for m in METALS], frame='goal')
+
+def metal_criteria() -> Json:
+    criteria = dict()
+    for metal in METALS.keys():
+        if metal in ('high_carbon_red_steel', 'high_carbon_steel', 'high_carbon_black_steel', 'high_carbon_blue_steel', 'wrought_iron'):
+            criteria.update(inventory_changed('tfc:metal/ingot/%s' % metal, name=metal))
+        else:
+            criteria.update(inventory_changed({'type': 'tfc:metal_item', 'metal': metal}, name=metal))
+    return criteria
+
 
 def kill_mob(mob: str, other: Dict = None) -> Json:
     return generic('minecraft:player_killed_entity', {'entity': [entity_predicate(mob, other)]})
 
-# if the predicate is an EntityPredicate.Composite, this should be inside an array.
+# if the predicate is (and usually it will be) an EntityPredicate.Composite, this should be inside an array.
+# EntityPredicate.Composite wraps a vanilla loot event in a trigger event
 def entity_predicate(mob: str, other: Dict = None) -> Json:
     dic = {
         'condition': 'minecraft:entity_properties',
@@ -125,6 +135,7 @@ def entity_predicate(mob: str, other: Dict = None) -> Json:
     if other is not None:
         dic.update(other)
     return dic
+
 
 def consume_item(item: str, name: str = 'item_consumed') -> Json:
     if isinstance(item, str) and name == 'item_consumed':

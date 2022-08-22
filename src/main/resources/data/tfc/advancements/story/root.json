@@ -19,7 +19,7 @@
     "show_toast": true,
     "announce_to_chat": false,
     "hidden": false,
-    "background": "tfc:textures/rock/mossy_cobble/diorite.png"
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
   },
   "requirements": [
     [

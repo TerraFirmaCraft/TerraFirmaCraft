@@ -53,7 +53,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/item/mud/silt.png"
+    "background": "tfc:textures/block/mud/silt.png"
   },
   "requirements": [
     [

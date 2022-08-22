@@ -6,11 +6,7 @@
       "trigger": "tfc:stab_entity",
       "conditions": {
         "entity": {
-          "condition": "minecraft:entity_properties",
-          "predicate": {
-            "type": "tfc:rabbit"
-          },
-          "entity": "this",
+          "type": "tfc:rabbit",
           "distance": {
             "horizontal": {
               "min": 50
@@ -34,7 +30,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/item/mud/silt.png"
+    "background": "tfc:textures/block/mud/silt.png"
   },
   "requirements": [
     [

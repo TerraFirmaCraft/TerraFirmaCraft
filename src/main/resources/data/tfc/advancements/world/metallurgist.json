@@ -8,7 +8,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:bismuth"
+            "metal": "bismuth"
           }
         ]
       }
@@ -19,7 +19,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:bismuth_bronze"
+            "metal": "bismuth_bronze"
           }
         ]
       }
@@ -30,7 +30,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:black_bronze"
+            "metal": "black_bronze"
           }
         ]
       }
@@ -41,7 +41,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:bronze"
+            "metal": "bronze"
           }
         ]
       }
@@ -52,7 +52,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:brass"
+            "metal": "brass"
           }
         ]
       }
@@ -63,7 +63,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:copper"
+            "metal": "copper"
           }
         ]
       }
@@ -74,7 +74,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:gold"
+            "metal": "gold"
           }
         ]
       }
@@ -85,7 +85,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:nickel"
+            "metal": "nickel"
           }
         ]
       }
@@ -96,7 +96,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:rose_gold"
+            "metal": "rose_gold"
           }
         ]
       }
@@ -107,7 +107,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:silver"
+            "metal": "silver"
           }
         ]
       }
@@ -118,7 +118,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:tin"
+            "metal": "tin"
           }
         ]
       }
@@ -129,7 +129,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:zinc"
+            "metal": "zinc"
           }
         ]
       }
@@ -140,7 +140,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:sterling_silver"
+            "metal": "sterling_silver"
           }
         ]
       }
@@ -150,8 +150,9 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:wrought_iron"
+            "items": [
+              "tfc:metal/ingot/wrought_iron"
+            ]
           }
         ]
       }
@@ -162,7 +163,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:cast_iron"
+            "metal": "cast_iron"
           }
         ]
       }
@@ -173,7 +174,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:pig_iron"
+            "metal": "pig_iron"
           }
         ]
       }
@@ -184,7 +185,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:steel"
+            "metal": "steel"
           }
         ]
       }
@@ -195,7 +196,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:black_steel"
+            "metal": "black_steel"
           }
         ]
       }
@@ -206,7 +207,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:blue_steel"
+            "metal": "blue_steel"
           }
         ]
       }
@@ -217,7 +218,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:red_steel"
+            "metal": "red_steel"
           }
         ]
       }
@@ -228,7 +229,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:weak_steel"
+            "metal": "weak_steel"
           }
         ]
       }
@@ -239,7 +240,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:weak_blue_steel"
+            "metal": "weak_blue_steel"
           }
         ]
       }
@@ -250,7 +251,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:weak_red_steel"
+            "metal": "weak_red_steel"
           }
         ]
       }
@@ -260,8 +261,9 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:high_carbon_steel"
+            "items": [
+              "tfc:metal/ingot/high_carbon_steel"
+            ]
           }
         ]
       }
@@ -271,8 +273,9 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:high_carbon_black_steel"
+            "items": [
+              "tfc:metal/ingot/high_carbon_black_steel"
+            ]
           }
         ]
       }
@@ -282,8 +285,9 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:high_carbon_blue_steel"
+            "items": [
+              "tfc:metal/ingot/high_carbon_blue_steel"
+            ]
           }
         ]
       }
@@ -293,8 +297,9 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:high_carbon_red_steel"
+            "items": [
+              "tfc:metal/ingot/high_carbon_red_steel"
+            ]
           }
         ]
       }
@@ -305,7 +310,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tfc:unknown"
+            "metal": "unknown"
           }
         ]
       }
@@ -325,7 +330,7 @@
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/item/mud/silt.png"
+    "background": "tfc:textures/block/mud/silt.png"
   },
   "requirements": [
     [
