@@ -6,21 +6,21 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every item has a $(thing)Size \u21f2$() and $(thing)Weight \u2696$(). An item's size and wieght is shown on the item's $(thing)tooltip$(), which appears when you hover over it with your mouse."
+      "text": "Every item has a $(thing)Size \u21f2$() and $(thing)Weight \u2696$(). An item's size and wieght is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse."
     },
     {
       "type": "patchouli:text",
-      "text": "Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().",
+      "text": "Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)$(thing)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().",
       "title": "Size \u21f2"
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are stored alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They count towards overburdening."
+      "text": "$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are placed alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They also count towards overburdening."
     },
     {
       "type": "patchouli:text",
       "anchor": "overburdening",
-      "text": "$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() turn from $(thing)Very Heavy$() to $(thing)Huge$() when they are sealed. $(l:mechanics/animal_husbandry#horses)Horses$() can be overburdened.",
+      "text": "$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() turn from $(thing)Very Heavy$() to $(thing)Huge$() when they are sealed. $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
       "title": "Overburdening"
     },
     {

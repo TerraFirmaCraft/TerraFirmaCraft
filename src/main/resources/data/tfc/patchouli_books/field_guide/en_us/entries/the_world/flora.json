@@ -85,7 +85,7 @@
         }
       },
       "name": "Creeping",
-      "text": "Creeping plants take the shape of the surrounding block faces. They spawn in blobs on the ground, mostly.",
+      "text": "Creeping plants take the shape of the surrounding block faces. They mostly spawn in blobs on the ground",
       "enable_visualize": false
     },
     {
@@ -212,7 +212,7 @@
         }
       },
       "name": "Weeping Vines",
-      "text": "Weeping vines grow downward from the an anchoring block.",
+      "text": "Weeping vines grow downward from an anchoring block.",
       "enable_visualize": false
     },
     {

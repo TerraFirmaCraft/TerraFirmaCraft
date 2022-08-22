@@ -16,7 +16,7 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/crucible",
-      "text": "After the crucible is knapped, it will need to be $(thing)fired$(), like any piece of pottery - a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$() would do.$(br2)n order to use the crucible, it needs a source of heat. The crucible can be heated by any heatable block below, for instance a $(l:mechanics/charcoal_forge)Charcoal Forge$()"
+      "text": "After the crucible is knapped, it will need to be $(thing)fired$(), like any piece of pottery - a $(l:getting_started/pit_kiln)Pit Kiln$() or $(l:mechanics/charcoal_forge)Charcoal Forge$() would do.$(br2)In order to use the crucible, it needs a source of heat. The crucible can be heated by any heatable block below, usually a $(l:mechanics/charcoal_forge)Charcoal Forge$()"
     },
     {
       "type": "patchouli:multiblock",
@@ -40,7 +40,7 @@
         }
       },
       "name": "",
-      "text": "A crucible powered by a charcoal forge below it.",
+      "text": "A crucible heated by a charcoal forge below it.",
       "enable_visualize": false
     },
     {
@@ -59,11 +59,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here, and they will be slowly drained into the crucible, allowing for precise control over your alloy's content.$(br2)Molds, or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
+      "text": "The crucible has nine slots where items can be added to be melted, and their liquefied contents will be directly added to the crucible. Molten metal containers such as $(l:getting_started/pottery#mold)Molds$() can also be placed here and they will be slowly drained into the crucible, allowing for precise control over your alloy's content.$(br2)Molds or other fluid containers can also be placed in the output slot, and will be slowly filled with the current content of the crucible."
     },
     {
       "type": "patchouli:text",
-      "text": "The temperature indicator on the left will rise based on external sources of heat, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() below, or heat from a $(l:mechanics/blast_furnace)Blast Furnace$() from above. Metal can be extracted from the crucible as long as it is hot enough.$(br2)Finally, the crucible will keep it's content when broken, allowing you to transport the alloy container around if you wish."
+      "text": "The temperature indicator on the left will rise based on external sources of heat, such as a $(l:mechanics/charcoal_forge)Charcoal Forge$() below or heat from a $(l:mechanics/blast_furnace)Blast Furnace$() from above. Metal can be extracted from the crucible as long as it is still molten.$(br2)Finally, the crucible will keep its contents when broken, allowing you to transport the alloy container around if you wish."
     }
   ],
   "read_by_default": true

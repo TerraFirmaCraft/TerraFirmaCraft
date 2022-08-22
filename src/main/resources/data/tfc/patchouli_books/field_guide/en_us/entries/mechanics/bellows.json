@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Bellows$() is a device which can be used to increase the air flow through other device, which lets them burn at a hotter temperature. However, by burning at a hotter temperature, they will also consume fuel faster. The bellows can provide heat to a device that is directly in front of it, or in front and one block down. This allows it to heat a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$(), for example."
+      "text": "A $(thing)Bellows$() is a device which can be used to increase the air flow through another device which lets them burn at a hotter temperature. However, by burning at a hotter temperature they will also consume fuel faster. The bellows can provide air to a device that is directly in front of it, or in front and one block down. This allows it to provide air to a $(l:getting_started/firepit)Firepit$(), or a $(l:mechanics/charcoal_forge)Charcoal Forge$() for example."
     },
     {
       "type": "patchouli:crafting",
