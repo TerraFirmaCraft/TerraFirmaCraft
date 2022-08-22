@@ -1,0 +1,224 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/root",
+  "criteria": {
+    "blackberry": {
+      "item": {
+        "items": [
+          "tfc:food/blackberry"
+        ]
+      }
+    },
+    "raspberry": {
+      "item": {
+        "items": [
+          "tfc:food/raspberry"
+        ]
+      }
+    },
+    "blueberry": {
+      "item": {
+        "items": [
+          "tfc:food/blueberry"
+        ]
+      }
+    },
+    "elderberry": {
+      "item": {
+        "items": [
+          "tfc:food/elderberry"
+        ]
+      }
+    },
+    "bunchberry": {
+      "item": {
+        "items": [
+          "tfc:food/bunchberry"
+        ]
+      }
+    },
+    "gooseberry": {
+      "item": {
+        "items": [
+          "tfc:food/gooseberry"
+        ]
+      }
+    },
+    "snowberry": {
+      "item": {
+        "items": [
+          "tfc:food/snowberry"
+        ]
+      }
+    },
+    "cloudberry": {
+      "item": {
+        "items": [
+          "tfc:food/cloudberry"
+        ]
+      }
+    },
+    "strawberry": {
+      "item": {
+        "items": [
+          "tfc:food/strawberry"
+        ]
+      }
+    },
+    "wintergreen_berry": {
+      "item": {
+        "items": [
+          "tfc:food/wintergreen_berry"
+        ]
+      }
+    },
+    "cranberry": {
+      "item": {
+        "items": [
+          "tfc:food/cranberry"
+        ]
+      }
+    },
+    "banana": {
+      "item": {
+        "items": [
+          "tfc:food/banana"
+        ]
+      }
+    },
+    "cherry": {
+      "item": {
+        "items": [
+          "tfc:food/cherry"
+        ]
+      }
+    },
+    "green_apple": {
+      "item": {
+        "items": [
+          "tfc:food/green_apple"
+        ]
+      }
+    },
+    "lemon": {
+      "item": {
+        "items": [
+          "tfc:food/lemon"
+        ]
+      }
+    },
+    "olive": {
+      "item": {
+        "items": [
+          "tfc:food/olive"
+        ]
+      }
+    },
+    "orange": {
+      "item": {
+        "items": [
+          "tfc:food/orange"
+        ]
+      }
+    },
+    "peach": {
+      "item": {
+        "items": [
+          "tfc:food/peach"
+        ]
+      }
+    },
+    "plum": {
+      "item": {
+        "items": [
+          "tfc:food/plum"
+        ]
+      }
+    },
+    "red_apple": {
+      "item": {
+        "items": [
+          "tfc:food/red_apple"
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:food/orange"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.fruit.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.fruit.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/item/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "blackberry"
+    ],
+    [
+      "raspberry"
+    ],
+    [
+      "blueberry"
+    ],
+    [
+      "elderberry"
+    ],
+    [
+      "bunchberry"
+    ],
+    [
+      "gooseberry"
+    ],
+    [
+      "snowberry"
+    ],
+    [
+      "cloudberry"
+    ],
+    [
+      "strawberry"
+    ],
+    [
+      "wintergreen_berry"
+    ],
+    [
+      "cranberry"
+    ],
+    [
+      "banana"
+    ],
+    [
+      "cherry"
+    ],
+    [
+      "green_apple"
+    ],
+    [
+      "lemon"
+    ],
+    [
+      "olive"
+    ],
+    [
+      "orange"
+    ],
+    [
+      "peach"
+    ],
+    [
+      "plum"
+    ],
+    [
+      "red_apple"
+    ]
+  ]
+}

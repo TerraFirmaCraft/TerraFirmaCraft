@@ -11,6 +11,7 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -43,6 +44,7 @@ import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.util.events.SpecialEventTrigger;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
 import org.jetbrains.annotations.Nullable;
 
@@ -105,6 +107,10 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
                 if (FluidHelpers.transferBetweenBlockEntityAndItem(stack, lamp, player, hand))
                 {
                     lamp.markForSync();
+                    if (lamp.getFuel() != null && lamp.getFuel().getBurnRate() == -1 && player instanceof ServerPlayer serverPlayer)
+                    {
+                        SpecialEventTrigger.LAVA_LAMP.trigger(serverPlayer);
+                    }
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }

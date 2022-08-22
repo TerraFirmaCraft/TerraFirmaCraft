@@ -36,6 +36,7 @@ import net.minecraftforge.network.NetworkHooks;
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.SpecialEntityTrigger;
 
 public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpawnData
 {
@@ -168,7 +169,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
                 {
                     player.awardStat(Stats.FISH_CAUGHT, 1);
                 }
-                CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer) player, stack, this, Collections.emptyList());
+                SpecialEntityTrigger.HOOKED_ENTITY.trigger((ServerPlayer) player, hookedIn);
                 level.broadcastEntityEvent(this, (byte) 31);
             }
             if (hookedIn == null || hookedIn.isRemoved())

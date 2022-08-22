@@ -1,26 +1,38 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:story/raw_stone",
+  "parent": "tfc:world/nugget",
   "criteria": {
-    "handstone": {
+    "hematite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:handstone"
+              "tfc:ore/small_hematite"
             ]
           }
         ]
       }
     },
-    "quern": {
+    "limonite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:quern"
+              "tfc:ore/small_limonite"
+            ]
+          }
+        ]
+      }
+    },
+    "magnetite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/small_magnetite"
             ]
           }
         ]
@@ -29,26 +41,29 @@
   },
   "display": {
     "icon": {
-      "item": "tfc:quern"
+      "item": "tfc:ore/small_hematite"
     },
     "title": {
-      "translate": "tfc.advancements.story.quern.title"
+      "translate": "tfc.advancements.world.iron.title"
     },
     "description": {
-      "translate": "tfc.advancements.story.quern.description"
+      "translate": "tfc.advancements.world.iron.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/rock/mossy_cobble/diorite.png"
+    "background": "tfc:textures/item/mud/silt.png"
   },
   "requirements": [
     [
-      "quern"
+      "hematite"
     ],
     [
-      "handstone"
+      "limonite"
+    ],
+    [
+      "magnetite"
     ]
   ]
 }

@@ -1,26 +1,26 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "tfc:story/raw_stone",
+  "parent": "tfc:world/nugget",
   "criteria": {
-    "handstone": {
+    "ore/lignite": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:handstone"
+              "tfc:ore/lignite"
             ]
           }
         ]
       }
     },
-    "quern": {
+    "ore/bituminous_coal": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "tfc:quern"
+              "tfc:ore/bituminous_coal"
             ]
           }
         ]
@@ -29,26 +29,24 @@
   },
   "display": {
     "icon": {
-      "item": "tfc:quern"
+      "item": "tfc:ore/lignite"
     },
     "title": {
-      "translate": "tfc.advancements.story.quern.title"
+      "translate": "tfc.advancements.world.coal.title"
     },
     "description": {
-      "translate": "tfc.advancements.story.quern.description"
+      "translate": "tfc.advancements.world.coal.description"
     },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false,
-    "background": "tfc:textures/rock/mossy_cobble/diorite.png"
+    "background": "tfc:textures/item/mud/silt.png"
   },
   "requirements": [
     [
-      "quern"
-    ],
-    [
-      "handstone"
+      "ore/lignite",
+      "ore/bituminous_coal"
     ]
   ]
 }

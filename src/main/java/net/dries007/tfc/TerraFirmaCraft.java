@@ -59,8 +59,8 @@ import net.dries007.tfc.util.InteractionManager;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.climate.ClimateModels;
+import net.dries007.tfc.util.events.SpecialEventTrigger;
 import net.dries007.tfc.util.loot.CustomItemPredicate;
-import net.dries007.tfc.util.events.SpecialBlockTrigger;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.TFCChunkGenerator;
@@ -160,7 +160,7 @@ public final class TerraFirmaCraft
             FoodCapability.setCreativeTabsNonDecaying();
             CauldronInteractions.registerCauldronInteractions();
             CustomItemPredicate.registerCustomItemPredicates();
-            SpecialBlockTrigger.registerSpecialBlockTriggers();
+            SpecialEventTrigger.registerSpecialEventTriggers();
         });
 
         PatchouliIntegration.registerMultiBlocks();

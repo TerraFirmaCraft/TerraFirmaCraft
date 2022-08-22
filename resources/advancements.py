@@ -1,6 +1,8 @@
-from mcresources import ResourceManager
+from mcresources import ResourceManager, utils
 from mcresources import advancements as adv
 from mcresources.type_definitions import Json
+
+from constants import *
 
 
 def main(rm: ResourceManager):
@@ -48,7 +50,7 @@ def main(rm: ResourceManager):
     # Parented to chisel
     story.advancement('smooth_stone', icon('tfc:rock/smooth/chert'), 'Super Smooth', 'Chisel a piece of raw stone into a smooth stone block.', 'chisel', generic('tfc:chiseled', {'tag': 'forge:smooth_stone'}))
     story.advancement('raw_stone', icon('tfc:rock/hardened/basalt'), 'Raw Emotions', 'Isolate a piece of raw rock to make it pop off.', 'smooth_stone', inventory_changed('#forge:stone'))
-    story.advancement('quern', icon('tfc:quern'), 'The Grind', 'Craft a quern and a handstone.', 'raw_stone', multiple(inventory_changed('tfc:handstone'), inventory_changed('tfc:quern')))
+    story.advancement('quern', icon('tfc:quern'), 'The Grind', 'Craft a quern and a handstone.', 'raw_stone', multiple(inventory_changed('tfc:handstone'), inventory_changed('tfc:quern')), requirements=[['quern'], ['handstone']])
     story.advancement('flux', icon('tfc:powder/flux'), 'In Flux', 'Grind some flux using a quern.', 'quern', inventory_changed('#tfc:flux'), frame='challenge')
     story.advancement('welding', icon('tfc:metal/double_ingot/copper'), 'Double Trouble', 'Weld a double ingot in an anvil.', 'flux', inventory_changed('#forge:double_ingots'))
     story.advancement('sheet', icon('tfc:metal/sheet/copper'), 'The Flattening', 'Pound a double ingot into a sheet.', 'welding', inventory_changed('#forge:sheets'))
@@ -61,19 +63,79 @@ def main(rm: ResourceManager):
     # Misc advancements
     story.advancement('get_unknown', icon('tfc:metal/ingot/unknown'), 'Rite of Passage', 'You made useless unknown metal.', 'pit_kiln', inventory_changed('tfc:metal/ingot/unknown'), hidden=True)
     story.advancement('flint_and_steel', icon('minecraft:flint_and_steel'), 'Sea of Flame', 'Craft a Flint and Steel', 'steel_age', inventory_changed('minecraft:flint_and_steel'))
-    story.advancement('iron_armor', icon('tfc:metal/chestplate/wrought_iron'), 'Knight in Shining Armor', 'Create a full set of wrought iron armor, a sword, and a shield.', 'iron_age', multiple(inventory_changed('tfc:metal/sword/wrought_iron'), inventory_changed('tfc:metal/shield/wrought_iron'), *[inventory_changed('tfc:metal/%s/wrought_iron' % piece) for piece in ('helmet', 'chestplate', 'greaves', 'boots')]))
+    story.advancement('iron_armor', icon('tfc:metal/chestplate/wrought_iron'), 'Knight in Shining Armor', 'Create a full set of wrought iron armor, a sword, and a shield.', 'iron_age', multiple(inventory_changed('tfc:metal/sword/wrought_iron'), inventory_changed('tfc:metal/shield/wrought_iron'), *[inventory_changed('tfc:metal/%s/wrought_iron' % piece) for piece in TFC_ARMOR_SECTIONS]), requirements=[['metal/%s/wrought_iron' % item] for item in ('chestplate', 'helmet', 'greaves', 'boots', 'sword', 'shield')])
     story.advancement('cast_iron', icon('tfc:metal/ingot/cast_iron'), 'I Can\'t Believe it\'s not Wrought!', 'Make a cast iron ingot.', 'pit_kiln', inventory_changed('tfc:metal/ingot/cast_iron'))
 
     world = adv.AdvancementCategory(rm, 'world', 'tfc:textures/item/mud/silt.png')
     world.advancement('root', icon('tfc:plant/morning_glory'), 'TerraFirmaCraft World', 'Exploring the world of TFC.', None, root_trigger(), chat=False)
     world.advancement('seeds', icon('tfc:seeds/tomato'), 'Gatherer', 'Get seeds from a wild crop.', 'root', inventory_changed('#tfc:seeds'))
+    world.advancement('all_crops', icon('tfc:metal/hoe/black_steel'), 'True Farmer', 'Gather every seed in TFC.', 'seeds', multiple(*[inventory_changed('tfc:seeds/%s' % c, name=c) for c in CROPS]), requirements=[[c] for c in CROPS])
     world.advancement('bread', icon('tfc:food/rye_bread'), 'Baker', 'Make a loaf of bread.', 'seeds', inventory_changed('#tfc:sandwich_bread'))
     world.advancement('wattle', icon('tfc:wattle'), 'Wattle and Daub', 'Craft some wattle.', 'root', inventory_changed('tfc:wattle'))
     world.advancement('mud_bricks', icon('tfc:mud_brick/sandy_loam'), 'Playing in the Mud', 'Dry out some mud to make bricks.', 'root', inventory_changed('#tfc:mud_bricks'))
-    world.advancement('pan', icon('tfc:pan/empty'), 'Gold Rush', 'Make a pan for sifting.', 'root', inventory_changed('tfc:pan/empty'))
+    world.advancement('lava_lamp', icon('tfc:metal/lamp/blue_steel'), 'Lava Lamp', 'Light a lamp that burns forever.', 'root', generic('tfc:lava_lamp', None))
+    world.advancement('pan', icon('tfc:pan/empty'), 'Gold Rush', 'Craft a pan for sifting.', 'root', inventory_changed('tfc:pan/empty'))
+    world.advancement('spindle', icon('tfc:spindle'), 'Spindly', 'Craft a spindle.', 'loom', inventory_changed('tfc:spindle'))
+    world.advancement('loom', icon('tfc:wood/planks/pine_loom'), 'Weaver', 'Craft a loom for weaving.', 'root', inventory_changed('#tfc:looms'))
+    world.advancement('bed', icon('minecraft:red_bed'), 'A Good Night\'s Rest', 'Craft a bed', 'spindle', inventory_changed('#minecraft:beds'))
+    world.advancement('volcano', icon('tfc:rock/magma/basalt'), 'Pacific Rim', 'Find an area with high volcanic activity.', 'root', multiple(*[biome(b) for b in TFC_BIOMES if b.__contains__('volcanic')]))
+    world.advancement('coral_reef', icon('tfc:coral/brain_coral_fan'), 'What a rel-Reef!', 'Find a coral reef.', 'volcano', biome('ocean_reef'))
+    world.advancement('trench', icon('tfc:rock/magma/diorite'), 'In the Trenches', 'Find a deep ocean trench.', 'volcano', biome('deep_ocean_trench'))
+    world.advancement('adventuring_time', icon('tfc:metal/boots/red_steel'), 'Adventuring Time', 'Discover every biome in TFC.', 'volcano', multiple(*[biome(b) for b in TFC_BIOMES]), requirements=[[b] for b in TFC_BIOMES], frame='challenge')
+    world.advancement('globe_trotter', icon('minecraft:map'), 'Globe Trotter', 'Travel to positive 20,000 and -20,000 z, the hottest and coldest points nearest to spawn.', 'root', multiple(generic('minecraft:location', {'location': {'position': {'z': {'min': 20000}}}}, name='high'), generic('minecraft:location', {'location': {'position': {'z': {'max': -20000}}}}, name='low')), requirements=[['high'], ['low']])
+    world.advancement('fruit', icon('tfc:food/orange'), 'Healthy Diet', 'Eat every berry and tree fruit in TFC.', 'root', multiple(*[consume_item('tfc:food/%s' % f, name=f) for f in (*BERRIES, *FRUITS)]), requirements=[[f] for f in (*BERRIES, *FRUITS)])
+    world.advancement('saplings', icon('tfc:wood/sapling/pine'), 'Arborist', 'Find every (non-fruit) tree sapling in TFC', 'root', multiple(*[inventory_changed('tfc:wood/sapling/%s' % t, name=t) for t, v in TREE_SAPLING_DROP_CHANCES.items() if v > 0]), requirements=[[t] for t, v in TREE_SAPLING_DROP_CHANCES.items() if v > 0])
+    world.advancement('nugget', icon('tfc:ore/small_native_copper'), 'A Weird Rock', 'Find a metal nugget on the ground.', 'root', inventory_changed('#tfc:nuggets'))
+    world.advancement('coal', icon('tfc:ore/lignite'), 'Carboniferous', 'Find Bituminous Coal or Lignite.', 'nugget', multiple(inventory_changed('tfc:ore/lignite'), inventory_changed('tfc:ore/bituminous_coal')))
+    world.advancement('diamond', icon('tfc:ore/diamond'), 'DIAM- oh, wait', 'Find Diamonds (Kimberlite).', 'nugget', inventory_changed('tfc:ore/diamond'))
+    world.advancement('graphite', icon('tfc:ore/graphite'), 'Better than Diamonds', 'Find Graphite.', 'nugget', inventory_changed('tfc:ore/graphite'), frame='goal')
+    world.advancement('kaolinite', icon('tfc:ore/kaolinite'), 'Pink Unicorn', 'Find Kaolinite.', 'nugget', inventory_changed('tfc:ore/kaolinite'), frame='goal')
+    world.advancement('sylvite', icon('tfc:ore/sylvite'), 'Plant Food', 'Find Sylvite.', 'nugget', inventory_changed('tfc:ore/sylvite'))
+    world.advancement('nickel', icon('tfc:ore/small_garnierite'), 'Nickels and Dimes', 'Find Garnierite.', 'nugget', inventory_changed('tfc:ore/small_garnierite'), frame='goal')
+    world.advancement('iron', icon('tfc:ore/small_hematite'), 'Pretty Ironic', 'Find Hematite, Liminote, and Magnetite nuggets.', 'nugget', multiple(*[inventory_changed('tfc:ore/small_%s' % o, name=o) for o in ('hematite', 'limonite', 'magnetite')]), requirements=[[o] for o in ('hematite', 'limonite', 'magnetite')])
+    world.advancement('compost', icon('tfc:compost'), 'Reduce Reuse Recycle', 'Make compost in a composter.', 'root', inventory_changed('tfc:compost'))
+    world.advancement('rotten_compost', icon('tfc:rotten_compost'), 'Wasteful', 'Kill a plant with rotten compost.', 'compost', generic('tfc:plant_killed', {'tag': 'tfc:plants'}))
+    world.advancement('guano', icon('tfc:groundcover/guano'), 'Gift from the Birds', 'Find guano.', 'root', inventory_changed('tfc:groundcover/guano'))
+    world.advancement('full_fertilizer', icon('tfc:pure_nitrogen'), 'Fully Fertile', 'Raise a crop to 10/10/10 nutrient levels.', 'seeds', generic('tfc:full_fertilizer', None))
+    world.advancement('hunter', icon('tfc:food/chevon'), 'Hunter', 'Kill an animal.', 'root', kill_mob('#tfc:animals'))
+    world.advancement('glow_hunter', icon('minecraft:glow_ink_sac'), 'Mystery of the Depths', 'Kill the Octopoteuthis', 'hunter', kill_mob('tfc:octopoteuthis'), hidden=True, frame='goal')
+    world.advancement('bear_hunter', icon('tfc:large_raw_hide'), 'Bear Attack', 'Kill a Bear.', 'hunter', kill_mob('#tfc:bears'))
+    world.advancement('fishing', icon('tfc:metal/fishing_rod/copper'), 'Fisherman', 'Hook a fish with a fishing rod.', 'hunter', generic('tfc:hooked_entity', {'entity': entity_predicate('#tfc:small_fish')}))
+    world.advancement('advanced_fishing', icon('tfc:metal/fishing_rod/red_steel'), 'Master Fisherman', 'Hook a dolphin or an orca with a fishing rod.', 'fishing', generic('tfc:hooked_entity', {'entity': entity_predicate('#tfc:needs_large_fishing_bait')}), frame='goal')
+    world.advancement('greatest_hunter', icon('tfc:metal/javelin/red_steel'), 'Greatest Hunter', 'Hit a rabbit from 50m away with a javelin.', 'hunter', generic('tfc:stab_entity', {'entity': entity_predicate('tfc:rabbit', {'distance': {'horizontal': {'min': 50}}})}))
+    world.advancement('artist', icon('minecraft:red_dye'), 'Artist', 'Procure all 16 colors of dye.', 'root', multiple(*[inventory_changed('minecraft:%s_dye' % c, name=c) for c in COLORS]), requirements=[[c] for c in COLORS], frame='goal')
+    world.advancement('familiarity', icon('tfc:food/wheat_grain'), 'A New Friend', 'Feed an animal some food to familiarize it.', 'root', generic('tfc:fed_animal', {'entity': entity_predicate('#tfc:animals')}))
+    world.advancement('tame_horse', icon('minecraft:saddle'), 'Horsing Around', 'Raise a horse\'s familiarity enough to tame it.', 'familiarity', generic('minecraft:tame_animal', {'entity': [entity_predicate('#tfc:horses')]}))
+    world.advancement('powderkeg', icon('tfc:powderkeg'), 'Big Boom', 'Light a powderkeg.', 'root', generic('tfc:lit', {'block': 'tfc:powderkeg'}))
+    world.advancement('full_powderkeg', icon('minecraft:gunpowder'), 'Demolitions Expert', 'Light a fully loaded powderkeg.', 'powderkeg', generic('tfc:full_powderkeg', None))
+    world.advancement('gemologist', icon('tfc:gem/amethyst'), 'Gemologist', 'Find every gem ore in TFC.', 'nugget', multiple(*[inventory_changed('tfc:ore/%s' % g, name=g) for g in GEMS]), requirements=[[g] for g in GEMS], frame='goal')
+    world.advancement('minerologist', icon('tfc:ore/halite'), 'Minerologist', 'Find every non-metal mineral in TFC.', 'gemologist', multiple(*[inventory_changed('tfc:ore/%s' % g, name=g) for g in ALL_MINERALS]), frame='goal')
+    world.advancement('metallurgist', icon('tfc:metal/ingot/gold'), 'Metallurgist', 'Obtain a metal-bearing specimen for every metal in TFC.', 'nugget', multiple(*[inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:%s' % m}, name=m) for m in METALS.keys()]), requirements=[[m] for m in METALS], frame='goal')
+
+def kill_mob(mob: str, other: Dict = None) -> Json:
+    return generic('minecraft:player_killed_entity', {'entity': [entity_predicate(mob, other)]})
+
+# if the predicate is an EntityPredicate.Composite, this should be inside an array.
+def entity_predicate(mob: str, other: Dict = None) -> Json:
+    dic = {
+        'condition': 'minecraft:entity_properties',
+        'predicate': {'type': mob},  # can be a hashtag to refer to entity tags
+        'entity': 'this',
+    }
+    if other is not None:
+        dic.update(other)
+    return dic
+
+def consume_item(item: str, name: str = 'item_consumed') -> Json:
+    if isinstance(item, str) and name == 'item_consumed':
+        name = item.split(':')[1]
+    return {name: {'item': utils.item_predicate(item)}}
 
 def icon(name: str) -> Json:
     return {'item': name}
+
+def biome(biome_name: str) -> Json:
+    return generic('minecraft:location', {'location': {'biome': 'tfc:%s' % biome_name}}, name=biome_name)
 
 def multiple(*conditions: Json) -> Json:
     merged = {}

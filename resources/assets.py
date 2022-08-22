@@ -122,7 +122,7 @@ def generate(rm: ResourceManager):
                 block = rm.blockstate('tfc:ore/small_%s' % ore, variants={"": four_ways('tfc:block/groundcover/%s' % ore)}, use_default_model=False)
                 block.with_lang(lang('small %s', ore)).with_block_loot('tfc:ore/small_%s' % ore).with_tag('can_be_snow_piled')
 
-                rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore))
+                rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore)).with_tag('nuggets')
 
                 for grade in ORE_GRADES.keys():
                     block = rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock))

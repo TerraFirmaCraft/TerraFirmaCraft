@@ -28,12 +28,14 @@ public class SpecialBlockTrigger extends SimpleCriterionTrigger<SpecialBlockTrig
         CriteriaTriggers.register(LIT);
         CriteriaTriggers.register(ROCK_ANVIL);
         CriteriaTriggers.register(FIREPIT_CREATED);
+        CriteriaTriggers.register(PLANT_KILLED);
     }
 
     public static final SpecialBlockTrigger CHISELED = new SpecialBlockTrigger(Helpers.identifier("chiseled"));
     public static final SpecialBlockTrigger LIT = new SpecialBlockTrigger(Helpers.identifier("lit"));
     public static final SpecialBlockTrigger ROCK_ANVIL = new SpecialBlockTrigger(Helpers.identifier("rock_anvil"));
     public static final SpecialBlockTrigger FIREPIT_CREATED = new SpecialBlockTrigger(Helpers.identifier("firepit_created"));
+    public static final SpecialBlockTrigger PLANT_KILLED = new SpecialBlockTrigger(Helpers.identifier("plant_killed"));
 
     private final ResourceLocation id;
 
