@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/mold",
+  "criteria": {
+    "item_obtained": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "tfc:metal_tool",
+            "metal": "tfc:copper"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/axe_head/copper"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.copper_age.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.copper_age.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "item_obtained"
+    ]
+  ]
+}

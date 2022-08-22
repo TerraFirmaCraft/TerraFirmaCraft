@@ -116,7 +116,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 
     'tuyere': MetalItem('tool', 100, 'item/generated', None, False),
     'fish_hook': MetalItem('tool', 100, 'item/generated', None, False),
-    'fishing_rod': MetalItem('tool', 100, 'item/generated', None, False),
+    'fishing_rod': MetalItem('tool', 100, 'item/generated', 'forge:fishing_rods', False),
     'pickaxe': MetalItem('tool', 100, 'item/handheld', None, False),
     'pickaxe_head': MetalItem('tool', 100, 'item/generated', None, True),
     'shovel': MetalItem('tool', 100, 'item/handheld', None, False),

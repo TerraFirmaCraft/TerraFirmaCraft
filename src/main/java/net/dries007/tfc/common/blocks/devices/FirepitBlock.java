@@ -48,6 +48,7 @@ import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.SpecialBlockTrigger;
 import org.jetbrains.annotations.Nullable;
 
 public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBellowsConsumer
@@ -195,7 +196,12 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
             {
                 if (!level.isClientSide)
                 {
-                    AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get());
+                    final Block newBlock = stack.getItem() == TFCItems.POT.get() ? TFCBlocks.POT.get() : TFCBlocks.GRILL.get();
+                    AbstractFirepitBlockEntity.convertTo(level, pos, state, firepit, newBlock);
+                    if (player instanceof ServerPlayer serverPlayer)
+                    {
+                        SpecialBlockTrigger.FIREPIT_CREATED.trigger(serverPlayer, newBlock.defaultBlockState());
+                    }
                     if (!player.isCreative()) stack.shrink(1);
                 }
                 return InteractionResult.SUCCESS;

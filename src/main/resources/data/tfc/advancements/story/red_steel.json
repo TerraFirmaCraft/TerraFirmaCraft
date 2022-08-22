@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/black_steel",
+  "criteria": {
+    "item_obtained": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "tfc:metal_item",
+            "metal": "tfc:red_steel"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/blue_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.red_steel.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.red_steel.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "item_obtained"
+    ]
+  ]
+}

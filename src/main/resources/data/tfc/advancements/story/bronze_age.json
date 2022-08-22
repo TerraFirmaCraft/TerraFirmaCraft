@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/copper_age",
+  "criteria": {
+    "item_obtained": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "type": "tfc:metal_item",
+            "tier": 2
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/sword/bronze"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.bronze_age.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.bronze_age.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "item_obtained"
+    ]
+  ]
+}

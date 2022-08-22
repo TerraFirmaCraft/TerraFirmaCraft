@@ -12,6 +12,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -39,6 +40,7 @@ import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.events.SpecialBlockTrigger;
 import net.dries007.tfc.util.events.StartFireEvent;
 
 public class FirestarterItem extends Item
@@ -50,19 +52,19 @@ public class FirestarterItem extends Item
 
     @Override
     @SuppressWarnings("deprecation")
-    public void onUseTick(Level world, LivingEntity livingEntityIn, ItemStack stack, int countLeft)
+    public void onUseTick(Level level, LivingEntity livingEntityIn, ItemStack stack, int countLeft)
     {
         if (livingEntityIn instanceof final Player player)
         {
-            final BlockHitResult result = getPlayerPOVHitResult(world, player, ClipContext.Fluid.NONE);
+            final BlockHitResult result = getPlayerPOVHitResult(level, player, ClipContext.Fluid.NONE);
 
             final BlockPos pos = result.getBlockPos();
             final BlockPos abovePos = pos.above();
-            double chance = TFCConfig.SERVER.fireStarterChance.get() * (world.isRainingAt(abovePos) ? 0.3 : 1);
-            if (world.isClientSide())
+            double chance = TFCConfig.SERVER.fireStarterChance.get() * (level.isRainingAt(abovePos) ? 0.3 : 1);
+            if (level.isClientSide())
             {
                 Vec3 location = result.getLocation();
-                makeEffects(world, player, location.x(), location.y(), location.z(), countLeft, getUseDuration(stack), world.random);
+                makeEffects(level, player, location.x(), location.y(), location.z(), countLeft, getUseDuration(stack), level.random);
             }
             else if (countLeft == 1)
             {
@@ -70,9 +72,9 @@ public class FirestarterItem extends Item
                 {
                     stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
                 }
-                if (FirepitBlock.canSurvive(world, pos)) // firepit
+                if (FirepitBlock.canSurvive(level, pos)) // firepit
                 {
-                    final List<ItemEntity> items = world.getEntitiesOfClass(ItemEntity.class, new AABB(abovePos, abovePos.offset(1, 2, 1)));
+                    final List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, new AABB(abovePos, abovePos.offset(1, 2, 1)));
                     final List<ItemEntity> usableItems = new ArrayList<>();
 
                     int sticks = 0, kindling = 0;
@@ -101,7 +103,7 @@ public class FirestarterItem extends Item
                     if (sticks >= 3 && logEntity != null)
                     {
                         final float kindlingModifier = Math.min(0.1F * (float) kindling, 0.5F);
-                        if (world.random.nextFloat() < chance + kindlingModifier)
+                        if (level.random.nextFloat() < chance + kindlingModifier)
                         {
                             usableItems.forEach(Entity::kill);
                             logEntity.kill();
@@ -110,20 +112,24 @@ public class FirestarterItem extends Item
                             initialLog.setCount(1);
 
                             final BlockState state = TFCBlocks.FIREPIT.get().defaultBlockState();
-                            world.setBlock(abovePos, state, 3);
-                            world.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.getCapability(Capabilities.ITEM).ifPresent(cap -> {
+                            level.setBlock(abovePos, state, 3);
+                            level.getBlockEntity(abovePos, TFCBlockEntities.FIREPIT.get()).ifPresent(firepit -> firepit.getCapability(Capabilities.ITEM).ifPresent(cap -> {
                                 if (cap instanceof IItemHandlerModifiable modifiableInventory)
                                 {
                                     modifiableInventory.setStackInSlot(AbstractFirepitBlockEntity.SLOT_FUEL_CONSUME, initialLog);
                                 }
                                 firepit.light(state);
                             }));
+                            if (player instanceof ServerPlayer serverPlayer)
+                            {
+                                SpecialBlockTrigger.FIREPIT_CREATED.trigger(serverPlayer, state);
+                            }
                         }
                         return;
                     }
                 }
                 // if can't make a firepit, try to light the block
-                StartFireEvent.startFire(world, pos, world.getBlockState(pos), result.getDirection(), player, stack);
+                StartFireEvent.startFire(level, pos, level.getBlockState(pos), result.getDirection(), player, stack);
             }
         }
     }

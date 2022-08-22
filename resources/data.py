@@ -58,14 +58,13 @@ def generate(rm: ResourceManager):
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type in metal_data.types or item_data.type == 'all':
                 if item_data.tag is not None:
+                    rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
                     rm.item_tag(item_data.tag + '/' + metal, 'tfc:metal/%s/%s' % (item, metal))
                     ingredient = utils.item_stack('#%s/%s' % (item_data.tag, metal))
                 else:
                     ingredient = utils.item_stack('tfc:metal/%s/%s' % (item, metal))
 
                 item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
-                if 'tool' in metal_data.types and item == 'fishing_rod':
-                    rm.item_tag('forge:fishing_rods', 'tfc:metal/%s/%s' % (item, metal))
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -380,7 +379,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
-    rm.block_tag('mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
+    block_and_item_tag(rm, 'mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():
@@ -414,8 +413,7 @@ def generate(rm: ResourceManager):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
-        block_and_item_tag(rm, 'forge:stone', block('raw'))
-        rm.block_tag('forge:stone', block('hardened'))
+        block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
@@ -914,6 +912,9 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
+
+    import advancements
+    advancements.main(rm)
 
 
 def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, entity_tag: str, piercing: int = 0, slashing: int = 0, crushing: int = 0):

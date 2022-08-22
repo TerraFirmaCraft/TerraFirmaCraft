@@ -9,6 +9,7 @@ package net.dries007.tfc.common.items;
 import java.util.function.Function;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +27,7 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.events.SpecialBlockTrigger;
 
 public class ChiselItem extends ToolItem
 {
@@ -68,6 +70,10 @@ public class ChiselItem extends ToolItem
                     });
                 }
                 level.setBlockAndUpdate(pos, resultState);
+                if (player instanceof ServerPlayer serverPlayer)
+                {
+                    SpecialBlockTrigger.CHISELED.trigger(serverPlayer, resultState);
+                }
 
                 held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
                 player.getCooldowns().addCooldown(this, 10);
