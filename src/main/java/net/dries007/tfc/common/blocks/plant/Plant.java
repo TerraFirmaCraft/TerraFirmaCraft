@@ -149,11 +149,11 @@ public enum Plant implements RegistryPlant
     DRY_PHRAGMITE_PLANT(BlockType.TWISTING, 0.3F),
     DRY_PHRAGMITE(BlockType.TWISTING_TOP, 0.3F),
     WINGED_KELP_PLANT(BlockType.KELP, 0.7F),
-    WINGED_KELP(BlockType.KELP_TOP, 0.7F),
+    WINGED_KELP(BlockType.KELP_TOP, 1.0F),
     LEAFY_KELP_PLANT(BlockType.KELP, 0.7F),
-    LEAFY_KELP(BlockType.KELP_TOP, 0.7F),
+    LEAFY_KELP(BlockType.KELP_TOP, 1.0F),
     GIANT_KELP_PLANT(BlockType.KELP_TREE, 0.2F),
-    GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 0.2F),
+    GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 1.0F),
     IVY(BlockType.VINE, 1.0F),
     JUNGLE_VINES(BlockType.VINE, 1.0F);
 
