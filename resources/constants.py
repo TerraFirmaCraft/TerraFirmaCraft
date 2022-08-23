@@ -531,6 +531,25 @@ COLOR_COMBOS = [
     ('yellow', 'blue', 'green')
 ]
 
+VESSEL_TYPES = {
+    'blue': 'a',
+    'brown': 'a',
+    'gray': 'a',
+    'light_gray': 'a',
+    'magenta': 'a',
+    'orange': 'a',
+    'white': 'a',
+    'pink': 'b',
+    'cyan': 'b',
+    'purple': 'b',
+    'yellow': 'c',
+    'black': 'c',
+    'light_blue': 'c',
+    'lime': 'c',
+    'red': 'c',
+    'green': 'd'
+}
+
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
                 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'spindle',

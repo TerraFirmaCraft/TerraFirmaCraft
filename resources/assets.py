@@ -350,8 +350,7 @@ def generate(rm: ResourceManager):
     item_model_property(rm, 'tfc:ceramic/large_vessel', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/large_vessel_sealed'}], {'parent': 'tfc:block/ceramic/large_vessel_opened'})
     
     # Unfired large undyed vessel
-    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay','bottom':'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed')
-    rm.lang('item.tfc.ceramic.unfired_large_vessel', lang("unfired large vessel"))
+    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay', 'bottom': 'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed').with_lang(lang('unfired large vessel'))
 
     for color in COLORS:
         vessel = 'tfc:ceramic/large_vessel/%s' % color
@@ -366,12 +365,20 @@ def generate(rm: ResourceManager):
             'conditions': [loot_tables.block_state_property(vessel + '[sealed=true]')]
         }, vessel))
         block.with_tag('minecraft:mineable/pickaxe')
-        rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures={'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_sealed')
-        rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures={'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_opened')
-        item_model_property(rm, 'tfc:ceramic/large_vessel/%s' % color, [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color}], {'parent': 'tfc:block/ceramic/%s_large_vessel_opened' % color})
-        rm.item_model('tfc:ceramic/unfired_large_vessel/%s' % color, {'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top_clay' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom_clay' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color}, parent='tfc:block/ceramic/large_vessel_sealed')
-        rm.lang('item.tfc.ceramic.unfired_large_vessel.%s' % color, lang("%s unfired large vessel", color))
-    
+        tex = 'tfc:block/ceramic/large_vessel/glazed/%s' % color
+        normal_tex = {'top': tex + '/top', 'side': tex + '/side', 'bottom': tex + '/bottom'}
+        clay_tex = {'top': tex + '/top_clay', 'bottom': tex + '/bottom_clay', 'side': tex + '/side_clay'}
+        parent_model = 'tfc:block/ceramic/large_vessel_' + VESSEL_TYPES[color]
+        if VESSEL_TYPES[color] == 'd':
+            normal_tex['back'] = tex + '/back'
+            clay_tex['back'] = tex + '/back_clay'
+        if VESSEL_TYPES[color] == 'c' or VESSEL_TYPES[color] == 'd':
+            normal_tex['front'] = tex + '/front'
+            clay_tex['front'] = tex + '/front_clay'
+        rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures=normal_tex, parent=parent_model + '_sealed')
+        rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures=normal_tex, parent=parent_model + '_opened')
+        item_model_property(rm, vessel, [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color}], {'parent': 'tfc:block/ceramic/%s_large_vessel_opened' % color})
+        rm.item_model('tfc:ceramic/unfired_large_vessel/%s' % color, clay_tex, parent=parent_model + '_sealed').with_lang(lang('%s unfired large vessel', color))
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
