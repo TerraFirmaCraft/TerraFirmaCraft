@@ -8,7 +8,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "bismuth"
+            "metal": "tfc:bismuth"
           }
         ]
       }
@@ -19,7 +19,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "bismuth_bronze"
+            "metal": "tfc:bismuth_bronze"
           }
         ]
       }
@@ -30,7 +30,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "black_bronze"
+            "metal": "tfc:black_bronze"
           }
         ]
       }
@@ -41,7 +41,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "bronze"
+            "metal": "tfc:bronze"
           }
         ]
       }
@@ -52,7 +52,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "brass"
+            "metal": "tfc:brass"
           }
         ]
       }
@@ -63,7 +63,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "copper"
+            "metal": "tfc:copper"
           }
         ]
       }
@@ -74,7 +74,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "gold"
+            "metal": "tfc:gold"
           }
         ]
       }
@@ -85,7 +85,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "nickel"
+            "metal": "tfc:nickel"
           }
         ]
       }
@@ -96,7 +96,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "rose_gold"
+            "metal": "tfc:rose_gold"
           }
         ]
       }
@@ -107,7 +107,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "silver"
+            "metal": "tfc:silver"
           }
         ]
       }
@@ -118,7 +118,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "tin"
+            "metal": "tfc:tin"
           }
         ]
       }
@@ -129,7 +129,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "zinc"
+            "metal": "tfc:zinc"
           }
         ]
       }
@@ -140,7 +140,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "sterling_silver"
+            "metal": "tfc:sterling_silver"
           }
         ]
       }
@@ -163,7 +163,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "cast_iron"
+            "metal": "tfc:cast_iron"
           }
         ]
       }
@@ -174,7 +174,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "pig_iron"
+            "metal": "tfc:pig_iron"
           }
         ]
       }
@@ -185,7 +185,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "steel"
+            "metal": "tfc:steel"
           }
         ]
       }
@@ -196,7 +196,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "black_steel"
+            "metal": "tfc:black_steel"
           }
         ]
       }
@@ -207,7 +207,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "blue_steel"
+            "metal": "tfc:blue_steel"
           }
         ]
       }
@@ -218,7 +218,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "red_steel"
+            "metal": "tfc:red_steel"
           }
         ]
       }
@@ -229,7 +229,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "weak_steel"
+            "metal": "tfc:weak_steel"
           }
         ]
       }
@@ -240,7 +240,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "weak_blue_steel"
+            "metal": "tfc:weak_blue_steel"
           }
         ]
       }
@@ -251,7 +251,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "weak_red_steel"
+            "metal": "tfc:weak_red_steel"
           }
         ]
       }
@@ -310,7 +310,7 @@
         "items": [
           {
             "type": "tfc:metal_item",
-            "metal": "unknown"
+            "metal": "tfc:unknown"
           }
         ]
       }

@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.util.Helpers;
 
 public class SpecialEntityTrigger extends SimpleCriterionTrigger<SpecialEntityTrigger.TriggerInstance>
@@ -47,7 +48,11 @@ public class SpecialEntityTrigger extends SimpleCriterionTrigger<SpecialEntityTr
     @Override
     protected SpecialEntityTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context)
     {
-        EntityPredicate ingredient = EntityPredicate.fromJson(json);
+        EntityPredicate ingredient = EntityPredicate.fromJson(json.get("entity"));
+        if (ingredient == EntityPredicate.ANY)
+        {
+            TerraFirmaCraft.LOGGER.error("Entity predicate '{}' failed to load: ", id);
+        }
         return new SpecialEntityTrigger.TriggerInstance(predicate, ingredient);
     }
 

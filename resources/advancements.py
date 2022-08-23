@@ -83,7 +83,7 @@ def main(rm: ResourceManager):
     world.advancement('trench', icon('tfc:rock/magma/diorite'), 'In the Trenches', 'Find a deep ocean trench.', 'volcano', biome('deep_ocean_trench'))
     world.advancement('adventuring_time', icon('tfc:metal/boots/red_steel'), 'Adventuring Time', 'Discover every biome in TFC.', 'volcano', multiple(*[biome(b) for b in TFC_BIOMES]), requirements=[[b] for b in TFC_BIOMES], frame='challenge')
     world.advancement('globe_trotter', icon('minecraft:map'), 'Globe Trotter', 'Travel to positive 20,000 and -20,000 z, the hottest and coldest points nearest to spawn.', 'root', multiple(generic('minecraft:location', {'location': {'position': {'z': {'min': 20000}}}}, name='high'), generic('minecraft:location', {'location': {'position': {'z': {'max': -20000}}}}, name='low')), requirements=[['high'], ['low']])
-    world.advancement('fruit', icon('tfc:food/orange'), 'Healthy Diet', 'Eat every berry and tree fruit in TFC.', 'root', multiple(*[consume_item('tfc:food/%s' % f, name=f) for f in (*BERRIES, *FRUITS)]), requirements=[[f] for f in (*BERRIES, *FRUITS)])
+    world.advancement('fruit', icon('tfc:food/orange'), 'Healthy Diet', 'Eat every berry and tree fruit in TFC.', 'root', multiple(*[consume_item('tfc:food/%s' % f, name=f) for f in (*BERRIES, *FRUITS)]), requirements=[[f] for f in (*BERRIES, *FRUITS)], frame='challenge')
     world.advancement('saplings', icon('tfc:wood/sapling/pine'), 'Arborist', 'Find every (non-fruit) tree sapling in TFC', 'root', multiple(*[inventory_changed('tfc:wood/sapling/%s' % t, name=t) for t, v in TREE_SAPLING_DROP_CHANCES.items() if v > 0]), requirements=[[t] for t, v in TREE_SAPLING_DROP_CHANCES.items() if v > 0])
     world.advancement('nugget', icon('tfc:ore/small_native_copper'), 'A Weird Rock', 'Find a metal nugget on the ground.', 'root', inventory_changed('#tfc:nuggets'))
     world.advancement('coal', icon('tfc:ore/lignite'), 'Carboniferous', 'Find Bituminous Coal or Lignite.', 'nugget', multiple(inventory_changed('tfc:ore/lignite'), inventory_changed('tfc:ore/bituminous_coal')))
@@ -117,7 +117,7 @@ def metal_criteria() -> Json:
         if metal in ('high_carbon_red_steel', 'high_carbon_steel', 'high_carbon_black_steel', 'high_carbon_blue_steel', 'wrought_iron'):
             criteria.update(inventory_changed('tfc:metal/ingot/%s' % metal, name=metal))
         else:
-            criteria.update(inventory_changed({'type': 'tfc:metal_item', 'metal': metal}, name=metal))
+            criteria.update(inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:%s' % metal}, name=metal))
     return criteria
 
 
@@ -140,7 +140,7 @@ def entity_predicate(mob: str, other: Dict = None) -> Json:
 def consume_item(item: str, name: str = 'item_consumed') -> Json:
     if isinstance(item, str) and name == 'item_consumed':
         name = item.split(':')[1]
-    return {name: {'item': utils.item_predicate(item)}}
+    return generic('minecraft:consume_item', {'item': utils.item_predicate(item)}, name=name)
 
 def icon(name: str) -> Json:
     return {'item': name}

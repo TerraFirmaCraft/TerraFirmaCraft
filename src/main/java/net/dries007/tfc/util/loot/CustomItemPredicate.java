@@ -18,6 +18,7 @@ import net.minecraft.world.item.TieredItem;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.util.Helpers;
@@ -75,6 +76,7 @@ public class CustomItemPredicate extends ItemPredicate
         return null;
     }
 
+    @Nullable
     public static Metal metalFromJson(JsonObject json)
     {
         if (json.has("metal"))
@@ -85,9 +87,11 @@ public class CustomItemPredicate extends ItemPredicate
             {
                 return metal;
             }
-            throw new JsonSyntaxException("Not a metal: " + metalLocation);
+            TerraFirmaCraft.LOGGER.error("Not a metal: " + metalLocation);
+            return null;
         }
-        throw new JsonSyntaxException("Expected a key 'metal', found: " + json);
+        TerraFirmaCraft.LOGGER.error("Expected a key 'metal', found: " + json);
+        return null;
     }
 
     private final Predicate<ItemStack> predicate;
