@@ -463,6 +463,40 @@ PLANTS: Dict[str, Plant] = {
     'water_taro': Plant(False, 12, 40, 260, 500, 'emergent_fresh'),
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
+
+SIMPLE_STAGE_PLANTS: Dict[str, int] = {
+    'allium': 8,
+    'anthurium': 2,
+    'black_orchid': 3,
+    'blood_lily': 4,
+    'blue_ginger': 2,
+    'blue_orchid': 3,
+    'butterfly_milkweed': 7,
+    'desert_flame': 2,
+    'heliconia': 3,
+    'houstonia': 3,
+    'goldenrod': 5,
+    'grape_hyacinth': 4,
+    'kangaroo_paw': 2,
+    'labrador_tea': 7,
+    'meads_milkweed': 7,
+    'nasturtium': 5,
+    'oxeye_daisy': 6,
+    'perovskia': 6,
+    'poppy': 5,
+    'primrose': 3,
+    'pulsatilla': 6,
+    'sacred_datura': 4,
+    'silver_spurflower': 3,
+    'strelitzia': 3,
+    'trillium': 6,
+    'tropical_milkweed': 4,
+    'yucca': 4
+}
+
+MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant']
+SEAGRASS: List[str] = ['star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail']
+
 UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
 SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
 CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
@@ -679,6 +713,7 @@ DEFAULT_LANG = {
     'effect.tfc.glow_ink': 'Glowing Ink',
     'effect.tfc.overburdened': 'Overburdened',
     'effect.tfc.thirst': 'Thirst',
+    'effect.tfc.exhausted': 'Exhausted',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',

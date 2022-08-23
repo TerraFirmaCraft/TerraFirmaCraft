@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:mechanics/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
+      "text": "You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
     },
     {
       "type": "patchouli:text",
@@ -56,11 +56,15 @@
             "X"
           ],
           [
+            "Y"
+          ],
+          [
             "0"
           ]
         ],
         "mapping": {
-          "X": "tfc:plant/cattail[part=lower,fluid=water]"
+          "X": "minecraft:air",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
         }
       },
       "name": "Water Safety",
@@ -70,7 +74,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/jug",
-      "text": "Knapping a jug a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water."
+      "text": "$(l:getting_started/pottery)Knapping$() and firing a $(l:getting_started/pottery#jug)jug$() is a way to carry water with you. Fill it like a bucket with $(item)$(k:key.use)$(). Holding $(item)$(k:key.use)$() drinks the water."
     },
     {
       "type": "patchouli:text",

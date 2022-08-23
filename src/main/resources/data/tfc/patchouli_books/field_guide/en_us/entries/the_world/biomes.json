@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes, from oceans to plains to hills to mountains that can be found."
+      "text": "The world is made up of $(thing)biomes$(). Biomes determine the rough shape of the landscape, the surface material, and some other features. There are several different types of biomes to explore, including oceans, river canyons, plains, hills, and mountains."
     },
     {
       "type": "patchouli:text",
@@ -71,7 +71,7 @@
     {
       "type": "patchouli:text",
       "anchor": "mountains",
-      "text": "In high elevation areas, multiple types of mountains, may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs, and rare volcanoes.",
+      "text": "In high elevation areas, multiple types of mountains may be found. Old Mountains are shorter and smoother, while Mountains stretch tall with rocky cliff faces. Mountains formed in areas of high tectonic activity can also generate hot springs and rare volcanoes.",
       "title": "Mountains"
     },
     {
@@ -79,7 +79,7 @@
       "images": [
         "tfc:textures/gui/book/biomes/old_mountains.png"
       ],
-      "text": "An Old Mountains with a hot spring on the snowy slopes.",
+      "text": "Old Mountains with a hot spring on the snowy slopes.",
       "border": true
     },
     {

@@ -11,7 +11,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -32,24 +31,26 @@ public class WeldingRecipeCategory extends BaseRecipeCategory<WeldingRecipe>
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, WeldingRecipe recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
-        IRecipeSlotBuilder inputSlot2 = builder.addSlot(RecipeIngredientRole.INPUT, 26, 5);
-        IRecipeSlotBuilder flux = builder.addSlot(RecipeIngredientRole.CATALYST, 46, 5);
-        IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5);
+        builder.addSlot(RecipeIngredientRole.INPUT, 6, 5)
+            .addIngredients(recipe.getFirstInput())
+            .setBackground(slot, -1, -1);
 
-        inputSlot.addIngredients(recipe.getFirstInput());
-        inputSlot2.addIngredients(recipe.getSecondInput());
-        flux.addIngredients(Ingredient.of(TFCTags.Items.FLUX));
-        outputSlot.addItemStack(recipe.getResultItem());
+        builder.addSlot(RecipeIngredientRole.INPUT, 26, 5)
+            .addIngredients(recipe.getSecondInput())
+            .setBackground(slot, -1, -1);
+
+        builder.addSlot(RecipeIngredientRole.CATALYST, 46, 5)
+            .addIngredients(Ingredient.of(TFCTags.Items.FLUX))
+            .setBackground(slot, -1, -1);
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 96, 5)
+            .addItemStack(recipe.getResultItem())
+            .setBackground(slot, -1, -1);
     }
 
     @Override
     public void draw(WeldingRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 5, 4);
-        slot.draw(stack, 25, 4);
-        slot.draw(stack, 45, 4);
-        slot.draw(stack, 95, 4);
         arrow.draw(stack, 68, 5);
         arrowAnimated.draw(stack, 68, 5);
     }

@@ -40,6 +40,7 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class CropBlock extends net.minecraft.world.level.block.CropBlock implements HoeOverlayBlock, ICropBlock, IForgeBlockExtension, EntityBlockExtension
@@ -185,7 +186,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
             .ifPresent(crop -> {
                 if (isDebug)
                 {
-                    text.add(Helpers.literal(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield())));
+                    text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
                 }
                 if (crop.getGrowth() >= 1)
                 {
@@ -193,7 +194,6 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
                 }
             });
     }
-
 
     @Override
     public void growthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)

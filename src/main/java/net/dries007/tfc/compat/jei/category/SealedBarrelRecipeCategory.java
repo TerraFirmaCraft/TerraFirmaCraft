@@ -52,6 +52,7 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
             final IRecipeSlotBuilder intermediateSlot = builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 76, 5);
             intermediateSlot.addItemStacks(intermediateItem);
             intermediateSlot.addTooltipCallback((slots, tooltip) -> tooltip.add(1, Helpers.translatable("tfc.tooltip.while_sealed_description").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC)));
+            intermediateSlot.setBackground(slot, -1, -1);
 
             // Note that the output item might be empty as parsed by the super() call, so we need to re-check it.
             if ((outputItem.isEmpty() || outputItem.stream().allMatch(ItemStack::isEmpty)) && recipe.getOnUnseal() != null)
@@ -61,11 +62,12 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
                 {
                     final int[] positions = slotPositions(recipe);
                     final FluidStack outputFluid = recipe.getOutputFluid();
-                    outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.isEmpty() ? positions[2] : positions[3], 5).setSlotName(ITEM_OUTPUT);
+                    outputItemSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, outputFluid.isEmpty() ? positions[2] : positions[3], 5);
                 }
 
                 final List<ItemStack> outputFromIntermediate = collapse(intermediateItem, recipe.getOnUnseal());
                 outputItemSlot.addItemStacks(outputFromIntermediate);
+                outputItemSlot.setBackground(slot, -1, -1);
             }
 
             // Create a link between all item slots if the seal behavior depends on the input
@@ -83,7 +85,6 @@ public class SealedBarrelRecipeCategory extends BarrelRecipeCategory<SealedBarre
 
         if (recipe.getOnSeal() != null)
         {
-            slot.draw(stack, 75, 4);
             arrow.draw(stack, 98, 5);
             arrowAnimated.draw(stack, 98, 5);
         }

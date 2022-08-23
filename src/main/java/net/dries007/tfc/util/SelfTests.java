@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -32,6 +33,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
@@ -42,6 +45,7 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -55,6 +59,7 @@ import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.util.calendar.Day;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
 import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.world.chunkdata.ForestType;
@@ -253,7 +258,14 @@ public final class SelfTests
 
     private static boolean validateOwnBlockEntities()
     {
-        return validateBlockEntities(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
+        final List<BlockEntityType<?>> errors = stream(ForgeRegistries.BLOCK_ENTITIES, MOD_ID)
+            .filter(type -> {
+                final BlockEntity b = type.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
+                return b instanceof TickCounterBlockEntity && b instanceof ICalendarTickable;
+            })
+            .toList();
+        return logRegistryErrors("{} block entities implement ICalendarTickable through TickCounterBlockEntity, this is almost surely a bug", errors, LOGGER)
+            | validateBlockEntities(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
     }
 
     private static boolean validateOwnBlockLootTables()

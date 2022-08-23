@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$()Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle."
+      "text": "Many different varieties of wild fruits can be found growing in the world. These can be collected to be eaten, or farmed, with the right equipment. These can be found on different varieties of bushes or trees. In general, fruits can be found in three types of plants: $(l:the_world/wild_fruits#fruit_trees)Fruit Trees$(), $(l:the_world/wild_fruits#tall_bushes)Tall Bushes$(), and $(l:the_world/wild_fruits#small_bushes)Small Bushes$().$(br2)All fruiting plants have a common lifecycle. They will grow, form flowers, sprout fruit, and then lay dormant in a yearly cycle."
     },
     {
       "type": "patchouli:text",
-      "text": "Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit, with no two being the same. Fruit plants can die, as well: of old age, and of improper climate conditions."
+      "text": "Fruit plants are seasonal. During their cold season, these plants will appear brown and lifeless. In the spring, they become green and healthy, getting ready to produce fruit and grow larger. The exact times this happen varies by the fruit. Fruit plants can die, as well: of old age, and of improper climate conditions."
     },
     {
       "type": "patchouli:text",

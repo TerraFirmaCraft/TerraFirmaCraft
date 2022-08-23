@@ -16,7 +16,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Supports can come in horizontal and vertical variations. Placing supports on top of a block places a column of up to three support beams. These vertical supports will be destroyed if they lose their base of support. Horizontal supports are automatically placed by pressing $(item)$(k:key.use)$() on the side of a vertical support beam. If there is a direct path to another vertical support beam, and enough items, the horizontal support will be formed.",
+      "text": "Supports can come in horizontal and vertical variations. Placing supports on top of a block places a column of up to three support beams. These vertical supports will be destroyed if they lose their base of support. Horizontal supports are placed by pressing $(item)$(k:key.use)$() on the side of a vertical support beam. If there is a direct path to another vertical support beam and enough beams available, the horizontal support will be formed.",
       "title": "Supporting Supports"
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Only horizontal support beams, the kind that have no 'elbow' components, can support blocks. The range that block supports is 4 blocks horizontal in each direction, and one block above and below. Blocks in this area are protected from collapsing. However, be warned! Mining outside of this range can easily cause collapses that end up in (and potentially destroy) your safe zone."
+      "text": "Only horizontal support beams, the kind that have no 'elbow' components, support blocks. Those beams support 4 blocks in each direction horizontally, and one block above and below. Blocks in this area are protected from collapsing. However, be warned! Mining outside of this range can easily cause collapses that end up in (and potentially destroy) your safe zone."
     }
   ],
   "read_by_default": true

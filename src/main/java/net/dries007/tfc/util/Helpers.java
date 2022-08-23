@@ -422,6 +422,11 @@ public final class Helpers
         return new MobEffectInstance(TFCEffects.OVERBURDENED.get(), 25, 0, false, visible);
     }
 
+    public static MobEffectInstance getExhausted(boolean visible)
+    {
+        return new MobEffectInstance(TFCEffects.EXHAUSTED.get(), 25, 0, false, visible);
+    }
+
     /**
      * Iterate through all slots in an {@code inventory}.
      */

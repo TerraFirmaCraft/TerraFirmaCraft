@@ -26,7 +26,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/barley_dough",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
       "text": "Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour."
     },
     {

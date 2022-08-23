@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Pot$() is an item that can be added to the firepit, in order to both cook new types of food, and produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(l:mechanics/pot#ceramic_pot)Ceramic Pot$() on the firepit."
+      "text": "A $(thing)Pot$() is an item that can be added to the firepit to cook new types of food and also produce some other useful items.$(br2)In order to create a firepit with a pot, first create a $(l:getting_started/firepit)Firepit$(), then use a $(l:mechanics/pot)Ceramic Pot$() on the firepit."
     },
     {
       "type": "patchouli:multiblock",
@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Like the firepit, the pot has four slots for fuel which must be added in the top slot, and a temperature indicator. The pot also contains five item slots and holds up to $(thing)1000 mB$() of any fluid.$(br2)In order to cook something in the pot, first the fluid must be added by using any type of fluid container, such as a bucket, on the pot. Then add items, and light the pot. It will start boiling for a while until the recipe is completed."
+      "text": "Like the firepit, the pot has four slots for fuel which must be added in the top slot, and a temperature indicator. The pot also contains five item slots and holds up to $(thing)1000 mB$() of any fluid.$(br2)In order to cook something in the pot, first the fluid must be added by using any type of fluid container, such as a bucket, on the pot. Then add items and light the pot. It will begin boiling for a while until the recipe is completed."
     },
     {
       "type": "patchouli:image",

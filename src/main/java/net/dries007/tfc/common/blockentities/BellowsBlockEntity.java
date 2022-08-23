@@ -34,13 +34,19 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
     public static void tickBoth(Level level, BlockPos pos, BlockState state, BellowsBlockEntity bellows)
     {
-        if (level.getGameTime() - bellows.lastPushed > 20 || !(state.getBlock() instanceof BellowsBlock))
+        if (bellows.justPushed)
+        {
+            bellows.justPushed = false;
+            bellows.afterPush();
+        }
+        if (level.getGameTime() - bellows.lastPushed > 20)
         {
             return;
         }
+
         final Direction direction = state.getValue(BellowsBlock.FACING).getOpposite();
         final AABB bounds = state.getShape(level, pos).bounds().move(pos);
-        List<Entity> list = level.getEntities(null, bounds);
+        final List<Entity> list = level.getEntities(null, bounds);
         if (!list.isEmpty())
         {
             for (Entity entity : list)
@@ -50,11 +56,11 @@ public class BellowsBlockEntity extends TFCBlockEntity
                     entity.move(MoverType.SHULKER_BOX, new Vec3(0.1 * direction.getStepX(), 0, 0.1 * direction.getStepZ()));
                 }
             }
-
         }
     }
 
     private long lastPushed = 0L;
+    private boolean justPushed = false;
 
     public BellowsBlockEntity(BlockPos pos, BlockState state)
     {
@@ -66,6 +72,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
     {
         super.saveAdditional(tag);
         tag.putLong("pushed", lastPushed);
+        tag.putBoolean("justPushed", justPushed);
     }
 
     @Override
@@ -73,6 +80,7 @@ public class BellowsBlockEntity extends TFCBlockEntity
     {
         super.loadAdditional(tag);
         lastPushed = tag.getLong("pushed");
+        justPushed = tag.getBoolean("justPushed");
     }
 
     public float getExtensionLength()
@@ -101,15 +109,19 @@ public class BellowsBlockEntity extends TFCBlockEntity
         {
             return InteractionResult.PASS;
         }
-
-        final Direction direction = getBlockState().getValue(BellowsBlock.FACING);
-        final BlockPos facingPos = worldPosition.relative(direction);
+        if (level.isClientSide)
+        {
+            // Run the effects on server just after we successfully push, as this will reset the lastPushed and justPushed flags
+            // Those will be synced to client, and as soon as it receives them, it will run afterPush() through it's tick() method
+            return InteractionResult.SUCCESS;
+        }
 
         // We can push EITHER if there are no receivers (and we're just pushing air into empty space), OR if there are receivers willing to receive air.
         // We CANNOT push if the only receivers we can find are not accepting air - this is to give the player feedback something is wrong (why the receiver cannot receive air).
         boolean foundAnyReceivers = false;
         boolean foundAnyAllowingReceivers = false;
 
+        final Direction direction = getBlockState().getValue(BellowsBlock.FACING);
         for (IBellowsConsumer.Offset offset : IBellowsConsumer.offsets())
         {
             final BlockPos airPosition = worldPosition.above(offset.up())
@@ -129,13 +141,26 @@ public class BellowsBlockEntity extends TFCBlockEntity
 
         if (!foundAnyReceivers || foundAnyAllowingReceivers)
         {
-            level.playSound(null, worldPosition, TFCSounds.BELLOWS_BLOW.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
-            level.addParticle(ParticleTypes.POOF, facingPos.getX() + 0.5f - 0.3f * direction.getStepX(), facingPos.getY() + 0.5f, facingPos.getZ() + 0.5f - 0.3f * direction.getStepZ(), 0, 0.005D, 0);
-
             lastPushed = level.getGameTime();
+            justPushed = true;
             markForSync();
+            afterPush();
         }
         // Return success in both cases because we want the player's arm to swing, because they 'tried'
         return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * Runs effects that need to happen on both sides, just after a successful push.
+     */
+    private void afterPush()
+    {
+        assert level != null;
+
+        final Direction direction = getBlockState().getValue(BellowsBlock.FACING);
+        final BlockPos facingPos = worldPosition.relative(direction);
+
+        level.playSound(null, worldPosition, TFCSounds.BELLOWS_BLOW.get(), SoundSource.BLOCKS, 1, 1 + ((level.random.nextFloat() - level.random.nextFloat()) / 16));
+        level.addParticle(ParticleTypes.POOF, facingPos.getX() + 0.5f - 0.3f * direction.getStepX(), facingPos.getY() + 0.5f, facingPos.getZ() + 0.5f - 0.3f * direction.getStepZ(), 0, 0.005D, 0);
     }
 }
