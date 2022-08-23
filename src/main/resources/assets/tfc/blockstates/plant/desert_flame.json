@@ -1,24 +1,11 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "stage": "0"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/desert_flame_0"
-        }
-      ]
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "stage=0": {
+      "model": "tfc:block/plant/desert_flame_0"
     },
-    {
-      "when": {
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/desert_flame_1"
-        }
-      ]
+    "stage=1": {
+      "model": "tfc:block/plant/desert_flame_1"
     }
-  ]
+  }
 }

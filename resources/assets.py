@@ -1011,6 +1011,15 @@ def generate(rm: ResourceManager):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
 
+    for plant, stages in SIMPLE_STAGE_PLANTS.items():
+        rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
+    for plant in MODEL_PLANTS:
+        rm.blockstate('plant/%s' % plant, model='tfc:block/plant/%s' % plant)
+    for plant in SEAGRASS:
+        rm.blockstate('plant/%s' % plant, variants=dict({'age=%s' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, 4)}))
+        for i in range(0, 4):
+            rm.block_model('plant/%s_%s' % (plant, i), parent='minecraft:block/template_seagrass', textures={'texture': 'tfc:block/plant/%s/%s' % (plant, i)})
+
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
         'name': 'tfc:sea_pickle',
         'conditions': loot_tables.block_state_property('tfc:sea_pickle[pickles=%d]' % i),
