@@ -8,6 +8,6 @@ package net.dries007.tfc.common.entities.livestock;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 
-public record CommonAnimalData(EntityDataAccessor<Boolean> gender, EntityDataAccessor<Long> birthday, EntityDataAccessor<Float> familiarity, EntityDataAccessor<Integer> uses, EntityDataAccessor<Boolean> fertilized, EntityDataAccessor<Long> oldDay)
+public record CommonAnimalData(EntityDataAccessor<Boolean> gender, EntityDataAccessor<Long> birthday, EntityDataAccessor<Float> familiarity, EntityDataAccessor<Integer> uses, EntityDataAccessor<Boolean> fertilized, EntityDataAccessor<Long> oldDay, EntityDataAccessor<Integer> geneticSize)
 {
 }

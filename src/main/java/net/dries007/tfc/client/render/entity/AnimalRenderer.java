@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.util.Helpers;
@@ -30,6 +31,14 @@ public class AnimalRenderer<T extends TFCAnimal, M extends EntityModel<T>> exten
         super(ctx, model, shadow);
         this.young = Helpers.animalTexture(name + "_young");
         this.old = Helpers.animalTexture(name + "_old");
+    }
+
+    @Override
+    protected void scale(T animal, PoseStack poseStack, float ticks)
+    {
+        animal.getAgeScale()
+        poseStack.scale(scale, scale, scale);
+        super.scale(animal, poseStack, ticks);
     }
 
     @Override

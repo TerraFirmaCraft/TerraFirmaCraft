@@ -67,7 +67,8 @@ public class TFCHorse extends Horse implements HorseProperties
     private static final EntityDataAccessor<Integer> USES = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY);
+    private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCHorse.class, EntityDataSerializers.INT);
+    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE);
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCHorse.class, EntityHelpers.LONG_SERIALIZER);
 
     private long lastFed; //Last time(in days) this entity was fed
