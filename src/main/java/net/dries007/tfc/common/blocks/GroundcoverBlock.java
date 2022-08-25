@@ -42,7 +42,7 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class GroundcoverBlock extends Block implements IFluidLoggable
+public class GroundcoverBlock extends ExtendedBlock implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
 
@@ -65,20 +65,18 @@ public class GroundcoverBlock extends Block implements IFluidLoggable
     private final VoxelShape shape;
     @Nullable
     private final Supplier<? extends Item> pickBlock;
-    private final ExtendedProperties properties;
 
     public GroundcoverBlock(GroundcoverBlockType cover)
     {
-        this(ExtendedProperties.of(Properties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noCollission()), cover.getShape(), cover.getVanillaItem());
+        this(ExtendedProperties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.NETHER_WART).noCollission(), cover.getShape(), cover.getVanillaItem());
     }
 
     public GroundcoverBlock(ExtendedProperties properties, VoxelShape shape, @Nullable Supplier<? extends Item> pickBlock)
     {
-        super(properties.properties());
+        super(properties);
 
         this.shape = shape;
         this.pickBlock = pickBlock;
-        this.properties = properties;
 
         registerDefaultState(getStateDefinition().any().setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
