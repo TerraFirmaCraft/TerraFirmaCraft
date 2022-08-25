@@ -975,7 +975,7 @@ DEFAULT_LANG = {
 
     # Enums
 
-    **dict(('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier)) for tier in ('0', 'i', 'ii', 'iii', 'iv', 'v', 'vi')),
+    **dict(('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % tier.upper()) for tier in ('0', 'i', 'ii', 'iii', 'iv', 'v', 'vi')),
     **lang_enum('heat', ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')),
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
