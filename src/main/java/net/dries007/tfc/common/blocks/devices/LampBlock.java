@@ -10,8 +10,14 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+<<<<<<< HEAD
 import net.minecraft.server.level.ServerPlayer;
+=======
+import net.minecraft.tags.EntityTypeTags;
+>>>>>>> 1.18.x
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,6 +31,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -43,8 +50,10 @@ import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.entities.ThrownJavelin;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.events.SpecialEventTrigger;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
 import org.jetbrains.annotations.Nullable;
 
@@ -180,7 +189,22 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     @SuppressWarnings("deprecation")
     public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile)
     {
-
+        BlockPos blockpos = hit.getBlockPos();
+        if (level instanceof ServerLevel serverLevel && projectile.mayInteract(level, blockpos) && (Helpers.isEntity(projectile, EntityTypeTags.ARROWS) || projectile instanceof ThrownJavelin))
+        {
+            serverLevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.GLASS.defaultBlockState()), projectile.getX(), projectile.getY(), projectile.getZ(), 10, 0, 0, 0, 0.15f);
+            level.destroyBlock(blockpos, true, projectile);
+            if (state.getValue(LIT))
+            {
+                projectile.setSecondsOnFire(5);
+                final Direction fireDir = Direction.Plane.HORIZONTAL.getRandomDirection(level.random);
+                final BlockPos pos = projectile.blockPosition();
+                if (FireBlock.canBePlacedAt(level, pos, fireDir))
+                {
+                    level.setBlockAndUpdate(pos, FireBlock.getState(level, pos));
+                }
+            }
+        }
     }
 
     @Override

@@ -13,6 +13,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.client.TFCColors;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.util.Helpers;
 
 public class LeafParticle extends TextureSheetParticle
 {
@@ -29,7 +31,8 @@ public class LeafParticle extends TextureSheetParticle
         yd = motionY;
         zd = motionZ;
         scale(2.5f);
-        final int color = TFCColors.getFoliageColor(new BlockPos(x, y, z), 0);
+        final BlockPos pos = new BlockPos(x, y, z);
+        final int color = Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
         setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
     }
 

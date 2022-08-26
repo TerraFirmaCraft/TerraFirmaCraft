@@ -1,36 +1,17 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "age": "0"
-      },
-      "apply": {
-        "model": "tfc:block/plant/manatee_grass_0"
-      }
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "age=0": {
+      "model": "tfc:block/plant/manatee_grass_0"
     },
-    {
-      "when": {
-        "age": "1"
-      },
-      "apply": {
-        "model": "tfc:block/plant/manatee_grass_1"
-      }
+    "age=1": {
+      "model": "tfc:block/plant/manatee_grass_1"
     },
-    {
-      "when": {
-        "age": "2"
-      },
-      "apply": {
-        "model": "tfc:block/plant/manatee_grass_2"
-      }
+    "age=2": {
+      "model": "tfc:block/plant/manatee_grass_2"
     },
-    {
-      "when": {
-        "age": "3"
-      },
-      "apply": {
-        "model": "tfc:block/plant/manatee_grass_3"
-      }
+    "age=3": {
+      "model": "tfc:block/plant/manatee_grass_3"
     }
-  ]
+  }
 }

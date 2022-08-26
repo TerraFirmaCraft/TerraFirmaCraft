@@ -1,44 +1,17 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "stage": "0"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/tropical_milkweed_0"
-        }
-      ]
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "stage=0": {
+      "model": "tfc:block/plant/tropical_milkweed_0"
     },
-    {
-      "when": {
-        "stage": "1"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/tropical_milkweed_1"
-        }
-      ]
+    "stage=1": {
+      "model": "tfc:block/plant/tropical_milkweed_1"
     },
-    {
-      "when": {
-        "stage": "2"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/tropical_milkweed_2"
-        }
-      ]
+    "stage=2": {
+      "model": "tfc:block/plant/tropical_milkweed_2"
     },
-    {
-      "when": {
-        "stage": "3"
-      },
-      "apply": [
-        {
-          "model": "tfc:block/plant/tropical_milkweed_3"
-        }
-      ]
+    "stage=3": {
+      "model": "tfc:block/plant/tropical_milkweed_3"
     }
-  ]
+  }
 }

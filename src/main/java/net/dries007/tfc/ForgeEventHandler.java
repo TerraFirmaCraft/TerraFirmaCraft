@@ -78,9 +78,9 @@ import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
-import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
+import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
@@ -698,8 +698,7 @@ public final class ForgeEventHandler
             final int hugeHeavyCount = Helpers.countOverburdened(player.getInventory());
             if (hugeHeavyCount >= 1)
             {
-                // 25% on top of normal exhaustion
-                player.causeFoodExhaustion(TFCFoodData.PASSIVE_EXHAUSTION_PER_SECOND * 20 * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue() * 0.25f);
+                player.addEffect(Helpers.getExhausted(false));
             }
             if (hugeHeavyCount == 2)
             {

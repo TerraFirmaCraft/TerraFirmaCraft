@@ -400,6 +400,8 @@ def generate(rm: ResourceManager):
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         rm.block_tag('converts_to_humus', 'tfc:wood/fallen_leaves/' + wood)
+        if wood not in ('kapok', 'palm', 'pine', 'sequoia', 'spruce', 'white_cedar'):
+            rm.block_tag('seasonal_leaves', 'tfc:wood/leaves/%s' % wood)
 
     for plant, data in PLANTS.items():  # Plants
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
