@@ -49,9 +49,9 @@ import net.dries007.tfc.common.blocks.ExtendedBlock;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.entities.ThrownJavelin;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.util.events.SpecialEventTrigger;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import org.jetbrains.annotations.Nullable;
 
 public class LampBlock extends ExtendedBlock implements EntityBlockExtension
@@ -115,7 +115,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
                     lamp.markForSync();
                     if (lamp.getFuel() != null && lamp.getFuel().getBurnRate() == -1 && player instanceof ServerPlayer serverPlayer)
                     {
-                        SpecialEventTrigger.LAVA_LAMP.trigger(serverPlayer);
+                        TFCAdvancements.LAVA_LAMP.trigger(serverPlayer);
                     }
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }

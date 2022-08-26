@@ -4,10 +4,10 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.events;
+package net.dries007.tfc.util.advancements;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.CriteriaTriggers;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -16,25 +16,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
-import net.dries007.tfc.TerraFirmaCraft;
-import net.dries007.tfc.util.Helpers;
-
-public class SpecialEntityTrigger extends SimpleCriterionTrigger<SpecialEntityTrigger.TriggerInstance>
+public class EntityActionTrigger extends SimpleCriterionTrigger<EntityActionTrigger.TriggerInstance>
 {
-    public static void registerSpecialEntityTriggers()
-    {
-        CriteriaTriggers.register(HOOKED_ENTITY);
-        CriteriaTriggers.register(FED_ANIMAL);
-        CriteriaTriggers.register(STAB_ENTITY);
-    }
-
-    public static final SpecialEntityTrigger HOOKED_ENTITY = new SpecialEntityTrigger(Helpers.identifier("hooked_entity"));
-    public static final SpecialEntityTrigger FED_ANIMAL = new SpecialEntityTrigger(Helpers.identifier("fed_animal"));
-    public static final SpecialEntityTrigger STAB_ENTITY = new SpecialEntityTrigger(Helpers.identifier("stab_entity"));
-
     private final ResourceLocation id;
 
-    public SpecialEntityTrigger(ResourceLocation id)
+    public EntityActionTrigger(ResourceLocation id)
     {
         this.id = id;
     }
@@ -46,14 +32,14 @@ public class SpecialEntityTrigger extends SimpleCriterionTrigger<SpecialEntityTr
     }
 
     @Override
-    protected SpecialEntityTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context)
+    protected EntityActionTrigger.TriggerInstance createInstance(JsonObject json, EntityPredicate.Composite predicate, DeserializationContext context)
     {
         EntityPredicate ingredient = EntityPredicate.fromJson(json.get("entity"));
         if (ingredient == EntityPredicate.ANY)
         {
-            TerraFirmaCraft.LOGGER.error("Entity predicate '{}' failed to load: ", id);
+            throw new JsonSyntaxException("Entity predicate " + id + " matches every entity. This probably means it failed to load.");
         }
-        return new SpecialEntityTrigger.TriggerInstance(predicate, ingredient);
+        return new EntityActionTrigger.TriggerInstance(predicate, ingredient);
     }
 
     public void trigger(ServerPlayer serverPlayer, Entity entity)

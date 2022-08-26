@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:metal/pickaxe/steel",
+    "tfc:metal/shovel/steel",
+    "tfc:metal/axe/steel",
+    "tfc:metal/hoe/steel",
+    "tfc:metal/chisel/steel",
+    "tfc:metal/sword/steel",
+    "tfc:metal/mace/steel",
+    "tfc:metal/saw/steel",
+    "tfc:metal/javelin/steel",
+    "tfc:metal/hammer/steel",
+    "tfc:metal/propick/steel",
+    "tfc:metal/knife/steel",
+    "tfc:metal/scythe/steel"
+  ]
+}

@@ -114,7 +114,6 @@ import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
 import net.dries007.tfc.util.collections.IndirectHashCollection;
 import net.dries007.tfc.util.events.SelectClimateModelEvent;
-import net.dries007.tfc.util.events.SpecialBlockTrigger;
 import net.dries007.tfc.util.events.StartFireEvent;
 import net.dries007.tfc.util.tracker.WeatherHelpers;
 import net.dries007.tfc.util.tracker.WorldTracker;
@@ -603,10 +602,10 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
-            if (event.getPlayer() instanceof ServerPlayer serverPlayer)
+            if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
             {
-                SpecialBlockTrigger.LIT.trigger(serverPlayer, state);
+                event.setCanceled(true);
+                event.setFireResult(StartFireEvent.FireResult.ALWAYS);
             }
         }
         else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))

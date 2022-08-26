@@ -29,7 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
-import net.dries007.tfc.util.events.SpecialEntityTrigger;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ThrownJavelin extends AbstractArrow
 {
@@ -125,7 +125,7 @@ public class ThrownJavelin extends AbstractArrow
 
             if (owner instanceof ServerPlayer serverPlayer)
             {
-                SpecialEntityTrigger.STAB_ENTITY.trigger(serverPlayer, hitEntity);
+                TFCAdvancements.STAB_ENTITY.trigger(serverPlayer, hitEntity);
             }
         }
 

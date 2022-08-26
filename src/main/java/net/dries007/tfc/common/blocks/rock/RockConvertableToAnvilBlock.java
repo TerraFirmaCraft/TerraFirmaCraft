@@ -22,7 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.events.SpecialBlockTrigger;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.registry.RegistryRock;
 
 public class RockConvertableToAnvilBlock extends Block
@@ -51,7 +51,7 @@ public class RockConvertableToAnvilBlock extends Block
             level.setBlockAndUpdate(pos, block);
             if (player instanceof ServerPlayer serverPlayer)
             {
-                SpecialBlockTrigger.ROCK_ANVIL.trigger(serverPlayer, block);
+                TFCAdvancements.ROCK_ANVIL.trigger(serverPlayer, block);
             }
             return InteractionResult.SUCCESS;
         }

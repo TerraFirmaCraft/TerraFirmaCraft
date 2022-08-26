@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.crop.ICropBlock;
-import net.dries007.tfc.util.events.SpecialEventTrigger;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class RottenCompostItem extends Item
 {
@@ -40,7 +40,7 @@ public class RottenCompostItem extends Item
                 crop.die(level, pos, state, mature);
                 if (context.getPlayer() instanceof ServerPlayer player)
                 {
-                    SpecialEventTrigger.ROTTEN_COMPOST_KILL.trigger(player);
+                    TFCAdvancements.ROTTEN_COMPOST_KILL.trigger(player);
                 }
             }
             return InteractionResult.sidedSuccess(level.isClientSide);

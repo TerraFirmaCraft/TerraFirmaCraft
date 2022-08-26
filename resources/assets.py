@@ -110,10 +110,9 @@ def generate(rm: ResourceManager):
                     block.with_lang(lang('%s %s', rock, block_type))
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
-            rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model().with_tag('tfc:rock_anvils')
+            rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()
             rm.block_model('tfc:rock/anvil/%s' % rock, parent='tfc:block/rock/anvil', textures={'texture': 'tfc:block/rock/raw/%s' % rock})
             rm.blockstate('tfc:rock/magma/%s' % rock, model='tfc:block/rock/magma/%s' % rock).with_block_model(parent='minecraft:block/cube_all', textures={'all': 'tfc:block/rock/magma/%s' % rock}).with_lang(lang('%s magma block', rock)).with_item_model().with_block_loot('tfc:rock/magma/%s' % rock)
-            rm.item_tag('rock_anvils', 'tfc:rock/anvil/%s' % rock)
 
         # Ores
         for ore, ore_data in ORES.items():

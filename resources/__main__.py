@@ -19,6 +19,7 @@ def main():
         'data',  # only data.py
         'recipes',  # only recipes.py
         'worldgen',  # only world gen data (excluding tags)
+        'advancements', # only advancements.py (which excludes recipe advancements)
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files
@@ -37,7 +38,7 @@ def main():
         if action == 'clean':
             clean()
         elif action == 'all':
-            resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True)
+            resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
         elif action == 'assets':
             resources(hotswap=hotswap, do_assets=True)
         elif action == 'data':
@@ -46,6 +47,8 @@ def main():
             resources(hotswap=hotswap, do_recipes=True)
         elif action == 'worldgen':
             resources(hotswap=hotswap, do_worldgen=True)
+        elif action == 'advancements':
+            resources(hotswap=hotswap, do_advancements=True)
         elif action == 'textures':
             import generate_textures
             generate_textures.main()
@@ -72,14 +75,14 @@ def clean():
     print('Clean Aborted')
 
 
-def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False):
+def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False, do_advancements: bool = False):
     """ Generates resource files, or a subset of them """
-    resources_at('./src/main/resources', do_assets, do_data, do_recipes, do_worldgen)
+    resources_at('./src/main/resources', do_assets, do_data, do_recipes, do_worldgen, do_advancements)
     if hotswap:
-        resources_at(hotswap, do_assets, do_data, do_recipes, do_worldgen)
+        resources_at(hotswap, do_assets, do_data, do_recipes, do_worldgen, do_advancements)
 
 
-def resources_at(dest: str, do_assets: bool, do_data: bool, do_recipes: bool, do_worldgen: bool):
+def resources_at(dest: str, do_assets: bool, do_data: bool, do_recipes: bool, do_worldgen: bool, do_advancements: bool):
     rm = ResourceManager('tfc', resource_dir=dest)
 
     # do simple lang keys first, because it's ordered intentionally
@@ -99,8 +102,11 @@ def resources_at(dest: str, do_assets: bool, do_data: bool, do_recipes: bool, do
     if do_worldgen:
         import world_gen
         world_gen.generate(rm)
+    if do_advancements:
+        import advancements
+        advancements.generate(rm)
 
-    if all((do_assets, do_data, do_worldgen, do_recipes)):
+    if all((do_assets, do_data, do_worldgen, do_recipes, do_advancements)):
         # Only generate this when generating all, as it's shared
         rm.flush()
 

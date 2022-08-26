@@ -2,13 +2,12 @@
   "__comment__": "This file was automatically created by mcresources",
   "parent": "tfc:story/steel_age",
   "criteria": {
-    "item_obtained": {
+    "metal_item/black_steel": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:black_steel"
+            "tag": "tfc:metal_item/black_steel"
           }
         ]
       }
@@ -32,7 +31,7 @@
   },
   "requirements": [
     [
-      "item_obtained"
+      "metal_item/black_steel"
     ]
   ]
 }

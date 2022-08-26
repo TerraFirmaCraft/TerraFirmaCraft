@@ -57,13 +57,17 @@ def generate(rm: ResourceManager):
         # Metal Items and Blocks
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type in metal_data.types or item_data.type == 'all':
+                item_name = 'tfc:metal/%s/%s' % (item, metal)
                 if item_data.tag is not None:
                     rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
-                    rm.item_tag(item_data.tag + '/' + metal, 'tfc:metal/%s/%s' % (item, metal))
+                    rm.item_tag(item_data.tag + '/' + metal, item_name)
                     ingredient = utils.item_stack('#%s/%s' % (item_data.tag, metal))
                 else:
-                    ingredient = utils.item_stack('tfc:metal/%s/%s' % (item, metal))
+                    ingredient = utils.item_stack(item_name)
 
+                rm.item_tag('metal_item/%s' % metal, item_name)
+                if item in METAL_TOOL_HEADS:
+                    rm.item_tag('metal_item/%s_tools' % metal, item_name)
                 item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
 
     for ore, ore_data in ORES.items():
@@ -430,6 +434,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.block_tag('creates_upward_bubbles', block('magma'))
+            block_and_item_tag(rm, 'rock_anvils', 'tfc:rock/anvil/%s' % rock)
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
@@ -917,9 +922,6 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
-
-    import advancements
-    advancements.main(rm)
 
 
 def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, entity_tag: str, piercing: int = 0, slashing: int = 0, crushing: int = 0):

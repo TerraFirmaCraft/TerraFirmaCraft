@@ -6,6 +6,9 @@
 
 package net.dries007.tfc.util.events;
 
+import java.util.function.Predicate;
+
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -23,7 +26,8 @@ import net.minecraftforge.eventbus.api.Event;
 import net.dries007.tfc.util.InteractionManager;
 
 /**
- * This event is used for lighting fires or optionally light-able blocks. If it's not cancelled, TFC will try to place a fire block.
+ * This event is used for lighting fires or optionally light-able blocks. This event should alwyas be cancelled if it was handled by the event listener
+ * The default behavior, FireResult.IF_FAILED, places a fire block when the event is not canceled. This can be set to ALWAYS and NEVER, which either guarantee or ban a fire block from placing.
  *
  * For things like flint and steel that don't require special mechanics, this event logic is handled for you in
  * {@link InteractionManager#registerDefaultInteractions()}. Adding items to the tag #starts_fires_with_items or #starts_fires_with_durability
@@ -35,43 +39,46 @@ import net.dries007.tfc.util.InteractionManager;
 @Cancelable
 public final class StartFireEvent extends Event
 {
-    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, @Nullable ItemStack stack)
+    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack)
     {
-        return startFire(level, pos, state, direction, player, stack, true);
+        return startFire(level, pos, state, direction, player, stack, FireResult.IF_FAILED);
     }
 
-    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, @Nullable ItemStack stack, boolean placeFireBlockIfFailed)
+    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult fireResult)
     {
-        boolean cancelled = MinecraftForge.EVENT_BUS.post(new StartFireEvent(level, pos, state, direction, player, stack));
+        final StartFireEvent event = new StartFireEvent(level, pos, state, direction, player, stack, fireResult);
+        final boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
+        boolean actionPerformed = false;
         if (cancelled)
         {
             if (player instanceof ServerPlayer serverPlayer)
             {
-                SpecialBlockTrigger.LIT.trigger(serverPlayer, state);
+                TFCAdvancements.LIT.trigger(serverPlayer, state);
             }
-            return true;
+            actionPerformed = true;
         }
-        if (placeFireBlockIfFailed)
+        if (event.fireResult.predicate.test(event))
         {
             pos = pos.relative(direction);
             if (BaseFireBlock.canBePlacedAt(level, pos, direction))
             {
                 level.setBlock(pos, BaseFireBlock.getState(level, pos), 11);
-                return true;
+                actionPerformed = true;
             }
         }
-        return false;
+        return actionPerformed;
     }
 
     private final Level world;
     private final BlockPos pos;
     private final BlockState state;
     private final Direction direction;
-    private final Player player;
     @Nullable
+    private final Player player;
     private final ItemStack stack;
+    private FireResult fireResult;
 
-    private StartFireEvent(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, @Nullable ItemStack stack)
+    private StartFireEvent(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult result)
     {
         this.world = world;
         this.pos = pos;
@@ -79,6 +86,7 @@ public final class StartFireEvent extends Event
         this.direction = direction;
         this.player = player;
         this.stack = stack;
+        this.fireResult = result;
     }
 
     public Level getLevel()
@@ -107,9 +115,33 @@ public final class StartFireEvent extends Event
         return player;
     }
 
-    @Nullable
     public ItemStack getItemStack()
     {
         return stack;
     }
+
+    public FireResult getFireResult()
+    {
+        return fireResult;
+    }
+
+    public void setFireResult(FireResult result)
+    {
+        this.fireResult = result;
+    }
+
+    public enum FireResult
+    {
+        ALWAYS(event -> true),
+        NEVER(event -> false),
+        IF_FAILED(event -> !event.isCanceled());
+
+        private final Predicate<StartFireEvent> predicate;
+
+        FireResult(Predicate<StartFireEvent> predicate)
+        {
+            this.predicate = predicate;
+        }
+    }
+
 }

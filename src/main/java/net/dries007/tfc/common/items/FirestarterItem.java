@@ -40,8 +40,8 @@ import net.dries007.tfc.common.blocks.devices.FirepitBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.events.SpecialBlockTrigger;
 import net.dries007.tfc.util.events.StartFireEvent;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class FirestarterItem extends Item
 {
@@ -122,7 +122,7 @@ public class FirestarterItem extends Item
                             }));
                             if (player instanceof ServerPlayer serverPlayer)
                             {
-                                SpecialBlockTrigger.FIREPIT_CREATED.trigger(serverPlayer, state);
+                                TFCAdvancements.FIREPIT_CREATED.trigger(serverPlayer, state);
                             }
                         }
                         return;

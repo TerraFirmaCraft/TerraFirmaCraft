@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:metal/ingot/brass",
+    "tfc:metal/double_ingot/brass",
+    "tfc:metal/sheet/brass",
+    "tfc:metal/double_sheet/brass",
+    "tfc:metal/rod/brass"
+  ]
+}

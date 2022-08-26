@@ -1,12 +1,12 @@
-from mcresources import ResourceManager, utils
-from mcresources import advancements as adv
+from mcresources import ResourceManager, utils, advancements
+from mcresources.advancements import AdvancementCategory
 from mcresources.type_definitions import Json
 
 from constants import *
 
 
-def main(rm: ResourceManager):
-    story = adv.AdvancementCategory(rm, 'story', 'tfc:textures/block/rock/mossy_cobble/diorite.png')
+def generate(rm: ResourceManager):
+    story = AdvancementCategory(rm, 'story', 'tfc:textures/block/rock/mossy_cobble/diorite.png')
 
     story.advancement('root', icon('tfc:metal/hammer/wrought_iron'), 'TerraFirmaCraft Story', 'TFC\'s main progression line.', None, root_trigger(), chat=False)
     story.advancement('find_rock', icon('tfc:rock/loose/schist'), 'Just a Rock', 'Pick up a stone from the ground.', 'root', inventory_changed('#tfc:rock_knapping'))
@@ -29,16 +29,16 @@ def main(rm: ResourceManager):
     story.advancement('knap_clay', icon('tfc:ceramic/unfired_vessel'), 'Clay Forming', 'Knap clay into a new shape.', 'find_clay', inventory_changed('#tfc:unfired_pottery'))
     story.advancement('pit_kiln', icon('tfc:ceramic/vessel'), 'Potter', 'Light a pit kiln on fire.', 'knap_clay', generic('tfc:lit', {'block': 'tfc:pit_kiln'}))
     story.advancement('mold', icon('tfc:ceramic/axe_head_mold'), 'Pouring Metal', 'Fire a mold for making a metal tool head.', 'pit_kiln', inventory_changed('#tfc:fired_molds'))
-    story.advancement('copper_age', icon('tfc:metal/axe_head/copper'), 'The Copper Age', 'Enter the Copper Age by smithing a copper tool', 'mold', inventory_changed({'type': 'tfc:metal_tool', 'metal': 'tfc:copper'}), frame='challenge')
-    story.advancement('bronze_age', icon('tfc:metal/sword/bronze'), 'The Bronze Age', 'Enter the Bronze Age by smithing a bronze item.', 'copper_age', inventory_changed({'type': 'tfc:metal_item', 'tier': 2}))
+    story.advancement('copper_age', icon('tfc:metal/axe_head/copper'), 'The Copper Age', 'Enter the Copper Age by smithing a copper tool', 'mold', inventory_changed('#tfc:metal_item/copper_tools'), frame='challenge')
+    story.advancement('bronze_age', icon('tfc:metal/sword/bronze'), 'The Bronze Age', 'Enter the Bronze Age by smithing a bronze item.', 'copper_age', multiple(inventory_changed('#tfc:metal_item/bronze'), inventory_changed('#tfc:metal_item/bismuth_bronze'), inventory_changed('#tfc:metal_item/black_bronze')))
     story.advancement('bloomery', icon('tfc:bloomery'), 'Ironworks', 'Craft a bloomery.', 'bronze_age', inventory_changed('tfc:bloomery'))
     story.advancement('iron_bloom', icon('tfc:raw_iron_bloom'), 'In Bloom', 'Create an iron bloom.', 'bloomery', inventory_changed('tfc:raw_iron_bloom'))
     story.advancement('iron_age', icon('tfc:metal/ingot/wrought_iron'), 'The Iron Age', 'Refine a bloom into wrought iron ingot.', 'iron_bloom', inventory_changed('tfc:metal/ingot/wrought_iron'), frame='challenge')
     story.advancement('blast_furnace', icon('tfc:blast_furnace'), 'Blast off!', 'Craft a blast furnace.', 'iron_age', inventory_changed('tfc:blast_furnace'))
-    story.advancement('steel_age', icon('tfc:metal/ingot/steel'), 'Industrialized', 'Make your first steel item.', 'blast_furnace', inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:steel'}), frame='challenge')
-    story.advancement('black_steel', icon('tfc:metal/ingot/black_steel'), 'Back in Black', 'Make your first black steel item.', 'steel_age', inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:black_steel'}), frame='challenge')
-    story.advancement('blue_steel', icon('tfc:metal/ingot/blue_steel'), 'Feeling Blue', 'Make your first blue steel item.', 'black_steel', inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:blue_steel'}), frame='challenge')
-    story.advancement('red_steel', icon('tfc:metal/ingot/blue_steel'), 'Seeing Red', 'Make your first red steel item.', 'black_steel', inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:red_steel'}), frame='challenge')
+    story.advancement('steel_age', icon('tfc:metal/ingot/steel'), 'Industrialized', 'Make your first steel item.', 'blast_furnace', inventory_changed('#tfc:metal_item/steel'), frame='challenge')
+    story.advancement('black_steel', icon('tfc:metal/ingot/black_steel'), 'Back in Black', 'Make your first black steel item.', 'steel_age', inventory_changed('#tfc:metal_item/black_steel'), frame='challenge')
+    story.advancement('blue_steel', icon('tfc:metal/ingot/blue_steel'), 'Feeling Blue', 'Make your first blue steel item.', 'black_steel', inventory_changed('#tfc:metal_item/blue_steel'), frame='challenge')
+    story.advancement('red_steel', icon('tfc:metal/ingot/blue_steel'), 'Seeing Red', 'Make your first red steel item.', 'black_steel', inventory_changed('#tfc:metal_item/red_steel'), frame='challenge')
     story.advancement('red_steel_bucket', icon('tfc:metal/bucket/red_steel'), 'Tsunami', 'Make a red steel bucket.', 'red_steel', inventory_changed('tfc:metal/bucket/red_steel'))
     story.advancement('blue_steel_bucket', icon('tfc:metal/bucket/blue_steel'), 'Hot Stuff', 'Make a blue steel bucket.', 'blue_steel', inventory_changed('tfc:metal/bucket/blue_steel'))
     story.advancement('ultimate_goal', icon('minecraft:bucket'), 'All This for a Bucket!?', 'Combine your red and blue steel buckets into a vanilla bucket.', 'blue_steel_bucket', inventory_changed('minecraft:bucket'), frame='goal')
@@ -66,7 +66,7 @@ def main(rm: ResourceManager):
     story.advancement('iron_armor', icon('tfc:metal/chestplate/wrought_iron'), 'Knight in Shining Armor', 'Create a full set of wrought iron armor, a sword, and a shield.', 'iron_age', multiple(inventory_changed('tfc:metal/sword/wrought_iron'), inventory_changed('tfc:metal/shield/wrought_iron'), *[inventory_changed('tfc:metal/%s/wrought_iron' % piece) for piece in TFC_ARMOR_SECTIONS]), requirements=[['metal/%s/wrought_iron' % item] for item in ('chestplate', 'helmet', 'greaves', 'boots', 'sword', 'shield')])
     story.advancement('cast_iron', icon('tfc:metal/ingot/cast_iron'), 'I Can\'t Believe it\'s not Wrought!', 'Make a cast iron ingot.', 'pit_kiln', inventory_changed('tfc:metal/ingot/cast_iron'))
 
-    world = adv.AdvancementCategory(rm, 'world', 'tfc:textures/block/mud/silt.png')
+    world = AdvancementCategory(rm, 'world', 'tfc:textures/block/mud/silt.png')
     world.advancement('root', icon('tfc:plant/morning_glory'), 'TerraFirmaCraft World', 'Exploring the world of TFC.', None, root_trigger(), chat=False)
     world.advancement('seeds', icon('tfc:seeds/tomato'), 'Gatherer', 'Get seeds from a wild crop.', 'root', inventory_changed('#tfc:seeds'))
     world.advancement('all_crops', icon('tfc:metal/hoe/black_steel'), 'True Farmer', 'Gather every seed in TFC.', 'seeds', multiple(*[inventory_changed('tfc:seeds/%s' % c, name=c) for c in CROPS]), requirements=[[c] for c in CROPS])
@@ -109,17 +109,7 @@ def main(rm: ResourceManager):
     world.advancement('full_powderkeg', icon('minecraft:gunpowder'), 'Pakratt', 'Light a fully loaded powderkeg.', 'powderkeg', generic('tfc:full_powderkeg', None))
     world.advancement('gemologist', icon('tfc:gem/amethyst'), 'Gemologist', 'Find every gem ore in TFC.', 'nugget', multiple(*[inventory_changed('tfc:ore/%s' % g, name=g) for g in GEMS]), requirements=[[g] for g in GEMS], frame='goal')
     world.advancement('minerologist', icon('tfc:ore/halite'), 'Minerologist', 'Find every non-metal mineral in TFC.', 'gemologist', multiple(*[inventory_changed('tfc:ore/%s' % g, name=g) for g in ALL_MINERALS]), frame='goal', requirements=[[g] for g in ALL_MINERALS])
-    world.advancement('metallurgist', icon('tfc:metal/ingot/gold'), 'Metallurgist', 'Obtain a metal-bearing specimen for every metal in TFC.', 'nugget', metal_criteria(), requirements=[[m] for m in METALS], frame='goal')
-
-def metal_criteria() -> Json:
-    criteria = dict()
-    for metal in METALS.keys():
-        if metal in ('high_carbon_red_steel', 'high_carbon_steel', 'high_carbon_black_steel', 'high_carbon_blue_steel', 'wrought_iron'):
-            criteria.update(inventory_changed('tfc:metal/ingot/%s' % metal, name=metal))
-        else:
-            criteria.update(inventory_changed({'type': 'tfc:metal_item', 'metal': 'tfc:%s' % metal}, name=metal))
-    return criteria
-
+    world.advancement('metallurgist', icon('tfc:metal/ingot/gold'), 'Metallurgist', 'Obtain a metal-bearing specimen for every metal in TFC.', 'nugget', multiple(*[inventory_changed('#tfc:metal_item/%s' % m, name=m) for m in METALS.keys()]), requirements=[[m] for m in METALS], frame='goal')
 
 def kill_mob(mob: str, other: Dict = None) -> Json:
     return generic('minecraft:player_killed_entity', {'entity': [entity_predicate(mob, other)]})
@@ -160,7 +150,7 @@ def generic(trigger_type: str, conditions: Json, name: str = 'special_condition'
 def inventory_changed(item: str | Json, name: str = 'item_obtained') -> Json:
     if isinstance(item, str) and name == 'item_obtained':
         name = item.split(':')[1]
-    return {name: adv.inventory_changed(item)}
+    return {name: advancements.inventory_changed(item)}
 
 def item_use_on_block(block: str, item: str, name: str = 'item_use_on_block_condition'):
     block_json = {'tag': block[1:]} if block[0] == '#' else {'blocks': [block]}

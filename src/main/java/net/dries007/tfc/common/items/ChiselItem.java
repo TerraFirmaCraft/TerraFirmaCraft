@@ -27,7 +27,7 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.events.SpecialBlockTrigger;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ChiselItem extends ToolItem
 {
@@ -72,7 +72,7 @@ public class ChiselItem extends ToolItem
                 level.setBlockAndUpdate(pos, resultState);
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    SpecialBlockTrigger.CHISELED.trigger(serverPlayer, resultState);
+                    TFCAdvancements.CHISELED.trigger(serverPlayer, resultState);
                 }
 
                 held.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));

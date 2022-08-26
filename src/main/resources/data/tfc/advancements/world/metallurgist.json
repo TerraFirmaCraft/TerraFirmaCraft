@@ -7,8 +7,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:bismuth"
+            "tag": "tfc:metal_item/bismuth"
           }
         ]
       }
@@ -18,8 +17,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:bismuth_bronze"
+            "tag": "tfc:metal_item/bismuth_bronze"
           }
         ]
       }
@@ -29,8 +27,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:black_bronze"
+            "tag": "tfc:metal_item/black_bronze"
           }
         ]
       }
@@ -40,8 +37,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:bronze"
+            "tag": "tfc:metal_item/bronze"
           }
         ]
       }
@@ -51,8 +47,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:brass"
+            "tag": "tfc:metal_item/brass"
           }
         ]
       }
@@ -62,8 +57,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:copper"
+            "tag": "tfc:metal_item/copper"
           }
         ]
       }
@@ -73,8 +67,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:gold"
+            "tag": "tfc:metal_item/gold"
           }
         ]
       }
@@ -84,8 +77,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:nickel"
+            "tag": "tfc:metal_item/nickel"
           }
         ]
       }
@@ -95,8 +87,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:rose_gold"
+            "tag": "tfc:metal_item/rose_gold"
           }
         ]
       }
@@ -106,8 +97,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:silver"
+            "tag": "tfc:metal_item/silver"
           }
         ]
       }
@@ -117,8 +107,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:tin"
+            "tag": "tfc:metal_item/tin"
           }
         ]
       }
@@ -128,8 +117,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:zinc"
+            "tag": "tfc:metal_item/zinc"
           }
         ]
       }
@@ -139,8 +127,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:sterling_silver"
+            "tag": "tfc:metal_item/sterling_silver"
           }
         ]
       }
@@ -150,9 +137,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tfc:metal/ingot/wrought_iron"
-            ]
+            "tag": "tfc:metal_item/wrought_iron"
           }
         ]
       }
@@ -162,8 +147,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:cast_iron"
+            "tag": "tfc:metal_item/cast_iron"
           }
         ]
       }
@@ -173,8 +157,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:pig_iron"
+            "tag": "tfc:metal_item/pig_iron"
           }
         ]
       }
@@ -184,8 +167,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:steel"
+            "tag": "tfc:metal_item/steel"
           }
         ]
       }
@@ -195,8 +177,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:black_steel"
+            "tag": "tfc:metal_item/black_steel"
           }
         ]
       }
@@ -206,8 +187,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:blue_steel"
+            "tag": "tfc:metal_item/blue_steel"
           }
         ]
       }
@@ -217,8 +197,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:red_steel"
+            "tag": "tfc:metal_item/red_steel"
           }
         ]
       }
@@ -228,8 +207,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:weak_steel"
+            "tag": "tfc:metal_item/weak_steel"
           }
         ]
       }
@@ -239,8 +217,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:weak_blue_steel"
+            "tag": "tfc:metal_item/weak_blue_steel"
           }
         ]
       }
@@ -250,8 +227,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:weak_red_steel"
+            "tag": "tfc:metal_item/weak_red_steel"
           }
         ]
       }
@@ -261,9 +237,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tfc:metal/ingot/high_carbon_steel"
-            ]
+            "tag": "tfc:metal_item/high_carbon_steel"
           }
         ]
       }
@@ -273,9 +247,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tfc:metal/ingot/high_carbon_black_steel"
-            ]
+            "tag": "tfc:metal_item/high_carbon_black_steel"
           }
         ]
       }
@@ -285,9 +257,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tfc:metal/ingot/high_carbon_blue_steel"
-            ]
+            "tag": "tfc:metal_item/high_carbon_blue_steel"
           }
         ]
       }
@@ -297,9 +267,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "tfc:metal/ingot/high_carbon_red_steel"
-            ]
+            "tag": "tfc:metal_item/high_carbon_red_steel"
           }
         ]
       }
@@ -309,8 +277,7 @@
       "conditions": {
         "items": [
           {
-            "type": "tfc:metal_item",
-            "metal": "tfc:unknown"
+            "tag": "tfc:metal_item/unknown"
           }
         ]
       }

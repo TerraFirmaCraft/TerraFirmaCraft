@@ -4,10 +4,9 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.util.events;
+package net.dries007.tfc.util.advancements;
 
 import com.google.gson.JsonObject;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
 import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -18,26 +17,12 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredient;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
-import net.dries007.tfc.util.Helpers;
 
-public class SpecialBlockTrigger extends SimpleCriterionTrigger<SpecialBlockTrigger.TriggerInstance>
+public class BlockActionTrigger extends SimpleCriterionTrigger<BlockActionTrigger.TriggerInstance>
 {
-    public static void registerSpecialBlockTriggers()
-    {
-        CriteriaTriggers.register(CHISELED);
-        CriteriaTriggers.register(LIT);
-        CriteriaTriggers.register(ROCK_ANVIL);
-        CriteriaTriggers.register(FIREPIT_CREATED);
-    }
-
-    public static final SpecialBlockTrigger CHISELED = new SpecialBlockTrigger(Helpers.identifier("chiseled"));
-    public static final SpecialBlockTrigger LIT = new SpecialBlockTrigger(Helpers.identifier("lit"));
-    public static final SpecialBlockTrigger ROCK_ANVIL = new SpecialBlockTrigger(Helpers.identifier("rock_anvil"));
-    public static final SpecialBlockTrigger FIREPIT_CREATED = new SpecialBlockTrigger(Helpers.identifier("firepit_created"));
-
     private final ResourceLocation id;
 
-    public SpecialBlockTrigger(ResourceLocation id)
+    public BlockActionTrigger(ResourceLocation id)
     {
         this.id = id;
     }

@@ -29,7 +29,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.events.SpecialEventTrigger;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 /**
  * Common growth logic for crop blocks
@@ -167,7 +167,7 @@ public final class CropHelpers
                     addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
                     if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
                     {
-                        SpecialEventTrigger.FULL_FERTILIZER.trigger(serverPlayer);
+                        TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
                     }
                 });
                 return true;

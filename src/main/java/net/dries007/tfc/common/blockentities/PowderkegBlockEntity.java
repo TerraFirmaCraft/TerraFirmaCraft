@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -33,7 +32,7 @@ import net.dries007.tfc.common.container.PowderkegContainer;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.PowderKegExplosion;
-import net.dries007.tfc.util.events.SpecialEventTrigger;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -131,7 +130,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
             this.igniter = igniter;
             if (igniter instanceof ServerPlayer serverPlayer && getStrength(this) >= 64)
             {
-                SpecialEventTrigger.FULL_POWDERKEG.trigger(serverPlayer);
+                TFCAdvancements.FULL_POWDERKEG.trigger(serverPlayer);
             }
         }
         else
