@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/chisel",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:chiseled",
+      "conditions": {
+        "tag": "forge:smooth_stone"
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:rock/smooth/chert"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.smooth_stone.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.smooth_stone.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

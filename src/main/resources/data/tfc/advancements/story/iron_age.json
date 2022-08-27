@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/iron_bloom",
+  "criteria": {
+    "metal/ingot/wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/ingot/wrought_iron"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/wrought_iron"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.iron_age.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.iron_age.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "metal/ingot/wrought_iron"
+    ]
+  ]
+}

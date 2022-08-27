@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/firepit",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:firepit_created",
+      "conditions": {
+        "block": "tfc:pot"
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:pot"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.pot.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.pot.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

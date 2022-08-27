@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/root",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:lava_lamp"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/lamp/blue_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.lava_lamp.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.lava_lamp.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/volcano",
+  "criteria": {
+    "ocean_reef": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:ocean_reef"
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:coral/brain_coral_fan"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.coral_reef.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.coral_reef.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "ocean_reef"
+    ]
+  ]
+}

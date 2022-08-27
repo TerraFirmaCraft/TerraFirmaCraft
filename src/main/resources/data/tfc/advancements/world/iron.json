@@ -1,0 +1,69 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/nugget",
+  "criteria": {
+    "hematite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/small_hematite"
+            ]
+          }
+        ]
+      }
+    },
+    "limonite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/small_limonite"
+            ]
+          }
+        ]
+      }
+    },
+    "magnetite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/small_magnetite"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ore/small_hematite"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.iron.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.iron.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "hematite"
+    ],
+    [
+      "limonite"
+    ],
+    [
+      "magnetite"
+    ]
+  ]
+}
