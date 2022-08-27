@@ -1,0 +1,282 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/gemologist",
+  "criteria": {
+    "bituminous_coal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/bituminous_coal"
+            ]
+          }
+        ]
+      }
+    },
+    "lignite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/lignite"
+            ]
+          }
+        ]
+      }
+    },
+    "kaolinite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/kaolinite"
+            ]
+          }
+        ]
+      }
+    },
+    "graphite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/graphite"
+            ]
+          }
+        ]
+      }
+    },
+    "cinnabar": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/cinnabar"
+            ]
+          }
+        ]
+      }
+    },
+    "cryolite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/cryolite"
+            ]
+          }
+        ]
+      }
+    },
+    "saltpeter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/saltpeter"
+            ]
+          }
+        ]
+      }
+    },
+    "sulfur": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/sulfur"
+            ]
+          }
+        ]
+      }
+    },
+    "sylvite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/sylvite"
+            ]
+          }
+        ]
+      }
+    },
+    "borax": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/borax"
+            ]
+          }
+        ]
+      }
+    },
+    "gypsum": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/gypsum"
+            ]
+          }
+        ]
+      }
+    },
+    "lapis_lazuli": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/lapis_lazuli"
+            ]
+          }
+        ]
+      }
+    },
+    "halite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/halite"
+            ]
+          }
+        ]
+      }
+    },
+    "diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/diamond"
+            ]
+          }
+        ]
+      }
+    },
+    "emerald": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/emerald"
+            ]
+          }
+        ]
+      }
+    },
+    "amethyst": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/amethyst"
+            ]
+          }
+        ]
+      }
+    },
+    "opal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/opal"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ore/halite"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.minerologist.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.minerologist.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "bituminous_coal"
+    ],
+    [
+      "lignite"
+    ],
+    [
+      "kaolinite"
+    ],
+    [
+      "graphite"
+    ],
+    [
+      "cinnabar"
+    ],
+    [
+      "cryolite"
+    ],
+    [
+      "saltpeter"
+    ],
+    [
+      "sulfur"
+    ],
+    [
+      "sylvite"
+    ],
+    [
+      "borax"
+    ],
+    [
+      "gypsum"
+    ],
+    [
+      "lapis_lazuli"
+    ],
+    [
+      "halite"
+    ],
+    [
+      "diamond"
+    ],
+    [
+      "emerald"
+    ],
+    [
+      "sulfur"
+    ],
+    [
+      "amethyst"
+    ],
+    [
+      "opal"
+    ]
+  ]
+}

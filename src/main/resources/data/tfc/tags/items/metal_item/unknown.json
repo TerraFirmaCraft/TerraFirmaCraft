@@ -1,4 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "parent": "item/template_spawn_egg"
+  "replace": false,
+  "values": [
+    "tfc:metal/ingot/unknown"
+  ]
 }

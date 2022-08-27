@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/bloomery",
+  "criteria": {
+    "raw_iron_bloom": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:raw_iron_bloom"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:raw_iron_bloom"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.iron_bloom.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.iron_bloom.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "raw_iron_bloom"
+    ]
+  ]
+}

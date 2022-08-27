@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/stone_anvil",
+  "criteria": {
+    "metal/anvil/copper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/anvil/copper"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/anvil/copper"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.metal_anvil.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.metal_anvil.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "metal/anvil/copper"
+    ]
+  ]
+}

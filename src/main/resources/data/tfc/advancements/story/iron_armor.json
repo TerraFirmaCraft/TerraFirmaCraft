@@ -1,0 +1,114 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/iron_age",
+  "criteria": {
+    "metal/sword/wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/sword/wrought_iron"
+            ]
+          }
+        ]
+      }
+    },
+    "metal/shield/wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/shield/wrought_iron"
+            ]
+          }
+        ]
+      }
+    },
+    "metal/helmet/wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/helmet/wrought_iron"
+            ]
+          }
+        ]
+      }
+    },
+    "metal/chestplate/wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/chestplate/wrought_iron"
+            ]
+          }
+        ]
+      }
+    },
+    "metal/greaves/wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/greaves/wrought_iron"
+            ]
+          }
+        ]
+      }
+    },
+    "metal/boots/wrought_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/boots/wrought_iron"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/chestplate/wrought_iron"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.iron_armor.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.iron_armor.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "metal/chestplate/wrought_iron"
+    ],
+    [
+      "metal/helmet/wrought_iron"
+    ],
+    [
+      "metal/greaves/wrought_iron"
+    ],
+    [
+      "metal/boots/wrought_iron"
+    ],
+    [
+      "metal/sword/wrought_iron"
+    ],
+    [
+      "metal/shield/wrought_iron"
+    ]
+  ]
+}

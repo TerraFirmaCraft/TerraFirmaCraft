@@ -57,15 +57,18 @@ def generate(rm: ResourceManager):
         # Metal Items and Blocks
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type in metal_data.types or item_data.type == 'all':
+                item_name = 'tfc:metal/%s/%s' % (item, metal)
                 if item_data.tag is not None:
-                    rm.item_tag(item_data.tag + '/' + metal, 'tfc:metal/%s/%s' % (item, metal))
+                    rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
+                    rm.item_tag(item_data.tag + '/' + metal, item_name)
                     ingredient = utils.item_stack('#%s/%s' % (item_data.tag, metal))
                 else:
-                    ingredient = utils.item_stack('tfc:metal/%s/%s' % (item, metal))
+                    ingredient = utils.item_stack(item_name)
 
+                rm.item_tag('metal_item/%s' % metal, item_name)
+                if item in METAL_TOOL_HEADS:
+                    rm.item_tag('metal_item/%s_tools' % metal, item_name)
                 item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
-                if 'tool' in metal_data.types and item == 'fishing_rod':
-                    rm.item_tag('forge:fishing_rods', 'tfc:metal/%s/%s' % (item, metal))
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -86,6 +89,9 @@ def generate(rm: ResourceManager):
     rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
     rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
     rm.entity_tag('horses', 'tfc:horse', 'tfc:mule', 'tfc:donkey')
+    rm.entity_tag('animals', *['tfc:%s' % mob for mob in SPAWN_EGG_ENTITIES])
+    rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
+    rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
 
     # Item Heats
 
@@ -380,7 +386,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
-    rm.block_tag('mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
+    block_and_item_tag(rm, 'mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():
@@ -416,8 +422,7 @@ def generate(rm: ResourceManager):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
-        block_and_item_tag(rm, 'forge:stone', block('raw'))
-        rm.block_tag('forge:stone', block('hardened'))
+        block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
@@ -429,6 +434,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.block_tag('creates_upward_bubbles', block('magma'))
+            block_and_item_tag(rm, 'rock_anvils', 'tfc:rock/anvil/%s' % rock)
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))

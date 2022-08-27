@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/root",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:lit",
+      "conditions": {
+        "block": "tfc:powderkeg"
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:powderkeg"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.powderkeg.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.powderkeg.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}
