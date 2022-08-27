@@ -33,4 +33,9 @@ public interface SimpleFluidHandler extends IFluidHandler
         }
         return FluidStack.EMPTY;
     }
+
+    default FluidStack getFluidInTank()
+    {
+        return getFluidInTank(0);
+    }
 }
