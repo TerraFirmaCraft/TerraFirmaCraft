@@ -86,7 +86,7 @@ def clean():
 def validate_resources():
     """ Validates all resources are unchanged. """
     rm = ValidatingResourceManager('tfc', './src/main/resources')
-    resources_at(rm, True, True, True, True)
+    resources_at(rm, True, True, True, True, True)
     assert rm.error_files == 0, 'Validation Errors Were Present'
 
 
