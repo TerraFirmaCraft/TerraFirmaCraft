@@ -1129,6 +1129,7 @@ DEFAULT_LANG = {
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom': 'Loom',
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
+    'tfc.jei.instant_fluid_barrel': 'Instant Fluid Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
     'tfc.jei.bloomery': 'Bloomery',
     'tfc.jei.welding': 'Welding',

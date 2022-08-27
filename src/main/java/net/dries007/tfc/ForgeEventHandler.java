@@ -780,17 +780,20 @@ public final class ForgeEventHandler
         {
             if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
             {
-                if (!TFCConfig.SERVER.enableVanillaMonsters.get())
+                if (TFCConfig.SERVER.enableVanillaMonsters.get())
+                {
+                    if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
+                    {
+                        final BlockPos pos = entity.blockPosition();
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                    }
+                }
+                else
                 {
                     event.setResult(Event.Result.DENY);
-                }
-                else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
-                {
-                    final BlockPos pos = entity.blockPosition();
-                    if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
-                    {
-                        event.setResult(Event.Result.DENY);
-                    }
                 }
             }
         }

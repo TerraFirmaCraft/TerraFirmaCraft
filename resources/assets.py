@@ -1158,8 +1158,19 @@ def generate(rm: ResourceManager):
                 'lifecycle=dormant': {'model': 'tfc:block/plant/%s_dry_leaves' % fruit},
                 'lifecycle=healthy': {'model': 'tfc:block/plant/%s_leaves' % fruit}
             }).with_item_model().with_tag('minecraft:leaves').with_tag('fruit_tree_leaves').with_lang(lang('%s Leaves', fruit)).with_block_loot({
-                'name': 'tfc:plant/%s_leaves' % fruit,
+                'name': 'tfc:food/%s' % fruit,
                 'conditions': [loot_tables.block_state_property('tfc:plant/%s_leaves[lifecycle=fruiting]' % fruit)]
+            }, {
+                'name': 'tfc:plant/%s_leaves' % fruit,
+                'conditions': [loot_tables.or_condition(loot_tables.match_tag('forge:shears'), loot_tables.silk_touch())]
+            }, {
+                'name': 'minecraft:stick',
+                'conditions': [loot_tables.match_tag('tfc:sharp_tools'), loot_tables.random_chance(0.2)],
+                'functions': [loot_tables.set_count(1, 2)]
+            }, {
+                'name': 'minecraft:stick',
+                'conditions': [loot_tables.random_chance(0.05)],
+                'functions': [loot_tables.set_count(1, 2)]
             })
             for life in ('', '_fruiting', '_flowering', '_dry'):
                 rm.block_model('tfc:plant/%s%s_leaves' % (fruit, life), parent='block/leaves', textures={'all': 'tfc:block/fruit_tree/%s%s_leaves' % (fruit, life)})
