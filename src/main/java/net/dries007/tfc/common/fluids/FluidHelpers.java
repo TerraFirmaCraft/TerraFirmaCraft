@@ -343,7 +343,7 @@ public final class FluidHelpers
             }
             return true;
         }
-        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME)
+        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME && allowPlacingSourceBlocks)
         {
             // Delegate to the container to place the block
             container.placeLiquid(level, pos, state, fluid.defaultFluidState());

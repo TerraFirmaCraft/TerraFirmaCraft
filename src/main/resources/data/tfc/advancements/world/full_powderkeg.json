@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/powderkeg",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:full_powderkeg"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "minecraft:gunpowder"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.full_powderkeg.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.full_powderkeg.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

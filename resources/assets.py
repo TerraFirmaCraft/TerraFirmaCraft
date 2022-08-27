@@ -121,7 +121,7 @@ def generate(rm: ResourceManager):
                 block = rm.blockstate('tfc:ore/small_%s' % ore, variants={"": four_ways('tfc:block/groundcover/%s' % ore)}, use_default_model=False)
                 block.with_lang(lang('small %s', ore)).with_block_loot('tfc:ore/small_%s' % ore).with_tag('can_be_snow_piled')
 
-                rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore))
+                rm.item_model('tfc:ore/small_%s' % ore).with_lang(lang('small %s', ore)).with_tag('nuggets')
 
                 for grade in ORE_GRADES.keys():
                     block = rm.blockstate(('ore', grade + '_' + ore, rock), 'tfc:block/ore/%s_%s/%s' % (grade, ore, rock))
@@ -350,8 +350,7 @@ def generate(rm: ResourceManager):
     item_model_property(rm, 'tfc:ceramic/large_vessel', [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/large_vessel_sealed'}], {'parent': 'tfc:block/ceramic/large_vessel_opened'})
     
     # Unfired large undyed vessel
-    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay','bottom':'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed')
-    rm.lang('item.tfc.ceramic.unfired_large_vessel', lang("unfired large vessel"))
+    rm.item_model('tfc:ceramic/unfired_large_vessel', {'top': 'tfc:block/ceramic/large_vessel/top_clay', 'side': 'tfc:block/ceramic/large_vessel/side_clay', 'bottom': 'tfc:block/ceramic/large_vessel/bottom_clay', 'particle': 'tfc:block/ceramic/large_vessel/side_clay'}, parent='tfc:block/ceramic/large_vessel_sealed').with_tag('tfc:unfired_pottery').with_lang(lang('unfired large vessel'))
 
     for color in COLORS:
         vessel = 'tfc:ceramic/large_vessel/%s' % color
@@ -366,12 +365,20 @@ def generate(rm: ResourceManager):
             'conditions': [loot_tables.block_state_property(vessel + '[sealed=true]')]
         }, vessel))
         block.with_tag('minecraft:mineable/pickaxe')
-        rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures={'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_sealed')
-        rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures={'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side' % color}, parent='tfc:block/large_vessel_opened')
-        item_model_property(rm, 'tfc:ceramic/large_vessel/%s' % color, [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color}], {'parent': 'tfc:block/ceramic/%s_large_vessel_opened' % color})
-        rm.item_model('tfc:ceramic/unfired_large_vessel/%s' % color, {'top': 'tfc:block/ceramic/large_vessel/glazed/%s/top_clay' % color, 'side': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color,'bottom':'tfc:block/ceramic/large_vessel/glazed/%s/bottom_clay' % color, 'particle': 'tfc:block/ceramic/large_vessel/glazed/%s/side_clay' % color}, parent='tfc:block/ceramic/large_vessel_sealed')
-        rm.lang('item.tfc.ceramic.unfired_large_vessel.%s' % color, lang("%s unfired large vessel", color))
-    
+        tex = 'tfc:block/ceramic/large_vessel/glazed/%s' % color
+        normal_tex = {'top': tex + '/top', 'side': tex + '/side', 'bottom': tex + '/bottom'}
+        clay_tex = {'top': tex + '/top_clay', 'bottom': tex + '/bottom_clay', 'side': tex + '/side_clay'}
+        parent_model = 'tfc:block/ceramic/large_vessel_' + VESSEL_TYPES[color]
+        if VESSEL_TYPES[color] == 'd':
+            normal_tex['back'] = tex + '/back'
+            clay_tex['back'] = tex + '/back_clay'
+        if VESSEL_TYPES[color] == 'c' or VESSEL_TYPES[color] == 'd':
+            normal_tex['front'] = tex + '/front'
+            clay_tex['front'] = tex + '/front_clay'
+        rm.block_model('tfc:ceramic/%s_large_vessel_sealed' % color, textures=normal_tex, parent=parent_model + '_sealed')
+        rm.block_model('tfc:ceramic/%s_large_vessel_opened' % color, textures=normal_tex, parent=parent_model + '_opened')
+        item_model_property(rm, vessel, [{'predicate': {'tfc:sealed': 1.0}, 'model': 'tfc:block/ceramic/%s_large_vessel_sealed' % color}], {'parent': 'tfc:block/ceramic/%s_large_vessel_opened' % color})
+        rm.item_model('tfc:ceramic/unfired_large_vessel/%s' % color, clay_tex, parent=parent_model + '_sealed').with_lang(lang('%s unfired large vessel', color))
 
     rm.blockstate('charcoal_pile', variants=dict((('layers=%d' % i), {'model': 'tfc:block/charcoal_pile/charcoal_height%d' % (i * 2) if i != 8 else 'tfc:block/charcoal_pile/charcoal_block'}) for i in range(1, 1 + 8))).with_lang(lang('Charcoal Pile')).with_block_loot('minecraft:charcoal')
     rm.blockstate('charcoal_forge', variants=dict((('heat_level=%d' % i), {'model': 'tfc:block/charcoal_forge/heat_%d' % i}) for i in range(0, 7 + 1))).with_lang(lang('Forge')).with_block_loot('7 minecraft:charcoal')
@@ -397,21 +404,21 @@ def generate(rm: ResourceManager):
         'lit=true': {'model': 'tfc:block/firepit_lit'},
         'lit=false': {'model': 'tfc:block/firepit_unlit'}
     }).with_lang(lang('Firepit')).with_block_loot('1-4 tfc:powder/wood_ash')
-    rm.item_model('firepit', parent='tfc:block/firepit_unlit')
+    rm.item_model('firepit', 'tfc:item/firepit')
 
     rm.blockstate_multipart('grill',
         ({'model': 'tfc:block/firepit_grill'}),
         ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
         ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
     ).with_lang(lang('Grill')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:wrought_iron_grill')
-    rm.item_model('grill', parent='tfc:block/firepit_grill')
+    rm.item_model('grill', 'tfc:item/firepit_grill')
 
     rm.blockstate_multipart('pot',
         ({'model': 'tfc:block/firepit_pot'}),
         ({'lit': True}, {'model': 'tfc:block/firepit_lit'}),
         ({'lit': False}, {'model': 'tfc:block/firepit_unlit'})
     ).with_lang(lang('Pot')).with_block_loot('1-4 tfc:powder/wood_ash', 'tfc:ceramic/pot')
-    rm.item_model('pot', parent='tfc:block/firepit_pot', no_textures=True)
+    rm.item_model('pot', 'tfc:item/firepit_pot')
 
     block = rm.blockstate('powderkeg', variants={
         'lit=false,sealed=true': {'model': 'tfc:block/powderkeg_sealed'},
@@ -623,6 +630,7 @@ def generate(rm: ResourceManager):
     # Hides
     for size in ('small', 'medium', 'large'):
         for hide in ('prepared', 'raw', 'scraped', 'sheepskin', 'soaked'):
+            rm.item_tag('%s_hides' % hide, 'tfc:%s_%s_hide' % (size, hide))
             item = rm.item_model('%s_%s_hide' % (size, hide), 'tfc:item/hide/%s/%s' % (size, hide))
             if item != 'sheepskin':
                 item.with_lang(lang('%s %s hide', size, hide))
@@ -639,6 +647,7 @@ def generate(rm: ResourceManager):
                 else:
                     item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
                 item.with_lang(lang('stone %s', rock_item))
+            rm.item_tag('stone_tools', 'tfc:stone/%s/%s' % (rock_item, rock))
 
     # Rock Items
     for rock in ROCKS.keys():
@@ -652,7 +661,7 @@ def generate(rm: ResourceManager):
                 if metal_item == 'fishing_rod':
                     item = item_model_property(rm, ('metal', metal_item, metal), [{'predicate': {'tfc:cast': 1}, 'model': 'minecraft:item/fishing_rod_cast'}], {'parent': 'minecraft:item/handheld_rod', 'textures': {'layer0': texture}})
                 elif metal_item == 'shield':
-                    item = rm.item(('metal', metal_item, metal))  # Shields have a custom model for inventory and blocking
+                    item = rm.item(('metal', metal_item, metal)).with_tag('shields')  # Shields have a custom model for inventory and blocking
                 elif metal_item == 'javelin':
                     item = make_javelin(rm, 'metal/%s/%s' % (metal_item, metal), 'tfc:item/metal/javelin/%s' % metal)
                 else:
@@ -778,26 +787,26 @@ def generate(rm: ResourceManager):
     # Pottery
     for pottery in SIMPLE_POTTERY:  # both fired and unfired items
         rm.item_model(('ceramic', pottery)).with_lang(lang(pottery))
-        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
+        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery)).with_tag('tfc:unfired_pottery')
 
     for pottery in SIMPLE_UNFIRED_POTTERY:  # just the unfired item (fired is a vanilla item)
-        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery))
+        rm.item_model(('ceramic', 'unfired_' + pottery)).with_lang(lang('Unfired %s', pottery)).with_tag('tfc:unfired_pottery')
 
     contained_fluid(rm, ('ceramic', 'jug'), 'tfc:item/ceramic/jug_empty', 'tfc:item/ceramic/jug_overlay').with_lang(lang('Ceramic Jug'))
     contained_fluid(rm, 'wooden_bucket', 'tfc:item/bucket/wooden_bucket_empty', 'tfc:item/bucket/wooden_bucket_overlay').with_lang(lang('Wooden Bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
 
-# Small Ceramic Vessels (colored)
+    # Small Ceramic Vessels (colored)
     for color in COLORS:
-        rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color))
+        rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color)).with_tag('tfc:unfired_pottery')
         rm.item_model(('ceramic', color + '_glazed_vessel')).with_lang(lang('%s Glazed Vessel', color))
 
     # Molds
     for variant, data in METAL_ITEMS.items():
         if data.mold:
-            rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant))
-            contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant))
+            rm.item_model(('ceramic', 'unfired_%s_mold' % variant), 'tfc:item/ceramic/unfired_%s' % variant).with_lang(lang('unfired %s mold', variant)).with_tag('tfc:unfired_pottery')
+            contained_fluid(rm, ('ceramic', '%s_mold' % variant), 'tfc:item/ceramic/fired_mold/%s_empty' % variant, 'tfc:item/ceramic/fired_mold/%s_overlay' % variant).with_lang(lang('%s mold', variant)).with_tag('fired_molds')
 
     # Crops
     for crop, crop_data in CROPS.items():

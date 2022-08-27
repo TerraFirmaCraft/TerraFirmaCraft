@@ -8,6 +8,7 @@ package net.dries007.tfc.common.items;
 
 import java.util.Random;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -40,7 +41,7 @@ public class TorchItem extends StandingAndWallBlockItem
     {
         final Level level = context.getLevel();
         final BlockPos pos = context.getClickedPos();
-        if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), false))
+        if (context.getHand() == InteractionHand.MAIN_HAND && StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), StartFireEvent.FireResult.NEVER))
         {
             return InteractionResult.SUCCESS;
         }
@@ -74,7 +75,7 @@ public class TorchItem extends StandingAndWallBlockItem
         {
             if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f)
             {
-                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null, false);
+                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.NEVER);
                 itemEntity.kill();
             }
             else

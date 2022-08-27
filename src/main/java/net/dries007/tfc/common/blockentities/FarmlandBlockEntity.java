@@ -58,6 +58,11 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         super.saveAdditional(nbt);
     }
 
+    public boolean isMaxedOut()
+    {
+        return nitrogen == 1 && phosphorous == 1 && potassium == 1;
+    }
+
     public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, boolean includeHydration, boolean includeNutrients)
     {
         if (includeHydration)

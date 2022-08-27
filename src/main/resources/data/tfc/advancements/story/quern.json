@@ -1,0 +1,54 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/raw_stone",
+  "criteria": {
+    "handstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:handstone"
+            ]
+          }
+        ]
+      }
+    },
+    "quern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:quern"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:quern"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.quern.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.quern.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "quern"
+    ],
+    [
+      "handstone"
+    ]
+  ]
+}
