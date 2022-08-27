@@ -116,7 +116,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 
     'tuyere': MetalItem('tool', 100, 'item/generated', None, False),
     'fish_hook': MetalItem('tool', 100, 'item/generated', None, False),
-    'fishing_rod': MetalItem('tool', 100, 'item/generated', None, False),
+    'fishing_rod': MetalItem('tool', 100, 'item/generated', 'forge:fishing_rods', False),
     'pickaxe': MetalItem('tool', 100, 'item/handheld', None, False),
     'pickaxe_head': MetalItem('tool', 100, 'item/generated', None, True),
     'shovel': MetalItem('tool', 100, 'item/handheld', None, False),
@@ -270,6 +270,8 @@ ORE_VEINS: Dict[str, Vein] = {
     'amethyst': vein('amethyst', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'metamorphic'], biomes='#tfc:is_river', height=4),
     'opal': vein('opal', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='#tfc:is_river', height=4)
 }
+
+ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
 
 DEPOSIT_RARES: Dict[str, str] = {
     'granite': 'topaz',
@@ -463,6 +465,40 @@ PLANTS: Dict[str, Plant] = {
     'water_taro': Plant(False, 12, 40, 260, 500, 'emergent_fresh'),
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
+
+SIMPLE_STAGE_PLANTS: Dict[str, int] = {
+    'allium': 8,
+    'anthurium': 2,
+    'black_orchid': 3,
+    'blood_lily': 4,
+    'blue_ginger': 2,
+    'blue_orchid': 3,
+    'butterfly_milkweed': 7,
+    'desert_flame': 2,
+    'heliconia': 3,
+    'houstonia': 3,
+    'goldenrod': 5,
+    'grape_hyacinth': 4,
+    'kangaroo_paw': 2,
+    'labrador_tea': 7,
+    'meads_milkweed': 7,
+    'nasturtium': 5,
+    'oxeye_daisy': 6,
+    'perovskia': 6,
+    'poppy': 5,
+    'primrose': 3,
+    'pulsatilla': 6,
+    'sacred_datura': 4,
+    'silver_spurflower': 3,
+    'strelitzia': 3,
+    'trillium': 6,
+    'tropical_milkweed': 4,
+    'yucca': 4
+}
+
+MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant']
+SEAGRASS: List[str] = ['star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail']
+
 UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
 SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
 CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
@@ -496,6 +532,25 @@ COLOR_COMBOS = [
     ('red', 'blue', 'purple'),
     ('yellow', 'blue', 'green')
 ]
+
+VESSEL_TYPES = {
+    'blue': 'a',
+    'brown': 'a',
+    'gray': 'a',
+    'light_gray': 'a',
+    'magenta': 'a',
+    'orange': 'a',
+    'white': 'a',
+    'pink': 'b',
+    'cyan': 'b',
+    'purple': 'b',
+    'yellow': 'c',
+    'black': 'c',
+    'light_blue': 'c',
+    'lime': 'c',
+    'red': 'c',
+    'green': 'd'
+}
 
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
@@ -548,7 +603,7 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth')
 OCEAN_PREDATORS = ('dolphin', 'orca')
@@ -637,11 +692,13 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
 
 DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
+TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
 VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wrought_iron')
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
+TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
 
 ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
     'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
@@ -679,6 +736,7 @@ DEFAULT_LANG = {
     'effect.tfc.glow_ink': 'Glowing Ink',
     'effect.tfc.overburdened': 'Overburdened',
     'effect.tfc.thirst': 'Thirst',
+    'effect.tfc.exhausted': 'Exhausted',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
@@ -1071,6 +1129,7 @@ DEFAULT_LANG = {
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom': 'Loom',
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
+    'tfc.jei.instant_fluid_barrel': 'Instant Fluid Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
     'tfc.jei.bloomery': 'Bloomery',
     'tfc.jei.welding': 'Welding',

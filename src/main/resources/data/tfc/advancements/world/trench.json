@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/volcano",
+  "criteria": {
+    "deep_ocean_trench": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:deep_ocean_trench"
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:rock/magma/diorite"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.trench.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.trench.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "deep_ocean_trench"
+    ]
+  ]
+}

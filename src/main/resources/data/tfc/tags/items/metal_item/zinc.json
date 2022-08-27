@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:metal/ingot/zinc",
+    "tfc:metal/double_ingot/zinc",
+    "tfc:metal/sheet/zinc",
+    "tfc:metal/double_sheet/zinc",
+    "tfc:metal/rod/zinc"
+  ]
+}

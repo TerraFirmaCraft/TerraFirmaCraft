@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/blast_furnace",
+  "criteria": {
+    "metal_item/steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:metal_item/steel"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.steel_age.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.steel_age.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "metal_item/steel"
+    ]
+  ]
+}

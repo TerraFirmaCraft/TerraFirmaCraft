@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/red_steel",
+  "criteria": {
+    "metal/bucket/red_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/bucket/red_steel"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/bucket/red_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.red_steel_bucket.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.red_steel_bucket.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "metal/bucket/red_steel"
+    ]
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/seeds",
+  "criteria": {
+    "sandwich_bread": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:sandwich_bread"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:food/rye_bread"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.bread.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.bread.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "sandwich_bread"
+    ]
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/nugget",
+  "criteria": {
+    "ore/graphite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/graphite"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ore/graphite"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.graphite.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.graphite.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "ore/graphite"
+    ]
+  ]
+}

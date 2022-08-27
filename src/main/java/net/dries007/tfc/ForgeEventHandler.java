@@ -78,9 +78,9 @@ import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
-import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
+import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
@@ -602,7 +602,11 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
+            if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
+            {
+                event.setCanceled(true);
+                event.setFireResult(StartFireEvent.FireResult.ALWAYS);
+            }
         }
         else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
         {
@@ -693,8 +697,7 @@ public final class ForgeEventHandler
             final int hugeHeavyCount = Helpers.countOverburdened(player.getInventory());
             if (hugeHeavyCount >= 1)
             {
-                // 25% on top of normal exhaustion
-                player.causeFoodExhaustion(TFCFoodData.PASSIVE_EXHAUSTION_PER_SECOND * 20 * TFCConfig.SERVER.passiveExhaustionModifier.get().floatValue() * 0.25f);
+                player.addEffect(Helpers.getExhausted(false));
             }
             if (hugeHeavyCount == 2)
             {
@@ -777,17 +780,20 @@ public final class ForgeEventHandler
         {
             if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
             {
-                if (!TFCConfig.SERVER.enableVanillaMonsters.get())
+                if (TFCConfig.SERVER.enableVanillaMonsters.get())
+                {
+                    if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
+                    {
+                        final BlockPos pos = entity.blockPosition();
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                    }
+                }
+                else
                 {
                     event.setResult(Event.Result.DENY);
-                }
-                else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
-                {
-                    final BlockPos pos = entity.blockPosition();
-                    if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
-                    {
-                        event.setResult(Event.Result.DENY);
-                    }
                 }
             }
         }

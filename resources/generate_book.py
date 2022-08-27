@@ -680,7 +680,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             crafting('tfc:crafting/barley_cutting', text_contents='First, cut the straw off of the food with a $(thing)Knife$().'),
             item_spotlight('tfc:food/rye_grain', text_contents='Grains are the longest-lasting stage of the process, decaying much slower than most foods. On its own, a fresh piece of grain lasts 10 months and 7 days. In a small vessel, it lasts 1 year, 9 months, and 7 days.'),
             quern_recipe('tfc:quern/oat_grain', 'Grain must then be ground in a $(l:mechanics/quern)Quern$() to make flour.'),
-            crafting('tfc:crafting/barley_dough_1', text_contents='Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour.'),
+            crafting('tfc:crafting/dough/barley_dough_1', text_contents='Dough is crafted by adding a bucket of $(thing)Fresh Water$() to flour.'),
             heat_recipe('tfc:heating/barley_dough', 'Dough is then able to be $(l:mechanics/heating)heated$() to make bread. At this point it can also be used in $(l:mechanics/sandwiches)Sandwiches$().'),
         )),
         entry('sandwiches', 'Sandwiches', 'tfc:food/barley_bread_sandwich', pages=(

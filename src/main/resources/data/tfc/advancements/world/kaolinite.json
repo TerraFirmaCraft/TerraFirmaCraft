@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/nugget",
+  "criteria": {
+    "ore/kaolinite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/kaolinite"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ore/kaolinite"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.kaolinite.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.kaolinite.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "ore/kaolinite"
+    ]
+  ]
+}

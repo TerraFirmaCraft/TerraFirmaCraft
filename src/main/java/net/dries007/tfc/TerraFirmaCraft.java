@@ -57,6 +57,7 @@ import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.climate.ClimateModels;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.loot.TFCLoot;
 import net.dries007.tfc.util.tracker.WorldTracker;
 import net.dries007.tfc.world.TFCChunkGenerator;
@@ -157,6 +158,7 @@ public final class TerraFirmaCraft
             IBellowsConsumer.registerDefaultOffsets();
             FoodCapability.setCreativeTabsNonDecaying();
             CauldronInteractions.registerCauldronInteractions();
+            TFCAdvancements.registerTriggers();
         });
 
         PatchouliIntegration.registerMultiBlocks();

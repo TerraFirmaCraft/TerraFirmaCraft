@@ -33,6 +33,7 @@ public class KelpTreeFeature extends Feature<BlockConfig<KelpTreeFlowerBlock>>
 
         final FluidState fluidAt = level.getFluidState(pos);
 
-        return context.config().block().generatePlant(level, pos, context.random(), 8, fluidAt.getType());
+        final int seaLevel = level.getLevel().getChunkSource().getGenerator().getSeaLevel();
+        return context.config().block().generatePlant(level, pos, context.random(), 8, fluidAt.getType(), seaLevel);
     }
 }

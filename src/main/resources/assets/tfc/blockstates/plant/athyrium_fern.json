@@ -1,11 +1,8 @@
 {
-  "multipart": [
-    {
-      "apply": [
-        {
-          "model": "tfc:block/plant/athyrium_fern"
-        }
-      ]
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": {
+      "model": "tfc:block/plant/athyrium_fern"
     }
-  ]
+  }
 }

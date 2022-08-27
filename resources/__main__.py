@@ -25,6 +25,7 @@ def main():
         'data',  # only data.py
         'recipes',  # only recipes.py
         'worldgen',  # only world gen data (excluding tags)
+        'advancements', # only advancements.py (which excludes recipe advancements)
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files
@@ -45,7 +46,7 @@ def main():
         elif action == 'validate':
             validate_resources()
         elif action == 'all':
-            resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True)
+            resources(hotswap=hotswap, do_assets=True, do_data=True, do_recipes=True, do_worldgen=True, do_advancements=True)
         elif action == 'assets':
             resources(hotswap=hotswap, do_assets=True)
         elif action == 'data':
@@ -54,6 +55,8 @@ def main():
             resources(hotswap=hotswap, do_recipes=True)
         elif action == 'worldgen':
             resources(hotswap=hotswap, do_worldgen=True)
+        elif action == 'advancements':
+            resources(hotswap=hotswap, do_advancements=True)
         elif action == 'textures':
             import generate_textures
             generate_textures.main()
@@ -87,15 +90,14 @@ def validate_resources():
     assert rm.error_files == 0, 'Validation Errors Were Present'
 
 
-def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False):
+def resources(hotswap: str = None, do_assets: bool = False, do_data: bool = False, do_recipes: bool = False, do_worldgen: bool = False, do_advancements: bool = False):
     """ Generates resource files, or a subset of them """
-    resources_at(ResourceManager('tfc', resource_dir='./src/main/resources'), do_assets, do_data, do_recipes, do_worldgen)
+    resources_at(ResourceManager('tfc', resource_dir='./src/main/resources'), do_assets, do_data, do_recipes, do_worldgen, do_advancements)
     if hotswap:
-        resources_at(ResourceManager('tfc', resource_dir=hotswap), do_assets, do_data, do_recipes, do_worldgen)
+        resources_at(ResourceManager('tfc', resource_dir=hotswap), do_assets, do_data, do_recipes, do_worldgen, do_advancements)
 
 
-def resources_at(rm: ResourceManager, do_assets: bool, do_data: bool, do_recipes: bool, do_worldgen: bool):
-
+def resources_at(rm: ResourceManager, do_assets: bool, do_data: bool, do_recipes: bool, do_worldgen: bool, do_advancements: bool):
     # do simple lang keys first, because it's ordered intentionally
     import constants
     rm.lang(constants.DEFAULT_LANG)
@@ -113,8 +115,11 @@ def resources_at(rm: ResourceManager, do_assets: bool, do_data: bool, do_recipes
     if do_worldgen:
         import world_gen
         world_gen.generate(rm)
+    if do_advancements:
+        import advancements
+        advancements.generate(rm)
 
-    if all((do_assets, do_data, do_worldgen, do_recipes)):
+    if all((do_assets, do_data, do_worldgen, do_recipes, do_advancements)):
         # Only generate this when generating all, as it's shared
         rm.flush()
 
