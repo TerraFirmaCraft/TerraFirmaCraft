@@ -59,7 +59,7 @@ public class LandslideTests
     @GameTest(template = "5x5_platform")
     public void testCobbleBreaksCharcoal(GameTestHelper helper)
     {
-        run(helper, TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.COBBLE).get(), TFCBlocks.CHARCOAL_PILE.get(), TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.COBBLE).get(), null, Items.CHARCOAL);
+        expectBreaksBlock(helper, TFCBlocks.ROCK_BLOCKS.get(Rock.GRANITE).get(Rock.BlockType.COBBLE).get(), TFCBlocks.CHARCOAL_PILE.get(), Items.CHARCOAL);
     }
 
     @GameTest(template = "5x5_platform")
@@ -78,6 +78,11 @@ public class LandslideTests
     private void expectBreaksBlock(GameTestHelper helper, Block blockToFallOn, ItemLike expectedItem)
     {
         run(helper, Blocks.DIRT, blockToFallOn, Blocks.DIRT, null, expectedItem);
+    }
+
+    private void expectBreaksBlock(GameTestHelper helper, Block blockToFall, Block blockToFallOn, ItemLike expectedItem)
+    {
+        run(helper, blockToFall, blockToFallOn, blockToFall, null, expectedItem);
     }
 
     private void expectPopsOff(GameTestHelper helper, Block blockToFallOn)
