@@ -18,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -106,9 +107,7 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
     @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        final BlockPos adjacentPos = pos.below();
-        final BlockState adjacentState = level.getBlockState(adjacentPos);
-        if (!adjacentState.isFaceSturdy(level, adjacentPos, Direction.UP) && !Helpers.isBlock(adjacentState, this))
+        if (!canSurvive(state, level, pos))
         {
             // Neighbor state is not sturdy, so pop off and drop items
             level.getBlockEntity(pos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> {
@@ -119,6 +118,15 @@ public class IngotPileBlock extends ExtendedBlock implements EntityBlockExtensio
             });
             level.destroyBlock(pos, false);
         }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
+    {
+        final BlockPos adjacentPos = pos.below();
+        final BlockState adjacentState = level.getBlockState(adjacentPos);
+        return adjacentState.isFaceSturdy(level, adjacentPos, Direction.UP) || Helpers.isBlock(adjacentState, this);
     }
 
     @Override
