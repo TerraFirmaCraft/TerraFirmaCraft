@@ -359,19 +359,19 @@ public class VesselItem extends Item
         private void updateInventoryMelting()
         {
             boolean updatedAlloy = false;
-            final ItemStackInventory wrapper = new ItemStackInventory();
+            final ItemStackInventory inventory = new ItemStackInventory();
             for (int i = 0; i < SLOTS; i++)
             {
-                final ItemStack stack = inventory.getStackInSlot(i);
-                wrapper.setStack(stack);
+                final ItemStack stack = this.inventory.getStackInSlot(i);
+                inventory.setStack(stack);
                 if (cachedRecipes[i] != null)
                 {
                     final HeatingRecipe recipe = cachedRecipes[i];
                     if (recipe.isValidTemperature(heat.getTemperature()))
                     {
                         // Melt item, add the contents to the alloy. Excess solids are placed into the inventory, more than can fit is voided.
-                        final ItemStack outputStack = recipe.assemble(wrapper);
-                        final FluidStack outputFluid = recipe.getOutputFluid();
+                        final ItemStack outputStack = recipe.assemble(inventory);
+                        final FluidStack outputFluid = recipe.assembleFluid(inventory);
 
                         if (!outputStack.isEmpty())
                         {
@@ -388,7 +388,7 @@ public class VesselItem extends Item
                         }
 
                         // Apply item output
-                        inventory.setStackInSlot(i, outputStack);
+                        this.inventory.setStackInSlot(i, outputStack);
 
                         // Apply fluid output
                         Metal metal = Metal.get(outputFluid.getFluid());

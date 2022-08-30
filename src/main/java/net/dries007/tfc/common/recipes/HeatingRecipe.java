@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -57,20 +58,22 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
     private final ItemStackProvider outputItem;
     private final FluidStack outputFluid;
     private final float temperature;
+    private final boolean useDurability;
 
-    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature)
+    public HeatingRecipe(ResourceLocation id, Ingredient ingredient, ItemStackProvider outputItem, FluidStack outputFluid, float temperature, boolean useDurability)
     {
         this.id = id;
         this.ingredient = ingredient;
         this.outputItem = outputItem;
         this.outputFluid = outputFluid;
         this.temperature = temperature;
+        this.useDurability = useDurability;
     }
 
     @Override
-    public boolean matches(ItemStackInventory inv, @Nullable Level worldIn)
+    public boolean matches(ItemStackInventory inventory, @Nullable Level level)
     {
-        return getIngredient().test(inv.getStack());
+        return getIngredient().test(inventory.getStack());
     }
 
     @Override
@@ -109,11 +112,34 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
         return outputStack;
     }
 
+    /**
+     * Assemble the fluid output. Use for recipe completions.
+     * @return A new {@link FluidStack}
+     */
+    public FluidStack assembleFluid(ItemStackInventory inventory)
+    {
+        final ItemStack inputStack = inventory.getStack();
+        final FluidStack outputFluid = this.outputFluid.copy();
+        if (useDurability && !outputFluid.isEmpty() && inputStack.getMaxDamage() > 0 && inputStack.isDamageableItem())
+        {
+            outputFluid.setAmount(Mth.floor(outputFluid.getAmount() * (1 - (float) inputStack.getDamageValue() / inputStack.getMaxDamage())));
+        }
+        return outputFluid;
+    }
+
+    /**
+     * @deprecated Use {@link #assembleFluid(ItemStackInventory)}
+     */
+    @Deprecated(forRemoval = true)
     public FluidStack getOutputFluid()
     {
         return outputFluid.copy();
     }
 
+    /**
+     * Get the output fluid for display only. Similar function to {@link #getResultItem()}
+     * @return An approximation of the output fluid from this recipe.
+     */
     public FluidStack getDisplayOutputFluid()
     {
         return outputFluid;
@@ -147,19 +173,21 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
             final Ingredient ingredient = Ingredient.fromJson(json.get("ingredient"));
             final ItemStackProvider outputItem = json.has("result_item") ? ItemStackProvider.fromJson(json.getAsJsonObject("result_item")): ItemStackProvider.empty();
             final FluidStack outputFluid = json.has("result_fluid") ? JsonHelpers.getFluidStack(json.getAsJsonObject("result_fluid")) : FluidStack.EMPTY;
-            final float temperature = GsonHelper.getAsFloat(json, "temperature");
-            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
+            final float temperature = JsonHelpers.getAsFloat(json, "temperature");
+            final boolean useDurability = JsonHelpers.getAsBoolean(json, "use_durability", false);
+            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability);
         }
 
         @Nullable
         @Override
         public HeatingRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            Ingredient ingredient = Ingredient.fromNetwork(buffer);
-            ItemStackProvider outputItem = ItemStackProvider.fromNetwork(buffer);
-            FluidStack outputFluid = buffer.readFluidStack();
-            float temperature = buffer.readFloat();
-            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature);
+            final Ingredient ingredient = Ingredient.fromNetwork(buffer);
+            final ItemStackProvider outputItem = ItemStackProvider.fromNetwork(buffer);
+            final FluidStack outputFluid = buffer.readFluidStack();
+            final float temperature = buffer.readFloat();
+            final boolean useDurability = buffer.readBoolean();
+            return new HeatingRecipe(recipeId, ingredient, outputItem, outputFluid, temperature, useDurability);
         }
 
         @Override
@@ -169,6 +197,7 @@ public class HeatingRecipe implements ISimpleRecipe<ItemStackInventory>
             recipe.outputItem.toNetwork(buffer);
             buffer.writeFluidStack(recipe.outputFluid);
             buffer.writeFloat(recipe.temperature);
+            buffer.writeBoolean(recipe.useDurability);
         }
     }
 }

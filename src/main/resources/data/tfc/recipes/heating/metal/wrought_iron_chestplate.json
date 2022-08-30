@@ -8,5 +8,6 @@
     "fluid": "tfc:metal/cast_iron",
     "amount": 800
   },
-  "temperature": 1535
+  "temperature": 1535,
+  "use_durability": true
 }

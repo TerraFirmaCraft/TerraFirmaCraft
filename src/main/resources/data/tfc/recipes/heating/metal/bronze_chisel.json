@@ -8,5 +8,6 @@
     "fluid": "tfc:metal/bronze",
     "amount": 100
   },
-  "temperature": 950
+  "temperature": 950,
+  "use_durability": true
 }
