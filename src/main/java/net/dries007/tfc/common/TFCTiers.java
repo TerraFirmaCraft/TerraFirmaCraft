@@ -22,16 +22,16 @@ import org.jetbrains.annotations.Nullable;
 public final class TFCTiers
 {
     // Stone >= Vanilla Wood
-    public static final Tier IGNEOUS_INTRUSIVE = register("igneous_intrusive", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 60, 3.0f, 2.0f, 5);
-    public static final Tier IGNEOUS_EXTRUSIVE = register("igneous_extrusive", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 70, 3.0f, 2.0f, 5);
-    public static final Tier SEDIMENTARY = register("sedimentary", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 50, 2.5f, 2.0f, 5);
-    public static final Tier METAMORPHIC = register("metamorphic", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 55, 2.75f, 2.0f, 5);
+    public static final Tier IGNEOUS_INTRUSIVE = register("igneous_intrusive", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 60, 4.7f, 2.0f, 5);
+    public static final Tier IGNEOUS_EXTRUSIVE = register("igneous_extrusive", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 70, 4.7f, 2.0f, 5);
+    public static final Tier SEDIMENTARY = register("sedimentary", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 50, 4.0f, 2.0f, 5);
+    public static final Tier METAMORPHIC = register("metamorphic", Tiers.WOOD, Tiers.STONE, TFCTags.Blocks.NEEDS_STONE_TOOL, 0, 55, 4.35f, 2.0f, 5);
     // Copper >= Vanilla Stone
-    public static final Tier COPPER = register("copper", Tiers.STONE, Tiers.IRON, TFCTags.Blocks.NEEDS_COPPER_TOOL, 1, 600, 4.5f, 3.25f, 8);
+    public static final Tier COPPER = register("copper", Tiers.STONE, Tiers.IRON, TFCTags.Blocks.NEEDS_COPPER_TOOL, 1, 600, 5.25f, 3.25f, 8);
     // Bronze >= Vanilla Iron
-    public static final Tier BRONZE = register("bronze", Tiers.IRON, Tiers.DIAMOND, TFCTags.Blocks.NEEDS_BRONZE_TOOL, 2, 1300, 6.5f, 4.0f, 13);
-    public static final Tier BISMUTH_BRONZE = register("bismuth_bronze", Tiers.IRON, Tiers.DIAMOND, TFCTags.Blocks.NEEDS_BRONZE_TOOL, 2, 1200, 6.0f, 4.0f, 10);
-    public static final Tier BLACK_BRONZE = register("black_bronze", Tiers.IRON, Tiers.DIAMOND, TFCTags.Blocks.NEEDS_BRONZE_TOOL, 2, 1460, 5.5f, 4.25f, 10);
+    public static final Tier BRONZE = register("bronze", Tiers.IRON, Tiers.DIAMOND, TFCTags.Blocks.NEEDS_BRONZE_TOOL, 2, 1300, 7.3f, 4.0f, 13);
+    public static final Tier BISMUTH_BRONZE = register("bismuth_bronze", Tiers.IRON, Tiers.DIAMOND, TFCTags.Blocks.NEEDS_BRONZE_TOOL, 2, 1200, 6.65f, 4.0f, 10);
+    public static final Tier BLACK_BRONZE = register("black_bronze", Tiers.IRON, Tiers.DIAMOND, TFCTags.Blocks.NEEDS_BRONZE_TOOL, 2, 1460, 6.0f, 4.25f, 10);
     // Wrought Iron >= Vanilla Iron
     public static final Tier WROUGHT_IRON = register("wrought_iron", List.of(BRONZE, BISMUTH_BRONZE, BLACK_BRONZE, Tiers.IRON), List.of(Tiers.DIAMOND), TFCTags.Blocks.NEEDS_WROUGHT_IRON_TOOL, 3, 2200, 8.0f, 4.75f, 12);
     // Steel >= Vanilla Diamond

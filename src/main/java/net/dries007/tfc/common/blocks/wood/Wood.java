@@ -136,12 +136,12 @@ public enum Wood implements RegistryWood
 
     public enum BlockType
     {
-        LOG((self, wood) -> new LogBlock(ExtendedProperties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.woodColor() : wood.barkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops().flammableLikeLogs(), wood.getBlock(self.stripped())), false),
-        STRIPPED_LOG(wood -> new LogBlock(ExtendedProperties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.woodColor() : wood.barkColor()).strength(2.0F).sound(SoundType.WOOD).requiresCorrectToolForDrops().flammableLikeLogs(), null), false),
-        WOOD((self, wood) -> new LogBlock(properties(wood).strength(2.0F).requiresCorrectToolForDrops().flammableLikeLogs(), wood.getBlock(self.stripped())), false),
-        STRIPPED_WOOD(wood -> new LogBlock(properties(wood).strength(2.0F).requiresCorrectToolForDrops().flammableLikeLogs(), null), false),
+        LOG((self, wood) -> new LogBlock(ExtendedProperties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.woodColor() : wood.barkColor()).strength(8f).sound(SoundType.WOOD).requiresCorrectToolForDrops().flammableLikeLogs(), wood.getBlock(self.stripped())), false),
+        STRIPPED_LOG(wood -> new LogBlock(ExtendedProperties.of(Material.WOOD, state -> state.getValue(RotatedPillarBlock.AXIS) == Direction.Axis.Y ? wood.woodColor() : wood.barkColor()).strength(7.5f).sound(SoundType.WOOD).requiresCorrectToolForDrops().flammableLikeLogs(), null), false),
+        WOOD((self, wood) -> new LogBlock(properties(wood).strength(8f).requiresCorrectToolForDrops().flammableLikeLogs(), wood.getBlock(self.stripped())), false),
+        STRIPPED_WOOD(wood -> new LogBlock(properties(wood).strength(7.5f).requiresCorrectToolForDrops().flammableLikeLogs(), null), false),
         LEAVES(wood -> TFCLeavesBlock.create(ExtendedProperties.of(Material.LEAVES, wood.woodColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().isViewBlocking(TFCBlocks::never).flammableLikeLeaves(), wood.maxDecayDistance()), false),
-        PLANKS(wood -> new ExtendedBlock(properties(wood).strength(2.0F, 3.0F).flammableLikePlanks()), false),
+        PLANKS(wood -> new ExtendedBlock(properties(wood).strength(1.5f, 3.0F).flammableLikePlanks()), false),
         SAPLING(wood -> new TFCSaplingBlock(wood.tree(), ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).flammableLikeLeaves().blockEntity(TFCBlockEntities.TICK_COUNTER), wood.daysToGrow()), false),
         BOOKSHELF(wood -> new ExtendedBlock(properties(wood).strength(2.0F, 3.0F).flammable(20, 30).enchantmentPower(1)), true),
         DOOR(wood -> new TFCDoorBlock(properties(wood).strength(3.0F).noOcclusion().flammableLikePlanks()), true),
@@ -151,8 +151,8 @@ public enum Wood implements RegistryWood
         FENCE_GATE(wood -> new TFCFenceGateBlock(properties(wood).strength(2.0F, 3.0F).flammableLikePlanks()), true),
         BUTTON(wood -> new TFCWoodButtonBlock(ExtendedProperties.of(Material.DECORATION).noCollission().strength(0.5F).sound(SoundType.WOOD).flammableLikePlanks()), true),
         PRESSURE_PLATE(wood -> new TFCPressurePlateBlock(PressurePlateBlock.Sensitivity.EVERYTHING, properties(wood).noCollission().strength(0.5F).sound(SoundType.WOOD).flammableLikePlanks()), true),
-        SLAB(wood -> new TFCSlabBlock(properties(wood).strength(2.0F, 3.0F).flammableLikePlanks()), true),
-        STAIRS(wood -> new TFCStairBlock(() -> wood.getBlock(PLANKS).get().defaultBlockState(), properties(wood).strength(2.0F, 3.0F).sound(SoundType.WOOD).flammableLikePlanks()), true),
+        SLAB(wood -> new TFCSlabBlock(properties(wood).strength(1.5f, 3.0F).flammableLikePlanks()), true),
+        STAIRS(wood -> new TFCStairBlock(() -> wood.getBlock(PLANKS).get().defaultBlockState(), properties(wood).strength(1.5f, 3.0F).sound(SoundType.WOOD).flammableLikePlanks()), true),
         TOOL_RACK(wood -> new ToolRackBlock(properties(wood).strength(2.0F).noOcclusion().flammableLikePlanks().blockEntity(TFCBlockEntities.TOOL_RACK)), true),
         TWIG(wood -> GroundcoverBlock.twig(ExtendedProperties.of(Material.GRASS).strength(0.05F, 0.0F).sound(SoundType.WOOD).noCollission().flammableLikeWool()), false),
         FALLEN_LEAVES(wood -> new FallenLeavesBlock(ExtendedProperties.of(Material.GRASS).strength(0.05F, 0.0F).noOcclusion().sound(SoundType.CROP).flammableLikeWool()), false),

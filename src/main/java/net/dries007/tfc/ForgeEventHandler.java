@@ -453,15 +453,6 @@ public final class ForgeEventHandler
 
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
-        // todo: this needs to be re-evaluated, it was way too harsh and applied on way too many blocks. Maybe apply only if the tool cannot harvest the block?
-        // Apply global modifiers when not using the correct tool
-        // This makes the difference between bare fists and tools more pronounced, without having to massively buff either our tools or make our blocks way higher than the standard hardness.
-        /*final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
-        if (defaultDestroySpeed <= 1.0f)
-        {
-            event.setNewSpeed(event.getNewSpeed() * 0.4f);
-        }*/
-
         // Apply mining speed modifiers from forging bonuses
         final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
         if (bonus != ForgingBonus.NONE)

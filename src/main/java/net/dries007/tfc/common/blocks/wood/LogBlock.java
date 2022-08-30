@@ -48,7 +48,8 @@ public class LogBlock extends RotatedPillarBlock implements IForgeBlockExtension
     @SuppressWarnings("deprecation")
     public float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos)
     {
-        final float baseSpeed = (state.getValue(NATURAL) ? Mth.PI /* precisely */ : 1) * state.getDestroySpeed(level, pos);
+        // Modified from the super() method, including the Forge patch, to add the 2x hardness in natural state modifier.
+        final float baseSpeed = (state.getValue(NATURAL) ? 2 : 1) * state.getDestroySpeed(level, pos);
         if (baseSpeed == -1.0F)
         {
             return 0.0F;
