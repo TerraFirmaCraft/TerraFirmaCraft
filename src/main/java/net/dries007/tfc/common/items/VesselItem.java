@@ -251,7 +251,12 @@ public class VesselItem extends Item
             final Metal metal = Metal.get(resource.getFluid());
             if (metal != null)
             {
-                return alloy.add(metal, resource.getAmount(), action.simulate());
+                final int result = alloy.add(metal, resource.getAmount(), action.simulate());
+                if (action.execute())
+                {
+                    updateHeatCapacity(true);
+                }
+                return result;
             }
             return 0;
         }
