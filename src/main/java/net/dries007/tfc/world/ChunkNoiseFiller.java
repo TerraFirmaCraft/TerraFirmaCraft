@@ -104,8 +104,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
     private double cellDeltaX, cellDeltaZ; // Delta within a noise cell
     private int lastCellZ; // Last cell Z, needed due to a quick in noise interpolator
 
-    private boolean updatingArraysAfterSampleBiomeAndHeight;
-
     public ChunkNoiseFiller(LevelAccessor level, ProtoChunk chunk, Object2DoubleMap<BiomeExtension>[] sampledBiomeWeights, RiverSource riverSource, Map<BiomeExtension, BiomeNoiseSampler> biomeNoiseSamplers, BiomeResolver biomeResolver, NoiseSampler sampler, ChunkBaseBlockSource baseBlockSource, ChunkNoiseSamplingSettings settings, int seaLevel)
     {
         super(biomeNoiseSamplers, sampledBiomeWeights);
@@ -143,7 +141,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
 
         this.biomeResolver = biomeResolver;
 
-        this.updatingArraysAfterSampleBiomeAndHeight = false;
         this.surfaceHeight = new int[16 * 16];
         this.localBiomes = new Biome[16 * 16];
         this.localBiomeWeights = new double[16 * 16];
@@ -249,7 +246,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
      */
     public void fillFromNoise()
     {
-        updatingArraysAfterSampleBiomeAndHeight = true;
 
         initializeForFirstCellX();
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -281,7 +277,6 @@ public class ChunkNoiseFiller extends ChunkHeightFiller
             swapSlices();
         }
 
-        updatingArraysAfterSampleBiomeAndHeight = false;
     }
 
     /**
