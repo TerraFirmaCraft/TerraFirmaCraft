@@ -86,6 +86,8 @@ public class ServerConfig
     // Blocks - Thatch Bed
     public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
     public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
+    // Blocks - Leaves
+    public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -281,6 +283,10 @@ public class ServerConfig
 
         enableThatchBedSpawnSetting = builder.apply("enableThatchBedSpawnSetting").comment("If true, thatch beds can set the player's spawn.").define("enableThatchBedSpawnSetting", true);
         enableThatchBedSleeping = builder.apply("enableThatchBedSleeping").comment("If true, the player can sleep the night in a thatch bed").define("enableThatchBedSleeping", false);
+
+        innerBuilder.pop().push("leaves");
+
+        enableLeavesDecaySlowly = builder.apply("enableLeavesDecaySlowly").comment("If true, then leaves will decay slowly over time when disconnected from logs (vanilla behavior), as opposed to instantly (TFC behavior).").define("enableLeavesDecaySlowly", false);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

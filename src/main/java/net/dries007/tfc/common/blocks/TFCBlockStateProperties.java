@@ -32,8 +32,9 @@ public class TFCBlockStateProperties
     public static final IntegerProperty DISTANCE_8 = IntegerProperty.create("distance", 1, 8);
     public static final IntegerProperty DISTANCE_9 = IntegerProperty.create("distance", 1, 9);
     public static final IntegerProperty DISTANCE_10 = IntegerProperty.create("distance", 1, 10);
+    public static final IntegerProperty DISTANCE_11 = IntegerProperty.create("distance", 1, 11);
 
-    public static final IntegerProperty[] DISTANCES = {DISTANCE_7, DISTANCE_8, DISTANCE_9, DISTANCE_10};
+    public static final IntegerProperty[] DISTANCES = {DISTANCE_7, DISTANCE_8, DISTANCE_9, DISTANCE_10, DISTANCE_11};
 
     public static final FluidProperty WATER = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER));
     public static final FluidProperty WATER_AND_LAVA = FluidProperty.create("fluid", Stream.of(Fluids.EMPTY, Fluids.WATER, TFCFluids.SALT_WATER, Fluids.LAVA));

@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.util;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import com.google.gson.JsonElement;
@@ -18,6 +19,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -147,6 +149,18 @@ public final class JsonHelpers extends GsonHelper
         {
             throw new JsonParseException(e.getMessage());
         }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static DyeColor getDyeColor(JsonObject json, String key)
+    {
+        final String name = getAsString(json, key);
+        final DyeColor color = DyeColor.byName(name, null);
+        if (color == null)
+        {
+            throw new JsonParseException("No dye color named '" + name + "', must be one of " + Arrays.toString(DyeColor.values()));
+        }
+        return color;
     }
 
     public static <T> T decodeCodecDefaulting(JsonObject json, Codec<T> codec, String key, T defaultValue)
