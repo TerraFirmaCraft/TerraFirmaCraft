@@ -1,0 +1,23 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": {
+      "item": "minecraft:leather_chestplate"
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:yellow_dye",
+    "amount": 125
+  },
+  "output_item": {
+    "modifiers": [
+      "tfc:copy_input",
+      {
+        "type": "tfc:dye_leather",
+        "color": "yellow"
+      }
+    ]
+  },
+  "duration": 1000
+}

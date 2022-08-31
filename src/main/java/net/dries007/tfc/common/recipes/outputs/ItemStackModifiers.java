@@ -37,6 +37,7 @@ public class ItemStackModifiers
         register("add_trait", AddRemoveTraitModifier.Serializer.ADD);
         register("remove_trait", AddRemoveTraitModifier.Serializer.REMOVE);
         register("add_heat", AddHeatModifier.Serializer.INSTANCE);
+        register("dye_leather", DyeLeatherModifier.Serializer.INSTANCE);
     }
 
     /**

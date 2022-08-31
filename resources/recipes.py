@@ -656,6 +656,8 @@ def generate(rm: ResourceManager):
         barrel_sealed_recipe(rm, 'dye/%s_glazed_large_vessel' % color, 'Dyeing Unfired Large Vessel %s' % color, 1000, 'tfc:ceramic/unfired_large_vessel', fluid, 'tfc:ceramic/unfired_large_vessel/%s' % color)
         barrel_sealed_recipe(rm, 'dye/%s_concrete_powder' % color, 'Dyeing Aggregate %s' % color, 1000, 'tfc:aggregate', fluid, 'minecraft:%s_concrete_powder' % color)
         barrel_sealed_recipe(rm, 'dye/%s_candle' % color, 'Dyeing Candle %s' % color, 1000, 'tfc:candle', fluid, 'tfc:candle/%s' % color)
+        for leather_item in ('chestplate', 'leggings', 'boots', 'helmet', 'horse_armor'):
+            barrel_sealed_recipe(rm, 'dye/%s_%s' % (color, leather_item), 'Dyeing Leather %s %s' % (leather_item, color), 1000, 'minecraft:leather_%s' % leather_item, fluid, output_item={'modifiers': ['tfc:copy_input', {'type': 'tfc:dye_leather', 'color': color}]})
         for variant in ('raw', 'bricks', 'polished'):
             barrel_sealed_recipe(rm, 'dye/%s_%s_alabaster' % (color, variant), 'Dyeing Alabaster %s %s' % (variant, color), 1000, 'tfc:alabaster/%s' % variant, fluid, 'tfc:alabaster/%s/%s' % (variant, color))
 
