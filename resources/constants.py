@@ -886,6 +886,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.temperature_fahrenheit': '%s\u00b0F',
     'tfc.tooltip.fluid_units': '%s mB',
     'tfc.tooltip.fluid_units_of': '%s mB of ',
+    'tfc.tooltip.fluid_units_and_capacity': '%s / %s mB',
+    'tfc.tooltip.fluid_units_and_capacity_of': '%s / %s mB of ',
     'tfc.tooltip.less_than_one_fluid_units': '< 1 mB',
     'tfc.tooltip.farmland.mature': '§aMature',
     'tfc.tooltip.farmland.hydration': '§1Hydration: §r%s%%',
@@ -932,6 +934,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§r Damage',
     'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§r Damage',
     'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§r Damage',
+    'tfc.tooltip.pot_boiling': 'Boiling!',
+    'tfc.tooltip.pot_finished': 'Finished',
+    'tfc.tooltip.pot_ready': 'Ready',
 
     # Commands
 

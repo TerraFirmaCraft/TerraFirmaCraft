@@ -510,8 +510,8 @@ def generate(rm: ResourceManager):
     simple_pot_recipe(rm, 'olive_oil_water', [utils.ingredient('tfc:olive_paste')] * 5, '1000 minecraft:water', '1000 tfc:olive_oil_water', None, 2000, 300)
     simple_pot_recipe(rm, 'tallow', [utils.ingredient('tfc:blubber')] * 5, '1000 minecraft:water', '1000 tfc:tallow', None, 2000, 600)
     simple_pot_recipe(rm, 'lye', [utils.ingredient('tfc:powder/wood_ash')] * 5, '1000 minecraft:water', '1000 tfc:lye', None, 2000, 600)
-    simple_pot_recipe(rm, 'cooked_rice', [not_rotten(utils.ingredient('tfc:food/rice_grain'))], '1000 minecraft:water', None, ['tfc:food/cooked_rice'], 1000, 300)
-    simple_pot_recipe(rm, 'boiled_egg', [utils.ingredient('minecraft:egg')], '1000 minecraft:water', None, ['tfc:food/boiled_egg'], 1000, 300)
+    simple_pot_recipe(rm, 'cooked_rice', [not_rotten(utils.ingredient('tfc:food/rice_grain'))], '100 minecraft:water', None, ['tfc:food/cooked_rice'], 1000, 300)
+    simple_pot_recipe(rm, 'boiled_egg', [utils.ingredient('minecraft:egg')], '100 minecraft:water', None, ['tfc:food/boiled_egg'], 1000, 300)
     for color in COLORS:
         simple_pot_recipe(rm, '%s_dye' % color, [utils.ingredient('minecraft:%s_dye' % color)], '1000 minecraft:water', '1000 tfc:%s_dye' % color, None, 2000, 600)
 
@@ -519,7 +519,7 @@ def generate(rm: ResourceManager):
     for duration, count in ((1000, 3), (1150, 4), (1300, 5)):
         rm.recipe(('pot', 'soup_%s' % count), 'tfc:pot_soup', {
             'ingredients': [soup_food] * count,
-            'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
+            'fluid_ingredient': fluid_stack_ingredient('100 minecraft:water'),
             'duration': duration,
             'temperature': 300
         })
