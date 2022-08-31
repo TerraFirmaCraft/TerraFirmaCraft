@@ -6,6 +6,7 @@
 
 package net.dries007.tfc;
 
+import net.minecraft.SharedConstants;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
@@ -52,10 +53,7 @@ import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.network.PacketHandler;
-import net.dries007.tfc.util.CauldronInteractions;
-import net.dries007.tfc.util.DispenserBehaviors;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.InteractionManager;
+import net.dries007.tfc.util.*;
 import net.dries007.tfc.util.calendar.CalendarEventHandler;
 import net.dries007.tfc.util.calendar.ServerCalendar;
 import net.dries007.tfc.util.climate.ClimateModels;
@@ -88,6 +86,8 @@ public final class TerraFirmaCraft
         LOGGER.info("Options: Assertions Enabled = {}, Boostrap = {}, Test = {}, Debug Logging = {}", Helpers.ASSERTIONS_ENABLED, Helpers.BOOTSTRAP_ENVIRONMENT, Helpers.TEST_ENVIRONMENT, LOGGER.isDebugEnabled());
 
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        SelfTests.runWorldVersionTest();
 
         bus.addListener(this::setup);
         bus.addListener(this::registerCapabilities);

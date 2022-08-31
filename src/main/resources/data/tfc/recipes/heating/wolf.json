@@ -8,7 +8,12 @@
     }
   },
   "result_item": {
-    "item": "tfc:food/cooked_wolf"
+    "stack": {
+      "item": "tfc:food/cooked_wolf"
+    },
+    "modifiers": [
+      "tfc:copy_food"
+    ]
   },
   "temperature": 200
 }

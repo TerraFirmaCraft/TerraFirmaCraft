@@ -12,7 +12,7 @@ import net.minecraft.network.chat.TextComponent;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.client.screen.AnvilPlanScreen;
 
 public class NextPageButton extends Button
 {
@@ -30,7 +30,7 @@ public class NextPageButton extends Button
 
     private NextPageButton(int x, int y, OnPress onPress, boolean left)
     {
-        super(x, y, 14, 14, TextComponent.EMPTY, onPress);
+        super(x, y, 9, 13, TextComponent.EMPTY, onPress);
         this.left = left;
     }
 
@@ -38,9 +38,9 @@ public class NextPageButton extends Button
     public void renderButton(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, ClientHelpers.GUI_ICONS);
+        RenderSystem.setShaderTexture(0, AnvilPlanScreen.BACKGROUND);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
 
-        blit(poseStack, x, y, left ? 0 : 14, isHoveredOrFocused() ? 32 : 32 + 14, 14, 14, 256, 256);
+        blit(poseStack, x, y, left ? 201 : 212, 3, 9, 13, 256, 256);
     }
 }

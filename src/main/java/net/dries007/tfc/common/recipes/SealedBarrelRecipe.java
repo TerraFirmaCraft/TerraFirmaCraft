@@ -61,8 +61,10 @@ public class SealedBarrelRecipe extends BarrelRecipe
     {
         if (onSeal != null)
         {
-            final ItemStack stack = Helpers.removeStack(inventory, BarrelBlockEntity.SLOT_ITEM);
-            inventory.setStackInSlot(BarrelBlockEntity.SLOT_ITEM, onSeal.getStack(stack));
+            inventory.whileMutable(() -> {
+                final ItemStack stack = Helpers.removeStack(inventory, BarrelBlockEntity.SLOT_ITEM);
+                inventory.insertItem(BarrelBlockEntity.SLOT_ITEM, onSeal.getStack(stack), false);
+            });
         }
     }
 
@@ -70,8 +72,10 @@ public class SealedBarrelRecipe extends BarrelRecipe
     {
         if (onUnseal != null)
         {
-            final ItemStack stack = Helpers.removeStack(inventory, BarrelBlockEntity.SLOT_ITEM);
-            inventory.setStackInSlot(BarrelBlockEntity.SLOT_ITEM, onUnseal.getStack(stack));
+            inventory.whileMutable(() -> {
+                final ItemStack stack = Helpers.removeStack(inventory, BarrelBlockEntity.SLOT_ITEM);
+                inventory.insertItem(BarrelBlockEntity.SLOT_ITEM, onUnseal.getStack(stack), false);
+            });
         }
     }
 

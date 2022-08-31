@@ -109,7 +109,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
             resetToBackgroundSprite();
 
             // Draw Title:
-            final Metal result = ((Alloy) alloy).getResult(ClientHelpers.getLevelOrThrow());
+            final Metal result = alloy.getResult(ClientHelpers.getLevelOrThrow());
             final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.getTranslationKey());
             font.draw(poseStack, resultText, leftPos + 10, topPos + 11, 0x000000);
 

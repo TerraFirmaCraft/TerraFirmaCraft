@@ -453,15 +453,6 @@ public final class ForgeEventHandler
 
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
-        // todo: this needs to be re-evaluated, it was way too harsh and applied on way too many blocks. Maybe apply only if the tool cannot harvest the block?
-        // Apply global modifiers when not using the correct tool
-        // This makes the difference between bare fists and tools more pronounced, without having to massively buff either our tools or make our blocks way higher than the standard hardness.
-        /*final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
-        if (defaultDestroySpeed <= 1.0f)
-        {
-            event.setNewSpeed(event.getNewSpeed() * 0.4f);
-        }*/
-
         // Apply mining speed modifiers from forging bonuses
         final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
         if (bonus != ForgingBonus.NONE)
@@ -780,17 +771,20 @@ public final class ForgeEventHandler
         {
             if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
             {
-                if (!TFCConfig.SERVER.enableVanillaMonsters.get())
+                if (TFCConfig.SERVER.enableVanillaMonsters.get())
+                {
+                    if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
+                    {
+                        final BlockPos pos = entity.blockPosition();
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                    }
+                }
+                else
                 {
                     event.setResult(Event.Result.DENY);
-                }
-                else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
-                {
-                    final BlockPos pos = entity.blockPosition();
-                    if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
-                    {
-                        event.setResult(Event.Result.DENY);
-                    }
                 }
             }
         }

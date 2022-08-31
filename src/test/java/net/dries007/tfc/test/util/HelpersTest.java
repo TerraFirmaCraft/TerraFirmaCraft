@@ -4,7 +4,7 @@
  * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
  */
 
-package net.dries007.tfc.test;
+package net.dries007.tfc.test.util;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.util.Helpers;
 import org.junit.jupiter.api.Test;
+
+import static net.dries007.tfc.TestAssertions.*;
 
 public class HelpersTest extends TestHelper
 {
@@ -32,7 +34,7 @@ public class HelpersTest extends TestHelper
 
         for (int i = 0; i < 5; i++)
         {
-            assertItemStackEquals(inventory.getStackInSlot(i), iterated.get(i));
+            assertEquals(inventory.getStackInSlot(i), iterated.get(i));
         }
     }
 }

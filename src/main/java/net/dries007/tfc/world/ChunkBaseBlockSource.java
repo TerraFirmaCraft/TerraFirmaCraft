@@ -24,13 +24,11 @@ public class ChunkBaseBlockSource
     private final RockData rockData;
     private final Sampler<BiomeExtension> biomeSampler;
     private final BlockState[] cachedFluidStates;
-    private final LevelAccessor level;
 
     private final BlockState freshWater = Blocks.WATER.defaultBlockState(), saltWater = TFCBlocks.SALT_WATER.get().defaultBlockState();
 
-    public ChunkBaseBlockSource(LevelAccessor level, RockData rockData, Sampler<BiomeExtension> biomeSampler)
+    public ChunkBaseBlockSource(RockData rockData, Sampler<BiomeExtension> biomeSampler)
     {
-        this.level = level;
         this.rockData = rockData;
         this.biomeSampler = biomeSampler;
         this.cachedFluidStates = new BlockState[16 * 16];

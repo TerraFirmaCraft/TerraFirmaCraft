@@ -162,11 +162,10 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     public void ejectInventory()
     {
         assert level != null;
-        int x = worldPosition.getX();
-        int y = worldPosition.getY();
-        int z = worldPosition.getZ();
-        strawItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
-        logItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
+
+        super.ejectInventory();
+        strawItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
+        logItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
     }
 
     @Override

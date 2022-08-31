@@ -427,13 +427,16 @@ public final class InteractionManager
                 else
                 {
                     // We clicked on a non-ingot pile, so we want to try and place an ingot pile at the current location.
-                    final ItemStack stackBefore = stack.copy();
+                    // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
+                    final ItemStack stackBefore = Helpers.copyWithSize(stack, 1);
+
+                    // The block as set through onItemUse() might be set at either the clicked, or relative position.
+                    // We need to construct this BlockPlaceContext before onItemUse is called, so it has the same value for the actual block placed pos
+                    final BlockPos actualPlacedPos = new BlockPlaceContext(context).getClickedPos();
                     final InteractionResult result = ingotPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
-                        stackBefore.setCount(1);
-                        level.getBlockEntity(relativePos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> pile.addIngot(stackBefore));
+                        level.getBlockEntity(actualPlacedPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> pile.addIngot(stackBefore));
                     }
                     return result;
                 }

@@ -63,7 +63,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             final int page = i / recipesPerPage;
             final int index = i % recipesPerPage;
             final int posX = 7 + (index % 9) * 18;
-            final int posY = 25 + ((index % 18) / 9) * 18;
+            final int posY = 17 + ((index % 18) / 9) * 18;
 
             final AnvilRecipe recipe = recipes.get(i);
             final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, RenderHelpers.makeButtonTooltip(this, recipe.getResultItem().getDisplayName()));
@@ -73,19 +73,19 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             addRenderableWidget(button);
         }
 
-        maxPageInclusive = (recipes.size() - 1) % recipesPerPage;
+        maxPageInclusive = (recipes.size() - 1) / recipesPerPage;
 
-        addRenderableWidget(leftButton = NextPageButton.left(guiLeft + 7, guiTop + 65, button -> {
-            if (currentPage < maxPageInclusive)
-            {
-                currentPage++;
-                updateCurrentPage();
-            }
-        }));
-        addRenderableWidget(rightButton = NextPageButton.right(guiLeft + 7, guiTop + 154, button -> {
+        addRenderableWidget(leftButton = NextPageButton.left(guiLeft + 7, guiTop + 56, button -> {
             if (currentPage > 0)
             {
                 currentPage--;
+                updateCurrentPage();
+            }
+        }));
+        addRenderableWidget(rightButton = NextPageButton.right(guiLeft + 160, guiTop + 56, button -> {
+            if (currentPage < maxPageInclusive)
+            {
+                currentPage++;
                 updateCurrentPage();
             }
         }));
@@ -108,7 +108,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             button.setCurrentPage(currentPage);
         }
 
-        leftButton.active = leftButton.visible = currentPage < maxPageInclusive;
-        rightButton.active = rightButton.visible = currentPage > 0;
+        leftButton.active = leftButton.visible = currentPage > 0;
+        rightButton.active = rightButton.visible = currentPage < maxPageInclusive;
     }
 }

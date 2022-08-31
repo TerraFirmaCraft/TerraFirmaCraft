@@ -100,7 +100,7 @@ def generate(rm: ResourceManager):
                 advanced_shaped(rm, 'crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': '#forge:rods/wooden'}, item_stack_provider('tfc:metal/%s/%s' % (tool, metal), copy_forging=True), (0, 0)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
             advanced_shaped(rm, 'crafting/metal/fishing_rod/%s' % metal, ['  X', ' XY', 'XZY'], {'X': '#forge:rods/wooden', 'Y': '#forge:string', 'Z': 'tfc:metal/fish_hook/%s' % metal}, item_stack_provider('tfc:metal/fishing_rod/%s' % metal, copy_forging=True), (1, 2)).with_advancement('tfc:metal/fish_hook/%s' % metal)
 
-    unsalted_raw_meat = not_rotten(has_trait('#tfc:foods/can_be_salted', 'tfc:salted', invert=True))
+    unsalted_raw_meat = not_rotten(lacks_trait('#tfc:foods/can_be_salted', 'tfc:salted'))
     advanced_shapeless(rm, 'crafting/salting', (unsalted_raw_meat, 'tfc:powder/salt'), item_stack_provider(copy_input=True, add_trait='tfc:salted'), unsalted_raw_meat).with_advancement('tfc:powder/salt')
     advanced_shapeless(rm, 'crafting/add_small_bait', ('#tfc:holds_small_fishing_bait', '#tfc:small_fishing_bait'), item_stack_provider(copy_input=True, other_modifier='tfc:add_bait_to_rod'), '#tfc:holds_small_fishing_bait').with_advancement('#tfc:holds_small_fishing_bait')
     advanced_shapeless(rm, 'crafting/add_large_bait', ('#tfc:holds_large_fishing_bait', '#tfc:large_fishing_bait'), item_stack_provider(copy_input=True, other_modifier='tfc:add_bait_to_rod'), '#tfc:holds_large_fishing_bait').with_advancement('#tfc:holds_large_fishing_bait')
@@ -391,7 +391,7 @@ def generate(rm: ResourceManager):
         melt_metal = metal if metal_data.melt_metal is None else metal_data.melt_metal
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type == 'all' or item_data.type in metal_data.types:
-                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal))
+                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal), use_durability=item_data.durability)
 
     wrought_iron = METALS['wrought_iron']
     heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
@@ -472,11 +472,11 @@ def generate(rm: ResourceManager):
         }).with_advancement('tfc:food/%s_bread' % grain)
 
     for meat in MEATS:
-        heat_recipe(rm, meat, not_rotten('tfc:food/%s' % meat), 200, result_item='tfc:food/cooked_%s' % meat)
+        heat_recipe(rm, meat, not_rotten('tfc:food/%s' % meat), 200, result_item=item_stack_provider('tfc:food/cooked_%s' % meat, copy_food=True))
 
     heat_recipe(rm, 'seaweed', 'tfc:groundcover/seaweed', 200, result_item='tfc:food/dried_seaweed')
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, result_item='tfc:food/dried_kelp')
-    heat_recipe(rm, 'cooked_egg', 'minecraft:egg', 200, result_item='tfc:food/cooked_egg')
+    heat_recipe(rm, 'cooked_egg', 'minecraft:egg', 200, result_item=item_stack_provider('tfc:food/cooked_egg', copy_food=True))
 
     for ore in ['hematite', 'limonite', 'malachite']:
         for grade, data in ORE_GRADES.items():
@@ -622,8 +622,8 @@ def generate(rm: ResourceManager):
 
     barrel_sealed_recipe(rm, 'vinegar', 'Vinegar', 8000, '#tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
 
-    barrel_sealed_recipe(rm, 'pickling', 'Pickling', 4000, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
-    barrel_sealed_recipe(rm, 'brined', 'Brining', 4000, not_rotten(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats']), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
+    barrel_sealed_recipe(rm, 'brined', 'Brining', 4000, not_rotten(lacks_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined')), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
+    barrel_sealed_recipe(rm, 'pickling', 'Pickling', 4000, not_rotten(lacks_trait(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined'), 'tfc:pickled')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
     barrel_sealed_recipe(rm, 'preserved_in_vinegar', 'Preserving in Vinegar', -1, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:pickled')), '125 tfc:vinegar', on_seal=item_stack_provider(copy_input=True, add_trait='tfc:vinegar'), on_unseal=item_stack_provider(copy_input=True, remove_trait='tfc:vinegar'))
 
     barrel_sealed_recipe(rm, 'mortar', 'Mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
@@ -931,14 +931,15 @@ def rock_knapping(rm: ResourceManager, name, pattern: List[str], result: utils.R
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None) -> RecipeContext:
+def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None, use_durability: Optional[bool] = None) -> RecipeContext:
     result_item = item_stack_provider(result_item) if isinstance(result_item, str) else result_item
     result_fluid = None if result_fluid is None else fluid_stack(result_fluid)
     return rm.recipe(('heating', name_parts), 'tfc:heating', {
         'ingredient': utils.ingredient(ingredient),
         'result_item': result_item,
         'result_fluid': result_fluid,
-        'temperature': temperature
+        'temperature': temperature,
+        'use_durability': use_durability if use_durability else None,
     })
 
 
@@ -1140,3 +1141,6 @@ def has_trait(ingredient: Json, trait: str, invert: bool = False) -> Json:
         'trait': trait,
         'ingredient': utils.ingredient(ingredient)
     }
+
+def lacks_trait(ingredient: Json, trait: str) -> Json:
+    return has_trait(ingredient, trait, True)

@@ -6,16 +6,11 @@
 
 package net.dries007.tfc.test.util;
 
-import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import net.minecraft.network.FriendlyByteBuf;
-
-import io.netty.buffer.Unpooled;
 import net.dries007.tfc.util.KnappingPattern;
 import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
 
@@ -81,20 +76,5 @@ public class KnappingPatternTests
                             if (x0 != x || y0 != y)
                                 assertTrue(p.get(x0, y0));
                 }))).flatMap(t -> t);
-    }
-
-    @RepeatedTest(value = 10)
-    public void testNetworkEncodeDecode()
-    {
-        Random random = new Random();
-        FriendlyByteBuf buffer = new FriendlyByteBuf(Unpooled.buffer());
-        int width = random.nextInt(5), height = random.nextInt(5);
-        KnappingPattern p = new KnappingPattern(width, height, random.nextBoolean());
-        for (int i = 0; i < width * height; i++) p.set(i, random.nextBoolean());
-
-        p.toNetwork(buffer);
-        KnappingPattern p0 = KnappingPattern.fromNetwork(buffer);
-
-        assertEquals(p, p0);
     }
 }

@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -16,35 +15,43 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.ThatchBedBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 /**
  * Lots of parts borrowed from {@link BedBlock}
- * Avoid extending directly as it implements {@link EntityBlock} which we don't want, and also defines the 'occupied' state which we don't use.
+ * Avoid extending directly as it implements {@link EntityBlock} which we don't want
  */
 public class ThatchBedBlock extends HorizontalDirectionalBlock implements EntityBlockExtension, IForgeBlockExtension
 {
     public static final EnumProperty<BedPart> PART = BlockStateProperties.BED_PART;
+    public static final BooleanProperty OCCUPIED = BlockStateProperties.OCCUPIED;
 
     private static final VoxelShape BED_SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
 
@@ -82,10 +89,24 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
         {
             if (!level.isThundering())
             {
-                player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use"), true);
-                if (!level.isClientSide && player instanceof ServerPlayer serverPlayer && (serverPlayer.getRespawnDimension() != level.dimension() || !pos.equals(serverPlayer.getRespawnPosition())))
+                final boolean willSleep = TFCConfig.SERVER.enableThatchBedSleeping.get();
+                final boolean spawnPoint = TFCConfig.SERVER.enableThatchBedSpawnSetting.get();
+                if (!willSleep)
+                {
+                    player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use"), true);
+                }
+                if (spawnPoint && !level.isClientSide && player instanceof ServerPlayer serverPlayer && (serverPlayer.getRespawnDimension() != level.dimension() || !pos.equals(serverPlayer.getRespawnPosition())))
                 {
                     serverPlayer.setRespawnPosition(level.dimension(), pos, 0, false, false);
+                }
+                if (willSleep && !level.isClientSide)
+                {
+                    player.startSleepInBed(pos).ifLeft(problem -> {
+                        if (problem.getMessage() != null)
+                        {
+                            player.displayClientMessage(problem.getMessage(), true);
+                        }
+                    });
                 }
             }
             else
@@ -179,15 +200,16 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
         return RenderShape.MODEL;
     }
 
-    @SuppressWarnings("deprecation")
+    // todo: this interaction is pretty delicate. we need to make the bed pop off when the face is no longer sturdy underneath
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    @SuppressWarnings("deprecation")
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos pos, BlockPos facingPos)
     {
-        Direction facing = state.getValue(FACING);
-        if (pos.relative(facing).equals(fromPos) || !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
+        if (facing == getNeighbourDirection(state.getValue(PART), state.getValue(FACING)))
         {
-            level.destroyBlock(pos, true);
+            return Helpers.isBlock(facingState, this) && facingState.getValue(PART) != state.getValue(PART) ? state.setValue(OCCUPIED, facingState.getValue(OCCUPIED)) : Blocks.AIR.defaultBlockState();
         }
+        return super.updateShape(state, facing, facingState, level, pos, facingPos);
     }
 
     @Override
@@ -197,9 +219,24 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
     }
 
     @Override
+    @SuppressWarnings("deprecation")
+    public boolean isPathfindable(BlockState state, BlockGetter level, BlockPos pos, PathComputationType type)
+    {
+        return false;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    {
+        return level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get()).map(bed ->
+            bed.getCapability(Capabilities.ITEM).map(inv -> inv.getStackInSlot(0).copy()).orElse(ItemStack.EMPTY)
+        ).orElse(ItemStack.EMPTY);
+    }
+
+    @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(PART, FACING));
+        super.createBlockStateDefinition(builder.add(PART, FACING, OCCUPIED));
     }
 
     @Override

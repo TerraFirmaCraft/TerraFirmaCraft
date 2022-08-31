@@ -6,7 +6,8 @@
   },
   "result_fluid": {
     "fluid": "tfc:metal/black_bronze",
-    "amount": 100
+    "amount": 200
   },
-  "temperature": 1070
+  "temperature": 1070,
+  "use_durability": true
 }

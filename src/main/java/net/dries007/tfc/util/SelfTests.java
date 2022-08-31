@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -79,6 +80,12 @@ public final class SelfTests
     private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     private static boolean EXTERNAL_TAG_LOADING_ERROR = false;
+
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
+    public static void runWorldVersionTest()
+    {
+        assert SharedConstants.WORLD_VERSION == 2975 : "If this fails, you need to update the world version here, AND in resources/generate_trees.py, then run `python resources trees`. This updates them and avoids triggering DFU when placed!";
+    }
 
     public static void runClientSelfTests()
     {

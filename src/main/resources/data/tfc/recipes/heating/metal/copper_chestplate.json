@@ -8,5 +8,6 @@
     "fluid": "tfc:metal/copper",
     "amount": 800
   },
-  "temperature": 1080
+  "temperature": 1080,
+  "use_durability": true
 }

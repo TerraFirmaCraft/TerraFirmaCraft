@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -194,37 +195,45 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     public void onCalendarUpdate(long ticks)
     {
         assert level != null;
-        if (level.isClientSide)
+
+        updateRecipe();
+        if (!getBlockState().getValue(BarrelBlock.SEALED) || recipe == null || recipe.isInfinite())
         {
-            return;
+            return; // No simulation occurs if we were not sealed, or if we had no recipe, or if we had an infinite recipe.
         }
-        if (recipe == null)
+
+        // Otherwise, begin simulation by jumping to the end tick of the current recipe. If that was in the past, we simulate and retry.
+        final long currentTick = Calendars.SERVER.getTicks();
+        long lastKnownTick = recipeTick + recipe.getDuration();
+        while (lastKnownTick < currentTick)
         {
-            updateRecipe();
-        }
-        while (ticks > 0)
-        {
-            ticks = 0;
-            if (recipe != null && !recipe.isInfinite() && getBlockState().getValue(BarrelBlock.SEALED))
-            {
-                final long finishTick = sealedTick + recipe.getDuration();
-                if (finishTick <= Calendars.SERVER.getTicks())
+            // Need to run the recipe completion, as it occurred in the past
+            final long offset = currentTick - lastKnownTick;
+            assert offset >= 0; // This event should be in the past
+
+            Calendars.SERVER.runTransaction(-offset, -offset, () -> {
+                final BarrelRecipe recipe = this.recipe;
+                if (recipe.matches(inventory, null))
                 {
-                    // Mark to run this transaction again in case this recipe produces valid output for another which could potentially finish in this time period.
-                    ticks = 1;
-                    final long offset = finishTick - Calendars.SERVER.getTicks();
-                    Calendars.SERVER.runTransaction(offset, offset, () -> {
-                        final BarrelRecipe recipe = this.recipe;
-                        if (recipe.matches(inventory, null))
-                        {
-                            // Recipe completed, so fill outputs
-                            recipe.assembleOutputs(inventory);
-                            this.recipe = null;
-                        }
-                        updateRecipe();
-                    });
+                    recipe.assembleOutputs(inventory);
                 }
+                updateRecipe();
+                markForSync();
+            });
+
+            // Re-check the recipe. If we have an invalid or infinite recipe, then exit simulation. Otherwise, jump forward to the next recipe completion
+            // This handles the case where multiple sequential recipes, such as brining -> pickling -> vinegar preservation would've occurred.
+            final SealedBarrelRecipe knownRecipe = recipe;
+            if (knownRecipe == null)
+            {
+                return;
             }
+            knownRecipe.onSealed(inventory); // We're in a sequential recipe, so apply sealed affects to the new recipe
+            if (knownRecipe.isInfinite())
+            {
+                return; // No more simulation can occur
+            }
+            lastKnownTick += recipe.getDuration();
         }
     }
 
@@ -234,6 +243,11 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         nbt.putLong("lastUpdateTick", lastUpdateTick);
         nbt.putLong("sealedTick", sealedTick);
         nbt.putLong("recipeTick", recipeTick);
+        if (recipe != null)
+        {
+            // Recipe saved to sync to client
+            nbt.putString("recipe", recipe.getId().toString());
+        }
         super.saveAdditional(nbt);
     }
 
@@ -243,6 +257,14 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         lastUpdateTick = nbt.getLong("lastUpdateTick");
         sealedTick = nbt.getLong("sealedTick");
         recipeTick = nbt.getLong("recipeTick");
+
+        recipe = null;
+        if (level != null && nbt.contains("recipe", Tag.TAG_STRING))
+        {
+            recipe = level.getRecipeManager().byKey(new ResourceLocation(nbt.getString("recipe")))
+                .map(b -> b instanceof SealedBarrelRecipe r ? r : null)
+                .orElse(null);
+        }
         super.loadAdditional(nbt);
     }
 
