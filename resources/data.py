@@ -399,6 +399,8 @@ def generate(rm: ResourceManager):
                 name = lang(ore)
                 if ore == 'diamond':
                     name = lang('kimberlite')
+                if ore == 'pyrite':
+                    name = lang('native gold?')
                 rm.block('tfc:ore/%s/%s/prospected' % (ore, rock)).with_lang(name)
 
     for wood in WOODS.keys():
