@@ -25,7 +25,6 @@
     "SnowLayerBlockMixin",
     "TagLoaderMixin",
     "accessor.BiomeAccessor",
-    "accessor.BiomeGenerationSettingsAccessor",
     "accessor.ChunkAccessAccessor",
     "accessor.FallingBlockEntityAccessor",
     "accessor.FlowingFluidAccessor",
