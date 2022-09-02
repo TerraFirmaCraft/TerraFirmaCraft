@@ -1,0 +1,6 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": "tfc:ore/rich_sphalerite/marble",
+  "result": "tfc:ore/normal_sphalerite/marble"
+}

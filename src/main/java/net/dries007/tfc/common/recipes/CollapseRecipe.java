@@ -77,7 +77,8 @@ public class CollapseRecipe extends SimpleBlockRecipe
                 int radZ = (random.nextInt(5) + 4) / 2;
                 for (BlockPos checking : Support.findUnsupportedPositions(level, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
                 {
-                    if (canStartCollapse(level, checking))
+                    // Exclude the position being mined, as it's done before the mining is completed, which is unintuitive
+                    if (!checking.equals(pos) && canStartCollapse(level, checking))
                     {
                         startCollapse(level, checking);
                         level.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
