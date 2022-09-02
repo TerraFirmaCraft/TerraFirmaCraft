@@ -109,7 +109,7 @@ def main(translate_lang: str, local_minecraft_dir: str, local_overwrite: bool):
     LocalInstance.INSTANCE_DIR = local_minecraft_dir
 
     rm = ResourceManager('tfc', './src/main/resources')
-    i18n = I18n.create(translate_lang)
+    i18n = I18n(translate_lang)
 
     print('Writing book')
     make_book(rm, i18n)
@@ -120,7 +120,7 @@ def main(translate_lang: str, local_minecraft_dir: str, local_overwrite: bool):
         print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
         if local_overwrite:
             utils.clean_generated_resources(LocalInstance.INSTANCE_DIR + '/patchouli_books')
-        make_book(rm, I18n.create(translate_lang), local_instance=True)
+        make_book(rm, I18n(translate_lang), local_instance=True)
 
     print('Done')
 
