@@ -17,12 +17,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, int radius, TreePlacementConfig placement) implements FeatureConfiguration
+public record StackedTreeConfig(List<Layer> layers, TrunkConfig trunk, TreePlacementConfig placement) implements FeatureConfiguration
 {
     public static final Codec<StackedTreeConfig> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         Layer.CODEC.listOf().fieldOf("layers").forGetter(c -> c.layers),
         TrunkConfig.CODEC.fieldOf("trunk").forGetter(c -> c.trunk),
-        Codec.INT.fieldOf("radius").forGetter(c -> c.radius),
         TreePlacementConfig.CODEC.fieldOf("placement").forGetter(c -> c.placement)
     ).apply(instance, StackedTreeConfig::new));
 
