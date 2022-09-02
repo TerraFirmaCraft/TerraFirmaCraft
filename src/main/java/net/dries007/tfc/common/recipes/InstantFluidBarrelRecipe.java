@@ -41,6 +41,11 @@ public class InstantFluidBarrelRecipe extends BarrelRecipe
         this.addedFluid = addedFluid;
     }
 
+    public FluidStackIngredient getAddedFluid()
+    {
+        return addedFluid;
+    }
+
     @Override
     public boolean matches(BarrelBlockEntity.BarrelInventory container, @Nullable Level level)
     {

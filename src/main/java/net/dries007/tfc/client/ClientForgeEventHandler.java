@@ -224,12 +224,12 @@ public class ClientForgeEventHandler
             }
 
             // Metal content, inferred from a matching heat recipe.
-            ItemStackInventory wrapper = new ItemStackInventory(stack);
-            HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
+            final ItemStackInventory inventory = new ItemStackInventory(stack);
+            final HeatingRecipe recipe = HeatingRecipe.getRecipe(inventory);
             if (recipe != null)
             {
                 // Check what we would get if melted
-                final FluidStack fluid = recipe.getOutputFluid();
+                final FluidStack fluid = recipe.assembleFluid(inventory);
                 if (!fluid.isEmpty())
                 {
                     final Metal metal = Metal.get(fluid.getFluid());

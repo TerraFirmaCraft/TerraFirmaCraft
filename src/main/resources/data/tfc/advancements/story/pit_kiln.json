@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/knap_clay",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:lit",
+      "conditions": {
+        "block": "tfc:pit_kiln"
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ceramic/vessel"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.pit_kiln.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.pit_kiln.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

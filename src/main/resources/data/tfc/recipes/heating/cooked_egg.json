@@ -5,7 +5,12 @@
     "item": "minecraft:egg"
   },
   "result_item": {
-    "item": "tfc:food/cooked_egg"
+    "stack": {
+      "item": "tfc:food/cooked_egg"
+    },
+    "modifiers": [
+      "tfc:copy_food"
+    ]
   },
   "temperature": 200
 }

@@ -44,7 +44,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         }
         if (loom.recipe != null)
         {
-            LoomRecipe recipe = loom.recipe; // Avoids NPE on slot changes
+            final LoomRecipe recipe = loom.recipe; // Avoids NPE on slot changes
             if (loom.needsProgressUpdate)
             {
                 if (level.getGameTime() - loom.lastPushed >= 20)
@@ -57,7 +57,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                         loom.inventory.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
                         loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE))));
                     }
-                    loom.markForBlockUpdate();
+                    loom.markForSync();
                 }
             }
         }
@@ -90,8 +90,11 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 if (heldItem.isEmpty() && !level.isClientSide)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, inventory.extractItem(SLOT_RECIPE, 1, false));
-                    markForBlockUpdate();
-                    if (inventory.getStackInSlot(SLOT_RECIPE).isEmpty()) clearRecipe();
+                    if (inventory.getStackInSlot(SLOT_RECIPE).isEmpty())
+                    {
+                        clearRecipe();
+                    }
+                    markForSync();
                 }
                 return InteractionResult.SUCCESS;
             }
@@ -108,9 +111,9 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     if (!level.isClientSide)
                     {
                         inventory.setStackInSlot(SLOT_RECIPE, heldItem.split(1));
-                        markForBlockUpdate();
                         recipeId = foundRecipe.getId();
                         recipe = foundRecipe;
+                        markForSync();
                     }
                 }
                 return InteractionResult.SUCCESS;
@@ -123,7 +126,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                     {
                         heldItem.shrink(1);
                         inventory.getStackInSlot(SLOT_RECIPE).grow(1);
-                        markForBlockUpdate();
+                        markForSync();
                     }
                     return InteractionResult.SUCCESS;
                 }
@@ -151,7 +154,7 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, inventory.getStackInSlot(SLOT_OUTPUT).copy());
                     inventory.setStackInSlot(SLOT_OUTPUT, ItemStack.EMPTY);
-                    markForBlockUpdate();
+                    markForSync();
                 }
                 progress = 0;
                 clearRecipe();
@@ -182,16 +185,6 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         return recipe;
     }
 
-    private void updateCachedRecipe()
-    {
-        assert level != null;
-        // Try to reduce how much we use the recipe manager
-        if (recipeId != null && recipe == null)
-        {
-            recipe = (LoomRecipe) level.getRecipeManager().byKey(recipeId).orElse(null);
-        }
-    }
-
     public double getAnimPos()
     {
         assert level != null;
@@ -208,13 +201,17 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
     {
         recipe = null;
         recipeId = null;
+        markForSync();
     }
 
     @Override
     public void saveAdditional(CompoundTag tag)
     {
         tag.putInt("progress", progress);
-        if (recipeId != null) tag.putString("recipe", recipeId.toString());
+        if (recipeId != null)
+        {
+            tag.putString("recipe", recipeId.toString());
+        }
         super.saveAdditional(tag);
     }
 
@@ -224,9 +221,23 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
         progress = tag.getInt("progress");
         recipeId = tag.contains("recipe") ? new ResourceLocation(tag.getString("recipe")) : null;
 
-        needsRecipeUpdate = true;
+        updateCachedRecipe();
         super.loadAdditional(tag);
     }
 
-
+    private void updateCachedRecipe()
+    {
+        recipe = null;
+        if (level == null)
+        {
+            // On first load, but not on sync
+            needsRecipeUpdate = true;
+        }
+        else if (recipeId != null)
+        {
+            recipe = level.getRecipeManager().byKey(recipeId)
+                .map(r -> r instanceof LoomRecipe lr ? lr : null)
+                .orElse(null);
+        }
+    }
 }

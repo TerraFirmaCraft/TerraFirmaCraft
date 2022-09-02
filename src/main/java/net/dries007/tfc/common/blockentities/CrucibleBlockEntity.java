@@ -96,7 +96,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                         // Convert input
                         final ItemStackInventory inventory = new ItemStackInventory(inputStack);
                         final ItemStack outputItem = recipe.assemble(inventory);
-                        final FluidStack outputFluid = recipe.getOutputFluid();
+                        final FluidStack outputFluid = recipe.assembleFluid(inventory);
 
                         // Output transformations
                         FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP);

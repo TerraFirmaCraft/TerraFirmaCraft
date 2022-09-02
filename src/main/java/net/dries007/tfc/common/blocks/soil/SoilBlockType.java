@@ -28,16 +28,16 @@ import net.dries007.tfc.util.registry.RegistrySoilVariant;
  */
 public enum SoilBlockType
 {
-    DIRT((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
-    GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
-    GRASS_PATH((self, variant) -> new PathBlock(Block.Properties.of(Material.DIRT).strength(0.65F).sound(SoundType.GRASS), self.transform(), variant)),
-    CLAY((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.GRAVEL), self.transform(), variant)),
-    CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(0.6F).sound(SoundType.GRASS), self.transform(), variant)),
-    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.DIRT).strength(0.6f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always)).blockEntity(TFCBlockEntities.FARMLAND), variant)),
-    ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(0.5F).sound(SoundType.ROOTED_DIRT), self.transform(), variant)),
+    DIRT((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.4f).sound(SoundType.GRAVEL), self.transform(), variant)),
+    GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
+    GRASS_PATH((self, variant) -> new PathBlock(Block.Properties.of(Material.DIRT).strength(1.5f).sound(SoundType.GRASS), self.transform(), variant)),
+    CLAY((self, variant) -> new DirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.5f).sound(SoundType.GRAVEL), self.transform(), variant)),
+    CLAY_GRASS((self, variant) -> new ConnectedGrassBlock(Block.Properties.of(Material.GRASS).randomTicks().strength(1.8f).sound(SoundType.GRASS), self.transform(), variant)),
+    FARMLAND((self, variant) -> new FarmlandBlock(ExtendedProperties.of(Material.DIRT).strength(1.3f).sound(SoundType.GRAVEL).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always).blockEntity(TFCBlockEntities.FARMLAND), variant)),
+    ROOTED_DIRT((self, variant) -> new TFCRootedDirtBlock(Block.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(2.0f).sound(SoundType.ROOTED_DIRT), self.transform(), variant)),
     MUD((self, variant) -> new MudBlock(mudProperties())),
     MUD_BRICKS((self, variant) -> new Block(mudProperties())),
-    DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(BlockBehaviour.Properties.of(Material.DECORATION).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks()).blockEntity(TFCBlockEntities.TICK_COUNTER), variant.getDriedMudBrick()));
+    DRYING_BRICKS((self, variant) -> new DryingBricksBlock(ExtendedProperties.of(Material.DECORATION).noCollission().noOcclusion().instabreak().sound(SoundType.STEM).randomTicks().blockEntity(TFCBlockEntities.TICK_COUNTER), variant.getDriedMudBrick()));
 
     public static final SoilBlockType[] VALUES = values();
 
@@ -49,7 +49,7 @@ public enum SoilBlockType
     public static BlockBehaviour.Properties mudProperties()
     {
         // todo: 1.19. correct sound
-        return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.0f).sound(SoundType.WART_BLOCK).speedFactor(0.8f);
+        return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.6f).sound(SoundType.WART_BLOCK).speedFactor(0.8f);
     }
 
     private final BiFunction<SoilBlockType, RegistrySoilVariant, Block> factory;

@@ -13,6 +13,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,6 +28,8 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class ThrownJavelin extends AbstractArrow
 {
@@ -118,6 +121,11 @@ public class ThrownJavelin extends AbstractArrow
                 }
 
                 this.doPostHurtEffects(livingVictim);
+            }
+
+            if (owner instanceof ServerPlayer serverPlayer)
+            {
+                TFCAdvancements.STAB_ENTITY.trigger(serverPlayer, hitEntity);
             }
         }
 

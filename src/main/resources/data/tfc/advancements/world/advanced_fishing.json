@@ -1,0 +1,35 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/fishing",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:hooked_entity",
+      "conditions": {
+        "entity": {
+          "type": "#tfc:needs_large_fishing_bait"
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/fishing_rod/red_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.advanced_fishing.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.advanced_fishing.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

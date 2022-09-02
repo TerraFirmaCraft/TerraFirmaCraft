@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -21,6 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 import net.dries007.tfc.util.registry.RegistryRock;
 
 public class RockConvertableToAnvilBlock extends Block
@@ -45,7 +47,12 @@ public class RockConvertableToAnvilBlock extends Block
         final ItemStack stack = player.getItemInHand(hand);
         if (Helpers.isItem(stack, TFCTags.Items.HAMMERS) && !Helpers.isItem(player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND), TFCTags.Items.CHISELS) && hit.getDirection() == Direction.UP && level.getBlockState(pos.above()).isAir())
         {
-            level.setBlockAndUpdate(pos, anvil.get().defaultBlockState());
+            final BlockState block = anvil.get().defaultBlockState();
+            level.setBlockAndUpdate(pos, block);
+            if (player instanceof ServerPlayer serverPlayer)
+            {
+                TFCAdvancements.ROCK_ANVIL.trigger(serverPlayer, block);
+            }
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;

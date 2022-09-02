@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:grizzly_bear",
+    "tfc:polar_bear",
+    "tfc:black_bear"
+  ]
+}

@@ -65,8 +65,8 @@ public record FoodData(int hunger, float water, float saturation, float grain, f
     {
         return new FoodData(
             nbt.getInt("food"),
-            nbt.getFloat("sat"),
             nbt.getFloat("water"),
+            nbt.getFloat("sat"),
             nbt.getFloat("grain"),
             nbt.getFloat("fruit"),
             nbt.getFloat("veg"),

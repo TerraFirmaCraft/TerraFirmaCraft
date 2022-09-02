@@ -1,0 +1,33 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/charcoal",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:lit",
+      "conditions": {
+        "block": "tfc:charcoal_forge"
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:rock/cobble/andesite"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.forge.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.forge.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}
