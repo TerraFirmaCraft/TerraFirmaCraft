@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/jack_o_lantern",
+  "textures": {
+    "layer0": "tfc:item/jack_o_lantern"
+  }
+}

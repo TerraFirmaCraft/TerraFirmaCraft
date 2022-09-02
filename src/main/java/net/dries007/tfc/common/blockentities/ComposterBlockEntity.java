@@ -94,7 +94,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         }
         else if (rotten)
         {
-            if (!client) player.displayClientMessage(new TranslatableComponent("tfc.composter.rotten"), true);
+            if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.rotten"), true);
             return finishUse(client);
         }
         else if (Helpers.isItem(stack, TFCTags.Items.COMPOST_POISONS))
@@ -106,7 +106,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             if (green == 4)
             {
-                if (!client) player.displayClientMessage(new TranslatableComponent("tfc.composter.too_many_greens"), true);
+                if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.too_many_greens"), true);
             }
             else
             {
@@ -124,7 +124,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         {
             if (brown == 4)
             {
-                if (!client) player.displayClientMessage(new TranslatableComponent("tfc.composter.too_many_browns"), true);
+                if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.too_many_browns"), true);
             }
             else
             {

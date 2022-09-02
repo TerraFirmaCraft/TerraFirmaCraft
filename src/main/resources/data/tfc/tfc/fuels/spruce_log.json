@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/spruce"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/spruce"
+    },
+    {
+      "item": "tfc:wood/stripped_log/spruce"
     }
   ],
   "duration": 1500,

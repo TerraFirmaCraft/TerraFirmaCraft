@@ -15,11 +15,10 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,8 +38,8 @@ public class CopyFluidFunction extends LootItemConditionalFunction
     {
         if (entity != null && !stack.isEmpty())
         {
-            final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
-            final IFluidHandler blockHandler = Helpers.getCapability(entity, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+            final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+            final IFluidHandler blockHandler = Helpers.getCapability(entity, Capabilities.FLUID);
             if (itemHandler != null && blockHandler != null)
             {
                 final IFluidHandler fromHandler = toItem ? blockHandler : itemHandler;

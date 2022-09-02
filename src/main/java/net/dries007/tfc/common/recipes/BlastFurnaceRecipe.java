@@ -32,10 +32,10 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
     public static BlastFurnaceRecipe get(Level level, ItemStack stack)
     {
         final ItemStackInventory inventory = new ItemStackInventory(stack);
-        final HeatingRecipe heatRecipe = HeatingRecipe.getRecipe(stack);
+        final HeatingRecipe heatRecipe = HeatingRecipe.getRecipe(inventory);
         if (heatRecipe != null)
         {
-            final FluidStack moltenFluid = heatRecipe.getOutputFluid();
+            final FluidStack moltenFluid = heatRecipe.assembleFluid(inventory);
             for (BlastFurnaceRecipe recipe : Helpers.getRecipes(level, TFCRecipeTypes.BLAST_FURNACE).values())
             {
                 if (recipe.inputFluid.ingredient().test(moltenFluid.getFluid()))
@@ -94,11 +94,12 @@ public class BlastFurnaceRecipe implements ISimpleRecipe<BlastFurnaceRecipe.Inve
 
     public boolean matchesInput(ItemStack stack)
     {
-        final HeatingRecipe heat = HeatingRecipe.getRecipe(stack);
+        final ItemStackInventory inventory = new ItemStackInventory(stack);
+        final HeatingRecipe heat = HeatingRecipe.getRecipe(inventory);
         if (heat != null)
         {
             // Ignore count, since the blast furnace will aggregate all inputs
-            final FluidStack fluid = heat.getOutputFluid();
+            final FluidStack fluid = heat.assembleFluid(inventory);
             return inputFluid.ingredient().test(fluid.getFluid());
         }
         return false;

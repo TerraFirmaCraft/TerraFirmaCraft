@@ -10,26 +10,25 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.plant.TallWaterPlantBlock;
 import net.dries007.tfc.util.EnvironmentHelpers;
-import net.dries007.tfc.world.Codecs;
+import net.dries007.tfc.world.feature.BlockConfig;
 
-public class EmergentPlantFeature extends Feature<BlockStateConfiguration>
+public class EmergentPlantFeature extends Feature<BlockConfig<TallWaterPlantBlock>>
 {
-    public static final Codec<BlockStateConfiguration> CODEC = Codecs.blockStateConfigCodec(b -> b instanceof TallWaterPlantBlock, "Must be a TallWaterPlantBlock");
+    public static final Codec<BlockConfig<TallWaterPlantBlock>> CODEC = BlockConfig.codec(b -> b instanceof TallWaterPlantBlock t ? t : null, "Must be a " + TallWaterPlantBlock.class.getSimpleName());
 
-    public EmergentPlantFeature(Codec<BlockStateConfiguration> codec)
+    public EmergentPlantFeature(Codec<BlockConfig<TallWaterPlantBlock>> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
+    public boolean place(FeaturePlaceContext<BlockConfig<TallWaterPlantBlock>> context)
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
@@ -37,7 +36,7 @@ public class EmergentPlantFeature extends Feature<BlockStateConfiguration>
         final Fluid fluidTop = level.getFluidState(pos.above()).getType();
         if (fluidTop.isSame(Fluids.EMPTY) && EnvironmentHelpers.isWorldgenReplaceable(level, pos))
         {
-            ((TallWaterPlantBlock) context.config().state.getBlock()).placeTwoHalves(level, pos, 2, context.random());
+            context.config().block().placeTwoHalves(level, pos, 2, context.random());
         }
         return true;
     }

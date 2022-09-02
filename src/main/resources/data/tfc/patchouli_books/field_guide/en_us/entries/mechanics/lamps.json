@@ -33,6 +33,7 @@
     },
     {
       "type": "tfc:quern_recipe",
+      "anchor": "olives",
       "recipe": "tfc:quern/olive",
       "text": "One lamp fuel is $(thing)Olive Oil$(). The first step in its production is to make olive paste."
     },
@@ -66,7 +67,7 @@
         }
       },
       "name": "Candles",
-      "text": "The candle is made from sealing $(thing)String$() in a bucket of $(thing)Tallow$().",
+      "text": "The candle is made from sealing $(thing)String$() in a barrel of $(thing)Tallow$().",
       "enable_visualize": false
     },
     {
@@ -85,7 +86,7 @@
         }
       },
       "name": "Lava Lamps",
-      "text": "Lava will keep burning forever, but can only be held in a $(thing)Blue Steel$() lamp.",
+      "text": "Lava will keep burning forever, but can only be held in a $(l:mechanics/steel#blue_steel)Blue Steel$() lamp.",
       "enable_visualize": false
     },
     {

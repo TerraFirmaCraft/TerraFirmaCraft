@@ -15,21 +15,21 @@ def generate(rm: ResourceManager):
     # feature/ -> individual features
 
     # Tags: in_biome/
-    placed_feature_tag(rm, 'in_biome/erosion', 'tfc:erosion')
-    placed_feature_tag(rm, 'in_biome/underground_lakes', 'tfc:underground_flood_fill_lake')
-    placed_feature_tag(rm, 'in_biome/all_lakes', 'tfc:underground_flood_fill_lake', 'tfc:flood_fill_lake')
-    placed_feature_tag(rm, 'in_biome/veins', *[
+    placed_feature_118_hack(rm, 'in_biome/erosion', 'tfc:erosion')
+    placed_feature_118_hack(rm, 'in_biome/underground_lakes', 'tfc:underground_flood_fill_lake')
+    placed_feature_118_hack(rm, 'in_biome/all_lakes', 'tfc:underground_flood_fill_lake', 'tfc:flood_fill_lake')
+    placed_feature_118_hack(rm, 'in_biome/veins', *[
         'tfc:vein/gravel',
         *['tfc:vein/%s_dike' % rock for rock, data in ROCKS.items() if data.category == 'igneous_intrusive'],
         *('tfc:vein/%s' % v for v in ORE_VEINS.keys()),
         'tfc:geode'
     ])
-    placed_feature_tag(rm, 'in_biome/underground_decoration', *UNDERGROUND_FEATURES)
-    placed_feature_tag(rm, 'in_biome/top_layer_modification', 'tfc:surface_loose_rocks', 'tfc:ice_and_snow')
+    placed_feature_118_hack(rm, 'in_biome/underground_decoration', *UNDERGROUND_FEATURES)
+    placed_feature_118_hack(rm, 'in_biome/top_layer_modification', 'tfc:surface_loose_rocks', 'tfc:ice_and_snow')
 
-    placed_feature_tag(rm, 'in_biome/underground_structures')
-    placed_feature_tag(rm, 'in_biome/surface_structures')
-    placed_feature_tag(rm, 'in_biome/strongholds')
+    placed_feature_118_hack(rm, 'in_biome/underground_structures')
+    placed_feature_118_hack(rm, 'in_biome/surface_structures')
+    placed_feature_118_hack(rm, 'in_biome/strongholds')
 
     # Tags: feature/
     placed_feature_tag(rm, 'feature/land_plants', *[
@@ -38,7 +38,7 @@ def generate(rm: ResourceManager):
         '#tfc:feature/forest_plants',
         'tfc:surface_grasses',  # Special, because it uses noise to select which to place
         *['tfc:plant/%s_patch' % plant for plant, data in PLANTS.items() if data.type not in OCEAN_PLANT_TYPES and not data.clay and data.type != 'short_grass'],
-        'tfc:berry_bushes',
+        '#tfc:feature/berry_bushes',
         '#tfc:feature/fruit_trees'
     ])
     placed_feature_tag(rm, 'feature/forest_plants', *['tfc:%s_patch' % d for d in FOREST_DECORATORS])
@@ -189,14 +189,14 @@ def generate(rm: ResourceManager):
             'max_radius': 3,
             'height': 2,
             'states': [{'replace': 'tfc:rock/gravel/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        }, decorate_chance(60), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
+        }, decorate_chance(12), decorate_square(), decorate_heightmap('ocean_floor_wg'), decorate_biome())
 
         configured_placed_feature(rm, '%s_deep_deposit' % ore, 'tfc:soil_disc', {
             'min_radius': 3,
             'max_radius': 10,
             'height': 3,
             'states': [{'replace': 'tfc:rock/raw/%s' % rock, 'with': 'tfc:deposit/%s/%s' % (ore, rock)} for rock in ROCKS.keys()]
-        }, decorate_chance(60), decorate_square(), decorate_range(40, 63), decorate_biome())
+        }, decorate_chance(24), decorate_square(), decorate_range(40, 63), decorate_biome())
 
         placed_feature_tag(rm, 'feature/ore_deposits', 'tfc:%s_deposit' % ore, 'tfc:%s_deep_deposit' % ore)
 
@@ -205,6 +205,8 @@ def generate(rm: ResourceManager):
 
     rm.placed_feature('cave_spike', 'tfc:cave_spike', decorate_carving_mask(), decorate_chance(5))
     rm.placed_feature('large_cave_spike', 'tfc:large_cave_spike', decorate_carving_mask(utils.vertical_anchor(25, 'above_bottom')), decorate_chance(0.006))
+
+    configured_placed_feature(rm, 'cave_column', 'tfc:cave_column', {}, decorate_carving_mask(utils.vertical_anchor(25, 'above_bottom')), decorate_chance(0.0015))
 
     rm.configured_feature('calcite', 'tfc:thin_spike', {
         'state': 'tfc:calcite',
@@ -642,7 +644,7 @@ def generate(rm: ResourceManager):
     configured_placed_feature(rm, ('plant', 'winged_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/winged_kelp_plant', 'tfc:plant/winged_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-15, 15, 0, 450, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'leafy_kelp'), 'tfc:kelp', tall_plant_config('tfc:plant/leafy_kelp_plant', 'tfc:plant/leafy_kelp', 64, 12, 14, 21), decorate_heightmap('ocean_floor_wg'), decorate_square(), decorate_chance(2), decorate_climate(-20, 20, 0, 500, fuzzy=True), decorate_air_or_empty_fluid())
 
-    configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 20, water='salt', custom_feature='tfc:kelp_tree'), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
+    configured_patch_feature(rm, ('plant', 'giant_kelp'), patch_config('tfc:plant/giant_kelp_flower[age=0,fluid=empty]', 2, 10, 20, water='salt', custom_feature='tfc:kelp_tree', custom_config={'block': 'tfc:plant/giant_kelp_flower'}), decorate_square(), decorate_climate(-18, 18, 0, 500, fuzzy=True))
 
     configured_placed_feature(rm, ('plant', 'ivy'), 'tfc:vines', {'state': utils.block_state('tfc:plant/ivy[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 128), decorate_replaceable(), decorate_climate(-4, 14, 90, 450, True, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'jungle_vines'), 'tfc:vines', {'state': utils.block_state('tfc:plant/jungle_vines[up=false,north=false,east=false,south=false,west=false]')}, decorate_count(127), decorate_square(), decorate_range(48, 128), decorate_replaceable(), decorate_climate(16, 32, 150, 470, True, fuzzy=True))
@@ -665,7 +667,7 @@ def generate(rm: ResourceManager):
     configured_noise_plant_feature(rm, ('plant', 'reindeer_lichen_cover'), plant_config('tfc:plant/reindeer_lichen[age=1,stage=1,up=false,down=true,north=false,east=false,west=false,south=false]', 1, 7, 100), decorate_climate(-20, -10, 220, 310, True, fuzzy=True), decorate_square(), water=False)
 
     # Clay Indicator Plants
-    # These piggy back on the clay disc feature, and so have limited decorators
+    # These piggyback on the clay disc feature, and so have limited decorators
     configured_plant_patch_feature(rm, ('plant', 'athyrium_fern'), plant_config('tfc:plant/athyrium_fern[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(-10, 14, 270, 500))
     configured_plant_patch_feature(rm, ('plant', 'canna'), plant_config('tfc:plant/canna[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(10, 40, 270, 500))
     configured_plant_patch_feature(rm, ('plant', 'goldenrod'), plant_config('tfc:plant/goldenrod[age=1,stage=1]', 1, 6, 16, requires_clay=True), decorate_climate(-16, 6, 75, 310))
@@ -676,12 +678,19 @@ def generate(rm: ResourceManager):
     # Crops
     for crop, crop_data in CROPS.items():
         name_parts = ('plant', 'wild_crop', crop)
-        tall = crop_data.type == 'double' or crop_data.type == 'double_stick'
-        name = 'tfc:wild_crop/%s[part=bottom]' % crop if tall else 'tfc:wild_crop/%s' % crop
+        name = 'tfc:wild_crop/%s' % crop
+        heightmap: Heightmap = 'world_surface_wg'
+        replaceable = decorate_replaceable()
 
-        feature = 'simple_block', {'to_place': simple_state_provider(name)}
-        if tall:
-            feature = 'tfc:tall_wild_crop', {'state': utils.block_state(name)}
+        if crop_data.type == 'double' or crop_data.type == 'double_stick':
+            feature = 'tfc:tall_wild_crop', {'block': name}
+            name += '[part=bottom]'
+        elif crop == 'rice':  # waterlogged
+            feature = 'tfc:block_with_fluid', {'to_place': simple_state_provider(name)}
+            heightmap = 'ocean_floor_wg'
+            replaceable = decorate_shallow(1)
+        else:
+            feature = 'simple_block', {'to_place': simple_state_provider(name)}
 
         res = utils.resource_location(rm.domain, name_parts)
         patch_feature = res.join() + '_patch'
@@ -692,16 +701,16 @@ def generate(rm: ResourceManager):
         rm.configured_feature(patch_feature, 'minecraft:random_patch', {'tries': 6, 'xz_spread': 5, 'y_spread': 1, 'feature': singular_feature.join()})
         rm.configured_feature(singular_feature, *feature)
         rm.placed_feature(patch_feature, patch_feature, decorate_chance(30), decorate_square(), decorate_climate(crop_data.min_temp, crop_data.max_temp, crop_data.min_rain, crop_data.max_rain, min_forest=crop_data.min_forest, max_forest=crop_data.max_forest))
-        rm.placed_feature(singular_feature, singular_feature, decorate_heightmap('world_surface_wg'), decorate_air_or_empty_fluid(), decorate_would_survive(name))
+        rm.placed_feature(singular_feature, singular_feature, decorate_heightmap(heightmap), replaceable, decorate_would_survive(name))
 
     for berry, info in BERRIES.items():
-        decorators = decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest),
-        if info.type == 'stationary' or info.type == 'spreading':
-            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0]' % berry, 1, 4, 4), *decorators, biome_check=False)
-        elif info.type == 'waterlogged':
-            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config('tfc:plant/%s_bush[lifecycle=healthy,stage=0,fluid=empty]' % berry, 1, 4, 4, water=True), *decorators, biome_check=False)
-        placed_feature_tag(rm, 'feature/berry_bushes', 'tfc:plant/%s_bush_patch' % berry)
-    configured_placed_feature(rm, 'berry_bushes', 'minecraft:simple_random_selector', {'features': '#tfc:feature/berry_bushes'}, decorate_square(), decorate_chance(20))
+        if info.type == 'spreading':
+            configured_placed_feature(rm, ('plant', berry + '_bush'), 'tfc:spreading_bush', {'block': 'tfc:plant/%s_bush' % berry}, decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_chance(22))
+            placed_feature_tag(rm, 'feature/berry_bushes', 'tfc:plant/%s_bush' % berry)
+        else:
+            bush_block = 'tfc:plant/%s_bush[lifecycle=healthy,stage=0%s]' % (berry, ',fluid=empty' if info.type == 'waterlogged' else '')
+            configured_patch_feature(rm, ('plant', berry + '_bush'), patch_config(bush_block, 1, 4, 4, 'fresh' if info.type == 'waterlogged' else False), decorate_climate(info.min_temp, info.max_temp, info.min_rain, info.max_rain, min_forest=info.min_forest, max_forest=info.max_forest), decorate_square(), decorate_chance(30), biome_check=False)
+            placed_feature_tag(rm, 'feature/berry_bushes', 'tfc:plant/%s_bush_patch' % berry)
 
     for fruit, info in FRUITS.items():
         config = {
@@ -716,7 +725,7 @@ def generate(rm: ResourceManager):
         if fruit == 'banana':
             feature = 'tfc:bananas'
             state = 'tfc:plant/banana_plant'
-        configured_placed_feature(rm, ('plant', fruit), feature, {'state': state}, ('tfc:climate', config), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_chance(20))
+        configured_placed_feature(rm, ('plant', fruit), feature, {'state': state}, ('tfc:climate', config), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_chance(50))
 
         placed_feature_tag(rm, 'feature/fruit_trees', 'tfc:plant/%s' % fruit, 'tfc:plant/%s' % fruit)
 
@@ -829,9 +838,9 @@ def configured_plant_patch_feature(rm: ResourceManager, name_parts: ResourceIden
     if config.water_plant:
         feature = 'tfc:block_with_fluid', feature[1]
     if config.emergent_plant:
-        feature = 'tfc:emergent_plant', {'state': utils.block_state(config.block)}
+        feature = 'tfc:emergent_plant', {'block': utils.block_state(config.block)['Name']}
     if config.tall_plant:
-        feature = 'tfc:tall_plant', {'state': utils.block_state(config.block)}
+        feature = 'tfc:tall_plant', {'block': utils.block_state(config.block)['Name']}
 
     res = utils.resource_location(rm.domain, name_parts)
     patch_feature = res.join() + '_patch'
@@ -878,10 +887,9 @@ def configured_patch_feature(rm: ResourceManager, name_parts: ResourceIdentifier
         singular_decorators.append(decorate_replaceable())
 
     if patch.custom_feature is not None:
+        assert patch.custom_config
         feature = patch.custom_feature
-        config = config['to_place']  # assume that for custom features, it uses just a single state (not state provider)
-        if patch.custom_config is not None:
-            config = patch.custom_config
+        config = patch.custom_config
 
     heightmap: Heightmap = 'world_surface_wg'
     if patch.any_water:
@@ -1032,7 +1040,7 @@ def random_config(tree: str, structure_count: int, radius: int = 1, suffix: str 
     return cfg
 
 
-def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, suffix: str = '', place = None):
+def stacked_config(tree: str, min_height: int, max_height: int, width: int, layers: List[Tuple[int, int, int]], radius: int = 1, suffix: str = '', place: Json = None) -> JsonObject:
     # layers consists of each layer, which is a (min_count, max_count, total_templates)
     block = 'tfc:wood/log/%s[axis=y,natural=true]' % tree
     tree += suffix
@@ -1048,7 +1056,7 @@ def stacked_config(tree: str, min_height: int, max_height: int, width: int, laye
     }
 
 
-def trunk_config(block: str, min_height: int, max_height: int, width: int):
+def trunk_config(block: str, min_height: int, max_height: int, width: int) -> JsonObject:
     return {
         'state': utils.block_state(block),
         'min_height': min_height,
@@ -1057,7 +1065,7 @@ def trunk_config(block: str, min_height: int, max_height: int, width: int):
     }
 
 
-def tree_placement_config(width: int, height: int, allow_submerged: bool = False):
+def tree_placement_config(width: int, height: int, allow_submerged: bool = False) -> JsonObject:
     return {
         'width': width,
         'height': height,
@@ -1076,7 +1084,7 @@ def decorate_square() -> Json:
 
 
 def decorate_biome() -> Json:
-    return 'minecraft:biome'
+    return 'tfc:biome'
 
 
 def decorate_chance(rarity_or_probability: Union[int, float]) -> Json:
@@ -1310,9 +1318,9 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         '#tfc:in_biome/top_layer_modification'  # Top Layer Modification
     ]
 
-    placed_feature_tag(rm, ('in_biome/soil_discs', name), *soil_discs)
-    placed_feature_tag(rm, ('in_biome/large_features', name), *large_features)
-    placed_feature_tag(rm, ('in_biome/surface_decoration', name), *surface_decorations)
+    placed_feature_118_hack(rm, ('in_biome/soil_discs', name), *soil_discs)
+    placed_feature_118_hack(rm, ('in_biome/large_features', name), *large_features)
+    placed_feature_118_hack(rm, ('in_biome/surface_decoration', name), *surface_decorations)
 
     if volcano_features:
         biome_tag(rm, 'is_volcanic', name)
@@ -1320,6 +1328,12 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
         biome_tag(rm, 'is_lake', name)
     if 'river' in name:
         biome_tag(rm, 'is_river', name)
+
+    # todo: remove in 1.19
+    feature_tags = [
+        [tag[1:]]
+        for tag in feature_tags
+    ]
 
     rm.lang('biome.tfc.%s' % name, lang(name))
     rm.biome(
@@ -1347,6 +1361,11 @@ def biome(rm: ResourceManager, name: str, category: str, boulders: bool = False,
 
 def placed_feature_tag(rm: ResourceManager, name_parts: ResourceIdentifier, *values: ResourceIdentifier):
     return rm.tag(name_parts, 'worldgen/placed_feature', *values)
+
+
+def placed_feature_118_hack(rm, name_parts: ResourceIdentifier, *values: ResourceIdentifier):
+    placed_feature_tag(rm, name_parts, *values)
+    configured_placed_feature(rm, name_parts, 'tfc:multiple', {'features': '#' + utils.resource_location(rm.domain, name_parts).join()})
 
 
 def configured_feature_tag(rm: ResourceManager, name_parts: ResourceIdentifier, *values: ResourceIdentifier):

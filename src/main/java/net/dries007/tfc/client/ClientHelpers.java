@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client;
 
+import java.util.Objects;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.searchtree.MutableSearchTree;
@@ -43,10 +45,20 @@ public final class ClientHelpers
         return Minecraft.getInstance().level;
     }
 
+    public static Level getLevelOrThrow()
+    {
+        return Objects.requireNonNull(getLevel());
+    }
+
     @Nullable
     public static Player getPlayer()
     {
         return Minecraft.getInstance().player;
+    }
+
+    public static Player getPlayerOrThrow()
+    {
+        return Objects.requireNonNull(getPlayer());
     }
 
     @Nullable

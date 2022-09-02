@@ -15,7 +15,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.WorldStem;
 import net.minecraft.server.level.PlayerRespawnLogic;
@@ -30,8 +29,9 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -43,10 +43,7 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LecternBlock;
-import net.minecraft.world.level.block.SnowLayerBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.*;
@@ -63,8 +60,7 @@ import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.PotionEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -82,6 +78,8 @@ import net.dries007.tfc.common.blockentities.*;
 import net.dries007.tfc.common.blocks.CharcoalPileBlock;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCCandleBlock;
+import net.dries007.tfc.common.blocks.devices.AnvilBlock;
+import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
@@ -166,8 +164,11 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onPlayerTick);
         bus.addListener(ForgeEventHandler::onEffectRemove);
         bus.addListener(ForgeEventHandler::onEffectExpire);
-        bus.addListener(ForgeEventHandler::onItemExpire);
+        bus.addListener(ForgeEventHandler::onLivingJump);
+        bus.addListener(ForgeEventHandler::onLivingHurt);
+        bus.addListener(ForgeEventHandler::onLivingSpawnCheck);
         bus.addListener(ForgeEventHandler::onEntityJoinWorld);
+        bus.addListener(ForgeEventHandler::onItemExpire);
         bus.addListener(ForgeEventHandler::onPlayerLoggedIn);
         bus.addListener(ForgeEventHandler::onPlayerRespawn);
         bus.addListener(ForgeEventHandler::onPlayerChangeDimension);
@@ -179,8 +180,8 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onDataPackSync);
         bus.addListener(ForgeEventHandler::onTagsUpdated);
         bus.addListener(ForgeEventHandler::onBoneMeal);
-        bus.addListener(ForgeEventHandler::onLivingJump);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
+        bus.addListener(ForgeEventHandler::onAnimalTame);
     }
 
     /**
@@ -452,15 +453,6 @@ public final class ForgeEventHandler
 
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
-        // todo: this needs to be re-evaluated, it was way too harsh and applied on way too many blocks. Maybe apply only if the tool cannot harvest the block?
-        // Apply global modifiers when not using the correct tool
-        // This makes the difference between bare fists and tools more pronounced, without having to massively buff either our tools or make our blocks way higher than the standard hardness.
-        /*final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
-        if (defaultDestroySpeed <= 1.0f)
-        {
-            event.setNewSpeed(event.getNewSpeed() * 0.4f);
-        }*/
-
         // Apply mining speed modifiers from forging bonuses
         final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
         if (bonus != ForgingBonus.NONE)
@@ -601,7 +593,11 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
+            if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
+            {
+                event.setCanceled(true);
+                event.setFireResult(StartFireEvent.FireResult.ALWAYS);
+            }
         }
         else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
         {
@@ -657,6 +653,11 @@ public final class ForgeEventHandler
             level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
+        else if (block == Blocks.CARVED_PUMPKIN)
+        {
+            level.setBlockAndUpdate(pos, Helpers.copyProperty(TFCBlocks.JACK_O_LANTERN.get().defaultBlockState(), state, HorizontalDirectionalBlock.FACING));
+            event.setCanceled(true);
+        }
     }
 
     public static void onProjectileImpact(ProjectileImpactEvent event)
@@ -681,6 +682,18 @@ public final class ForgeEventHandler
         if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
+        }
+        if (!level.isClientSide() && !player.isCreative() && TFCConfig.SERVER.enableOverburdening.get() && level.getGameTime() % 20 == 0)
+        {
+            final int hugeHeavyCount = Helpers.countOverburdened(player.getInventory());
+            if (hugeHeavyCount >= 1)
+            {
+                player.addEffect(Helpers.getExhausted(false));
+            }
+            if (hugeHeavyCount == 2)
+            {
+                player.addEffect(Helpers.getOverburdened(false));
+            }
         }
     }
 
@@ -720,14 +733,79 @@ public final class ForgeEventHandler
     }
 
     /**
+     * Apply modifications from damage types, player health, and forging bonus, before armor and absorption and other resources are consumed.
+     */
+    public static void onLivingHurt(LivingHurtEvent event)
+    {
+        float amount = event.getAmount();
+
+        // Forging bonus
+        final Entity entity = event.getSource().getEntity();
+        if (entity instanceof LivingEntity livingEntity)
+        {
+            amount *= ForgingBonus.get(livingEntity.getMainHandItem()).damage();
+        }
+
+        // Physical damage type
+        amount *= PhysicalDamageType.calculateMultiplier(event.getSource(), event.getEntity());
+
+        // Player health modifier
+        if (event.getEntityLiving() instanceof Player player && player.getFoodData() instanceof TFCFoodData foodData)
+        {
+            amount /= foodData.getHealthModifier();
+        }
+
+        event.setAmount(amount);
+    }
+
+    /**
+     * This prevents vanilla mobs from spawning either at all or on the surface.
+     */
+    public static void onLivingSpawnCheck(LivingSpawnEvent.CheckSpawn event)
+    {
+        final LivingEntity entity = event.getEntityLiving();
+        final LevelAccessor level = event.getWorld();
+        final MobSpawnType spawn = event.getSpawnReason();
+        // we only care about "natural" spawns
+        if (spawn == MobSpawnType.NATURAL || spawn == MobSpawnType.CHUNK_GENERATION || spawn == MobSpawnType.REINFORCEMENT)
+        {
+            if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
+            {
+                if (TFCConfig.SERVER.enableVanillaMonsters.get())
+                {
+                    if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
+                    {
+                        final BlockPos pos = entity.blockPosition();
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                    }
+                }
+                else
+                {
+                    event.setResult(Event.Result.DENY);
+                }
+            }
+        }
+    }
+
+    /**
      * Applies multiple effect for entities joining the world:
      *
      * - Set a very short lifespan to item entities that are cool-able. This causes ItemExpireEvent to fire at regular intervals
      * - Causes lightning bolts to strip nearby logs
      * - Prevents skeleton trap horses from spawning (see {@link ServerLevel#tickChunk(LevelChunk, int)}
+     * - Prevents some categories of mobs from spawning. Some can't be done in {@link LivingSpawnEvent.CheckSpawn} because Forge does not always fire it.
      */
     public static void onEntityJoinWorld(EntityJoinWorldEvent event)
     {
+        if (event.loadedFromDisk())
+        {
+            // This event is used for modifications to entity spawning, so we shouldn't apply any effects for entities that already exist in the world.
+            return;
+        }
+
         final Level level = event.getWorld();
 
         Entity entity = event.getEntity();
@@ -776,26 +854,15 @@ public final class ForgeEventHandler
                 monster.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
         }
-        if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
-        {
-            if (!TFCConfig.SERVER.enableVanillaMonsters.get())
-            {
-                event.setCanceled(true);
-            }
-            else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
-            {
-                final BlockPos pos = entity.blockPosition();
-                if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
-                {
-                    event.setCanceled(true);
-                }
-            }
-        }
-        else if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
+        if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
         {
             event.setCanceled(true); // not tolerating this crap again
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
+        {
+            event.setCanceled(true);
+        }
+        else if (entity instanceof IronGolem || entity instanceof SnowGolem && TFCConfig.SERVER.enableVanillaGolems.get())
         {
             event.setCanceled(true);
         }
@@ -974,7 +1041,7 @@ public final class ForgeEventHandler
 
                 words[i] = word;
             }
-            event.setComponent(new TranslatableComponent("<" + event.getUsername() + "> " + String.join(" ", words)));
+            event.setComponent(Helpers.translatable("<" + event.getUsername() + "> " + String.join(" ", words)));
         }
     }
 
@@ -1049,6 +1116,7 @@ public final class ForgeEventHandler
         event.addListener(Fauna.MANAGER);
         event.addListener(HeatCapability.MANAGER);
         event.addListener(FoodCapability.MANAGER);
+        event.addListener(EntityDamageResistance.MANAGER);
 
         // In addition, we capture the recipe manager here
         Helpers.setCachedRecipeManager(event.getServerResources().getRecipeManager());
@@ -1113,6 +1181,14 @@ public final class ForgeEventHandler
         {
             // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
             event.setModel(new OverworldClimateModel());
+        }
+    }
+
+    public static void onAnimalTame(AnimalTameEvent event)
+    {
+        if (Helpers.isEntity(event.getEntity(), TFCTags.Entities.HORSES))
+        {
+            event.setCanceled(true); // cancel vanilla taming methods
         }
     }
 }

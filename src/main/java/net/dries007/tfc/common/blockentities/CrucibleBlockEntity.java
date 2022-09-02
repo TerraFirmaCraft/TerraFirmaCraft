@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,7 +21,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -48,7 +46,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     public static final int SLOT_INPUT_END = 8;
     public static final int SLOT_OUTPUT = 9;
 
-    private static final Component NAME = new TranslatableComponent("tfc.tile_entity.crucible");
+    private static final Component NAME = Helpers.translatable("tfc.tile_entity.crucible");
     private static final int TARGET_TEMPERATURE_STABILITY_TICKS = 5;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CrucibleBlockEntity crucible)
@@ -98,7 +96,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
                         // Convert input
                         final ItemStackInventory inventory = new ItemStackInventory(inputStack);
                         final ItemStack outputItem = recipe.assemble(inventory);
-                        final FluidStack outputFluid = recipe.getOutputFluid();
+                        final FluidStack outputFluid = recipe.assembleFluid(inventory);
 
                         // Output transformations
                         FoodCapability.applyTrait(outputItem, FoodTraits.BURNT_TO_A_CRISP);
@@ -174,7 +172,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         needsRecipeUpdate = true;
         temperature = targetTemperature = 0;
         lastFillTicks = 0;
-        lastUpdateTick = 0;
+        lastUpdateTick = Integer.MIN_VALUE;
 
         // Inputs in top, the output slot is accessed via the sides
         sidedInventory
@@ -228,12 +226,14 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastUpdateTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastUpdateTick = tick;
@@ -252,6 +252,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         temperature = nbt.getFloat("temperature");
         targetTemperature = nbt.getFloat("targetTemperature");
         targetTemperatureStabilityTicks = nbt.getInt("targetTemperatureStabilityTicks");
+        lastUpdateTick = nbt.getLong("lastUpdateTick");
         needsRecipeUpdate = true;
         super.loadAdditional(nbt);
     }
@@ -263,6 +264,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         nbt.putFloat("targetTemperature", targetTemperature);
         nbt.putInt("targetTemperatureStabilityTicks", targetTemperatureStabilityTicks);
         nbt.putBoolean("empty", Helpers.isEmpty(inventory) && inventory.alloy.isEmpty()); // We save this in order for the block item to efficiently check if the crucible is empty later
+        nbt.putLong("lastUpdateTick", lastUpdateTick);
         super.saveAdditional(nbt);
     }
 
@@ -270,7 +272,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (cap == Capabilities.FLUID)
         {
             return sidedFluidInventory.getSidedHandler(side).cast();
         }
@@ -315,7 +317,8 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
 
         public boolean isMolten()
         {
-            return crucible.temperature > alloy.getResult().getMeltTemperature();
+            assert crucible.level != null;
+            return crucible.temperature > alloy.getResult(crucible.level).getMeltTemperature();
         }
 
         @Override
@@ -376,7 +379,8 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         {
             if (isMolten())
             {
-                final Metal result = alloy.getResult();
+                assert crucible.level != null;
+                final Metal result = alloy.getResult(crucible.level);
                 final int amount = alloy.removeAlloy(maxDrain, action.simulate());
                 if (action.execute())
                 {

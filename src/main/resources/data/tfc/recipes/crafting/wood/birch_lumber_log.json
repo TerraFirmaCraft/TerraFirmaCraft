@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:wood/log/birch"
+        "tag": "tfc:birch_logs"
       },
       {
         "tag": "tfc:saws"

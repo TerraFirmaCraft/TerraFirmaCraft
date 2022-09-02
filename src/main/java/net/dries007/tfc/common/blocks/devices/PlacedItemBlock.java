@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -54,15 +55,18 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
         return true;
     }
 
-    private static final BooleanProperty ITEM_0 = TFCBlockStateProperties.ITEM_0;
-    private static final BooleanProperty ITEM_1 = TFCBlockStateProperties.ITEM_1;
-    private static final BooleanProperty ITEM_2 = TFCBlockStateProperties.ITEM_2;
-    private static final BooleanProperty ITEM_3 = TFCBlockStateProperties.ITEM_3;
+    public static final BooleanProperty ITEM_0 = TFCBlockStateProperties.ITEM_0;
+    public static final BooleanProperty ITEM_1 = TFCBlockStateProperties.ITEM_1;
+    public static final BooleanProperty ITEM_2 = TFCBlockStateProperties.ITEM_2;
+    public static final BooleanProperty ITEM_3 = TFCBlockStateProperties.ITEM_3;
+
     public static final BooleanProperty[] ITEM_PROPERTIES = new BooleanProperty[] {ITEM_0, ITEM_1, ITEM_2, ITEM_3};
+
     private static final VoxelShape SHAPE_0 = box(0, 0, 0, 8.0D, 1.0D, 8.0D);
     private static final VoxelShape SHAPE_1 = box(8.0D, 0, 0, 16.0D, 1.0D, 8.0D); // x
     private static final VoxelShape SHAPE_2 = box(0, 0, 8.0D, 8.0D, 1.0D, 16.0D); // z
     private static final VoxelShape SHAPE_3 = box(8.0D, 0, 8.0D, 16.0D, 1.0D, 16.0D); // xz
+
     private static final VoxelShape[] SHAPES = new VoxelShape[] {SHAPE_0, SHAPE_1, SHAPE_2, SHAPE_3};
 
     /**
@@ -168,5 +172,15 @@ public class PlacedItemBlock extends DeviceBlock implements IForgeBlockExtension
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(ITEM_0, ITEM_1, ITEM_2, ITEM_3);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult result, BlockGetter level, BlockPos pos, Player player)
+    {
+        if (result instanceof BlockHitResult blockResult)
+        {
+           return level.getBlockEntity(pos, TFCBlockEntities.PLACED_ITEM.get()).map(placedItem -> placedItem.getCloneItemStack(state, blockResult)).orElse(ItemStack.EMPTY);
+        }
+        return ItemStack.EMPTY;
     }
 }

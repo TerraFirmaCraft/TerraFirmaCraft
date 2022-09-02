@@ -6,13 +6,17 @@
 
 package net.dries007.tfc.common.blocks.plant.fruit;
 
+import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -25,17 +29,24 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.ClimateRange;
 
-public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtension
+import static net.dries007.tfc.common.blocks.plant.fruit.FruitTreeSaplingBlock.maySplice;
+
+public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtension, HoeOverlayBlock
 {
     public static final IntegerProperty STAGE = TFCBlockStateProperties.STAGE_3;
     private final ExtendedProperties properties;
+    private final Supplier<ClimateRange> climateRange;
 
-    public FruitTreeBranchBlock(ExtendedProperties properties)
+    public FruitTreeBranchBlock(ExtendedProperties properties, Supplier<ClimateRange> climateRange)
     {
         super(0.25F, properties.properties());
         this.properties = properties;
+        this.climateRange = climateRange;
         registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, false));
     }
 
@@ -43,6 +54,25 @@ public class FruitTreeBranchBlock extends PipeBlock implements IForgeBlockExtens
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return getStateForPlacement(context.getLevel(), context.getClickedPos());
+    }
+
+    @Override
+    public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
+    {
+        final ClimateRange range = climateRange.get();
+
+        text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
+        text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        if (maySplice(level, pos.above(), level.getBlockState(pos.above())))
+        {
+            text.add(Helpers.translatable("tfc.tooltip.fruit_tree.sapling_splice"));
+        }
+        addExtraInfo(text);
+    }
+
+    public void addExtraInfo(List<Component> text)
+    {
+        text.add(Helpers.translatable("tfc.tooltip.fruit_tree.done_growing"));
     }
 
     @Override

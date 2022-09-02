@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -37,25 +36,22 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 {
     private static final VoxelShape HALF_PLANT = box(2, 0, 2, 14, 8, 14);
 
-    protected final Supplier<ClimateRange> climateRange; // todo: move this field to SeasonalPlantBlock
+    /**
+     * Any bush that spends four consecutive months dormant when it shouldn't be, should die.
+     * Since most bushes have a 7 month non-dormant cycle, this means that it just needs to be in valid conditions for about 1 month a year in order to not die.
+     * It won't produce (it needs more months to properly advance the cycle from dormant -> healthy -> flowering -> fruiting, requiring 4 months at least), but it won't outright die.
+     */
+    private static final int MONTHS_SPENT_DORMANT_TO_DIE = 4;
 
     public StationaryBerryBushBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle, Supplier<ClimateRange> climateRange)
     {
-        super(properties, productItem, lifecycle);
-
-        this.climateRange = climateRange;
+        super(properties, climateRange, productItem, lifecycle);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return defaultBlockState().setValue(LIFECYCLE, getLifecycleForCurrentMonth().active() ? Lifecycle.HEALTHY : Lifecycle.DORMANT);
-    }
-
-    @Override
-    protected ItemStack getTrimItemStack()
-    {
-        return new ItemStack(this);
     }
 
     @Override
@@ -68,7 +64,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        IBushBlock.super.randomTick(state, level, pos, random);
+        IBushBlock.randomTick(this, state, level, pos, random);
     }
 
     @Override
@@ -100,7 +96,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 final ClimateRange range = climateRange.get();
                 final int hydration = FarmlandBlock.getHydration(level, sourcePos);
 
-                int stagesGrown = 0, monthsSpentDying = 0;
+                int monthsSpentDying = 0;
                 do
                 {
                     // This always runs at least once. It is called through random ticks, and calendar updates - although calendar updates will only call this if they've waited at least a day, or the average delta between random ticks.
@@ -110,10 +106,6 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                     // Advance both the stage (randomly, if the previous month was healthy), and lifecycle (if the at-the-time conditions were valid)
                     nextCalendarTick = Math.min(nextCalendarTick + Calendars.SERVER.getCalendarTicksInMonth(), currentCalendarTick);
 
-                    if (currentLifecycle.active() && level.getRandom().nextInt(3) == 0)
-                    {
-                        stagesGrown++;
-                    }
 
                     float temperatureAtNextTick = Climate.getTemperature(level, pos, nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth());
                     Lifecycle lifecycleAtNextTick = getLifecycleForMonth(ICalendar.getMonthOfYear(nextCalendarTick, Calendars.SERVER.getCalendarDaysInMonth()));
@@ -139,22 +131,14 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
 
                 BlockState newState;
 
-                if (monthsSpentDying > 0 && level.getRandom().nextInt(getDeathChance()) < monthsSpentDying && specialDeathCondition(level, pos, state))
+                if (mayDie(level, pos, state, monthsSpentDying))
                 {
-                    // It may have died, as it spent too many consecutive months where it should've been healthy, in invalid conditions.
                     newState = getDeadState(state);
                 }
                 else
                 {
                     // It's not dead! Now, perform the actual update over the time taken.
-                    newState = state.setValue(STAGE, Math.min(2, state.getValue(STAGE) + stagesGrown))
-                        .setValue(LIFECYCLE, currentLifecycle);
-
-                    // Finally, possibly, cause a propagation event - this is based on the current time.
-                    if (mayPropagate(newState, level, pos))
-                    {
-                        propagate(level, pos, level.getRandom(), newState);
-                    }
+                    newState = growAndPropagate(level, pos, level.getRandom(), state.setValue(LIFECYCLE, currentLifecycle));
                 }
 
                 // And update the block
@@ -163,18 +147,15 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                     level.setBlock(pos, newState, 3);
                 }
             }
-            bush.afterUpdate();
         });
     }
 
-    protected boolean specialDeathCondition(Level level, BlockPos pos, BlockState state)
+    /**
+     * Can this bush die, given that it spent {@code monthsSpentDying} consecutive months in a dormant state, when it should've been in a non-dormant state.
+     */
+    protected boolean mayDie(Level level, BlockPos pos, BlockState state, int monthsSpentDying)
     {
-        return true;
-    }
-
-    protected int getDeathChance()
-    {
-        return 6;
+        return monthsSpentDying >= MONTHS_SPENT_DORMANT_TO_DIE;
     }
 
     protected BlockState getNewState(Level level, BlockPos pos)
@@ -192,16 +173,29 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
         return TFCBlocks.DEAD_BERRY_BUSH.get().defaultBlockState().setValue(STAGE, state.getValue(STAGE));
     }
 
-    protected boolean mayPropagate(BlockState newState, Level level, BlockPos pos)
+    /**
+     * Performs growth and (optional) propagation of the bush.
+     * Propagation should be naturally limited to not cause runaway generation.
+     * @return The new state of the bush at {@code pos}. This will be set by the caller.
+     */
+    protected BlockState growAndPropagate(Level level, BlockPos pos, Random random, BlockState state)
     {
-        return newState.getValue(STAGE) == 2 && newState.getValue(LIFECYCLE).active() && level.getRandom().nextInt(3) == 0;
-    }
+        if (state.getValue(LIFECYCLE).active())
+        {
+            return state; // Only grow when active
+        }
 
-    protected void propagate(Level level, BlockPos pos, Random random, BlockState newState)
-    {
+        // Increment stage by one
+        final BlockState newState = state.setValue(STAGE, Math.min(2, state.getValue(STAGE) + 1));
+
         // Conditions:
         // 1. Must be in max growth stage, and an active lifecycle
         // 2. Must not have more than 3 other bushes within the expansion radius
+        if (newState.getValue(STAGE) != 2)
+        {
+            return newState;
+        }
+
         int count = 0;
         for (BlockPos target : BlockPos.betweenClosed(pos.offset(-2, -1, -2), pos.offset(2, 1, 2)))
         {
@@ -210,7 +204,7 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
                 count++;
                 if (count > 3)
                 {
-                    return;
+                    return newState;
                 }
             }
         }
@@ -224,8 +218,9 @@ public class StationaryBerryBushBlock extends SeasonalPlantBlock implements HoeO
             if (canPlaceNewBushAt(level, pos, placementState))
             {
                 level.setBlockAndUpdate(cursor, placementState);
-                return;
+                return newState;
             }
         }
+        return newState;
     }
 }

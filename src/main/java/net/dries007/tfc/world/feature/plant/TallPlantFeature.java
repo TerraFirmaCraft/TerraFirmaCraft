@@ -8,25 +8,24 @@ package net.dries007.tfc.world.feature.plant;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockStateConfiguration;
 
 import com.mojang.serialization.Codec;
 import net.dries007.tfc.common.blocks.plant.TFCTallGrassBlock;
-import net.dries007.tfc.world.Codecs;
+import net.dries007.tfc.world.feature.BlockConfig;
 
-public class TallPlantFeature extends Feature<BlockStateConfiguration>
+public class TallPlantFeature extends Feature<BlockConfig<TFCTallGrassBlock>>
 {
-    public static final Codec<BlockStateConfiguration> CODEC = Codecs.blockStateConfigCodec(b -> b instanceof TFCTallGrassBlock, "Must be a TFCTallGrassBlock");
+    public static final Codec<BlockConfig<TFCTallGrassBlock>> CODEC = BlockConfig.codec(b -> b instanceof TFCTallGrassBlock t ? t : null, "Must be a " + TFCTallGrassBlock.class.getSimpleName());
 
-    public TallPlantFeature(Codec<BlockStateConfiguration> codec)
+    public TallPlantFeature(Codec<BlockConfig<TFCTallGrassBlock>> codec)
     {
         super(codec);
     }
 
     @Override
-    public boolean place(FeaturePlaceContext<BlockStateConfiguration> context)
+    public boolean place(FeaturePlaceContext<BlockConfig<TFCTallGrassBlock>> context)
     {
-        ((TFCTallGrassBlock) context.config().state.getBlock()).placeTwoHalves(context.level(), context.origin(), 2, context.random());
+        context.config().block().placeTwoHalves(context.level(), context.origin(), 2, context.random());
         return true;
     }
 }

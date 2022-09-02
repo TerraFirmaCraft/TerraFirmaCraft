@@ -1,0 +1,21 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "facing=east": {
+      "model": "minecraft:block/jack_o_lantern",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "minecraft:block/jack_o_lantern",
+      "y": 0
+    },
+    "facing=south": {
+      "model": "minecraft:block/jack_o_lantern",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "minecraft:block/jack_o_lantern",
+      "y": 270
+    }
+  }
+}

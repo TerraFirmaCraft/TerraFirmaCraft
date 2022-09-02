@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/kapok"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/kapok"
+    },
+    {
+      "item": "tfc:wood/stripped_log/kapok"
     }
   ],
   "duration": 1000,

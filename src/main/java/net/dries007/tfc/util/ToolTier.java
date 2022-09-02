@@ -39,6 +39,7 @@ public record ToolTier(String name, int level, int uses, float speed, float atta
     }
 
     @Override
+    @Deprecated
     public int getLevel()
     {
         return level;

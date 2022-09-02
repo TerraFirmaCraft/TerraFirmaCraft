@@ -152,7 +152,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
     public interface Output
     {
         /**
-         * Read an output from an nbt tag.
+         * Read an output from an NBT tag.
          */
         static Output read(CompoundTag nbt)
         {
@@ -161,7 +161,7 @@ public abstract class PotRecipe implements ISimpleRecipe<PotBlockEntity.PotInven
         }
 
         /**
-         * Write an output to a nbt tag.
+         * Write an output to a NBT tag.
          */
         static CompoundTag write(Output output)
         {

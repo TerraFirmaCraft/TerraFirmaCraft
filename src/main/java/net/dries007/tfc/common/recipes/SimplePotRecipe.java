@@ -67,11 +67,10 @@ public class SimplePotRecipe extends PotRecipe
      */
     record SimpleOutput(FluidStack stack, List<ItemStack> items) implements Output
     {
-
         @Override
         public void onFinish(PotBlockEntity.PotInventory inventory)
         {
-            for (int i = 0; i < items.size(); i++)
+            for (int i = 0; i < Math.min(items.size(), inventory.getSlots()); i++)
             {
                 inventory.setStackInSlot(i, items.get(i).copy());
             }
@@ -108,6 +107,10 @@ public class SimplePotRecipe extends PotRecipe
                     }
                     stacks.add(stack);
                 }
+            }
+            if (stacks.size() > 5)
+            {
+                throw new JsonParseException("Cannot have more than five item stack outputs for pot recipe.");
             }
             return new SimplePotRecipe(recipeId, ingredients, fluidIngredient, duration, minTemp, output, stacks);
         }

@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Pressing $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$() with an empty hand also toggles the seal."
+      "text": "Barrels can be $(thing)Sealed$(). Sealing allows the barrel to be broken while keeping its contents stored. It also allows for the execution of some recipes. In the interface, sealing can be toggled with the grey button on the right side. Using $(item)$(k:key.use)$() on the barrel with an empty hand while holding $(item)$(k:key.sneak)$() also toggles the seal."
     },
     {
       "type": "patchouli:text",
@@ -27,11 +27,24 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels are mostly known for their ability to execute $(thing)Barrel Recipe$(). The simplest kind of barrel recipe is an $(thing)Instant Recipe$(). Barrel recipes are based on ratios of fluids to items. For example, 500mB of water is needed for each $(l:mechanics/flux)flux$() item to create 500mB of $(thing)Limewater$(). Since making Limewater is an instant recipe, having at least enough flux to convert all the present water will instantly create limewater."
+      "text": "Barrels are an important device used for mixing various fluids and items together. To use a $(thing)Barrel$() recipe, the barrel must be filled with the correct ratio of fluid and items required. Depending on the recipe, it may need to be $(thing)Sealed$() for a period of time to allow the contents to transform.",
+      "title": "Crafting"
     },
     {
       "type": "patchouli:text",
-      "text": "Some barrel recipes require the barrel to be $(thing)Sealed$() for a period of time. For example, sealing $(thing)Barley Flour$() in 500mB of water for three days will make $(thing)Beer$()."
+      "text": "If the contents of a barrel does not match the ratio required for the recipe, any excess fluid or items will be lost. If the recipe is one which converts instantly, however, you will always need at least enough items to fully convert the fluid, according to the recipe."
+    },
+    {
+      "type": "tfc:instant_barrel_recipe",
+      "anchor": "limewater",
+      "recipe": "tfc:barrel/limewater",
+      "text": "$(bold)Limewater$() is made by adding $(l:mechanics/flux)Flux$() to a barrel of $(thing)Water$(). A single $(l:mechanics/flux)Flux$() is required for every $(thing) 500 mB$() of $(thing)Water$(). $(thing)Limewater$() is a reagent used in $(l:mechanics/leather_making)Leather Making$(), and is used to make $(thing)Mortar$()."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tannin",
+      "recipe": "tfc:barrel/tannin",
+      "text": "$(bold)Tannin$() is an acidic fluid, made by dissolving bark from certain $(thing)Logs$() in a barrel of $(thing)Water$(). $(thing)Oak$(), $(thing)Birch$(), $(thing)Chestnut$(), $(thing)Douglas Fir$(), $(thing)Hickory$(), $(thing)Maple$(), and $()Sequoia$() are all able to be used to create $(thing)Tannin$()."
     },
     {
       "type": "patchouli:text",
@@ -47,7 +60,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:food/decay#vinegar)page$()."
+      "text": "Barrels can preserve items in $(thing)Vinegar$(). Vinegar is made by sealing $(thing)Fruit$() in a barrel of $(thing)Alcohol$(). For information on how that process works, see the relevant $(l:mechanics/decay#vinegar)page$()."
     }
   ],
   "read_by_default": true

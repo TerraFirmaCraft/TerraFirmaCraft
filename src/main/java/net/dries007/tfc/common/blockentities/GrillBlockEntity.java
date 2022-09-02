@@ -6,13 +6,11 @@
 
 package net.dries007.tfc.common.blockentities;
 
-import net.dries007.tfc.common.items.TFCItems;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -37,7 +35,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.grill");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.grill");
 
     private final HeatingRecipe[] cachedRecipes;
 
@@ -115,11 +113,4 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
         }
     }
 
-    @Override
-    public void ejectInventory()
-    {
-        super.ejectInventory();
-        assert level != null;
-        Helpers.spawnItem(level, worldPosition, new ItemStack(TFCItems.WROUGHT_IRON_GRILL.get()));
-    }
 }

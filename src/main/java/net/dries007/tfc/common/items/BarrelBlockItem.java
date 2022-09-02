@@ -22,12 +22,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blockentities.BarrelInventoryCallback;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.FluidTankCallback;
 import net.dries007.tfc.common.container.ISlotCallback;
@@ -59,7 +59,7 @@ public class BarrelBlockItem extends BlockItem
                 return super.useOn(context);
             }
 
-            final IFluidHandler handler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+            final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
             if (handler == null)
             {
                 return InteractionResult.PASS;
@@ -125,7 +125,7 @@ public class BarrelBlockItem extends BlockItem
         @Override
         public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side)
         {
-            if (cap == CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY || cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            if (cap == Capabilities.FLUID_ITEM || cap == Capabilities.FLUID)
             {
                 return capability.cast();
             }

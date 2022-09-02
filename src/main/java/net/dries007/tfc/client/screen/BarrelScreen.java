@@ -12,12 +12,10 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.TerraFirmaCraft;
@@ -25,6 +23,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.BarrelSealButton;
 import net.dries007.tfc.common.blockentities.BarrelBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -34,8 +33,8 @@ import net.dries007.tfc.util.calendar.ICalendar;
 
 public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelContainer>
 {
-    private static final Component SEAL = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
-    private static final Component UNSEAL = new TranslatableComponent(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
+    private static final Component SEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.seal_barrel");
+    private static final Component UNSEAL = Helpers.translatable(TerraFirmaCraft.MOD_ID + ".tooltip.unseal_barrel");
     private static final int MAX_RECIPE_NAME_LENGTH = 100;
 
     public static final ResourceLocation BACKGROUND = Helpers.identifier("textures/gui/barrel.png");
@@ -94,7 +93,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                     font.draw(poseStack, resultText.getString(), 70 + Math.floorDiv(MAX_RECIPE_NAME_LENGTH - font.width(resultText), 2), 61, 0x404040);
                 }
             }
-            String date = ICalendar.getTimeAndDate(blockEntity.getSealedTick(), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
+            String date = ICalendar.getTimeAndDate(Calendars.CLIENT.ticksToCalendarTicks(blockEntity.getSealedTick()), Calendars.CLIENT.getCalendarDaysInMonth()).getString();
             font.draw(poseStack, date, imageWidth / 2f - font.width(date) / 2f, 74, 0x404040);
         }
     }
@@ -103,7 +102,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
     protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY)
     {
         super.renderBg(poseStack, partialTicks, mouseX, mouseY);
-        blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(fluidHandler -> {
+        blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
             FluidStack fluidStack = fluidHandler.getFluidInTank(0);
             if (!fluidStack.isEmpty())
             {
@@ -130,11 +129,11 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
 
         if (relX >= 7 && relY >= 19 && relX < 25 && relY < 71)
         {
-            blockEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).ifPresent(fluidHandler -> {
+            blockEntity.getCapability(Capabilities.FLUID).ifPresent(fluidHandler -> {
                 FluidStack fluid = fluidHandler.getFluidInTank(0);
                 if (!fluid.isEmpty())
                 {
-                    Component units = new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName());
+                    Component units = Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName());
                     renderTooltip(poseStack, units, mouseX, mouseY);
                 }
             });

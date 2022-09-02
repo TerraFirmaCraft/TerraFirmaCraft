@@ -37,6 +37,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.datafixers.util.Pair;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.BiomeSourceExtension;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -48,12 +49,12 @@ import org.jetbrains.annotations.Nullable;
 
 public class LocateCommand
 {
-    private static final DynamicCommandExceptionType ERROR_INVALID_BIOME = new DynamicCommandExceptionType(id -> new TranslatableComponent("tfc.commands.locate.invalid_biome", id));
-    private static final SimpleCommandExceptionType ERROR_INVALID_BIOME_SOURCE = new SimpleCommandExceptionType(new TranslatableComponent("tfc.commands.locate.invalid_biome_source"));
-    private static final DynamicCommandExceptionType ERROR_NOT_FOUND = new DynamicCommandExceptionType(id -> new TranslatableComponent("tfc.commands.locate.not_found", id));
-    private static final SimpleCommandExceptionType ERROR_VOLCANO_NOT_FOUND = new SimpleCommandExceptionType(new TranslatableComponent("tfc.commands.locate.volcano_not_found"));
-    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> new TranslatableComponent("tfc.commands.locate.unknown_vein", args));
-    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> new TranslatableComponent("tfc.commands.locate.vein_not_found", args));
+    private static final DynamicCommandExceptionType ERROR_INVALID_BIOME = new DynamicCommandExceptionType(id -> Helpers.translatable("tfc.commands.locate.invalid_biome", id));
+    private static final SimpleCommandExceptionType ERROR_INVALID_BIOME_SOURCE = new SimpleCommandExceptionType(Helpers.translatable("tfc.commands.locate.invalid_biome_source"));
+    private static final DynamicCommandExceptionType ERROR_NOT_FOUND = new DynamicCommandExceptionType(id -> Helpers.translatable("tfc.commands.locate.not_found", id));
+    private static final SimpleCommandExceptionType ERROR_VOLCANO_NOT_FOUND = new SimpleCommandExceptionType(Helpers.translatable("tfc.commands.locate.volcano_not_found"));
+    public static final DynamicCommandExceptionType ERROR_UNKNOWN_VEIN = new DynamicCommandExceptionType(args -> Helpers.translatable("tfc.commands.locate.unknown_vein", args));
+    public static final DynamicCommandExceptionType ERROR_VEIN_NOT_FOUND = new DynamicCommandExceptionType(args -> Helpers.translatable("tfc.commands.locate.vein_not_found", args));
 
     public static LiteralArgumentBuilder<CommandSourceStack> create()
     {
@@ -204,11 +205,11 @@ public class LocateCommand
     private static int showLocateResult(CommandSourceStack context, String nameOfThing, BlockPos source, BlockPos dest, String y, String translationKey)
     {
         final int distance = (int) Math.sqrt(source.distSqr(dest));
-        final Component text = ComponentUtils.wrapInSquareBrackets(new TranslatableComponent("chat.coordinates", dest.getX(), y, dest.getZ()))
+        final Component text = ComponentUtils.wrapInSquareBrackets(Helpers.translatable("chat.coordinates", dest.getX(), y, dest.getZ()))
             .withStyle((styleIn) -> styleIn.withColor(ChatFormatting.GREEN)
                 .withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/tp @s " + dest.getX() + " " + y + " " + dest.getZ()))
-                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TranslatableComponent("chat.coordinates.tooltip"))));
-        context.sendSuccess(new TranslatableComponent(translationKey, nameOfThing, text, distance), false);
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Helpers.translatable("chat.coordinates.tooltip"))));
+        context.sendSuccess(Helpers.translatable(translationKey, nameOfThing, text, distance), false);
         return distance;
     }
 

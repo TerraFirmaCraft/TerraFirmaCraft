@@ -25,10 +25,10 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DiscreteItemStackFluidHandler;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.util.Helpers;
@@ -60,7 +60,7 @@ public class DiscreteFluidContainerItem extends Item
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
         final ItemStack stack = player.getItemInHand(hand);
-        final IFluidHandler handler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+        final IFluidHandler handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
         if (handler == null)
         {
             return InteractionResultHolder.pass(stack);
@@ -103,7 +103,7 @@ public class DiscreteFluidContainerItem extends Item
     @Override
     public Component getName(ItemStack stack)
     {
-        final FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+        final FluidStack fluid = stack.getCapability(Capabilities.FLUID_ITEM)
             .map(cap -> cap.getFluidInTank(0))
             .orElse(FluidStack.EMPTY);
         if (!fluid.isEmpty())
@@ -128,7 +128,7 @@ public class DiscreteFluidContainerItem extends Item
                 }
 
                 final ItemStack stack = new ItemStack(this);
-                stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(c -> c.fill(new FluidStack(fluid, FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE));
+                stack.getCapability(Capabilities.FLUID_ITEM).ifPresent(c -> c.fill(new FluidStack(fluid, FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE));
                 items.add(stack);
             }
         }
@@ -137,7 +137,7 @@ public class DiscreteFluidContainerItem extends Item
     @Override
     public boolean hasContainerItem(ItemStack stack)
     {
-        return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
+        return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
     }
 
     @Override

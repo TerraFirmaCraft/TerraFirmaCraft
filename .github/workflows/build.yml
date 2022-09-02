@@ -47,14 +47,6 @@ jobs:
         arguments: build
       env:
         VERSION: ${{ steps.version.outputs.result }}
-        GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
-    - name: Game Test
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: runGameTestServer
-      env:
-        VERSION: indev-test
-        GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
     - name: Create Release
       id: create_release
       if: ${{ steps.version.outputs.result != 'indev' && success() }}
@@ -71,7 +63,7 @@ jobs:
           
           - todo: document changes
         draft: true
-        prerelease: ${{ steps.version_type.outputs.result != 'release' }}
+        prerelease: ${{ steps.version_type.outputs.result == 'alpha' }}
     - name: Upload Main Jar
       id: upload_main_jar
       if: ${{ steps.version.outputs.result != 'indev' && success() }}
@@ -83,3 +75,12 @@ jobs:
         asset_path: ./build/libs/TerraFirmaCraft-Forge-1.18.2-${{ steps.version.outputs.result }}.jar
         asset_name: TerraFirmaCraft-Forge-1.18.2-${{ steps.version.outputs.result }}.jar
         asset_content_type: application/java-archive
+    - name: Publish
+      id: publish
+      if: ${{ steps.version_type.outputs.result != 'alpha' && success() }}
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: curseforge
+      env:
+        VERSION: ${{ steps.version.outputs.result }}
+        CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}

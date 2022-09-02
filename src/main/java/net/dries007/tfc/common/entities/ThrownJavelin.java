@@ -13,6 +13,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,6 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
+import net.dries007.tfc.util.advancements.TFCAdvancements;
+
 public class ThrownJavelin extends AbstractArrow
 {
     private static final EntityDataAccessor<Boolean> DATA_ENCHANT_GLOW = SynchedEntityData.defineId(ThrownJavelin.class, EntityDataSerializers.BOOLEAN);
@@ -42,7 +45,12 @@ public class ThrownJavelin extends AbstractArrow
 
     public ThrownJavelin(Level level, LivingEntity entity, ItemStack stack)
     {
-        super(TFCEntities.THROWN_JAVELIN.get(), entity, level);
+        this(TFCEntities.THROWN_JAVELIN.get(), level, entity, stack);
+    }
+
+    public ThrownJavelin(EntityType<? extends ThrownJavelin> type, Level level, LivingEntity entity, ItemStack stack)
+    {
+        super(type, entity, level);
         setItem(stack);
         setIsEnchantGlowing(stack.hasFoil());
     }
@@ -113,6 +121,11 @@ public class ThrownJavelin extends AbstractArrow
                 }
 
                 this.doPostHurtEffects(livingVictim);
+            }
+
+            if (owner instanceof ServerPlayer serverPlayer)
+            {
+                TFCAdvancements.STAB_ENTITY.trigger(serverPlayer, hitEntity);
             }
         }
 

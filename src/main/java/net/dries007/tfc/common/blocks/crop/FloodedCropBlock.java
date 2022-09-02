@@ -77,7 +77,7 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
     @Override
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
-        return state.getFluidState().getType() == Fluids.EMPTY ? 0 : CropHelpers.GROWTH_LIMIT;
+        return state.getFluidState().getType() == Fluids.EMPTY ? 0 : super.getGrowthLimit(level, pos, state);
     }
 
     @Override

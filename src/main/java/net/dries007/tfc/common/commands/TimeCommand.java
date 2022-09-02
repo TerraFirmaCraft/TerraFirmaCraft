@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -119,7 +120,7 @@ public final class TimeCommand
 
     private static int sendQueryResults(CommandSourceStack source, String translationKey, long value)
     {
-        source.sendSuccess(new TranslatableComponent(translationKey, (int) value), false);
+        source.sendSuccess(Helpers.translatable(translationKey, (int) value), false);
         return Command.SINGLE_SUCCESS;
     }
 }

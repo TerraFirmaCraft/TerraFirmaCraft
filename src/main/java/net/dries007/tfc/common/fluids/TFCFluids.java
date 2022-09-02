@@ -60,7 +60,7 @@ public final class TFCFluids
     public static final Map<Metal.Default, FlowingFluidRegistryObject<ForgeFlowingFluid>> METALS = Helpers.mapOfKeys(Metal.Default.class, metal -> register(
         "metal/" + metal.getSerializedName(),
         "metal/flowing_" + metal.getSerializedName(),
-        properties -> properties.block(TFCBlocks.METAL_FLUIDS.get(metal)).bucket(TFCItems.METAL_FLUID_BUCKETS.get(metal)).explosionResistance(100),
+        properties -> properties.block(TFCBlocks.METAL_FLUIDS.get(metal)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(metal))).explosionResistance(100),
         FluidAttributes.builder(MOLTEN_STILL, MOLTEN_FLOW)
             .translationKey("fluid.tfc.metal." + metal.getSerializedName())
             .color(ALPHA_MASK | metal.getColor())
@@ -77,7 +77,7 @@ public final class TFCFluids
     public static final FlowingFluidRegistryObject<ForgeFlowingFluid> SALT_WATER = register(
         "salt_water",
         "flowing_salt_water",
-        properties -> properties.block(TFCBlocks.SALT_WATER).bucket(TFCItems.SALT_WATER_BUCKET).canMultiply(),
+        properties -> properties.block(TFCBlocks.SALT_WATER).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.SALT_WATER)).canMultiply(),
         new FluidAttributes.Builder(WATER_STILL, WATER_FLOW, SaltWaterAttributes::new) {}
             .translationKey("fluid.tfc.salt_water")
             .overlay(WATER_OVERLAY)
@@ -90,7 +90,7 @@ public final class TFCFluids
     public static final FlowingFluidRegistryObject<ForgeFlowingFluid> SPRING_WATER = register(
         "spring_water",
         "flowing_spring_water",
-        properties -> properties.block(TFCBlocks.SPRING_WATER).bucket(TFCItems.SPRING_WATER_BUCKET),
+        properties -> properties.block(TFCBlocks.SPRING_WATER).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.SPRING_WATER)),
         FluidAttributes.builder(WATER_STILL, WATER_FLOW)
             .translationKey("fluid.tfc.spring_water")
             .color(ALPHA_MASK | 0x4ECBD7)
@@ -105,7 +105,7 @@ public final class TFCFluids
     public static final Map<SimpleFluid, FlowingFluidRegistryObject<ForgeFlowingFluid>> SIMPLE_FLUIDS = Helpers.mapOfKeys(SimpleFluid.class, fluid -> register(
         fluid.getId(),
         "flowing_" + fluid.getId(),
-        properties -> properties.block(TFCBlocks.SIMPLE_FLUIDS.get(fluid)).bucket(TFCItems.SIMPLE_FLUID_BUCKETS.get(fluid)),
+        properties -> properties.block(TFCBlocks.SIMPLE_FLUIDS.get(fluid)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(fluid))),
         FluidAttributes.builder(WATER_STILL, WATER_FLOW)
             .translationKey("fluid.tfc." + fluid.getId())
             .color(fluid.getColor())
@@ -118,7 +118,7 @@ public final class TFCFluids
     public static final Map<Alcohol, FlowingFluidRegistryObject<ForgeFlowingFluid>> ALCOHOLS = Helpers.mapOfKeys(Alcohol.class, fluid -> register(
         fluid.getId(),
         "flowing_" + fluid.getId(),
-        properties -> properties.block(TFCBlocks.ALCOHOLS.get(fluid)).bucket(TFCItems.ALCOHOL_BUCKETS.get(fluid)),
+        properties -> properties.block(TFCBlocks.ALCOHOLS.get(fluid)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(fluid))),
         FluidAttributes.builder(WATER_STILL, WATER_FLOW)
             .translationKey("fluid.tfc." + fluid.getId())
             .color(fluid.getColor())
@@ -129,20 +129,25 @@ public final class TFCFluids
     ));
 
     public static final Map<DyeColor, FlowingFluidRegistryObject<ForgeFlowingFluid>> COLORED_FLUIDS = Helpers.mapOfKeys(DyeColor.class, color -> {
-        float[] colors = color.getTextureDiffuseColors();
         return register(
             color.getName() + "_dye",
             "flowing_" + color.getName() + "_dye",
-            properties -> properties.block(TFCBlocks.COLORED_FLUIDS.get(color)).bucket(TFCItems.COLORED_FLUID_BUCKETS.get(color)),
+            properties -> properties.block(TFCBlocks.COLORED_FLUIDS.get(color)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(color))),
             FluidAttributes.builder(WATER_STILL, WATER_FLOW)
                 .translationKey("fluid.tfc." + color.getName() + "_dye")
-                .color(new Color(colors[0], colors[1], colors[2]).getRGB())
+                .color(dyeColorToInt(color))
                 .overlay(WATER_OVERLAY)
                 .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
             MixingFluid.Source::new,
             MixingFluid.Flowing::new
         );
     });
+
+    public static int dyeColorToInt(DyeColor dye)
+    {
+        float[] colors = dye.getTextureDiffuseColors();
+        return new Color(colors[0], colors[1], colors[2]).getRGB();
+    }
 
     /**
      * Registration helper for fluids and this stupid API

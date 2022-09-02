@@ -6,6 +6,6 @@
   "category": "dairy",
   "hunger": 4,
   "saturation": 2,
-  "decay": 0.3,
+  "decay_modifier": 0.3,
   "dairy": 3
 }

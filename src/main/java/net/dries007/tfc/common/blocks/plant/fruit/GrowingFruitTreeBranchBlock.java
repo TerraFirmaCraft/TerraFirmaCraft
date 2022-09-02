@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -86,13 +87,19 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
 
     public GrowingFruitTreeBranchBlock(ExtendedProperties properties, Supplier<? extends Block> body, Supplier<? extends Block> leaves, Supplier<ClimateRange> climateRange)
     {
-        super(properties);
+        super(properties, climateRange);
 
         this.body = body;
         this.leaves = leaves;
         this.climateRange = climateRange;
 
         registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, true).setValue(STAGE, 0));
+    }
+
+    @Override
+    public void addExtraInfo(List<Component> text)
+    {
+        text.add(Helpers.translatable("tfc.tooltip.fruit_tree.growing"));
     }
 
     public void grow(BlockState state, ServerLevel level, BlockPos pos, Random random, int cyclesLeft)
@@ -184,9 +191,8 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     @SuppressWarnings("deprecation")
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
-        //todo: include root water?
-        final int hydration = (int) (Climate.getRainfall(level, pos) / 5f);
-        final float temp = Climate.getAverageTemperature(level, pos);
+        final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
+        final float temp = Climate.getTemperature(level, pos);
         if (!climateRange.get().checkBoth(hydration, temp, false))
         {
             TickCounterBlockEntity.reset(level, pos);
@@ -238,7 +244,9 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         final BlockState leaves = this.leaves.get().defaultBlockState();
         BlockState downState = level.getBlockState(pos.below(2));
         if (!(downState.isAir() || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_LEAVES) || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH)))
+        {
             return;
+        }
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : NOT_DOWN)
         {

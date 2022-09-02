@@ -24,7 +24,7 @@ public abstract class ClientboundUpdateRecipesPacketMixin
     @Inject(method = "fromNetwork", at = @At("HEAD"), cancellable = true)
     private static void beforeFromNetwork(FriendlyByteBuf buffer, CallbackInfoReturnable<Recipe<?>> cir)
     {
-        if (TFCConfig.COMMON.enableNetworkDebugging.get())
+        if (TFCConfig.COMMON.enableNetworkDebugging())
         {
             cir.setReturnValue(NetworkRecipeParityCheck.decodeRecipe(buffer));
         }
@@ -33,7 +33,7 @@ public abstract class ClientboundUpdateRecipesPacketMixin
     @Inject(method = "toNetwork", at = @At("HEAD"))
     private static <T extends Recipe<?>> void beforeToNetwork(FriendlyByteBuf buffer, T recipe, CallbackInfo ci)
     {
-        if (TFCConfig.COMMON.enableNetworkDebugging.get())
+        if (TFCConfig.COMMON.enableNetworkDebugging())
         {
             NetworkRecipeParityCheck.encodeRecipePrefix(buffer, recipe);
         }

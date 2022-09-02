@@ -9,6 +9,7 @@ package net.dries007.tfc.common;
 import net.minecraft.core.Registry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
@@ -83,6 +84,7 @@ public class TFCTags
         public static final TagKey<Block> CREATES_DOWNWARD_BUBBLES = create("creates_downward_bubbles");
         public static final TagKey<Block> RABBIT_RAIDABLE = create("rabbit_raidable"); // rabbits will break it
         public static final TagKey<Block> FOX_RAIDABLE = create("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
+        public static final TagKey<Block> SEASONAL_LEAVES = create("seasonal_leaves"); // drops fall leaf particles
 
         private static TagKey<Block> create(String id)
         {
@@ -139,6 +141,7 @@ public class TFCTags
         public static final TagKey<Item> FIRE_CLAY_KNAPPING = create("fire_clay_knapping");
         public static final TagKey<Item> LEATHER_KNAPPING = create("leather_knapping");
         public static final TagKey<Item> AXES_THAT_LOG = create("axes_that_log"); // Axes which cut down entire trees
+        public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
         public static final TagKey<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
@@ -178,6 +181,22 @@ public class TFCTags
         public static final TagKey<Item> MOB_MAINHAND_WEAPONS = create("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
         public static final TagKey<Item> MOB_OFFHAND_WEAPONS = create("mob_offhand_weapons"); // armor that mobs can put on their mainhand
         public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = create("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
+        public static final TagKey<Item> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
+        public static final TagKey<Item> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
+        public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
+
+        public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
+        {
+            return switch (slot)
+                {
+                    case MAINHAND -> TFCTags.Items.MOB_MAINHAND_WEAPONS;
+                    case OFFHAND -> TFCTags.Items.MOB_OFFHAND_WEAPONS;
+                    case FEET -> TFCTags.Items.MOB_FEET_ARMOR;
+                    case LEGS -> TFCTags.Items.MOB_LEG_ARMOR;
+                    case CHEST -> TFCTags.Items.MOB_CHEST_ARMOR;
+                    case HEAD -> TFCTags.Items.MOB_HEAD_ARMOR;
+                };
+        }
 
         private static TagKey<Item> create(String id)
         {
@@ -197,6 +216,10 @@ public class TFCTags
         public static final TagKey<EntityType<?>> OCEAN_PREDATORS = create("ocean_predators");
         public static final TagKey<EntityType<?>> HUNTED_BY_OCEAN_PREDATORS = create("hunted_by_ocean_predators");
         public static final TagKey<EntityType<?>> VANILLA_MONSTERS = create("vanilla_monsters");
+        public static final TagKey<EntityType<?>> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
+        public static final TagKey<EntityType<?>> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
+        public static final TagKey<EntityType<?>> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
+        public static final TagKey<EntityType<?>> HORSES = create("horses");
 
         private static TagKey<EntityType<?>> create(String id)
         {

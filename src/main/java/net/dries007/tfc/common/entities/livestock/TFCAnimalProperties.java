@@ -12,8 +12,8 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -37,6 +37,7 @@ import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public interface TFCAnimalProperties extends GenderedRenderAnimal
 {
@@ -180,6 +181,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                     familiarity = Math.min(familiarity, getAdultFamiliarityCap());
                 }
                 setFamiliarity(familiarity);
+                if (player instanceof ServerPlayer serverPlayer)
+                {
+                    TFCAdvancements.FED_ANIMAL.trigger(serverPlayer, getEntity());
+                }
             }
             getEntity().playSound(eatingSound(stack), 1f, 1f);
         }
@@ -224,6 +229,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setUses(nbt.getInt("uses"));
         setLastFed(nbt.getLong("fed"));
         setLastFamiliarityDecay(nbt.getLong("decay"));
+        setMated(nbt.getLong("mating"));
         setLastAge(Age.valueOf(nbt.getInt("lastAge")));
         setOldDay(nbt.getLong("oldDay"));
     }
@@ -233,6 +239,8 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setGender(Gender.valueOf(getEntity().getRandom().nextBoolean()));
         setBirthDay(EntityHelpers.getRandomGrowth(getEntity().getRandom(), getDaysToAdulthood()));
         setFamiliarity(0);
+        setOldDay(-1L);
+        setUses(0);
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {
@@ -517,7 +525,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default Component getGenderedTypeName()
     {
-        return new TranslatableComponent(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
+        return Helpers.translatable(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
     }
 
     enum Age

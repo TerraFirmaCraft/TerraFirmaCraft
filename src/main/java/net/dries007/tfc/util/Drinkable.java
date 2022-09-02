@@ -35,6 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.TFCFoodData;
 import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
@@ -117,6 +118,7 @@ public class Drinkable extends FluidDefinition
     private final int thirst;
     private final int intoxication;
     private final List<Effect> effects;
+    @Nullable private final FoodData food;
 
     private Drinkable(ResourceLocation id, JsonObject json)
     {
@@ -125,6 +127,7 @@ public class Drinkable extends FluidDefinition
         this.consumeChance = JsonHelpers.getAsFloat(json, "consume_chance", 0);
         this.thirst = JsonHelpers.getAsInt(json, "thirst", 0);
         this.intoxication = JsonHelpers.getAsInt(json, "intoxication", 0);
+        this.food = json.has("food") ? FoodData.read(json.getAsJsonObject("food")) : null;
 
         final ImmutableList.Builder<Effect> builder = new ImmutableList.Builder<>();
         if (json.has("effects"))
@@ -151,6 +154,7 @@ public class Drinkable extends FluidDefinition
         this.consumeChance = buffer.readFloat();
         this.thirst = buffer.readVarInt();
         this.intoxication = buffer.readVarInt();
+        this.food = Helpers.decodeNullable(buffer, FoodData::decode);
 
         this.effects = Helpers.decodeAll(buffer, new ArrayList<>(), Effect::fromNetwork);
     }
@@ -164,7 +168,7 @@ public class Drinkable extends FluidDefinition
         final float multiplier = mB / 25f;
         final Random random = player.getRandom();
 
-        if (thirst > 0 && player.getFoodData() instanceof TFCFoodData foodData)
+        if (player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(thirst * multiplier);
         }
@@ -172,6 +176,11 @@ public class Drinkable extends FluidDefinition
         if (intoxication > 0)
         {
             player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(p -> p.addIntoxicatedTicks((long) (intoxication * multiplier)));
+        }
+
+        if (food != null && player.getFoodData() instanceof TFCFoodData data)
+        {
+            data.eat(food);
         }
 
         for (Drinkable.Effect effect : effects)
@@ -200,6 +209,12 @@ public class Drinkable extends FluidDefinition
         return intoxication;
     }
 
+    @Nullable
+    public FoodData getFoodStats()
+    {
+        return food;
+    }
+
     public Collection<Effect> getEffects()
     {
         return effects;
@@ -212,6 +227,7 @@ public class Drinkable extends FluidDefinition
         buffer.writeFloat(consumeChance);
         buffer.writeVarInt(thirst);
         buffer.writeVarInt(intoxication);
+        Helpers.encodeNullable(food, buffer, FoodData::encode);
 
         Helpers.encodeAll(buffer, effects, Effect::toNetwork);
     }

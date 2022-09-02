@@ -34,6 +34,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.soil.SoilBlockType;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.feature.vein.VeinConfig;
 import net.dries007.tfc.world.feature.vein.VeinFeature;
 
@@ -56,7 +57,7 @@ public final class ClearWorldCommand
 
     private static int clearWorld(CommandSourceStack source, int radius, Preset preset)
     {
-        source.sendSuccess(new TranslatableComponent(STARTING), true);
+        source.sendSuccess(Helpers.translatable(STARTING), true);
 
         final Level level = source.getLevel();
         final BlockPos center = new BlockPos(source.getPosition());
@@ -85,7 +86,7 @@ public final class ClearWorldCommand
                 }
             }
         }
-        source.sendSuccess(new TranslatableComponent(DONE, blocksRemoved), true);
+        source.sendSuccess(Helpers.translatable(DONE, blocksRemoved), true);
         return Command.SINGLE_SUCCESS;
     }
 

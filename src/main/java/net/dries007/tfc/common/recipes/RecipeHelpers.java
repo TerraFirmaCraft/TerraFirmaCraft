@@ -37,7 +37,7 @@ public final class RecipeHelpers
     }
 
     /**
-     * @return The crafting container of the player currently crafting an recipe which might need it. Provided by {@link AdvancedShapedRecipe} and {@link AdvancedShapelessRecipe}. Used by {@link AddBaitToRodModifier}.
+     * @return The crafting container of the player currently crafting an recipe which might need it. Provided by {@link AdvancedShapedRecipe} and {@link AdvancedShapelessRecipe}. Used by {@link net.dries007.tfc.common.recipes.outputs.AddBaitToRodModifier}.
      */
     @Nullable
     public static CraftingContainer getCraftingContainer()

@@ -7,10 +7,10 @@
 package net.dries007.tfc.common.blocks.rock;
 
 import java.util.Locale;
+import java.util.function.Function;
 
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.*;
-import net.minecraftforge.common.util.NonNullFunction;
 
 import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
@@ -41,6 +41,11 @@ public enum RockCategory implements StringRepresentable
         return itemTier;
     }
 
+    public float hardness(float base)
+    {
+        return base + hardnessModifier;
+    }
+
     public float getHardness()
     {
         return hardnessModifier;
@@ -54,22 +59,32 @@ public enum RockCategory implements StringRepresentable
 
     public enum ItemType
     {
-        AXE(rock -> new AxeItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.getTier()), -3.2F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        AXE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HAMMER(rock -> new ToolItem(rock.getTier(), 1.0F, -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HAMMER_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HOE(rock -> new HoeItem(rock.getTier(), -1, -3.0f, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        HOE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        JAVELIN(rock -> new JavelinItem(rock.getTier(), 1.0F, -1.8F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS), "stone")),
-        JAVELIN_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        KNIFE(rock -> new ToolItem(rock.getTier(), 0.54F, -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        KNIFE_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        SHOVEL(rock -> new ShovelItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.getTier()), -3.0F, new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS))),
-        SHOVEL_HEAD(rock -> new Item(new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS)));
+        AXE(rock -> new AxeItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.5F, rock.getTier()), -3.2F, properties())),
+        AXE_HEAD,
+        HAMMER(rock -> new ToolItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1f, rock.getTier()), -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties())),
+        HAMMER_HEAD,
+        HOE(rock -> new HoeItem(rock.getTier(), -1, -3.0f, properties())),
+        HOE_HEAD,
+        JAVELIN(rock -> new JavelinItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.0F, rock.getTier()), -1.8F, properties(), "stone")),
+        JAVELIN_HEAD,
+        KNIFE(rock -> new ToolItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.54f, rock.getTier()), -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
+        KNIFE_HEAD,
+        SHOVEL(rock -> new ShovelItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(0.875F, rock.getTier()), -3.0F, properties())),
+        SHOVEL_HEAD;
 
-        private final NonNullFunction<RockCategory, Item> itemFactory;
+        public static Item.Properties properties()
+        {
+            return new Item.Properties().tab(TFCItemGroup.ROCK_STUFFS);
+        }
 
-        ItemType(NonNullFunction<RockCategory, Item> itemFactory)
+        private final Function<RockCategory, Item> itemFactory;
+
+        ItemType()
+        {
+            this(rock -> new Item(properties()));
+        }
+
+        ItemType(Function<RockCategory, Item> itemFactory)
         {
             this.itemFactory = itemFactory;
         }

@@ -49,6 +49,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBlockExtension, EntityBlockExtension
 {
@@ -60,7 +61,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     /**
      * This function is essentially min(blocks to reach the ground, provided distance value)
      */
-    protected static int distanceToGround(Level level, BlockPos pos, int distance)
+    public static int distanceToGround(Level level, BlockPos pos, int distance)
     {
         BlockPos.MutableBlockPos mutablePos = pos.mutable();
         for (int i = 1; i <= distance; i++)
@@ -79,7 +80,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
      *
      * @return if the plant is dormant
      */
-    protected static boolean checkAndSetDormant(Level level, BlockPos pos, BlockState state, Lifecycle current, Lifecycle expected)
+    public static boolean checkAndSetDormant(Level level, BlockPos pos, BlockState state, Lifecycle current, Lifecycle expected)
     {
         if (expected == Lifecycle.DORMANT)
         {
@@ -93,7 +94,7 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         return false;
     }
 
-    protected static void randomDestroyTick(ServerLevel level, BlockPos pos, int days)
+    public static void randomDestroyTick(ServerLevel level, BlockPos pos, int days)
     {
         level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(be -> {
             if (be.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * days)
@@ -105,16 +106,18 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     }
 
     protected final Supplier<? extends Item> productItem;
+    protected final Supplier<ClimateRange> climateRange;
     private final Lifecycle[] lifecycle;
     private final ExtendedProperties properties;
 
-    public SeasonalPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] lifecycle)
+    public SeasonalPlantBlock(ExtendedProperties properties, Supplier<ClimateRange> climateRange, Supplier<? extends Item> productItem, Lifecycle[] lifecycle)
     {
         super(properties.properties());
 
         Preconditions.checkArgument(lifecycle.length == 12, "Lifecycle length must be 12");
 
         this.properties = properties;
+        this.climateRange = climateRange;
         this.lifecycle = lifecycle;
         this.productItem = productItem;
     }
@@ -129,46 +132,6 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (!getTrimItemStack().isEmpty())
-        {
-            // Flowering bushes can be cut to create trimmings. This is how one moves or creates new bushes.
-            // The larger the bush is (higher stage), the better chance you have of
-            // 1. damaging it less (i.e. reducing the stage, or killing it), and
-            // 2. making a clipping.
-            if (state.getValue(LIFECYCLE) == Lifecycle.FLOWERING)
-            {
-                final ItemStack held = player.getItemInHand(hand);
-                if (Helpers.isItem(held.getItem(), TFCTags.Items.BUSH_CUTTING_TOOLS))
-                {
-                    level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.PLAYERS, 0.5f, 1.0f);
-                    if (!level.isClientSide())
-                    {
-                        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
-                            final int finalStage = state.getValue(STAGE) - 1 - level.getRandom().nextInt(2);
-                            if (finalStage >= 0)
-                            {
-                                // We didn't kill the bush, but we have cut the flowers off
-                                level.setBlock(pos, state.setValue(STAGE, finalStage).setValue(LIFECYCLE, Lifecycle.HEALTHY), 3);
-                            }
-                            else
-                            {
-                                // Oops
-                                level.destroyBlock(pos, false, player);
-                            }
-
-                            held.hurtAndBreak(1, player, e -> e.broadcastBreakEvent(hand));
-
-                            // But, if we were successful, we have obtained a clipping (2 / 3 chance)
-                            if (level.getRandom().nextInt(3) != 0)
-                            {
-                                ItemHandlerHelper.giveItemToPlayer(player, getTrimItemStack());
-                            }
-                        });
-                    }
-                    return InteractionResult.SUCCESS;
-                }
-            }
-        }
         if (state.getValue(LIFECYCLE) == Lifecycle.FRUITING)
         {
             level.playSound(player, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.PLAYERS, 1.0f, level.getRandom().nextFloat() + 0.7f + 0.3f);
@@ -182,11 +145,6 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.PASS;
-    }
-
-    protected ItemStack getTrimItemStack()
-    {
-        return ItemStack.EMPTY;
     }
 
     public BlockState stateAfterPicking(BlockState state)
@@ -216,7 +174,6 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
         {
             Helpers.slowEntityInBlock(entity, 0.2f, 5);
         }
-        // todo: move this to bushes
         if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
             entity.hurt(DamageSource.SWEET_BERRY_BUSH, 1.0f);

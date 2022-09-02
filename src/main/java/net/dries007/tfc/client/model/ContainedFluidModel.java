@@ -28,11 +28,11 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.*;
 import net.minecraftforge.client.model.geometry.IModelGeometry;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.math.Transformation;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -168,7 +168,7 @@ public class ContainedFluidModel implements IModelGeometry<ContainedFluidModel>
             {
                 return overriden;
             }
-            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return stack.getCapability(Capabilities.FLUID)
                 .map(cap -> {
                     // Forge: don't try and DRAIN THE STACK to see if it contains fluid...
                     final Fluid fluid = cap.getFluidInTank(0).getFluid();

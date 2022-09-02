@@ -15,10 +15,12 @@ import net.minecraft.world.entity.player.Inventory;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
+import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.AlloyView;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -107,7 +109,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
             resetToBackgroundSprite();
 
             // Draw Title:
-            final Metal result = alloy.getResult();
+            final Metal result = alloy.getResult(ClientHelpers.getLevelOrThrow());
             final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.getTranslationKey());
             font.draw(poseStack, resultText, leftPos + 10, topPos + 11, 0x000000);
 
@@ -130,9 +132,9 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
 
                 // Draw the content, format:
                 // Metal name:
-                //   XXX units(YY.Y)%
+                //   XXX units (YY.Y%)
                 // Metal 2 name:
-                //   ZZZ units(WW.W)%
+                //   ZZZ units (WW.W%)
 
                 String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().getTranslationKey()), 141);
                 metalName += ":";
@@ -145,7 +147,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 {
                     units = I18n.get("tfc.tooltip.less_than_one_fluid_units");
                 }
-                String content = String.format("  %s(%s%2.1f%%%s)", units, ChatFormatting.DARK_GREEN, Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f, ChatFormatting.RESET);
+                String content = String.format("  %s (%s%2.1f%%%s)", units, ChatFormatting.DARK_GREEN, Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f, ChatFormatting.RESET);
                 font.draw(poseStack, metalName, leftPos + 10, yPos, 0x404040);
                 font.draw(poseStack, content, leftPos + 10, yPos + 9, 0x404040);
                 yPos += 18;

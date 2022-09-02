@@ -105,7 +105,7 @@ public class TFCFishingRodItem extends FishingRodItem
                 ItemStack bait = getBaitItem(rod);
                 if (bait.isEmpty())
                 {
-                    player.displayClientMessage(new TranslatableComponent("tfc.fishing.no_bait"), true);
+                    player.displayClientMessage(Helpers.translatable("tfc.fishing.no_bait"), true);
                 }
                 else
                 {
@@ -126,7 +126,7 @@ public class TFCFishingRodItem extends FishingRodItem
         ItemStack bait = TFCFishingRodItem.getBaitItem(stack);
         if (!bait.isEmpty())
         {
-            text.add(new TranslatableComponent("tfc.tooltip.fishing.bait").append(bait.getHoverName()));
+            text.add(Helpers.translatable("tfc.tooltip.fishing.bait").append(bait.getHoverName()));
         }
     }
 

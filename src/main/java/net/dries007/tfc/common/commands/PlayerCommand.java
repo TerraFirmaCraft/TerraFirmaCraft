@@ -99,14 +99,14 @@ public final class PlayerCommand
     private static int queryHunger(CommandContext<CommandSourceStack> context, Player player)
     {
         int hunger = player.getFoodData().getFoodLevel();
-        context.getSource().sendSuccess(new TranslatableComponent(QUERY_HUNGER, hunger), true);
+        context.getSource().sendSuccess(Helpers.translatable(QUERY_HUNGER, hunger), true);
         return Command.SINGLE_SUCCESS;
     }
 
     private static int querySaturation(CommandContext<CommandSourceStack> context, Player player)
     {
         float saturation = player.getFoodData().getSaturationLevel();
-        context.getSource().sendSuccess(new TranslatableComponent(QUERY_SATURATION, saturation), true);
+        context.getSource().sendSuccess(Helpers.translatable(QUERY_SATURATION, saturation), true);
         return Command.SINGLE_SUCCESS;
     }
 
@@ -115,10 +115,10 @@ public final class PlayerCommand
         if (player.getFoodData() instanceof TFCFoodData)
         {
             float water = ((TFCFoodData) player.getFoodData()).getThirst();
-            context.getSource().sendSuccess(new TranslatableComponent(QUERY_WATER, water), true);
+            context.getSource().sendSuccess(Helpers.translatable(QUERY_WATER, water), true);
             return Command.SINGLE_SUCCESS;
         }
-        context.getSource().sendFailure(new TranslatableComponent(FAIL_INVALID_FOOD_STATS));
+        context.getSource().sendFailure(Helpers.translatable(FAIL_INVALID_FOOD_STATS));
         return 0;
     }
 
@@ -127,18 +127,18 @@ public final class PlayerCommand
         if (player.getFoodData() instanceof TFCFoodData)
         {
             float[] nutrition = ((TFCFoodData) player.getFoodData()).getNutrition().getNutrients();
-            context.getSource().sendSuccess(new TranslatableComponent(QUERY_NUTRITION), true);
+            context.getSource().sendSuccess(Helpers.translatable(QUERY_NUTRITION), true);
             for (Nutrient nutrient : Nutrient.VALUES)
             {
                 int percent = (int) (100 * nutrition[nutrient.ordinal()]);
                 context.getSource().sendSuccess(
-                    new TextComponent(" - ")
+                    Helpers.literal(" - ")
                         .append(Helpers.translateEnum(nutrient).withStyle(nutrient.getColor()))
                         .append(": " + percent + "%"), true);
             }
             return Command.SINGLE_SUCCESS;
         }
-        context.getSource().sendFailure(new TranslatableComponent(FAIL_INVALID_FOOD_STATS));
+        context.getSource().sendFailure(Helpers.translatable(FAIL_INVALID_FOOD_STATS));
         return 0;
     }
 

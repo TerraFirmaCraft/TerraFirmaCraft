@@ -6,6 +6,6 @@
   "category": "fruit",
   "hunger": 4,
   "saturation": 0.5,
-  "decay": 1.7,
+  "decay_modifier": 1.7,
   "fruit": 1
 }

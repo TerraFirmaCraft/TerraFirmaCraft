@@ -11,7 +11,6 @@ import java.util.Arrays;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
@@ -21,15 +20,14 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.CharcoalForgeBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.Heat;
@@ -55,7 +53,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     public static final int SLOT_EXTRA_MIN = 10;
     public static final int SLOT_EXTRA_MAX = 13;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.charcoal_forge");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.charcoal_forge");
 
     public static void createFromCharcoalPile(Level level, BlockPos pos)
     {
@@ -112,12 +110,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             forge.temperature = HeatCapability.adjustDeviceTemp(forge.temperature, forge.burnTemperature, forge.airTicks, isRaining);
 
-            // Provide heat to blocks above
-            final BlockEntity above = level.getBlockEntity(pos.above());
-            if (above != null)
-            {
-                above.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(forge.temperature));
-            }
+            HeatCapability.provideHeatTo(level, pos.above(), forge.temperature);
 
             for (int i = SLOT_INPUT_MIN; i <= SLOT_INPUT_MAX; i++)
             {
@@ -163,7 +156,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         burnTemperature = 0;
         burnTicks = 0;
         airTicks = 0;
-        lastPlayerTick = Calendars.SERVER.getTicks();
+        lastPlayerTick = Integer.MIN_VALUE;
         syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
 
         Arrays.fill(cachedRecipes, null);
@@ -205,12 +198,14 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastPlayerTick = tick;
@@ -289,7 +284,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         }
         else
         {
-            return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+            return stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).isPresent();
         }
     }
 
@@ -348,19 +343,20 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
             if (recipe != null && recipe.isValidTemperature(cap.getTemperature()))
             {
                 // Handle possible metal output
-                FluidStack fluidStack = recipe.getOutputFluid();
-                ItemStack outputStack = recipe.assemble(new ItemStackInventory(stack));
+                final ItemStackInventory inventory = new ItemStackInventory(stack);
+                FluidStack fluidStack = recipe.assembleFluid(inventory);
+                ItemStack outputStack = recipe.assemble(inventory);
                 float itemTemperature = cap.getTemperature();
 
                 // Loop through all input slots
                 for (int slot = SLOT_EXTRA_MIN; slot <= SLOT_EXTRA_MAX; slot++)
                 {
-                    fluidStack = Helpers.mergeOutputFluidIntoSlot(inventory, fluidStack, itemTemperature, slot);
+                    fluidStack = Helpers.mergeOutputFluidIntoSlot(this.inventory, fluidStack, itemTemperature, slot);
                     if (fluidStack.isEmpty()) break;
                 }
 
                 FoodCapability.applyTrait(outputStack, FoodTraits.CHARCOAL_GRILLED);
-                inventory.setStackInSlot(startIndex, outputStack);
+                this.inventory.setStackInSlot(startIndex, outputStack);
             }
         });
     }

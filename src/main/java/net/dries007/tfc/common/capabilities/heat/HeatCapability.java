@@ -8,9 +8,12 @@ package net.dries007.tfc.common.capabilities.heat;
 
 import java.util.Iterator;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -218,6 +221,15 @@ public final class HeatCapability
             }
         }
         return new Remainder(burnTicks, burnTemperature, ticks);
+    }
+
+    public static void provideHeatTo(Level level, BlockPos pos, float temperature)
+    {
+        final BlockEntity entity = level.getBlockEntity(pos);
+        if (entity != null)
+        {
+            entity.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> cap.setTemperatureIfWarmer(temperature));
+        }
     }
 
     public record Remainder(int burnTicks, float burnTemperature, long ticks) {}

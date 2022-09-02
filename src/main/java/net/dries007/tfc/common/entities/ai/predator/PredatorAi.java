@@ -68,11 +68,11 @@ public class PredatorAi
             Activity current = brain.getActiveNonCoreActivity().get();
             if (current == Activity.FIGHT && !brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET))
             {
-                brain.updateActivityFromSchedule(predator.level.getGameTime(), predator.level.getGameTime());
+                brain.updateActivityFromSchedule(predator.level.getDayTime(), predator.level.getGameTime());
             }
             else if (current == Activity.AVOID && !brain.hasMemoryValue(MemoryModuleType.PACIFIED))
             {
-                brain.updateActivityFromSchedule(predator.level.getGameTime(), predator.level.getGameTime());
+                brain.updateActivityFromSchedule(predator.level.getDayTime(), predator.level.getGameTime());
             }
         }
         predator.setAggressive(brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET));

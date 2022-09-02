@@ -29,7 +29,6 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.IntArrayBuilder;
-import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 
 public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends TickableInventoryBlockEntity<C> implements ICalendarTickable, MenuProvider
@@ -87,6 +86,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         {
             firepit.temperature = HeatCapability.adjustDeviceTemp(firepit.temperature, firepit.burnTemperature, firepit.airTicks, isRaining);
         }
+        HeatCapability.provideHeatTo(level, pos.above(), firepit.temperature);
         firepit.handleCooking();
         if (firepit.needsSlotUpdate)
         {
@@ -102,7 +102,7 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     protected int airTicks; // ticks remaining for bellows provided air
     protected float burnTemperature; // burn temperature of the current fuel item
     protected float temperature; // current actual temperature
-    private long lastPlayerTick;
+    private long lastPlayerTick = Integer.MIN_VALUE;
 
     public AbstractFirepitBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventoryFactory, Component defaultName)
     {
@@ -111,7 +111,6 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
         burnTicks = 0;
         temperature = 0;
         burnTemperature = 0;
-        lastPlayerTick = Calendars.SERVER.getTicks();
 
         syncableData = new IntArrayBuilder().add(() -> (int) temperature, value -> temperature = value);
     }
@@ -169,12 +168,14 @@ public abstract class AbstractFirepitBlockEntity<C extends IItemHandlerModifiabl
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastPlayerTick = tick;

@@ -15,16 +15,16 @@ import net.minecraftforge.common.Tags;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.registry.RegistryPlant;
 
 public abstract class DryPlantBlock extends PlantBlock
 {
-    public static DryPlantBlock create(IPlant plant, ExtendedProperties properties)
+    public static DryPlantBlock create(RegistryPlant plant, ExtendedProperties properties)
     {
         return new DryPlantBlock(properties)
         {
-
             @Override
-            public IPlant getPlant()
+            public RegistryPlant getPlant()
             {
                 return plant;
             }
@@ -34,8 +34,6 @@ public abstract class DryPlantBlock extends PlantBlock
     protected DryPlantBlock(ExtendedProperties properties)
     {
         super(properties);
-
-        registerDefaultState(getStateDefinition().any().setValue(getPlant().getStageProperty(), 0).setValue(AGE, 0));
     }
 
     @Override

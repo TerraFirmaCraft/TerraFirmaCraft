@@ -1,31 +1,35 @@
 # Reverse gitignore - explicitly include files
 *
 !*/
-!.gitignore
-!.editorconfig
+!/.gitignore
+!/.editorconfig
 
 # Github and build script
-!.github/**/*.md
-!.github/**/*.yml
-!gradle/wrapper/gradle-wrapper.jar
-!gradle/wrapper/gradle-wrapper.properties
-!src/**
+!/.github/**/*.md
+!/.github/**/*.yml
+!/gradle/wrapper/gradle-wrapper.jar
+!/gradle/wrapper/gradle-wrapper.properties
+!/src/**
 
 # Resource generation
-!resources/**/*.py
-!resources/lang/*.json
+!/resources/**/*.py
 !/resources/texture_templates/**/*.png
-!resources/structure_templates/**/*.nbt
+!/resources/structure_templates/**/*.nbt
+!/resources/lang/**/*.json
+!/resources/requirements.txt
 
 # Metadata
-!build.gradle
-!gradle.properties
-!gradlew
-!gradlew.bat
-!LICENSE.txt
-!HEADER.txt
-!README.md
-!CodeStyle.xml
+!/build.gradle
+!/gradle.properties
+!/gradlew
+!/gradlew.bat
+!/LICENSE.txt
+!/HEADER.txt
+!/README.md
+!/CodeStyle.xml
+
+# Splash / Logo Images
+!/img/**/*.png
 
 # Other exclusions
 __pycache__/
@@ -35,4 +39,5 @@ __pycache__/
 /run/
 /out/
 /build/
+/venv/
 /.idea/

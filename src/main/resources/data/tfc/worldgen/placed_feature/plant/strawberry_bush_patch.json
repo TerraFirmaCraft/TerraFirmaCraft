@@ -7,9 +7,16 @@
       "min_temperature": 5,
       "max_temperature": 28,
       "min_rainfall": 100,
-      "max_rainfall": 500,
-      "min_forest": "none",
-      "max_forest": "sparse"
+      "max_rainfall": 400,
+      "min_forest": "edge",
+      "max_forest": "old_growth"
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 30
     }
   ]
 }

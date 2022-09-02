@@ -86,6 +86,8 @@ public class HotSpringFeature extends Feature<HotSpringConfig>
                     if (stateAbove.getMaterial().isReplaceable())
                     {
                         setBlock(level, mutablePos, stateAbove.getFluidState().createLegacyBlock());
+                        mutablePos.move(0, 1, 0);
+                        level.scheduleTick(mutablePos, level.getBlockState(mutablePos).getBlock(), 1);
                     }
                     else
                     {

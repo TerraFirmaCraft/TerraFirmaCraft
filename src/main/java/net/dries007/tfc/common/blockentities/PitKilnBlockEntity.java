@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PitKilnBlock;
@@ -161,11 +162,33 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     public void ejectInventory()
     {
         assert level != null;
-        int x = worldPosition.getX();
-        int y = worldPosition.getY();
-        int z = worldPosition.getZ();
-        strawItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
-        logItems.forEach(i -> Containers.dropItemStack(level, x, y, z, i));
+
+        super.ejectInventory();
+        strawItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
+        logItems.forEach(stack -> Helpers.spawnItem(level, worldPosition, stack));
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, BlockHitResult hit)
+    {
+        if (state.hasProperty(PitKilnBlock.STAGE) && state.getValue(PitKilnBlock.STAGE) > 0)
+        {
+            for (ItemStack item : logItems)
+            {
+                if (!item.isEmpty())
+                {
+                    return item.copy();
+                }
+            }
+            for (ItemStack item : strawItems)
+            {
+                if (!item.isEmpty())
+                {
+                    return item.copy();
+                }
+            }
+        }
+        return super.getCloneItemStack(state, hit);
     }
 
     public void deleteStraw(int slot)
@@ -218,11 +241,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 for (Vec3i diagonal : DIAGONALS)
                 {
                     BlockPos pitPos = worldPosition.offset(diagonal);
-                    PitKilnBlockEntity pitKiln = level.getBlockEntity(pitPos, TFCBlockEntities.PIT_KILN.get()).orElse(null);
-                    if (pitKiln != null)
-                    {
-                        pitKiln.tryLight();
-                    }
+                    level.getBlockEntity(pitPos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
                 }
                 return true;
             }
@@ -260,7 +279,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     {
         assert level != null;
 
-        final float progress = (float) Mth.inverseLerp(Calendars.SERVER.getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
+        final float progress = Mth.inverseLerp(Calendars.SERVER.getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
         final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach just above max temperature just before the end
         final float targetTemperature = Mth.lerp(eagerProgress, 0, TFCConfig.SERVER.pitKilnTemperature.get());
 

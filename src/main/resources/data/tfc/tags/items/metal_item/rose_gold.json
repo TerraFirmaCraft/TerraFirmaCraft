@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:metal/ingot/rose_gold",
+    "tfc:metal/double_ingot/rose_gold",
+    "tfc:metal/sheet/rose_gold",
+    "tfc:metal/double_sheet/rose_gold",
+    "tfc:metal/rod/rose_gold"
+  ]
+}

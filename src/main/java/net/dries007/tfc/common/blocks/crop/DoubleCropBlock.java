@@ -124,7 +124,7 @@ public abstract class DoubleCropBlock extends CropBlock
     @Override
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
-        return isSameOrAir(level.getBlockState(pos.above())) ? CropHelpers.GROWTH_LIMIT : maxSingleGrowth;
+        return isSameOrAir(level.getBlockState(pos.above())) ? super.getGrowthLimit(level, pos, state) : maxSingleGrowth;
     }
 
     @Override

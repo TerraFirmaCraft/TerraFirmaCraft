@@ -72,6 +72,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue sluiceTicks;
     // Blocks - Lamp
     public final ForgeConfigSpec.IntValue lampCapacity;
+    // Blocks - Pumpkin
+    public final ForgeConfigSpec.BooleanValue enablePumpkinCarving;
+    public final ForgeConfigSpec.IntValue jackOLanternTicks;
     // Blocks - Bloomery
     public final ForgeConfigSpec.IntValue bloomeryCapacity;
     public final ForgeConfigSpec.IntValue bloomeryMaxChimneyHeight;
@@ -80,6 +83,11 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
     public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
     public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
+    // Blocks - Thatch Bed
+    public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
+    public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
+    // Blocks - Leaves
+    public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -118,24 +126,29 @@ public class ServerConfig
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
     public final ForgeConfigSpec.IntValue collapseRadiusVariance;
-    // Mechanics - Food / Nutrition
+    // Mechanics - Player
     public final ForgeConfigSpec.BooleanValue enablePeacefulDifficultyPassiveRegeneration;
     public final ForgeConfigSpec.DoubleValue passiveExhaustionModifier;
     public final ForgeConfigSpec.DoubleValue thirstModifier;
+    public final ForgeConfigSpec.BooleanValue enableThirstOverheating;
     public final ForgeConfigSpec.DoubleValue thirstGainedFromDrinkingInTheRain;
     public final ForgeConfigSpec.DoubleValue naturalRegenerationModifier;
     public final ForgeConfigSpec.IntValue nutritionRotationHungerWindow;
     public final ForgeConfigSpec.IntValue foodDecayStackWindow;
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
+    public final ForgeConfigSpec.BooleanValue enableOverburdening;
     // Mechanics - Vanilla Changes
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
     public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
     public final ForgeConfigSpec.BooleanValue enableVanillaSkeletonHorseSpawning;
     public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithEnchantments;
     public final ForgeConfigSpec.BooleanValue enableVanillaMobsSpawningWithVanillaEquipment;
+    public final ForgeConfigSpec.BooleanValue enableVanillaGolems;
     public final ForgeConfigSpec.BooleanValue enableVanillaMonsters;
     public final ForgeConfigSpec.BooleanValue enableVanillaMonstersOnSurface;
     public final ForgeConfigSpec.BooleanValue enableChickenJockies;
+    public final ForgeConfigSpec.BooleanValue enableVanillaEggThrowing;
+    public final ForgeConfigSpec.BooleanValue enableVanillaDrinkingMilkClearsPotionEffects;
 
     // Animals
     public final MammalConfig pigConfig;
@@ -249,6 +262,11 @@ public class ServerConfig
 
         lampCapacity = builder.apply("lampCapacity").comment("Tank capacity of a lamp (in mB).").defineInRange("lampCapacity", 250, 0, Alloy.MAX_ALLOY);
 
+        innerBuilder.pop().push("pumpkin");
+
+        enablePumpkinCarving = builder.apply("enablePumpkinCarving").comment("Enables the knifing of pumpkins to carve them.").define("enablePumpkinCarving", true);
+        jackOLanternTicks = builder.apply("jackOLanternTicks").comment("Number of ticks required for a jack 'o lantern to burn out (1000 = 1 in game hour = 50 seconds), default is 108 hours. Set to -1 to disable burnout.").defineInRange("jackOLanternTicks", 108000, -1, Integer.MAX_VALUE);
+
         innerBuilder.pop().push("bloomery");
 
         bloomeryCapacity = builder.apply("bloomeryCapacity").comment("Inventory capacity (in number of items per level of chimney) of the bloomery.").defineInRange("bloomeryCapacity", 8, 1, Integer.MAX_VALUE);
@@ -260,6 +278,15 @@ public class ServerConfig
         blastFurnaceFluidCapacity = builder.apply("blastFurnaceFluidCapacity").comment("Fluid capacity (in mB) of the output tank of the blast furnace.").defineInRange("blastFurnaceFluidCapacity", 10_000, 1, Integer.MAX_VALUE);
         blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
         blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("thatchBed");
+
+        enableThatchBedSpawnSetting = builder.apply("enableThatchBedSpawnSetting").comment("If true, thatch beds can set the player's spawn.").define("enableThatchBedSpawnSetting", true);
+        enableThatchBedSleeping = builder.apply("enableThatchBedSleeping").comment("If true, the player can sleep the night in a thatch bed").define("enableThatchBedSleeping", false);
+
+        innerBuilder.pop().push("leaves");
+
+        enableLeavesDecaySlowly = builder.apply("enableLeavesDecaySlowly").comment("If true, then leaves will decay slowly over time when disconnected from logs (vanilla behavior), as opposed to instantly (TFC behavior).").define("enableLeavesDecaySlowly", false);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
@@ -321,6 +348,7 @@ public class ServerConfig
         thirstModifier = builder.apply("thirstModifier").comment(
             "A multiplier for how quickly the player gets thirsty.",
             "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier", 8d, 0d, 100d);
+        enableThirstOverheating = builder.apply("enableThirstOverheating").comment("Enables the player losing more thirst in hotter environments.").define("enableThirstOverheating", true);
         thirstGainedFromDrinkingInTheRain = builder.apply("thirstGainedFromDrinkingInTheRain").comment("How much thirst the player gains from drinking in the rain (standing outside in the rain and looking up) per tick.").defineInRange("thirstGainedFromDrinkingInTheRain", 5d / 24d, 0d, 100d);
         naturalRegenerationModifier = builder.apply("naturalRegenerationModifier").comment(
             "A multiplier for how quickly the player regenerates health, under TFC's passive regeneration.",
@@ -332,6 +360,7 @@ public class ServerConfig
             "How many hours should different foods ignore when trying to stack together automatically?",
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 1, 6, 100);
         foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
+        enableOverburdening = builder.apply("enableOverburdening").comment("Enables negative effects from carrying too many very heavy items, including potion effects.").define("enableOverburdening", true);
 
         innerBuilder.pop().push("vanillaChanges");
 
@@ -340,9 +369,12 @@ public class ServerConfig
         enableVanillaSkeletonHorseSpawning = builder.apply("enableVanillaSkeletonHorseSpawning").comment("If true, vanilla will attempt to spawn skeleton 'trap' horses during thunderstorms.").define("enableVanillaSkeletonHorseSpawning", false);
         enableVanillaMobsSpawningWithEnchantments = builder.apply("enableVanillaMobsSpawningWithEnchantments").comment("If true, enables the default vanilla behavior of mobs spawning with enchanted weapons sometimes.").define("enableVanillaMobsSpawningWithEnchantments", false);
         enableVanillaMobsSpawningWithVanillaEquipment = builder.apply("enableVanillaMobsSpawningWithVanillaEquipment").comment("If true, enables the default behavior of mobs sapwning with vanilla armor and weapons").define("enableVanillaMobsSpawningWithVanillaEquipment", false);
-        enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters will spawn.").define("enableVanillaMonsters", true);
-        enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground.").define("enableVanillaMonstersOnSurface", false);
+        enableVanillaGolems = builder.apply("enableVanillaGolems").comment("If true, golems can be built").define("enableVanillaGolems", false);
+        enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters are able to spawn. If false, the 'enableVanillaMonstersOnSurface' config option is not used, and all spawns are denied.").define("enableVanillaMonsters", true);
+        enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground. If false, vanilla monsters will not spawn on the surface.").define("enableVanillaMonstersOnSurface", false);
         enableChickenJockies = builder.apply("enableChickenJockies").comment("If true, chicken jockies can spawn").define("enableChickenJockies", false);
+        enableVanillaEggThrowing = builder.apply("enableVanillaEggThrowing").comment("If true, eggs can be thrown.").define("enableVanillaEggThrowing", false);
+        enableVanillaDrinkingMilkClearsPotionEffects = builder.apply("enableVanillaDrinkingMilkClearsPotionEffects").comment("If true, drinking milk will clear potion effects and restore no nutrition, as in vanilla.").define("enableVanillaDrinkingMilkClearsPotionEffects", false);
 
         innerBuilder.pop().push("animals").push("pig");
         pigConfig = MammalConfig.build(builder, "pig", 0.35, 80, 60, true, 19, 10);

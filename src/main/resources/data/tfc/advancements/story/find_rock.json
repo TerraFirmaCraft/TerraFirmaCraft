@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/root",
+  "criteria": {
+    "rock_knapping": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:rock_knapping"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:rock/loose/schist"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.find_rock.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.find_rock.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "rock_knapping"
+    ]
+  ]
+}

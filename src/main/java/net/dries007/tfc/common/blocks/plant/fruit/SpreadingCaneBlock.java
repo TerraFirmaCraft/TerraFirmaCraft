@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -22,15 +23,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
@@ -45,12 +45,6 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     public SpreadingCaneBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages, Supplier<? extends Block> companion, int maxHeight, Supplier<ClimateRange> climateRange)
     {
         super(properties, productItem, stages, companion, maxHeight, climateRange);
-    }
-
-    @Override
-    protected ItemStack getTrimItemStack()
-    {
-        return new ItemStack(companion.get());
     }
 
     @Override
@@ -78,27 +72,39 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     }
 
     @Override
-    protected void propagate(Level level, BlockPos pos, Random random, BlockState state)
+    protected BlockState growAndPropagate(Level level, BlockPos pos, Random random, BlockState state)
     {
-        final int stage = state.getValue(STAGE);
-        BlockState placeState = companion.get().defaultBlockState().setValue(STAGE, stage).setValue(LIFECYCLE, state.getValue(LIFECYCLE));
-        if (stage == 2 && placeState.canSurvive(level, pos))
+        if (!state.getValue(LIFECYCLE).active())
+        {
+            return state; // Only grow when active
+        }
+
+        final int prevStage = state.getValue(STAGE);
+        if (prevStage < 2)
+        {
+            return state.setValue(STAGE, prevStage + 1); // Increment stage if possible
+        }
+
+        // Otherwise, try and convert to a bush bock
+        // Bush blocks start at stage = 1 when they're grown from another bush block, as stage = 0 is just for newly planted
+        final BlockState placeState = companion.get().defaultBlockState().setValue(STAGE, 1).setValue(LIFECYCLE, state.getValue(LIFECYCLE));
+        if (placeState.canSurvive(level, pos))
         {
             level.setBlockAndUpdate(pos, placeState);
-            level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> bush.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * bush.getTicksSinceUpdate()));
         }
+
+        return state;
     }
 
     @Override
-    protected boolean specialDeathCondition(Level level, BlockPos pos, BlockState state)
+    protected boolean mayDie(Level level, BlockPos pos, BlockState state, int monthsSpentDying)
     {
         BlockState parent = level.getBlockState(pos.relative(state.getValue(FACING).getOpposite()));
-        // if the parent is alive we shouldn't die
         if (Helpers.isBlock(parent, TFCTags.Blocks.SPREADING_BUSH))
         {
-            return false;
+            return false; // if the parent is alive we shouldn't die
         }
-        return super.specialDeathCondition(level, pos, state);
+        return super.mayDie(level, pos, state, monthsSpentDying);
     }
 
     @Override
@@ -118,5 +124,11 @@ public class SpreadingCaneBlock extends SpreadingBushBlock implements IBushBlock
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
     {
         return Helpers.isBlock(level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())), TFCTags.Blocks.ANY_SPREADING_BUSH);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
+    {
+        return new ItemStack(companion.get());
     }
 }

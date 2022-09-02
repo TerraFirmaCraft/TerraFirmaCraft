@@ -18,12 +18,13 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -39,13 +40,13 @@ public abstract class DairyAnimal extends ProducingMammal
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         ItemStack held = player.getItemInHand(hand);
-        if (!held.isEmpty() && held.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).isPresent())
+        if (!held.isEmpty() && held.getCapability(Capabilities.FLUID_ITEM).isPresent())
         {
             if (getFamiliarity() > produceFamiliarity.get() && isReadyForAnimalProduct())
             {
                 // copy the stack because we do not know if we'll need to replace it or not yet
                 ItemStack bucket = held.copy();
-                boolean filled = bucket.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(itemCap -> {
+                boolean filled = bucket.getCapability(Capabilities.FLUID_ITEM).map(itemCap -> {
                     FluidStack milk = new FluidStack(getMilkFluid(), FluidHelpers.BUCKET_VOLUME);
                     return itemCap.fill(milk, IFluidHandler.FluidAction.EXECUTE) > 0;
                 }).orElse(false);
@@ -83,23 +84,23 @@ public abstract class DairyAnimal extends ProducingMammal
         TranslatableComponent component = null;
         if (getGender() == Gender.MALE)
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.male_milk", getTypeName().getString());
         }
         else if (getAgeType() == Age.OLD)
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.old", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.old", getTypeName().getString());
         }
         else if (getAgeType() == Age.CHILD)
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.young", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.young", getTypeName().getString());
         }
         else if (getFamiliarity() <= produceFamiliarity.get())
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.low_familiarity", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.low_familiarity", getTypeName().getString());
         }
         else if (!hasProduct())
         {
-            component = new TranslatableComponent(MOD_ID + ".tooltip.animal.no_milk", getTypeName().getString());
+            component = Helpers.translatable(MOD_ID + ".tooltip.animal.no_milk", getTypeName().getString());
         }
         if (component != null && level.isClientSide)
         {

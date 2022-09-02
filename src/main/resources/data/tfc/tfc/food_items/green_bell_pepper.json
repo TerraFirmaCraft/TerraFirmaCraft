@@ -6,6 +6,6 @@
   "category": "vegetable",
   "hunger": 4,
   "saturation": 0.5,
-  "decay": 2.7,
+  "decay_modifier": 2.7,
   "vegetables": 1
 }

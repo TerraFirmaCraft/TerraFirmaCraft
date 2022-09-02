@@ -34,7 +34,7 @@ public class HeatingComponent extends InputOutputComponent<HeatingRecipe>
 
         context.renderIngredient(poseStack, 14, 5, mouseX, mouseY, getIngredient(recipe));
         context.renderItemStack(poseStack, 86, 5, mouseX, mouseY, getOutput(recipe));
-        renderFluidStack(poseStack, recipe.getDisplayOutputFluid(), 64, 5);
+        renderFluidStack(context, poseStack, 64, 5, mouseX, mouseY, recipe.getDisplayOutputFluid());
 
         final MutableComponent tooltip = TFCConfig.CLIENT.heatTooltipStyle.get().format(recipe.getTemperature());
         if (tooltip != null)

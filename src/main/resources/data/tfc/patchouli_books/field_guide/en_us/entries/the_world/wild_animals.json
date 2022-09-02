@@ -10,60 +10,68 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Predators$() are animals that can attack the player. They are either $(thing)Nocturnal$(), only hunting at night, or $(thing)Diurnal$(), only hunting during the day. When they get a kill, they will not hunt for hours. However, attacking a predator will always anger it. Predators have a chance of pinning you to the ground when they attack, if they get up close. Predators have a home territory that they do not like to leave. If you run far enough away, the predator will return home."
+      "text": "Animals can be grouped into a few different categories: $(l:the_world/wild_animals#predators)Predators$(), $(l:the_world/wild_animals#prey)Prey$(), and $(l:the_world/wild_animals#aquatic)Aquatic$() animals.$(br2)The next few pages will detail each of these categories of animals."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "predators",
+      "text": "$(thing)Predators$() are animals that can attack the player. They are either $(thing)Nocturnal$(), only hunting at night, or $(thing)Diurnal$(), only hunting during the day. Predators can be neutral or hostile, depending on if they have killed a target recently. Predators have a home territory that they will defend - if you run far enough away, the predator will stop chasing and return home.",
+      "title": "Predators"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:polar_bear",
-      "scale": 0.7,
+      "scale": 0.55,
       "name": "Polar Bear",
       "text": "The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10\u00b0C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:grizzly_bear",
-      "scale": 0.7,
+      "scale": 0.55,
       "name": "Grizzly Bear",
       "text": "The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15\u00b0C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:black_bear",
-      "scale": 0.7,
+      "scale": 0.55,
       "name": "Black Bear",
       "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20\u00b0C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cougar",
-      "scale": 0.7,
+      "scale": 0.6,
       "name": "Cougar",
       "text": "The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21\u00b0C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:panther",
-      "scale": 0.7,
+      "scale": 0.6,
       "name": "Panther",
       "text": "The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21\u00b0C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:lion",
-      "scale": 0.7,
+      "scale": 0.55,
       "name": "Lion",
       "text": "The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16\u00b0C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sabertooth",
-      "scale": 0.7,
+      "scale": 0.6,
       "name": "Sabertooth",
       "text": "The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0\u00b0C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops."
+      "anchor": "prey",
+      "text": "$(thing)Prey$() animals fear players and predators. They are adept at fleeing from danger, but generally cannot fight back. Some prey animals enjoy snacking on crops.",
+      "title": "Prey"
     },
     {
       "type": "patchouli:entity",
@@ -88,6 +96,12 @@
     },
     {
       "type": "patchouli:text",
+      "anchor": "aquatic",
+      "text": "$(thing)Aquatic Animals$() are a broad category which covers a number of different behaviors. They may be $(thing)Shore Dwellers$(), $(thing)Fish$(), $(thing)Shellfish$(), or $(thing)Large Aquatic Creatures$()",
+      "title": "Aquatic Animals"
+    },
+    {
+      "type": "patchouli:text",
       "text": "$(thing)Shore Animals$() only spawn on sea shores and spend some of their day swimming, and some walking on the beach. They are curious creatures, and will follow the player around, but cannot be tamed."
     },
     {
@@ -106,7 +120,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes."
+      "text": "$(thing)Fish$() are small creatures that swim in water. Most of them can be $(l:mechanics/fishing)fished$(). Some prefer oceans, rivers, or lakes.",
+      "title": "Fish"
     },
     {
       "type": "patchouli:entity",
@@ -140,18 +155,21 @@
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
+      "name": "Salmon",
       "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5\u00b0C."
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:bluegill",
       "scale": 0.7,
+      "name": "Bluegill",
       "text": "Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10\u00b0C and at most 26\u00b0C."
     },
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish."
+      "text": "$(thing)Shellfish$() are small animals that live on the floor of bodies of water. They cannot be fished, but drop shells that can be eaten or made into $(l:mechanics/flux)flux$(). Shellfish can be $(l:mechanics/fishing)bait$() for fish.",
+      "title": "Shellfish"
     },
     {
       "type": "patchouli:entity",
@@ -183,7 +201,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them predate on fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel."
+      "text": "$(thing)Large Water Creatures$() are larger animals that live in the bigger bodies of water. Some of them hunt fish. They drop $(l:mechanics/lamps#tallow)blubber$(), which can be made into lamp fuel.",
+      "title": "Large Water Creatures"
     },
     {
       "type": "patchouli:entity",
@@ -213,5 +232,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 9
+  "sortnum": 8
 }

@@ -34,6 +34,7 @@ import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -45,7 +46,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBlockEntity.Inventory> implements ICalendarTickable
 {
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.bloomery");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.bloomery");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BloomeryBlockEntity bloomery)
     {
@@ -106,7 +107,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     protected final List<ItemStack> inputStacks;
     protected final List<ItemStack> catalystStacks;
 
-    private long lastPlayerTick;
+    private long lastPlayerTick = Integer.MIN_VALUE;
     private long litTick;
     @Nullable protected BloomeryRecipe cachedRecipe;
 
@@ -220,12 +221,14 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastPlayerTick = tick;
@@ -424,10 +427,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             FluidStack fluid = FluidStack.EMPTY;
             for (ItemStack stack : bloomery.inputStacks)
             {
-                HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
+                final ItemStackInventory inventory = new ItemStackInventory(stack);
+                final HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(inventory);
                 if (heatingRecipe != null)
                 {
-                    FluidStack toAdd = heatingRecipe.getOutputFluid();
+                    final FluidStack toAdd = heatingRecipe.assembleFluid(inventory);
                     if (!toAdd.isEmpty())
                     {
                         if (fluid.isEmpty())

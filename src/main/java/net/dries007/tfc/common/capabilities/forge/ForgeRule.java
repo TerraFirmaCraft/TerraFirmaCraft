@@ -112,7 +112,7 @@ public enum ForgeRule
 
     public Component getDescriptionId()
     {
-        return (type == HIT_LIGHT ? new TranslatableComponent("tfc.enum.forgestep.hit") : Helpers.translateEnum(type))
+        return (type == HIT_LIGHT ? Helpers.translatable("tfc.enum.forgestep.hit") : Helpers.translateEnum(type))
             .append(" ")
             .append(Helpers.translateEnum(order));
     }

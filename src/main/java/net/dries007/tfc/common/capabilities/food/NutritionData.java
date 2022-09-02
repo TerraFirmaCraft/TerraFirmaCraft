@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraft.util.ToFloatFunction;
 
 import net.dries007.tfc.config.TFCConfig;
 
@@ -23,9 +23,9 @@ import net.dries007.tfc.config.TFCConfig;
  *
  * This only executes logic on server side, on client side it simply sets the lastAverageNutrients
  */
-public class NutritionData implements INBTSerializable<CompoundTag>
+public class NutritionData
 {
-    private final LinkedList<FoodRecord> records;
+    private final LinkedList<FoodData> records;
     private final float defaultNutritionValue, defaultDairyNutritionValue;
     private final float[] nutrients;
     private float averageNutrients;
@@ -75,18 +75,25 @@ public class NutritionData implements INBTSerializable<CompoundTag>
         updateAverageNutrients(); // Only need to update the average
     }
 
-    public void addNutrients(FoodRecord data)
+    /**
+     * Applies nutrients to the food data
+     * If the last meal you ate had hunger, and this one didn't have hunger, we will apply the meal
+     * Use case: Milk drinking. We add milk as a meal if and only if you just ate something
+     */
+    public void addNutrients(FoodData data)
     {
-        records.addFirst(data);
-        calculateNutrition();
+        if (data.hunger() > 0 || records.isEmpty() || records.getFirst().hunger() > 0)
+        {
+            records.addFirst(data);
+            calculateNutrition();
+        }
     }
 
-    @Override
-    public CompoundTag serializeNBT()
+    public CompoundTag writeToNbt()
     {
         CompoundTag nbt = new CompoundTag();
         ListTag recordsNbt = new ListTag();
-        for (FoodRecord data : records)
+        for (FoodData data : records)
         {
             recordsNbt.add(data.write());
         }
@@ -94,14 +101,13 @@ public class NutritionData implements INBTSerializable<CompoundTag>
         return nbt;
     }
 
-    @Override
-    public void deserializeNBT(CompoundTag nbt)
+    public void readFromNbt(CompoundTag nbt)
     {
         records.clear();
         ListTag recordsNbt = nbt.getList("records", Tag.TAG_COMPOUND);
         for (int i = 0; i < recordsNbt.size(); i++)
         {
-            records.add(new FoodRecord(recordsNbt.getCompound(i)));
+            records.add(FoodData.read(recordsNbt.getCompound(i)));
         }
         calculateNutrition();
     }
@@ -116,19 +122,19 @@ public class NutritionData implements INBTSerializable<CompoundTag>
         hungerWindow = TFCConfig.SERVER.nutritionRotationHungerWindow.get();
         for (int i = 0; i < records.size(); i++)
         {
-            FoodRecord record = records.get(i);
-            int nextHunger = record.getHunger() + runningHungerTotal;
+            FoodData record = records.get(i);
+            int nextHunger = record.hunger() + runningHungerTotal;
             if (nextHunger < this.hungerWindow)
             {
                 // Add weighted nutrition, keep moving
-                updateAllNutrients(nutrients, j -> nutrients[j] + record.getNutrient(j) * record.getHunger());
+                updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] + record.nutrient(j) * Math.max(record.hunger(), 4));
                 runningHungerTotal = nextHunger;
             }
             else
             {
                 // Calculate overshoot, weight appropriately, and exit
                 float actualHunger = hungerWindow - runningHungerTotal;
-                updateAllNutrients(nutrients, j -> nutrients[j] + record.getNutrient(j) * actualHunger);
+                updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] + record.nutrient(j) * actualHunger);
 
                 // Remove any excess elements, this has the side effect of exiting the loop
                 while (records.size() > i + 1)
@@ -139,7 +145,7 @@ public class NutritionData implements INBTSerializable<CompoundTag>
         }
 
         // Average over hunger window, using default value if beyond the hunger window
-        updateAllNutrients(nutrients, j -> nutrients[j] / hungerWindow);
+        updateAllNutrients(nutrients, j -> nutrients[j.ordinal()] / hungerWindow);
         if (runningHungerTotal < hungerWindow)
         {
             float defaultModifier = 1 - (float) runningHungerTotal / hungerWindow;
@@ -155,7 +161,7 @@ public class NutritionData implements INBTSerializable<CompoundTag>
                 }
             }
         }
-        updateAllNutrients(nutrients, j -> Math.min(1, nutrients[j])); // Cap all nutrient averages at 1
+        updateAllNutrients(nutrients, j -> Math.min(1, nutrients[j.ordinal()])); // Cap all nutrient averages at 1
         updateAverageNutrients(); // Also calculate overall average
     }
 
@@ -169,18 +175,11 @@ public class NutritionData implements INBTSerializable<CompoundTag>
         averageNutrients /= Nutrient.TOTAL;
     }
 
-    private void updateAllNutrients(float[] array, IntToFloatFunction operator)
+    private void updateAllNutrients(float[] array, ToFloatFunction<Nutrient> operator)
     {
-        // Arrays.setAll doesn't have a float version >:(
-        for (int i = 0; i < array.length; i++)
+        for (Nutrient nutrient : Nutrient.VALUES)
         {
-            array[i] = operator.apply(i);
+            array[nutrient.ordinal()] = operator.apply(nutrient);
         }
-    }
-
-    @FunctionalInterface
-    interface IntToFloatFunction
-    {
-        float apply(int i);
     }
 }

@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/chestnut"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/chestnut"
+    },
+    {
+      "item": "tfc:wood/stripped_log/chestnut"
     }
   ],
   "duration": 1500,

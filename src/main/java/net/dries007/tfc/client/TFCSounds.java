@@ -48,7 +48,7 @@ public final class TFCSounds
     public static final RegistryObject<SoundEvent> WATTLE_WOVEN = create("block.wattle.woven");
 
     // Armor
-    public static final Map<TFCArmorMaterials, RegistryObject<SoundEvent>> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> create("item.armor.equip_" + mat.getLocation().getPath()));
+    public static final Map<TFCArmorMaterials, RegistryObject<SoundEvent>> ARMOR_EQUIP = Helpers.mapOfKeys(TFCArmorMaterials.class, mat -> create("item.armor.equip_" + mat.getId().getPath()));
 
     public static final ForgeSoundType CHARCOAL = createBlock("charcoal");
     public static final ForgeSoundType THATCH = createBlock("thatch");

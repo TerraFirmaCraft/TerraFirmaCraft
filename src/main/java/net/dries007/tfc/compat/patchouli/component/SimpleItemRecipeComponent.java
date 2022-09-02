@@ -25,5 +25,4 @@ public abstract class SimpleItemRecipeComponent<T extends SimpleItemRecipe> exte
     {
         return recipe.getResultItem();
     }
-
 }

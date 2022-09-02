@@ -14,13 +14,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.screen.button.AnvilPlanSelectButton;
 import net.dries007.tfc.client.screen.button.NextPageButton;
 import net.dries007.tfc.common.blockentities.AnvilBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.AnvilPlanContainer;
 import net.dries007.tfc.common.recipes.AnvilRecipe;
 import net.dries007.tfc.util.Helpers;
@@ -52,7 +52,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
         final int guiLeft = getGuiLeft(), guiTop = getGuiTop();
 
         final ItemStack inputStack = blockEntity
-            .getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null)
+            .getCapability(Capabilities.ITEM, null)
             .map(t -> t.getStackInSlot(AnvilBlockEntity.SLOT_INPUT_MAIN))
             .orElse(ItemStack.EMPTY);
         final List<AnvilRecipe> recipes = AnvilRecipe.getAll(playerInventory.player.level, inputStack, blockEntity.getTier());
@@ -63,7 +63,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             final int page = i / recipesPerPage;
             final int index = i % recipesPerPage;
             final int posX = 7 + (index % 9) * 18;
-            final int posY = 25 + ((index % 18) / 9) * 18;
+            final int posY = 17 + ((index % 18) / 9) * 18;
 
             final AnvilRecipe recipe = recipes.get(i);
             final AnvilPlanSelectButton button = new AnvilPlanSelectButton(guiLeft + posX, guiTop + posY, page, recipe, RenderHelpers.makeButtonTooltip(this, recipe.getResultItem().getDisplayName()));
@@ -73,19 +73,19 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             addRenderableWidget(button);
         }
 
-        maxPageInclusive = (recipes.size() - 1) % recipesPerPage;
+        maxPageInclusive = (recipes.size() - 1) / recipesPerPage;
 
-        addRenderableWidget(leftButton = NextPageButton.left(guiLeft + 7, guiTop + 65, button -> {
-            if (currentPage < maxPageInclusive)
-            {
-                currentPage++;
-                updateCurrentPage();
-            }
-        }));
-        addRenderableWidget(rightButton = NextPageButton.right(guiLeft + 7, guiTop + 154, button -> {
+        addRenderableWidget(leftButton = NextPageButton.left(guiLeft + 7, guiTop + 56, button -> {
             if (currentPage > 0)
             {
                 currentPage--;
+                updateCurrentPage();
+            }
+        }));
+        addRenderableWidget(rightButton = NextPageButton.right(guiLeft + 160, guiTop + 56, button -> {
+            if (currentPage < maxPageInclusive)
+            {
+                currentPage++;
                 updateCurrentPage();
             }
         }));
@@ -108,7 +108,7 @@ public class AnvilPlanScreen extends BlockEntityScreen<AnvilBlockEntity, AnvilPl
             button.setCurrentPage(currentPage);
         }
 
-        leftButton.active = leftButton.visible = currentPage < maxPageInclusive;
-        rightButton.active = rightButton.visible = currentPage > 0;
+        leftButton.active = leftButton.visible = currentPage > 0;
+        rightButton.active = rightButton.visible = currentPage < maxPageInclusive;
     }
 }

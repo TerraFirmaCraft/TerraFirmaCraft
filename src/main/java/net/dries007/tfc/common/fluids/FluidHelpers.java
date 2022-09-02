@@ -34,7 +34,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemHandlerHelper;
@@ -42,6 +41,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.mixin.accessor.FlowingFluidAccessor;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
@@ -84,7 +84,7 @@ public final class FluidHelpers
         final BlockState state = level.getBlockState(pos);
 
         final ItemStack stack = originalStack.copy();
-        final IFluidHandlerItem handler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
+        final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
         if (handler == null)
         {
             return false;
@@ -133,13 +133,20 @@ public final class FluidHelpers
      * <br>
      * If the item is empty, it will attempt to fill the item from the fluid tank. If the item contains any fluid, it will attempt to fill the fluid block entity from the item.
      *
-     * @return A number of mB that were transferred. < 0 indicates a transfer <strong>out of</strong> the block entity, > 0 indicates a transfer <strong>into</strong> the block entity.
+     * @return {@code true} if a transfer occurred.
      */
     public static boolean transferBetweenBlockEntityAndItem(ItemStack originalStack, BlockEntity entity, Level level, BlockPos pos, AfterTransfer after)
     {
+        return transferBetweenBlockHandlerAndItem(originalStack, Helpers.getCapability(entity, Capabilities.FLUID), level, pos, after);
+    }
+
+    /**
+     * A variant of {@link #transferBetweenBlockEntityAndItem(ItemStack, BlockEntity, Level, BlockPos, AfterTransfer)} that doesn't require a block entity - the block handler can be from an explicit block based handler, for example.
+     */
+    public static boolean transferBetweenBlockHandlerAndItem(ItemStack originalStack, @Nullable IFluidHandler blockHandler, Level level, BlockPos pos, AfterTransfer after)
+    {
         final ItemStack stack = originalStack.copy(); // Copy here, because the semantics of item fluid handlers require us to carefully manage the container
-        final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY);
-        final IFluidHandler blockHandler = Helpers.getCapability(entity, CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY);
+        final IFluidHandlerItem itemHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
 
         if (itemHandler == null || blockHandler == null)
         {
@@ -157,11 +164,6 @@ public final class FluidHelpers
             // Transfer item -> block
             return transferBetweenItemAndOther(originalStack, itemHandler, itemHandler, blockHandler, Transfer.DRAIN, level, pos, after);
         }
-    }
-
-    public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, AfterTransfer after)
-    {
-        return transferBetweenItemAndOther(originalStack, itemHandler, from, to, fluid -> {}, after);
     }
 
     public static boolean transferBetweenItemAndOther(ItemStack originalStack, IFluidHandlerItem itemHandler, IFluidHandler from, IFluidHandler to, Transfer type, Level level, BlockPos pos, AfterTransfer after)
@@ -277,7 +279,7 @@ public final class FluidHelpers
     }
 
     /**
-     * Pickup a fluid fluid from a block in the world, leaving the block empty.
+     * Pickup a fluid from a block in the world, leaving the block empty.
      */
     @Nullable
     public static FluidStack pickupFluid(Level level, BlockPos pos, BlockState state, IFluidHandler.FluidAction action)
@@ -295,7 +297,7 @@ public final class FluidHelpers
             {
                 // Directly execute, assuming that we can pickup into a bucket, then empty the bucket to obtain the contents
                 final ItemStack stack = pickup.pickupBlock(level, pos, state);
-                final FluidStack fluid = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY)
+                final FluidStack fluid = stack.getCapability(Capabilities.FLUID_ITEM)
                     .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE))
                     .orElse(FluidStack.EMPTY);
                 playTransferSound(level, pos, fluid, Transfer.FILL);
@@ -341,7 +343,7 @@ public final class FluidHelpers
             }
             return true;
         }
-        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME)
+        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME && allowPlacingSourceBlocks)
         {
             // Delegate to the container to place the block
             container.placeLiquid(level, pos, state, fluid.defaultFluidState());

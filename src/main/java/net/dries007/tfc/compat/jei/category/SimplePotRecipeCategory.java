@@ -14,7 +14,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -24,6 +23,7 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.SimplePotRecipe;
 import net.dries007.tfc.common.recipes.PotRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 
 public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
 {
@@ -48,6 +48,7 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
             {
                 IRecipeSlotBuilder input = builder.addSlot(RecipeIngredientRole.INPUT, INPUT_X[i] + 1, INPUT_Y[i] + 1);
                 input.addIngredients(ingredient);
+                input.setBackground(slot, -1, -1);
                 i++;
             }
         }
@@ -56,8 +57,9 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         if (!inputFluids.isEmpty())
         {
             IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
-            fluidOutput.addIngredients(VanillaTypes.FLUID, inputFluids);
+            fluidOutput.addIngredients(JEIIntegration.FLUID_STACK, inputFluids);
             fluidOutput.setFluidRenderer(1, false, 16, 16);
+            fluidOutput.setBackground(slot, -1, -1);
         }
 
         int j = 0;
@@ -67,6 +69,7 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
             {
                 IRecipeSlotBuilder output = builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_X[j] + 1, OUTPUT_Y[j] + 1);
                 output.addItemStack(stack);
+                output.setBackground(slot, -1, -1);
                 j++;
             }
         }
@@ -74,9 +77,10 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
         final FluidStack outputFluid = recipe.getDisplayFluid();
         if (!outputFluid.isEmpty())
         {
-            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 16, 66);
-            fluidOutput.addIngredient(VanillaTypes.FLUID, outputFluid);
+            IRecipeSlotBuilder fluidOutput = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 66);
+            fluidOutput.addIngredient(JEIIntegration.FLUID_STACK, outputFluid);
             fluidOutput.setFluidRenderer(1, false, 16, 16);
+            fluidOutput.setBackground(slot, -1, -1);
         }
     }
 
@@ -89,25 +93,8 @@ public class SimplePotRecipeCategory extends PotRecipeCategory<PotRecipe>
     @Override
     public void draw(PotRecipe recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        // Item Input
-        drawFive(stack, INPUT_X, INPUT_Y);
-        // Water Input
-        slot.draw(stack, 15, 65);
         // fire
         fire.draw(stack, 47, 45);
         fireAnimated.draw(stack, 47, 45);
-        // Item Output
-        drawFive(stack, OUTPUT_X, OUTPUT_Y);
-        // Water Output
-        slot.draw(stack, 75, 65);
-    }
-
-    private void drawFive(PoseStack stack, int[] x, int[] y)
-    {
-        slot.draw(stack, x[0], y[0]);
-        slot.draw(stack, x[1], y[1]);
-        slot.draw(stack, x[2], y[2]);
-        slot.draw(stack, x[3], y[3]);
-        slot.draw(stack, x[4], y[4]);
     }
 }

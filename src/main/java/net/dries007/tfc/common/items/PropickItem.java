@@ -138,7 +138,7 @@ public class PropickItem extends ToolItem
     {
         if (flag.isAdvanced())
         {
-            text.add(new TranslatableComponent("tfc.tooltip.propick.accuracy", (int) (100 * (1 - falseNegativeChance))).withStyle(ChatFormatting.GRAY));
+            text.add(Helpers.translatable("tfc.tooltip.propick.accuracy", (int) (100 * (1 - falseNegativeChance))).withStyle(ChatFormatting.GRAY));
         }
     }
 

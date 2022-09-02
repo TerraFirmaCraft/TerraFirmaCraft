@@ -33,11 +33,11 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
         IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
+        inputSlot.setBackground(slot, -1, -1);
         IRecipeSlotBuilder toolSlot = null;
         if (getToolTag() != null)
         {
             toolSlot = builder.addSlot(RecipeIngredientRole.CATALYST, 26, 5);
-            toolSlot.setSlotName("tool");
         }
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
@@ -45,19 +45,15 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
         if (toolSlot != null)
         {
             toolSlot.addIngredients(Ingredient.of(getToolTag()));
+            toolSlot.setBackground(slot, -1, -1);
         }
         outputSlot.addItemStack(recipe.getResultItem());
+        outputSlot.setBackground(slot, -1, -1);
     }
 
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 5, 4);
-        if (recipeSlots.findSlotByName("tool").isPresent())
-        {
-            slot.draw(stack, 25, 4);
-        }
-        slot.draw(stack, 75, 4);
         arrow.draw(stack, 48, 5);
         arrowAnimated.draw(stack, 48, 5);
     }

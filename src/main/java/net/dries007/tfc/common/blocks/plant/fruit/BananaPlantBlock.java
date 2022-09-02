@@ -50,11 +50,9 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     private static final VoxelShape TRUNK_0 = box(4.0, 0.0, 4.0, 12.0, 16.0, 12.0);
     private static final VoxelShape TRUNK_1 = box(5.0, 0.0, 5.0, 11.0, 16.0, 11.0);
 
-    private final Supplier<ClimateRange> climateRange = ClimateRanges.BANANA_PLANT;
-
     public BananaPlantBlock(ExtendedProperties properties, Supplier<? extends Item> productItem, Lifecycle[] stages)
     {
-        super(properties, productItem, stages);
+        super(properties, ClimateRanges.BANANA_PLANT, productItem, stages);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
 
         // picking bananas kills the plant. this propagates death to the whole stalk.
         Block deadBlock = TFCBlocks.DEAD_BANANA_PLANT.get();
-        if (!level.isClientSide && level.getBlockState(pos).is(deadBlock))
+        if (!level.isClientSide && Helpers.isBlock(level.getBlockState(pos), deadBlock))
         {
             BlockState deadState = deadBlock.defaultBlockState();
             BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos().set(pos.below());
@@ -90,9 +88,8 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
-        final BlockPos sourcePos = pos.below();
 
-        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+        text.add(FarmlandBlock.getHydrationTooltip(level, pos, range, false, FruitTreeLeavesBlock.getHydration(level, pos)));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
     }
 
@@ -144,9 +141,8 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                 long currentCalendarTick = Calendars.SERVER.getCalendarTicks();
                 long nextCalendarTick = currentCalendarTick - deltaTicks;
 
-                final BlockPos sourcePos = pos.below();
                 final ClimateRange range = climateRange.get();
-                final int hydration = FarmlandBlock.getHydration(level, sourcePos);
+                final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
 
                 int stage = state.getValue(STAGE);
 
@@ -206,7 +202,6 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                     level.setBlockAndUpdate(pos, newState);
                 }
             }
-            bush.afterUpdate();
         });
     }
 

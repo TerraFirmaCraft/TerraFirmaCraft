@@ -88,7 +88,7 @@
     "tfc:plant/water_lily_patch",
     "tfc:plant/water_taro_patch",
     "tfc:plant/yucca_patch",
-    "tfc:berry_bushes",
+    "#tfc:feature/berry_bushes",
     "#tfc:feature/fruit_trees"
   ]
 }

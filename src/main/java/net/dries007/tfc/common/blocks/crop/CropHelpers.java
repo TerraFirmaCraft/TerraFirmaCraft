@@ -10,15 +10,13 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.WorldgenRandom;
-import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
@@ -31,6 +29,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 /**
  * Common growth logic for crop blocks
@@ -47,12 +46,17 @@ public final class CropHelpers
     public static final float YIELD_MIN = 0.2f;
     public static final float YIELD_LIMIT = 1f;
 
+    public static boolean lightValid(Level level, BlockPos pos)
+    {
+        return level.getRawBrightness(pos, 0) >= 12;
+    }
+
     /**
      * @return {@code true} if the crop survived.
      */
     public static boolean growthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)
     {
-        final long firstTick = crop.getLastUpdateTick(), thisTick = Calendars.SERVER.getTicks();
+        final long firstTick = crop.getLastGrowthTick(), thisTick = Calendars.SERVER.getTicks();
         long tick = firstTick + CropHelpers.UPDATE_INTERVAL, lastTick = firstTick;
         for (; tick < thisTick; tick += CropHelpers.UPDATE_INTERVAL)
         {
@@ -139,7 +143,7 @@ public final class CropHelpers
         crop.setGrowth(growth);
         crop.setYield(actualYield);
         crop.setExpiry(expiry);
-        crop.setLastUpdateTick(calendar.getTicks());
+        crop.setLastGrowthTick(calendar.getTicks());
 
         return true;
     }
@@ -161,6 +165,10 @@ public final class CropHelpers
                     farmland.addNutrients(fertilizer);
                     if (!player.isCreative()) stack.shrink(1);
                     addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
+                    if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
+                    {
+                        TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
+                    }
                 });
                 return true;
             }

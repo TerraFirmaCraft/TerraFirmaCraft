@@ -16,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,7 +31,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemStackHandler;
@@ -41,6 +39,7 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.MoltenBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.PartialFluidHandler;
 import net.dries007.tfc.common.capabilities.SidedHandler;
@@ -49,6 +48,7 @@ import net.dries007.tfc.common.container.BlastFurnaceContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BlastFurnaceRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
@@ -61,7 +61,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
 public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastFurnaceBlockEntity.BlastFurnaceInventory> implements ICalendarTickable
 {
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.blast_furnace");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.blast_furnace");
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BlastFurnaceBlockEntity entity)
     {
@@ -162,7 +162,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
                     if (inputRecipe != null && inputRecipe.isValidTemperature(cap.getTemperature()))
                     {
                         // Only convert fluid output, and append to the buffer
-                        final FluidStack fluidStack = inputRecipe.getOutputFluid();
+                        final FluidStack fluidStack = inputRecipe.assembleFluid(new ItemStackInventory(inputStack));
                         newInputFluids.add(fluidStack);
 
                         // And then remove this item, it's catalyst, and recipe from the iterators
@@ -202,7 +202,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
             final BlockEntity below = level.getBlockEntity(pos.below());
             if (below != null)
             {
-                final IFluidHandler belowFluidHandler = below.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).resolve().orElse(null);
+                final IFluidHandler belowFluidHandler = below.getCapability(Capabilities.FLUID).resolve().orElse(null);
                 if (belowFluidHandler != null && FluidHelpers.transferExact(entity.outputFluidTank, belowFluidHandler, 1))
                 {
                     // And try and transfer heat
@@ -231,7 +231,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     private int burnTicks; // Ticks remaining on the current item of fuel
     private float burnTemperature; // Temperature provided from the current item of fuel
     private int airTicks; // Ticks of air provided by bellows
-    private long lastPlayerTick; // Last player tick this device was ticked (for purposes of catching up)
+    private long lastPlayerTick = Integer.MIN_VALUE; // Last player tick this device was ticked (for purposes of catching up)
     private int lastKnownCapacity; // Last calculation of capacity (happens every 20 ticks), used by the gui
 
     public BlastFurnaceBlockEntity(BlockPos pos, BlockState state)
@@ -373,12 +373,14 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     }
 
     @Override
+    @Deprecated
     public long getLastUpdateTick()
     {
         return lastPlayerTick;
     }
 
     @Override
+    @Deprecated
     public void setLastUpdateTick(long tick)
     {
         lastPlayerTick = tick;
@@ -394,7 +396,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (cap == Capabilities.FLUID)
         {
             return sidedFluidInventory.getSidedHandler(side).cast();
         }

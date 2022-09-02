@@ -8,19 +8,20 @@ package net.dries007.tfc.common.blocks.wood;
 
 import java.util.Optional;
 import java.util.function.Supplier;
+
+import net.dries007.tfc.common.container.RestrictedChestContainer;
+import net.dries007.tfc.common.container.TFCContainerTypes;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.CompoundContainer;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoubleBlockCombiner;
@@ -55,7 +56,7 @@ public class TFCChestBlock extends ChestBlock implements IForgeBlockExtension, E
                     {
                         chest1.unpackLootTable(inventory.player);
                         chest2.unpackLootTable(inventory.player);
-                        return new ChestMenu(MenuType.GENERIC_9x4, id, inventory, container, 4);
+                        return new RestrictedChestContainer(TFCContainerTypes.CHEST_9x4.get(), id, inventory, container, 4);
                     }
                     return null;
                 }
@@ -66,7 +67,7 @@ public class TFCChestBlock extends ChestBlock implements IForgeBlockExtension, E
                     {
                         return chest1.getDisplayName();
                     }
-                    return chest2.hasCustomName() ? chest2.getDisplayName() : new TranslatableComponent("container.chestDouble");
+                    return chest2.hasCustomName() ? chest2.getDisplayName() : Helpers.translatable("container.chestDouble");
                 }
             });
         }

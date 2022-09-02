@@ -14,6 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.INBTSerializable;
 
@@ -24,6 +25,7 @@ import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.container.LargeVesselContainer;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,11 +34,16 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBlockEntity.VesselInventory>
 {
     public static final int SLOTS = 9;
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.large_vessel");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.large_vessel");
 
     public LargeVesselBlockEntity(BlockPos pos, BlockState state)
     {
-        super(TFCBlockEntities.LARGE_VESSEL.get(), pos, state, VesselInventory::new, NAME);
+        this(TFCBlockEntities.LARGE_VESSEL.get(), pos, state);
+    }
+
+    public LargeVesselBlockEntity(BlockEntityType<? extends LargeVesselBlockEntity> type, BlockPos pos, BlockState state)
+    {
+        super(type, pos, state, VesselInventory::new, NAME);
     }
 
     @Nullable

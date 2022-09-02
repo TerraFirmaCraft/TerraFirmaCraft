@@ -6,6 +6,12 @@
     },
     {
       "item": "tfc:wood/wood/ash"
+    },
+    {
+      "item": "tfc:wood/stripped_wood/ash"
+    },
+    {
+      "item": "tfc:wood/stripped_log/ash"
     }
   ],
   "duration": 1250,

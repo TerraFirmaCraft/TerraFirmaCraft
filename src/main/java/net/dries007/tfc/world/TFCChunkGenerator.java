@@ -12,8 +12,11 @@ import java.util.concurrent.Executor;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
+import net.minecraft.CrashReport;
+import net.minecraft.ReportedException;
 import net.minecraft.core.*;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.server.level.WorldGenRegion;
@@ -30,6 +33,9 @@ import net.minecraft.world.level.levelgen.*;
 import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.carver.CarvingContext;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
+import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
@@ -38,10 +44,14 @@ import net.minecraftforge.registries.DeferredRegister;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.BiomeExtension;
 import net.dries007.tfc.world.biome.TFCBiomeSource;
 import net.dries007.tfc.world.biome.TFCBiomes;
@@ -68,6 +78,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     ).apply(instance, TFCChunkGenerator::new));
 
     public static final DeferredRegister<Codec<? extends ChunkGenerator>> CHUNK_GENERATOR = DeferredRegister.create(Registry.CHUNK_GENERATOR_REGISTRY, MOD_ID);
+    public static final int DECORATION_STEPS = GenerationStep.Decoration.values().length;
 
     static
     {
@@ -456,12 +467,101 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureFeatureManager structureFeatureManager)
     {
-        super.applyBiomeDecoration(level, chunk, structureFeatureManager);
+        final ChunkPos chunkPos = chunk.getPos();
+        final SectionPos sectionPos = SectionPos.of(chunkPos, level.getMinSection());
+        final BlockPos originPos = sectionPos.origin();
+
+        final Registry<ConfiguredStructureFeature<?, ?>> structureFeatures = level.registryAccess().registryOrThrow(Registry.CONFIGURED_STRUCTURE_FEATURE_REGISTRY);
+        final Registry<PlacedFeature> placedFeatures = level.registryAccess().registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
+
+        final Map<Integer, List<ConfiguredStructureFeature<?, ?>>> structureFeaturesByStep = structureFeatures.stream()
+            .collect(Collectors.groupingBy(feature -> feature.feature.step().ordinal()));
+
+        final List<BiomeSource.StepFeatureData> orderedFeatures = biomeSource.featuresPerStep();
+        final Random random = new Random();
+        final long baseSeed = Helpers.hash(128739412341L, originPos);
+
+        final Set<Biome> allAdjacentBiomes = new ObjectArraySet<>();
+        ChunkPos.rangeClosed(sectionPos.chunk(), 1).forEach((chunkPos1_) -> {
+            final ChunkAccess adjChunk = level.getChunk(chunkPos1_.x, chunkPos1_.z);
+            for (LevelChunkSection adjSection : adjChunk.getSections())
+            {
+                adjSection.getBiomes().getAll(biome -> allAdjacentBiomes.add(biome.value()));
+            }
+        });
+
+        for (int decorationIndex = 0; decorationIndex < Math.max(DECORATION_STEPS, orderedFeatures.size()); ++decorationIndex)
+        {
+            if (structureFeatureManager.shouldGenerateFeatures())
+            {
+                int featureIndex = 0;
+                for (ConfiguredStructureFeature<?, ?> feature : structureFeaturesByStep.getOrDefault(decorationIndex, Collections.emptyList()))
+                {
+                    Helpers.seedLargeFeatures(random, baseSeed, featureIndex, decorationIndex);
+
+                    try
+                    {
+                        structureFeatureManager.startsForFeature(sectionPos, feature).forEach(start -> start.placeInChunk(level, structureFeatureManager, this, random, getBoundingBoxForStructure(chunk), chunkPos));
+                    }
+                    catch (Exception e)
+                    {
+                        final CrashReport crash = CrashReport.forThrowable(e, "Feature placement");
+                        crash.addCategory("Feature").setDetail("Description", () -> structureFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString));
+                        throw new ReportedException(crash);
+                    }
+
+                    featureIndex++;
+                }
+            }
+
+            if (decorationIndex < orderedFeatures.size())
+            {
+                final IntSet featureIndices = new IntArraySet();
+                for (Biome biome : allAdjacentBiomes)
+                {
+                    List<HolderSet<PlacedFeature>> featuresPerBiome = TFCBiomes.getExtensionOrThrow(level, biome).getFlattenedFeatures(biome);
+                    if (decorationIndex < featuresPerBiome.size())
+                    {
+                        final HolderSet<PlacedFeature> featuresPerBiomeAtStep = featuresPerBiome.get(decorationIndex);
+                        final BiomeSource.StepFeatureData stepIndex = orderedFeatures.get(decorationIndex);
+                        for (Holder<PlacedFeature> holder : featuresPerBiomeAtStep)
+                        {
+                            featureIndices.add(stepIndex.indexMapping().applyAsInt(holder.value()));
+                        }
+                    }
+                }
+
+                final int[] sortedIndices = featureIndices.toIntArray();
+                final BiomeSource.StepFeatureData step = orderedFeatures.get(decorationIndex);
+
+                Arrays.sort(sortedIndices);
+                for (int featureIndex : sortedIndices)
+                {
+                    final PlacedFeature feature = step.features().get(featureIndex);
+                    Helpers.seedLargeFeatures(random, baseSeed, featureIndex, decorationIndex);
+                    try
+                    {
+                        feature.placeWithBiomeCheck(level, this, random, originPos);
+                    }
+                    catch (Exception e)
+                    {
+                        final CrashReport crash = CrashReport.forThrowable(e, "Feature placement");
+                        crash.addCategory("Feature").setDetail("Description", () -> placedFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString));
+                        throw new ReportedException(crash);
+                    }
+                }
+            }
+        }
+
+        level.setCurrentlyGenerating(null);
     }
 
     @Override
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor mainExecutor, Blender oldTerrainBlender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk)
     {
+        // Debug
+        final boolean debugGetBaseHeight = false;
+
         // Initialization
         final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
         final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
@@ -492,6 +592,19 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Unlock before surfaces are built, as they use locks directly
         sections.forEach(LevelChunkSection::release);
 
+        if (debugGetBaseHeight)
+        {
+            final int blockX = chunkPos.getMinBlockX(), blockZ = chunkPos.getMinBlockZ();
+            final ChunkHeightFiller heightFiller = createHeightFillerForChunk(chunkPos);
+            for (int dx = 0; dx < 16; dx++)
+            {
+                for (int dz = 0; dz < 16; dz++)
+                {
+                    chunk.setBlockState(new BlockPos(dx, (int) heightFiller.sampleHeight(blockX + dx, blockZ + dz), dz), Blocks.PURPLE_STAINED_GLASS.defaultBlockState(), false);
+                }
+            }
+        }
+
         surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.getLocalBiomes(), filler.getLocalBiomeWeights(), filler.getSlopeMap(), random, getSeaLevel(), settings.minY());
 
         return CompletableFuture.completedFuture(chunk);
@@ -512,7 +625,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public int getBaseHeight(int x, int z, Heightmap.Types type, LevelHeightAccessor level)
     {
-        return SEA_LEVEL_Y;
+        final ChunkPos pos = new ChunkPos(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+        return (int) createHeightFillerForChunk(pos).sampleHeight(x, z);
     }
 
     @Override
@@ -557,22 +671,39 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         }
     }
 
+    private BoundingBox getBoundingBoxForStructure(ChunkAccess chunk)
+    {
+        final ChunkPos pos = chunk.getPos();
+        final int blockX = pos.getMinBlockX(), blockZ = pos.getMinBlockZ();
+        final LevelHeightAccessor level = chunk.getHeightAccessorForGeneration();
+        return new BoundingBox(blockX, level.getMinBuildHeight() + 1, blockZ, blockX + 15, level.getMaxBuildHeight() - 1, blockZ + 15);
+    }
+
     private BiomeExtension sampleBiomeVariants(int blockX, int blockZ)
     {
         return customBiomeSource.getNoiseBiomeVariants(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ));
     }
 
+    public ChunkHeightFiller createHeightFillerForChunk(ChunkPos pos)
+    {
+        final Object2DoubleMap<BiomeExtension>[] biomeWeights = sampleBiomes(pos, this::sampleBiomeVariants, BiomeExtension::getGroup);
+        return new ChunkHeightFiller(createBiomeSamplersForChunk(), biomeWeights);
+    }
+
     private ChunkBaseBlockSource createBaseBlockSourceForChunk(ChunkAccess chunk)
     {
-        final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final RockData rockData = chunkDataProvider.get(chunk).getRockData();
-        return new ChunkBaseBlockSource(actualLevel, rockData, this::sampleBiomeVariants);
+        return new ChunkBaseBlockSource(rockData, this::sampleBiomeVariants);
     }
 
     private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkAccess chunk)
     {
+        return createNoiseSamplingSettingsForChunk(chunk.getPos(), chunk.getHeightAccessorForGeneration());
+    }
+
+    private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkPos pos, LevelHeightAccessor level)
+    {
         final NoiseSettings noiseSettings = settings.value().noiseSettings();
-        final LevelHeightAccessor level = chunk.getHeightAccessorForGeneration();
 
         final int cellWidth = noiseSettings.getCellWidth();
         final int cellHeight = noiseSettings.getCellHeight();
@@ -582,9 +713,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final int cellCountY = Math.floorDiv(maxY - minY, noiseSettings.getCellHeight());
 
-        final int firstCellX = Math.floorDiv(chunk.getPos().getMinBlockX(), cellWidth);
+        final int firstCellX = Math.floorDiv(pos.getMinBlockX(), cellWidth);
         final int firstCellY = Math.floorDiv(minY, cellHeight);
-        final int firstCellZ = Math.floorDiv(chunk.getPos().getMinBlockZ(), cellWidth);
+        final int firstCellZ = Math.floorDiv(pos.getMinBlockZ(), cellWidth);
 
         return new ChunkNoiseSamplingSettings(minY, 16 / cellWidth, cellCountY, cellWidth, cellHeight, firstCellX, firstCellY, firstCellZ);
     }

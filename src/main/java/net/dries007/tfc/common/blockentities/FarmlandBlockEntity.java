@@ -8,13 +8,14 @@ package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
 import java.util.function.IntFunction;
+
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -57,19 +58,24 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         super.saveAdditional(nbt);
     }
 
-    public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, @Nullable IntFunction<Component> hydrationValidity, boolean includeNutrients)
+    public boolean isMaxedOut()
     {
-        final int value = FarmlandBlock.getHydration(level, pos);
-        final MutableComponent hydration = new TranslatableComponent("tfc.tooltip.farmland.hydration", value);
-        if (hydrationValidity != null)
+        return nitrogen == 1 && phosphorous == 1 && potassium == 1;
+    }
+
+    public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, boolean includeHydration, boolean includeNutrients)
+    {
+        if (includeHydration)
         {
-            hydration.append(hydrationValidity.apply(value));
+            final int value = FarmlandBlock.getHydration(level, pos);
+            final MutableComponent hydration = Helpers.translatable("tfc.tooltip.farmland.hydration", value);
+            text.add(hydration);
+
         }
 
-        text.add(hydration);
         if (includeNutrients)
         {
-            text.add(new TranslatableComponent("tfc.tooltip.farmland.nutrients", format(nitrogen), format(phosphorous), format(potassium)));
+            text.add(Helpers.translatable("tfc.tooltip.farmland.nutrients", format(nitrogen), format(phosphorous), format(potassium)));
         }
     }
 

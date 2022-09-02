@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft. Some would say over nine thousand. Those people would be wrong.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye."
+      "text": "There are many, many, $(italic)many$() different types of plants in TerraFirmaCraft.$(br2)Different plants appear in different $(l:the_world/climate)Climates$(), and their appearance may change over the current season - going through cycles of flowering and laying dormant, or changing color as the local temperature changes. Colorful flowers can typically be crushed in a $(l:mechanics/quern)Quern$() for dye."
     },
     {
       "type": "patchouli:multiblock",
@@ -85,7 +85,7 @@
         }
       },
       "name": "Creeping",
-      "text": "Creeping plants take the shape of the surrounding block faces. They spawn in blobs on the ground, mostly.",
+      "text": "Creeping plants take the shape of the surrounding block faces. They mostly spawn in blobs on the ground",
       "enable_visualize": false
     },
     {
@@ -212,7 +212,7 @@
         }
       },
       "name": "Weeping Vines",
-      "text": "Weeping vines grow downward from the an anchoring block.",
+      "text": "Weeping vines grow downward from an anchoring block.",
       "enable_visualize": false
     },
     {

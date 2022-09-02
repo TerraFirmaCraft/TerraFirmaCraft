@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.TFCSounds;
@@ -46,6 +45,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.*;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
 import net.dries007.tfc.common.blocks.devices.SheetPileBlock;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.container.ItemStackContainerProvider;
 import net.dries007.tfc.common.container.TFCContainerProviders;
 import net.dries007.tfc.common.recipes.ScrapingRecipe;
@@ -276,7 +276,7 @@ public final class InteractionManager
                 if (Helpers.isBlock(stateClicked, TFCBlocks.LOG_PILE.get()))
                 {
                     return level.getBlockEntity(posClicked, TFCBlockEntities.LOG_PILE.get())
-                        .flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(t -> t))
+                        .flatMap(entity -> entity.getCapability(Capabilities.ITEM).map(t -> t))
                         .map(cap -> {
                             ItemStack insertStack = stack.copy();
                             insertStack = Helpers.insertAllSlots(cap, insertStack);
@@ -327,7 +327,7 @@ public final class InteractionManager
                 {
                     level.setBlockAndUpdate(abovePos, TFCBlocks.SCRAPING.get().defaultBlockState());
                     level.getBlockEntity(abovePos, TFCBlockEntities.SCRAPING.get())
-                        .map(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).map(cap -> {
+                        .map(entity -> entity.getCapability(Capabilities.ITEM).map(cap -> {
                             if (!level.isClientSide)
                             {
                                 ItemStack insertStack = stack.split(1);
@@ -427,13 +427,16 @@ public final class InteractionManager
                 else
                 {
                     // We clicked on a non-ingot pile, so we want to try and place an ingot pile at the current location.
-                    final ItemStack stackBefore = stack.copy();
+                    // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
+                    final ItemStack stackBefore = Helpers.copyWithSize(stack, 1);
+
+                    // The block as set through onItemUse() might be set at either the clicked, or relative position.
+                    // We need to construct this BlockPlaceContext before onItemUse is called, so it has the same value for the actual block placed pos
+                    final BlockPos actualPlacedPos = new BlockPlaceContext(context).getClickedPos();
                     final InteractionResult result = ingotPilePlacement.onItemUse(stack, context);
                     if (result.consumesAction())
                     {
-                        // Shrinking is already handled by the placement onItemUse() call, we just need to insert the stack
-                        stackBefore.setCount(1);
-                        level.getBlockEntity(relativePos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> pile.addIngot(stackBefore));
+                        level.getBlockEntity(actualPlacedPos, TFCBlockEntities.INGOT_PILE.get()).ifPresent(pile -> pile.addIngot(stackBefore));
                     }
                     return result;
                 }

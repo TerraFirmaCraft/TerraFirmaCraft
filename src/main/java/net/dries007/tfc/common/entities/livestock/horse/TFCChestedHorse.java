@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.Container;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -63,6 +64,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     private static final EntityDataAccessor<Long> PREGNANT_TIME = SynchedEntityData.defineId(TFCChestedHorse.class, EntityHelpers.LONG_SERIALIZER);
     private static final EntityDataAccessor<ItemStack> CHEST_ITEM = SynchedEntityData.defineId(TFCChestedHorse.class, EntityDataSerializers.ITEM_STACK);
 
+    private boolean overburdened = false;
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
     private long matingTime; //The last time(in ticks) this male tried fertilizing females
@@ -102,6 +104,13 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
     public void setChestItem(ItemStack stack)
     {
         entityData.set(CHEST_ITEM, stack);
+    }
+
+    @Override
+    public void containerChanged(Container container)
+    {
+        super.containerChanged(container);
+        overburdened = Helpers.countOverburdened(container) == 2;
     }
 
     @Override
@@ -177,9 +186,9 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
             }
             else
             {
-                if (getOwnerUUID() == null) // tfc: add an owner
+                if (isTamed() && getOwnerUUID() == null) // tfc: add an owner
                 {
-                    setOwnerUUID(player.getUUID());
+                    tameWithName(player);
                 }
                 this.doPlayerRide(player);
                 return InteractionResult.sidedSuccess(this.level.isClientSide);
@@ -343,6 +352,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         super.addAdditionalSaveData(nbt);
         saveCommonAnimalData(nbt);
         nbt.put("chestItem", getChestItem().save(new CompoundTag()));
+        nbt.putBoolean("overburdened", overburdened);
     }
 
     @Override
@@ -351,6 +361,7 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         super.readAdditionalSaveData(nbt);
         readCommonAnimalData(nbt);
         setChestItem(ItemStack.of(nbt.getCompound("chestItem")));
+        overburdened = nbt.getBoolean("overburdened");
     }
 
     @Override
@@ -446,6 +457,10 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
         if (level.getGameTime() % 20 == 0)
         {
             tickAnimalData();
+            if (overburdened)
+            {
+                addEffect(Helpers.getOverburdened(true));
+            }
         }
     }
 

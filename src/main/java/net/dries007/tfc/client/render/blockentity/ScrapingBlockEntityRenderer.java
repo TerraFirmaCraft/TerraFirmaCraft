@@ -15,20 +15,20 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.model.data.EmptyModelData;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.ScrapingBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class ScrapingBlockEntityRenderer implements BlockEntityRenderer<ScrapingBlockEntity>
 {
     @Override
     public void render(ScrapingBlockEntity scraping, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int combinedLight, int combinedOverlay)
     {
-        scraping.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(cap -> {
+        scraping.getCapability(Capabilities.ITEM).ifPresent(cap -> {
             final ItemStack baseStack = cap.getStackInSlot(0);
             final ItemStack scrapeStack = scraping.getCachedItem();
             if (!baseStack.isEmpty() && !scrapeStack.isEmpty())

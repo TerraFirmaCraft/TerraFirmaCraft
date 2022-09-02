@@ -8,9 +8,9 @@ package net.dries007.tfc.common.container;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.CapabilityItemHandler;
 
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
 
 public class CharcoalForgeContainer extends BlockEntityContainer<CharcoalForgeBlockEntity>
 {
@@ -39,7 +39,7 @@ public class CharcoalForgeContainer extends BlockEntityContainer<CharcoalForgeBl
     @Override
     protected void addContainerSlots()
     {
-        blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
+        blockEntity.getCapability(Capabilities.ITEM).ifPresent(handler -> {
             // Fuel slots
             // Note: the order of these statements is important
             int index = CharcoalForgeBlockEntity.SLOT_FUEL_MIN;

@@ -6,6 +6,10 @@
     "tfc:groundcover/dead_grass",
     "tfc:groundcover/driftwood",
     "tfc:groundcover/pinecone",
-    "minecraft:paper"
+    "minecraft:paper",
+    "tfc:melon",
+    "tfc:pumpkin",
+    "tfc:rotten_melon",
+    "tfc:rotten_pumpkin"
   ]
 }

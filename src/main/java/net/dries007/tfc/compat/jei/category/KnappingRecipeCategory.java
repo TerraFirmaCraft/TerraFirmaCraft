@@ -36,7 +36,6 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     @Override
     public void draw(T recipe, IRecipeSlotsView recipeSlots, PoseStack stack, double mouseX, double mouseY)
     {
-        slot.draw(stack, 116, 32);
         arrow.draw(stack, 86, 33);
         arrowAnimated.draw(stack, 86, 33);
         IDrawable high = getHigh(recipe, recipeSlots);
@@ -75,5 +74,6 @@ public class KnappingRecipeCategory<T extends KnappingRecipe> extends BaseRecipe
     {
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 117, 33);
         outputSlot.addItemStack(recipe.getResultItem());
+        outputSlot.setBackground(slot, -1, -1);
     }
 }

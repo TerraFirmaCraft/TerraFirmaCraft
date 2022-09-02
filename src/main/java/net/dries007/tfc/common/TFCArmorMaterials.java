@@ -11,11 +11,14 @@ import java.util.Locale;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.PhysicalDamageType;
 
-public enum TFCArmorMaterials implements TFCArmorMaterial
+public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multiplier
 {
     COPPER(160, 200, 215, 150, 1, 3, 4, 1, 9, 0f, 0f, 10, 10, 6.25f),
     BISMUTH_BRONZE( 250, 288, 311, 240, 1, 4, 4, 1, 9, 0f, 0f, 15, 10, 8.25f),
@@ -27,8 +30,7 @@ public enum TFCArmorMaterials implements TFCArmorMaterial
     BLUE_STEEL(860, 960, 1088, 748, 3, 6, 8, 3, 23, 3f, 0.1f, 62.5f, 50, 50),
     RED_STEEL(884, 1020, 1010, 715, 3, 6, 8, 3, 23, 3f, 0.1f, 50, 62.5f, 50);
 
-    private final ResourceLocation location;
-    private final String serializedName;
+    private final ResourceLocation serializedName;
     private final int feetDamage;
     private final int legDamage;
     private final int chestDamage;
@@ -46,8 +48,7 @@ public enum TFCArmorMaterials implements TFCArmorMaterial
 
     TFCArmorMaterials(int feetDamage, int legDamage, int chestDamage, int headDamage, int feetReduction, int legReduction, int chestReduction, int headReduction, int enchantability, float toughness, float knockbackResistance, float crushingModifier, float piercingModifier, float slashingModifier)
     {
-        this.location = Helpers.identifier(name().toLowerCase(Locale.ROOT));
-        this.serializedName = location.toString();
+        this.serializedName = Helpers.identifier(name().toLowerCase(Locale.ROOT));
         this.feetDamage = feetDamage;
         this.legDamage = legDamage;
         this.chestDamage = chestDamage;
@@ -64,35 +65,20 @@ public enum TFCArmorMaterials implements TFCArmorMaterial
         this.slashingModifier = slashingModifier;
     }
 
-    /**
-     * Returns the crushing modifier this armor has
-     *
-     * @return float value with the modifier. To check how damage calculation is done
-     */
     @Override
-    public float getCrushingModifier()
+    public float crushing()
     {
         return crushingModifier;
     }
 
-    /**
-     * Returns the crushing modifier this armor has
-     *
-     * @return float value with the modifier. To check how damage calculation is done
-     */
     @Override
-    public float getPiercingModifier()
+    public float piercing()
     {
         return piercingModifier;
     }
 
-    /**
-     * Returns the crushing modifier this armor has
-     *
-     * @return float value with the modifier. To check how damage calculation is done
-     */
     @Override
-    public float getSlashingModifier()
+    public float slashing()
     {
         return slashingModifier;
     }
@@ -135,16 +121,21 @@ public enum TFCArmorMaterials implements TFCArmorMaterial
         return TFCSounds.ARMOR_EQUIP.get(this).get();
     }
 
+    /**
+     * Use {@link #getId()} because it doesn't have weird namespaced side effects.
+     */
     @Override
+    @Deprecated
     public String getName()
     {
-        return serializedName;
+        // Note that in HumanoidArmorLayer, the result of getName() is used directly in order to infer the armor texture location
+        // So, this needs to be properly namespaced despite being a string.
+        return serializedName.toString();
     }
 
-    @Override
-    public ResourceLocation getLocation()
+    public ResourceLocation getId()
     {
-        return location;
+        return serializedName;
     }
 
     @Override
@@ -157,5 +148,11 @@ public enum TFCArmorMaterials implements TFCArmorMaterial
     public float getKnockbackResistance()
     {
         return knockbackResistance;
+    }
+
+    @Override
+    public Ingredient getRepairIngredient()
+    {
+        return Ingredient.EMPTY;
     }
 }

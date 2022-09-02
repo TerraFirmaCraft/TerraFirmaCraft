@@ -1,0 +1,284 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/root",
+  "criteria": {
+    "blackberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/blackberry"
+          ]
+        }
+      }
+    },
+    "raspberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/raspberry"
+          ]
+        }
+      }
+    },
+    "blueberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/blueberry"
+          ]
+        }
+      }
+    },
+    "elderberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/elderberry"
+          ]
+        }
+      }
+    },
+    "bunchberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/bunchberry"
+          ]
+        }
+      }
+    },
+    "gooseberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/gooseberry"
+          ]
+        }
+      }
+    },
+    "snowberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/snowberry"
+          ]
+        }
+      }
+    },
+    "cloudberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/cloudberry"
+          ]
+        }
+      }
+    },
+    "strawberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/strawberry"
+          ]
+        }
+      }
+    },
+    "wintergreen_berry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/wintergreen_berry"
+          ]
+        }
+      }
+    },
+    "cranberry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/cranberry"
+          ]
+        }
+      }
+    },
+    "banana": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/banana"
+          ]
+        }
+      }
+    },
+    "cherry": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/cherry"
+          ]
+        }
+      }
+    },
+    "green_apple": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/green_apple"
+          ]
+        }
+      }
+    },
+    "lemon": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/lemon"
+          ]
+        }
+      }
+    },
+    "olive": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/olive"
+          ]
+        }
+      }
+    },
+    "orange": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/orange"
+          ]
+        }
+      }
+    },
+    "peach": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/peach"
+          ]
+        }
+      }
+    },
+    "plum": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/plum"
+          ]
+        }
+      }
+    },
+    "red_apple": {
+      "trigger": "minecraft:consume_item",
+      "conditions": {
+        "item": {
+          "items": [
+            "tfc:food/red_apple"
+          ]
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:food/orange"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.fruit.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.fruit.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "blackberry"
+    ],
+    [
+      "raspberry"
+    ],
+    [
+      "blueberry"
+    ],
+    [
+      "elderberry"
+    ],
+    [
+      "bunchberry"
+    ],
+    [
+      "gooseberry"
+    ],
+    [
+      "snowberry"
+    ],
+    [
+      "cloudberry"
+    ],
+    [
+      "strawberry"
+    ],
+    [
+      "wintergreen_berry"
+    ],
+    [
+      "cranberry"
+    ],
+    [
+      "banana"
+    ],
+    [
+      "cherry"
+    ],
+    [
+      "green_apple"
+    ],
+    [
+      "lemon"
+    ],
+    [
+      "olive"
+    ],
+    [
+      "orange"
+    ],
+    [
+      "peach"
+    ],
+    [
+      "plum"
+    ],
+    [
+      "red_apple"
+    ]
+  ]
+}

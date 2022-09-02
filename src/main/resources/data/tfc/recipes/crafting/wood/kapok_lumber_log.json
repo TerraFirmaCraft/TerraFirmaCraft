@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:wood/log/kapok"
+        "tag": "tfc:kapok_logs"
       },
       {
         "tag": "tfc:saws"

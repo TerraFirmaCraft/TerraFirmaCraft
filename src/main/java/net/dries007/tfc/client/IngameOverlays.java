@@ -132,12 +132,24 @@ public class IngameOverlays
 
             int x = width / 2;
             int y = height - gui.right_height;
-            float percentThirst = (player.getFoodData() instanceof TFCFoodData data ? data.getThirst() : 0) / TFCFoodData.MAX_THIRST;
+            float percentThirst = 0;
+            float overheat = 0;
+            if (player.getFoodData() instanceof TFCFoodData data)
+            {
+                percentThirst = data.getThirst() / TFCFoodData.MAX_THIRST;
+                overheat = data.getThirstContributionFromTemperature(player);
+            }
 
             stack.pushPose();
             stack.translate(x + 1, y + 4, 0);
             gui.blit(stack, 0, 0, 90, 20, 90, 5);
             gui.blit(stack, 0, 0, 90, 25, (int) (90 * percentThirst), 5);
+            if (overheat > 0)
+            {
+                RenderSystem.setShaderColor(1f, 1f, 1f, overheat / TFCFoodData.MAX_TEMPERATURE_THIRST_DECAY);
+                gui.blit(stack, 0, 0, 90, 30, 90, 5);
+                RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+            }
             stack.popPose();
 
             gui.right_height += 6;
@@ -223,6 +235,7 @@ public class IngameOverlays
         gui.blit(stack, 0, 0, 0, 0, 90, 10);
 
         float absorption = entity.getAbsorptionAmount();
+        absorption = Float.isNaN(absorption) ? 0 : absorption;
         float percentHealth = (entity.getHealth() + absorption) / 20f;
         float currentHealth = percentHealth * maxHealth;
         percentHealth = Mth.clamp(percentHealth, 0, 1);
@@ -245,7 +258,10 @@ public class IngameOverlays
         }
         stack.popPose();
 
-        String text = style.format(currentHealth, maxHealth);
+        // Health modifier affects both max and current health equally. All we do is draw different numbers as a result.
+        final float healthModifier = entity instanceof Player player && player.getFoodData() instanceof TFCFoodData data ? data.getHealthModifier() : 1f;
+
+        String text = style.format(currentHealth * healthModifier, maxHealth * healthModifier);
         stack.pushPose();
         stack.translate(centerX - 45, y + 2.5, 0);
         stack.scale(0.8f, 0.8f, 1.0f);

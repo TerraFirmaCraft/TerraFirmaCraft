@@ -4,6 +4,7 @@
 from enum import Enum, auto
 
 from mcresources import ResourceManager, utils, loot_tables
+from mcresources.type_definitions import ResourceIdentifier
 
 from constants import *
 from recipes import fluid_ingredient
@@ -56,15 +57,18 @@ def generate(rm: ResourceManager):
         # Metal Items and Blocks
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type in metal_data.types or item_data.type == 'all':
+                item_name = 'tfc:metal/%s/%s' % (item, metal)
                 if item_data.tag is not None:
-                    rm.item_tag(item_data.tag + '/' + metal, 'tfc:metal/%s/%s' % (item, metal))
+                    rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
+                    rm.item_tag(item_data.tag + '/' + metal, item_name)
                     ingredient = utils.item_stack('#%s/%s' % (item_data.tag, metal))
                 else:
-                    ingredient = utils.item_stack('tfc:metal/%s/%s' % (item, metal))
+                    ingredient = utils.item_stack(item_name)
 
+                rm.item_tag('metal_item/%s' % metal, item_name)
+                if item in METAL_TOOL_HEADS:
+                    rm.item_tag('metal_item/%s_tools' % metal, item_name)
                 item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
-                if 'tool' in metal_data.types and item == 'fishing_rod':
-                    rm.item_tag('forge:fishing_rods', 'tfc:metal/%s/%s' % (item, metal))
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
@@ -84,6 +88,10 @@ def generate(rm: ResourceManager):
     rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
     rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
     rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
+    rm.entity_tag('horses', 'tfc:horse', 'tfc:mule', 'tfc:donkey')
+    rm.entity_tag('animals', *['tfc:%s' % mob for mob in SPAWN_EGG_ENTITIES])
+    rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
+    rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
 
     # Item Heats
 
@@ -99,7 +107,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HC)
     item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HC)
     item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
-    item_heat(rm, 'dough', ['tfc:food/%s_dough' % grain for grain in GRAINS], 1)
+    item_heat(rm, 'dough', '#tfc:foods/dough', 1)
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
     item_heat(rm, 'egg', 'minecraft:egg', 1)
@@ -131,7 +139,7 @@ def generate(rm: ResourceManager):
     # Fuels
 
     for wood, wood_data in WOODS.items():
-        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood], wood_data.duration, wood_data.temp)
+        fuel_item(rm, wood + '_log', ['tfc:wood/log/' + wood, 'tfc:wood/wood/' + wood, 'tfc:wood/stripped_wood/' + wood, 'tfc:wood/stripped_log/' + wood], wood_data.duration, wood_data.temp)
 
     fuel_item(rm, 'coal', ['minecraft:coal', 'tfc:ore/bituminous_coal'], 2200, 1415)
     fuel_item(rm, 'lignite', 'tfc:ore/lignite', 2200, 1350)
@@ -152,6 +160,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('high_quality_cloth', 'tfc:silk_cloth', 'tfc:wool_cloth')
     rm.item_tag('minecraft:stone_pressure_plates', 'minecraft:stone_pressure_plate', 'minecraft:polished_blackstone_pressure_plate')
     rm.item_tag('axes_that_log', '#tfc:axes')
+    rm.item_tag('inefficient_logging_axes', *['tfc:stone/axe/%s' % cat for cat in ROCK_CATEGORIES])
     rm.item_tag('extinguisher', '#tfc:shovels')
     rm.item_tag('forge:shears', '#tfc:shears')  # forge tag includes TFC shears
     rm.item_tag('minecraft:coals', 'tfc:ore/bituminous_coal', 'tfc:ore/lignite')
@@ -203,10 +212,11 @@ def generate(rm: ResourceManager):
     rm.item_tag('horse_food', '#tfc:foods/grains', '#tfc:foods/fruits')
     rm.item_tag('musk_ox_food', '#tfc:foods/grains')
 
+    rm.item_tag('tfc:foods/dough', *['tfc:food/%s_dough' % g for g in GRAINS])
     rm.item_tag('foods/can_be_salted', '#tfc:foods/raw_meats')
     rm.item_tag('tfc:foods/grains', *['tfc:food/%s_grain' % grain for grain in GRAINS])
-    rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in VEGETABLES], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
-    rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper')
+    rm.item_tag('tfc:compost_greens', '#tfc:plants', *['tfc:food/%s' % v for v in MISC_FOODS], *['tfc:food/%s' % m for m in FRUITS], *['tfc:food/%s_bread' % grain for grain in GRAINS])
+    rm.item_tag('tfc:compost_browns', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:rotten_melon', 'tfc:rotten_pumpkin')
     rm.item_tag('tfc:compost_poisons', *['tfc:food/%s' % m for m in MEATS], *['tfc:food/cooked_%s' % m for m in MEATS], 'minecraft:bone')
     rm.item_tag('forge:double_sheets/any_bronze', *['#forge:double_sheets/%sbronze' % b for b in ('bismuth_', 'black_', '')])
     rm.item_tag('tfc:bronze_anvils', *['tfc:metal/anvil/%sbronze' % b for b in ('bismuth_', 'black_', '')])
@@ -233,6 +243,9 @@ def generate(rm: ResourceManager):
     rm.item_tag('mob_offhand_weapons', *['tfc:metal/shield/%s' % metal for metal in MOB_ARMOR_METALS])
     rm.item_tag('mob_mainhand_weapons', *['tfc:metal/%s/%s' % (tool, metal) for metal in MOB_ARMOR_METALS for tool in MOB_TOOLS], *['tfc:stone/%s/%s' % (tool, stone) for stone in ROCK_CATEGORIES for tool in STONE_MOB_TOOLS], 'tfc:large_raw_hide', 'tfc:medium_raw_hide', 'tfc:small_raw_hide', 'tfc:handstone')
     rm.item_tag('disabled_monster_held_items', 'minecraft:iron_sword', 'minecraft:iron_shovel', 'minecraft:fishing_rod', 'minecraft:nautilus_shell')
+    rm.item_tag('deals_piercing_damage', '#tfc:javelins', '#tfc:knives')
+    rm.item_tag('deals_slashing_damage', '#tfc:swords', '#tfc:axes')
+    rm.item_tag('deals_crushing_damage', '#tfc:hammers', '#tfc:maces')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -333,6 +346,9 @@ def generate(rm: ResourceManager):
     rm.block_tag('minecraft:climbable', 'tfc:plant/hanging_vines', 'tfc:plant/hanging_vines_plant', 'tfc:plant/liana', 'tfc:plant/liana_plant')
     rm.block_tag('minecraft:infiniburn_overworld', 'tfc:pit_kiln')
     rm.block_tag('creeping_plantable_on', '#minecraft:logs')
+    rm.block_tag('minecraft:prevent_mob_spawning_inside', 'tfc:thatch', '#minecraft:leaves')
+    rm.block_tag('minecraft:wall_post_override', 'tfc:torch', 'tfc:dead_torch')
+    rm.block_tag('minecraft:fall_damage_resetting', 'tfc:thatch', '#tfc:berry_bushes')
 
     for color in COLORS:
         rm.block_tag('minecraft:walls', 'tfc:alabaster/polished/%s_wall' % color, 'tfc:alabaster/bricks/%s_wall' % color)
@@ -370,7 +386,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('usable_on_tool_rack', 'tfc:firestarter', 'minecraft:bow', 'minecraft:crossbow', 'minecraft:flint_and_steel')
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
-    rm.block_tag('mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
+    block_and_item_tag(rm, 'mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():
@@ -383,11 +399,15 @@ def generate(rm: ResourceManager):
                 name = lang(ore)
                 if ore == 'diamond':
                     name = lang('kimberlite')
+                if ore == 'pyrite':
+                    name = lang('native gold?')
                 rm.block('tfc:ore/%s/%s/prospected' % (ore, rock)).with_lang(name)
 
     for wood in WOODS.keys():
         rm.block_tag('lit_by_dropped_torch', 'tfc:wood/fallen_leaves/' + wood)
         rm.block_tag('converts_to_humus', 'tfc:wood/fallen_leaves/' + wood)
+        if wood not in ('kapok', 'palm', 'pine', 'sequoia', 'spruce', 'white_cedar'):
+            rm.block_tag('seasonal_leaves', 'tfc:wood/leaves/%s' % wood)
 
     for plant, data in PLANTS.items():  # Plants
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
@@ -404,9 +424,8 @@ def generate(rm: ResourceManager):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
-        block_and_item_tag(rm, 'forge:stone', block('raw'))
-        rm.block_tag('forge:stone', block('hardened'))
-        block_and_item_tag(rm, 'forge:cobblestone', block('cobble'), block('mossy_cobble'))
+        block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
+        block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
         rm.block_tag('minecraft:base_stone_overworld', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:stone_bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
         block_and_item_tag(rm, 'forge:smooth_stone', block('smooth'))
@@ -417,6 +436,7 @@ def generate(rm: ResourceManager):
         rm.item_tag('tfc:%s_rock' % rock_data.category, block('loose'))
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.block_tag('creates_upward_bubbles', block('magma'))
+            block_and_item_tag(rm, 'rock_anvils', 'tfc:rock/anvil/%s' % rock)
 
         if rock in ['chalk', 'dolomite', 'limestone', 'marble']:
             rm.item_tag('tfc:fluxstone', block('loose'))
@@ -598,10 +618,18 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_jug', '#tfc:drinkable_ingredients')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
     rm.fluid_tag('usable_in_red_steel_bucket', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_blue_steel_bucket', '#tfc:ingredients', '#minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('usable_in_blue_steel_bucket', '#minecraft:lava', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#minecraft:water')
     rm.fluid_tag('scribing_ink', 'tfc:black_dye')
+
+    # Entity Tags
+
+    # Note, for all of these, weapons take priority over entity type
+    # So, this is the damage the entity would do, if somehow they attacked you *without* a weapon.
+    rm.entity_tag('deals_piercing_damage', 'minecraft:arrow', 'minecraft:bee', 'minecraft:cave_spider', 'minecraft:evoker_fangs', 'minecraft:phantom', 'minecraft:spectral_arrow', 'minecraft:spider', 'minecraft:trident', 'tfc:glow_arrow', 'tfc:thrown_javelin', 'tfc:boar')
+    rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
+    rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
 
     # Item Sizes
 
@@ -609,7 +637,6 @@ def generate(rm: ResourceManager):
     item_size(rm, 'quern', 'tfc:quern', Size.very_large, Weight.very_heavy)
     item_size(rm, 'tool_racks', '#tfc:tool_racks', Size.large, Weight.very_heavy)
     item_size(rm, 'chests', '#forge:chests', Size.large, Weight.light)
-    # todo: add tfc (non-wooden) slabs to minecraft slab tag
     item_size(rm, 'slabs', '#minecraft:slabs', Size.small, Weight.very_light)
     item_size(rm, 'vessels', '#tfc:vessels', Size.normal, Weight.very_heavy)
     item_size(rm, 'doors', '#minecraft:doors', Size.very_large, Weight.heavy)
@@ -637,9 +664,9 @@ def generate(rm: ResourceManager):
     item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.very_heavy)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
-
-    # unimplemented
-    # item_size(rm, 'loom', 'tfc:loom', Size.large, Weight.very_heavy)
+    item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
+    item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.very_heavy)
+    item_size(rm, 'looms', '#tfc:looms', Size.large, Weight.very_heavy)
 
     # Food
 
@@ -712,6 +739,10 @@ def generate(rm: ResourceManager):
     food_item(rm, 'sugarcane', 'tfc:food/sugarcane', Category.vegetable, 4, 0, 0, 0.5)
     food_item(rm, 'tomato', 'tfc:food/tomato', Category.vegetable, 4, 0.5, 5, 3.5, veg=1.5)
     food_item(rm, 'yellow_bell_pepper', 'tfc:food/yellow_bell_pepper', Category.vegetable, 4, 1, 0, 2.5, veg=1)
+    food_item(rm, 'pumpkin', 'tfc:pumpkin', Category.vegetable, 4, 0, 0, 0.5)
+    food_item(rm, 'melon', 'tfc:melon', Category.vegetable, 4, 0, 0, 0.5)
+    food_item(rm, 'melon_slice', 'minecraft:melon_slice', Category.fruit, 4, 0.2, 5, 2.5, fruit=0.75)
+    food_item(rm, 'pumpkin_pie', 'minecraft:pumpkin_pie', Category.fruit, 4, 2, 5, 2.5, fruit=1.5, grain=1)
     food_item(rm, 'cheese', 'tfc:food/cheese', Category.dairy, 4, 2, 0, 0.3, dairy=3)
     food_item(rm, 'cooked_egg', 'tfc:food/cooked_egg', Category.other, 4, 0.5, 0, 4, protein=1.5, dairy=0.25)
     food_item(rm, 'boiled_egg', 'tfc:food/boiled_egg', Category.other, 4, 2, 10, 4, protein=1.5, dairy=0.25)
@@ -763,22 +794,26 @@ def generate(rm: ResourceManager):
     food_item(rm, 'cooked_chevon', 'tfc:food/cooked_chevon', Category.cooked_meat, 4, 1, 0, 2.25, protein=2)
     food_item(rm, 'cooked_gran_feline', 'tfc:food/cooked_gran_feline', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
     food_item(rm, 'cooked_camelidae', 'tfc:food/cooked_camelidae', Category.cooked_meat, 4, 2, 0, 2.25, protein=2.5)
+    # Always Rotten
+    food_item(rm, 'rotten_flesh', 'minecraft:rotten_flesh', Category.other, 0, 0, 0, 99999)
+    food_item(rm, 'rotten_pumpkin', 'tfc:rotten_pumpkin', Category.other, 0, 0, 0, 99999)
+    food_item(rm, 'rotten_melon', 'tfc:rotten_melon', Category.other, 0, 0, 0, 99999)
 
     # Drinkables
 
     drinkable(rm, 'fresh_water', ['minecraft:water', 'tfc:river_water'], thirst=10)
-    drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1)
+    drinkable(rm, 'salt_water', 'tfc:salt_water', thirst=-1, effects=[{'type': 'tfc:thirst', 'duration': 600, 'chance': 0.25}])
     drinkable(rm, 'alcohol', '#tfc:alcohols', thirst=10, intoxication=4000)
-    drinkable(rm, 'milk', '#tfc:milks', thirst=10)
+    drinkable(rm, 'milk', '#tfc:milks', thirst=10, food={'category': 'dairy', 'hunger': 0, 'saturation': 0, 'dairy': 1.0})
 
     # Climate Ranges
 
     for berry, data in BERRIES.items():
-        climate_range(rm, 'plant/%s_bush' % berry, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp, data.max_temp, 0))
+        climate_range(rm, 'plant/%s_bush' % berry, temperature=(data.min_temp, data.max_temp, 0), hydration=(hydration_from_rainfall(data.min_rain), 100, 0))
+
     for fruit, data in FRUITS.items():
         climate_range(rm, 'plant/%s_tree' % fruit, hydration=(hydration_from_rainfall(data.min_rain), 100, 0), temperature=(data.min_temp - 7, data.max_temp + 7, 0))
 
-    # Crops
     for crop, data in CROPS.items():
         climate_range(rm, 'crop/%s' % crop, hydration=(data.min_hydration, data.max_hydration, 0), temperature=(data.min_temp, data.max_temp, 5))
 
@@ -843,6 +878,15 @@ def generate(rm: ResourceManager):
     # Misc Block Loot
     rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
 
+    # Entity Damage Resistance
+    rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')
+    rm.entity_tag('creepers', 'minecraft:creeper')
+    rm.entity_tag('zombies', 'minecraft:zombie', 'minecraft:husk', 'minecraft:zombie_villager')
+
+    entity_damage_resistance(rm, 'skeletons', 'tfc:skeletons', piercing=1000000000, crushing=-50)
+    entity_damage_resistance(rm, 'creeper', 'tfc:creepers', slashing=-25, crushing=50)
+    entity_damage_resistance(rm, 'zombies', 'tfc:zombies', piercing=-25, crushing=50)
+
     # Entity Loot
 
     for mob in ('cod', 'bluegill', 'tropical_fish', 'salmon'):
@@ -881,8 +925,14 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
-    global_loot_modifiers(rm, 'tfc:reset_decay')
-    global_loot_modifier(rm, 'reset_decay', 'tfc:reset_decay', {'condition': 'tfc:always_true'})
+
+def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier, entity_tag: str, piercing: int = 0, slashing: int = 0, crushing: int = 0):
+    rm.data(('tfc', 'entity_damage_resistances', name_parts), {
+        'entity': entity_tag,
+        'piercing': piercing,
+        'slashing': slashing,
+        'crushing': crushing
+    })
 
 def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
@@ -902,19 +952,6 @@ def loot_invert(condition: utils.JsonObject):
         'term': condition
     }
 
-def global_loot_modifier(rm: ResourceManager, name: str, mod_type: str, *conditions: utils.Json):
-    rm.write((*rm.resource_dir, 'data', rm.domain, 'loot_modifiers', name), {
-        'type': mod_type,
-        'conditions': [c for c in conditions]
-    })
-
-# note for the mcresources dev: these work exactly the same as tags so if you implement this, do it like that
-def global_loot_modifiers(rm: ResourceManager, *modifiers: str):
-    rm.write((*rm.resource_dir, 'data', 'forge', 'loot_modifiers', 'global_loot_modifiers'), {
-        'replace': False,
-        'entries': [m for m in modifiers]
-    })
-
 def lamp_fuel(fluid: str, burn_rate: int, valid_lamps: str = '#tfc:lamps'):
     return {
         'fluid': fluid,
@@ -929,6 +966,7 @@ def fertilizer(ingredient: str, n: float = None, p: float = None, k: float = Non
         'potassium': k,
         'phosphorus': p
     }
+
 
 def climate_config(min_temp: Optional[float] = None, max_temp: Optional[float] = None, min_rain: Optional[float] = None, max_rain: Optional[float] = None, needs_forest: Optional[bool] = False, fuzzy: Optional[bool] = None, min_forest: Optional[str] = None, max_forest: Optional[str] = None) -> Dict[str, Any]:
     return {
@@ -960,7 +998,7 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         'hunger': hunger,
         'saturation': saturation,
         'water': water if water != 0 else None,
-        'decay': decay,
+        'decay_modifier': decay,
         'fruit': fruit,
         'vegetables': veg,
         'protein': protein,
@@ -980,13 +1018,13 @@ def food_item(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
         rm.item_tag('foods/dairy', ingredient)
 
 
-def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None):
+def drinkable(rm: ResourceManager, name_parts: utils.ResourceIdentifier, fluid: utils.Json, thirst: Optional[int] = None, intoxication: Optional[int] = None, effects: Optional[utils.Json] = None, food: Optional[utils.Json] = None):
     rm.data(('tfc', 'drinkables', name_parts), {
         'ingredient': fluid_ingredient(fluid),
         'thirst': thirst,
-        'intoxication': intoxication
-        # todo: effects
-        # todo: milk effects
+        'intoxication': intoxication,
+        'effects': effects,
+        'food': food
     })
 
 

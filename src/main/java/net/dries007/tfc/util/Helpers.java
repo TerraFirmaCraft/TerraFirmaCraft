@@ -14,14 +14,12 @@ import java.util.stream.Stream;
 
 import com.google.common.collect.Iterators;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.NonNullList;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -33,6 +31,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,6 +45,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -55,6 +55,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.RandomSource;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.configurations.SimpleRandomFeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -69,10 +72,8 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -82,10 +83,17 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
+import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
+import net.dries007.tfc.common.capabilities.size.IItemSize;
+import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
+import net.dries007.tfc.world.feature.MultipleFeature;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -174,7 +182,7 @@ public final class Helpers
 
     public static TranslatableComponent translateEnum(Enum<?> anEnum)
     {
-        return new TranslatableComponent(getEnumTranslationKey(anEnum));
+        return Helpers.translatable(getEnumTranslationKey(anEnum));
     }
 
     /**
@@ -183,6 +191,30 @@ public final class Helpers
     public static String getEnumTranslationKey(Enum<?> anEnum)
     {
         return getEnumTranslationKey(anEnum, anEnum.getDeclaringClass().getSimpleName());
+    }
+
+    /**
+     * Use over invoking the constructor, as Mojang refactors this in 1.19
+     */
+    public static TranslatableComponent translatable(String key)
+    {
+        return new TranslatableComponent(key);
+    }
+
+    /**
+     * Use over invoking the constructor, as Mojang refactors this in 1.19
+     */
+    public static TranslatableComponent translatable(String key, Object... args)
+    {
+        return new TranslatableComponent(key, args);
+    }
+
+    /**
+     * Use over invoking the constructor, as Mojang refactors this in 1.19
+     */
+    public static TextComponent literal(String literalText)
+    {
+        return new TextComponent(literalText);
     }
 
     /**
@@ -361,6 +393,41 @@ public final class Helpers
     }
 
     /**
+     * @return 0 (well-burdened), 1 (exhausted), 2 (overburdened, add potion effect)
+     */
+    public static int countOverburdened(Container container)
+    {
+        int count = 0;
+        for (int i = 0; i < container.getContainerSize(); i++)
+        {
+            final ItemStack stack = container.getItem(i);
+            if (!stack.isEmpty())
+            {
+                IItemSize size = ItemSizeManager.get(stack);
+                if (size.getWeight(stack) == Weight.VERY_HEAVY && size.getSize(stack) == Size.HUGE)
+                {
+                    count++;
+                    if (count == 2)
+                    {
+                        return count;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+
+    public static MobEffectInstance getOverburdened(boolean visible)
+    {
+        return new MobEffectInstance(TFCEffects.OVERBURDENED.get(), 25, 0, false, visible);
+    }
+
+    public static MobEffectInstance getExhausted(boolean visible)
+    {
+        return new MobEffectInstance(TFCEffects.EXHAUSTED.get(), 25, 0, false, visible);
+    }
+
+    /**
      * Iterate through all slots in an {@code inventory}.
      */
     public static Iterable<ItemStack> iterate(IItemHandler inventory, int startSlotInclusive, int endSlotExclusive)
@@ -516,7 +583,7 @@ public final class Helpers
     public static boolean insertOne(Optional<? extends BlockEntity> blockEntity, ItemStack stack)
     {
         ItemStack toInsert = stack.copy();
-        return blockEntity.flatMap(entity -> entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).resolve())
+        return blockEntity.flatMap(entity -> entity.getCapability(Capabilities.ITEM).resolve())
             .map(cap -> {
                 toInsert.setCount(1);
                 return insertAllSlots(cap, toInsert).isEmpty();
@@ -681,6 +748,11 @@ public final class Helpers
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
+    public static boolean spawnItem(Level level, Vec3 pos, ItemStack stack)
+    {
+        return level.addFreshEntity(new ItemEntity(level, pos.x(), pos.y(), pos.z(), stack));
+    }
+
     public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack, double yOffset)
     {
         return level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
@@ -696,7 +768,7 @@ public final class Helpers
         if (!fluidStack.isEmpty())
         {
             final ItemStack mergeStack = inventory.getStackInSlot(slot);
-            return mergeStack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY).map(fluidCap -> {
+            return mergeStack.getCapability(Capabilities.FLUID).map(fluidCap -> {
                 int filled = fluidCap.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
                 if (filled > 0)
                 {
@@ -705,7 +777,7 @@ public final class Helpers
                 FluidStack remainder = fluidStack.copy();
                 remainder.shrink(filled);
                 return remainder;
-            }).orElse(FluidStack.EMPTY);
+            }).orElse(fluidStack);
         }
         return FluidStack.EMPTY;
     }
@@ -770,15 +842,6 @@ public final class Helpers
             return decoder.apply(buffer);
         }
         return null;
-    }
-
-    /**
-     * This returns the previous result of {@link ServerLevel#getBlockRandomPos(int, int, int, int)}.
-     */
-    public static BlockPos getPreviousRandomPos(int x, int y, int z, int yMask, int randValue)
-    {
-        int i = randValue >> 2;
-        return new BlockPos(x + (i & 15), y + (i >> 16 & yMask), z + (i >> 8 & 15));
     }
 
     /**
@@ -1048,7 +1111,7 @@ public final class Helpers
 
         if (totalItems - maximumItems > 0)
         {
-            tooltips.add(new TranslatableComponent("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
+            tooltips.add(Helpers.translatable("container.shulkerBox.more", totalItems - maximumItems).withStyle(ChatFormatting.ITALIC));
         }
     }
 
@@ -1059,7 +1122,7 @@ public final class Helpers
     {
         if (!fluid.isEmpty())
         {
-            tooltips.add(new TranslatableComponent("tfc.tooltip.fluid_units_of", fluid.getAmount())
+            tooltips.add(Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount())
                 .append(fluid.getDisplayName()));
         }
     }
@@ -1142,6 +1205,54 @@ public final class Helpers
     public static ResourceLocation animalTexture(String name)
     {
         return identifier("textures/entity/animal/" + name + ".png");
+    }
+
+    public static List<HolderSet<PlacedFeature>> flattenTopLevelMultipleFeature(BiomeGenerationSettings settings)
+    {
+        return settings.features()
+            .stream()
+            .map(set -> (HolderSet<PlacedFeature>) HolderSet.direct(set.stream()
+                .flatMap(holder -> {
+                    final ConfiguredFeature<?, ?> feature = holder.value().feature().value();
+                    if (feature.feature() instanceof MultipleFeature && feature.config() instanceof SimpleRandomFeatureConfiguration features)
+                    {
+                        return features.features.stream();
+                    }
+                    return Stream.of(holder);
+                })
+                .toList()
+            ))
+            .toList();
+    }
+
+    /**
+     * This exists to fix a horrible case of vanilla seeding, which led to noticeable issues of feature clustering.
+     * The key issue was that features with a chance placement, applied sequentially, would appear to generate on the same chunk much more often than was expected.
+     * This was then identified as the problem by the lovely KaptainWutax <3. The following is a excerpt / paraphrase from our conversation:
+     *
+     * So you're running setSeed(n), setSeed(n + 1) and setSeed(n + 2) on the 3 structure respectively.
+     * And n is something we can compute given a chunk and seed.
+     * setSeed applies an xor on the lowest 35 bits and assigns that value internally
+     * But like, since your seeds are like 1 apart
+     * Even after the xor they're at worst 1 apart
+     * You can convince yourself of that quite easily
+     * So now nextFloat() does seed = 25214903917 * seed + 11 and returns (seed >> 24) / 2^24
+     * Sooo lets see what the actual difference in seeds are between your 2 features in the worst case:
+     * a = 25214903917, b = 11
+     * So a * (seed + 1) + b = a * seed + b + a
+     * As you can see the internal seed only varies by "a" amount
+     * Now we can measure the effect that big number has no the upper bits since the seed is shifted
+     * 25214903917/2^24 = 1502.92539101839
+     * And that's by how much the upper 24 bits will vary
+     * The effect on the next float are 1502 / 2^24 = 8.95261764526367e-5
+     * Blam, so the first nextFloat() between setSeed(n) and setSeed(n + 1) is that distance apart ^
+     * Which as you can see... isn't that far from 0
+     */
+    public static void seedLargeFeatures(Random random, long baseSeed, int index, int decoration)
+    {
+        random.setSeed(baseSeed);
+        final long seed = (index * random.nextLong() * 203704237L) ^ (decoration * random.nextLong() * 758031792L) ^ baseSeed;
+        random.setSeed(seed);
     }
 
     /**

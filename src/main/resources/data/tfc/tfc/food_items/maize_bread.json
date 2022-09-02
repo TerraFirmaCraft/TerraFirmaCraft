@@ -6,6 +6,6 @@
   "category": "bread",
   "hunger": 4,
   "saturation": 1,
-  "decay": 1,
+  "decay_modifier": 1,
   "grain": 1
 }

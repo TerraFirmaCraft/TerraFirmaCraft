@@ -47,6 +47,8 @@ public final class TFCContainerTypes
     public static final RegistryObject<MenuType<AnvilContainer>> ANVIL = TFCContainerTypes.<AnvilBlockEntity, AnvilContainer>registerBlock("anvil", TFCBlockEntities.ANVIL, AnvilContainer::create);
     public static final RegistryObject<MenuType<AnvilPlanContainer>> ANVIL_PLAN = TFCContainerTypes.<AnvilBlockEntity, AnvilPlanContainer>registerBlock("anvil_plan", TFCBlockEntities.ANVIL, AnvilPlanContainer::create);
     public static final RegistryObject<MenuType<BlastFurnaceContainer>> BLAST_FURNACE = TFCContainerTypes.<BlastFurnaceBlockEntity, BlastFurnaceContainer>registerBlock("blast_furnace", TFCBlockEntities.BLAST_FURNACE, BlastFurnaceContainer::create);
+    public static final RegistryObject<MenuType<RestrictedChestContainer>> CHEST_9x2 = TFCContainerTypes.<RestrictedChestContainer>register("chest_9x2", RestrictedChestContainer::twoRows);
+    public static final RegistryObject<MenuType<RestrictedChestContainer>> CHEST_9x4 = TFCContainerTypes.<RestrictedChestContainer>register("chest_9x4", RestrictedChestContainer::fourRows);
 
     public static final RegistryObject<MenuType<KnappingContainer>> CLAY_KNAPPING = registerItem("clay_knapping", KnappingContainer::createClay);
     public static final RegistryObject<MenuType<KnappingContainer>> FIRE_CLAY_KNAPPING = registerItem("fire_clay_knapping", KnappingContainer::createFireClay);

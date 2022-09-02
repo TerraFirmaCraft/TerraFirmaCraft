@@ -8,7 +8,7 @@ RockCategory = Literal['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneo
 BerryBushType = Literal['stationary', 'spreading', 'waterlogged']
 Rock = NamedTuple('Rock', category=RockCategory, sand=str)
 Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float, melt_metal=Optional[str])
-MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str], mold=bool)
+MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str], mold=bool, durability=bool)
 Ore = NamedTuple('Ore', metal=Optional[str], graded=bool, required_tool=Tier, tag=str)
 OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
 Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int], deposits=bool)
@@ -102,61 +102,61 @@ METALS: Dict[str, Metal] = {
     'unknown': Metal(0, set(), 0.5, 400, None)
 }
 METAL_BLOCKS: Dict[str, MetalItem] = {
-    'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False),
-    'chain': MetalItem('utility', 6, 'tfc:block/chain', None, False),
-    'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False),
-    'trapdoor': MetalItem('utility', 200, 'tfc:block/trapdoor', None, False)
+    'anvil': MetalItem('utility', 1400, 'tfc:block/anvil', None, False, False),
+    'chain': MetalItem('utility', 6, 'tfc:block/chain', None, False, False),
+    'lamp': MetalItem('utility', 100, 'tfc:block/lamp', None, False, False),
+    'trapdoor': MetalItem('utility', 200, 'tfc:block/trapdoor', None, False, False)
 }
 METAL_ITEMS: Dict[str, MetalItem] = {
-    'ingot': MetalItem('all', 100, 'item/generated', 'forge:ingots', True),
-    'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots', False),
-    'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False),
-    'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False),
-    'rod': MetalItem('part', 50, 'item/generated', 'forge:rods', False),
+    'ingot': MetalItem('all', 100, 'item/generated', 'forge:ingots', True, False),
+    'double_ingot': MetalItem('part', 200, 'item/generated', 'forge:double_ingots', False, False),
+    'sheet': MetalItem('part', 200, 'item/generated', 'forge:sheets', False, False),
+    'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False, False),
+    'rod': MetalItem('part', 50, 'item/generated', 'forge:rods', False, False),
 
-    'tuyere': MetalItem('tool', 100, 'item/generated', None, False),
-    'fish_hook': MetalItem('tool', 100, 'item/generated', None, False),
-    'fishing_rod': MetalItem('tool', 100, 'item/generated', None, False),
-    'pickaxe': MetalItem('tool', 100, 'item/handheld', None, False),
-    'pickaxe_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'shovel': MetalItem('tool', 100, 'item/handheld', None, False),
-    'shovel_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'axe': MetalItem('tool', 100, 'item/handheld', None, False),
-    'axe_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'hoe': MetalItem('tool', 100, 'item/handheld', None, False),
-    'hoe_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'chisel': MetalItem('tool', 100, 'item/handheld', None, False),
-    'chisel_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'sword': MetalItem('tool', 200, 'item/handheld', None, False),
-    'sword_blade': MetalItem('tool', 200, 'item/generated', None, True),
-    'mace': MetalItem('tool', 200, 'item/handheld', None, False),
-    'mace_head': MetalItem('tool', 200, 'item/generated', None, True),
-    'saw': MetalItem('tool', 100, 'item/handheld', None, False),
-    'saw_blade': MetalItem('tool', 100, 'item/generated', None, True),
-    'javelin': MetalItem('tool', 100, 'item/handheld', None, False),
-    'javelin_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'hammer': MetalItem('tool', 100, 'item/handheld', None, False),
-    'hammer_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'propick': MetalItem('tool', 100, 'item/handheld', None, False),
-    'propick_head': MetalItem('tool', 100, 'item/generated', None, True),
-    'knife': MetalItem('tool', 100, 'tfc:item/handheld_flipped', None, False),
-    'knife_blade': MetalItem('tool', 100, 'item/generated', None, True),
-    'scythe': MetalItem('tool', 100, 'item/handheld', None, False),
-    'scythe_blade': MetalItem('tool', 100, 'item/generated', None, True),
-    'shears': MetalItem('tool', 200, 'item/handheld', None, False),
+    'tuyere': MetalItem('tool', 100, 'item/generated', None, False, True),
+    'fish_hook': MetalItem('tool', 200, 'item/generated', None, False, False),
+    'fishing_rod': MetalItem('tool', 200, 'item/generated', 'forge:fishing_rods', False, True),
+    'pickaxe': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'pickaxe_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'shovel': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'shovel_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'axe': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'axe_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'hoe': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'hoe_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'chisel': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'chisel_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'sword': MetalItem('tool', 200, 'item/handheld', None, False, True),
+    'sword_blade': MetalItem('tool', 200, 'item/generated', None, True, False),
+    'mace': MetalItem('tool', 200, 'item/handheld', None, False, True),
+    'mace_head': MetalItem('tool', 200, 'item/generated', None, True, False),
+    'saw': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'saw_blade': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'javelin': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'javelin_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'hammer': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'hammer_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'propick': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'propick_head': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'knife': MetalItem('tool', 100, 'tfc:item/handheld_flipped', None, False, True),
+    'knife_blade': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'scythe': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'scythe_blade': MetalItem('tool', 100, 'item/generated', None, True, False),
+    'shears': MetalItem('tool', 200, 'item/handheld', None, False, True),
 
-    'unfinished_helmet': MetalItem('armor', 400, 'item/generated', None, False),
-    'helmet': MetalItem('armor', 600, 'item/generated', None, False),
-    'unfinished_chestplate': MetalItem('armor', 400, 'item/generated', None, False),
-    'chestplate': MetalItem('armor', 800, 'item/generated', None, False),
-    'unfinished_greaves': MetalItem('armor', 400, 'item/generated', None, False),
-    'greaves': MetalItem('armor', 600, 'item/generated', None, False),
-    'unfinished_boots': MetalItem('armor', 200, 'item/generated', None, False),
-    'boots': MetalItem('armor', 400, 'item/generated', None, False),
+    'unfinished_helmet': MetalItem('armor', 400, 'item/generated', None, False, False),
+    'helmet': MetalItem('armor', 600, 'item/generated', None, False, True),
+    'unfinished_chestplate': MetalItem('armor', 400, 'item/generated', None, False, False),
+    'chestplate': MetalItem('armor', 800, 'item/generated', None, False, True),
+    'unfinished_greaves': MetalItem('armor', 400, 'item/generated', None, False, False),
+    'greaves': MetalItem('armor', 600, 'item/generated', None, False, True),
+    'unfinished_boots': MetalItem('armor', 200, 'item/generated', None, False, False),
+    'boots': MetalItem('armor', 400, 'item/generated', None, False, True),
 
-    'shield': MetalItem('tool', 400, 'item/handheld', None, False)
+    'shield': MetalItem('tool', 400, 'item/handheld', None, False, True)
 }
-METAL_ITEMS_AND_BLOCKS = {**METAL_ITEMS, **METAL_BLOCKS}
+METAL_ITEMS_AND_BLOCKS: Dict[str, MetalItem] = {**METAL_ITEMS, **METAL_BLOCKS}
 METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword', 'axe')
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True, 'copper', 'copper'),
@@ -271,6 +271,8 @@ ORE_VEINS: Dict[str, Vein] = {
     'opal': vein('opal', 'disc', 14, 8, 40, 60, 20, 0, 0, 0, ['sedimentary', 'igneous_extrusive'], biomes='#tfc:is_river', height=4)
 }
 
+ALL_MINERALS = ('bituminous_coal', 'lignite', 'kaolinite', 'graphite', 'cinnabar', 'cryolite', 'saltpeter', 'sulfur', 'sylvite', 'borax', 'gypsum', 'lapis_lazuli', 'halite', 'diamond', 'emerald', 'sulfur', 'amethyst', 'opal')
+
 DEPOSIT_RARES: Dict[str, str] = {
     'granite': 'topaz',
     'diorite': 'emerald',
@@ -353,7 +355,9 @@ CROPS: Dict[str, Crop] = {
     'carrot': Crop('default', 5, 'potassium', 3, 30, 100, 400, 25, 100, None, None),
     'garlic': Crop('default', 5, 'nitrogen', -20, 18, 60, 310, 15, 75, None, None),
     'green_bean': Crop('double_stick', 8, 'nitrogen', 2, 35, 150, 410, 38, 100, 'normal', None),
+    'melon': Crop('spreading', 8, 'phosphorus', 5, 37, 200, 500, 75, 100, 'normal', None),
     'potato': Crop('default', 7, 'potassium', -1, 37, 200, 410, 50, 100, None, None),
+    'pumpkin': Crop('spreading', 8, 'phosphorus', 0, 30, 120, 390, 30, 80, None, None),
     'onion': Crop('default', 7, 'nitrogen', 0, 30, 100, 390, 25, 90, None, None),
     'soybean': Crop('default', 7, 'nitrogen', 8, 30, 160, 410, 40, 100, 'normal', None),
     'squash': Crop('default', 8, 'potassium', 5, 33, 90, 390, 23, 95, 'normal', None),
@@ -461,6 +465,40 @@ PLANTS: Dict[str, Plant] = {
     'water_taro': Plant(False, 12, 40, 260, 500, 'emergent_fresh'),
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
+
+SIMPLE_STAGE_PLANTS: Dict[str, int] = {
+    'allium': 8,
+    'anthurium': 2,
+    'black_orchid': 3,
+    'blood_lily': 4,
+    'blue_ginger': 2,
+    'blue_orchid': 3,
+    'butterfly_milkweed': 7,
+    'desert_flame': 2,
+    'heliconia': 3,
+    'houstonia': 3,
+    'goldenrod': 5,
+    'grape_hyacinth': 4,
+    'kangaroo_paw': 2,
+    'labrador_tea': 7,
+    'meads_milkweed': 7,
+    'nasturtium': 5,
+    'oxeye_daisy': 6,
+    'perovskia': 6,
+    'poppy': 5,
+    'primrose': 3,
+    'pulsatilla': 6,
+    'sacred_datura': 4,
+    'silver_spurflower': 3,
+    'strelitzia': 3,
+    'trillium': 6,
+    'tropical_milkweed': 4,
+    'yucca': 4
+}
+
+MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant']
+SEAGRASS: List[str] = ['star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail']
+
 UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
 SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
 CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
@@ -495,6 +533,25 @@ COLOR_COMBOS = [
     ('yellow', 'blue', 'green')
 ]
 
+VESSEL_TYPES = {
+    'blue': 'a',
+    'brown': 'a',
+    'gray': 'a',
+    'light_gray': 'a',
+    'magenta': 'a',
+    'orange': 'a',
+    'white': 'a',
+    'pink': 'b',
+    'cyan': 'b',
+    'purple': 'b',
+    'yellow': 'c',
+    'black': 'c',
+    'light_blue': 'c',
+    'lime': 'c',
+    'red': 'c',
+    'green': 'd'
+}
+
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
 SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
                 'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'spindle',
@@ -510,42 +567,43 @@ FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'hu
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
 MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
-UNDERGROUND_FEATURES = ('cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch', 'hanging_roots_patch')
+UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
+# For now, bush hydration ranges are unused, and rainfall ranges are just used for world gen
 BERRIES: Dict[str, Berry] = {
-    'blackberry': Berry(7, 24, 100, 500, 'spreading', 'edge', 'edge'),
-    'raspberry': Berry(5, 25, 100, 500, 'spreading', 'edge', 'edge'),
-    'blueberry': Berry(7, 29, 100, 500, 'spreading', 'edge', 'edge'),
-    'elderberry': Berry(10, 33, 100, 500, 'spreading', 'edge', 'edge'),
-    'bunchberry': Berry(15, 35, 100, 500, 'stationary', 'edge', 'normal'),
-    'gooseberry': Berry(5, 27, 100, 500, 'stationary', 'none', 'sparse'),
-    'snowberry': Berry(-5, 18, 100, 500, 'stationary', 'normal', 'old_growth'),
-    'cloudberry': Berry(3, 17, 80, 500, 'stationary', 'normal', 'old_growth'),
-    'strawberry': Berry(5, 28, 100, 500, 'stationary', 'none', 'sparse'),
-    'wintergreen_berry': Berry(-5, 17, 100, 500, 'stationary', 'old_growth', 'old_growth'),
+    'blackberry': Berry(7, 24, 200, 500, 'spreading', 'none', 'edge'),
+    'raspberry': Berry(5, 25, 200, 500, 'spreading', 'none', 'edge'),
+    'blueberry': Berry(7, 29, 100, 400, 'spreading', 'none', 'edge'),
+    'elderberry': Berry(10, 33, 100, 400, 'spreading', 'none', 'edge'),
+    'bunchberry': Berry(15, 35, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'gooseberry': Berry(5, 27, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'snowberry': Berry(-7, 18, 200, 500, 'stationary', 'edge', 'old_growth'),
+    'cloudberry': Berry(-2, 17, 80, 380, 'stationary', 'edge', 'old_growth'),
+    'strawberry': Berry(5, 28, 100, 400, 'stationary', 'edge', 'old_growth'),
+    'wintergreen_berry': Berry(-6, 17, 100, 400, 'stationary', 'edge', 'old_growth'),
     'cranberry': Berry(-5, 17, 250, 500, 'waterlogged', 'edge', 'old_growth')
 }
 
 FRUITS: Dict[str, Fruit] = {
-    'banana': Fruit(23, 35, 280, 480),
-    'cherry': Fruit(5, 21, 100, 350),
-    'green_apple': Fruit(8, 25, 110, 280),
+    'banana': Fruit(17, 35, 280, 500),
+    'cherry': Fruit(5, 25, 100, 350),
+    'green_apple': Fruit(1, 25, 110, 280),
     'lemon': Fruit(10, 30, 180, 470),
-    'olive': Fruit(13, 30, 150, 380),
-    'orange': Fruit(23, 36, 250, 480),
-    'peach': Fruit(9, 27, 60, 230),
-    'plum': Fruit(18, 31, 250, 400),
-    'red_apple': Fruit(9, 25, 100, 280)
+    'olive': Fruit(5, 30, 150, 500),
+    'orange': Fruit(15, 36, 250, 500),
+    'peach': Fruit(4, 27, 60, 230),
+    'plum': Fruit(15, 31, 250, 400),
+    'red_apple': Fruit(1, 25, 100, 280)
 }
 NORMAL_FRUIT_TREES: List[str] = [k for k in FRUITS.keys() if k != 'banana']
 
 GRAINS = ('barley', 'maize', 'oat', 'rice', 'rye', 'wheat')
 GRAIN_SUFFIXES = ('', '_grain', '_flour', '_dough', '_bread')
-VEGETABLES = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
+MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_pepper', 'onion', 'potato', 'red_bell_pepper', 'soybean', 'squash', 'tomato', 'yellow_bell_pepper', 'cheese', 'cooked_egg', 'boiled_egg', 'dried_seaweed', 'dried_kelp', 'cattail_root', 'taro_root', 'sugarcane', 'cooked_rice')
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'vulture', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth')
 OCEAN_PREDATORS = ('dolphin', 'orca')
@@ -632,13 +690,27 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'wool', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
+TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
 VANILLA_TOOLS = ('sword', 'shovel', 'pickaxe', 'axe', 'hoe')
 MOB_ARMOR_METALS = ('copper', 'bronze', 'black_bronze', 'bismuth_bronze', 'wrought_iron')
 MOB_TOOLS = ('axe', 'sword', 'javelin', 'mace', 'scythe')
 STONE_MOB_TOOLS = ('axe', 'javelin')
+TFC_BIOMES = ('badlands', 'inverted_badlands', 'canyons', 'low_canyons', 'plains', 'plateau', 'hills', 'rolling_hills', 'lake', 'lowlands', 'mountains', 'volcanic_mountains', 'old_mountains', 'oceanic_mountains', 'volcanic_oceanic_mountains', 'ocean', 'ocean_reef', 'deep_ocean', 'deep_ocean_trench', 'river', 'shore', 'mountain_river', 'volcanic_mountain_river', 'old_mountain_river', 'oceanic_mountain_river', 'volcanic_oceanic_mountain_river', 'mountain_lake', 'volcanic_mountain_lake', 'old_mountain_lake', 'oceanic_mountain_lake', 'volcanic_oceanic_mountain_lake', 'plateau_lake')
+
+ALLOYS: Dict[str, Tuple[Tuple[str, float, float], ...]] = {
+    'bismuth_bronze': (('zinc', 0.2, 0.3), ('copper', 0.5, 0.65), ('bismuth', 0.1, 0.2)),
+    'black_bronze': (('copper', 0.5, 0.7), ('silver', 0.1, 0.25), ('gold', 0.1, 0.25)),
+    'bronze': (('copper', 0.88, 0.92), ('tin', 0.08, 0.12)),
+    'brass': (('copper', 0.88, 0.92), ('zinc', 0.08, 0.12)),
+    'rose_gold': (('copper', 0.15, 0.3), ('gold', 0.7, 0.85)),
+    'sterling_silver': (('copper', 0.2, 0.4), ('silver', 0.6, 0.8)),
+    'weak_steel': (('steel', 0.5, 0.7), ('nickel', 0.15, 0.25), ('black_bronze', 0.15, 0.25)),
+    'weak_blue_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('bismuth_bronze', 0.1, 0.15), ('sterling_silver', 0.1, 0.15)),
+    'weak_red_steel': (('black_steel', 0.5, 0.55), ('steel', 0.2, 0.25), ('brass', 0.1, 0.15), ('rose_gold', 0.1, 0.15))
+}
 
 # This is here because it's used all over, and it's easier to import with all constants
 def lang(key: str, *args) -> str:
@@ -662,6 +734,9 @@ DEFAULT_LANG = {
     'effect.tfc.pinned': 'Pinned',
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',
+    'effect.tfc.overburdened': 'Overburdened',
+    'effect.tfc.thirst': 'Thirst',
+    'effect.tfc.exhausted': 'Exhausted',
     'item.minecraft.glow_ink_sac': 'Glowing Ink Sac',
     'tfc.key.place_block': 'Place Block',
     'tfc.key.cycle_chisel_mode': 'Cycle Chisel Mode',
@@ -811,6 +886,8 @@ DEFAULT_LANG = {
     'tfc.tooltip.temperature_fahrenheit': '%s\u00b0F',
     'tfc.tooltip.fluid_units': '%s mB',
     'tfc.tooltip.fluid_units_of': '%s mB of ',
+    'tfc.tooltip.fluid_units_and_capacity': '%s / %s mB',
+    'tfc.tooltip.fluid_units_and_capacity_of': '%s / %s mB of ',
     'tfc.tooltip.less_than_one_fluid_units': '< 1 mB',
     'tfc.tooltip.farmland.mature': '§aMature',
     'tfc.tooltip.farmland.hydration': '§1Hydration: §r%s%%',
@@ -821,6 +898,10 @@ DEFAULT_LANG = {
     'tfc.tooltip.farmland.temperature_too_high': ' - §4Too high! §r(<%s\u00b0C)',
     'tfc.tooltip.farmland.just_right': ' - §2Good§r',
     'tfc.tooltip.farmland.nutrients': '§b(N) Nitrogen: §r%s%%, §6(P) Phosphorus: §r%s%%, §d(K) Potassium: §r%s%%',
+    'tfc.tooltip.fruit_tree.done_growing': 'This block is done growing',
+    'tfc.tooltip.fruit_tree.growing': 'This block could grow under the right conditions.',
+    'tfc.tooltip.fruit_tree.sapling_wrong_month': 'Wrong season to grow a tree.',
+    'tfc.tooltip.fruit_tree.sapling_splice': 'May be spliced',
     'tfc.tooltip.fertilizer.nitrogen': '§b(N) Nitrogen: §r%s%%',
     'tfc.tooltip.fertilizer.phosphorus': '§6(P) Phosphorus: §r%s%%',
     'tfc.tooltip.fertilizer.potassium': '§d(K) Potassium: §r%s%%',
@@ -850,6 +931,12 @@ DEFAULT_LANG = {
     'tfc.tooltip.animal.no_wool': 'This %s has no wool.',
     'tfc.tooltip.scribing_table.missingink': 'Ink is missing!',
     'tfc.tooltip.scribing_table.invalidink': 'Item isn\'t ink!',
+    'tfc.tooltip.deals_damage.slashing': '§7Deals §fSlashing§r Damage',
+    'tfc.tooltip.deals_damage.piercing': '§7Deals §fPiercing§r Damage',
+    'tfc.tooltip.deals_damage.crushing': '§7Deals §fCrushing§r Damage',
+    'tfc.tooltip.pot_boiling': 'Boiling!',
+    'tfc.tooltip.pot_finished': 'Finished',
+    'tfc.tooltip.pot_ready': 'Ready',
 
     # Commands
 
@@ -920,6 +1007,7 @@ DEFAULT_LANG = {
     'entity.tfc.sabertooth': 'Sabertooth',
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
+    'entity.tfc.chest_minecart': 'Chest Minecart',
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',
@@ -950,22 +1038,21 @@ DEFAULT_LANG = {
 
     # Enums
 
-    **dict(('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % lang(tier)) for tier in ('0', 'i', 'ii', 'iii', 'iv', 'v', 'vi')),
+    **dict(('tfc.enum.tier.tier_%s' % tier, 'Tier %s' % tier.upper()) for tier in ('0', 'i', 'ii', 'iii', 'iv', 'v', 'vi')),
     **lang_enum('heat', ('warming', 'hot', 'very_hot', 'faint_red', 'dark_red', 'bright_red', 'orange', 'yellow', 'yellow_white', 'white', 'brilliant_white')),
     **lang_enum('month', ('january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december')),
     **lang_enum('day', ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     **lang_enum('foresttype', ('sparse', 'old_growth', 'normal', 'edge', 'none')),
-    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
+    **lang_enum('koppenclimateclassification', ('arctic', 'tundra', 'humid_subarctic', 'subarctic', 'cold_desert', 'hot_desert', 'temperate', 'subtropical', 'humid_subtropical', 'humid_oceanic', 'humid_subtropical', 'tropical_savanna', 'tropical_rainforest')),
     **dict(('tfc.enum.platetectonicsclassification.%s' % k, v) for k, v in {
         'oceanic': 'Oceanic',
         'continental_low': 'Low Altitude Continental',
         'continental_mid': 'Mid Altitude Continental',
         'continental_high': 'High Altitude Continental',
         'ocean_ocean_diverging': 'Mid-Ocean Ridge',
-        'ocean_ocean_converging_lower': 'Oceanic Subduction',
-        'ocean_ocean_converging_upper': 'Oceanic Subduction',
-        'ocean_continent_converging_lower': 'Continental Subduction',
-        'ocean_continent_converging_upper': 'Continental Subduction',
+        'ocean_ocean_converging': 'Oceanic Subduction',
+        'ocean_continent_diverging': 'Continental Subduction',
+        'ocean_continent_converging': 'Continental Subduction',
         'continent_continent_diverging': 'Continental Rift',
         'continent_continent_converging': 'Orogenic Belt',
         'continental_shelf': 'Continental Shelf'
@@ -1024,6 +1111,8 @@ DEFAULT_LANG = {
     'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
     'tfc.composter.too_many_greens': 'This composter has enough green items',
     'tfc.composter.too_many_browns': 'This composter has enough brown items',
+    'tfc.composter.green_items': '%s Green Items',
+    'tfc.composter.brown_items': '%s Brown Items',
     'tfc.chisel.cannot_place': 'The chiseled version of this block cannot exist here',
     'tfc.chisel.no_recipe': 'This block cannot be chiseled',
     'tfc.chisel.bad_fluid': 'The chiseled version of this block cannot contain the fluid here',
@@ -1045,18 +1134,12 @@ DEFAULT_LANG = {
     'tfc.jei.alloying': 'Alloying',
     'tfc.jei.loom': 'Loom',
     'tfc.jei.instant_barrel': 'Instant Barrel Recipe',
+    'tfc.jei.instant_fluid_barrel': 'Instant Fluid Barrel Recipe',
     'tfc.jei.sealed_barrel': 'Sealed Barrel Recipe',
     'tfc.jei.bloomery': 'Bloomery',
     'tfc.jei.welding': 'Welding',
     'tfc.jei.anvil': 'Anvil',
     'tfc.jei.chisel': 'Chisel',
-
-    # jei tooltips
-    'tfc.jei.compost_greens': 'This item can be added to the Composter as a green item. Composters need four green and four brown items to work.',
-    'tfc.jei.compost_browns': 'This item can be added to the Composter as a brown item. Composters need four green and four brown items to work.',
-    'tfc.jei.compost_poisons': 'This item poisons compost in the Composter. This causes it to produce rotten compost.',
-    'tfc.jei.compost': 'This fertilizer is made by adding four green items and four brown items to the Composter, and waiting for a while.',
-    'tfc.jei.rotten_compost': 'This kills plants. It is made by adding compost poisons to the Composter.',
 
     'tfc.field_guide.book_name': 'TerraFirmaCraft',
     'tfc.field_guide.book_landing_text': 'Welcome traveller! This book will be the source of all you need to know as you explore the world of TerraFirmaCraft (TFC).'

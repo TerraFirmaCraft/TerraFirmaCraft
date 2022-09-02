@@ -40,7 +40,7 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
 
     private void initFoodStats(CraftingContainer inv, FoodHandler.Dynamic handler)
     {
-        List<FoodRecord> ingredients = new ArrayList<>(3);
+        List<FoodData> ingredients = new ArrayList<>(3);
         ItemStack breadItem1 = ItemStack.EMPTY;
         ItemStack breadItem2 = ItemStack.EMPTY;
         boolean checkBread = true;
@@ -69,28 +69,28 @@ public enum SandwichModifier implements ItemStackModifier.SingleInstance<Sandwic
             }
             item.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).ifPresent(ingredients::add);
         }
-        final FoodRecord bread1 = breadItem1.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).orElse(FoodRecord.EMPTY);
-        final FoodRecord bread2 = breadItem2.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).orElse(FoodRecord.EMPTY);
+        final FoodData bread1 = breadItem1.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).orElse(FoodData.EMPTY);
+        final FoodData bread2 = breadItem2.getCapability(FoodCapability.CAPABILITY).map(IFood::getData).orElse(FoodData.EMPTY);
 
         // Nutrition and saturation of sandwich is (average of breads) + 0.8f (sum of ingredients), +1 bonus saturation
         float[] nutrition = new float[Nutrient.TOTAL];
-        float saturation = 1 + 0.5f * (bread1.getSaturation() + bread2.getSaturation());
-        float water = 0.5f * (bread1.getWater() + bread2.getWater());
-        for (int i = 0; i < nutrition.length; i++)
+        float saturation = 1 + 0.5f * (bread1.saturation() + bread2.saturation());
+        float water = 0.5f * (bread1.water() + bread2.water());
+        for (Nutrient nutrient : Nutrient.VALUES)
         {
-            nutrition[i] = 0.5f * (bread1.getNutrients()[i] + bread2.getNutrients()[i]);
+            nutrition[nutrient.ordinal()] = 0.5f * (bread1.nutrient(nutrient) + bread2.nutrient(nutrient));
         }
-        for (FoodRecord ingredient : ingredients)
+        for (FoodData ingredient : ingredients)
         {
-            for (int i = 0; i < nutrition.length; i++)
+            for (Nutrient nutrient : Nutrient.VALUES)
             {
-                nutrition[i] += 0.8f * ingredient.getNutrients()[i];
+                nutrition[nutrient.ordinal()] += 0.8f * ingredient.nutrient(nutrient);
             }
-            saturation += 0.8f * ingredient.getSaturation();
-            water += 0.8f * ingredient.getWater();
+            saturation += 0.8f * ingredient.saturation();
+            water += 0.8f * ingredient.water();
         }
 
-        handler.setFood(new FoodRecord(4, water, saturation, nutrition, 1f / handler.getDecayDateModifier()));
+        handler.setFood(FoodData.create(4, water, saturation, nutrition, 4.5f));
         handler.setCreationDate(FoodCapability.getRoundedCreationDate());
     }
 

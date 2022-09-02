@@ -15,12 +15,14 @@ import java.util.stream.Stream;
 
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
+import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.client.sounds.WeighedSoundEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -32,6 +34,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.Event;
@@ -42,12 +46,25 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.plant.BodyPlantBlock;
 import net.dries007.tfc.common.blocks.plant.Plant;
 import net.dries007.tfc.common.blocks.plant.fruit.GrowingFruitTreeBranchBlock;
+import net.dries007.tfc.common.capabilities.food.Nutrient;
+import net.dries007.tfc.common.capabilities.forge.ForgeStep;
+import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
+import net.dries007.tfc.common.capabilities.heat.Heat;
+import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.util.calendar.Day;
+import net.dries007.tfc.util.calendar.ICalendarTickable;
+import net.dries007.tfc.util.calendar.Month;
+import net.dries007.tfc.util.climate.KoppenClimateClassification;
+import net.dries007.tfc.world.chunkdata.ForestType;
+import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
 import org.slf4j.Logger;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
@@ -63,6 +80,12 @@ public final class SelfTests
     private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     private static boolean EXTERNAL_TAG_LOADING_ERROR = false;
+
+    @SuppressWarnings({"ConstantConditions", "deprecation"})
+    public static void runWorldVersionTest()
+    {
+        assert SharedConstants.WORLD_VERSION == 2975 : "If this fails, you need to update the world version here, AND in resources/generate_trees.py, then run `python resources trees`. This updates them and avoids triggering DFU when placed!";
+    }
 
     public static void runClientSelfTests()
     {
@@ -143,6 +166,39 @@ public final class SelfTests
     }
 
     /**
+     * Validates that a translation exists for all enum constants in the style of {@link Helpers#getEnumTranslationKey(Enum)}
+     */
+    public static <T extends Enum<?>> boolean validateTranslations(Logger logger, Set<String> missingTranslations, Class<? extends T> enumClass)
+    {
+        boolean errors = false;
+        for (T enumConstant : enumClass.getEnumConstants())
+        {
+            errors |= validateTranslation(logger, missingTranslations, Helpers.translateEnum(enumConstant));
+        }
+        return errors;
+    }
+
+    /**
+     * Validates that a translation exists for a component.
+     */
+    public static boolean validateTranslation(Logger logger, Set<String> missingTranslations, Component component)
+    {
+        if (component instanceof TranslatableComponent translatable)
+        {
+            if (!Language.getInstance().has(translatable.getKey()))
+            {
+                missingTranslations.add(translatable.getKey());
+            }
+        }
+        else
+        {
+            logger.error("Tried to check the translation key of a non-translatable-component, this is almost certainly a bug, {}", component);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Validates that all blocks have a loot table defined.
      */
     public static boolean validateBlockLootTables(Stream<Block> blocks, Logger logger)
@@ -209,12 +265,19 @@ public final class SelfTests
 
     private static boolean validateOwnBlockEntities()
     {
-        return validateBlockEntities(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
+        final List<BlockEntityType<?>> errors = stream(ForgeRegistries.BLOCK_ENTITIES, MOD_ID)
+            .filter(type -> {
+                final BlockEntity b = type.create(BlockPos.ZERO, Blocks.AIR.defaultBlockState());
+                return b instanceof TickCounterBlockEntity && b instanceof ICalendarTickable;
+            })
+            .toList();
+        return logRegistryErrors("{} block entities implement ICalendarTickable through TickCounterBlockEntity, this is almost surely a bug", errors, LOGGER)
+            | validateBlockEntities(stream(ForgeRegistries.BLOCKS, MOD_ID), LOGGER);
     }
 
     private static boolean validateOwnBlockLootTables()
     {
-        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT))
+        final Set<Block> expectedNoLootTableBlocks = Stream.of(TFCBlocks.PLACED_ITEM, TFCBlocks.PIT_KILN, TFCBlocks.LOG_PILE, TFCBlocks.BURNING_LOG_PILE, TFCBlocks.BLOOM, TFCBlocks.MOLTEN, TFCBlocks.SCRAPING, TFCBlocks.THATCH_BED, TFCBlocks.INGOT_PILE, TFCBlocks.SHEET_PILE, TFCBlocks.PLANTS.get(Plant.GIANT_KELP_PLANT), TFCBlocks.PUMPKIN, TFCBlocks.MELON)
             .map(Supplier::get)
             .collect(Collectors.toSet());
         final Set<Class<?>> expectedNoLootTableClasses = ImmutableSet.of(BodyPlantBlock.class, GrowingFruitTreeBranchBlock.class);
@@ -274,39 +337,25 @@ public final class SelfTests
         final Set<String> missingTranslations = Bootstrap.getMissingTranslations();
         final NonNullList<ItemStack> items = NonNullList.create();
 
-        ForgeRegistries.ITEMS.getValues().forEach(item -> {
+        stream(ForgeRegistries.ITEMS, MOD_ID).forEach(item -> {
             items.clear();
             item.fillItemCategory(CreativeModeTab.TAB_SEARCH, items);
-            items.forEach(stack -> validateTranslation(missingTranslations, stack.getHoverName()));
+            items.forEach(stack -> validateTranslation(LOGGER, missingTranslations, stack.getHoverName()));
         });
 
-        SoundManager soundManager = Minecraft.getInstance().getSoundManager();
-        ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(missingTranslations, subtitle)));
+        final SoundManager soundManager = Minecraft.getInstance().getSoundManager();
+        ForgeRegistries.SOUND_EVENTS.getKeys().forEach(sound -> Optional.ofNullable(soundManager.getSoundEvent(sound)).map(WeighedSoundEvents::getSubtitle).ifPresent(subtitle -> validateTranslation(LOGGER, missingTranslations, subtitle)));
 
-        boolean metaError = false;
+        boolean error = false;
         for (CreativeModeTab tab : CreativeModeTab.TABS)
         {
-            metaError |= validateTranslation(missingTranslations, tab.getDisplayName());
+            error |= validateTranslation(LOGGER, missingTranslations, tab.getDisplayName());
         }
 
-        return metaError | logErrors("{} missing translation keys:", missingTranslations, LOGGER);
-    }
+        error |= Stream.of(ForgeStep.class, ForgingBonus.class, Metal.Tier.class, Heat.class, Nutrient.class, Size.class, Weight.class, Day.class, Month.class, PlateTectonicsClassification.class, KoppenClimateClassification.class, ForestType.class)
+            .anyMatch(clazz -> validateTranslations(LOGGER, missingTranslations, clazz));
 
-    private static boolean validateTranslation(Set<String> missingTranslations, Component component)
-    {
-        if (component instanceof TranslatableComponent translatable)
-        {
-            if (!Language.getInstance().has(translatable.getKey()))
-            {
-                missingTranslations.add(translatable.getKey());
-            }
-        }
-        else
-        {
-            LOGGER.error("Tried to check the translation key of a non-translatable-component, this is almost certainly a bug, {}", component);
-            return true;
-        }
-        return false;
+        return error | logErrors("{} missing translation keys:", missingTranslations, LOGGER);
     }
 
     public static class ClientSelfTestEvent extends Event {}

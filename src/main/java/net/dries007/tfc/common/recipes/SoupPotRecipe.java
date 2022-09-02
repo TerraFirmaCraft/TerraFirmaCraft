@@ -22,7 +22,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.PotBlockEntity;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
-import net.dries007.tfc.common.capabilities.food.FoodRecord;
+import net.dries007.tfc.common.capabilities.food.FoodData;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.common.capabilities.food.Nutrient;
 import net.dries007.tfc.common.items.DynamicBowlFood;
@@ -63,12 +63,12 @@ public class SoupPotRecipe extends PotRecipe
                     ingredientCount = 0;
                     break;
                 }
-                final FoodRecord data = food.getData();
-                water += data.getWater();
-                saturation += data.getSaturation();
+                final FoodData data = food.getData();
+                water += data.water();
+                saturation += data.saturation();
                 for (Nutrient nutrient : Nutrient.VALUES)
                 {
-                    nutrition[nutrient.ordinal()] += data.getNutrient(nutrient);
+                    nutrition[nutrient.ordinal()] += data.nutrient(nutrient);
                 }
                 ingredientCount++;
             }
@@ -89,7 +89,7 @@ public class SoupPotRecipe extends PotRecipe
                     maxNutrient = nutrient;
                 }
             }
-            FoodRecord data = new FoodRecord(SOUP_HUNGER_VALUE, water, saturation, nutrition, SOUP_DECAY_MODIFIER);
+            FoodData data = FoodData.create(SOUP_HUNGER_VALUE, water, saturation, nutrition, SOUP_DECAY_MODIFIER);
             int servings = (int) (ingredientCount / 2f) + 1;
             long created = FoodCapability.getRoundedCreationDate();
 

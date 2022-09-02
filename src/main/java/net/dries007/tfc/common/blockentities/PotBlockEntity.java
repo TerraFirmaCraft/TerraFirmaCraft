@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +20,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -31,7 +29,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.*;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.PotRecipe;
 import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
@@ -47,7 +44,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     public static final int SLOT_EXTRA_INPUT_START = 4;
     public static final int SLOT_EXTRA_INPUT_END = 8;
 
-    private static final Component NAME = new TranslatableComponent(MOD_ID + ".block_entity.pot");
+    private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.pot");
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
     @Nullable private PotRecipe.Output output;
@@ -208,7 +205,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     @Override
     public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
     {
-        if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        if (cap == Capabilities.FLUID)
         {
             return sidedFluidInventory.getSidedHandler(side).cast();
         }
@@ -220,14 +217,6 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
         return PotContainer.create(this, playerInv, windowID);
-    }
-
-    @Override
-    public void ejectInventory()
-    {
-        super.ejectInventory();
-        assert level != null;
-        Helpers.spawnItem(level, worldPosition, new ItemStack(TFCItems.POT.get()));
     }
 
     public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>

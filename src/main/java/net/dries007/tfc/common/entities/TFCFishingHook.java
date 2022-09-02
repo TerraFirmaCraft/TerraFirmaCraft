@@ -6,13 +6,9 @@
 
 package net.dries007.tfc.common.entities;
 
-import java.util.Collections;
-
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,7 +17,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.AbstractFish;
@@ -35,6 +30,8 @@ import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.common.items.TFCFishingRodItem;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpawnData
 {
@@ -144,7 +141,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
             {
                 if (player != null && level.isClientSide)
                 {
-                    player.displayClientMessage(new TranslatableComponent("tfc.fishing.pulled_too_hard"), true);
+                    player.displayClientMessage(Helpers.translatable("tfc.fishing.pulled_too_hard"), true);
                 }
                 eatBait();
                 playSound(SoundEvents.ITEM_BREAK, 1f, 0.5f + random.nextFloat());
@@ -167,7 +164,7 @@ public class TFCFishingHook extends FishingHook implements IEntityAdditionalSpaw
                 {
                     player.awardStat(Stats.FISH_CAUGHT, 1);
                 }
-                CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer) player, stack, this, Collections.emptyList());
+                TFCAdvancements.HOOKED_ENTITY.trigger((ServerPlayer) player, hookedIn);
                 level.broadcastEntityEvent(this, (byte) 31);
             }
             if (hookedIn == null || hookedIn.isRemoved())

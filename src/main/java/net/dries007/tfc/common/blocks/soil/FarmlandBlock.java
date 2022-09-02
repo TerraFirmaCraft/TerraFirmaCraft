@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -52,14 +51,18 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
 
     public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
-        final int hydration = getHydration(level, pos);
-        final MutableComponent tooltip = new TranslatableComponent("tfc.tooltip.farmland.hydration", hydration);
+        return getHydrationTooltip(level, pos, validRange, allowWiggle, getHydration(level, pos));
+    }
+
+    public static Component getHydrationTooltip(LevelAccessor level, BlockPos pos, ClimateRange validRange, boolean allowWiggle, int hydration)
+    {
+        final MutableComponent tooltip = Helpers.translatable("tfc.tooltip.farmland.hydration", hydration);
 
         tooltip.append(switch (validRange.checkHydration(hydration, allowWiggle))
             {
-                case VALID -> new TranslatableComponent("tfc.tooltip.farmland.just_right");
-                case LOW -> new TranslatableComponent("tfc.tooltip.farmland.hydration_too_low", validRange.getMinHydration(allowWiggle));
-                case HIGH -> new TranslatableComponent("tfc.tooltip.farmland.hydration_too_high", validRange.getMaxHydration(allowWiggle));
+                case VALID -> Helpers.translatable("tfc.tooltip.farmland.just_right");
+                case LOW -> Helpers.translatable("tfc.tooltip.farmland.hydration_too_low", validRange.getMinHydration(allowWiggle));
+                case HIGH -> Helpers.translatable("tfc.tooltip.farmland.hydration_too_high", validRange.getMaxHydration(allowWiggle));
             });
         return tooltip;
     }
@@ -67,13 +70,13 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     public static Component getTemperatureTooltip(Level level, BlockPos pos, ClimateRange validRange, boolean allowWiggle)
     {
         final float temperature = Climate.getTemperature(level, pos);
-        final MutableComponent tooltip = new TranslatableComponent("tfc.tooltip.farmland.temperature", String.format("%.1f", temperature));
+        final MutableComponent tooltip = Helpers.translatable("tfc.tooltip.farmland.temperature", String.format("%.1f", temperature));
 
         tooltip.append(switch (validRange.checkTemperature(temperature, allowWiggle))
             {
-                case VALID -> new TranslatableComponent("tfc.tooltip.farmland.just_right");
-                case LOW -> new TranslatableComponent("tfc.tooltip.farmland.temperature_too_low", validRange.getMinTemperature(allowWiggle));
-                case HIGH -> new TranslatableComponent("tfc.tooltip.farmland.temperature_too_high", validRange.getMaxTemperature(allowWiggle));
+                case VALID -> Helpers.translatable("tfc.tooltip.farmland.just_right");
+                case LOW -> Helpers.translatable("tfc.tooltip.farmland.temperature_too_low", validRange.getMinTemperature(allowWiggle));
+                case HIGH -> Helpers.translatable("tfc.tooltip.farmland.temperature_too_high", validRange.getMaxTemperature(allowWiggle));
             });
         return tooltip;
     }
@@ -209,7 +212,7 @@ public class FarmlandBlock extends Block implements ISoilBlock, HoeOverlayBlock,
     @Override
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
     {
-        level.getBlockEntity(pos, TFCBlockEntities.FARMLAND.get()).ifPresent(farmland -> farmland.addHoeOverlayInfo(level, pos, text, null, true));
+        level.getBlockEntity(pos, TFCBlockEntities.FARMLAND.get()).ifPresent(farmland -> farmland.addHoeOverlayInfo(level, pos, text, true, true));
     }
 
     @Override

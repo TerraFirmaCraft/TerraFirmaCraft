@@ -7,6 +7,6 @@
   "hunger": 4,
   "saturation": 0.2,
   "water": 5,
-  "decay": 4,
+  "decay_modifier": 4,
   "fruit": 1
 }

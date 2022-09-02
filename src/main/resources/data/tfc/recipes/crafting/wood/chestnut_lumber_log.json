@@ -5,7 +5,7 @@
     "type": "minecraft:crafting_shapeless",
     "ingredients": [
       {
-        "item": "tfc:wood/log/chestnut"
+        "tag": "tfc:chestnut_logs"
       },
       {
         "tag": "tfc:saws"

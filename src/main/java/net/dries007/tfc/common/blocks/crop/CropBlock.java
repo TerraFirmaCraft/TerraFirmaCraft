@@ -40,6 +40,7 @@ import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.ClimateRange;
 
 public abstract class CropBlock extends net.minecraft.world.level.block.CropBlock implements HoeOverlayBlock, ICropBlock, IForgeBlockExtension, EntityBlockExtension
@@ -174,22 +175,25 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         final ClimateRange range = climateRange.get();
         final BlockPos sourcePos = pos.below();
 
-        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
+        text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
+
+        level.getBlockEntity(sourcePos, TFCBlockEntities.FARMLAND.get())
+            .or(() -> level.getBlockEntity(sourcePos.below(), TFCBlockEntities.FARMLAND.get())) // For 2-tall crops
+            .ifPresent(farmland -> farmland.addHoeOverlayInfo(level, farmland.getBlockPos(), text, false, true));
 
         level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
             .ifPresent(crop -> {
                 if (isDebug)
                 {
-                    text.add(new TextComponent(String.format("[Debug] Growth = %.2f Yield = %.2f", crop.getGrowth(), crop.getYield())));
+                    text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
                 }
                 if (crop.getGrowth() >= 1)
                 {
-                    text.add(new TranslatableComponent("tfc.tooltip.farmland.mature"));
+                    text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
                 }
             });
     }
-
 
     @Override
     public void growthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)

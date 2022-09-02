@@ -1,7 +1,0 @@
-{
-  "__comment__": "This file was automatically created by mcresources",
-  "name": "Food",
-  "description": "How to find, harvest, and cook food.",
-  "icon": "tfc:food/wheat",
-  "sortnum": 3
-}
