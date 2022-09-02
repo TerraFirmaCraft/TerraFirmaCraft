@@ -61,15 +61,15 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
 
                 if (cachedRecipe != null && cachedRecipe.isValidTemperature(itemTemp))
                 {
-                    HeatingRecipe recipe = cachedRecipe;
-                    ItemStackInventory wrapper = new ItemStackInventory(inputStack);
+                    final HeatingRecipe recipe = cachedRecipe;
+                    final ItemStackInventory inventory = new ItemStackInventory(inputStack);
 
                     // Clear input
-                    inventory.setStackInSlot(SLOT_ITEM_INPUT, ItemStack.EMPTY);
+                    this.inventory.setStackInSlot(SLOT_ITEM_INPUT, ItemStack.EMPTY);
 
                     // Handle outputs
-                    mergeOutputStack(recipe.assemble(wrapper));
-                    mergeOutputFluids(recipe.getOutputFluid(), cap.getTemperature());
+                    mergeOutputStack(recipe.assemble(inventory));
+                    mergeOutputFluids(recipe.assembleFluid(inventory), cap.getTemperature());
                 }
             });
         }

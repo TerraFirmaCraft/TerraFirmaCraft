@@ -41,6 +41,11 @@ public enum RockCategory implements StringRepresentable
         return itemTier;
     }
 
+    public float hardness(float base)
+    {
+        return base + hardnessModifier;
+    }
+
     public float getHardness()
     {
         return hardnessModifier;

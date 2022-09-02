@@ -1,0 +1,376 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/volcano",
+  "criteria": {
+    "badlands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:badlands"
+        }
+      }
+    },
+    "inverted_badlands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:inverted_badlands"
+        }
+      }
+    },
+    "canyons": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:canyons"
+        }
+      }
+    },
+    "low_canyons": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:low_canyons"
+        }
+      }
+    },
+    "plains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:plains"
+        }
+      }
+    },
+    "plateau": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:plateau"
+        }
+      }
+    },
+    "hills": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:hills"
+        }
+      }
+    },
+    "rolling_hills": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:rolling_hills"
+        }
+      }
+    },
+    "lake": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:lake"
+        }
+      }
+    },
+    "lowlands": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:lowlands"
+        }
+      }
+    },
+    "mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:mountains"
+        }
+      }
+    },
+    "volcanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:volcanic_mountains"
+        }
+      }
+    },
+    "old_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:old_mountains"
+        }
+      }
+    },
+    "oceanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:oceanic_mountains"
+        }
+      }
+    },
+    "volcanic_oceanic_mountains": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:volcanic_oceanic_mountains"
+        }
+      }
+    },
+    "ocean": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:ocean"
+        }
+      }
+    },
+    "ocean_reef": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:ocean_reef"
+        }
+      }
+    },
+    "deep_ocean": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:deep_ocean"
+        }
+      }
+    },
+    "deep_ocean_trench": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:deep_ocean_trench"
+        }
+      }
+    },
+    "river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:river"
+        }
+      }
+    },
+    "shore": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:shore"
+        }
+      }
+    },
+    "mountain_river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:mountain_river"
+        }
+      }
+    },
+    "volcanic_mountain_river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:volcanic_mountain_river"
+        }
+      }
+    },
+    "old_mountain_river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:old_mountain_river"
+        }
+      }
+    },
+    "oceanic_mountain_river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:oceanic_mountain_river"
+        }
+      }
+    },
+    "volcanic_oceanic_mountain_river": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:volcanic_oceanic_mountain_river"
+        }
+      }
+    },
+    "mountain_lake": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:mountain_lake"
+        }
+      }
+    },
+    "volcanic_mountain_lake": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:volcanic_mountain_lake"
+        }
+      }
+    },
+    "old_mountain_lake": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:old_mountain_lake"
+        }
+      }
+    },
+    "oceanic_mountain_lake": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:oceanic_mountain_lake"
+        }
+      }
+    },
+    "volcanic_oceanic_mountain_lake": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:volcanic_oceanic_mountain_lake"
+        }
+      }
+    },
+    "plateau_lake": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "tfc:plateau_lake"
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/boots/red_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.adventuring_time.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.adventuring_time.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "badlands"
+    ],
+    [
+      "inverted_badlands"
+    ],
+    [
+      "canyons"
+    ],
+    [
+      "low_canyons"
+    ],
+    [
+      "plains"
+    ],
+    [
+      "plateau"
+    ],
+    [
+      "hills"
+    ],
+    [
+      "rolling_hills"
+    ],
+    [
+      "lake"
+    ],
+    [
+      "lowlands"
+    ],
+    [
+      "mountains"
+    ],
+    [
+      "volcanic_mountains"
+    ],
+    [
+      "old_mountains"
+    ],
+    [
+      "oceanic_mountains"
+    ],
+    [
+      "volcanic_oceanic_mountains"
+    ],
+    [
+      "ocean"
+    ],
+    [
+      "ocean_reef"
+    ],
+    [
+      "deep_ocean"
+    ],
+    [
+      "deep_ocean_trench"
+    ],
+    [
+      "river"
+    ],
+    [
+      "shore"
+    ],
+    [
+      "mountain_river"
+    ],
+    [
+      "volcanic_mountain_river"
+    ],
+    [
+      "old_mountain_river"
+    ],
+    [
+      "oceanic_mountain_river"
+    ],
+    [
+      "volcanic_oceanic_mountain_river"
+    ],
+    [
+      "mountain_lake"
+    ],
+    [
+      "volcanic_mountain_lake"
+    ],
+    [
+      "old_mountain_lake"
+    ],
+    [
+      "oceanic_mountain_lake"
+    ],
+    [
+      "volcanic_oceanic_mountain_lake"
+    ],
+    [
+      "plateau_lake"
+    ]
+  ]
+}

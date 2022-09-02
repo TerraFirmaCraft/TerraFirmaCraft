@@ -43,6 +43,7 @@ import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.*;
 import net.dries007.tfc.compat.jei.category.*;
+import net.dries007.tfc.compat.jei.extension.AdvancedShapelessExtension;
 import net.dries007.tfc.util.Helpers;
 
 @JeiPlugin
@@ -65,6 +66,7 @@ public final class JEIIntegration implements IModPlugin
     public static final RecipeType<AlloyRecipe> ALLOYING = type("alloying", AlloyRecipe.class);
     public static final RecipeType<SealedBarrelRecipe> SEALED_BARREL = type("sealed_barrel", SealedBarrelRecipe.class);
     public static final RecipeType<InstantBarrelRecipe> INSTANT_BARREL = type("instant_barrel", InstantBarrelRecipe.class);
+    public static final RecipeType<InstantFluidBarrelRecipe> INSTANT_FLUID_BARREL = type("instant_fluid_barrel", InstantFluidBarrelRecipe.class);
     public static final RecipeType<BloomeryRecipe> BLOOMERY = type("bloomery", BloomeryRecipe.class);
     public static final RecipeType<WeldingRecipe> WELDING = type("welding", WeldingRecipe.class);
     public static final RecipeType<AnvilRecipe> ANVIL = type("anvil", AnvilRecipe.class);
@@ -121,6 +123,7 @@ public final class JEIIntegration implements IModPlugin
             new AlloyRecipeCategory(ALLOYING, gui),
             new SealedBarrelRecipeCategory(SEALED_BARREL, gui),
             new InstantBarrelRecipeCategory(INSTANT_BARREL, gui),
+            new InstantFluidBarrelRecipeCategory(INSTANT_FLUID_BARREL, gui),
             new BloomeryRecipeCategory(BLOOMERY, gui),
             new WeldingRecipeCategory(WELDING, gui),
             new AnvilRecipeCategory(ANVIL, gui),
@@ -145,6 +148,7 @@ public final class JEIIntegration implements IModPlugin
         registry.addRecipes(ALLOYING, recipes(TFCRecipeTypes.ALLOY.get()));
         registry.addRecipes(SEALED_BARREL, recipes(TFCRecipeTypes.BARREL_SEALED.get()));
         registry.addRecipes(INSTANT_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT.get()));
+        registry.addRecipes(INSTANT_FLUID_BARREL, recipes(TFCRecipeTypes.BARREL_INSTANT_FLUID.get()));
         registry.addRecipes(BLOOMERY, recipes(TFCRecipeTypes.BLOOMERY.get()));
         registry.addRecipes(WELDING, recipes(TFCRecipeTypes.WELDING.get()));
         registry.addRecipes(ANVIL, recipes(TFCRecipeTypes.ANVIL.get()));
@@ -179,11 +183,12 @@ public final class JEIIntegration implements IModPlugin
         addRecipeCatalyst(registry, Wood.BlockType.LOOM, LOOM);
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, SEALED_BARREL);
         addRecipeCatalyst(registry, Wood.BlockType.BARREL, INSTANT_BARREL);
+        addRecipeCatalyst(registry, Wood.BlockType.BARREL, INSTANT_FLUID_BARREL);
     }
 
     @Override
     public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registry)
     {
-        // todo: add bait, salting recipes
+        registry.getCraftingCategory().addCategoryExtension(AdvancedShapelessRecipe.class, AdvancedShapelessExtension::new);
     }
 }

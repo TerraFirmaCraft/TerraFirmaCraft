@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/black_steel",
+  "criteria": {
+    "metal_item/blue_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:metal_item/blue_steel"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/blue_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.blue_steel.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.blue_steel.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "metal_item/blue_steel"
+    ]
+  ]
+}

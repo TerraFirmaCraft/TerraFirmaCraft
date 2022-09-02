@@ -1,0 +1,159 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/nugget",
+  "criteria": {
+    "amethyst": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/amethyst"
+            ]
+          }
+        ]
+      }
+    },
+    "diamond": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/diamond"
+            ]
+          }
+        ]
+      }
+    },
+    "emerald": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/emerald"
+            ]
+          }
+        ]
+      }
+    },
+    "lapis_lazuli": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/lapis_lazuli"
+            ]
+          }
+        ]
+      }
+    },
+    "opal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/opal"
+            ]
+          }
+        ]
+      }
+    },
+    "pyrite": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/pyrite"
+            ]
+          }
+        ]
+      }
+    },
+    "ruby": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/ruby"
+            ]
+          }
+        ]
+      }
+    },
+    "sapphire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/sapphire"
+            ]
+          }
+        ]
+      }
+    },
+    "topaz": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:ore/topaz"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:gem/amethyst"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.gemologist.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.gemologist.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "amethyst"
+    ],
+    [
+      "diamond"
+    ],
+    [
+      "emerald"
+    ],
+    [
+      "lapis_lazuli"
+    ],
+    [
+      "opal"
+    ],
+    [
+      "pyrite"
+    ],
+    [
+      "ruby"
+    ],
+    [
+      "sapphire"
+    ],
+    [
+      "topaz"
+    ]
+  ]
+}

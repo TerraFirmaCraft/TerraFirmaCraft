@@ -10,6 +10,7 @@ import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +29,7 @@ import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 /**
  * Common growth logic for crop blocks
@@ -163,6 +165,10 @@ public final class CropHelpers
                     farmland.addNutrients(fertilizer);
                     if (!player.isCreative()) stack.shrink(1);
                     addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
+                    if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
+                    {
+                        TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
+                    }
                 });
                 return true;
             }

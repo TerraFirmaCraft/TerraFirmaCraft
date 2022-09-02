@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "item": "tfc:metal/fishing_rod/blue_steel"
+    "tag": "forge:fishing_rods/blue_steel"
   },
   "heat_capacity": 0.35,
   "forging_temperature": 924.0,

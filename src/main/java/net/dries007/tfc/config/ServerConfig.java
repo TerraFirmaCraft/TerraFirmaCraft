@@ -83,6 +83,11 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
     public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
     public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
+    // Blocks - Thatch Bed
+    public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
+    public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
+    // Blocks - Leaves
+    public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -274,6 +279,15 @@ public class ServerConfig
         blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
         blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("thatchBed");
+
+        enableThatchBedSpawnSetting = builder.apply("enableThatchBedSpawnSetting").comment("If true, thatch beds can set the player's spawn.").define("enableThatchBedSpawnSetting", true);
+        enableThatchBedSleeping = builder.apply("enableThatchBedSleeping").comment("If true, the player can sleep the night in a thatch bed").define("enableThatchBedSleeping", false);
+
+        innerBuilder.pop().push("leaves");
+
+        enableLeavesDecaySlowly = builder.apply("enableLeavesDecaySlowly").comment("If true, then leaves will decay slowly over time when disconnected from logs (vanilla behavior), as opposed to instantly (TFC behavior).").define("enableLeavesDecaySlowly", false);
+
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
         smallVesselCapacity = builder.apply("smallVesselCapacity").comment("Tank capacity of a small vessel (in mB).").defineInRange("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
@@ -356,8 +370,8 @@ public class ServerConfig
         enableVanillaMobsSpawningWithEnchantments = builder.apply("enableVanillaMobsSpawningWithEnchantments").comment("If true, enables the default vanilla behavior of mobs spawning with enchanted weapons sometimes.").define("enableVanillaMobsSpawningWithEnchantments", false);
         enableVanillaMobsSpawningWithVanillaEquipment = builder.apply("enableVanillaMobsSpawningWithVanillaEquipment").comment("If true, enables the default behavior of mobs sapwning with vanilla armor and weapons").define("enableVanillaMobsSpawningWithVanillaEquipment", false);
         enableVanillaGolems = builder.apply("enableVanillaGolems").comment("If true, golems can be built").define("enableVanillaGolems", false);
-        enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters will spawn everywhere. This overrides the 'enableVanillaMonstersOnSurface' config option.").define("enableVanillaMonsters", true);
-        enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground.").define("enableVanillaMonstersOnSurface", false);
+        enableVanillaMonsters = builder.apply("enableVanillaMonsters").comment("If true, vanilla monsters are able to spawn. If false, the 'enableVanillaMonstersOnSurface' config option is not used, and all spawns are denied.").define("enableVanillaMonsters", true);
+        enableVanillaMonstersOnSurface = builder.apply("enableVanillaMonstersOnSurface").comment("If true, vanilla monsters will spawn on the surface instead of just underground. If false, vanilla monsters will not spawn on the surface.").define("enableVanillaMonstersOnSurface", false);
         enableChickenJockies = builder.apply("enableChickenJockies").comment("If true, chicken jockies can spawn").define("enableChickenJockies", false);
         enableVanillaEggThrowing = builder.apply("enableVanillaEggThrowing").comment("If true, eggs can be thrown.").define("enableVanillaEggThrowing", false);
         enableVanillaDrinkingMilkClearsPotionEffects = builder.apply("enableVanillaDrinkingMilkClearsPotionEffects").comment("If true, drinking milk will clear potion effects and restore no nutrition, as in vanilla.").define("enableVanillaDrinkingMilkClearsPotionEffects", false);

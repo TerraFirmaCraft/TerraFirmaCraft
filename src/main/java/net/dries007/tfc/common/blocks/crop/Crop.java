@@ -50,6 +50,11 @@ public enum Crop implements StringRepresentable
     MELON(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
     // todo: pickable crops
 
+    private static ExtendedProperties doubleCrop()
+    {
+        return dead().blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTickBottomPartOnly);
+    }
+
     private static ExtendedProperties crop()
     {
         return dead().blockEntity(TFCBlockEntities.CROP).serverTicks(CropBlockEntity::serverTick);
@@ -57,7 +62,7 @@ public enum Crop implements StringRepresentable
 
     private static ExtendedProperties dead()
     {
-        return ExtendedProperties.of(BlockBehaviour.Properties.of(Material.PLANT).noCollission().randomTicks().strength(0.4F).sound(SoundType.CROP)).flammable(60, 30);
+        return ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0.4F).sound(SoundType.CROP).flammable(60, 30);
     }
 
     private final String serializedName;
@@ -85,8 +90,8 @@ public enum Crop implements StringRepresentable
     Crop(NutrientType primaryNutrient, int doubleBlockBottomStages, int doubleBlockTopStages, boolean requiresStick)
     {
         this(primaryNutrient, requiresStick ?
-            self -> ClimbingCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), doubleBlockBottomStages, doubleBlockTopStages, self) :
-            self -> DoubleCropBlock.create(crop().serverTicks(CropBlockEntity::serverTickBottomPartOnly), doubleBlockBottomStages, doubleBlockTopStages, self),
+            self -> ClimbingCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self) :
+            self -> DoubleCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self),
             self -> new DeadClimbingCropBlock(dead(), self), self -> new WildDoubleCropBlock(dead()));
     }
 

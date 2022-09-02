@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/root",
+  "criteria": {
+    "nuggets": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:nuggets"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ore/small_native_copper"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.nugget.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.nugget.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "nuggets"
+    ]
+  ]
+}

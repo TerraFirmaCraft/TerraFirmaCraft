@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/bronze_age",
+  "criteria": {
+    "bloomery": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:bloomery"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:bloomery"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.bloomery.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.bloomery.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "bloomery"
+    ]
+  ]
+}

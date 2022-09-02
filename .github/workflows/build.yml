@@ -47,12 +47,6 @@ jobs:
         arguments: build
       env:
         VERSION: ${{ steps.version.outputs.result }}
-    - name: Game Test
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: runGameTestServer
-      env:
-        VERSION: indev-test
     - name: Create Release
       id: create_release
       if: ${{ steps.version.outputs.result != 'indev' && success() }}

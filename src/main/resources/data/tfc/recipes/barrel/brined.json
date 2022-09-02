@@ -2,17 +2,21 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:barrel_sealed",
   "input_item": {
-    "ingredient": [
-      {
-        "tag": "tfc:foods/fruits"
-      },
-      {
-        "tag": "tfc:foods/vegetables"
-      },
-      {
-        "tag": "tfc:foods/meats"
-      }
-    ]
+    "ingredient": {
+      "type": "tfc:lacks_trait",
+      "trait": "tfc:brined",
+      "ingredient": [
+        {
+          "tag": "tfc:foods/fruits"
+        },
+        {
+          "tag": "tfc:foods/vegetables"
+        },
+        {
+          "tag": "tfc:foods/meats"
+        }
+      ]
+    }
   },
   "input_fluid": {
     "ingredient": "tfc:brine",

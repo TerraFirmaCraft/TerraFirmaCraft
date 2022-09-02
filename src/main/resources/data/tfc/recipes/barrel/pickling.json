@@ -3,19 +3,23 @@
   "type": "tfc:barrel_sealed",
   "input_item": {
     "ingredient": {
-      "type": "tfc:has_trait",
-      "trait": "tfc:brined",
-      "ingredient": [
-        {
-          "tag": "tfc:foods/fruits"
-        },
-        {
-          "tag": "tfc:foods/vegetables"
-        },
-        {
-          "tag": "tfc:foods/meats"
-        }
-      ]
+      "type": "tfc:lacks_trait",
+      "trait": "tfc:pickled",
+      "ingredient": {
+        "type": "tfc:has_trait",
+        "trait": "tfc:brined",
+        "ingredient": [
+          {
+            "tag": "tfc:foods/fruits"
+          },
+          {
+            "tag": "tfc:foods/vegetables"
+          },
+          {
+            "tag": "tfc:foods/meats"
+          }
+        ]
+      }
     }
   },
   "input_fluid": {

@@ -6,7 +6,10 @@ from nbtlib.tag import String as StringTag, Int as IntTag
 
 Tree = NamedTuple('Tree', name=str, feature=Literal['random', 'overlay', 'stacked'], variant=str, count=Union[int, Tuple[int, ...]])
 
-DATA_VERSION = 2970
+DATA_VERSION = 2975
+
+TEMPLATES_DIR = './resources/structure_templates'
+STRUCTURES_DIR = './src/main/resources/data/tfc/structures'
 
 NORMAL_TREES = [
     Tree('acacia', 'random', 'acacia', 35),
@@ -123,7 +126,7 @@ def make_tree_structures(tree: Tree, suffix: str = ''):
 
 
 def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
-    f = nbt.load('./structure_templates/%s.nbt' % template)
+    f = nbt.load('%s/%s.nbt' % (TEMPLATES_DIR, template))
     for block in f['palette']:
         if block['Name'] == 'minecraft:oak_log':
             block['Name'] = StringTag('tfc:wood/log/%s' % wood)
@@ -140,7 +143,7 @@ def make_tree_structure(template: str, wood: str, dest: str, wood_dir: str):
     # Hack the data version, to avoid needing to run DFU on anything
     f['DataVersion'] = IntTag(DATA_VERSION)
 
-    result_dir = '../src/main/resources/data/tfc/structures/%s/' % wood_dir
+    result_dir = '%s/%s/' % (STRUCTURES_DIR, wood_dir)
     os.makedirs(result_dir, exist_ok=True)
 
     file_name = result_dir + dest + '.nbt'
@@ -178,8 +181,8 @@ def count_leaves_in_random_tree(base_name: str, count: int) -> float:
 
 
 def count_leaves_in_overlay_tree(base_name: str) -> float:
-    base = nbt.load('./structure_templates/%s.nbt' % base_name)
-    overlay = nbt.load('./structure_templates/%s_overlay.nbt' % base_name)
+    base = nbt.load('%s/%s.nbt' % (TEMPLATES_DIR, base_name))
+    overlay = nbt.load('%s/%s_overlay.nbt' % (TEMPLATES_DIR, base_name))
 
     base_leaves = leaf_ids(base)
     leaves = set(pos_key(block) for block in base['blocks'] if block['state'] in base_leaves)
@@ -195,7 +198,7 @@ def count_leaves_in_overlay_tree(base_name: str) -> float:
 
 
 def count_leaves_in_structure(file_name: str):
-    file = nbt.load('./structure_templates/%s.nbt' % file_name)
+    file = nbt.load('%s/%s.nbt' % (TEMPLATES_DIR, file_name))
     leaves = leaf_ids(file)
     return sum(block['state'] in leaves for block in file['blocks'])
 
@@ -211,7 +214,7 @@ def pos_key(tag: Any, key: str = 'pos') -> Tuple[int, int, int]:
 
 def verify_center_trunk(prefix: str, count: int):
     for i in range(1, 1 + count):
-        root = nbt.load('./structure_templates/%s%d.nbt' % (prefix, i))
+        root = nbt.load('%s/%s%d.nbt' % (TEMPLATES_DIR, prefix, i))
         sx, sy, sz = pos_key(root, 'size')
         if sx % 2 != 1 or sz % 2 != 1:
             print('Non-odd dimensions: %d x %d x %d on %s%d' % (sx, sy, sz, prefix, i))

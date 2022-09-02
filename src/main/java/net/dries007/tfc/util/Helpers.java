@@ -748,6 +748,11 @@ public final class Helpers
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
+    public static boolean spawnItem(Level level, Vec3 pos, ItemStack stack)
+    {
+        return level.addFreshEntity(new ItemEntity(level, pos.x(), pos.y(), pos.z(), stack));
+    }
+
     public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack, double yOffset)
     {
         return level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));

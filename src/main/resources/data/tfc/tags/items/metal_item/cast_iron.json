@@ -1,0 +1,11 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:metal/ingot/cast_iron",
+    "tfc:metal/double_ingot/cast_iron",
+    "tfc:metal/sheet/cast_iron",
+    "tfc:metal/double_sheet/cast_iron",
+    "tfc:metal/rod/cast_iron"
+  ]
+}

@@ -23,11 +23,11 @@ public class MossSpreadingBlock extends Block
     {
         if (world.isAreaLoaded(pos, 5) && TFCConfig.SERVER.enableMossyRockSpreading.get() && random.nextInt(TFCConfig.SERVER.mossyRockSpreadRate.get()) == 0)
         {
-            BlockPos targetPos = pos.offset(random.nextInt(4) - random.nextInt(4), random.nextInt(4) - random.nextInt(4), random.nextInt(4) - random.nextInt(4));
-            BlockState targetState = world.getBlockState(targetPos);
-            if (targetState.getBlock() instanceof IMossGrowingBlock)
+            final BlockPos targetPos = pos.offset(random.nextInt(4) - random.nextInt(4), random.nextInt(4) - random.nextInt(4), random.nextInt(4) - random.nextInt(4));
+            final BlockState targetState = world.getBlockState(targetPos);
+            if (targetState.getBlock() instanceof IMossGrowingBlock block)
             {
-                ((IMossGrowingBlock) targetState.getBlock()).convertToMossy(world, targetPos, targetState, true);
+                block.convertToMossy(world, targetPos, targetState, true);
             }
         }
     }

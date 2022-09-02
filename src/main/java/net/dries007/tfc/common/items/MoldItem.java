@@ -156,6 +156,7 @@ public class MoldItem extends Item
 
         private final HeatHandler heat;
         private final FluidTank tank;
+        private final int capacity;
 
         MoldCapability(ItemStack stack, int capacity)
         {
@@ -164,6 +165,7 @@ public class MoldItem extends Item
 
             this.heat = new HeatHandler(1, 0, 0);
             this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null); // Must be a metal
+            this.capacity = capacity;
 
             load();
         }
@@ -188,7 +190,7 @@ public class MoldItem extends Item
                     text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                     text.add(metal.getDisplayName()
                         .append(" ")
-                        .append(Helpers.translatable("tfc.tooltip.fluid_units", fluid.getAmount()))
+                        .append(Helpers.translatable("tfc.tooltip.fluid_units_and_capacity", fluid.getAmount(), capacity))
                         .append(" ")
                         .append(Helpers.translatable(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
                 }
@@ -220,8 +222,7 @@ public class MoldItem extends Item
             final int amount = tank.fill(resource, action);
             if (amount > 0)
             {
-                updateHeatCapacity();
-                save();
+                updateHeatCapacity(true);
             }
             return amount;
         }
@@ -235,8 +236,7 @@ public class MoldItem extends Item
                 final FluidStack result = drain(resource.getAmount(), action);
                 if (!result.isEmpty())
                 {
-                    updateHeatCapacity();
-                    save();
+                    updateHeatCapacity(true);
                 }
                 return result;
             }
@@ -256,8 +256,7 @@ public class MoldItem extends Item
             final FluidStack result = tank.drain(maxDrain, action);
             if (!result.isEmpty())
             {
-                updateHeatCapacity();
-                save();
+                updateHeatCapacity(true);
             }
             return result;
         }
@@ -299,10 +298,10 @@ public class MoldItem extends Item
             final CompoundTag tag = stack.getOrCreateTag();
             tank.readFromNBT(tag.getCompound("tank"));
 
-            // Deserialize heat capacity before we deserialize heat
+            // Update heat capacity before we deserialize heat
             // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
             // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
-            heat.setHeatCapacity(tag.getFloat("heat_capacity"));
+            updateHeatCapacity(false);
             heat.deserializeNBT(tag.getCompound("heat"));
         }
 
@@ -311,7 +310,6 @@ public class MoldItem extends Item
             final CompoundTag tag = stack.getOrCreateTag();
             tag.put("tank", tank.writeToNBT(new CompoundTag()));
             tag.put("heat", heat.serializeNBT());
-            tag.putFloat("heat_capacity", heat.getHeatCapacity());
         }
 
         @Nullable
@@ -320,11 +318,14 @@ public class MoldItem extends Item
             return Metal.get(tank.getFluid().getFluid());
         }
 
-        private void updateHeatCapacity()
+        private void updateHeatCapacity(boolean save)
         {
             final Metal metal = getContainedMetal();
-            heat.setHeatCapacity(metal != null ? metal.getHeatCapacity() : 1); // If fluid is not empty, should not be null, but we don't check for that case here
-            save();
+            heat.setHeatCapacity(metal != null ? metal.getHeatCapacity() : 1.0f); // If fluid is not empty, should not be null, but we don't check for that case here
+            if (save)
+            {
+                save();
+            }
         }
     }
 }

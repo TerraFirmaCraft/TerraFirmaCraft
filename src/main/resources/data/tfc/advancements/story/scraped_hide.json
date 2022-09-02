@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/barrel",
+  "criteria": {
+    "scraped_hides": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:scraped_hides"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:large_scraped_hide"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.scraped_hide.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.scraped_hide.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "scraped_hides"
+    ]
+  ]
+}

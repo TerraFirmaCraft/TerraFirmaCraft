@@ -34,6 +34,7 @@ import net.dries007.tfc.common.container.ISlotCallback;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.BloomeryInventory;
+import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -426,10 +427,11 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             FluidStack fluid = FluidStack.EMPTY;
             for (ItemStack stack : bloomery.inputStacks)
             {
-                HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(stack);
+                final ItemStackInventory inventory = new ItemStackInventory(stack);
+                final HeatingRecipe heatingRecipe = HeatingRecipe.getRecipe(inventory);
                 if (heatingRecipe != null)
                 {
-                    FluidStack toAdd = heatingRecipe.getOutputFluid();
+                    final FluidStack toAdd = heatingRecipe.assembleFluid(inventory);
                     if (!toAdd.isEmpty())
                     {
                         if (fluid.isEmpty())

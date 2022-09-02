@@ -9,36 +9,9 @@ package net.dries007.tfc.world;
 import java.util.List;
 
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
 
-import com.mojang.serialization.Codec;
-
-public class NoopClimateSampler
+public final class NoopClimateSampler
 {
-    private static final DensityFunction NONE = new DensityFunction.SimpleFunction() {
-        @Override
-        public double compute(FunctionContext ctx)
-        {
-            return 0;
-        }
-
-        @Override
-        public double minValue()
-        {
-            return 0;
-        }
-
-        @Override
-        public double maxValue()
-        {
-            return 0;
-        }
-
-        @Override
-        public Codec<? extends DensityFunction> codec()
-        {
-            return Codec.unit(() -> NONE);
-        }
-    };
-    public static final Climate.Sampler INSTANCE = new Climate.Sampler(NONE, NONE, NONE, NONE, NONE, NONE, List.of());
+    public static final Climate.Sampler INSTANCE = new Climate.Sampler(DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), DensityFunctions.zero(), List.of());
 }

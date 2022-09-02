@@ -8,5 +8,6 @@
     "fluid": "tfc:metal/bismuth_bronze",
     "amount": 100
   },
-  "temperature": 985
+  "temperature": 985,
+  "use_durability": true
 }
