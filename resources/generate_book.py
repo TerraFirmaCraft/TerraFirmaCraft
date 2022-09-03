@@ -802,12 +802,27 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
             text('Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(thing)collapse$().')  # todo: ref gravity
         )),
         entry('support_beams', 'Support Beams', 'tfc:wood/support/oak', pages=(
-            text('$(thing)Support Beams$() are a means of preventing block collapses. They are most often used during mining, when rocky blocks are susceptible to falling on your head.', title='Support Beams'),
-            crafting('tfc:crafting/wood/oak_support', text_contents='Supports can be crafted with a $(thing)Saw$() and some $(thing)Logs$()'),
-            text('Supports can come in horizontal and vertical variations. Placing supports on top of a block places a column of up to three support beams. These vertical supports will be destroyed if they lose their base of support. Horizontal supports are placed by pressing $(item)$(k:key.use)$() on the side of a vertical support beam. If there is a direct path to another vertical support beam and enough beams available, the horizontal support will be formed.', title='Supporting Supports'),
-            multiblock('Basic Structure', '', False, (('CRD',), ('V V',), ('V0V',)), {'C': 'tfc:wood/vertical_support/oak[south=true]', 'R': 'tfc:wood/horizontal_support/oak[north=true,south=true]', 'D': 'tfc:wood/vertical_support/oak[north=true]', 'V': 'tfc:wood/vertical_support/oak'}),
-            text('Only horizontal support beams, the kind that have no \'elbow\' components, support blocks. Those beams support 4 blocks in each direction horizontally, and one block above and below. Blocks in this area are protected from collapsing. However, be warned! Mining outside of this range can easily cause collapses that end up in (and potentially destroy) your safe zone.'),
-            empty_last_page(), # todo: in 1.12, we had a support visualization. and also i'm sure more info about gravity, collapses is wanted.
+            text('In TerraFirmaCraft, raw rock is unstable and susceptible to $(thing)Collapsing$(). Most rock blocks, including $(thing)Raw Rock$(), $(thing)Ores$(), $(thing)Smooth$() and $(thing)Bricks$() can all rain down on your head under the right circumstances.$(br2)$(thing)Support Beams$() can be used to prevent collapses from occurring.', title='Support Beams'),
+            text('Collapses can occur whenever a player $(thing)mines any Raw Rock$() that is near to $(thing)Unsupported Raw Rock$(). Once a collapse has started, however, even previously $(thing)Supported$() rock can start to collapse.$(br2)Note that the rock on the roof of caves ia $(thing)naturally supported$(). For areas mined by a player, however, $(thing)Support Beams$() are needed to ensure everything is stable.'),
+            crafting('tfc:crafting/wood/oak_support', text_contents='To get started, $(thing)Support Beams$() can be crafted with a $(thing)Saw$() and any type of $(thing)Logs$().$(br2)$(thing)Support Beams$() come in $(thing)Vertical$(), and $(thing)Horizontal$() forms.'),
+            text('Placing a $(thing)Support Beam$() on top of a block places a column up to three tall. These must have a solid block beneath them to stay upright.$(br2)$(thing)Horizontal$() beams can be placed between any two $(thing)Vertical$() beams that are within five blocks.', title='Supporting Supports'),
+            text('Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 3 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)The horizontal area can be seen as the glass area to the right, with support extending to one block above and below the center support beam.'),
+            multiblock('Supported Area', '', False, (
+                ('         ', '         ', '         ', '         ', '   CRD   ', '         ', '         ', '         ', '         '),
+                ('         ', '         ', '         ', '         ', '   V V   ', '         ', '         ', '         ', '         '),
+                ('         ', '         ', '         ', '         ', '   V0V   ', '         ', '         ', '         ', '         '),
+                ('555555555', '544444445', '543333345', '543222345', '543212345', '543222345', '543333345', '544444445', '555555555')
+            ), {
+                'C': 'tfc:wood/vertical_support/oak[south=true]',
+                'R': 'tfc:wood/horizontal_support/chestnut[north=true,south=true]',
+                'D': 'tfc:wood/vertical_support/oak[north=true]',
+                'V': 'tfc:wood/vertical_support/oak',
+                '1': 'minecraft:white_concrete',
+                '2': 'minecraft:gray_concrete',
+                '3': 'minecraft:white_concrete',
+                '4': 'minecraft:gray_concrete',
+                '5': 'minecraft:white_concrete',
+            }),
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
             text('You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in either under your feet or across the world.'),
