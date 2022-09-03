@@ -270,6 +270,7 @@ def generate(rm: ResourceManager):
             *['tfc:ore/poor_%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if ore_data.graded],
             *['tfc:ore/%s/%s' % (ore, rock) for ore, ore_data in ORES.items() if not ore_data.graded]
         ], block('cobble'))
+        collapse_recipe(rm, '%s_mossy_cobble' % rock, block('mossy_bricks'), mossy_cobble)
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:

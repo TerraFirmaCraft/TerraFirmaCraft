@@ -499,6 +499,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 {
                     Helpers.seedLargeFeatures(random, baseSeed, featureIndex, decorationIndex);
 
+                    final Supplier<String> featureName = () -> structureFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString);
+
                     try
                     {
                         structureFeatureManager.startsForFeature(sectionPos, feature).forEach(start -> start.placeInChunk(level, structureFeatureManager, this, random, getBoundingBoxForStructure(chunk), chunkPos));
@@ -506,7 +508,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     catch (Exception e)
                     {
                         final CrashReport crash = CrashReport.forThrowable(e, "Feature placement");
-                        crash.addCategory("Feature").setDetail("Description", () -> structureFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString));
+                        crash.addCategory("Feature").setDetail("Description", featureName::get);
                         throw new ReportedException(crash);
                     }
 
@@ -539,6 +541,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                 {
                     final PlacedFeature feature = step.features().get(featureIndex);
                     Helpers.seedLargeFeatures(random, baseSeed, featureIndex, decorationIndex);
+                    final Supplier<String> featureName = () -> placedFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString);
                     try
                     {
                         feature.placeWithBiomeCheck(level, this, random, originPos);
@@ -546,7 +549,7 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
                     catch (Exception e)
                     {
                         final CrashReport crash = CrashReport.forThrowable(e, "Feature placement");
-                        crash.addCategory("Feature").setDetail("Description", () -> placedFeatures.getResourceKey(feature).map(Object::toString).orElseGet(feature::toString));
+                        crash.addCategory("Feature").setDetail("Description", featureName);
                         throw new ReportedException(crash);
                     }
                 }

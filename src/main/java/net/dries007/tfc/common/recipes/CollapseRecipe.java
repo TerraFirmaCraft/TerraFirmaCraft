@@ -152,13 +152,13 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean collapseBlock(Level world, BlockPos pos, BlockState state)
     {
-        BlockInventory wrapper = new BlockInventory(pos, state);
-        CollapseRecipe recipe = getRecipe(world, wrapper);
+        final BlockInventory wrapper = new BlockInventory(pos, state);
+        final CollapseRecipe recipe = getRecipe(world, wrapper);
         if (recipe != null)
         {
-            BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
+            final BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
             world.setBlockAndUpdate(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
-            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState));
+            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState, 3f, 20));
             return true;
         }
         return false;

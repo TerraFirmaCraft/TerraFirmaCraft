@@ -47,7 +47,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         Direction direction = random.nextBoolean() ? Direction.UP : Direction.DOWN;
         BlockState wallState = level.getBlockState(pos.relative(direction.getOpposite()));
         RockSettings wallRock = rockSettings.getRock(wallState.getBlock());
-        if (wallRock != null && (Helpers.isBlock(wallState, wallRock.hardened()) || Helpers.isBlock(wallState, wallRock.raw())))
+        if (wallRock != null && wallRock.isRawOrHardened(wallState))
         {
             placeIfPresent(level, pos, direction, random, wallRock);
         }
@@ -57,7 +57,7 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
             direction = direction.getOpposite();
             wallState = level.getBlockState(pos.relative(direction));
             wallRock = rockSettings.getRock(wallState.getBlock());
-            if (wallRock != null && wallRock.raw() == wallState.getBlock())
+            if (wallRock != null && wallRock.isRawOrHardened(wallState))
             {
                 placeIfPresent(level, pos, direction, random, wallRock);
             }
@@ -65,69 +65,72 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
         return true;
     }
 
-    protected void place(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    protected void place(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random)
     {
-        placeSmallSpike(worldIn, pos, spike, raw, direction, rand);
+        placeSmallSpike(level, pos, spike, raw, direction, random);
     }
 
-    protected void placeSmallSpike(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random)
     {
-        placeSmallSpike(worldIn, pos, spike, raw, direction, rand, rand.nextFloat());
+        placeSmallSpike(level, pos, spike, raw, direction, random, random.nextFloat());
     }
 
-    protected void placeSmallSpike(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand, float sizeWeight)
+    protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random, float sizeWeight)
     {
         if (!Helpers.isBlock(raw, BlockTags.BASE_STONE_OVERWORLD))
+        {
             return;
+        }
+
         // Build a spike starting downwards from the target block
         if (sizeWeight < 0.2f)
         {
-            replaceBlock(worldIn, pos, spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
-            replaceBlock(worldIn, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
+            replaceBlock(level, pos, spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
+            replaceBlock(level, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
         }
         else if (sizeWeight < 0.7f)
         {
-            replaceBlock(worldIn, pos, spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
-            replaceBlock(worldIn, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
-            replaceBlock(worldIn, pos.relative(direction, 2), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
+            replaceBlock(level, pos, spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
+            replaceBlock(level, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
+            replaceBlock(level, pos.relative(direction, 2), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
         }
         else
         {
-            replaceBlockWithoutFluid(worldIn, pos, raw);
-            replaceBlock(worldIn, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
-            replaceBlock(worldIn, pos.relative(direction, 2), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
-            replaceBlock(worldIn, pos.relative(direction, 3), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
+            replaceBlockWithoutFluid(level, pos, raw);
+            replaceBlock(level, pos.relative(direction, 1), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.BASE));
+            replaceBlock(level, pos.relative(direction, 2), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.MIDDLE));
+            replaceBlock(level, pos.relative(direction, 3), spike.setValue(RockSpikeBlock.PART, RockSpikeBlock.Part.TIP));
         }
     }
 
-    protected void replaceBlock(WorldGenLevel world, BlockPos pos, BlockState state)
+    protected void replaceBlock(WorldGenLevel level, BlockPos pos, BlockState state)
     {
-        Block block = world.getBlockState(pos).getBlock();
+        final Block block = level.getBlockState(pos).getBlock();
         if (block == Blocks.CAVE_AIR)
         {
-            setBlock(world, pos, state);
+            setBlock(level, pos, state);
         }
         else if (block == Blocks.WATER || block == TFCBlocks.RIVER_WATER.get())
         {
-            setBlock(world, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
+            setBlock(level, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.WATER)));
         }
         else if (block == Blocks.LAVA)
         {
-            setBlock(world, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.LAVA)));
+            setBlock(level, pos, state.setValue(RockSpikeBlock.FLUID, RockSpikeBlock.FLUID.keyFor(Fluids.LAVA)));
         }
     }
 
-    protected void replaceBlockWithoutFluid(WorldGenLevel world, BlockPos pos, BlockState state)
+    protected void replaceBlockWithoutFluid(WorldGenLevel level, BlockPos pos, BlockState state)
     {
-        Block block = world.getBlockState(pos).getBlock();
+        final Block block = level.getBlockState(pos).getBlock();
         if (block == Blocks.CAVE_AIR || block == Blocks.WATER || block == TFCBlocks.RIVER_WATER.get() || block == Blocks.LAVA)
         {
-            setBlock(world, pos, state);
+            setBlock(level, pos, state);
         }
     }
 
-    private void placeIfPresent(WorldGenLevel worldIn, BlockPos pos, Direction direction, Random random, RockSettings wallRock)
+    private void placeIfPresent(WorldGenLevel level, BlockPos pos, Direction direction, Random random, RockSettings wallRock)
     {
-        wallRock.spike().ifPresent(spike -> place(worldIn, pos, spike.defaultBlockState(), wallRock.raw().defaultBlockState(), direction, random));
+        wallRock.spike().ifPresent(spike -> place(level, pos, spike.defaultBlockState(), wallRock.hardened().defaultBlockState(), direction, random));
     }
 }

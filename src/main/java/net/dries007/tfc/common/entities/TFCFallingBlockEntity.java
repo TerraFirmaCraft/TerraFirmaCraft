@@ -112,6 +112,12 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
         dontSetBlock = false;
     }
 
+    public TFCFallingBlockEntity(Level level, double x, double y, double z, BlockState fallingBlockState, float damagePerBlockFallen, int maximumFallDamage)
+    {
+        this(level, x, y, z, fallingBlockState);
+        setHurtsEntities(damagePerBlockFallen, maximumFallDamage);
+    }
+
     public TFCFallingBlockEntity(Level level, double x, double y, double z, BlockState fallingBlockState)
     {
         this(TFCEntities.FALLING_BLOCK.get(), level);

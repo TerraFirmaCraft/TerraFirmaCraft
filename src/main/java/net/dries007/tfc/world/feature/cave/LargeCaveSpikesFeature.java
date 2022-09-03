@@ -26,11 +26,11 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
     /**
      * Much larger spikes, calls to the smaller spikes on the outsides
      */
-    public void place(WorldGenLevel worldIn, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random rand)
+    public void place(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random)
     {
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        int height = 6 + rand.nextInt(11);
-        int radius = 2 + rand.nextInt(1);
+        int height = 6 + random.nextInt(11);
+        int radius = 2 + random.nextInt(1);
         int maxHeightReached = 0;
         for (int y = -3; y <= height; y++)
         {
@@ -49,28 +49,28 @@ public class LargeCaveSpikesFeature extends CaveSpikesFeature
                     if (actualRadius < 0.7)
                     {
                         // Fill in actual blocks
-                        replaceBlockWithoutFluid(worldIn, mutablePos, raw);
+                        replaceBlockWithoutFluid(level, mutablePos, raw);
                         if (x == 0 && z == 0)
                         {
                             maxHeightReached = y;
                         }
                     }
-                    else if (actualRadius < 0.85 && rand.nextBoolean())
+                    else if (actualRadius < 0.85 && random.nextBoolean())
                     {
                         // Only fill in if continuing downwards
-                        if (worldIn.getBlockState(mutablePos.offset(0, -direction.getStepY(), 0)) == raw)
+                        if (level.getBlockState(mutablePos.offset(0, -direction.getStepY(), 0)) == raw)
                         {
-                            replaceBlockWithoutFluid(worldIn, mutablePos, raw);
+                            replaceBlockWithoutFluid(level, mutablePos, raw);
                         }
                     }
-                    else if (actualRadius < 1 && rand.nextInt(3) == 0 && y > 0)
+                    else if (actualRadius < 1 && random.nextInt(3) == 0 && y > 0)
                     {
-                        placeSmallSpike(worldIn, mutablePos, spike, raw, direction, rand);
+                        placeSmallSpike(level, mutablePos, spike, raw, direction, random);
                     }
                 }
             }
         }
         mutablePos.set(pos).move(direction, maxHeightReached - 1);
-        placeSmallSpike(worldIn, mutablePos, spike, raw, direction, rand, 1.0f);
+        placeSmallSpike(level, mutablePos, spike, raw, direction, random, 1.0f);
     }
 }
