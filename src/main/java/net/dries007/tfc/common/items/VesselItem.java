@@ -102,6 +102,7 @@ public class VesselItem extends Item
         private final ItemStackHandler inventory;
         private final Alloy alloy;
         private final HeatHandler heat; // Since we cannot heat individual items (no tick() method), we only use a heat value for the container
+        private final int capacity;
 
         private final HeatingRecipe[] cachedRecipes; // Recipes for each of the four slots in the inventory
 
@@ -111,7 +112,8 @@ public class VesselItem extends Item
             this.capability = LazyOptional.of(() -> this);
 
             this.inventory = new InventoryItemHandler(this, SLOTS);
-            this.alloy = new Alloy(TFCConfig.SERVER.smallVesselCapacity.get());
+            this.capacity = TFCConfig.SERVER.smallVesselCapacity.get();
+            this.alloy = new Alloy(capacity);
             this.heat = new HeatHandler(1, 0, 0);
 
             this.cachedRecipes = new HeatingRecipe[SLOTS];
@@ -190,7 +192,7 @@ public class VesselItem extends Item
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
                         text.add(alloy.getResult().getDisplayName()
                             .append(" ")
-                            .append(Helpers.translatable("tfc.tooltip.fluid_units", alloy.getAmount()))
+                            .append(Helpers.translatable("tfc.tooltip.fluid_units_and_capacity", alloy.getAmount(), capacity))
                             .append(" ")
                             .append(Helpers.translatable(mode == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
                         if (!Helpers.isEmpty(inventory))

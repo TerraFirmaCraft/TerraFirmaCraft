@@ -136,14 +136,14 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         // Fill output
         if (crucible.inventory.isMolten())
         {
-            final ItemStack outputStack = crucible.inventory.getStackInSlot(SLOT_OUTPUT);
-            final MoldLike mold = MoldLike.get(outputStack);
-            if (mold != null)
+            final FluidStack outputDrop = crucible.inventory.drain(1, IFluidHandler.FluidAction.SIMULATE);
+            final FluidStack outputRemainder = Helpers.mergeOutputFluidIntoSlot(crucible.inventory, outputDrop, crucible.temperature, SLOT_OUTPUT);
+            if (outputRemainder.isEmpty())
             {
-                FluidHelpers.transferExact(crucible.inventory, mold, 1);
-                mold.setTemperatureIfWarmer(crucible.temperature);
-                crucible.markForSync();
+                // Remainder was emptied, so do the extraction for real
+                crucible.inventory.drain(1, IFluidHandler.FluidAction.EXECUTE);
             }
+            crucible.markForSync();
         }
     }
 
@@ -207,6 +207,16 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     public AlloyView getAlloy()
     {
         return inventory.alloy;
+    }
+
+    @Override
+    public boolean isItemValid(int slot, ItemStack stack)
+    {
+        if (slot == SLOT_OUTPUT)
+        {
+            return stack.getCapability(Capabilities.FLUID_ITEM).isPresent() && stack.getCapability(HeatCapability.CAPABILITY).isPresent();
+        }
+        return stack.getCapability(HeatCapability.CAPABILITY).isPresent();
     }
 
     @Override

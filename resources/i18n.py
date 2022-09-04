@@ -4,36 +4,22 @@ import json
 
 class I18n:
 
-    @staticmethod
-    def create(lang: str):
-        return I18n(lang) if lang == 'en_us' else ForLanguage(lang)
-
     lang: str
 
     def __init__(self, lang: str):
         self.lang = lang
-
-    def translate(self, text: str) -> str:
-        """ Translates the string into the current domain """
-        return text
-
-    def flush(self):
-        """ Updates the local translation file, if needed """
-        pass
-
-
-class ForLanguage(I18n):
-    def __init__(self, lang: str):
-        super().__init__(lang)
         self.before = {}
         self.after = {}
-        self.lang_path = './lang/%s.json' % lang
+        self.lang_path = './resources/lang/%s.json' % lang
         
         # Default translation
         if not os.path.isfile(self.lang_path):
             print('Writing default translation for language %s to %s' % (self.lang, self.lang_path))
             with open(self.lang_path, 'w', encoding='utf-8') as f:
                 f.write('{}\n')
+
+        if lang == 'en_us':
+            return  # Don't read the en_us translation, it is only written to
 
         # Read the existing translation
         with open(self.lang_path, 'r', encoding='utf-8') as f:
@@ -48,7 +34,10 @@ class ForLanguage(I18n):
             self.before[key] = value
 
     def translate(self, text: str) -> str:
-        if text in self.before:
+        """ Translates the string into the current domain """
+        if self.lang == 'en_us':  # For en_us, always keep the current text (read only)
+            translated = text
+        elif text in self.before:
             translated = self.before[text]  # Translate if available
         else:
             translated = text  # Not available, but record and output anyway
@@ -57,6 +46,7 @@ class ForLanguage(I18n):
         return translated
 
     def flush(self):
+        """ Updates the local translation file, if needed """
         with open(self.lang_path, 'w', encoding='utf-8') as f:
             print('Writing updated translation for language %s' % self.lang)
             json.dump(self.after, f, indent=2, ensure_ascii=False)

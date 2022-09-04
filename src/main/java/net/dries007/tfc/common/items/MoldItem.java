@@ -156,6 +156,7 @@ public class MoldItem extends Item
 
         private final HeatHandler heat;
         private final FluidTank tank;
+        private final int capacity;
 
         MoldCapability(ItemStack stack, int capacity)
         {
@@ -164,6 +165,7 @@ public class MoldItem extends Item
 
             this.heat = new HeatHandler(1, 0, 0);
             this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null); // Must be a metal
+            this.capacity = capacity;
 
             load();
         }
@@ -188,7 +190,7 @@ public class MoldItem extends Item
                     text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                     text.add(metal.getDisplayName()
                         .append(" ")
-                        .append(Helpers.translatable("tfc.tooltip.fluid_units", fluid.getAmount()))
+                        .append(Helpers.translatable("tfc.tooltip.fluid_units_and_capacity", fluid.getAmount(), capacity))
                         .append(" ")
                         .append(Helpers.translatable(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
                 }

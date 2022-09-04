@@ -128,7 +128,7 @@ public class DiscreteFluidContainerItem extends Item
                 }
 
                 final ItemStack stack = new ItemStack(this);
-                stack.getCapability(Capabilities.FLUID_ITEM).ifPresent(c -> c.fill(new FluidStack(fluid, FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE));
+                stack.getCapability(Capabilities.FLUID_ITEM).ifPresent(c -> c.fill(new FluidStack(fluid, capacity.get()), IFluidHandler.FluidAction.EXECUTE));
                 items.add(stack);
             }
         }
