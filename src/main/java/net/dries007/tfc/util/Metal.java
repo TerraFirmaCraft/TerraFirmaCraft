@@ -464,7 +464,7 @@ public final class Metal
         AXE_HEAD(Type.TOOL, true),
         SHOVEL(Type.TOOL, metal -> new ShovelItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.875F, metal.toolTier()), -3.0F, properties())),
         SHOVEL_HEAD(Type.TOOL, true),
-        HOE(Type.TOOL, metal -> new HoeItem(metal.toolTier(), -1, -2f, properties())),
+        HOE(Type.TOOL, metal -> new TFCHoeItem(metal.toolTier(), -1, -2f, properties())),
         HOE_HEAD(Type.TOOL, true),
         CHISEL(Type.TOOL, metal -> new ChiselItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.27f, metal.toolTier()), -1.5F, properties())),
         CHISEL_HEAD(Type.TOOL, true),

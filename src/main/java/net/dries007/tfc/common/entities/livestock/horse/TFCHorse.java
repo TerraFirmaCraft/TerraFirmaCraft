@@ -131,8 +131,8 @@ public class TFCHorse extends Horse implements HorseProperties
         HorseProperties.super.applyGenes(tag, babyProperties);
         if (babyProperties instanceof TFCHorse baby && tag.contains("markings1")) // if we actually set the genes, and we have a horse, set the traits.
         {
-            EntityHelpers.setNullableAttribute(baby, Attributes.JUMP_STRENGTH, (tag.getDouble("jumpStrength") + generateRandomJumpStrength()) / 3);
-            EntityHelpers.setNullableAttribute(baby, Attributes.MOVEMENT_SPEED, (tag.getDouble("movementSpeed") + generateRandomSpeed()) / 3);
+            EntityHelpers.setNullableAttribute(baby, Attributes.JUMP_STRENGTH, mutateGeneticValue(tag.getDouble("jumpStrength"), generateRandomJumpStrength()));
+            EntityHelpers.setNullableAttribute(baby, Attributes.MOVEMENT_SPEED, mutateGeneticValue(tag.getDouble("movementSpeed"), generateRandomSpeed()));
 
             Variant variant;
             final int i = this.random.nextInt(9);
