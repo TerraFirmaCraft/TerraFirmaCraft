@@ -3,7 +3,7 @@ import json
 
 def main():
     en_us = load('en_us')
-    for lang in ('zh_cn', 'ru_ru', 'ko_kr', 'pt_br', 'es_es'):
+    for lang in ('zh_cn', 'ru_ru', 'ko_kr', 'pt_br', 'es_es', 'ja_jp'):
         format_lang(en_us, lang)
 
 
