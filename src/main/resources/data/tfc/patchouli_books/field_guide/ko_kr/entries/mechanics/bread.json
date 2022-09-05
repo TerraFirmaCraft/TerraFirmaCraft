@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l빵",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/barley_bread.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "빵은 $(l:mechanics/crops#barley)보리$() 등의 여러 곡물을 가공한 음식입니다. 곡식 작물을 부수면 날것의 곡물 아이템이 나오는데, 이 자체로는 쓸모가 없습니다. 곡물로는 $(thing)빵$()을 만들어서, 먹거나 $(l:mechanics/sandwiches)샌드위치$()를 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/barley_cutting",
+      "text": "일단, $(thing)칼$()로 곡식을 잘라 곡물을 얻으세요."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:food/rye_grain",
+      "link_recipes": false,
+      "text": "곡물은 곡식의 가공 과정에서 가장 오래도록 보존되는 형태로서, 대부분의 음식보다 훨씬 느리게 상합니다. 신선한 곡물은 10개월 7일동안 상하지 않습니다. 작은 작은 항아리 안에서 보관하면 1년 9개월 7일동안 상하지 않습니다."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/oat_grain",
+      "text": "곡물을 $(l:mechanics/quern)맷돌$()로 갈면 곡물 가루를 얻을 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/dough/barley_dough_1",
+      "text": "반죽은 곡물 가루에 $(thing)물 양동이$()를 더해 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/barley_dough",
+      "text": "반죽을 $(l:mechanics/heating)구우면$() 빵을 만들 수 있습니다. 또한 빵은 $(l:mechanics/sandwiches)샌드위치$()를 만드는 데도 쓸 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}

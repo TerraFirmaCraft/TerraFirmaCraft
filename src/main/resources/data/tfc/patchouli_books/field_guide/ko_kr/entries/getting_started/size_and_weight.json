@@ -1,0 +1,34 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l크기와 무게",
+  "category": "tfc:getting_started",
+  "icon": "tfc:wood/chest/kapok",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "모든 아이템에는 $(thing)크기 ⇲$()와 $(thing)무게 ⚖$()가 있습니다. 아이템의 크기와 무게는 $(thing)툴팁$()에 나타납닏. 툴팁은 아이템에 마우스를 올렸을 때 볼 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "크기는 아이템이 들어갈 수 있는 블록을 결정합니다.$(br)$(li)$(thing)조그마한$() 아이템들은 어떤 블록에도 들어갑니다.$(li)$(thing)아주 작은$() 아이템들은 어떤 블록에도 들어갑니다.$(li)$(thing)작은$() 크기 이하의 아이템들은 $(l:mechanics/decay#small_vessels)작은 항아리$()에 들어갑니다$().$(li)$(thing)보통$() 크기 이하의 아이템들은 $(l:mechanics/decay#small_vessels)큰 항아리$()에 들어갑니다.",
+      "title": "§l크기 §r⇲"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(thing)큰$() 크기 이하의 아이템들은 상자에 들어갑니다. $(l:getting_started/pit_kiln)구덩이 가마$()에는 4개까지 들어갑니다.$(li)$(thing)아주 큰$() 아이템들은 구덩이 가마에 1개가 들어갑니다.$(li)$(thing)거대한$()아이템들은 일반적인 블록에 들어갈 수 없으며 과중량을 유발합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "$(thing)과중량은 $(thing)거대한$() 아이템을 들면 발생합니다. 하나의 거대한 아이템을 드는 것만으로도 당신이 피곤해지게 만들어 배고픔을 더 빨리 닳게 합니다. 2개 이상의 아이템을 들면 $(thing)과중량$() 상태 효과가 부여되며 이동 속도를 굉장히 늦춥니다.$(br)$(l:mechanics/anvils)모루$() 외에도, $(l:mechanics/barrels)통$()이나 $(l:mechanics/crucible)도가니$()처럼 부서져도 내용물을 보존하는 장치들이 아이템을 포함하면 $(thing)아주 큼$()에서 $(thing)거대함$()으로 크기가 바뀝니다. $(l:mechanics/animal_husbandry#horses)말$() 역시 과중량에 걸릴 수 있습니다.",
+      "title": "§l과중량"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "무게는 아이템의 최대 스택 수를 정합니다.$(br)$(li)$(thing)아주 가벼움$(): 64$(li)$(thing)가벼움$(): 32$(li)$(thing)중간$(): 16$(li)$(thing)무거움$(): 4$(li)$(thing)아주 무거움$(): 1$(br2)대부분의 아이템은 기본적으로 $(thing)아주 가벼움$()입니다. 블록들은 보통 $(thing)중간$()입니다.",
+      "title": "§l무게 §r⚖"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 9
+}

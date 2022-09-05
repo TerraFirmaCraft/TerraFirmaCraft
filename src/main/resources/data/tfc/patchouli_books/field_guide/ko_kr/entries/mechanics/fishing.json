@@ -1,0 +1,40 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l낚시",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/fishing_rod/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)낚시$()는 강, 호수나 바다에서 헤엄치는 물고기를 사냥하는 방법입니다. 낚싯대에는 미끼가 있어야 합니다. 물고기들은 미끼를 먹으려 노력하며 가끔씩은 걸립니다. 낚싯줄을 감아 올리면 물고기가 올라오며, 낚싯바늘의 티어가 높을수록 쉬워집니다."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "text": "먼저 낚싯바늘을 $(l:mechanics/anvils)모루$()에서 만들어야 합니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
+      "title": "§l낚싯대",
+      "text": "낚싯대는 낚싯바늘로 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "낚싯대에 미끼가 없다면 아무 쓸모가 없습니다. 미끼는 작업대를 통해 달 수 있습니다. 일반적인 물고기를 잡으려면 $(thing)씨앗$()이나 $(thing)가재$()가 필요합니다. $(thing)돌고래$()나 $(thing)범고래$() 같은 더 큰 물고기들을 잡으려면 $(item)대구$(), $(item)연어$(), $(item)열대어$(), 또는 $(item)블루길$()이 필요합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "낚싯대를 던지려면 $(item)$(k:key.use)$()을 누르세요. 그리고는 물고기가 오기까지 낚싯대를 들고 기다리세요. 당기려면 다시 $(item)$(k:key.use)$()을 누르세요. 당길 때 핫바에 있는 게이지가 차오릅니다. 너무 빨리 당긴다면 물고기는 미끼와 함께 달아납니다. 낚시를 할 때 마다, 물고기가 미끼를 먹어버릴 가능성도 있습니다. 물고기를 잡기 위해서는 육지로 끌어올린 다음 도구로 죽이세요. 낚싯대를 왼손에 들면 더 수월하게 작업할 수 있습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/fishing.png"
+      ],
+      "text": "낚시 중에 경험치 바를 대신하는 낚시 게이지.",
+      "border": true
+    }
+  ],
+  "read_by_default": true
+}

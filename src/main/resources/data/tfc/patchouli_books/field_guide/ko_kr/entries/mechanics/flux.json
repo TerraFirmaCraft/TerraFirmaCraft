@@ -1,0 +1,18 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l플럭스",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/flux",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "플럭스는 $(l:mechanics/anvils#welding)용접$()과 $(l:mechanics/blast_furnace)용광로$()의 촉매로 사용되는 가루입니다. 플럭스는 특정 아이템을 $(l:mechanics/quern)맷돌$()로 갈아서 얻을 수 있습니다.$(br2)플럭스는 많은 방법으로 얻을 수 있으며, 그 중 하나는 $(l:the_world/ores_and_minerals#borax)붕사$() 광석을 찾는 것입니다."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "$(thing)석회암$(), $(thing)백운암$(), $(thing)백악$(), $(thing)대리암$()을 $(l:mechanics/quern)맷돌$()로 갈아도 플럭스를 얻을 수 있습니다. $(thing)인갑$(), $(thing)조개$(), $(thing)달팽이$(), $(l:the_world/wild_animals#shellfish)가재$() 역시 플럭스 제작에 사용될 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}
