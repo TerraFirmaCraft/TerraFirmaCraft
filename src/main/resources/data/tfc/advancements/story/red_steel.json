@@ -15,7 +15,7 @@
   },
   "display": {
     "icon": {
-      "item": "tfc:metal/ingot/blue_steel"
+      "item": "tfc:metal/ingot/red_steel"
     },
     "title": {
       "translate": "tfc.advancements.story.red_steel.title"

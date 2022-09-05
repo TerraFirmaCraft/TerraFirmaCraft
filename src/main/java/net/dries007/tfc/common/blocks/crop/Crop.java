@@ -78,7 +78,7 @@ public enum Crop implements StringRepresentable
 
     Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<Supplier<? extends Block>> fruit)
     {
-        this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self), self -> new WildCropBlock(dead()));
+        this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self), self -> new WildSpreadingCropBlock(dead(), fruit));
     }
 
     Crop(NutrientType primaryNutrient, int floodedSingleBlockStages, boolean flooded)

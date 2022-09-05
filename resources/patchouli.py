@@ -229,6 +229,8 @@ def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, p
 
     https://vazkiimods.github.io/Patchouli/docs/reference/entry-json/
     """
+    if icon.startswith('tfc:food/'):  # Food items decay - this is a stupid hack to just replace them with their .png image, so they don't! Wizard!
+        icon = icon.replace('tfc:', 'tfc:textures/item/') + '.png'
     return Entry(entry_id, name, icon, pages, advancement)
 
 

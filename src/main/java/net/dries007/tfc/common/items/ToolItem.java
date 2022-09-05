@@ -33,6 +33,14 @@ public class ToolItem extends DiggerItem
         return (attackDamage - 1) * tier.getAttackDamageBonus();
     }
 
+    /**
+     * Mining plants should consume some durability
+     */
+    public static boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
+    {
+        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.PLANTS) || state.getDestroySpeed(level, pos) != 0.0F;
+    }
+
     public ToolItem(Tier tier, float attackDamage, float attackSpeed, TagKey<Block> mineableBlocks, Properties properties)
     {
         super(attackDamage, attackSpeed, tier, mineableBlocks, properties);
@@ -41,16 +49,10 @@ public class ToolItem extends DiggerItem
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity entity)
     {
-        // Mining plants should consume some durability
         if (!level.isClientSide && willConsumeDurability(level, pos, state))
         {
             stack.hurtAndBreak(1, entity, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
         }
         return true;
-    }
-
-    protected boolean willConsumeDurability(Level level, BlockPos pos, BlockState state)
-    {
-        return Helpers.isBlock(state.getBlock(), TFCTags.Blocks.PLANTS) || state.getDestroySpeed(level, pos) != 0.0F;
     }
 }

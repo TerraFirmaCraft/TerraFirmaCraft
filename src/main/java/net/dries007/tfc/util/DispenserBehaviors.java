@@ -8,6 +8,8 @@ package net.dries007.tfc.util;
 
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -28,10 +30,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
 
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import net.dries007.tfc.common.items.DiscreteFluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
 
@@ -64,17 +69,22 @@ public final class DispenserBehaviors
         @Override
         public ItemStack execute(BlockSource source, ItemStack stack)
         {
-            BlockPos dropPos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-            Level level = source.getLevel();
-            return stack.getCapability(Capabilities.FLUID_ITEM).map(handler -> {
-                if (FluidHelpers.emptyFluidFrom(handler, level, dropPos, level.getBlockState(dropPos), null, true))
+            final Level level = source.getLevel();
+            final BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
+            if (stack.getItem() instanceof DiscreteFluidContainerItem item)
+            {
+                final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+                if (handler != null)
                 {
-                    // if we wanted to check extra content, we would do that here.
-                    return stack.getContainerItem();
+                    final Mutable<ItemStack> result = new MutableObject<>();
+                    result.setValue(stack);
+                    FluidHelpers.transferBetweenWorldAndItem(stack, level, pos, null, (newOriginalStack, newContainerStack) -> {
+                        result.setValue(newOriginalStack);
+                    }, item.canPlaceLiquidsInWorld(), item.canPlaceSourceBlocks(), false);
+                    return result.getValue();
                 }
-                return DEFAULT.dispense(source, stack);
-            }).orElse(DEFAULT.dispense(source, stack));
-
+            }
+            return stack;
         }
     };
 
@@ -154,7 +164,7 @@ public final class DispenserBehaviors
         Stream.of(TFCItems.BLUE_STEEL_BUCKET, TFCItems.RED_STEEL_BUCKET, TFCItems.JUG, TFCItems.WOODEN_BUCKET)
             .forEach(reg -> DispenserBlock.registerBehavior(reg.get(), TFC_BUCKET_BEHAVIOR));
 
-        Stream.of(TFCItems.BLUEGILL_BUCKET, TFCItems.COD_BUCKET, TFCItems.JELLYFISH_BUCKET,TFCItems.SALMON_BUCKET, TFCItems.TROPICAL_FISH_BUCKET, TFCItems.PUFFERFISH_BUCKET)
+        Stream.of(TFCItems.BLUEGILL_BUCKET, TFCItems.COD_BUCKET, TFCItems.JELLYFISH_BUCKET, TFCItems.SALMON_BUCKET, TFCItems.TROPICAL_FISH_BUCKET, TFCItems.PUFFERFISH_BUCKET)
             .forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
         TFCItems.FLUID_BUCKETS.values().forEach(reg -> DispenserBlock.registerBehavior(reg.get(), VANILLA_BUCKET_BEHAVIOR));
 
