@@ -1,16 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Heating",
+  "name": "§l가열하기",
   "category": "tfc:mechanics",
   "icon": "tfc:firestarter",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Heating items is a way of converting one item to another, or an item to a fluid. Items can be heated in many ways - in a $(l:firepit)Firepit$(), a $(l:getting_started/pit_kiln)Pit Kiln$(), or a $(l:getting_started/charcoal_forge)Charcoal Forge$(), to name a few. However they all function in the same way. When you place items inside these devices, the items will gradually start to heat up. This is visible on the item's tooltip."
+      "text": "아이템을 가열하는 것은 하나의 아이템을 다른 아이템이나 액체로 바꾸는 방법입니다. 아이템은 $(l:getting_started/firepit)모닥불$(), $(l:getting_started/pit_kiln)구덩이 가마$(), $(l:mechanics/charcoal_forge)숯불 노$(), 그 외의 여러 방법으로 가열될 수 있습니다. 그러나 이들 모두는 같은 방식으로 작동합니다. 이러한 장치 내부에 아이템을 넣으면 아이템이 점차 가열됩니다. 아이템의 툴팁에서 이를 확인할 수 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "The temperature of an item is represented by a color, which will change through the following values:$(br2)$(7)$(bold)Warming$(): 1 - 80 °C$(br)$(7)$(bold)Hot$(): 80 - 210 °C$(br)$(7)$(bold)Very Hot$(): 210 - 480 °C$(br)$(4)$(bold)Faint Red$(): 480 - 580 °C$(br)$(bold)$(4)Dark Red$(): 580 - 730 °C$(br)$(c)$(bold)Bright Red$(): 730 - 930 °C$(br)$(6)$(bold)Orange$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)Yellow$(): 1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)Yellow White$(): 1300 - 1400 °C$(br)$(f)$(bold)$(t:White)White$(): 1400 - 1500 °C$(br)$(f)$(bold)$(t:Brilliant White)Brilliant White$(): >1500 °C"
+      "text": "아이템의 온도는 색깔로써 표시되며 다음과 같이 변합니다:$(br2)$(7)$(bold)따뜻함$(): 1 - 80 °C$(br)$(7)$(bold)뜨거움$(): 80 - 210 °C$(br)$(7)$(bold)아주 뜨거움$(): 210 - 480 °C$(br)$(4)$(bold)희미한 빨강$(): 480 - 580 °C$(br)$(bold)$(4)어두운 빨강$(): 580 - 730 °C$(br)$(c)$(bold)밝은 빨강$(): 730 - 930 °C$(br)$(6)$(bold)주황$(): 930 - 1100 °C$(br)$(e)$(bold)$(t:노랑)노랑$(): 1100 - 1300 °C$(br)$(e)$(t:연노랑)$(bold)연노랑$(): 1300 - 1400 °C$(br)$(d)$(bold)$(t:하양)하양$(): 1400 - 1500 °C$(br)$(d)$(bold)$(t:밝은 하양)밝은 하양$(): >1500 °C"
     }
   ],
   "read_by_default": true

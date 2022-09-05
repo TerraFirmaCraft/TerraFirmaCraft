@@ -40,7 +40,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sedimentary",
-      "text": "$(l:https://ko.wikipedia.org/wiki/%ED%87%B4%EC%A0%81%EC%95%94)퇴적암$()은 광물 또는 유기물 입자들의 퇴적으로 형성되는 암석입니다. 퇴적암은 $(thing)높은 고도()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음은 퇴적암의 목록입니다:$(br)$(li)셰일$(li)점토암$(li)석회암$(li)역암$(li)역암$(li)각암$(li)백악",
+      "text": "$(l:https://ko.wikipedia.org/wiki/%ED%87%B4%EC%A0%81%EC%95%94)퇴적암$()은 광물 또는 유기물 입자들의 퇴적으로 형성되는 암석입니다. 퇴적암은 $(thing)높은 고도$()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음은 퇴적암의 목록입니다:$(br)$(li)셰일$(li)점토암$(li)석회암$(li)역암$(li)역암$(li)각암$(li)백악",
       "title": "§l퇴적암"
     },
     {
@@ -52,13 +52,13 @@
     {
       "type": "patchouli:text",
       "anchor": "igneous_extrusive",
-      "text": "$(l:https://ko.wikipedia.org/wiki/%ED%99%94%EC%82%B0%EC%95%94)화산암$()은 마그마가 지표에서 식어 형성되는 암석입니다. 화산암은 $(thing)높은 고도()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음은 화산암의 목록입니다:$(br)$(li)유문암$(li)현무암$(li)안산암$(li)석영안산암",
+      "text": "$(l:https://ko.wikipedia.org/wiki/%ED%99%94%EC%82%B0%EC%95%94)화산암$()은 마그마가 지표에서 식어 형성되는 암석입니다. 화산암은 $(thing)높은 고도$()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음은 화산암의 목록입니다:$(br)$(li)유문암$(li)현무암$(li)안산암$(li)석영안산암",
       "title": "§l화산암"
     },
     {
       "type": "patchouli:text",
       "anchor": "igneous_intrusive",
-      "text": "$(l:https://ko.wikipedia.org/wiki/%EC%8B%AC%EC%84%B1%EC%95%94)심성암$()은 마그마가 지각 아래 깊은 곳에서 식어 형성되는 암석입니다. 심성암은 $(thing)낮은 고도()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음은 심성암의 목록입니다:$(br)$(li)화강암$(li)섬록암$(li)반려암",
+      "text": "$(l:https://ko.wikipedia.org/wiki/%EC%8B%AC%EC%84%B1%EC%95%94)심성암$()은 마그마가 지각 아래 깊은 곳에서 식어 형성되는 암석입니다. 심성암은 $(thing)낮은 고도$()나 $(thing)중간 고도$()의 암석층에서 찾을 수 있습니다. 다음은 심성암의 목록입니다:$(br)$(li)화강암$(li)섬록암$(li)반려암",
       "title": "§l심성암"
     }
   ],

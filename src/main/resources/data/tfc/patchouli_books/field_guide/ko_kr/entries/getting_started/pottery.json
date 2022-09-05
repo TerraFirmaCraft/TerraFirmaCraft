@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)점토$()는 굉장히 유용한 균형 잡힌 재료로, 도자기를 만드는 데 쓰일 수 있습니다. 그러나 먼저 점토를 찾아야 합니다. 점토는 일반적으로 잔디에 가려져 있지만, 다음의 장소에서 주로 발견됩니다. $(l:the_world/climate#rainfall)연 강수량$()이 175mm 이상인 곳에서는 점토를 어디서나 찾을 수 있지만, 보통 특정 $(thing)식물이$() 점토의 위치를 나타냅니다."
+      "text": "$(thing)점토$()는 굉장히 유용한 균형 잡힌 재료로, 도자기를 만드는 데 쓰일 수 있습니다. 점토를 처음으로 찾는 것은 쉬운 일이 아닐 수 있습니다. 점토는 일반적으로 잔디에 가려져 있지만, 다음의 장소에서 주로 발견됩니다. $(l:the_world/climate#rainfall)연 강수량$()이 175mm 이상인 곳에서는 점토를 어디서나 찾을 수 있지만, 보통 특정 $(thing)식물이$() 점토의 위치를 나타냅니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -48,13 +48,13 @@
     {
       "type": "patchouli:text",
       "anchor": "vessel",
-      "text": "항아리는 다른 도자기 아이템들과 같이 $(l:https://ko.wikipedia.org/wiki/%EB%8F%84%EC%9E%90%EA%B8%B0)구워져야$() 합니다. 점토를 굽는 것은 점토가 단단한$(thing)세라믹$()으로 변할 때까지 $(l:mechanics/heating)데우는$() 것입니다. 이를 위해서는 $(thing)$(t:§e노랑)1200°C$()까지 온도를 올려야 합니다.$(br2)초반의 게임에서 이 온도를 달성하기 위해, 당신에게는 $(l:getting_started/pit_kiln)구덩이 가마$()가 필요할 것입니다.",
-      "title": "§l항아리"
+      "text": "작은 항아리는 다른 도자기 아이템들과 같이 $(l:https://ko.wikipedia.org/wiki/%EB%8F%84%EC%9E%90%EA%B8%B0)구워져야$() 합니다. 점토를 굽는 것은 점토가 단단한 $(thing)도자기$()으로 변할 때까지 $(l:mechanics/heating)가열하는$() 것입니다. 이를 위해서는 $(thing)$(t:§e노랑)1200°C$()까지 온도를 올려야 합니다.$(br2)초반의 게임에서 이 온도를 달성하기 위해, 당신에게는 $(l:getting_started/pit_kiln)구덩이 가마$()가 필요할 것입니다.",
+      "title": "§l작은 항아리"
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/vessel",
-      "text": "점토로 항아리를 만드는 방법."
+      "text": "점토로 작은 항아리를 만드는 방법."
     },
     {
       "type": "patchouli:text",
@@ -70,7 +70,7 @@
     {
       "type": "patchouli:text",
       "anchor": "mold",
-      "text": "점토는 또한 $(thing)금형$()을 만들기 위한 좋은 재료입니다. 금형에는 녹은 금속을 부어 금형의 모양대로 굳힐 수 있습니다. The item and potentially the mold can then be retrieved by using $(item)$(k:key.use)$() on the mold.$(br2)가장 간단한 금형은 오른쪽에 있는 주괴 금형입니다.",
+      "text": "점토는 또한 $(thing)금형$()을 만들기 위해서도 필요합니다. 금형에는 녹은 금속을 부어 금형의 모양대로 굳힐 수 있습니다. 아이템은 (그리고 운이 좋다면 금형도) $(item)$(k:key.use)$()을 눌러 돌려받을 수 있습니다.$(br2)가장 간단한 금형은 오른쪽에 있는 주괴 금형입니다.",
       "title": "§l금형"
     },
     {
@@ -93,7 +93,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/propick_head_mold",
-      "text": "$(l:mechanics/prospecting#propick)탐색기$()는 표면 탐색보다 많은 양의 광석을 찾기 위해서 필수적인 도구입니다."
+      "text": "$(l:mechanics/prospecting#propick)탐색기$()는 많은 양의 광석을 찾기 위해서 필수적인 도구입니다."
     },
     {
       "type": "tfc:clay_knapping_recipe",
@@ -103,7 +103,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/saw_blade_mold",
-      "text": "$(thing)톱$()은 $(thing)작업대$()나 $(l:mechanics/support_beams)지지대$()와 같은 많은 목제 기구를 만드는 데 필요한 도구입니다."
+      "text": "$(thing)톱$()은 $(thing)작업대$()나 $(l:mechanics/support_beams)지지대$()와 같은 많은 목제 장치를 만드는 데 필요한 도구입니다."
     },
     {
       "type": "tfc:clay_knapping_recipe",
@@ -113,12 +113,12 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/chisel_head_mold",
-      "text": "$(l:mechanics/chisel)끌$()은 수많은 장식용 블록을 만들 수 있는 도구입니다."
+      "text": "$(l:mechanics/chisel)끌$()은 블록들을 다듬고 많은 장식 블록을 만들 수 있는 도구입니다."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/axe_head_mold",
-      "text": "$(thing)도끼$()는 나무를 베어버리는 도구입니다."
+      "text": "$(thing)도끼$()는 나무를 베어버리는 도구입니다. 참고: 돌 도끼는 금속 도끼보다 효율이 더 낮습니다!"
     },
     {
       "type": "tfc:clay_knapping_recipe",
@@ -144,6 +144,7 @@
   "read_by_default": true,
   "sortnum": 2,
   "extra_recipe_mappings": {
+    "minecraft:clay": 0,
     "tag:tfc:clay_indicators": 2,
     "tfc:ceramic/unfired_vessel": 4,
     "tfc:ceramic/vessel": 4,

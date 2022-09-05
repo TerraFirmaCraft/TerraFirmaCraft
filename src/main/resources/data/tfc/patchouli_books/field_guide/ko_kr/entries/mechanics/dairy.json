@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l유제품",
+  "category": "tfc:mechanics",
+  "icon": "tfc:food/cheese",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)유제품$()은 $(l:mechanics/animal_husbandry#dairy_animals)우유를 짤 수 있는 동물$()들에게서 짠 우유로 얻을 수 있는 $(l:the_world/food_and_water#nutrients)영양소$()입니다. 우유는 바로 마시거나 $(thing)치즈$()로 만들 수 있습니다. 우유는 주전자로 마실 수 있고 $(l:the_world/food_and_water#thirst)갈증$()을 해소합니다. 그러나 우유로 영양소를 얻기 위해서는 음식을 먹은 직후에 마셔야 합니다. 그러므로 우유를 2번 연속으로 마신다면 효과가 없습니다. 먼저 음식을 먹어야 합니다.",
+      "title": "§l유제품"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)치즈$() 제작 과정을 시작하려면, $(thing)우유$()와 $(thing)식초$()를 9:1의 비율로 $(l:mechanics/barrels)통$()에 담으세요. 가장 쉽게 하려면 통에 우유를 양동이 9개만큼 담고 식초를 양동이 하나만큼 담으면 됩니다. 이로서 $(thing)버터밀크$()를 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/curdling",
+      "text": "우유와 식초를 섞고, 8시간동안 통을 밀봉하면 응고됩니다. 별도의 재료는 필요 없으며 기다리기만 하면 됩니다."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/cheese",
+      "text": "치즈는 응고된 우유를 다시 8시간동안 통에서 밀봉하면 만들어집니다. 치즈는 오래 보존되는 유제품이며 $(l:mechanics/sandwiches)샌드위치$() 등의 식품에 첨가되어 유제품 영양소를 추가할 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}

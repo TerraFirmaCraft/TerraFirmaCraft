@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l직조",
+  "category": "tfc:mechanics",
+  "icon": "tfc:spindle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)직조$()는 다양한 종류의 실들을 $(thing)천$()으로 만드는 과정입니다. 직조의 최종 과정은 $(thing)베틀$()에서 진행되지만, $(thing)양털$()과 같은 일부 직물들은 $(l:mechanics/animal_husbandry#wooly_animals)털$()을 깎을 수 있는 동물로부터 얻어지므로 직조하기 위해서 $(thing)물레가락$()으로 $(thing)털실$()을 얻어야 합니다."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/spindle_head",
+      "text": "$(thing)굽지 않은 물레가락 머리$()는 점토로 만들어집니다. $(thing)물레가락 머리$()를 만들기 위해서는 $(l:mechanics/heating)구워$()야 합니다. 물레가락을 완성하기 위해서는 $(thing)막대기$()와 조합해야 합니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wool_yarn",
+      "text": "$(thing)양털$()과 물레가락을 조합하면 $(thing)털실$()을 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/acacia_loom",
+      "text": "베틀은 $(thing)목재$()와 $(thing)나무$()로 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/wool_cloth",
+      "text": "$(thing)양털 천$()을 만들려면 16개의 $(thing)털실$()이 필요합니다. 베틀에 $(item)$(k:key.use)$()을 클릭하여 털실을 추가한 후, $(item)$(k:key.use)$()을 꾹 눌러 베틀을 작동시킬 수 있습니다. 완성된 후, $(item)$(k:key.use)$()을 누르면 아이템을 꺼낼 수 있습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/loom_empty.png",
+        "tfc:textures/gui/book/tutorial/loom_full.png",
+        "tfc:textures/gui/book/tutorial/loom_working.png",
+        "tfc:textures/gui/book/tutorial/loom_done.png"
+      ],
+      "text": "베틀 작업의 단계.",
+      "border": true
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/wool_block",
+      "text": "$(thing)양털 천$()은 다시 $(thing)양털 블록$()으로 직조할 수 있습니다. 양털 블록은 염색될 수 있습니다."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/silk_cloth",
+      "text": "$(thing)비단 천$()은 $(thing)실$()을 베틀에서 직조하여 만들 수 있습니다. 비단은 특정 상황에서는 양털 대신 쓰일 수 있습니다."
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/burlap_cloth",
+      "text": "$(thing)삼베 천$()은 쓰임새가 없지만, $(l:mechanics/crops#jute)황마 섬유$()로 만들 수는 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/color/light_blue_bed",
+      "recipe2": "tfc:crafting/vanilla/painting"
+    }
+  ],
+  "read_by_default": true
+}

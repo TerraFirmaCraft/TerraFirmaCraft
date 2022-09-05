@@ -1,47 +1,47 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Prospecting",
+  "name": "§l광물 탐색",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/propick/wrought_iron",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "You remembered where you picked up those $(l:getting_started/finding_ores)Small Metal Nuggets$(), right? Finding additional ores may require extensive exploration and mining. You should become very familiar with $(l:the_world/ores_and_minerals)Ores and Minerals$(). If you need a specific resource, you must find the rock type it spawns in, either under your feet or across the world."
+      "text": "$(l:getting_started/finding_ores)작은 금속 조각$()들, 기억하시나요? 더 많은 광석들을 찾기 위해서는 광범위한 탐색이 필요할 지도 모릅니다. 이를 위해서는 $(l:the_world/ores_and_minerals)광석과 광물$()들과 굉장히 익숙해져야 합니다. 당신이 특정 자원을 찾고 있다면, 해당 광석이 생성되는 암석의 종류를 세계에서 찾아야 합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "When picking up small nuggets becomes unsatisfying, it is time to start prospecting to find ore veins:$(br)$(li)Small nuggets occur when ore is nearby, within 15 blocks horizontally and 35 vertically.If you find the center of a group of nuggets, it's likely that the vein is beneath you.$(li)Exposed ore can occur in cliffs and water bodies, which may be seen from farther away."
+      "text": "작은 조각을 줍는 것만으로 성에 차지 않는다면, 이제 광맥을 탐색할 시간입니다:$(br)$(li)작은 광석 조각들은 광맥이 가로 15블록, 세로 35블록 이내에 있을 때 나타납니다. 당신이 광석 조각들의 중앙을 찾는다면, 광맥이 당신 바로 아래에 있을 확률이 높습니다.$(li)땅에 드러난 광맥은 멀리서 볼 수 있는 절벽이나 수역에서 발견할 수 있습니다."
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "propick",
       "item": "tfc:metal/propick/copper",
-      "title": "Prospector's Pick",
+      "title": "§l탐색기",
       "link_recipes": false,
-      "text": "If you're looking for metal ores or mineral veins (which have no nuggets), and you can't find the vein by guessing, it's time to pull out the $(thing)Prospector's Pick$(). It searches the 25x25x25 area centered on the block clicked, and reports to the action bar the amount and type of ore located."
+      "text": "당신이 (조각을 찾을 수 없는) 광석이나 광물의 광맥을 찾고 있고 위치를 전혀 추측할 수 없다면, $(thing)탐색기$()를 사용할 수 있습니다. 탐색기는 사용한 블록의 25x25x25 주변 범위에 있는 광석의 양과 종류를 표시합니다."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/propick_head_mold",
-      "text": "To make a Prospector's Pick, you can $(l:getting_started/pottery)knapp$() an unfired mold out of clay as shown above."
+      "text": "탐색기를 만들려면 $(l:getting_started/pottery)점토$()로 위와 같은 모양을 만들어야 합니다."
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/propick_head_mold",
-      "text": "Once the mold has been $(l:getting_started/pottery)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Propick Head Mold.$()$(br2)To create the tool head, $(l:getting_started/finding_ores#casting)cast$() liquid metal into the mold."
+      "text": "금형의 $(l:getting_started/pottery)모양을 제작$()했다면 $(thing)탐색기 머리 금형$()을 만들기 위해서 $(l:mechanics/heating)구워져야$() 합니다.$(br2)탐색기 머리를 만들려면 녹은 금속을 금형에 담아 $(l:getting_started/finding_ores#casting)주조$()해야 합니다."
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/wrought_iron_propick_head",
-      "text": "A Prospector's Pick Head can also be $(l:mechanics/anvils#working)smithed$() out of an $(thing)ingot$() of any tool metal on an $(l:mechanics/anvils)Anvil$().$(br2)The Prospector's Pick is then created by crafting the tool head with a stick."
+      "text": "탐색기 머리는 또한 금속 $(thing)주괴$()를 $(l:mechanics/anvils)모루$()에서 $(l:mechanics/anvils#working)단조$()하여 만들 수도 있습니다.$(br2)탐색기는 탐색기 머리를 막대기와 조합해 만들 수 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "The Prospector's Pick may incorrectly say nothing is there. It will never report finding something when nothing is actually there. Higher tier tools will reduce or eliminate these false negatives.$(br2)A Prospector's Pick of the same metal tier will always have the same result when used on the same block unless ores were removed.$(br2)If the Prospector's Pick finds multiple ores nearby, it will select only one to report."
+      "text": "탐색기는 실제로 없는 광물이 있다고 탐색하지는 않습니다. 다만, 범위 내에 광맥이 있는 경우에도 없다고 표시되는 경우는 있습니다. 높은 티어의 탐색기일수록 이런 효과가 줄어들거나 아예 사라집니다.$(br2)하나의 블록에 사용하면 같은 티어의 탐색기는 광석이 제거되지 않는 한 항상 같은 결과를 나타냅니다.$(br2)만일 주변에 여러 가지의 광맥이 존재하더라도, 탐색기에서는 하나의 광맥만이 표시됩니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Right-clicking a Prospector's Pick on a block will report finding one of these possible results:$(br)$(li)Nothing (may be false)$(li)Traces$(li)A Small Sample$(li)A Medium Sample$(li)A Large Sample$(li)A Very Large Sample$(br2)Very large samples indicate at least eighty and potentially many more blocks."
+      "text": "탐색기를 사용하면 이 결과들 중 하나가 나타납니다:$(br)$(li)아무것도 찾지 못 함. (거짓일 가능성 있음)$(li)광물의 흔적$(li)작은 광맥$(li)중간 크기 광맥$(li)큰 광맥$(li)아주 큰 광맥$(br2)아주 큰 광맥은 최소 80개 이상의 블록으로 이루어집니다."
     }
   ],
   "read_by_default": true,

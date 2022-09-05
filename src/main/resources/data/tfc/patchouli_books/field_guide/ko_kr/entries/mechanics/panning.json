@@ -1,22 +1,22 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Panning",
+  "name": "§l사금질",
   "category": "tfc:mechanics",
   "icon": "tfc:pan/empty",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Panning$() is a method of obtaining small pieces of certain native ores by searching in rivers and other waterways.$(br2)Panning makes use of $(l:the_world/waterways#ore_deposits)Ore Deposits$() which are found in gravel patches in the bottom of lakes and rivers.$(br2)In order to get started panning, you will need a empty pan."
+      "text": "$(thing)사금질$()은 강이나 다른 물길에서 특정 자연 원석의 조각을 찾는 방법입니다.$(br2)사금질은 강이나 호수의 자갈 바닥에 있는 $(l:the_world/waterways#ore_deposits)광석 침전물$()을 사용합니다.$(br2)사금질을 시작하기 위해서는, 빈 사금 접시가 필요합니다."
     },
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/pan",
-      "text": "Clay can be $(l:getting_started/pottery)knapped$() into a pan as shown above."
+      "text": "$(l:getting_started/pottery)점토$()로 사금 접시를 만들 수 있습니다."
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/ceramic_pan",
-      "text": "Once the pan has been $(thing)knapped$(), it needs to be $(l:mechanics/heating)fired$() to create a $(thing)Ceramic Pan$().$(br2)The next thing you will need to find is some sort of $(thing)Ore Deposit$(). Ore deposits can come in several different ores: Native Copper, Native Silver, Native Gold, and Cassiterite."
+      "text": "사금 접시를 점토로 $(thing)만들고$(), $(thing)세라믹$()으로 만들기 위해서는 $(l:mechanics/heating)구워야$() 합니다.$(br2)다음으로는 $(thing)광석 침전물$()이 필요합니다. 광석 침전물은 자연동, 자연은, 자연금과 주석석 4개의 종류가 있습니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -39,7 +39,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Then, you can begin panning!$(br2)$(bold)1.$() With the pan in hand, $(thing)use$() it on the ore deposit block.$(br2)$(bold)2.$() While standing in water with the pan in your hand, hold down $(item)$(k:key.use)$(), and you will start panning.$(br2)$(bold)3.$() After a few moments, if you are lucky, you may be rewarded with a small piece of ore in your inventory."
+      "text": "이제 사금질을 시작할 수 있습니다!$(br2)$(bold)1.$() 사금 접시를 들고, 침전물 블록에 대고 $(thing)사용$()하세요.$(br2)$(bold)2.$() 물 속에서 사금 접시를 들고 $(item)$(k:key.use)$()을 꾹 누르면 사금질이 시작됩니다.$(br2)$(bold)3.$() 잠시 후, 운이 좋다면 몇 개의 작은 광석을 얻을 수 있습니다."
     },
     {
       "type": "patchouli:image",

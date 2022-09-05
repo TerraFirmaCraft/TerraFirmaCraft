@@ -1,67 +1,67 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Blast Furnace",
+  "name": "§l용광로",
   "category": "tfc:mechanics",
   "icon": "tfc:blast_furnace",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Blast Furnace$() is an advanced device which is used in the creation of $(thing)Steel$(). By mixing $(thing)Iron Ores$(), $(thing)Charcoal$(), and $(thing)Flux$() in a controlled, hot environment, you can create a stronger metal than cast or wrought iron.$(br2)To obtain a blast furnace, you will first need a $(l:mechanics/crucible)Crucible$(), and a lot of $(thing)Wrought Iron Sheets$()."
+      "text": "$(thing)용광로$()는 $(thing)강철$() 제작에 사용되는 심화 장치입니다. $(thing)철 광석$(), $(thing)숯$(), $(thing)플럭스$()를 뜨겁고 잘 조정된 환경에서 섞으면, 주철이나 연철보다 더 강한 금속을 만들 수 있습니다.$(br2)용광로를 만들려면 $(l:mechanics/crucible)도가니$()와 다량의 $(thing)연철 판$()이 필요합니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/blast_furnace",
-      "text": "Crafting a blast furnace itself requires a $(thing)Crucible$(), along with some of the $(thing)Wrought Iron Sheets$() you will need."
+      "text": "용광로 건설에는 $(thing)도가니$()가 들어가며, $(thing)연철판$() 역시 필요합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "You will then need to construct the blast furnace, along with it's $(thing)Chimney$(). The chimney must be composed out of $(l:mechanics/fire_clay#fire_bricks)Fire Bricks$(), as they are strong enough to withstand the intense heat. It must then be lined with $(thing)Wrought Iron Sheets$(), for extra reinforcement. Stronger metals such as $(thing)Steel$() can also be used for the sheets, if desired."
+      "text": "용광로와 함께 $(thing)굴뚝$()을 건설해야 합니다. 굴뚝은 뜨겁고 강렬한 열기를 감당하기 위해서 $(l:mechanics/fire_clay#fire_bricks)내화벽돌$()로 만들어야 합니다. 그리고서는 굴뚝을 강화하기 위해 $(thing)연철판$()이 필요합니다. 원한다면 $(thing)강철$() 등의 더 강한 재료도 사용할 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:blast_furnace",
-      "name": "A Blast Furnace",
-      "text": "A blast furnace with a minimum height chimney.",
+      "name": "§l용광로",
+      "text": "최소 높이의 굴뚝만을 가진 용광로.",
       "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "The blast furnace's chimney can be up to five layers - each layer requiring four $(thing)Fire Bricks$(), and twelve $(thing)Wrought Iron Sheets$() to complete. Having more layers increases the total capacity of the blast furnace, allowing it to smelt more steel at a time. Each chimney layer, up to a maximum of five, allows the blast furnace to hold four ore items at a time."
+      "text": "용광로의 굴뚝은 최대 5블록까지 높일 수 있습니다. 각 층을 완성하기 위해서는 4개의 $(thing)내화벽돌$()과 12개의 $(thing)연철 판$()이 있어야 합니다. 층을 높일수록 용광로의 용량을 증가시키며, 한 번에 더 많이 강철을 제작할 수 있게 합니다. 최대 5층까지의 각각의 층마다 용광로에 광석 4개 분량의 용량을 추가합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "In order to use the blast furnace, you must drop items in the top of the chimney - for steel production, you must add an equal number of items of $(thing)Iron Ores$(), and $(l:mechanics/flux)Flux$(). Any iron ores, or items that are able to melt into $(thing)Cast Iron$() will do. You will also need to add $(l:mechanics/charcoal_pit)Charcoal$(), which will be consumed as the blast furnace works."
+      "text": "용광로를 사용해서 강철을 생산하려면 굴뚝으로 아이템을 넣어야 합니다. 이때 $(thing)철 광석$()과 $(l:mechanics/flux)플럭스$()는 같은 양이어야 합니다. 광석으로는 철광석이나 녹아서 $(thing)주철$()이 되는 아이템을 모두 사용할 수 있습니다. 또한 용광로가 작동하는 데 사용되는 $(l:mechanics/charcoal_pit)숯$() 역시 필요합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Using the blast furnace will open the blast furnace interface, seen to the right. In this interface, you will see meters for both the ore, and the fuel content of the blast furnace. The top right slot must have a $(thing)Tuyere$(), which is a metal pipe used to funnel air into the blast furnace, required to reach the hottest temperatures to smelt steel. A tuyere can be crafted with an $(l:mechanics/anvils)Anvil$()."
+      "text": "용광로를 클릭하면 오른쪽에 보이는 바와 같이 용광로 인터페이스가 열립니다. 이 인터페이스에는 용광로의 광석 및 연료의 양이 표시됩니다. 오른쪽 위의 슬롯에는 용광로에 바람을 불어넣어 온도를 최대로 올리기 위해 $(thing)송풍구$()가 있어야 합니다. 송풍구는 $(l:mechanics/anvils)모루$()에서 만들 수 있습니다."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/blast_furnace.png"
       ],
-      "text": "The Blast Furnace Interface",
+      "text": "용광로 인터페이스",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "You will also need a $(l:mechanics/bellows)Bellows$() in order for the Blast Furnace to reach it's maximum temperature. This can be placed on any of the four sides of the blast furnace."
+      "text": "철을 녹이기 위한 최대 온도까지 높이기 위해서는 $(l:mechanics/bellows)풀무$() 역시 필요합니다. 풀무는 용광로 주변 4 블록중 어느 곳에나 설치할 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:full_blast_furnace",
       "name": "",
-      "text": "A full size blast furnace, with bellows and crucible attached.",
+      "text": "도가니와 풀무가 장착된 최대 크기의 용광로.",
       "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "Finally, to get started, light the blast furnace with a $(l:getting_started/firepit#firestarter)Fire Starter$(), or a $(thing)Flint and Steel$(). It will begin to heat the ores inside. Make sure that the blast furnace has enough fuel, and that it's internal temperature is at a maximum, and after a while, it's contents will liquify and convert into $(l:mechanics/steel)Pig Iron$()."
+      "text": "이제 시작하려면 용광로를 $(l:getting_started/firepit#firestarter)불피우개$()나 $(thing)부싯돌과 부시$()로 켜야 합니다. 그러면 안에 있는 광석들이 가열되기 시작합니다. 용광로의 온도가 숯의 최대 온도까지 도달한 후에는 계속 풀무질을 해야 합니다. 안의 광석들이 충분히 가열되면 광석들이 녹아 $(l:mechanics/steel)선철$()이 만들어집니다."
     },
     {
       "type": "patchouli:text",
-      "text": "This liquid metal will drip into any fluid container placed immediately below the blast furnace, such as a $(l:mechanics/crucible)Crucible$(). This can then be collected from the output slot of the crucible and then worked into $(l:mechanics/steel)Steel$()."
+      "text": "이 액체 금속은 $(l:mechanics/crucible)도가니$()와 같이 용광로 바로 아래의 액체 저장소로 들어갑니다. 선철을 주괴 금형으로 주조한 후에 $(l:mechanics/steel)강철$()로 단조할 수 있습니다."
     }
   ],
   "read_by_default": true

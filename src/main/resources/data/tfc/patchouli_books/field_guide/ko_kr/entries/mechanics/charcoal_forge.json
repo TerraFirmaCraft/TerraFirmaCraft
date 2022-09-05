@@ -1,23 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Charcoal Forge",
+  "name": "§l숯불 노",
   "category": "tfc:mechanics",
   "icon": "tfc:textures/block/devices/charcoal_forge/lit_static.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Charcoal Forge$() is a device used to $(l:mechanics/heating)heat$() and melt items. Forges are necessary to make a $(l:mechanics/crucible)crucible$() work. They are typically used to heat items to prepare them for $(l:mechanics/anvils)anvils$(). $(br)It is constructed with 5 $(thing)stone$() blocks surrounding a $(l:mechanics/charcoal_pit#charcoal_pile)charcoal pile$() of 7 or 8 layers, which is then lit."
+      "text": "$(thing)숯불 노$()는 아이템을 $(l:mechanics/heating)가열$()하고 녹일 수 있는 장치입니다. 숯불 노는 $(l:mechanics/crucible)도가니$()를 작동시키기 위해 필요합니다. 이들은 특히나 아이템을 가열하고 $(l:mechanics/anvils)모루$()를 사용하기 위해 준비할 때 주로 사용됩니다. $(br)숯불 노는 불이 붙은 $(l:mechanics/charcoal_pit#charcoal_pile)숯 더미$() 7-8장을 5개의 $(thing)돌$()블록으로 둘러싸 건설할 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
       "multiblock_id": "tfc:charcoal_forge",
-      "name": "A Charcoal Forge",
-      "text": "A complete forge multiblock, ready to be lit.",
+      "name": "§l숯불 노",
+      "text": "불을 붙일 준비가 된 완성된 멀티블록.",
       "enable_visualize": true
     },
     {
       "type": "patchouli:text",
-      "text": "A Forge needs a chimney in order to work. The block directly above the Forge must be air, or a $(l:mechanics/crucible)Crucible$(). In addition, either the block directly above, or one of eight nearby blocks must be able to see the sky - the blue stained glass in the visualization to the right.$(br2)A $(l:mechanics/bellows)Bellows$() can be placed on one block up and adjacent to the Forge, in order to increase the maximum temperature it can reach."
+      "text": "숯불 노는 작동하기 위해서 공기가 통해야 합니다. 숯불 노의 바로 위의 블록은 공기이거나 $(l:mechanics/crucible)도가니$()여야 합니다. 또한 바로 위에 있는 블록 또는 주변 8개 블록 중 하나의 위쪽이 뚫려 있어야 합니다. 오른쪽에 있는 파란색 색유리가 해당 부분을 표시합니다.$(br2)$(l:mechanics/bellows)풀무$()를 숯불 노 대각선 위쪽에 설치하여 도달 가능한 최대 온도를 높일 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -55,12 +55,12 @@
       "images": [
         "tfc:textures/gui/book/gui/charcoal_forge.png"
       ],
-      "text": "The forge's interface.",
+      "text": "숯불 노의 인터페이스.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "The five slots at the bottom of the forge are used for fuel. While the forge is running, it periodically consumes fuel, which can be $(thing)Charcoal$() or $(l:the_world/ores_and_minerals#bituminous_coal)Coal$(). The top five slots will heat items, up to the temperature shown in the indicator on the left. The right side slots are for containers that can contain liquid metal, like $(thing)Vessels$(). Items that melt in the forge will fill those containers."
+      "text": "숯불 노의 바닥에 있는 5개의 슬롯은 연료 슬롯입니다. 숯불 노를 작동하는 동안 연료가 소모되며, 연료로는 $(thing)숯$()이나 $(l:the_world/ores_and_minerals#bituminous_coal)석탄$()을 사용할 수 있습니다. 위쪽의 5개 슬롯은, 아이템을 왼쪽에 표시된 온도까지 가열합니다. 오른쪽의 슬롯에 $(thing)작은 항아리$()나 $(thing)금형$() 등을 놓으면 액체 금속을 담을 수 있습니다. 숯불 노에서 녹은 아이템들은 이들에게 들어갑니다."
     }
   ],
   "read_by_default": true

@@ -1,37 +1,37 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Leather Making",
+  "name": "§l가죽 제작",
   "category": "tfc:mechanics",
   "icon": "minecraft:leather",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Leather$() is a sturdy material formed from animal hides. It is required to craft $(thing)Leather Armor$(), $(thing)Saddles$(), or a $(l:mechanics/bellows)Bellows$(). $()Raw Hides$() must be treated through several processes: $(l:mechanics/leather_making#soaking)soaking$(), $(l:mechanics/leather_making#scraping)scraping$(), $(l:mechanics/leather_making#preparing)preparing$(), and $(l:mechanics/leather_making#tanning)tanning$(), in order to turn them into durable and sturdy $(thing)Leather$()."
+      "text": "$(thing)가죽$()은 생가죽으로 만드는 견고한 재료입니다. 가죽으로는 $(thing)가죽 갑옷$(), $(thing)안장$(), 또는 $(l:mechanics/bellows)풀무$()를 만들 수 있습니다. $()생가죽$()은 $(l:mechanics/leather_making#soaking)석회수에 불리고$(), $(l:mechanics/leather_making#scraping)털을 빼고$(), $(l:mechanics/leather_making#preparing)세척하고$(), $(l:mechanics/leather_making#tanning)무두질$()하여 $(thing)가죽$()으로 만들 수 있습니다."
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:small_raw_hide,tfc:medium_raw_hide,tfc:large_raw_hide",
-      "title": "Raw Hide",
+      "title": "§l생가죽",
       "link_recipes": false,
-      "text": "To get started you will first need to obtain $(thing)Raw Hide$(), which is dropped when slaughtering many different $(l:the_world/wild_animals)Animals$(). Different animals will drop different sizes of $(thing)Raw Hide$()."
+      "text": "일단 처음으로는 $(thing)생가죽$()을 얻어야 합니다. 생가죽은 여러 $(l:the_world/wild_animals)동물$()들을 잡아 얻을 수 있습니다. 각각의 동물들은 다양한 크기의 $(thing)생가죽$()을 드롭합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Leather making will require several materials and tools. You will need:$(br)$(li)$(l:mechanics/barrels#limewater)Limewater$(), a solution of $(l:mechanics/flux)Flux$() in $(thing)Water$()$(li)Water$(li)$(l:mechanics/barrels#tannin)Tannin$(), an acidic solution made from the bark of some trees.$(li)And some $(thing)Raw Hides$()$(br2)With all that ready, you are ready to begin the leather working process."
+      "text": "가죽 제작에는 여러 재료와 도구들이 필요합니다. 필요한 것들은 다음과 같습니다:$(br)$(li)$(l:mechanics/barrels#limewater)석회수$() - $(l:mechanics/flux)플럭스$()를 $(thing)물$()에 녹인 용액$(li)물$(li)$(l:mechanics/barrels#tannin)탄닌$() - 특정 나무의 원목으로부터 만들어지는 산성 용액$(li)$(thing)생가죽$()$(br2)이 모든 것이 있다면, 이제 가죽 가공을 시작할 준비가 되었습니다."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "soaking",
       "recipe": "tfc:barrel/medium_soaked_hide",
-      "text": "First, raw hides must be $(thing)soaked$(), in order to clean them, and remove any unwanted material before processing. This can be done by sealing some $(thing)Raw Hide$() in a $(l:mechanics/barrels#limewater)Barrel of Limewater$(), for at least eight hours."
+      "text": "일단, 생가죽을 깨끗이 씻고 털 등의 필요 없는 재료들을 느슨히 만들기 위해 $(thing)석회수에 불려$()야 합니다. 이 과정을 진행하기 위해서는 $(thing)생가죽$()을 $(l:mechanics/barrels#limewater)석회수가 담긴 통$()에 8시간 이상 담가야 합니다."
     },
     {
       "type": "patchouli:spotlight",
       "anchor": "scraping",
       "item": "tfc:small_scraped_hide,tfc:medium_scraped_hide,tfc:large_scraped_hide",
-      "title": "Scraping",
+      "title": "§l털 빼기",
       "link_recipes": true,
-      "text": "After soaking, $(thing)Soaked Hides$() must be scraped, which removes any excess material that was loosened up during the soaking. In order to scrape hides, place the hide on the side of a $(thing)Log$(). Then, with a $(thing)Knife$(), $(item)$(k:key.use)$() on each part of the hide, and you will see it start to change texture."
+      "text": "불린 후에, $(thing)불린 생가죽$()에서 털 등을 제거하기 위해 가죽을 긁어야 합니다. 가죽을 긁기 위해서는 가죽을 $(thing)통나무$() 옆면 위에 올려놓아야 합니다. $(thing)칼$()을 들고, 가죽의 각 부위에 $(item)$(k:key.use)$()을 누르면 색이 약간 변할 것입니다."
     },
     {
       "type": "patchouli:image",
@@ -41,20 +41,20 @@
         "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
         "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
       ],
-      "text": "Once the hide is fully scraped, it can be broken to pick up a $(thing)Scraped Hide$()",
+      "text": "가죽을 다 긁은 후에, 가죽을 부수면 $(thing)털을 뺀 생가죽$()을 얻을 수 있습니다",
       "border": true
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "preparing",
       "recipe": "tfc:barrel/medium_prepared_hide",
-      "text": "After scraping, $(thing)Scraped Hides$() must be sealed in a $(l:mechanics/barrels)Barrel$() of $(thing)Water$(), for at least eight hours, for one final cleaning before tanning."
+      "text": "가죽을 긁은 후에, $(thing)털을 뺀 생가죽$()은 무두질하기 이전에 마지막으로 세척하기 위해서 $(thing)물$()이 담긴 $(l:mechanics/barrels)통$()에 8시간 이상 담가야 합니다."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tanning",
       "recipe": "tfc:barrel/medium_leather",
-      "text": "Finally, $(thing)Prepared Hides$() must be sealed in a $(l:mechanics/barrels#tannin)Barrel of Tannin$(), which is an acidic chemical compound that helps to convert the hide to $(thing)Leather$(). After another eight hours, you will be able to remove the $(thing)Leather$() from the barrel."
+      "text": "마지막으로, $(thing)세척한 가죽$()은 생가죽을 $(thing)가죽$()으로 변환하기 위한 산성 화합물인 $(l:mechanics/barrels#tannin)탄닌이 담긴 통$()에 담가야 합니다. 다시 8시간이 지난 후, 통에서 $(thing)가죽$()을 꺼낼 수 있습니다."
     }
   ],
   "read_by_default": true

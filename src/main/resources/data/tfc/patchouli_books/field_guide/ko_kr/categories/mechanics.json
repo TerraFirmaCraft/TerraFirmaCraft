@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Advanced Mechanics",
-  "description": "Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.",
+  "name": "심화 기술",
+  "description": "첫 곡괭이부터 여러 강철들까지를 포함하는 심화 기술들.",
   "icon": "tfc:metal/axe/red_steel",
   "sortnum": 2
 }

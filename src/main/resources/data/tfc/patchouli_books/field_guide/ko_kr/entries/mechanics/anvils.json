@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Anvils",
+  "name": "§l모루",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/anvil/copper",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Anvils are a important tool required for metalworking, as they allow you to work and weld metal ingots into various different forms.$(br2)Anvils can be useful for both $(l:mechanics/anvils#working)Working$(), which is used to form one piece of metal into another, or $(l:mechanics/anvils#welding)Welding$(), which is used to fuse two metal items into one solid piece."
+      "text": "모루는 금속 주괴를 용접하고 단조하여 여러 다양한 형태로 만드는, 금속 가공에 중요한 장치입니다.$(br2)모루는 금속을 다른 형태로 변형하는 $(l:mechanics/anvils#working)단조$()와 두 개의 금속을 하나로 합치는 $(l:mechanics/anvils#welding)용접$() 2가지의 일을 할 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -24,84 +24,84 @@
         }
       },
       "name": "",
-      "text": "All types of metal anvils.",
+      "text": "모든 종류의 금속 모루.",
       "enable_visualize": false
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/anvil/copper",
-      "text": "Anvils can be crafted with $(thing)Double Ingots$() of their respective metal. For your first anvil, you must $(l:mechanics/anvils#welding)weld$() double ingots first on a $(l:getting_started/primitive_anvils)Stone Anvil$()."
+      "text": "모루는 금속 $(thing)합괴$()로 제작할 수 있습니다. 최초의 모루를 만들기 위해서는 먼저 $(l:getting_started/primitive_anvils)돌 모루$()에서 금속을 $(l:mechanics/anvils#welding)용접$()해야 합니다."
     },
     {
       "type": "patchouli:text",
       "anchor": "tiers",
-      "text": "Anvils each have a $(thing)Tier$(), which defines what types of material they can work and weld. An anvil can work metals of it's current tier, and it can weld metals that are one tier higher.$(br)$(li)$(bold)Tier 0$(): Stone Anvils$(li)$(bold)Tier I$(): Copper$(li)$(bold)Tier II$(): Bismuth Bronze, Black Bronze, Bronze$(li)$(bold)Tier III$(): Wrought Iron$(li)$(bold)Tier IV$(): Steel$(li)$(bold)Tier V$(): Black Steel$(li)$(bold)Tier VI$(): Red Steel, Blue Steel"
+      "text": "모루는 $(thing)티어$()가 있으며, 티어는 모루가 용접하고 변형할 수 있는 재료의 종류를 결정합니다. 모루에서는 모루와 같은 티어의 금속을 변형할 수 있으며 한 티어 높은 금속을 용접할 수 있습니다.$(br)$(li)$(bold)티어 0$(): 돌 모루$(li)$(bold)티어 I$(): 구리$(li)$(bold)티어 II$(): 비스무트 청동, 헤파티존, 청동$(li)$(bold)티어 III$(): 연철$(li)$(bold)티어 IV$(): 강철$(li)$(bold)티어 V$(): 흑강$(li)$(bold)티어 VI$(): 적강, 청강"
     },
     {
       "type": "patchouli:text",
       "anchor": "working",
-      "text": "In order to work an item on the anvil, you will need to use the anvil, to open up the anvil interface, seen to the right. On the left, there are two input slots for items - for working, the target item must be in the right hand slot. You will also need a hammer while working, either in the hammer slot, on the right of the anvil $(bold)or$(), in your main hand. The hammer will gradually take damage as you work the item.",
-      "title": "Working"
+      "text": "모루에서 아이템을 단조하려면 먼저 오른쪽에 보이는 바와 같이 모루를 열어야 합니다. 왼쪽에는 2개의 입력 아이템 슬롯이 있으며, 단조는 왼쪽 슬롯에서 진행됩니다. 모루에서 단조하는 데는 망치가 필요합니다. 망치는 모루의 망치 슬롯에 두거나 $(bold)또는$() 손에 들고 있을 수 있습니다. 아이템을 단조할 때마다 망치의 내구도는 감소합니다.",
+      "title": "§l단조"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/anvil_empty.png"
       ],
-      "text": "The anvil interface.",
+      "text": "모루 인터페이스.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "You will then need to select the $(thing)Plan$(), which chooses which item you want to create. $(item)$(k:key.attack)$() on the the scroll button, and then pick one of the items to create. The anvil interface will return, but now you will have selected a plan - the scroll will show the item you are working to create, and the $(thing)Rules$(), and $(thing)Target$() will now be populated."
+      "text": "그리고 나서는 당신이 원하는 아이템으로 $(thing)계획$()을 선택해야 합니다. 계획서가 그려진 버튼을 클릭하고 제작할 아이템을 선택하세요. 다시 모루 인터페이스로 돌아오면 계획서 버튼에 선택한 아이템이 표시되며 $(thing)조건$()과 $(thing)목표 지점$()이 표시됩니다."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/gui/anvil_in_use.png"
       ],
-      "text": "After selecting to create a pickaxe.",
+      "text": "곡괭이 제작을 선택한 이후.",
       "border": false
     },
     {
       "type": "patchouli:text",
-      "text": "In the middle of the anvil screen, there is a bar with two colored indicators. The $(2)green$() pointer, is your current working progress. The $(4)red$() pointer, is the target. Your goal is to line up the current progress, with the target.$(br2)In order do this, you can use the $(2)green$() and $(4)red$() action buttons, which move your current progress a certain amount, depending on the action taken.",
-      "title": "Targets"
+      "text": "모루 화면의 중앙에는 2개의 화살표가 있습니다. $(2)초록색$() 화살표는 현재의 단조 진행도입니다. $(4)빨간색$() 화살표는 목표 지점입니다. 당신의 목표는 초록색 화살표를 빨간색 화살표에 정확히 맞추는 것입니다.$(br2)이를 위해서는 $(2)초록색$()과 $(4)빨간색$() 행동 버튼을 눌러 정해진 양만큼 초록색 화살표를 좌우로 움직여야 합니다.",
+      "title": "§l목표"
     },
     {
       "type": "patchouli:text",
-      "text": "$(2)Green$() actions will always move your target $(bold)right$(), and $(4)Red$() actions will always move your progress $(bold)left$(). Note that if you move your target off of the progress bar, you will have overworked your item - you will lose the ingot. However, while working, you must also obey the $(thing)rules$()..."
+      "text": "$(2)초록색$() 행동들은 진행도를 $(bold)오른쪽$()으로 이동시키며, $(4)빨간색$() 행동들은 $(bold)왼쪽$()으로 이동시킵니다. 진행도를 진행도 바 바깥으로 이동시키면, 아이템에 너무 많은 충격이 가해지며 아이템을 잃게 됩니다. 그러나 단조 중에는 또한 $(thing)규칙$()도 맞추어야 합니다..."
     },
     {
       "type": "patchouli:text",
-      "text": "The $(thing)rules$(), are the two or three icons shown on the top of the anvil interface. They represent specific actions that must be taken, at specific times, in order for your working to be a success. For example, you have have to $(2)Bend Second Last$(), meaning the second last action you take $(bold)must$(), be a $(2)Bend$() action.",
-      "title": "Working Rules"
+      "text": "$(thing)규칙$()은 모루 화면 위쪽에 표시되는 2-3개의 아이콘입니다. 이 아이콘들은 단조를 완성하기 위해 취해야 하는 특정한 행동들을 표시합니다. 예를 들면면 $(2)굽히기 (뒤에서 2번째로)$()는 끝내기 전 뒤에서 2번째로 $(bold)무조건$() $(2)굽히기$()를 해야 한다는 것을 의미합니다.",
+      "title": "§l단조 조건"
     },
     {
       "type": "patchouli:text",
-      "text": "Your last three actions are shown right underneath your the rules, for convenience. When a rule is satisfied, it's outline will change to green.$(br2)Finally, you have to be mindful of your item's $(l:mechanics/heating)temperature$(). Metals can only be worked when they are above a certain temperature, when the tooltip will show \"Can Work\". You may take an item out and re-heat it during the working process."
+      "text": "마지막으로 한 3개의 행동들이 규칙 아래에 표시됩니다. 조건이 만족되었을 때, 해당 조건의 테두리는 초록색으로 변합니다. 모든 조건이 만족되었을 때만 단조를 완료할 수 있습니다.$(br2)마지막으로, 단조할 때는 아이템의 $(l:mechanics/heating)온도$()에 주의해야 합니다. 금속은 아이템의 툴팁에 $(underline)단조 가능$()이 표시되는 온도 이상에서만 단조할 수 있습니다. 단조 중에 아이템을 다시 꺼내어서 가열할 수도 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Working can be tedious, and take many steps to get correct. However, there is a reward for being efficient. Some items, such as tool heads, when they are worked in a low or minimal amount of steps, receive a Forging Bonus, based on how efficiently they were forged. This bonus can then be applied to tools that the item is used in, for example, a pickaxe head used to make a pickaxe.",
-      "title": "Forging Bonuses"
+      "text": "단조는 지루하거나 목표를 맞추는 데 오랜 시행착오가 필요할 수도 있습니다. 하지만, 효율적으로 단조한다면 보상이 주어집니다. 도구 머리와 같은 일부 아이템들은 적은 행동만으로 목표를 맞추었을 때, 얼마나 효율적으로 단조했는가에 기반하여 단조 보너스가 주어집니다. 이 보너스는 해당 머리를 사용해 만든 아이템에 적용됩니다.",
+      "title": "§l단조 보너스"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/pickaxe/wrought_iron{\"tfc:forging_bonus\":4}",
-      "title": "Perfectly Forged",
+      "title": "§l완벽한 단조",
       "link_recipes": false,
-      "text": "There are four tiers of forging bonus:$(li)Poorly Forged$(li)Well Forged$(li)Expertly Forged$(li)Perfectly Forged$(br2)These bonuses increase the power of your tool - making it break less often, mine faster, or do more damage in combat, depending on the tool."
+      "text": "다음은 4종류의 단조 보너스입니다:$(li)어설픈 단조$(li)쓸만한 단조$(li)전문적인 단조$(li)완벽한 단조$(br2)단조 보너스는 도구의 내구도를 올리거나 채굴 속도를 높이고, 공격 대미지를 높이는 등 도구의 능력치를 강화합니다."
     },
     {
       "type": "patchouli:text",
       "anchor": "welding",
-      "text": "Welding is a process through which two items are fused together to create a new item. Welding works the same as it does on a $(l:getting_started/primitive_anvils)Stone Anvil$(), on a metal anvil.$(br2)First, you must place the two items you want to weld, on the anvil. You can do this either by using the items on the anvil, or by opening the anvil interface, and inserting them in the two leftmost slots.",
-      "title": "Welding"
+      "text": "용접은 두 개의 아이템을 합쳐서 하나로 만드는 작업입니다. 용접은 $(l:getting_started/primitive_anvils)돌 모루$()나 금속 모루에서나 똑같은 방법으로 할 수 있습니다.$(br2)먼저, 용접하고 싶은 두 개의 아이템을 모루에 올려놓아야 합니다. 아이템은 모루로 웅크리고 클릭하거나 직접 모루 인터페이스를 열어서 넣을 수 있습니다.",
+      "title": "§l용접"
     },
     {
       "type": "patchouli:text",
-      "text": "You also need to place one $(l:mechanics/flux)Flux$() in the anvil, to aid the welding process. Then, while both items are $(l:mechanics/heating)hot enough$() to weld - the tooltip will say \"Can Weld\" - you must use any $(thing)Hammer$() on the anvil. You will hear a hammering sound, and the items will be welded together. They can then be extracted by using $(item)$(k:key.use)$() on the anvil with an empty hand."
+      "text": "또한 용접을 하기 위해서는 하나의 $(l:mechanics/flux)플럭스$()가 모루에 들어 있어야 합니다. 또한 용접할 아이템 모두가 툴팁에 $(underline)용접 가능$()이라고 표시될 만큼 $(l:mechanics/heating)충분히 뜨거워야$() 합니다. 그리고 나서 모루에 웅크리고 $(thing)망치$()로 클릭하면 아이템이 용접되는 망치질 소리가 들릴 것입니다. 그리고 모루를 웅크리고 맨손으로 $(item)$(k:key.use)$()을 눌러 꺼낼 수 있습니다."
     }
   ],
   "read_by_default": true

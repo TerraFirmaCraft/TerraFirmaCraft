@@ -1,20 +1,20 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Chisel",
+  "name": "§l끌",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/chisel/wrought_iron",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Chisels are a tool for creating decorative forms of other blocks, including slabs and stairs. In order to get started, you will need a $(thing)Chisel$() and any type of $(thing)Hammer$(). Chisels must be made from metals on an $(l:mechanics/anvils)Anvil$(). In order to start chiseling, hold the chisel in your main hand, and a hammer in your off hand, and target a block in the world."
+      "text": "끌은 반 블록이나 계단 등의 장식 블록을 만드는 도구입니다. 시작하려면 $(thing)끌$()과 아무 종류의 $(thing)망치$()가 필요합니다. 끌은 금형으로 주조하거나 $(l:mechanics/anvils)모루$()로 만들 수 있습니다. 끌을 사용하려면, 끌을 오른손에 두고 망치를 왼손에 둔 상태로 월드에 있는 블록 하나를 바라보세요."
     },
     {
       "type": "patchouli:text",
-      "text": "If you can chisel that block, a $(c)red outline$() of the block to be chiseled will be shown based on what $(thing)Mode$() you have selected.$(br2)The chisel has three modes that can be switched by using $(item)$(k:tfc.key.cycle_chisel_mode)$(): $(thing)Slab$(), $(thing)Stair$(), and $(thing)Smooth$(). An indicator of your chisel mode should show up next to the hotbar."
+      "text": "만약 그 블록에 끌을 사용할 수 있다면, 블록에 선택된 끌의 $(thing)모드$()에 따라 $(c)빨간 외곽선$()이 보여질 것입니다.$(br2)끌에는 $(thing)반 블록$(), $(thing)계단$(), $(thing)다듬기$() 3개의 모드가 있습니다. 끌의 모드는 $(item)$(k:tfc.key.cycle_chisel_mode)$() 키를 눌러 바꿀 수 있습니다. 선택된 끌의 모드는 핫바 바로 왼편에 표시됩니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Press $(item)$(k:key.use)$() to convert the block to the shape that was highlighted in red. If you chiseled a slab, the half of the block you chiseled will pop off, and you can grab it. Change the orientation of your player and your mouse to change the orientation of the chiseled block. As a rule of thumb, the orientation of the chiseled block will be the same as if you placed it in that orientation yourself."
+      "text": "$(item)$(k:key.use)$()을 누르면 빨간 외곽선으로 표시된 것처럼 블록을 바꿀 수 있습니다. 반 블록 모드를 선택했다면, 블록의 나머지 반쪽이 반 블록으로 떨어집니다. 플레이어와 마우스의 방향을 바꾸면 결과물 블록의 방향도 바꿀 수 있습니다. 대체로 결과물 블록의 방향은 당신이 블록을 설치할 때의 방향과 일치합니다."
     },
     {
       "type": "patchouli:image",
@@ -23,17 +23,17 @@
         "tfc:textures/gui/book/tutorial/chisel_stair.png",
         "tfc:textures/gui/book/tutorial/chisel_slab.png"
       ],
-      "text": "The three chisel modes usable on a $(thing)Raw Limestone$() block.",
+      "text": "$(thing)석회암$() 블록에 사용 가능한 3개의 끌 모드.",
       "border": true
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/marble_smooth",
-      "text": "The chisel can also be used in some crafting recipes as a shortcut for large quantities."
+      "text": "또한 끌은 제작대에서 대량의 블록을 한 번에 다듬기 위해서 사용될 수도 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Be careful! Chiseling in a mineshaft is not safe. Each time you chisel, there is a chance of $(thing)collapse$()."
+      "text": "조심하세요! 광산에서 끌을 사용하면 안전하지 않습니다. 끌을 사용할 때 마다 $(thing)무너질$() 가능성이 있습니다."
     }
   ],
   "read_by_default": true

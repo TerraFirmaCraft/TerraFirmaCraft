@@ -1,23 +1,23 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Support Beams",
+  "name": "§l지지대",
   "category": "tfc:mechanics",
   "icon": "tfc:wood/support/oak",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Support Beams$() are a means of preventing block collapses. They are most often used during mining, when rocky blocks are susceptible to falling on your head.",
-      "title": "Support Beams"
+      "text": "$(thing)지지대$()는 붕괴를 방지하기 위한 수단입니다. 지지대는 주로 채굴 중에 돌이 머리 위로 떨어지는 것을 방지하기 위해 주로 사용됩니다.",
+      "title": "§l지지대"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_support",
-      "text": "Supports can be crafted with a $(thing)Saw$() and some $(thing)Logs$()"
+      "text": "지지대는 $(thing)톱$()과 약간의 $(thing)원목$()으로 만들 수 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Supports can come in horizontal and vertical variations. Placing supports on top of a block places a column of up to three support beams. These vertical supports will be destroyed if they lose their base of support. Horizontal supports are automatically placed by pressing $(item)$(k:key.use)$() on the side of a vertical support beam. If there is a direct path to another vertical support beam, and enough items, the horizontal support will be formed.",
-      "title": "Supporting Supports"
+      "text": "지지대는 수평과 수직 방향 모두로 설치할 수 있습니다. 지지대를 설치하면 최대 3블록 높이로 설치됩니다. 아래의 블록이 부서지면 그 위에 있던 지지대도 같이 부서집니다. 가로 지지대는 세로 지지대 옆에 $(item)$(k:key.use)$()을 눌러 설치할 수 있습니다. 다른 수직 지지대와 마주 본 상태에서 충분한 지지대가 있다면, 수평 지지대가 만들어집니다.",
+      "title": "§l지지대로 지지하기"
     },
     {
       "type": "patchouli:multiblock",
@@ -40,13 +40,13 @@
           "V": "tfc:wood/vertical_support/oak"
         }
       },
-      "name": "Basic Structure",
+      "name": "§l기본적인 구조",
       "text": "",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "Only horizontal support beams, the kind that have no 'elbow' components, can support blocks. The range that block supports is 4 blocks horizontal in each direction, and one block above and below. Blocks in this area are protected from collapsing. However, be warned! Mining outside of this range can easily cause collapses that end up in (and potentially destroy) your safe zone."
+      "text": "꺾이지 않은 가로 지지대만이 블록을 지지할 수 있습니다. 이 지지대는 수평으로로 4 블록씩, 수직으로 1 블록만큼 지지합니다. 이 범위 내의 블록들은 무너지지 않습니다. 그러나 여전히 조심하세요! 이 범위를 벗어나서 블록들이 무너지면 지지대 주변까지 무너질 수 있습니다."
     }
   ],
   "read_by_default": true

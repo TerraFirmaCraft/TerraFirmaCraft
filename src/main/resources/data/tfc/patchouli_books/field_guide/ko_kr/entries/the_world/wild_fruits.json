@@ -37,7 +37,7 @@
     {
       "type": "patchouli:text",
       "anchor": "cherry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 100 - 350mm$(br)$(br)",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 100 - 350mm$(br2)",
       "title": "§l체리 나무"
     },
     {
@@ -117,7 +117,7 @@
     {
       "type": "patchouli:text",
       "anchor": "green_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 110 - 280mm$(br)$(br)",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 110 - 280mm$(br2)",
       "title": "§l청사과 나무"
     },
     {
@@ -197,7 +197,7 @@
     {
       "type": "patchouli:text",
       "anchor": "lemon",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 180 - 470mm$(br)$(br)",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 10 - 30 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 180 - 470mm$(br2)",
       "title": "§l레몬 나무"
     },
     {
@@ -277,7 +277,7 @@
     {
       "type": "patchouli:text",
       "anchor": "olive",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 150 - 500mm$(br)$(br)The processing of olives is used to produce $(l:mechanics/lamps#olives)lamp fuel$().",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 30 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 150 - 500mm$(br2)올리브는 가공해서 $(l:mechanics/lamps#olives)램프 연료$()로 쓸 수 있습니다.",
       "title": "§l올리브 나무"
     },
     {
@@ -357,7 +357,7 @@
     {
       "type": "patchouli:text",
       "anchor": "orange",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 250 - 500mm$(br)$(br)",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 36 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 250 - 500mm$(br2)",
       "title": "§l오렌지 나무"
     },
     {
@@ -437,7 +437,7 @@
     {
       "type": "patchouli:text",
       "anchor": "peach",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 60 - 230mm$(br)$(br)",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 4 - 27 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 60 - 230mm$(br2)",
       "title": "§l복숭아 나무"
     },
     {
@@ -517,7 +517,7 @@
     {
       "type": "patchouli:text",
       "anchor": "plum",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 250 - 400mm$(br)$(br)",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 31 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 250 - 400mm$(br2)",
       "title": "§l자두 나무"
     },
     {
@@ -597,7 +597,7 @@
     {
       "type": "patchouli:text",
       "anchor": "red_apple",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 100 - 280mm$(br)$(br)",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 1 - 25 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 100 - 280mm$(br2)",
       "title": "§l적사과 나무"
     },
     {
@@ -677,7 +677,7 @@
     {
       "type": "patchouli:text",
       "anchor": "banana",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 280 - 500mm$(br)$(br)바나나 나무는 특이한 과일 나무입니다. 바나나 나무는 위로만 자라고, 잎이 없으며 맨 위 블록에서만 과일이 열립니다. 묘목은 식물의 꽃이 열리는 부분에서 떨어집니다. 바나나나무를 수확하면 나무가 죽고 더 이상 과일을 열지 않으며, 봄에 다시 심어야만 합니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 17 - 35 °C$(br)$(bold)$(l:mechanics/hydration)강수량$(): 280 - 500mm$(br2)바나나는 특별한 종류의 과일 나무입니다. 바나나는 수직으로만 자라고, 잎이 적으며 맨 위의 블록에서만 열매가 열립니다. 묘목은 식물의 꽃 부분에서 떨어집니다. 바나나가 한 번 수확되면, 식물은 죽고 새로운 과일을 만들어내지 않습니다. 대신 다음 해 봄에 다시 심어져야 합니다.",
       "title": "§l바나나 나무"
     },
     {
@@ -807,7 +807,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blackberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br)$(br)블랙베리 덤불은 주변에 나무가 적은 지역에서만 생성됩니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 24 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)블랙베리 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l블랙베리 덤불"
     },
     {
@@ -907,7 +907,7 @@
     {
       "type": "patchouli:text",
       "anchor": "raspberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br)$(br)산딸기 덤불은 주변에 나무가 적은 지역에서만 생성됩니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 25 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)산딸기 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l산딸기 덤불"
     },
     {
@@ -1007,7 +1007,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blueberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br)$(br)블루베리 덤불은 주변에 나무가 적은 지역에서만 생성됩니다.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 7 - 29 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)블루베리 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l블루베리 덤불"
     },
     {
@@ -1107,7 +1107,7 @@
     {
       "type": "patchouli:text",
       "anchor": "elderberry",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 100 - 400 %$(br)$(br)Elderberry bushes only spawn in areas with few trees.",
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 10 - 33 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)산딸기 덤불은 나무가 적은 곳에서만 생성됩니다.",
       "title": "§l딱총나무 덤불"
     },
     {
@@ -1212,7 +1212,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)산딸나무 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br)$(br)",
+      "text": "$(bold)산딸나무 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 35 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1374,7 +1374,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)구스베리 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br)$(br)",
+      "text": "$(bold)구스베리 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 27 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1536,7 +1536,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)인동딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br)$(br)",
+      "text": "$(bold)인동딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -7 - 18 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 200 - 500 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1698,7 +1698,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)진들딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 80 - 380 %$(br)$(br)",
+      "text": "$(bold)진들딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -2 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 80 - 380 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -1860,7 +1860,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br)$(br)",
+      "text": "$(bold)딸기 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 28 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)",
       "multiblocks": [
         {
           "pattern": [
@@ -2022,7 +2022,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "$(bold)가울테리아 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br)$(br)",
+      "text": "$(bold)가울테리아 덤불$()$(br)$(bold)$(l:the_world/climate#temperature)기온$(): -6 - 17 °C$(br)$(bold)$(l:mechanics/hydration)수화$(): 100 - 400 %$(br2)",
       "multiblocks": [
         {
           "pattern": [

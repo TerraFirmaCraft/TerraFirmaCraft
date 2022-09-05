@@ -1,16 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Keeping Hydrated",
+  "name": "§l작물 수화",
   "category": "tfc:mechanics",
   "icon": "tfc:wooden_bucket{fluid:{\"Amount\":100,\"FluidName\":\"minecraft:water\"}}",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "One challenge when farming is keeping your crops hydrated. Based on the $(l:the_world/climate#rainfall)Rainfall$() in the area, the ground may have some latent moisture, however this may not be enough, especially for particularly water-intensive crops.$(br2)In order to see the hydration of any specific block, you must have a $(thing)Hoe$() in hand."
+      "text": "농사 지을 때의 여러 어려움 중 하나는 작물들의 수화입니다. 지역의 $(l:the_world/climate#rainfall)강수량$()에 따라서 땅에는 기본적인 습기가 있습니다. 그러나 수분을 더 필요로 하는 작물에는 이가 충분치 않을 수 있습니다.$(br2)특정 블록의 수분을 보려면 $(thing)괭이$()를 들고 있어야 합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Then, simply look at any $(thing)Farmland$() block, or any crop which require hydration. You will see a tooltip which shows the current hydration as a percentage from 0% to 100%.$(br2)Hydration cannot be decreased except by moving to a area with less rainfall - however, it can be increased by the proximity to nearby $(thing)water$() blocks, much like Vanilla farmland."
+      "text": "괭이를 들고 $(thing)경작지$() 블록이나 작물을 바라보면 0% to 100%까지 현재 수분이 나타납니다.$(br2)경작지를 강수량이 적은 곳으로 옮기는 것을 제외한다면 수분을 더 감소시키는 방법은 없습니다. 다만, 바닐라 경작지처럼 근처에 $(thing)물$() 블록이 있다면 수분이 늘어날 수는 있습니다."
     }
   ],
   "read_by_default": true

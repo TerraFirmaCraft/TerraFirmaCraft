@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "A Place to Sleep",
+  "name": "§l잠자리",
   "category": "tfc:getting_started",
   "icon": "tfc:medium_raw_hide",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other. Then, right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$()."
+      "text": "사실은 아직 잠은 못 잡니다! $(thing)짚단 침대$()는 원시적인 침대로 밤을 보낼 수는 없습니다. 대신, 스폰 지점을 설정할 수는 있습니다. 짚단 침대를 만들려면 2개의 $(thing)짚단$()블록을 가로로 나란히 설치하고, $(thing)큰 생가죽$()을 우클릭하세요. 큰 생가죽은 $(thing)곰$()이나 $(thing)소$() 같은 큰 동물들에게서 드롭됩니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -22,8 +22,8 @@
           "D": "tfc:thatch_bed[part=foot,facing=east]"
         }
       },
-      "name": "Thatch Bed",
-      "text": "A constructed thatch bed.",
+      "name": "짚단 침대",
+      "text": "완성된 짚단 침대.",
       "enable_visualize": false
     }
   ],

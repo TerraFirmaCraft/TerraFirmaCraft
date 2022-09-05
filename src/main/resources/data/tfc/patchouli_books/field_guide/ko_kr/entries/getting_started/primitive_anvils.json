@@ -1,26 +1,26 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Primitive Anvils",
+  "name": "§l기초적인 모루",
   "category": "tfc:getting_started",
   "icon": "tfc:rock/anvil/granite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "An alternative to casting tool molds directly in the early game, and a requirement for higher tier metals, is to use an $(thing)Anvil$(). An anvil is a block which can be used for two different processes: $(l:mechanics/anvils#working)Working$(), ad $(l:mechanics/anvils#welding)Welding$(). This chapter is just going to show you how to obtain your first, primitive stone anvil."
+      "text": "더 높은 티어의 금속을 가공하기 위해서는 직접 금형에 주조하는 것이 아니라, $(thing)모루$()를 사용해야 합니다. 모루는 $(l:mechanics/anvils#working)단조$()과 $(l:mechanics/anvils#welding)용접$(), 2가지 종류의 일을 할 수 있는 블록입니다. 이 챕터에서는 최초의 기초적인 돌 모루를 만드는 법을 보여줍니다."
     },
     {
       "type": "patchouli:text",
-      "text": "First, you need to acquire a block of $(thing)Raw Rock$(), that is $(thing)Igneous Intrusive$() (Rhyolite, Basalt, Andesite, or Dacite), or $(thing)Igneous Extrusive$() (Granite, Diorite, or Gabbro). You could find and use an exposed block in the world, or you could $(l:getting_started/primitive_anvils#raw_rock)extract one$() from the surrounding rock."
+      "text": "일단, $(thing)화산암$() (유문암, 현무암, 안산암, 석영안산암)이나 $(thing)심성암$() (화강암, 섬록암, 반려암) $(thing)돌$() 블록이 필요합니다. 세계에 있는 블록을 그대로 사용하거나, 주변에서 돌 블록을 $(l:getting_started/primitive_anvils#raw_rock)추출$()할 수 있습니다."
     },
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "You will also need any material of $(thing)Hammer$(). In order to make the anvil, simply right click the exposed $(thing)top$() face of one of the aforementioned raw rocks with your $(thing)hammer$(), and voila! An anvil will be formed.$(br2)Anvils each have $(l:mechanics/anvils#tiers)tiers$(), and the rock anvil is a Tier 0 - the lowest tier. It is only able to $(l:mechanics/anvils#welding)Weld$() Tier I ingots.",
-      "title": "Rock Anvil"
+      "text": "모루를 만들기 위해서는 또한 아무 종류의 $(thing)망치$()가 필요합니다. 돌 블록의 $(thing)위쪽$() 면을 $(thing)망치로$() 클릭하면 모루가 만들어집니다!$(br2)모루는 각각 $(l:mechanics/anvils#tiers)티어$()를 가지고 있고, 돌 모루는 가장 낮은 티어인 0티어입니다. 돌 모루로는 1티어 금속들을 $(l:mechanics/anvils#welding)용접$()하는 일 밖에 할 수 없습니다.",
+      "title": "§l돌 모루"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Converting the center raw rock to an anvil",
+      "text": "중앙의 돌 블록을 모루로 바꾸는 장면",
       "multiblocks": [
         {
           "pattern": [
@@ -42,12 +42,12 @@
     {
       "type": "patchouli:text",
       "anchor": "raw_rock",
-      "text": "In order to obtain raw rock without it breaking into smaller rocks, it needs to be $(thing)extracted$(). You must mine the blocks on all six sides of a raw rock block - once it is surrounded by air on all sides, it will pop off as a raw rock item which you can then move.",
-      "title": "Obtaining Raw Rock"
+      "text": "조약돌로 쪼개지 않고 돌 그대로의 블록을 얻으려면, 블록을 $(thing)추출$()해야 합니다. 하나의 블록과 닿아 있는 6개의 면을 모두 제거하면 당신이 들고 옮길 수 있는 돌 블록이 떨어집니다.",
+      "title": "§l돌 블록 얻기"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Mining all six sides of a piece of raw stone - once complete, the center block will pop off as an item.",
+      "text": "돌 블록의 6면을 모두 제거하기. 제거한 후에는 블록이 아이템으로 떨어집니다.",
       "multiblocks": [
         {
           "pattern": [

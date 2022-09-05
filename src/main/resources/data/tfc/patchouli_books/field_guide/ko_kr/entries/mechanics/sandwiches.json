@@ -1,0 +1,22 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l샌드위치",
+  "category": "tfc:mechanics",
+  "icon": "tfc:food/barley_bread_sandwich",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)샌드위치$()는 2개의 $(l:mechanics/bread)빵$()과 3개의 샌드위치 재료 음식으로 만들 수 있는 음식으로, 재료에는 $(l:mechanics/bread)채소$(), $(thing)익힌 고기$(), 그리고 $(l:mechanics/dairy)치즈$()가 들어갈 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wheat_sandwich",
+      "text": "$(thing)작업대$()에서 제작할 수 있는 샌드위치 제작법."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "음식의 영양소, 물, 그리고 포화도는 샌드위치의 영양 성분으로 합쳐집니다. 빵의 비중은 50%인 반면, 재료 음식은 80%의 비중을 차지합니다. 썩은 재료로도 샌드위치를 만들 수 있습니다. 썩은 재료로 샌드위치를 만들어도 재료가 신선하다고 여겨지며, 다시 처음부터 상하기 시작합니다."
+    }
+  ],
+  "read_by_default": true
+}

@@ -65,11 +65,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "주조에 필요한 것:$(br)$(li)$(l:getting_started/pottery#vessel)항아리$()$(li)$(l:getting_started/pit_kiln)구덩이 가마$()를 만들 충분한 재료.$(li)녹은 금속을 부을 $(l:getting_started/pottery#mold)금형$().$(li)주조에 적합한 금속인 $(thing)구리$()의 아무 광석 100 mb.$(br2)$(br)$(italic)참고: 주조는 $(l:getting_started/primitive_alloys)합금$()으로도 할 수 있습니다"
+      "text": "주조에 필요한 것:$(br)$(li)$(l:getting_started/pottery#vessel)작은 항아리$()$(li)$(l:getting_started/pit_kiln)구덩이 가마$()를 만들 충분한 재료.$(li)녹은 금속을 부을 $(l:getting_started/pottery#mold)금형$().$(li)$(thing)구리$() 등 주조에 적합한 금속의 아무 광석 100 mb.$(br2)$(br)$(italic)참고: 주조는 $(l:getting_started/primitive_alloys)합금$()으로도 할 수 있습니다"
     },
     {
       "type": "patchouli:text",
-      "text": "일단, $(thing)항아리$()를 열어 광석을 안에 넣으세요. 광석 속의 금속의 총량을 신중하게 세세요! 그리고, 당신은 $(l:getting_started/pit_kiln)구덩이 가마$()를 만들고 안에 항아리를 넣어야 합니다. 항아리가 데워지면, 그 안의 광석들은 녹고 녹은 금속으로 채워진 항아리가 나옵니다.$(br2)항아리를 꺼내고 $(item)$(k:key.use)$()를 눌러 $(thing)주조$() 인터페이스를 열 수 있습니다."
+      "text": "일단, $(thing)작은 항아리$()를 열어 광석을 안에 넣으세요. 광석 속의 금속의 총량을 신중하게 세세요! 그리고, 당신은 $(l:getting_started/pit_kiln)구덩이 가마$()를 만들고 안에 작은 항아리를 넣어야 합니다. 작은 항아리가 가열되면, 그 안의 광석들은 녹고 녹은 금속으로 채워진 작은 항아리가 나옵니다.$(br2)작은 항아리를 꺼내고 $(item)$(k:key.use)$()를 눌러 $(thing)주조$() 인터페이스를 열 수 있습니다."
     },
     {
       "type": "patchouli:image",
@@ -81,12 +81,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "주조 인터페이스를 열고, 빈 금형을 중앙의 슬롯에 놓으세요. 항아리가 비어 있지 않다면 금형이 차오릅니다. (만약 항아리가 굳어 버린다면, 다시 구덩이 가마를 사용할 수 있습니다.) 금형이 가득 차면, 슬롯에서 제거하고 식혀야 합니다. 금형이 식은 후에는 금형을 사용하거나 조합창에 올려놓아 내용물을 빼낼 수 있습니다."
+      "text": "주조 인터페이스를 열고, 빈 금형을 중앙의 슬롯에 놓으세요. 작은 항아리가 비어 있지 않다면 금형이 차오릅니다. (만약 작은 항아리가 굳어 버린다면, 다시 구덩이 가마로 가열할 수 있습니다.) 금형이 가득 차면, 슬롯에서 제거하고 식혀야 합니다. 금형이 식은 후에는 금형을 웅크리고 클릭하거나 조합창에 올려놓아 내용물을 빼낼 수 있습니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/pickaxe/copper",
-      "text": "With a tool head in hand, you are now able to craft your first pickaxe! Find enough copper to make a single pickaxe head, cast it using a mold and a few pit kilns, and then slap it on a stick, and voila!"
+      "text": "도구 머리가 있으면 첫 곡괭이를 만들 수 있습니다! 구리를 충분히 모아서 구덩이 가마에 녹이고, 금형에 담아 주조한 다음 막대기와 조합하면 완성!"
     }
   ],
   "read_by_default": true,

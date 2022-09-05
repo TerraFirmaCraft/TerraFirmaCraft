@@ -1,17 +1,17 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Flux",
+  "name": "§l플럭스",
   "category": "tfc:mechanics",
   "icon": "tfc:powder/flux",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Flux is a powder which is required for $(l:mechanics/anvils#welding)Welding$(), and is also used as a catalyst in a $(l:mechanics/blast_furnace)Blast Furnace$(). Flux can be obtained by grinding specific items in a $(l:mechanics/quern)Quern$().$(br2)Flux can be obtained in a number of ways, one of which is from it's native ore, $(l:the_world/ores_and_minerals#borax)Borax$()."
+      "text": "플럭스는 $(l:mechanics/anvils#welding)용접$()과 $(l:mechanics/blast_furnace)용광로$()의 촉매로 사용되는 가루입니다. 플럭스는 특정 아이템을 $(l:mechanics/quern)맷돌$()로 갈아서 얻을 수 있습니다.$(br2)플럭스는 많은 방법으로 얻을 수 있으며, 그 중 하나는 $(l:the_world/ores_and_minerals#borax)붕사$() 광석을 찾는 것입니다."
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/fluxstone",
-      "text": "Some rocks - $(thing)Limestone$(), $(thing)Dolomite$(), $(thing)Chalk$(), or $(thing)Marble$() - can also be used as flux, after being ground in a $(l:mechanics/quern)Quern$(). Other items, including $(thing)Scutes$(), $(thing)Clams$(), $(thing)Mollusks$(), and the edible remains of $(l:the_world/wild_animals#shellfish)Shellfish$(), can all also be used to create flux."
+      "text": "$(thing)석회암$(), $(thing)백운암$(), $(thing)백악$(), $(thing)대리암$()을 $(l:mechanics/quern)맷돌$()로 갈아도 플럭스를 얻을 수 있습니다. $(thing)인갑$(), $(thing)조개$(), $(thing)달팽이$(), $(l:the_world/wild_animals#shellfish)가재$() 역시 플럭스 제작에 사용될 수 있습니다."
     }
   ],
   "read_by_default": true

@@ -1,28 +1,28 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Building Materials",
+  "name": "§l건축 블록",
   "category": "tfc:getting_started",
   "icon": "tfc:wattle/unstained",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In the early stages of the game building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a couple useful building blocks that can be accessed just with stone tools."
+      "text": "여러 건축 블록들은 금속 도구가 있어야 만들 수 있기 때문에 게임 초반에는 건축이 쉽지 않을 수 있습니다. 그러나 돌 도구만으로도 만들 수 있는 몇몇 유용한 건축 블록들도 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  3. $(l:getting_started/building_materials#alabaster)Alabaster$()",
-      "title": "Contents"
+      "text": "$(br)  1. $(l:getting_started/building_materials#mud_bricks)진흙 벽돌$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)초벽$()$(br)  3. $(l:getting_started/building_materials#alabaster)석고 블록$() (곡괭이 필요)",
+      "title": "§l내용"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/soil/loam_drying_bricks",
-      "title": "Mud Bricks",
-      "text": "$(thing)Mud$() can be found on the ground, underneath rivers and lakes, or in patches in low elevation swampy environments. With a little bit of $(thing)Straw$(), it can be crafted into some $()Wet Mud Bricks$()."
+      "title": "§l진흙 벽돌",
+      "text": "$(thing)진흙$()은 땅 위에서나 강과 호수 바닥, 또는 늪지대의 낮은 곳에서 발견할 수 있습니다. 점토와 $(thing)짚$()이 있다면 $()젖은 진흙 벽돌$()을 만들 수 있습니다."
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "These can be placed on the ground in a dry location, and after a day they will harden into $(thing)Mud Bricks$().",
+      "text": "이 벽돌들을 마른 땅에 올려놓은 후, 하루가 지나면 벽돌들이 굳고 $(thing)진흙 벽돌$()이 됩니다.",
       "multiblocks": [
         {
           "pattern": [
@@ -63,7 +63,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
-      "text": "These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can additionally be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired."
+      "text": "마른 진흙 벽돌들로는 $(thing)진흙 벽돌 블록$()을 만들 수 있습니다. 필요하다면 벽돌로 $(thing)계단$()이나 $(thing)반 블록$(), $(thing)벽$() 역시 만들 수 있습니다."
     },
     {
       "type": "patchouli:multiblock",
@@ -81,19 +81,19 @@
         }
       },
       "name": "",
-      "text": "All different varieties of mud bricks",
+      "text": "모든 진흙 벽돌의 종류",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
       "anchor": "wattle_and_daub",
-      "text": "$(thing)Wattle$() and $(thing)Daub$() is a versatile building and decoration block.$(br2)$(thing)Wattle$() can be crafted and placed, however it is breakable and allows players and mobs to walk through it. It can be augmented with $(thing)Daub$(), to make it solid.",
-      "title": "Wattle and Daub"
+      "text": "$(thing)초벽$()은 다목적 건축/장식 블록입니다.$(br2)$(thing)욋가지$()를 만들어서 설치하면, 쉽게 부서지고 플레이어와 몹들이 지나다닐 수 있습니다. $(thing)칠$()을 사용하면 욋가지를 단단하게 만들 수 있습니다.",
+      "title": "§l초벽"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wattle",
-      "text": "In order to make $(thing)Wattle$() solid, it first must be woven, which requires adding sticks to the structure."
+      "text": "$(thing)욋가지$()를 단단하게 만들기 위해, 욋가지에 막대기를 추가하여 엮어야 합니다."
     },
     {
       "type": "patchouli:crafting",
@@ -106,19 +106,19 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_weave.png"
       ],
-      "text": "Four sticks are required to $(thing)weave$() wattle.",
+      "text": "욋가지를 $(thing)엮기$() 위해서는 4개의 막대기가 필요합니다.",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face."
+      "text": "막대기는 각각의 대각선과 위, 아래쪽에 추가할 수 있습니다. $(thing)막대기$()를 들고 욋가지에 $(item)$(k:key.use)$()을 누르면 막대기를 추가할 수 있습니다. 다른 쪽 면을 선택하면 당신이 막대기를 추가할 면을 바꿀 수 있습니다."
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
       ],
-      "text": "Adding sticks to wattle.",
+      "text": "욋가지에 막대기를 추가하기.",
       "border": true
     },
     {
@@ -126,7 +126,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
       ],
-      "text": "Using $(thing)Daub on $(thing)Woven Wattle$() creates a solid block.",
+      "text": "$(thing)칠$()을 $(thing)엮은 욋가지$()에 사용하면 초벽이 됩니다.",
       "border": true
     },
     {
@@ -134,30 +134,41 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_stained.png"
       ],
-      "text": "It can then be $(thing)stained$() by using dye on it.",
+      "text": "염료를 사용하면 초벽을 $(thing)염색할 수 있습니다$().",
       "border": true
     },
     {
       "type": "patchouli:text",
+      "anchor": "clay_and_peat",
+      "text": "점토는 점토 블록으로도 만들 수 있습니다. 점토 블록을 설치하고 부수면 다시 점토로 돌아옵니다. 별로 예쁘지는 않지만, 점토 블록을 얻기는 어렵지 않습니다.$(br2)이탄은 물 근처의 월드에서 생성되고 돌 도구로 캘 수 있습니다. 몇몇 식물들은 이탄 위에서 자랍니다.$(br2)그러나, 이탄은 꽤 잘 불에 탑니다.",
+      "title": "§l점토 블록과 이탄"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "minecraft:clay",
+      "title": "§l점토 블록"
+    },
+    {
+      "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). It can be made by directly crafting with $(l:the_world/ores_and_minerals#gypsum)Gypsum$(), however it can be made more efficiently by sealing some $(l:the_world/ores_and_minerals#gypsum)Gypsum$() with 100 mB of $(thing)Limewater$().",
-      "title": "Alabaster"
+      "text": "석고 블록은 $(l:the_world/ores_and_minerals#gypsum)석고$()로 만드는 건축 블록입니다. 석고는 광석이기 때문에 캐기 위해서는 금속 곡괭이가 필요합니다. 석고 블록은 $(l:the_world/ores_and_minerals#gypsum)석고$()를 직접 조합해도 제작할 수 있지만, $(l:the_world/ores_and_minerals#gypsum)석고$()를 $(thing)석회수$() 100 mB에 담그면 보다 효율적으로 만들 수 있습니다.",
+      "title": "§l석고 블록"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster_brick",
       "recipe2": "tfc:crafting/alabaster_bricks",
-      "title": "Alabaster Bricks"
+      "title": "§l석고 벽돌"
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode."
+      "text": "석고는 $(l:mechanics/barrels)통$()에서 여러 색으로 염색할 수 있습니다. 생 석고는 $(l:mechanics/chisel)끌$()의 $(thing)다듬기$() 모드를 이용하여 $(thing)윤나는 석고$()로 바꿀 수 있습니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster/magenta_polished_stairs",
-      "title": "Alabaster Decorations",
-      "text": "Polished Alabaster and Alabaster Bricks can be crafted or $(l:mechanics/chisel)chiseled$() into stairs, walls, and slabs."
+      "title": "§l석고 장식",
+      "text": "염색된 석고와 석고 벽돌은 $(l:mechanics/chisel)끌$()을 사용해 계단, 벽 또는 반 블록으로 만들 수 있습니다."
     }
   ],
   "read_by_default": true,

@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "Crops",
+  "name": "§l작물",
   "category": "tfc:mechanics",
   "icon": "tfc:food/wheat",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Crops are a source of food and some other materials. While each crop is slightly different, crops all have some similar principles. In order to start growing crops, you will need some $(thing)Seeds$(), which can be obtained by searching for $(l:the_world/wild_crops)Wild Crops$(), and breaking them.$(br2)Once you have obtained seeds, you will also need a $(thing)Hoe$(). Seeds are also useful as $(l:mechanics/fishing)bait$()."
+      "text": "작물은 음식과 여러 재료들을 만드는 데 사용됩니다. 각각의 작물마다 약간은 다르지만, 작물에는 비슷한 법칙이 있습니다. 작물을 기르기 시작하려면 $(thing)씨앗$()이 필요하며, 씨앗은 $(l:the_world/wild_crops)야생 작물$()을 찾아서 부수면 얻을 수 있습니다.$(br2)씨를 얻었다면 이제 $(thing)괭이$()가 필요합니다. 씨앗은 또한 낚싯대 $(l:mechanics/fishing)미끼$()로도 사용할 수 있습니다."
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -16,30 +16,30 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "In the stone age, a Hoe can be $(thing)knapped$() as seen above."
+      "text": "석기 시대에는, 괭이는 위처럼 돌을 $(thing)떼어$() 만들 수 있습니다."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/hoe_sedimentary",
-      "text": "Once the hoe head is knapped, it can be crafted into a Hoe.$(br2)Hoes function as in Vanilla, by right clicking dirt blocks to turn them into $(thing)Farmland$(). They can also be used to create $(thing)Path Blocks$(), and convert $(thing)Rooted Dirt$() into $(thing)Dirt$()."
+      "text": "괭이 머리를 만들었다면 괭이를 조합할 수 있습니다.$(br2)괭이는 바닐라에서와 같이 흙을 클릭하여 $(thing)경작지$()로 바꿀 수 있습니다. 괭이는 $(thing)뿌리내린 흙$()을 $(thing)흙$()으로 바꿀 수도 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "All crops need to be planted on farmland in order to grow. Some crops have additional requirements such as being waterlogged, or requiring a stick to grow on."
+      "text": "모든 작물들은 경작지 위에 심어져야 자랄 수 있습니다. 몇몇 작물들은 물 속에 있어야 한다거나 막대기가 필요한 등의 추가적인 조건이 필요하기도 합니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Crops do not need $(thing)nutrients$() to grow, but they certainly help. There are three nutrients: $(b)Nitrogen$(), $(6)Phosphorous$(), and $(d)Potassium$(). Each crop has a favorite nutrient."
+      "text": "식물이 자라는 데에 $(thing)영양소$()가 꼭 필요한 것은 아니나, 식물의 성장을 도와줍니다. 영양소에는 $(b)질소$(), $(6)인$(), $(d)칼륨$() 3종류가 있습니다. 각각의 작물에는 선호하는 영양소가 있습니다."
     },
     {
       "type": "patchouli:text",
-      "text": "Consuming its favorite nutrient causes a crop to grow faster, and improves the yield of the crop at harvest time. That means that crops that consumed more nutrients drop more food when broken! Consuming a nutrient also has the effect of replenishing the other nutrients around it a small amount."
+      "text": "작물이 선호하는 영양소를 소모하면 더 빨리 자라며, 작물의 수확량도 늘어납니다. 즉, 작물을 부술 때 더 많은 아이템이 나옵니다. 영양소를 소모하면 그 주변의 다른 영양소들을 약간 보충해주는 효과도 있습니다."
     },
     {
       "type": "patchouli:text",
       "anchor": "barley",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -8 - 26 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 18 - 75 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Barley is a single block crop. Barley seeds can be planted on farmland to be grown, and will produce $(thing)Barley$() and $(thing)Barley Seeds$() as a product.",
-      "title": "Barley"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): -8 - 26 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 18 - 75 %$(br)$(bold)선호 영양소$(): 질소$(br2)보리는 한 블록 높이의 작물입니다. 보리 씨앗은 경작지에 심을 수 있으며 $(thing)보리$()와 $(thing)보리 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l보리"
     },
     {
       "type": "tfc:multimultiblock",
@@ -186,8 +186,8 @@
     {
       "type": "patchouli:text",
       "anchor": "oat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 3 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 35 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Oat is a single block crop. Oat seeds can be planted on farmland to be grown, and will produce $(thing)Oat$() and $(thing)Oat Seeds$() as a product.",
-      "title": "Oat"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 3 - 40 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 35 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)귀리는 한 블록 높이의 작물입니다. 귀리 씨앗은 경작지에 심을 수 있으며 $(thing)귀리$()와 $(thing)귀리 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l귀리"
     },
     {
       "type": "tfc:multimultiblock",
@@ -334,8 +334,8 @@
     {
       "type": "patchouli:text",
       "anchor": "rye",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -11 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 85 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Rye is a single block crop. Rye seeds can be planted on farmland to be grown, and will produce $(thing)Rye$() and $(thing)Rye Seeds$() as a product.",
-      "title": "Rye"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): -11 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 85 %$(br)$(bold)선호 영양소$(): 인$(br2)호밀은 한 블록 높이의 작물입니다. 호밀 씨앗은 경작지에 심을 수 있으며 $(thing)호밀$()과 $(thing)호밀 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l호밀"
     },
     {
       "type": "tfc:multimultiblock",
@@ -482,8 +482,8 @@
     {
       "type": "patchouli:text",
       "anchor": "maize",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 13 - 40 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 75 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Maize is a two block tall crop. Maize seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Maize$() and $(thing)Maize Seeds$() as a product.",
-      "title": "Maize"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 13 - 40 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 75 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)옥수수는 두 블록 높이의 작물입니다. 옥수수 씨앗은 경작지에 심을 수 있으며 두 블록 높이로 자라납니다. $(thing)옥수수$()와 $(thing)옥수수 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l옥수수"
     },
     {
       "type": "tfc:multimultiblock",
@@ -620,8 +620,8 @@
     {
       "type": "patchouli:text",
       "anchor": "wheat",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -4 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Wheat is a single block crop. Wheat seeds can be planted on farmland to be grown, and will produce $(thing)Wheat$() and $(thing)Wheat Seeds$() as a product.",
-      "title": "Wheat"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): -4 - 35 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)밀은 한 블록 높이의 작물입니다. 밀 씨앗은 경작지에 심을 수 있으며 $(thing)밀$()과 $(thing)밀 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l밀"
     },
     {
       "type": "tfc:multimultiblock",
@@ -768,12 +768,12 @@
     {
       "type": "patchouli:text",
       "anchor": "rice",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Rice is a single block crop. Rice must be grown underwater - it must be planted on farmland, in freshwater that is a single block deep. It will produce $(thing)Rice$() and $(thing)Rice Seeds$() as a product.",
-      "title": "Rice"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 15 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)쌀은 한 블록 높이의 작물입니다. 쌀 씨앗은 경작지에 심을 수 있으며 한 칸 깊이의 민물에서 자라야 합니다. $(thing)쌀$()과 $(thing)쌀 씨앗$()을 얻을 수 있습니다.",
+      "title": "§l쌀"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "Note: in order to grow, the rice block must be $(thing)Waterlogged$().",
+      "text": "참고: 쌀이 자라기 위해서는 $(thing)물에 잠겨 있어야$() 합니다.",
       "multiblocks": [
         {
           "pattern": [
@@ -916,8 +916,8 @@
     {
       "type": "patchouli:text",
       "anchor": "beet",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -5 - 20 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 18 - 85 %$(br)$(bold)Nutrient$(): Potassium$(br2)Beets area a single block crop. Beet seeds can be planted on farmland to be grown, and will produce $(thing)Beet$() and $(thing)Beet Seeds$() as a product.",
-      "title": "Beet"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): -5 - 20 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 18 - 85 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)비트는 한 블록 높이의 작물입니다. 비트 씨앗은 경작지에 심을 수 있으며 $(thing)비트$()와 $(thing)비트 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l비트"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1030,8 +1030,8 @@
     {
       "type": "patchouli:text",
       "anchor": "cabbage",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -10 - 27 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 65 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Cabbage is a single block crop. Cabbage seeds can be planted on farmland to be grown, and will produce $(thing)Cabbage$() and $(thing)Cabbage Seeds$() as a product.",
-      "title": "Cabbage"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): -10 - 27 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 15 - 65 %$(br)$(bold)선호 영양소$(): 질소$(br2)양배추는 한 블록 높이의 작물입니다. 양배추 씨앗은 경작지에 심을 수 있으며 $(thing)양배추$()와 $(thing)양배추 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l양배추"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1144,8 +1144,8 @@
     {
       "type": "patchouli:text",
       "anchor": "carrot",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 3 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Carrot is a single block crop. Carrot seeds can be planted on farmland to be grown, and will produce $(thing)Carrot$() and $(thing)Carrot Seeds$() as a product.",
-      "title": "Carrot"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 3 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)당근은 한 블록 높이의 작물입니다. 당근 씨앗은 경작지에 심을 수 있으며 $(thing)당근$()과 $(thing)당근 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l당근"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1241,8 +1241,8 @@
     {
       "type": "patchouli:text",
       "anchor": "garlic",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -20 - 18 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 15 - 75 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Garlic is a single block crop. Garlic seeds can be planted on farmland to be grown, and will produce $(thing)Garlic$() and $(thing)Garlic Seeds$() as a product.",
-      "title": "Garlic"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): -20 - 18 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 15 - 75 %$(br)$(bold)선호 영양소$(): 질소$(br2)마늘은 한 블록 높이의 작물입니다. 마늘 씨앗은 경작지에 심을 수 있으며 $(thing)마늘$()과 $(thing)마늘 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l마늘"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1338,12 +1338,12 @@
     {
       "type": "patchouli:text",
       "anchor": "green_bean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 2 - 35 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 38 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Green Beans is a climbing two block tall crop. Green Bean seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Green Beans$() and $(thing)Green Bean Seeds$() as a product.",
-      "title": "Green Beans"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 2 - 35 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 38 - 100 %$(br)$(bold)선호 영양소$(): 질소$(br2)완두는 두 블록 높이의 덩굴 작물입니다. 완두 씨앗은 경작지에 심을 수 있으며 막대기가 있다면 두 블록 높이로 자라납니다. $(thing)완두$()와 $(thing)완두 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l완두"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The stick is required in order for the crop to fully grow.",
+      "text": "완두가 완전히 자라기 위해서는 막대기가 필요합니다.",
       "multiblocks": [
         {
           "pattern": [
@@ -1518,8 +1518,8 @@
     {
       "type": "patchouli:text",
       "anchor": "potato",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): -1 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 50 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Potatoes are a single block crop. Potato seeds can be planted on farmland to be grown, and will produce $(thing)Potatoes$() and $(thing)Potato Seeds$() as a product.",
-      "title": "Potatoes"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): -1 - 37 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 50 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)감자는 한 블록 높이의 작물입니다. 감자 씨앗은 경작지에 심을 수 있으며 $(thing)감자$()와 $(thing)감자 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l감자"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1649,8 +1649,8 @@
     {
       "type": "patchouli:text",
       "anchor": "pumpkin",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 80 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Pumpkins are a spreading crop. Pumpkin seeds can be planted on farmland to be grown, and will place up to two $(thing)Pumpkin Blocks$() on the ground next to it while it is mature. If the pumpkin blocks are harvested, if the pumpkin plant matures again, it can grow more pumpkins.",
-      "title": "Pumpkins"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 30 - 80 %$(br)$(bold)선호 영양소$(): 인$(br2)호박은 옆으로 자라는 작물입니다. 호박 씨앗은 경작지에 심을 수 있으며 성숙한 동안 양 옆으로 $(thing)호박 블록$()을 자라게 합니다. 호박 블록을 수확하고 나서, 호박이 다시 성숙하면 호박 블록이 더 자랄 수 있습니다.",
+      "title": "§l호박"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1821,8 +1821,8 @@
     {
       "type": "patchouli:text",
       "anchor": "melon",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 75 - 100 %$(br)$(bold)Nutrient$(): Phosphorus$(br2)Melons are a spreading crop. Melon seeds can be planted on farmland to be grown, and will place up to two $(thing)Melon Blocks$() on the ground next to it while it is mature. If the melon blocks are harvested, if the pumpkin plant matures again, it can grow more melon.",
-      "title": "Melons"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 75 - 100 %$(br)$(bold)선호 영양소$(): 인$(br2)수박은 옆으로 자라는 작물입니다. 수박 씨앗은 경작지에 심을 수 있으며 성숙한 동안 양 옆으로 $(thing)수박 블록$()을 자라게 합니다. 수박 블록을 수확하고 나서, 수박이 다시 성숙하면 수박 블록이 더 자랄 수 있습니다.",
+      "title": "§l수박"
     },
     {
       "type": "tfc:multimultiblock",
@@ -1993,8 +1993,8 @@
     {
       "type": "patchouli:text",
       "anchor": "onion",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 90 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Onions are a single block crop. Onion seeds can be planted on farmland to be grown, and will produce $(thing)Onions$() and $(thing)Onion Seeds$() as a product.",
-      "title": "Onions"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 0 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 90 %$(br)$(bold)선호 영양소$(): 질소$(br2)양파는 한 블록 높이의 작물입니다. 양파 씨앗은 경작지에 심을 수 있으며 $(thing)양파$()와 $(thing)양파 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l양파"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2124,8 +2124,8 @@
     {
       "type": "patchouli:text",
       "anchor": "soybean",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 8 - 30 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Nitrogen$(br2)Soybean is a single block crop. Soybean seeds can be planted on farmland to be grown, and will produce $(thing)Soybean$() and $(thing)Soybean Seeds$() as a product.",
-      "title": "Soybean"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 8 - 30 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 40 - 100 %$(br)$(bold)선호 영양소$(): 질소$(br2)대두는 한 블록 높이의 작물입니다. 대두 씨앗은 경작지에 심을 수 있으며 $(thing)대두$()와 $(thing)대두 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l대두"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2255,8 +2255,8 @@
     {
       "type": "patchouli:text",
       "anchor": "squash",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 33 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 23 - 95 %$(br)$(bold)Nutrient$(): Potassium$(br2)Squash is a single block crop. Squash seeds can be planted on farmland to be grown, and will produce $(thing)Squash$() and $(thing)Squash Seeds$() as a product.",
-      "title": "Squash"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 33 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 23 - 95 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)애호박은 한 블록 높이의 작물입니다. 애호박 씨앗은 경작지에 심을 수 있으며 $(thing)애호박$()과 $(thing)애호박 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l애호박"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2403,8 +2403,8 @@
     {
       "type": "patchouli:text",
       "anchor": "sugarcane",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 40 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Sugarcane is a two block tall crop. Sugarcane seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Sugarcane$() and $(thing)Sugarcane Seeds$() as a product. Sugarcane can be used to make $(thing)Sugar$().",
-      "title": "Sugarcane"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 12 - 38 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 40 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)사탕수수는 두 블록 높이의 작물입니다. 사탕수수 씨앗은 경작지에 심을 수 있으며 두 블록 높이로 자라납니다. $(thing)사탕수수$()와 $(thing)사탕수수 씨앗$()을 수확할 수 있습니다. 사탕수수로는 $(thing)설탕$()을 만들 수 있습니다.",
+      "title": "§l사탕수수"
     },
     {
       "type": "tfc:multimultiblock",
@@ -2583,12 +2583,12 @@
     {
       "type": "patchouli:text",
       "anchor": "tomatoes",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 0 - 36 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 30 - 95 %$(br)$(bold)Nutrient$(): Potassium$(br2)Tomatoes are a climbing two block tall crop. Tomato seeds can be planted on farmland to be grown, will grow two blocks tall if a stick is present, and will produce $(thing)Tomatoes$() and $(thing)Tomato Seeds$() as a product.",
-      "title": "Tomatoes"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 0 - 36 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 30 - 95 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)토마토는 두 블록 높이의 덩굴 작물입니다. 토마토 씨앗은 경작지에 심을 수 있으며 막대기가 있다면 두 블록 높이로 자라납니다. $(thing)토마토$()와 $(thing)토마토 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l토마토"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The stick is required in order for the crop to fully grow.",
+      "text": "완두가 완전히 자라기 위해서는 막대기가 필요합니다.",
       "multiblocks": [
         {
           "pattern": [
@@ -2763,8 +2763,8 @@
     {
       "type": "patchouli:text",
       "anchor": "jute",
-      "text": "$(bold)$(l:the_world/climate#temperature)Temperature$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)Hydration$(): 25 - 100 %$(br)$(bold)Nutrient$(): Potassium$(br2)Jute is a two block tall crop. Jute seeds can be planted on farmland to be grown, will grow two blocks tall, and will produce $(thing)Jute$() and $(thing)Jute Seeds$() as a product.",
-      "title": "Jute"
+      "text": "$(bold)$(l:the_world/climate#temperature)기온$(): 5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)수분$(): 25 - 100 %$(br)$(bold)선호 영양소$(): 칼륨$(br2)황마는 두 블록 높이의 작물입니다. 황마 씨앗은 경작지에 심을 수 있으며 두 블록 높이로 자라납니다. $(thing)황마$()와 $(thing)황마 씨앗$()을 수확할 수 있습니다.",
+      "title": "§l황마"
     },
     {
       "type": "tfc:multimultiblock",
