@@ -231,7 +231,7 @@
     {
       "type": "patchouli:text",
       "anchor": "mule",
-      "text": "$(thing)Mules$() spawn in plains with $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고 강수량이 130mm 이상 40mm 이하인. They are a kind of $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 노새는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 또한 노새는 $(thing)말$()과 $()당나귀$()의 잡종으로 번식할 수 없으며 80일 뒤에 성체가 됩니다.",
+      "text": "$(thing)노새$()는 $(l:the_world/climate#temperature)기온$()이 -15°C 이상이고 강수량이 130mm 이상 40mm 이하인 습한 평원에서 생성됩니다. They are a kind of $(l:mechanics/animal_husbandry#horses)말속$() 동물이며 $(thing)상자$()를 달 수 있습니다. 노새는 $(thing)곡물$()과 $(thing)과일$()을 먹습니다. 또한 노새는 $(thing)말$()과 $()당나귀$()의 잡종으로 번식할 수 없으며 80일 뒤에 성체가 됩니다.",
       "title": "§l노새"
     },
     {

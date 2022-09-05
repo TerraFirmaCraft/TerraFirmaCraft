@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "§l음식과 물",
   "category": "tfc:the_world",
-  "icon": "tfc:food/orange",
+  "icon": "tfc:textures/item/food/orange.png",
   "pages": [
     {
       "type": "patchouli:text",

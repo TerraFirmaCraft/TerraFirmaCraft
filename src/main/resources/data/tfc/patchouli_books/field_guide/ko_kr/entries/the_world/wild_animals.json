@@ -155,8 +155,8 @@
       "type": "patchouli:entity",
       "entity": "tfc:salmon",
       "scale": 0.7,
-      "name": "§lSalmon",
-      "text": "§l연어 $(l:the_world/climate#temperature)기온$()이 -5°C 이상인 강이나 호수에서 생성됩니다."
+      "name": "§l연어",
+      "text": "§l연어는 $(l:the_world/climate#temperature)기온$()이 -5°C 이상인 강이나 호수에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
