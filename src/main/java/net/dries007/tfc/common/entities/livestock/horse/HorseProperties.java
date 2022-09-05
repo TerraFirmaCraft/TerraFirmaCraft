@@ -58,7 +58,7 @@ public interface HorseProperties extends MammalProperties
     {
         MammalProperties.super.applyGenes(tag, babyProperties);
         AbstractHorse baby = (AbstractHorse) babyProperties;
-        EntityHelpers.setNullableAttribute(baby, Attributes.MAX_HEALTH, (tag.getDouble("maxHealth") + generateRandomMaxHealth()) / 3);
+        EntityHelpers.setNullableAttribute(baby, Attributes.MAX_HEALTH, mutateGeneticValue(tag.getDouble("maxHealth"), generateRandomMaxHealth()));
     }
 
     @Override
@@ -76,6 +76,16 @@ public interface HorseProperties extends MammalProperties
         {
             EntityHelpers.findFemaleMate((Animal & TFCAnimalProperties) this);
         }
+    }
+
+    /**
+     * Vanilla weights the parents equally to the "mystery third horse" which is considered a bug as it makes upper-spectrum horse breeding impossible.
+     * We can just weight the parents against the mystery third horse to produce stronger parental effects
+     */
+    default double mutateGeneticValue(double parentsCombined, double thirdHorse)
+    {
+        final double average = parentsCombined / 2;
+        return average * 0.8f + thirdHorse * 0.2f;
     }
 
     private float generateRandomMaxHealth()

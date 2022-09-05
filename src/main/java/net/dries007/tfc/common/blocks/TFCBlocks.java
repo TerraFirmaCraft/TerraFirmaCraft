@@ -57,6 +57,7 @@ import net.dries007.tfc.common.fluids.Alcohol;
 import net.dries007.tfc.common.fluids.FluidType;
 import net.dries007.tfc.common.fluids.SimpleFluid;
 import net.dries007.tfc.common.fluids.TFCFluids;
+import net.dries007.tfc.common.items.DecayingBlockItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -217,8 +218,8 @@ public final class TFCBlocks
 
     public static final RegistryObject<Block> ROTTEN_PUMPKIN = register("rotten_pumpkin", () -> new Block(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD)), FLORA);
     public static final RegistryObject<Block> ROTTEN_MELON = register("rotten_melon", () -> new Block(Properties.of(Material.VEGETABLE, MaterialColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD)), FLORA);
-    public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_PUMPKIN), FLORA);
-    public static final RegistryObject<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(Material.VEGETABLE, MaterialColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_MELON), FLORA);
+    public static final RegistryObject<Block> PUMPKIN = register("pumpkin", () -> new TFCPumpkinBlock(ExtendedProperties.of(Material.VEGETABLE, MaterialColor.COLOR_ORANGE).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_PUMPKIN), b -> new DecayingBlockItem(b, new Item.Properties().tab(FLORA)));
+    public static final RegistryObject<Block> MELON = register("melon", () -> new DecayingBlock(ExtendedProperties.of(Material.VEGETABLE, MaterialColor.COLOR_GREEN).strength(1.0F).sound(SoundType.WOOD).blockEntity(TFCBlockEntities.DECAYING).serverTicks(DecayingBlockEntity::serverTick), ROTTEN_MELON), b -> new DecayingBlockItem(b, new Item.Properties().tab(FLORA)));
 
     public static final RegistryObject<Block> SEA_PICKLE = register("sea_pickle", () -> new TFCSeaPickleBlock(BlockBehaviour.Properties.of(Material.WATER_PLANT, MaterialColor.COLOR_GREEN).lightLevel((state) -> TFCSeaPickleBlock.isDead(state) ? 0 : 3 + 3 * state.getValue(SeaPickleBlock.PICKLES)).sound(SoundType.SLIME_BLOCK).noOcclusion()), FLORA);
 

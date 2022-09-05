@@ -44,6 +44,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
+    public final ForgeConfigSpec.BooleanValue enablePlantsSlowEntities;
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
@@ -207,6 +208,7 @@ public class ServerConfig
         innerBuilder.pop().push("plants");
 
         plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.05, 0, 1);
+        enablePlantsSlowEntities = builder.apply("enablePlantsSlowEntities").comment("[Requires MC Restart] If grass and other plants will slow players that move through them.").define("enablePlantsSlowEntities", true);
 
         innerBuilder.pop().push("leaves");
 

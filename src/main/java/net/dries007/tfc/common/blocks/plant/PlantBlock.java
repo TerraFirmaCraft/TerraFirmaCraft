@@ -99,6 +99,12 @@ public abstract class PlantBlock extends TFCBushBlock
         builder.add(AGE);
     }
 
+    @Override
+    public float getSpeedFactor()
+    {
+        return TFCConfig.SERVER.enablePlantsSlowEntities.get() ? speedFactor : 1f;
+    }
+
     protected BlockState updateStateWithCurrentMonth(BlockState state)
     {
         return getPlant().getStageProperty() != null ? state.setValue(getPlant().getStageProperty(), getPlant().stageFor(Calendars.SERVER.getCalendarMonthOfYear())) : state;
