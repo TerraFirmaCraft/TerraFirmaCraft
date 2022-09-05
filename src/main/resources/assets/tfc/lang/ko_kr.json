@@ -179,7 +179,7 @@
     "tfc.tooltip.farmland.nutrients": "§b(N) 질소: §r%s%%, §6(P) 인: §r%s%%, §d(K) 칼륨: §r%s%%",
     "tfc.tooltip.fruit_tree.done_growing": "이 블록은 다 자랐습니다.",
     "tfc.tooltip.fruit_tree.growing": "이 블록은 자라는 중입니다.",
-    "tfc.tooltip.fruit_tree.sapling_wrong_month": "나무가 자라는 계절임 아닙니다.",
+    "tfc.tooltip.fruit_tree.sapling_wrong_month": "나무가 자라는 계절이 아닙니다.",
     "tfc.tooltip.fruit_tree.sapling_splice": "접목할 수 있음",
     "tfc.tooltip.fertilizer.nitrogen": "§b(N) 질소: §r%s%%",
     "tfc.tooltip.fertilizer.phosphorus": "§6(P) 인: §r%s%%",
