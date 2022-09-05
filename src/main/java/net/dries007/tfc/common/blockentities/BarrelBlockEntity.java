@@ -181,6 +181,14 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     }
 
     @Override
+    public void fluidTankChanged()
+    {
+        needsInstantRecipeUpdate = true;
+        updateRecipe();
+        setChanged();
+    }
+
+    @Override
     public boolean isItemValid(int slot, ItemStack stack)
     {
         return switch (slot)
