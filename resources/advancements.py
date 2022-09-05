@@ -92,7 +92,7 @@ def generate(rm: ResourceManager):
     world.advancement('kaolinite', icon('tfc:ore/kaolinite'), 'Pink Unicorn', 'Find Kaolinite.', 'nugget', inventory_changed('tfc:ore/kaolinite'), frame='goal')
     world.advancement('sylvite', icon('tfc:ore/sylvite'), 'Plant Food', 'Find Sylvite.', 'nugget', inventory_changed('tfc:ore/sylvite'))
     world.advancement('nickel', icon('tfc:ore/small_garnierite'), 'Nickels and Dimes', 'Find Garnierite.', 'nugget', inventory_changed('tfc:ore/small_garnierite'), frame='goal')
-    world.advancement('iron', icon('tfc:ore/small_hematite'), 'Pretty Ironic', 'Find Hematite, Liminote, and Magnetite nuggets.', 'nugget', multiple(*[inventory_changed('tfc:ore/small_%s' % o, name=o) for o in ('hematite', 'limonite', 'magnetite')]), requirements=[[o] for o in ('hematite', 'limonite', 'magnetite')])
+    world.advancement('iron', icon('tfc:ore/small_hematite'), 'Pretty Ironic', 'Find Hematite, Limonite, and Magnetite nuggets.', 'nugget', multiple(*[inventory_changed('tfc:ore/small_%s' % o, name=o) for o in ('hematite', 'limonite', 'magnetite')]), requirements=[[o] for o in ('hematite', 'limonite', 'magnetite')])
     world.advancement('compost', icon('tfc:compost'), 'Reduce Reuse Recycle', 'Make compost in a composter.', 'root', inventory_changed('tfc:compost'))
     world.advancement('rotten_compost', icon('tfc:rotten_compost'), 'Wasteful', 'Kill a plant with rotten compost.', 'compost', generic('tfc:rotten_compost_kill', None))
     world.advancement('guano', icon('tfc:groundcover/guano'), 'Gift from the Birds', 'Find guano.', 'root', inventory_changed('tfc:groundcover/guano'))
