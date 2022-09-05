@@ -30,7 +30,7 @@
       "entity": "tfc:grizzly_bear",
       "scale": 0.55,
       "name": "§l회색곰",
-      "text": "회색곰은 $(l:the_world/climate#temperature)ㅛ -15°C 이상 15°C 이하이고 $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 온화한 숲에서 생성됩니다."
+      "text": "회색곰은 $(l:the_world/climate#temperature)기온$()이 -15°C 이상 15°C 이하이고 $(l:the_world/climate#rainfall)강수량$()이 200mm 이상인 온화한 숲에서 생성됩니다."
     },
     {
       "type": "patchouli:entity",
