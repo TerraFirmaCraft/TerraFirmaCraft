@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/flower_pot_cross",
+  "textures": {
+    "plant": "tfc:block/plant/heliconia/heliconia_0",
+    "dirt": "tfc:block/dirt/loam"
+  }
+}

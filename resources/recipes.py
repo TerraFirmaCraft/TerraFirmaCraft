@@ -196,7 +196,11 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/blast_furnace', ['XXX', 'XCX', 'XXX'], {'X': 'tfc:metal/sheet/wrought_iron', 'C': 'tfc:crucible'}, 'tfc:blast_furnace').with_advancement('tfc:metal/sheet/wrought_iron')
     damage_shapeless(rm, 'crafting/melon_slice', ('#tfc:knives', not_rotten('tfc:melon')), (4, 'minecraft:melon_slice')).with_advancement('tfc:melon')
     damage_shapeless(rm, 'crafting/pumpkin_pie', (not_rotten('#tfc:foods/dough'), not_rotten('tfc:pumpkin'), '#tfc:knives', 'minecraft:egg', 'minecraft:sugar'), 'minecraft:pumpkin_pie').with_advancement('tfc:pumpkin')
+    rm.crafting_shapeless('crafting/soot', ('tfc:glue', 'tfc:powder/charcoal', 'tfc:powder/wood_ash'), 'tfc:soot').with_advancement('tfc:glue')
+    rm.crafting_shapeless('crafting/rotten_compost', ('tfc:soot', 'tfc:compost'), 'tfc:rotten_compost').with_advancement('tfc:soot')
+    rm.crafting_shapeless('crafting/blank_disc', ('tfc:soot', 'minecraft:glass_pane'), 'tfc:blank_disc').with_advancement('tfc:blank_disc')
 
+    rm.crafting_shapeless('crafting/vanilla/disc_11', ('tfc:blank_disc', '#tfc:rock_knapping'), 'minecraft:music_disc_11').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/vanilla/crafting_table', ('#tfc:saws', '#tfc:workbenches'), 'minecraft:crafting_table').with_advancement('#tfc:saws')
     damage_shapeless(rm, 'crafting/vanilla/lectern', ('#tfc:saws', '#tfc:lecterns'), 'minecraft:lectern').with_advancement('#tfc:saws')
     damage_shapeless(rm, 'crafting/vanilla/bookshelf', ('#tfc:saws', '#tfc:bookshelves'), 'minecraft:bookshelf').with_advancement('#tfc:saws')
@@ -651,6 +655,9 @@ def generate(rm: ResourceManager):
             item = 'minecraft:%s_%s' % (color, variant)
             if color != 'white':
                 barrel_sealed_recipe(rm, 'dye/%s_%s' % (color, variant), 'Dyeing %s %s' % (variant, color), 1000, 'minecraft:white_%s' % variant, fluid, item)
+        if color in DISC_COLORS:
+            disc = DISC_COLORS[color]
+            barrel_sealed_recipe(rm, 'dye/disc_%s' % disc, 'Imprinting %s Disc' % disc, 1000, 'tfc:blank_disc', fluid, 'minecraft:music_disc_%s' % disc)
 
         barrel_sealed_recipe(rm, 'dye/%s_shulker' % color, 'Dyeing Shulker %s' % color, 1000, 'minecraft:shulker_box', fluid, 'minecraft:%s_shulker_box' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_vessel' % color, 'Dyeing Unfired Vessel %s' % color, 1000, 'tfc:ceramic/unfired_vessel', fluid, 'tfc:ceramic/%s_unfired_vessel' % color)
