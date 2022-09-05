@@ -38,7 +38,7 @@ def generate(rm: ResourceManager):
     story.advancement('steel_age', icon('tfc:metal/ingot/steel'), 'Industrialized', 'Make your first steel item.', 'blast_furnace', inventory_changed('#tfc:metal_item/steel'), frame='challenge')
     story.advancement('black_steel', icon('tfc:metal/ingot/black_steel'), 'Back in Black', 'Make your first black steel item.', 'steel_age', inventory_changed('#tfc:metal_item/black_steel'), frame='challenge')
     story.advancement('blue_steel', icon('tfc:metal/ingot/blue_steel'), 'Feeling Blue', 'Make your first blue steel item.', 'black_steel', inventory_changed('#tfc:metal_item/blue_steel'), frame='challenge')
-    story.advancement('red_steel', icon('tfc:metal/ingot/blue_steel'), 'Seeing Red', 'Make your first red steel item.', 'black_steel', inventory_changed('#tfc:metal_item/red_steel'), frame='challenge')
+    story.advancement('red_steel', icon('tfc:metal/ingot/red_steel'), 'Seeing Red', 'Make your first red steel item.', 'black_steel', inventory_changed('#tfc:metal_item/red_steel'), frame='challenge')
     story.advancement('red_steel_bucket', icon('tfc:metal/bucket/red_steel'), 'Tsunami', 'Make a red steel bucket.', 'red_steel', inventory_changed('tfc:metal/bucket/red_steel'))
     story.advancement('blue_steel_bucket', icon('tfc:metal/bucket/blue_steel'), 'Hot Stuff', 'Make a blue steel bucket.', 'blue_steel', inventory_changed('tfc:metal/bucket/blue_steel'))
     story.advancement('ultimate_goal', icon('minecraft:bucket'), 'All This for a Bucket!?', 'Combine your red and blue steel buckets into a vanilla bucket.', 'blue_steel_bucket', inventory_changed('minecraft:bucket'), frame='goal')
