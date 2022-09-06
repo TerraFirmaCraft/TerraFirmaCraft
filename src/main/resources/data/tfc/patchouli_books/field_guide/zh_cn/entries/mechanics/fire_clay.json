@@ -11,7 +11,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/fire_clay",
-      "text": "耐火粘土是用普通粘土混合$(l:the_world/ores_and_minerals#kaolinite)高岭石$()粉和$(l:the_world/ores_and_minerals#graphite)石墨$()粉制成的。$(l:mechanics/quern)quern$()可以将这两种矿物磨成粉。"
+      "text": "耐火粘土是用普通粘土混合$(l:the_world/ores_and_minerals#kaolinite)高岭石$()粉和$(l:the_world/ores_and_minerals#graphite)石墨$()粉制成的。$(l:mechanics/quern)手推磨$()可以将这两种矿物磨成粉。"
     },
     {
       "type": "tfc:fire_clay_knapping_recipe",

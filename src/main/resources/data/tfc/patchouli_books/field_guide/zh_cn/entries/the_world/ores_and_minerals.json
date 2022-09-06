@@ -819,7 +819,7 @@
       "item": "tfc:ore/sulfur",
       "title": "硫磺",
       "link_recipes": false,
-      "text": "硫磺是一种可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火药$()的$(thing)矿物$()。它只会出现在 y=0 以上的$(l:the_world/geology#igneous_extrusive)喷出岩$()中。在$(thing)地质活跃$()的地区中，硫磺会更为频繁地出现在深度较浅的$(l:the_world/geology#igneous_extrusive)喷发岩$()和$(l:the_world/geology#igneous_extrusive)侵入岩$()中。"
+      "text": "硫磺是一种可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火药$()的$(thing)矿物$()。它只会出现在 y=0 以上的$(l:the_world/geology#igneous_extrusive)喷出岩$()中。在$(thing)地质活跃$()的地区中，硫磺会更为频繁地出现在深度较浅的$(l:the_world/geology#igneous_extrusive)喷出岩$()和$(l:the_world/geology#igneous_extrusive)侵入岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
