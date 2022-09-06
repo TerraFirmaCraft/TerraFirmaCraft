@@ -241,8 +241,10 @@ public final class TFCBlocks
     public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_branch", tree::createBranch));
     public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_GROWING_BRANCHES = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_growing_branch", tree::createGrowingBranch));
     public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_SAPLINGS = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/" + tree.name() + "_sapling", tree::createSapling, FLORA));
+    public static final Map<FruitBlocks.Tree, RegistryObject<Block>> FRUIT_TREE_POTTED_SAPLINGS = Helpers.mapOfKeys(FruitBlocks.Tree.class, tree -> register("plant/potted/" + tree.name() + "_sapling", tree::createPottedSapling));
     public static final RegistryObject<Block> BANANA_PLANT = register("plant/banana_plant", FruitBlocks::createBananaPlant);
     public static final RegistryObject<Block> BANANA_SAPLING = register("plant/banana_sapling", FruitBlocks::createBananaSapling, FLORA);
+    public static final RegistryObject<Block> BANANA_POTTED_SAPLING = register("plant/potted/banana_sapling", FruitBlocks::createPottedBananaSapling);
 
     // Decorations
 
@@ -361,7 +363,11 @@ public final class TFCBlocks
 
     public static void registerFlowerPotFlowers()
     {
-        POTTED_PLANTS.forEach((plant, reg) -> ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(PLANTS.get(plant).getId(), reg));
+        FlowerPotBlock pot = (FlowerPotBlock) Blocks.FLOWER_POT;
+        POTTED_PLANTS.forEach((plant, reg) -> pot.addPlant(PLANTS.get(plant).getId(), reg));
+        WOODS.forEach((wood, map) -> pot.addPlant(map.get(Wood.BlockType.SAPLING).getId(), map.get(Wood.BlockType.POTTED_SAPLING)));
+        FRUIT_TREE_POTTED_SAPLINGS.forEach((plant, reg) -> pot.addPlant(FRUIT_TREE_SAPLINGS.get(plant).getId(), reg));
+        pot.addPlant(BANANA_SAPLING.getId(), BANANA_POTTED_SAPLING);
     }
 
     public static boolean always(BlockState state, BlockGetter level, BlockPos pos)
