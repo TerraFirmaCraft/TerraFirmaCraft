@@ -61,14 +61,14 @@
     {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
-      "text": "$(thing)产奶动物$()也是哺乳动物的一种。只要成年且亲密度足够，就可以用木桶点击雌性产奶动物来挤奶。$(br)$(l:mechanics/animal_husbandry#goat)山羊$()、$(l:mechanics/animal_husbandry#cow)奶牛$()和$(l:mechanics/animal_husbandry#yak)牦牛$()都属于这一类动物。。"
+      "text": "$(thing)产奶动物$()也是哺乳动物的一种。只要成年且亲密度足够，就可以用木桶点击雌性产奶动物来挤奶。$(br)$(l:mechanics/animal_husbandry#goat)山羊$()、$(l:mechanics/animal_husbandry#cow)奶牛$()和$(l:mechanics/animal_husbandry#yak)牦牛$()都属于这一类动物。"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "oviparous_animals",
       "recipe": "tfc:crafting/nest_box",
       "title": "巢箱",
-      "text": "$(thing)卵生动物$()不像$(l:mechanics/animal_husbandry#mammals)哺乳动物$()可以直接产下幼崽，而是通过产下并孵化$(thing)蛋$()来繁殖。它们只能在$(thing)巢箱$()中产卵。$(br)$(l:mechanics/animal_husbandry#duck)鸭子$()、$(l:mechanics/animal_husbandry#quail)鹌鹑$()和$(l:mechanics/animal_husbandry#chicken)鸡$()都属于这一类动物。。"
+      "text": "$(thing)卵生动物$()不像$(l:mechanics/animal_husbandry#mammals)哺乳动物$()可以直接产下幼崽，而是通过产下并孵化$(thing)蛋$()来繁殖。它们只能在$(thing)巢箱$()中产卵。$(br)$(l:mechanics/animal_husbandry#duck)鸭子$()、$(l:mechanics/animal_husbandry#quail)鹌鹑$()和$(l:mechanics/animal_husbandry#chicken)鸡$()都属于这一类动物。"
     },
     {
       "type": "tfc:heat_recipe",
