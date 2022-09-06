@@ -159,6 +159,7 @@ public final class TFCItems
         register("powder/" + powder.name(), MISC)
     );
 
+    public static final RegistryObject<Item> BLANK_DISC = register("blank_disc", MISC);
     public static final RegistryObject<Item> BLUBBER = register("blubber", MISC);
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms", MISC);
     public static final RegistryObject<Item> BURLAP_CLOTH = register("burlap_cloth", MISC);
@@ -181,6 +182,7 @@ public final class TFCItems
     public static final RegistryObject<Item> PURE_POTASSIUM = register("pure_potassium", MISC);
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);
+    public static final RegistryObject<Item> SOOT = register("soot", MISC);
     public static final RegistryObject<Item> SPINDLE = register("spindle", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(40)));
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle", MISC);

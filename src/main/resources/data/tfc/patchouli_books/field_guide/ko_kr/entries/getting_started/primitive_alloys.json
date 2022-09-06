@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l기초 합금",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)합금$()은 2개 이상의 금속을 섞어서 더 강한 새로운 금속을 만드는 방법입니다. 게임 초반에 구리는 유용한 금속이기는 하지만, 다음 티어의 금속은 3가지 종류의 $(thing)구리 합금$()입니다. 합금은 여러 $(thing)금속$()들로 구성되고, 각각의 금속의 비율은 전체 중 특정 비율을 만족해야 합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "게임 초반에 합금을 제작하는 법 중 하나는 $(thing)작은 항아리$()를 이용하는 것입니다. 이 과정은 $(l:getting_started/finding_ores#casting)주조$()와 유사합니다. 다만 한 종류의 금속만을 사용하는 게 아닌, 비율을 맞춰 충분한 양의 금속 광석들을 작은 항아리 안에 넣음으로써 합금을 제작할 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "예를 들어서, $(thing)청동$() 1000 mB를 만들기 위해서는 (오른쪽에 나와있듯이) $(thing)구리$() 880-920 mB와 $(thing)주석$() 80-120 mB가 필요합니다.$(br2)다음 세 페이지에는 각각의 합금들의 제작법이 나와 있습니다. 각각의 2티어 금속들로는 도구, 방어구, 그리고 다른 금속 아이템들을 만들 수 있습니다. 각 금속은 특성이 약간씩 다르며, 금속으로 만든 도구들 역시 각자 내구성이나 효율, 공격 대미지가 다릅니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bronze",
+      "title": "§l청동",
+      "link_recipes": false,
+      "text": "$(br)$(bold)합금 비율:$()$(br)$(li)88 - 92% : $(thing)구리$()$(li)8 - 12% : $(thing)주석$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bismuth_bronze",
+      "title": "§l비스무트 청동",
+      "link_recipes": false,
+      "text": "$(br)$(bold)합금 비율:$()$(br)$(li)20 - 30% : $(thing)아연$()$(li)50 - 65% : $(thing)구리$()$(li)10 - 20% : $(thing)비스무트$()$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/black_bronze",
+      "title": "§l헤파티존",
+      "link_recipes": false,
+      "text": "$(br)$(bold)합금 비율:$()$(br)$(li)50 - 70% : $(thing)구리$()$(li)10 - 25% : $(thing)은$()$(li)10 - 25% : $(thing)금$()$(br2)"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

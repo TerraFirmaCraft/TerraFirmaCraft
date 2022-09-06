@@ -1,0 +1,91 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l음식 보존",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:rotten_flesh",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft에서는 영원한 음식 같은 건 없습니다! 음식은 시간이 지나면 $(thing)상해서$() 썩습니다. 썩은 음식은 배고픔을 채워주지 않으며 $(thing)배고픔$()이나 $(thing)독$() 등의 효과를 줄 수도 있습니다!$(br2)다행히도 음식을 더 오래 보관하기 위해서 여러 가지의 $(thing)보존$() 방법이 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "음식 아이템에 마우스를 올리면, 음식이 상할 때 까지 남은 시간을 담은 툴팁이 보여집니다. 툴팁은 대략 다음과 같이 생겼습니다:$(br2)$(bold)$(2)다음 날짜에 상함: 5:30 7월 5년, 1000일 (5일 후)$()$(br2)다양한 보존 방법을 사용하면 이 날짜를 연장하여 음식이 상하기까지 걸리는 시간을 늘릴 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "small_vessels",
+      "text": "가장 쉬운 보존 방법 중 하나는 $(thing)항아리$()입니다. $(thing)큰 항아리$()에는 최대 9종류의 아이템을 넣을 수 있으며, $(thing)밀봉$()할 시 내부의 아이템은 $(5)$(bold)보존됨$() 상태가 되어 보존 기간을 2배로 늘립니다.$(br2)$(thing)작은 항아리$()에는 최대 4종류의 아이템을 넣을 수 있으며, 역시나 내용물에 $(5)$(bold)보존됨$() 상태를 부여합니다.",
+      "title": "§l항아리"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ceramic/large_vessel[sealed=true]"
+        }
+      },
+      "name": "",
+      "text": "밀봉된 큰 항아리.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "또 다른 간단한 보존 방법에는 굽는 것이 있습니다. $(thing)고기$()는 날것일 때 보다 구웠을 때 더 오래 보존됩니다.$(br2)구울 때 알맞은 장치를 사용하는 것도 중요합니다. $(l:mechanics/charcoal_forge)숯불 노$() 또는 $(l:mechanics/crucible)도가니$()처럼 과도하게 뜨거운 장치들은 음식을 요리하기에는 적합치 $(bold)않으며$(), 음식을 더 빨리 상하게 합니다!",
+      "title": "§l굽기"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/mutton",
+      "text": "대신, $(l:getting_started/firepit)모닥불$()이나 $(l:mechanics/grill)석쇠$()를 사용하면 보존 기간에 보너스를 줍니다! 예를 들면, 위처럼 양고기를 $(thing)모닥불$()에 구우면 보존 기간이 1.33배 증가하며 $(thing)석쇠$()에 구우면 1.66배 증가합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "salting",
+      "text": "$(thing)염장$()은 고기를 더 오래 보존하는 방법입니다. 고기를 염장하려면 조합 창에서 고기와 $(thing)소금$()을 조합해야합니다. 염장은 날고기만 가능합니다. 그리고 나서는 굽거나 다른 보존 수단을 사용해도 염장은 그대로 유지됩니다.",
+      "title": "§l염장"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/salt",
+      "text": "소금을 얻는 방법에는 광물 $(l:the_world/ores_and_minerals#halite)암염$()을 $(l:mechanics/quern)가는$() 것이 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:groundcover/salt_lick"
+        }
+      },
+      "name": "§l염지",
+      "text": "소금은 숲에서 자연적으로 찾을 수 있습니다. 다시 설치하고 부술 수도 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vinegar",
+      "text": "$(thing)식초 보존$()은 과일과 채소, 고기를 보존하는 방법입니다.$(br2)$(thing)식초$()는 $(l:mechanics/barrels)통$()에서 과일을 술 250mB에 밀봉하여 만들 수 있습니다. 식초에 음식을 보존하려면 먼저 $(thing)염수$()와 $(thing)식초$()에 $(thing)절여져야$() 합니다. 염수는 $(thing)식초$()와 $(thing)바닷물$()을 1:9로 섞어 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "음식이 절여지면, 이제 식초가 담긴 통에 보존할 수 있습니다. 절인 아이템 하나당 125mB의 식초가 있으면 음식이 보존됩니다."
+    }
+  ],
+  "read_by_default": true
+}

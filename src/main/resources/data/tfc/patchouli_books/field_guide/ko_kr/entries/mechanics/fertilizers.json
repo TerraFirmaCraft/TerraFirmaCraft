@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l비료",
+  "category": "tfc:mechanics",
+  "icon": "tfc:powder/sylvite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "비료는 $(l:mechanics/crops)작물$()에 영양분을 주기 위해 사용합니다. 비료를 들고 $(thing)경작지$()나 $(thing)작물$()에 $(item)$(k:key.use)$()을 클릭하면 비료를 줄 수 있습니다. 비료를 주면 입자들이 나타납니다.",
+      "title": "§l비옥화"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/composter",
+      "text": "퇴비통은 퇴비를 만들기 위해 필수적인 도구입니다. 퇴비통에서 퇴비를 만들기 위해서는 4개의 $(2)초록색$() 아이템과 4개의 $(4)갈색$()아이템이 필요합니다. 퇴비통에 아이템을 추가하려면 $(item)$(k:key.use)$()을 누르면 됩니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "초록색 아이템에는 $(2)식물$(), $(2)과일$(), $(2)채소$(), $(2)곡물$()이 있습니다. 갈색 아이템에는 $(4)부식토$(), $(4)종이$(), $(4)죽은 잔디$(), $(4)유목$(), $(4)솔방울$()이 있습니다. 퇴비가 완성되면 퇴비통에서 연기가 나기 시작합니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:rotten_compost",
+      "link_recipes": false,
+      "text": "일부 아이템들은 퇴비에 $(c)독$()을 풀 것입니다. 이런 아이템에는 $(c)고기$()와 $(c)뼈$() 등이 있습니다. 썩은 퇴비를 작물에 사용하면 즉시 죽어버립니다."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:compost",
+      "link_recipes": false,
+      "text": "퇴비는 퇴비통의 생산품입니다. $(br)$(li)$(b)질소: 40$()$(li)$(6)인: 20$()$(li)$(d)칼륨: 40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "minecraft:bone_meal",
+      "link_recipes": false,
+      "text": "뼛가루는 뼈를 갈아 만들 수 있습니다. $(br)$(li)$(6)인: 10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/saltpeter",
+      "link_recipes": false,
+      "text": "초석은 초석 광석으로 만들 수 있습니다. $(br)$(li)$(b)질소: 10$()$(li)$(d)칼륨: 40$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:groundcover/guano",
+      "link_recipes": false,
+      "text": "구아노는 땅 속 깊이 또는 자갈 해변에서 찾을 수 있습니다. $(br)$(li)$(b)질소: 80$()$(li)$(6)인: 50$()$(li)$(d)칼륨: 10$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/wood_ash",
+      "link_recipes": false,
+      "text": "나뭇재는 모닥불을 부수어 만들 수 있습니다. $(br)$(li)$(6)인: 10$()$(li)$(d)칼륨: 30$()"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:powder/sylvite",
+      "link_recipes": false,
+      "text": "칼리암염은 칼리암염 광석으로 만들 수 있습니다. $(br)$(li)$(6)인: 50$()"
+    }
+  ],
+  "read_by_default": true
+}

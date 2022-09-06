@@ -1020,6 +1020,16 @@ def generate(rm: ResourceManager):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
 
+    for plant, texture in FLOWERPOT_CROSS_PLANTS.items():
+        rm.blockstate('plant/potted/%s' % plant, model='tfc:block/plant/flowerpot/%s' % plant).with_lang(lang('potted %s', plant)).with_tag('minecraft:flower_pots').with_block_loot('tfc:plant/%s' % plant, 'minecraft:flower_pot')
+        plant_folder = plant
+        if 'tulip' in plant:
+            plant_folder = 'tulip'
+        elif 'snapdragon' in plant:
+            plant_folder = 'snapdragon'
+        rm.block_model('plant/flowerpot/%s' % plant, parent='minecraft:block/flower_pot_cross', textures={'plant': 'tfc:block/plant/%s/%s' % (plant_folder, texture), 'dirt': 'tfc:block/dirt/loam'})
+    for plant in MISC_POTTED_PLANTS:
+        rm.blockstate('plant/potted/%s' % plant, model='tfc:block/plant/flowerpot/%s' % plant).with_lang(lang('potted %s', plant)).with_tag('minecraft:flower_pots').with_block_loot('tfc:plant/%s' % plant, 'minecraft:flower_pot')
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
         rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
     for plant in MODEL_PLANTS:
@@ -1028,6 +1038,9 @@ def generate(rm: ResourceManager):
         rm.blockstate('plant/%s' % plant, variants=dict({'age=%s' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, 4)}))
         for i in range(0, 4):
             rm.block_model('plant/%s_%s' % (plant, i), parent='minecraft:block/template_seagrass', textures={'texture': 'tfc:block/plant/%s/%s' % (plant, i)})
+    rm.blockstate('plant/dead_bush', variants={"": [{'model': 'tfc:block/plant/dead_bush_large'}, *[{'model': 'tfc:block/plant/dead_bush%s' % i} for i in range(0, 7)]]}, use_default_model=False)
+    for i in range(0, 7):
+        rm.block_model('plant/dead_bush%s' % i, parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/dead_bush/dead_bush%s' % i})
 
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
         'name': 'tfc:sea_pickle',

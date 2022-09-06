@@ -14,6 +14,9 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
+/**
+ * todo 1.19: Remove and use event, see https://github.com/MinecraftForge/MinecraftForge/pull/8880
+ */
 @Mixin(ClientLevel.class)
 public interface ClientLevelAccessor
 {

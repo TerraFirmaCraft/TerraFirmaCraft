@@ -1,12 +1,14 @@
 from typing import NamedTuple, Tuple, List, Mapping, Set
 
 from mcresources import ResourceManager, utils
-from mcresources.type_definitions import JsonObject, ResourceLocation
+from mcresources.type_definitions import JsonObject, ResourceLocation, ResourceIdentifier
 
 from i18n import I18n
 from constants import ROCK_CATEGORIES, ALLOYS, lang
 
 import re
+import os
+import json
 
 
 NON_TEXT_FIRST_PAGE = 'NON_TEXT_FIRST_PAGE'
@@ -70,12 +72,13 @@ class Category(NamedTuple):
 
 class Book:
 
-    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject, i18n: I18n, local_instance: bool):
+    def __init__(self, rm: ResourceManager, root_name: str, macros: JsonObject, i18n: I18n, local_instance: bool, reverse_translate: bool):
         self.rm: ResourceManager = rm
         self.root_name = root_name
         self.category_count = 0
         self.i18n = i18n
         self.local_instance = local_instance
+        self.reverse_translate = reverse_translate
 
         self.categories: List[Category] = []
         self.macros = macros
@@ -125,13 +128,18 @@ class Book:
             self.build_category(link_targets, c.category_id, c.name, c.description, c.icon, c.parent, c.is_sorted, c.entries)
 
     def build_category(self, link_targets: Mapping[str, Set[str]], category_id: str, name: str, description: str, icon: str, parent: str | None, is_sorted: bool, entries: Tuple[Entry, ...]):
-        self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'categories', category_id), {
-            'name': self.i18n.translate(name),
-            'description': self.i18n.translate(description),
-            'icon': icon,
-            'parent': parent,
-            'sortnum': self.category_count
-        })
+        if self.reverse_translate:
+            data = self.load_data(('patchouli_books', self.root_name, self.i18n.lang, 'categories', category_id))
+            self.i18n.after[name] = data['name']
+            self.i18n.after[description] = data['description']
+        else:
+            self.rm.data(('patchouli_books', self.root_name, self.i18n.lang, 'categories', category_id), {
+                'name': self.i18n.translate(name),
+                'description': self.i18n.translate(description),
+                'icon': icon,
+                'parent': parent,
+                'sortnum': self.category_count
+            })
         self.category_count += 1
 
         category_res: ResourceLocation = utils.resource_location(self.rm.domain, category_id)
@@ -195,6 +203,17 @@ class Book:
                             assert anchor in link_targets[target], 'Link anchor \'%s\' not found for link \'%s\'\n  at page: %s\n  at entry: \'%s\'' % (anchor, key, p, e.entry_id)
 
             # Separately translate each page
+            if self.reverse_translate is not None:
+                rev_entry = self.load_data(('patchouli_books', self.root_name, self.i18n.lang, 'entries', category_res.path, e.entry_id))
+                rev_pages = rev_entry['pages']
+                for p, rp in zip(real_pages, rev_pages):
+                    for key in p.translation_keys:
+                        if key in p.data and p.data[key] is not None:
+                            self.i18n.after[p.data[key]] = rp[key]
+
+                self.i18n.after[e.name] = rev_entry['name']
+                continue
+
             entry_name = self.i18n.translate(e.name)
             for p in real_pages:
                 p.translate(self.i18n)
@@ -218,6 +237,12 @@ class Book:
         """ In a local instance, domains are all under patchouli, otherwise under tfc """
         return ('patchouli' if self.local_instance else 'tfc') + ':' + path
 
+    def load_data(self, name_parts: ResourceIdentifier) -> JsonObject:
+        res = utils.resource_location(self.rm.domain, name_parts)
+        path = os.path.join(*self.rm.resource_dir, 'data', res.domain, res.path) + '.json'
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+
 
 def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, pages: Tuple[Page, ...] = ()) -> Entry:
     """
@@ -229,6 +254,8 @@ def entry(entry_id: str, name: str, icon: str, advancement: str | None = None, p
 
     https://vazkiimods.github.io/Patchouli/docs/reference/entry-json/
     """
+    if icon.startswith('tfc:food/'):  # Food items decay - this is a stupid hack to just replace them with their .png image, so they don't! Wizard!
+        icon = icon.replace('tfc:', 'tfc:textures/item/') + '.png'
     return Entry(entry_id, name, icon, pages, advancement)
 
 

@@ -1,0 +1,115 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l최초의 불",
+  "category": "tfc:getting_started",
+  "icon": "tfc:firepit",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "firestarter",
+      "text": "$(thing)불$()은 중요한 기술적 발전입니다. 불을 피우기 위해서는 $(thing)불피우개$()가 필요합니다. 불피우개를 사용하려면 간단히 $(item)$(k:key.use)$()을 땅에 대고 꾹 누르면 됩니다. 잠시 기다리면, 연기가 나며 불이 피워집니다. 불을 성공적으로 피우기 위해서는 몇 번 다시 시도해야 할 수도 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/firestarter",
+      "text": "불피우개는 막대기 2개로 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "불피우개를 사용하면 $(thing)모닥불$()을 만들 수 있습니다. 모닥불을 만들려면 $(thing)원목$(), 하나 $(thing)막대기$() 3개, 그리고 필수는 아니나 $(thing)불쏘시개$() 3개가 필요합니다. 불쏘시개는 종이나 짚, 다른 아이템들이 될 수 있으며 모닥불이 만들어질 확률을 높여줍니다. 모든 아이템들을 $(item)$(k:key.drop)$() 키를 눌러 하나의 블록 위에 던지고, 불쏘시개를 해당 블록 위에 사용하세요.",
+      "title": "§l모닥불"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:firepit[lit=true]"
+        }
+      },
+      "name": "",
+      "text": "성공했다면 모닥불이 만들어집니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "모닥불을 사용하면 모닥불 화면이 열립니다. 왼쪽은 4개의 $(thing)연료$() 슬롯입니다. 나무, 이탄, 막대기 더미를 맨 위의 슬롯에 넣어서 모닥불 연료로 사용할 수 있습니다. 연료는 맨 아래의 슬롯부터 타오릅니다. 옆에 모닥불의 $(thing)온도$()를 표시하는 게이지가 있고, 오른쪽에는 $(l:mechanics/heating)가열되는$() 아이템들이 있습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/firepit.png"
+      ],
+      "text": "모닥불 화면",
+      "border": false
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/torch_from_stick",
+      "text": "모닥불로 아이템을 가열하면 많은 유용한 아이템이 만들어집니다. 막대기를 가열하면 $(thing)횃불$()이 만들어집니다. 횃불은 결국 꺼지기 때문에 $(thing)불피우개$()를 사용해서 다시 켜거나 새로운 $(thing)횃불$()을 설치해야 합니다."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/cod",
+      "text": "모닥불은 $(thing)음식을 요리$()하기도 좋습니다. 모든 날고기와 반죽들은 모닥불에서 익힐 수 있고, 익히면 상하기까지 남은 기간이 늘어납니다. (자세한 내용은 $(l:mechanics/decay)여기$()에서 확인하실 수 있습니다.)"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "모닥불은 $(thing)삽$()을 이용하여 끌 수 있습니다.$(br2)모닥불에 다른 장치들을 사용하면 기능을 늘릴 수 있습니다. $(thing)연철 석쇠$()은 모닥불을 $(l:mechanics/grill)석쇠$()로, $(thing)도자기 냄비$()는 $(l:mechanics/pot)냄비$()로 바꾸며. 장치들을 제거하려면, $(item)$(k:key.sneak)$() 키를 눌러 웅크리며 $(item)$(k:key.use)$()을 누르세요. 뜨거운 석쇠나 냄비를 제거하지 않도록 조심하세요!"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "석쇠나 냄비가 추가된 모닥불.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:firepit"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:grill"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:pot"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

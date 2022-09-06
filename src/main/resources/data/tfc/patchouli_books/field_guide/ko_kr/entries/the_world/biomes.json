@@ -1,0 +1,144 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l생물군계",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/biomes.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "세계는 $(thing)생물군계$()들로 이루어져 있습니다. 생물군계는 대략적인 풍경과 지표면의 물질, 그리고 다른 특징들을 결정합니다. 당신은 바다나 강줄기, 평원이나 언덕과 산 등의 여러 다양한 생물군계들을 탐험해볼 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "다음 페이지에서는 (전부는 아니지만) 이 세계에서 당신이 찾아볼 수 있는 생물군계들에 대한 정보가 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "평원은 고도가 낮은 생물군계로, 언덕과 비슷하지만 해수면 바로 위에 있습니다. 평원은 평평하며 잔디나 꽃, 또는 숲이 있을 수 있습니다.",
+      "title": "§l평원"
+    },
+    {
+      "type": "patchouli:image",
+      "anchor": "plains",
+      "images": [
+        "tfc:textures/gui/book/biomes/plains.png"
+      ],
+      "text": "평원의 예시.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hills",
+      "text": "언덕과 구불구불한 언덕은 고도가 낮거나 중간 정도인 생물군계로, 일반적으로 평원이나 고도가 높은 생물군계에 접합니다. 이곳에서는 큰 바위와, 드물지만 빈 화산 온천의 흔적을 찾을 수 있습니다.",
+      "title": "§l언덕 §r& §l구불구불한 언덕"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/rolling_hills_with_river.png"
+      ],
+      "text": "강이 흐르는 구불구불한 언덕.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "badlands",
+      "text": "악지는 고도가 중간 정도인 대륙성 생물군계로, 보통 고원이나 산, 또는 구불구불한 언덕 근처에 있습니다. 일반적으로 모래와 사암이 겹겹이 쌓인 능선이 있습니다. 모래의 종류는 빨강/갈색 또는 노랑/하양, 아니면 중간일 수도 있습니다.",
+      "title": "§l악지"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/badlands.png"
+      ],
+      "text": "악지의 예시.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "plateau",
+      "text": "고원은 고도가 높은 대륙성 생물군계입니다. 고원은 평평하고 풀이 많은 지역이라는 점에서 고도가 높은 평원과 비슷합니다. 고원에서는 흔히 바위들을 찾을 수 있으며, 가끔은 말랐거나 비어있는 온천도 찾을 수 있습니다.",
+      "title": "§l고원"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/plateau.png"
+      ],
+      "text": "깊은 협곡에 강이 흐르는 고원.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "mountains",
+      "text": "고도가 높은 지역에서는 여러 종류의 산들을 찾을 수 있습니다. 오래된 산 생물군계는 더 낮고 완만하지만, 산 생물군계는 바위 절벽으로 높게 뻗어 있습니다. 지질학적 활동이 활발한 곳에 형성된 산에는 온천이 생길 수 있으며, 또한 드물게는 화산이 생깁니다.",
+      "title": "§l산"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/old_mountains.png"
+      ],
+      "text": "눈 비탈과 그 위에 온천이 있는 오래된 산.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "lowlands",
+      "text": "높이 솟은 $(l:the_world/biomes#mountains)산$()과는 반대로, 저지대는 축축하게 물로 채워진 생물군계입니다. 해수면 이하에서 많은 신선한 물들과 진흙이나 많은 식물도 찾을 수 있습니다.",
+      "title": "§l저지대"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/lowlands.png"
+      ],
+      "text": "저지대의 예시.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "low_canyons",
+      "text": "낮은 협곡은 또 다른 저고도의 대륙성 생물군계로, 보통 바다나 다른 고도가 낮은 생물군계에 접합니다. 그곳은 또한 약간의 언덕과 비틀린 연못들이 있는 지역입니다. 낮은 협곡은 지질학적 보호막과 비슷하며, 활동적이지 않은 빈 온천들이 존재할 수도 있습니다.",
+      "title": "§l낮은 협곡"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/low_canyons.png"
+      ],
+      "text": "낮은 협곡의 예시.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "canyons",
+      "text": "$(l:the_world/biomes#low_canyons)낮은 협곡$()과 비슷하게, 협곡은 고도가 중간 정도인 대륙성 생물군계로 약간의 언덕과 비틀린 연못, 호수들이 있는 지역입니다. 이곳은 낮고 완만한 화산들이나 바위, 활동적인 온천들이 자주 보이는 지질학적으로 활발한 지역입니다.",
+      "title": "§l협곡"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/canyons.png"
+      ],
+      "text": "근처에 화산이 있는 협곡.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ocean",
+      "text": "TerraFirmaCraft의 광대한 바다는 대륙을 서로 분리합니다. 바다의 표면을 본다면 그저 넓게 퍼진 물일 뿐이지만, 아래에서는 다양한 식물, 해양 동물, 그리고 해조류도 찾을 수 있습니다. 추운 기후의 바다에서는 높은 빙산들과 떠다니는 유빙들을 찾을 수도 있습니다.",
+      "title": "§l바다"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/ocean.png"
+      ],
+      "text": "해안가에서 본 바다.",
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 0
+}

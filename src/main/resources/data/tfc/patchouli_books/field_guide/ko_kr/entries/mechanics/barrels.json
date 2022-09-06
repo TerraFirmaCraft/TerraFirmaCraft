@@ -1,0 +1,67 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l통",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/barrel/palm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)통$()은 아이템과 액체를 보관할 수 있는 장치입니다. 중앙 슬롯에는 아이템을 넣을 수 있습니다. 액체는 왼쪽에 있는 칸에 보여지며, $(thing)양동이$()나 $(thing)주전자$()를 왼쪽 위 슬롯에 넣어 추가할 수 있습니다. 같은 슬롯에 빈 양동이나 주전자를 넣으면 액체를 제거할 수 있습니다. 아니면 양동이를 들고 통에 $(item)$(k:key.use)$()을 눌러도 됩니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/barrel.png"
+      ],
+      "text": "통 인터페이스.",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "통은 $(thing)밀봉$()될 수 있습니다. 통을 밀봉하면 부숴도 내용물이 보존됩니다. 통으로는 또한 여러 가지 아이템을 제작할 수 있습니다. 인터페이스에서 오른쪽의 회색 버튼으로 밀봉 상태를 조절할 수 있습니다. 웅크린 채로 통을 클릭해도 밀봉 상태를 조절할 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)통을 들고 액체 블록을 클릭하면 통을 채울 수 있습니다.$()$(li)비가 올 때는 통이 서서히 물로 채워집니다$()$(li)통 위에서 고드름이 녹으면 물이 통에 채워집니다$()$(li)통을 밀봉하면 중앙 슬롯을 제외한 다른 슬롯에 있는 아이템들이 빠져나옵니다.$()",
+      "title": "§l통 관련 팁"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "통은 여러 액체들과 아이템을 섞기 위한 중요한 장치입니다. $(thing)통$() 제작법으로 제작하기 위해서는 통이 올바른 비율의 액체와 아이템으로 채워져야 합니다. 어떤 제작법은 통을 $(thing)밀봉$()하고 기다려야 완성할 수 있습니다.",
+      "title": "§l제작"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "통에 있는 아이템과 액체의 비율이 조합법과 맞지 않다면, 초과된 액체나 아이템은 소멸됩니다. 그러나 제작법이."
+    },
+    {
+      "type": "tfc:instant_barrel_recipe",
+      "anchor": "limewater",
+      "recipe": "tfc:barrel/limewater",
+      "text": "$(bold)석회수$()는 $(thing)물$()이 담긴 통에 $(l:mechanics/flux)플럭스$()를 넣어 만듭니다. 하나의 $(l:mechanics/flux)플럭스$()당 $(thing) 500 mB$()의 $(thing)물$()을 석회수로 바꿉니다. $(thing)석회수$()는 $(l:mechanics/leather_making)가죽 제작$()이나 $(thing)회반죽$()을 만드는 데 사용됩니다."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tannin",
+      "recipe": "tfc:barrel/tannin",
+      "text": "$(bold)탄닌$()은 $(thing)물$() 이 담긴 통에 특정한 $(thing)원목$()을 녹여 만드는 산성 용액입니다. $(thing)참나무$(), $(thing)자작나무$(), $(thing)밤나무$(), $(thing)더글러스 전나무$(), $(thing)히코리나무$(), $(thing)단풍나무$(), $()세쿼이아$() 원목으로 $(thing)탄닌$()을 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "어떤 통 제작법은 두 개의 액체를 섞어서 제작됩니다. 이 작업은 하나의 재료로 채워진 통에 다른 재료로 채운 양동이를 액체 추가 슬롯에 넣어서 진행할 수 있습니다. 이런 방식의 제작법에는 $(thing)식초$()를 $(thing)우유$()가 담긴 통에 9:1 비율로 추가해서 만드는 $(thing)버터밀크$() 등이 있습니다. 식초를 같은 비율로 $(thing)바닷물$()에 추가하면 $(thing)염수$()가 됩니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "통은 또한 $(l:mechanics/heating)뜨거운$() 아이템들을 식힐 수 있습니다. $(thing)물$(), $(thing)올리브유$(), 또는 $(thing)바닷물$()이 담긴 통에 뜨거운 아이템을 넣으면 아이템의 온도가 빠르게 낮아집니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "통에서는 아이템을 $(thing)염색$()하고 $(thing)탈색$()할 수 있습니다. 염료 아이템을 $(l:mechanics/pot)냄비$()에서 끓이면 액체 염료를 만들 수 있습니다. 양탄자, 초, $(l:getting_started/building_materials#alabaster)석고$() 등 거의 모든 색깔 있는 아이템들은 염료가 담긴 통에 밀봉하여 염색할 수 있습니다. 염색된 아이템들은 $(thing)잿물$()이 담긴 통에 밀봉하여 탈색할 수 있습니다. 잿물은 $(l:mechanics/pot)물$()이 담긴 냄비에 $(thing)나뭇재$()를 끓여 만들 수 있습니다. 나뭇재는 $(l:getting_started/firepit)모닥불$()을 부수어 얻을 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "통은 $(thing)식초$()로 음식을 보존할 수 있습니다. 식초는 $(thing)과일$()을 $(thing)술$()이 담긴 통에 밀봉하여 만들 수 있습니다. 자세한 내용은 $(l:mechanics/decay#vinegar)여기$()에서 확인할 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}

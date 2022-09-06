@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l강이 흐르는 곳에서",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/rivers.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "여러분이 탐험하는 동안 강, 호수, 또는 바다와 같은 넓은 물을 만나게 될 수도 있습니다. 강과 호수는 $(thing)민물$()로 이루어져 있지만, 바다는 $(thing)바닷물$()로 이루어져 있습니다. 민물을 마시면 갈증이 해소되지만, 바닷물을 마시면 시간이 지날수록 갈증이 더 심해집니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/river.png"
+      ],
+      "text": "강.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft의 강은 $(thing)흐름$()이 있습니다. 강의 흐름은 흐르는 물과 같이 아이템이나 플레이어, 엔티티들을 밀어냅니다. 강의 흐름은 궁극적으로는 $(l:the_world/biomes#ocean)바다$()로 향하며, 그 과정에서 다른 물줄기와 합쳐질 수도 있습니다. 때때로 강이 지하로 사라질 때가 있고, 심지어 드물게는 지하의 넓은 동굴 호수를 볼 수도 있지만, 강은 결국 언젠가는 바다로 이어집니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/underground_river.png"
+      ],
+      "text": "지하 강의 일부분.",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ore_deposits",
+      "text": "강이나 호수에서는 또한 몇몇 자원들을 발견할 수도 있습니다. 첫 번째는 작은 광석 침전물입니다. 작은 광석 점이 박힌 자갈을 강이나 호수의 바닥에서 찾을 수 있습니다. 이 자갈들은 $(l:mechanics/panning)사금질$()을 하여 적은 양의 광석을 얻을 수 있습니다. 자연동, 자연은, 자연은, 그리고 주석석을 이 방법으로 찾을 수 있습니다.",
+      "title": "§l광석 침전물"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:deposit/native_gold/slate"
+        }
+      },
+      "name": "예시",
+      "text": "점판암 속의 자연금 침전물.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "gemstones",
+      "text": "호수는 자갈 속 광석 침전물 뿐 아니라, 몇몇 보석들 또한 숨길 수 있습니다. 자수정이나 오팔은 이러한 방식으로 호수 및 강 아래의 땅 또는 광맥에서 발견될 수 있습니다.",
+      "title": "§l보석 원석"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/limestone"
+        }
+      },
+      "name": "예시",
+      "text": "석회암 속의 자수정 광석.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

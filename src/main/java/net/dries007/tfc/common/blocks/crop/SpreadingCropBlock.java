@@ -56,8 +56,8 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
     public float getGrowthLimit(Level level, BlockPos pos, BlockState state)
     {
         int fruitAround = 0;
-        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
-        Block fruit = this.fruit.get().get();
+        final BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        final Block fruit = getFruit();
         for (Direction d : Direction.Plane.HORIZONTAL)
         {
             mutable.setWithOffset(pos, d);
@@ -80,10 +80,10 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
         super.postGrowthTick(level, pos, state, crop);
         if (crop.getGrowth() >= 1)
         {
-            Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(level.getRandom());
-            BlockPos fruitPos = pos.relative(offset);
-            Block fruitBlock = fruit.get().get();
-            BlockState fruitState = fruitBlock.defaultBlockState();
+            final Direction offset = Direction.Plane.HORIZONTAL.getRandomDirection(level.getRandom());
+            final BlockPos fruitPos = pos.relative(offset);
+            final Block fruitBlock = getFruit();
+            final BlockState fruitState = fruitBlock.defaultBlockState();
             if (fruitState.canSurvive(level, fruitPos) && level.getBlockState(fruitPos).getMaterial().isReplaceable())
             {
                 level.setBlockAndUpdate(fruitPos, fruitState);
@@ -94,5 +94,10 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
                 crop.setGrowth(Mth.nextFloat(level.getRandom(), 0.8f, 0.87f));
             }
         }
+    }
+
+    public Block getFruit()
+    {
+        return fruit.get().get();
     }
 }

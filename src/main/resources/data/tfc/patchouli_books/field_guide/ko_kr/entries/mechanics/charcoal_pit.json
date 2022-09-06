@@ -1,0 +1,306 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l숯 구덩이",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:charcoal",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)숯 구덩이$()는 $(thing)숯$()을 얻기 위한 방법입니다. 숯 구덩이는 $(thing)원목 더미$()로 만들어집니다. 원목 더미를 설치하려면 $(thing)원목$()을 든 상태로 $(item)$(k:key.sneak)$() 키를 누르고 $(item)$(k:key.use)$()을 누르면 됩니다. 원목을 든 상태로 $(item)$(k:key.use)$()을 누르면 나무를 더 추가할 수 있으며 다른 아이템을 든 상태로 누르면 인터페이스를 열 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:log_pile"
+        }
+      },
+      "name": "원목 더미",
+      "text": "원목 더미를 설치하기 위해서는 바로 아래에 단단한 블록이 필요합니다. 이들은 또한 굉장히 잘 불탑니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "숯 구덩이는 단단한 불연성 블록으로 원목 더미를 둘러싸서 형성됩니다. 생성되는 숯의 양은 원목 더미 안에 들어 있는 원목의 양에 비례합니다. 그리고 나서 시작하려면 원목 하나에 불을 붙이고 다시 덮으면 됩니다. 제대로 했다면, 그 위에 $(thing)연기$() 입자가 올라오는 것을 볼 수 있습니다."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "숯 구덩이 제작 순서의 예시.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:burning_log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              " XXX ",
+              " XXX ",
+              " XXX ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:log_pile"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "     ",
+              "     ",
+              "     ",
+              "     ",
+              "     "
+            ],
+            [
+              "XXXXX",
+              "XYYYX",
+              "XYYYX",
+              "XYYYX",
+              "XXXXX"
+            ],
+            [
+              "XXXXX",
+              "XXXXX",
+              "XX0XX",
+              "XXXXX",
+              "XXXXX"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:dirt/sandy_loam",
+            "0": "tfc:dirt/sandy_loam",
+            "Y": "tfc:charcoal_pile[layers=7]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "charcoal_pile",
+      "text": "숯 구덩이가 다 타오르고 연기가 나지 않으면, $(thing)숯 더미$()가 남습니다. 숯 더미는 최대 8장의 $(thing)숯$()을 포함합니다. 숯을 얻으려면 숯 더미를 삽으로 파내면 됩니다. 숯 더미는 $(item)$(k:key.use)$()을 눌러 설치할 수 있습니다."
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "숯 더미.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=1]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=2]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=3]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=4]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=5]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=6]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=7]"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:charcoal_pile[layers=8]"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true
+}

@@ -1,7 +1,31 @@
 {
+  "__comment__": "This file was automatically created by mcresources",
   "variants": {
-    "": {
-      "model": "minecraft:block/dead_bush"
-    }
+    "": [
+      {
+        "model": "tfc:block/plant/dead_bush_large"
+      },
+      {
+        "model": "tfc:block/plant/dead_bush0"
+      },
+      {
+        "model": "tfc:block/plant/dead_bush1"
+      },
+      {
+        "model": "tfc:block/plant/dead_bush2"
+      },
+      {
+        "model": "tfc:block/plant/dead_bush3"
+      },
+      {
+        "model": "tfc:block/plant/dead_bush4"
+      },
+      {
+        "model": "tfc:block/plant/dead_bush5"
+      },
+      {
+        "model": "tfc:block/plant/dead_bush6"
+      }
+    ]
   }
 }

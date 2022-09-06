@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Bread",
   "category": "tfc:mechanics",
-  "icon": "tfc:food/barley_bread",
+  "icon": "tfc:textures/item/food/barley_bread.png",
   "pages": [
     {
       "type": "patchouli:text",

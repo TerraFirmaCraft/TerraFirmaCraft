@@ -1,0 +1,7 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "tfc:block/plant/dead_bush/dead_bush1"
+  }
+}

@@ -125,8 +125,8 @@ def main(translate_lang: str, local_minecraft_dir: str, local_overwrite: bool):
     print('Done')
 
 
-def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False):
-    book = Book(rm, 'field_guide', {}, i18n, local_instance)
+def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, reverse_translate: bool = False):
+    book = Book(rm, 'field_guide', {}, i18n, local_instance, reverse_translate)
 
     book.template('multimultiblock', custom_component(0, 0, 'MultiMultiBlockComponent', {'multiblocks': '#multiblocks'}), text_component(0, 115))
 

@@ -689,6 +689,8 @@ def generate(rm: ResourceManager):
             feature = 'tfc:block_with_fluid', {'to_place': simple_state_provider(name)}
             heightmap = 'ocean_floor_wg'
             replaceable = decorate_shallow(1)
+        elif crop_data.type == 'spreading':
+            feature = 'tfc:spreading_crop', {'block': name}
         else:
             feature = 'simple_block', {'to_place': simple_state_provider(name)}
 

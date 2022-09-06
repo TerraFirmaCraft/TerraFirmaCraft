@@ -159,6 +159,7 @@ public final class TerraFirmaCraft
             FoodCapability.setCreativeTabsNonDecaying();
             CauldronInteractions.registerCauldronInteractions();
             TFCAdvancements.registerTriggers();
+            TFCBlocks.registerFlowerPotFlowers();
         });
 
         PatchouliIntegration.registerMultiBlocks();

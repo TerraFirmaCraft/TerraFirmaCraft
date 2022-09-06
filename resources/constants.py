@@ -114,7 +114,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'double_sheet': MetalItem('part', 400, 'item/generated', 'forge:double_sheets', False, False),
     'rod': MetalItem('part', 50, 'item/generated', 'forge:rods', False, False),
 
-    'tuyere': MetalItem('tool', 100, 'item/generated', None, False, True),
+    'tuyere': MetalItem('tool', 400, 'item/generated', None, False, True),
     'fish_hook': MetalItem('tool', 200, 'item/generated', None, False, False),
     'fishing_rod': MetalItem('tool', 200, 'item/generated', 'forge:fishing_rods', False, True),
     'pickaxe': MetalItem('tool', 100, 'item/handheld', None, False, True),
@@ -466,6 +466,56 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
 
+FLOWERPOT_CROSS_PLANTS = {
+    'allium': 'allium_0',
+    'anthurium': 'anthurium_0',
+    'athyrium_fern': 'single',
+    'black_orchid': 'black_orchid_0',
+    'blood_lily': 'blood_lily_0',
+    'blue_orchid': 'blue_orchid_1',
+    'blue_ginger': 'blue_ginger_0',
+    'butterfly_milkweed': 'butterfly_milkweed_3',
+    'calendula': 'calendula_3',
+    'canna': 'canna_3',
+    'dandelion': 'dandelion_2',
+    'dead_bush': 'dead_bush0',
+    'desert_flame': 'desert_flame_0',
+    'field_horsetail': 'item',
+    'goldenrod': 'goldenrod_2',
+    'grape_hyacinth': 'grape_hyacinth_1',
+    'heliconia': 'heliconia_0',
+    'houstonia': 'houstonia_1',
+    'kangaroo_paw': 'item',
+    'labrador_tea': 'labrador_tea_4',
+    'lady_fern': 'item',
+    'meads_milkweed': 'meads_milkweed_3',
+    'nasturtium': 'nasturtium_2',
+    'oxeye_daisy': 'oxeye_daisy_3',
+    'perovskia': 'perovskia_3',
+    'poppy': 'poppy_2',
+    'primrose': 'primrose',
+    'pulsatilla': 'pulsatilla_3',
+    'rose': 'classic',
+    'sacred_datura': 'sacred_datura_2b',
+    'sagebrush': 'sagebrush_4',
+    'silver_spurflower': 'silver_spurflower_2',
+    'snapdragon_pink': 'snapdragon_pink_1',
+    'snapdragon_red': 'snapdragon_red_1',
+    'snapdragon_white': 'snapdragon_white_1',
+    'snapdragon_yellow': 'snapdragon_yellow_1',
+    'strelitzia': 'strelitzia_0',
+    'sword_fern': 'potted',
+    'trillium': 'trillium',
+    'tropical_milkweed': 'tropical_milkweed_3',
+    'tulip_orange': 'tulip_orange_1',
+    'tulip_pink': 'tulip_pink_1',
+    'tulip_red': 'tulip_red_1',
+    'tulip_white': 'tulip_white_1',
+    'yucca': 'yucca_2'
+}
+
+MISC_POTTED_PLANTS = ['barrel_cactus', 'foxglove', 'morning_glory', 'moss', 'ostrich_fern', 'reindeer_lichen', 'rose', 'sapphire_tower', 'toquilla_palm', 'tree_fern']
+
 SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'allium': 8,
     'anthurium': 2,
@@ -552,9 +602,24 @@ VESSEL_TYPES = {
     'green': 'd'
 }
 
+DISC_COLORS = {
+    'yellow': '13',
+    'orange': 'blocks',
+    'lime': 'cat',
+    'red': 'chirp',
+    'green': 'far',
+    'purple': 'mall',
+    'magenta': 'mellohi',
+    'cyan': 'otherside',
+    'black': 'stal',
+    'white': 'strad',
+    'light_blue': 'wait',
+    'blue': 'ward',
+}
+
 SIMPLE_BLOCKS = ('peat', 'aggregate', 'fire_bricks', 'fire_clay_block', 'thatch')
-SIMPLE_ITEMS = ('alabaster_brick', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
-                'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'spindle',
+SIMPLE_ITEMS = ('alabaster_brick', 'blank_disc', 'blubber', 'brass_mechanisms', 'burlap_cloth', 'compost', 'daub', 'dirty_jute_net', 'fire_clay', 'firestarter', 'glass_shard', 'glow_arrow', 'glue',
+                'jute', 'jute_fiber', 'jute_net', 'mortar', 'olive_paste', 'pure_nitrogen', 'pure_phosphorus', 'pure_potassium', 'rotten_compost', 'silk_cloth', 'soot', 'spindle',
                 'stick_bunch', 'stick_bundle', 'straw', 'wool', 'wool_cloth', 'wool_yarn', 'wrought_iron_grill')
 GENERIC_POWDERS = ('charcoal', 'coke', 'graphite', 'hematite', 'kaolinite', 'limonite', 'malachite', 'sylvite')
 POWDERS = ('flux', 'salt', 'saltpeter', 'sulfur', 'wood_ash')
