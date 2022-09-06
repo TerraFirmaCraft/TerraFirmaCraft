@@ -153,7 +153,7 @@
     {
       "type": "patchouli:text",
       "anchor": "sheep",
-      "text": "$(thing)绵羊$()是一种会在$(l:the_world/climate#temperature)温度$()在 0 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$() 70 到 300 毫米的较干燥的气候中生成的(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()。它们一胎能生产 1-2 个幼崽，怀孕 32 天，56 天成年。若从未剪过毛，衰老前它们可以产仔 6 次。若从未产过仔，衰老前它们可以剪毛 60 次，且每 9 天长出一次羊毛。",
+      "text": "$(thing)绵羊$()是一种会在$(l:the_world/climate#temperature)温度$()在 0 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$() 70 到 300 毫米的较干燥的气候中生成的$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()。它们一胎能生产 1-2 个幼崽，怀孕 32 天，56 天成年。若从未剪过毛，衰老前它们可以产仔 6 次。若从未产过仔，衰老前它们可以剪毛 60 次，且每 9 天长出一次羊毛。",
       "title": "绵羊"
     },
     {

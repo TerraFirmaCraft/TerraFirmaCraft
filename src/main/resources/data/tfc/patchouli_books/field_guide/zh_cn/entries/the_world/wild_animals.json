@@ -37,7 +37,7 @@
       "entity": "tfc:black_bear",
       "scale": 0.55,
       "name": "黑熊",
-      "text": "黑熊生活在(l:the_world/climate#temperature)温度$()在 5 到 20°C、$(l:the_world/climate#rainfall)降雨量$()不小于 250mm 的温暖潮湿的森林中。"
+      "text": "黑熊生活在$(l:the_world/climate#temperature)温度$()在 5 到 20°C、$(l:the_world/climate#rainfall)降雨量$()不小于 250mm 的温暖潮湿的森林中。"
     },
     {
       "type": "patchouli:entity",
