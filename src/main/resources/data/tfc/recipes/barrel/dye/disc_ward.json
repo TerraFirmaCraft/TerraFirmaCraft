@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:barrel_sealed",
+  "input_item": {
+    "ingredient": {
+      "item": "tfc:blank_disc"
+    }
+  },
+  "input_fluid": {
+    "ingredient": "tfc:blue_dye",
+    "amount": 125
+  },
+  "output_item": {
+    "item": "minecraft:music_disc_ward"
+  },
+  "duration": 1000
+}

@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.plant;
 
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -59,18 +58,16 @@ public enum Plant implements RegistryPlant
     ALLIUM(BlockType.STANDARD, 0.8F, new int[] {6, 6, 7, 0, 1, 1, 2, 2, 3, 4, 5, 6}),
     ANTHURIUM(BlockType.STANDARD, 0.8F, new int[] {0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1}),
     ARROWHEAD(BlockType.TALL_WATER_FRESH, 0.6F),
-    HOUSTONIA(BlockType.STANDARD, 0.9F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
     BADDERLOCKS(BlockType.TALL_WATER, 0.8F),
     BARREL_CACTUS(BlockType.CACTUS, 0F, new int[] {0, 0, 0, 0, 1, 2, 2, 2, 2, 3, 3, 0}),
     BLOOD_LILY(BlockType.STANDARD, 0.9F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
-    BLUE_ORCHID(BlockType.STANDARD, 0.9F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
     BLUE_GINGER(BlockType.STANDARD, 0.8F, new int[] {1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1}),
-    CATTAIL(BlockType.TALL_WATER_FRESH, 0.6F),
-    LAMINARIA(BlockType.WATER, 0.6F),
-    MARIGOLD(BlockType.TALL_WATER_FRESH, 0.4F),
+    BLUE_ORCHID(BlockType.STANDARD, 0.9F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
     BUR_REED(BlockType.TALL_WATER_FRESH, 0.6F, new int[] {0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0}),
     BUTTERFLY_MILKWEED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
     BLACK_ORCHID(BlockType.STANDARD, 0.8F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
+    CALENDULA(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
+    CATTAIL(BlockType.TALL_WATER_FRESH, 0.6F),
     COONTAIL(BlockType.GRASS_WATER_FRESH, 0.7F, new int[] {3, 0, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     DANDELION(BlockType.STANDARD, 0.9F, new int[] {9, 9, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8}),
     DEAD_BUSH(BlockType.DRY, 0.9F),
@@ -81,16 +78,19 @@ public enum Plant implements RegistryPlant
     FOXGLOVE(BlockType.TALL_GRASS, 0.8F, new int[] {0, 0, 0, 0, 0, 1, 1, 2, 3, 3, 3, 4}),
     GRAPE_HYACINTH(BlockType.STANDARD, 0.8F, new int[] {3, 3, 3, 0, 1, 1, 2, 3, 3, 3, 3, 3}),
     GUTWEED(BlockType.WATER, 0.9F),
+    GUZMANIA(BlockType.EPIPHYTE, 0.9F),
     HELICONIA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 2, 0, 0, 0, 0, 1, 2, 0, 0}),
     HIBISCUS(BlockType.TALL_GRASS, 0.9F, new int[] {2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 2, 2}),
+    HOUSTONIA(BlockType.STANDARD, 0.9F, new int[] {2, 2, 2, 0, 1, 1, 1, 2, 2, 2, 2, 2}),
     KANGAROO_PAW(BlockType.STANDARD, 0.8F, new int[] {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1}),
     KING_FERN(BlockType.TALL_GRASS, 0.4F),
     LABRADOR_TEA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 2, 3, 4, 4, 5, 6, 0, 0, 0}),
     LADY_FERN(BlockType.STANDARD, 0.6F),
+    LAMINARIA(BlockType.WATER, 0.6F),
     LICORICE_FERN(BlockType.EPIPHYTE, 0.7F),
     LILAC(BlockType.TALL_GRASS, 0.7F, new int[] {0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0}),
     LOTUS(BlockType.FLOATING_FRESH, 0.9F, new int[] {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0}),
-    CALENDULA(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
+    MARIGOLD(BlockType.TALL_WATER_FRESH, 0.4F),
     MEADS_MILKWEED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 2, 3, 3, 3, 3, 4, 5}),
     MILFOIL(BlockType.WATER_FRESH, 0.7F),
     MORNING_GLORY(BlockType.CREEPING, 0.9F, new int[] {2, 2, 2, 0, 0, 1, 1, 1, 1, 1, 2, 2}),
@@ -112,7 +112,6 @@ public enum Plant implements RegistryPlant
     SAGO(BlockType.WATER_FRESH, 0.7F),
     SAPPHIRE_TOWER(BlockType.TALL_GRASS, 0.6F, new int[] {2, 3, 0, 0, 0, 1, 2, 2, 2, 2, 2, 2}),
     SARGASSUM(BlockType.FLOATING, 0.9F),
-    GUZMANIA(BlockType.EPIPHYTE, 0.9F),
     SILVER_SPURFLOWER(BlockType.STANDARD, 0.8F, new int[] {0, 0, 0, 0, 1, 2, 2, 2, 0, 0, 0, 0}),
     SNAPDRAGON_PINK(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
     SNAPDRAGON_RED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
@@ -156,6 +155,8 @@ public enum Plant implements RegistryPlant
     GIANT_KELP_FLOWER(BlockType.KELP_TREE_FLOWER, 1.0F),
     IVY(BlockType.VINE, 1.0F),
     JUNGLE_VINES(BlockType.VINE, 1.0F);
+
+    private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN);
 
     private final float speedFactor;
     @Nullable private final IntegerProperty property;
@@ -230,6 +231,11 @@ public enum Plant implements RegistryPlant
     public boolean isItemTinted()
     {
         return this == BLUEGRASS || this == BROMEGRASS || this == FOUNTAIN_GRASS || this == ORCHARD_GRASS || this == RYEGRASS || this == SCUTCH_GRASS || this == TIMOTHY_GRASS || this == KANGAROO_PAW || this == KING_FERN || this == MOSS || this == SAGO || this == SWITCHGRASS || this == TALL_FESCUE_GRASS || this == IVY || this == JUNGLE_VINES || this == HANGING_VINES || this == GUTWEED;
+    }
+
+    public boolean hasFlowerPot()
+    {
+        return type == BlockType.STANDARD || type == BlockType.DRY || SPECIAL_POTTED_PLANTS.contains(this);
     }
 
     /**

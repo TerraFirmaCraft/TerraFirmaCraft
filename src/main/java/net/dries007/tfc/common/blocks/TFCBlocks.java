@@ -7,12 +7,14 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
@@ -198,6 +200,10 @@ public final class TFCBlocks
         register(("plant/" + plant.name()), plant::create, plant.createBlockItem(new Item.Properties().tab(FLORA)))
     );
 
+    public static final Map<Plant, RegistryObject<Block>> POTTED_PLANTS = Helpers.mapOfKeys(Plant.class, Plant::hasFlowerPot, plant ->
+        register(("plant/potted/" + plant.name()), () -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, PLANTS.get(plant), Properties.of(Material.DECORATION).instabreak().noOcclusion()))
+    );
+
     public static final Map<Crop, RegistryObject<Block>> CROPS = Helpers.mapOfKeys(Crop.class, crop ->
         register("crop/" + crop.name(), crop::create)
     );
@@ -352,6 +358,11 @@ public final class TFCBlocks
     public static final RegistryObject<LiquidBlock> SPRING_WATER = register("fluid/spring_water", () -> new HotWaterBlock(TFCFluids.SPRING_WATER.source(), Properties.of(TFCMaterials.SPRING_WATER).noCollission().strength(100f).noDrops()));
 
     public static final RegistryObject<RiverWaterBlock> RIVER_WATER = register("fluid/river_water", () -> new RiverWaterBlock(BlockBehaviour.Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops()));
+
+    public static void registerFlowerPotFlowers()
+    {
+        POTTED_PLANTS.forEach((plant, reg) -> ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(PLANTS.get(plant).getId(), reg));
+    }
 
     public static boolean always(BlockState state, BlockGetter level, BlockPos pos)
     {
