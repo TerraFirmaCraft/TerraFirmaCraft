@@ -5,30 +5,34 @@
   "icon": "tfc:metal/fishing_rod/copper",
   "pages": [
     {
+      "type": "patchouli:text",
+      "text": "河湖大海中的鱼必须通过$(thing)钓鱼$()才能抓住。若鱼竿上有鱼饵，鱼儿便会试图咬钩。咬钩的鱼儿有时会把鱼饵吃掉。鱼咬钩后还要收线才能钓上来。更高级的鱼钩收线时越容易操控。"
+    },
+    {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
-      "text": "在群峦传说中钓鱼有点不同。首先，你必须在$(l:mechanics/anvils)砧$()上锻造一个钓鱼钩。"
+      "text": "首先，你需要在$(l:mechanics/anvils)砧$()上锻造出一只鱼钩。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
       "title": "钓鱼竿",
-      "text": "钓鱼竿是用钓鱼钩制作的。"
+      "text": "制作钓鱼竿需要鱼钩。"
     },
     {
       "type": "patchouli:text",
-      "text": "如果没有诱饵，钓鱼竿是没有用的。诱饵可以使用工作台添加到的钓鱼竿上。要钓到普通的鱼，你需要$(thing)种子$()或$(thing)贝类$()。要捕获较大的鱼，例如$(thing)海豚$()和$(thing)逆戟鲸$()，您需要$(item)鳕鱼$()、$(item)三文鱼$()、$(item)热带鱼$()或$(item)蓝鳃鱼$()。"
+      "text": "钓鱼必须要有鱼饵才行。每次钓鱼成功后，鱼饵都有一定几率被消耗掉。可以使用工作台将鱼饵添加到的钓鱼竿上。普通的鱼用$(thing)种子$()或$(thing)贝类$()就行了。而更大的鱼，例如$(thing)海豚$()和$(thing)逆戟鲸$()，就需要$(item)鳕鱼$()、$(item)三文鱼$()、$(item)热带鱼$()或$(item)蓝鳃鱼$()。"
     },
     {
       "type": "patchouli:text",
-      "text": "按下$(item)$(k:key.use)$()来丢出浮子。这时经验条将会被替换成钓鱼栏。等待鱼上钩后按下$(item)$(k:key.use)$()可以将鱼拉过来。每按下一次都会填充一部分进度。请注意不要拉的太快，如果填满了钓鱼栏。鱼会被诱饵逃脱。每次钓鱼，鱼都有可能吃掉诱饵。为了钓到鱼，你需要先将它拉到陆地上，然后用工具送它归西。"
+      "text": "手持钓鱼竿按$(item)$(k:key.use)$()就能抛竿。等待鱼儿靠近并咬钩后，按$(item)$(k:key.use)$()就能收线。每按一次收线屏幕底下的蓄力条就会增加。收线太快会导致鱼儿脱钩，你的鱼饵也就没了！你要做的就是把鱼儿拖上岸，然后用别的什么东西把它敲晕。提示：可以把鱼竿放在副手上。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/fishing.png"
       ],
-      "text": "钓鱼栏在激活时会取代经验栏。",
+      "text": "钓鱼时蓄力条会取代经验条。",
       "border": true
     }
   ],

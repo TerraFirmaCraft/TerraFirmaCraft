@@ -6,17 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "助焊剂是 $(l:mechanics/anvils#welding)焊接$()所需的粉末，也可用作$(l:mechanics/blast_furnace)高炉$()中的催化剂. 通量可以通过在$(l:mechanics/quern)手推磨$()研磨中的某些物品来获得。"
-    },
-    {
-      "type": "tfc:quern_recipe",
-      "recipe": "tfc:quern/borax",
-      "text": "获得助焊剂的最有效方法是找到$(l:the_world/ores_and_minerals#borax)硼砂$()"
+      "text": "助焊剂是$(l:mechanics/anvils#welding)焊接$()时的必需品，同时它也是$(l:mechanics/blast_furnace)高炉$()炼钢所必须的催化剂。助焊剂是在$(l:mechanics/quern)手推磨$()上制作的。$(br2)助焊剂最直接的获取方式是研磨$(l:the_world/ores_and_minerals#borax)硼砂$()。"
     },
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/fluxstone",
-      "text": "获得助焊剂的第二种方法是通过$(thing)助熔剂$()。这些可以是岩石（包括：$(thing)石灰石$()、$(thing)白云石$()、$(thing)白垩岩$() 或 $(thing)大理石$()），或贝壳（包括 $(thing)鳞甲$()、$(thing)蛤蜊$()、$(thing)软体动物$() 和 $(l:the_world/wild_animals#shellfish)贝类$()的可食用物品）"
+      "text": "除硼砂外，某些岩石，如$(thing)石灰岩$()、$(thing)白云岩$()、$(thing)白垩岩$()、和$(thing)大理岩$()等，以及$(thing)鳞甲$()、$(thing)蛤蜊$()、$(thing)软体动物$()、和$(l:the_world/wild_animals#shellfish)贝类$()等某些生物产品也可以被研磨成助焊剂。"
     }
   ],
   "read_by_default": true

@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "介绍",
+  "name": "第一天",
   "category": "tfc:getting_started",
   "icon": "tfc:rock/loose/granite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在群峦传说中，您首先可以获得的是木棍、树枝和松散的岩石（对的，不能空手撸树了！）。它们几乎可以在每一种气候中找到，散落在地上。可以按$(item)$(k:key.use)$()打破这些来捡起它们。"
+      "text": "在群峦传说中，你最初能获得的资源只有那些散落在地上的木棍、树枝、和小石子。几乎所有气候中都会有这些资源。你可以按$(item)$(k:key.use)$()，或打破它们来把它们捡起来。"
     },
     {
       "type": "patchouli:multiblock",
@@ -36,13 +36,13 @@
           "5": "tfc:wood/twig/ash"
         }
       },
-      "name": "例子",
-      "text": "一些普通的木棍和石头。",
+      "name": "示例",
+      "text": "一些散落的木棍和石头。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "除了在地上收集木棍和小树枝外，还可以通过用拳头打碎树叶来获得木棍。一旦你有了一些石头和木柜，你就可以开始$(thing)塑形$()了。塑形是将两块岩石互相敲击在一起以形成特定形状的过程。为了塑形，首先在你的手中至少握住两块石头，然后在空中右键单击，这将打开$(thing)塑形界面$()。"
+      "text": "除了在地上收集木棍和小树枝外，还可以空手打碎树叶来获得木棍。在你收集了一些石头和木棍后，你就可以开始尝试$(thing)石子塑形$()了。石子塑形是将两块石子互相敲击以将其中一块凿成特定形状的过程。首先你的手中应至少握住两块石子，然后对着空气按下$(item)$(k:key.use)$()就能打开$(thing)塑形界面$()。"
     },
     {
       "type": "patchouli:image",
@@ -54,7 +54,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "为了打制特定的物品，您需要点击去除$(thing)塑形界面$()上的正方形石片，直到形成所需的图案。例如，通过匹配右侧显示的配方来创建刀刃。$(br2)与制作配方一样，所需图案的位置对输出并不重要，并且一些配方具有多个有效的图案。"
+      "text": "想要塑形特定的物品，就必须通过点击$(thing)塑形界面$()上的正方形石片来凿去不要的部分，直到形成所需的图案。例如将石片凿成右侧显示的图案就能做成石刀刃。注意！如果不小心凿掉了错误的部分，材料就被浪费掉了！$(br2)与制作配方一样，所需图案的位置对输出并不重要，并且一些配方具有多个有效的图案。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -64,36 +64,36 @@
         "tfc:rock_knapping/knife_head_igneous_extrusive",
         "tfc:rock_knapping/knife_head_igneous_intrusive"
       ],
-      "text": "一把刀刃，由几种不同的岩石制成。"
+      "text": "一把石刀刃，用各种不同的岩石都可以制作。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/knife_sedimentary",
-      "text": "获得刀刃后，要制作石刀，只需在物品栏中用棍子制作即可。"
+      "text": "获得石刀刃后，只需在物品栏中用木棍与之合成就能制成石刀。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/stick_from_twigs",
-      "text": "如果需要，早期的树枝也可以用来制作木棍。"
+      "text": "如果没有木棍，可以用小树枝代替。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:stone/knife/sedimentary",
       "link_recipes": false,
-      "text": "刀是一个非常有用的工具。它们的主要用途之一是通过破坏植物来收集稻草。大多数高大的草和植物在用刀打碎时都会掉落稻草。"
+      "text": "刀是一个非常有用的工具。它们的主要用途之一是通过破坏植物来收集干草。大多数的高草和植物在用刀破坏时都会掉落干草。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/thatch",
-      "text": "稻草可用于制作最早的建筑材料之一：$(thing)茅草$()。茅草是一种不受重力影响的轻质方块，但玩家和其他实体可以直接穿过它！"
+      "text": "干草可用于制作你的第一个建筑材料：$(thing)干草块$()。干草块是一种不受重力影响的轻质方块，但玩家和其他实体可以直接穿过它！"
     },
     {
       "type": "patchouli:text",
-      "text": "除了刀具之外，您可能还想制作一些其他工具。$(thing)斧头$()可以用来砍树（终于！），也可以制作有用的武器。$(thing)锤子$()可以用作粉碎武器，但也可以用来将原木变成木棍，方法是用锤子破坏原木块。"
+      "text": "除了刀以外，其他几件工具对于早期生存也很有帮助。$(thing)斧$()可以用来砍树（想必你也尝试过空手撸树会发生啥了），也可以作为一件不太趁手的武器。$(thing)锤$()也可以作为武器使用，但早期的主要作用还是用来将原木方块打碎成木棍。"
     },
     {
       "type": "patchouli:text",
-      "text": "最后，$(thing)铲子$()和$(thing)锄头$()的行为与它们在香草中的行为相同，而$(thing)标枪$()可以用作简单的一次性远程武器。"
+      "text": "最后，$(thing)铲$()和$(thing)锄$()作用和原版中的相同，而$(thing)标枪$()则是一种原始的一次性远程武器。"
     }
   ],
   "read_by_default": true,

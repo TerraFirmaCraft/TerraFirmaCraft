@@ -6,33 +6,64 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在这里烤面包"
+      "text": "$(thing)坩埚$()是一种用来制作$(l:mechanics/crucible#advanced_alloying)合金$()的高级设备。用坩埚制作合金比用$(l:getting_started/primitive_alloys)小缸$()更精确也更方便，$(br2)要制作坩埚，首先你得先获取一些比普通粘土更强的$(l:mechanics/fire_clay)耐火粘土$()。耐火粘土可以通过粘土塑形制作成$()未烧制的坩埚$()。"
+    },
+    {
+      "type": "tfc:fire_clay_knapping_recipe",
+      "recipe": "tfc:fire_clay_knapping/crucible",
+      "text": "粘土塑形制作$(thing)未烧制的坩埚$()."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/crucible",
+      "text": "塑形之后就可以用$(l:getting_started/pit_kiln)坑窑$()或$(l:mechanics/charcoal_forge)木炭炉$()之类的设备将坩埚$(thing)烧制$()成型了。$(br2)要使用坩埚，就得给它提供一个热源。任何位于坩埚下方的方块都可以作为其热源。$(l:mechanics/charcoal_forge)木炭炉$()就很合适。"
     },
     {
       "type": "patchouli:multiblock",
       "multiblock": {
         "pattern": [
           [
-            "X"
+            "   ",
+            " C ",
+            "   "
           ],
           [
-            "0"
+            "GGG",
+            "G0G",
+            "GGG"
           ]
         ],
         "mapping": {
-          "X": "tfc:crucible"
+          "C": "tfc:crucible",
+          "0": "tfc:charcoal_forge[heat_level=7]",
+          "G": "tfc:rock/bricks/granite"
         }
       },
-      "name": "坩埚",
-      "text": "",
+      "name": "",
+      "text": "用木炭炉加热坩埚",
       "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "advanced_alloying",
+      "text": "现在你就可以使用坩埚了。与坩埚互动打开$(thing)坩埚界面$()，如右图所示。屏幕上方的区域显示的是坩埚内目前容纳的金属。其中第一行写的是如果现在从坩埚内取出将会得到的金属或合金的名称。其他条目则是现在坩埚内的剩余金属的种类和数量。",
+      "title": "高级冶金术"
     },
     {
       "type": "patchouli:image",
       "images": [
-        "tfc:textures/gui/book/wip.png"
+        "tfc:textures/gui/book/gui/crucible.png"
       ],
-      "border": true
+      "text": "坩埚界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "坩埚界面的左下方的 9 个空格是用来放置需要熔化的物品的。诸如$(l:getting_started/pottery#mold)模具$()等可以容纳液体金属的容器也可以放在左边，其内容物会直接流入坩埚$(br2)右侧的空格则是用于放置接收熔融金属的容器的，坩埚内的合金会将其注满。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "根据热源方块的温度变化，屏幕左侧的温度指示器也会相应上升或下降。只要温度足够熔化金属，就随时可将金属取出。$(br2)值得一提的是，破坏坩埚并不会销毁它的内容物。你可以用这种方法将合金转移到其他地方。"
     }
   ],
   "read_by_default": true

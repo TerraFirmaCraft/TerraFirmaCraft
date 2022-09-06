@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "沙拉",
+  "category": "tfc:mechanics",
+  "icon": "tfc:food/protein_salad",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)沙拉$()是一种用$(thing)碗$()制作的餐点，可以包含最多五种$(thing)水果$()、$(thing)蔬菜$()、和$(thing)熟肉$()。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/bowl_4",
+      "text": "粘土塑形可以制作陶碗。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持陶碗按住$(item)$(k:key.sneak)$()的同时按$(item)$(k:key.use)$()就可以打开沙拉制作界面。将想要加入的食材拖入上方的空格，再从右侧取出沙拉即可。$(br2)成品的$(l:the_world/food_and_water)营养元素$()、水分、和饱和度会将所用食材的数值的 75% 相加得到。制作沙拉所用的食材不能腐败。沙拉本身的保质期和所用食材剩余的保质期无关。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/salad.png"
+      ],
+      "text": "沙拉制作界面。",
+      "border": false
+    }
+  ],
+  "read_by_default": true
+}

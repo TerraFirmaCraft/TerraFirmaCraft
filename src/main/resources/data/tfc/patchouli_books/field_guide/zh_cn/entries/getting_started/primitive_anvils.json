@@ -6,21 +6,21 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在早期游戏中直接铸造工具模具的替代方法以及对更高等级金属的要求是使用$(thing)砧$()。铁砧是可用于两种不同过程的方块：$(l:mechanics/anvils#working)加工$()和$(l:mechanics/anvils#welding)焊接$()。本章将向您展示如何获得您的第一个原始石砧。"
+      "text": "用$(thing)砧$()锻造金属锭是不同于铸造的另一种制作工具的方法。同时砧也是发展使用更高级金属的必需品。砧既可以用来$(l:mechanics/anvils#working)锻造$()，也可以用来$(l:mechanics/anvils#welding)焊接$()。这一章节我们只讲如何获得你的第一个原始石砧。"
     },
     {
       "type": "patchouli:text",
-      "text": "首先，你需要获得一块$(thing)原始岩石$()，即 $(thing)深成岩$()（流纹岩、玄武岩、安山岩或英安岩），或$(thing)喷发岩$()（花岗岩、闪长岩或辉长岩）。你可以在世界上找到并使用一个暴露的岩石，或者你可以从周围的岩石中$(l:getting_started/primitive_anvils#raw_rock)提取$()一个。"
+      "text": "首先，你得找到一块$(thing)未加工的$()$(thing)喷出岩$() （流纹岩、玄武岩、安山岩、或英安岩）或$(thing)侵入岩$()（花岗岩、闪长岩、或辉长岩）。你可以直接使用暴露在地表的那些，或者也可以把它们从岩壁上$(l:getting_started/primitive_anvils#raw_rock)采下来$()。"
     },
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "您还需要一把任何材质的$(thing)锤子$()。为了制作砧，只需用你的 $(thing)锤子$()右键单击上述原石之一的$(thing)上$()面，瞧！将形成一个砧。$(br2)每个砧都有$(thing)等级$()，而石砧是第 0 级 - 最低级。它只能 $(l:mechanics/anvils#welding)焊接$()一级钢锭。",
-      "title": "岩砧"
+      "text": "你还需要一把任意材料制成的$(thing)锤$()。要把岩石变成砧，手持$(thing)锤$()右键点击其$(thing)顶面$()即可。$(br2)砧是有不同$(l:mechanics/anvils#tiers)等级$()的。石砧的等级是 0 - 也就是最低等级。它只能用来$(l:mechanics/anvils#welding)焊接$() 1 级的金属锭。",
+      "title": "石砧"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "将中心指示器指示的原石转换为铁砧",
+      "text": "将中间那块岩石作为石砧。",
       "multiblocks": [
         {
           "pattern": [
@@ -42,12 +42,12 @@
     {
       "type": "patchouli:text",
       "anchor": "raw_rock",
-      "text": "为了在不破碎成更小的岩石的情况下获得原始的岩石，就需要对其进行“提取”的操作。您必须在原始的岩石方块的所有六个面上挖掘块 - 一旦它的四面都被空气包围，它将作为物品掉落，然后您可以把它带到想去的地方。",
+      "text": "想要获得一块未加工的岩石，直接用镐挖是不行的。唯一的方法是将其六面所相邻的方块都挖掉，悬空的岩石就会掉落其本体了。",
       "title": "获得原石"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "挖掘一块原石的所有六个面 - 一旦完成，中心块将作为物品掉落。",
+      "text": "挖掉一块原石的所有六个邻面 - 之后，中心块将作为物品掉落。",
       "multiblocks": [
         {
           "pattern": [

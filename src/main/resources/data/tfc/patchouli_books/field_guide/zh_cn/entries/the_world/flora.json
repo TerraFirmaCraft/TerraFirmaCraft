@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "植物",
+  "name": "自然植物",
   "category": "tfc:the_world",
   "icon": "tfc:plant/goldenrod",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "群峦传说中有很多$(italic)很多$()不同类型的植物。有人说超过九千种，其实并没有那么多。$(br2)不同的植物出现在不同的$(l:the_world/climate)气候$()下，它们的外观可能会在当前季节发生变化——经历开花和休眠的周期，五颜六色的花朵通常可以在$(l:mechanics/quern)手推磨$()磨碎用于染料。"
+      "text": "群峦传说中有许多、很多、$(italic)数不胜数$()的自然植物。$(br2)不同的$(l:the_world/climate)气候$()环境中会生成不同的植物。根据季节和温度的不同，植物会开花或休眠，从而改变外观。颜色艳丽的花往往都可以在$(l:mechanics/quern)手推磨$()中磨成染料。"
     },
     {
       "type": "patchouli:multiblock",
@@ -23,8 +23,8 @@
           "X": "tfc:plant/anthurium"
         }
       },
-      "name": "普通",
-      "text": "普通植物就像小花。它们生长在草地、泥土和农田上。",
+      "name": "普通植物",
+      "text": "普通植物就像小花。它们会生长在草地、泥土和农田上。",
       "enable_visualize": false
     },
     {
@@ -42,8 +42,8 @@
           "X": "tfc:plant/sagebrush"
         }
       },
-      "name": "干燥",
-      "text": "干燥植物与普通植物一样，但它们可以在沙地上生长。这些植物一般只在降雨量低的地区出生。",
+      "name": "耐旱植物",
+      "text": "耐旱植物与普通植物一样，但它们可以在沙子上生长。这些植物一般只会生长在降雨量少的地区。",
       "enable_visualize": false
     },
     {
@@ -84,8 +84,8 @@
           "X": "tfc:plant/moss[down=true]"
         }
       },
-      "name": "匍匐",
-      "text": "匍匐植物的形状与周围的方块面相同。它们主要是在地面上以方块形式生成。",
+      "name": "匍匐植物",
+      "text": "匍匐植物会在其他方块表面爬行。它们大部分时候都会成片出现。",
       "enable_visualize": false
     },
     {
@@ -107,8 +107,8 @@
           "Y": "tfc:plant/spanish_moss[hanging=true]"
         }
       },
-      "name": "悬挂",
-      "text": "悬挂的植物是相连，因为它们不会工作，而喜欢出去走走。",
+      "name": "悬垂植物",
+      "text": "这些悬垂植物成天屁事不干，就在那儿摆。",
       "enable_visualize": false
     },
     {
@@ -127,8 +127,8 @@
           "Y": "tfc:plant/licorice_fern[facing=south]"
         }
       },
-      "name": "附生",
-      "text": "附生植物只生活在原木的侧面。",
+      "name": "附生植物",
+      "text": "附生植物只能生长在原木的侧面。",
       "enable_visualize": false
     },
     {
@@ -147,7 +147,7 @@
         }
       },
       "name": "矮草",
-      "text": "低矮的草块会随着年龄增长而变得更高。它们也能够在泥炭和泥土上生长。",
+      "text": "矮草会随着时间推移而长高。它们也能够在泥炭和壤泥上生长。",
       "enable_visualize": false
     },
     {
@@ -170,7 +170,7 @@
         }
       },
       "name": "高草",
-      "text": "高大的草块刚好够挡住你的视野。",
+      "text": "高度刚好够遮住你的视野。",
       "enable_visualize": false
     },
     {
@@ -189,7 +189,7 @@
         }
       },
       "name": "藤蔓",
-      "text": "如果足够温暖，藤蔓块会自行散布到世界各地。",
+      "text": "只要足够温暖，藤蔓就会自行散布。",
       "enable_visualize": false
     },
     {
@@ -211,8 +211,8 @@
           "Y": "tfc:plant/liana"
         }
       },
-      "name": "垂垂的藤蔓",
-      "text": "垂垂的藤蔓从锚块向下生长。",
+      "name": "悬垂藤",
+      "text": "悬垂藤蔓以其顶部一个方块为基础向下生长。",
       "enable_visualize": false
     },
     {
@@ -234,13 +234,13 @@
           "Y": "tfc:plant/arundo_plant"
         }
       },
-      "name": "扭曲的藤蔓",
-      "text": "扭曲的藤蔓从地面向上扭曲生长。他们可以有一个坚实的变体。",
+      "name": "缠绕藤",
+      "text": "缠绕藤从地面向上生长。有些品种是实心的。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "水生植物只能在淡水或咸水中生成。否则，它们的生长和行为就像您在表面上看到的植物一样。一些水生植物可以煮熟作为食物。",
+      "text": "水生植物只能在淡水或咸水中生成，其他方面和陆地上的植物没什么不同。一些水生植物可以烹饪成食物。",
       "title": "水生植物"
     },
     {
@@ -258,8 +258,8 @@
           "X": "tfc:plant/sago[fluid=water]"
         }
       },
-      "name": "普通水草",
-      "text": "普通水草可以用$(thing)$()刀$()割获得$(thing)海藻$().",
+      "name": "普通水生植物",
+      "text": "用$(thing)刀$()割普通水生植物可以获得$(thing)海草$().",
       "enable_visualize": false
     },
     {
@@ -278,7 +278,7 @@
         }
       },
       "name": "水草",
-      "text": "水草是生长在水下的草。",
+      "text": "水草就是生长在水中的草。",
       "enable_visualize": false
     },
     {
@@ -300,8 +300,8 @@
           "Y": "tfc:plant/cattail[part=lower,fluid=water]"
         }
       },
-      "name": "高大的水生植物",
-      "text": "高大的水生植物可以生活在只有最底下有水的地方。$(thing)水生芋头$()和$()阔叶香蒲$()可以用$(thing)刀$()割获得它们的$(thing)根$().",
+      "name": "高大水生植物",
+      "text": "只要下面那格有水就可以活。用$(thing)刀$()割$(thing)水生芋头$()和$()阔叶香蒲$()可以获得它们的$(thing)根$().",
       "enable_visualize": false
     },
     {
@@ -323,8 +323,8 @@
           "Y": "minecraft:water"
         }
       },
-      "name": "漂浮",
-      "text": "漂浮的植物坐在水面上。船会在接触时破坏它们。",
+      "name": "漂萍植物",
+      "text": "漂萍植物生长在水面上。船会在接触时破坏它们。",
       "enable_visualize": false
     },
     {
@@ -347,7 +347,7 @@
         }
       },
       "name": "海带",
-      "text": "海带是生长在水下的扭曲藤蔓。",
+      "text": "海带是缠绕藤的水生版本。",
       "enable_visualize": false
     },
     {
@@ -370,7 +370,7 @@
         }
       },
       "name": "树海带",
-      "text": "树海带在水下长成错综复杂的树木。可以用$(thing)刀$()来收获花朵。",
+      "text": "树海带在水下长成错综复杂的树。用$(thing)刀$()可以收获它们的花朵。",
       "enable_visualize": false
     }
   ],

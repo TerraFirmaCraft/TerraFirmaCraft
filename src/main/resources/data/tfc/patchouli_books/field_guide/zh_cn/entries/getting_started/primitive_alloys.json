@@ -6,36 +6,36 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)合金$() 是一种将两种或多种金属混合在一起的方法，以创造一种新的、更坚固的金属。在游戏早期，虽然铜是制造工具的有用金属，但下一层金属是$(thing)青铜$()的三种类型之一。合金由组件$(thing)金属$()组成，每个组件都必须满足整体的特定百分比。"
+      "text": "$(thing)合金$()是指由两种或更多种不同金属混合而成的更强的金属。铜在游戏早期很实用，但想要发展到下一级文明，就必须想办法做出$(thing)青铜$()。将不同金属混合在一起熔化，只要所有成分都处于特定区间内就能做出对应的合金了！"
     },
     {
       "type": "patchouli:text",
-      "text": "在游戏早期制作合金的一种方法是使用$(thing)小缸$()。该过程与$(l:getting_started/finding_ores#casting)铸造$()非常相似。然而，不要只使用一种金属，而是在容器内以正确的比例放置足够的矿石，便可形成已知的合金混合物。"
+      "text": "$(thing)小缸$()是游戏早期唯一可以制作合金的手段。制作合金的步骤和$(l:getting_started/finding_ores#casting)铸造$()很相似，唯一的区别是要在小缸中混合放置多种不同的金属而不仅仅是铜。只要小缸中的几种金属比例都位于可接受范围内，熔化所得的金属就会自动转化为合金。"
     },
     {
       "type": "patchouli:text",
-      "text": "例如，要创建 1000 mB 的$(thing)青铜$()（如右图所示），您需要 880 到 920 mB 的 $(thing)铜$()，以及 80 到 120 mB 的 $(thing)锡$()。$(br2)接下来的三页展示了三个青铜器的配方。每种类型的青铜都可以用来制作工具、盔甲和其他金属物品，尽管每种金属的些许不同，会导致工具会有不同的耐用性、效率或攻击伤害。"
+      "text": "举个例子，要合成 1000 mB 的$(thing)青铜$()（右侧所示），你需要加入 880~920 mB 的$(thing)铜$()以及 80~120 mB 的$(thing)锡$()。$(br2)接下来的几页展示了三种不同的铜合金。每种铜合金都可以做成工具、盔甲、和其他金属物品，但它们的耐久度、效率、和伤害有些微小的差异。"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/bronze",
       "title": "青铜",
       "link_recipes": false,
-      "text": "$(br)$(bold)条件：$()$(br)$(li)88 - 92 % : $(thing)铜$()$(li)8 - 12 % : $(thing)锡$()$(br2)"
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)铜$()：88 - 92 %$(li)$(thing)锡$()：8 - 12 %$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/bismuth_bronze",
       "title": "铋铜",
       "link_recipes": false,
-      "text": "$(br)$(bold)条件：$()$(br)$(li)50 - 65 % : $(thing)铜$()$(li)20 - 30 % : $(thing)锌$()$(li)10 - 20 % : $(thing)铋$()$(br2)"
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)铜$()：50 - 65 %$(li)$(thing)锌$()：20 - 30 %$(li)$(thing)铋$()：10 - 20 %$(br2)"
     },
     {
       "type": "patchouli:spotlight",
       "item": "tfc:metal/ingot/black_bronze",
       "title": "黑铜",
       "link_recipes": false,
-      "text": "$(br)$(bold)条件：$()$(br)$(li)50 - 70 % : $(thing)铜$()$(li)10 - 25 % : $(thing)金$()$(li)10 - 25 % : $(thing)银$()$(br2)"
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)铜$()：50 - 70 %$(li)$(thing)银$()：10 - 25 %$(li)$(thing)金$()：10 - 25 %$(br2)"
     }
   ],
   "read_by_default": true,

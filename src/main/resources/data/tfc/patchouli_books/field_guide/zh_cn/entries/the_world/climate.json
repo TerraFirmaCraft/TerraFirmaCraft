@@ -1,13 +1,13 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "日历和气候",
+  "name": "历法和气候",
   "category": "tfc:the_world",
   "icon": "tfc:textures/gui/book/icons/thermometer.png",
   "pages": [
     {
       "type": "patchouli:text",
       "anchor": "calendar",
-      "text": "在群峦传说中，气候和时间都是非常重要的因素。那我们就从$(thing)日历$()开始。$(br2)在任何时候，您都可以通过按 $(item)$(k:key.inventory)$()并单击$(thing)日历$()选项卡来查看日历。这里将会显示$(thing)季节$()、$(thing)星期$()和$(thing)日期$()."
+      "text": "在群峦传说中，气候和时间都是影响生存的非常重要的要素。首先，我们先来谈谈$(thing)日历$()。$(br2)在任何时候，只要打开物品栏并点击$(thing)日历$()选项卡就能查看日历。这里会显示当前的$(thing)季节$()、$(thing)日历日$()和$(thing)日期$()."
     },
     {
       "type": "patchouli:image",
@@ -19,16 +19,16 @@
     },
     {
       "type": "patchouli:text",
-      "text": "有季节，天气和气候也会随之变化！群峦传说有四个季节，每个季节根据月份分为$(thing)早期$()、$(thing)中期$()和$(thing)晚期$()。四个季节是：$(br)$(li)$(bold)春季$(): 三月——五月$(li)$(bold)夏季$(): 六月——八月$(li)$(bold)秋季$(): 九月——十一月$(li)$(bold)冬季$(): 十二月——二月"
+      "text": "群峦传说的世界是有四季的，气象和气候也会随之变化。每个季节根据月份分为$(thing)初期$()、$(thing)仲期$()和$(thing)暮期$()。以下是四季所对应的月份：$(br)$(li)$(bold)春季$()：三月 - 五月$(li)$(bold)夏季$()：六月 - 八月$(li)$(bold)秋季$()：九月 - 十一月$(li)$(bold)冬季$()：十二月 - 次年二月"
     },
     {
       "type": "patchouli:text",
-      "text": "当前季节会影响该地区的温度、降水（如果会下雨或下雪）等。所以日历选项卡将会很有用！$(br2)现在，进入气候..."
+      "text": "当前季节会影响地区的温度和降水（如果可以下雨或下雪）等。所以一定要经常查看日历，它对你的生存会有很大的帮助！$(br2)接下来，我们来谈谈气候。"
     },
     {
       "type": "patchouli:text",
       "anchor": "climate",
-      "text": "主背包界面上的另一个选项卡是$(thing)气候$()界面。这个显示有关当前位置的信息。$(br2)第一行显示整体$(l:https://baike.baidu.com/item/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB)气候$()。$(br2)第二行显示$(l:the_world/geology)地区$().$(br2)第三行显示$(thing)年平均温度$().",
+      "text": "物品栏界面中的另一个选项卡是$(thing)气候$()界面。这个页面会显示有关当前地理位置的信息。$(br2)第一行会显示该地区的$(l:https://zh.wikipedia.org/wiki/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB%E6%B3%95)气候分类$()。$(br2)第二行会显示$(l:the_world/geology)地质结构$()。$(br2)第三行则会显示$(thing)年平均温度$().",
       "title": "气候"
     },
     {
@@ -42,21 +42,21 @@
     {
       "type": "patchouli:text",
       "anchor": "temperature",
-      "text": "群峦传说中的温度受多种因素影响：$(br)$(li)首先，地区，尤其是纬度（Z坐标）将发挥最大的作用。$(li)其次，当前季节会影响温度——夏季最热，冬季最冷。$(li)最后，温度也可以每天不同，甚至每小时不同。"
+      "text": "一个地区的温度是由几个因素共同决定的。$(br)$(li)首先，地质结构和纬度（Z 坐标）的影响是最大的。$(li)其次是当前的季节——夏天最热，冬天最冷。$(li)最后，每天的不同时间温度也会有所不同，且天和天之间也会有小幅变动。"
     },
     {
       "type": "patchouli:text",
-      "text": "最后一行显示当前温度，包括所有上述因素。$(br2)温度会影响很多事情：作物和植物是否会生长，冰雪是否会形成或融化等等。"
+      "text": "最后一行显示的是当前由上述因素共同决定后的温度。$(br2)温度会影响很多事情：作物和植物是否会生长，冰雪是否会形成或融化等等。"
     },
     {
       "type": "patchouli:text",
       "anchor": "rainfall",
-      "text": "降雨量是另一个气候值，可能会因您在世界上的位置而异。年降雨量以毫米 (mm) 为单位，可以在 0mm - 500mm 之间。降雨会影响一个地区的植物群类型，以及土壤的类型，从沙子和仙人掌到壤土，再到淤泥和木棉树。",
-      "title": "降雨"
+      "text": "降雨量是一个会根据地理位置而变化的数值。年降雨量以毫米（mm）为单位，可以在 0mm - 500mm 之间取值。地表土壤是沙子还是淤泥，植被是仙人掌还是木棉树都由降雨量决定。",
+      "title": "降雨量"
     },
     {
       "type": "patchouli:text",
-      "text": "降雨也很重要，因为它会影响一个地区可以种植的东西。降雨是$(l:food/hydration)湿度$()的主要计算条件之一，湿度是对给定位置土壤湿润程度的精确测量，并被$(l:food/crops)农作物$(), $(l:the_world/fruit_trees)果树$()和$(l:the_world/berry_bushes)浆果灌木$()用来确定它们是否可以生长。"
+      "text": "一个区域的降雨量还决定了何种农作物能被种植在这儿。降雨量的多少是影响土地$(l:mechanics/hydration)湿润度$()的一个重要因素，而湿润度则决定了$(l:mechanics/crops)农作物$()、$(l:the_world/wild_fruits#fruit_trees)果树$()、和$(l:the_world/wild_fruits#tall_bushes)灌木丛$()是否可以生长。"
     }
   ],
   "read_by_default": true,

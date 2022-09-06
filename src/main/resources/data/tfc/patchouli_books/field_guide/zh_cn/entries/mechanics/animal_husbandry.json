@@ -6,30 +6,30 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "牲畜是可以被玩家驯服和饲养的动物。牲畜可以是$(thing)公的$()或$(thing)母的$()。对于某些动物来说，可以通过视觉来分辨它们的性别。例如，公猪有象牙。"
+      "text": "$(thing)牲畜$()是可以被玩家驯服和饲养的动物。牲畜可以是$(thing)公的$()或$(thing)母的$()。某些动物会有$(thing)两性异形$()的现象。例如，只有公猪会有獠牙。"
     },
     {
       "type": "patchouli:text",
-      "text": "牲畜会$(thing)变老$()。他们作为$(thing)幼崽$()出生，比较小且无法为玩家提供东西。几天后，它们长成$(thing)成年$()动物，能够做诸如繁殖或产奶之类的事情。在它们繁殖或经历了生产了足够多的东西之后动物会$(thing)变老$()，这时只有它们的肉有用了。"
+      "text": "牲畜会逐渐$(thing)衰老$()。刚出生的幼崽不会产出资源，也不能繁殖。一段时间之后它们才会$(thing)成年$()。成年的牲畜可以提供蛋、奶等资源，也可以繁殖出新的幼崽。当繁殖或产出资源多次之后，牲畜有可能会衰老。衰老的动物只能作为肉用。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/old_cow.png"
       ],
-      "text": "这头公牛年纪大了，不能繁殖，所以它的皮毛已经褪色，眼睛灰蒙蒙的。",
+      "text": "这只牛太老了，不能繁殖。可以从它灰白的毛色和模糊的眼睛中看出。",
       "border": true
     },
     {
       "type": "patchouli:text",
-      "text": "可以喂牲畜以提高$(thing)好感度$()。每只动物都有一套它喜欢吃的食物。如果想要喂动物，请在手上拿着食物按下$(item)$(k:key.sneak)$()和$(item)$(k:key.use)$()对准要喂的动物。"
+      "text": "喂养牲畜可以提升与之的$(thing)亲密度$()。每种动物都有其喜爱的食物。手持食物对准牲畜按住$(item)$(k:key.sneak)$()的同时按$(item)$(k:key.use)$()就可以喂养了。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "牲畜有一个$(thing)好感度指示器$()，显示它们对您的熟悉程度。当按住$(item)$(k:key.sneak)$()并看着动物时可见。",
+      "text": "按住$(item)$(k:key.sneak)$()并看着牲畜时会在头上显示其$(thing)亲密度$()。",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "好感度每天都会衰减一点，除非它达到一定程度，用白色勾勒出的心表示。",
+      "text": "如果牲畜和你的亲密度不够高，则亲密度会在没有喂养的日子略微流失。当亲密度出现白色轮廓时就说明亲密度不再会降低了。",
       "border": true
     },
     {
@@ -45,201 +45,214 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "成年牲畜的好感度不能超过一定的限度，由红色轮廓的心表示。而幼崽可以达到 100% 的好感度。",
+      "text": "成年牲畜不能被完全驯化。当其亲密度出现红色轮廓时就表示亲密度已满。只有幼崽可以达到 100% 的亲密度。",
       "border": true
     },
     {
       "type": "patchouli:text",
       "anchor": "mammals",
-      "text": "$(thing)哺乳动物$()是经历怀孕的牲畜。当好感度超过 30% 并在当天被喂食的成年哺乳动物中，如果是异性并且彼此靠近便会开始交配。之后雌性动物将会$(thing)怀孕$()，这会导致它在受精后的固定天数内产子。$(br)属于此类的动物：$(l:mechanics/animal_husbandry#pig)猪$()。"
+      "text": "$(thing)哺乳动物$()是通过怀孕繁殖的牲畜。喂食一对亲密度超过 30% 的成年哺乳动物就会让它们开始……你懂的。之后雌性动物将会$(thing)怀孕$()。怀孕的动物会在几个月至一年之内产子。$(br)比如，$(l:mechanics/animal_husbandry#pig)猪$()就是哺乳动物。"
     },
     {
       "type": "patchouli:text",
       "anchor": "wooly_animals",
-      "text": "$(thing)毛茸茸的动物$()是$(l:mechanics/animal_husbandry#mammals)哺乳动物$()，如果它们成年并且对您好感度足够高，则可以$(thing)剪毛$()。$(br)属于此类的动物：$(l:mechanics/animal_husbandry#sheep)绵羊$()、$(l:mechanics/animal_husbandry#alpaca)羊驼$()和$(l:mechanics/animal_husbandry#musk_ox)麝牛$()。"
+      "text": "$(thing)产毛动物$()是$(l:mechanics/animal_husbandry#mammals)哺乳动物$()的一种。如果它们和你的亲密度足够高且已成年就可以$(thing)剪毛$()。$(br)$(l:mechanics/animal_husbandry#sheep)绵羊$()、$(l:mechanics/animal_husbandry#alpaca)羊驼$()和$(l:mechanics/animal_husbandry#musk_ox)麝牛$()都属于这一类动物。"
     },
     {
       "type": "patchouli:text",
       "anchor": "dairy_animals",
-      "text": "$(thing)奶牛$()是能获得$(thing)牛奶$()的哺乳动物。可以用桶点击雌性奶牛来获取牛奶。$(br)属于此类的动物：$(l:mechanics/animal_husbandry#goat)山羊$()、$(l:mechanics/animal_husbandry#cow)奶牛$()和$(l:mechanics/animal_husbandry#yak)牦牛$()。"
+      "text": "$(thing)产奶动物$()也是哺乳动物的一种。只要成年且亲密度足够，就可以用木桶点击雌性产奶动物来挤奶。$(br)$(l:mechanics/animal_husbandry#goat)山羊$()、$(l:mechanics/animal_husbandry#cow)奶牛$()和$(l:mechanics/animal_husbandry#yak)牦牛$()都属于这一类动物。。"
     },
     {
       "type": "patchouli:crafting",
       "anchor": "oviparous_animals",
       "recipe": "tfc:crafting/nest_box",
       "title": "巢箱",
-      "text": "$(thing)卵生动物$()不像$(l:mechanics/animal_husbandry#mammals)哺乳动物$()可以直接产下幼崽，而是通过产下$(thing)蛋$()，孵化后才能得到幼仔。它们需要一个$(thing)巢箱$()来产卵，它们能够自己找到可达的巢箱。$(br)属于此类的动物：$(l:mechanics/animal_husbandry#duck)鸭子$(), $(l:mechanics/animal_husbandry#quail)鹌鹑$()和$(l:mechanics/animal_husbandry#chicken)鸡$()。"
+      "text": "$(thing)卵生动物$()不像$(l:mechanics/animal_husbandry#mammals)哺乳动物$()可以直接产下幼崽，而是通过产下并孵化$(thing)蛋$()来繁殖。它们只能在$(thing)巢箱$()中产卵。$(br)$(l:mechanics/animal_husbandry#duck)鸭子$()、$(l:mechanics/animal_husbandry#quail)鹌鹑$()和$(l:mechanics/animal_husbandry#chicken)鸡$()都属于这一类动物。。"
     },
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/cooked_egg",
-      "text": "$(thing)蛋$()可以煮熟或煮熟作为食物。雄性卵生动物可以使雌性受精，从而使巢箱中的卵受精。查看蛋可以知道需要多久才能孵化。"
+      "text": "$(thing)蛋$()可以煎来吃或煮来吃。雄性动物可以让雌性受精，使其产下的下一枚卵变为受精卵。受精卵会在其工具提示里显示它们还需要多久才能孵化。"
     },
     {
       "type": "tfc:leather_knapping_recipe",
       "anchor": "horses",
       "recipe": "tfc:leather_knapping/saddle",
-      "text": "$(thing)骑乘动物$()是驯服后可以骑乘的哺乳动物。当好感度达到 15% 后，骑乘动物就可以骑乘了。他们需要一个 $(thing)鞍$() 来骑行，他可以被$(thing)塑形$()出来。这包括$(l:mechanics/animal_husbandry#mule)骡子$()、$(l:mechanics/animal_husbandry#donkey)驴$()和$(l:mechanics/animal_husbandry#Horses)马$()。"
+      "text": "$(thing)骑乘动物$()是$(l:mechanics/animal_husbandry#mammals)哺乳动物$()的一种，可以在亲密度到达 15% 之后骑乘。"
     },
     {
       "type": "patchouli:text",
-      "text": "接下来的几页将介绍不同类型的动物。"
+      "text": "骑乘动物需要用$(thing)鞍$()。鞍可以通过$(thing)皮革塑形$()制作。$(l:mechanics/animal_husbandry#mule)骡$()、$(l:mechanics/animal_husbandry#donkey)驴$()和$(l:mechanics/animal_husbandry#horses)马$()都属于这一类动物。$(br2)接下来几页会展示所有可作为牲畜的动物。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "pig",
+      "text": "$(thing)猪$()会在$(l:the_world/climate#temperature)温度$()在 -10 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 200 毫米的温和森林中生成。它们是没有特殊功能的$(l:mechanics/animal_husbandry#mammals)哺乳动物$()。它们会吃任何食物（可以是腐烂的）。它们一胎能生产 1-10 个幼崽，怀孕 19 天，80 天成年。衰老前它们可以产仔 6 次。",
+      "title": "猪"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:pig",
       "scale": 1,
-      "name": "猪",
-      "text": "一头猪"
+      "name": " ",
+      "text": "A pig."
     },
     {
       "type": "patchouli:text",
-      "anchor": "pig",
-      "text": "$(thing)猪$()在$(l:the_world/climate#temperature)温度$()在 -10 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$()在至少 200 毫米的温和森林中生活。它们是没有特殊能力的 $(l:mechanics/animal_husbandry#mammals)哺乳动物$()。它们会吃任何食物（可以是腐烂的）。它们一胎能生产 1-10 个幼崽，怀孕 19 天，80 天成年。进入老年前它们可以产仔 6 次。"
+      "anchor": "cow",
+      "text": "$(thing)牛$()是一种会在$(l:the_world/climate#temperature)温度$()在 -10 和 35°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的大多数气候中生成的$(l:mechanics/animal_husbandry#dairy_animals)产奶动物$()。它们只吃$(thing)谷物$()（可以是腐烂的）。他们一胎能生产 1-2 个幼崽，怀孕 58 天，192 天成年。若从未挤过奶，衰老前它们可以产仔 13 次。若从未产过仔，衰老前它们可以挤奶 128 次，且每天都可挤奶。",
+      "title": "牛"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:cow",
       "scale": 1,
-      "name": "牛",
-      "text": "一头牛"
+      "name": " ",
+      "text": "A cow."
     },
     {
       "type": "patchouli:text",
-      "anchor": "cow",
-      "text": "$(thing)牛$()在$(l:the_world/climate#temperature)温度$()在 -10 和 35°C 之间、$(l:the_world/climate#rainfall)降雨量$()在至少 250 毫米的大多数气候中生活。它们是没有特殊能力的 $(l:mechanics/animal_husbandry#dairy_animals)奶牛$()。他们只吃$(thing)谷物$()（可以是腐烂的）。他们一胎能生产 1-2 个幼崽，怀孕 58 天，192 天成年。如果它们从未挤过奶，进入老年前它们可以产仔 13 次。如果它们从没产仔过，进入老年前他们可以挤奶 128 次。每天都可获得奶。"
+      "anchor": "goat",
+      "text": "$(thing)山羊$()是一种会在$(l:the_world/climate#temperature)温度$()在 -12 到 25°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 300 毫米的温和的气候中生成的$(l:mechanics/animal_husbandry#dairy_animals)产奶动物$()。它们会吃$(thing)谷物$()、$(thing)水果$()和$(thing)蔬菜$()（可以是腐烂的）。他们一胎能生产 1-2 个幼崽，怀孕 32 天，96 天成年。若从未挤过奶，衰老前它们可以产仔 6 次。若从未产过仔，衰老前它们可以挤奶 60 次，且每三天可挤一次奶。",
+      "title": "山羊"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:goat",
       "scale": 1,
-      "name": "山羊",
-      "text": "一头山羊"
+      "name": " ",
+      "text": "A goat."
     },
     {
       "type": "patchouli:text",
-      "anchor": "goat",
-      "text": "$(thing)山羊$()在$(l:the_world/climate#temperature)温度$()在 -12 到 25°C 之间、$(l:the_world/climate#rainfall)降雨量$()在至少 300 毫米的温和的气候中生活。它们是$(l:mechanics/animal_husbandry#dairy_animals)奶牛$()。他们吃$(thing)谷物$()、$(thing)水果$()和$(thing)蔬菜$()（可以是腐烂的）。他们一胎能生产 1-2 个幼崽，怀孕 32 天，96 天成年。如果它们从未挤过奶，进入老年前它们可以产仔 6 次。如果它们从没产仔过，进入老年前他们可以挤奶 60 次。每三天可获得奶。"
+      "anchor": "yak",
+      "text": "$(thing)牦牛$()是一种会在$(l:the_world/climate#temperature)温度$()不超过 -11°C、$(l:the_world/climate#rainfall)降雨量$()至少 100 毫米的寒冷的气候中生成的$(l:mechanics/animal_husbandry#dairy_animals)产奶动物$()。它们只吃新鲜的$(thing)谷物$()。它们一胎只能产 1 个幼崽，怀孕 64 天，180 天成年。若从未挤过奶，衰老前它们可以产仔 23 次。若从未产过仔，衰老前它们可以挤奶 230 次，且每天都可挤奶。",
+      "title": "牦牛"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:yak",
       "scale": 1,
-      "name": "牦牛",
-      "text": "一只牦牛"
+      "name": " ",
+      "text": "A yak."
     },
     {
       "type": "patchouli:text",
-      "anchor": "yak",
-      "text": "$(thing)牦牛$()在$(l:the_world/climate#temperature)温度$()不超过 -11°C、$(l:the_world/climate#rainfall)降雨量$()在至少 100 毫米的寒冷的气候中生活。它们是$(l:mechanics/animal_husbandry#dairy_animals)奶牛$()。它们只吃新鲜的$(thing)谷物$()。它们一胎只能生产 1 个幼崽，怀孕 64 天，180 天成年。如果它们从未挤过奶，进入老年前它们可以产仔 23 次。如果它们从没产仔过，进入老年前它们可以挤奶 230 次。每天都可获得奶。"
+      "anchor": "alpaca",
+      "text": "$(thing)羊驼$()是一种会在$(l:the_world/climate#temperature)温度$()在 -8 到 20°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 250 毫米的温和的气候中生成的$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()和$(thing)水果。他们一胎能生产 1-2 个幼崽，怀孕 36 天，98 天成年。若从未剪过毛，衰老前它们可以产仔 13 次。若从未产过仔，衰老前它们可以剪毛 180 次，且每 6 天长出一次羊毛。",
+      "title": "羊驼"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:alpaca",
       "scale": 1,
-      "name": "羊驼",
-      "text": "一只羊驼"
+      "name": " ",
+      "text": "An alpaca."
     },
     {
       "type": "patchouli:text",
-      "anchor": "alpaca",
-      "text": "$(thing)羊驼$()在$(l:the_world/climate#temperature)温度$()在 -8 到 20°C 之间、$(l:the_world/climate#rainfall)降雨量$()在至少 250 毫米的温和的气候中生活。它们是$(l:mechanics/animal_husbandry#wooly_animals)毛茸茸的动物$()。它们吃$(thing)谷物$()和$(thing)水果。他们一胎能生产 1-2 个幼崽，怀孕 36 天，98 天成年。如果它们从未剪毛，进入老年前它们可以产仔 13 次。如果它们从没产仔过，进入老年前它们可以剪毛 180 次。每 6 天长出一次羊毛。"
+      "anchor": "sheep",
+      "text": "$(thing)绵羊$()是一种会在$(l:the_world/climate#temperature)温度$()在 0 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$() 70 到 300 毫米的较干燥的气候中生成的(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。它们会吃$(thing)谷物$()。它们一胎能生产 1-2 个幼崽，怀孕 32 天，56 天成年。若从未剪过毛，衰老前它们可以产仔 6 次。若从未产过仔，衰老前它们可以剪毛 60 次，且每 9 天长出一次羊毛。",
+      "title": "绵羊"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:sheep",
       "scale": 1,
-      "name": "绵羊",
-      "text": "一只绵羊"
+      "name": " ",
+      "text": "A sheep."
     },
     {
       "type": "patchouli:text",
-      "anchor": "sheep",
-      "text": "$(thing)绵羊$()在$(l:the_world/climate#temperature)温度$()在 0 到 35°C 之间、$(l:the_world/climate#rainfall)降雨量$() 70 到 300 毫米的较干燥的气候中生活。它们是$(l:mechanics/animal_husbandry#wooly_animals)毛茸茸的动物$()。它们吃$(thing)谷物$()。它们一胎能生产 1-2 个幼崽，怀孕 32 天，56 天成年。如果它们从未剪毛，进入老年前它们可以产仔 6 次。如果它们从没产仔过，进入老年前它们可以剪毛 60 次。每 9 天长出一次羊毛。"
+      "anchor": "musk_ox",
+      "text": "$(thing)麝牛$()是一种会在$(l:the_world/climate#temperature)温度$()在 0 到 25°C 之间、$(l:the_world/climate#rainfall)降雨量$()至少 100 毫米的温和气候中生成的$(l:mechanics/animal_husbandry#wooly_animals)产毛动物$()。他们只吃$(thing)谷物$()。它们一胎只能生产 1 个幼崽，怀孕 64 天，168 天成年。若从未剪过毛，衰老前它们可以产仔 16 次。",
+      "title": "麝牛"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:musk_ox",
       "scale": 1,
-      "name": "麝牛",
-      "text": "一只麝牛"
+      "name": " ",
+      "text": "A musk ox."
     },
     {
       "type": "patchouli:text",
-      "anchor": "musk_ox",
-      "text": "$(thing)麝牛$()在$(l:the_world/climate#temperature)温度$()在 0 到 25°C 之间、$(l:the_world/climate#rainfall)降雨量$()在至少 100 毫米的温和气候中生活。它们是$(l:mechanics/animal_husbandry#wooly_animals)毛茸茸的动物$()。他们只吃$(thing)谷物$()。它们一胎只能生产 1 个幼崽，怀孕 64 天，168 天成年。如果它们从未剪毛，进入老年前它们可以产仔 16 次。"
+      "anchor": "chicken",
+      "text": "$(thing)鸡$()是一种会在$(l:the_world/climate#temperature)温度$()不低于 14°C、$(l:the_world/climate#rainfall)降雨量$()至少 225 毫米的温暖的森林中生成的$(l:mechanics/animal_husbandry#oviparous_animals)卵生动物$()。它们会吃$(thing)谷物$()、$(thing)水果$()、$(thing)蔬菜$()和$(thing)种子$()（可以是腐烂的）。每 30 小时产一次卵，8 天孵化，24 天成年。衰老前可以产卵 100 次。",
+      "title": "鸡"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:chicken",
       "scale": 1,
-      "name": "鸡",
-      "text": "一只鸡"
+      "name": " ",
+      "text": "A chicken."
     },
     {
       "type": "patchouli:text",
-      "anchor": "chicken",
-      "text": "$(thing)鸡$()在$(l:the_world/climate#temperature)温度$()不低于 14°C、$(l:the_world/climate#rainfall)降雨量$()在至少 225 毫米的温暖的森林中生活。它们是$(l:mechanics/animal_husbandry#oviparous_animals)卵生动物$()。他们吃$(thing)谷物$()、$(thing)水果$()、$(thing)蔬菜$()和$(thing)种子$()（可以是腐烂的）。每 30 小时产一次卵，8 天孵化，24 天成年。进入老年前可以产卵 100 次。"
+      "anchor": "duck",
+      "text": "$(thing)鸭$()是一种会在$(l:the_world/climate#temperature)温度$()在 -25 到 30°C、$(l:the_world/climate#rainfall)降雨量$()至少 100 毫米的大多数平原中生成的$(l:mechanics/animal_husbandry#oviparous_animals)卵生动物$()。它们会吃$(thing)谷物$()、$(thing)水果$()、$(thing)蔬菜$()和$(thing)种子$()（可以是腐烂的）。每 32 小时产一次卵，8 天孵化，32 天成年。衰老前可以产卵 72 次。",
+      "title": "鸭"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:duck",
       "scale": 1,
-      "name": "鸭",
-      "text": "一只鸭"
+      "name": " ",
+      "text": "A duck."
     },
     {
       "type": "patchouli:text",
-      "anchor": "duck",
-      "text": "$(thing)鸭$()在$(l:the_world/climate#temperature)温度$()在 -25 到 30°C、$(l:the_world/climate#rainfall)降雨量$()在至少 100 毫米的大多数平原中生活。它们是$(l:mechanics/animal_husbandry#oviparous_animals)卵生动物$()。他们吃$(thing)谷物$()、$(thing)水果$()、$(thing)蔬菜$()和$(thing)种子$()（可以是腐烂的）。每 32 小时产一次卵，8 天孵化，32 天成年。进入老年前可以产卵 72 次。"
+      "anchor": "quail",
+      "text": "$(thing)鹌鹑$()是一种会在$(l:the_world/climate#temperature)温度$()在 -15 到 15°C、$(l:the_world/climate#rainfall)降雨量$()至少 200 毫米的较冷的气候中生成的$(l:mechanics/animal_husbandry#oviparous_animals)卵生动物$()。它们会吃$(thing)谷物$()、$(thing)水果$()、$(thing)蔬菜$()和$(thing)种子$()（可以是腐烂的）。每 28 小时产一次卵，8 天孵化， 22 天成年。衰老前可以产卵 48 次。",
+      "title": "鹌鹑"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:quail",
       "scale": 1,
-      "name": "鹌鹑",
-      "text": "一只鹌鹑"
+      "name": " ",
+      "text": "A quail."
     },
     {
       "type": "patchouli:text",
-      "anchor": "quail",
-      "text": "$(thing)鹌鹑$()在$(l:the_world/climate#temperature)温度$()在 -15 到 15°C、$(l:the_world/climate#rainfall)降雨量$()在至少 200 毫米的较冷的气候中生活。它们是$(l:mechanics/animal_husbandry#oviparous_animals)卵生动物$()。他们吃$(thing)谷物$()、$(thing)水果$()、$(thing)蔬菜$()和$(thing)种子$()（可以是腐烂的）。每 28 小时产一次卵，8 天孵化， 22 天成年。进入老年前可以产卵 48 次。"
+      "anchor": "donkey",
+      "text": "$(thing)驴$()是一种会在$(l:the_world/climate#temperature)温度$()在至少 -15°C、$(l:the_world/climate#rainfall)降雨量$() 130 到 400mm 的潮湿的平原中生成的$(l:mechanics/animal_husbandry#horses)骑乘动物$()。可以在它们身上放置一个$(thing)箱子$()。它们会吃$(thing)谷物$()和$(thing)水果$()。它们一胎只能产 1 个幼崽，怀孕 19 天，80 天成年。衰老前它们可以产仔 6 次。",
+      "title": "驴"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:donkey",
       "scale": 1,
-      "name": "驴",
-      "text": "一头驴"
+      "name": " ",
+      "text": "A donkey."
     },
     {
       "type": "patchouli:text",
-      "anchor": "donkey",
-      "text": "$(thing)驴$()在$(l:the_world/climate#temperature)温度$()在至少 -15°C、$(l:the_world/climate#rainfall)降雨量$()在 130 和 400mm 的潮湿的平原中生活。它们是$(l:mechanics/animal_husbandry#horses)骑乘动物$()。他们有一个$(thing)储物空间$()。他们吃$(thing)谷物$()和$(thing)水果$()。它们一胎能生产 1 个幼崽，怀孕 19 天，80 天成年。进入老年前它们可以产仔 6 次。"
+      "anchor": "mule",
+      "text": "$(thing)骡子$()是一种会在$(l:the_world/climate#temperature)温度$()在至少 -15°C、$(l:the_world/climate#rainfall)降雨量$()在 130 到 400mm 的平原中生成的$(l:mechanics/animal_husbandry#horses)骑乘动物$()。可以在它们身上放置一个$(thing)箱子$()。它们是$(thing)马$()和$(thing)驴$()杂交的产物，只有雄性，无法繁殖。他们吃$(thing)谷物$()和$(thing)水果$()。80 天成年。",
+      "title": "骡子"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:mule",
       "scale": 1,
-      "name": "骡子",
-      "text": "一头骡子"
+      "name": " ",
+      "text": "A mule."
     },
     {
       "type": "patchouli:text",
-      "anchor": "mule",
-      "text": "$(thing)骡子$()在$(l:the_world/climate#temperature)温度$()在至少 -15°C、$(l:the_world/climate#rainfall)降雨量$()在 130 和 400mm 的平原中生活。它们是$(l:mechanics/animal_husbandry#horses)骑乘动物$()。他们有一个$(thing)储物空间$()。它们是$(thing)马$()和$(thing)驴$()杂交的产物，始终是雄性，无法繁殖。他们吃$(thing)谷物$()和$(thing)水果$()。80 天成年。"
+      "anchor": "horse",
+      "text": "$(thing)马$()是一种会在$(l:the_world/climate#temperature)温度$()在至少 -15°C、$(l:the_world/climate#rainfall)降雨量$()在 130 到 400 毫米的平原中生成的$(l:mechanics/animal_husbandry#horses)骑乘动物$()。它们会吃$(thing)谷物$()和$(thing)水果$()。它们一胎只能产 1 个幼崽，怀孕 19 天，80 天成年。衰老前它们可以产仔 6 次。",
+      "title": "马"
     },
     {
       "type": "patchouli:entity",
       "entity": "tfc:horse",
       "scale": 1,
-      "name": "马",
-      "text": "一匹马"
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "horse",
-      "text": "$(thing)马$()在$(l:the_world/climate#temperature)温度$()在至少 -15°C、$(l:the_world/climate#rainfall)降雨量$()在 130 和 400 毫米的平原中生活。它们是$(l:mechanics/animal_husbandry#horses)骑乘动物$()。他们吃$(thing)谷物$()和$(thing)水果$()。它们一胎能生产 1 个幼崽，怀孕 19 天，80 天成年。进入老年前它们可以产仔 6 次。"
+      "name": " ",
+      "text": "A horse."
     }
   ],
   "read_by_default": true

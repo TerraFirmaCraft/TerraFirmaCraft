@@ -6,15 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "坑窑是一种早期的$(l:mechanics/heating)加热$()物品的方式。例如，它可以用来将粘土$(thing)烧$()成陶瓷。坑窑在大约 8 小时的时间内将其内容物加热到 1600°C，或$(bold)$(f)$(t:炽白)炽白$()."
+      "text": "坑窑是一种早期$(l:mechanics/heating)加热$()物品的手段。它的温度足以将粘土$(thing)烧制$()成陶瓷。坑窑的温度最高可达 1600 °C（$(bold)$(d)$(t:Brilliant White)炽白$()），但需要 8 小时的时间才能达到。"
     },
     {
       "type": "patchouli:text",
-      "text": "建造一个坑窑需要准备：$(br)$(li)要烧制的最多四件物品。$(li)八个$(thing)稻草$()$(li)八个$(thing)原木$()$(li)能够点燃坑窑的根据例如$(l:getting_started/firepit#firestarter)起火器$()或者一根$(thing)火把$().$(br2)$(bold)注意：$()只需将火把扔到坑窑上并等待几秒钟即可开始燃烧。"
+      "text": "搭建坑窑前，你需要准备：$(br)$(li)最多 4 个想要加热的物品。$(li)8 束$(thing)干草$()$(li)8 根$(thing)原木$()$(li)$(l:getting_started/firepit#firestarter)起火器$()，或$(thing)火把$()等能生火的物品。$(br2)$(bold)备注：$()想要用火把生火，只需将火把丢在搭建好的坑窑上再等一会儿就可以了。"
     },
     {
       "type": "patchouli:text",
-      "text": "为了建造一个坑窑：$(br2)$(bold)1.$() 在 1x1 孔中按$(item)$(k:tfc.key.place_block)$() 放置最多四个物品。$(br)$(bold)2. $() 放置八个$(thing)稻草$()在坑窑内直到物品被覆盖。$(br)$(bold)3.$()放置八个$(thing)原木$()在坑窑内直到填满$(br)$(bold)4.$() 点燃坑窑的顶部！$(br2)坑窑将会燃烧 8 个小时，慢慢的$(l:mechanics/heating)加热$()里面的物品。"
+      "text": "如何搭建坑窑：$(br2)$(bold)1. $()挖一个 1x1 的坑，按$(item)$(k:tfc.key.place_block)$()将你想烧制的物品放置在其中。$(br)$(bold)2. $()将 8 束$(thing)干草$()放置到坑窑内（应完全覆盖要烧制的物品）。$(br)$(bold)3. $()用 8 根$(thing)原木$()把坑窑填满。$(br)$(bold)4. $()点燃坑窑！$(br2)坑窑将会燃烧 8 个小时，慢慢地$(l:mechanics/heating)加热$()里面的物品。"
     },
     {
       "type": "patchouli:image",
@@ -25,7 +25,7 @@
         "tfc:textures/gui/book/tutorial/pit_kiln_4.png",
         "tfc:textures/gui/book/tutorial/pit_kiln_5.png"
       ],
-      "text": "教程：创建一个坑窑。$(br)(图片右下角可点击下一页）",
+      "text": "如何搭建一个坑窑。",
       "border": true
     }
   ],
