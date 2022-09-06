@@ -32,7 +32,7 @@
     {
       "type": "tfc:heat_recipe",
       "recipe": "tfc:heating/barley_dough",
-      "text": "最后，只要将面团$(l:mechanics/heating)加热$()就可以烤出面包了。有了面包，我们就可以来做$(l:mechanics/sandwiches)三明治$()了。"
+      "text": "最后，只要将面团$(l:mechanics/heating)加热$()就可以烤出面包。面包可以做成$(l:mechanics/sandwiches)三明治$()。"
     }
   ],
   "read_by_default": true

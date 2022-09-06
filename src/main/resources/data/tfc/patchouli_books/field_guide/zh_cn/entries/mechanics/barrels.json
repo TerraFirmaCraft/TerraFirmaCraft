@@ -28,7 +28,7 @@
     {
       "type": "patchouli:text",
       "text": "大桶的主要作用是用来混合某些液体和物品。用大桶合成时，桶内的液体和物品的比例必须正确无误。某些配方还需要将大桶$(thing)密封$()一段时间才能执行。",
-      "title": "用桶合成"
+      "title": "用大桶合成"
     },
     {
       "type": "patchouli:text",
@@ -44,7 +44,7 @@
       "type": "tfc:sealed_barrel_recipe",
       "anchor": "tannin",
       "recipe": "tfc:barrel/tannin",
-      "text": "$(bold)鞣酸$()是一种将某些$(thing)原木$()的树皮溶于$(thing)淡水$()中制得的酸性溶液。$(thing)橡木$()、$(thing)白桦木$()、$(thing)栗木$()、$(thing)花旗松木$()、$(thing)山核桃木$()、$(thing)枫木$()和$()红杉木$()都可以用来合成$(thing)鞣酸$()。"
+      "text": "$(bold)鞣酸$()是一种将某些$(thing)原木$()的树皮溶于$(thing)淡水$()中制得的酸性溶液。$(thing)橡木$()、$(thing)白桦木$()、$(thing)栗木$()、$(thing)花旗松木$()、$(thing)山核桃木$()、$(thing)枫木$()和$(thing)红杉木$()都可以用来合成$(thing)鞣酸$()。"
     },
     {
       "type": "patchouli:text",
@@ -56,11 +56,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "大桶还可以用来$(thing)染色$()和$(thing)漂白$()物品。通过在$(l:mechanics/pot)陶锅$()中煮沸单个染料物品就能制成染液。大多数可染色的东西，如地毯、蜡烛和$(l:getting_started/building_materials#alabaster)雪花石膏$()等，都可以通过将它们密封在一桶染液中来染色。已染色的物品也可以通过将它们密封在一桶$(thing)碱液$()中来漂白。碱液是通过在 $(l:mechanics/pot)锅$()水中煮沸 $(thing)草木灰$()制成的。草木灰可以通过破坏$(l:getting_started/firepit)篝火$()获得。"
+      "text": "大桶还可以用来$(thing)染色$()和$(thing)漂白$()物品。通过在$(l:mechanics/pot)陶锅$()中煮沸单个染料物品就能制成染液。大多数可染色的东西，如地毯、蜡烛和$(l:getting_started/building_materials#alabaster)雪花石膏$()等，都可以通过将它们密封在一桶染液中来染色。已染色的物品也可以通过将它们密封在一桶$(thing)碱液$()中来漂白。碱液是通过在$(l:mechanics/pot)锅$()水中煮沸$(thing)草木灰$()制成的。草木灰可以通过破坏$(l:getting_started/firepit)篝火$()获得。"
     },
     {
       "type": "patchouli:text",
-      "text": "将食物封入装有$(thing)醋$()的大桶里有助于延长其保质期。将任意$(thing)水果$()密封在装有$(thing)酒精饮料$()的大桶中就能得到醋。有关于食物保鲜的知识，请参看$(l:mechanics/decay#vinegar)醋$()页面。"
+      "text": "将食物封入装有$(thing)醋$()的大桶里有助于延长其保质期。将任意$(thing)水果$()密封在装有$(thing)酒精饮料$()的大桶中就能得到醋。有关于用醋保鲜的知识，请参看$(l:mechanics/decay#vinegar)食物保鲜$()页面。"
     }
   ],
   "read_by_default": true

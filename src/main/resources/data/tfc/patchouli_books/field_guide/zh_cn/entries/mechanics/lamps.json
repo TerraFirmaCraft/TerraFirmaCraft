@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "灯烛辉煌",
+  "name": "油灯和蜡烛",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -29,7 +29,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "手持装有燃料的桶对着灯按下$(item)$(k:key.use)$()添加燃料，然后用$(thing)起火器$()或任何能够生火的东西就能将其点亮。灯被破坏时会保留内部的燃料。"
+      "text": "手持装有燃料的桶对着灯按下$(item)$(k:key.use)$()以添加燃料，然后用$(thing)起火器$()或任何能生火的东西就能将其点亮。灯被破坏时会保留内部的燃料。"
     },
     {
       "type": "tfc:quern_recipe",

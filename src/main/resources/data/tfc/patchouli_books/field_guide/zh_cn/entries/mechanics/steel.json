@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "black_steel",
-      "text": "当你获得了一定数量的$(thing)钢$()后，就可以开始制作三种有色钢之一，$(thing)黑钢$()了。黑钢是三种高级有色钢合金中最为基础的一种。要合成黑钢，首先得先在$(l:mechanics/crucible)坩埚$()中制作$(thing)脆钢$()。",
+      "text": "当你获得了一定数量的$(thing)钢$()后，就可以开始制作三种有色钢之一，$(thing)黑钢$()了。黑钢是三种高级有色钢合金中最基础的一种。要合成黑钢，首先得先在$(l:mechanics/crucible)坩埚$()中制作$(thing)脆钢$()。",
       "title": "如何制作黑钢"
     },
     {

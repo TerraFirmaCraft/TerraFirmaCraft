@@ -1822,7 +1822,7 @@
       "type": "patchouli:text",
       "anchor": "melon",
       "text": "$(bold)$(l:the_world/climate#temperature)温度$()：5 - 37 °C$(br)$(bold)$(l:mechanics/hydration)湿度$()：75 - 100 %$(br)$(bold)营养物质$()：磷$(br2)西瓜是一种爬行作物。种植在耕地上时，西瓜梗会在成熟后在相邻位置放置最多两颗$(thing)西瓜$()。西瓜梗在入冬前可结果多次。",
-      "title": "Melons"
+      "title": "西瓜"
     },
     {
       "type": "tfc:multimultiblock",
