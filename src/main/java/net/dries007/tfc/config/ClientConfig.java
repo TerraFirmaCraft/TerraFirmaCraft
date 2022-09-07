@@ -40,6 +40,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
+    public final ForgeConfigSpec.BooleanValue showHoeOverlaysInInfoMods;
     public final ForgeConfigSpec.BooleanValue displayFamiliarityAsPercent;
     public final ForgeConfigSpec.BooleanValue showGuideBookLinksAlways;
     public final ForgeConfigSpec.BooleanValue showGuideBookTabInInventory;
@@ -99,6 +100,7 @@ public class ClientConfig
         sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect information should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
 
         showHoeOverlaysOnlyWhenShifting = builder.apply("showHoeOverlaysOnlyWhenShifting").comment("If hoe overlays (for hydration, nutrition, or temperature, shown when hovering over a plant or farmland while holding a hoe), should only be shown when the shift key is held down.").define("showHoeOverlaysOnlyWhenShifting", false);
+        showHoeOverlaysInInfoMods = builder.apply("showHoeOverlaysInInfoMods").comment("If true, mods like Jade that add info when hovering on a block will add hoe overlay info.").define("showHoeOverlaysInInfoMods", true);
 
         displayFamiliarityAsPercent = builder.apply("displayFamiliarityAsPercent").comment("If familiarity is displayed as a percent rather than a heart").define("displayFamiliarityAsPercent", false);
 

@@ -19,17 +19,16 @@ import net.minecraft.world.phys.Vec2;
 import mcp.mobius.waila.api.*;
 import mcp.mobius.waila.api.ui.IElement;
 import net.dries007.tfc.common.blocks.BloomBlock;
+import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.common.blocks.crop.DeadCropBlock;
 import net.dries007.tfc.common.blocks.crop.DeadDoubleCropBlock;
-import net.dries007.tfc.common.blocks.devices.BarrelBlock;
-import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
-import net.dries007.tfc.common.blocks.devices.NestBoxBlock;
-import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.plant.fruit.*;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.compat.jade.provider.*;
+import net.dries007.tfc.config.TFCConfig;
 
 @WailaPlugin
 @SuppressWarnings("UnstableApiUsage")
@@ -52,8 +51,12 @@ public class JadeIntegration implements IWailaPlugin
         registry.registerComponentProvider(BloomeryProvider.INSTANCE, TooltipPosition.BODY, BloomeryBlock.class);
         registry.registerComponentProvider(BloomProvider.INSTANCE, TooltipPosition.BODY, BloomBlock.class);
         registry.registerComponentProvider(NestBoxProvider.INSTANCE, TooltipPosition.BODY, NestBoxBlock.class);
+        registry.registerComponentProvider(LampProvider.INSTANCE, TooltipPosition.BODY, LampBlock.class);
+        registry.registerComponentProvider(CharcoalForgeProvider.INSTANCE, TooltipPosition.BODY, CharcoalForgeBlock.class);
+        registry.registerComponentProvider(CrucibleProvider.INSTANCE, TooltipPosition.BODY, CrucibleBlock.class);
+        registry.registerComponentProvider(BlastFurnaceProvider.INSTANCE, TooltipPosition.BODY, BlastFurnaceBlock.class);
 
-        // todo: crop, double crop, animal, blast furnace, forge, crucible, climate??, IPile, lamp, kiln
+        // todo: animal, climate??, kiln
         registerHoeOverlay(registry, FarmlandBlock.class);
         registerHoeOverlay(registry, DeadCropBlock.class);
         registerHoeOverlay(registry, DeadDoubleCropBlock.class);
@@ -62,6 +65,8 @@ public class JadeIntegration implements IWailaPlugin
         registerHoeOverlay(registry, FruitTreeLeavesBlock.class);
         registerHoeOverlay(registry, StationaryBerryBushBlock.class);
         registerHoeOverlay(registry, SpreadingBushBlock.class);
+        // todo: replace with more info than just overlay
+        registerHoeOverlay(registry, CropBlock.class);
 
     }
 
@@ -72,11 +77,14 @@ public class JadeIntegration implements IWailaPlugin
 
     public static void loadHoeOverlay(HoeOverlayBlock block, ITooltip tooltip, BlockAccessor access)
     {
-        final List<Component> text = new ArrayList<>();
-        final BlockPos pos = access.getPosition();
-        final Level level = access.getLevel();
-        block.addHoeOverlayInfo(level, pos, level.getBlockState(pos), text, false);
-        tooltip.addAll(text);
+        if (TFCConfig.CLIENT.showHoeOverlaysInInfoMods.get())
+        {
+            final List<Component> text = new ArrayList<>();
+            final BlockPos pos = access.getPosition();
+            final Level level = access.getLevel();
+            block.addHoeOverlayInfo(level, pos, level.getBlockState(pos), text, false);
+            tooltip.addAll(text);
+        }
     }
 
     public static IElement getItem(ITooltip tooltip, ItemStack item)

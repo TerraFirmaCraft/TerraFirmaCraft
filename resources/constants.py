@@ -1009,7 +1009,13 @@ DEFAULT_LANG = {
     'tfc.jade.sealed_date': 'Sealed Date: ',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
     'tfc.jade.input_stacks': '%sx Catalyst Stacks',
+    'tfc.jade.fuel_stacks': '%sx Fuel Stacks',
     'tfc.jade.creating': 'Creating %s',
+    'tfc.jade.burn_rate': 'Burn Rate: %s ticks / mB',
+    'tfc.jade.burn_forever': 'Will burn indefinitely',
+    'tfc.jade.ticks_remaining': '%s ticks remaining',
+    'tfc.jade.hours_remaining': '%s hours remaining',
+    'tfc.jade.air_ticks': '%s added air ticks remaining',
 
     # Commands
 
