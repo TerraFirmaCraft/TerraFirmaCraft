@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.recipes;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -177,14 +178,14 @@ public class AnvilRecipe implements ISimpleRecipe<AnvilRecipe.Inventory>
             final Ingredient ingredient = Ingredient.fromJson(json.get("input"));
             final int tier = JsonHelpers.getAsInt(json, "tier", -1);
             final JsonArray rulesJson = JsonHelpers.getAsJsonArray(json, "rules");
-            if (rulesJson.size() > 3)
-            {
-                throw new JsonParseException("Cannot have more than three rules defined");
-            }
             final ForgeRule[] rules = new ForgeRule[rulesJson.size()];
             for (int i = 0; i < rules.length; i++)
             {
                 rules[i] = JsonHelpers.getEnum(rulesJson.get(i), ForgeRule.class);
+            }
+            if (!ForgeRule.isConsistent(rules))
+            {
+                throw new JsonParseException("The rules " + Arrays.toString(rules) + " cannot be satisfied by any combination of steps!");
             }
             final boolean applyForgingBonus = JsonHelpers.getAsBoolean(json, "apply_forging_bonus", false);
             final ItemStackProvider output = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
