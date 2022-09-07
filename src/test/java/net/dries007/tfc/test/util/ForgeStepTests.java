@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ForgeStepTests extends TestHelper
 {
     @Test
-    public void testOptimalPaths()
+    public void testGetOptimalStepsToTarget()
     {
         for (int i = 0; i < ForgeStep.LIMIT; i++)
         {
