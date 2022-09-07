@@ -12,7 +12,7 @@ import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.compat.jade.JadeIntegration;
 
 public enum CrucibleProvider implements IComponentProvider
 {
@@ -23,9 +23,7 @@ public enum CrucibleProvider implements IComponentProvider
     {
         if (access.getBlockEntity() instanceof CrucibleBlockEntity crucible)
         {
-            crucible.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap ->
-                tooltip.add(TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(cap.getTemperature()))
-            );
+            crucible.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> JadeIntegration.displayHeat(tooltip, cap.getTemperature()));
         }
     }
 }

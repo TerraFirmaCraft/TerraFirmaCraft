@@ -10,19 +10,19 @@ import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.config.IPluginConfig;
-import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
-import net.dries007.tfc.compat.jade.JadeIntegration;
+import net.dries007.tfc.common.blockentities.PowderkegBlockEntity;
+import net.dries007.tfc.util.Helpers;
 
-public enum HoeOverlayProvider implements IComponentProvider
+public enum PowderkegProvider implements IComponentProvider
 {
     INSTANCE;
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor access, IPluginConfig iPluginConfig)
     {
-        if (access.getBlock() instanceof HoeOverlayBlock overlay)
+        if (access.getBlockEntity() instanceof PowderkegBlockEntity keg)
         {
-            JadeIntegration.loadHoeOverlay(overlay, tooltip, access);
+            tooltip.add(Helpers.translatable("tfc.jade.explosion_strength").append(Helpers.translatable(String.valueOf(PowderkegBlockEntity.getStrength(keg)))));
         }
     }
 }

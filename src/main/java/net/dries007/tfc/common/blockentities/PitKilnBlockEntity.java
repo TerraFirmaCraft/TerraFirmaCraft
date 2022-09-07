@@ -13,7 +13,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -279,7 +278,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     {
         assert level != null;
 
-        final float progress = Mth.inverseLerp(Calendars.SERVER.getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
+        final float progress = getProgress();
         final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach just above max temperature just before the end
         final float targetTemperature = Mth.lerp(eagerProgress, 0, TFCConfig.SERVER.pitKilnTemperature.get());
 
@@ -297,6 +296,12 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
                 }
             });
         }
+    }
+
+    public float getProgress()
+    {
+        assert level != null;
+        return Mth.inverseLerp(Calendars.get(level).getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
     }
 
     private void updateCache()

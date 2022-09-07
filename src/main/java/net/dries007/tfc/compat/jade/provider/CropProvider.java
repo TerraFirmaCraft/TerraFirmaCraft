@@ -10,19 +10,23 @@ import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.config.IPluginConfig;
-import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.common.blockentities.CropBlockEntity;
+import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.compat.jade.JadeIntegration;
+import net.dries007.tfc.util.Helpers;
 
-public enum HoeOverlayProvider implements IComponentProvider
+public enum CropProvider implements IComponentProvider
 {
     INSTANCE;
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor access, IPluginConfig iPluginConfig)
     {
-        if (access.getBlock() instanceof HoeOverlayBlock overlay)
+        if (access.getBlockEntity() instanceof CropBlockEntity crop && access.getBlock() instanceof CropBlock block)
         {
-            JadeIntegration.loadHoeOverlay(overlay, tooltip, access);
+            JadeIntegration.loadHoeOverlay(block, tooltip, access);
+
+            tooltip.add(Helpers.translatable("tfc.jade.yield").append(Helpers.literal(String.format("%.2f", crop.getYield()))));
         }
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -27,19 +28,18 @@ import net.dries007.tfc.common.blocks.plant.fruit.*;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
+import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.compat.jade.provider.*;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
 @WailaPlugin
 @SuppressWarnings("UnstableApiUsage")
 public class JadeIntegration implements IWailaPlugin
 {
-
-    @Override
-    public void register(IWailaCommonRegistration registry)
-    {
-
-    }
+    // Optionally we can register server side info providers here. We sync most everything so this is not needed right now.
 
     @Override
     public void registerClient(IWailaClientRegistration registry)
@@ -55,8 +55,16 @@ public class JadeIntegration implements IWailaPlugin
         registry.registerComponentProvider(CharcoalForgeProvider.INSTANCE, TooltipPosition.BODY, CharcoalForgeBlock.class);
         registry.registerComponentProvider(CrucibleProvider.INSTANCE, TooltipPosition.BODY, CrucibleBlock.class);
         registry.registerComponentProvider(BlastFurnaceProvider.INSTANCE, TooltipPosition.BODY, BlastFurnaceBlock.class);
+        registry.registerComponentProvider(PitKilnProvider.INSTANCE, TooltipPosition.BODY, PitKilnBlock.class);
+        registry.registerComponentProvider(PowderkegProvider.INSTANCE, TooltipPosition.BODY, PowderkegBlock.class);
+        registry.registerComponentProvider(FirepitProvider.INSTANCE, TooltipPosition.BODY, FirepitBlock.class);
+        registry.registerComponentProvider(CropProvider.INSTANCE, TooltipPosition.BODY, CropBlock.class);
+        registry.registerComponentProvider(BellowsProvider.INSTANCE, TooltipPosition.BODY, BellowsBlock.class);
 
-        // todo: animal, climate??, kiln
+        registry.registerComponentProvider(AnimalProvider.INSTANCE, TooltipPosition.BODY, TFCAnimal.class);
+        registry.registerComponentProvider(AnimalProvider.INSTANCE, TooltipPosition.BODY, TFCHorse.class);
+        registry.registerComponentProvider(AnimalProvider.INSTANCE, TooltipPosition.BODY, TFCChestedHorse.class);
+
         registerHoeOverlay(registry, FarmlandBlock.class);
         registerHoeOverlay(registry, DeadCropBlock.class);
         registerHoeOverlay(registry, DeadDoubleCropBlock.class);
@@ -65,14 +73,12 @@ public class JadeIntegration implements IWailaPlugin
         registerHoeOverlay(registry, FruitTreeLeavesBlock.class);
         registerHoeOverlay(registry, StationaryBerryBushBlock.class);
         registerHoeOverlay(registry, SpreadingBushBlock.class);
-        // todo: replace with more info than just overlay
-        registerHoeOverlay(registry, CropBlock.class);
 
     }
 
     private void registerHoeOverlay(IWailaClientRegistration registry, Class<? extends Block> blockClass)
     {
-        registry.registerComponentProvider(new HoeOverlayProvider(), TooltipPosition.BODY, blockClass);
+        registry.registerComponentProvider(HoeOverlayProvider.INSTANCE, TooltipPosition.BODY, blockClass);
     }
 
     public static void loadHoeOverlay(HoeOverlayBlock block, ITooltip tooltip, BlockAccessor access)
@@ -84,6 +90,20 @@ public class JadeIntegration implements IWailaPlugin
             final Level level = access.getLevel();
             block.addHoeOverlayInfo(level, pos, level.getBlockState(pos), text, false);
             tooltip.addAll(text);
+        }
+    }
+
+    public static void displayCountedItemName(ITooltip tooltip, ItemStack stack)
+    {
+        tooltip.add(Helpers.literal(String.valueOf(stack.getCount())).append("x ").append(stack.getHoverName()));
+    }
+
+    public static void displayHeat(ITooltip tooltip, float temperature)
+    {
+        final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(temperature);
+        if (heat != null)
+        {
+            tooltip.add(heat);
         }
     }
 

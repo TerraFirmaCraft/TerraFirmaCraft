@@ -141,6 +141,10 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
 
     public long getRemainingTicks()
     {
+        if (cachedRecipe == null)
+        {
+            updateCachedRecipe();
+        }
         if (cachedRecipe != null && level != null)
         {
             return cachedRecipe.getDuration() - getTicksSinceLit(level);

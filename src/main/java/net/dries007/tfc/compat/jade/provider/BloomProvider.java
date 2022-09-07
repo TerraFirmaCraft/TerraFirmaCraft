@@ -18,7 +18,7 @@ import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import net.dries007.tfc.common.blockentities.BloomBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.compat.jade.JadeIntegration;
 
 public enum BloomProvider implements IComponentProvider
 {
@@ -30,7 +30,10 @@ public enum BloomProvider implements IComponentProvider
         if (access.getBlockEntity() instanceof BloomBlockEntity bloom)
         {
             final ItemStack item = bloom.getItem();
-            tooltip.add(Helpers.literal(String.valueOf(bloom.getCount())).append("x ").append(item.getHoverName()));
+
+            ItemStack displayItem = item.copy();
+            displayItem.setCount(bloom.getCount());
+            JadeIntegration.displayCountedItemName(tooltip, displayItem);
 
             final List<Component> text = new ArrayList<>();
             item.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(item, text));

@@ -37,7 +37,7 @@ public enum ComposterProvider implements IComponentProvider
                 JadeIntegration.loadHoeOverlay(block, tooltip, access);
                 if (!composter.isReady())
                 {
-                    final String percent = Helpers.formatPercentage((float) composter.getTicksSinceUpdate() / composter.getReadyTicks() * 100);
+                    final String percent = Helpers.formatPercentage(Math.min(0.99f, (float) composter.getTicksSinceUpdate() / composter.getReadyTicks()) * 100);
                     tooltip.add(Helpers.translatable("tfc.jade.progress").append(percent));
                 }
             }

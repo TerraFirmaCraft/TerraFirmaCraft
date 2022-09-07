@@ -20,8 +20,6 @@ import net.dries007.tfc.common.blockentities.NestBoxBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.capabilities.egg.IEgg;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.Calendars;
 
 public enum NestBoxProvider implements IComponentProvider
 {
@@ -38,11 +36,8 @@ public enum NestBoxProvider implements IComponentProvider
                 {
                     ItemStack stack = inventory.getStackInSlot(i);
                     stack.getCapability(EggCapability.CAPABILITY).filter(IEgg::isFertilized).ifPresent(egg -> {
-                        if (egg.getHatchDay() > 0 && egg.getHatchDay() <= Calendars.get(access.getLevel()).getTotalDays())
-                        {
-                            text.add(stack.getHoverName());
-                            egg.addTooltipInfo(text);
-                        }
+                        text.add(stack.getHoverName());
+                        egg.addTooltipInfo(text);
                     });
                 }
             });

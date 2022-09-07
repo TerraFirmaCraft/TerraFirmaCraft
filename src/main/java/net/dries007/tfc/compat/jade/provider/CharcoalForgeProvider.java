@@ -11,8 +11,7 @@ import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import net.dries007.tfc.common.blockentities.CharcoalForgeBlockEntity;
-import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.compat.jade.JadeIntegration;
 
 public enum CharcoalForgeProvider implements IComponentProvider
 {
@@ -23,8 +22,7 @@ public enum CharcoalForgeProvider implements IComponentProvider
     {
         if (access.getBlockEntity() instanceof CharcoalForgeBlockEntity forge)
         {
-            tooltip.add(TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(forge.getTemperature()));
-            tooltip.add(Helpers.translatable("tfc.jade.air_ticks", forge.getAirTicks()));
+            JadeIntegration.displayHeat(tooltip, forge.getTemperature());
         }
     }
 }

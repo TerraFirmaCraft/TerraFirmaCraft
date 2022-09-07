@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.compat.jade.provider;
 
+import net.minecraft.util.Mth;
+
 import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.ITooltip;
@@ -14,6 +16,7 @@ import net.dries007.tfc.common.blockentities.BloomeryBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BloomeryBlock;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.ICalendar;
 
 public enum BloomeryProvider implements IComponentProvider
 {
@@ -28,12 +31,15 @@ public enum BloomeryProvider implements IComponentProvider
             tooltip.add(Helpers.translatable("tfc.jade.catalyst_stacks", bloomery.getCatalystStacks().size()));
             if (access.getBlockState().getValue(BloomeryBlock.LIT))
             {
-                final BloomeryRecipe recipe = bloomery.getCachedRecipe();
-                if (recipe != null)
+                final long ticksLeft = bloomery.getRemainingTicks();
+                if (ticksLeft > 0)
                 {
-                    final String percent = Helpers.formatPercentage((float) bloomery.getTicksSinceLit(access.getLevel()) / recipe.getDuration() * 100);
-                    tooltip.add(Helpers.translatable("tfc.jade.progress").append(percent));
-                    tooltip.add(Helpers.translatable("tfc.jade.creating", recipe.getResultItem().getHoverName()));
+                    final BloomeryRecipe recipe = bloomery.getCachedRecipe();
+                    if (recipe != null)
+                    {
+                        tooltip.add(Helpers.translatable("tfc.jade.hours_remaining", String.valueOf(Mth.ceil((float) ticksLeft / ICalendar.TICKS_IN_HOUR))));
+                        tooltip.add(Helpers.translatable("tfc.jade.creating", recipe.getResultItem().getHoverName()));
+                    }
                 }
             }
         }

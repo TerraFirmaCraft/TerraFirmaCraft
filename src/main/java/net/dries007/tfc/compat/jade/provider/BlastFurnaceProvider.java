@@ -12,7 +12,7 @@ import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import net.dries007.tfc.common.blockentities.BlastFurnaceBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
-import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.compat.jade.JadeIntegration;
 import net.dries007.tfc.util.Helpers;
 
 public enum BlastFurnaceProvider implements IComponentProvider
@@ -24,10 +24,7 @@ public enum BlastFurnaceProvider implements IComponentProvider
     {
         if (access.getBlockEntity() instanceof BlastFurnaceBlockEntity furnace)
         {
-            furnace.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap ->
-                tooltip.add(TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(cap.getTemperature()))
-            );
-            tooltip.add(Helpers.translatable("tfc.jade.air_ticks", String.valueOf(furnace.getAirTicks())));
+            furnace.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> JadeIntegration.displayHeat(tooltip, cap.getTemperature()));
 
             tooltip.add(Helpers.translatable("tfc.jade.input_stacks", String.valueOf(furnace.getInputCount())));
             tooltip.add(Helpers.translatable("tfc.jade.catalyst_stacks", String.valueOf(furnace.getCatalystCount())));
