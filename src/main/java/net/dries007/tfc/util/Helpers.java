@@ -180,6 +180,11 @@ public final class Helpers
         return t instanceof Collection<?> c ? (Stream<? extends R>) c.stream() : (t instanceof Stream<?> s ? (Stream<? extends R>) s : Stream.of((R) t));
     }
 
+    public static String formatPercentage(float percent)
+    {
+        return String.format("%d%%", Math.round(percent));
+    }
+
     public static TranslatableComponent translateEnum(Enum<?> anEnum)
     {
         return Helpers.translatable(getEnumTranslationKey(anEnum));

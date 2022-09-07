@@ -82,6 +82,13 @@ repositories {
         name = "BlameJared"
         url = "https://maven.blamejared.com"
     }
+    maven {
+        // Jade
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
     flatDir {
         dirs 'libs'
     }
@@ -175,6 +182,9 @@ dependencies {
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+
+    // Jade
+    implementation fg.deobf("curse.maven:jade-324717:${jade_version}")
 
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"

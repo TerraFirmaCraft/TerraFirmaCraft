@@ -84,4 +84,9 @@ public class TFCSaplingBlock extends SaplingBlock implements IForgeBlockExtensio
     {
         return super.mayPlaceOn(state, level, pos) || Helpers.isBlock(state.getBlock(), TFCTags.Blocks.BUSH_PLANTABLE_ON);
     }
+
+    public int getDaysToGrow()
+    {
+        return daysToGrow;
+    }
 }

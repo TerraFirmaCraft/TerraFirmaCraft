@@ -1004,6 +1004,9 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
 
+    'tfc.jade.growth': 'Growth: ',
+    'tfc.jade.completion': 'Completion: ',
+
     # Commands
 
     'tfc.commands.time.query.daytime': 'The day time is %s',

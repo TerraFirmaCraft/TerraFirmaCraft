@@ -200,6 +200,11 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         super.createBlockStateDefinition(builder.add(SAPLINGS));
     }
 
+    public int getTreeGrowthDays()
+    {
+        return treeGrowthDays;
+    }
+
     @Override
     public ExtendedProperties getExtendedProperties()
     {
