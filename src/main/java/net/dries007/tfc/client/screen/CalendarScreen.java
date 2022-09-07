@@ -54,9 +54,9 @@ public class CalendarScreen extends TFCContainerScreen<Container>
     {
         super.renderLabels(matrixStack, mouseX, mouseY);
 
-        String season = I18n.get("tfc.tooltip.calendar_season") + I18n.get(Calendars.CLIENT.getCalendarMonthOfYear().getTranslationKey(Month.Style.SEASON));
-        String day = I18n.get("tfc.tooltip.calendar_day") + Calendars.CLIENT.getCalendarDayOfYear().getString();
-        String date = I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getString();
+        String season = I18n.get("tfc.tooltip.calendar_season", I18n.get(Calendars.CLIENT.getCalendarMonthOfYear().getTranslationKey(Month.Style.SEASON)));
+        String day = I18n.get("tfc.tooltip.calendar_day", Calendars.CLIENT.getCalendarDayOfYear().getString());
+        String date = I18n.get("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate().getString());
 
         font.draw(matrixStack, season, (imageWidth - font.width(season)) / 2f, 25, 0x404040);
         font.draw(matrixStack, day, (imageWidth - font.width(day)) / 2f, 34, 0x404040);

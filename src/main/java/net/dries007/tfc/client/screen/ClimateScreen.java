@@ -60,8 +60,8 @@ public class ClimateScreen extends TFCContainerScreen<Container>
         float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
         float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
 
-        String climateType = I18n.get("tfc.tooltip.climate_koppen_climate_classification") + I18n.get(Helpers.getEnumTranslationKey(KoppenClimateClassification.classify(averageTemp, rainfall)));
-        String plateTectonics = I18n.get("tfc.tooltip.climate_plate_tectonics_classification") + I18n.get(Helpers.getEnumTranslationKey(ClimateRenderCache.INSTANCE.getPlateTectonicsInfo()));
+        String climateType = I18n.get("tfc.tooltip.climate_koppen_climate_classification", I18n.get(Helpers.getEnumTranslationKey(KoppenClimateClassification.classify(averageTemp, rainfall))));
+        String plateTectonics = I18n.get("tfc.tooltip.climate_plate_tectonics_classification", I18n.get(Helpers.getEnumTranslationKey(ClimateRenderCache.INSTANCE.getPlateTectonicsInfo())));
         String averageTempTooltip = I18n.get("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp));
         String rainfallTooltip = I18n.get("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall));
         String currentTempTooltip = I18n.get("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp));

@@ -109,7 +109,7 @@ public class PropickItem extends ToolItem
                     if (states.isEmpty())
                     {
                         // Nothing
-                        result = ProspectResult.NOTHING_FALSE_NEGATIVE;
+                        result = ProspectResult.NOTHING;
                     }
                     else
                     {
