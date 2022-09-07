@@ -24,8 +24,7 @@ public enum SaplingProvider implements IComponentProvider
     {
         if (access.getBlockEntity() instanceof TickCounterBlockEntity counter && access.getBlock() instanceof TFCSaplingBlock sapling)
         {
-            final float perc = Math.min(0.99f, (float) counter.getTicksSinceUpdate() / (sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY));
-            final String growth = String.format("%d%%", Math.round(perc));
+            final String growth = Helpers.formatPercentage(Math.min(0.99f, (float) counter.getTicksSinceUpdate() / (sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY)) * 100);
             tooltip.add(Helpers.translatable("tfc.jade.growth").append(growth));
         }
     }

@@ -26,24 +26,6 @@ import net.dries007.tfc.util.climate.Climate;
 
 public class ComposterBlockEntity extends TickCounterBlockEntity
 {
-    public static long getReadyTicks(Level level, BlockPos pos)
-    {
-        final float rainfall = Climate.getRainfall(level, pos);
-        long readyTicks = TFCConfig.SERVER.composterTicks.get();
-        if (TFCConfig.SERVER.composterRainfallCheck.get())
-        {
-            if (rainfall < 150f) // inverted trapezoid wave
-            {
-                readyTicks *= (long) ((150f - rainfall) / 50f + 1f);
-            }
-            else if (rainfall > 350f)
-            {
-                readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
-            }
-        }
-        return readyTicks;
-    }
-
     private int green, brown;
 
     public ComposterBlockEntity(BlockPos pos, BlockState state)
@@ -61,12 +43,31 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         if (green >= 4 && brown >= 4 & !isRotten())
         {
             assert level != null;
-            if (getTicksSinceUpdate() > getReadyTicks(level, getBlockPos()))
+            if (getTicksSinceUpdate() > getReadyTicks())
             {
                 setState(TFCComposterBlock.CompostType.READY);
                 markForSync();
             }
         }
+    }
+
+    public long getReadyTicks()
+    {
+        assert level != null;
+        final float rainfall = Climate.getRainfall(level, getBlockPos());
+        long readyTicks = TFCConfig.SERVER.composterTicks.get();
+        if (TFCConfig.SERVER.composterRainfallCheck.get())
+        {
+            if (rainfall < 150f) // inverted trapezoid wave
+            {
+                readyTicks *= (long) ((150f - rainfall) / 50f + 1f);
+            }
+            else if (rainfall > 350f)
+            {
+                readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
+            }
+        }
+        return readyTicks;
     }
 
     @Override

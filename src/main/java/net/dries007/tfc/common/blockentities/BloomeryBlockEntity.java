@@ -141,11 +141,22 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
 
     public long getRemainingTicks()
     {
-        if (cachedRecipe != null)
+        if (cachedRecipe != null && level != null)
         {
-            return cachedRecipe.getDuration() - (Calendars.SERVER.getTicks() - litTick);
+            return cachedRecipe.getDuration() - getTicksSinceLit(level);
         }
         return 0;
+    }
+
+    public long getTicksSinceLit(Level level)
+    {
+        return Calendars.get(level).getTicks() - litTick;
+    }
+
+    @Nullable
+    public BloomeryRecipe getCachedRecipe()
+    {
+        return cachedRecipe;
     }
 
     /**
@@ -409,6 +420,16 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
         {
             cachedRecipe = null;
         }
+    }
+
+    public List<ItemStack> getInputStacks()
+    {
+        return inputStacks;
+    }
+
+    public List<ItemStack> getCatalystStacks()
+    {
+        return catalystStacks;
     }
 
     static class Inventory extends InventoryItemHandler implements BloomeryInventory

@@ -1005,7 +1005,11 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_ready': 'Ready',
 
     'tfc.jade.growth': 'Growth: ',
-    'tfc.jade.completion': 'Completion: ',
+    'tfc.jade.progress': 'Progress: ',
+    'tfc.jade.sealed_date': 'Sealed Date: ',
+    'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
+    'tfc.jade.input_stacks': '%sx Catalyst Stacks',
+    'tfc.jade.creating': 'Creating %s',
 
     # Commands
 

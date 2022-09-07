@@ -25,7 +25,7 @@ public enum FruitTreeSaplingProvider implements IComponentProvider
     {
         if (access.getBlockEntity() instanceof TickCounterBlockEntity counter && access.getBlock() instanceof FruitTreeSaplingBlock sapling)
         {
-            final String growth = Helpers.formatPercentage(Math.min(0.99f, (float) counter.getTicksSinceUpdate() / (sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY)));
+            final String growth = Helpers.formatPercentage(Math.min(0.99f, (float) counter.getTicksSinceUpdate() / (sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY)) * 100);
             tooltip.add(Helpers.translatable("tfc.jade.growth").append(growth));
             JadeIntegration.loadHoeOverlay(sapling, tooltip, access);
         }

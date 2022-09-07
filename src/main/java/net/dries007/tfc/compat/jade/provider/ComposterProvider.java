@@ -6,12 +6,15 @@
 
 package net.dries007.tfc.compat.jade.provider;
 
+import net.minecraft.world.item.ItemStack;
+
 import mcp.mobius.waila.api.BlockAccessor;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.ITooltip;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import net.dries007.tfc.common.blockentities.ComposterBlockEntity;
 import net.dries007.tfc.common.blocks.devices.TFCComposterBlock;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.compat.jade.JadeIntegration;
 import net.dries007.tfc.util.Helpers;
 
@@ -24,15 +27,19 @@ public enum ComposterProvider implements IComponentProvider
     {
         if (access.getBlock() instanceof TFCComposterBlock block && access.getBlockEntity() instanceof ComposterBlockEntity composter)
         {
-
             if (composter.isRotten())
             {
-                tooltip.add(Helpers.translatable("tfc.composter.rotten"));
+                tooltip.add(JadeIntegration.getItem(tooltip, new ItemStack(TFCItems.ROTTEN_COMPOST.get())));
+                tooltip.append(Helpers.translatable("tfc.composter.rotten"));
             }
             else
             {
                 JadeIntegration.loadHoeOverlay(block, tooltip, access);
-
+                if (!composter.isReady())
+                {
+                    final String percent = Helpers.formatPercentage((float) composter.getTicksSinceUpdate() / composter.getReadyTicks() * 100);
+                    tooltip.add(Helpers.translatable("tfc.jade.progress").append(percent));
+                }
             }
         }
     }
