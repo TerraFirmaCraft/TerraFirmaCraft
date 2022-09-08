@@ -145,7 +145,7 @@ public final class BlockEntityTooltips
             else
             {
                 hoeOverlay(level, block, entity, tooltip);
-                if (!composter.isReady())
+                if (!composter.isReady() && state.getValue(TFCComposterBlock.STAGE) == 8)
                 {
                     tooltip.accept(Calendars.get(level).getTimeDelta(composter.getReadyTicks() - composter.getTicksSinceUpdate()));
                 }
@@ -201,7 +201,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip FRUIT_TREE_SAPLING = (level, state, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof FruitTreeSaplingBlock sapling)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.growth", Calendars.get(level).getTimeDelta((long) sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
+            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta((long) sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
             hoeOverlay(level, sapling, entity, tooltip);
         }
     };
@@ -219,7 +219,10 @@ public final class BlockEntityTooltips
             final LampFuel fuel = lamp.getFuel();
             if (fuel != null)
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.burn_rate", fuel.getBurnRate()));
+                if (fuel.getBurnRate() != -1)
+                {
+                    tooltip.accept(Helpers.translatable("tfc.jade.burn_rate", fuel.getBurnRate()));
+                }
                 if (state.getValue(LampBlock.LIT))
                 {
                     if (fuel.getBurnRate() == -1)
@@ -275,7 +278,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip SAPLING = (level, state, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof TFCSaplingBlock sapling)
         {
-            tooltip.accept(Helpers.translatable("tfc.jade.growth", Calendars.get(level).getTimeDelta((long) sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
+            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta((long) sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
         }
     };
 
@@ -308,7 +311,7 @@ public final class BlockEntityTooltips
                 }
                 else
                 {
-                    tooltip.accept(Helpers.translatable("tfc.jade.time_left", TFCConfig.SERVER.dryingBricksTicks.get() - counter.getTicksSinceUpdate()));
+                    tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.dryingBricksTicks.get() - counter.getTicksSinceUpdate())));
                 }
             }
         }
@@ -336,9 +339,9 @@ public final class BlockEntityTooltips
         }
     };
 
-        private static void pitKiln(Level level, @Nullable BlockEntity entity, Consumer<Component> tooltip, int offset)
+    private static void pitKiln(Level level, @Nullable BlockEntity entity, Consumer<Component> tooltip, int offset)
     {
-        if (entity == null) return;
+        if (entity == null) return; // todo this does not work because we have NO position access without a block entity (fire is not a BE). we have to refactor position into all of these.
 
         final BlockPos pos = entity.getBlockPos().relative(Direction.UP, offset);
         final BlockState state = level.getBlockState(pos);

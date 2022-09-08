@@ -9,9 +9,10 @@ package net.dries007.tfc.compat.jade.common;
 import java.util.function.BiConsumer;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FireBlock;
-import net.minecraft.world.level.block.LoomBlock;
 
 import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.TFCTorchBlock;
@@ -23,10 +24,16 @@ import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.plant.fruit.*;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
+import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
+import net.dries007.tfc.common.entities.TFCFishingHook;
+import net.dries007.tfc.common.entities.WildAnimal;
+import net.dries007.tfc.common.entities.aquatic.TFCSquid;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
+import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.TFCRabbit;
 
 public class Tooltips
 {
@@ -62,10 +69,16 @@ public class Tooltips
         registerBlock.accept(BlockEntityTooltips.JACK_O_LANTERN, JackOLanternBlock.class);
         registerBlock.accept(BlockEntityTooltips.MUD_BRICKS, DryingBricksBlock.class);
         registerBlock.accept(BlockEntityTooltips.DECAYING, DecayingBlock.class);
-        registerBlock.accept(BlockEntityTooltips.LOOM, LoomBlock.class);
+        registerBlock.accept(BlockEntityTooltips.LOOM, TFCLoomBlock.class);
 
         registerEntity.accept(EntityTooltips.ANIMAL, TFCAnimal.class);
         registerEntity.accept(EntityTooltips.ANIMAL, TFCHorse.class);
         registerEntity.accept(EntityTooltips.ANIMAL, TFCChestedHorse.class);
+        registerEntity.accept(EntityTooltips.ANIMAL, WildAnimal.class);
+        registerEntity.accept(EntityTooltips.SQUID, TFCSquid.class);
+        registerEntity.accept(EntityTooltips.FISH, WaterAnimal.class);
+        registerEntity.accept(EntityTooltips.PREDATOR, Predator.class);
+        registerEntity.accept(EntityTooltips.RABBIT, Rabbit.class);
+        registerEntity.accept(EntityTooltips.HOOK, TFCFishingHook.class);
     }
 }

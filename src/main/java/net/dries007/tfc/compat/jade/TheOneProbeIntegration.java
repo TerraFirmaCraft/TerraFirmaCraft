@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.compat.jade;
 
+import java.util.Locale;
 import java.util.function.Function;
 
 import net.minecraft.resources.ResourceLocation;
@@ -34,13 +35,13 @@ public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
             @Override
             public ResourceLocation getID()
             {
-                return Helpers.identifier(blockClass.getSimpleName());
+                return Helpers.identifier(blockClass.getSimpleName().toLowerCase(Locale.ROOT));
             }
 
             @Override
             public void addProbeInfo(ProbeMode probeMode, IProbeInfo info, Player player, Level level, BlockState blockState, IProbeHitData data)
             {
-                if (data.getPos() != null && blockState.getBlock().getClass().isInstance(blockClass))
+                if (data.getPos() != null && blockClass.isInstance(blockState.getBlock()))
                 {
                     tooltip.display(level, blockState, level.getBlockEntity(data.getPos()), info::text);
                 }
@@ -54,13 +55,13 @@ public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
             @Override
             public String getID()
             {
-                return Helpers.identifier(entityClass.getSimpleName()).toString();
+                return Helpers.identifier(entityClass.getSimpleName().toLowerCase(Locale.ROOT)).toString();
             }
 
             @Override
             public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo info, Player player, Level level, Entity entity, IProbeHitEntityData data)
             {
-                if (entity.getClass().isInstance(entityClass))
+                if (entityClass.isInstance(entity))
                 {
                     tooltip.display(level, entity, info::text);
                 }

@@ -1004,7 +1004,6 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
 
-    'tfc.jade.growth': 'Growth: %s',
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
     'tfc.jade.input_stacks': '%sx Input Stacks',
@@ -1034,6 +1033,14 @@ DEFAULT_LANG = {
     'tfc.jade.raining_mud_bricks': 'Raining, cannot start drying',
     'tfc.jade.dried_mud_bricks': 'Dried',
     'tfc.jade.loom_progress': 'Weaving Progress: %s / %s making %s',
+    'tfc.jade.squid_size': 'Size: %s',
+    'tfc.jade.freshwater': 'Freshwater',
+    'tfc.jade.saltwater': 'Saltwater',
+    'tfc.jade.diurnal': 'Diurnal',
+    'tfc.jade.nocturnal': 'Nocturnal',
+    'tfc.jade.large_bait': 'Needs large fishing bait to catch',
+    'tfc.jade.hooked': 'Hooked Entity: %s',
+    'tfc.jade.bait': 'Attached Bait: %s',
     **{'tfc.jade.bellows_%s' % i: 'W' + ('o' * (2 + i)) + 'sh' for i in range(1, 11)},
 
     # Commands
@@ -1217,6 +1224,13 @@ DEFAULT_LANG = {
     'tfc.enum.order.not_last': 'Not Last',
     'tfc.enum.order.second_last': 'Second Last',
     'tfc.enum.order.third_last': 'Third Last',
+    'tfc.rabbit_0': 'Brown Fur',
+    'tfc.rabbit_1': 'White Fur',
+    'tfc.rabbit_2': 'Black Fur',
+    'tfc.rabbit_3': 'White Splotched Fur',
+    'tfc.rabbit_4': 'Golden Fur',
+    'tfc.rabbit_5': 'Salty Fur',
+    'tfc.rabbit_99': '§cEvil',
 
     'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
