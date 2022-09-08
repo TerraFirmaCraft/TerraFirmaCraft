@@ -467,7 +467,7 @@ PLANTS: Dict[str, Plant] = {
 }
 
 FLOWERPOT_CROSS_PLANTS = {
-    'allium': 'allium_0',
+    'allium': 'allium_2',
     'anthurium': 'anthurium_0',
     'athyrium_fern': 'single',
     'black_orchid': 'black_orchid_0',
@@ -481,6 +481,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'dead_bush': 'dead_bush0',
     'desert_flame': 'desert_flame_0',
     'field_horsetail': 'item',
+    'foxglove': 'item',
     'goldenrod': 'goldenrod_2',
     'grape_hyacinth': 'grape_hyacinth_1',
     'heliconia': 'heliconia_0',
@@ -514,7 +515,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'yucca': 'yucca_2'
 }
 
-MISC_POTTED_PLANTS = ['barrel_cactus', 'foxglove', 'morning_glory', 'moss', 'ostrich_fern', 'reindeer_lichen', 'rose', 'sapphire_tower', 'toquilla_palm', 'tree_fern']
+MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'ostrich_fern', 'reindeer_lichen', 'rose', 'sapphire_tower', 'toquilla_palm', 'tree_fern']
 
 SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'allium': 8,

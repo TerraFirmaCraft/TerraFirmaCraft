@@ -73,7 +73,7 @@ public enum ForgeStep
 
     public static int getOptimalStepsToTarget(int target)
     {
-        return PATHS[target];
+        return target < 0 || target >= PATHS.length ? Integer.MAX_VALUE : PATHS[target];
     }
 
     private final int step;
