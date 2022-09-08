@@ -42,7 +42,7 @@ public final class EntityTooltips
             {
                 familiarityStyle = ChatFormatting.WHITE;
             }
-            tooltip.accept(Helpers.translatable("tfc.jade.familiarity").append(Helpers.literal(familiarityPercent).withStyle(familiarityStyle)));
+            tooltip.accept(Helpers.translatable("tfc.jade.familiarity", familiarityPercent).withStyle(familiarityStyle));
             if (animal.isReadyForAnimalProduct())
             {
                 tooltip.accept(animal.getProductReadyName().withStyle(ChatFormatting.GREEN));
@@ -55,7 +55,7 @@ public final class EntityTooltips
             switch (age)
             {
                 case CHILD -> tooltip.accept(Helpers.translatable("tfc.jade.adulthood_days", animal.getDaysToAdulthood()));
-                case ADULT -> tooltip.accept(Helpers.translatable("tfc.jade.animal_wear").append(Helpers.formatPercentage(100f * animal.getUses() / animal.getUsesToElderly())));
+                case ADULT -> tooltip.accept(Helpers.translatable("tfc.jade.animal_wear", String.format("%d%%", Math.round(100f * animal.getUses() / animal.getUsesToElderly()))));
                 case OLD -> tooltip.accept(Helpers.translatable("tfc.jade.old_animal"));
             }
 
@@ -67,7 +67,7 @@ public final class EntityTooltips
                 tooltip.accept(Helpers.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()));
 
                 final long totalDays = Calendars.get(level).getTotalDays();
-                tooltip.accept(Helpers.translatable("tfc.jade.gestation_progress", Helpers.formatPercentage(100f * (mammal.getPregnantTime() - totalDays) / mammal.getGestationDays())));
+                tooltip.accept(Helpers.translatable("tfc.jade.gestation_progress", String.format("%d%%", Math.round(100f * (mammal.getPregnantTime() - totalDays) / mammal.getGestationDays()))));
             }
         }
         if (entity instanceof HorseProperties horse)
@@ -78,7 +78,7 @@ public final class EntityTooltips
             }
             if (entity instanceof TFCHorse tfcHorse)
             {
-                tooltip.accept(Helpers.translateEnum(tfcHorse.getVariant()).append(Helpers.literal(", ").append(Helpers.translateEnum(tfcHorse.getMarkings()))));
+                tooltip.accept(Helpers.translatable("tfc.jade.variant_and_markings", Helpers.translateEnum(tfcHorse.getVariant()), Helpers.translateEnum(tfcHorse.getMarkings())));
             }
             if (entity instanceof TFCChestedHorse chested && !chested.getChestItem().isEmpty())
             {

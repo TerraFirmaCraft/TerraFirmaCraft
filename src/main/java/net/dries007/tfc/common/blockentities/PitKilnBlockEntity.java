@@ -278,7 +278,7 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     {
         assert level != null;
 
-        final float progress = getProgress();
+        final float progress = Mth.inverseLerp(Calendars.get(level).getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
         final float eagerProgress = Mth.clamp(progress * 1.125f, 0, 1); // Reach just above max temperature just before the end
         final float targetTemperature = Mth.lerp(eagerProgress, 0, TFCConfig.SERVER.pitKilnTemperature.get());
 
@@ -298,10 +298,10 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
         }
     }
 
-    public float getProgress()
+    public long getTicksLeft()
     {
         assert level != null;
-        return Mth.inverseLerp(Calendars.get(level).getTicks(), litTick, litTick + TFCConfig.SERVER.pitKilnTicks.get());
+        return litTick + TFCConfig.SERVER.pitKilnTicks.get() - Calendars.get(level).getTicks();
     }
 
     private void updateCache()
