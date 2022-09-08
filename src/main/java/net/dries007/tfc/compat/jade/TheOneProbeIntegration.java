@@ -25,7 +25,8 @@ public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
     @Override
     public Void apply(ITheOneProbe registry)
     {
-        Tooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass), (tooltip, aClass) -> register(registry, tooltip, aClass));
+        BlockEntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
+        EntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
         return null;
     }
 
@@ -43,7 +44,7 @@ public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
             {
                 if (data.getPos() != null && blockClass.isInstance(blockState.getBlock()))
                 {
-                    tooltip.display(level, blockState, level.getBlockEntity(data.getPos()), info::text);
+                    tooltip.display(level, blockState, data.getPos(), level.getBlockEntity(data.getPos()), info::text);
                 }
             }
         });

@@ -8,26 +8,35 @@ package net.dries007.tfc.compat.jade.common;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blocks.BloomBlock;
 import net.dries007.tfc.common.blocks.TFCTorchBlock;
+import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.crop.CropBlock;
+import net.dries007.tfc.common.blocks.crop.DeadCropBlock;
+import net.dries007.tfc.common.blocks.crop.DeadDoubleCropBlock;
+import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.devices.*;
-import net.dries007.tfc.common.blocks.plant.fruit.FruitTreeSaplingBlock;
+import net.dries007.tfc.common.blocks.plant.fruit.*;
+import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
+import net.dries007.tfc.common.blocks.wood.TFCLoomBlock;
 import net.dries007.tfc.common.blocks.wood.TFCSaplingBlock;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
@@ -49,7 +58,42 @@ import net.dries007.tfc.util.calendar.ICalendar;
  */
 public final class BlockEntityTooltips
 {
-    public static final BlockEntityTooltip BARREL = (level, state, entity, tooltip) -> {
+    public static void register(BiConsumer<BlockEntityTooltip, Class<? extends Block>> registerBlock)
+    {
+        registerBlock.accept(BARREL, BarrelBlock.class);
+        registerBlock.accept(BELLOWS, BellowsBlock.class);
+        registerBlock.accept(SAPLING, TFCSaplingBlock.class);
+        registerBlock.accept(BLAST_FURNACE, BlastFurnaceBlock.class);
+        registerBlock.accept(BLOOMERY, BloomeryBlock.class);
+        registerBlock.accept(BLOOM, BloomBlock.class);
+        registerBlock.accept(CHARCOAL_FORGE, CharcoalForgeBlock.class);
+        registerBlock.accept(COMPOSTER, TFCComposterBlock.class);
+        registerBlock.accept(CROP, CropBlock.class);
+        registerBlock.accept(CRUCIBLE, CrucibleBlock.class);
+        registerBlock.accept(FIREPIT, FirepitBlock.class);
+        registerBlock.accept(FRUIT_TREE_SAPLING, FruitTreeSaplingBlock.class);
+        registerBlock.accept(HOE_OVERLAY, FarmlandBlock.class);
+        registerBlock.accept(HOE_OVERLAY, DeadCropBlock.class);
+        registerBlock.accept(HOE_OVERLAY, DeadDoubleCropBlock.class);
+        registerBlock.accept(HOE_OVERLAY, BananaPlantBlock.class);
+        registerBlock.accept(HOE_OVERLAY, FruitTreeBranchBlock.class);
+        registerBlock.accept(HOE_OVERLAY, FruitTreeLeavesBlock.class);
+        registerBlock.accept(HOE_OVERLAY, StationaryBerryBushBlock.class);
+        registerBlock.accept(HOE_OVERLAY, SpreadingBushBlock.class);
+        registerBlock.accept(LAMP, LampBlock.class);
+        registerBlock.accept(NEST_BOX, NestBoxBlock.class);
+        registerBlock.accept(PIT_KILN_INTERNAL, PitKilnBlock.class);
+        registerBlock.accept(PIT_KILN_ABOVE, FireBlock.class);
+        registerBlock.accept(POWDER_KEG, PowderkegBlock.class);
+        registerBlock.accept(TORCH, TFCTorchBlock.class);
+        registerBlock.accept(TORCH, TFCWallTorchBlock.class);
+        registerBlock.accept(JACK_O_LANTERN, JackOLanternBlock.class);
+        registerBlock.accept(MUD_BRICKS, DryingBricksBlock.class);
+        registerBlock.accept(DECAYING, DecayingBlock.class);
+        registerBlock.accept(LOOM, TFCLoomBlock.class);
+    }
+
+    public static final BlockEntityTooltip BARREL = (level, state, pos, entity, tooltip) -> {
         if (state.getBlock() instanceof BarrelBlock && entity instanceof BarrelBlockEntity barrel)
         {
             if (state.getValue(BarrelBlock.SEALED))
@@ -65,7 +109,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip BELLOWS = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip BELLOWS = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BellowsBlockEntity bellows)
         {
             int pushTicks = bellows.getTicksSincePushed();
@@ -81,7 +125,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip BLAST_FURNACE = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip BLAST_FURNACE = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BlastFurnaceBlockEntity furnace)
         {
             furnace.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> heat(tooltip, cap.getTemperature()));
@@ -92,7 +136,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip BLOOMERY = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip BLOOMERY = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BloomeryBlockEntity bloomery && state.getBlock() instanceof BloomeryBlock)
         {
             tooltip.accept(Helpers.translatable("tfc.jade.input_stacks", bloomery.getInputStacks().size()));
@@ -113,7 +157,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip BLOOM = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip BLOOM = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof BloomBlockEntity bloom)
         {
             final ItemStack item = bloom.getItem();
@@ -128,14 +172,14 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip CHARCOAL_FORGE = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip CHARCOAL_FORGE = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof CharcoalForgeBlockEntity forge)
         {
             heat(tooltip, forge.getTemperature());
         }
     };
 
-    public static final BlockEntityTooltip COMPOSTER = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip COMPOSTER = (level, state, pos, entity, tooltip) -> {
         if (state.getBlock() instanceof TFCComposterBlock block && entity instanceof ComposterBlockEntity composter)
         {
             if (composter.isRotten())
@@ -153,7 +197,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip CROP = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip CROP = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof CropBlockEntity crop && state.getBlock() instanceof CropBlock block)
         {
             hoeOverlay(level, block, entity, tooltip);
@@ -162,14 +206,14 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip CRUCIBLE = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip CRUCIBLE = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof CrucibleBlockEntity crucible)
         {
             crucible.getCapability(HeatCapability.BLOCK_CAPABILITY).ifPresent(cap -> heat(tooltip, cap.getTemperature()));
         }
     };
 
-    public static final BlockEntityTooltip FIREPIT = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip FIREPIT = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof AbstractFirepitBlockEntity<?> firepit)
         {
             heat(tooltip, firepit.getTemperature());
@@ -198,7 +242,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip FRUIT_TREE_SAPLING = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip FRUIT_TREE_SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof FruitTreeSaplingBlock sapling)
         {
             tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta((long) sapling.getTreeGrowthDays() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
@@ -206,14 +250,14 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip HOE_OVERLAY = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip HOE_OVERLAY = (level, state, pos, entity, tooltip) -> {
         if (state.getBlock() instanceof HoeOverlayBlock overlay)
         {
             hoeOverlay(level, overlay, entity, tooltip);
         }
     };
 
-    public static final BlockEntityTooltip LAMP = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip LAMP = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof LampBlockEntity lamp && state.getBlock() instanceof LampBlock)
         {
             final LampFuel fuel = lamp.getFuel();
@@ -247,7 +291,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip NEST_BOX = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip NEST_BOX = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof NestBoxBlockEntity nest)
         {
             final List<Component> text = new ArrayList<>();
@@ -265,38 +309,38 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip PIT_KILN_INTERNAL = (level, state, entity, tooltip) -> pitKiln(level, entity, tooltip, 0);
-    public static final BlockEntityTooltip PIT_KILN_ABOVE = (level, state, entity, tooltip) -> pitKiln(level, entity, tooltip, -1);
+    public static final BlockEntityTooltip PIT_KILN_INTERNAL = (level, state, pos, entity, tooltip) -> pitKiln(level, pos, tooltip);
+    public static final BlockEntityTooltip PIT_KILN_ABOVE = (level, state, pos, entity, tooltip) -> pitKiln(level, pos.below(), tooltip);
 
-    public static final BlockEntityTooltip POWDER_KEG = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip POWDER_KEG = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof PowderkegBlockEntity keg)
         {
             tooltip.accept(Helpers.translatable("tfc.jade.explosion_strength", PowderkegBlockEntity.getStrength(keg)));
         }
     };
 
-    public static final BlockEntityTooltip SAPLING = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip SAPLING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof TFCSaplingBlock sapling)
         {
             tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta((long) sapling.getDaysToGrow() * ICalendar.TICKS_IN_DAY - counter.getTicksSinceUpdate())));
         }
     };
 
-    public static final BlockEntityTooltip TORCH = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip TORCH = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter)
         {
             tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.torchTicks.get() - counter.getTicksSinceUpdate())));
         }
     };
 
-    public static final BlockEntityTooltip JACK_O_LANTERN = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip JACK_O_LANTERN = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter)
         {
             tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.jackOLanternTicks.get() - counter.getTicksSinceUpdate())));
         }
     };
 
-    public static final BlockEntityTooltip MUD_BRICKS = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip MUD_BRICKS = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof DryingBricksBlock)
         {
             if (state.getValue(DryingBricksBlock.DRIED))
@@ -311,13 +355,13 @@ public final class BlockEntityTooltips
                 }
                 else
                 {
-                    tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.dryingBricksTicks.get() - counter.getTicksSinceUpdate())));
+                    tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.mudBricksTicks.get() - counter.getTicksSinceUpdate())));
                 }
             }
         }
     };
 
-    public static final BlockEntityTooltip DECAYING = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip DECAYING = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof DecayingBlockEntity decaying)
         {
             final ItemStack stack = decaying.getStack();
@@ -328,7 +372,7 @@ public final class BlockEntityTooltips
         }
     };
 
-    public static final BlockEntityTooltip LOOM = (level, state, entity, tooltip) -> {
+    public static final BlockEntityTooltip LOOM = (level, state, pos, entity, tooltip) -> {
         if (entity instanceof LoomBlockEntity loom)
         {
             final LoomRecipe recipe = loom.getRecipe();
@@ -339,13 +383,9 @@ public final class BlockEntityTooltips
         }
     };
 
-    private static void pitKiln(Level level, @Nullable BlockEntity entity, Consumer<Component> tooltip, int offset)
+    private static void pitKiln(Level level, BlockPos pos, Consumer<Component> tooltip)
     {
-        if (entity == null) return; // todo this does not work because we have NO position access without a block entity (fire is not a BE). we have to refactor position into all of these.
-
-        final BlockPos pos = entity.getBlockPos().relative(Direction.UP, offset);
         final BlockState state = level.getBlockState(pos);
-
         if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && state.getBlock() instanceof PitKilnBlock)
         {
             if (state.getValue(PitKilnBlock.STAGE) == PitKilnBlock.LIT)

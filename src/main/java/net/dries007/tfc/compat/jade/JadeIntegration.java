@@ -19,12 +19,13 @@ public class JadeIntegration implements IWailaPlugin
     @Override
     public void registerClient(IWailaClientRegistration registry)
     {
-        Tooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass), (tooltip, aClass) -> register(registry, tooltip, aClass));
+        BlockEntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
+        EntityTooltips.register((tooltip, aClass) -> register(registry, tooltip, aClass));
     }
 
     private void register(IWailaClientRegistration registry, BlockEntityTooltip blockEntityTooltip, Class<? extends Block> blockClass)
     {
-        registry.registerComponentProvider((tooltip, access, config) -> blockEntityTooltip.display(access.getLevel(), access.getBlockState(), access.getBlockEntity(), tooltip::add), TooltipPosition.BODY, blockClass);
+        registry.registerComponentProvider((tooltip, access, config) -> blockEntityTooltip.display(access.getLevel(), access.getBlockState(), access.getPosition(), access.getBlockEntity(), tooltip::add), TooltipPosition.BODY, blockClass);
     }
 
     private void register(IWailaClientRegistration registry, EntityTooltip entityTooltip, Class<? extends Entity> entityClass)

@@ -6,8 +6,12 @@
 
 package net.dries007.tfc.compat.jade.common;
 
+import java.util.function.BiConsumer;
+
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Rabbit;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
@@ -16,6 +20,7 @@ import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.aquatic.AquaticMob;
 import net.dries007.tfc.common.entities.aquatic.TFCSquid;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.livestock.horse.HorseProperties;
 import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
@@ -30,6 +35,19 @@ import net.dries007.tfc.util.calendar.Calendars;
  */
 public final class EntityTooltips
 {
+    public static void register(BiConsumer<EntityTooltip, Class<? extends Entity>> registry)
+    {
+        registry.accept(ANIMAL, TFCAnimal.class);
+        registry.accept(ANIMAL, TFCHorse.class);
+        registry.accept(ANIMAL, TFCChestedHorse.class);
+        registry.accept(ANIMAL, WildAnimal.class);
+        registry.accept(SQUID, TFCSquid.class);
+        registry.accept(FISH, WaterAnimal.class);
+        registry.accept(PREDATOR, Predator.class);
+        registry.accept(RABBIT, Rabbit.class);
+        registry.accept(HOOK, TFCFishingHook.class);
+    }
+
     public static final EntityTooltip ANIMAL = (level, entity, tooltip) -> {
         if (entity instanceof WildAnimal animal)
         {
