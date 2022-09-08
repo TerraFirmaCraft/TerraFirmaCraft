@@ -213,8 +213,7 @@ public final class BlockEntityTooltips
     public static final BlockEntityTooltip LAMP = (level, state, entity, tooltip) -> {
         if (entity instanceof LampBlockEntity lamp && state.getBlock() instanceof LampBlock)
         {
-            // todo: this info is not available on the client (?)
-            LampFuel fuel = lamp.getFuel();
+            final LampFuel fuel = lamp.getFuel();
             if (fuel != null)
             {
                 tooltip.accept(Helpers.translatable("tfc.jade.burn_rate", fuel.getBurnRate()));
