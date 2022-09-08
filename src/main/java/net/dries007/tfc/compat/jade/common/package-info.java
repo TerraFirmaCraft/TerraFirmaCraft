@@ -7,7 +7,7 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-package net.dries007.tfc.compat.jade.provider;
+package net.dries007.tfc.compat.jade.common;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
