@@ -143,17 +143,18 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
     {
         if (cachedRecipe == null)
         {
-            updateCachedRecipe();
+            updateCachedRecipe(); // this is called on client, allowing jade to show a recipe
         }
-        if (cachedRecipe != null && level != null)
+        if (cachedRecipe != null)
         {
-            return cachedRecipe.getDuration() - getTicksSinceLit(level);
+            return cachedRecipe.getDuration() - getTicksSinceLit();
         }
         return 0;
     }
 
-    public long getTicksSinceLit(Level level)
+    public long getTicksSinceLit()
     {
+        assert level != null;
         return Calendars.get(level).getTicks() - litTick;
     }
 

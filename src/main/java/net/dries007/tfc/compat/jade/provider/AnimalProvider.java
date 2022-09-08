@@ -7,14 +7,13 @@
 package net.dries007.tfc.compat.jade.provider;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 import mcp.mobius.waila.api.*;
 import mcp.mobius.waila.api.config.IPluginConfig;
 import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.common.entities.livestock.horse.HorseProperties;
+import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -89,6 +88,10 @@ public enum AnimalProvider implements IEntityComponentProvider
             if (access.getEntity() instanceof TFCHorse tfcHorse)
             {
                 tooltip.add(Helpers.translateEnum(tfcHorse.getVariant()).append(Helpers.literal(", ").append(Helpers.translateEnum(tfcHorse.getMarkings()))));
+            }
+            if (access.getEntity() instanceof TFCChestedHorse chested && !chested.getChestItem().isEmpty())
+            {
+                tooltip.add(chested.getChestItem().getHoverName());
             }
         }
     }

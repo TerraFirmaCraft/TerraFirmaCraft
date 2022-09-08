@@ -26,6 +26,7 @@ public enum LampProvider implements IComponentProvider
     {
         if (access.getBlockEntity() instanceof LampBlockEntity lamp && access.getBlock() instanceof LampBlock)
         {
+            // todo: this info is not available on the client (?)
             LampFuel fuel = lamp.getFuel();
             if (fuel != null)
             {

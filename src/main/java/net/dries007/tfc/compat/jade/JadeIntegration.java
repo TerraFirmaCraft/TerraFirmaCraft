@@ -15,7 +15,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FireBlock;
 import net.minecraft.world.phys.Vec2;
+
 
 import mcp.mobius.waila.api.*;
 import mcp.mobius.waila.api.ui.IElement;
@@ -39,7 +41,6 @@ import net.dries007.tfc.util.Helpers;
 @SuppressWarnings("UnstableApiUsage")
 public class JadeIntegration implements IWailaPlugin
 {
-    // Optionally we can register server side info providers here. We sync most everything so this is not needed right now.
 
     @Override
     public void registerClient(IWailaClientRegistration registry)
@@ -55,7 +56,8 @@ public class JadeIntegration implements IWailaPlugin
         registry.registerComponentProvider(CharcoalForgeProvider.INSTANCE, TooltipPosition.BODY, CharcoalForgeBlock.class);
         registry.registerComponentProvider(CrucibleProvider.INSTANCE, TooltipPosition.BODY, CrucibleBlock.class);
         registry.registerComponentProvider(BlastFurnaceProvider.INSTANCE, TooltipPosition.BODY, BlastFurnaceBlock.class);
-        registry.registerComponentProvider(PitKilnProvider.INSTANCE, TooltipPosition.BODY, PitKilnBlock.class);
+        registry.registerComponentProvider(PitKilnProvider.INTERNAL, TooltipPosition.BODY, PitKilnBlock.class);
+        registry.registerComponentProvider(PitKilnProvider.ABOVE, TooltipPosition.BODY, FireBlock.class);
         registry.registerComponentProvider(PowderkegProvider.INSTANCE, TooltipPosition.BODY, PowderkegBlock.class);
         registry.registerComponentProvider(FirepitProvider.INSTANCE, TooltipPosition.BODY, FirepitBlock.class);
         registry.registerComponentProvider(CropProvider.INSTANCE, TooltipPosition.BODY, CropBlock.class);
