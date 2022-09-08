@@ -54,6 +54,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue candleTicks;
+    // Blocks - Drying Bricks
+    public final ForgeConfigSpec.IntValue dryingBricksTicks;
     // Blocks - Charcoal Pit
     public final ForgeConfigSpec.IntValue charcoalTicks;
     // Blocks - Pit Kiln
@@ -229,6 +231,10 @@ public class ServerConfig
         innerBuilder.pop().push("candle");
 
         candleTicks = builder.apply("candleTicks").comment("Number of ticks required for a candle to burn out (1000 = 1 in game hour = 50 seconds), default is 264 hours. Set to -1 to disable candle burnout.").defineInRange("candleTicks", 264000, -1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("dryingBricks");
+
+        dryingBricksTicks = builder.apply("dryingBricksTicks").comment("Number of ticks required for mud bricks to dry (1000 = 1 in game hour = 50 seconds), default is 24 hours. Set to -1 to disable drying.").defineInRange("dryingBricksTicks",  24000, -1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("charcoal");
 

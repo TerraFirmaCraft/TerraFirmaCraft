@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import net.dries007.tfc.common.blockentities.*;
+import net.dries007.tfc.common.blocks.TFCTorchBlock;
 import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitTreeSaplingBlock;
@@ -34,6 +36,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.common.recipes.BloomeryRecipe;
+import net.dries007.tfc.common.recipes.LoomRecipe;
 import net.dries007.tfc.common.recipes.SoupPotRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
@@ -276,7 +279,64 @@ public final class BlockEntityTooltips
         }
     };
 
-    private static void pitKiln(Level level, @Nullable BlockEntity entity, Consumer<Component> tooltip, int offset)
+    public static final BlockEntityTooltip TORCH = (level, state, entity, tooltip) -> {
+        if (entity instanceof TickCounterBlockEntity counter)
+        {
+            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.torchTicks.get() - counter.getTicksSinceUpdate())));
+        }
+    };
+
+    public static final BlockEntityTooltip JACK_O_LANTERN = (level, state, entity, tooltip) -> {
+        if (entity instanceof TickCounterBlockEntity counter)
+        {
+            tooltip.accept(Helpers.translatable("tfc.jade.time_left", Calendars.get(level).getTimeDelta(TFCConfig.SERVER.jackOLanternTicks.get() - counter.getTicksSinceUpdate())));
+        }
+    };
+
+    public static final BlockEntityTooltip MUD_BRICKS = (level, state, entity, tooltip) -> {
+        if (entity instanceof TickCounterBlockEntity counter && state.getBlock() instanceof DryingBricksBlock)
+        {
+            if (state.getValue(DryingBricksBlock.DRIED))
+            {
+                tooltip.accept(Helpers.translatable("tfc.jade.dried_mud_bricks"));
+            }
+            else
+            {
+                if (level.isRainingAt(entity.getBlockPos().above()))
+                {
+                    tooltip.accept(Helpers.translatable("tfc.jade.raining_mud_bricks").withStyle(ChatFormatting.BLUE));
+                }
+                else
+                {
+                    tooltip.accept(Helpers.translatable("tfc.jade.time_left", TFCConfig.SERVER.dryingBricksTicks.get() - counter.getTicksSinceUpdate()));
+                }
+            }
+        }
+    };
+
+    public static final BlockEntityTooltip DECAYING = (level, state, entity, tooltip) -> {
+        if (entity instanceof DecayingBlockEntity decaying)
+        {
+            final ItemStack stack = decaying.getStack();
+            tooltip.accept(stack.getHoverName());
+            final List<Component> text = new ArrayList<>();
+            stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
+            text.forEach(tooltip);
+        }
+    };
+
+    public static final BlockEntityTooltip LOOM = (level, state, entity, tooltip) -> {
+        if (entity instanceof LoomBlockEntity loom)
+        {
+            final LoomRecipe recipe = loom.getRecipe();
+            if (recipe != null)
+            {
+                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem()));
+            }
+        }
+    };
+
+        private static void pitKiln(Level level, @Nullable BlockEntity entity, Consumer<Component> tooltip, int offset)
     {
         if (entity == null) return;
 

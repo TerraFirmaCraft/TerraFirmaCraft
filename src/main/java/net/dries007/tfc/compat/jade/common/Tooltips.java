@@ -11,11 +11,15 @@ import java.util.function.BiConsumer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.LoomBlock;
 
 import net.dries007.tfc.common.blocks.BloomBlock;
+import net.dries007.tfc.common.blocks.TFCTorchBlock;
+import net.dries007.tfc.common.blocks.TFCWallTorchBlock;
 import net.dries007.tfc.common.blocks.crop.CropBlock;
 import net.dries007.tfc.common.blocks.crop.DeadCropBlock;
 import net.dries007.tfc.common.blocks.crop.DeadDoubleCropBlock;
+import net.dries007.tfc.common.blocks.crop.DecayingBlock;
 import net.dries007.tfc.common.blocks.devices.*;
 import net.dries007.tfc.common.blocks.plant.fruit.*;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
@@ -53,6 +57,12 @@ public class Tooltips
         registerBlock.accept(BlockEntityTooltips.PIT_KILN_INTERNAL, PitKilnBlock.class);
         registerBlock.accept(BlockEntityTooltips.PIT_KILN_ABOVE, FireBlock.class);
         registerBlock.accept(BlockEntityTooltips.POWDER_KEG, PowderkegBlock.class);
+        registerBlock.accept(BlockEntityTooltips.TORCH, TFCTorchBlock.class);
+        registerBlock.accept(BlockEntityTooltips.TORCH, TFCWallTorchBlock.class);
+        registerBlock.accept(BlockEntityTooltips.JACK_O_LANTERN, JackOLanternBlock.class);
+        registerBlock.accept(BlockEntityTooltips.MUD_BRICKS, DryingBricksBlock.class);
+        registerBlock.accept(BlockEntityTooltips.DECAYING, DecayingBlock.class);
+        registerBlock.accept(BlockEntityTooltips.LOOM, LoomBlock.class);
 
         registerEntity.accept(EntityTooltips.ANIMAL, TFCAnimal.class);
         registerEntity.accept(EntityTooltips.ANIMAL, TFCHorse.class);

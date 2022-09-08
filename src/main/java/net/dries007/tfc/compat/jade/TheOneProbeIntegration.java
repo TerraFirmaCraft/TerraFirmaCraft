@@ -40,7 +40,7 @@ public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
             @Override
             public void addProbeInfo(ProbeMode probeMode, IProbeInfo info, Player player, Level level, BlockState blockState, IProbeHitData data)
             {
-                if (data.getPos() != null)
+                if (data.getPos() != null && blockState.getBlock().getClass().isInstance(blockClass))
                 {
                     tooltip.display(level, blockState, level.getBlockEntity(data.getPos()), info::text);
                 }
@@ -60,7 +60,10 @@ public class TheOneProbeIntegration implements Function<ITheOneProbe, Void>
             @Override
             public void addProbeEntityInfo(ProbeMode probeMode, IProbeInfo info, Player player, Level level, Entity entity, IProbeHitEntityData data)
             {
-                tooltip.display(level, entity, info::text);
+                if (entity.getClass().isInstance(entityClass))
+                {
+                    tooltip.display(level, entity, info::text);
+                }
             }
         });
     }

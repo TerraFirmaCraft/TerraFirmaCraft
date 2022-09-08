@@ -1031,6 +1031,9 @@ DEFAULT_LANG = {
     'tfc.jade.yield': 'Yield Multiplier: %s',
     'tfc.jade.no_stick': 'Needs stick to reach max growth',
     'tfc.jade.variant_and_markings': '%s, %s',
+    'tfc.jade.raining_mud_bricks': 'Raining, cannot start drying',
+    'tfc.jade.dried_mud_bricks': 'Dried',
+    'tfc.jade.loom_progress': 'Weaving Progress: %s / %s making %s',
     **{'tfc.jade.bellows_%s' % i: 'W' + ('o' * (2 + i)) + 'sh' for i in range(1, 11)},
 
     # Commands
