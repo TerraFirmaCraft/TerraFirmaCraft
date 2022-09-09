@@ -6,13 +6,13 @@
 
 package net.dries007.tfc;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -187,6 +187,9 @@ public final class TerraFirmaCraft
 
     public void onInterModComms(InterModEnqueueEvent event)
     {
-        InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
+        if (ModList.get().isLoaded("theoneprobe"))
+        {
+            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
+        }
     }
 }

@@ -185,9 +185,9 @@ dependencies {
 
     // Jade
     compileOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
-    //runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
+    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
     compileOnly fg.deobf("curse.maven:top-245211:${top_version}")
-    runtimeOnly fg.deobf("curse.maven:top-245211:${top_version}")
+    //runtimeOnly fg.deobf("curse.maven:top-245211:${top_version}")
 
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
