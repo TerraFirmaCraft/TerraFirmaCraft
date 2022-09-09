@@ -23,17 +23,20 @@ public class LeafParticle extends TextureSheetParticle
     private final double xMod = (random.nextFloat() - 0.5f) / 7;
     private final double zMod = (random.nextFloat() - 0.5f) / 7;
 
-    private LeafParticle(ClientLevel level, double x, double y, double z, double motionX, double motionY, double motionZ)
+    private LeafParticle(ClientLevel level, double x, double y, double z, double motionX, double motionY, double motionZ, boolean tinted)
     {
         super(level, x, y, z);
         lifetime = 60 + random.nextInt(20);
         xd = motionX;
         yd = motionY;
         zd = motionZ;
-        scale(2.5f);
+        scale(Mth.nextFloat(random, 1.8f, 2.6f));
         final BlockPos pos = new BlockPos(x, y, z);
-        final int color = Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
-        setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
+        if (tinted)
+        {
+            final int color = Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.SEASONAL_LEAVES) ? TFCColors.getSeasonalFoliageColor(pos, 0) : TFCColors.getFoliageColor(pos, 0);
+            setColor(((color >> 16) & 0xFF) / 255F, ((color >> 8) & 0xFF) / 255F, (color & 0xFF) / 255F);
+        }
     }
 
     @Override
@@ -59,9 +62,8 @@ public class LeafParticle extends TextureSheetParticle
 
         if (onGround)
         {
-            alpha += 0.1;
-            xd = yd = zd = 0;
-            if (age >= lifetime - random.nextInt(6))
+            alpha += 0.04;
+            if (alpha >= 1)
             {
                 remove();
             }
@@ -74,12 +76,12 @@ public class LeafParticle extends TextureSheetParticle
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-    public record Provider(SpriteSet set) implements ParticleProvider<SimpleParticleType>
+    public record Provider(SpriteSet set, boolean tinted) implements ParticleProvider<SimpleParticleType>
     {
         @Override
         public Particle createParticle(SimpleParticleType type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed)
         {
-            LeafParticle particle = new LeafParticle(level, x, y, z, xSpeed, ySpeed, zSpeed);
+            LeafParticle particle = new LeafParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, tinted);
             particle.pickSprite(set);
             return particle;
         }

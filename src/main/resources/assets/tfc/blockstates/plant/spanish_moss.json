@@ -1,20 +1,8 @@
 {
-  "multipart": [
-    {
-      "when": {
-        "hanging": "false"
-      },
-      "apply": {
-        "model": "tfc:block/plant/spanish_moss_0"
-      }
-    },
-    {
-      "when": {
-        "hanging": "true"
-      },
-      "apply": {
-        "model": "tfc:block/plant/spanish_moss_1"
-      }
+  "__comment__": "This file was automatically created by mcresources",
+  "variants": {
+    "": {
+      "model": "tfc:block/plant/spanish_moss"
     }
-  ]
+  }
 }

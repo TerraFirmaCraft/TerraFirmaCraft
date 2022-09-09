@@ -93,29 +93,6 @@
       "multiblock": {
         "pattern": [
           [
-            "X"
-          ],
-          [
-            "Y"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:wood/wood/oak",
-          "Y": "tfc:plant/spanish_moss[hanging=true]"
-        }
-      },
-      "name": "Hanging",
-      "text": "Hanging plants are relatable, because they don't do work and mostly just hang out.",
-      "enable_visualize": false
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
             "XY"
           ],
           [

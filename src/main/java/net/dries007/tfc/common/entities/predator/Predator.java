@@ -74,6 +74,11 @@ public class Predator extends WildAnimal
         this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
     }
 
+    public boolean isDiurnal()
+    {
+        return diurnal;
+    }
+
     @Override
     protected Brain.Provider<Predator> brainProvider()
     {

@@ -40,8 +40,8 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.calendar.ICalendar;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -141,9 +141,13 @@ public class DryingBricksBlock extends DeviceBlock
             {
                 counter.resetCounter();
             }
-            else if (counter.getTicksSinceUpdate() > ICalendar.TICKS_IN_DAY)
+            else
             {
-                level.setBlockAndUpdate(pos, state.setValue(DRIED, true));
+                final int ticks = TFCConfig.SERVER.mudBricksTicks.get();
+                if (ticks > -1 && counter.getTicksSinceUpdate() > ticks)
+                {
+                    level.setBlockAndUpdate(pos, state.setValue(DRIED, true));
+                }
             }
         });
     }

@@ -93,29 +93,6 @@
       "multiblock": {
         "pattern": [
           [
-            "X"
-          ],
-          [
-            "Y"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:wood/wood/oak",
-          "Y": "tfc:plant/spanish_moss[hanging=true]"
-        }
-      },
-      "name": "§l매달린 식물",
-      "text": "매달린 식물들은 하루 종일 그저 매달려 있습니다.",
-      "enable_visualize": false
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
             "XY"
           ],
           [

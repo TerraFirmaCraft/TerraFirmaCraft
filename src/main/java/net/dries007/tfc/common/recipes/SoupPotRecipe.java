@@ -112,7 +112,7 @@ public class SoupPotRecipe extends PotRecipe
         return TFCRecipeSerializers.POT_SOUP.get();
     }
 
-    record SoupOutput(ItemStack stack) implements Output
+    public record SoupOutput(ItemStack stack) implements Output
     {
         @Override
         public boolean isEmpty()
