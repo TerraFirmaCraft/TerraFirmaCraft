@@ -13,6 +13,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -42,25 +43,31 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         if (green >= 4 && brown >= 4 & !isRotten())
         {
             assert level != null;
-            final float rainfall = Climate.getRainfall(level, getBlockPos());
-            long readyTicks = TFCConfig.SERVER.composterTicks.get();
-            if (TFCConfig.SERVER.composterRainfallCheck.get())
-            {
-                if (rainfall < 150f) // inverted trapezoid wave
-                {
-                    readyTicks *= (long) ((150f - rainfall) / 50f + 1f);
-                }
-                else if (rainfall > 350f)
-                {
-                    readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
-                }
-            }
-            if (getTicksSinceUpdate() > readyTicks)
+            if (getTicksSinceUpdate() > getReadyTicks())
             {
                 setState(TFCComposterBlock.CompostType.READY);
                 markForSync();
             }
         }
+    }
+
+    public long getReadyTicks()
+    {
+        assert level != null;
+        final float rainfall = Climate.getRainfall(level, getBlockPos());
+        long readyTicks = TFCConfig.SERVER.composterTicks.get();
+        if (TFCConfig.SERVER.composterRainfallCheck.get())
+        {
+            if (rainfall < 150f) // inverted trapezoid wave
+            {
+                readyTicks *= (long) ((150f - rainfall) / 50f + 1f);
+            }
+            else if (rainfall > 350f)
+            {
+                readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
+            }
+        }
+        return readyTicks;
     }
 
     @Override
@@ -168,31 +175,31 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         setState(TFCComposterBlock.CompostType.NORMAL, 0);
     }
 
-    private boolean isRotten()
+    public boolean isRotten()
     {
         assert level != null;
         return level.getBlockState(getBlockPos()).getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.ROTTEN;
     }
 
-    private boolean isReady()
+    public boolean isReady()
     {
         assert level != null;
         return level.getBlockState(getBlockPos()).getValue(TFCComposterBlock.TYPE) == TFCComposterBlock.CompostType.READY;
     }
 
-    private void setState(TFCComposterBlock.CompostType type)
+    public void setState(TFCComposterBlock.CompostType type)
     {
         assert level != null;
         level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.TYPE, type));
     }
 
-    private void setState(TFCComposterBlock.CompostType type, int stage)
+    public void setState(TFCComposterBlock.CompostType type, int stage)
     {
         assert level != null;
         level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.TYPE, type).setValue(TFCComposterBlock.STAGE, stage));
     }
 
-    private void setState(int stage)
+    public void setState(int stage)
     {
         assert level != null;
         level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.STAGE, stage));

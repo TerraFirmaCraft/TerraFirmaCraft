@@ -1136,6 +1136,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
     }
 
     /**
