@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "The World",
-  "description": "All about the natural world around you.",
+  "name": "세계",
+  "description": "당신을 둘러싸고 있는 자연의 세계에 대한 모든 것.",
   "icon": "tfc:grass/loam",
   "sortnum": 0
 }
