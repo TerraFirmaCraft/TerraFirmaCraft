@@ -89,6 +89,7 @@ public class ServerConfig
     // Blocks - Thatch Bed
     public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
     public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
+    public final ForgeConfigSpec.BooleanValue thatchBedNoSleepInThunderstorms;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
     // Items - Small Vessel
@@ -291,6 +292,7 @@ public class ServerConfig
 
         enableThatchBedSpawnSetting = builder.apply("enableThatchBedSpawnSetting").comment("If true, thatch beds can set the player's spawn.").define("enableThatchBedSpawnSetting", true);
         enableThatchBedSleeping = builder.apply("enableThatchBedSleeping").comment("If true, the player can sleep the night in a thatch bed").define("enableThatchBedSleeping", false);
+        thatchBedNoSleepInThunderstorms = builder.apply("thatchBedNoSleepInThunderstorms").comment("If true, the player cannot sleep in thatch beds during thunderstorms.").define("thatchBedNoSleepInThunderstorms", true);
 
         innerBuilder.pop().push("leaves");
 

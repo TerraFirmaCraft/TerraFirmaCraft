@@ -117,7 +117,6 @@ public enum Plant implements RegistryPlant
     SNAPDRAGON_RED(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
     SNAPDRAGON_WHITE(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
     SNAPDRAGON_YELLOW(BlockType.STANDARD, 0.8F, new int[] {6, 6, 6, 0, 1, 1, 2, 3, 4, 1, 1, 5}),
-    SPANISH_MOSS(BlockType.HANGING, 0.7F),
     STRELITZIA(BlockType.STANDARD, 0.8F, new int[] {0, 0, 1, 1, 2, 2, 0, 0, 1, 1, 2, 2}),
     SWITCHGRASS(BlockType.TALL_GRASS, 0.7F, new int[] {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0}),
     SWORD_FERN(BlockType.STANDARD, 0.7F),
@@ -139,6 +138,8 @@ public enum Plant implements RegistryPlant
     // Unique
     HANGING_VINES_PLANT(BlockType.WEEPING, 1.0F),
     HANGING_VINES(BlockType.WEEPING_TOP, 1.0F),
+    SPANISH_MOSS_PLANT(BlockType.WEEPING, 1f),
+    SPANISH_MOSS(BlockType.WEEPING_TOP, 1f),
     LIANA_PLANT(BlockType.WEEPING, 1.0F),
     LIANA(BlockType.WEEPING_TOP, 1.0F),
     TREE_FERN_PLANT(BlockType.TWISTING_SOLID, 0F),
@@ -157,6 +158,7 @@ public enum Plant implements RegistryPlant
     JUNGLE_VINES(BlockType.VINE, 1.0F);
 
     private static final EnumSet<Plant> SPECIAL_POTTED_PLANTS = EnumSet.of(BARREL_CACTUS, FOXGLOVE, MORNING_GLORY, MOSS, OSTRICH_FERN, REINDEER_LICHEN, ROSE, SAPPHIRE_TOWER, TOQUILLA_PALM, TREE_FERN);
+    private static final EnumSet<Plant> ITEM_TINTED_PLANTS = EnumSet.of(BLUEGRASS, BROMEGRASS, FOUNTAIN_GRASS, ORCHARD_GRASS, RYEGRASS, SCUTCH_GRASS, TIMOTHY_GRASS, KANGAROO_PAW, KING_FERN, MOSS, SAGO, SWITCHGRASS, TALL_FESCUE_GRASS, IVY, JUNGLE_VINES, HANGING_VINES, GUTWEED);
 
     private final float speedFactor;
     @Nullable private final IntegerProperty property;
@@ -210,12 +212,12 @@ public enum Plant implements RegistryPlant
 
     public boolean needsItem()
     {
-        return type != BlockType.WEEPING && type != BlockType.TWISTING_SOLID && type != BlockType.KELP && type != BlockType.KELP_TREE && type != BlockType.TWISTING;
+        return !BlockType.NO_ITEM_TYPES.contains(type);
     }
 
     public boolean isFoliage()
     {
-        return type == BlockType.WEEPING || type == BlockType.WEEPING_TOP || type == BlockType.FLOATING_FRESH || type == BlockType.FLOATING || type == BlockType.WATER_FRESH || type == BlockType.GRASS_WATER_FRESH || type == BlockType.GRASS_WATER;
+        return BlockType.FOLIAGE_TYPES.contains(type);
     }
 
     public boolean isSeasonal()
@@ -230,7 +232,7 @@ public enum Plant implements RegistryPlant
 
     public boolean isItemTinted()
     {
-        return this == BLUEGRASS || this == BROMEGRASS || this == FOUNTAIN_GRASS || this == ORCHARD_GRASS || this == RYEGRASS || this == SCUTCH_GRASS || this == TIMOTHY_GRASS || this == KANGAROO_PAW || this == KING_FERN || this == MOSS || this == SAGO || this == SWITCHGRASS || this == TALL_FESCUE_GRASS || this == IVY || this == JUNGLE_VINES || this == HANGING_VINES || this == GUTWEED;
+        return ITEM_TINTED_PLANTS.contains(this);
     }
 
     public boolean hasFlowerPot()
@@ -260,6 +262,8 @@ public enum Plant implements RegistryPlant
                 case DRY_PHRAGMITE_PLANT -> DRY_PHRAGMITE;
                 case LIANA -> LIANA_PLANT;
                 case LIANA_PLANT -> LIANA;
+                case SPANISH_MOSS_PLANT -> SPANISH_MOSS;
+                case SPANISH_MOSS -> SPANISH_MOSS_PLANT;
                 default -> throw new IllegalStateException("Uhh why did you try to transform something that's not a tall plant?");
             });
     }
@@ -270,7 +274,6 @@ public enum Plant implements RegistryPlant
         CACTUS((plant, type) -> TFCCactusBlock.create(plant, fire(solid().strength(0.25F).sound(SoundType.WOOL)).pathType(BlockPathTypes.DAMAGE_CACTUS))),
         DRY((plant, type) -> DryPlantBlock.create(plant, fire(nonSolid(plant)))),
         CREEPING((plant, type) -> CreepingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))), // Post process ensures shape is updated after world gen
-        HANGING((plant, type) -> HangingPlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),
         EPIPHYTE((plant, type) -> EpiphytePlantBlock.create(plant, fire(nonSolid(plant).hasPostProcess(TFCBlocks::always)))),
         SHORT_GRASS((plant, type) -> ShortGrassBlock.create(plant, fire(nonSolid(plant)))),
         TALL_GRASS((plant, type) -> TFCTallGrassBlock.create(plant, fire(nonSolid(plant)))),
@@ -294,6 +297,9 @@ public enum Plant implements RegistryPlant
         WATER_FRESH((plant, type) -> WaterPlantBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant))),
         GRASS_WATER((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.SALT_WATER, nonSolid(plant))),
         GRASS_WATER_FRESH((plant, type) -> TFCSeagrassBlock.create(plant, TFCBlockStateProperties.FRESH_WATER, nonSolid(plant)));
+
+        private static final EnumSet<BlockType> NO_ITEM_TYPES = EnumSet.of(WEEPING, TWISTING_SOLID, KELP, KELP_TREE, TWISTING);
+        private static final EnumSet<BlockType> FOLIAGE_TYPES = EnumSet.of(WEEPING, WEEPING_TOP, FLOATING_FRESH, FLOATING, WATER_FRESH, GRASS_WATER_FRESH, GRASS_WATER);
 
         /**
          * Default properties to avoid rewriting them out every time

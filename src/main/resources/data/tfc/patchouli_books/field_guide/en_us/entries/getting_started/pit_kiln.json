@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat it's contents up to 1600 \u00b0C, or $(bold)$(d)$(t:Brilliant White)Brilliant White$()."
+      "text": "A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat it's contents up to 1600 °C, or $(bold)$(d)$(t:Brilliant White)Brilliant White$()."
     },
     {
       "type": "patchouli:text",

@@ -32,12 +32,12 @@ public class CropYieldProvider implements NumberProvider
     @Override
     public float getFloat(LootContext context)
     {
-        final BlockEntity entity = context.getParam(LootContextParams.BLOCK_ENTITY);
+        final BlockEntity entity = context.getParamOrNull(LootContextParams.BLOCK_ENTITY);
         if (entity instanceof CropBlockEntity crop)
         {
             return Mth.lerp(crop.getYield(), min.getFloat(context), max.getFloat(context));
         }
-        return 0;
+        return min.getFloat(context);
     }
 
     @Override

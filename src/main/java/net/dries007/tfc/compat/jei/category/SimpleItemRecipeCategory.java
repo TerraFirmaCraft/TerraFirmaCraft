@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.compat.jei.category;
 
+import java.util.List;
+
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -20,6 +22,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.dries007.tfc.common.recipes.SimpleItemRecipe;
+import net.dries007.tfc.compat.jei.JEIIntegration;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> extends BaseRecipeCategory<T>
@@ -32,7 +35,7 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses)
     {
-        IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
+        final IRecipeSlotBuilder inputSlot = builder.addSlot(RecipeIngredientRole.INPUT, 6, 5);
         inputSlot.setBackground(slot, -1, -1);
         IRecipeSlotBuilder toolSlot = null;
         if (getToolTag() != null)
@@ -41,14 +44,20 @@ public abstract class SimpleItemRecipeCategory<T extends SimpleItemRecipe> exten
         }
         IRecipeSlotBuilder outputSlot = builder.addSlot(RecipeIngredientRole.OUTPUT, 76, 5);
 
-        inputSlot.addIngredients(recipe.getIngredient());
+        final Ingredient ingredient = recipe.getIngredient();
+        final List<ItemStack> inputList = List.of(ingredient.getItems());
+        inputSlot.addIngredients(JEIIntegration.ITEM_STACK, inputList);
+
         if (toolSlot != null)
         {
             toolSlot.addIngredients(Ingredient.of(getToolTag()));
             toolSlot.setBackground(slot, -1, -1);
         }
-        outputSlot.addItemStack(recipe.getResultItem());
+
+        outputSlot.addItemStacks(collapse(inputList, recipe.getResult()));
         outputSlot.setBackground(slot, -1, -1);
+
+        builder.createFocusLink(inputSlot, outputSlot);
     }
 
     @Override

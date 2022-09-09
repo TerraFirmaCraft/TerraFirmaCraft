@@ -4,6 +4,7 @@
   "values": [
     "tfc:plant/hanging_vines",
     "tfc:plant/hanging_vines_cave",
+    "tfc:plant/spanish_moss",
     "tfc:plant/ivy",
     "tfc:plant/jungle_vines",
     "tfc:plant/liana",
@@ -72,7 +73,6 @@
     "tfc:plant/snapdragon_red_patch",
     "tfc:plant/snapdragon_white_patch",
     "tfc:plant/snapdragon_yellow_patch",
-    "tfc:plant/spanish_moss_patch",
     "tfc:plant/strelitzia_patch",
     "tfc:plant/switchgrass_patch",
     "tfc:plant/sword_fern_patch",

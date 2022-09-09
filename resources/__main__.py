@@ -25,7 +25,7 @@ def main():
         'data',  # only data.py
         'recipes',  # only recipes.py
         'worldgen',  # only world gen data (excluding tags)
-        'advancements', # only advancements.py (which excludes recipe advancements)
+        'advancements',  # only advancements.py (which excludes recipe advancements)
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files

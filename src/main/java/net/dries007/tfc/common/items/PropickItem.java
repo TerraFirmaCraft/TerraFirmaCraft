@@ -80,55 +80,52 @@ public class PropickItem extends ToolItem
         final BlockPos pos = context.getClickedPos();
         final BlockState state = level.getBlockState(pos);
 
-        if (player != null && !level.isClientSide())
+        if (player instanceof ServerPlayer serverPlayer)
         {
-            if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
+            final SoundType sound = state.getSoundType(level, pos, player);
+            level.playSound(player, pos, sound.getHitSound(), SoundSource.PLAYERS, sound.getVolume(), sound.getPitch());
+
+            context.getItemInHand().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
+            player.getCooldowns().addCooldown(this, COOLDOWN);
+
+            ProspectResult result;
+            BlockState found = state;
+            RANDOM.setSeed(Helpers.hash(19827384739241223L, pos));
+            if (Helpers.isBlock(state, TFCTags.Blocks.PROSPECTABLE))
             {
-                final SoundType sound = state.getSoundType(level, pos, player);
-                level.playSound(player, pos, sound.getHitSound(), SoundSource.PLAYERS, sound.getVolume(), sound.getPitch());
-
-                player.getMainHandItem().hurtAndBreak(1, player, p -> p.broadcastBreakEvent(context.getHand()));
-                player.getCooldowns().addCooldown(this, COOLDOWN);
-
-                ProspectResult result;
-                BlockState found = state;
-                RANDOM.setSeed(Helpers.hash(19827384739241223L, pos));
-                if (Helpers.isBlock(state, TFCTags.Blocks.PROSPECTABLE))
+                // Found
+                result = ProspectResult.FOUND;
+            }
+            else if (RANDOM.nextFloat() < falseNegativeChance)
+            {
+                // False Negative (Nothing)
+                result = ProspectResult.NOTHING;
+            }
+            else
+            {
+                final Object2IntMap<BlockState> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
+                if (states.isEmpty())
                 {
-                    // Found
-                    result = ProspectResult.FOUND;
-                }
-                else if (RANDOM.nextFloat() < falseNegativeChance)
-                {
-                    // False Negative (Nothing)
-                    result = ProspectResult.NOTHING;
+                    // Nothing
+                    result = ProspectResult.NOTHING_FALSE_NEGATIVE;
                 }
                 else
                 {
-                    final Object2IntMap<BlockState> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
-                    if (states.isEmpty())
-                    {
-                        // Nothing
-                        result = ProspectResult.NOTHING_FALSE_NEGATIVE;
-                    }
-                    else
-                    {
-                        // Found Traces
-                        final ArrayList<BlockState> stateKeys = new ArrayList<>(states.keySet());
-                        found = stateKeys.get(RANDOM.nextInt(stateKeys.size()));
-                        final int amount = states.getOrDefault(found, 1);
+                    // Found Traces
+                    final ArrayList<BlockState> stateKeys = new ArrayList<>(states.keySet());
+                    found = stateKeys.get(RANDOM.nextInt(stateKeys.size()));
+                    final int amount = states.getOrDefault(found, 1);
 
-                        if (amount < 10) result = ProspectResult.TRACES;
-                        else if (amount < 20) result = ProspectResult.SMALL;
-                        else if (amount < 40) result = ProspectResult.MEDIUM;
-                        else if (amount < 80) result = ProspectResult.LARGE;
-                        else result = ProspectResult.VERY_LARGE;
-                    }
+                    if (amount < 10) result = ProspectResult.TRACES;
+                    else if (amount < 20) result = ProspectResult.SMALL;
+                    else if (amount < 40) result = ProspectResult.MEDIUM;
+                    else if (amount < 80) result = ProspectResult.LARGE;
+                    else result = ProspectResult.VERY_LARGE;
                 }
-
-                MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, found.getBlock()));
-                PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found.getBlock(), result));
             }
+
+            MinecraftForge.EVENT_BUS.post(new ProspectedEvent(player, result, found.getBlock()));
+            PacketHandler.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ProspectedPacket(found.getBlock(), result));
         }
         return InteractionResult.SUCCESS;
     }
