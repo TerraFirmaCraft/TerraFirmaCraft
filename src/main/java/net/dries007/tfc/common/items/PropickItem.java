@@ -111,16 +111,25 @@ public class PropickItem extends ToolItem
                 }
                 else
                 {
-                    // Found Traces
-                    final ArrayList<BlockState> stateKeys = new ArrayList<>(states.keySet());
-                    found = stateKeys.get(RANDOM.nextInt(stateKeys.size()));
-                    final int amount = states.getOrDefault(found, 1);
+                    final Object2IntMap<BlockState> states = scanAreaFor(level, pos, RADIUS, TFCTags.Blocks.PROSPECTABLE);
+                    if (states.isEmpty())
+                    {
+                        // Nothing
+                        result = ProspectResult.NOTHING;
+                    }
+                    else
+                    {
+                        // Found Traces
+                        final ArrayList<BlockState> stateKeys = new ArrayList<>(states.keySet());
+                        found = stateKeys.get(RANDOM.nextInt(stateKeys.size()));
+                        final int amount = states.getOrDefault(found, 1);
 
-                    if (amount < 10) result = ProspectResult.TRACES;
-                    else if (amount < 20) result = ProspectResult.SMALL;
-                    else if (amount < 40) result = ProspectResult.MEDIUM;
-                    else if (amount < 80) result = ProspectResult.LARGE;
-                    else result = ProspectResult.VERY_LARGE;
+                        if (amount < 10) result = ProspectResult.TRACES;
+                        else if (amount < 20) result = ProspectResult.SMALL;
+                        else if (amount < 40) result = ProspectResult.MEDIUM;
+                        else if (amount < 80) result = ProspectResult.LARGE;
+                        else result = ProspectResult.VERY_LARGE;
+                    }
                 }
             }
 

@@ -91,7 +91,7 @@ public class DiscreteFluidContainerItem extends Item
             .orElse(FluidStack.EMPTY);
         if (!fluid.isEmpty())
         {
-            return fluid.getDisplayName().copy().append(" ").append(super.getName(stack));
+            return Helpers.translatable(getDescriptionId(stack) + ".filled", fluid.getDisplayName());
         }
         return super.getName(stack);
     }

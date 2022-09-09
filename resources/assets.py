@@ -798,6 +798,10 @@ def generate(rm: ResourceManager):
     contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
 
+    rm.lang('item.tfc.wooden_bucket.filled', '%s Wooden Bucket')
+    rm.lang('item.tfc.metal.bucket.red_steel.filled', '%s Red Steel Bucket')
+    rm.lang('item.tfc.metal.bucket.blue_steel.filled', '%s Blue Steel Bucket')
+
     # Small Ceramic Vessels (colored)
     for color in COLORS:
         rm.item_model(('ceramic', color + '_unfired_vessel')).with_lang(lang('%s Unfired Vessel', color)).with_tag('tfc:unfired_pottery')

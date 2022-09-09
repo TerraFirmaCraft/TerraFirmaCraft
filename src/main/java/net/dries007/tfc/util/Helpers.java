@@ -1118,12 +1118,12 @@ public final class Helpers
     /**
      * Adds a tooltip based on a single fluid stack
      */
+    @Deprecated(forRemoval = true)
     public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
     {
         if (!fluid.isEmpty())
         {
-            tooltips.add(Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount())
-                .append(fluid.getDisplayName()));
+            tooltips.add(Tooltips.fluidUnitsOf(fluid));
         }
     }
 
