@@ -53,7 +53,10 @@ public class AmphibianPlayDeadBehavior extends Behavior<AmphibiousAnimal>
         Brain<AmphibiousAnimal> brain = animal.getBrain();
         brain.eraseMemory(MemoryModuleType.WALK_TARGET);
         brain.eraseMemory(MemoryModuleType.LOOK_TARGET);
-        animal.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0, false, false));
-        animal.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2, false, false));
+        if (animal.isPlayingDeadEffective())
+        {
+            animal.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0, false, false));
+            animal.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 2, false, false));
+        }
     }
 }

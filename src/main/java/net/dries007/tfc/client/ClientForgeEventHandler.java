@@ -402,8 +402,8 @@ public class ClientForgeEventHandler
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && event.getMode() == FogRenderer.FogMode.FOG_TERRAIN)
         {
-            FogType fluid = event.getCamera().getFluidInCamera();
-            BlockPos pos = event.getCamera().getBlockPosition();
+            final FogType fluid = event.getCamera().getFluidInCamera();
+            final BlockPos pos = event.getCamera().getBlockPosition();
             if (fluid == FogType.NONE)
             {
                 final float fog = Climate.getFogginess(mc.level, pos);
@@ -412,7 +412,6 @@ public class ClientForgeEventHandler
                     final float renderDistance = mc.gameRenderer.getRenderDistance();
                     final float density = renderDistance * (1 - Math.min(0.86f, fog));
 
-                    // let's just do this the same way MC does because the FogDensityEvent is crap
                     event.setNearPlaneDistance(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
                     event.setFarPlaneDistance(density);
                     event.setCanceled(true);
