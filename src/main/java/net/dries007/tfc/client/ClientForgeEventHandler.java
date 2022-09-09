@@ -204,10 +204,9 @@ public class ClientForgeEventHandler
                 final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
                 if (heat != null)
                 {
-                    text.add(Helpers.translatable("tfc.tooltip.fuel_burns_at")
-                        .append(heat)
-                        .append(Helpers.translatable("tfc.tooltip.fuel_burns_at_duration"))
-                        .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                    text.add(Helpers.translatable(
+                        "tfc.tooltip.fuel_burns_at", // burns at %s for %s
+                        heat, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
 
@@ -235,16 +234,13 @@ public class ClientForgeEventHandler
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
-                        final MutableComponent line = Helpers.translatable("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
-                            .append(Helpers.translatable(metal.getTranslationKey()));
                         final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
                         if (heat != null)
                         {
-                            line.append(Helpers.translatable("tfc.tooltip.item_melts_into_open"))
-                                .append(heat)
-                                .append(Helpers.translatable("tfc.tooltip.item_melts_into_close"));
+                            text.add(Helpers.translatable(
+                                "tfc.tooltip.item_melts_into", // %s mB of %s (at %s)
+                                fluid.getAmount() * stack.getCount(), Helpers.translatable(metal.getTranslationKey()), heat));
                         }
-                        text.add(line);
                     }
                 }
             }

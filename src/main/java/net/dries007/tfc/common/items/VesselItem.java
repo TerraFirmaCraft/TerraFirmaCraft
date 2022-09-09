@@ -42,6 +42,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Tooltips;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -190,10 +191,7 @@ public class VesselItem extends Item
                 {
                     case INVENTORY -> Helpers.addInventoryTooltipInfo(inventory, text);
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
-                        text.add(alloy.getResult().getDisplayName()
-                            .append(" ")
-                            .append(Helpers.translatable("tfc.tooltip.fluid_units_and_capacity", alloy.getAmount(), capacity))
-                            .append(" ")
+                        text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult().getDisplayName(), alloy.getAmount(), capacity)
                             .append(Helpers.translatable(mode == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
                         if (!Helpers.isEmpty(inventory))
                         {
