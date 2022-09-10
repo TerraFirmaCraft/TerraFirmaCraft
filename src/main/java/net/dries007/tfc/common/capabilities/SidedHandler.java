@@ -9,6 +9,8 @@ package net.dries007.tfc.common.capabilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+
+import net.dries007.tfc.common.container.ISlotCallback;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.Direction;
@@ -40,7 +42,7 @@ public interface SidedHandler<T>
         @SuppressWarnings("unchecked")
         public Builder(T internal)
         {
-            this.internal = LazyOptional.of(() -> internal);
+            this.internal = SidedHandler.lazyOf(internal);
             this.sidedHandlers = (LazyOptional<T>[]) new LazyOptional[SIDES];
             this.handlers = new ArrayList<>();
             this.handlers.add(this.internal);
@@ -53,7 +55,7 @@ public interface SidedHandler<T>
 
         public Builder<T> on(T handler, Predicate<Direction> sides)
         {
-            final LazyOptional<T> optional = LazyOptional.of(() -> handler);
+            final LazyOptional<T> optional = SidedHandler.lazyOf(handler);
             for (Direction side : Helpers.DIRECTIONS)
             {
                 if (sides.test(side))
@@ -67,7 +69,7 @@ public interface SidedHandler<T>
 
         public Builder<T> on(T handler, Direction... sides)
         {
-            final LazyOptional<T> optional = LazyOptional.of(() -> handler);
+            final LazyOptional<T> optional = SidedHandler.lazyOf(handler);
             for (Direction side : sides)
             {
                 sidedHandlers[side.ordinal()] = optional;
@@ -86,6 +88,17 @@ public interface SidedHandler<T>
             final LazyOptional<T> sided = sidedHandlers[side.ordinal()];
             return sided == null ? LazyOptional.empty() : sided;
         }
+    }
+
+    private static <T> LazyOptional<T> lazyOf(T handler)
+    {
+        return LazyOptional.of(() -> {
+            if (handler instanceof ISlotCallback callback)
+            {
+                callback.slotChecked();
+            }
+            return handler;
+        });
     }
 
     class Noop<T> implements SidedHandler<LazyOptional<T>>

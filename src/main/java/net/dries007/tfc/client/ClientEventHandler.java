@@ -549,6 +549,7 @@ public final class ClientEventHandler
     private static BlockColor springWater(int[] colors)
     {
         assert colors.length == 4;
+
         return (state, level, pos, tintIndex) -> {
             if (pos == null || level == null) return colors[3];
             final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
