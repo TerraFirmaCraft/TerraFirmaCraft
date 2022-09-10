@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -111,5 +112,11 @@ public abstract class DairyAnimal extends ProducingMammal
     public Fluid getMilkFluid()
     {
         return ForgeMod.MILK.get();
+    }
+
+    @Override
+    public MutableComponent getProductReadyName()
+    {
+        return Helpers.translatable("tfc.jade.product.milk");
     }
 }

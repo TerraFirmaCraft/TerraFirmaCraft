@@ -204,10 +204,9 @@ public class ClientForgeEventHandler
                 final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
                 if (heat != null)
                 {
-                    text.add(Helpers.translatable("tfc.tooltip.fuel_burns_at")
-                        .append(heat)
-                        .append(Helpers.translatable("tfc.tooltip.fuel_burns_at_duration"))
-                        .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                    text.add(Helpers.translatable(
+                        "tfc.tooltip.fuel_burns_at", // burns at %s for %s
+                        heat, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
 
@@ -235,16 +234,13 @@ public class ClientForgeEventHandler
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
-                        final MutableComponent line = Helpers.translatable("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
-                            .append(Helpers.translatable(metal.getTranslationKey()));
                         final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
                         if (heat != null)
                         {
-                            line.append(Helpers.translatable("tfc.tooltip.item_melts_into_open"))
-                                .append(heat)
-                                .append(Helpers.translatable("tfc.tooltip.item_melts_into_close"));
+                            text.add(Helpers.translatable(
+                                "tfc.tooltip.item_melts_into", // %s mB of %s (at %s)
+                                fluid.getAmount() * stack.getCount(), Helpers.translatable(metal.getTranslationKey()), heat));
                         }
-                        text.add(line);
                     }
                 }
             }
@@ -402,8 +398,8 @@ public class ClientForgeEventHandler
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && event.getMode() == FogRenderer.FogMode.FOG_TERRAIN)
         {
-            FogType fluid = event.getCamera().getFluidInCamera();
-            BlockPos pos = event.getCamera().getBlockPosition();
+            final FogType fluid = event.getCamera().getFluidInCamera();
+            final BlockPos pos = event.getCamera().getBlockPosition();
             if (fluid == FogType.NONE)
             {
                 final float fog = Climate.getFogginess(mc.level, pos);
@@ -412,7 +408,6 @@ public class ClientForgeEventHandler
                     final float renderDistance = mc.gameRenderer.getRenderDistance();
                     final float density = renderDistance * (1 - Math.min(0.86f, fog));
 
-                    // let's just do this the same way MC does because the FogDensityEvent is crap
                     event.setNearPlaneDistance(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
                     event.setFarPlaneDistance(density);
                     event.setCanceled(true);

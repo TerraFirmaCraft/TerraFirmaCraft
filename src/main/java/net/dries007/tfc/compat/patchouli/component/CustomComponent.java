@@ -38,6 +38,7 @@ import net.dries007.tfc.common.recipes.ingredients.ItemStackIngredient;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
+import net.dries007.tfc.util.Tooltips;
 import org.slf4j.Logger;
 import vazkii.patchouli.api.*;
 import vazkii.patchouli.client.book.gui.GuiBookEntry;
@@ -114,7 +115,7 @@ public abstract class CustomComponent implements ICustomComponent
             if (context.isAreaHovered(mouseX, mouseY, x, y, 16, 16))
             {
                 final List<Component> tooltip = new ArrayList<>(1);
-                Helpers.addFluidStackTooltipInfo(fluid, tooltip);
+                tooltip.add(Tooltips.fluidUnitsOf(fluid));
                 context.setHoverTooltipComponents(tooltip);
             }
         }

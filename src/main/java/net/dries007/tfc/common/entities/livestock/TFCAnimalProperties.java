@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -526,6 +527,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     default Component getGenderedTypeName()
     {
         return Helpers.translatable(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
+    }
+
+    default MutableComponent getProductReadyName()
+    {
+        return Helpers.translatable("tfc.jade.product.generic");
     }
 
     enum Age

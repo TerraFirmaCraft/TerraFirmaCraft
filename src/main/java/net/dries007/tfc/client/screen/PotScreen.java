@@ -19,7 +19,7 @@ import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.PotContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Tooltips;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -74,7 +74,7 @@ public class PotScreen extends BlockEntityScreen<PotBlockEntity, PotContainer>
                 .orElse(FluidStack.EMPTY);
             if (!fluid.isEmpty())
             {
-                renderTooltip(poseStack, Helpers.translatable("tfc.tooltip.fluid_units_and_capacity_of", fluid.getAmount(), FluidHelpers.BUCKET_VOLUME).append(fluid.getDisplayName()), mouseX, mouseY);
+                renderTooltip(poseStack, Tooltips.fluidUnitsAndCapacityOf(fluid, FluidHelpers.BUCKET_VOLUME), mouseX, mouseY);
             }
         }
     }

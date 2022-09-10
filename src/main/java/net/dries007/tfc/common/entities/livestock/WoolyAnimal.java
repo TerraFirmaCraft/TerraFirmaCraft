@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities.livestock;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -21,6 +22,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -67,5 +69,11 @@ public abstract class WoolyAnimal extends ProducingMammal implements IForgeShear
     {
         final int amount = Mth.nextInt(random, 1, 2);
         return new ItemStack(TFCItems.WOOL.get(), amount);
+    }
+
+    @Override
+    public MutableComponent getProductReadyName()
+    {
+        return Helpers.translatable("tfc.jade.product.wool");
     }
 }

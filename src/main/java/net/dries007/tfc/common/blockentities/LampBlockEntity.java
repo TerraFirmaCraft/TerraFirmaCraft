@@ -58,7 +58,7 @@ public class LampBlockEntity extends TickCounterBlockEntity implements FluidTank
         boolean ranOut = false;
         if (fuel != null)
         {
-            int usage = Mth.floor(getTicksSinceUpdate() / (double) fuel.getBurnRate()); // burn rate is in mb/day
+            int usage = Mth.floor(getTicksSinceUpdate() / (double) fuel.getBurnRate()); // burn rate is in ticks/mb
             if (usage >= 1)
             {
                 FluidStack used = tank.drain(usage, IFluidHandler.FluidAction.EXECUTE);

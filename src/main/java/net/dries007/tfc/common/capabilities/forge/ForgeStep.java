@@ -27,7 +27,7 @@ public enum ForgeStep
 
     public static final int LIMIT = 150;
 
-    private static final ForgeStep[] VALUES = values();
+    public static final ForgeStep[] VALUES = values();
     private static final int[] PATHS;
 
     static

@@ -91,4 +91,14 @@ public class BloomBlockEntity extends TFCBlockEntity
         assert level != null;
         return count <= 0 ? Blocks.AIR.defaultBlockState() : level.getBlockState(worldPosition).setValue(BloomBlock.LAYERS, (int) Mth.clamp((float) count / maxCount * TOTAL_LAYERS, 1, 8));
     }
+
+    public ItemStack getItem()
+    {
+        return item;
+    }
+
+    public int getCount()
+    {
+        return count;
+    }
 }
