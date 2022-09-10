@@ -446,7 +446,6 @@ PLANTS: Dict[str, Plant] = {
     'snapdragon_red': Plant(False, 12, 20, 150, 300, 'standard'),
     'snapdragon_white': Plant(False, 8, 16, 150, 300, 'standard'),
     'snapdragon_yellow': Plant(False, 6, 24, 150, 300, 'standard'),
-    'spanish_moss': Plant(False, 8, 22, 400, 500, 'hanging'),
     'strelitzia': Plant(False, 14, 26, 50, 300, 'standard'),
     'switchgrass': Plant(False, -6, 22, 110, 390, 'tall_grass'),
     'sword_fern': Plant(False, -12, 12, 100, 500, 'standard'),
@@ -547,10 +546,10 @@ SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'yucca': 4
 }
 
-MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant']
+MODEL_PLANTS: List[str] = ['arundo', 'arundo_plant', 'athyrium_fern', 'dry_phragmite', 'dry_phragmite_plant', 'hanging_vines', 'hanging_vines_plant', 'spanish_moss', 'spanish_moss_plant', 'lady_fern', 'laminaria', 'liana', 'liana_plant', 'milfoil', 'sago', 'sword_fern', 'tree_fern', 'tree_fern_plant', 'winged_kelp', 'winged_kelp_plant']
 SEAGRASS: List[str] = ['star_grass', 'manatee_grass', 'eel_grass', 'turtle_grass', 'coontail']
 
-UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
+UNIQUE_PLANTS: List[str] = ['hanging_vines_plant', 'hanging_vines', 'spanish_moss', 'spanish_moss_plant', 'liana_plant', 'liana', 'tree_fern_plant', 'tree_fern', 'arundo_plant', 'arundo', 'dry_phragmite', 'dry_phragmite_plant', 'winged_kelp_plant', 'winged_kelp', 'leafy_kelp_plant', 'leafy_kelp', 'giant_kelp_plant', 'giant_kelp_flower', 'ivy', 'jungle_vines']
 SEAWEED: List[str] = ['sago', 'gutweed', 'laminaria', 'milfoil']
 CORALS: List[str] = ['tube', 'brain', 'bubble', 'fire', 'horn']
 CORAL_BLOCKS: List[str] = ['dead_coral', 'dead_coral', 'dead_coral_fan', 'coral_fan', 'dead_coral_wall_fan', 'coral_wall_fan']
@@ -631,7 +630,7 @@ VANILLA_TOOL_MATERIALS = ('netherite', 'diamond', 'iron', 'stone', 'wooden', 'go
 SHORE_DECORATORS = ('driftwood', 'clam', 'mollusk', 'mussel', 'seaweed', 'sticks_shore', 'guano')
 FOREST_DECORATORS = ('sticks_forest', 'pinecone', 'salt_lick', 'dead_grass', 'humus', 'rotten_flesh')
 OCEAN_PLANT_TYPES = ('grass_water', 'floating', 'water', 'emergent', 'tall_water')
-MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
+MISC_PLANT_FEATURES = ('hanging_vines', 'hanging_vines_cave', 'spanish_moss', 'ivy', 'jungle_vines', 'liana', 'moss_cover_patch', 'reindeer_lichen_cover_patch', 'morning_glory_cover_patch', 'tree_fern', 'arundo')
 SURFACE_GRASS_FEATURES = ('fountain_', 'orchard_', 'rye', 'scutch_', 'timothy_', 'brome', 'blue', 'raddia_')
 UNDERGROUND_FEATURES = ('cave_column', 'cave_spike', 'large_cave_spike', 'water_spring', 'lava_spring', 'calcite', 'mega_calcite', 'icicle', 'underground_loose_rocks', 'underground_guano_patch')
 
@@ -756,7 +755,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -1002,6 +1001,45 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
 
+    'tfc.jade.sealed_date': 'Sealed Date: %s',
+    'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
+    'tfc.jade.input_stacks': '%sx Input Stacks',
+    'tfc.jade.fuel_stacks': '%sx Fuel Stacks',
+    'tfc.jade.straws': '%s Straw',
+    'tfc.jade.logs': '%s Logs',
+    'tfc.jade.creating': 'Creating %s',
+    'tfc.jade.burn_rate': 'Burn Rate: %s ticks / mB',
+    'tfc.jade.burn_forever': 'Will burn indefinitely',
+    'tfc.jade.time_left': 'Time left: %s',
+    'tfc.jade.air_ticks': '%s added air ticks remaining',
+    'tfc.jade.animal_wear': 'Wear & Tear: %s',
+    'tfc.jade.familiarity': 'Familiarity: %s',
+    'tfc.jade.adulthood_days': 'Becomes adult in %s days',
+    'tfc.jade.product.generic': 'Has Animal Product',
+    'tfc.jade.product.eggs': 'Has Eggs',
+    'tfc.jade.product.milk': 'Ready to Milk',
+    'tfc.jade.product.wool': 'Ready to Shear',
+    'tfc.jade.can_mate': 'Ready to Mate',
+    'tfc.jade.old_animal': 'Old, cannot reproduce or provide useful products',
+    'tfc.jade.gestation_progress': 'Gestation Progress: %s',
+    'tfc.jade.may_ride_horse': 'May be ridden',
+    'tfc.jade.explosion_strength': 'Explosion Strength: %s',
+    'tfc.jade.yield': 'Yield Multiplier: %s',
+    'tfc.jade.no_stick': 'Needs stick to reach max growth',
+    'tfc.jade.variant_and_markings': '%s, %s',
+    'tfc.jade.raining_mud_bricks': 'Raining, cannot start drying',
+    'tfc.jade.dried_mud_bricks': 'Dried',
+    'tfc.jade.loom_progress': 'Weaving Progress: %s / %s making %s',
+    'tfc.jade.squid_size': 'Size: %s',
+    'tfc.jade.freshwater': 'Freshwater',
+    'tfc.jade.saltwater': 'Saltwater',
+    'tfc.jade.diurnal': 'Diurnal',
+    'tfc.jade.nocturnal': 'Nocturnal',
+    'tfc.jade.large_bait': 'Needs large fishing bait to catch',
+    'tfc.jade.hooked': 'Hooked Entity: %s',
+    'tfc.jade.bait': 'Attached Bait: %s',
+    **{'tfc.jade.bellows_%s' % i: 'W' + ('o' * (2 + i)) + 'sh' for i in range(1, 11)},
+
     # Commands
 
     'tfc.commands.time.query.daytime': 'The day time is %s',
@@ -1133,6 +1171,20 @@ DEFAULT_LANG = {
     'tfc.enum.season.october': 'Autumn',
     'tfc.enum.season.november': 'Late Autumn',
     'tfc.enum.season.december': 'Early Winter',
+    'tfc.enum.gender.male': 'Male',
+    'tfc.enum.gender.female': 'Female',
+    'tfc.enum.variant.white': 'White Variant',
+    'tfc.enum.variant.creamy': 'Creamy Variant',
+    'tfc.enum.variant.chestnut': 'Chestnut Variant',
+    'tfc.enum.variant.brown': 'Brown Variant',
+    'tfc.enum.variant.black': 'Black Variant',
+    'tfc.enum.variant.gray': 'Gray Variant',
+    'tfc.enum.variant.darkbrown': 'Dark Brown',
+    'tfc.enum.markings.none': 'No Markings',
+    'tfc.enum.markings.white': 'White Markings',
+    'tfc.enum.markings.white_field': 'White Field Markings',
+    'tfc.enum.markings.white_dots': 'White Dot Markings',
+    'tfc.enum.markings.black_dots': 'Black Dot Markings',
     'tfc.enum.size.tiny': 'Tiny',
     'tfc.enum.size.very_small': 'Very Small',
     'tfc.enum.size.small': 'Small',
@@ -1169,8 +1221,18 @@ DEFAULT_LANG = {
     'tfc.enum.order.not_last': 'Not Last',
     'tfc.enum.order.second_last': 'Second Last',
     'tfc.enum.order.third_last': 'Third Last',
+    'tfc.rabbit_0': 'Brown Fur',
+    'tfc.rabbit_1': 'White Fur',
+    'tfc.rabbit_2': 'Black Fur',
+    'tfc.rabbit_3': 'White Splotched Fur',
+    'tfc.rabbit_4': 'Golden Fur',
+    'tfc.rabbit_5': 'Salty Fur',
+    'tfc.rabbit_99': '§cEvil',
 
-    'tfc.thatch_bed.use': 'This bed is too uncomfortable to sleep in.',
+    'tfc.thatch_bed.use_no_sleep_no_spawn': 'This bed is too uncomfortable to sleep in.',
+    'tfc.thatch_bed.use_sleep_no_spawn': 'This bed does not allow you to set your spawn.',
+    'tfc.thatch_bed.use_no_sleep_spawn': 'This bed is too uncomfortable to sleep in, but your spawn point was set.',
+    'tfc.thatch_bed.use_sleep_spawn': 'Spawn point set.',
     'tfc.thatch_bed.thundering': 'You are too scared to sleep.',
     'tfc.composter.rotten': 'This composter is smelly and might attract animals. You should empty it.',
     'tfc.composter.too_many_greens': 'This composter has enough green items',

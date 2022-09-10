@@ -500,7 +500,8 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.COMPOST_READY.get(), set -> new GlintParticleProvider(set, ChatFormatting.GRAY));
         particleEngine.register(TFCParticles.COMPOST_ROTTEN.get(), set -> new GlintParticleProvider(set, ChatFormatting.DARK_RED));
         particleEngine.register(TFCParticles.SLEEP.get(), SleepParticle.Provider::new);
-        particleEngine.register(TFCParticles.LEAF.get(), LeafParticle.Provider::new);
+        particleEngine.register(TFCParticles.LEAF.get(), set -> new LeafParticle.Provider(set, true));
+        particleEngine.register(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         particleEngine.register(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
     }
 

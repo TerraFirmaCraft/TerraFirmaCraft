@@ -6,15 +6,17 @@
 
 package net.dries007.tfc;
 
-import net.minecraft.SharedConstants;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
@@ -49,6 +51,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.ingredients.BlockIngredients;
 import net.dries007.tfc.common.recipes.ingredients.TFCIngredients;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifiers;
+import net.dries007.tfc.compat.jade.TheOneProbeIntegration;
 import net.dries007.tfc.compat.patchouli.PatchouliClientEventHandler;
 import net.dries007.tfc.compat.patchouli.PatchouliIntegration;
 import net.dries007.tfc.config.TFCConfig;
@@ -92,6 +95,7 @@ public final class TerraFirmaCraft
         bus.addListener(this::setup);
         bus.addListener(this::registerCapabilities);
         bus.addListener(this::loadComplete);
+        bus.addListener(this::onInterModComms);
         bus.addListener(TFCEntities::onEntityAttributeCreation);
 
         TFCBlocks.BLOCKS.register(bus);
@@ -179,5 +183,13 @@ public final class TerraFirmaCraft
     public void loadComplete(FMLLoadCompleteEvent event)
     {
         FoodHandler.setNonDecaying(false);
+    }
+
+    public void onInterModComms(InterModEnqueueEvent event)
+    {
+        if (ModList.get().isLoaded("theoneprobe"))
+        {
+            InterModComms.sendTo("theoneprobe", "getTheOneProbe", TheOneProbeIntegration::new);
+        }
     }
 }

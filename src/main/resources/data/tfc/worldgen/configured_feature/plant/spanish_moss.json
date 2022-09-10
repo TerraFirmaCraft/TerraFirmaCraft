@@ -1,18 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:simple_block",
+  "type": "tfc:weeping_vines",
   "config": {
-    "to_place": {
-      "type": "tfc:random_property",
-      "state": {
-        "Name": "tfc:plant/spanish_moss",
-        "Properties": {
-          "age": "1",
-          "stage": "1",
-          "hanging": "false"
-        }
-      },
-      "property": "age"
-    }
+    "body": "tfc:plant/spanish_moss_plant",
+    "head": "tfc:plant/spanish_moss",
+    "tries": 90,
+    "radius": 10,
+    "min_height": 14,
+    "max_height": 21
   }
 }

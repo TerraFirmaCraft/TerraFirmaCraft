@@ -6,10 +6,10 @@
 
 package net.dries007.tfc.common.entities.livestock;
 
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
@@ -26,6 +26,7 @@ import net.dries007.tfc.common.capabilities.egg.EggCapability;
 import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.events.AnimalProductEvent;
 
@@ -161,5 +162,11 @@ public abstract class OviparousAnimal extends ProducingAnimal
     public void setLastAge(Age lastAge)
     {
         this.lastAge = lastAge;
+    }
+
+    @Override
+    public MutableComponent getProductReadyName()
+    {
+        return Helpers.translatable("tfc.jade.product.eggs");
     }
 }
