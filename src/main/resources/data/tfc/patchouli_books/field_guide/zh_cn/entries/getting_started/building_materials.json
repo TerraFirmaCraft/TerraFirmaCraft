@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#mud_bricks)壤泥砖$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)板条和涂料$()$(br)  3. $(l:getting_started/building_materials#clay_and_peat)粘土块和泥煤$()$(br)  4. $(l:getting_started/building_materials#alabaster)雪花石膏$()（需要金属镐）",
+      "text": "$(br)  1. $(l:getting_started/building_materials#mud_bricks)壤泥砖$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)板条和涂料$()$(br)  3. $(l:getting_started/building_materials#clay_and_peat)粘土块和泥炭$()$(br)  4. $(l:getting_started/building_materials#alabaster)雪花石膏$()（需要金属镐）",
       "title": "材料目录"
     },
     {
@@ -140,8 +140,8 @@
     {
       "type": "patchouli:text",
       "anchor": "clay_and_peat",
-      "text": "粘土球可以做成粘土块。将粘土块放在地上再挖掉就可以把它变回粘土球。虽然谈不上美观，它们至少很好获得。$(br2)泥煤也是一种不受重力影响的方块，常常会在水边生成。有些植物也会生长在泥煤上。$(br2)然而，泥煤很容易着火。",
-      "title": "粘土块和泥煤"
+      "text": "粘土球可以做成粘土块。将粘土块放在地上再挖掉就可以把它变回粘土球。虽然谈不上美观，它们至少很好获得。$(br2)泥炭也是一种不受重力影响的方块，常常会在水边生成。有些植物也会生长在泥炭上。$(br2)然而，泥炭很容易着火。",
+      "title": "粘土块和泥炭"
     },
     {
       "type": "patchouli:crafting",

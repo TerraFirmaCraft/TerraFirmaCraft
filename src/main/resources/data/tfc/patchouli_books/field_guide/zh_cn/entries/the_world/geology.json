@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)中海拔大陆$()$(br)中等高度的大陆板块，包含许多生物群系，通常与低海拔或高海拔大陆板块接壤。$(br2)$(bold)高海拔大陆$()$(br)海拔较高的地区。$(l:the_world/biomes#hills)连绵丘陵$()、$(l:the_world/biomes#plateau)高原$()和$(l:the_world/biomes#mountains)古老山脉$()等生物群系会生成在这里。$(br2)$(bold)大洋中脊$()$(br)当两个大洋板块相互分离时，就会形成大洋中脊。"
+      "text": "$(bold)中海拔大陆$()$(br)中等高度的大陆板块，包含许多生物群系，通常与低海拔或高海拔大陆板块接壤。$(br2)$(bold)高海拔大陆$()$(br)海拔较高的地区。$(l:the_world/biomes#hills)连绵丘陵$()、$(l:the_world/biomes#plateau)高原$()和$(l:the_world/biomes#mountains)原始山脉$()等生物群系会生成在这里。$(br2)$(bold)大洋中脊$()$(br)当两个大洋板块相互分离时，就会形成大洋中脊。"
     },
     {
       "type": "patchouli:text",

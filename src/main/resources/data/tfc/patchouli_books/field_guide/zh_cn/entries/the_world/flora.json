@@ -93,29 +93,6 @@
       "multiblock": {
         "pattern": [
           [
-            "X"
-          ],
-          [
-            "Y"
-          ],
-          [
-            "0"
-          ]
-        ],
-        "mapping": {
-          "X": "tfc:wood/wood/oak",
-          "Y": "tfc:plant/spanish_moss[hanging=true]"
-        }
-      },
-      "name": "悬垂植物",
-      "text": "这些悬垂植物成天屁事不干，就在那儿摆。",
-      "enable_visualize": false
-    },
-    {
-      "type": "patchouli:multiblock",
-      "multiblock": {
-        "pattern": [
-          [
             "XY"
           ],
           [
