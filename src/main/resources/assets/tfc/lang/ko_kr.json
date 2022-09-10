@@ -165,7 +165,7 @@
     "tfc.tooltip.fluid_units": "%s mB",
     "tfc.tooltip.fluid_units_of": "%2$s %1$s mB",
     "tfc.tooltip.fluid_units_and_capacity": "%s / %s mB",
-    "tfc.tooltip.fluid_units_and_capacity_of": "%1$s %2$s / %3$s mB",
+    "tfc.tooltip.fluid_units_and_capacity_of": "%3$s %1$s / %2$s mB",
     "tfc.tooltip.less_than_one_fluid_units": "< 1 mB",
     "tfc.tooltip.farmland.mature": "§a성숙함",
     "tfc.tooltip.farmland.hydration": "§9수분: §r%s%%",
