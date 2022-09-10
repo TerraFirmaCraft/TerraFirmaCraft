@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "加热",
+  "category": "tfc:mechanics",
+  "icon": "tfc:firestarter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "将物品加热可以将其转化为另一种物品或熔化为液体。$(l:getting_started/firepit)篝火$()、$(l:getting_started/pit_kiln)坑窑$()或$(l:mechanics/charcoal_forge)木炭炉$()等设备都可以加热物品，它们的工作原理都大同小异。当将物品放入这些设备时，物品就会逐渐升温。物品的工具提示中会说明它当前的温度。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "物品的温度是用颜色来表示的。每个颜色表示了物品所处温度的区间：$(br2)$(7)$(bold)暖$()：1 - 80 °C$(br)$(7)$(bold)热$()：80 - 210 °C$(br)$(7)$(bold)灼热$()：210 - 480 °C$(br)$(4)$(bold)淡红$()：480 - 580 °C$(br)$(bold)$(4)暗红$()：580 - 730 °C$(br)$(c)$(bold)亮红$()：730 - 930 °C$(br)$(6)$(bold)橙$()：930 - 1100 °C$(br)$(e)$(bold)$(t:Yellow)黄$()：1100 - 1300 °C$(br)$(e)$(t:Yellow White)$(bold)黄白$()：1300 - 1400 °C$(br)$(d)$(bold)$(t:White)白$()：1400 - 1500 °C$(br)$(d)$(bold)$(t:Brilliant White)炽白$()： >1500 °C"
+    }
+  ],
+  "read_by_default": true
+}

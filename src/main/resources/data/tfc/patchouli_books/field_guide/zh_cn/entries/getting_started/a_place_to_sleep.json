@@ -1,0 +1,32 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "如何过夜",
+  "category": "tfc:getting_started",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "游戏早期你可以做一张$(thing)干草床$()。虽然不能用它来跳过夜晚，但至少可以用来设置你的复活点。要搭建干草床，在地上放置两个相邻的$(thing)干草块$()，然后手持一张$(thing)大块兽皮$()右击干草块。只有大型动物会掉落大块兽皮，例如$(thing)熊$()和$(thing)牛$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            " D ",
+            " 0 "
+          ]
+        ],
+        "mapping": {
+          "0": "tfc:thatch_bed[part=head,facing=west]",
+          "D": "tfc:thatch_bed[part=foot,facing=east]"
+        }
+      },
+      "name": "干草床",
+      "text": "一张干草床。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8
+}

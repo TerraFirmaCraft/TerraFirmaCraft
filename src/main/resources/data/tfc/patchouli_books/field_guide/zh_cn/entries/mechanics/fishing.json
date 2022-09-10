@@ -1,0 +1,40 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "钓鱼",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/fishing_rod/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "河湖大海中的鱼必须通过$(thing)钓鱼$()才能抓住。若鱼竿上有鱼饵，鱼儿便会试图咬钩。咬钩的鱼儿有时会把鱼饵吃掉。鱼咬钩后还要收线才能钓上来。更高级的鱼钩收线时更容易操控。"
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/bismuth_bronze_fish_hook",
+      "text": "首先，你需要在$(l:mechanics/anvils)砧$()上锻造出一只鱼钩。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/fishing_rod/bismuth_bronze",
+      "title": "钓鱼竿",
+      "text": "制作钓鱼竿需要鱼钩。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "钓鱼必须要有鱼饵才行。每次钓鱼成功后，鱼饵都有一定几率被消耗掉。可以使用工作台将鱼饵添加到钓鱼竿上。普通的鱼用$(thing)种子$()或$(thing)贝类$()就行了。而更大的鱼，例如$(thing)海豚$()和$(thing)逆戟鲸$()，就需要$(item)鳕鱼$()、$(item)三文鱼$()、$(item)热带鱼$()或$(item)蓝鳃鱼$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持钓鱼竿按$(item)$(k:key.use)$()就能抛竿。等待鱼儿靠近并咬钩后，按$(item)$(k:key.use)$()就能收线。每按一次收线屏幕底下的蓄力条就会增加。收线太快会导致鱼儿脱钩，你的鱼饵也就没了！你要做的就是把鱼儿拖上岸，然后用别的什么东西把它敲晕。提示：可以把鱼竿放在副手上。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/fishing.png"
+      ],
+      "text": "钓鱼时蓄力条会取代经验条。",
+      "border": true
+    }
+  ],
+  "read_by_default": true
+}

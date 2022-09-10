@@ -1,0 +1,17 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "保持土壤湿润",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wooden_bucket{fluid:{\"Amount\":100,\"FluidName\":\"minecraft:water\"}}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "务农时的一大挑战便是如何保持土壤湿润。根据地区$(l:the_world/climate#rainfall)降雨量$()的多寡，土壤可能本身就会含有一些水分。然而，单靠降水对于种植某些水量需求大的作物来说可能还不够。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "手持$(thing)锄$()对准$(thing)耕地$()或需要水分的$(thing)农作物$()即可查看其当前湿润度。该方块的湿润度会以 0% - 100% 之间的一个数值显示在屏幕上。$(br2)湿润度无法减少——除非移动到降雨量更少的区域。不过可以在耕地周围放置$(thing)水$()方块来提升。"
+    }
+  ],
+  "read_by_default": true
+}

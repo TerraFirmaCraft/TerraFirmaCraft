@@ -1,0 +1,53 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "支撑梁",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/support/oak",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)支撑梁$()是一种用来防止塌方的方块。采矿时若没有支撑梁很有可能导致塌方。从天而降的石头可以轻易把你砸成肉饼！",
+      "title": "支撑梁"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/oak_support",
+      "text": "用$(thing)锯$()和$(thing)原木$()可以制成支撑梁。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "支撑梁可以横向放置也可以纵向放置。在方块顶面放置支撑梁时会一次性放下三根。如果最下面的方块被摧毁或坍塌，支撑梁就会被破坏。当在同一条直线上有两根纵向的支撑梁时，手持支撑梁$(item)$(k:key.use)$()点击其中一根的侧面就可以连接两根支撑梁了。",
+      "title": "支撑支撑梁"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "CRD"
+          ],
+          [
+            "V V"
+          ],
+          [
+            "V0V"
+          ]
+        ],
+        "mapping": {
+          "C": "tfc:wood/vertical_support/oak[south=true]",
+          "R": "tfc:wood/horizontal_support/oak[north=true,south=true]",
+          "D": "tfc:wood/vertical_support/oak[north=true]",
+          "V": "tfc:wood/vertical_support/oak"
+        }
+      },
+      "name": "基础结构",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "只有横向的支撑梁会防止塌方，纵向的和有拐角的都不行。每块横向的支撑梁会使它本体以及上下各一格四周 9x9 范围内的方块免受重力影响。警告：在安全范围之外开始的塌方有可能会漫延到安全范围之内，且一旦有方块砸在支撑梁上，支撑梁就会崩塌！"
+    }
+  ],
+  "read_by_default": true
+}
