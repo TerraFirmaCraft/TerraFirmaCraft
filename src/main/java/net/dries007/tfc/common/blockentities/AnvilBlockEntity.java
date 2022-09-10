@@ -30,10 +30,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.Tiered;
 import net.dries007.tfc.common.capabilities.InventoryItemHandler;
-import net.dries007.tfc.common.capabilities.forge.ForgeStep;
-import net.dries007.tfc.common.capabilities.forge.Forging;
-import net.dries007.tfc.common.capabilities.forge.ForgingBonus;
-import net.dries007.tfc.common.capabilities.forge.ForgingCapability;
+import net.dries007.tfc.common.capabilities.forge.*;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
 import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.container.AnvilContainer;
@@ -271,7 +268,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
                     // And apply the forging bonus, if the recipe says to do so
                     if (recipe.shouldApplyForgingBonus())
                     {
-                        final float ratio = (float) forge.getSteps().total() / ForgeStep.getOptimalStepsToTarget(recipe.computeTarget(inventory));
+                        final float ratio = (float) forge.getSteps().total() / ForgeRule.calculateOptimalStepsToTarget(recipe.computeTarget(inventory), recipe.getRules());
                         final ForgingBonus bonus = ForgingBonus.byRatio(ratio);
                         ForgingBonus.set(outputStack, bonus);
                     }

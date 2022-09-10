@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.plant.fruit;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -34,6 +36,11 @@ public final class FruitBlocks
     public static Block createBananaSapling()
     {
         return new BananaSaplingBlock(ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), BANANA_STAGES, TFCBlocks.BANANA_PLANT, 6);
+    }
+
+    public static Block createPottedBananaSapling()
+    {
+        return new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TFCBlocks.BANANA_SAPLING, BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion());
     }
 
     public static Block createBananaPlant()
@@ -117,6 +124,11 @@ public final class FruitBlocks
         public Block createSapling()
         {
             return new FruitTreeSaplingBlock(ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).blockEntity(TFCBlockEntities.TICK_COUNTER).flammableLikeLeaves(), TFCBlocks.FRUIT_TREE_GROWING_BRANCHES.get(this), 8, ClimateRanges.FRUIT_TREES.get(this), stages);
+        }
+
+        public Block createPottedSapling()
+        {
+            return new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, TFCBlocks.FRUIT_TREE_SAPLINGS.get(this), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion());
         }
 
         public Block createLeaves()

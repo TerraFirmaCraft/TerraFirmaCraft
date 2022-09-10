@@ -44,6 +44,7 @@ import net.dries007.tfc.common.recipes.CastingRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Tooltips;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -188,10 +189,7 @@ public class MoldItem extends Item
                 if (metal != null)
                 {
                     text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
-                    text.add(metal.getDisplayName()
-                        .append(" ")
-                        .append(Helpers.translatable("tfc.tooltip.fluid_units_and_capacity", fluid.getAmount(), capacity))
-                        .append(" ")
+                    text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity)
                         .append(Helpers.translatable(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
                 }
             }

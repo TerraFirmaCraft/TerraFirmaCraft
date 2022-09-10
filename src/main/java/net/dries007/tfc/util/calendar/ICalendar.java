@@ -114,10 +114,7 @@ public interface ICalendar
 
     static MutableComponent getTimeAndDate(int hour, int minute, Month month, int day, long years)
     {
-        return Helpers.literal(String.format("%d:%02d ", hour, minute))
-            .append(Helpers.translateEnum(month))
-            .append(" ")
-            .append(Helpers.translatable("tfc.tooltip.calendar_days_years", day, years));
+        return Helpers.translatable("tfc.tooltip.calendar_hour_minute_month_day_year", String.format("%d:%02d", hour, minute), Helpers.translateEnum(month), day, years);
     }
 
     static MutableComponent getTimeDelta(long ticks, int daysInMonth)

@@ -221,6 +221,11 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         return temperature;
     }
 
+    public int getAirTicks()
+    {
+        return airTicks;
+    }
+
     public void onFirstCreation()
     {
         burnTicks = 200;

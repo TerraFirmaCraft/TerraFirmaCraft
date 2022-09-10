@@ -7,23 +7,21 @@
       "heightmap": "WORLD_SURFACE_WG"
     },
     {
-      "type": "block_predicate_filter",
-      "predicate": {
-        "type": "tfc:air_or_empty_fluid"
-      }
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "tfc:climate",
+      "min_temperature": 8,
+      "max_temperature": 22,
+      "min_rainfall": 400,
+      "max_rainfall": 500,
+      "min_forest": "normal",
+      "fuzzy": true
     },
     {
       "type": "block_predicate_filter",
       "predicate": {
-        "type": "would_survive",
-        "state": {
-          "Name": "tfc:plant/spanish_moss",
-          "Properties": {
-            "age": "1",
-            "stage": "1",
-            "hanging": "false"
-          }
-        }
+        "type": "tfc:air_or_empty_fluid"
       }
     }
   ]

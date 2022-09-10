@@ -54,6 +54,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue candleTicks;
+    // Blocks - Drying Bricks
+    public final ForgeConfigSpec.IntValue mudBricksTicks;
     // Blocks - Charcoal Pit
     public final ForgeConfigSpec.IntValue charcoalTicks;
     // Blocks - Pit Kiln
@@ -87,6 +89,7 @@ public class ServerConfig
     // Blocks - Thatch Bed
     public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
     public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
+    public final ForgeConfigSpec.BooleanValue thatchBedNoSleepInThunderstorms;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
     // Items - Small Vessel
@@ -230,6 +233,10 @@ public class ServerConfig
 
         candleTicks = builder.apply("candleTicks").comment("Number of ticks required for a candle to burn out (1000 = 1 in game hour = 50 seconds), default is 264 hours. Set to -1 to disable candle burnout.").defineInRange("candleTicks", 264000, -1, Integer.MAX_VALUE);
 
+        innerBuilder.pop().push("dryingBricks");
+
+        mudBricksTicks = builder.apply("mudBricksTicks").comment("Number of ticks required for mud bricks to dry (1000 = 1 in game hour = 50 seconds), default is 24 hours. Set to -1 to disable drying.").defineInRange("mudBricksTicks",  24000, -1, Integer.MAX_VALUE);
+
         innerBuilder.pop().push("charcoal");
 
         charcoalTicks = builder.apply("charcoalTicks").comment("Number of ticks required for charcoal pit to complete. (1000 = 1 in game hour = 50 seconds), default is 18 hours.").defineInRange("charcoalTicks", 18000, -1, Integer.MAX_VALUE);
@@ -285,6 +292,7 @@ public class ServerConfig
 
         enableThatchBedSpawnSetting = builder.apply("enableThatchBedSpawnSetting").comment("If true, thatch beds can set the player's spawn.").define("enableThatchBedSpawnSetting", true);
         enableThatchBedSleeping = builder.apply("enableThatchBedSleeping").comment("If true, the player can sleep the night in a thatch bed").define("enableThatchBedSleeping", false);
+        thatchBedNoSleepInThunderstorms = builder.apply("thatchBedNoSleepInThunderstorms").comment("If true, the player cannot sleep in thatch beds during thunderstorms.").define("thatchBedNoSleepInThunderstorms", true);
 
         innerBuilder.pop().push("leaves");
 
