@@ -89,7 +89,7 @@ public class PowderkegBlockEntity extends TickableInventoryBlockEntity<Powderkeg
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
     {
-        return PowderkegContainer.create(this, player.getInventory(), containerId);
+        return canOpen(player) ? PowderkegContainer.create(this, player.getInventory(), containerId) : null;
     }
 
     @Override

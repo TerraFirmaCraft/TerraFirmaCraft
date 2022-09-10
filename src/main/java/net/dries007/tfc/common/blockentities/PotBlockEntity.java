@@ -216,7 +216,7 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return PotContainer.create(this, playerInv, windowID);
+        return canOpen(player) ? PotContainer.create(this, playerInv, windowID) : null;
     }
 
     public static class PotInventory implements EmptyInventory, DelegateItemHandler, DelegateFluidHandler, INBTSerializable<CompoundTag>

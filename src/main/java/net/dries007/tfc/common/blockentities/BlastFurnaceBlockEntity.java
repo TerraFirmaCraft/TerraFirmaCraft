@@ -379,7 +379,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
     {
-        return BlastFurnaceContainer.create(this, inventory, containerId);
+        return canOpen(player) ? BlastFurnaceContainer.create(this, inventory, containerId) : null;
     }
 
     @Override

@@ -253,7 +253,7 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
     {
-        return CrucibleContainer.create(this, player.getInventory(), containerId);
+        return canOpen(player) ? CrucibleContainer.create(this, player.getInventory(), containerId) : null;
     }
 
     @Override

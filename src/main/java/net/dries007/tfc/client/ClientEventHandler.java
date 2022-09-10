@@ -33,6 +33,7 @@ import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -452,7 +453,7 @@ public final class ClientEventHandler
         TFCBlocks.WILD_CROPS.forEach((crop, reg) -> registry.register(grassColor, reg.get()));
 
         registry.register((state, level, pos, tintIndex) -> TFCColors.getWaterColor(pos), TFCBlocks.SALT_WATER.get(), TFCBlocks.SEA_ICE.get(), TFCBlocks.RIVER_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SALT_WATER).get());
-        registry.register(blockColor(0x5FB5B8), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SPRING_WATER).get());
+        registry.register(springWater(new int[] {0xcc6600, 0xffc266, 0xffffb3, 0x5FB5B8}), TFCBlocks.SPRING_WATER.get(), TFCBlocks.CAULDRONS.get(FluidType.SPRING_WATER).get());
 
         TFCBlocks.CAULDRONS.forEach((type, reg) -> type.color().ifPresent(color -> registry.register(blockColor(color), reg.get())));
     }
@@ -543,5 +544,25 @@ public final class ClientEventHandler
     private static BlockColor blockColor(int color)
     {
         return (state, level, pos, tintIndex) -> color;
+    }
+
+    private static BlockColor springWater(int[] colors)
+    {
+        assert colors.length == 4;
+        return (state, level, pos, tintIndex) -> {
+            if (pos == null || level == null) return colors[3];
+            final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+            int idx = 0;
+            for (Direction d : Direction.Plane.HORIZONTAL)
+            {
+                cursor.setWithOffset(pos, d);
+                if (level.getFluidState(cursor).isEmpty())
+                {
+                    idx++;
+                    if (idx == 3) break;
+                }
+            }
+            return colors[idx];
+        };
     }
 }

@@ -53,7 +53,7 @@ public class GrillBlockEntity extends AbstractFirepitBlockEntity<ItemStackHandle
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return GrillContainer.create(this, playerInv, windowID);
+        return canOpen(player) ? GrillContainer.create(this, playerInv, windowID) : null;
     }
 
     @Override

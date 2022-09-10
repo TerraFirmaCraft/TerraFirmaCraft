@@ -158,7 +158,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
     {
-        return BarrelContainer.create(this, player.getInventory(), containerId);
+        return canOpen(player) ? BarrelContainer.create(this, player.getInventory(), containerId) : null;
     }
 
     @NotNull

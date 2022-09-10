@@ -40,6 +40,14 @@ public interface ISlotCallback
     default void setAndUpdateSlots(int slot) {}
 
     /**
+     * Called when a slot is asked for its item inside, BEFORE the read actually goes through.
+     * This is done to cause loot tables to unpack themselves first.
+     *
+     * Check where this is actually implemented. Not all ISlotCallback impls need or want this!
+     */
+    default void slotChecked() { }
+
+    /**
      * Called when a slot is taken from
      */
     default void onSlotTake(Player player, int slot, ItemStack stack) {}

@@ -50,7 +50,7 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory inv, Player player)
     {
-        return LargeVesselContainer.create(this, inv, windowID);
+        return canOpen(player) ? LargeVesselContainer.create(this, inv, windowID) : null;
     }
 
     public void onUnseal()

@@ -62,6 +62,7 @@ import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -415,6 +416,96 @@ public final class Helpers
             }
         }
         return count;
+    }
+
+    /**
+     * {@link LootTable#fill(Container, LootContext)} for forge land
+     */
+    public static void fillContainerLoot(LootTable table, IItemHandlerModifiable container, LootContext context)
+    {
+        final List<ItemStack> allItems = table.getRandomItems(context);
+        final var random = context.getRandom();
+        final List<Integer> slots = getAvailableSlots(container, random);
+        shuffleAndSplitItems(allItems, slots.size(), random);
+
+        for (ItemStack stack : allItems)
+        {
+            if (slots.isEmpty())
+            {
+                LOGGER.warn("Container was attempted to be over-filled by a loot table and not all items were inserted! Loot Table ID: {}, Items Found: {}", table.getLootTableId(), allItems.size());
+                return;
+            }
+
+            if (stack.isEmpty())
+            {
+                container.insertItem(slots.remove(slots.size() - 1), ItemStack.EMPTY, false);
+            }
+            else
+            {
+                container.insertItem(slots.remove(slots.size() - 1), stack, false);
+            }
+        }
+    }
+
+    private static List<Integer> getAvailableSlots(IItemHandlerModifiable container, Random random)
+    {
+        final List<Integer> list = new ArrayList<>(container.getSlots());
+        for (int i = 0; i < container.getSlots(); ++i)
+        {
+            if (container.getStackInSlot(i).isEmpty())
+            {
+                list.add(i);
+            }
+        }
+        Collections.shuffle(list, random);
+        return list;
+    }
+
+    private static void shuffleAndSplitItems(List<ItemStack> stacks, int size, Random random)
+    {
+        List<ItemStack> list = new ArrayList<>(stacks.size());
+        Iterator<ItemStack> iterator = stacks.iterator();
+
+        while (iterator.hasNext())
+        {
+            ItemStack itemstack = iterator.next();
+            if (itemstack.isEmpty())
+            {
+                iterator.remove();
+            }
+            else if (itemstack.getCount() > 1)
+            {
+                list.add(itemstack);
+                iterator.remove();
+            }
+        }
+
+        while (size - stacks.size() - list.size() > 0 && !list.isEmpty())
+        {
+            ItemStack stack = list.remove(Mth.nextInt(random, 0, list.size() - 1));
+            int i = Mth.nextInt(random, 1, stack.getCount() / 2);
+            ItemStack singleStack = stack.split(i);
+            if (stack.getCount() > 1 && random.nextBoolean())
+            {
+                list.add(stack);
+            }
+            else
+            {
+                stacks.add(stack);
+            }
+
+            if (singleStack.getCount() > 1 && random.nextBoolean())
+            {
+                list.add(singleStack);
+            }
+            else
+            {
+                stacks.add(singleStack);
+            }
+        }
+
+        stacks.addAll(list);
+        Collections.shuffle(stacks, random);
     }
 
     public static MobEffectInstance getOverburdened(boolean visible)

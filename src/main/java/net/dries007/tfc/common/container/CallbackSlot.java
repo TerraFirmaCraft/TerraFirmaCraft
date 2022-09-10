@@ -11,6 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CallbackSlot extends SlotItemHandler
 {
     private final ISlotCallback callback;
@@ -46,5 +48,35 @@ public class CallbackSlot extends SlotItemHandler
     public int getMaxStackSize()
     {
         return Math.min(callback.getSlotStackLimit(getSlotIndex()), super.getMaxStackSize());
+    }
+
+    @NotNull
+    @Override
+    public ItemStack getItem()
+    {
+        callback.slotChecked();
+        return super.getItem();
+    }
+
+    @Override
+    public boolean mayPickup(Player player)
+    {
+        callback.slotChecked();
+        return super.mayPickup(player);
+    }
+
+    @NotNull
+    @Override
+    public ItemStack remove(int amount)
+    {
+        callback.slotChecked();
+        return super.remove(amount);
+    }
+
+    @Override
+    public void set(@NotNull ItemStack stack)
+    {
+        callback.slotChecked();
+        super.set(stack);
     }
 }

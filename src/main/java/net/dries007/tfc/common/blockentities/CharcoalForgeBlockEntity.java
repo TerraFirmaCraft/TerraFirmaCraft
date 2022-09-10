@@ -237,7 +237,7 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return CharcoalForgeContainer.create(this, playerInv, windowID);
+        return canOpen(player) ? CharcoalForgeContainer.create(this, playerInv, windowID) : null;
     }
 
     @Override

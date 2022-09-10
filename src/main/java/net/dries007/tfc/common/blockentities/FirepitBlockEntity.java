@@ -46,7 +46,7 @@ public class FirepitBlockEntity extends AbstractFirepitBlockEntity<ItemStackHand
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory playerInv, Player player)
     {
-        return FirepitContainer.create(this, playerInv, windowID);
+        return canOpen(player) ? FirepitContainer.create(this, playerInv, windowID) : null;
     }
 
     @Override

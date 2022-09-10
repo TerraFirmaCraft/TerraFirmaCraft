@@ -89,7 +89,7 @@ public class AnvilBlockEntity extends InventoryBlockEntity<AnvilBlockEntity.Anvi
     @Override
     public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player)
     {
-        return AnvilContainer.create(this, player.getInventory(), containerId);
+        return canOpen(player) ? AnvilContainer.create(this, player.getInventory(), containerId) : null;
     }
 
     @Nullable

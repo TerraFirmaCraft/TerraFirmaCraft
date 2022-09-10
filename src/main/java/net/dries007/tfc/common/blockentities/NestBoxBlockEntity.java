@@ -102,6 +102,6 @@ public class NestBoxBlockEntity extends TickableInventoryBlockEntity<ItemStackHa
     @Override
     public AbstractContainerMenu createMenu(int windowID, Inventory inv, Player player)
     {
-        return NestBoxContainer.create(this, inv, windowID);
+        return canOpen(player) ? NestBoxContainer.create(this, inv, windowID) : null;
     }
 }
