@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -23,11 +24,13 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -191,6 +194,17 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, getDistanceProperty());
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile)
+    {
+        if (Helpers.isEntity(projectile, TFCTags.Entities.DESTROYED_BY_LEAVES) && level instanceof ServerLevel serverLevel)
+        {
+            doParticles(serverLevel, projectile.getX(), projectile.getY(), projectile.getZ(), 4);
+            projectile.kill();
+        }
     }
 
     /**

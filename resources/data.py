@@ -92,6 +92,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('animals', *['tfc:%s' % mob for mob in SPAWN_EGG_ENTITIES])
     rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
     rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
+    rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
 
     # Item Heats
 
