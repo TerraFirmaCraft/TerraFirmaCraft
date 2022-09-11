@@ -6,12 +6,17 @@
 
 package net.dries007.tfc.mixin.client.compat.sodium;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
 
 import net.dries007.tfc.common.fluids.FluidHelpers;
+import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Desc;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
@@ -19,16 +24,18 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * However, the sodium replacement has near 1-1 copies of the target methods - namely, we can retarget both of these mixins without introducing any dependency.
  */
 @Pseudo
-@Mixin(targets = "me.jellysquid.mods.sodium.client.render.pipeline.FluidRenderer", remap = false)
+@Mixin(targets = "me.jellysquid.mods.sodium.client.render.pipeline.FluidRenderer")
 public abstract class FluidRendererMixin
 {
-    @Redirect(method = "isFluidOccluded(Lnet/minecraft/world/level/BlockAndTintGetter;IIILnet/minecraft/core/Direction;Lnet/minecraft/world/level/material/Fluid;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), remap = false, require = 0)
+    @Dynamic("Method boolean isFluidOccluded(BlockAndTintGetter, int, int, Direction, Fluid) in Sodium's FluidRenderer")
+    @Redirect(method = "isFluidOccluded", target = @Desc(value = "isFluidOccluded", args = {BlockAndTintGetter.class, int.class, int.class, int.class, Direction.class, Fluid.class}, ret = boolean.class), at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), require = 0)
     private boolean isFluidOccludedWithMixing(Fluid fluid, Fluid fluidIn)
     {
         return fluid.isSame(fluidIn) || FluidHelpers.canMixFluids(fluid, fluidIn);
     }
 
-    @Redirect(method = "fluidHeight(Lnet/minecraft/world/level/BlockAndTintGetter;Lnet/minecraft/world/level/material/Fluid;Lnet/minecraft/core/BlockPos;)F", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), remap = false, require = 0)
+    @Dynamic("Method float fluidHeight(BlockAndTintGetter, Fluid, BlockPos) in Sodium's FluidRenderer")
+    @Redirect(target = @Desc(value = "fluidHeight", args = {BlockAndTintGetter.class, Fluid.class, BlockPos.class}, ret = float.class), at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Fluid;isSame(Lnet/minecraft/world/level/material/Fluid;)Z"), require = 0)
     private boolean fluidHeightWithMixing(Fluid fluid, Fluid fluidIn)
     {
         return fluid.isSame(fluidIn) || FluidHelpers.canMixFluids(fluid, fluidIn);
