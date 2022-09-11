@@ -2,8 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#minecraft:water",
-    "#tfc:alcohols",
-    "#tfc:milks"
+    "#tfc:fresh_water",
+    "tfc:salt_water"
   ]
 }

@@ -184,6 +184,7 @@ public class TFCTags
         public static final TagKey<Item> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
         public static final TagKey<Item> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
         public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
+        public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = create("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {

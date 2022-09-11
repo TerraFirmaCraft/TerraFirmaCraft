@@ -12,7 +12,7 @@
     "tfc:tallow",
     "tfc:tannin",
     "tfc:vinegar",
-    "#tfc:drinkable_ingredients",
+    "#tfc:drinkables",
     "#tfc:dyes"
   ]
 }

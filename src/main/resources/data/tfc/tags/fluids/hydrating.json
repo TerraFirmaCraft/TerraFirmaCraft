@@ -2,7 +2,6 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:river_water",
-    "#minecraft:water"
+    "#tfc:any_fresh_water"
   ]
 }

@@ -40,11 +40,10 @@ public class JugItem extends DiscreteFluidContainerItem
         if (handler != null)
         {
             final FluidStack drained = handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-            final Player player = entity instanceof Player ? (Player) entity : null;
-            if (player != null)
+            if (entity instanceof Player player)
             {
                 final Drinkable drinkable = Drinkable.get(drained.getFluid());
-                if (drinkable != null)
+                if (drinkable != null && !level.isClientSide)
                 {
                     drinkable.onDrink(player, drained.getAmount());
                 }

@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "minecraft:lava",
-    "#tfc:molten_metals"
+    "#tfc:drinkables",
+    "#tfc:any_infinite_water"
   ]
 }

@@ -247,6 +247,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('deals_piercing_damage', '#tfc:javelins', '#tfc:knives')
     rm.item_tag('deals_slashing_damage', '#tfc:swords', '#tfc:axes')
     rm.item_tag('deals_crushing_damage', '#tfc:hammers', '#tfc:maces')
+    rm.item_tag('fluid_item_ingredient_empty_containers', 'minecraft:bucket', 'tfc:wooden_bucket', 'tfc:ceramic/jug', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
 
     for color in COLORS:
         rm.item_tag('vessels', 'tfc:ceramic/%s_unfired_vessel' % color, 'tfc:ceramic/%s_glazed_vessel' % color)
@@ -606,25 +607,41 @@ def generate(rm: ResourceManager):
     # FLUID TAGS
     # ==========
 
+    # Water
+    # Any = Includes block waters like flowing, river water. These should never be present in fluid tanks
+    # Fresh = only fresh
+    # Infinite = infinite waters (fresh + salt)
+    # Any = all waters (fresh, salt, spring)
+
+    rm.fluid_tag('any_fresh_water', 'minecraft:water', 'minecraft:flowing_water', 'tfc:river_water')
+    rm.fluid_tag('any_infinite_water', '#tfc:any_fresh_water', 'tfc:salt_water', 'tfc:flowing_salt_water')
+    rm.fluid_tag('any_water', '#tfc:any_infinite_water', 'tfc:spring_water', 'tfc:flowing_spring_water')
+
+    rm.fluid_tag('fresh_water', 'minecraft:water')
+    rm.fluid_tag('infinite_water', '#tfc:fresh_water', 'tfc:salt_water')
+    rm.fluid_tag('water', '#tfc:infinite_water', 'tfc:spring_water')
+
     # Categories
+    # None of these use the word 'Any' and such should not include flowing fluids
     rm.fluid_tag('milks', 'minecraft:milk')
     rm.fluid_tag('alcohols', *ALCOHOLS)
     rm.fluid_tag('dyes', *['tfc:%s_dye' % dye for dye in COLORS])
-    rm.fluid_tag('drinkable_ingredients', '#minecraft:water', '#tfc:alcohols', '#tfc:milks')
-    rm.fluid_tag('ingredients', *SIMPLE_FLUIDS, '#tfc:drinkable_ingredients', '#tfc:dyes')
+    rm.fluid_tag('ingredients', *SIMPLE_FLUIDS, '#tfc:drinkables', '#tfc:dyes')
+    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
+
+    rm.fluid_tag('drinkables', '#tfc:infinite_water', '#tfc:alcohols', '#tfc:milks')
+    rm.fluid_tag('any_drinkables', '#tfc:drinkables', '#tfc:any_infinite_water')
 
     # Applications
-    rm.fluid_tag('drinkables', 'tfc:river_water', '#tfc:drinkable_ingredients')
-    rm.fluid_tag('hydrating', 'tfc:river_water', '#minecraft:water')
+    rm.fluid_tag('hydrating', '#tfc:any_fresh_water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_jug', '#tfc:drinkable_ingredients')
+    rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
     rm.fluid_tag('usable_in_wooden_bucket', '#tfc:ingredients')
     rm.fluid_tag('usable_in_red_steel_bucket', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_blue_steel_bucket', '#minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('usable_in_blue_steel_bucket', 'minecraft:lava', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
-    rm.fluid_tag('usable_in_sluice', '#minecraft:water')
-    rm.fluid_tag('scribing_ink', 'tfc:black_dye')
+    rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
 
     # Entity Tags
 
