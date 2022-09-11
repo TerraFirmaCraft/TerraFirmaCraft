@@ -503,6 +503,7 @@ public final class ClientEventHandler
         particleEngine.register(TFCParticles.LEAF.get(), set -> new LeafParticle.Provider(set, true));
         particleEngine.register(TFCParticles.FEATHER.get(), set -> new LeafParticle.Provider(set, false));
         particleEngine.register(TFCParticles.SPARK.get(), SparkParticle.Provider::new);
+        particleEngine.register(TFCParticles.BUTTERFLY.get(), AnimatedParticle.Provider::new);
     }
 
     public static void onTextureStitch(TextureStitchEvent.Pre event)

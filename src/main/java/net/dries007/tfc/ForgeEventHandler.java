@@ -909,6 +909,7 @@ public final class ForgeEventHandler
                         final int layers = state.getValue(SnowLayerBlock.LAYERS);
                         if (layers > 1)
                         {
+                            level.destroyBlock(pos, false);
                             level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
                         }
                         else

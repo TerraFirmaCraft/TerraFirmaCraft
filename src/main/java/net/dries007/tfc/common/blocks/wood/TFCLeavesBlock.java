@@ -13,7 +13,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -24,7 +23,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -178,6 +176,10 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             Helpers.slowEntityInBlock(entity, 0.3f, 5);
         }
+        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
+        {
+            entity.kill();
+        }
         if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
         {
             doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
@@ -194,17 +196,6 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(PERSISTENT, getDistanceProperty());
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onProjectileHit(Level level, BlockState state, BlockHitResult hit, Projectile projectile)
-    {
-        if (Helpers.isEntity(projectile, TFCTags.Entities.DESTROYED_BY_LEAVES) && level instanceof ServerLevel serverLevel)
-        {
-            doParticles(serverLevel, projectile.getX(), projectile.getY(), projectile.getZ(), 4);
-            projectile.kill();
-        }
     }
 
     /**

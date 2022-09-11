@@ -29,4 +29,5 @@ public class TFCParticles
     public static final RegistryObject<SimpleParticleType> LEAF = PARTICLE_TYPES.register("leaf", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> FEATHER = PARTICLE_TYPES.register("feather", () -> new SimpleParticleType(false));
     public static final RegistryObject<SimpleParticleType> SPARK = PARTICLE_TYPES.register("spark", () -> new SimpleParticleType(false));
+    public static final RegistryObject<SimpleParticleType> BUTTERFLY = PARTICLE_TYPES.register("butterfly", () -> new SimpleParticleType(false));
 }

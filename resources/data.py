@@ -388,6 +388,8 @@ def generate(rm: ResourceManager):
     rm.block_tag('creates_downward_bubbles', 'minecraft:soul_sand')
     block_and_item_tag(rm, 'clay_indicators', *['tfc:plant/%s' % plant for plant in ('athyrium_fern', 'canna', 'goldenrod', 'pampas_grass', 'perovskia', 'water_canna')])
     block_and_item_tag(rm, 'mud_bricks', 'tfc:mud_bricks/loam', 'tfc:mud_bricks/silt', 'tfc:mud_bricks/sandy_loam', 'tfc:mud_bricks/silty_loam')
+    block_and_item_tag(rm, 'minecraft:small_flowers', *['tfc:plant/%s' % plant for plant in SMALL_FLOWERS])
+    block_and_item_tag(rm, 'minecraft:tall_flowers', *['tfc:plant/%s' % plant for plant in TALL_FLOWERS])
 
     for ore, ore_data in ORES.items():
         for rock in ROCKS.keys():

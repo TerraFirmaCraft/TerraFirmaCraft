@@ -465,6 +465,13 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
 
+SMALL_FLOWERS = ('allium', 'anthurium', 'black_orchid', 'blood_lily', 'blue_orchid', 'blue_ginger', 'butterfly_milkweed', 'calendula', 'canna', 'dandelion', 'desert_flame', 'goldenrod',
+           'grape_hyacinth', 'guzmania', 'kangaroo_paw', 'labrador_tea', 'lotus', 'nasturtium', 'oxeye_daisy', 'pistia', 'poppy', 'primrose', 'pulsatilla',
+           'rose', 'sacred_datura', 'sagebrush', 'sapphire_tower', 'sargassum', 'silver_spurflower', 'snapdragon_red', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_yellow', 'strelitzia',
+           'trillium', 'tropical_milkweed', 'tulip_orange', 'tulip_red', 'tulip_pink', 'tulip_white', 'vriesea', 'water_lily', 'yucca')
+
+TALL_FLOWERS = ('foxglove', 'hibiscus', 'lilac', 'toquilla_palm', 'marigold')
+
 FLOWERPOT_CROSS_PLANTS = {
     'allium': 'allium_2',
     'anthurium': 'anthurium_0',
