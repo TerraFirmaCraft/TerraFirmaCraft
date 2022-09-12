@@ -44,12 +44,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "将$(thing)橄榄糊$()封入装有$(thing)淡水$()的$(thing)大桶$()中就能制成$(thing)毛橄榄油$()。随后将$(thing)黄麻网$()封入大桶中过滤，过滤后的产物便是$(thing)橄榄油$()。每 mB 橄榄油可以供灯燃烧 8 游戏内小时。"
+      "text": "将$(thing)橄榄糊$()封入装有$(thing)淡水$()的$(thing)大桶$()中就能制成$(thing)毛橄榄油$()。随后将$(thing)黄麻网$()封入大桶中过滤，过滤后的产物便是$(thing)橄榄油$()。每单位橄榄油可以供灯燃烧 8 Minecraft小时。"
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:mechanics/pot)陶锅$()中用淡水煮 5 份$(thing)鲸脂$()。每 mB 蜡脂的燃烧时间只有不到 2 游戏内小时。"
+      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:mechanics/pot)陶锅$()中用淡水中煮 5 份$(thing)鲸脂$()。每单位蜡脂的燃烧时间只有不到 2 Minecraft小时。"
     },
     {
       "type": "patchouli:multiblock",

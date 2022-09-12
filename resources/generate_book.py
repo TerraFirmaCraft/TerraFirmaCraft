@@ -70,8 +70,7 @@ In addition, here's some useful things for dev work, and also making standardize
 """
 
 from argparse import ArgumentParser
-
-from mcresources.type_definitions import ResourceIdentifier
+from typing import Optional
 
 from constants import CROPS, METALS, FRUITS, BERRIES
 from patchouli import *
@@ -99,30 +98,27 @@ def main_with_args():
     parser = ArgumentParser('generate_book.py')
     parser.add_argument('--translate', type=str, default='en_us', help='The language to translate to')
     parser.add_argument('--local', type=str, default=None, help='The directory of a local .minecraft to copy into')
-    parser.add_argument('--local-overwrite', action='store_true', dest='local_overwrite', help='Overwrite existing files in the provided local .minecraft directory')
 
     args = parser.parse_args()
-    main(args.translate, args.local, args.local_overwrite)
+    main(args.translate, args.local, False)
 
 
-def main(translate_lang: str, local_minecraft_dir: str, local_overwrite: bool):
+def main(translate_lang: str, local_minecraft_dir: Optional[str], validate: bool, validating_rm: ResourceManager = None):
     LocalInstance.INSTANCE_DIR = local_minecraft_dir
 
     rm = ResourceManager('tfc', './src/main/resources')
-    i18n = I18n(translate_lang)
+    if validate:
+        rm = validating_rm
+    i18n = I18n(translate_lang, validate)
 
-    print('Writing book')
+    print('Writing book at %s' % translate_lang)
     make_book(rm, i18n)
 
     i18n.flush()
 
     if LocalInstance.wrap(rm):
-        print('Copying into local instance at: %s' % LocalInstance.INSTANCE_DIR)
-        if local_overwrite:
-            utils.clean_generated_resources(LocalInstance.INSTANCE_DIR + '/patchouli_books')
-        make_book(rm, I18n(translate_lang), local_instance=True)
-
-    print('Done')
+        print('Copying %s book into local instance at: %s' % (translate_lang, LocalInstance.INSTANCE_DIR))
+        make_book(rm, I18n(translate_lang, validate), local_instance=True)
 
 
 def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, reverse_translate: bool = False):
@@ -209,7 +205,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Native Copper is an ore of $(thing)Copper$() metal. It can be found at any elevation, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Native Copper').link(*['tfc:ore/%s_%s' % (g, 'native_copper') for g in GRADES_ALL]).anchor('native_copper'),
             multimultiblock('Native Copper Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_copper', 'dacite')) for g in GRADES]),
             text('Native Gold is an ore of $(thing)Gold$() metal. It can be found at elevations below y=60, but deeper veins are often richer. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() and $(l:the_world/geology#igneous_intrusive)Igneous Intrusive$() rocks.', title='Native Gold').link(*['tfc:ore/%s_%s' % (g, 'native_gold') for g in GRADES_ALL]).anchor('native_gold'),
-            multimultiblock('Native Gold Ores in Dacite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_gold', 'dacite')) for g in GRADES]),
+            multimultiblock('Native Gold Ores in Diorite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_gold', 'diorite')) for g in GRADES]),
             text('Native Silver is an ore of $(thing)Silver$() metal. It can be found at elevations between y=-32 and y=100. It can be found in $(thing)Granite$(), and $(thing)Gneiss$() primarily, however smaller poorer veins can be found in any $(l:the_world/geology#metamorphic)Metamorphic$() rocks.', title='Native Silver').link(*['tfc:ore/%s_%s' % (g, 'native_silver') for g in GRADES_ALL]).anchor('native_silver'),
             multimultiblock('Native Silver Ores in Granite.', *[block_spotlight('', '', 'tfc:ore/%s_%s/%s' % (g, 'native_silver', 'granite')) for g in GRADES]),
             text('Hematite is an ore of $(thing)Iron$() metal. It can be found at elevations below y=75. It can be found in $(l:the_world/geology#igneous_extrusive)Igneous Extrusive$() rocks.', title='Hematite').link(*['tfc:ore/%s_%s' % (g, 'hematite') for g in GRADES_ALL]).anchor('hematite'),
@@ -449,7 +445,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/wood/stick_from_twigs', text_contents='The twigs from earlier can also be used to create sticks, if needed.'),
             item_spotlight('tfc:stone/knife/sedimentary', text_contents='Knives are a very useful tool. One of their primary uses is to collect straw by breaking plants. Most tall grasses and plants will drop straw when broken with a knife.'),
             crafting('tfc:crafting/thatch', text_contents='Straw can be used to craft one of the first building materials: $(thing)Thatch$(). Thatch is a lightweight block that isn\'t affected by gravity, however players and other entities can pass right through it!'),
-            text('In addition to knives, you will likely want to craft a couple other tools. $(thing)Axes$() can be used to chop down trees (finally!), and also make a useful weapon. $(thing)Hammers$() can be used as a crushing weapon, but can also be used to turn logs into sticks by breaking log blocks with the hammer.'),
+            text('In addition to knives, you will likely want to craft a couple other tools. $(thing)Axes$() can be used to chop down trees (finally!), and also make a useful weapon. $(thing)Hammers$() can be used as a crushing weapon, but can also be used to turn logs into sticks by breaking log blocks.'),
             text('Finally, $(thing)Shovels$() and $(thing)Hoes$() behave the same as they do in Vanilla, and $(thing)Javelins$() can be used as a simple toss-once-and-retrieve ranged weapon.'),
         )),
         entry('firepit', 'Pits of Fire', 'tfc:firepit', pages=(
@@ -457,11 +453,11 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/firestarter', text_contents='Crafting a firestarter can be done with two sticks.'),
             text('With a firestarter, it is now possible to make a $(thing)Firepit$(). In order to make one, you will need one $(thing)log$(), three $(thing)sticks$(), and optionally up to three pieces of $(thing)kindling$(). Kindling can be items such as paper, straw, or other items, and will increase the chance of successfully creating a firepit. Throw ($(item)$(k:key.drop)$()) all the items on the ground, on the same block. Then use the firestarter on the block with the items floating above it.', 'Firepit'),
             block_spotlight('', 'If you were successful, a firepit will be created.', 'tfc:firepit[lit=true]'),
-            text('Using the firepit again will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:mechanics/heating)heated$() in.'),
+            text('Using the firepit will now open the firepit screen. On the left are four $(thing)fuel$() slots. Logs, Peat, and Stick Bundles can all be used as firepit fuel by placing them in the topmost slot. Fuel will be consumed from the bottommost slot. There is a gauge which displays the current $(thing)Temperature$() of the firepit, and on the right, a slot for items to be $(l:mechanics/heating)heated$() in.'),
             image('tfc:textures/gui/book/gui/firepit.png', text_contents='The Firepit Screen', border=False),
             heat_recipe('tfc:heating/torch_from_stick', 'Many useful items can be made in a firepit by heating them. Sticks can be heated, where they will produce two $(thing)Torches$(). Note that torches will eventually burn out, and need to be re-lit by using a $(thing)Firestarter$(), or using another $(thing)Torch$() on them.'),
             heat_recipe('tfc:heating/cod', 'The fire pit is also a good device for $(thing)cooking food$(). All raw meats and doughs can be cooked in a firepit, which will lengthen their shelf life. (More on that $(l:mechanics/decay)here$())'),
-            text('The firepit can be extinguished at any time by using a $(thing)Shovel$() on it.$(br2)A firepit can take can also have other devices added to it to extend it\'s functionality. Using a $(thing)Wrought Iron Grill$() will convert the firepit into a $(l:mechanics/grill)Grill$(), and using a $(thing)Ceramic Pot$() will convert the firepit into a $(l:mechanics/pot)Pot$(). To remove either device, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Be careful not to try to remove a hot grill or pot!'),
+            text('The firepit can be extinguished at any time by using a $(thing)Shovel$() on it.$(br2)A firepit can also have other devices added to it to extend its functionality. Using a $(thing)Wrought Iron Grill$() will convert the firepit into a $(l:mechanics/grill)Grill$(), and using a $(thing)Ceramic Pot$() will convert the firepit into a $(l:mechanics/pot)Pot$(). To remove either device, $(item)$(k:key.use)$() while holding $(item)$(k:key.sneak)$(). Be careful not to try to remove a hot grill or pot!'),
             multimultiblock(
                 'A firepit, with either a grill or pot added.',
                 block_spotlight('', '', 'tfc:firepit'),
@@ -471,7 +467,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('pottery', 'Pottery', 'tfc:ceramic/vessel', pages=(
             text('$(thing)Clay$() is an incredibly useful and balanced material which can be used for pottery. It can prove challenging to locate at first. Clay is usually hidden by grass, but it is often found in two locations. In areas with at least 175mm $(l:the_world/climate#rainfall)Annual Rainfall$(), clay can be found in patches all over the place, usually marked by the presence of certain $(thing)Plants$().').link('minecraft:clay'),
-            multiblock('Clay Indicators', 'Clay, with one of the plants that may indicate it\'s presence.', False, pattern=(
+            multiblock('Clay Indicators', 'Clay, with one of the plants that may indicate its presence.', False, pattern=(
                 ('   ', ' C ', '   '),
                 ('XXX', 'X0X', 'XXX')
             ), mapping={
@@ -486,12 +482,12 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('Another useful pottery item is the $(thing)Jug$(). It can be used to pick up and $(thing)drink$() fluids, such as fresh water.$(br2)In order to use it, simply $(item)$(k:key.use)$() the jug on the fluid in the world. Then use the jug in order to drink from it. The jug can hold $(thing)100 mB$() of fluid at a time.', title='Jug').link('tfc:ceramic/unfired_jug').link('tfc:ceramic/jug').anchor('jug'),
             clay_knapping('tfc:clay_knapping/jug', 'Knapping a Clay Jug.'),
             text('Clay is also necessary for making $(thing)Molds$(). Molds can have molten metal poured into them, which will eventually solidify into the shape of a mold. The item and potentially the mold can then be retrieved by using $(item)$(k:key.use)$() on the mold.$(br2)The most simple type of mold is the ingot mold, to the right.', title='Molds').anchor('mold'),
-            clay_knapping('tfc:clay_knapping/ingot_mold', 'Knapping a clay ingot mold.'),
+            clay_knapping('tfc:clay_knapping/ingot_mold', 'Knapping a Clay Ingot Mold.'),
             heat_recipe('tfc:heating/ingot_mold', 'The mold then needs to be fired, like all clay items, to be usable - likely in a $(l:getting_started/pit_kiln)Pit Kiln$().$(br2)Once it is fired, molten metal can be poured in. Once the metal has cooled enough, it can be extracted.'),
             item_spotlight('tfc:ceramic/ingot_mold{tank:{"Amount":100,"FluidName":"tfc:metal/copper"}}', 'Casting', text_contents='The next few pages show several of the knapping patterns for various tools.'),
             clay_knapping('tfc:clay_knapping/propick_head_mold', 'A $(l:mechanics/prospecting#propick)Prospector\'s Pick$() is an essential tool for locating large quantities of ore.'),
             clay_knapping('tfc:clay_knapping/pickaxe_head_mold', 'A $(thing)Pickaxe$()! The bread and butter tool for mining.'),
-            clay_knapping('tfc:clay_knapping/saw_blade_mold', 'An $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$().'),
+            clay_knapping('tfc:clay_knapping/saw_blade_mold', 'A $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$().'),
             clay_knapping('tfc:clay_knapping/scythe_blade_mold', 'A $(thing)Scythe$() is a tool that can harvest plants and leaves in a 3x3x3 area!'),
             clay_knapping('tfc:clay_knapping/chisel_head_mold', 'A $(l:mechanics/chisel)Chisel$() is a tool used for smoothing blocks as well as creating a large number of decorative blocks.'),
             clay_knapping('tfc:clay_knapping/axe_head_mold', 'An $(thing)Axe$() for all your tree chopping purposes. Note that stone axes are less efficient than metal!'),
@@ -501,7 +497,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             clay_knapping('tfc:clay_knapping/shovel_head_mold', 'A $(thing)Shovel$() for all your digging purposes.'),
         )),
         entry('pit_kiln', 'Pit Kilns', 'tfc:textures/block/molten.png', pages=(
-            text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat it\'s contents up to 1600 °C, or $(bold)$(d)$(t:Brilliant White)Brilliant White$().'),
+            text('A pit kiln is an early game method of $(l:mechanics/heating)heating$() items up. It can be used to $(thing)fire$() clay into ceramic, for example. The pit kiln, over the time period of about eight hours, will heat its contents up to 1600 °C, or $(bold)$(d)$(t:Brilliant White)Brilliant White$().'),
             text('To build a pit kiln, you will need:$(br)$(li)Up to four items to be fired.$(li)Eight pieces of $(thing)Straw$()$(li)Eight $(thing)Logs$()$(li)An item capable of lighting fires, like a $(l:getting_started/firepit#firestarter)Firestarter$(), or a $(thing)Torch$().$(br2)$(bold)Note:$() Torches can start fires simply by tossing the torch on the pit kiln and waiting a few seconds.'),
             text('In order to create a pit kiln:$(br2)$(bold)1.$() Place up to four items down in a 1x1 hole with $(item)$(k:tfc.key.place_block)$().$(br)$(bold)2.$() Use eight $(thing)Straw$() on the pit kiln, until the items are covered.$(br)$(bold)3.$() Use eight $(thing)Logs$() on the pit kiln, until full.$(br)$(bold)4.$() Light the top of the pit kiln on fire!$(br2)The pit kiln will then burn for eight hours, slowly $(l:mechanics/heating)heating$() the items inside up.'),
             image(*['tfc:textures/gui/book/tutorial/pit_kiln_%d.png' % i for i in range(1, 1 + 5)], text_contents='Tutorial: creating a pit kiln.')
@@ -513,10 +509,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 'X': 'tfc:grass/loam',
                 **{k: 'tfc:ore/small_%s' % v for k, v in zip('ABCDEFGHIJKL', ('native_copper', 'native_gold', 'hematite', 'native_silver', 'cassiterite', 'bismuthinite', 'garnierite', 'malachite', 'magnetite', 'limonite', 'sphalerite', 'tetrahedrite'))},
             }),
-            text('These small ore pieces can serve two purposes: they can provide a source of metal, and more importantly, they indicate the presence of a larger vein of ore somewhere nearby, probably underground and close to the surface,. Be sure to note where you find small ores, as the location of ore veins will be useful later during $(l:mechanics/prospecting)Prospecting$().$(br2)The twelve types of small ores, and the metal they can be melted into are listed on the next page.'),
+            text('These small ore pieces can serve two purposes: they can provide a source of metal, and more importantly, they indicate the presence of a larger vein of ore somewhere nearby, probably underground and close to the surface. Be sure to note where you find small ores, as the location of ore veins will be useful later during $(l:mechanics/prospecting)Prospecting$().$(br2)The twelve types of small ores, and the metal they can be melted into are listed on the next page.'),
             text('$(li)Native Copper ($(thing)Copper$())$(li)Native Gold ($(thing)Gold$())$(li)Hematite ($(thing)Cast Iron$())$(li)Native Silver ($(thing)Silver$())$(li)Cassiterite ($(thing)Tin$())$(li)Bismuthinite ($(thing)Bismuth$())$(li)Garnierite ($(thing)Nickel$())$(li)Malachite ($(thing)Copper$())$(li)Magnetite ($(thing)Cast Iron$())$(li)Limonite ($(thing)Cast Iron$())$(li)Sphalerite ($(thing)Zinc$())$(li)Tetrahedrite ($(thing)Copper$())', title='Small Ores'),
             text('In TerraFirmaCraft, ores each contain a certain number of $(thing)units$(), or $(thing)mB (millibuckets)$() of actual metal which can be extracted. Small ores like this found on the surface are the lowest quality, and only provide $(thing)10 mB$() of metal. In order to extract this metal, it needs to be $(thing)melted$(), and made into tools using a process called $(thing)casting$().', title='Casting').anchor('casting'),
-            text('You will need:$(br)$(li)A $(l:getting_started/pottery#vessel)Small Vessel$()$(li)Enough materials for a $(l:getting_started/pit_kiln)Pit Kiln$().$(li)One or more $(l:getting_started/pottery#mold)Mold(s)$() to cast the molten metal.$(li)And finally, at least 100 mB total of a metal which is suitable for casting: $(thing)Copper$() as one or more of its three ores.$(br2)$(br)$(italic)Note: Casting can also be done with some $(l:getting_started/primitive_alloys)Alloys$()'),
+            text('You will need:$(br)$(li)A $(l:getting_started/pottery#vessel)Small Vessel$()$(li)Enough materials for a $(l:getting_started/pit_kiln)Pit Kiln$().$(li)One or more $(l:getting_started/pottery#mold)Mold(s)$() to cast the molten metal.$(li)And finally, at least 100 mB total of a metal which is suitable for casting: $(thing)Copper$(), in one or more of its three ore forms.$(br2)$(br)$(italic)Note: Casting can also be done with some $(l:getting_started/primitive_alloys)Alloys$()'),
             text('First, open the $(thing)Small Vessel$() and put the ores inside. Count up the total amount of metal in the ores carefully! Then, you need to build a $(l:getting_started/pit_kiln)Pit Kiln$() with the filled small vessel inside. As the vessel heats, the ores inside it will melt, and you\'ll be left with a vessel of molten metal.$(br2)Take the vessel out and $(item)$(k:key.use)$() it, to open the $(thing)Casting$() interface.'),
             image('tfc:textures/gui/book/gui/casting.png', text_contents='The Casting Interface.', border=False),
             text('With the casting interface open, place your empty fired mold in the center slot. It will fill up as long as the vessel remains liquid. (If the vessel solidifies, it can be reheated in another pit kiln.) Once the mold is full, it can be removed and left to cool. Once cool, the mold and its contents can be extracted by using the mold, or putting it in the crafting grid.'),
@@ -563,14 +559,14 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 two_tall_block_spotlight('', '', 'tfc:grass/loam', 'tfc:drying_bricks/loam[count=4,dried=true]'),
             ),
             crafting('tfc:crafting/soil/loam_mud_bricks', text_contents='These dried mud bricks can then be crafted into $(thing)Mud Brick Blocks$(). They can also be made into $(thing)Stairs$(), $(thing)Slabs$(), or $(thing)Walls$(), if so desired.'),
-            block_spotlight('', 'All different varieties of mud bricks', '#tfc:mud_bricks'),
+            block_spotlight('', 'All different varieties of mud bricks.', '#tfc:mud_bricks'),
             page_break(),
             # Wattle and Daub
             text('$(thing)Wattle$() and $(thing)Daub$() is a versatile building and decoration block.$(br2)$(thing)Wattle$() can be crafted and placed, however it is breakable and allows players and mobs to walk through it. It can be augmented with $(thing)Daub$(), to make it solid.', 'Wattle and Daub').anchor('wattle_and_daub'),
             crafting('tfc:crafting/wattle', text_contents='In order to make $(thing)Wattle$() solid, it first must be woven, which requires adding sticks to the structure.'),
             crafting('tfc:crafting/daub', 'tfc:crafting/daub_from_mud', text_contents=''),
             image('tfc:textures/gui/book/tutorial/wattle_weave.png', text_contents='Four sticks are required to $(thing)weave$() wattle.'),
-            text('At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you\'re adding the stick to by selecting a different side of the face.'),
+            text('At any time, sticks can be added on each diagonal, as well as the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you\'re adding the stick to by selecting a different side of the face.'),
             image('tfc:textures/gui/book/tutorial/wattle_add_stick.png', text_contents='Adding sticks to wattle.'),
             image('tfc:textures/gui/book/tutorial/wattle_add_daub.png', text_contents='Using $(thing)Daub on $(thing)Woven Wattle$() creates a solid block.'),
             image('tfc:textures/gui/book/tutorial/wattle_stained.png', text_contents='It can then be $(thing)stained$() by using dye on it.'),
@@ -585,19 +581,18 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             crafting('tfc:crafting/alabaster_brick', 'tfc:crafting/alabaster_bricks', title='Alabaster Bricks'),
             text('Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode.'),
             crafting('tfc:crafting/alabaster/magenta_polished_stairs', text_contents='Polished Alabaster and Alabaster Bricks can be crafted or $(l:mechanics/chisel)chiseled$() into stairs, walls, and slabs.', title='Alabaster Decorations'),
-            #empty_last_page(),
         )),
         entry('a_place_to_sleep', 'A Place to Sleep', 'tfc:medium_raw_hide', pages=(
             text('Just kidding! The $(thing)Thatch Bed$() is a primitive bed which can be used to set your spawn, although not to sleep through the night. To make a thatch bed, place two $(thing)Thatch$() blocks adjacent to each other, then right click with a $(thing)Large Raw Hide$(). Large hides are dropped by larger animals, like $(thing)bears$() and $(thing)cows$().'),
-            multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=west]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),)),
+            multiblock('Thatch Bed', 'A constructed thatch bed.', False, mapping={'0': 'tfc:thatch_bed[part=head,facing=east]', 'D': 'tfc:thatch_bed[part=foot,facing=east]'}, pattern=((' D ', ' 0 '),)),
         )),
         entry('size_and_weight', 'Size and Weight', 'tfc:wood/chest/kapok', pages=(
-            text('Every item has a $(thing)Size ⇲$() and $(thing)Weight \u2696$(). An item\'s size and wieght is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse.'),
+            text('Every item has a $(thing)Size ⇲$() and $(thing)Weight \u2696$(). An item\'s size and weight is shown on the $(thing)tooltip$(), which appears when you hover over it with your mouse.'),
             text('Size determines what storage blocks an item can fit inside of.$(br)$(li)$(thing)Tiny$() items fit in anything.$(li)$(thing)Very Small$() items fit in anything.$(li)$(thing)Small$() items are the largest item that will fit in $(l:mechanics/decay#small_vessels)Small Vessels$()$().$(li)$(thing)Normal$() items are the largest that will fit in $(l:mechanics/decay#small_vessels)Large Vessels$().', title='Size ⇲'),
             text('$(li)$(thing)Large$() items are the largest that will fit in Chests. $(l:getting_started/pit_kiln)Pit Kilns$() can hold four.$(li)$(thing)Very Large$() items are placed alone in Pit Kilns.$(li)$(thing)Huge$() items do not fit in any normal storage device. They also count towards overburdening.'),
-            text('$(thing)Overburdening happens when you carry $(thing)Huge$() items. Carrying just one Huge item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.$(br)Devices that hold their contents when dropped, such as $(l:mechanics/barrels)Barrels$() and $(l:mechanics/crucible)Crucibles$(), as well as $(l:mechanics/anvils)Anvils$() turn from $(thing)Very Heavy$() to $(thing)Huge$() when they are sealed. $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.', title='Overburdening').anchor('overburdening'),
             text('Weight determines the max stack size of items.$(br)$(li)$(thing)Very Light$(): 64$(li)$(thing)Light$(): 32$(li)$(thing)Medium$(): 16$(li)$(thing)Heavy$(): 4$(li)$(thing)Very Heavy$(): 1$(br2)Most items are $(thing)Very Light$() by default. Blocks are usually $(thing)Medium$().', title='Weight \u2696'),
-            empty_last_page()
+            text('$(thing)Overburdening happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow.'),
+            text('Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.', title='Overburdening').anchor('overburdening'),
         ))
     ))
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(

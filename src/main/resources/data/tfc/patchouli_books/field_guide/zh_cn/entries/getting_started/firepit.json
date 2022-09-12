@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "如何生火",
+  "name": "生火",
   "category": "tfc:getting_started",
   "icon": "tfc:firepit",
   "pages": [
@@ -40,7 +40,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "再次与篝火互动就可以打开篝火界面。屏幕的左侧是四个$(thing)燃料$()槽。将原木、泥煤、或木棍捆之类的可燃物放置在最上面那格就能将它们添加到篝火里了。篝火会先燃烧最下面那格的燃料。左侧的刻度尺对应了篝火目前的$(thing)温度$()。屏幕右侧的格子则可以放置需要$(l:mechanics/heating)加热$()的物品。"
+      "text": "再次与篝火互动就可以打开篝火界面。屏幕的左侧是四个$(thing)燃料$()槽。将原木、泥炭、或木棍捆之类的可燃物放置在最上面那格就能将它们添加到篝火里了。篝火会先燃烧最下面那格的燃料。左侧的刻度尺对应了篝火目前的$(thing)温度$()。屏幕右侧的格子则可以放置需要$(l:mechanics/heating)加热$()的物品。"
     },
     {
       "type": "patchouli:image",

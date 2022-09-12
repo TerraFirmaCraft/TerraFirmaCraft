@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "农作物",
   "category": "tfc:mechanics",
-  "icon": "tfc:food/wheat",
+  "icon": "tfc:textures/item/food/wheat.png",
   "pages": [
     {
       "type": "patchouli:text",

@@ -83,7 +83,7 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:ore/poor_native_gold/dacite"
+            "X": "tfc:ore/poor_native_gold/diorite"
           }
         },
         {
@@ -96,7 +96,7 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:ore/normal_native_gold/dacite"
+            "X": "tfc:ore/normal_native_gold/diorite"
           }
         },
         {
@@ -109,7 +109,7 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:ore/rich_native_gold/dacite"
+            "X": "tfc:ore/rich_native_gold/diorite"
           }
         }
       ]

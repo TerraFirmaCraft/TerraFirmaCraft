@@ -30,7 +30,7 @@
         }
       },
       "name": "Clay Indicators",
-      "text": "Clay, with one of the plants that may indicate it's presence.",
+      "text": "Clay, with one of the plants that may indicate its presence.",
       "enable_visualize": false
     },
     {
@@ -76,7 +76,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/ingot_mold",
-      "text": "Knapping a clay ingot mold."
+      "text": "Knapping a Clay Ingot Mold."
     },
     {
       "type": "tfc:heat_recipe",
@@ -103,7 +103,7 @@
     {
       "type": "tfc:clay_knapping_recipe",
       "recipe": "tfc:clay_knapping/saw_blade_mold",
-      "text": "An $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$()."
+      "text": "A $(thing)Saw$() is a tool which is required in order to craft advanced wooden components like a $(thing)Workbench$() along with many other devices like $(l:mechanics/support_beams)Supports$()."
     },
     {
       "type": "tfc:clay_knapping_recipe",

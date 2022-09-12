@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "三明治",
   "category": "tfc:mechanics",
-  "icon": "tfc:food/barley_bread_sandwich",
+  "icon": "tfc:textures/item/food/barley_bread_sandwich.png",
   "pages": [
     {
       "type": "patchouli:text",

@@ -18,7 +18,7 @@
           ]
         ],
         "mapping": {
-          "0": "tfc:thatch_bed[part=head,facing=west]",
+          "0": "tfc:thatch_bed[part=head,facing=east]",
           "D": "tfc:thatch_bed[part=foot,facing=east]"
         }
       },

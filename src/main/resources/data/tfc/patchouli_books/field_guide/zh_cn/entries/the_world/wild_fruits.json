@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "野生水果",
   "category": "tfc:the_world",
-  "icon": "tfc:food/elderberry",
+  "icon": "tfc:textures/item/food/elderberry.png",
   "pages": [
     {
       "type": "patchouli:text",

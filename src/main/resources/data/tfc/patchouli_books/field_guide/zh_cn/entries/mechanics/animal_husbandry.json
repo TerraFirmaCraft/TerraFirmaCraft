@@ -96,7 +96,7 @@
       "entity": "tfc:pig",
       "scale": 1,
       "name": " ",
-      "text": "猪"
+      "text": "A pig."
     },
     {
       "type": "patchouli:text",
@@ -109,7 +109,7 @@
       "entity": "tfc:cow",
       "scale": 1,
       "name": " ",
-      "text": "牛"
+      "text": "A cow."
     },
     {
       "type": "patchouli:text",
@@ -122,7 +122,7 @@
       "entity": "tfc:goat",
       "scale": 1,
       "name": " ",
-      "text": "山羊"
+      "text": "A goat."
     },
     {
       "type": "patchouli:text",
@@ -135,7 +135,7 @@
       "entity": "tfc:yak",
       "scale": 1,
       "name": " ",
-      "text": "牦牛"
+      "text": "A yak."
     },
     {
       "type": "patchouli:text",
@@ -148,7 +148,7 @@
       "entity": "tfc:alpaca",
       "scale": 1,
       "name": " ",
-      "text": "羊驼"
+      "text": "An alpaca."
     },
     {
       "type": "patchouli:text",
@@ -161,7 +161,7 @@
       "entity": "tfc:sheep",
       "scale": 1,
       "name": " ",
-      "text": "绵羊"
+      "text": "A sheep."
     },
     {
       "type": "patchouli:text",
@@ -174,7 +174,7 @@
       "entity": "tfc:musk_ox",
       "scale": 1,
       "name": " ",
-      "text": "麝牛"
+      "text": "A musk ox."
     },
     {
       "type": "patchouli:text",
@@ -187,7 +187,7 @@
       "entity": "tfc:chicken",
       "scale": 1,
       "name": " ",
-      "text": "鸡"
+      "text": "A chicken."
     },
     {
       "type": "patchouli:text",
@@ -200,7 +200,7 @@
       "entity": "tfc:duck",
       "scale": 1,
       "name": " ",
-      "text": "鸭"
+      "text": "A duck."
     },
     {
       "type": "patchouli:text",
@@ -213,7 +213,7 @@
       "entity": "tfc:quail",
       "scale": 1,
       "name": " ",
-      "text": "鹌鹑"
+      "text": "A quail."
     },
     {
       "type": "patchouli:text",
@@ -226,7 +226,7 @@
       "entity": "tfc:donkey",
       "scale": 1,
       "name": " ",
-      "text": "驴"
+      "text": "A donkey."
     },
     {
       "type": "patchouli:text",
@@ -239,7 +239,7 @@
       "entity": "tfc:mule",
       "scale": 1,
       "name": " ",
-      "text": "骡子"
+      "text": "A mule."
     },
     {
       "type": "patchouli:text",
@@ -252,7 +252,7 @@
       "entity": "tfc:horse",
       "scale": 1,
       "name": " ",
-      "text": "马"
+      "text": "A horse."
     }
   ],
   "read_by_default": true

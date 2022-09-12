@@ -19,14 +19,18 @@
     },
     {
       "type": "patchouli:text",
-      "anchor": "overburdening",
-      "text": "只要携带一个体积为$(thing)巨大$()的物品，你就会变得$(thing)疲惫$()，你的饥饿度也会消耗得更快。携带两个或更多巨大的物品则会让你$(thing)负担过重$()，你的行动也会变得非常迟缓。$(br)$(l:mechanics/barrels)桶$()和$(l:mechanics/crucible)坩埚$()等可以保存其内容物的方块在密封的状态下拥有$(thing)极大$()的体积。另一个方块则是$(l:mechanics/anvils)砧$()。$(l:mechanics/animal_husbandry#horses)马$()也会受到负担过重的影响。",
-      "title": "负担过重"
+      "text": "物品的重量决定了它一组可堆叠的上限。$(br)$(li)$(thing)非常轻$()：64$(li)$(thing)轻$()：32$(li)$(thing)中等$()：16$(li)$(thing)重$()：4$(li)$(thing)非常重$()：1$(br2)大部分物品都属于$(thing)非常轻$()的类别。方块一般都是$(thing)中等$()重量。",
+      "title": "重量 ⚖"
     },
     {
       "type": "patchouli:text",
-      "text": "物品的重量决定了它一组可堆叠的上限。$(br)$(li)$(thing)非常轻$()：64$(li)$(thing)轻$()：32$(li)$(thing)中等$()：16$(li)$(thing)重$()：4$(li)$(thing)非常重$()：1$(br2)大部分物品都属于$(thing)非常轻$()的类别。方块一般都是$(thing)中等$()重量。",
-      "title": "重量 ⚖"
+      "text": "$(thing)Overburdening happens when you carry items that are both $(thing)Huge$() and $(thing)Very Heavy$(). Carrying just one $(thing)Huge, Very Heavy$() item causes you to become exhausted, making your food burn quicker. Carrying two or more gives you the $(thing)Overburdened$() status effect, which makes movement very slow."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "overburdening",
+      "text": "Items that count towards overburdening include $(thing)Anvils$(), $(thing)Sealed Barrels$(), $(thing)Crucibles$() (with contents)$(br2)Note: $(l:mechanics/animal_husbandry#horses)Horses$() can also be overburdened.",
+      "title": "负担过重"
     }
   ],
   "read_by_default": true,
