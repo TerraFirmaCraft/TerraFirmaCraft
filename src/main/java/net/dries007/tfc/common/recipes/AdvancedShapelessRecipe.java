@@ -19,6 +19,7 @@ import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,9 +32,9 @@ import org.jetbrains.annotations.Nullable;
 public class AdvancedShapelessRecipe extends ShapelessRecipe
 {
     protected final ItemStackProvider result;
-    protected final Ingredient primaryIngredient;
+    protected final @Nullable Ingredient primaryIngredient;
 
-    public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, Ingredient primaryIngredient)
+    public AdvancedShapelessRecipe(ResourceLocation id, String group, ItemStackProvider result, NonNullList<Ingredient> ingredients, @Nullable Ingredient primaryIngredient)
     {
         super(id, group, result.getEmptyStack(), ingredients);
         this.result = result;
@@ -43,14 +44,16 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
     @Override
     public boolean matches(CraftingContainer inv, Level level)
     {
-        return super.matches(inv, level) && !getSeed(inv).isEmpty();
+        return super.matches(inv, level) && (primaryIngredient == null || !getSeed(inv).isEmpty());
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv)
+    public ItemStack assemble(CraftingContainer inventory)
     {
-        RecipeHelpers.setCraftingContainer(inv);
-        return result.getSingleStack(getSeed(inv).copy());
+        RecipeHelpers.setCraftingContainer(inventory);
+        final ItemStack result = this.result.getSingleStack(getSeed(inventory).copy());
+        RecipeHelpers.setCraftingContainer(null);
+        return result;
     }
 
     public ItemStackProvider getResult()
@@ -58,6 +61,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
         return result;
     }
 
+    @Nullable
     public Ingredient getPrimaryIngredient()
     {
         return primaryIngredient;
@@ -65,6 +69,10 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
 
     private ItemStack getSeed(CraftingContainer inv)
     {
+        if (primaryIngredient == null)
+        {
+            return ItemStack.EMPTY;
+        }
         for (int i = 0; i < inv.getContainerSize(); i++)
         {
             ItemStack item = inv.getItem(i);
@@ -100,7 +108,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
                 throw new JsonParseException("ingredients should be 1 to 9 ingredients long, it was: " + ingredients.size());
             }
             final ItemStackProvider result = ItemStackProvider.fromJson(JsonHelpers.getAsJsonObject(json, "result"));
-            final Ingredient primaryIngredient = Ingredient.fromJson(json.get("primary_ingredient"));
+            final Ingredient primaryIngredient = json.has("primary_ingredient") ? Ingredient.fromJson(json.get("primary_ingredient")) : null;
             return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
         }
 
@@ -116,7 +124,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
                 ingredients.set(j, Ingredient.fromNetwork(buffer));
             }
             final ItemStackProvider result = ItemStackProvider.fromNetwork(buffer);
-            final Ingredient primaryIngredient = Ingredient.fromNetwork(buffer);
+            final Ingredient primaryIngredient = Helpers.decodeNullable(buffer, Ingredient::fromNetwork);
             return new AdvancedShapelessRecipe(id, group, result, ingredients, primaryIngredient);
         }
 
@@ -130,7 +138,7 @@ public class AdvancedShapelessRecipe extends ShapelessRecipe
                 ingredient.toNetwork(buffer);
             }
             recipe.result.toNetwork(buffer);
-            recipe.primaryIngredient.toNetwork(buffer);
+            Helpers.encodeNullable(recipe.primaryIngredient, buffer, Ingredient::toNetwork);
         }
     }
 }

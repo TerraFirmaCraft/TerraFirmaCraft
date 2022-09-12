@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.capabilities.food;
 
+import java.util.Collection;
 import java.util.function.Supplier;
 
 import net.minecraft.resources.ResourceLocation;
@@ -113,6 +114,37 @@ public final class FoodCapability
                 newFood.setCreationDate(calculateNewCreationDate(oldFood.getCreationDate(), decayDelta));
             }));
 
+        return newStack;
+    }
+
+    /**
+     * Like {@link #updateFoodFromPrevious(ItemStack, ItemStack)}, however this method has two key differences.
+     * First, it updates the food from a collection of previous stacks, not just a single stack.
+     * Second, it only updates the creation date, and takes the oldest of all possible creation dates and averages the decay modifiers. It does not copy traits from any of the old stacks to the new stack.
+     * It should generally only be used in a situation where all the old stacks are of the same type.
+     */
+    public static ItemStack updateFoodFromAllPrevious(Collection<ItemStack> oldStacks, ItemStack newStack)
+    {
+        newStack.getCapability(FoodCapability.CAPABILITY).ifPresent(newFood -> {
+            float decayDateModifier = 0;
+            long oldCreationDate = Long.MAX_VALUE;
+            int oldFoodCount = 0;
+            for (ItemStack oldStack : oldStacks)
+            {
+                final IFood oldFood = Helpers.getCapability(oldStack, FoodCapability.CAPABILITY);
+                if (oldFood != null)
+                {
+                    decayDateModifier += oldFood.getDecayDateModifier();
+                    oldCreationDate = Math.min(oldCreationDate, oldFood.getCreationDate());
+                    oldFoodCount++;
+                }
+            }
+            if (oldFoodCount > 0)
+            {
+                final float decayDelta = oldFoodCount * newFood.getDecayDateModifier() / decayDateModifier;
+                newFood.setCreationDate(calculateNewCreationDate(oldCreationDate, decayDelta));
+            }
+        });
         return newStack;
     }
 
