@@ -197,7 +197,7 @@
     "tfc.tooltip.blast_furnace_ore": "입력: %d / %d",
     "tfc.tooltip.blast_furnace_fuel": "연료: %d / %d",
     "tfc.tooltip.crucible_content_line": "  %s (§2%s%%§r)",
-    "tfc.tooltip.fertilized": "§6비옥함",
+    "tfc.tooltip.fertilized": "§6수정됨",
     "tfc.tooltip.egg_hatch": "%s일 후 부화함",
     "tfc.tooltip.egg_hatch_today": "오늘 부화함!",
     "tfc.tooltip.fishing.bait": "§6미끼: ",
