@@ -432,21 +432,31 @@ public class ClientForgeEventHandler
         }
     }
 
+    /**
+     * Vanilla will first make a decision about which hands to render, then optionally render each one. (In {@link net.minecraft.client.renderer.ItemInHandRenderer#evaluateWhichHandsToRender(LocalPlayer)})
+     * We have to intercept both hands individually, *after* vanilla's decision has been made, and cooperate with it. As if vanilla decides not to render a given hand, it will not even fire this event to give us the chance.
+     */
     public static void onHandRender(RenderHandEvent event)
     {
-        ItemStack stack = event.getItemStack();
-        final Item item = stack.getItem();
-        if (item instanceof PanItem || item instanceof EmptyPanItem)
+        final Player player = ClientHelpers.getPlayer();
+        if (player == null)
         {
-            if (event.getHand() == InteractionHand.OFF_HAND) // handled by main hand
+            return;
+        }
+
+        final ItemStack mainHand = player.getMainHandItem();
+        if (mainHand.getItem() instanceof PanItem || mainHand.getItem() instanceof EmptyPanItem)
+        {
+            // Like charged crossbows, when present in the main hand, we only render the main hand, and we render it with two hands
+            // So, we cancel this event unconditionally, and in the main hand branch, render our own two-handed item
+            // Pans held in the offhand render normally, and don't allow panning (unlike vanilla crossbows), as we require it to be the two-handed animation.
+            if (event.getHand() == InteractionHand.MAIN_HAND)
             {
-                event.setCanceled(true);
-                return;
+                final PoseStack poseStack = event.getPoseStack();
+                poseStack.pushPose();
+                RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), mainHand);
+                poseStack.popPose();
             }
-            PoseStack poseStack = event.getPoseStack();
-            poseStack.pushPose();
-            RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
-            poseStack.popPose();
             event.setCanceled(true);
         }
     }
