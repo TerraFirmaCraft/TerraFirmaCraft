@@ -13,12 +13,12 @@ import java.util.function.Supplier;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
+import net.dries007.tfc.common.blockentities.IFarmland.NutrientType;
+import net.dries007.tfc.common.blockentities.IFarmland;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -27,27 +27,27 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 public enum Crop implements StringRepresentable
 {
     // Grains
-    BARLEY(NutrientType.NITROGEN, 8), // Default, 8
-    OAT(NutrientType.PHOSPHOROUS, 8), // Default, 8
-    RYE(NutrientType.PHOSPHOROUS, 8), // Default, 8
-    MAIZE(NutrientType.PHOSPHOROUS, 3, 3, false), // Double, 3 -> 3
-    WHEAT(NutrientType.PHOSPHOROUS, 8), // Default, 8
-    RICE(NutrientType.PHOSPHOROUS, 8, true), // Default, Waterlogged, 8
+    BARLEY(IFarmland.NutrientType.NITROGEN, 8), // Default, 8
+    OAT(IFarmland.NutrientType.PHOSPHOROUS, 8), // Default, 8
+    RYE(IFarmland.NutrientType.PHOSPHOROUS, 8), // Default, 8
+    MAIZE(IFarmland.NutrientType.PHOSPHOROUS, 3, 3, false), // Double, 3 -> 3
+    WHEAT(IFarmland.NutrientType.PHOSPHOROUS, 8), // Default, 8
+    RICE(IFarmland.NutrientType.PHOSPHOROUS, 8, true), // Default, Waterlogged, 8
     // Vegetables
-    BEET(NutrientType.POTASSIUM, 6), // Default, 6
-    CABBAGE(NutrientType.NITROGEN, 6), // Default, 6
-    CARROT(NutrientType.POTASSIUM, 5), // Default, 5
-    GARLIC(NutrientType.NITROGEN, 5), // Default, 5
-    GREEN_BEAN(NutrientType.NITROGEN, 4, 4, true), // Double, Stick, 4 -> 4
-    POTATO(NutrientType.POTASSIUM, 7), // Default, 7
-    ONION(NutrientType.NITROGEN, 7), // Default, 7
-    SOYBEAN(NutrientType.NITROGEN, 7), // Default, 7
-    SQUASH(NutrientType.POTASSIUM, 8), // Default , 8
-    SUGARCANE(NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
-    TOMATO(NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
-    JUTE(NutrientType.POTASSIUM, 3, 3, false), // Double, 3 -> 3
-    PUMPKIN(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN),
-    MELON(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
+    BEET(IFarmland.NutrientType.POTASSIUM, 6), // Default, 6
+    CABBAGE(IFarmland.NutrientType.NITROGEN, 6), // Default, 6
+    CARROT(IFarmland.NutrientType.POTASSIUM, 5), // Default, 5
+    GARLIC(IFarmland.NutrientType.NITROGEN, 5), // Default, 5
+    GREEN_BEAN(IFarmland.NutrientType.NITROGEN, 4, 4, true), // Double, Stick, 4 -> 4
+    POTATO(IFarmland.NutrientType.POTASSIUM, 7), // Default, 7
+    ONION(IFarmland.NutrientType.NITROGEN, 7), // Default, 7
+    SOYBEAN(IFarmland.NutrientType.NITROGEN, 7), // Default, 7
+    SQUASH(IFarmland.NutrientType.POTASSIUM, 8), // Default , 8
+    SUGARCANE(IFarmland.NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
+    TOMATO(IFarmland.NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
+    JUTE(IFarmland.NutrientType.POTASSIUM, 3, 3, false), // Double, 3 -> 3
+    PUMPKIN(IFarmland.NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN),
+    MELON(IFarmland.NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
     // todo: pickable crops
 
     private static ExtendedProperties doubleCrop()

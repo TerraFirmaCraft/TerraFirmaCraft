@@ -7,10 +7,8 @@
 package net.dries007.tfc.common.blockentities;
 
 import java.util.List;
-import java.util.function.IntFunction;
 
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.util.Fertilizer;
 
-public class FarmlandBlockEntity extends TFCBlockEntity
+public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
 {
     private float nitrogen, phosphorous, potassium;
 
@@ -70,26 +68,20 @@ public class FarmlandBlockEntity extends TFCBlockEntity
             final int value = FarmlandBlock.getHydration(level, pos);
             final MutableComponent hydration = Helpers.translatable("tfc.tooltip.farmland.hydration", value);
             text.add(hydration);
-
         }
 
         if (includeNutrients)
         {
-            text.add(Helpers.translatable("tfc.tooltip.farmland.nutrients", format(nitrogen), format(phosphorous), format(potassium)));
+            addTooltipInfo(text);
         }
     }
-
-    private String format(float value)
-    {
-        return String.format("%.2f", value * 100);
-    }
-
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
      * Additionally, increase all other nutrients by 1/6 the consumed value (effectively, recovering 33% of the consumed nutrients)
      * @return The amount of nutrient {@code type} that was actually consumed.
      */
+    @Override
     public float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
     {
         final float startValue = getNutrient(type);
@@ -107,6 +99,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         return consumed;
     }
 
+    @Override
     public float getNutrient(NutrientType type)
     {
         return switch (type)
@@ -117,6 +110,7 @@ public class FarmlandBlockEntity extends TFCBlockEntity
             };
     }
 
+    @Override
     public void addNutrients(Fertilizer fertilizer)
     {
         nitrogen = Math.min(1, nitrogen + fertilizer.getNitrogen());
@@ -125,11 +119,13 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         markForSync();
     }
 
+    @Override
     public void addNutrient(NutrientType type, float value)
     {
         setNutrient(type, getNutrient(type) + value);
     }
 
+    @Override
     public void setNutrient(NutrientType type, float value)
     {
         value = Mth.clamp(value, 0, 1);
@@ -142,10 +138,4 @@ public class FarmlandBlockEntity extends TFCBlockEntity
         markForSync();
     }
 
-    public enum NutrientType
-    {
-        NITROGEN, PHOSPHOROUS, POTASSIUM;
-
-        private static final NutrientType[] VALUES = values();
-    }
 }
