@@ -9,6 +9,7 @@ package net.dries007.tfc.common.blockentities;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -16,7 +17,12 @@ import net.minecraft.util.Mth;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.util.Fertilizer;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType;
+import static net.dries007.tfc.common.blockentities.FarmlandBlockEntity.NutrientType.*;
 
+/**
+ * Implement on block entities that hold nitrogen, phosphorous, and potassium values to allow fertilization and consuming nutrients.
+ */
 public interface IFarmland
 {
     static void addNutrientParticles(ServerLevel level, BlockPos pos, Fertilizer fertilizer)
@@ -36,25 +42,69 @@ public interface IFarmland
         }
     }
 
-    float getNutrient(FarmlandBlockEntity.NutrientType type);
+    float getNutrient(NutrientType type);
 
-    void addNutrient(FarmlandBlockEntity.NutrientType type, float value);
+    void setNutrient(NutrientType type, float value);
 
-    void setNutrient(FarmlandBlockEntity.NutrientType type, float value);
+    default void addNutrient(NutrientType type, float value)
+    {
+        setNutrient(type, getNutrient(type) + value);
+    }
 
     default void addNutrients(Fertilizer fertilizer)
     {
+        setNutrient(NITROGEN, Math.min(1, getNutrient(NITROGEN) + fertilizer.getNitrogen()));
+        setNutrient(PHOSPHOROUS, Math.min(1, getNutrient(PHOSPHOROUS) + fertilizer.getNitrogen()));
+        setNutrient(POTASSIUM, Math.min(1, getNutrient(POTASSIUM) + fertilizer.getNitrogen()));
+    }
 
+    /**
+     * @return The fraction [0, 1] of a nutrient consumed to add to non-consumed nutrients
+     */
+    default float resupplyFraction()
+    {
+        return 1 / 6f;
     }
 
     /**
      * Consume up to {@code amount} of nutrient {@code type}.
-     * Other nutrients may be changed during this call as a result.
+     * Resupplies other nutrient by default 1/6 of the amount consumed.
      * @return The amount of nutrient {@code type} that was actually consumed.
      */
     default float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
     {
-        return 0f;
+        final float startValue = getNutrient(type);
+        final float consumed = Math.min(startValue, amount);
+
+        setNutrient(type, startValue - consumed);
+        for (NutrientType other : NutrientType.VALUES)
+        {
+            if (other != type)
+            {
+                addNutrient(other, consumed * resupplyFraction());
+            }
+        }
+
+        return consumed;
+    }
+
+    default boolean isMaxedOut()
+    {
+        return getNutrient(NITROGEN) == 1 && getNutrient(PHOSPHOROUS) == 1 && getNutrient(POTASSIUM) == 1;
+    }
+
+    default void saveNutrients(CompoundTag nbt)
+    {
+        nbt.putFloat("n", getNutrient(NITROGEN));
+        nbt.putFloat("p", getNutrient(PHOSPHOROUS));
+        nbt.putFloat("k", getNutrient(POTASSIUM));
+    }
+
+    default void loadNutrients(CompoundTag nbt)
+    {
+        setNutrient(NITROGEN, nbt.getFloat("n"));
+        setNutrient(PHOSPHOROUS, nbt.getFloat("p"));
+        setNutrient(POTASSIUM, nbt.getFloat("k"));
     }
 
     default void addTooltipInfo(List<Component> text)
@@ -68,10 +118,4 @@ public interface IFarmland
     }
 
 
-    enum NutrientType
-    {
-        NITROGEN, PHOSPHOROUS, POTASSIUM;
-
-        public static final NutrientType[] VALUES = values();
-    }
 }

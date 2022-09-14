@@ -163,12 +163,10 @@ public final class CropHelpers
                 if (!player.isCreative()) stack.shrink(1);
                 IFarmland.addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
 
-                // provided for the TFC advancement, not public API
-                if (farmland instanceof FarmlandBlockEntity tfcFarmland && tfcFarmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
+                if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
                 {
                     TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
                 }
-
                 return true;
             }
         }

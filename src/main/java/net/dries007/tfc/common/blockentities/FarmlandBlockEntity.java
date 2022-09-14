@@ -41,24 +41,15 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     @Override
     public void loadAdditional(CompoundTag nbt)
     {
-        nitrogen = nbt.getFloat("n");
-        phosphorous = nbt.getFloat("p");
-        potassium = nbt.getFloat("k");
+        loadNutrients(nbt);
         super.loadAdditional(nbt);
     }
 
     @Override
     public void saveAdditional(CompoundTag nbt)
     {
-        nbt.putFloat("n", nitrogen);
-        nbt.putFloat("p", phosphorous);
-        nbt.putFloat("k", potassium);
+        saveNutrients(nbt);
         super.saveAdditional(nbt);
-    }
-
-    public boolean isMaxedOut()
-    {
-        return nitrogen == 1 && phosphorous == 1 && potassium == 1;
     }
 
     public void addHoeOverlayInfo(Level level, BlockPos pos, List<Component> text, boolean includeHydration, boolean includeNutrients)
@@ -76,29 +67,6 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
         }
     }
 
-    /**
-     * Consume up to {@code amount} of nutrient {@code type}.
-     * Additionally, increase all other nutrients by 1/6 the consumed value (effectively, recovering 33% of the consumed nutrients)
-     * @return The amount of nutrient {@code type} that was actually consumed.
-     */
-    @Override
-    public float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
-    {
-        final float startValue = getNutrient(type);
-        final float consumed = Math.min(startValue, amount);
-
-        setNutrient(type, startValue - consumed);
-        for (NutrientType other : NutrientType.VALUES)
-        {
-            if (other != type)
-            {
-                addNutrient(other, consumed * (1 / 6f));
-            }
-        }
-
-        return consumed;
-    }
-
     @Override
     public float getNutrient(NutrientType type)
     {
@@ -113,16 +81,8 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     @Override
     public void addNutrients(Fertilizer fertilizer)
     {
-        nitrogen = Math.min(1, nitrogen + fertilizer.getNitrogen());
-        phosphorous = Math.min(1, phosphorous + fertilizer.getPhosphorus());
-        potassium = Math.min(1, potassium + fertilizer.getPotassium());
+        IFarmland.super.addNutrients(fertilizer);
         markForSync();
-    }
-
-    @Override
-    public void addNutrient(NutrientType type, float value)
-    {
-        setNutrient(type, getNutrient(type) + value);
     }
 
     @Override
@@ -138,4 +98,10 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
         markForSync();
     }
 
+    public enum NutrientType
+    {
+        NITROGEN, PHOSPHOROUS, POTASSIUM;
+
+        public static final NutrientType[] VALUES = values();
+    }
 }
