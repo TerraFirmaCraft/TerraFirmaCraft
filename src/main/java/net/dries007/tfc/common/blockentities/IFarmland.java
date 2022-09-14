@@ -42,8 +42,17 @@ public interface IFarmland
         }
     }
 
+    /**
+     * @return the amount [0-1] of the nutrient of {@code type}
+     */
     float getNutrient(NutrientType type);
 
+    /**
+     * Implementations should clamp {@code value} on a range [0, 1]
+     *
+     * @param type the nutrient type to be set
+     * @param value the amount (clamped [0-1]) of the nutrient to set
+     */
     void setNutrient(NutrientType type, float value);
 
     default void addNutrient(NutrientType type, float value)
@@ -53,9 +62,9 @@ public interface IFarmland
 
     default void addNutrients(Fertilizer fertilizer)
     {
-        setNutrient(NITROGEN, Math.min(1, getNutrient(NITROGEN) + fertilizer.getNitrogen()));
-        setNutrient(PHOSPHOROUS, Math.min(1, getNutrient(PHOSPHOROUS) + fertilizer.getNitrogen()));
-        setNutrient(POTASSIUM, Math.min(1, getNutrient(POTASSIUM) + fertilizer.getNitrogen()));
+        setNutrient(NITROGEN, getNutrient(NITROGEN) + fertilizer.getNitrogen());
+        setNutrient(PHOSPHOROUS, getNutrient(PHOSPHOROUS) + fertilizer.getNitrogen());
+        setNutrient(POTASSIUM, getNutrient(POTASSIUM) + fertilizer.getNitrogen());
     }
 
     /**
