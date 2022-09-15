@@ -304,10 +304,14 @@ public final class InteractionManager
                 {
                     // when placing against a non-pile block
                     final ItemStack stackBefore = stack.copy();
+
+                    // The block as set through onItemUse() might be set at either the clicked, or relative position.
+                    // We need to construct this BlockPlaceContext before onItemUse is called, so it has the same value for the actual block placed pos
+                    final BlockPos actualPlacedPos = new BlockPlaceContext(context).getClickedPos();
                     final InteractionResult result = logPilePlacement.onItemUse(stack, context); // Consumes the item if successful
                     if (result.consumesAction())
                     {
-                        Helpers.insertOne(level, relativePos, TFCBlockEntities.LOG_PILE.get(), stackBefore);
+                        Helpers.insertOne(level, actualPlacedPos, TFCBlockEntities.LOG_PILE.get(), stackBefore);
                     }
                     return result;
                 }
@@ -368,7 +372,6 @@ public final class InteractionManager
                 final Direction direction = context.getClickedFace();
                 final BlockPos posClicked = context.getClickedPos();
                 final BlockState stateClicked = level.getBlockState(posClicked);
-                final BlockPos relativePos = posClicked.relative(direction);
 
                 if (Helpers.isBlock(stateClicked, TFCBlocks.INGOT_PILE.get()))
                 {
@@ -471,7 +474,7 @@ public final class InteractionManager
                 // We assume immediately that we want to target the relative pos and state
                 if (Helpers.isBlock(relativeState, TFCBlocks.SHEET_PILE.get()))
                 {
-                    // We targeted a existing sheet pile, so we need to check if there's an empty space for it
+                    // We targeted an existing sheet pile, so we need to check if there's an empty space for it
                     if (!relativeState.getValue(property) && BlockItemPlacement.canPlace(blockContext, clickedState) && clickedState.isFaceSturdy(level, clickedPos, clickedFace))
                     {
                         // Add to an existing sheet pile
