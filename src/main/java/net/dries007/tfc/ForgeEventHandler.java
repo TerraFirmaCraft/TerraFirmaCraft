@@ -679,7 +679,7 @@ public final class ForgeEventHandler
         final Player player = event.player;
         final Level level = player.getLevel();
         final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
-        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
+        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.eyeBlockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
@@ -909,6 +909,7 @@ public final class ForgeEventHandler
                         final int layers = state.getValue(SnowLayerBlock.LAYERS);
                         if (layers > 1)
                         {
+                            level.destroyBlock(pos, false);
                             level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
                         }
                         else

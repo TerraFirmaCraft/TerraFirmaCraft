@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -174,6 +175,10 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
         {
             Helpers.slowEntityInBlock(entity, 0.3f, 5);
+        }
+        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
+        {
+            entity.kill();
         }
         if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
         {

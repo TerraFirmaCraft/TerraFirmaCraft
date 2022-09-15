@@ -1,0 +1,91 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "食物保鲜",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:rotten_flesh",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在群峦传说中，食物可不会在箱子里等你一辈子！随着时间的推移，食物会$(thing)过期$()，变得腐烂。吃腐烂的食物不会恢复任何饥饿度，并且有可能导致$(thing)饥饿$()或$(thing)中毒$()之类的负面效果!$(br2)幸运的是，你可以使用多种$(thing)保鲜$()手段来让你的食物储存得更久些。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "把鼠标悬停在食物上就能看到食物的保质期。比如：$(br2)$(bold)$(2)保质期: 5:30 七月 5日，1000（约5天）$()$(br2)通过使用各种保鲜手段，可延长食物的保质期。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "small_vessels",
+      "text": "把食物装入$(thing)缸$()中是保存食物最简单的方法之一。$(thing)大缸$()最多可以存储九组物品。$(thing)密封$()时，里面的物品将获得$(5)$(bold)储存$()词条。拥有储存词条的食物的保质期是平常的 2 倍。$(br2)$(thing)小缸$()最多可以存储四组物品，放入其中的食物也会获得$(5)$(bold)储存$()词条。",
+      "title": "缸"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ceramic/large_vessel[sealed=true]"
+        }
+      },
+      "name": "",
+      "text": "一个密封的大缸。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "另一种十分简单的食物保鲜方法是烹饪。$(thing)熟肉$()比生肉的储存时间要久。$(br2)注意，加热时使用的设备会影响食物的保质期。某些太热的设备，例如$(l:mechanics/charcoal_forge)木炭炉$()和$(l:mechanics/crucible)高炉$()$(bold)不适合$()用来烹饪食物。它们烤出来的食物的保质期会打折扣。",
+      "title": "烹饪"
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/mutton",
+      "text": "相反，用$(l:getting_started/firepit)篝火$()或$(l:mechanics/grill)锻铁烤架$()做出来的食物会获得保质期加成。比如，用$(thing)篝火$()烤制的羊肉保质期会延长 33 %，而用$(thing)锻铁烤架$()烤制的则会延长 66 %！"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "salting",
+      "text": "$(thing)抹盐$()是一种能让肉类保存得更久的方法。将肉与$(thing)盐$()在合成格内合成就能把盐抹上去。只有生肉可以抹盐，但抹了盐的生肉依然可以烤制，不会失去该词条。",
+      "title": "抹盐"
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/salt",
+      "text": "$(l:mechanics/quern)研磨$()$(l:the_world/ores_and_minerals#halite)石盐$()可以得到盐。石盐是一种矿物。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:groundcover/salt_lick"
+        }
+      },
+      "name": "舔盐",
+      "text": "有时森林里会在地上自然生成盐。可以从地上把盐挖走，也可以用$(item)$(k:key.use)$()放回去。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "vinegar",
+      "text": "$(thing)酸渍$()是一种用来保存水果、蔬菜和肉类的方法。$(br2)在装有 250 mB $(thing)酒精饮料$()的$(l:mechanics/barrels)大桶$()中封入一颗水果就能将其转化为$(thing)醋$()。酸渍前，必须先将食物在$(thing)卤水$()中$(thing)腌制$()。卤水是由 1 份$(thing)醋$()和 9 份$(thing)咸水$()在大桶中混合而成的。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "将腌制好的食物放在装有醋的大桶中并密封便能延长其保质期。每份食物必须要对应至少 125 mB 的醋。不过一旦启封大桶或将食物从中取出，延长的效果就会失效。"
+    }
+  ],
+  "read_by_default": true
+}

@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -38,6 +39,7 @@ import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.blocks.soil.FarmlandBlock;
 import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.common.blocks.wood.ILeavesBlock;
+import net.dries007.tfc.common.blocks.wood.TFCLeavesBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
@@ -89,6 +91,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     {
         IBushBlock.randomTick(this, state, level, pos, random);
     }
+
 
     // this is superficially the same as the StationaryBerryBushBlock onUpdate, we can condense them
     @Override
@@ -165,6 +168,16 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
     }
 
     @Override
+    public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
+    {
+        super.entityInside(state, level, pos, entity);
+        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
+        {
+            entity.kill();
+        }
+    }
+
+    @Override
     public void addHoeOverlayInfo(Level level, BlockPos pos, BlockState state, List<Component> text, boolean isDebug)
     {
         final ClimateRange range = climateRange.get();
@@ -213,6 +226,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         if (!isValid(level, pos, state))
         {
             level.destroyBlock(pos, true);
+            TFCLeavesBlock.doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
         }
     }
 

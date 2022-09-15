@@ -19,6 +19,7 @@
     "MilkBucketItemMixin",
     "MobMixin",
     "PlayerMixin",
+    "PotionItemMixin",
     "PrimaryLevelDataMixin",
     "ReloadableServerResourcesMixin",
     "ServerLevelMixin",
@@ -53,7 +54,8 @@
     "client.accessor.ClientLevelAccessor",
     "client.accessor.LevelRendererAccessor",
     "client.accessor.LocalPlayerAccessor",
-    "client.accessor.SuspendedTownParticleAccessor"
+    "client.accessor.SuspendedTownParticleAccessor",
+    "client.compat.sodium.FluidRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

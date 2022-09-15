@@ -364,6 +364,7 @@ def generate(rm: ResourceManager):
         chisel_recipe(rm, '%s_alabaster_bricks_polished' % color, 'tfc:alabaster/raw/%s' % color, 'tfc:alabaster/polished/%s' % color, 'smooth')
         for variant in ('bricks', 'polished'):
             craft_decorations('crafting/alabaster/%s_%s' % (color, variant), 'tfc:alabaster/%s/%s' % (variant, color))
+    chisel_recipe(rm, 'polished_alabaster', 'tfc:alabaster/raw', 'tfc:alabaster/polished', 'smooth')
 
     for wood in WOODS.keys():
         chisel_stair_slab('%s_wood' % wood, 'tfc:wood/planks/%s' % wood)

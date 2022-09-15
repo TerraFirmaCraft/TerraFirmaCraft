@@ -69,6 +69,11 @@ public class PanItem extends Item
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
+        if (hand == InteractionHand.OFF_HAND)
+        {
+            // We require pans be operated with the main hand - as that's when they render as two-handed
+            return InteractionResultHolder.pass(player.getItemInHand(hand));
+        }
         if (Helpers.isFluid(level.getFluidState(player.blockPosition()), FluidTags.WATER))
         {
             return ItemUtils.startUsingInstantly(level, player, hand);

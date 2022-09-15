@@ -282,7 +282,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Olive tree",
+      "text": "The monthly stages of an Olive tree",
       "multiblocks": [
         {
           "pattern": [
@@ -362,7 +362,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "The monthly stages of a Orange tree",
+      "text": "The monthly stages of an Orange tree",
       "multiblocks": [
         {
           "pattern": [

@@ -465,6 +465,13 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
 
+SMALL_FLOWERS = ('allium', 'anthurium', 'black_orchid', 'blood_lily', 'blue_orchid', 'blue_ginger', 'butterfly_milkweed', 'calendula', 'canna', 'dandelion', 'desert_flame', 'goldenrod',
+           'grape_hyacinth', 'guzmania', 'kangaroo_paw', 'labrador_tea', 'lotus', 'nasturtium', 'oxeye_daisy', 'pistia', 'poppy', 'primrose', 'pulsatilla',
+           'rose', 'sacred_datura', 'sagebrush', 'sapphire_tower', 'sargassum', 'silver_spurflower', 'snapdragon_red', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_yellow', 'strelitzia',
+           'trillium', 'tropical_milkweed', 'tulip_orange', 'tulip_red', 'tulip_pink', 'tulip_white', 'vriesea', 'water_lily', 'yucca')
+
+TALL_FLOWERS = ('foxglove', 'hibiscus', 'lilac', 'toquilla_palm', 'marigold')
+
 FLOWERPOT_CROSS_PLANTS = {
     'allium': 'allium_2',
     'anthurium': 'anthurium_0',
@@ -479,7 +486,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'dandelion': 'dandelion_2',
     'dead_bush': 'dead_bush0',
     'desert_flame': 'desert_flame_0',
-    'field_horsetail': 'item',
+    'field_horsetail': 'potted',
     'foxglove': 'item',
     'goldenrod': 'goldenrod_2',
     'grape_hyacinth': 'grape_hyacinth_1',
@@ -490,6 +497,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'lady_fern': 'item',
     'meads_milkweed': 'meads_milkweed_3',
     'nasturtium': 'nasturtium_2',
+    'ostrich_fern': 'ostrich_fern_3',
     'oxeye_daisy': 'oxeye_daisy_3',
     'perovskia': 'perovskia_3',
     'poppy': 'poppy_2',
@@ -514,7 +522,7 @@ FLOWERPOT_CROSS_PLANTS = {
     'yucca': 'yucca_2'
 }
 
-MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'ostrich_fern', 'reindeer_lichen', 'rose', 'sapphire_tower', 'toquilla_palm', 'tree_fern']
+MISC_POTTED_PLANTS = ['barrel_cactus', 'morning_glory', 'moss', 'reindeer_lichen', 'rose', 'sapphire_tower', 'toquilla_palm', 'tree_fern']
 
 SIMPLE_STAGE_PLANTS: Dict[str, int] = {
     'allium': 8,
@@ -743,7 +751,6 @@ LAND_CREATURES: Dict[str, Dict[str, Any]] = {
     'fox': spawner('tfc:fox', min_count=1, max_count=1),
     'boar': spawner('tfc:boar', min_count=1, max_count=2),
     'donkey': spawner('tfc:donkey', min_count=1, max_count=3),
-    'mule': spawner('tfc:mule', min_count=1, max_count=3),
     'horse': spawner('tfc:horse', min_count=1, max_count=3),
 }
 

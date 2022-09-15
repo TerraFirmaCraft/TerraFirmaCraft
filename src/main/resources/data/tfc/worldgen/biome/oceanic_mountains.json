@@ -275,12 +275,6 @@
         "maxCount": 3
       },
       {
-        "type": "tfc:mule",
-        "weight": 1,
-        "minCount": 1,
-        "maxCount": 3
-      },
-      {
         "type": "tfc:horse",
         "weight": 1,
         "minCount": 1,

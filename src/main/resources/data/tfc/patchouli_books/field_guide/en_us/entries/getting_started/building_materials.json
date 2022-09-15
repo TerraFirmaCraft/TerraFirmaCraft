@@ -81,7 +81,7 @@
         }
       },
       "name": "",
-      "text": "All different varieties of mud bricks",
+      "text": "All different varieties of mud bricks.",
       "enable_visualize": false
     },
     {
@@ -111,7 +111,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "At any time, sticks can be added on each diagonal, and the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face."
+      "text": "At any time, sticks can be added on each diagonal, as well as the top and bottom. Hold a single $(thing)Stick$() in your hand and $(item)$(k:key.use)$() it to add a stick. Change what part of the wattle you're adding the stick to by selecting a different side of the face."
     },
     {
       "type": "patchouli:image",

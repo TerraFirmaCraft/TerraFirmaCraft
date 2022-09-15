@@ -83,7 +83,7 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:ore/poor_native_gold/dacite"
+            "X": "tfc:ore/poor_native_gold/diorite"
           }
         },
         {
@@ -96,7 +96,7 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:ore/normal_native_gold/dacite"
+            "X": "tfc:ore/normal_native_gold/diorite"
           }
         },
         {
@@ -109,7 +109,7 @@
             ]
           ],
           "mapping": {
-            "X": "tfc:ore/rich_native_gold/dacite"
+            "X": "tfc:ore/rich_native_gold/diorite"
           }
         }
       ]
@@ -118,7 +118,7 @@
       "type": "patchouli:text",
       "anchor": "native_silver",
       "text": "자연은은 $(thing)은$() 광석입니다. Y 좌표 -32 이상 100 이하에서 발견할 수 있습니다. 자연은은 $(thing)화강암$() 또는 $(thing)편마암$()에서 많이 발견되지만, 작고 빈약한 광맥들은 아무 $(l:the_world/geology#metamorphic)변성암$()에서도 찾을 수 있습니다.",
-      "title": "Native Silver"
+      "title": "§l자연은"
     },
     {
       "type": "tfc:multimultiblock",

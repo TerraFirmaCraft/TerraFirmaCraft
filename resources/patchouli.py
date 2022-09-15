@@ -203,7 +203,7 @@ class Book:
                             assert anchor in link_targets[target], 'Link anchor \'%s\' not found for link \'%s\'\n  at page: %s\n  at entry: \'%s\'' % (anchor, key, p, e.entry_id)
 
             # Separately translate each page
-            if self.reverse_translate is not None:
+            if self.reverse_translate:
                 rev_entry = self.load_data(('patchouli_books', self.root_name, self.i18n.lang, 'entries', category_res.path, e.entry_id))
                 rev_pages = rev_entry['pages']
                 for p, rp in zip(real_pages, rev_pages):
