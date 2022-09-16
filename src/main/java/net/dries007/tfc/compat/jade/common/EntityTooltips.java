@@ -90,9 +90,10 @@ public final class EntityTooltips
                 tooltip.accept(Helpers.translatable("tfc.jade.can_mate"));
             }
 
+            final long totalDays = Calendars.get(level).getTotalDays();
             switch (age)
             {
-                case CHILD -> tooltip.accept(Helpers.translatable("tfc.jade.adulthood_days", animal.getDaysToAdulthood()));
+                case CHILD -> tooltip.accept(Helpers.translatable("tfc.jade.adulthood_days", animal.getDaysToAdulthood() - (totalDays - animal.getBirthDay()) + 1)); // Add 1 so tooltip doesn't say 0 days on day before birth
                 case ADULT -> tooltip.accept(Helpers.translatable("tfc.jade.animal_wear", String.format("%d%%", Math.round(100f * animal.getUses() / animal.getUsesToElderly()))));
                 case OLD -> tooltip.accept(Helpers.translatable("tfc.jade.old_animal"));
             }
@@ -105,7 +106,7 @@ public final class EntityTooltips
                 tooltip.accept(Helpers.translatable("tfc.tooltip.animal.pregnant", entity.getName().getString()));
 
                 final long totalDays = Calendars.get(level).getTotalDays();
-                tooltip.accept(Helpers.translatable("tfc.jade.gestation_progress", String.format("%d%%", Math.round(100f * (mammal.getPregnantTime() - totalDays) / mammal.getGestationDays()))));
+                tooltip.accept(Helpers.translatable("tfc.jade.gestation_progress", String.format("%d%%", Math.round(100f * (totalDays - mammal.getPregnantTime()) / mammal.getGestationDays()))));
             }
         }
         if (entity instanceof HorseProperties horse)

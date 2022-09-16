@@ -79,7 +79,7 @@ public final class BlockEntityTooltips
         registerBlock.accept(HOE_OVERLAY, FruitTreeBranchBlock.class);
         registerBlock.accept(HOE_OVERLAY, FruitTreeLeavesBlock.class);
         registerBlock.accept(HOE_OVERLAY, StationaryBerryBushBlock.class);
-        registerBlock.accept(HOE_OVERLAY, SpreadingBushBlock.class);
+//        registerBlock.accept(HOE_OVERLAY, SpreadingBushBlock.class);
         registerBlock.accept(LAMP, LampBlock.class);
         registerBlock.accept(NEST_BOX, NestBoxBlock.class);
         registerBlock.accept(PIT_KILN_INTERNAL, PitKilnBlock.class);
@@ -378,7 +378,7 @@ public final class BlockEntityTooltips
             final LoomRecipe recipe = loom.getRecipe();
             if (recipe != null)
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem()));
+                tooltip.accept(Helpers.translatable("tfc.jade.loom_progress", loom.getProgress(), recipe.getStepCount(), recipe.getResultItem().getDisplayName().getString()));
             }
         }
     };

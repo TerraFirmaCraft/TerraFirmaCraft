@@ -57,7 +57,6 @@ public class LoomBlockEntity extends InventoryBlockEntity<ItemStackHandler>
                         loom.inventory.setStackInSlot(SLOT_RECIPE, ItemStack.EMPTY);
                         loom.inventory.setStackInSlot(SLOT_OUTPUT, recipe.assemble(new ItemStackInventory(loom.inventory.getStackInSlot(SLOT_RECIPE))));
                     }
-                    loom.markForSync();
                 }
             }
         }
