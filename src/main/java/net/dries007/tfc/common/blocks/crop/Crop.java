@@ -26,27 +26,27 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 public enum Crop implements StringRepresentable
 {
     // Grains
-    BARLEY(FarmlandBlockEntity.NutrientType.NITROGEN, 8), // Default, 8
-    OAT(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8), // Default, 8
-    RYE(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8), // Default, 8
-    MAIZE(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 3, 3, false), // Double, 3 -> 3
-    WHEAT(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8), // Default, 8
-    RICE(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8, true), // Default, Waterlogged, 8
+    BARLEY(NutrientType.NITROGEN, 8), // Default, 8
+    OAT(NutrientType.PHOSPHOROUS, 8), // Default, 8
+    RYE(NutrientType.PHOSPHOROUS, 8), // Default, 8
+    MAIZE(NutrientType.PHOSPHOROUS, 3, 3, false), // Double, 3 -> 3
+    WHEAT(NutrientType.PHOSPHOROUS, 8), // Default, 8
+    RICE(NutrientType.PHOSPHOROUS, 8, true), // Default, Waterlogged, 8
     // Vegetables
-    BEET(FarmlandBlockEntity.NutrientType.POTASSIUM, 6), // Default, 6
-    CABBAGE(FarmlandBlockEntity.NutrientType.NITROGEN, 6), // Default, 6
-    CARROT(FarmlandBlockEntity.NutrientType.POTASSIUM, 5), // Default, 5
-    GARLIC(FarmlandBlockEntity.NutrientType.NITROGEN, 5), // Default, 5
-    GREEN_BEAN(FarmlandBlockEntity.NutrientType.NITROGEN, 4, 4, true), // Double, Stick, 4 -> 4
-    POTATO(FarmlandBlockEntity.NutrientType.POTASSIUM, 7), // Default, 7
-    ONION(FarmlandBlockEntity.NutrientType.NITROGEN, 7), // Default, 7
-    SOYBEAN(FarmlandBlockEntity.NutrientType.NITROGEN, 7), // Default, 7
-    SQUASH(FarmlandBlockEntity.NutrientType.POTASSIUM, 8), // Default , 8
-    SUGARCANE(FarmlandBlockEntity.NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
-    TOMATO(FarmlandBlockEntity.NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
-    JUTE(FarmlandBlockEntity.NutrientType.POTASSIUM, 3, 3, false), // Double, 3 -> 3
-    PUMPKIN(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN),
-    MELON(FarmlandBlockEntity.NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
+    BEET(NutrientType.POTASSIUM, 6), // Default, 6
+    CABBAGE(NutrientType.NITROGEN, 6), // Default, 6
+    CARROT(NutrientType.POTASSIUM, 5), // Default, 5
+    GARLIC(NutrientType.NITROGEN, 5), // Default, 5
+    GREEN_BEAN(NutrientType.NITROGEN, 4, 4, true), // Double, Stick, 4 -> 4
+    POTATO(NutrientType.POTASSIUM, 7), // Default, 7
+    ONION(NutrientType.NITROGEN, 7), // Default, 7
+    SOYBEAN(NutrientType.NITROGEN, 7), // Default, 7
+    SQUASH(NutrientType.POTASSIUM, 8), // Default , 8
+    SUGARCANE(NutrientType.POTASSIUM, 4, 4, false), // Double, 4 -> 4
+    TOMATO(NutrientType.POTASSIUM, 4, 4, true), // Double, Stick, 4 -> 4
+    JUTE(NutrientType.POTASSIUM, 3, 3, false), // Double, 3 -> 3
+    PUMPKIN(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.PUMPKIN),
+    MELON(NutrientType.PHOSPHOROUS, 8, () -> TFCBlocks.MELON);
     // todo: pickable crops
 
     private static ExtendedProperties doubleCrop()
