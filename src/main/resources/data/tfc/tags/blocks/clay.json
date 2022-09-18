@@ -2,11 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:peat_grass",
-    "tfc:grass/silt",
-    "tfc:grass/loam",
-    "tfc:grass/sandy_loam",
-    "tfc:grass/silty_loam",
+    "#tfc:clay_dirt",
     "#tfc:clay_grass"
   ]
 }

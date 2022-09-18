@@ -129,7 +129,7 @@ public class ClientForgeEventHandler
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
                 // Always add calendar info
-                list.add(I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getString());
+                list.add(Helpers.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
 
                 if (TFCConfig.CLIENT.enableDebug.get())
                 {

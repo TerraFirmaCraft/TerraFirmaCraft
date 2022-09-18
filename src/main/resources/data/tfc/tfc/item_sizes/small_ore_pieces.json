@@ -1,7 +1,7 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "tag": "tfc:foods"
+    "tag": "tfc:small_ore_pieces"
   },
   "size": "small",
   "weight": "light"

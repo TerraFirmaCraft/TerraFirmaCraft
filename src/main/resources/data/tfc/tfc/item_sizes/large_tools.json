@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": [
+    {
+      "tag": "forge:fishing_rods"
+    },
+    {
+      "tag": "tfc:pickaxes"
+    },
+    {
+      "tag": "tfc:propicks"
+    },
+    {
+      "tag": "tfc:axes"
+    },
+    {
+      "tag": "tfc:shovels"
+    },
+    {
+      "tag": "tfc:hoes"
+    },
+    {
+      "tag": "tfc:hammers"
+    },
+    {
+      "tag": "tfc:saws"
+    },
+    {
+      "tag": "tfc:javelins"
+    },
+    {
+      "tag": "tfc:swords"
+    },
+    {
+      "tag": "tfc:maces"
+    },
+    {
+      "tag": "tfc:scythes"
+    }
+  ],
+  "size": "very_large",
+  "weight": "very_heavy"
+}

@@ -580,7 +580,6 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:dirt/%s' % soil)
             else:
                 block.with_block_loot('1-3 minecraft:clay_ball')
-            block.with_tag('grass')
             block.with_lang(lang('%s %s', soil, grass_var))
             grass_models((grass_var, soil), dirt)
 

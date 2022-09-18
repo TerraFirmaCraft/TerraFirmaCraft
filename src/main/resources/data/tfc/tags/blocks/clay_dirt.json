@@ -2,6 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:dirt"
+    "tfc:clay/silt",
+    "tfc:clay/loam",
+    "tfc:clay/sandy_loam",
+    "tfc:clay/silty_loam"
   ]
 }

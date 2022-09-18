@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "tag": "tfc:foods"
+    "tag": "forge:rods"
   },
-  "size": "small",
+  "size": "normal",
   "weight": "light"
 }
