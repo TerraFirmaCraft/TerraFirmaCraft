@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/sheet/bronze"
+    "tag": "forge:sheets/bronze"
   },
   "second_input": {
-    "item": "tfc:metal/sheet/bronze"
+    "tag": "forge:sheets/bronze"
   },
   "tier": 1,
   "result": {

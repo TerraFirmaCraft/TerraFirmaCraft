@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/sheet/tin"
+    "tag": "forge:sheets/tin"
   },
   "second_input": {
-    "item": "tfc:metal/sheet/tin"
+    "tag": "forge:sheets/tin"
   },
   "tier": 0,
   "result": {

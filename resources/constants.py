@@ -762,7 +762,7 @@ VANILLA_MONSTERS: Dict[str, Dict[str, Any]] = {
     'slime': spawner('minecraft:slime', weight=100, min_count=4, max_count=4),
 }
 
-DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew')
+DISABLED_VANILLA_RECIPES = ('flint_and_steel', 'turtle_helmet', 'campfire', 'bucket', 'composter', 'tinted_glass', 'enchanting_table', 'bowl', 'blaze_rod', 'bone_meal', 'flower_pot', 'painting', 'torch', 'soul_torch', 'sticky_piston', 'clock', 'compass', 'white_wool_from_string', 'hay_block', 'anvil', 'wheat', 'lapis_lazuli', 'leather_horse_armor', 'map', 'furnace', 'jack_o_lantern', 'melon_seeds', 'melon', 'pumpkin_pie', 'chest', 'barrel', 'trapped_chest', 'bricks', 'bookshelf', 'crafting_table', 'lectern', 'chest_minecart', 'rail', 'beetroot_soup', 'mushroom_stew', 'rabbit_stew_from_red_mushroom', 'rabbit_stew_from_brown_mushroom', 'suspicious_stew', 'scaffolding', 'bow')
 ARMOR_SECTIONS = ('chestplate', 'leggings', 'boots', 'helmet')
 TFC_ARMOR_SECTIONS = ('helmet', 'chestplate', 'greaves', 'boots')
 VANILLA_ARMOR_TYPES = ('leather', 'golden', 'iron', 'diamond', 'netherite')
@@ -1018,17 +1018,18 @@ DEFAULT_LANG = {
     'tfc.jade.burn_rate': 'Burn Rate: %s ticks / mB',
     'tfc.jade.burn_forever': 'Will burn indefinitely',
     'tfc.jade.time_left': 'Time left: %s',
+    'tfc.jade.ready_to_grow': 'Ready to Grow',
     'tfc.jade.air_ticks': '%s added air ticks remaining',
     'tfc.jade.animal_wear': 'Wear & Tear: %s',
     'tfc.jade.familiarity': 'Familiarity: %s',
-    'tfc.jade.adulthood_days': 'Becomes adult in %s days',
+    'tfc.jade.adulthood_progress': 'Becomes adult in %s',
     'tfc.jade.product.generic': 'Has Animal Product',
     'tfc.jade.product.eggs': 'Has Eggs',
     'tfc.jade.product.milk': 'Ready to Milk',
     'tfc.jade.product.wool': 'Ready to Shear',
     'tfc.jade.can_mate': 'Ready to Mate',
     'tfc.jade.old_animal': 'Old, cannot reproduce or provide useful products',
-    'tfc.jade.gestation_progress': 'Gestation Progress: %s',
+    'tfc.jade.gestation_time_left': 'Gestation Time Left: %s',
     'tfc.jade.may_ride_horse': 'May be ridden',
     'tfc.jade.explosion_strength': 'Explosion Strength: %s',
     'tfc.jade.yield': 'Yield Multiplier: %s',

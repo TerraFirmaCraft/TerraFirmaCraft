@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/ingot/weak_blue_steel"
+    "tag": "forge:ingots/weak_blue_steel"
   },
   "second_input": {
-    "item": "tfc:metal/ingot/black_steel"
+    "tag": "forge:ingots/black_steel"
   },
   "tier": 4,
   "result": {
