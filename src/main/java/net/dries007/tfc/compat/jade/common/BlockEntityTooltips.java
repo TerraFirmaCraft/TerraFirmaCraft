@@ -394,8 +394,8 @@ public final class BlockEntityTooltips
             }
             else
             {
-                tooltip.accept(Helpers.translatable("tfc.jade.straws", kiln.getStraws().size()));
-                tooltip.accept(Helpers.translatable("tfc.jade.logs", kiln.getLogs().size()));
+                tooltip.accept(Helpers.translatable("tfc.jade.straws", kiln.getStrawsCount()));
+                tooltip.accept(Helpers.translatable("tfc.jade.logs", kiln.getLogsCount()));
             }
         }
     }

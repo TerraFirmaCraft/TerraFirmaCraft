@@ -31,6 +31,8 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
+import java.util.function.Predicate;
+
 public class PitKilnBlockEntity extends PlacedItemBlockEntity
 {
     public static final Vec3i[] DIAGONALS = new Vec3i[] {new Vec3i(1, 0, 1), new Vec3i(-1, 0, 1), new Vec3i(1, 0, -1), new Vec3i(-1, 0, -1)};
@@ -272,6 +274,14 @@ public class PitKilnBlockEntity extends PlacedItemBlockEntity
     public NonNullList<ItemStack> getStraws()
     {
         return strawItems;
+    }
+
+    public Long getLogsCount() {
+        return logItems.stream().filter(Predicate.not(ItemStack::isEmpty)).count();
+    }
+
+    public Long getStrawsCount() {
+        return strawItems.stream().filter(Predicate.not(ItemStack::isEmpty)).count();
     }
 
     private void cookContents()
