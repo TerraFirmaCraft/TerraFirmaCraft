@@ -220,7 +220,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         nbt.putLong("mating", getMated());
         nbt.putInt("lastAge", getLastAge().ordinal());
         nbt.putLong("oldDay", getOldDay());
-        nbt.putLong("geneticSize", getGeneticSize());
+        nbt.putInt("geneticSize", getGeneticSize());
     }
 
     default void readCommonAnimalData(CompoundTag nbt)
@@ -245,7 +245,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setFamiliarity(0);
         setOldDay(-1L);
         setUses(0);
-        setGeneticSize(Mth.nextInt(getEntity().getRandom(), 6, 20));
+        setGeneticSize(Mth.nextInt(getEntity().getRandom(), 4, 18));
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {

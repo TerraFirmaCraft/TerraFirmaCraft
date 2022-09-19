@@ -39,7 +39,7 @@ public class AnimalYieldProvider extends MinMaxProvider
             }
 
             // 32 (max size) + 8 (max damage contrib) + 6 (max familiarity contribution)
-            final float scaledSize = Mth.clampedMap(adjustedSize, 1f, 46f, 0f, 6f);
+            final float scaledSize = Mth.clampedMap(adjustedSize, 1f, 46f, 0f, 1f);
             return Mth.lerp(scaledSize, min.getFloat(context), max.getFloat(context));
         }
         return min.getFloat(context);

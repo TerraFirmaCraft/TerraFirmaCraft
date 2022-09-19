@@ -9,7 +9,6 @@ package net.dries007.tfc.common.entities.livestock;
 import java.util.Random;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.AgeableMob;
@@ -110,10 +109,10 @@ public interface MammalProperties extends TFCAnimalProperties
 
     default void applyGenes(CompoundTag tag, MammalProperties baby)
     {
-        setGeneticSize(Mth.floor(EntityHelpers.getIntOrDefault(tag, "size", 16) / 2d + Mth.nextInt(baby.getEntity().getRandom(), -2, 2)));
+        baby.setGeneticSize(Mth.floor(EntityHelpers.getIntOrDefault(tag, "size", 16) / 2d + Mth.nextInt(baby.getEntity().getRandom(), -3, 3)));
         if (tag.getBoolean("runt"))
         {
-            setGeneticSize(1);
+            baby.setGeneticSize(1);
         }
     }
 
@@ -131,7 +130,6 @@ public interface MammalProperties extends TFCAnimalProperties
     {
         TFCAnimalProperties.super.saveCommonAnimalData(nbt);
         nbt.putLong("pregnant", getPregnantTime());
-        nbt.putLong("genes", getPregnantTime());
         if (getGenes() != null)
         {
             nbt.put("genes", getGenes());
