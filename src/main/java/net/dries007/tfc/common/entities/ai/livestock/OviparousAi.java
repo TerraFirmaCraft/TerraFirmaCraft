@@ -43,6 +43,7 @@ public class OviparousAi
     {
         initCoreActivity(brain);
         initIdleActivity(brain);
+        initRetreatActivity(brain);
 
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE)); // core activities run all the time
         brain.setDefaultActivity(Activity.IDLE); // the default activity is a useful way to have a fallback activity
@@ -70,5 +71,10 @@ public class OviparousAi
                 Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
                 Pair.of(new DoNothing(30, 60), 1)))) // do nothing for a certain period of time
         ));
+    }
+
+    public static void initRetreatActivity(Brain<? extends OviparousAnimal> brain)
+    {
+        LivestockAi.initRetreatActivity(brain);
     }
 }

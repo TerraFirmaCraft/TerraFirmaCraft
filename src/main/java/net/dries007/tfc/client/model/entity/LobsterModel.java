@@ -8,9 +8,6 @@ package net.dries007.tfc.client.model.entity;
 
 import com.google.common.collect.ImmutableMap;
 
-import net.dries007.tfc.common.capabilities.VesselLike;
-import net.dries007.tfc.common.entities.aquatic.FreshWaterCritter;
-
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
