@@ -15,6 +15,7 @@ public class TFCDamageSources
     public static final DamageSource GRILL = create("grill").bypassArmor().setIsFire();
     public static final DamageSource POT = create("pot").bypassArmor().setIsFire();
     public static final DamageSource DEHYDRATION = create("dehydration").bypassArmor().bypassMagic();
+    public static final DamageSource CORAL = create("coral");
 
     private static DamageSource create(String key)
     {

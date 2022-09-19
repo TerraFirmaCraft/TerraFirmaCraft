@@ -803,6 +803,8 @@ DEFAULT_LANG = {
     'death.attack.tfc.pot.player': '%1$s boiled themself while trying to escape %2$s',
     'death.attack.tfc.dehydration': '%1$s dehydrated to death',
     'death.attack.tfc.dehydration.player': '%1$s dehydrated to death while trying to escape %2$s',
+    'death.attack.tfc.coral': '%1$s impaled themself on a coral reef.',
+    'death.attack.tfc.coral.player': '%1$s impaled themself on a coral reef while trying to escape %2$s',
     'effect.tfc.pinned': 'Pinned',
     'effect.tfc.ink': 'Ink',
     'effect.tfc.glow_ink': 'Glowing Ink',
