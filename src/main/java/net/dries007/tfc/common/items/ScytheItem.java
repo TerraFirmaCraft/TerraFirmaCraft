@@ -35,9 +35,9 @@ public class ScytheItem extends ToolItem
                 final BlockState stateAt = level.getBlockState(pos);
                 if (!pos.equals(origin) && isCorrectToolForDrops(stack, stateAt))
                 {
-                    level.destroyBlock(pos, false, player); // we have to drop resources manually as breaking from the level means the tool is ignored
-
                     Block.dropResources(stateAt, level, pos, stateAt.hasBlockEntity() ? level.getBlockEntity(pos) : null, player, player.getMainHandItem());
+
+                    level.destroyBlock(pos, false, player); // we have to drop resources manually as breaking from the level means the tool is ignored
                 }
             }
         }

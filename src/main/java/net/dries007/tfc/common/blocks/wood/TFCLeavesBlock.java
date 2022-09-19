@@ -28,6 +28,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.client.particle.TFCParticles;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -60,7 +61,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     {
         if (maxDecayDistance >= 7 && maxDecayDistance < 7 + TFCBlockStateProperties.DISTANCES.length)
         {
-            return TFCBlockStateProperties.DISTANCES[maxDecayDistance - 7];
+            return TFCBlockStateProperties.DISTANCES[maxDecayDistance - 7 + 1]; // we select one higher than max
         }
         throw new IllegalArgumentException("No property set for distance: " + maxDecayDistance);
     }
@@ -126,6 +127,18 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
 
     @Override
     @SuppressWarnings("deprecation")
+    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
+    {
+        super.randomTick(state, level, pos, rand); // super calls tick()
+        if (state.getValue(getDistanceProperty()) > maxDecayDistance && !state.getValue(PERSISTENT))
+        {
+            level.removeBlock(pos, false);
+            doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
     public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
         int distance = updateDistance(level, pos);
@@ -133,8 +146,16 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             if (!state.getValue(PERSISTENT))
             {
-                level.removeBlock(pos, false);
-                doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
+                if (!TFCConfig.SERVER.enableLeavesDecaySlowly.get())
+                {
+                    level.removeBlock(pos, false);
+                    doParticles(level, pos.getX() + rand.nextFloat(), pos.getY() + rand.nextFloat(), pos.getZ() + rand.nextFloat(), 1);
+                }
+                else
+                {
+                    // max + 1 means it must decay next random tick
+                    level.setBlockAndUpdate(pos, state.setValue(getDistanceProperty(), maxDecayDistance + 1));
+                }
             }
             else
             {
@@ -155,16 +176,14 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
         {
             Helpers.slowEntityInBlock(entity, 0.3f, 5);
         }
+        if (Helpers.isEntity(entity, TFCTags.Entities.DESTROYED_BY_LEAVES))
+        {
+            entity.kill();
+        }
         if (level.random.nextInt(20) == 0 && level instanceof ServerLevel server)
         {
             doParticles(server, entity.getX(), entity.getEyeY() - 0.25D, entity.getZ(), 3);
         }
-    }
-
-    @Override
-    public boolean isRandomlyTicking(BlockState state)
-    {
-        return true; // Not for the purposes of leaf decay, but for the purposes of seasonal updates
     }
 
     @Override
@@ -188,7 +207,7 @@ public abstract class TFCLeavesBlock extends Block implements ILeavesBlock, IFor
     {
         int distance = 1 + maxDecayDistance;
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        for (Direction direction : Direction.values())
+        for (Direction direction : Helpers.DIRECTIONS)
         {
             mutablePos.set(pos).move(direction);
             distance = Math.min(distance, getDistance(level.getBlockState(mutablePos)) + 1);

@@ -1,0 +1,324 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/seeds",
+  "criteria": {
+    "barley": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/barley"
+            ]
+          }
+        ]
+      }
+    },
+    "oat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/oat"
+            ]
+          }
+        ]
+      }
+    },
+    "rye": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/rye"
+            ]
+          }
+        ]
+      }
+    },
+    "maize": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/maize"
+            ]
+          }
+        ]
+      }
+    },
+    "wheat": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/wheat"
+            ]
+          }
+        ]
+      }
+    },
+    "rice": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/rice"
+            ]
+          }
+        ]
+      }
+    },
+    "beet": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/beet"
+            ]
+          }
+        ]
+      }
+    },
+    "cabbage": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/cabbage"
+            ]
+          }
+        ]
+      }
+    },
+    "carrot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/carrot"
+            ]
+          }
+        ]
+      }
+    },
+    "garlic": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/garlic"
+            ]
+          }
+        ]
+      }
+    },
+    "green_bean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/green_bean"
+            ]
+          }
+        ]
+      }
+    },
+    "melon": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/melon"
+            ]
+          }
+        ]
+      }
+    },
+    "potato": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/potato"
+            ]
+          }
+        ]
+      }
+    },
+    "pumpkin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/pumpkin"
+            ]
+          }
+        ]
+      }
+    },
+    "onion": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/onion"
+            ]
+          }
+        ]
+      }
+    },
+    "soybean": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/soybean"
+            ]
+          }
+        ]
+      }
+    },
+    "squash": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/squash"
+            ]
+          }
+        ]
+      }
+    },
+    "sugarcane": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/sugarcane"
+            ]
+          }
+        ]
+      }
+    },
+    "tomato": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/tomato"
+            ]
+          }
+        ]
+      }
+    },
+    "jute": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:seeds/jute"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/hoe/black_steel"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.all_crops.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.all_crops.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "barley"
+    ],
+    [
+      "oat"
+    ],
+    [
+      "rye"
+    ],
+    [
+      "maize"
+    ],
+    [
+      "wheat"
+    ],
+    [
+      "rice"
+    ],
+    [
+      "beet"
+    ],
+    [
+      "cabbage"
+    ],
+    [
+      "carrot"
+    ],
+    [
+      "garlic"
+    ],
+    [
+      "green_bean"
+    ],
+    [
+      "melon"
+    ],
+    [
+      "potato"
+    ],
+    [
+      "pumpkin"
+    ],
+    [
+      "onion"
+    ],
+    [
+      "soybean"
+    ],
+    [
+      "squash"
+    ],
+    [
+      "sugarcane"
+    ],
+    [
+      "tomato"
+    ],
+    [
+      "jute"
+    ]
+  ]
+}

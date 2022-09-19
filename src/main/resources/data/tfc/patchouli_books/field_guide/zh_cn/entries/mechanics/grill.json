@@ -1,0 +1,48 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "篝火烧烤",
+  "category": "tfc:mechanics",
+  "icon": "tfc:grill",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)烤架$()是一种可以用来升级篝火的物品。有烤架的篝火可以一次性烹饪五件物品，同时烧出的食物会获得$(thing)原木烤制$()词条，略微延长其$(l:mechanics/decay)保质期$()。手持$(thing)锻铁烤架$()对准$(l:getting_started/firepit)篝火$()按$(item)$(k:key.use)$()就能将它放上去了。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grill"
+        }
+      },
+      "name": "附有锻铁烤架的篝火",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_grill",
+      "text": "烤架是通过在$(l:mechanics/anvils)砧$()上锻造$(thing)锻铁双层薄板$()制成的。$(br2)下一页展示了烤架界面。和篝火类似，它有四个燃料槽，必须在顶部空格中添加燃料。温度指示器也和篝火相同。唯一不同的是用于加热物品的槽的数量变成了五个。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/grill.png"
+      ],
+      "text": "烤架界面",
+      "border": false
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:wrought_iron_grill": 0
+  }
+}

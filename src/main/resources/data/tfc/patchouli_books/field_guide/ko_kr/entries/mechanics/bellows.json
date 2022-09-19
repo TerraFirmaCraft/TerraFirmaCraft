@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l풀무",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bellows",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)풀무$()는 다른 장치에 공기를 불어 넣어 장치의 온도를 높일 수 있는 장치입니다. 다만 더 높은 온도에서 불탈수록 많은 연료가 필요합니다. 풀무는 바로 앞의 블록이나 바로 앞의 한칸 아래 블록에게 공기를 불어넣을 수 있습니다. 이로써 풀무로는 $(l:getting_started/firepit)모닥불$()이나 $(l:mechanics/charcoal_forge)숯불 노$() 등에 사용할 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/bellows",
+      "title": "",
+      "text": "풀무를 사용하기 위해서는 단순히 목표 장치를 향해 설치하기만 하면 됩니다. 풀무로 장치에 바람을 불어넣으면 잠시동안 장치의 최고 온도를 증가시킵니다."
+    }
+  ],
+  "read_by_default": true
+}

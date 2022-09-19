@@ -20,4 +20,13 @@ public interface IItemSize
     Size getSize(ItemStack stack);
 
     Weight getWeight(ItemStack stack);
+
+    /**
+     * Get the stack size of this item.
+     * This may be inconsistent for implementations that want to modify their weight in order to selectively trigger overburdening, but want to have a consistent stack size.
+     */
+    default int getDefaultStackSize(ItemStack stack)
+    {
+        return getWeight(stack).stackSize;
+    }
 }

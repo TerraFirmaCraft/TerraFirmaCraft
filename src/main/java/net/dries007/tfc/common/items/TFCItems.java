@@ -159,6 +159,7 @@ public final class TFCItems
         register("powder/" + powder.name(), MISC)
     );
 
+    public static final RegistryObject<Item> BLANK_DISC = register("blank_disc", MISC);
     public static final RegistryObject<Item> BLUBBER = register("blubber", MISC);
     public static final RegistryObject<Item> BRASS_MECHANISMS = register("brass_mechanisms", MISC);
     public static final RegistryObject<Item> BURLAP_CLOTH = register("burlap_cloth", MISC);
@@ -181,11 +182,12 @@ public final class TFCItems
     public static final RegistryObject<Item> PURE_POTASSIUM = register("pure_potassium", MISC);
     public static final RegistryObject<Item> ROTTEN_COMPOST = register("rotten_compost", () -> new RottenCompostItem(new Item.Properties().tab(MISC)));
     public static final RegistryObject<Item> SILK_CLOTH = register("silk_cloth", MISC);
+    public static final RegistryObject<Item> SOOT = register("soot", MISC);
     public static final RegistryObject<Item> SPINDLE = register("spindle", () -> new Item(new Item.Properties().tab(MISC).defaultDurability(40)));
     public static final RegistryObject<Item> STICK_BUNCH = register("stick_bunch", MISC);
     public static final RegistryObject<Item> STICK_BUNDLE = register("stick_bundle", MISC);
     public static final RegistryObject<Item> STRAW = register("straw", MISC);
-    public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new DiscreteFluidContainerItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.woodenBucketCapacity::get, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, false));
+    public static final RegistryObject<Item> WOODEN_BUCKET = register("wooden_bucket", () -> new DiscreteFluidContainerItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.woodenBucketCapacity, TFCTags.Fluids.USABLE_IN_WOODEN_BUCKET, false));
     public static final RegistryObject<Item> WOOL = register("wool", MISC);
     public static final RegistryObject<Item> WOOL_CLOTH = register("wool_cloth", MISC);
     public static final RegistryObject<Item> WOOL_YARN = register("wool_yarn", MISC);
@@ -252,7 +254,7 @@ public final class TFCItems
     public static final RegistryObject<Item> FIRE_BRICK = register("ceramic/fire_brick", MISC);
 
     public static final RegistryObject<Item> UNFIRED_JUG = register("ceramic/unfired_jug", MISC);
-    public static final RegistryObject<Item> JUG = register("ceramic/jug", () -> new JugItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.jugCapacity::get, TFCTags.Fluids.USABLE_IN_JUG));
+    public static final RegistryObject<Item> JUG = register("ceramic/jug", () -> new JugItem(new Item.Properties().tab(MISC).stacksTo(1), TFCConfig.SERVER.jugCapacity, TFCTags.Fluids.USABLE_IN_JUG));
 
     public static final RegistryObject<Item> UNFIRED_POT = register("ceramic/unfired_pot", MISC);
     public static final RegistryObject<Item> POT = register("ceramic/pot", MISC);

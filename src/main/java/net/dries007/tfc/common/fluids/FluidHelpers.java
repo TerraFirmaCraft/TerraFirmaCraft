@@ -59,6 +59,11 @@ public final class FluidHelpers
         return transferBetweenWorldAndItem(originalStack, level, target, new AfterTransferWithPlayer(player, hand), allowPlacingAnyLiquidBlocks, allowPlacingSourceBlocks, allowInfiniteSourceFilling);
     }
 
+    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
+    {
+        return target.getType() == HitResult.Type.BLOCK && transferBetweenWorldAndItem(originalStack, level, target.getBlockPos(), target, after, allowPlacingAnyLiquidBlocks, allowPlacingSourceBlocks, allowInfiniteSourceFilling);
+    }
+
     /**
      * Invoked from an item, when it is interacting with an arbitrary position in the world, and might be trying a fluid transfer.
      * Based on the content of the item's handler (empty or not), will either try and fill or empty itself with whatever it can find. In order, it will try:
@@ -73,16 +78,9 @@ public final class FluidHelpers
      * @param allowInfiniteSourceFilling  If {@code true}, when interacting directly with the world on a fluid source block, this will attempt to fill with {@code Integer.MAX_VALUE} fluid, if the fluid source block supports infinite sources.
      * @return {@code true} if a transfer occurred.
      */
-    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
+    public static boolean transferBetweenWorldAndItem(ItemStack originalStack, Level level, BlockPos pos, @Nullable BlockHitResult target, AfterTransfer after, boolean allowPlacingAnyLiquidBlocks, boolean allowPlacingSourceBlocks, boolean allowInfiniteSourceFilling)
     {
-        if (target.getType() != HitResult.Type.BLOCK)
-        {
-            return false;
-        }
-
-        final BlockPos pos = target.getBlockPos();
         final BlockState state = level.getBlockState(pos);
-
         final ItemStack stack = originalStack.copy();
         final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
         if (handler == null)
@@ -343,7 +341,7 @@ public final class FluidHelpers
             }
             return true;
         }
-        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME)
+        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME && allowPlacingSourceBlocks)
         {
             // Delegate to the container to place the block
             container.placeLiquid(level, pos, state, fluid.defaultFluidState());

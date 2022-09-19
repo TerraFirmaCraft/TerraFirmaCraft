@@ -11,12 +11,9 @@ import java.util.Random;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.Feature;
 
 import com.mojang.serialization.Codec;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 

@@ -8,7 +8,12 @@
     }
   },
   "result_item": {
-    "item": "tfc:food/cooked_chicken"
+    "stack": {
+      "item": "tfc:food/cooked_chicken"
+    },
+    "modifiers": [
+      "tfc:copy_food"
+    ]
   },
   "temperature": 200
 }

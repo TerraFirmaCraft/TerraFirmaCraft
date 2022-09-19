@@ -1,0 +1,30 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:world/seeds",
+  "criteria": {
+    "special_condition": {
+      "trigger": "tfc:full_fertilizer"
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:pure_nitrogen"
+    },
+    "title": {
+      "translate": "tfc.advancements.world.full_fertilizer.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.world.full_fertilizer.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/mud/silt.png"
+  },
+  "requirements": [
+    [
+      "special_condition"
+    ]
+  ]
+}

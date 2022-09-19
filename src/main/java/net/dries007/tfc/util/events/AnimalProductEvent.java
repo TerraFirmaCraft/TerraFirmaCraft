@@ -42,7 +42,7 @@ public final class AnimalProductEvent extends Event
     /**
      * @return {@code true} if the event was handled using the default behavior (add uses, spawn the product)
      */
-    public static boolean produce(Level level, BlockPos pos, Player player, TFCAnimalProperties entity, ItemStack product, ItemStack tool, int uses)
+    public static boolean produce(Level level, BlockPos pos, @Nullable Player player, TFCAnimalProperties entity, ItemStack product, ItemStack tool, int uses)
     {
         AnimalProductEvent event = new AnimalProductEvent(level, pos, player, entity, product, tool, uses);
         if (!MinecraftForge.EVENT_BUS.post(event))
@@ -81,8 +81,8 @@ public final class AnimalProductEvent extends Event
         this.animalProperties = entity;
         this.player = player;
         this.tool = tool;
-        this.setProduct(product);
-        this.setUses(uses);
+        this.product = product;
+        this.uses = uses;
     }
 
     public Level getLevel()

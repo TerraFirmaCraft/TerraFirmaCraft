@@ -748,6 +748,11 @@ public final class Helpers
         level.playSound(null, pos, sound, SoundSource.BLOCKS, 1.0F + rand.nextFloat(), rand.nextFloat() + 0.7F + 0.3F);
     }
 
+    public static boolean spawnItem(Level level, Vec3 pos, ItemStack stack)
+    {
+        return level.addFreshEntity(new ItemEntity(level, pos.x(), pos.y(), pos.z(), stack));
+    }
+
     public static boolean spawnItem(Level level, BlockPos pos, ItemStack stack, double yOffset)
     {
         return level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5D, pos.getY() + yOffset, pos.getZ() + 0.5D, stack));
@@ -1113,12 +1118,12 @@ public final class Helpers
     /**
      * Adds a tooltip based on a single fluid stack
      */
+    @Deprecated(forRemoval = true)
     public static void addFluidStackTooltipInfo(FluidStack fluid, List<Component> tooltips)
     {
         if (!fluid.isEmpty())
         {
-            tooltips.add(Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount())
-                .append(fluid.getDisplayName()));
+            tooltips.add(Tooltips.fluidUnitsOf(fluid));
         }
     }
 

@@ -2,7 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "tfc:river_water",
-    "#tfc:drinkable_ingredients"
+    "#tfc:infinite_water",
+    "#tfc:alcohols",
+    "#tfc:milks"
   ]
 }

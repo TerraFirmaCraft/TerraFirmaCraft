@@ -83,23 +83,6 @@ public class DiscreteFluidContainerItem extends Item
         }
     }
 
-    protected InteractionResultHolder<ItemStack> afterFillFailed(IFluidHandler handler, Level level, Player player, ItemStack stack, InteractionHand hand)
-    {
-        return InteractionResultHolder.pass(stack);
-    }
-
-    protected InteractionResultHolder<ItemStack> afterEmptyFailed(IFluidHandler handler, Level level, Player player, ItemStack stack, InteractionHand hand)
-    {
-        return InteractionResultHolder.pass(stack);
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
-    {
-        return new DiscreteItemStackFluidHandler(stack, whitelist, capacity.get());
-    }
-
     @Override
     public Component getName(ItemStack stack)
     {
@@ -108,7 +91,7 @@ public class DiscreteFluidContainerItem extends Item
             .orElse(FluidStack.EMPTY);
         if (!fluid.isEmpty())
         {
-            return fluid.getDisplayName().copy().append(" ").append(super.getName(stack));
+            return Helpers.translatable(getDescriptionId(stack) + ".filled", fluid.getDisplayName());
         }
         return super.getName(stack);
     }
@@ -128,10 +111,16 @@ public class DiscreteFluidContainerItem extends Item
                 }
 
                 final ItemStack stack = new ItemStack(this);
-                stack.getCapability(Capabilities.FLUID_ITEM).ifPresent(c -> c.fill(new FluidStack(fluid, FluidHelpers.BUCKET_VOLUME), IFluidHandler.FluidAction.EXECUTE));
+                stack.getCapability(Capabilities.FLUID_ITEM).ifPresent(c -> c.fill(new FluidStack(fluid, capacity.get()), IFluidHandler.FluidAction.EXECUTE));
                 items.add(stack);
             }
         }
+    }
+
+    @Override
+    public ItemStack getContainerItem(ItemStack stack)
+    {
+        return new ItemStack(this);
     }
 
     @Override
@@ -140,9 +129,30 @@ public class DiscreteFluidContainerItem extends Item
         return stack.getCapability(Capabilities.FLUID_ITEM).map(cap -> !cap.getFluidInTank(0).isEmpty()).orElse(false);
     }
 
+    @Nullable
     @Override
-    public ItemStack getContainerItem(ItemStack stack)
+    public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new ItemStack(this);
+        return new DiscreteItemStackFluidHandler(stack, whitelist, capacity.get());
+    }
+
+    public boolean canPlaceSourceBlocks()
+    {
+        return canPlaceSourceBlocks;
+    }
+
+    public boolean canPlaceLiquidsInWorld()
+    {
+        return canPlaceLiquidsInWorld;
+    }
+
+    protected InteractionResultHolder<ItemStack> afterFillFailed(IFluidHandler handler, Level level, Player player, ItemStack stack, InteractionHand hand)
+    {
+        return InteractionResultHolder.pass(stack);
+    }
+
+    protected InteractionResultHolder<ItemStack> afterEmptyFailed(IFluidHandler handler, Level level, Player player, ItemStack stack, InteractionHand hand)
+    {
+        return InteractionResultHolder.pass(stack);
     }
 }

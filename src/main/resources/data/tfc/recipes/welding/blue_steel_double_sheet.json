@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/sheet/blue_steel"
+    "tag": "forge:sheets/blue_steel"
   },
   "second_input": {
-    "item": "tfc:metal/sheet/blue_steel"
+    "tag": "forge:sheets/blue_steel"
   },
   "tier": 5,
   "result": {

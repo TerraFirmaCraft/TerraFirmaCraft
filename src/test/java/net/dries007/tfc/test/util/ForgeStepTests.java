@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.test.util;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 
 import net.dries007.tfc.TestHelper;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ForgeStepTests extends TestHelper
 {
     @Test
-    public void testOptimalPaths()
+    public void testGetOptimalStepsToTarget()
     {
         for (int i = 0; i < ForgeStep.LIMIT; i++)
         {
@@ -66,7 +67,8 @@ public class ForgeStepTests extends TestHelper
     public void testWriteReadEmpty()
     {
         final ForgeSteps before = new ForgeSteps();
-        final ForgeSteps after = writeAndRead(before, ForgeSteps::write, new ForgeSteps(), ForgeSteps::read);
+        final CompoundTag tag = before.write(new CompoundTag());
+        final ForgeSteps after = new ForgeSteps().read(tag);
         assertEquals(before, after);
     }
 
@@ -74,7 +76,8 @@ public class ForgeStepTests extends TestHelper
     public void testWriteReadExample()
     {
         final ForgeSteps before = exampleSteps();
-        final ForgeSteps after = writeAndRead(before, ForgeSteps::write, new ForgeSteps(), ForgeSteps::read);
+        final CompoundTag tag = before.write(new CompoundTag());
+        final ForgeSteps after = new ForgeSteps().read(tag);
         assertEquals(before, after);
     }
 

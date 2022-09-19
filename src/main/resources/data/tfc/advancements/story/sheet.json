@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/welding",
+  "criteria": {
+    "sheets": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:sheets"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/sheet/copper"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.sheet.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.sheet.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "sheets"
+    ]
+  ]
+}

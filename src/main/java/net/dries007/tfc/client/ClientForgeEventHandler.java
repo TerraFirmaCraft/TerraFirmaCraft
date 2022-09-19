@@ -129,7 +129,7 @@ public class ClientForgeEventHandler
                 list.add(AQUA + TerraFirmaCraft.MOD_NAME);
 
                 // Always add calendar info
-                list.add(I18n.get("tfc.tooltip.calendar_date") + Calendars.CLIENT.getCalendarTimeAndDate().getString());
+                list.add(Helpers.translatable("tfc.tooltip.calendar_date", Calendars.CLIENT.getCalendarTimeAndDate()).getString());
 
                 if (TFCConfig.CLIENT.enableDebug.get())
                 {
@@ -204,10 +204,9 @@ public class ClientForgeEventHandler
                 final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(fuel.getTemperature());
                 if (heat != null)
                 {
-                    text.add(Helpers.translatable("tfc.tooltip.fuel_burns_at")
-                        .append(heat)
-                        .append(Helpers.translatable("tfc.tooltip.fuel_burns_at_duration"))
-                        .append(Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
+                    text.add(Helpers.translatable(
+                        "tfc.tooltip.fuel_burns_at", // burns at %s for %s
+                        heat, Calendars.CLIENT.getTimeDelta(fuel.getDuration())));
                 }
             }
 
@@ -224,27 +223,24 @@ public class ClientForgeEventHandler
             }
 
             // Metal content, inferred from a matching heat recipe.
-            ItemStackInventory wrapper = new ItemStackInventory(stack);
-            HeatingRecipe recipe = HeatingRecipe.getRecipe(wrapper);
+            final ItemStackInventory inventory = new ItemStackInventory(stack);
+            final HeatingRecipe recipe = HeatingRecipe.getRecipe(inventory);
             if (recipe != null)
             {
                 // Check what we would get if melted
-                final FluidStack fluid = recipe.getOutputFluid();
+                final FluidStack fluid = recipe.assembleFluid(inventory);
                 if (!fluid.isEmpty())
                 {
                     final Metal metal = Metal.get(fluid.getFluid());
                     if (metal != null)
                     {
-                        final MutableComponent line = Helpers.translatable("tfc.tooltip.item_melts_into", (fluid.getAmount() * stack.getCount()))
-                            .append(Helpers.translatable(metal.getTranslationKey()));
                         final MutableComponent heat = TFCConfig.CLIENT.heatTooltipStyle.get().formatColored(recipe.getTemperature());
                         if (heat != null)
                         {
-                            line.append(Helpers.translatable("tfc.tooltip.item_melts_into_open"))
-                                .append(heat)
-                                .append(Helpers.translatable("tfc.tooltip.item_melts_into_close"));
+                            text.add(Helpers.translatable(
+                                "tfc.tooltip.item_melts_into", // %s mB of %s (at %s)
+                                fluid.getAmount() * stack.getCount(), Helpers.translatable(metal.getTranslationKey()), heat));
                         }
-                        text.add(line);
                     }
                 }
             }
@@ -402,8 +398,8 @@ public class ClientForgeEventHandler
         Minecraft mc = Minecraft.getInstance();
         if (mc.level != null && event.getMode() == FogRenderer.FogMode.FOG_TERRAIN)
         {
-            FogType fluid = event.getCamera().getFluidInCamera();
-            BlockPos pos = event.getCamera().getBlockPosition();
+            final FogType fluid = event.getCamera().getFluidInCamera();
+            final BlockPos pos = event.getCamera().getBlockPosition();
             if (fluid == FogType.NONE)
             {
                 final float fog = Climate.getFogginess(mc.level, pos);
@@ -412,7 +408,6 @@ public class ClientForgeEventHandler
                     final float renderDistance = mc.gameRenderer.getRenderDistance();
                     final float density = renderDistance * (1 - Math.min(0.86f, fog));
 
-                    // let's just do this the same way MC does because the FogDensityEvent is crap
                     event.setNearPlaneDistance(density - Mth.clamp(renderDistance / 10.0F, 4.0F, 64.0F));
                     event.setFarPlaneDistance(density);
                     event.setCanceled(true);
@@ -437,21 +432,31 @@ public class ClientForgeEventHandler
         }
     }
 
+    /**
+     * Vanilla will first make a decision about which hands to render, then optionally render each one. (In {@link net.minecraft.client.renderer.ItemInHandRenderer#evaluateWhichHandsToRender(LocalPlayer)})
+     * We have to intercept both hands individually, *after* vanilla's decision has been made, and cooperate with it. As if vanilla decides not to render a given hand, it will not even fire this event to give us the chance.
+     */
     public static void onHandRender(RenderHandEvent event)
     {
-        ItemStack stack = event.getItemStack();
-        final Item item = stack.getItem();
-        if (item instanceof PanItem || item instanceof EmptyPanItem)
+        final Player player = ClientHelpers.getPlayer();
+        if (player == null)
         {
-            if (event.getHand() == InteractionHand.OFF_HAND) // handled by main hand
+            return;
+        }
+
+        final ItemStack mainHand = player.getMainHandItem();
+        if (mainHand.getItem() instanceof PanItem || mainHand.getItem() instanceof EmptyPanItem)
+        {
+            // Like charged crossbows, when present in the main hand, we only render the main hand, and we render it with two hands
+            // So, we cancel this event unconditionally, and in the main hand branch, render our own two-handed item
+            // Pans held in the offhand render normally, and don't allow panning (unlike vanilla crossbows), as we require it to be the two-handed animation.
+            if (event.getHand() == InteractionHand.MAIN_HAND)
             {
-                event.setCanceled(true);
-                return;
+                final PoseStack poseStack = event.getPoseStack();
+                poseStack.pushPose();
+                RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), mainHand);
+                poseStack.popPose();
             }
-            PoseStack poseStack = event.getPoseStack();
-            poseStack.pushPose();
-            RenderHelpers.renderTwoHandedItem(poseStack, event.getMultiBufferSource(), event.getPackedLight(), event.getInterpolatedPitch(), event.getEquipProgress(), event.getSwingProgress(), stack);
-            poseStack.popPose();
             event.setCanceled(true);
         }
     }

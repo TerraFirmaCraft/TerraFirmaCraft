@@ -8,7 +8,6 @@ package net.dries007.tfc.common.capabilities.forge;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
@@ -59,6 +58,129 @@ public enum ForgeRule
     public static ForgeRule valueOf(int id)
     {
         return id >= 0 && id < VALUES.length ? VALUES[id] : null;
+    }
+
+    /**
+     * @return {@code true} if a set of {@code rules} is self-consistent, meaning there exists at least one possible solution which satisfies all rules.
+     */
+    public static boolean isConsistent(ForgeRule... rules)
+    {
+        if (rules.length == 0 || rules.length > 3)
+        {
+            return false;
+        }
+        ForgeRule last = null, secondLast = null, thirdLast = null, notLast1 = null, notLast2 = null;
+        for (ForgeRule rule : rules)
+        {
+            if (rule == last || rule == secondLast || rule == thirdLast || rule == notLast1 || rule == notLast2)
+            {
+                continue;
+            }
+            switch (rule.order)
+            {
+                case THIRD_LAST -> {
+                    if (thirdLast != null)
+                    {
+                        return false;
+                    }
+                    thirdLast = rule;
+                }
+                case SECOND_LAST -> {
+                    if (secondLast != null)
+                    {
+                        return false;
+                    }
+                    secondLast = rule;
+                }
+                case LAST -> {
+                    if (last != null)
+                    {
+                        return false;
+                    }
+                    last = rule;
+                }
+                case NOT_LAST -> {
+                    if (notLast2 != null)
+                    {
+                        return false;
+                    }
+                    notLast2 = notLast1;
+                    notLast1 = rule;
+                }
+            }
+        }
+        return conflict3(notLast1, secondLast, thirdLast)
+            && conflict3(secondLast, notLast1, notLast2)
+            && conflict3(thirdLast, notLast1, notLast2);
+    }
+
+    private static boolean conflict3(@Nullable ForgeRule rule1, @Nullable ForgeRule rule2, @Nullable ForgeRule rule3)
+    {
+        return rule1 == null || rule2 == null || rule3 == null || rule1.type == rule2.type || rule1.type == rule3.type;
+    }
+
+    /**
+     * Calculates the minimum number of steps to reach a total offset of {@code target} while satisfying the {@code rules}. Assumes the rules are consistent as determined by {@link #isConsistent(ForgeRule[])}
+     */
+    public static int calculateOptimalStepsToTarget(int target, final ForgeRule... rules)
+    {
+        final ForgeRule[] lastSteps = {null, null, null};
+        for (final ForgeRule rule : rules)
+        {
+            switch (rule.order)
+            {
+                case LAST -> lastSteps[0] = rule;
+                case SECOND_LAST -> lastSteps[1] = rule;
+                case THIRD_LAST -> lastSteps[2] = rule;
+            }
+        }
+        for (final ForgeRule rule : rules)
+        {
+            if (rule.order == Order.NOT_LAST || rule.order == Order.ANY)
+            {
+                boolean placed = false;
+                for (int i = 2; i >= 0; i--)
+                {
+                    if (lastSteps[i] != null && lastSteps[i].type == rule.type && (rule.order == Order.ANY || i > 0))
+                    {
+                        lastSteps[i] = rule;
+                        placed = true;
+                        break;
+                    }
+                }
+                if (!placed)
+                {
+                    for (int i = 2; i >= 0; i--)
+                    {
+                        if (lastSteps[i] == null)
+                        {
+                            lastSteps[i] = rule;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        int requiredSteps = 0, requiredHits = 0;
+        for (ForgeRule rule : lastSteps)
+        {
+            if (rule != null)
+            {
+                requiredSteps++;
+                target -= rule.type.step();
+                if (rule.type == HIT_LIGHT)
+                {
+                    requiredHits++;
+                }
+            }
+        }
+        int minimumSteps = ForgeStep.getOptimalStepsToTarget(target);
+        for (int hit = 0; hit < requiredHits * 2; hit++)
+        {
+            target -= HIT_LIGHT.step();
+            minimumSteps = Math.min(minimumSteps, ForgeStep.getOptimalStepsToTarget(target));
+        }
+        return requiredSteps + minimumSteps;
     }
 
     public static ForgeRule fromNetwork(FriendlyByteBuf buffer)

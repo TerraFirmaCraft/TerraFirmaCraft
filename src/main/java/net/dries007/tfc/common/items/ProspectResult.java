@@ -22,8 +22,7 @@ public enum ProspectResult
     TRACES("tfc.tooltip.propick.found_traces"),
 
     FOUND("tfc.tooltip.propick.found"),
-    NOTHING("tfc.tooltip.propick.nothing"),
-    NOTHING_FALSE_NEGATIVE("tfc.tooltip.propick.nothing"); // The player cannot tell these two apart
+    NOTHING("tfc.tooltip.propick.nothing");
 
     private static final ProspectResult[] VALUES = values();
 
@@ -41,12 +40,8 @@ public enum ProspectResult
 
     public Component getText(Block block)
     {
-        MutableComponent text = Helpers.translatable(translationKey);
-        if (this != NOTHING && this != NOTHING_FALSE_NEGATIVE)
-        {
-            // Use a custom translation for prospecting blocks
-            text = text.append(" ").append(Helpers.translatable(block.getDescriptionId() + ".prospected"));
-        }
-        return text;
+        return this == NOTHING ?
+            Helpers.translatable(translationKey) :
+            Helpers.translatable(translationKey, Helpers.translatable(block.getDescriptionId() + ".prospected"));
     }
 }

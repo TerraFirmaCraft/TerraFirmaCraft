@@ -29,7 +29,7 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Tooltips;
 
 public class BarrelBlock extends SealableDeviceBlock
 {
@@ -88,7 +88,7 @@ public class BarrelBlock extends SealableDeviceBlock
         tank.readFromNBT(inventoryTag.getCompound("tank"));
         if (!tank.isEmpty())
         {
-            Helpers.addFluidStackTooltipInfo(tank.getFluid(), tooltip);
+            tooltip.add(Tooltips.fluidUnitsOf(tank.getFluid()));
         }
     }
 }

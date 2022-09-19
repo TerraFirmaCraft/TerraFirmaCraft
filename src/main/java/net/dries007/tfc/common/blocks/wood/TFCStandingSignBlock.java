@@ -17,10 +17,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.blocks.ExtendedProperties;
+import net.dries007.tfc.common.fluids.FluidHelpers;
 
 public class TFCStandingSignBlock extends AbstractSignBlock
 {
@@ -43,10 +45,11 @@ public class TFCStandingSignBlock extends AbstractSignBlock
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        return defaultBlockState()
-            .setValue(ROTATION, Mth.floor((double) ((180.0F + context.getRotation()) * 16.0F / 360.0F) + 0.5D) & 15)
-            .setValue(FLUID, getFluidProperty().keyFor(fluidstate.getType()));
+        final BlockState state = defaultBlockState().setValue(ROTATION, Mth.floor((double) ((180.0F + context.getRotation()) * 16.0F / 360.0F) + 0.5D) & 15);
+        final Fluid fluid = context.getLevel().getFluidState(context.getClickedPos()).getType();
+
+        final BlockState filled = FluidHelpers.fillWithFluid(state, fluid);
+        return filled == null ? state : filled;
     }
 
     @Override

@@ -47,7 +47,7 @@ public final class ProspectedEvent extends Event
     }
 
     /**
-     * If {@link #getType()} is not {@link ProspectResult#NOTHING} or {@link ProspectResult#NOTHING_FALSE_NEGATIVE}, then this will contain the block which was found.
+     * If {@link #getType()} is not {@link ProspectResult#NOTHING}, then this will contain the block which was found.
      * Otherwise, this will be the block that was initially clicked.
      */
     public Block getBlock()

@@ -23,7 +23,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -67,6 +72,24 @@ public class Drinkable extends FluidDefinition
         return null;
     }
 
+    public static void drinkFromPotion(ItemStack stack, Level level, LivingEntity entity)
+    {
+        if (entity instanceof Player player && !level.isClientSide)
+        {
+            // Unless there is more need, we only handle water potions.
+            // There is no nice API way to translate Potion -> Fluid, so any further functionality would require 1) addon for TFC, 2) mod to add potion fluids, 3) datapack to add the TFC drinkables.
+            final Potion potion = PotionUtils.getPotion(stack);
+            if (potion == Potions.WATER)
+            {
+                final Drinkable drink = Drinkable.get(Fluids.WATER);
+                if (drink != null)
+                {
+                    drink.onDrink(player, 100);
+                }
+            }
+        }
+    }
+
     /**
      * Attempt to drink from a fluid source block.
      * Called by TFC through both right click block and right click empty events.
@@ -99,6 +122,8 @@ public class Drinkable extends FluidDefinition
 
     private static void doDrink(Level level, Player player, BlockState state, BlockPos pos, LazyOptional<PlayerData> playerData, Drinkable drinkable)
     {
+        assert !level.isClientSide;
+
         playerData.ifPresent(p -> p.setLastDrinkTick(Calendars.SERVER.getTicks()));
         level.playSound(null, pos, SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 1.0f, 1.0f);
 
@@ -161,10 +186,12 @@ public class Drinkable extends FluidDefinition
 
     /**
      * @param player The player doing the drinking
-     * @param mB     The amount of fluid that is being drank, in mB. This will scale certain effects proportional to the volume. 25mB is a reference for amount drank when right clicking a fluid source with an open hand, which is also the amount that the drinkable JSON is defined as.
+     * @param mB     The amount of fluid that is being drank, in mB. This will scale certain effects proportional to the volume. 25mB is a reference for amount drank when right-clicking a fluid source with an open hand, which is also the amount that the drinkable JSON is defined as.
      */
     public void onDrink(Player player, int mB)
     {
+        assert !player.level.isClientSide;
+
         final float multiplier = mB / 25f;
         final Random random = player.getRandom();
 

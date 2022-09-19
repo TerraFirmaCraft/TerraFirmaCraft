@@ -25,8 +25,8 @@ import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
 import net.dries007.tfc.config.TFCConfig;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.LampFuel;
+import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.loot.CopyFluidFunction;
 import org.jetbrains.annotations.Nullable;
 
@@ -64,7 +64,7 @@ public class LampBlockItem extends BlockItem
         FluidStack fluid = getFluidInside(stack);
         if (!fluid.isEmpty())
         {
-            Helpers.addFluidStackTooltipInfo(fluid, tooltip);
+            tooltip.add(Tooltips.fluidUnitsOf(fluid));
         }
     }
 

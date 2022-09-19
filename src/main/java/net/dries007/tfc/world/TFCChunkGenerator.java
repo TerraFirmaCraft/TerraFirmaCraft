@@ -50,7 +50,6 @@ import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import it.unimi.dsi.fastutil.objects.Object2DoubleOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import it.unimi.dsi.fastutil.objects.ObjectIterator;
-import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.world.biome.BiomeExtension;
@@ -64,7 +63,6 @@ import net.dries007.tfc.world.noise.ChunkNoiseSamplingSettings;
 import net.dries007.tfc.world.noise.Kernel;
 import net.dries007.tfc.world.noise.NoiseSampler;
 import net.dries007.tfc.world.surface.SurfaceManager;
-import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
@@ -561,6 +559,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public CompletableFuture<ChunkAccess> fillFromNoise(Executor mainExecutor, Blender oldTerrainBlender, StructureFeatureManager structureFeatureManager, ChunkAccess chunk)
     {
+        // Debug
+        final boolean debugGetBaseHeight = false;
+
         // Initialization
         final ChunkNoiseSamplingSettings settings = createNoiseSamplingSettingsForChunk(chunk);
         final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
@@ -591,6 +592,19 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         // Unlock before surfaces are built, as they use locks directly
         sections.forEach(LevelChunkSection::release);
 
+        if (debugGetBaseHeight)
+        {
+            final int blockX = chunkPos.getMinBlockX(), blockZ = chunkPos.getMinBlockZ();
+            final ChunkHeightFiller heightFiller = createHeightFillerForChunk(chunkPos);
+            for (int dx = 0; dx < 16; dx++)
+            {
+                for (int dz = 0; dz < 16; dz++)
+                {
+                    chunk.setBlockState(new BlockPos(dx, (int) heightFiller.sampleHeight(blockX + dx, blockZ + dz), dz), Blocks.PURPLE_STAINED_GLASS.defaultBlockState(), false);
+                }
+            }
+        }
+
         surfaceManager.buildSurface(actualLevel, chunk, getRockLayerSettings(), chunkData, filler.getLocalBiomes(), filler.getLocalBiomeWeights(), filler.getSlopeMap(), random, getSeaLevel(), settings.minY());
 
         return CompletableFuture.completedFuture(chunk);
@@ -611,7 +625,8 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
     @Override
     public int getBaseHeight(int x, int z, Heightmap.Types type, LevelHeightAccessor level)
     {
-        return SEA_LEVEL_Y;
+        final ChunkPos pos = new ChunkPos(SectionPos.blockToSectionCoord(x), SectionPos.blockToSectionCoord(z));
+        return (int) createHeightFillerForChunk(pos).sampleHeight(x, z);
     }
 
     @Override
@@ -669,17 +684,26 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
         return customBiomeSource.getNoiseBiomeVariants(QuartPos.fromBlock(blockX), QuartPos.fromBlock(blockZ));
     }
 
+    public ChunkHeightFiller createHeightFillerForChunk(ChunkPos pos)
+    {
+        final Object2DoubleMap<BiomeExtension>[] biomeWeights = sampleBiomes(pos, this::sampleBiomeVariants, BiomeExtension::getGroup);
+        return new ChunkHeightFiller(createBiomeSamplersForChunk(), biomeWeights);
+    }
+
     private ChunkBaseBlockSource createBaseBlockSourceForChunk(ChunkAccess chunk)
     {
-        final LevelAccessor actualLevel = (LevelAccessor) ((ChunkAccessAccessor) chunk).accessor$getLevelHeightAccessor();
         final RockData rockData = chunkDataProvider.get(chunk).getRockData();
-        return new ChunkBaseBlockSource(actualLevel, rockData, this::sampleBiomeVariants);
+        return new ChunkBaseBlockSource(rockData, this::sampleBiomeVariants);
     }
 
     private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkAccess chunk)
     {
+        return createNoiseSamplingSettingsForChunk(chunk.getPos(), chunk.getHeightAccessorForGeneration());
+    }
+
+    private ChunkNoiseSamplingSettings createNoiseSamplingSettingsForChunk(ChunkPos pos, LevelHeightAccessor level)
+    {
         final NoiseSettings noiseSettings = settings.value().noiseSettings();
-        final LevelHeightAccessor level = chunk.getHeightAccessorForGeneration();
 
         final int cellWidth = noiseSettings.getCellWidth();
         final int cellHeight = noiseSettings.getCellHeight();
@@ -689,9 +713,9 @@ public class TFCChunkGenerator extends ChunkGenerator implements ChunkGeneratorE
 
         final int cellCountY = Math.floorDiv(maxY - minY, noiseSettings.getCellHeight());
 
-        final int firstCellX = Math.floorDiv(chunk.getPos().getMinBlockX(), cellWidth);
+        final int firstCellX = Math.floorDiv(pos.getMinBlockX(), cellWidth);
         final int firstCellY = Math.floorDiv(minY, cellHeight);
-        final int firstCellZ = Math.floorDiv(chunk.getPos().getMinBlockZ(), cellWidth);
+        final int firstCellZ = Math.floorDiv(pos.getMinBlockZ(), cellWidth);
 
         return new ChunkNoiseSamplingSettings(minY, 16 / cellWidth, cellCountY, cellWidth, cellHeight, firstCellX, firstCellY, firstCellZ);
     }

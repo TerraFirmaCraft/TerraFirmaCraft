@@ -12,7 +12,9 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
@@ -36,6 +38,7 @@ import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
+import net.dries007.tfc.util.advancements.TFCAdvancements;
 
 public interface TFCAnimalProperties extends GenderedRenderAnimal
 {
@@ -179,6 +182,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
                     familiarity = Math.min(familiarity, getAdultFamiliarityCap());
                 }
                 setFamiliarity(familiarity);
+                if (player instanceof ServerPlayer serverPlayer)
+                {
+                    TFCAdvancements.FED_ANIMAL.trigger(serverPlayer, getEntity());
+                }
             }
             getEntity().playSound(eatingSound(stack), 1f, 1f);
         }
@@ -523,6 +530,11 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     default Component getGenderedTypeName()
     {
         return Helpers.translatable(getEntity().getType().getDescriptionId() + "." + getGender().name().toLowerCase(Locale.ROOT));
+    }
+
+    default MutableComponent getProductReadyName()
+    {
+        return Helpers.translatable("tfc.jade.product.generic");
     }
 
     enum Age

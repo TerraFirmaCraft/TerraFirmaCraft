@@ -56,20 +56,14 @@ public class ClimateScreen extends TFCContainerScreen<Container>
         super.renderLabels(stack, mouseX, mouseY);
 
         // Climate at the current player
-        float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
-        float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
-        float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
+        final float averageTemp = ClimateRenderCache.INSTANCE.getAverageTemperature();
+        final float rainfall = ClimateRenderCache.INSTANCE.getRainfall();
+        final float currentTemp = ClimateRenderCache.INSTANCE.getTemperature();
 
-        String climateType = I18n.get("tfc.tooltip.climate_koppen_climate_classification") + I18n.get(Helpers.getEnumTranslationKey(KoppenClimateClassification.classify(averageTemp, rainfall)));
-        String plateTectonics = I18n.get("tfc.tooltip.climate_plate_tectonics_classification") + I18n.get(Helpers.getEnumTranslationKey(ClimateRenderCache.INSTANCE.getPlateTectonicsInfo()));
-        String averageTempTooltip = I18n.get("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp));
-        String rainfallTooltip = I18n.get("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall));
-        String currentTempTooltip = I18n.get("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp));
-
-        drawCenteredLine(stack, climateType, 17);
-        drawCenteredLine(stack, plateTectonics, 28);
-        drawCenteredLine(stack, averageTempTooltip, 39);
-        drawCenteredLine(stack, rainfallTooltip, 50);
-        drawCenteredLine(stack, currentTempTooltip, 61);
+        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_koppen_climate_classification", Helpers.translateEnum(KoppenClimateClassification.classify(averageTemp, rainfall))), 17);
+        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_plate_tectonics_classification", Helpers.translateEnum(ClimateRenderCache.INSTANCE.getPlateTectonicsInfo())), 28);
+        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_average_temperature", String.format("%.1f", averageTemp)), 39);
+        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_annual_rainfall", String.format("%.1f", rainfall)), 50);
+        drawCenteredLine(stack, Helpers.translatable("tfc.tooltip.climate_current_temp", String.format("%.1f", currentTemp)), 61);
     }
 }

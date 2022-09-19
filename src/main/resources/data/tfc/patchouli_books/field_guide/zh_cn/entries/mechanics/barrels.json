@@ -1,0 +1,67 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "大桶",
+  "category": "tfc:mechanics",
+  "icon": "tfc:wood/barrel/palm",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)大桶$()是一种可以容纳物品和液体的设备。大桶中央的空格是用来放置物品的，液体则显示在左侧的水槽中。将$(thing)桶$()或$(thing)罐$()放在左上角的空格中可以将其中的液体添加到大桶、或将大桶中的液体盛出。拿着容器对着装有液体的大桶按下$(item)$(k:key.use)$()也有同样的效果。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/barrel.png"
+      ],
+      "text": "桶界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "可以按屏幕右边的按钮来将大桶$(thing)密封$()。密封状态下的桶在被破坏时会保留其中的液体。部分配方必须在密封的大桶中才能制作。对着大桶空手$(item)$(k:key.sneak)$()$(item)$(k:key.use)$()也可以切换大桶的密封状态。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)手持空的大桶点击水源方块可以盛装液体。$()$(li)启封的大桶会在雨中慢慢地装满水。$()$(li)大桶会接住上方融化的冰柱。$()$(li)密封大桶会弹出不在中心空格的物品。$()",
+      "title": "用桶小贴士"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "大桶的主要作用是用来混合某些液体和物品。用大桶合成时，桶内的液体和物品的比例必须正确无误。某些配方还需要将大桶$(thing)密封$()一段时间才能执行。",
+      "title": "用大桶合成"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "如果大桶中物品的比例和配方所需的不一致，多余的物品或液体就会被浪费。但如果执行的是$(thing)瞬时配方$()，则必须提供对应液体的足量物品才能进行。"
+    },
+    {
+      "type": "tfc:instant_barrel_recipe",
+      "anchor": "limewater",
+      "recipe": "tfc:barrel/limewater",
+      "text": "$(bold)石灰水$()是由$(l:mechanics/flux)助焊剂$()溶于$(thing)淡水$()制成的。每份$(l:mechanics/flux)助焊剂$()可转化 $(thing)500 mB$() 的$(thing)淡水$()。$(thing)石灰水$()可以用来加工$(l:mechanics/leather_making)皮革$()，还可以用来合成$(thing)砂浆$()。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "anchor": "tannin",
+      "recipe": "tfc:barrel/tannin",
+      "text": "$(bold)鞣酸$()是一种将某些$(thing)原木$()的树皮溶于$(thing)淡水$()中制得的酸性溶液。$(thing)橡木$()、$(thing)白桦木$()、$(thing)栗木$()、$(thing)花旗松木$()、$(thing)山核桃木$()、$(thing)枫木$()和$(thing)红杉木$()都可以用来合成$(thing)鞣酸$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "某些大桶配方需要以一定比例混合两种液体。例如，以 9:1 的比例将$(thing)奶$()与$(thing)醋$()混合可以得到$(thing)醋奶$()；醋和$(thing)咸水$()以相同比例混合可以得到$(thing)卤水$()。这种配方只能通过先在大桶里装一种液体，然后把装有另一种液体的陶罐或桶放在左上角的液体添加格内来完成。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "大桶还可以用来快速$(l:mechanics/heating)冷却$()其他物品。把热的东西浸泡在一桶$(thing)淡水$()、$(thing)橄榄油$()或$(thing)咸水$()中就会很快冷却下来。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "大桶还可以用来$(thing)染色$()和$(thing)漂白$()物品。通过在$(l:mechanics/pot)陶锅$()中煮沸单个染料物品就能制成染液。大多数可染色的东西，如地毯、蜡烛和$(l:getting_started/building_materials#alabaster)雪花石膏$()等，都可以通过将它们密封在一桶染液中来染色。已染色的物品也可以通过将它们密封在一桶$(thing)碱液$()中来漂白。碱液是通过在$(l:mechanics/pot)锅$()水中煮沸$(thing)草木灰$()制成的。草木灰可以通过破坏$(l:getting_started/firepit)篝火$()获得。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "将食物封入装有$(thing)醋$()的大桶里有助于延长其保质期。将任意$(thing)水果$()密封在装有$(thing)酒精饮料$()的大桶中就能得到醋。有关于用醋保鲜的知识，请参看$(l:mechanics/decay#vinegar)食物保鲜$()页面。"
+    }
+  ],
+  "read_by_default": true
+}

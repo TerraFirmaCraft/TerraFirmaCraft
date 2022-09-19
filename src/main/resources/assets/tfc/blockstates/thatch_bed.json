@@ -17,18 +17,18 @@
     },
     "facing=east,part=head": {
       "model": "tfc:block/thatch_bed_head",
-      "y": 90
+      "y": 270
     },
     "facing=north,part=head": {
-      "model": "tfc:block/thatch_bed_head"
-    },
-    "facing=south,part=head": {
       "model": "tfc:block/thatch_bed_head",
       "y": 180
     },
+    "facing=south,part=head": {
+      "model": "tfc:block/thatch_bed_head"
+    },
     "facing=west,part=head": {
       "model": "tfc:block/thatch_bed_head",
-      "y": 270
+      "y": 90
     }
   }
 }

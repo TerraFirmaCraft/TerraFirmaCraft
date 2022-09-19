@@ -125,21 +125,27 @@ def generate(rm: ResourceManager):
     clay = [{'replace': 'tfc:dirt/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS] + [{'replace': 'tfc:grass/%s' % soil, 'with': 'tfc:clay_grass/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
     water_clay = clay + [{'replace': 'tfc:mud/%s' % soil, 'with': 'tfc:clay/%s' % soil} for soil in SOIL_BLOCK_VARIANTS]
 
-    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:if_then', {'if': 'tfc:clay_disc', 'then': 'tfc:clay_indicator'})
-    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:if_then', {'if': 'tfc:water_clay_disc', 'then': 'tfc:clay_indicator'})
+    configured_placed_feature(rm, 'clay_disc_with_indicator', 'tfc:if_then', {
+        'if': 'tfc:clay_disc',
+        'then': 'tfc:clay_indicator'
+    }, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    configured_placed_feature(rm, 'water_clay_disc_with_indicator', 'tfc:if_then', {
+        'if': 'tfc:water_clay_disc',
+        'then': 'tfc:clay_indicator'
+    }, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
 
     configured_placed_feature(rm, 'clay_disc', 'tfc:soil_disc', {
         'min_radius': 3,
         'max_radius': 5,
         'height': 3,
         'states': clay
-    }, decorate_chance(20), decorate_square(), decorate_heightmap('world_surface_wg'), decorate_climate(min_rain=175))
+    })
     configured_placed_feature(rm, 'water_clay_disc', 'tfc:soil_disc', {
         'min_radius': 2,
         'max_radius': 3,
         'height': 2,
         'states': water_clay
-    }, decorate_chance(10), decorate_square(), decorate_heightmap('world_surface_wg'), 'tfc:near_water')
+    })
 
     # Individual indicator plants are invoked through multiple, which has decorators attached already
     configured_placed_feature(rm, 'clay_indicator', 'tfc:multiple', {'features': '#tfc:feature/clay_indicators', 'biome_check': False})
@@ -170,8 +176,7 @@ def generate(rm: ResourceManager):
             'state': utils.block_state('minecraft:%s[falling=true]' % spring_cfg[0]),
             'valid_blocks': ['tfc:rock/raw/%s' % rock for rock in ROCKS.keys()]
         })
-        y = -64
-        rm.placed_feature('%s_spring' % spring_cfg[0], 'tfc:%s_spring' % spring_cfg[0], decorate_count(spring_cfg[1]), decorate_square(), decorate_range(y, 180, bias='biased_to_bottom'))
+        rm.placed_feature('%s_spring' % spring_cfg[0], 'tfc:%s_spring' % spring_cfg[0], decorate_count(spring_cfg[1]), decorate_square(), decorate_range(-64, 180, bias='biased_to_bottom'))
 
     rm.configured_feature('peat_disc', 'tfc:soil_disc', {
         'min_radius': 5,
@@ -600,7 +605,6 @@ def generate(rm: ResourceManager):
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_red'), plant_config('tfc:plant/snapdragon_red[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(12, 20, 150, 300, min_forest='none', max_forest='sparse'))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_white'), plant_config('tfc:plant/snapdragon_white[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(8, 16, 150, 300, min_forest='none', max_forest='sparse'))
     configured_plant_patch_feature(rm, ('plant', 'snapdragon_yellow'), plant_config('tfc:plant/snapdragon_yellow[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(6, 24, 150, 300, min_forest='none', max_forest='sparse'))
-    configured_plant_patch_feature(rm, ('plant', 'spanish_moss'), plant_config('tfc:plant/spanish_moss[age=1,stage=1,hanging=false]', 1, 5), decorate_chance(5), decorate_square(), decorate_climate(8, 22, 400, 500))
     configured_plant_patch_feature(rm, ('plant', 'strelitzia'), plant_config('tfc:plant/strelitzia[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(14, 26, 50, 300))
     configured_plant_patch_feature(rm, ('plant', 'toquilla_palm'), plant_config('tfc:plant/toquilla_palm[age=1,stage=1,part=lower]', 1, 15, 10, tall_plant=True), decorate_chance(5), decorate_square(), decorate_climate(16, 40, 250, 500))
     configured_plant_patch_feature(rm, ('plant', 'trillium'), plant_config('tfc:plant/trillium[age=1,stage=1]', 1, 10, 10), decorate_chance(5), decorate_square(), decorate_climate(-10, 8, 250, 500, min_forest='normal', max_forest='old_growth'))
@@ -636,6 +640,7 @@ def generate(rm: ResourceManager):
 
     configured_placed_feature(rm, ('plant', 'hanging_vines'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 21), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'hanging_vines_cave'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/hanging_vines_plant', 'tfc:plant/hanging_vines', 90, 10, 14, 22), decorate_carving_mask(30, 100), decorate_chance(0.003), decorate_climate(16, 32, 150, 470, True, fuzzy=True), decorate_air_or_empty_fluid())
+    configured_placed_feature(rm, ('plant', 'spanish_moss'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/spanish_moss_plant', 'tfc:plant/spanish_moss', 90, 10, 14, 21), decorate_heightmap('world_surface_wg'), decorate_square(), decorate_climate(8, 22, 400, 500, True, fuzzy=True), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'liana'), 'tfc:weeping_vines', tall_plant_config('tfc:plant/liana_plant', 'tfc:plant/liana', 40, 10, 8, 16), decorate_carving_mask(30, 100), decorate_chance(0.003), decorate_climate(16, 32, 150, 470, True, fuzzy=True))
     configured_placed_feature(rm, ('plant', 'tree_fern'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/tree_fern_plant', 'tfc:plant/tree_fern', 8, 7, 2, 6), decorate_heightmap('world_surface_wg'), decorate_chance(5), decorate_square(), decorate_climate(19, 50, 300, 500), decorate_air_or_empty_fluid())
     configured_placed_feature(rm, ('plant', 'arundo'), 'tfc:twisting_vines', tall_plant_config('tfc:plant/arundo_plant', 'tfc:plant/arundo', 70, 7, 5, 8), decorate_heightmap('world_surface_wg'), decorate_chance(3), decorate_square(), decorate_climate(5, 22, 150, 500), ('tfc:near_water', {'radius': 6}), decorate_air_or_empty_fluid())
@@ -689,6 +694,8 @@ def generate(rm: ResourceManager):
             feature = 'tfc:block_with_fluid', {'to_place': simple_state_provider(name)}
             heightmap = 'ocean_floor_wg'
             replaceable = decorate_shallow(1)
+        elif crop_data.type == 'spreading':
+            feature = 'tfc:spreading_crop', {'block': name}
         else:
             feature = 'simple_block', {'to_place': simple_state_provider(name)}
 

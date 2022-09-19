@@ -69,6 +69,12 @@ public abstract class SimpleItemRecipe implements ISimpleRecipe<ItemStackInvento
     }
 
     @Override
+    public boolean isSpecial()
+    {
+        return result.dependsOnInput();
+    }
+
+    @Override
     public ItemStack assemble(ItemStackInventory wrapper)
     {
         return result.getSingleStack(wrapper.getStack());

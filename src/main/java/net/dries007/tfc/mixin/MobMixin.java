@@ -37,7 +37,7 @@ public abstract class MobMixin
         }
     }
 
-    @Inject(method="populateDefaultEquipmentEnchantments", at=@At(value="HEAD"), cancellable = true)
+    @Inject(method = "populateDefaultEquipmentEnchantments", at = @At(value = "HEAD"), cancellable = true)
     private void inject$populateDefaultEquipmentEnchantments(DifficultyInstance difficulty, CallbackInfo ci)
     {
         if (!TFCConfig.SERVER.enableVanillaMobsSpawningWithEnchantments.get())

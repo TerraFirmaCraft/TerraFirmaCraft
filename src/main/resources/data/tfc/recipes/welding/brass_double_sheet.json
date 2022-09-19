@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/sheet/brass"
+    "tag": "forge:sheets/brass"
   },
   "second_input": {
-    "item": "tfc:metal/sheet/brass"
+    "tag": "forge:sheets/brass"
   },
   "tier": 1,
   "result": {

@@ -453,15 +453,6 @@ public final class ForgeEventHandler
 
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event)
     {
-        // todo: this needs to be re-evaluated, it was way too harsh and applied on way too many blocks. Maybe apply only if the tool cannot harvest the block?
-        // Apply global modifiers when not using the correct tool
-        // This makes the difference between bare fists and tools more pronounced, without having to massively buff either our tools or make our blocks way higher than the standard hardness.
-        /*final float defaultDestroySpeed = event.getPlayer().getInventory().getDestroySpeed(event.getState());
-        if (defaultDestroySpeed <= 1.0f)
-        {
-            event.setNewSpeed(event.getNewSpeed() * 0.4f);
-        }*/
-
         // Apply mining speed modifiers from forging bonuses
         final ForgingBonus bonus = ForgingBonus.get(event.getPlayer().getMainHandItem());
         if (bonus != ForgingBonus.NONE)
@@ -602,7 +593,11 @@ public final class ForgeEventHandler
         }
         else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.PIT_KILN.get()).ifPresent(PitKilnBlockEntity::tryLight);
+            if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
+            {
+                event.setCanceled(true);
+                event.setFireResult(StartFireEvent.FireResult.ALWAYS);
+            }
         }
         else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
         {
@@ -684,7 +679,7 @@ public final class ForgeEventHandler
         final Player player = event.player;
         final Level level = player.getLevel();
         final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
-        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
+        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.eyeBlockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
@@ -776,17 +771,20 @@ public final class ForgeEventHandler
         {
             if (Helpers.isEntity(entity, TFCTags.Entities.VANILLA_MONSTERS))
             {
-                if (!TFCConfig.SERVER.enableVanillaMonsters.get())
+                if (TFCConfig.SERVER.enableVanillaMonsters.get())
+                {
+                    if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
+                    {
+                        final BlockPos pos = entity.blockPosition();
+                        if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
+                        {
+                            event.setResult(Event.Result.DENY);
+                        }
+                    }
+                }
+                else
                 {
                     event.setResult(Event.Result.DENY);
-                }
-                else if (!TFCConfig.SERVER.enableVanillaMonstersOnSurface.get())
-                {
-                    final BlockPos pos = entity.blockPosition();
-                    if (level.getRawBrightness(pos, 0) != 0 || level.getHeight(Heightmap.Types.MOTION_BLOCKING, pos.getX(), pos.getZ()) <= pos.getY())
-                    {
-                        event.setResult(Event.Result.DENY);
-                    }
                 }
             }
         }
@@ -911,6 +909,7 @@ public final class ForgeEventHandler
                         final int layers = state.getValue(SnowLayerBlock.LAYERS);
                         if (layers > 1)
                         {
+                            level.destroyBlock(pos, false);
                             level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
                         }
                         else
@@ -1138,6 +1137,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
     }
 
     /**

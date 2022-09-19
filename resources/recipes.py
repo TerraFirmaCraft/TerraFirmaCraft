@@ -100,7 +100,7 @@ def generate(rm: ResourceManager):
                 advanced_shaped(rm, 'crafting/metal/%s/%s' % (tool, metal), ['X', 'Y'], {'X': 'tfc:metal/%s%s/%s' % (tool, suffix, metal), 'Y': '#forge:rods/wooden'}, item_stack_provider('tfc:metal/%s/%s' % (tool, metal), copy_forging=True), (0, 0)).with_advancement('tfc:metal/%s%s/%s' % (tool, suffix, metal))
             advanced_shaped(rm, 'crafting/metal/fishing_rod/%s' % metal, ['  X', ' XY', 'XZY'], {'X': '#forge:rods/wooden', 'Y': '#forge:string', 'Z': 'tfc:metal/fish_hook/%s' % metal}, item_stack_provider('tfc:metal/fishing_rod/%s' % metal, copy_forging=True), (1, 2)).with_advancement('tfc:metal/fish_hook/%s' % metal)
 
-    unsalted_raw_meat = not_rotten(has_trait('#tfc:foods/can_be_salted', 'tfc:salted', invert=True))
+    unsalted_raw_meat = not_rotten(lacks_trait('#tfc:foods/can_be_salted', 'tfc:salted'))
     advanced_shapeless(rm, 'crafting/salting', (unsalted_raw_meat, 'tfc:powder/salt'), item_stack_provider(copy_input=True, add_trait='tfc:salted'), unsalted_raw_meat).with_advancement('tfc:powder/salt')
     advanced_shapeless(rm, 'crafting/add_small_bait', ('#tfc:holds_small_fishing_bait', '#tfc:small_fishing_bait'), item_stack_provider(copy_input=True, other_modifier='tfc:add_bait_to_rod'), '#tfc:holds_small_fishing_bait').with_advancement('#tfc:holds_small_fishing_bait')
     advanced_shapeless(rm, 'crafting/add_large_bait', ('#tfc:holds_large_fishing_bait', '#tfc:large_fishing_bait'), item_stack_provider(copy_input=True, other_modifier='tfc:add_bait_to_rod'), '#tfc:holds_large_fishing_bait').with_advancement('#tfc:holds_large_fishing_bait')
@@ -196,7 +196,11 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/blast_furnace', ['XXX', 'XCX', 'XXX'], {'X': 'tfc:metal/sheet/wrought_iron', 'C': 'tfc:crucible'}, 'tfc:blast_furnace').with_advancement('tfc:metal/sheet/wrought_iron')
     damage_shapeless(rm, 'crafting/melon_slice', ('#tfc:knives', not_rotten('tfc:melon')), (4, 'minecraft:melon_slice')).with_advancement('tfc:melon')
     damage_shapeless(rm, 'crafting/pumpkin_pie', (not_rotten('#tfc:foods/dough'), not_rotten('tfc:pumpkin'), '#tfc:knives', 'minecraft:egg', 'minecraft:sugar'), 'minecraft:pumpkin_pie').with_advancement('tfc:pumpkin')
+    rm.crafting_shapeless('crafting/soot', ('tfc:glue', 'tfc:powder/charcoal', 'tfc:powder/wood_ash'), 'tfc:soot').with_advancement('tfc:glue')
+    rm.crafting_shapeless('crafting/rotten_compost', ('tfc:soot', 'tfc:compost'), 'tfc:rotten_compost').with_advancement('tfc:soot')
+    rm.crafting_shapeless('crafting/blank_disc', ('tfc:soot', 'minecraft:glass_pane'), 'tfc:blank_disc').with_advancement('tfc:blank_disc')
 
+    rm.crafting_shapeless('crafting/vanilla/disc_11', ('tfc:blank_disc', '#tfc:rock_knapping'), 'minecraft:music_disc_11').with_advancement('tfc:blank_disc')
     damage_shapeless(rm, 'crafting/vanilla/crafting_table', ('#tfc:saws', '#tfc:workbenches'), 'minecraft:crafting_table').with_advancement('#tfc:saws')
     damage_shapeless(rm, 'crafting/vanilla/lectern', ('#tfc:saws', '#tfc:lecterns'), 'minecraft:lectern').with_advancement('#tfc:saws')
     damage_shapeless(rm, 'crafting/vanilla/bookshelf', ('#tfc:saws', '#tfc:bookshelves'), 'minecraft:bookshelf').with_advancement('#tfc:saws')
@@ -221,6 +225,9 @@ def generate(rm: ResourceManager):
     rm.crafting_shaped('crafting/vanilla/spyglass', ['X', 'Y', 'Y'], {'Y': '#forge:sheets/copper', 'X': 'minecraft:glass_pane'}, 'minecraft:spyglass').with_advancement('#forge:sheets/copper')
     rm.crafting_shaped('crafting/vanilla/tinted_glass', [' X ', 'XYX', ' X '], {'X': 'tfc:powder/amethyst', 'Y': 'minecraft:glass'}, 'minecraft:tinted_glass').with_advancement('minecraft:glass')
     rm.crafting_shaped('crafting/vanilla/map', ['XXX', 'XYX', 'XXX'], {'X': 'minecraft:paper', 'Y': '#forge:leather'}, 'minecraft:map').with_advancement('minecraft:paper')
+    rm.crafting_shaped('crafting/vanilla/bowl', ['XYX', ' X '], {'X': '#tfc:lumber', 'Y': 'tfc:glue'}, (3, 'minecraft:bowl')).with_advancement('#tfc:lumber')
+    rm.crafting_shaped('crafting/vanilla/scaffolding', ['XYX', 'X X', 'X X'], {'X': 'minecraft:bamboo', 'Y': '#forge:string'}, (6, 'minecraft:scaffolding')).with_advancement('minecraft:bamboo')
+    rm.crafting_shaped('crafting/vanilla/bow', [' YX', 'Y X', ' YX'], {'X': '#forge:rods/wooden', 'Y': '#forge:string'}, 'minecraft:bow').with_advancement('#forge:string')
 
     # todo: redstone lamp
     rm.crafting_shaped('crafting/vanilla/redstone/hopper', ['X X', ' Y '], {'X': '#forge:sheets/wrought_iron', 'Y': '#forge:chests/wooden'}, 'minecraft:hopper').with_advancement('#forge:sheets/wrought_iron')
@@ -359,6 +366,7 @@ def generate(rm: ResourceManager):
         chisel_recipe(rm, '%s_alabaster_bricks_polished' % color, 'tfc:alabaster/raw/%s' % color, 'tfc:alabaster/polished/%s' % color, 'smooth')
         for variant in ('bricks', 'polished'):
             craft_decorations('crafting/alabaster/%s_%s' % (color, variant), 'tfc:alabaster/%s/%s' % (variant, color))
+    chisel_recipe(rm, 'polished_alabaster', 'tfc:alabaster/raw', 'tfc:alabaster/polished', 'smooth')
 
     for wood in WOODS.keys():
         chisel_stair_slab('%s_wood' % wood, 'tfc:wood/planks/%s' % wood)
@@ -391,7 +399,7 @@ def generate(rm: ResourceManager):
         melt_metal = metal if metal_data.melt_metal is None else metal_data.melt_metal
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type == 'all' or item_data.type in metal_data.types:
-                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal))
+                heat_recipe(rm, ('metal', '%s_%s' % (metal, item)), 'tfc:metal/%s/%s' % (item, metal), metal_data.melt_temperature, None, '%d tfc:metal/%s' % (item_data.smelt_amount, melt_metal), use_durability=item_data.durability)
 
     wrought_iron = METALS['wrought_iron']
     heat_recipe(rm, 'raw_bloom', 'tfc:raw_iron_bloom', wrought_iron.melt_temperature, None, '100 tfc:metal/cast_iron')
@@ -472,11 +480,11 @@ def generate(rm: ResourceManager):
         }).with_advancement('tfc:food/%s_bread' % grain)
 
     for meat in MEATS:
-        heat_recipe(rm, meat, not_rotten('tfc:food/%s' % meat), 200, result_item='tfc:food/cooked_%s' % meat)
+        heat_recipe(rm, meat, not_rotten('tfc:food/%s' % meat), 200, result_item=item_stack_provider('tfc:food/cooked_%s' % meat, copy_food=True))
 
     heat_recipe(rm, 'seaweed', 'tfc:groundcover/seaweed', 200, result_item='tfc:food/dried_seaweed')
     heat_recipe(rm, 'giant_kelp_flower', 'tfc:plant/giant_kelp_flower', 200, result_item='tfc:food/dried_kelp')
-    heat_recipe(rm, 'cooked_egg', 'minecraft:egg', 200, result_item='tfc:food/cooked_egg')
+    heat_recipe(rm, 'cooked_egg', 'minecraft:egg', 200, result_item=item_stack_provider('tfc:food/cooked_egg', copy_food=True))
 
     for ore in ['hematite', 'limonite', 'malachite']:
         for grade, data in ORE_GRADES.items():
@@ -510,8 +518,8 @@ def generate(rm: ResourceManager):
     simple_pot_recipe(rm, 'olive_oil_water', [utils.ingredient('tfc:olive_paste')] * 5, '1000 minecraft:water', '1000 tfc:olive_oil_water', None, 2000, 300)
     simple_pot_recipe(rm, 'tallow', [utils.ingredient('tfc:blubber')] * 5, '1000 minecraft:water', '1000 tfc:tallow', None, 2000, 600)
     simple_pot_recipe(rm, 'lye', [utils.ingredient('tfc:powder/wood_ash')] * 5, '1000 minecraft:water', '1000 tfc:lye', None, 2000, 600)
-    simple_pot_recipe(rm, 'cooked_rice', [not_rotten(utils.ingredient('tfc:food/rice_grain'))], '1000 minecraft:water', None, ['tfc:food/cooked_rice'], 1000, 300)
-    simple_pot_recipe(rm, 'boiled_egg', [utils.ingredient('minecraft:egg')], '1000 minecraft:water', None, ['tfc:food/boiled_egg'], 1000, 300)
+    simple_pot_recipe(rm, 'cooked_rice', [not_rotten(utils.ingredient('tfc:food/rice_grain'))], '100 minecraft:water', None, ['tfc:food/cooked_rice'], 1000, 300)
+    simple_pot_recipe(rm, 'boiled_egg', [utils.ingredient('minecraft:egg')], '100 minecraft:water', None, ['tfc:food/boiled_egg'], 1000, 300)
     for color in COLORS:
         simple_pot_recipe(rm, '%s_dye' % color, [utils.ingredient('minecraft:%s_dye' % color)], '1000 minecraft:water', '1000 tfc:%s_dye' % color, None, 2000, 600)
 
@@ -519,7 +527,7 @@ def generate(rm: ResourceManager):
     for duration, count in ((1000, 3), (1150, 4), (1300, 5)):
         rm.recipe(('pot', 'soup_%s' % count), 'tfc:pot_soup', {
             'ingredients': [soup_food] * count,
-            'fluid_ingredient': fluid_stack_ingredient('1000 minecraft:water'),
+            'fluid_ingredient': fluid_stack_ingredient('100 minecraft:water'),
             'duration': duration,
             'temperature': 300
         })
@@ -622,8 +630,8 @@ def generate(rm: ResourceManager):
 
     barrel_sealed_recipe(rm, 'vinegar', 'Vinegar', 8000, '#tfc:foods/fruits', '250 #tfc:alcohols', output_fluid='250 tfc:vinegar')
 
-    barrel_sealed_recipe(rm, 'pickling', 'Pickling', 4000, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
-    barrel_sealed_recipe(rm, 'brined', 'Brining', 4000, not_rotten(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats']), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
+    barrel_sealed_recipe(rm, 'brined', 'Brining', 4000, not_rotten(lacks_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined')), '125 tfc:brine', item_stack_provider(copy_input=True, add_trait='tfc:brined'))
+    barrel_sealed_recipe(rm, 'pickling', 'Pickling', 4000, not_rotten(lacks_trait(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:brined'), 'tfc:pickled')), '125 tfc:vinegar', item_stack_provider(copy_input=True, add_trait='tfc:pickled'))
     barrel_sealed_recipe(rm, 'preserved_in_vinegar', 'Preserving in Vinegar', -1, not_rotten(has_trait(['#tfc:foods/fruits', '#tfc:foods/vegetables', '#tfc:foods/meats'], 'tfc:pickled')), '125 tfc:vinegar', on_seal=item_stack_provider(copy_input=True, add_trait='tfc:vinegar'), on_unseal=item_stack_provider(copy_input=True, remove_trait='tfc:vinegar'))
 
     barrel_sealed_recipe(rm, 'mortar', 'Mortar', 8000, '#minecraft:sand', '100 tfc:limewater', output_item='16 tfc:mortar')
@@ -644,18 +652,23 @@ def generate(rm: ResourceManager):
         barrel_sealed_recipe(rm, 'dye/bleach_%s' % variant, 'Bleaching %s Alabaster' % variant, 1000, '#tfc:colored_%s_alabaster' % variant, '125 tfc:lye', output_item='tfc:alabaster/%s' % variant)
 
     # Dyeing Items
+    leather_items = {'ingredient': ['minecraft:leather_%s' % leather_item for leather_item in ('chestplate', 'leggings', 'boots', 'helmet', 'horse_armor')]}
     for color in COLORS:
         fluid = '125 tfc:%s_dye' % color
         for variant in VANILLA_DYED_ITEMS:
             item = 'minecraft:%s_%s' % (color, variant)
             if color != 'white':
                 barrel_sealed_recipe(rm, 'dye/%s_%s' % (color, variant), 'Dyeing %s %s' % (variant, color), 1000, 'minecraft:white_%s' % variant, fluid, item)
+        if color in DISC_COLORS:
+            disc = DISC_COLORS[color]
+            barrel_sealed_recipe(rm, 'dye/disc_%s' % disc, 'Imprinting %s Disc' % disc, 1000, 'tfc:blank_disc', fluid, 'minecraft:music_disc_%s' % disc)
 
         barrel_sealed_recipe(rm, 'dye/%s_shulker' % color, 'Dyeing Shulker %s' % color, 1000, 'minecraft:shulker_box', fluid, 'minecraft:%s_shulker_box' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_vessel' % color, 'Dyeing Unfired Vessel %s' % color, 1000, 'tfc:ceramic/unfired_vessel', fluid, 'tfc:ceramic/%s_unfired_vessel' % color)
         barrel_sealed_recipe(rm, 'dye/%s_glazed_large_vessel' % color, 'Dyeing Unfired Large Vessel %s' % color, 1000, 'tfc:ceramic/unfired_large_vessel', fluid, 'tfc:ceramic/unfired_large_vessel/%s' % color)
         barrel_sealed_recipe(rm, 'dye/%s_concrete_powder' % color, 'Dyeing Aggregate %s' % color, 1000, 'tfc:aggregate', fluid, 'minecraft:%s_concrete_powder' % color)
         barrel_sealed_recipe(rm, 'dye/%s_candle' % color, 'Dyeing Candle %s' % color, 1000, 'tfc:candle', fluid, 'tfc:candle/%s' % color)
+        barrel_sealed_recipe(rm, 'dye/%s_leather' % color, 'Dyeing Leather %s' % color, 1000, leather_items, fluid, output_item=item_stack_provider(copy_input=True, dye_color=color))
         for variant in ('raw', 'bricks', 'polished'):
             barrel_sealed_recipe(rm, 'dye/%s_%s_alabaster' % (color, variant), 'Dyeing Alabaster %s %s' % (variant, color), 1000, 'tfc:alabaster/%s' % variant, fluid, 'tfc:alabaster/%s/%s' % (variant, color))
 
@@ -751,8 +764,8 @@ def generate(rm: ResourceManager):
 
     for metal, metal_data in METALS.items():
         if 'part' in metal_data.types:
-            welding_recipe(rm, '%s_double_ingot' % metal, item('ingot'), item('ingot'), item('double_ingot'), metal_data.tier - 1)
-            welding_recipe(rm, '%s_double_sheet' % metal, item('sheet'), item('sheet'), item('double_sheet'), metal_data.tier - 1)
+            welding_recipe(rm, '%s_double_ingot' % metal, item_tag('forge', 'ingot'), item_tag('forge', 'ingot'), item('double_ingot'), metal_data.tier - 1)
+            welding_recipe(rm, '%s_double_sheet' % metal, item_tag('forge', 'sheet'), item_tag('forge', 'sheet'), item('double_sheet'), metal_data.tier - 1)
 
         if 'armor' in metal_data.types:
             welding_recipe(rm, '%s_helmet' % metal, item('unfinished_helmet'), item('sheet'), item('helmet'), metal_data.tier - 1)
@@ -768,7 +781,7 @@ def generate(rm: ResourceManager):
         ('weak_blue_steel', 'black_steel', 'high_carbon_blue_steel'),
         ('weak_red_steel', 'black_steel', 'high_carbon_red_steel')
     ):
-        welding_recipe(rm, '%s_ingot' % metal_out, 'tfc:metal/ingot/%s' % metal_in_1, 'tfc:metal/ingot/%s' % metal_in_2, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_out].tier - 1)
+        welding_recipe(rm, '%s_ingot' % metal_out, '#forge:ingots/%s' % metal_in_1, '#forge:ingots/%s' % metal_in_2, 'tfc:metal/ingot/%s' % metal_out, METALS[metal_out].tier - 1)
 
 
 def simple_pot_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredients: Json, fluid: str, output_fluid: str = None, output_items: Json = None, duration: int = 2000, temp: int = 300):
@@ -931,14 +944,15 @@ def rock_knapping(rm: ResourceManager, name, pattern: List[str], result: utils.R
     })
 
 
-def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None) -> RecipeContext:
+def heat_recipe(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, temperature: float, result_item: Optional[Union[str, Json]] = None, result_fluid: Optional[str] = None, use_durability: Optional[bool] = None) -> RecipeContext:
     result_item = item_stack_provider(result_item) if isinstance(result_item, str) else result_item
     result_fluid = None if result_fluid is None else fluid_stack(result_fluid)
     return rm.recipe(('heating', name_parts), 'tfc:heating', {
         'ingredient': utils.ingredient(ingredient),
         'result_item': result_item,
         'result_fluid': result_fluid,
-        'temperature': temperature
+        'temperature': temperature,
+        'use_durability': use_durability if use_durability else None,
     })
 
 
@@ -1105,7 +1119,7 @@ def fluid_item_ingredient(fluid: Json, delegate: Json = None):
     }
 
 
-def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None, empty_bowl: bool = False, copy_forging: bool = False, other_modifier: str = None) -> Json:
+def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_heat: bool = False, copy_food: bool = False, reset_food: bool = False, add_heat: float = None, add_trait: str = None, remove_trait: str = None, empty_bowl: bool = False, copy_forging: bool = False, other_modifier: str = None, dye_color: str = None) -> Json:
     if isinstance(data_in, dict):
         return data_in
     stack = utils.item_stack(data_in) if data_in is not None else None
@@ -1119,7 +1133,8 @@ def item_stack_provider(data_in: Json = None, copy_input: bool = False, copy_hea
         (other_modifier, other_modifier is not None),
         ({'type': 'tfc:add_heat', 'temperature': add_heat}, add_heat is not None),
         ({'type': 'tfc:add_trait', 'trait': add_trait}, add_trait is not None),
-        ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None)
+        ({'type': 'tfc:remove_trait', 'trait': remove_trait}, remove_trait is not None),
+        ({'type': 'tfc:dye_leather', 'color': dye_color}, dye_color is not None)
     ) if v]
     if modifiers:
         return {
@@ -1140,3 +1155,6 @@ def has_trait(ingredient: Json, trait: str, invert: bool = False) -> Json:
         'trait': trait,
         'ingredient': utils.ingredient(ingredient)
     }
+
+def lacks_trait(ingredient: Json, trait: str) -> Json:
+    return has_trait(ingredient, trait, True)

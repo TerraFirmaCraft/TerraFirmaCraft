@@ -8,7 +8,12 @@
     }
   },
   "result_item": {
-    "item": "tfc:food/cooked_cod"
+    "stack": {
+      "item": "tfc:food/cooked_cod"
+    },
+    "modifiers": [
+      "tfc:copy_food"
+    ]
   },
   "temperature": 200
 }

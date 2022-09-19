@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import java.util.Optional;
 
+import net.dries007.tfc.common.entities.TFCEntities;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -62,6 +63,11 @@ public class AmphibiousAnimal extends PathfinderMob
         setPathfindingMalus(BlockPathTypes.WALKABLE, 0f);
         moveControl = new MoveControl(this, level);
         lookControl = new SmoothSwimmingLookControl(this, 20);
+    }
+
+    public boolean isPlayingDeadEffective()
+    {
+        return getType() == TFCEntities.TURTLE.get();
     }
 
     @Override

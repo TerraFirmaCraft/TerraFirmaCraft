@@ -54,20 +54,22 @@ public final class ForgeSteps
         return total;
     }
 
-    public void write(CompoundTag tag)
+    public CompoundTag write(CompoundTag tag)
     {
         tag.putByte("first", (byte) (first != null ? first.ordinal() : -1));
         tag.putByte("second", (byte) (second != null ? second.ordinal() : -1));
         tag.putByte("third", (byte) (third != null ? third.ordinal() : -1));
         tag.putInt("total", total);
+        return tag;
     }
 
-    public void read(CompoundTag nbt)
+    public ForgeSteps read(CompoundTag nbt)
     {
         first = ForgeStep.valueOf(nbt.getByte("first"));
         second = ForgeStep.valueOf(nbt.getByte("second"));
         third = ForgeStep.valueOf(nbt.getByte("third"));
         total = nbt.getInt("total");
+        return this;
     }
 
     @Override

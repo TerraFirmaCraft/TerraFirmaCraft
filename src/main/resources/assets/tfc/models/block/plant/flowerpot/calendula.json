@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "minecraft:block/flower_pot_cross",
+  "textures": {
+    "plant": "tfc:block/plant/calendula/calendula_3",
+    "dirt": "tfc:block/dirt/loam"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "风箱",
+  "category": "tfc:mechanics",
+  "icon": "tfc:bellows",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)风箱$()是一种可以增大气流以提升其他设备燃烧温度的方块。然而，燃烧的温度越高，消耗的燃料也就越多。风箱可以作用于它正对着的那一格方块，或是正对着一格的正下方一格方块。因此，$(l:getting_started/firepit)篝火$()和$(l:mechanics/charcoal_forge)木炭炉$()都可以从风箱受益。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/bellows",
+      "title": "",
+      "text": "要拉动风箱，$(item)$(k:key.use)$()点击即可。在一段时间内，目标设备的最大燃烧温度会获得提升。"
+    }
+  ],
+  "read_by_default": true
+}

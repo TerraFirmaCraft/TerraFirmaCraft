@@ -8,6 +8,7 @@ package net.dries007.tfc.common.items;
 
 import java.util.Random;
 
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -40,7 +41,7 @@ public class TorchItem extends StandingAndWallBlockItem
     {
         final Level level = context.getLevel();
         final BlockPos pos = context.getClickedPos();
-        if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), false))
+        if (context.getHand() == InteractionHand.MAIN_HAND && StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), context.getPlayer(), context.getItemInHand(), StartFireEvent.FireResult.NEVER))
         {
             return InteractionResult.SUCCESS;
         }
@@ -55,13 +56,34 @@ public class TorchItem extends StandingAndWallBlockItem
         final BlockState stateAt = level.getBlockState(pos);
         if (Helpers.isFluid(stateAt.getFluidState(), FluidTags.WATER))
         {
-            itemEntity.setItem(new ItemStack(Items.STICK, stack.getCount()));
-            int ash = (int) Mth.clamp(stack.getCount() * 0.5 - 4, 0, 8);
+            // Chances of dropping are independent of the size of stack dropped in water
+            // This puts a 25% chance for each product (independent) per item.
+            int sticks = 0, ash = 0;
+            for (int i = 0; i < stack.getCount(); i++)
+            {
+                if (level.random.nextInt(4) == 0)
+                {
+                    sticks++;
+                }
+                if (level.random.nextInt(4) == 0)
+                {
+                    ash++;
+                }
+            }
+            if (sticks > stack.getCount() / 2)
+            {
+                sticks = stack.getCount() / 2; // Don't duplicate sticks, since 1 stick = 2 torches
+            }
+            if (sticks > 0)
+            {
+                Helpers.spawnItem(level, itemEntity.position(), new ItemStack(Items.STICK, sticks));
+            }
             if (ash > 0)
             {
-                Helpers.spawnItem(level, pos, new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));
+                Helpers.spawnItem(level, itemEntity.position(), new ItemStack(TFCItems.POWDERS.get(Powder.WOOD_ASH).get(), ash));
             }
             Helpers.playSound(level, pos, SoundEvents.FIRE_EXTINGUISH);
+            itemEntity.discard();
             return true;
         }
 
@@ -74,7 +96,7 @@ public class TorchItem extends StandingAndWallBlockItem
         {
             if (itemEntity.getAge() > ageRequirement && level.random.nextFloat() < 0.01f)
             {
-                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, null, false);
+                StartFireEvent.startFire(level, isNotInBlock ? downPos : pos, checkState, Direction.UP, null, ItemStack.EMPTY, StartFireEvent.FireResult.NEVER);
                 itemEntity.kill();
             }
             else

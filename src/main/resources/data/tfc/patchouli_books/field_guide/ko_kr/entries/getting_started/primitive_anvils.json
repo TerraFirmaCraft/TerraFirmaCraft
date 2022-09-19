@@ -1,0 +1,218 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l기초적인 모루",
+  "category": "tfc:getting_started",
+  "icon": "tfc:rock/anvil/granite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "더 높은 티어의 금속을 가공하기 위해서는 직접 금형에 주조하는 것이 아니라, $(thing)모루$()를 사용해야 합니다. 모루는 $(l:mechanics/anvils#working)단조$()과 $(l:mechanics/anvils#welding)용접$(), 2가지 종류의 일을 할 수 있는 블록입니다. 이 챕터에서는 최초의 기초적인 돌 모루를 만드는 법을 보여줍니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "일단, $(thing)화산암$() (유문암, 현무암, 안산암, 석영안산암)이나 $(thing)심성암$() (화강암, 섬록암, 반려암) $(thing)돌$() 블록이 필요합니다. 세계에 있는 블록을 그대로 사용하거나, 주변에서 돌 블록을 $(l:getting_started/primitive_anvils#raw_rock)추출$()할 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "stone_anvils",
+      "text": "모루를 만들기 위해서는 또한 아무 종류의 $(thing)망치$()가 필요합니다. 돌 블록의 $(thing)위쪽$() 면을 $(thing)망치로$() 클릭하면 모루가 만들어집니다!$(br2)모루는 각각 $(l:mechanics/anvils#tiers)티어$()를 가지고 있고, 돌 모루는 가장 낮은 티어인 0티어입니다. 돌 모루로는 1티어 금속들을 $(l:mechanics/anvils#welding)용접$()하는 일 밖에 할 수 없습니다.",
+      "title": "§l돌 모루"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "중앙의 돌 블록을 모루로 바꾸는 장면",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              " 0 "
+            ],
+            [
+              "RRR"
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        "tfc:rock_anvil"
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "raw_rock",
+      "text": "조약돌로 쪼개지 않고 돌 그대로의 블록을 얻으려면, 블록을 $(thing)추출$()해야 합니다. 하나의 블록과 닿아 있는 6개의 면을 모두 제거하면 당신이 들고 옮길 수 있는 돌 블록이 떨어집니다.",
+      "title": "§l돌 블록 얻기"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "돌 블록의 6면을 모두 제거하기. 제거한 후에는 블록이 아이템으로 떨어집니다.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              " R ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              "RRR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              " R "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " RR",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "tfc:rock/raw/gabbro",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "   ",
+              "   ",
+              "   "
+            ],
+            [
+              "   ",
+              " R ",
+              "   "
+            ],
+            [
+              "   ",
+              " 0 ",
+              "   "
+            ]
+          ],
+          "mapping": {
+            "0": "AIR",
+            "R": "tfc:rock/raw/gabbro"
+          }
+        }
+      ]
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 6
+}

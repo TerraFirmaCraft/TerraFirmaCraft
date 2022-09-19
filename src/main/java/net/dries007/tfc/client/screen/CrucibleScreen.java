@@ -10,6 +10,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -20,10 +21,7 @@ import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
-import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.AlloyView;
-import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.*;
 
 public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, CrucibleContainer>
 {
@@ -109,7 +107,7 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
             resetToBackgroundSprite();
 
             // Draw Title:
-            final Metal result = ((Alloy) alloy).getResult(ClientHelpers.getLevelOrThrow());
+            final Metal result = alloy.getResult(ClientHelpers.getLevelOrThrow());
             final String resultText = ChatFormatting.UNDERLINE + I18n.get(result.getTranslationKey());
             font.draw(poseStack, resultText, leftPos + 10, topPos + 11, 0x000000);
 
@@ -136,18 +134,13 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
                 // Metal 2 name:
                 //   ZZZ units (WW.W%)
 
-                String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().getTranslationKey()), 141);
-                metalName += ":";
-                String units;
-                if (entry.getDoubleValue() >= 1)
-                {
-                    units = I18n.get("tfc.tooltip.fluid_units", Math.round(entry.getDoubleValue()));
-                }
-                else
-                {
-                    units = I18n.get("tfc.tooltip.less_than_one_fluid_units");
-                }
-                String content = String.format("  %s (%s%2.1f%%%s)", units, ChatFormatting.DARK_GREEN, Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f, ChatFormatting.RESET);
+                final String metalName = font.plainSubstrByWidth(I18n.get(entry.getKey().getTranslationKey()), 141) + ":";
+                final MutableComponent content = Helpers.translatable(
+                    "tfc.tooltip.crucible_content_line", // %s units (%s %)
+                    Tooltips.fluidUnits(entry.getDoubleValue()),
+                    String.format("%2.1f", Math.round(1000 * entry.getDoubleValue() / alloy.getAmount()) / 10f)
+                    );
+
                 font.draw(poseStack, metalName, leftPos + 10, yPos, 0x404040);
                 font.draw(poseStack, content, leftPos + 10, yPos + 9, 0x404040);
                 yPos += 18;

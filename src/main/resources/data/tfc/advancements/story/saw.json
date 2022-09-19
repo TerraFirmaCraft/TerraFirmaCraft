@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/copper_age",
+  "criteria": {
+    "saws": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:saws"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/saw/copper"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.saw.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.saw.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "saws"
+    ]
+  ]
+}

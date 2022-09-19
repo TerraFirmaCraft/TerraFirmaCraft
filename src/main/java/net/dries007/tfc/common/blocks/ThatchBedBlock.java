@@ -6,58 +6,54 @@
 
 package net.dries007.tfc.common.blocks;
 
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BedPart;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blockentities.ThatchBedBlockEntity;
+import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.items.HideItemType;
+import net.dries007.tfc.common.items.TFCItems;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Lots of parts borrowed from {@link BedBlock}
- * Avoid extending directly as it implements {@link EntityBlock} which we don't want, and also defines the 'occupied' state which we don't use.
- */
-public class ThatchBedBlock extends HorizontalDirectionalBlock implements EntityBlockExtension, IForgeBlockExtension
+public class ThatchBedBlock extends BedBlock implements EntityBlockExtension, IForgeBlockExtension
 {
-    public static final EnumProperty<BedPart> PART = BlockStateProperties.BED_PART;
-
-    private static final VoxelShape BED_SHAPE = Block.box(0.0F, 0.0F, 0.0F, 16.0F, 9.0F, 16.0F);
-
-    public static Direction getNeighbourDirection(BedPart part, Direction direction)
-    {
-        return part == BedPart.FOOT ? direction : direction.getOpposite();
-    }
+    private static final VoxelShape BED_SHAPE = box(0, 0, 0, 16, 9, 16);
 
     private final ExtendedProperties properties;
 
     public ThatchBedBlock(ExtendedProperties properties)
     {
-        super(properties.properties());
+        super(DyeColor.YELLOW, properties.properties()); // dye property unused, it's just in the Bed BEWLR which we don't need
         this.properties = properties;
     }
 
@@ -74,102 +70,119 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
         return state.getValue(PART) == BedPart.HEAD ? getExtendedProperties().newBlockEntity(pos, state) : null;
     }
 
+    /**
+     * This is based very closely on {@link BedBlock#use} to avoid bugs. Even if it's not the best practices.
+     */
     @Override
-    @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        if (BedBlock.canSetSpawn(level))
+        if (level.isClientSide)
         {
-            if (!level.isThundering())
-            {
-                player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use"), true);
-                if (!level.isClientSide && player instanceof ServerPlayer serverPlayer && (serverPlayer.getRespawnDimension() != level.dimension() || !pos.equals(serverPlayer.getRespawnPosition())))
-                {
-                    serverPlayer.setRespawnPosition(level.dimension(), pos, 0, false, false);
-                }
-            }
-            else
-            {
-                player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.thundering"), true);
-            }
-        }
-        else if (!level.isClientSide)
-        {
-            level.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.BlockInteraction.DESTROY);
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public PushReaction getPistonPushReaction(BlockState state)
-    {
-        return PushReaction.DESTROY;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-    {
-        return BED_SHAPE;
-    }
-
-    @Nullable
-    public BlockState getStateForPlacement(BlockPlaceContext context)
-    {
-        return context.getLevel().getBlockState(context.getClickedPos().relative(context.getHorizontalDirection())).canBeReplaced(context) ? this.defaultBlockState().setValue(FACING, context.getHorizontalDirection()) : null;
-    }
-
-    @Override
-    public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance)
-    {
-        super.fallOn(level, state, pos, entity, fallDistance * 0.5f);
-    }
-
-    @Override
-    public void updateEntityAfterFallOn(BlockGetter level, Entity entity)
-    {
-        if (entity.isSuppressingBounce())
-        {
-            super.updateEntityAfterFallOn(level, entity);
+            return InteractionResult.CONSUME;
         }
         else
         {
-            bounceUp(entity);
-        }
-    }
-
-    @Override
-    public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player)
-    {
-        if (!level.isClientSide && player.isCreative())
-        {
-            BedPart part = state.getValue(PART);
-            if (part == BedPart.FOOT)
+            if (state.getValue(PART) != BedPart.HEAD)
             {
-                BlockPos neighbourPos = pos.relative(getNeighbourDirection(part, state.getValue(FACING)));
-                BlockState neighbourState = level.getBlockState(neighbourPos);
-                if (Helpers.isBlock(neighbourState, this) && neighbourState.getValue(PART) == BedPart.HEAD)
+                pos = pos.relative(state.getValue(FACING));
+                state = level.getBlockState(pos);
+                if (!Helpers.isBlock(state, this))
                 {
-                    level.setBlock(neighbourPos, Blocks.AIR.defaultBlockState(), 35);
-                    level.levelEvent(player, 2001, neighbourPos, Block.getId(neighbourState));
+                    return InteractionResult.CONSUME;
                 }
             }
         }
-        super.playerWillDestroy(level, pos, state, player);
+        if (!canSetSpawn(level))
+        {
+            level.removeBlock(pos, false);
+            BlockPos blockpos = pos.relative(state.getValue(FACING).getOpposite());
+            if (Helpers.isBlock(level.getBlockState(blockpos), this))
+            {
+                level.removeBlock(blockpos, false);
+            }
+            level.explode(null, DamageSource.badRespawnPointExplosion(), null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, 7.0F, true, Explosion.BlockInteraction.DESTROY);
+            return InteractionResult.SUCCESS;
+        }
+        else if (state.getValue(OCCUPIED))
+        {
+            if (!kickVillagerOutOfBed(level, pos))
+            {
+                player.displayClientMessage(Helpers.translatable("block.minecraft.bed.occupied"), true);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        else if (player instanceof ServerPlayer serverPlayer)
+        {
+            if (level.isThundering() && TFCConfig.SERVER.thatchBedNoSleepInThunderstorms.get())
+            {
+                player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.thundering"), true);
+                return InteractionResult.SUCCESS;
+            }
+            final boolean willSleep = TFCConfig.SERVER.enableThatchBedSleeping.get();
+            final boolean spawnPoint = TFCConfig.SERVER.enableThatchBedSpawnSetting.get();
+
+            // if we can set spawn but not sleep, we have to set spawn ourselves
+            if (!willSleep)
+            {
+                if (spawnPoint)
+                {
+                    player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use_no_sleep_spawn"), true);
+                    serverPlayer.setRespawnPosition(level.dimension(), pos, 0, false, false);
+                    return InteractionResult.SUCCESS;
+                }
+                // no spawn, no sleep, do nothing
+                player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use_no_sleep_no_spawn"), true);
+                return InteractionResult.SUCCESS;
+            }
+
+            final BlockPos lastRespawnPos = serverPlayer.getRespawnPosition();
+            final ResourceKey<Level> lastRespawnDimension = serverPlayer.getRespawnDimension();
+            final float lastRespawnAngle = serverPlayer.getRespawnAngle();
+            player.startSleepInBed(pos).ifLeft(problem -> {
+                if (problem.getMessage() != null)
+                {
+                    player.displayClientMessage(problem.getMessage(), true);
+                }
+            }).ifRight(unit -> {
+                // in this case vanilla sets the spawn point in startSleepInBed
+                if (spawnPoint)
+                {
+                    player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use_sleep_spawn"), true);
+                }
+                else
+                {
+                    // sleeping automagically resets your spawn position, so we have to copy over the old spawn position and then set it to that.
+                    serverPlayer.setRespawnPosition(lastRespawnDimension, lastRespawnPos, lastRespawnAngle, false, false);
+                    player.displayClientMessage(Helpers.translatable("tfc.thatch_bed.use_sleep_no_spawn"), true);
+                }
+            });
+
+        }
+        return InteractionResult.SUCCESS;
     }
 
-    /**
-     * {@link BedBlock#bounceUp(Entity)}
-     */
-    private void bounceUp(Entity entity)
+    @Override
+    public boolean addLandingEffects(BlockState state1, ServerLevel level, BlockPos pos, BlockState state2, LivingEntity entity, int numberOfParticles)
     {
-        final Vec3 v = entity.getDeltaMovement();
-        if (v.y < 0.0D)
+        level.sendParticles(TFCParticles.FEATHER.get(), entity.getX(), Math.max(entity.getY() + 0.1f, pos.getY() + 0.6f), entity.getZ(), numberOfParticles, 0.0D, 0.0D, 0.0D, 0.15F);
+        return super.addLandingEffects(state1, level, pos, state2, entity, numberOfParticles);
+    }
+
+    private boolean kickVillagerOutOfBed(Level level, BlockPos pos)
+    {
+        List<Villager> list = level.getEntitiesOfClass(Villager.class, new AABB(pos), LivingEntity::isSleeping);
+        if (list.isEmpty())
         {
-            double factor = entity instanceof LivingEntity ? 1.0D : 0.8D;
-            entity.setDeltaMovement(v.x, -v.y * (double) 0.66F * factor, v.z);
+            return false;
         }
+        list.get(0).stopSleeping();
+        return true;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
+    {
+        return BED_SHAPE;
     }
 
     @Override
@@ -179,34 +192,34 @@ public class ThatchBedBlock extends HorizontalDirectionalBlock implements Entity
         return RenderShape.MODEL;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player)
     {
-        Direction facing = state.getValue(FACING);
-        if (pos.relative(facing).equals(fromPos) || !level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), Direction.UP))
+        if (state.getValue(PART) == BedPart.FOOT)
         {
-            level.destroyBlock(pos, true);
+            pos = pos.relative(state.getValue(FACING));
         }
+        return level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get()).map(bed ->
+            bed.getCapability(Capabilities.ITEM).map(inv -> inv.getStackInSlot(0).copy()).orElse(ItemStack.EMPTY)
+        ).orElse(ItemStack.EMPTY);
     }
 
     @Override
-    public boolean isBed(BlockState state, BlockGetter world, BlockPos pos, @Nullable Entity player)
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity entity, ItemStack stack)
     {
-        return true;
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
-    {
-        super.createBlockStateDefinition(builder.add(PART, FACING));
+        // provide reasonable defaults for the bed item
+        super.setPlacedBy(level, pos, state, entity, stack);
+        level.getBlockEntity(pos.relative(state.getValue(FACING)), TFCBlockEntities.THATCH_BED.get()).ifPresent(bed -> {
+            BlockState thatch = TFCBlocks.THATCH.get().defaultBlockState();
+            bed.setBed(thatch, thatch, TFCItems.HIDES.get(HideItemType.RAW).get(HideItemType.Size.LARGE).get().getDefaultInstance());
+        });
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        if (state.getValue(PART) == BedPart.HEAD)
+        if (state.getValue(PART) == BedPart.HEAD && !Helpers.isBlock(state, newState.getBlock()))
         {
             level.getBlockEntity(pos, TFCBlockEntities.THATCH_BED.get()).ifPresent(ThatchBedBlockEntity::destroyBed);
         }

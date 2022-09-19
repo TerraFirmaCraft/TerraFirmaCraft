@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/sheet/rose_gold"
+    "tag": "forge:sheets/rose_gold"
   },
   "second_input": {
-    "item": "tfc:metal/sheet/rose_gold"
+    "tag": "forge:sheets/rose_gold"
   },
   "tier": 0,
   "result": {

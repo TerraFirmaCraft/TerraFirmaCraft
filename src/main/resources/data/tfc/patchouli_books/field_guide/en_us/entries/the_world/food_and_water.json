@@ -2,7 +2,7 @@
   "__comment__": "This file was automatically created by mcresources",
   "name": "Food and Water",
   "category": "tfc:the_world",
-  "icon": "tfc:food/orange",
+  "icon": "tfc:textures/item/food/orange.png",
   "pages": [
     {
       "type": "patchouli:text",
@@ -45,7 +45,7 @@
     {
       "type": "patchouli:text",
       "anchor": "thirst",
-      "text": "Thirst is the level of water in your body. It depletes at a similar rate to hunger. At high temperatures or levels of high hunger usage, your thirst will deplete fastter. Luckily, drinking $(thing)Fresh Water$() replenishes thirst. This can be done by clicking $(item)$(k:key.use)$() on a water block. Drinking saltwater causes you to lose thirst, and even has a chance of giving you the $(thing)Thirst$() effect, which will drain you even more.",
+      "text": "Thirst is the level of water in your body. It depletes at a similar rate to hunger. At high temperatures or levels of high hunger usage, your thirst will deplete faster. Luckily, drinking $(thing)Fresh Water$() replenishes thirst. This can be done by clicking $(item)$(k:key.use)$() on a water block. Drinking saltwater causes you to lose thirst, and even has a chance of giving you the $(thing)Thirst$() effect, which will drain you even more.",
       "title": "Thirst"
     },
     {

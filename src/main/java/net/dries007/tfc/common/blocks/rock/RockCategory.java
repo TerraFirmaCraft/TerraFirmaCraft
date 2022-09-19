@@ -16,6 +16,7 @@ import net.dries007.tfc.common.TFCItemGroup;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.TFCTiers;
 import net.dries007.tfc.common.items.JavelinItem;
+import net.dries007.tfc.common.items.TFCHoeItem;
 import net.dries007.tfc.common.items.ToolItem;
 
 public enum RockCategory implements StringRepresentable
@@ -41,6 +42,11 @@ public enum RockCategory implements StringRepresentable
         return itemTier;
     }
 
+    public float hardness(float base)
+    {
+        return base + hardnessModifier;
+    }
+
     public float getHardness()
     {
         return hardnessModifier;
@@ -58,7 +64,7 @@ public enum RockCategory implements StringRepresentable
         AXE_HEAD,
         HAMMER(rock -> new ToolItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1f, rock.getTier()), -3.0F, TFCTags.Blocks.MINEABLE_WITH_HAMMER, properties())),
         HAMMER_HEAD,
-        HOE(rock -> new HoeItem(rock.getTier(), -1, -3.0f, properties())),
+        HOE(rock -> new TFCHoeItem(rock.getTier(), -1, -3.0f, properties())),
         HOE_HEAD,
         JAVELIN(rock -> new JavelinItem(rock.getTier(), ToolItem.calculateVanillaAttackDamage(1.0F, rock.getTier()), -1.8F, properties(), "stone")),
         JAVELIN_HEAD,

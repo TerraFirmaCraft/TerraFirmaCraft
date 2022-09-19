@@ -97,7 +97,11 @@ public class DeadDoubleCropBlock extends DeadCropBlock
     {
         if (state.getValue(PART) == DoubleCropBlock.Part.TOP)
         {
-            super.addHoeOverlayInfo(level, pos.below(), level.getBlockState(pos.below()), text, isDebug);
+            final BlockState belowState = level.getBlockState(pos.below());
+            if (belowState.getBlock() instanceof DeadDoubleCropBlock)
+            {
+                super.addHoeOverlayInfo(level, pos.below(), belowState, text, isDebug);
+            }
         }
         else
         {

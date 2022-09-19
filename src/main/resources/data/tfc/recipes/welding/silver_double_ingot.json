@@ -2,10 +2,10 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:welding",
   "first_input": {
-    "item": "tfc:metal/ingot/silver"
+    "tag": "forge:ingots/silver"
   },
   "second_input": {
-    "item": "tfc:metal/ingot/silver"
+    "tag": "forge:ingots/silver"
   },
   "tier": 0,
   "result": {

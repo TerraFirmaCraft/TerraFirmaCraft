@@ -1,0 +1,39 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/pit_kiln",
+  "criteria": {
+    "metal/ingot/cast_iron": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "tfc:metal/ingot/cast_iron"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:metal/ingot/cast_iron"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.cast_iron.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.cast_iron.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "metal/ingot/cast_iron"
+    ]
+  ]
+}

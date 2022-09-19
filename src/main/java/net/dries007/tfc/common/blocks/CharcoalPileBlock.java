@@ -96,6 +96,7 @@ public class CharcoalPileBlock extends Block
                     if (layersUnder + layersAt <= 8)
                     {
                         level.setBlock(facingPos, facingState.setValue(LAYERS, layersAt + layersUnder), 3);
+                        level.destroyBlock(currentPos, false); // Have to destroy the block to prevent it from dropping an additional charcoal
                         return Blocks.AIR.defaultBlockState();
                     }
                     else

@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/pit_kiln",
+  "criteria": {
+    "fired_molds": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "tfc:fired_molds"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:ceramic/axe_head_mold"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.mold.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.mold.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "fired_molds"
+    ]
+  ]
+}

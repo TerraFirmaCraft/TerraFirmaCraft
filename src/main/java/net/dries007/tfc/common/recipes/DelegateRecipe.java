@@ -56,7 +56,7 @@ public abstract class DelegateRecipe<R extends Recipe<C>, C extends Container> i
         return id;
     }
 
-    protected static class Serializer<C extends Container> extends RecipeSerializerImpl<DelegateRecipe<?, C>>
+    public static class Serializer<C extends Container> extends RecipeSerializerImpl<DelegateRecipe<?, C>>
     {
         public static <C extends Container> Serializer<C> shapeless(BiFunction<ResourceLocation, Recipe<C>, DelegateRecipe<Recipe<C>, C>> factory)
         {

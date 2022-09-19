@@ -1,0 +1,37 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:story/smooth_stone",
+  "criteria": {
+    "stone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:stone"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "item": "tfc:rock/hardened/basalt"
+    },
+    "title": {
+      "translate": "tfc.advancements.story.raw_stone.title"
+    },
+    "description": {
+      "translate": "tfc.advancements.story.raw_stone.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "tfc:textures/block/rock/mossy_cobble/diorite.png"
+  },
+  "requirements": [
+    [
+      "stone"
+    ]
+  ]
+}

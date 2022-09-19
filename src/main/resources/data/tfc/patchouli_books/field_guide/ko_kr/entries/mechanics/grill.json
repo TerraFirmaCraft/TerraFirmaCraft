@@ -1,0 +1,48 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l모닥불과 석쇠",
+  "category": "tfc:mechanics",
+  "icon": "tfc:grill",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)석쇠$()은 모닥불에서 음식을 더 효율적으로 조리하기 위한 장치입니다. 석쇠는 동시에 5개의 아이템을 요리할 수 있으며 음식에게 $(l:mechanics/decay)보존 기간$()을 늘리는 $(thing)석쇠구이$() 속성을 줍니다. 석쇠를 사용하기 위해서는 $(l:getting_started/firepit)모닥불$() 위에 $(thing)연철 석쇠$()를 클릭하여 올려놓아야 합니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:grill"
+        }
+      },
+      "name": "§l석쇠를 올려놓은 모닥불",
+      "text": "",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/wrought_iron_grill",
+      "text": "석쇠는 $(l:mechanics/anvils)모루$()에서 $(thing)연철 합판$()을 단조하여 만들 수 있습니다.$(br2)다음 페이지에는 석쇠의 인터페이스가 있습니다. 모닥불과 마찬가지로, 맨 위쪽부터 넣는 4개의 연료 슬롯과 온도 게이지, 그리고 1개가 아닌 5개의 가열할 아이템 슬롯이 있습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/grill.png"
+      ],
+      "text": "석쇠 인터페이스.",
+      "border": false
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tfc:wrought_iron_grill": 0
+  }
+}

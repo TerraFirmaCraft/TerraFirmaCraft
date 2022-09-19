@@ -28,6 +28,7 @@ import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Tooltips;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendar;
 
@@ -133,8 +134,7 @@ public class BarrelScreen extends BlockEntityScreen<BarrelBlockEntity, BarrelCon
                 FluidStack fluid = fluidHandler.getFluidInTank(0);
                 if (!fluid.isEmpty())
                 {
-                    Component units = Helpers.translatable("tfc.tooltip.fluid_units_of", fluid.getAmount()).append(fluid.getDisplayName());
-                    renderTooltip(poseStack, units, mouseX, mouseY);
+                    renderTooltip(poseStack, Tooltips.fluidUnitsOf(fluid), mouseX, mouseY);
                 }
             });
         }

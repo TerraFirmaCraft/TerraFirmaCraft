@@ -8,5 +8,6 @@
     "fluid": "tfc:metal/red_steel",
     "amount": 200
   },
-  "temperature": 1540
+  "temperature": 1540,
+  "use_durability": true
 }

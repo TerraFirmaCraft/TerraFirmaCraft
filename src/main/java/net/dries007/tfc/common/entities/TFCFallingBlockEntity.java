@@ -16,10 +16,8 @@ import net.minecraft.world.level.block.FallingBlock;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.item.context.DirectionalPlaceContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.GameRules;
@@ -78,12 +76,16 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
      */
     public static boolean canFallThrough(BlockGetter level, BlockPos pos, BlockState state, Direction fallingDirection, BlockState fallingState)
     {
-        return !state.isFaceSturdy(level, pos, fallingDirection.getOpposite()) // Must be non sturdy in the direction opposed to the fall
+        return !state.isFaceSturdy(level, pos, fallingDirection.getOpposite()) // Must be non-sturdy in the direction opposed to the fall
             && getBlockToughness(fallingState) >= getBlockToughness(state); // Must be of an equal or greater toughness
     }
 
     public static int getBlockToughness(BlockState state)
     {
+        if (state.getBlock() == Blocks.BEDROCK)
+        {
+            return 4; // Fake value, useful for simulating really hard toughness checks.
+        }
         if (Helpers.isBlock(state, TFCTags.Blocks.TOUGHNESS_3))
         {
             return 3;
@@ -198,60 +200,99 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                         remove(RemovalReason.DISCARDED);
                         if (!dontSetBlock)
                         {
-                            if (hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP)) && fallingBlockState.canSurvive(this.level, posAt) && !FallingBlock.isFree(this.level.getBlockState(posAt.below())))
+                            // Attempt to set the block, first by replacing the target block.
+                            if (canPlaceAt(hitBlockState, posAt, fallingBlockState, fallingBlockState))
                             {
-                                if (level.setBlockAndUpdate(posAt, fallingBlockState))
-                                {
-                                    if (block instanceof FallingBlock)
-                                    {
-                                        ((FallingBlock) block).onLand(this.level, posAt, fallingBlockState, hitBlockState, this);
-                                    }
-
-                                    if (Helpers.isBlock(fallingBlockState.getBlock(), TFCTags.Blocks.CAN_LANDSLIDE))
-                                    {
-                                        level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
-                                    }
-
-                                    // Sets the tile entity if it exists
-                                    if (blockData != null && fallingBlockState.hasBlockEntity())
-                                    {
-                                        BlockEntity tileEntity = level.getBlockEntity(posAt);
-                                        if (tileEntity != null)
-                                        {
-                                            CompoundTag tileEntityData = tileEntity.saveWithoutMetadata();
-                                            for (String dataKey : tileEntityData.getAllKeys())
-                                            {
-                                                Tag dataElement = tileEntityData.get(dataKey);
-                                                if (!"x".equals(dataKey) && !"y".equals(dataKey) && !"z".equals(dataKey) && dataElement != null)
-                                                {
-                                                    tileEntityData.put(dataKey, dataElement.copy());
-                                                }
-                                            }
-                                            tileEntity.load(tileEntityData);
-                                            tileEntity.setChanged();
-                                        }
-                                    }
-                                }
-                                else if (dropItem && level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
-                                {
-                                    spawnAtLocation(block);
-                                }
+                                placeAsBlockOrDropAsItem(hitBlockState, posAt, fallingBlockState);
                             }
-                            else if (dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+                            else
                             {
-                                spawnAtLocation(block);
+                                // Second check: try and place the block one block above from it's current position
+                                // This is to handle blocks such as soul sand or mud, which it will attempt to fall into (because it has a < a block collision shape), but then needs to pretend to place above the block (since they support falling blocks).
+                                // Note that the second time we do this, we have to use bedrock as the toughness check - because we only want to place if we can't fall, and can't fall includes checks against toughness - not just against sturdy ground.
+                                final BlockPos posAbove = posAt.above();
+                                final BlockState hitAboveBlockState = level.getBlockState(posAbove);
+                                if (canPlaceAt(hitAboveBlockState, posAbove, fallingBlockState, Blocks.BEDROCK.defaultBlockState()))
+                                {
+                                    placeAsBlockOrDropAsItem(hitAboveBlockState, posAbove, fallingBlockState);
+                                }
+                                else
+                                {
+                                    // Cannot find a location where can survive, and breaking checks have failed.
+                                    attemptToDropAsItem(fallingBlockState);
+                                }
                             }
                         }
 
-                        if (block instanceof IFallableBlock)
+                        if (block instanceof IFallableBlock fallingBlock)
                         {
-                            ((IFallableBlock) block).onceFinishedFalling(this.level, posAt, this);
+                            fallingBlock.onceFinishedFalling(this.level, posAt, this);
                         }
                     }
                 }
             }
-
             setDeltaMovement(getDeltaMovement().scale(0.98D));
+        }
+    }
+
+    private boolean canPlaceAt(BlockState hitBlockState, BlockPos posAt, BlockState fallingBlockState, BlockState toughnessBlockState)
+    {
+        final BlockPos below = posAt.below();
+        return hitBlockState.canBeReplaced(new DirectionalPlaceContext(this.level, posAt, Direction.DOWN, ItemStack.EMPTY, Direction.UP))
+            && fallingBlockState.canSurvive(this.level, posAt)
+            && !canFallThrough(this.level, below, Direction.DOWN, toughnessBlockState);
+    }
+
+    private void placeAsBlockOrDropAsItem(BlockState hitBlockState, BlockPos posAt, BlockState fallingBlockState)
+    {
+        if (level.setBlockAndUpdate(posAt, fallingBlockState))
+        {
+            afterPlacementAsBlock(hitBlockState, posAt, fallingBlockState);
+        }
+        else
+        {
+            attemptToDropAsItem(fallingBlockState);
+        }
+    }
+
+    private void afterPlacementAsBlock(BlockState hitBlockState, BlockPos posAt, BlockState fallingBlockState)
+    {
+        if (fallingBlockState.getBlock() instanceof FallingBlock fallingBlock)
+        {
+            fallingBlock.onLand(this.level, posAt, fallingBlockState, hitBlockState, this);
+        }
+
+        if (Helpers.isBlock(fallingBlockState.getBlock(), TFCTags.Blocks.CAN_LANDSLIDE))
+        {
+            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addLandslidePos(posAt));
+        }
+
+        // Sets the tile entity if it exists
+        if (blockData != null && fallingBlockState.hasBlockEntity())
+        {
+            BlockEntity tileEntity = level.getBlockEntity(posAt);
+            if (tileEntity != null)
+            {
+                CompoundTag tileEntityData = tileEntity.saveWithoutMetadata();
+                for (String dataKey : tileEntityData.getAllKeys())
+                {
+                    Tag dataElement = tileEntityData.get(dataKey);
+                    if (!"x".equals(dataKey) && !"y".equals(dataKey) && !"z".equals(dataKey) && dataElement != null)
+                    {
+                        tileEntityData.put(dataKey, dataElement.copy());
+                    }
+                }
+                tileEntity.load(tileEntityData);
+                tileEntity.setChanged();
+            }
+        }
+    }
+
+    private void attemptToDropAsItem(BlockState fallingBlockState)
+    {
+        if (dropItem && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+        {
+            spawnAtLocation(fallingBlockState.getBlock());
         }
     }
 }

@@ -1,0 +1,56 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l사금질",
+  "category": "tfc:mechanics",
+  "icon": "tfc:pan/empty",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)사금질$()은 강이나 다른 물길에서 특정 자연 원석의 조각을 찾는 방법입니다.$(br2)사금질은 강이나 호수의 자갈 바닥에 있는 $(l:the_world/waterways#ore_deposits)광석 침전물$()을 사용합니다.$(br2)사금질을 시작하기 위해서는, 빈 사금 접시가 필요합니다."
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/pan",
+      "text": "$(l:getting_started/pottery)점토$()로 사금 접시를 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:heat_recipe",
+      "recipe": "tfc:heating/ceramic_pan",
+      "text": "사금 접시를 점토로 $(thing)만들고$(), $(thing)세라믹$()으로 만들기 위해서는 $(l:mechanics/heating)구워야$() 합니다.$(br2)다음으로는 $(thing)광석 침전물$()이 필요합니다. 광석 침전물은 자연동, 자연은, 자연금과 주석석 4개의 종류가 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:deposit/native_gold/slate"
+        }
+      },
+      "name": "예시",
+      "text": "점판암 속의 자연금 침전물.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "이제 사금질을 시작할 수 있습니다!$(br2)$(bold)1.$() 사금 접시를 들고, 침전물 블록에 대고 $(thing)사용$()하세요.$(br2)$(bold)2.$() 물 속에서 사금 접시를 들고 $(item)$(k:key.use)$()을 꾹 누르면 사금질이 시작됩니다.$(br2)$(bold)3.$() 잠시 후, 운이 좋다면 몇 개의 작은 광석을 얻을 수 있습니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/panning.png"
+      ],
+      "border": true
+    }
+  ],
+  "read_by_default": true,
+  "extra_recipe_mappings": {
+    "tag:tfc:ore_deposits": 0
+  }
+}

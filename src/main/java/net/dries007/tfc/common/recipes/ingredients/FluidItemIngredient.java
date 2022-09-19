@@ -6,13 +6,19 @@
 
 package net.dries007.tfc.common.recipes.ingredients;
 
+import java.util.Objects;
+
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.registries.ForgeRegistries;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.JsonHelpers;
@@ -53,7 +59,25 @@ public class FluidItemIngredient extends DelegateIngredient
         return fluid.ingredient()
             .getMatchingFluids()
             .stream()
-            .map(fluid -> new ItemStack(fluid.getBucket()))
+            .flatMap(fluid -> Helpers.streamAllTagValues(TFCTags.Items.FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS, ForgeRegistries.ITEMS)
+                .map(item -> {
+                    final ItemStack stack = new ItemStack(item);
+                    final IFluidHandlerItem fluidHandler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
+                    if (fluidHandler != null)
+                    {
+                        // Attempt to fill with the current fluid
+                        fluidHandler.fill(new FluidStack(fluid, Integer.MAX_VALUE), IFluidHandler.FluidAction.EXECUTE);
+
+                        // Then attempt to drain, and ensure the content matches the filled fluid, and is of amount > the required amount.
+                        final FluidStack content = fluidHandler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
+                        if (content.getFluid() == fluid && content.getAmount() >= this.fluid.amount())
+                        {
+                            return fluidHandler.getContainer();
+                        }
+                    }
+                    return null;
+                }))
+            .filter(Objects::nonNull)
             .toArray(ItemStack[]::new);
     }
 
