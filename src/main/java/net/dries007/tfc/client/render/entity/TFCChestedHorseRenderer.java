@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.ChestedHorseRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.common.entities.livestock.horse.TFCChestedHorse;
 
 public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends ChestedHorseRenderer<T>
@@ -26,6 +27,14 @@ public class TFCChestedHorseRenderer<T extends TFCChestedHorse> extends ChestedH
     {
         super(ctx, shadow, layer);
         this.texture = texture;
+    }
+
+    @Override
+    protected void scale(T animal, PoseStack poseStack, float ticks)
+    {
+        final float scale = animal.getAgeScale();
+        poseStack.scale(scale, scale, scale);
+        super.scale(animal, poseStack, ticks);
     }
 
     @Override
