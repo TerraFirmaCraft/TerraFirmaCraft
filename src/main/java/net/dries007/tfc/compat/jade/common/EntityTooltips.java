@@ -82,6 +82,7 @@ public final class EntityTooltips
                 familiarityStyle = ChatFormatting.WHITE;
             }
             tooltip.accept(Helpers.translatable("tfc.jade.familiarity", familiarityPercent).withStyle(familiarityStyle));
+            tooltip.accept(Helpers.translatable("tfc.jade.animal_size", animal.getGeneticSize()));
             if (animal.isReadyForAnimalProduct())
             {
                 tooltip.accept(animal.getProductReadyName().withStyle(ChatFormatting.GREEN));

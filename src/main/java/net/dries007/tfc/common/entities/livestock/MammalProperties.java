@@ -17,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -93,7 +94,8 @@ public interface MammalProperties extends TFCAnimalProperties
 
     default void createGenes(CompoundTag tag, TFCAnimalProperties male)
     {
-
+        tag.putInt("size", male.getGeneticSize() + getGeneticSize());
+        tag.putBoolean("runt", getEntity().getRandom().nextInt(20) == 0);
     }
 
     @Override
@@ -108,7 +110,11 @@ public interface MammalProperties extends TFCAnimalProperties
 
     default void applyGenes(CompoundTag tag, MammalProperties baby)
     {
-
+        setGeneticSize(Mth.floor(EntityHelpers.getIntOrDefault(tag, "size", 16) / 2d + Mth.nextInt(baby.getEntity().getRandom(), -2, 2)));
+        if (tag.getBoolean("runt"))
+        {
+            setGeneticSize(1);
+        }
     }
 
     @Override

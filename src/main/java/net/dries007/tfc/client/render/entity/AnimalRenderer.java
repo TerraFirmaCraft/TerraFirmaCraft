@@ -36,7 +36,7 @@ public class AnimalRenderer<T extends TFCAnimal, M extends EntityModel<T>> exten
     @Override
     protected void scale(T animal, PoseStack poseStack, float ticks)
     {
-        animal.getAgeScale()
+        final float scale = animal.getAgeScale();
         poseStack.scale(scale, scale, scale);
         super.scale(animal, poseStack, ticks);
     }

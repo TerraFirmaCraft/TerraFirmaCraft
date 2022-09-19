@@ -245,7 +245,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setFamiliarity(0);
         setOldDay(-1L);
         setUses(0);
-        setGeneticSize(16);
+        setGeneticSize(Mth.nextInt(getEntity().getRandom(), 6, 20));
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {
@@ -328,6 +328,9 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         entityData().set(animalData().familiarity(), Mth.clamp(value, 0f, 1f));
     }
 
+    /**
+     * @return A value [1, 32] for the genetic size scale of the animal.
+     */
     default int getGeneticSize()
     {
         return entityData().get(animalData().geneticSize());
@@ -335,7 +338,12 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
 
     default void setGeneticSize(int size)
     {
-        entityData().set(animalData().geneticSize(), size);
+        entityData().set(animalData().geneticSize(), Mth.clamp(size, 1, 32));
+    }
+
+    default float getAgeScale()
+    {
+        return Mth.map(getGeneticSize(), 1, 32, 0.8f, 1.2f);
     }
 
     /**

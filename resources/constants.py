@@ -1023,6 +1023,7 @@ DEFAULT_LANG = {
     'tfc.jade.animal_wear': 'Wear & Tear: %s',
     'tfc.jade.familiarity': 'Familiarity: %s',
     'tfc.jade.adulthood_progress': 'Becomes adult in %s',
+    'tfc.jade.animal_size': 'Size: %s',
     'tfc.jade.product.generic': 'Has Animal Product',
     'tfc.jade.product.eggs': 'Has Eggs',
     'tfc.jade.product.milk': 'Ready to Milk',

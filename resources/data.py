@@ -941,22 +941,22 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'panther', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'lion', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'sabertooth', 'tfc:large_raw_hide', bones=8)
-    mob_loot(rm, 'pig', 'tfc:food/pork', 4, 10, 'medium', bones=3)
-    mob_loot(rm, 'cow', 'tfc:food/beef', 6, 12, 'large', bones=4)
-    mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4)
-    mob_loot(rm, 'yak', 'tfc:food/chevon', 8, 16, 'large', bones=4)
-    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'})
-    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'})
-    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 14, 'large', bones=4, extra_pool={'name': 'tfc:wool'})
-    mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
-    mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
-    mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
+    mob_loot(rm, 'pig', 'tfc:food/pork', 4, 10, 'medium', bones=3, livestock=True)
+    mob_loot(rm, 'cow', 'tfc:food/beef', 6, 12, 'large', bones=4, livestock=True)
+    mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4, livestock=True)
+    mob_loot(rm, 'yak', 'tfc:food/chevon', 8, 16, 'large', bones=4, livestock=True)
+    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 14, 'large', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
+    mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
+    mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
     mob_loot(rm, 'rabbit', 'tfc:food/rabbit', hide_size='small', hide_chance=0.5, bones=1, extra_pool={'name': 'minecraft:rabbit_foot', 'conditions': [loot_tables.random_chance(0.1)]})
     mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
-    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
-    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
-    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
+    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
+    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
 
@@ -968,9 +968,11 @@ def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier
         'crushing': crushing
     })
 
-def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
+def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None, livestock: bool = False):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
     pools = [{'name': drop, 'functions': func}]
+    if livestock:
+        pools = [{'name': drop, 'functions': animal_yield(min_amount, (max(1, max_amount - 3), max_amount + 3))}]
     if hide_size is not None:
         func = None if hide_chance == 1 else loot_tables.random_chance(hide_chance)
         pools.append({'name': 'tfc:%s_raw_hide' % hide_size, 'conditions': func})
@@ -979,6 +981,21 @@ def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max
     if extra_pool is not None:
         pools.append(extra_pool)
     rm.entity_loot(name, *pools)
+
+def animal_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
+    return {
+        'function': 'minecraft:set_count',
+        'count': {
+            'type': 'tfc:animal_yield',
+            'min': lo,
+            'max': {
+                'type': 'minecraft:uniform',
+                'min': hi[0],
+                'max': hi[1]
+            }
+        }
+    }
+
 
 def loot_invert(condition: utils.JsonObject):
     return {
