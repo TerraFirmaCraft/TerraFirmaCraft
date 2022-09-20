@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "举个例子，要合成 1000 mB 的$(thing)青铜$()（右侧所示），你需要加入 880~920 mB 的$(thing)铜$()以及 80~120 mB 的$(thing)锡$()。$(br2)接下来的几页展示了三种不同的铜合金。每种铜合金都可以做成工具、盔甲、和其他金属物品，但它们的耐久度、效率、和伤害有些微小的差异。"
+      "text": "For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, $(l:mechanics/armor)Armor$(), and other metal items. They are slightly different so resulting tools will have different durability, efficiency, and attack damage."
     },
     {
       "type": "patchouli:spotlight",

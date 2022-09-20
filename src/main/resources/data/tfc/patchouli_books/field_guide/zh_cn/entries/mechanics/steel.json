@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/blast_furnace)高炉$()烧炼出的$(thing)生铁$()并不能直接使用，必须先将其转化为$(thing)钢$()后才能进一步加工成工具或装备。根据生产工艺的不同，可以将生铁锻造成几种不同的钢：普通$(thing)钢$()、$(thing)黑钢$()、$(thing)红钢$()和$(thing)蓝钢$()。"
+      "text": "Steel is an advanced material which can be used to create tools and $(l:mechanics/armor)Armor$(), and comes in a few different varieties: $(thing)Steel$(), $(thing)Black Steel$(), $(thing)Red Steel$(), and $(thing)Blue Steel$().$(br2)In order to create steel, you must first create $(thing)Pig Iron$() in a $(l:mechanics/blast_furnace)Blast Furnace$(), and cast it into $(thing)Ingots$()."
     },
     {
       "type": "tfc:anvil_recipe",
@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)黑钢锭$()可以制作成工具和装备。黑钢的另一大作用则是用来合成更加强大的$(l:mechanics/steel#blue_steel)蓝钢$()和$(l:mechanics/steel#red_steel)红钢$()。"
+      "text": "$(thing)Black Steel$() can be used to craft tools and $(l:mechanics/armor)Armor$(), and also is used as a key ingredient in the creation of $(l:mechanics/steel#blue_steel)Blue Steel$() and $(l:mechanics/steel#red_steel)Red Steel$()."
     },
     {
       "type": "patchouli:text",
@@ -55,7 +55,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)蓝钢锭$()可以制作成工具和装备。$(thing)蓝钢锭$()的另一大作用则是制作$(thing)蓝钢桶$()。蓝钢桶可以盛装并移动岩浆和熔融金属源方块，同时它也是合成全游戏最强道具——$(thing)桶$()——的素材之一。"
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket capable of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
     },
     {
       "type": "patchouli:text",
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)红钢锭$()可以制作成工具和装备。$(thing)红钢锭$()的另一大作用则是制作$(thing)红钢桶$()。红钢桶可以盛装并移动水源或其他流体源方块，同时它也是合成全游戏最强道具——$(thing)桶$()——的素材之一。"
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket capable of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
     }
   ],
   "read_by_default": true

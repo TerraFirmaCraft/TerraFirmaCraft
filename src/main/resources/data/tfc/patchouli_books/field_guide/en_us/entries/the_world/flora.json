@@ -48,6 +48,7 @@
     },
     {
       "type": "patchouli:multiblock",
+      "anchor": "cacti",
       "multiblock": {
         "pattern": [
           [

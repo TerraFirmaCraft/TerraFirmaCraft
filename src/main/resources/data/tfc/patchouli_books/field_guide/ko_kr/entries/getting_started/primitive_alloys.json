@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "예를 들어서, $(thing)청동$() 1000 mB를 만들기 위해서는 (오른쪽에 나와있듯이) $(thing)구리$() 880-920 mB와 $(thing)주석$() 80-120 mB가 필요합니다.$(br2)다음 세 페이지에는 각각의 합금들의 제작법이 나와 있습니다. 각각의 2티어 금속들로는 도구, 방어구, 그리고 다른 금속 아이템들을 만들 수 있습니다. 각 금속은 특성이 약간씩 다르며, 금속으로 만든 도구들 역시 각자 내구성이나 효율, 공격 대미지가 다릅니다."
+      "text": "For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, $(l:mechanics/armor)Armor$(), and other metal items. They are slightly different so resulting tools will have different durability, efficiency, and attack damage."
     },
     {
       "type": "patchouli:spotlight",
