@@ -30,6 +30,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableHungerBar;
     public final ForgeConfigSpec.BooleanValue enableHealthBar;
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
+    public final ForgeConfigSpec.BooleanValue enableExperienceBar;
     public final ForgeConfigSpec.BooleanValue enableInkSplatter;
     public final ForgeConfigSpec.BooleanValue enableVanillaTutorialToasts;
     public final ForgeConfigSpec.IntValue effectHorizontalAdjustment;
@@ -66,6 +67,7 @@ public class ClientConfig
         enableHungerBar = builder.apply("enableHungerBar").comment("Replace the vanilla hunger bar with a TFC one.").define("enableHungerBar", true);
         enableHealthBar = builder.apply("enableHealthBar").comment("Replaces the vanilla health bar with a TFC one.").define("enableHealthBar", true);
         enableThirstBar = builder.apply("enableThirstBar").comment("Adds a TFC thirst bar over the hotbar.").define("enableThirstBar", true);
+        enableExperienceBar = builder.apply("enableExperienceBar").comment("Allows the vanilla XP bar to render.").define("enableExperienceBar", true);
         enableInkSplatter = builder.apply("enableInkSplatter").comment("Enables squids inking your screen.").define("enableInkSplatter", true);
         enableVanillaTutorialToasts = builder.apply("enableVanillaTutorialToasts").comment("Enables the vanilla tutorial toasts that appear during gameplay. These can be difficult to make disappear in modded environments, so they are disabled by default.").define("enableVanillaTutorialToasts", false);
 

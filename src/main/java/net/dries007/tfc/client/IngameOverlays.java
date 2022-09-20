@@ -197,7 +197,7 @@ public class IngameOverlays
             RenderSystem.enableBlend();
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
-        else
+        else if (TFCConfig.CLIENT.enableExperienceBar.get())
         {
             ForgeIngameGui.EXPERIENCE_BAR_ELEMENT.render(gui, stack, partialTicks, width, height);
         }

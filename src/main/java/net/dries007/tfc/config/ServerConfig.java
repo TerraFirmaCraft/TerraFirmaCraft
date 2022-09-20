@@ -90,6 +90,11 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
     public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
     public final ForgeConfigSpec.BooleanValue thatchBedNoSleepInThunderstorms;
+    // Blocks - Item Size
+    public final ForgeConfigSpec.EnumValue<Size> maxPlacedItemSize;
+    public final ForgeConfigSpec.EnumValue<Size> maxPlacedLargeItemSize;
+    public final ForgeConfigSpec.BooleanValue enablePlacingItems;
+    public final ForgeConfigSpec.BooleanValue usePlacedItemWhitelist;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
     // Items - Small Vessel
@@ -297,6 +302,13 @@ public class ServerConfig
         innerBuilder.pop().push("leaves");
 
         enableLeavesDecaySlowly = builder.apply("enableLeavesDecaySlowly").comment("If true, then leaves will decay slowly over time when disconnected from logs (vanilla behavior), as opposed to instantly (TFC behavior).").define("enableLeavesDecaySlowly", false);
+
+        innerBuilder.pop().push("placedItems");
+
+        maxPlacedItemSize = builder.apply("maxPlacedItemSize").comment("The maximum size of items that can be placed as 4 items on the ground with V. If an item is larger than this, it could still be placed with the 'maxPlacedLargeItemSize' option.").defineEnum("maxPlacedItemSize", Size.LARGE);
+        maxPlacedLargeItemSize = builder.apply("maxPlacedLargeItemSize").comment("The maximum size of items that can be placed as a single item on the ground with V. Items are checked to see if they're the right size to be placed in a group of 4 items first.").defineEnum("maxPlacedLargeItemSize", Size.HUGE);
+        enablePlacingItems = builder.apply("enablePlacingItems").comment("If true, players can place items on the ground with V.").define("enablePlacingItems", true);
+        usePlacedItemWhitelist = builder.apply("usePlacedItemWhitelist").comment("If true, the tag 'tfc:placed_item_whitelist' will be checked to allow items to be in placed items and will exclude everything else.").define("usePlacedItemWhitelist", false);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

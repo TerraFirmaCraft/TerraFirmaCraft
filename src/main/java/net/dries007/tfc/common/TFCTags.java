@@ -185,6 +185,8 @@ public class TFCTags
         public static final TagKey<Item> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
         public static final TagKey<Item> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
         public static final TagKey<Item> FLUID_ITEM_INGREDIENT_EMPTY_CONTAINERS = create("fluid_item_ingredient_empty_containers"); // Containers that are filled, as examples for FluidItemIngredient
+        public static final TagKey<Item> PLACED_ITEM_BLACKLIST = create("placed_item_blacklist"); // items that cannot go in placed items, for whatever reason
+        public static final TagKey<Item> PLACED_ITEM_WHITELIST = create("placed_item_whitelist"); // items that can go in placed items. not used unless enabled
 
         public static TagKey<Item> mobEquipmentSlotTag(EquipmentSlot slot)
         {
