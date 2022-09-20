@@ -38,7 +38,7 @@
     {
       "type": "patchouli:text",
       "anchor": "blue_steel",
-      "text": "$(thing)Blue Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#red_steel)Red Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Blue Steel$() $(l:mechanics/crucible)Crucible$().",
+      "text": "$(thing)Blue Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#red_steel)Red Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Blue Steel$() in a $(l:mechanics/crucible)Crucible$().",
       "title": "Blue Steel"
     },
     {
@@ -55,12 +55,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Blue Steel$() can be used to create tools and armor, and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket able of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)Blue Steel$() can be used to create tools and armor, and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket capable of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
     },
     {
       "type": "patchouli:text",
       "anchor": "red_steel",
-      "text": "$(thing)Red Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Red Steel$() $(l:mechanics/crucible)Crucible$().",
+      "text": "$(thing)Red Steel$() is one of the two highest tier metals, along with $(l:mechanics/steel#blue_steel)Blue Steel$(). Similar to $(l:mechanics/steel#black_steel)Black Steel$(), the first step is to create an alloy of $(thing)Weak Red Steel$() in a $(l:mechanics/crucible)Crucible$().",
       "title": "Red Steel"
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Red Steel$() can be used to create tools and armor, and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket able of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+      "text": "$(thing)Red Steel$() can be used to create tools and armor, and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket capable of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
     }
   ],
   "read_by_default": true

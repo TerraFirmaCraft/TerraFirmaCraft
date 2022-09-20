@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "가축들은 플레이어와 얼마나 친밀한지를 나타내는 $(thing)친밀도 게이지$()가 있습니다. $(item)$(k:key.sneak)$() 키를 누르고 동물을 바라보면 볼 수 있습니다.",
+      "text": "Livestock have a $(thing)Familiarity Indicator$() that shows how familiar they are with you. Hold $(item)$(k:key.sneak)$() and look at the animal to reveal it.",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "충분한 친밀도를 달성하지 않으면 하트 모양이 흰색으로 표시되며, 매일 약간씩 떨어집니다.",
+      "text": "Familiarity decays a little each day if not fed. Raising the familiarity enough prevents decay, indicated by the white outlined heart.",
       "border": true
     },
     {
@@ -45,7 +45,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "성체 동물들은 특정 정도 이상 친밀도를 높일 수 없으며, 그 경우 하트 모양이 빨간색으로 표시됩니다. 새끼들은 친밀도를 100%까지 올릴 수 있습니다.",
+      "text": "Adult livestock cannot be fully familiarized, indicated by the red outlined heart. Babies can reach 100% familiarity.",
       "border": true
     },
     {

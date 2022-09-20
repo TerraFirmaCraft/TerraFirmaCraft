@@ -44,7 +44,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(l:mechanics/barrels)통$()에 $(thing)으깬 올리브$()와 $(thing)물$()을 담아 밀봉하면 $(thing)올리브 물$()을 만들 수 있습니다. 다시 $(thing)황마 그물$()을 담고 밀봉하면 $(thing)올리브유$()를 제작할 수 있습니다. 올리브유는 한 단위당 인게임 시간으로 8시간동안 탑니다."
+      "text": "Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid."
     },
     {
       "type": "patchouli:text",

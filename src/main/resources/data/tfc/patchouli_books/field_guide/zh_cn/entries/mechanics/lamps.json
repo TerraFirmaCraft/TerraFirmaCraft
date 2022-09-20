@@ -44,7 +44,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "将$(thing)橄榄糊$()封入装有$(thing)淡水$()的$(thing)大桶$()中就能制成$(thing)毛橄榄油$()。随后将$(thing)黄麻网$()封入大桶中过滤，过滤后的产物便是$(thing)橄榄油$()。每单位橄榄油可以供灯燃烧 8 Minecraft小时。"
+      "text": "Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid."
     },
     {
       "type": "patchouli:text",

@@ -58,7 +58,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "칼리암염은 칼리암염 광석으로 만들 수 있습니다. $(br)$(li)$(6)인: 50$()"
+      "text": "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()"
     }
   ],
   "read_by_default": true

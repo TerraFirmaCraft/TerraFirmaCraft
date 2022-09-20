@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "anchor": "nutrients",
-      "text": "There are five nutrients, all obtainable from food: $(l)$(a)Fruit$()$(), $(l)$(2)Vegetables$()$(), $(l)$(c)Protein$()$(), $(l)$(6)Grain$()$(), and $(l)$(5)Dairy$()$(). Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating a food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don't count towards your nutrition.",
+      "text": "There are five nutrients, all obtainable from food: $(l)$(a)Fruit$()$(), $(l)$(2)Vegetables$()$(), $(l)$(c)Protein$()$(), $(l)$(6)Grain$()$(), and $(l)$(5)Dairy$()$(). Having a large amounts of all nutrients increases your maximum health, while having a poor nutrition decreases it. Eating food gives you its nutrients. Meals such as $(l:mechanics/pot#soup)Soup$() combine more nutrients into one meal. This is important, because meals you ate a while ago don't count towards your nutrition.",
       "title": "Nutrients"
     },
     {

@@ -12,7 +12,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/wood/oak_support",
-      "text": "Supports can be crafted with a $(thing)Saw$() and some $(thing)Logs$()"
+      "text": "Supports can be crafted with a $(thing)Saw$() and some $(thing)Logs$()."
     },
     {
       "type": "patchouli:text",

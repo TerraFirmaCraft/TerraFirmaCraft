@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "Livestock have a $(thing)Familiarity Indicator$() that shows how familiar they are with you. It is visible when holding $(item)$(k:key.sneak)$() and looking at the animal.",
+      "text": "Livestock have a $(thing)Familiarity Indicator$() that shows how familiar they are with you. Hold $(item)$(k:key.sneak)$() and look at the animal to reveal it.",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "Familiarity decays a little each day if not fed, until it reaches a certain amount, indicated by the heart being outlined in white.",
+      "text": "Familiarity decays a little each day if not fed. Raising the familiarity enough prevents decay, indicated by the white outlined heart.",
       "border": true
     },
     {
@@ -45,7 +45,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "Adult livestock cannot be familiarized above a certain amount, indicated by the red outlined heart. Babies can reach up to 100% familiarity.",
+      "text": "Adult livestock cannot be fully familiarized, indicated by the red outlined heart. Babies can reach 100% familiarity.",
       "border": true
     },
     {

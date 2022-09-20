@@ -41,7 +41,7 @@
         "tfc:textures/gui/book/tutorial/soaked_hide_3.png",
         "tfc:textures/gui/book/tutorial/soaked_hide_4.png"
       ],
-      "text": "Once the hide is fully scraped, it can be broken to pick up a $(thing)Scraped Hide$()",
+      "text": "Once the hide is fully scraped, it can be broken to pick up a $(thing)Scraped Hide$().",
       "border": true
     },
     {
