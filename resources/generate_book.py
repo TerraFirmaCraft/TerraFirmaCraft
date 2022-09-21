@@ -404,7 +404,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             entity('tfc:orca', 'Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm.', 'Orca', scale=0.25),
             entity('tfc:dolphin', 'Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm.', 'Dolphin', scale=0.4),
             entity('tfc:manatee', 'Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm.', 'Manatee', scale=0.25),
-            text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),  # todo: squid renderer does not work without proper context...
+            text('Squid can spawn in any deep ocean. They drop $(thing)Ink Sacs$(), and ink any player that gets too close. Some say that squids in deep, unexplored caves have strange properties.', 'Squid'),
             empty_last_page(),
         )),
         entry('food_and_water', 'Food and Water', 'tfc:food/orange', pages=(
@@ -598,6 +598,10 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
     book.category('mechanics', 'Advanced Mechanics', 'Advanced sections of the tech tree, from the first pickaxe, all the way to colored steel.', 'tfc:metal/axe/red_steel', entries=(
         # Possible new entries
         # todo: dyes (both items, and fluids) - just add on to the barrels page maybe? or link?
+        # todo: sluices
+        # todo: powderkeg
+        # todo: jack o lanterns, candles, torches (alt lighting page..?)
+        # todo: entity renderers have issues. many are babies, squids don't work. need to figure out what entity data to insert
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
             text('Livestock experience $(thing)aging$(). They are born as babies, which are smaller and cannot provide things for the player. After a certain number of days, they grow into $(thing)adult$() animals, which are able to do things like breed or produce milk. After they breed or are used enough times, animals become $(thing)old$(), and are only useful for their meat.'),
