@@ -51,8 +51,9 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     //Is this female fertilized? (in oviparous, the egg laying is fertilized, for mammals this is pregnancy)
     private static final EntityDataAccessor<Boolean> FERTILIZED = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Long> OLD_DAY = SynchedEntityData.defineId(TFCAnimal.class, EntityHelpers.LONG_SERIALIZER);
+    private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
 
-    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY);
+    private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE);
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
