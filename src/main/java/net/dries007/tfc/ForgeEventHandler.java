@@ -586,12 +586,12 @@ public final class ForgeEventHandler
             level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.LOG_PILE.get())
+        else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
         {
             BurningLogPileBlock.tryLightLogPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
+        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15 && event.isStrong())
         {
             if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
             {
@@ -599,7 +599,7 @@ public final class ForgeEventHandler
                 event.setFireResult(StartFireEvent.FireResult.ALWAYS);
             }
         }
-        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
+        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
             CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
@@ -620,7 +620,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED))
+        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED) && event.isStrong())
         {
             level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
                 entity.setLit(true, event.getPlayer());

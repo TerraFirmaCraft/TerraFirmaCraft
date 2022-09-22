@@ -177,10 +177,14 @@ public final class InteractionManager
             {
                 final Level level = context.getLevel();
                 final BlockPos pos = context.getClickedPos();
-                if (!player.isCreative())
-                    stack.shrink(1);
                 if (StartFireEvent.startFire(level, pos, level.getBlockState(pos), context.getClickedFace(), player, stack))
+                {
+                    if (!player.isCreative())
+                    {
+                        stack.shrink(1);
+                    }
                     return InteractionResult.SUCCESS;
+                }
             }
             return InteractionResult.FAIL;
         });

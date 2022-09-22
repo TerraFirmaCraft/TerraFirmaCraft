@@ -41,12 +41,17 @@ public final class StartFireEvent extends Event
 {
     public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack)
     {
-        return startFire(level, pos, state, direction, player, stack, FireResult.IF_FAILED);
+        return startFire(level, pos, state, direction, player, stack, FireResult.IF_FAILED, FireStrength.STRONG);
     }
 
-    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult fireResult)
+    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult result)
     {
-        final StartFireEvent event = new StartFireEvent(level, pos, state, direction, player, stack, fireResult);
+        return startFire(level, pos, state, direction, player, stack, result, FireStrength.STRONG);
+    }
+
+    public static boolean startFire(Level level, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult fireResult, FireStrength strength)
+    {
+        final StartFireEvent event = new StartFireEvent(level, pos, state, direction, player, stack, fireResult, strength);
         final boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
         boolean actionPerformed = false;
         if (cancelled)
@@ -76,9 +81,10 @@ public final class StartFireEvent extends Event
     @Nullable
     private final Player player;
     private final ItemStack stack;
+    private final FireStrength strength;
     private FireResult fireResult;
 
-    private StartFireEvent(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult result)
+    private StartFireEvent(Level world, BlockPos pos, BlockState state, Direction direction, @Nullable Player player, ItemStack stack, FireResult result, FireStrength strength)
     {
         this.world = world;
         this.pos = pos;
@@ -87,6 +93,7 @@ public final class StartFireEvent extends Event
         this.player = player;
         this.stack = stack;
         this.fireResult = result;
+        this.strength = strength;
     }
 
     public Level getLevel()
@@ -130,6 +137,11 @@ public final class StartFireEvent extends Event
         this.fireResult = result;
     }
 
+    public boolean isStrong()
+    {
+        return strength == FireStrength.STRONG;
+    }
+
     public enum FireResult
     {
         ALWAYS(event -> true),
@@ -144,4 +156,20 @@ public final class StartFireEvent extends Event
         }
     }
 
+    public enum FireStrength
+    {
+        /**
+         * Strong represents a fire starting where:
+         * 1. The fire starting was the primary functionality (i.e. not a side effect). This is to make it obvious to the player what can happen, or
+         * 2. Destructive fire starting behaviors (such as creating fire blocks, lighting log piles, etc.) is desired.
+         */
+        STRONG,
+        /**
+         * Weak represents a fire starting where:
+         * 1. The fire starting may have been secondary behavior or a side effect (i.e. easy to misclick).
+         * 2. Destructive fire starting behaviors should <strong>not</strong> be attempted.
+         */
+        WEAK;
+        // More granularity may be added if needed
+    }
 }
