@@ -1,0 +1,80 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l맷돌",
+  "category": "tfc:mechanics",
+  "icon": "tfc:quern",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)맷돌$()은 아이템을 가는 장치입니다. 맷돌로는 가루와 그 외의 아이템들 몇몇을 만들 수 있습니다. 맷돌은 $(thing)받침대$()와 $(thing)윗돌$()로 구성됩니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/quern",
+      "text": "맷돌의 받침대는 3개의 $(thing)부드러운 돌$()과 3개의 다른 $(thing)돌$()블록으로 만들어집니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/handstone",
+      "text": "맷돌에는 $(thing)윗돌$()이 있어야 작동합니다."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_empty.png"
+      ],
+      "text": "맷돌 블록의 위쪽을 보고 $(item)$(k:key.use)$()을 누르면 윗돌을 설치할 수 있습니다.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_add_item.png"
+      ],
+      "text": "맷돌의 위에 $(item)$(k:key.use)$()을 누르면 아이템을 추가할 수 있습니다.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_handle.png"
+      ],
+      "text": "맷돌의 손잡이에 $(item)$(k:key.use)$()을 누르면 윗돌을 돌릴 수 있습니다.",
+      "border": true
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/quern_result.png"
+      ],
+      "text": "결과물은 맷돌 위에 올려집니다. 맷돌의 아무 부분에나 $(item)$(k:key.use)$()을 누르면 아이템을 꺼낼 수 있습니다.",
+      "border": true
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/sulfur",
+      "text": "맷돌은 $(thing)황$() 같은 다양한 광석으로부터 $(thing)가루$()를 만드는 데 사용됩니다."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/plant/black_orchid",
+      "text": "$(thing)염료$()는 여러 꽃들을 갈아 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/emerald",
+      "text": "$(l:the_world/waterways#gemstones)보석들$() 역시 가루로 갈립니다."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/barley_grain",
+      "text": "$(thing)곡물 가루$() 역시 맷돌로 제작할 수 있습니다."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "recipe": "tfc:quern/fluxstone",
+      "text": "$(l:mechanics/flux)플럭스$() 역시 맷돌로 제작할 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}

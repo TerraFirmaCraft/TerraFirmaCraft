@@ -1,0 +1,99 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l램프와 초",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/lamp/bismuth_bronze",
+  "pages": [
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/chain/copper[axis=y]",
+          "Y": "tfc:metal/lamp/copper[hanging=true,lit=true]"
+        }
+      },
+      "name": "§l램프",
+      "text": "램프는 오래 가는 광원입니다. 램프는 액체 연료를 태웁니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "램프에 연료를 추가하려면 양동이를 들고 $(item)$(k:key.use)$()을 눌러야 합니다. 램프를 켜려면 $(thing)불피우개$() 등 불을 피울 수 있는 아이템을 사용하면 됩니다. 램프를 부수어도 안에 연료가 보존됩니다."
+    },
+    {
+      "type": "tfc:quern_recipe",
+      "anchor": "olives",
+      "recipe": "tfc:quern/olive",
+      "text": "램프 연료 중 하나는 $(thing)올리브유$()입니다. 제작하려면 먼저 으깬 올리브를 만들어야 합니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/jute_net",
+      "text": "황마 그물 역시 필요합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Boil the $(thing)Olive Paste$() with $(thing)Water$() in a $(l:mechanics/pot)Pot() to make $(thing)Olive Oil Water$(). Seal that in a $(l:mechanics/barrels)Barrel$() with your $(thing)Jute Net$() to produce $(thing)Olive Oil$(). Olive oil burns for 8 in-game hours for every unit of fluid."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tallow",
+      "text": "또 다른 램프 연료로는 $(thing)고래기름$()이 있습니다. 고래기름을 만들려면 5개의 $(thing)고래지방$()을 물이 담긴 $(l:mechanics/pot)냄비$()에서 끓여야 합니다. 고래기름은 한 단위당 인게임 시간으로 최대 2시간동안 탑니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:candle[candles=3,lit=true]"
+        }
+      },
+      "name": "§l초",
+      "text": "초는 $(thing)실$()을 $(thing)고래기름$()이 담긴 통에 밀봉하여 만들 수 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:metal/lamp/blue_steel[lit=true]"
+        }
+      },
+      "name": "§l용암 램프",
+      "text": "용암은 영원히 지속되는 연료지만, $(l:mechanics/steel#blue_steel)청강$() 램프에만 사용할 수 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/black_steel_chain",
+      "text": "$(thing)사슬$()은 램프를 거는 좋은 방법이며, $(l:mechanics/anvils)모루$()에서 만들 수 있습니다."
+    }
+  ],
+  "read_by_default": true
+}

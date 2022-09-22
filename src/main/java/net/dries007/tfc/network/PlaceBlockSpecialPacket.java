@@ -21,6 +21,7 @@ import net.minecraftforge.network.NetworkEvent;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.devices.PlacedItemBlock;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 
 public class PlaceBlockSpecialPacket
@@ -29,7 +30,7 @@ public class PlaceBlockSpecialPacket
     {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-            if (player != null)
+            if (player != null && TFCConfig.SERVER.enablePlacingItems.get())
             {
                 final Level level = player.getLevel();
                 final HitResult rayTrace = player.pick(5.0F, 1.0F, false);

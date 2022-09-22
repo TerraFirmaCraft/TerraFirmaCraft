@@ -30,6 +30,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableHungerBar;
     public final ForgeConfigSpec.BooleanValue enableHealthBar;
     public final ForgeConfigSpec.BooleanValue enableThirstBar;
+    public final ForgeConfigSpec.BooleanValue enableExperienceBar;
     public final ForgeConfigSpec.BooleanValue enableInkSplatter;
     public final ForgeConfigSpec.BooleanValue enableVanillaTutorialToasts;
     public final ForgeConfigSpec.IntValue effectHorizontalAdjustment;
@@ -40,6 +41,7 @@ public class ClientConfig
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
+    public final ForgeConfigSpec.BooleanValue showHoeOverlaysInInfoMods;
     public final ForgeConfigSpec.BooleanValue displayFamiliarityAsPercent;
     public final ForgeConfigSpec.BooleanValue showGuideBookLinksAlways;
     public final ForgeConfigSpec.BooleanValue showGuideBookTabInInventory;
@@ -65,6 +67,7 @@ public class ClientConfig
         enableHungerBar = builder.apply("enableHungerBar").comment("Replace the vanilla hunger bar with a TFC one.").define("enableHungerBar", true);
         enableHealthBar = builder.apply("enableHealthBar").comment("Replaces the vanilla health bar with a TFC one.").define("enableHealthBar", true);
         enableThirstBar = builder.apply("enableThirstBar").comment("Adds a TFC thirst bar over the hotbar.").define("enableThirstBar", true);
+        enableExperienceBar = builder.apply("enableExperienceBar").comment("Allows the vanilla XP bar to render.").define("enableExperienceBar", true);
         enableInkSplatter = builder.apply("enableInkSplatter").comment("Enables squids inking your screen.").define("enableInkSplatter", true);
         enableVanillaTutorialToasts = builder.apply("enableVanillaTutorialToasts").comment("Enables the vanilla tutorial toasts that appear during gameplay. These can be difficult to make disappear in modded environments, so they are disabled by default.").define("enableVanillaTutorialToasts", false);
 
@@ -99,6 +102,7 @@ public class ClientConfig
         sendProspectResultsToActionbar = builder.apply("sendProspectResultsToActionbar").comment("If prospect information should appear in the space above the hotbar (the actionbar). False will put them in the chat window.").define("sendProspectResultsToActionbar", true);
 
         showHoeOverlaysOnlyWhenShifting = builder.apply("showHoeOverlaysOnlyWhenShifting").comment("If hoe overlays (for hydration, nutrition, or temperature, shown when hovering over a plant or farmland while holding a hoe), should only be shown when the shift key is held down.").define("showHoeOverlaysOnlyWhenShifting", false);
+        showHoeOverlaysInInfoMods = builder.apply("showHoeOverlaysInInfoMods").comment("If true, mods like Jade that add info when hovering on a block will add the hoe's overlay info to the tooltip, even when not holding a hoe.").define("showHoeOverlaysInInfoMods", true);
 
         displayFamiliarityAsPercent = builder.apply("displayFamiliarityAsPercent").comment("If familiarity is displayed as a percent rather than a heart").define("displayFamiliarityAsPercent", false);
 

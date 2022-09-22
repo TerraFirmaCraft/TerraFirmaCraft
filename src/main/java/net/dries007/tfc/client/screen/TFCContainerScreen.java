@@ -9,6 +9,7 @@ package net.dries007.tfc.client.screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -55,6 +56,13 @@ public class TFCContainerScreen<C extends AbstractContainerMenu> extends Abstrac
         blit(poseStack, leftPos, topPos, 0, 0, 0, imageWidth, imageHeight, 256, 256);
     }
 
+    protected void drawCenteredLine(PoseStack stack, MutableComponent text, int y)
+    {
+        final int x = (imageWidth - font.width(text)) / 2;
+        font.draw(stack, text, x, y, 0x404040);
+    }
+
+    @Deprecated(forRemoval = true)
     protected void drawCenteredLine(PoseStack stack, String text, int y)
     {
         final int x = (imageWidth - font.width(text)) / 2;

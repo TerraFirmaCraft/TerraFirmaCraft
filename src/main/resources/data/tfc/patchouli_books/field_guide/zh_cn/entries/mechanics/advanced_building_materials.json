@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "高级建筑材料",
+  "category": "tfc:mechanics",
+  "icon": "tfc:brick/rhyolite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在你一步一步升级你的科技树的同时，你可能也会想用一些更牢固、更美观的建筑材料。你可以用$(thing)砖$()和$(thing)砂浆$()来制作$(thing)石砖块$()。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/mortar",
+      "text": "将$(thing)沙子$()混入$(l:mechanics/barrels#limewater)石灰水$()以制成砂浆。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_brick",
+      "recipe2": "tfc:crafting/rock/gneiss_bricks"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_pressure_plate",
+      "recipe2": "tfc:crafting/rock/gneiss_button"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_cracked",
+      "text": "用$(thing)锤$()可将石砖块砸成有裂纹的版本。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/quartzite_hardened",
+      "text": "砂浆也可以用来制作$(thing)硬化岩石$()。硬化岩石不会导致塌方。"
+    }
+  ],
+  "read_by_default": true
+}

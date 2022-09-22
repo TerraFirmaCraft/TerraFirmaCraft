@@ -72,7 +72,7 @@ public class SimplePotRecipe extends PotRecipe
         {
             for (int i = 0; i < Math.min(items.size(), inventory.getSlots()); i++)
             {
-                inventory.setStackInSlot(i, items.get(i).copy());
+                inventory.setStackInSlot(i + PotBlockEntity.SLOT_EXTRA_INPUT_START, items.get(i).copy());
             }
             inventory.drain(FluidHelpers.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
             inventory.fill(stack.copy(), IFluidHandler.FluidAction.EXECUTE);

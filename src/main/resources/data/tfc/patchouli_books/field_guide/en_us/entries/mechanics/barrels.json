@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)Barrels can be filled by clicking an empty one on a fluid block in the world.$()$(li)Barrels will slowly fill up with water in the rain$()$(li)Icicles melting above barrels also adds water to them$()$(li)Sealing a barrel will eject items that are not in the center slot.$()",
+      "text": "$(li)Barrels can be filled by clicking an empty one on a fluid block in the world.$()$(li)Barrels will slowly fill up with water in the rain.$()$(li)Icicles melting above barrels also adds water to them.$()$(li)Sealing a barrel will eject items that are not in the center slot.$()",
       "title": "Barrel Tips"
     },
     {
@@ -52,7 +52,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Barrels have the ability to cool $(l:mechanics/heating)hot$() items. Put a hot item in a barrel of $(thing)Water$(), $(thing)Olive Oil$(), or $(thing)Salt Water$(), and it will quickly bring its temperature lower."
+      "text": "Barrels have the ability to cool $(l:mechanics/heating)hot$() items. Put a hot item in a barrel of $(thing)Water$(), $(thing)Olive Oil$(), or $(thing)Salt Water$(), and it will quickly bring its temperature down."
     },
     {
       "type": "patchouli:text",

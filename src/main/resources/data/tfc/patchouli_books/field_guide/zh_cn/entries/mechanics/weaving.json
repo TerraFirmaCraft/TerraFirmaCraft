@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "札札弄机杼",
+  "category": "tfc:mechanics",
+  "icon": "tfc:spindle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)织布术$()是一种将线变为$(thing)布匹$()的工艺。虽然将线织成布只需要$(thing)织机$()就行了，但想要将$(l:mechanics/animal_husbandry#wooly_animals)产毛动物的$()$(thing)毛$()捻成$(thing)羊毛纱$()线就得先做一只$(thing)纺锤$()。"
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/spindle_head",
+      "text": "$(thing)纺锤头$()可以通过粘土塑形来制作。先将粘土如图捏成$(thing)未烧制的纺锤头$()$，然后在将其$(l:mechanics/heating)加热$()即可。将纺锤头与$(thing)木棍$()合成便能做出纺锤了"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wool_yarn",
+      "text": "将$(thing)羊毛$()与纺锤合成，得到$(thing)羊毛纱$()."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/acacia_loom",
+      "text": "可以用$(thing)木材$()和$(thing)木棍$()制作织机。"
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/wool_cloth",
+      "text": "每 16 卷$(thing)羊毛纱$()能够织成一匹$(thing)羊毛布$()。首先，手持羊毛纱对准织机按$(item)$(k:key.use)$()。接着持续$(item)$(k:key.use)$()点击织机。待织机处理完整匹毛布后再次按$(item)$(k:key.use)$()就可以取下布匹了。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/tutorial/loom_empty.png",
+        "tfc:textures/gui/book/tutorial/loom_full.png",
+        "tfc:textures/gui/book/tutorial/loom_working.png",
+        "tfc:textures/gui/book/tutorial/loom_done.png"
+      ],
+      "text": "织机织布的几个不同阶段。",
+      "border": true
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/wool_block",
+      "text": "$(thing)羊毛布$()可以合成成$(thing)羊毛块$()。羊毛块可以染色。"
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/silk_cloth",
+      "text": "织机可以将$(thing)蛛丝$()织成$(thing)丝绸$()。丝绸在某些配方中可以代替羊毛布。"
+    },
+    {
+      "type": "tfc:loom_recipe",
+      "recipe": "tfc:loom/burlap_cloth",
+      "text": "$(l:mechanics/crops#jute)黄麻纤维$()可以织成$(thing)粗麻布$()，但现在看来它还是没有什么用的样子。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/vanilla/color/light_blue_bed",
+      "recipe2": "tfc:crafting/vanilla/painting"
+    }
+  ],
+  "read_by_default": true
+}

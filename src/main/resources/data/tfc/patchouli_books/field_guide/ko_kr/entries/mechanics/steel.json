@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l강철",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/ingot/steel",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Steel is an advanced material which can be used to create tools and $(l:mechanics/armor)Armor$(), and comes in a few different varieties: $(thing)Steel$(), $(thing)Black Steel$(), $(thing)Red Steel$(), and $(thing)Blue Steel$().$(br2)In order to create steel, you must first create $(thing)Pig Iron$() in a $(l:mechanics/blast_furnace)Blast Furnace$(), and cast it into $(thing)Ingots$()."
+    },
+    {
+      "type": "tfc:anvil_recipe",
+      "recipe": "tfc:anvil/high_carbon_steel_ingot",
+      "text": "$(thing)선철 주괴$()는 단조하여 $(thing)고탄소강$() 주괴를 만들 수 있으며, 다시 단조하면 $(thing)강철 주괴$()가 됩니다"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "black_steel",
+      "text": "$(thing)흑강$()은 강철을 다른 금속들과 합금하여 만드는 강화된 강철입니다. 흑강을 만들기 위해서는 $(l:mechanics/crucible)도가니$()에서 $(thing)약강철$()을 만들어야 합니다.",
+      "title": "§l흑강"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_steel",
+      "title": "§l약강철",
+      "link_recipes": false,
+      "text": "$(br)$(bold)합금 비율:$()$(br)$(li)50 - 70 % : $(thing)강철$()$(li)15 - 25 % : $(thing)니켈$()$(li)15 - 25 % : $(thing)헤파티존$()$(br2)녹은 $(thing)약강철$()은 주조하여 주괴로 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_black_steel_ingot",
+      "text": "$(thing)약강철 주괴$()는 다시 $(thing)선철 주괴$()와 용접하여 $(thing)고탄소 흑강 주괴$()를 만들 수 있습니다. 마지막으로, 고탄소 흑강 주괴를 $(l:mechanics/anvils)모루$()로 단조하면 $(thing)흑강 주괴$()를 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Black Steel$() can be used to craft tools and $(l:mechanics/armor)Armor$(), and also is used as a key ingredient in the creation of $(l:mechanics/steel#blue_steel)Blue Steel$() and $(l:mechanics/steel#red_steel)Red Steel$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "blue_steel",
+      "text": "$(thing)청강$()은 $(l:mechanics/steel#red_steel)적강$()과 더불어 가장 높은 티어의 금속 중 하나입니다. $(l:mechanics/steel#black_steel)흑강$()과 비슷하게 첫 단계는 $(thing)약한 청강$()을 $(l:mechanics/crucible)도가니$()에서 만드는 것입니다.",
+      "title": "§l청강"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_blue_steel",
+      "title": "§l약한 청강",
+      "link_recipes": false,
+      "text": "$(br)$(bold)합금 비율:$()$(br)$(li)50 - 55 % : $(thing)흑강$()$(li)20 - 25 % : $(thing)강철$()$(li)10 - 15 % : $(thing)비스무트 청동$()$(li)10 - 15 % : $(thing)스털링 실버$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_blue_steel_ingot",
+      "text": "$(thing)약한 청강 주괴$()는 $(l:mechanics/steel#black_steel)흑강 주괴$()와 용접하여 $(thing)고탄소 청강 주괴$()를 만들 수 있습니다. 마지막으로, 고탄소 청강 주괴를 $(l:mechanics/anvils)모루$()로 단조하면 $(thing)청강 주괴$()를 얻을 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Blue Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Blue Steel Bucket$(). The blue steel bucket is a powerful bucket capable of transporting source blocks of lava and molten metals. Blue steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "red_steel",
+      "text": "$(thing)적강$()은 $(l:mechanics/steel#blue_steel)청강$()과 더불어 가장 높은 티어의 금속 중 하나입니다. $(l:mechanics/steel#black_steel)흑강$()과 비슷하게 첫 단계는 $(thing)약한 적강$()을 $(l:mechanics/crucible)도가니$()에서 만드는 것입니다.",
+      "title": "§l적강"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/weak_red_steel",
+      "title": "§l약한 적강",
+      "link_recipes": false,
+      "text": "$(br)$(bold)합금 비율:$()$(br)$(li)50 - 55 % : $(thing)흑강$()$(li)20 - 25 % : $(thing)강철$()$(li)10 - 15 % : $(thing)황동$()$(li)10 - 15 % : $(thing)로즈골드$()$(br2)"
+    },
+    {
+      "type": "tfc:welding_recipe",
+      "recipe": "tfc:welding/high_carbon_red_steel_ingot",
+      "text": "$(thing)약한 적강 주괴는$() $(l:mechanics/steel#black_steel)흑강 주괴$()와 용접하여 $(thing)고탄소 적강 주괴$()를 만들 수 있습니다. 마지막으로, 고탄소 적강 주괴를 $(l:mechanics/anvils)모루$()로 단조하면 $(thing)청강 주괴$()를 얻을 수 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Red Steel$() can be used to create tools and $(l:mechanics/armor)Armor$(), and a $(thing)Red Steel Bucket$(). The red steel bucket is a powerful bucket capable of transporting source blocks of water and other fluids. Red steel is also used as a crafting ingredient in one of the most sought after items in the game... a $(thing)Bucket$()."
+    }
+  ],
+  "read_by_default": true
+}

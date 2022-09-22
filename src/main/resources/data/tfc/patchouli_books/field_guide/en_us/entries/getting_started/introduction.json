@@ -89,7 +89,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "In addition to knives, you will likely want to craft a couple other tools. $(thing)Axes$() can be used to chop down trees (finally!), and also make a useful weapon. $(thing)Hammers$() can be used as a crushing weapon, but can also be used to turn logs into sticks by breaking log blocks with the hammer."
+      "text": "In addition to knives, you will likely want to craft a couple other tools. $(thing)Axes$() can be used to chop down trees (finally!), and also make a useful weapon. $(thing)Hammers$() can be used as a crushing weapon, but can also be used to turn logs into sticks by breaking log blocks."
     },
     {
       "type": "patchouli:text",

@@ -19,6 +19,9 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+/**
+ * todo: 1.19 remove, as tags can be used directly as top level holder sets without requiring multiple feature
+ */
 @Mixin(BiomeSource.class)
 public abstract class BiomeSourceMixin
 {

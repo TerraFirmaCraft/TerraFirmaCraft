@@ -31,7 +31,7 @@ public final class RecipeHelpers
 {
     private static final ThreadLocal<CraftingContainer> CRAFTING_CONTAINER = ThreadLocal.withInitial(() -> null);
 
-    public static void setCraftingContainer(CraftingContainer container)
+    public static void setCraftingContainer(@Nullable CraftingContainer container)
     {
         CRAFTING_CONTAINER.set(container);
     }

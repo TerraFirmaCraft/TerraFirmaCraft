@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Crucible$() is an advanced device used for the creation of $(l:mechanics/crucible#advanced_alloying)Alloys$(). It is a more precise method than using a $(l:getting_started/primitive_alloys)Small Vessel$() to make alloys.$(br2)To obtain a crucible, you will first need to obtain some $(l:mechanics/fire_clay)Fire Clay$(), which is a stronger material than clay. This fire clay can then be knapped to shape it into and $()Unfired Crucible$()."
+      "text": "A $(thing)Crucible$() is an advanced device used for the creation of $(l:mechanics/crucible#advanced_alloying)Alloys$(). It is a more precise method than using a $(l:getting_started/primitive_alloys)Small Vessel$() to make alloys.$(br2)To obtain a crucible, you will first need to obtain some $(l:mechanics/fire_clay)Fire Clay$(), which is a stronger material than clay. This fire clay can then be knapped to shape it into an $()Unfired Crucible$()."
     },
     {
       "type": "tfc:fire_clay_knapping_recipe",

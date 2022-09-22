@@ -58,7 +58,7 @@
       "type": "patchouli:spotlight",
       "item": "tfc:powder/sylvite",
       "link_recipes": false,
-      "text": "Sylvite is made from its ore. $(br)$(li)$(6)Phosphorous: 50$()"
+      "text": "Sylvite is made from its ore. $(br)$(li)$(d)Potassium: 50$()"
     }
   ],
   "read_by_default": true

@@ -1,0 +1,108 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "砧",
+  "category": "tfc:mechanics",
+  "icon": "tfc:metal/anvil/copper",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "砧是开展冶金大业必不可少的工具。砧的主要作用是焊接金属锭，或将它们锻造成各种不同的工具和装备。$(br2)$(l:mechanics/anvils#working)锻造$()是指将一块金属锭打造成其他形状，以便于将其制成某些工具或装备的工艺。而$(l:mechanics/anvils#welding)焊接$()则是指将两块金属锭或其他金属部件粘连在一起物品的工艺。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "#tfc:anvils"
+        }
+      },
+      "name": "",
+      "text": "各式各样的金属砧",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/metal/anvil/copper",
+      "text": "砧是由它们对应的金属$(thing)双锭$()制作的。在获得你的第一个砧前，你只能使用最原始的$(l:getting_started/primitive_anvils)石砧$()。有了石砧，你就可以用它来$(l:mechanics/anvils#welding)焊接$()出$(thing)铜双锭$()了。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tiers",
+      "text": "砧是分$(thing)等级$()的。等级决定了什么样的金属和材料可以在这个砧上加工。只有等级和砧相同或比砧低的材料才可以在砧上锻造，而能在砧上焊接的金属的最大等级为砧的等级 +1。$(br)$(li)$(bold)第零级$()：石砧$(li)$(bold)第一级$()：铜$(li)$(bold)第二级$()：铋铜、黑铜、青铜$(li)$(bold)第三级$()：锻铁$(li)$(bold)第四级$()：钢$(li)$(bold)第五级$()：黑钢$(li)$(bold)第六级$()；红钢、蓝钢"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "working",
+      "text": "与砧互动就能打开砧界面，如右图所示。屏幕左侧的两个空格是用来放置需要加工的物品的。锻造素材必须放在右边那格——左边那格只有焊接时才会用到。锻造时，必须手持、或在右侧空格内放置一柄$(thing)锤$()。每次加工时，锤都会略微磨损。",
+      "title": "如何锻造"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/anvil_empty.png"
+      ],
+      "text": "砧界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "开工前，你必须先选择锻造$(thing)目标$()。$(item)$(k:key.attack)$()点击卷轴图标打开目标一览，选择完后会自动返回砧界面，且卷轴图标会转变为你刚刚选择的物品，同时屏幕上方的三个空格会显示当前目标所需的$(thing)锻造规则$()。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/anvil_in_use.png"
+      ],
+      "text": "案例：选择镐头作为目标",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "屏幕的最中间有一根长条和一红一绿两个指针。$(2)绿色指针$()表示了目前的锻造进度。$(4)红色指针$()表示了锻造目标。你需要做的，就是将绿色指针与红色指针对齐。",
+      "title": "完成锻造目标"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(br2)屏幕正中的$(4)红色$()与$(2)绿色$()按钮代表了不同的$(thing)锻造手法$()。使用$(2)绿色$()手法会将绿色指针向$(bold)右$()移动，而使用$(4)红色$()手法则会将绿色指针向$(bold)左$()移动。注意！如果你把绿色指针打出了屏幕，锻造素材就作废了！然而，单单将两个指针对齐是不够的。你还必须遵守额外的$(thing)锻造规则$()……"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "每个目标都会有两到三个$(thing)锻造规则$()，标注在屏幕顶部。锻造规则要求你按照特定的顺序使用特定的锻造手法来完成目标。比如，如果一个锻造规则要求“$(2)弯曲 倒数第二$()”，则你将指针对齐前的倒数第二个手法必须是“$(2)弯曲$()”",
+      "title": "锻造规则"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "锻造规则下方会显示你最后使用的三个锻造手法。被满足的锻造规则的轮廓会变为绿色。只有当所有锻造规则都被满足，且两个指针也对齐时才算锻造成功。$(br2)最后，别忘了留意锻造素材的$(l:mechanics/heating)温度$()。金属锭只有在温度足够高时（其工具提示会显示“可加工”）才可以用来锻造。锻造到一半的物品可以从砧上取出再加热，其锻造进度会保留。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "锻造可不是件容易活儿。新手往往需要将素材来回敲打多次才能做好，而老手便能一气呵成。对于某些锻造目标（比如工具头）来说，如果能在几步内就做成，锻造出来的成品的$(thing)锻造评价$()会提升。用评价高的工具头做出来的工具会有一定的属性加成。",
+      "title": "锻造评价"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/pickaxe/wrought_iron{\"tfc:forging_bonus\":4}",
+      "title": "完美！",
+      "link_recipes": false,
+      "text": "有四种不同的锻造评价：$(li)粗糙$(li)合格$(li)精良$(li)完美！$(br2)根据工具类型的不同，这些词条会改变工具的耐久度、挖掘速度、和伤害等属性。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "welding",
+      "text": "焊接是指将两块金属锭或其他金属部件粘连在一起的工艺。$(l:getting_started/primitive_anvils)石砧$()和金属砧都可以进行焊接。$(br2)首先，将要焊接的两件物品加热到足以焊接的$(l:mechanics/heating)温度$()（工具提示会显示“可焊接”）。",
+      "title": "如何焊接"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "将两件物品放在砧上（手持物品按住$(item)$(k:key.sneak)$()的同时按$(item)$(k:key.use)$()，或打开界面手动放入都行）。砧上还必须至少有一份$(l:mechanics/flux)助焊剂$()。材料都放好后，手持任意$(thing)锤$()对准砧按住$(item)$(k:key.sneak)$()的同时按$(item)$(k:key.use)$()。只要听见锤击的音效，且两件物品合二为一就说明完成了。焊接好的物品可以用空手从砧上取出。"
+    }
+  ],
+  "read_by_default": true
+}

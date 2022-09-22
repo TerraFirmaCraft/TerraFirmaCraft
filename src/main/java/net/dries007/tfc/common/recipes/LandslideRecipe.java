@@ -54,10 +54,10 @@ public class LandslideRecipe extends SimpleBlockRecipe
     }
 
     /**
-     * Tries to cause a land slide from a given block
+     * Tries to cause a landslide from a given block
      *
      * @param state {@code level.getBlockState(pos)}
-     * @return true if a land slide actually occurred
+     * @return true if a landslide actually occurred
      */
     @SuppressWarnings("UnusedReturnValue")
     public static boolean tryLandslide(Level level, BlockPos pos, BlockState state)

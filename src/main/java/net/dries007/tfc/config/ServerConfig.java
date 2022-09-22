@@ -44,6 +44,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
+    public final ForgeConfigSpec.BooleanValue enablePlantsSlowEntities;
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
@@ -53,6 +54,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue torchTicks;
     // Blocks - Torch
     public final ForgeConfigSpec.IntValue candleTicks;
+    // Blocks - Drying Bricks
+    public final ForgeConfigSpec.IntValue mudBricksTicks;
     // Blocks - Charcoal Pit
     public final ForgeConfigSpec.IntValue charcoalTicks;
     // Blocks - Pit Kiln
@@ -86,6 +89,12 @@ public class ServerConfig
     // Blocks - Thatch Bed
     public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
     public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
+    public final ForgeConfigSpec.BooleanValue thatchBedNoSleepInThunderstorms;
+    // Blocks - Item Size
+    public final ForgeConfigSpec.EnumValue<Size> maxPlacedItemSize;
+    public final ForgeConfigSpec.EnumValue<Size> maxPlacedLargeItemSize;
+    public final ForgeConfigSpec.BooleanValue enablePlacingItems;
+    public final ForgeConfigSpec.BooleanValue usePlacedItemWhitelist;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
     // Items - Small Vessel
@@ -207,6 +216,7 @@ public class ServerConfig
         innerBuilder.pop().push("plants");
 
         plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.05, 0, 1);
+        enablePlantsSlowEntities = builder.apply("enablePlantsSlowEntities").comment("[Requires MC Restart] If grass and other plants will slow players that move through them.").define("enablePlantsSlowEntities", true);
 
         innerBuilder.pop().push("leaves");
 
@@ -227,6 +237,10 @@ public class ServerConfig
         innerBuilder.pop().push("candle");
 
         candleTicks = builder.apply("candleTicks").comment("Number of ticks required for a candle to burn out (1000 = 1 in game hour = 50 seconds), default is 264 hours. Set to -1 to disable candle burnout.").defineInRange("candleTicks", 264000, -1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("dryingBricks");
+
+        mudBricksTicks = builder.apply("mudBricksTicks").comment("Number of ticks required for mud bricks to dry (1000 = 1 in game hour = 50 seconds), default is 24 hours. Set to -1 to disable drying.").defineInRange("mudBricksTicks",  24000, -1, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("charcoal");
 
@@ -283,10 +297,18 @@ public class ServerConfig
 
         enableThatchBedSpawnSetting = builder.apply("enableThatchBedSpawnSetting").comment("If true, thatch beds can set the player's spawn.").define("enableThatchBedSpawnSetting", true);
         enableThatchBedSleeping = builder.apply("enableThatchBedSleeping").comment("If true, the player can sleep the night in a thatch bed").define("enableThatchBedSleeping", false);
+        thatchBedNoSleepInThunderstorms = builder.apply("thatchBedNoSleepInThunderstorms").comment("If true, the player cannot sleep in thatch beds during thunderstorms.").define("thatchBedNoSleepInThunderstorms", true);
 
         innerBuilder.pop().push("leaves");
 
         enableLeavesDecaySlowly = builder.apply("enableLeavesDecaySlowly").comment("If true, then leaves will decay slowly over time when disconnected from logs (vanilla behavior), as opposed to instantly (TFC behavior).").define("enableLeavesDecaySlowly", false);
+
+        innerBuilder.pop().push("placedItems");
+
+        maxPlacedItemSize = builder.apply("maxPlacedItemSize").comment("The maximum size of items that can be placed as 4 items on the ground with V. If an item is larger than this, it could still be placed with the 'maxPlacedLargeItemSize' option.").defineEnum("maxPlacedItemSize", Size.LARGE);
+        maxPlacedLargeItemSize = builder.apply("maxPlacedLargeItemSize").comment("The maximum size of items that can be placed as a single item on the ground with V. Items are checked to see if they're the right size to be placed in a group of 4 items first.").defineEnum("maxPlacedLargeItemSize", Size.HUGE);
+        enablePlacingItems = builder.apply("enablePlacingItems").comment("If true, players can place items on the ground with V.").define("enablePlacingItems", true);
+        usePlacedItemWhitelist = builder.apply("usePlacedItemWhitelist").comment("If true, the tag 'tfc:placed_item_whitelist' will be checked to allow items to be in placed items and will exclude everything else.").define("usePlacedItemWhitelist", false);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

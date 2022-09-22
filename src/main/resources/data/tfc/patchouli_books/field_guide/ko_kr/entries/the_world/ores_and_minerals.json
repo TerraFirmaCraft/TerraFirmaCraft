@@ -1,0 +1,1100 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l광석과 광물",
+  "category": "tfc:the_world",
+  "icon": "tfc:ore/normal_hematite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft에서 광석과 광물들은 흔하지 않습니다. 바닐라와 다르게, 광석들은 $(l:mechanics/prospecting)탐색기$()로 찾을 수 있는 거대하지만 드문 광맥에서 찾을 수 있습니다. 각각의 광물마다 발견할 수 있는 암석 종류나 고도가 다릅니다. 따라서 원하는 광석을 찾기 위해서는 올바른 고도에서 올바른 암석의 종류를 찾는 것이 중요합니다."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "또한, 몇몇 광석들에는 $(thing)등급$()이 있습니다. 광석 블록은 빈약하거나, 평범하거나, 또는 풍부할 수 있으며 각각의 광맥들은 각 종류의 블록마다 다른 밀집도를 가지고 있습니다. $(thing)풍부한$() 광맥일수록 더 효율적입니다.$(br2)다음 페이지에는 다양한 종류의 광석들과 광석들을 찾아야 하는 곳에 대한 정보가 있습니다."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_copper",
+      "text": "자연동은 $(thing)구리$() 광석입니다. 모든 고도에서 발견할 수 있지만, 깊은 광맥일수록 대체로 풍부합니다. 자연동은 $(l:the_world/geology#igneous_extrusive)화산암$()에서 찾을 수 있습니다.",
+      "title": "§l자연동"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "석영안산암 속의 자연동 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_copper/dacite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_copper/dacite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_gold",
+      "text": "자연금은 $(thing)금$() 광석입니다. Y 좌표 60 이하에서 발견할 수 있으며, 깊은 광맥일수록 대체로 풍부합니다. 자연금은 $(l:the_world/geology#igneous_extrusive)화산암$()과 $(l:the_world/geology#igneous_intrusive)심성암$()에서 찾을 수 있습니다.",
+      "title": "§l자연금"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "섬록암 속의 자연금 광석",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_gold/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_gold/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_gold/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "native_silver",
+      "text": "자연은은 $(thing)은$() 광석입니다. Y 좌표 -32 이상 100 이하에서 발견할 수 있습니다. 자연은은 $(thing)화강암$() 또는 $(thing)편마암$()에서 많이 발견되지만, 작고 빈약한 광맥들은 아무 $(l:the_world/geology#metamorphic)변성암$()에서도 찾을 수 있습니다.",
+      "title": "Native Silver"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "화강암 속의 자연은 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_native_silver/granite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_native_silver/granite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "hematite",
+      "text": "적철석은 $(thing)철$() 광석입니다. Y 좌표 75 이하에서 발견할 수 있습니다. 적철석은 $(l:the_world/geology#igneous_extrusive)화산암$()에서 찾을 수 있습니다.",
+      "title": "§l적철석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "안산암 속의 적철석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_hematite/andesite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_hematite/andesite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "cassiterite",
+      "text": "주석석은 $(thing)주석$() 광석입니다. 모든 고도에서 발견할 수 있지만, 깊은 광맥일수록 대체로 풍부합니다. 주석석은 $(l:the_world/geology#igneous_intrusive)심성암$()에서 찾을 수 있습니다.$(br2)$(thing)화강암$()에서, 주석석 광맥은 $(thing)토파즈$()를 약간 포함할 수도 있습니다.",
+      "title": "§l주석석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "섬록암 속의 주석석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_cassiterite/diorite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_cassiterite/diorite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "bismuthinite",
+      "text": "휘창연석은 $(thing)비스무트$() 광석입니다. 모든 고도에서 발견할 수 있지만, 깊은 광맥일수록 대체로 풍부합니다. 휘창연석은 $(l:the_world/geology#igneous_intrusive)심성암$()과 $(l:the_world/geology#sedimentary)퇴적암$()에서 찾을 수 있습니다.",
+      "title": "§l휘창연석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "셰일 속의 휘창연석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_bismuthinite/shale"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_bismuthinite/shale"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "garnierite",
+      "text": "규니켈석은 $(thing)니켈$() 광석입니다. Y 좌표 -32 이상 100 이하에서 발견할 수 있습니다. 규니켈석은 $(thing)반려암$()에서 많이 발견되지만, 작고 빈약한 광맥들은 아무 $(l:the_world/geology#igneous_intrusive)심성암$()에서도 찾을 수 있습니다.",
+      "title": "§l규니켈석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "반려암 속의 규니켈석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_garnierite/gabbro"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_garnierite/gabbro"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "malachite",
+      "text": "공작석은 $(thing)구리$() 광석입니다. Y 좌표 -32 이상 100 이하에서 발견할 수 있습니다. 공작석은 $(thing)대리암$()이나 $(thing)석회암$()에서 많이 발견되지만, 작고 빈약한 광맥들은 $(thing)천매암$(), $(thing)백악$(), 그리고 $(thing)백운암$()에서도 찾을 수 있습니다.$(br2)$(thing)석회암$()에서, 공작석 광맥은 $(thing)석고$()를 약간 포함할 수도 있습니다.",
+      "title": "§l공작석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "대리암 속의 공작석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_malachite/marble"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_malachite/marble"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "magnetite",
+      "text": "자철석은 $(thing)철$() 광석입니다. Y 좌표 60 이하에서 발견할 수 있으며, 깊은 광맥일수록 대체로 풍부합니다. 자철석은 $(l:the_world/geology#sedimentary)퇴적암$()에서 발견할 수 있습니다.",
+      "title": "§l자철석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "석회암 속의 자철석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_magnetite/limestone"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_magnetite/limestone"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "limonite",
+      "text": "갈철석은 $(thing)철$() 광석입니다. Y 좌표 60 이하에서 발견할 수 있으며, 깊은 광맥일수록 대체로 풍부합니다. 갈철석은 $(l:the_world/geology#sedimentary)퇴적암$()에서 발견할 수 있습니다.$(br2)$(thing)석회암$()이나 $(thing)셰일$()에서, 갈철석 광맥은 $(thing)루비$()를 약간 포함할 수도 있습니다.",
+      "title": "§l갈철석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "백악 속의 갈철석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_limonite/chalk"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_limonite/chalk"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "sphalerite",
+      "text": "섬아연석은 $(thing)아연$() 광석입니다. 모든 고도에서 발견할 수 있지만, 깊은 광맥일수록 대체로 풍부합니다. 섬아연석은 $(l:the_world/geology#metamorphic)변성암$()에서 찾을 수 있습니다.",
+      "title": "§l섬아연석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "규암 속의 섬아연석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_sphalerite/quartzite"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_sphalerite/quartzite"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "tetrahedrite",
+      "text": "사면동석은 $(thing)구리$() 광석입니다. 모든 고도에서 발견할 수 있지만, 깊은 광맥일수록 대체로 풍부합니다. 사면동석은 $(l:the_world/geology#metamorphic)변성암$()에서 찾을 수 있습니다.",
+      "title": "§l사면동석"
+    },
+    {
+      "type": "tfc:multimultiblock",
+      "text": "편암 속의 사면동석 광석.",
+      "multiblocks": [
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/poor_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/normal_tetrahedrite/schist"
+          }
+        },
+        {
+          "pattern": [
+            [
+              "X"
+            ],
+            [
+              "0"
+            ]
+          ],
+          "mapping": {
+            "X": "tfc:ore/rich_tetrahedrite/schist"
+          }
+        }
+      ]
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "bituminous_coal",
+      "item": "tfc:ore/bituminous_coal",
+      "title": "§l역청탄",
+      "link_recipes": false,
+      "text": "역청탄은 $(thing)석탄$()의 종류 중 하나입니다. Y 좌표 0 이상에서 발견할 수 있습니다. 역청탄은 $(l:the_world/geology#sedimentary)퇴적암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/bituminous_coal/chert"
+        }
+      },
+      "name": "",
+      "text": "각암 속의 역청탄.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lignite",
+      "item": "tfc:ore/lignite",
+      "title": "§l갈탄",
+      "link_recipes": false,
+      "text": "갈탄은 $(thing)석탄$()의 종류 중 하나입니다. Y 좌표 100 이하에서 발견할 수 있습니다. 갈탄은 $(l:the_world/geology#sedimentary)퇴적암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lignite/dolomite"
+        }
+      },
+      "name": "",
+      "text": "백운암 속의 갈탄.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "kaolinite",
+      "item": "tfc:ore/kaolinite",
+      "title": "§l고령석",
+      "link_recipes": false,
+      "text": "고령석은 $(l:mechanics/fire_clay)내화점토$() 제작에 사용되는 $(thing)광물$()입니다. Y 좌표 0 이상에서 발견할 수 있습니다. 고령석은 $(l:the_world/geology#sedimentary)퇴적암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/kaolinite/claystone"
+        }
+      },
+      "name": "",
+      "text": "점토암 속의 고령석.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "graphite",
+      "item": "tfc:ore/graphite",
+      "title": "§l흑연",
+      "link_recipes": false,
+      "text": "흑연은 $(l:mechanics/fire_clay)내화점토$() 제작에 사용되는 $(thing)광물$() 입니다. Y 좌표 100 이하에서 발견할 수 있습니다. 흑연은 $(thing)편마암$(), $(thing)대리암$(), $(thing)규암$(), 그리고 $(thing)편암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/graphite/gneiss"
+        }
+      },
+      "name": "",
+      "text": "편마암 속의 흑연.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cinnabar",
+      "item": "tfc:ore/cinnabar",
+      "title": "§l진사",
+      "link_recipes": false,
+      "text": "진사는 $(l:mechanics/quern)맷돌$()로 갈아 $(thing)레드스톤 가루$()를 얻는 데 사용되는 $(thing)광물$()입니다. Y 좌표 100 이하에서 발견할 수 있습니다. 진사는 $(l:the_world/geology#igneous_intrusive)심성암$(), $(thing)규암$() 그리고 $(thing)셰일$()에서 찾을 수 있습니다.$(br2)$(thing)규암$()에서, 진사 광맥은 $(thing)오팔$()을 약간 포함할 수도 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cinnabar/quartzite"
+        }
+      },
+      "name": "",
+      "text": "규암 속의 진사.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "cryolite",
+      "item": "tfc:ore/cryolite",
+      "title": "§l빙정석",
+      "link_recipes": false,
+      "text": "빙정석은 $(l:mechanics/quern)맷돌$()로 갈아 $(thing)레드스톤 가루$()를 얻는 데 사용되는 $(thing)광물$()입니다. Y 좌표 100 이하에서 발견할 수 있습니다. 빙정석은 유일하게 $(thing)화강암$()에서만 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/cryolite/granite"
+        }
+      },
+      "name": "",
+      "text": "화강암 속의 빙정석.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "saltpeter",
+      "item": "tfc:ore/saltpeter",
+      "title": "§l초석",
+      "link_recipes": false,
+      "text": "초석은 $(l:mechanics/quern)맷돌$()로 갈아 $(thing)화약$() 제작에 사용되는 $(thing)광물$()입니다. Y 좌표 100 이하에서 발견할 수 있습니다. 초석은 $(l:the_world/geology#sedimentary)퇴적암$()에서 찾을 수 있습니다.$(br2)$(thing)석회암에서$(), 초석 광맥은 $(thing)석고$()를 약간 포함할 수도 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/saltpeter/shale"
+        }
+      },
+      "name": "",
+      "text": "셰일 속의 초석.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sulfur",
+      "item": "tfc:ore/sulfur",
+      "title": "§l황",
+      "link_recipes": false,
+      "text": "황은 $(l:mechanics/quern)맷돌$()로 갈아 $(thing)화약$() 제작에 사용되는 $(thing)광물$()입니다. Y 좌표 0 이상에서 발견할 수 있습니다. 황은 $(l:the_world/geology#igneous_extrusive)화산암$()에서 찾을 수 있습니다. 더 흔하게는 $(thing)화산$() 지대에서 높은 고도의 $(l:the_world/geology#igneous_extrusive)화산암$()과 $(l:the_world/geology#igneous_intrusive)심성암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sulfur/basalt"
+        }
+      },
+      "name": "",
+      "text": "현무암 속의 황.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "sylvite",
+      "item": "tfc:ore/sylvite",
+      "title": "§l칼리암염",
+      "link_recipes": false,
+      "text": "칼리암염은 $(l:mechanics/quern)맷돌$()로 갈아 $(thing)비료$()로 사용할 수 있는 $(thing)광물$()입니다. Y 좌표 0 이상에서 발견할 수 있습니다. 칼리암염은 $(thing)셰일$(), $(thing)점토암$() 그리고 $(thing)각암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/sylvite/chert"
+        }
+      },
+      "name": "",
+      "text": "각암 속의 칼리암염.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "borax",
+      "item": "tfc:ore/borax",
+      "title": "§l붕사",
+      "link_recipes": false,
+      "text": "붕사 $(l:mechanics/quern)맷돌$()로 갈아 $(thing)플럭스$()를 얻는 데 사용되는 $(thing)광물$()입니다. Y 좌표 0 이상에서 발견할 수 있습니다. 붕사는 $(thing)점토암$(), $(thing)석회암$(), 그리고 $(thing)셰일$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/borax/shale"
+        }
+      },
+      "name": "",
+      "text": "셰일 속의 붕사.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "lapis_lazuli",
+      "item": "tfc:ore/lapis_lazuli",
+      "title": "§l청금석",
+      "link_recipes": false,
+      "text": "청금석은 $(thing)염료$() 제작에 사용될 수 있는 장식용 $(thing)광물$()입니다. Y 좌표 100 이하에서 발견될 수 있습니다. 청금석은 $(thing)석회암$()과 $(thing)대리암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/lapis_lazuli/limestone"
+        }
+      },
+      "name": "",
+      "text": "석회암 속의 청금석.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "gypsum",
+      "item": "tfc:ore/gypsum",
+      "title": "§l석고",
+      "link_recipes": false,
+      "text": "석고는 $(l:getting_started/building_materials#alabaster)건축$()에 사용될 수 있는 장식용 $(thing)광물$()입니다. Y 좌표 30 이상 90 이하에서 조밀한 고리 모양으로 나타납니다. 석고는 $(l:the_world/geology#metamorphic)변성암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/gypsum/phyllite"
+        }
+      },
+      "name": "",
+      "text": "천매암 속의 석고.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "halite",
+      "item": "tfc:ore/halite",
+      "title": "§l암염",
+      "link_recipes": false,
+      "text": "암염은 $(l:mechanics/quern)맷돌$()로 갈아 $(thing)소금$()을 얻을 수 있는 $(thing)광물$()로, 소금은 $(l:mechanics/decay#salting)음식 보존$()에 중요합니다. Y 좌표 30 이상 90 이하에서 조밀한 고리 모양으로 나타납니다. 암염은 $(l:the_world/geology#sedimentary)퇴적암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/halite/chalk"
+        }
+      },
+      "name": "",
+      "text": "백악 속의 암염.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "emerald",
+      "item": "tfc:ore/emerald",
+      "title": "§l에메랄드",
+      "link_recipes": false,
+      "text": "에메랄드는 장식용 $(thing)보석$()입니다. 꽤 예뻐 보이는데, 어쩌면 이 고독한 세상에서 누군가와 거래할 수 있을지도 모르겠네요...$(br2)에메랄드는 최대 60블록까지 수직적으로 광석이 생성됩니다. $(l:the_world/geology#igneous_intrusive)심성암$()에서 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/emerald/diorite"
+        }
+      },
+      "name": "",
+      "text": "섬록암 속의 에메랄드.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:spotlight",
+      "anchor": "diamond",
+      "item": "tfc:ore/diamond",
+      "title": "§l킴벌라이트",
+      "link_recipes": false,
+      "text": "킴벌라이트는 귀중한 장식용 $(thing)보석$()입니다. 킴벌라이트는 $(l:https://en.wikipedia.org/wiki/Volcanic_pipe)킴벌라이트 파이프$()라는 구조로 최대 60블록까지 수직적으로 광석이 생성됩니다. 유일하게 $(thing)반려암$()에서만 찾을 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/diamond/gabbro"
+        }
+      },
+      "name": "",
+      "text": "반려암 속의 킴벌라이트.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 3,
+  "extra_recipe_mappings": {
+    "tfc:ore/small_native_copper": 2,
+    "tfc:ore/poor_native_copper": 2,
+    "tfc:ore/normal_native_copper": 2,
+    "tfc:ore/rich_native_copper": 2,
+    "tfc:ore/small_native_gold": 4,
+    "tfc:ore/poor_native_gold": 4,
+    "tfc:ore/normal_native_gold": 4,
+    "tfc:ore/rich_native_gold": 4,
+    "tfc:ore/small_native_silver": 6,
+    "tfc:ore/poor_native_silver": 6,
+    "tfc:ore/normal_native_silver": 6,
+    "tfc:ore/rich_native_silver": 6,
+    "tfc:ore/small_hematite": 8,
+    "tfc:ore/poor_hematite": 8,
+    "tfc:ore/normal_hematite": 8,
+    "tfc:ore/rich_hematite": 8,
+    "tfc:ore/small_cassiterite": 10,
+    "tfc:ore/poor_cassiterite": 10,
+    "tfc:ore/normal_cassiterite": 10,
+    "tfc:ore/rich_cassiterite": 10,
+    "tfc:ore/small_bismuthinite": 12,
+    "tfc:ore/poor_bismuthinite": 12,
+    "tfc:ore/normal_bismuthinite": 12,
+    "tfc:ore/rich_bismuthinite": 12,
+    "tfc:ore/small_garnierite": 14,
+    "tfc:ore/poor_garnierite": 14,
+    "tfc:ore/normal_garnierite": 14,
+    "tfc:ore/rich_garnierite": 14,
+    "tfc:ore/small_malachite": 16,
+    "tfc:ore/poor_malachite": 16,
+    "tfc:ore/normal_malachite": 16,
+    "tfc:ore/rich_malachite": 16,
+    "tfc:ore/small_magnetite": 18,
+    "tfc:ore/poor_magnetite": 18,
+    "tfc:ore/normal_magnetite": 18,
+    "tfc:ore/rich_magnetite": 18,
+    "tfc:ore/small_limonite": 20,
+    "tfc:ore/poor_limonite": 20,
+    "tfc:ore/normal_limonite": 20,
+    "tfc:ore/rich_limonite": 20,
+    "tfc:ore/small_sphalerite": 22,
+    "tfc:ore/poor_sphalerite": 22,
+    "tfc:ore/normal_sphalerite": 22,
+    "tfc:ore/rich_sphalerite": 22,
+    "tfc:ore/small_tetrahedrite": 24,
+    "tfc:ore/poor_tetrahedrite": 24,
+    "tfc:ore/normal_tetrahedrite": 24,
+    "tfc:ore/rich_tetrahedrite": 24,
+    "tfc:ore/bituminous_coal": 26,
+    "tfc:ore/lignite": 28,
+    "tfc:ore/kaolinite": 30,
+    "tfc:ore/graphite": 32,
+    "tfc:ore/cinnabar": 34,
+    "tfc:ore/cryolite": 36,
+    "tfc:ore/saltpeter": 38,
+    "tfc:ore/sulfur": 40,
+    "tfc:ore/sylvite": 42,
+    "tfc:ore/borax": 44,
+    "tfc:ore/lapis_lazuli": 46,
+    "tfc:ore/gypsum": 48,
+    "tfc:ore/halite": 50,
+    "tfc:ore/emerald": 52,
+    "tfc:ore/diamond": 54
+  }
+}

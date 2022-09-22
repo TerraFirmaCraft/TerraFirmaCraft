@@ -8,7 +8,12 @@
     }
   },
   "result_item": {
-    "item": "tfc:food/rice_bread"
+    "stack": {
+      "item": "tfc:food/rice_bread"
+    },
+    "modifiers": [
+      "tfc:copy_food"
+    ]
   },
   "temperature": 200
 }

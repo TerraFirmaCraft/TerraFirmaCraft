@@ -12,7 +12,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -26,6 +25,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -37,6 +37,7 @@ import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Tooltips;
 import org.jetbrains.annotations.Nullable;
 
 public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, IItemSize
@@ -124,7 +125,11 @@ public class CrucibleBlock extends DeviceBlock implements EntityBlockExtension, 
 
             tooltip.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
             Helpers.addInventoryTooltipInfo(inventory, tooltip);
-            Helpers.addFluidStackTooltipInfo(alloy.getResultAsFluidStack(), tooltip);
+            final FluidStack fluid = alloy.getResultAsFluidStack();
+            if (!fluid.isEmpty())
+            {
+                tooltip.add(Tooltips.fluidUnitsOf(fluid));
+            }
         }
     }
 }

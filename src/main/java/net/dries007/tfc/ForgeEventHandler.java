@@ -586,12 +586,12 @@ public final class ForgeEventHandler
             level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.LOG_PILE.get())
+        else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
         {
             BurningLogPileBlock.tryLightLogPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
+        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15 && event.isStrong())
         {
             if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
             {
@@ -599,7 +599,7 @@ public final class ForgeEventHandler
                 event.setFireResult(StartFireEvent.FireResult.ALWAYS);
             }
         }
-        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
+        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
             CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
@@ -620,7 +620,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED))
+        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED) && event.isStrong())
         {
             level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
                 entity.setLit(true, event.getPlayer());
@@ -679,7 +679,7 @@ public final class ForgeEventHandler
         final Player player = event.player;
         final Level level = player.getLevel();
         final float angle = Mth.wrapDegrees(player.getXRot()); // Copied from DebugScreenOverlay, which is the value in F3
-        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.blockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
+        if (angle <= -80 && !level.isClientSide() && level.isRainingAt(player.eyeBlockPosition()) && player.getFoodData() instanceof TFCFoodData foodData)
         {
             foodData.addThirst(TFCConfig.SERVER.thirstGainedFromDrinkingInTheRain.get().floatValue());
         }
@@ -909,6 +909,7 @@ public final class ForgeEventHandler
                         final int layers = state.getValue(SnowLayerBlock.LAYERS);
                         if (layers > 1)
                         {
+                            level.destroyBlock(pos, false);
                             level.setBlockAndUpdate(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1));
                         }
                         else
@@ -1136,6 +1137,7 @@ public final class ForgeEventHandler
         PacketHandler.send(target, ItemSizeManager.MANAGER.createSyncPacket());
         PacketHandler.send(target, ClimateRange.MANAGER.createSyncPacket());
         PacketHandler.send(target, Drinkable.MANAGER.createSyncPacket());
+        PacketHandler.send(target, LampFuel.MANAGER.createSyncPacket());
     }
 
     /**

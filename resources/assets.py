@@ -397,6 +397,7 @@ def generate(rm: ResourceManager):
 
     block = rm.block('thatch_bed')
     block.with_lang(lang('thatch bed'))
+    rm.item_model('thatch_bed', 'tfc:item/thatch_bed')
 
     rm.blockstate('nest_box', model='tfc:block/nest_box').with_block_loot('tfc:nest_box').with_lang(lang('nest box')).with_item_model()
 
@@ -579,7 +580,6 @@ def generate(rm: ResourceManager):
                 block.with_block_loot('tfc:dirt/%s' % soil)
             else:
                 block.with_block_loot('1-3 minecraft:clay_ball')
-            block.with_tag('grass')
             block.with_lang(lang('%s %s', soil, grass_var))
             grass_models((grass_var, soil), dirt)
 
@@ -796,6 +796,11 @@ def generate(rm: ResourceManager):
     contained_fluid(rm, 'wooden_bucket', 'tfc:item/bucket/wooden_bucket_empty', 'tfc:item/bucket/wooden_bucket_overlay').with_lang(lang('Wooden Bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'red_steel'), 'tfc:item/metal/bucket/red_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('red steel bucket'))
     contained_fluid(rm, ('metal', 'bucket', 'blue_steel'), 'tfc:item/metal/bucket/blue_steel', 'tfc:item/metal/bucket/overlay').with_lang(lang('blue steel bucket'))
+
+    rm.lang('item.tfc.wooden_bucket.filled', '%s Wooden Bucket')
+    rm.lang('item.tfc.ceramic.jug.filled', '%s Ceramic Jug')
+    rm.lang('item.tfc.metal.bucket.red_steel.filled', '%s Red Steel Bucket')
+    rm.lang('item.tfc.metal.bucket.blue_steel.filled', '%s Blue Steel Bucket')
 
     # Small Ceramic Vessels (colored)
     for color in COLORS:
@@ -1014,12 +1019,26 @@ def generate(rm: ResourceManager):
                 rm.block_loot(p, {'name': p, 'conditions': [loot_tables.match_tag('tfc:sharp_tools'), lower_only]})
         else:
             rm.block_loot(p, {'name': p, 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
-    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo'):
+    # todo this is a mess
+    for plant in ('hanging_vines', 'jungle_vines', 'ivy', 'liana', 'tree_fern', 'arundo', 'spanish_moss'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
     for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp_flower', 'dry_phragmite'):
         rm.lang('block.tfc.plant.%s' % plant, lang(plant))
         rm.block_loot('tfc:plant/%s' % plant, 'tfc:plant/%s' % plant)
+    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'spanish_moss', 'liana', 'dry_phragmite'):
+        rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
+    for plant in ('hanging_vines', 'ivy', 'jungle_vines', 'liana', 'spanish_moss'):
+        rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
+    for plant, texture in FLOWERPOT_CROSS_PLANTS.items():
+        plant_folder = plant
+        if 'tulip' in plant:
+            plant_folder = 'tulip'
+        elif 'snapdragon' in plant:
+            plant_folder = 'snapdragon'
+        flower_pot_cross(rm, plant, 'tfc:plant/potted/%s' % plant, 'plant/flowerpot/%s' % plant, 'tfc:block/plant/%s/%s' % (plant_folder, texture), 'tfc:plant/%s' % plant)
+    for plant in MISC_POTTED_PLANTS:
+        rm.blockstate('plant/potted/%s' % plant, model='tfc:block/plant/flowerpot/%s' % plant).with_lang(lang('potted %s', plant)).with_tag('minecraft:flower_pots').with_block_loot('tfc:plant/%s' % plant, 'minecraft:flower_pot')
     for plant, stages in SIMPLE_STAGE_PLANTS.items():
         rm.blockstate('plant/%s' % plant, variants=dict({'stage=%d' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, stages)}))
     for plant in MODEL_PLANTS:
@@ -1028,17 +1047,15 @@ def generate(rm: ResourceManager):
         rm.blockstate('plant/%s' % plant, variants=dict({'age=%s' % i: {'model': 'tfc:block/plant/%s_%s' % (plant, i)} for i in range(0, 4)}))
         for i in range(0, 4):
             rm.block_model('plant/%s_%s' % (plant, i), parent='minecraft:block/template_seagrass', textures={'texture': 'tfc:block/plant/%s/%s' % (plant, i)})
+    rm.blockstate('plant/dead_bush', variants={"": [{'model': 'tfc:block/plant/dead_bush_large'}, *[{'model': 'tfc:block/plant/dead_bush%s' % i} for i in range(0, 7)]]}, use_default_model=False)
+    for i in range(0, 7):
+        rm.block_model('plant/dead_bush%s' % i, parent='minecraft:block/cross', textures={'cross': 'tfc:block/plant/dead_bush/dead_bush%s' % i})
 
     rm.block('sea_pickle').with_lang(lang('sea pickle')).with_block_loot([{
         'name': 'tfc:sea_pickle',
         'conditions': loot_tables.block_state_property('tfc:sea_pickle[pickles=%d]' % i),
         'functions': [loot_tables.set_count(i)]
     } for i in (1, 2, 3, 4)])
-
-    for plant in ('tree_fern', 'arundo', 'winged_kelp', 'leafy_kelp', 'giant_kelp', 'hanging_vines', 'liana', 'dry_phragmite'):
-        rm.lang('block.tfc.plant.%s_plant' % plant, lang(plant))
-    for plant in ('hanging_vines', 'ivy', 'jungle_vines', 'liana'):
-        rm.block_loot('tfc:plant/%s' % plant, {'name': 'tfc:plant/%s' % plant, 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
     for plant in ('duckweed', 'lotus', 'sargassum', 'water_lily'):
         rm.block_model('plant/%s' % plant, parent='tfc:block/plant/template_floating_tinted', textures={'pad': 'tfc:block/plant/%s/%s' % (plant, plant)})
@@ -1209,6 +1226,7 @@ def generate(rm: ResourceManager):
 
         rm.item_model(('plant', '%s_sapling' % fruit), 'tfc:block/fruit_tree/%s_sapling' % fruit)
         rm.item_model(('food', fruit), 'tfc:item/food/%s' % fruit).with_lang(lang(fruit))
+        flower_pot_cross(rm, '%s sapling' % fruit, 'tfc:plant/potted/%s_sapling' % fruit, 'plant/flowerpot/%s_sapling' % fruit, 'tfc:block/fruit_tree/%s_sapling' % fruit, 'tfc:plant/%s_sapling' % fruit)
 
     # Wood Blocks
     for wood in WOODS.keys():
@@ -1298,6 +1316,8 @@ def generate(rm: ResourceManager):
         block.with_block_model({'cross': 'tfc:block/wood/sapling/%s' % wood}, 'block/cross')
         block.with_block_loot('tfc:wood/sapling/%s' % wood)
         rm.item_model(('wood', 'sapling', wood), 'tfc:block/wood/sapling/%s' % wood)
+
+        flower_pot_cross(rm, '%s sapling' % wood, 'tfc:wood/potted_sapling/%s' % wood, 'wood/potted_sapling/%s' % wood, 'tfc:block/wood/sapling/%s' % wood, 'tfc:wood/sapling/%s' % wood)
 
         # Planks and variant blocks
         block = rm.block(('wood', 'planks', wood))
@@ -1526,6 +1546,9 @@ def generate(rm: ResourceManager):
     for be in BLOCK_ENTITIES:
         rm.lang('tfc.block_entity.%s' % be, lang(be))
 
+def flower_pot_cross(rm: ResourceManager, simple_name: str, name: str, model: str, texture: str, loot: str):
+    rm.blockstate(name, model='tfc:block/%s' % model).with_lang(lang('potted %s', simple_name)).with_tag('minecraft:flower_pots').with_block_loot(loot, 'minecraft:flower_pot')
+    rm.block_model(model, parent='minecraft:block/flower_pot_cross', textures={'plant': texture, 'dirt': 'tfc:block/dirt/loam'})
 
 def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifier, overrides: utils.Json, data: Dict[str, Any]) -> ItemContext:
     res = utils.resource_location(rm.domain, name_parts)

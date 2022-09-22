@@ -1,0 +1,43 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "原始合金",
+  "category": "tfc:getting_started",
+  "icon": "tfc:ceramic/ingot_mold{tank:{\"Amount\":100,\"FluidName\":\"tfc:metal/bronze\"}}",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)合金$()是指由两种或更多种不同金属混合而成的更强的金属。铜在游戏早期很实用，但想要发展到下一级文明，就必须想办法做出$(thing)青铜$()。将不同金属混合在一起熔化，只要所有成分都处于特定区间内就能做出对应的合金了！"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)小缸$()是游戏早期唯一可以制作合金的手段。制作合金的步骤和$(l:getting_started/finding_ores#casting)铸造$()很相似，唯一的区别是要在小缸中混合放置多种不同的金属而不仅仅是铜。只要小缸中的几种金属比例都位于可接受范围内，熔化所得的金属就会自动转化为合金。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "For example, to create 1000 mB of $(thing)Bronze$() (shown to the right), you would need between 880 and 920 mB of $(thing)Copper$(), and between 80 and 120 mB of $(thing)Tin$().$(br2)The next three pages show the recipes of the three bronzes. Each type of bronze can be used to make tools, $(l:mechanics/armor)Armor$(), and other metal items. They are slightly different so resulting tools will have different durability, efficiency, and attack damage."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bronze",
+      "title": "青铜",
+      "link_recipes": false,
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)铜$()：88 - 92 %$(li)$(thing)锡$()：8 - 12 %$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/bismuth_bronze",
+      "title": "铋铜",
+      "link_recipes": false,
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)铜$()：50 - 65 %$(li)$(thing)锌$()：20 - 30 %$(li)$(thing)铋$()：10 - 20 %$(br2)"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "tfc:metal/ingot/black_bronze",
+      "title": "黑铜",
+      "link_recipes": false,
+      "text": "$(br)$(bold)条件：$()$(br)$(li)$(thing)铜$()：50 - 70 %$(li)$(thing)银$()：10 - 25 %$(li)$(thing)金$()：10 - 25 %$(br2)"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

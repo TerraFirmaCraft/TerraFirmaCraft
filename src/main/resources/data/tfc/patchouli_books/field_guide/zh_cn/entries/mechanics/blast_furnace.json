@@ -1,0 +1,68 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "建造高炉",
+  "category": "tfc:mechanics",
+  "icon": "tfc:blast_furnace",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)高炉$()是一种用来炼$(thing)钢$()的高级设备。将$(thing)铁矿石$()、$(thing)木炭$()、和$(thing)助焊剂$()在高热环境中混合就能制造出一种比锻铁更强的金属。$(br2)要搭建高炉，你必须先制作两只$(l:mechanics/crucible)坩埚$()、一根锻铁$(thing)鼓风口$()、和一个风箱。此外，你还会需要很多$(thing)锻铁薄板$()和$(thing)耐火砖块$()。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/blast_furnace",
+      "text": "制作高炉方块本体就需要一只$(thing)坩埚$()，以及八张$(thing)锻铁薄板$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "接下来就可以开始搭建高炉的$(thing)烟囱$()了。烟囱必须用足以承受炼钢高温的$(l:mechanics/fire_clay#fire_bricks)耐火砖块$()搭建。耐火砖块的外层还需要用$(thing)锻铁薄板$()围绕一圈加固。如果材料富裕，也可以用更高级的金属薄板（如$(thing)钢$()）来代替锻铁薄板。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:blast_furnace",
+      "name": "高炉",
+      "text": "最基础的高炉结构。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "高炉的烟囱最多可以搭建 5 层，每层烟囱需要额外 4 块$(thing)耐火砖块$()和 12 张$(thing)锻铁薄板$()。每额外搭建一层烟囱，高炉就可以同时多烧炼 4 个物品，从而提升工作效率。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "必须从高炉的烟囱顶投入炼钢所需的素材。要炼钢，首先将等量的$(thing)铁矿石$()和$(l:mechanics/flux)助焊剂$()投入高炉。铁矿石可以用任何能被熔化成$(thing)铸铁$()的物品代替。另外，你还需要在高炉燃烧的过程中不断加入$(l:mechanics/charcoal_pit)木炭$()来维持燃烧。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "与高炉方块互动可以打开高炉界面，如右图所示。高炉界面会显示炉中的金属和燃料数量。屏幕右上角的空格必须放置一根$(thing)鼓风口$()。有了鼓风口高炉才能达到可以炼钢的温度。可以在$(l:mechanics/anvils)砧$()上锻造鼓风口。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/blast_furnace.png"
+      ],
+      "text": "高炉界面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要让高炉达到炼钢的温度，还需要在高炉方块的任意邻面放置一个$(l:mechanics/bellows)风箱$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:full_blast_furnace",
+      "name": "",
+      "text": "一个最大的完整高炉结构，包含风箱。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最后，用$(l:getting_started/firepit#firestarter)起火器$()或$(thing)打火石$()点燃高炉方块就可以开始炼钢了。高炉会缓慢加热矿石，同时要注意不断鼓风和添加木炭。当高炉内的温度足以熔化矿石时，矿石就会熔化并转化为$(l:mechanics/steel)生铁$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "熔融生铁会从高炉中流入任何直接放置在其下方的容器（如$(l:mechanics/crucible)坩埚$()）中。之后可从坩埚界面将熔融生铁浇铸至铸锭模具中。你不能直接用生铁制作工具或装备，它还必须再经过一些其他工序处理之后才能使用。具体方法请参阅$(l:mechanics/steel)炼钢$()章节。"
+    }
+  ],
+  "read_by_default": true
+}

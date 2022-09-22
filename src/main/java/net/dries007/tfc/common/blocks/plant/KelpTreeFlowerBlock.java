@@ -357,14 +357,12 @@ public abstract class KelpTreeFlowerBlock extends Block implements IFluidLoggabl
     {
         Fluid fluid = level.getFluidState(pos).getType();
         level.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, age).setValue(FACING, facing), 2);
-        level.levelEvent(1033, pos, 0);
     }
 
     protected void placeDeadFlower(LevelAccessor level, BlockPos pos, Direction facing)
     {
         Fluid fluid = level.getFluidState(pos).getType();
         level.setBlock(pos, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyFor(fluid)).setValue(AGE, 5).setValue(FACING, facing), 2);
-        level.levelEvent(1034, pos, 0);
     }
 
     protected void setBodyBlockWithFluid(LevelAccessor level, BlockPos pos, Fluid fluid)

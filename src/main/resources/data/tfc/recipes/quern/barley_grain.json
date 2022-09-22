@@ -8,6 +8,11 @@
     }
   },
   "result": {
-    "item": "tfc:food/barley_flour"
+    "stack": {
+      "item": "tfc:food/barley_flour"
+    },
+    "modifiers": [
+      "tfc:copy_food"
+    ]
   }
 }

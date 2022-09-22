@@ -96,13 +96,19 @@ public class SealableDeviceBlock extends DeviceBlock implements IItemSize
     @Override
     public Size getSize(ItemStack stack)
     {
-        return stack.getTag() == null ? Size.VERY_LARGE : Size.HUGE;
+        return Size.HUGE;
     }
 
     @Override
     public Weight getWeight(ItemStack stack)
     {
-        return Weight.VERY_HEAVY;
+        return stack.getTag() == null ? Weight.HEAVY : Weight.VERY_HEAVY;
+    }
+
+    @Override
+    public int getDefaultStackSize(ItemStack stack)
+    {
+        return 1; // Stacks to 1, regardless of weight
     }
 
     @Override

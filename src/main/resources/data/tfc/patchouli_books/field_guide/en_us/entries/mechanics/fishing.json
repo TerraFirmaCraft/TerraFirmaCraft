@@ -25,7 +25,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to come and grab it. Then $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier."
+      "text": "To release the bobber, $(item)$(k:key.use)$(). Wait for a fish to spot the hook and bite it. Then $(item)$(k:key.use)$() to pull it in. As you do that, the meter on your hotbar will fill up. Pull too quickly, and the fish will get away with the bait. Each time you fish, the fish has a chance of eating the bait. To catch the fish, pull it up on land and kill it with a tool. You can hold the fishing rod in your off hand to make this easier."
     },
     {
       "type": "patchouli:image",

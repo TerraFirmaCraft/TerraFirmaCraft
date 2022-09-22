@@ -1,0 +1,45 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l필기대",
+  "category": "tfc:mechanics",
+  "icon": "minecraft:black_dye",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)필기대$()는 아이템의 이름을 바꾸기 위해 사용돕니다. 필기대를 사용하려면 $(thing)검은색 염료$()가 필요하며, 염료는 염료 아이템이나 염료 양동이로 추가할 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/scribing_table/kapok"
+        }
+      },
+      "name": "",
+      "text": "필기대.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/wood/birch_scribing_table",
+      "text": "필기대 제작법."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/scribing.png"
+      ],
+      "text": "필기대 스크린은 맨 위에 이름 변경 칸이 있으며, 왼쪽에 입력 슬롯과 중앙에 염료 슬롯이 있습니다. 결과물은 오른쪽 슬롯으로 나옵니다.",
+      "border": false
+    }
+  ],
+  "read_by_default": true
+}

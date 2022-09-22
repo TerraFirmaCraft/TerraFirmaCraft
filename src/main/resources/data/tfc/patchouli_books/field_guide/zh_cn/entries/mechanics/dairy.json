@@ -1,0 +1,28 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "乳制品",
+  "category": "tfc:mechanics",
+  "icon": "tfc:textures/item/food/cheese.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)乳制品$()是一种主要由$(l:mechanics/animal_husbandry#dairy_animals)产奶动物$()提供的$(l:the_world/food_and_water#nutrients)营养元素$()。可以直接用陶罐喝奶，会回复$(l:the_world/food_and_water#thirst)口渴度$()，也可以将奶做成$(thing)奶酪$()。需要注意的是，空腹喝奶并不能摄入多少营养元素，只有在吃过其他食物之后再喝奶才能吸收营养。换句话说，连续多次喝奶的效率比吃一顿饭、喝一口奶的效率要差。",
+      "title": "乳制品"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "想要制作$(thing)奶酪$()，第一步是将$(thing)奶$()和$(thing)醋$()以 9 比 1 的比例在$(l:mechanics/barrels)大桶$()里混合。最简单的方法是先往桶里倒 9 桶奶，然后再倒 1 桶醋。这样就能得到$(thing)醋奶$()."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/curdling",
+      "text": "将醋奶混合之后密封大桶，奶就会开始逐渐凝固成炼乳，只需静待 8 小时即可。"
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/cheese",
+      "text": "制成炼乳之后先不要开盖，继续静置 8 小时就能将炼乳凝固成奶酪了。奶酪是一种保质期很长的乳制品，且可以作为某些餐点（比如$(l:mechanics/sandwiches)三明治$()）的食材以提供乳制品营养元素。"
+    }
+  ],
+  "read_by_default": true
+}

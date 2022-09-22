@@ -1,0 +1,38 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l발전된 재료",
+  "category": "tfc:mechanics",
+  "icon": "tfc:brick/rhyolite",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TFC를 진행하면서, 당신은 바닐라에 있었던 장치들이나 강하고 예쁜 건축 자재를 원할지도 모릅니다. 그 중 하나는 $(thing)석재 벽돌$()로, $(thing)벽돌$()과 $(thing)회반죽$()으로 만들 수 있습니다."
+    },
+    {
+      "type": "tfc:sealed_barrel_recipe",
+      "recipe": "tfc:barrel/mortar",
+      "text": "$(l:mechanics/barrels#limewater)석회수$()와 $(thing)모래$()를 결합하면 회반죽을 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_brick",
+      "recipe2": "tfc:crafting/rock/gneiss_bricks"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_pressure_plate",
+      "recipe2": "tfc:crafting/rock/gneiss_button"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/gneiss_cracked",
+      "text": "벽돌은 $(thing)망치$()를 사용하여 금이 간 벽돌로 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/rock/quartzite_hardened",
+      "text": "회반죽은 $(thing)단단한 돌$()을 만드는 데 사용할 수 있습니다. 단단한 돌은 돌의 일종으로 무너지지 않습니다."
+    }
+  ],
+  "read_by_default": true
+}

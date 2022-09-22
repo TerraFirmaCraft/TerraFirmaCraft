@@ -8,6 +8,7 @@ package net.dries007.tfc.world.feature.tree;
 
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SaplingBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
@@ -118,6 +120,7 @@ public final class TreeHelpers
      */
     public static boolean isValidTrunk(LevelAccessor level, BlockPos pos, StructurePlaceSettings settings, TreePlacementConfig config)
     {
+        final Predicate<BlockState> trunkTest = config.allowDeeplySubmerged() ? FluidHelpers::isAirOrEmptyFluid : BlockBehaviour.BlockStateBase::isAir;
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int x = (1 - config.width()) / 2; x <= config.width() / 2; x++)
         {
@@ -130,7 +133,7 @@ public final class TreeHelpers
                     mutablePos.move(pos);
 
                     final BlockState stateAt = level.getBlockState(mutablePos);
-                    if (!stateAt.isAir())
+                    if (!trunkTest.test(stateAt))
                     {
                         return false;
                     }

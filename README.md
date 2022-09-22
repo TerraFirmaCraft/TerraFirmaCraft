@@ -28,7 +28,7 @@ In order to understand all of these new features, TerraFirmaCraft comes with a d
  - In addition, we request that you give us the right to change the license in the future.
  - Import & use the project's Code Style. (Recommend using Intellij as that's what our code style xml is based on)
 - Before creating a Pull Request, run `gradlew updateLicenses`. This will apply the correct license header to all project files.
-- We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, and `nbtlib`.
+- We use python for data and asset generation, among other things. In order to run the generation scripts (all found in `/resources`), you will need to install the python modules `mcresources`, `pillow`, `nbtlib`, and `Levenshtein` (see `resources/requirements.txt`).
 
 ### Copyright
 

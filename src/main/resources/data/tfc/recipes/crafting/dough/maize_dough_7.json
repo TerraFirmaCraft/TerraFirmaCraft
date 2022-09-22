@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shapeless",
+  "type": "tfc:advanced_shapeless_crafting",
   "ingredients": [
     {
       "type": "tfc:fluid_item",
@@ -53,7 +53,12 @@
     }
   ],
   "result": {
-    "item": "tfc:food/maize_dough",
-    "count": 14
+    "stack": {
+      "item": "tfc:food/maize_dough",
+      "count": 14
+    },
+    "modifiers": [
+      "tfc:copy_oldest_food"
+    ]
   }
 }

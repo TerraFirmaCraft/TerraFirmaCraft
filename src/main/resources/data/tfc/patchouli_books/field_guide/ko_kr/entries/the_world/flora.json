@@ -1,0 +1,357 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "§l식물",
+  "category": "tfc:the_world",
+  "icon": "tfc:plant/goldenrod",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "TerraFirmaCraft에는 아주, 아주 $(italic)굉장히$() 다양한 종류의 식물들이 있습니다.$(br2)다양한 $(l:the_world/climate)기후$()마다 다양한 식물들이 나타나며, 식물들의 형태는 계절마다 달라지기도 합니다. 예를 들면 꽃이 피고 지거나, 기온 변화에 따라 색깔이 변할 수도 있습니다. 형형색색의 꽃들은 $(l:mechanics/quern)맷돌$()로 갈아 염료를 만들 수 있습니다."
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/anthurium"
+        }
+      },
+      "name": "§l일반",
+      "text": "일반적인 식물들은 작은 꽃 등이 있습니다. 잔디나 흙, 경작지에서 자랍니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sagebrush"
+        }
+      },
+      "name": "§l건조",
+      "text": "건조한 식물들은 일반적인 식물들과 비슷하지만, 모래에서 자랄 수 있습니다. 일반적으로 강수량이 적은 지역에서 나타납니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "anchor": "cacti",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/barrel_cactus[part=upper]",
+          "Y": "tfc:plant/barrel_cactus[part=lower]"
+        }
+      },
+      "name": "§l선인장",
+      "text": "선인장은 2블록 높이로 자라고, 당신에게 피해를 줍니다!",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/moss[down=true]"
+        }
+      },
+      "name": "§l이끼",
+      "text": "이끼들은 붙어 있는 블록의 형태를 취합니다. 대체로 땅에서 한데 뭉쳐 생성됩니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "XY"
+          ],
+          [
+            "0 "
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:wood/wood/birch",
+          "Y": "tfc:plant/licorice_fern[facing=south]"
+        }
+      },
+      "name": "§l착생식물",
+      "text": "착생식물들은 원목의 옆면에서만 삽니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/bluegrass"
+        }
+      },
+      "name": "§l짧은 잔디",
+      "text": "짧은 잔디는 자라면서 점차 커집니다. 이탄이나 진흙에서도 자랄 수 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/king_fern[part=upper]",
+          "Y": "tfc:plant/king_fern[part=lower]"
+        }
+      },
+      "name": "§l큰 잔디",
+      "text": "큰 잔디는 당신의 시야를 가릴만큼 큽니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/ivy[up=true,north=true]"
+        }
+      },
+      "name": "§l덩굴",
+      "text": "덩굴 블록들은 충분히 따뜻하다면, 스스로 주위로 퍼집니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/liana_plant",
+          "Y": "tfc:plant/liana"
+        }
+      },
+      "name": "§l늘어진 덩굴",
+      "text": "늘어진 덩굴은 기준 블록에서 아래쪽으로 자랍니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/arundo",
+          "Y": "tfc:plant/arundo_plant"
+        }
+      },
+      "name": "§l휘어진 덩굴",
+      "text": "휘어진 덩굴들은 땅에서 위쪽으로 자랍니다. 딱딱한 종류도 존재합니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "수생 식물들은 민물이나 바닷물 둘 중 하나에서만 자랍니다. 그 외에는 육지 식물들과 같이 자라고 행동합니다. 몇몇 수생 식물들은 요리하여 먹을 수 있습니다.",
+      "title": "§l수생 식물"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/sago[fluid=water]"
+        }
+      },
+      "name": "§l일반",
+      "text": "일반 수생 식물은 $(thing)$()칼$()로 잘라 $(thing)해초$()를 얻을 수 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/manatee_grass[fluid=salt_water]"
+        }
+      },
+      "name": "§l수중 잔디",
+      "text": "수중 잔디는 물 속에서 자라는 잔디입니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/cattail[part=upper]",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "§l큰 수생 식물",
+      "text": "큰 수생 식물은 물 속의 바닥 블록부터 자랄 수 있습니다. $(thing)물토란$()과 $()부들$()은 $(thing)칼$()로 잘라 $(thing)뿌리$()를 얻을 수 있습니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/duckweed",
+          "Y": "minecraft:water"
+        }
+      },
+      "name": "§l부유",
+      "text": "부유 식물은 물 위로 떠 있습니다. 보트와 부딪히면 부서집니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/winged_kelp[fluid=salt_water]",
+          "Y": "tfc:plant/winged_kelp_plant[fluid=salt_water]"
+        }
+      },
+      "name": "§l켈프",
+      "text": "켈프는 물 속에서 자라는 휘어진 덩굴입니다.",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:plant/giant_kelp_flower[facing=up,fluid=salt_water]",
+          "Y": "tfc:plant/giant_kelp_plant[down=true,up=true,fluid=salt_water]"
+        }
+      },
+      "name": "§l나무 켈프",
+      "text": "나무 켈프들은 물 속에서 복잡하게 나무로 자랍니다. $(thing)칼$()로 꽃을 수확할 수 있습니다.",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 5
+}

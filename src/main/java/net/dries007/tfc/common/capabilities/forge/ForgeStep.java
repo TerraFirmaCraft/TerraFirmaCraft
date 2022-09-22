@@ -27,7 +27,7 @@ public enum ForgeStep
 
     public static final int LIMIT = 150;
 
-    private static final ForgeStep[] VALUES = values();
+    public static final ForgeStep[] VALUES = values();
     private static final int[] PATHS;
 
     static
@@ -73,7 +73,7 @@ public enum ForgeStep
 
     public static int getOptimalStepsToTarget(int target)
     {
-        return PATHS[target];
+        return target < 0 || target >= PATHS.length ? Integer.MAX_VALUE : PATHS[target];
     }
 
     private final int step;

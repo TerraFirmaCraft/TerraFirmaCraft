@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.plant.coral;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -26,7 +25,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.TFCDamageSources;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.entities.aquatic.AquaticMob;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
@@ -106,7 +107,10 @@ public class TFCCoralPlantBlock extends Block implements IFluidLoggable
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entityIn)
     {
-        entityIn.hurt(DamageSource.CACTUS, 1.0F);
+        if (!(entityIn instanceof AquaticMob))
+        {
+            entityIn.hurt(TFCDamageSources.CORAL, 0.5F);
+        }
     }
 
     @Override

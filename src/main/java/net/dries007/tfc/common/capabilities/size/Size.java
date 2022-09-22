@@ -12,9 +12,9 @@ public enum Size
     VERY_SMALL("very_small"), // Fits in anything
     SMALL("small"), // Fits in small vessels
     NORMAL("normal"), // Fits in large vessels
-    LARGE("large"), // Fits in chests, Pit kilns can hold four
-    VERY_LARGE("very_large"), // Pit kilns can only hold one
-    HUGE("huge"); // Counts towards overburdened, fits in nothing
+    LARGE("large"), // Fits in chests, Pit kilns can hold four.
+    VERY_LARGE("very_large"), // Pit kilns can only hold one.
+    HUGE("huge"); // Pit kilns can only hold one. Counts towards overburdened when also very heavy.
 
     private static final Size[] VALUES = values();
 

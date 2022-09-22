@@ -1,0 +1,236 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "野生动物",
+  "category": "tfc:the_world",
+  "icon": "tfc:medium_raw_hide",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "群峦传说的世界充满了各种各样的动物。有些动物会试图和你在这个世界中共同生存，有些动物却非常危险。这一章节是关于野生动物的。有关牲畜的信息，请参阅$(l:mechanics/animal_husbandry)畜牧业$()章节。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "动物可以大致被分为几类：$(l:the_world/wild_animals#predators)捕食者$()、$(l:the_world/wild_animals#prey)猎物$()、和$(l:the_world/wild_animals#aquatic)水生生物$()。$(br2)接下来的几页会详细介绍以上每一种类别的生物。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "predators",
+      "text": "$(thing)捕食者$()会攻击玩家。$(thing)夜行性$()动物只会在晚上狩猎，而$(thing)日行性$()动物只会在白天狩猎。捕食者一般都处于敌对状态，但若最近刚刚杀死了一个生物，它们便会变成中立生物。捕食者拥有$(thing)领地意识$()。只要你跑得够远，它们便不会追出它们的领地。",
+      "title": "捕食者"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:polar_bear",
+      "scale": 0.55,
+      "name": "Polar Bear",
+      "text": "The polar bear spawns in only the coldest regions, $(l:the_world/climate#temperature)temperature$() at most 10°C, with a $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:grizzly_bear",
+      "scale": 0.55,
+      "name": "Grizzly Bear",
+      "text": "The grizzly bear spawns in forests of moderate climates, with a $(l:the_world/climate#temperature)temperature$() range of -15 to 15°C and at least 200mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:black_bear",
+      "scale": 0.55,
+      "name": "Black Bear",
+      "text": "The black bear spawns in forests of warmer, wetter climates, of $(l:the_world/climate#temperature)temperature$() 5 to 20°C and at least 250mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cougar",
+      "scale": 0.6,
+      "name": "Cougar",
+      "text": "The cougar prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:panther",
+      "scale": 0.6,
+      "name": "Panther",
+      "text": "The panther prefers most moderate climates, with $(l:the_world/climate#temperature)temperature$() from -10 to 21°C and at least 150mm of $(l:the_world/climate#rainfall)rainfall$()."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lion",
+      "scale": 0.55,
+      "name": "Lion",
+      "text": "The lion spawns in plains with an average $(l:the_world/climate#temperature)temperature$() of at least 16°C, and $(l:the_world/climate#rainfall)rainfall$() between 50 and 300mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:sabertooth",
+      "scale": 0.6,
+      "name": "Sabertooth",
+      "text": "The sabertooth spawns at any $(l:the_world/climate#temperature)temperature$() above 0°C, and any $(l:the_world/climate#rainfall)rainfall$() above 250mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "prey",
+      "text": "$(thing)猎物$()害怕玩家和捕食者。他们擅长逃离危险，但通常无法反击。一些猎物喜欢偷吃农作物。",
+      "title": "猎物"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:boar",
+      "scale": 0.7,
+      "name": "Boar",
+      "text": "The boar spawns in plains with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:rabbit",
+      "scale": 0.7,
+      "name": "Rabbit",
+      "text": "The rabbit is known to chew on carrots and cabbage. They are ubiquitous in the world, changing their coat based on climate. They only need 15mm of $(l:the_world/climate#rainfall)rainfall$() to spawn."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:fox",
+      "scale": 0.7,
+      "name": "Fox",
+      "text": "The fox likes to eat the berries off of bushes. It can be found in forests with $(l:the_world/climate#temperature)temperature$() below 25°C, and $(l:the_world/climate#rainfall)rainfall$() between 130 and 400mm."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "aquatic",
+      "text": "$(thing)水生生物$()是一大类包含了多种习性迥异的生物的类别。可以大致分为几小类：$(thing)滩涂动物$()、$(thing)鱼类$()、$(thing)贝壳类$()、或$(thing)大型海洋生物$()。",
+      "title": "海洋生物"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)滩涂动物$()只会生成在海岸边。它们一天中大部分时间都在水里游泳，部分时间在沙滩上散步。它们天性好奇，会跟随玩家，但无法被驯服。"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:penguin",
+      "scale": 0.7,
+      "name": "Penguin",
+      "text": "The penguin spawns in only the coldest beaches, with $(l:the_world/climate#temperature)temperature$() of at most -14°C and $(l:the_world/climate#rainfall)rainfall$() of at least 75mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:turtle",
+      "scale": 0.7,
+      "name": "Sea Turtle",
+      "text": "The sea turtle likes warm water. It spawns in $(l:the_world/climate#temperature)temperature$() of at least 21°C and $(l:the_world/climate#rainfall)rainfall$() of at least 250mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)鱼$()是生活在水中的小动物。它们中的大多数都可以被$(l:mechanics/fishing)钓起来$()。不同种的鱼喜好在海洋、河流或湖泊中生活。",
+      "title": "鱼"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:cod",
+      "scale": 0.7,
+      "name": "Cod",
+      "text": "Cod prefer colder oceans, $(l:the_world/climate#temperature)temperature$() at most 18°C. They can be fished."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:pufferfish",
+      "scale": 0.7,
+      "name": "Pufferfish",
+      "text": "Pufferfish live in any ocean with at least a $(l:the_world/climate#temperature)temperature$() of 10°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:jellyfish",
+      "scale": 0.7,
+      "name": "Jellyfish",
+      "text": "Jellyfish live in warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:tropical_fish",
+      "scale": 0.7,
+      "name": "Tropical Fish",
+      "text": "Tropical fish prefer warmer oceans, with a $(l:the_world/climate#temperature)temperature$() of at least 18°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:salmon",
+      "scale": 0.7,
+      "name": "Salmon",
+      "text": "Salmon spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -5°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:bluegill",
+      "scale": 0.7,
+      "name": "Bluegill",
+      "text": "Bluegill spawn in any river or lake with a $(l:the_world/climate#temperature)temperature$() of at least -10°C and at most 26°C."
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "shellfish",
+      "text": "$(thing)贝类$()是生活在水底的小动物。它们不能被钓起来，但会掉落可以食用或制成$(l:mechanics/flux)助焊剂$()的壳。贝类可以作为钓鱼所需的$(l:mechanics/fishing)诱饵$()。",
+      "title": "贝类"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:isopod",
+      "scale": 0.7,
+      "name": "Isopod",
+      "text": "Isopods spawn in deeper sections of oceans of $(l:the_world/climate#temperature)temperature$() at most 14°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:lobster",
+      "scale": 0.7,
+      "name": "Lobster",
+      "text": "Lobster spawn in any ocean that is at most of a $(l:the_world/climate#temperature)temperature$() of 21°C."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:crayfish",
+      "scale": 0.7,
+      "name": "Crayfish",
+      "text": "Crayfish are like lobster, but spawn in rivers and lakes. They need a $(l:the_world/climate#temperature)temperature$() of at least 5°C and a $(l:the_world/climate#rainfall)rainfall$() of at least 125mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:horseshoe_crab",
+      "scale": 0.7,
+      "name": "Horseshoe Crab",
+      "text": "Horseshoe crabs spawn in oceans of moderate climate, $(l:the_world/climate#temperature)temperature$() between 10 and 21°C and with a $(l:the_world/climate#rainfall)rainfall$() of at most 400mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)大型海洋生物$()只生活在巨大水体中。它们中的有些会捕猎其他鱼类。它们会掉落能制作成灯油的$(l:mechanics/lamps#tallow)鲸脂$()。",
+      "title": "大型海洋生物"
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:orca",
+      "scale": 0.25,
+      "name": "Orca",
+      "text": "Orca whales live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at most 19°C and $(l:the_world/climate#rainfall)rainfall$() of at least 100mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:dolphin",
+      "scale": 0.4,
+      "name": "Dolphin",
+      "text": "Dolphins live in deep oceans with $(l:the_world/climate#temperature)temperature$() of at least 10°C and $(l:the_world/climate#rainfall)rainfall$() of at least 200mm."
+    },
+    {
+      "type": "patchouli:entity",
+      "entity": "tfc:manatee",
+      "scale": 0.25,
+      "name": "Manatee",
+      "text": "Manatees live in any warm lake, with $(l:the_world/climate#temperature)temperature$() of at least 20°C and $(l:the_world/climate#rainfall)rainfall$() of at most 300mm."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "鱿鱼可以在任何深海中生成。它们会掉落$(thing)墨囊$()，并给靠得太近的玩家喷上一脸墨水。传言，那些在地下洞穴湖中生活的鱿鱼有一些奇怪的特性。",
+      "title": "鱿鱼"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 8
+}

@@ -262,6 +262,11 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
         return lastKnownCapacity;
     }
 
+    public int getAirTicks()
+    {
+        return airTicks;
+    }
+
     public int getInputCount()
     {
         return inputStacks.size();
@@ -270,6 +275,11 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     public int getFuelCount()
     {
         return fuelStacks.size();
+    }
+
+    public int getCatalystCount()
+    {
+        return catalystStacks.size();
     }
 
     public float getTemperature()

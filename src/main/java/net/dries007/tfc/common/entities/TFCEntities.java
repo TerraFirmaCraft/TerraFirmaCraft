@@ -89,10 +89,10 @@ public class TFCEntities
     public static final RegistryObject<EntityType<Bluegill>> BLUEGILL = register("bluegill", EntityType.Builder.of(Bluegill::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
     public static final RegistryObject<EntityType<Jellyfish>> JELLYFISH = register("jellyfish", EntityType.Builder.of(Jellyfish::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.5F).clientTrackingRange(4));
 
-    public static final RegistryObject<EntityType<AquaticCritter>> ISOPOD = register("isopod", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
-    public static final RegistryObject<EntityType<AquaticCritter>> LOBSTER = register("lobster", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
-    public static final RegistryObject<EntityType<FreshWaterCritter>> CRAYFISH = register("crayfish", EntityType.Builder.of(FreshWaterCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
-    public static final RegistryObject<EntityType<AquaticCritter>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(AquaticCritter::new, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<AquaticCritter>> ISOPOD = register("isopod", EntityType.Builder.of(AquaticCritter::salty, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<AquaticCritter>> LOBSTER = register("lobster", EntityType.Builder.of(AquaticCritter::salty, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<AquaticCritter>> CRAYFISH = register("crayfish", EntityType.Builder.of(AquaticCritter::fresh, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
+    public static final RegistryObject<EntityType<AquaticCritter>> HORSESHOE_CRAB = register("horseshoe_crab", EntityType.Builder.of(AquaticCritter::salty, MobCategory.WATER_AMBIENT).sized(0.5F, 0.3F).clientTrackingRange(4));
 
     // Water Creatures
 

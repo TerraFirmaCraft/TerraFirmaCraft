@@ -54,6 +54,7 @@ public class TFCFeatures
     public static final RegistryObject<EmergentPlantFeature> EMERGENT_PLANT = register("emergent_plant", EmergentPlantFeature::new, EmergentPlantFeature.CODEC);
     public static final RegistryObject<TallPlantFeature> TALL_PLANT = register("tall_plant", TallPlantFeature::new, TallPlantFeature.CODEC);
     public static final RegistryObject<TallWildCropFeature> TALL_WILD_CROP = register("tall_wild_crop", TallWildCropFeature::new, TallWildCropFeature.CODEC);
+    public static final RegistryObject<SpreadingCropFeature> SPREADING_CROP = register("spreading_crop", SpreadingCropFeature::new, SpreadingCropFeature.CODEC);
     public static final RegistryObject<SpreadingBushFeature> SPREADING_BUSH = register("spreading_bush", SpreadingBushFeature::new, SpreadingBushFeature.CODEC);
     public static final RegistryObject<BlockWithFluidFeature> BLOCK_WITH_FLUID = register("block_with_fluid", BlockWithFluidFeature::new, SimpleBlockConfiguration.CODEC);
 
