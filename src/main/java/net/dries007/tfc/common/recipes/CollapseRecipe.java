@@ -9,6 +9,8 @@ package net.dries007.tfc.common.recipes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import net.dries007.tfc.TerraFirmaCraft;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -72,17 +74,19 @@ public class CollapseRecipe extends SimpleBlockRecipe
             if (random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
             {
                 // Random radius
-                int radX = (random.nextInt(5) + 4) / 2;
-                int radY = (random.nextInt(3) + 2) / 2;
-                int radZ = (random.nextInt(5) + 4) / 2;
+                final int radX = (random.nextInt(5) + 4) / 2;
+                final int radY = (random.nextInt(3) + 2) / 2;
+                final int radZ = (random.nextInt(5) + 4) / 2;
                 for (BlockPos checking : Support.findUnsupportedPositions(level, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
                 {
                     // Exclude the position being mined, as it's done before the mining is completed, which is unintuitive
                     if (!checking.equals(pos) && canStartCollapse(level, checking))
                     {
-                        startCollapse(level, checking);
-                        level.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
-                        return true; // Don't need to check other blocks
+                        if (startCollapse(level, checking))
+                        {
+                            level.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
+                        }
+                        return true; // Don't need to check other blocks, regardless of if we managed to collapse any blocks.
                     }
                 }
             }
@@ -95,7 +99,16 @@ public class CollapseRecipe extends SimpleBlockRecipe
      */
     public static boolean canStartCollapse(LevelAccessor level, BlockPos pos)
     {
-        return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.CAN_START_COLLAPSE) && TFCFallingBlockEntity.canFallInDirection(level, pos, Direction.DOWN);
+        final BlockPos posBelow = pos.below();
+        final BlockState state = level.getBlockState(pos);
+        final BlockState stateBelow = level.getBlockState(posBelow);
+        return Helpers.isBlock(state, TFCTags.Blocks.CAN_START_COLLAPSE)
+            // If we can directly fall into this block (same as a single block collapse check), we can start a collapse
+            && (TFCFallingBlockEntity.canFallThrough(level, posBelow, stateBelow, Direction.DOWN, state)
+            // Or, if the block directly below isn't quite a solid block - stuff like upwards facing slabs n stairs can still cause collapses to start, since we can forcibly break them
+            || !stateBelow.isCollisionShapeFullBlock(level, posBelow)
+            // Finally, we want to include blocks that have a non-solid-supporting full block below them. As usually, these blocks can collapse themselves, and aren't alone enough to prevent a collapse.
+            || Helpers.isBlock(stateBelow, TFCTags.Blocks.NOT_SOLID_SUPPORTING));
     }
 
     /**
@@ -103,13 +116,21 @@ public class CollapseRecipe extends SimpleBlockRecipe
      * - at this point, any supports are ignored completely.
      * - many more blocks can collapse, even if they can't trigger or start collapses.
      * - this is much more in-depth than previous implementations, and searches aggressively for next-tick collapse blocks
+     *
+     * @return {@code true} if any blocks started collapsing.
      */
-    public static void startCollapse(Level world, BlockPos centerPos)
+    public static boolean startCollapse(Level level, BlockPos centerPos)
     {
-        final Random random = world.getRandom();
+        final Random random = level.getRandom();
         final int radius = TFCConfig.SERVER.collapseMinRadius.get() + random.nextInt(TFCConfig.SERVER.collapseRadiusVariance.get());
         final int radiusSquared = radius * radius;
         final List<BlockPos> secondaryPositions = new ArrayList<>();
+
+        TerraFirmaCraft.LOGGER.info("Collapse started at pos {}, with the block column {} -> (start: {}) -> {}",
+            centerPos,
+            level.getBlockState(centerPos.above()),
+            level.getBlockState(centerPos),
+            level.getBlockState(centerPos.below()));
 
         // Initially only scan on the bottom layer, and advance upwards
         for (BlockPos pos : BlockPos.betweenClosed(centerPos.offset(-radius, -4, -radius), centerPos.offset(radius, -4, radius)))
@@ -118,13 +139,13 @@ public class CollapseRecipe extends SimpleBlockRecipe
             for (int y = 0; y <= 8; y++)
             {
                 BlockPos posAt = pos.above(y);
-                BlockState stateAt = world.getBlockState(posAt);
+                BlockState stateAt = level.getBlockState(posAt);
                 if (foundEmpty && Helpers.isBlock(stateAt, TFCTags.Blocks.CAN_COLLAPSE))
                 {
                     // Check for a possible collapse
                     if (posAt.distSqr(centerPos) < radiusSquared && random.nextFloat() < TFCConfig.SERVER.collapsePropagateChance.get())
                     {
-                        if (collapseBlock(world, posAt, stateAt))
+                        if (collapseBlock(level, posAt, stateAt, true)) // Trigger destruction, since our previous check only was 'non-full-blocks'
                         {
                             // This column has started to collapse. Mark the next block above as unstable for the "follow up"
                             secondaryPositions.add(posAt.above());
@@ -132,17 +153,17 @@ public class CollapseRecipe extends SimpleBlockRecipe
                         }
                     }
                 }
-                if (TFCFallingBlockEntity.canFallThrough(world, posAt, Direction.DOWN))
-                {
-                    foundEmpty = true;
-                }
+                // Any non-solid block below might be a candidate for a collapse, since we just break stuff like slabs and stairs that would otherwise count as a solid surface above.
+                foundEmpty = !stateAt.isCollisionShapeFullBlock(level, posAt);
             }
         }
 
         if (!secondaryPositions.isEmpty())
         {
-            world.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new Collapse(centerPos, secondaryPositions, radiusSquared)));
+            level.getCapability(WorldTrackerCapability.CAPABILITY).ifPresent(cap -> cap.addCollapseData(new Collapse(centerPos, secondaryPositions, radiusSquared)));
         }
+
+        return !secondaryPositions.isEmpty();
     }
 
     /**
@@ -150,15 +171,28 @@ public class CollapseRecipe extends SimpleBlockRecipe
      *
      * @return true if the collapse actually occurred
      */
-    public static boolean collapseBlock(Level world, BlockPos pos, BlockState state)
+    public static boolean collapseBlock(Level level, BlockPos pos, BlockState state)
+    {
+        return collapseBlock(level, pos, state, false);
+    }
+
+    public static boolean collapseBlock(Level level, BlockPos pos, BlockState state, boolean destroyBlockBelow)
     {
         final BlockInventory wrapper = new BlockInventory(pos, state);
-        final CollapseRecipe recipe = getRecipe(world, wrapper);
+        final CollapseRecipe recipe = getRecipe(level, wrapper);
         if (recipe != null)
         {
+            final BlockPos posBelow = pos.below();
+            if (destroyBlockBelow && !TFCFallingBlockEntity.canFallThrough(level, posBelow, Direction.DOWN, Blocks.BEDROCK.defaultBlockState()))
+            {
+                // If we cannot fall through the pos below, yet we're trying to collapse this block, it's because we identified it as one we can bust through
+                // So, once we know we are actually collapsing, now we break the block below.
+                // If this check passes, it means the collapsing block will break the block below during it's collapse, so this extra destruction isn't needed.
+                level.destroyBlock(posBelow, true);
+            }
             final BlockState collapseState = recipe.getBlockCraftingResult(wrapper);
-            world.setBlockAndUpdate(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
-            world.addFreshEntity(new TFCFallingBlockEntity(world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState, 3f, 20));
+            level.setBlockAndUpdate(pos, collapseState); // Required as the falling block entity will replace the block in it's first tick
+            level.addFreshEntity(new TFCFallingBlockEntity(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, collapseState, 2.0f, 20));
             return true;
         }
         return false;

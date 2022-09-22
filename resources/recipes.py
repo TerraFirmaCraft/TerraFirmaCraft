@@ -260,9 +260,11 @@ def generate(rm: ResourceManager):
     # TRIGGERS include raw, hardened, and ores
     # STARTS include raw, ores
     # COLLAPSIBLE includes raw, hardened, ores (lossy), bricks, smooth, spikes (special)
+    # NOT SOLID SUPPORTING includes blocks that don't count as a solid block below for support purposes, which is just smooth + all slabs, stairs, etc.
     rm.block_tag('can_trigger_collapse', '#tfc:rock/raw', '#tfc:rock/hardened', '#tfc:rock/ores')
     rm.block_tag('can_start_collapse', '#tfc:rock/raw', '#tfc:rock/ores')
-    rm.block_tag('can_collapse', '#tfc:can_trigger_collapse', '#tfc:rock/bricks', '#tfc:rock/smooth')
+    rm.block_tag('can_collapse', '#tfc:can_trigger_collapse', '#tfc:rock/smooth')
+    rm.block_tag('not_solid_supporting', '#tfc:rock/smooth')
 
     for rock in ROCKS:
         def block(block_type: str):

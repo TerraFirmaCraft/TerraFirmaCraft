@@ -77,9 +77,12 @@ public class CaveSpikesFeature extends Feature<NoneFeatureConfiguration>
 
     protected void placeSmallSpike(WorldGenLevel level, BlockPos pos, BlockState spike, BlockState raw, Direction direction, Random random, float sizeWeight)
     {
-        if (!Helpers.isBlock(raw, BlockTags.BASE_STONE_OVERWORLD))
+        // Replace the block above from raw -> hardened, if necessary
+        final BlockPos above = pos.above();
+        final BlockState stateAbove = level.getBlockState(pos.above());
+        if (Helpers.isBlock(stateAbove, BlockTags.BASE_STONE_OVERWORLD))
         {
-            return;
+            level.setBlock(above, raw, 2);
         }
 
         // Build a spike starting downwards from the target block

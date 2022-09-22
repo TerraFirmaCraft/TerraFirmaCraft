@@ -432,7 +432,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('rock/raw', block('raw'))
         rm.block_tag('rock/hardened', block('hardened'))
         rm.block_tag('rock/gravel', block('gravel'))
-        rm.block_tag('rock/smooth', block('smooth'), block('chiseled'))
+        rm.block_tag('rock/smooth', block('smooth'))
         rm.block_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
 
         for ore, ore_data in ORES.items():

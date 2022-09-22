@@ -3,7 +3,6 @@
   "replace": false,
   "values": [
     "#tfc:can_trigger_collapse",
-    "#tfc:rock/bricks",
     "#tfc:rock/smooth",
     "tfc:rock/spike/granite",
     "tfc:rock/spike/diorite",

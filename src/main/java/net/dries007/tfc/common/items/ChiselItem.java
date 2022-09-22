@@ -22,6 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import net.minecraftforge.items.ItemHandlerHelper;
 
+import com.mojang.datafixers.util.Either;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.recipes.ChiselRecipe;
@@ -45,7 +46,7 @@ public class ChiselItem extends ToolItem
             final Level level = context.getLevel();
             final BlockPos pos = context.getClickedPos();
             final BlockState state = level.getBlockState(pos);
-            var result = ChiselRecipe.computeResult(player, state, new BlockHitResult(context.getClickLocation(), context.getClickedFace(), pos, context.isInside()), true);
+            final Either<BlockState, InteractionResult> result = ChiselRecipe.computeResult(player, state, new BlockHitResult(context.getClickLocation(), context.getClickedFace(), pos, context.isInside()), true);
             return result.map(resultState -> {
                 player.playSound(resultState.getSoundType().getHitSound(), 1f, 1f);
 
@@ -54,7 +55,10 @@ public class ChiselItem extends ToolItem
                 {
                     if (TFCConfig.SERVER.enableChiselsStartCollapses.get())
                     {
-                        CollapseRecipe.tryTriggerCollapse(level, pos);
+                        if (CollapseRecipe.tryTriggerCollapse(level, pos))
+                        {
+                            return InteractionResult.SUCCESS; // Abort chiseling
+                        }
                     }
 
                     player.getCapability(PlayerDataCapability.CAPABILITY).ifPresent(cap -> {
@@ -69,6 +73,7 @@ public class ChiselItem extends ToolItem
                         }
                     });
                 }
+
                 level.setBlockAndUpdate(pos, resultState);
                 if (player instanceof ServerPlayer serverPlayer)
                 {
