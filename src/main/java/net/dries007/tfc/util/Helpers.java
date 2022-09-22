@@ -980,6 +980,11 @@ public final class Helpers
         return new XoroshiroRandomSource(random.nextLong(), random.nextLong());
     }
 
+    public static float catMullRomSpline(float lerp, float lowAnchor, float start, float end, float endAnchor)
+    {
+        return 0.5F * (2F * start + (end - lowAnchor) * lerp + (2F * lowAnchor - 5F * start + 4F * end - endAnchor) * lerp * lerp + (3F * start - lowAnchor - 3F * end + endAnchor) * lerp * lerp * lerp);
+    }
+
     /**
      * A triangle function, with input {@code value} and parameters {@code amplitude, midpoint, frequency}.
      * A period T = 1 / frequency, with a sinusoidal shape. triangle(0) = midpoint, with triangle(+/-1 / (4 * frequency)) = the first peak.

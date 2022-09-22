@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -166,5 +167,15 @@ public final class EntityHelpers
                 break;
             }
         }
+    }
+
+    public static boolean isMovingOnLand(Entity entity)
+    {
+        return entity.isOnGround() && entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && !entity.isInWaterOrBubble();
+    }
+
+    public static boolean isMovingInWater(Entity entity)
+    {
+        return entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && entity.isInWaterOrBubble();
     }
 }

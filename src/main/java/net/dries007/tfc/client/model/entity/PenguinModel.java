@@ -8,20 +8,20 @@ package net.dries007.tfc.client.model.entity;
 
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.dries007.tfc.client.model.Animation;
-import net.dries007.tfc.client.model.Easing;
-import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
+import net.dries007.tfc.client.model.animation.AnimationChannel;
+import net.dries007.tfc.client.model.animation.AnimationDefinition;
+import net.dries007.tfc.client.model.animation.VanillaAnimations;
+import net.dries007.tfc.common.entities.aquatic.Penguin;
 
-public class PenguinModel extends EntityModel<AmphibiousAnimal>
+import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
+
+public class PenguinModel extends HierarchicalModel<Penguin>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -41,25 +41,25 @@ public class PenguinModel extends EntityModel<AmphibiousAnimal>
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    public static final Animation WALK = new Animation.Builder(1.0F)
-        .bone("core", new Animation.Bone.Builder(Easing.EASE_IN_OUT_CUBIC).rotation(0F, 0F, 0F, 15F).rotation(0.5F, 0F, 0F, -15F).rotation(1.0F, 0F, 0F, 15F).build())
-        .bone("head", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.33F, 0F, 0F, -15F).rotation(0.66F, 0F, 0F, 15F).noRotation(1.0F).build())
-        .bone("leftFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 45F, 0F, 0F).noRotation(1.0F).build())
-        .bone("rightFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, -45F, 0F, 0F).noRotation(1.0F).build())
-        .bone("leftWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 25F, 0F, 0F).noRotation(1.0F).build())
-        .bone("rightWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 25F, 0F, 0F).noRotation(1.0F).build())
+    public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(1f).looping()
+        .addAnimation("core", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0f, 0f, 0f, 15f), rotation(0.5f, 0f, 0f, -15f), rotation(1f, 0f, 0f, 15f)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.33f, 0f, 0f, -15f), rotation(0.66f, 0f, 0f, 15f), noRotation(1f)))
+        .addAnimation("leftFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("rightFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, -45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("leftWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 25f, 0f, 0f), noRotation(1f)))
+        .addAnimation("rightWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 25f, 0f, 0f), noRotation(1f)))
         .build();
 
-    public static final Animation SWIM = new Animation.Builder(0.5F)
-        .bone("leftFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 45F, 0F, 0F).noRotation(1.0F).build())
-        .bone("rightFoot", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, -45F, 0F, 0F).noRotation(1.0F).build())
-        .bone("leftWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 0F, 0F, -25F).noRotation(1.0F).build())
-        .bone("rightWing", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0F).rotation(0.5F, 0F, 0F, 25F).noRotation(1.0F).build())
+    public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(0.5f).looping()
+        .addAnimation("leftFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("rightFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, -45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("leftWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 0f, 0f, -25f), noRotation(1f)))
+        .addAnimation("rightWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 0f, 0f, 25f), noRotation(1f)))
         .build();
 
-    public final Map<String, ModelPart> parts;
     public final Map<ModelPart, PartPose> defaults;
 
+    private final ModelPart root;
     private final ModelPart core;
     private final ModelPart head;
     private final ModelPart rightWing;
@@ -69,6 +69,7 @@ public class PenguinModel extends EntityModel<AmphibiousAnimal>
 
     public PenguinModel(ModelPart root)
     {
+        this.root = root;
         core = root.getChild("core");
         head = core.getChild("head");
         leftFoot = core.getChild("leftfoot");
@@ -76,12 +77,11 @@ public class PenguinModel extends EntityModel<AmphibiousAnimal>
         leftWing = core.getChild("leftwing");
         rightWing = core.getChild("rightwing");
 
-        parts = new ImmutableMap.Builder<String, ModelPart>().put("core", core).put("head", head).put("leftFoot", leftFoot).put("rightFoot", rightFoot).put("leftWing", leftWing).put("rightWing", rightWing).build();
-        defaults = Animation.initDefaults(parts);
+        defaults = VanillaAnimations.save(root.getAllParts());
     }
 
     @Override
-    public void setupAnim(AmphibiousAnimal entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    public void setupAnim(Penguin entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         defaults.forEach(ModelPart::loadPose);
         if (entity.isPlayingDead())
@@ -90,28 +90,17 @@ public class PenguinModel extends EntityModel<AmphibiousAnimal>
         }
         else
         {
-            if (entity.getDeltaMovement().lengthSqr() > 0f)
-            {
-                final float adjustedAgeInTicks = ageInTicks + limbSwingAmount * 2F;
-                if (entity.isInWater())
-                {
-                    SWIM.tick(parts, adjustedAgeInTicks);
-                }
-                else
-                {
-                    WALK.tick(parts, adjustedAgeInTicks);
-                }
-            }
+            VanillaAnimations.animate(this, entity.walkingAnimation, WALK, ageInTicks, limbSwingAmount * 2f);
+            VanillaAnimations.animate(this, entity.swimmingAnimation, SWIM, ageInTicks, limbSwingAmount * 2f);
 
             head.xRot = entity.isInWater() ? -1 : headPitch * Mth.PI / 180F;
             head.yRot = netHeadYaw * Mth.PI / 180F;
         }
-
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public ModelPart root()
     {
-        core.render(poseStack, buffer, packedLight, packedOverlay);
+        return root;
     }
 }
