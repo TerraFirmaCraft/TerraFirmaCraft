@@ -25,6 +25,7 @@
     "ServerPlayerGameModeMixin",
     "SnowLayerBlockMixin",
     "TagLoaderMixin",
+    "VineBlockMixin",
     "accessor.BiomeAccessor",
     "accessor.ChunkAccessAccessor",
     "accessor.FallingBlockEntityAccessor",
