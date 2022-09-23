@@ -7,8 +7,11 @@
 package net.dries007.tfc.common.items;
 
 
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -16,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodHandler;
@@ -40,17 +44,31 @@ public class DynamicBowlFood extends DecayingItem
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity)
     {
-        final ItemStack result = super.finishUsingItem(stack, level, entity);
-        if (entity instanceof Player player && player.getAbilities().instabuild)
+        // This is a rare stackable-with-remainder-after-finished-using item
+        // See: vanilla honey bottles
+        if (entity instanceof ServerPlayer player)
         {
-            return result;
+            CriteriaTriggers.CONSUME_ITEM.trigger(player, stack);
+            player.awardStat(Stats.ITEM_USED.get(this));
         }
-        else
+
+        // Pull the bowl out first, before we shrink the stack in super.finishUsingItem()
+        final ItemStack bowl = stack.getCapability(FoodCapability.CAPABILITY)
+            .map(cap -> cap instanceof DynamicBowlHandler handler ? handler.getBowl() : ItemStack.EMPTY)
+            .orElse(ItemStack.EMPTY);
+        final ItemStack result = super.finishUsingItem(stack.copy(), level, entity); // Copy the stack, so we can still refer to the original
+
+        if (result.isEmpty())
         {
-            return stack.getCapability(FoodCapability.CAPABILITY)
-                .map(cap -> cap instanceof DynamicBowlHandler handler ? handler.getBowl() : result)
-                .orElse(result);
+            return bowl;
         }
+        else if (entity instanceof Player player && !player.getAbilities().instabuild)
+        {
+            // In non-creative, we still need to give the player an empty bowl, but we must also return the result here, as it is non-empty
+            // The super() call to finishUsingItem will handle decrementing the stack - only in non-creative - for us already.
+            ItemHandlerHelper.giveItemToPlayer(player, bowl);
+        }
+        return result;
     }
 
     public static class DynamicBowlHandler extends FoodHandler.Dynamic
@@ -58,12 +76,11 @@ public class DynamicBowlFood extends DecayingItem
         private final ItemStack stack;
         private ItemStack bowl;
 
-        private boolean initialized;
-
         protected DynamicBowlHandler(ItemStack stack)
         {
             this.stack = stack;
-            this.bowl = ItemStack.EMPTY;
+            final CompoundTag tag = stack.getOrCreateTag();
+            bowl = tag.contains("bowl") ? ItemStack.of(tag.getCompound("bowl")) : ItemStack.EMPTY;
         }
 
         public ItemStack getBowl()
@@ -77,33 +94,12 @@ public class DynamicBowlFood extends DecayingItem
             save();
         }
 
-        @NotNull
-        @Override
-        public <T> LazyOptional<T> getCapability(Capability<T> cap, @Nullable Direction side)
-        {
-            if (cap == FoodCapability.CAPABILITY)
-            {
-                load();
-            }
-            return super.getCapability(cap, side);
-        }
-
         private void save()
         {
             final CompoundTag tag = stack.getOrCreateTag();
             if (!bowl.isEmpty())
             {
                 tag.put("bowl", bowl.save(new CompoundTag()));
-            }
-        }
-
-        private void load()
-        {
-            if (!initialized)
-            {
-                initialized = true;
-                final CompoundTag tag = stack.getOrCreateTag();
-                bowl = tag.contains("bowl") ? ItemStack.of(tag.getCompound("bowl")) : ItemStack.EMPTY;
             }
         }
     }
