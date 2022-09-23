@@ -44,6 +44,7 @@ def main():
         'book',  # generate the book
         'trees',  # generate tree NBT structures from templates
         'format_lang',  # format language files
+        'update_lang',  # useful to update localizations after a change to the base which renders some translations incorrect
         'textures',  # generate textures
     ))
     parser.add_argument('--translate', type=str, default='en_us', help='Runs the book translation using a single provided language')
@@ -84,6 +85,8 @@ def main():
             generate_trees.main()
         elif action == 'format_lang':
             format_lang.main(False, MOD_LANGUAGES)
+        elif action == 'update_lang':
+            format_lang.update(MOD_LANGUAGES)
 
 
 def clean(local: Optional[str]):
