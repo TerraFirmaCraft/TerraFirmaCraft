@@ -18,7 +18,6 @@
     "MilkBucketItemMixin",
     "MobMixin",
     "PlayerMixin",
-    "PotionItemMixin",
     "PrimaryLevelDataMixin",
     "ReloadableServerResourcesMixin",
     "ServerLevelMixin",
