@@ -216,6 +216,9 @@ public final class Metal
         return meltTemperature;
     }
 
+    /**
+     * @return The Specific Heat Capacity of the metal.
+     */
     public float getHeatCapacity()
     {
         return heatCapacity;

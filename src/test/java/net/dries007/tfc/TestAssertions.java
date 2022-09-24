@@ -28,6 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import org.jetbrains.annotations.Contract;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 
@@ -192,51 +193,61 @@ public final class TestAssertions
     // Bouncers for JUnit Assertions, if present.
     // Otherwise these use TFC Assertions in GameTest, where JUnit is not loaded.
 
+    @Contract(value = "null, null, _ -> _; null, !null, _ -> fail; !null, null, _ -> fail", pure = true)
     public static void assertEquals(Object expected, Object actual, String message)
     {
         ASSERTIONS.assertEquals.accept(expected, actual, message);
     }
 
+    @Contract(value = "null, null -> _; null, !null -> fail; !null, null -> fail", pure = true)
     public static void assertEquals(Object expected, Object actual)
     {
         assertEquals(expected, actual, "Expected " + expected + " to be equal to " + actual);
     }
 
+    @Contract(value = "null, null, _ -> fail; null, !null, _ -> _; !null, null, _ -> _", pure = true)
     public static void assertNotEquals(Object expected, Object actual, String message)
     {
         ASSERTIONS.assertNotEquals.accept(expected, actual, message);
     }
 
+    @Contract(value = "null, null -> fail; null, !null -> _; !null, null -> _", pure = true)
     public static void assertNotEquals(Object expected, Object actual)
     {
         assertNotEquals(expected, actual, "Expected " + expected + " to be not equal to " + actual);
     }
 
+    @Contract(value = "null, _ -> fail;", pure = true)
     public static void assertNotNull(Object actual, String message)
     {
         ASSERTIONS.assertNotNull.accept(actual, message);
     }
 
+    @Contract(value = "null -> fail;", pure = true)
     public static void assertNotNull(Object actual)
     {
         assertNotNull(actual, "Expected non null");
     }
 
+    @Contract(value = "null, _ -> fail;false, _ -> fail", pure = true)
     public static void assertTrue(Boolean actual, String message)
     {
         ASSERTIONS.assertTrue.accept(actual, message);
     }
 
+    @Contract(value = "null -> fail;false -> fail", pure = true)
     public static void assertTrue(Boolean actual)
     {
         assertTrue(actual, "Expected true");
     }
 
+    @Contract(value = "null, _ -> fail;true, _ -> fail", pure = true)
     public static void assertFalse(Boolean actual, String message)
     {
         ASSERTIONS.assertFalse.accept(actual, message);
     }
 
+    @Contract(value = "null -> fail;true -> fail", pure = true)
     public static void assertFalse(Boolean actual)
     {
         assertFalse(actual, "Expected false");
@@ -244,30 +255,30 @@ public final class TestAssertions
 
     // Wrapper methods
 
-    private static Type wrap(FluidStack stack)
+    public static Type wrap(FluidStack stack)
     {
         return new Named<>(stack, "%d mB of %s".formatted(stack.getAmount(), stack.getFluid().getRegistryName()));
     }
 
-    private static Type wrap(ItemStack stack)
+    public static Type wrap(ItemStack stack)
     {
         record TItemStack(Item item, int count, CompoundTag tag) {}
-        return new Named<>(new TItemStack(stack.getItem(), stack.getCount(), stack.getTag()), stack.toString());
+        return new Named<>(new TItemStack(stack.getItem(), stack.getCount(), stack.getTag()), stack.toString() + stack.getTag());
     }
 
-    private static Type wrap(Ingredient ingredient)
+    public static Type wrap(Ingredient ingredient)
     {
         record TIngredient(Class<?> clazz, IIngredientSerializer<? extends Ingredient> serializer, List<Type> stacks) implements Type {}
         return new TIngredient(ingredient.getClass(), ingredient.getSerializer(), wrap(ingredient.getItems(), TestAssertions::wrap));
     }
 
-    private static Type wrap(Recipe<?> recipe)
+    public static Type wrap(Recipe<?> recipe)
     {
         record TRecipe(Class<?> clazz, ResourceLocation id, String group, Type result, List<Type> ingredients) implements Type {}
         return new Named<>(new TRecipe(recipe.getClass(), recipe.getId(), recipe.getGroup(), wrap(recipe.getResultItem()), wrap(recipe.getIngredients(), TestAssertions::wrap)), "[Recipe " + recipe.getId() +  " of type " + recipe.getType() + "and serializer" + recipe.getSerializer().getRegistryName() + "]");
     }
 
-    private static Type wrap(ItemStackProvider provider)
+    public static Type wrap(ItemStackProvider provider)
     {
         record TItemStackProvider(Type stack, ItemStackModifier[] modifiers) implements Type {}
         return new TItemStackProvider(wrap(provider.stack().get()), provider.modifiers());

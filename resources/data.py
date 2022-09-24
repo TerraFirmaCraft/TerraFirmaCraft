@@ -40,11 +40,10 @@ class Category(Enum):
 
 
 def generate(rm: ResourceManager):
-    # Metal Items
+
+    # === Metals ===
 
     for metal, metal_data in METALS.items():
-
-        # Metal
         rm.data(('tfc', 'metals', metal), {
             'tier': metal_data.tier,
             'fluid': 'tfc:metal/%s' % metal,
@@ -70,33 +69,11 @@ def generate(rm: ResourceManager):
                     rm.item_tag('metal_item/%s_tools' % metal, item_name)
                 item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
 
-    for ore, ore_data in ORES.items():
-        if ore_data.metal and ore_data.graded:
-            metal_data = METALS[ore_data.metal]
-            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, int(metal_data.melt_temperature))
+    # === Item Heats ===
 
-    rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
-    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
-    rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
-    rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
-    rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
-    rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
-    rm.entity_tag('land_prey', *['tfc:%s' % entity for entity in LAND_PREY], '#tfc:livestock')
-    rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
-    rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player')
-    rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
-    rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
-    rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
-    rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
-    rm.entity_tag('horses', 'tfc:horse', 'tfc:mule', 'tfc:donkey')
-    rm.entity_tag('animals', *['tfc:%s' % mob for mob in SPAWN_EGG_ENTITIES])
-    rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
-    rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
-    rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
+    wrought_iron = METALS['wrought_iron']
 
-    # Item Heats
-
-    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 0.35, 1535)
+    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.heat_capacity, wrought_iron.melt_temperature)
     item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
     item_heat(rm, 'stick', '#forge:rods/wooden', 0.3)
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
@@ -112,11 +89,11 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
     item_heat(rm, 'egg', 'minecraft:egg', 1)
-    item_heat(rm, 'blooms', '#tfc:blooms', 0.35, METALS['wrought_iron'].melt_temperature)
+    item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.heat_capacity, wrought_iron.melt_temperature)
 
+    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HC)
     for pottery in SIMPLE_POTTERY:
         item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
-    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HC)
 
     for color in COLORS:
         item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HC)
@@ -127,7 +104,17 @@ def generate(rm: ResourceManager):
             item_heat(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HC)
             # No need to do fired molds, as they have their own capability implementation
 
-    # Supports
+    for metal, metal_data in METALS.items():
+        for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
+            if item_data.type in metal_data.types or item_data.type == 'all':
+                item_heat(rm, 'metal/%s_%s' % (metal, item), '#%s/%s' % (item_data.tag, metal) if item_data.tag else 'tfc:metal/%s/%s' % (item, metal), metal_data.heat_capacity, metal_data.melt_temperature, mb=item_data.smelt_amount)
+
+    for ore, ore_data in ORES.items():
+        if ore_data.metal and ore_data.graded:
+            metal_data = METALS[ore_data.metal]
+            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, int(metal_data.melt_temperature), mb=25)  # Average at 25 mB / ore piece
+
+    # === Supports ===
 
     for wood in WOODS:
         rm.data(('tfc', 'supports', wood), {
@@ -670,6 +657,31 @@ def generate(rm: ResourceManager):
     rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
     rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
 
+    # Used for Entity Damage Resistance
+    rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')
+    rm.entity_tag('creepers', 'minecraft:creeper')
+    rm.entity_tag('zombies', 'minecraft:zombie', 'minecraft:husk', 'minecraft:zombie_villager')
+
+    # Misc tags
+    rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
+    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
+    rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
+    rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
+    rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
+    rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
+    rm.entity_tag('land_prey', *['tfc:%s' % entity for entity in LAND_PREY], '#tfc:livestock')
+    rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
+    rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player')
+    rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
+    rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
+    rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
+    rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
+    rm.entity_tag('horses', 'tfc:horse', 'tfc:mule', 'tfc:donkey')
+    rm.entity_tag('animals', *['tfc:%s' % mob for mob in SPAWN_EGG_ENTITIES])
+    rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
+    rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
+    rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
+
     # Item Sizes
 
     item_size(rm, 'logs', '#minecraft:logs', Size.very_large, Weight.medium)
@@ -928,11 +940,6 @@ def generate(rm: ResourceManager):
     # Misc Block Loot
     rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
 
-    # Entity Damage Resistance
-    rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')
-    rm.entity_tag('creepers', 'minecraft:creeper')
-    rm.entity_tag('zombies', 'minecraft:zombie', 'minecraft:husk', 'minecraft:zombie_villager')
-
     entity_damage_resistance(rm, 'skeletons', 'tfc:skeletons', piercing=1000000000, crushing=-50)
     entity_damage_resistance(rm, 'creeper', 'tfc:creepers', slashing=-25, crushing=50)
     entity_damage_resistance(rm, 'zombies', 'tfc:zombies', piercing=-25, crushing=50)
@@ -1103,12 +1110,16 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None):
+def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None, mb: Optional[int] = None):
     if melt_temperature is not None:
         forging_temperature = melt_temperature * 0.6
         welding_temperature = melt_temperature * 0.8
     else:
         forging_temperature = welding_temperature = None
+    if mb is not None:
+        # Interpret heat capacity as a specific heat capacity - so we need to scale by the mB present. Baseline is 100 mB (an ingot)
+        # Higher mB = lower heat capacity = heats and cools slower = consumes proportionally more fuel
+        heat_capacity *= 100 / mb
     rm.data(('tfc', 'item_heats', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'heat_capacity': heat_capacity,
