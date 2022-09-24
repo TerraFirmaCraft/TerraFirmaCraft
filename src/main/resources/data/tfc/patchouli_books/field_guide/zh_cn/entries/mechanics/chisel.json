@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "当心！在矿井中直接凿成的方块依然受重力影响，而且你每次凿方块的时候，都有可能导致$(thing)塌方$()。"
+      "text": "当心！在矿井中直接凿成的方块依然受重力影响，而且你每次凿方块的时候，都有可能导致$(l:mechanics/support_beams)塌方$()。"
     }
   ],
   "read_by_default": true
