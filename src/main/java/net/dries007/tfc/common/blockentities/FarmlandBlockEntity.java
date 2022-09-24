@@ -79,13 +79,6 @@ public class FarmlandBlockEntity extends TFCBlockEntity implements IFarmland
     }
 
     @Override
-    public void addNutrients(Fertilizer fertilizer)
-    {
-        IFarmland.super.addNutrients(fertilizer);
-        markForSync();
-    }
-
-    @Override
     public void setNutrient(NutrientType type, float value)
     {
         value = Mth.clamp(value, 0, 1);

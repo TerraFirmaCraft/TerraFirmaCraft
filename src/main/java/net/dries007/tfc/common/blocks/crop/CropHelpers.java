@@ -153,22 +153,25 @@ public final class CropHelpers
 
     public static boolean useFertilizer(Level level, Player player, InteractionHand hand, BlockPos farmlandPos)
     {
-        if (!level.isClientSide())
+        final ItemStack stack = player.getItemInHand(hand);
+        final Fertilizer fertilizer = Fertilizer.get(stack);
+        if (fertilizer != null && level.getBlockEntity(farmlandPos) instanceof IFarmland farmland)
         {
-            ItemStack stack = player.getItemInHand(hand);
-            Fertilizer fertilizer = Fertilizer.get(stack);
-            if (fertilizer != null && level.getBlockEntity(farmlandPos) instanceof IFarmland farmland)
+            if (!level.isClientSide())
             {
                 farmland.addNutrients(fertilizer);
-                if (!player.isCreative()) stack.shrink(1);
+                if (!player.isCreative())
+                {
+                    stack.shrink(1);
+                }
                 IFarmland.addNutrientParticles((ServerLevel) level, farmlandPos.above(), fertilizer);
 
                 if (farmland.isMaxedOut() && player instanceof ServerPlayer serverPlayer)
                 {
                     TFCAdvancements.FULL_FERTILIZER.trigger(serverPlayer);
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }

@@ -62,9 +62,9 @@ public interface IFarmland
 
     default void addNutrients(Fertilizer fertilizer)
     {
-        setNutrient(NITROGEN, getNutrient(NITROGEN) + fertilizer.getNitrogen());
-        setNutrient(PHOSPHOROUS, getNutrient(PHOSPHOROUS) + fertilizer.getNitrogen());
-        setNutrient(POTASSIUM, getNutrient(POTASSIUM) + fertilizer.getNitrogen());
+        addNutrient(NITROGEN, fertilizer.getNitrogen());
+        addNutrient(PHOSPHOROUS,  fertilizer.getPhosphorus());
+        addNutrient(POTASSIUM, fertilizer.getPotassium());
     }
 
     /**
