@@ -25,6 +25,7 @@ public class TFCTags
         public static final TagKey<Block> CAN_COLLAPSE = create("can_collapse");
         public static final TagKey<Block> CAN_LANDSLIDE = create("can_landslide");
         public static final TagKey<Block> SUPPORTS_LANDSLIDE = create("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
+        public static final TagKey<Block> NOT_SOLID_SUPPORTING = create("not_solid_supporting"); // Blocks that don't count as supporting the block above for the purposes of collapse start checks
         public static final TagKey<Block> TOUGHNESS_1 = create("toughness_1"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> TOUGHNESS_2 = create("toughness_2"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> TOUGHNESS_3 = create("toughness_3"); // Tags for toughness of materials w.r.t falling blocks

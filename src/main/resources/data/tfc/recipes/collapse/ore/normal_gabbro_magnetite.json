@@ -1,0 +1,6 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": "tfc:ore/rich_magnetite/gabbro",
+  "result": "tfc:ore/normal_magnetite/gabbro"
+}

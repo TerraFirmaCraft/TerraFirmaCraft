@@ -428,6 +428,20 @@ def generate(rm: ResourceManager):
         def block(block_type: str):
             return 'tfc:rock/%s/%s' % (block_type, rock)
 
+        # Type-Based Block Tags
+        rm.block_tag('rock/raw', block('raw'))
+        rm.block_tag('rock/hardened', block('hardened'))
+        rm.block_tag('rock/gravel', block('gravel'))
+        rm.block_tag('rock/smooth', block('smooth'))
+        rm.block_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+
+        for ore, ore_data in ORES.items():
+            if ore_data.graded:
+                for grade in ORE_GRADES.keys():
+                    rm.block_tag('rock/ores', 'tfc:ore/%s_%s/%s' % (grade, ore, rock))
+            else:
+                rm.block_tag('rock/ores', 'tfc:ore/%s/%s' % (ore, rock))
+
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
         block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
         block_and_item_tag(rm, 'forge:cobblestone/normal', block('cobble'), block('mossy_cobble'))
