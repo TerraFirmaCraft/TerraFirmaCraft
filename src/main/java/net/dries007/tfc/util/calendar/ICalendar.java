@@ -10,6 +10,8 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
+import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.config.TimeDeltaTooltipStyle;
 import net.dries007.tfc.util.Helpers;
 
 /**
@@ -130,12 +132,13 @@ public interface ICalendar
             return Helpers.translatable("tfc.tooltip.time_delta_hours_minutes", hours, String.format("%02d", getMinuteOfHour(ticks)));
         }
         final long months = getTotalMonths(ticks, daysInMonth);
-        if (months < 1)
+        final TimeDeltaTooltipStyle style = TFCConfig.CLIENT.timeDeltaTooltipStyle.get();
+        if (months < 1 || style == TimeDeltaTooltipStyle.DAYS)
         {
             return Helpers.translatable("tfc.tooltip.time_delta_days", days);
         }
         final long years = getTotalYears(ticks, daysInMonth) - 1000; // Since years starts at 1k
-        if (years < 1)
+        if (years < 1 || style == TimeDeltaTooltipStyle.DAYS_MONTHS)
         {
             return Helpers.translatable("tfc.tooltip.time_delta_months_days", months, days % daysInMonth);
         }
