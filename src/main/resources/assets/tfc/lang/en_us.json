@@ -213,6 +213,8 @@
   "tfc.tooltip.deals_damage.slashing": "§7Deals §fSlashing§r Damage",
   "tfc.tooltip.deals_damage.piercing": "§7Deals §fPiercing§r Damage",
   "tfc.tooltip.deals_damage.crushing": "§7Deals §fCrushing§r Damage",
+  "tfc.tooltip.resists_damage": "§7Resistances: §fSlashing§r %s, §fPiercing§r %s, §fCrushing§r %s",
+  "tfc.tooltip.immune_to_damage": "Immune",
   "tfc.tooltip.pot_boiling": "Boiling!",
   "tfc.tooltip.pot_finished": "Finished",
   "tfc.tooltip.pot_ready": "Ready",
