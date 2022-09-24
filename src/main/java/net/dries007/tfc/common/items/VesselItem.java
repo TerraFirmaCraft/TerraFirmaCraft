@@ -149,6 +149,12 @@ public class VesselItem extends Item
         }
 
         @Override
+        public void onCarried(ItemStack stack)
+        {
+            FoodCapability.removeTrait(stack, FoodTraits.PRESERVED);
+        }
+
+        @Override
         public Mode mode()
         {
             if (alloy.isEmpty())

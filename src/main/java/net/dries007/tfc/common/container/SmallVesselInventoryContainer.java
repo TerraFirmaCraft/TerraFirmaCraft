@@ -30,7 +30,7 @@ public class SmallVesselInventoryContainer extends ItemStackContainer
     {
         super(TFCContainerTypes.SMALL_VESSEL_INVENTORY.get(), windowId, playerInv, stack, hand);
 
-        vessel = VesselLike.get(stack);
+        callback = vessel = VesselLike.get(stack);
     }
 
     @Override
@@ -61,13 +61,11 @@ public class SmallVesselInventoryContainer extends ItemStackContainer
     @Override
     protected void addContainerSlots()
     {
-        // the field vessel will not be initialized yet, since this is called in the super constructor
-        if (vessel != null)
-        {
-            addSlot(new CallbackSlot(vessel, vessel, 0, 71, 23));
-            addSlot(new CallbackSlot(vessel, vessel, 1, 89, 23));
-            addSlot(new CallbackSlot(vessel, vessel, 2, 71, 41));
-            addSlot(new CallbackSlot(vessel, vessel, 3, 89, 41));
-        }
+        assert vessel != null;
+
+        addSlot(new CallbackSlot(vessel, vessel, 0, 71, 23));
+        addSlot(new CallbackSlot(vessel, vessel, 1, 89, 23));
+        addSlot(new CallbackSlot(vessel, vessel, 2, 71, 41));
+        addSlot(new CallbackSlot(vessel, vessel, 3, 89, 41));
     }
 }

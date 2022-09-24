@@ -7,6 +7,7 @@
 package net.dries007.tfc.common.container;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -43,4 +44,9 @@ public interface ISlotCallback
      * Called when a slot is taken from
      */
     default void onSlotTake(Player player, int slot, ItemStack stack) {}
+
+    /**
+     * Called when an item stack is carried in the inventory. Useful for cases where {@link #onSlotTake(Player, int, ItemStack)} won't be called due to vanilla weirdness in {@link net.minecraft.world.inventory.AbstractContainerMenu#doClick(int, int, ClickType, Player)}.
+     */
+    default void onCarried(ItemStack stack) {}
 }

@@ -9,6 +9,7 @@ package net.dries007.tfc.common.container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Base container implementation, which just adds the player inventory.
- * Can be used as-is, although most commonly used with a implementation extending either {@link ItemStackContainer} or {@link BlockEntityContainer}
+ * Can be used as-is, although most commonly used with an implementation extending either {@link ItemStackContainer} or {@link BlockEntityContainer}
  */
 public class Container extends AbstractContainerMenu
 {
@@ -28,10 +29,17 @@ public class Container extends AbstractContainerMenu
 
     protected int containerSlots; // The number of slots in the container (not including the player inventory)
     @Nullable protected Player player;
+    @Nullable protected ISlotCallback callback;
+
+    protected Container(@Nullable ISlotCallback callback, MenuType<?> type, int windowId)
+    {
+        super(type, windowId);
+        this.callback = callback;
+    }
 
     protected Container(MenuType<?> type, int windowId)
     {
-        super(type, windowId);
+        this(null, type, windowId);
     }
 
     /**
@@ -88,6 +96,22 @@ public class Container extends AbstractContainerMenu
             return original;
         }
         return ItemStack.EMPTY;
+    }
+
+    /**
+     * In {@link net.minecraft.world.inventory.AbstractContainerMenu#doClick(int, int, ClickType, Player)} there is a call path through which {@link net.minecraft.world.inventory.Slot#onTake(Player, ItemStack)} is not called. It just directly sets the slot, and the carried in the container.
+     * We call the callback's slotless version here, as it's all we can realistically do.
+     *
+     * @param stack The stack that is set to be carried.
+     */
+    @Override
+    public void setCarried(ItemStack stack)
+    {
+        if (callback != null)
+        {
+            callback.onCarried(stack);
+        }
+        super.setCarried(stack);
     }
 
     @Override
