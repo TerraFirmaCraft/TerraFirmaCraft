@@ -49,7 +49,7 @@ public enum SoilBlockType
     public static BlockBehaviour.Properties mudProperties()
     {
         // todo: 1.19. correct sound
-        return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.6f).sound(SoundType.WART_BLOCK).speedFactor(0.8f);
+        return BlockBehaviour.Properties.of(Material.DIRT, MaterialColor.DIRT).strength(1.6f).sound(SoundType.WART_BLOCK).speedFactor(0.8f).isRedstoneConductor(TFCBlocks::always).isViewBlocking(TFCBlocks::always).isSuffocating(TFCBlocks::always);
     }
 
     private final BiFunction<SoilBlockType, RegistrySoilVariant, Block> factory;
