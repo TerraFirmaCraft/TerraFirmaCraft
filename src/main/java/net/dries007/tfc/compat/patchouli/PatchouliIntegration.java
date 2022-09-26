@@ -63,6 +63,11 @@ public final class PatchouliIntegration
         PatchouliAPI.get().openBookGUI(player, BOOK_ID);
     }
 
+    public static void openGui(ServerPlayer player, ResourceLocation entry, int page)
+    {
+        PatchouliAPI.get().openBookEntry(player, BOOK_ID, entry, page);
+    }
+
     public static void registerMultiBlocks()
     {
         registerMultiblock("bloomery", PatchouliIntegration::bloomery);
