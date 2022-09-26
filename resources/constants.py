@@ -131,7 +131,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
     'sword_blade': MetalItem('tool', 200, 'item/generated', None, True, False),
     'mace': MetalItem('tool', 200, 'item/handheld', None, False, True),
     'mace_head': MetalItem('tool', 200, 'item/generated', None, True, False),
-    'saw': MetalItem('tool', 100, 'item/handheld', None, False, True),
+    'saw': MetalItem('tool', 100, 'tfc:item/handheld_flipped', None, False, True),
     'saw_blade': MetalItem('tool', 100, 'item/generated', None, True, False),
     'javelin': MetalItem('tool', 100, 'item/handheld', None, False, True),
     'javelin_head': MetalItem('tool', 100, 'item/generated', None, True, False),
