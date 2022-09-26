@@ -423,6 +423,7 @@ public class BlastFurnaceBlockEntity extends TickableInventoryBlockEntity<BlastF
     @Override
     public void ejectInventory()
     {
+        super.ejectInventory();
         dumpItems();
         destroyMolten();
     }
