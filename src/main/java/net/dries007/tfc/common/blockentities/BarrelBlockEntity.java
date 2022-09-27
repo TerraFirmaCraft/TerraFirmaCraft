@@ -36,8 +36,10 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.capabilities.*;
+import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
+import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.common.container.BarrelContainer;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.recipes.BarrelRecipe;
@@ -194,7 +196,12 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         return switch (slot)
             {
                 case SLOT_FLUID_CONTAINER_IN -> stack.getCapability(Capabilities.FLUID).isPresent() || stack.getItem() instanceof BucketItem;
-                case SLOT_ITEM -> ItemSizeManager.get(stack).getSize(stack).isSmallerThan(Size.HUGE);
+                case SLOT_ITEM -> {
+                    // We only want to deny heavy/huge (aka things that can hold inventory).
+                    // Other than that, barrels don't need a size restriction, and should in general be unrestricted, so we can allow any kind of recipe input (i.e. unfired large vessel)
+                    final IItemSize size = ItemSizeManager.get(stack);
+                    yield size.getSize(stack).isSmallerThan(Size.HUGE) || size.getWeight(stack).isSmallerThan(Weight.VERY_HEAVY);
+                }
                 default -> true;
             };
     }
