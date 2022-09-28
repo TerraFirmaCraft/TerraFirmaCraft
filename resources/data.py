@@ -153,6 +153,7 @@ def generate(rm: ResourceManager):
     # =========
 
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
+    rm.item_tag('forge:rods/wooden', '#tfc:twigs')
     rm.item_tag('firepit_sticks', '#forge:rods/wooden')
     rm.item_tag('firepit_kindling', 'tfc:straw', 'minecraft:paper', 'minecraft:book', 'tfc:groundcover/pinecone')
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
