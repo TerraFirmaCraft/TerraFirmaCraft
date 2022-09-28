@@ -251,8 +251,13 @@ public final class FoodCapability
      */
     public static long getRoundedCreationDate()
     {
+        return getRoundedCreationDate(Calendars.get().getTicks());
+    }
+
+    public static long getRoundedCreationDate(long tick)
+    {
         final int window = TFCConfig.SERVER.foodDecayStackWindow.get();
-        return (Calendars.get().getTotalHours() / window) * ICalendar.TICKS_IN_HOUR * window;
+        return ((ICalendar.getTotalHours(tick - 1) + 1) / window) * ICalendar.TICKS_IN_HOUR * window;
     }
 
     /**
@@ -275,12 +280,12 @@ public final class FoodCapability
      *
      * @param ci The initial creation date
      * @param p  The decay date modifier (1 / standard decay modifier)
-     * @return cf the final creation date
+     * @return cf the final creation date, rounded to the nearest hour, for ease of stackability.
      */
     private static long calculateNewCreationDate(long ci, float p)
     {
         // Cf = (1 - p) * T + p * Ci
-        return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);
+        return getRoundedCreationDate((long) ((1 - p) * Calendars.get().getTicks() + p * ci));
     }
 
     public static class Packet extends DataManagerSyncPacket<FoodDefinition> {}
