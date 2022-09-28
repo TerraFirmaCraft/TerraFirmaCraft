@@ -75,11 +75,11 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
     }
 
     @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
+    public BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
     {
         if (facing.getAxis().isHorizontal())
         {
-            stateIn = stateIn.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(facing), Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM));
             // if support incomplete, try the other way (E/W vs N/S)
             if (!Helpers.isBlock(facingState, TFCTags.Blocks.SUPPORT_BEAM) || !Helpers.isBlock(level.getBlockState(currentPos.relative(facing.getOpposite())), TFCTags.Blocks.SUPPORT_BEAM))
             {
@@ -91,7 +91,7 @@ public class HorizontalSupportBlock extends VerticalSupportBlock implements IFor
                 }
             }
         }
-        return stateIn;
+        return state;
     }
 
     /**

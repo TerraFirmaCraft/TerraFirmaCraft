@@ -170,9 +170,10 @@ public abstract class SeasonalPlantBlock extends BushBlock implements IForgeBloc
     @SuppressWarnings("deprecation")
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity)
     {
-        if (TFCConfig.SERVER.enableLeavesSlowEntities.get())
+        final float modifier = TFCConfig.SERVER.leavesMovementModifier.get().floatValue();
+        if (modifier < 1)
         {
-            Helpers.slowEntityInBlock(entity, 0.2f, 5);
+            Helpers.slowEntityInBlock(entity, modifier, 5);
         }
         if (entity.getType() != EntityType.ITEM && Helpers.isBlock(this, TFCTags.Blocks.THORNY_BUSHES))
         {
