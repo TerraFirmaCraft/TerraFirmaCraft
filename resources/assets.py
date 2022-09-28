@@ -697,7 +697,6 @@ def generate(rm: ResourceManager):
                         'name': 'tfc:metal/lamp/%s' % metal,
                         'functions': [{'function': 'tfc:copy_fluid'}]
                     }).with_tag('lamps')
-                    rm.item_tag('lamps', 'tfc:metal/%s/%s' % (metal_block, metal))
                     rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
                 elif metal_block == 'chain':
                     rm.block_model(('metal', 'chain', metal), {'all': metal_dir % (metal_block, metal), 'particle': metal_dir % (metal_block, metal)}, parent='minecraft:block/chain')

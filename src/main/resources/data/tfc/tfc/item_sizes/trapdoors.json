@@ -1,8 +1,8 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "ingredient": {
-    "tag": "tfc:lamps"
+    "tag": "tfc:trapdoors"
   },
-  "size": "normal",
-  "weight": "medium"
+  "size": "large",
+  "weight": "heavy"
 }
