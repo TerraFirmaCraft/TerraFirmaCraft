@@ -151,7 +151,7 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
     {
         playerWillDestroy(level, pos, state, player);
         removePileOrSnow(level, pos, state);
-        return false;
+        return true; // Cause drops and other stuff to occur
     }
 
     @Override
