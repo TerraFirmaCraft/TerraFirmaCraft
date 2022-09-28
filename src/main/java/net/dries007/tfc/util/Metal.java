@@ -480,7 +480,7 @@ public final class Metal
         MACE_HEAD(Type.TOOL, true),
         KNIFE(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.54f, metal.toolTier()), -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
         KNIFE_BLADE(Type.TOOL, true),
-        SCYTHE(Type.TOOL, metal -> new ScytheItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(2f, metal.toolTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, properties())),
+        SCYTHE(Type.TOOL, metal -> new ScytheItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.7f, metal.toolTier()), -3.2F, TFCTags.Blocks.MINEABLE_WITH_SCYTHE, properties())),
         SCYTHE_BLADE(Type.TOOL, true),
         SHEARS(Type.TOOL, metal -> new ShearsItem(properties().defaultDurability(metal.toolTier().getUses()))),
 

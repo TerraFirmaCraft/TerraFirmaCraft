@@ -59,17 +59,16 @@ public enum PhysicalDamageType implements StringRepresentable
     public static float calculateMultiplier(DamageSource source, Entity entityUnderAttack)
     {
         final PhysicalDamageType type = getTypeForSource(source);
-        if (type == null)
-        {
-            return 1f;
-        }
-
         float resistance = 0;
 
-        final PhysicalDamageType.Multiplier naturalMultiplier = EntityDamageResistance.get(entityUnderAttack);
-        if (naturalMultiplier != null)
+        if (type != null)
         {
-            resistance += naturalMultiplier.value(type);
+            // Natural resistances only apply to specific damage types (because they can be infinite, which would make punching deal zero damage)
+            final PhysicalDamageType.Multiplier naturalMultiplier = EntityDamageResistance.get(entityUnderAttack);
+            if (naturalMultiplier != null)
+            {
+                resistance += naturalMultiplier.value(type);
+            }
         }
 
         for (ItemStack stack : entityUnderAttack.getArmorSlots())
@@ -192,8 +191,13 @@ public enum PhysicalDamageType implements StringRepresentable
         float piercing();
         float slashing();
 
-        default float value(PhysicalDamageType type)
+        default float value(@Nullable PhysicalDamageType type)
         {
+            if (type == null)
+            {
+                // No damage type = use the highest of all resistances.
+                return Math.max(crushing(), Math.max(piercing(), slashing()));
+            }
             return switch (type)
                 {
                     case CRUSHING -> crushing();

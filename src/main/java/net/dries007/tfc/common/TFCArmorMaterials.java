@@ -60,9 +60,11 @@ public enum TFCArmorMaterials implements ArmorMaterial, PhysicalDamageType.Multi
         this.enchantability = enchantability;
         this.toughness = toughness;
         this.knockbackResistance = knockbackResistance;
-        this.crushingModifier = crushingModifier;
-        this.piercingModifier = piercingModifier;
-        this.slashingModifier = slashingModifier;
+
+        // Since each slot is applied separately, the input values are values for a full set of armor of this type.
+        this.crushingModifier = crushingModifier * 0.25f;
+        this.piercingModifier = piercingModifier * 0.25f;
+        this.slashingModifier = slashingModifier * 0.25f;
     }
 
     @Override
