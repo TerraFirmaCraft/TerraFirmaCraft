@@ -91,10 +91,18 @@ public final class TestAssertions
                 {
                     final String methodName = method.getName();
                     functions.add(new TestFunction("defaultBatch", className + '.' + methodName, "tfc:empty", 100, 0, true, helper -> asUnitTest(className, methodName, helper, () -> {
-                        LOGGER.debug("Running AutoGameTest {}.{}()", className, methodName);
                         try
                         {
-                            method.invoke(instance, helper);
+                            final Object ret = method.invoke(instance, helper);
+                            if (ret instanceof String output)
+                            {
+                                // Returning a string allows game tests to log some additional output even if they pass
+                                LOGGER.debug("Running AutoGameTest {}.{}() : {}", className, methodName, output);
+                            }
+                            else
+                            {
+                                LOGGER.debug("Running AutoGameTest {}.{}()", className, methodName);
+                            }
                         }
                         catch (InvocationTargetException e)
                         {
@@ -107,6 +115,7 @@ public final class TestAssertions
                     })));
                 }
             }
+            functions.sort(Comparator.comparing(TestFunction::getTestName));
             return functions;
         }
         catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e)
@@ -263,7 +272,7 @@ public final class TestAssertions
     public static Type wrap(ItemStack stack)
     {
         record TItemStack(Item item, int count, CompoundTag tag) {}
-        return new Named<>(new TItemStack(stack.getItem(), stack.getCount(), stack.getTag()), stack.toString() + stack.getTag());
+        return new Named<>(new TItemStack(stack.getItem(), stack.getCount(), stack.getTag()), stack.toString() + (stack.getTag() != null ? stack.getTag() : ""));
     }
 
     public static Type wrap(Ingredient ingredient)
@@ -275,7 +284,7 @@ public final class TestAssertions
     public static Type wrap(Recipe<?> recipe)
     {
         record TRecipe(Class<?> clazz, ResourceLocation id, String group, Type result, List<Type> ingredients) implements Type {}
-        return new Named<>(new TRecipe(recipe.getClass(), recipe.getId(), recipe.getGroup(), wrap(recipe.getResultItem()), wrap(recipe.getIngredients(), TestAssertions::wrap)), "[Recipe " + recipe.getId() +  " of type " + recipe.getType() + "and serializer" + recipe.getSerializer().getRegistryName() + "]");
+        return new Named<>(new TRecipe(recipe.getClass(), recipe.getId(), recipe.getGroup(), wrap(recipe.getResultItem()), wrap(recipe.getIngredients(), TestAssertions::wrap)), "[Recipe " + recipe.getId() +  " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + "]");
     }
 
     public static Type wrap(ItemStackProvider provider)

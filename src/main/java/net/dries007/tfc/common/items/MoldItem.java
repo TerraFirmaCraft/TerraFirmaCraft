@@ -318,8 +318,17 @@ public class MoldItem extends Item
 
         private void updateHeatCapacity(boolean save)
         {
-            final Metal metal = getContainedMetal();
-            heat.setHeatCapacity(metal != null ? metal.getHeatCapacity() : 1.0f); // If fluid is not empty, should not be null, but we don't check for that case here
+            final FluidStack fluid = tank.getFluid();
+            final Metal metal = Metal.get(fluid.getFluid());
+
+            float value = HeatCapability.POTTERY_HEAT_CAPACITY;
+            if (!fluid.isEmpty() && metal != null)
+            {
+                // Non-empty mold, so add the heat capacity of the vessel with the heat capacity of the content
+                value += metal.getHeatCapacity(fluid.getAmount());
+            }
+
+            heat.setHeatCapacity(value);
             if (save)
             {
                 save();

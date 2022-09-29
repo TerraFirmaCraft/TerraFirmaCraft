@@ -48,71 +48,55 @@ def generate(rm: ResourceManager):
             'tier': metal_data.tier,
             'fluid': 'tfc:metal/%s' % metal,
             'melt_temperature': metal_data.melt_temperature,
-            'heat_capacity': metal_data.heat_capacity,
+            'specific_heat_capacity': metal_data.specific_heat_capacity(),
             'ingots': utils.ingredient('#forge:ingots/%s' % metal),
             'sheets': utils.ingredient('#forge:sheets/%s' % metal)
         })
-
-        # Metal Items and Blocks
-        for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
-            if item_data.type in metal_data.types or item_data.type == 'all':
-                item_name = 'tfc:metal/%s/%s' % (item, metal)
-                if item_data.tag is not None:
-                    rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
-                    rm.item_tag(item_data.tag + '/' + metal, item_name)
-                    ingredient = utils.item_stack('#%s/%s' % (item_data.tag, metal))
-                else:
-                    ingredient = utils.item_stack(item_name)
-
-                rm.item_tag('metal_item/%s' % metal, item_name)
-                if item in METAL_TOOL_HEADS:
-                    rm.item_tag('metal_item/%s_tools' % metal, item_name)
-                item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
 
     # === Item Heats ===
 
     wrought_iron = METALS['wrought_iron']
 
-    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.heat_capacity, wrought_iron.melt_temperature)
+    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.specific_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
     item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
-    item_heat(rm, 'stick', '#forge:rods/wooden', 0.3)
-    item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
-    item_heat(rm, 'glass_shard', 'tfc:glass_shard', 1)
+    item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)
+    item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
+    item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass
     item_heat(rm, 'sand', '#forge:sand', 0.8)
-    item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HC)
-    item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
-    item_heat(rm, 'dough', '#tfc:foods/dough', 1)
-    item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
-    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
-    item_heat(rm, 'egg', 'minecraft:egg', 1)
-    item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.heat_capacity, wrought_iron.melt_temperature)
+    item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
+    item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
+    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1.0)
+    item_heat(rm, 'egg', 'minecraft:egg', 1.0)
+    item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.specific_heat_capacity(), wrought_iron.melt_temperature, mb=100)
 
-    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HC)
+    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HEAT_CAPACITY)
     for pottery in SIMPLE_POTTERY:
-        item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
+        item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HEAT_CAPACITY)
 
     for color in COLORS:
-        item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HC)
-        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HC)
+        item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HEAT_CAPACITY)
+        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HEAT_CAPACITY)
 
     for item, item_data in METAL_ITEMS.items():
         if item_data.mold:
-            item_heat(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HC)
+            item_heat(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HEAT_CAPACITY)
             # No need to do fired molds, as they have their own capability implementation
 
     for metal, metal_data in METALS.items():
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type in metal_data.types or item_data.type == 'all':
-                item_heat(rm, 'metal/%s_%s' % (metal, item), '#%s/%s' % (item_data.tag, metal) if item_data.tag else 'tfc:metal/%s/%s' % (item, metal), metal_data.heat_capacity, metal_data.melt_temperature, mb=item_data.smelt_amount)
+                item_heat(rm, 'metal/%s_%s' % (metal, item), '#%s/%s' % (item_data.tag, metal) if item_data.tag else 'tfc:metal/%s/%s' % (item, metal), metal_data.ingot_heat_capacity(), metal_data.melt_temperature, mb=item_data.smelt_amount)
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
             metal_data = METALS[ore_data.metal]
-            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, int(metal_data.melt_temperature), mb=25)  # Average at 25 mB / ore piece
+            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.ingot_heat_capacity(), int(metal_data.melt_temperature), mb=40)  # Average at 40 mB / ore piece - consolidating does reduce net heat capacity, but not overly so, and less so for higher richness ores.
 
     # === Supports ===
 
@@ -293,13 +277,33 @@ def generate(rm: ResourceManager):
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
             rm.item_tag("usable_on_tool_rack", 'tfc:stone/%s/%s' % (tool, category))
 
-    for metal, metal_data in METALS.items():  # Metal Tools
+    for metal, metal_data in METALS.items():
+        # Metal Ingots / Sheets, for Ingot/Sheet Piles
+        rm.item_tag('forge:ingots/%s' % metal)
+        rm.item_tag('forge:sheets/%s' % metal)
+        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
+        rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
+
+        # Metal Tools
+        if 'tool' in metal_data.types:
+            rm.item_tag('metal_item/%s_tools' % metal, *['tfc:metal/%s/%s' % (item, metal) for item in METAL_TOOL_HEADS])
+
+        # Metal Tool Tags
         if 'tool' in metal_data.types:
             for tool_type, tool_tag in TOOL_TAGS.items():
                 rm.item_tag(tool_tag, 'tfc:metal/%s/%s' % (tool_type, metal))
-                rm.item_tag("usable_on_tool_rack", 'tfc:metal/%s/%s' % (tool_type, metal))
-            rm.item_tag("usable_on_tool_rack", 'tfc:metal/fishing_rod/%s' % metal, 'tfc:metal/tuyere/%s' % metal)
-        
+                rm.item_tag('usable_on_tool_rack', 'tfc:metal/%s/%s' % (tool_type, metal))
+            rm.item_tag('usable_on_tool_rack', 'tfc:metal/fishing_rod/%s' % metal, 'tfc:metal/tuyere/%s' % metal)
+
+        # Metal Blocks + Items
+        for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
+            if item_data.type in metal_data.types or item_data.type == 'all':
+                item_name = 'tfc:metal/%s/%s' % (item, metal)
+                if item_data.tag is not None:
+                    rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
+                    rm.item_tag(item_data.tag + '/' + metal, item_name)
+
+                rm.item_tag('metal_item/%s' % metal, item_name)
 
     for wood in WOODS.keys():
         block_and_item_tag(rm, 'tool_racks', 'tfc:wood/planks/%s_tool_rack' % wood)
@@ -309,13 +313,6 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)
-
-    # Metal Ingots / Sheets, for Ingot/Sheet Piles
-    for metal in METALS.keys():
-        rm.item_tag('forge:ingots/%s' % metal)
-        rm.item_tag('forge:sheets/%s' % metal)
-        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
-        rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
 
     # ==========
     # BLOCK TAGS
@@ -1112,14 +1109,14 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
 
 def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None, mb: Optional[int] = None):
     if melt_temperature is not None:
-        forging_temperature = melt_temperature * 0.6
-        welding_temperature = melt_temperature * 0.8
+        forging_temperature = round(melt_temperature * 0.6)
+        welding_temperature = round(melt_temperature * 0.8)
     else:
         forging_temperature = welding_temperature = None
     if mb is not None:
         # Interpret heat capacity as a specific heat capacity - so we need to scale by the mB present. Baseline is 100 mB (an ingot)
-        # Higher mB = lower heat capacity = heats and cools slower = consumes proportionally more fuel
-        heat_capacity *= 100 / mb
+        # Higher mB = higher heat capacity = heats and cools slower = consumes proportionally more fuel
+        heat_capacity = round(10 * heat_capacity * mb) / 1000
     rm.data(('tfc', 'item_heats', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'heat_capacity': heat_capacity,
