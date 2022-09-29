@@ -15,7 +15,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -53,6 +56,30 @@ public class VesselItem extends Item
     public VesselItem(Properties properties)
     {
         super(properties);
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
+    {
+        final VesselLike vessel = VesselLike.get(stack);
+        if (vessel != null && TFCConfig.SERVER.enableSmallVesselInventoryInteraction.get() && vessel.mode() == VesselLike.Mode.INVENTORY && vessel.getTemperature() == 0f && !player.isCreative() && action == ClickAction.SECONDARY)
+        {
+            for (int i = 0; i < SLOTS; i++)
+            {
+                final ItemStack current = vessel.getStackInSlot(i);
+                if (current.isEmpty() && !carried.isEmpty())
+                {
+                    carriedSlot.set(vessel.insertItem(i, carried, false));
+                    return true;
+                }
+                else if (carried.isEmpty() && !current.isEmpty())
+                {
+                    carriedSlot.set(vessel.extractItem(i, 64, false));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

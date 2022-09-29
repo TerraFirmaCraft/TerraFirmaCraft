@@ -100,6 +100,7 @@ public class ServerConfig
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
+    public final ForgeConfigSpec.BooleanValue enableSmallVesselInventoryInteraction;
     // Items - Mold(s)
     public final ForgeConfigSpec.IntValue moldIngotCapacity;
     public final ForgeConfigSpec.IntValue moldPickaxeHeadCapacity;
@@ -314,6 +315,7 @@ public class ServerConfig
 
         smallVesselCapacity = builder.apply("smallVesselCapacity").comment("Tank capacity of a small vessel (in mB).").defineInRange("smallVesselCapacity", 3000, 0, Alloy.MAX_ALLOY);
         smallVesselMaximumItemSize = builder.apply("smallVesselMaximumItemSize").comment("The largest (inclusive) size of an item that is allowed in a small vessel.").defineEnum("smallVesselMaximumItemSize", Size.SMALL);
+        enableSmallVesselInventoryInteraction = builder.apply("enableSmallVesselInventoryInteraction").comment("If true, the vessel can be inserted and extracted from by clicking on it in the inventory. You may want to disable this if you have a inventory-tweaking mod").define("enableSmallVesselInventoryInteraction", true);
 
         innerBuilder.pop().push("molds");
 
