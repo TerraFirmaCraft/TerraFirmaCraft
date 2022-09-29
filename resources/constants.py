@@ -25,7 +25,7 @@ class Metal(NamedTuple):
     melt_temperature: float
     melt_metal: Optional[str]
 
-    def specific_heat_capacity(self) -> float: return round(30 / self.heat_capacity_base) / 10_000
+    def specific_heat_capacity(self) -> float: return round(300 / self.heat_capacity_base) / 100_000
     def ingot_heat_capacity(self) -> float: return 1 / self.heat_capacity_base
 
 

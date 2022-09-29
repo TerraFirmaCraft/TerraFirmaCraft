@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:sheets/red_steel"
   },
-  "heat_capacity": 0.35,
+  "heat_capacity": 5.714,
   "forging_temperature": 924.0,
   "welding_temperature": 1232.0
 }

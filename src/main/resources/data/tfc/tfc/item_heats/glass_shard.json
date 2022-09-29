@@ -3,5 +3,5 @@
   "ingredient": {
     "item": "tfc:glass_shard"
   },
-  "heat_capacity": 1
+  "heat_capacity": 0.3
 }

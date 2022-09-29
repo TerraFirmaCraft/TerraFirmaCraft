@@ -14,7 +14,7 @@
       "item": "tfc:ore/rich_bismuthinite"
     }
   ],
-  "heat_capacity": 0.14,
+  "heat_capacity": 2.857,
   "forging_temperature": 162.0,
   "welding_temperature": 216.0
 }
