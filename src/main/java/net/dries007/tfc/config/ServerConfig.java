@@ -251,7 +251,7 @@ public class ServerConfig
         innerBuilder.pop().push("pitKiln");
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
-        pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).").defineInRange("pitKilnTemperature", 1600, 0, Integer.MAX_VALUE);
+        pitKilnTemperature = builder.apply("pitKilnTemperature1").comment("The maximum temperature which a pit kiln reaches.").defineInRange("pitKilnTemperature1", 1400, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("crucible");
 

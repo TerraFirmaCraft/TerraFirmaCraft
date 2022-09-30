@@ -48,6 +48,7 @@ import net.dries007.tfc.common.recipes.TFCRecipeTypes;
 import net.dries007.tfc.common.recipes.inventory.EmptyInventory;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.calendar.ICalendarTickable;
 import org.jetbrains.annotations.NotNull;
@@ -226,7 +227,10 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
             final long offset = currentTick - lastKnownTick;
             assert offset >= 0; // This event should be in the past
 
-            Calendars.SERVER.runTransaction(-offset, -offset, () -> {
+            try (CalendarTransaction tr = Calendars.SERVER.transaction())
+            {
+                tr.add(-offset);
+
                 final BarrelRecipe recipe = this.recipe;
                 if (recipe.matches(inventory, null))
                 {
@@ -234,7 +238,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
                 }
                 updateRecipe();
                 markForSync();
-            });
+            }
 
             // Re-check the recipe. If we have an invalid or infinite recipe, then exit simulation. Otherwise, jump forward to the next recipe completion
             // This handles the case where multiple sequential recipes, such as brining -> pickling -> vinegar preservation would've occurred.

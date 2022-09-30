@@ -14,7 +14,7 @@
       "item": "tfc:ore/rich_native_silver"
     }
   ],
-  "heat_capacity": 0.48,
-  "forging_temperature": 576.6,
-  "welding_temperature": 768.8000000000001
+  "heat_capacity": 0.833,
+  "forging_temperature": 577,
+  "welding_temperature": 769
 }

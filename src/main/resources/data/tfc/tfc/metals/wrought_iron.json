@@ -3,7 +3,7 @@
   "tier": 3,
   "fluid": "tfc:metal/wrought_iron",
   "melt_temperature": 1535,
-  "heat_capacity": 0.35,
+  "specific_heat_capacity": 0.00857,
   "ingots": {
     "tag": "forge:ingots/wrought_iron"
   },

@@ -1,13 +1,12 @@
 #  Work under Copyright. Licensed under the EUPL.
 #  See the project README.md and LICENSE.txt for more information.
 
-from typing import Dict, List, NamedTuple, Sequence, Optional, Literal, Tuple, Any
+from typing import Dict, List, Set, NamedTuple, Sequence, Optional, Literal, Tuple, Any
 
 Tier = Literal['stone', 'copper', 'bronze', 'wrought_iron', 'steel', 'black_steel', 'colored_steel']
 RockCategory = Literal['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
 BerryBushType = Literal['stationary', 'spreading', 'waterlogged']
 Rock = NamedTuple('Rock', category=RockCategory, sand=str)
-Metal = NamedTuple('Metal', tier=int, types=set, heat_capacity=float, melt_temperature=float, melt_metal=Optional[str])
 MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str], mold=bool, durability=bool)
 Ore = NamedTuple('Ore', metal=Optional[str], graded=bool, required_tool=Tier, tag=str)
 OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
@@ -18,11 +17,20 @@ Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_
 Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
 Crop = NamedTuple('Crop', type=str, stages=int, nutrient=str, min_temp=int, max_temp=int, min_rain=int, max_rain=int, min_hydration=int, max_hydration=int, min_forest=Optional[str], max_forest=Optional[str])
 
-# Melting Temps
-POTTERY_MELT = 1200 - 1
 
-# Heat Capacities
-POTTERY_HC = 0.2
+class Metal(NamedTuple):
+    tier: int
+    types: Set[str]
+    heat_capacity_base: float  # Do not access directly, use one of specific or ingot heat capacity.
+    melt_temperature: float
+    melt_metal: Optional[str]
+
+    def specific_heat_capacity(self) -> float: return round(300 / self.heat_capacity_base) / 100_000
+    def ingot_heat_capacity(self) -> float: return 1 / self.heat_capacity_base
+
+
+POTTERY_MELT = 1400 - 1
+POTTERY_HEAT_CAPACITY = 1.2  # Heat Capacity
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 

@@ -18,6 +18,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -343,18 +344,29 @@ public class VesselItem extends Item
                 int count = 0;
                 for (ItemStack stack : Helpers.iterate(inventory))
                 {
-                    final IHeat heat = stack.getCapability(HeatCapability.CAPABILITY).resolve().orElse(null);
+                    final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
                     if (heat != null)
                     {
                         count += stack.getCount();
-                        value += heat.getHeatCapacity();
+                        value += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be stack size = 1, so we have to multiply here
                     }
                 }
-                value = count > 0 ? value / count : 1;
+                if (count > 0)
+                {
+                    // Vessel has contents
+                    // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
+                    value = HeatCapability.POTTERY_HEAT_CAPACITY + value * 0.85f + (value / count) * 0.15f;
+                }
+                else
+                {
+                    // Vessel has no contents, so the value is just the heat capacity of the vessel alone.
+                    value = HeatCapability.POTTERY_HEAT_CAPACITY;
+                }
             }
             else
             {
-                value = alloy.getResult().getHeatCapacity();
+                // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
+                value = HeatCapability.POTTERY_HEAT_CAPACITY + alloy.getHeatCapacity(0.7f);
             }
             heat.setHeatCapacity(value);
             if (save)

@@ -43,6 +43,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.TFCChainBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.LampBlock;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 import net.dries007.tfc.common.items.*;
 import net.dries007.tfc.network.DataManagerSyncPacket;
 import net.dries007.tfc.util.registry.RegistryMetal;
@@ -123,7 +124,7 @@ public final class Metal
     private final int tier;
     private final Fluid fluid;
     private final float meltTemperature;
-    private final float heatCapacity;
+    private final float specificHeatCapacity;
 
     private final ResourceLocation id;
     private final ResourceLocation textureId;
@@ -138,8 +139,8 @@ public final class Metal
 
         this.tier = JsonHelpers.getAsInt(json, "tier", 0);
         this.fluid = JsonHelpers.getRegistryEntry(json, "fluid", ForgeRegistries.FLUIDS);
+        this.specificHeatCapacity = JsonHelpers.getAsFloat(json, "specific_heat_capacity");
         this.meltTemperature = JsonHelpers.getAsFloat(json, "melt_temperature");
-        this.heatCapacity = JsonHelpers.getAsFloat(json, "heat_capacity");
         this.translationKey = "metal." + id.getNamespace() + "." + id.getPath();
 
         this.ingots = Ingredient.fromJson(JsonHelpers.get(json, "ingots"));
@@ -154,7 +155,7 @@ public final class Metal
         this.tier = buffer.readVarInt();
         this.fluid = buffer.readRegistryIdUnsafe(ForgeRegistries.FLUIDS);
         this.meltTemperature = buffer.readFloat();
-        this.heatCapacity = buffer.readFloat();
+        this.specificHeatCapacity = buffer.readFloat();
         this.translationKey = buffer.readUtf();
 
         this.ingots = Ingredient.fromNetwork(buffer);
@@ -172,7 +173,7 @@ public final class Metal
         this.tier = 0;
         this.fluid = Fluids.EMPTY;
         this.meltTemperature = 0;
-        this.heatCapacity = 0;
+        this.specificHeatCapacity = 0;
         this.translationKey = "";
 
         this.ingots = Ingredient.EMPTY;
@@ -184,7 +185,7 @@ public final class Metal
         buffer.writeVarInt(tier);
         buffer.writeRegistryIdUnsafe(ForgeRegistries.FLUIDS, fluid);
         buffer.writeFloat(meltTemperature);
-        buffer.writeFloat(heatCapacity);
+        buffer.writeFloat(specificHeatCapacity);
         buffer.writeUtf(translationKey);
 
         ingots.toNetwork(buffer);
@@ -216,9 +217,21 @@ public final class Metal
         return meltTemperature;
     }
 
-    public float getHeatCapacity()
+    /**
+     * @return The Specific Heat Capacity of the metal. Units of Energy / °C
+     * @see IHeat#getHeatCapacity()
+     */
+    public float getHeatCapacity(float mB)
     {
-        return heatCapacity;
+        return getSpecificHeatCapacity() * mB;
+    }
+
+    /**
+     * @return The Specific Heat Capacity of the metal. Units of Energy / (°C * mB)
+     */
+    public float getSpecificHeatCapacity()
+    {
+        return specificHeatCapacity;
     }
 
     public MutableComponent getDisplayName()

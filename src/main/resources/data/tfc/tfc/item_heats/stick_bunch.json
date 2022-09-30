@@ -3,5 +3,5 @@
   "ingredient": {
     "item": "tfc:stick_bunch"
   },
-  "heat_capacity": 0.05
+  "heat_capacity": 20.0
 }
