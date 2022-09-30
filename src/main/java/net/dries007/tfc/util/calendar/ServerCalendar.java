@@ -55,7 +55,7 @@ public class ServerCalendar extends Calendar
     }
 
     /**
-     * Opens a calendar transaction, which allows you to safely manipulate time to perform a sequence of actions, without possibility of distrupting the state of the global calendar.
+     * Opens a calendar transaction, which allows you to safely manipulate time to perform a sequence of actions, without possibility of distributing the state of the global calendar.
      * @return A new {@link CalendarTransaction}
      * @see CalendarTransaction
      */

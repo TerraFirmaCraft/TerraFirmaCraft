@@ -65,14 +65,14 @@ public class HeatingBehaviorTest
     @AutoGameTest
     public void checkTicksToCool560mBCopperInSmallVessel(GameTestHelper helper)
     {
-        checkTicksSpentMoltenAfterPitKiln(helper, 1460, false, false, Metal.Default.COPPER, new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16));
+        checkTicksSpentMoltenAfterPitKiln(helper, 1459, false, false, Metal.Default.COPPER, new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16));
     }
 
     @AutoGameTest
     public void checkTicksToCool2240mBCopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
-        checkTicksSpentMoltenAfterPitKiln(helper, 4685, false, false, Metal.Default.COPPER, copper16, copper16, copper16, copper16);
+        checkTicksSpentMoltenAfterPitKiln(helper, 4684, false, false, Metal.Default.COPPER, copper16, copper16, copper16, copper16);
     }
 
     @AutoGameTest
@@ -86,7 +86,7 @@ public class HeatingBehaviorTest
     public void checkPitKilnCanMelt64CopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
-        checkTicksSpentMoltenAfterPitKiln(helper, 2083, false, true, Metal.Default.COPPER, copper16, copper16, copper16, copper16);
+        checkTicksSpentMoltenAfterPitKiln(helper, 2082, false, true, Metal.Default.COPPER, copper16, copper16, copper16, copper16);
     }
 
     @AutoGameTest
