@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:metal/greaves/bronze"
   },
-  "heat_capacity": 0.35,
+  "heat_capacity": 17.143,
   "forging_temperature": 570.0,
   "welding_temperature": 760.0
 }

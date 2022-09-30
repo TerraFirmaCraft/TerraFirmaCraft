@@ -1,16 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "§l음식과 물",
-  "category": "tfc:the_world",
+  "category": "tfc:getting_started",
   "icon": "tfc:textures/item/food/orange.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "TerraFirmaCraft에서, 당신은 배고픔뿐만 아니라 목마름도 관리해야 합니다. 배고픔은 바닐라와 비슷하게 동작합니다. 대부분의 음식들은 당신의 배고픔 바의 20%가량을 채우며, $(thing)부들 뿌리$()와 같은 일부 음식은 그보다 좀 덜 배고픔을 채웁니다. 음식을 먹으면 당신이 얼마나 배부른지 나타내는 $(thing)포화도$() 역시 채워줍니다. 어떤 음식들은 포화도가 굉장히 높아 배고픔 수치를 오래도록 유지하지만, 어떤 음식을 먹으면 다시 금방 배고파질 수도 있습니다."
+      "text": "In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are."
     },
     {
       "type": "patchouli:text",
-      "text": "배고픔은 게임을 하는 과정에서 닳습니다. 배고픔은 달리거나, 수영하거나, $(l:mechanics/size_and_weight#overburdening)과중량$() 상태가 되는 등의 행동은 배고픔을 더 빨리 닳게 합니다. 인벤토리에서 음식 위에 마우스를 올리면 $(thing)영양소$(), $(thing)수분$(), $(thing)포화도$()가 나타납니다. $(item)$(k:key.sneak)$() 키를 눌러서 상세한 설명을 확인할 수 있습니다."
+      "text": "Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.$(br2)You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "음식의 툴팁은 이렇게 생겼습니다:$(br2)오렌지$(br)$(2)다음 날짜에 상함: 11:59 7월 4년, 1004일 (1개월 1일 후)$()$(br)영양소:$(br)- 포화도: 2%%$(br)- 수분: 2%%$(br)$(a)- 과일: 0.5"
+      "text": "A food tooltip may look like:$(br2)$(bold)Orange$()$(br)  $(2)$(bold)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)  $(8)Nutrition:$(br)  - Saturation: 2%$(br)  - Water: 10%$(br)$(a)  - Fruit: 0.5"
     },
     {
       "type": "patchouli:image",
@@ -82,5 +82,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 9
+  "sortnum": 10
 }

@@ -3,7 +3,7 @@
   "tier": 2,
   "fluid": "tfc:metal/bronze",
   "melt_temperature": 950,
-  "heat_capacity": 0.35,
+  "specific_heat_capacity": 0.00857,
   "ingots": {
     "tag": "forge:ingots/bronze"
   },

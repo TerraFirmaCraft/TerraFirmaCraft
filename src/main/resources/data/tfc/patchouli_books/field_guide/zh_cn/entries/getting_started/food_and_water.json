@@ -1,16 +1,16 @@
 {
   "__comment__": "This file was automatically created by mcresources",
   "name": "食物和水",
-  "category": "tfc:the_world",
+  "category": "tfc:getting_started",
   "icon": "tfc:textures/item/food/orange.png",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在群峦传说中，你不仅需要注意你的饥饿度，还需要管理你的口渴度。饥饿度的机制和原版类似。大部分的食物会为你回复五分之一饥饿条，其他一些食物（比如$(thing)香蒲根$()）则会少回复些。进食还会使你回复一些$(thing)饱和度$()，也就是饱腹感。吃饱和度高的食物会让你在更长一段时间内不损失饥饿度。还有一些食物则会给你施加持续一小段时间的状态效果。"
+      "text": "In TerraFirmaCraft, not only must you manage your hunger, but you must manage your thirst. Hunger works similar to vanilla. Most pieces of food restore about a fifth of your hunger bar. Some pieces of food may restore a bit less, such as $(thing)Cattail Roots$(). Eating food also restores $(thing)Saturation$(), which can be thought of as how full you are."
     },
     {
       "type": "patchouli:text",
-      "text": "几乎任何动作都会消耗饥饿度。疾跑、游泳、或$(l:getting_started/size_and_weight#overburdening)负担过重$()都会更快消耗饥饿度。有关某样食物可以为你回复的$(thing)饱和度$()、$(thing)口渴度$()、和$(thing)营养元素$()可以通过在物品栏中将鼠标放置在其上并按住$(item)$(k:key.sneak)$()检视。"
+      "text": "Some foods are very filling, so they keep you from losing hunger for longer, while some foods have a short-lived effect.$(br2)You will lose hunger just from regular gameplay. Hunger drains faster if you do things like sprint, swim, or become $(l:getting_started/size_and_weight#overburdening)Overburdened$(). Information about the $(thing)Saturation$(), $(thing)Water$(), as well as $(thing)Nutrients$() available from a food is available by hovering over it in your inventory. Using $(item)$(k:key.sneak)$() reveals the full tooltip."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "以下是一个食物的工具提示的示例：$(br2)橙子$(br)$(2)保质期：11:59 七月 6日, 1004年 （约 1月1天）$()$(br)营养：$(br)- 饱和度：2%%$(br)- 口渴值：2%%$(br)$(a)- 水果：0.5"
+      "text": "A food tooltip may look like:$(br2)$(bold)Orange$()$(br)  $(2)$(bold)Expires on: 11:59 July 6, 1004 (in 1 month(s) and 1 day(s))$()$(br)  $(8)Nutrition:$(br)  - Saturation: 2%$(br)  - Water: 10%$(br)$(a)  - Fruit: 0.5"
     },
     {
       "type": "patchouli:image",
@@ -82,5 +82,5 @@
     }
   ],
   "read_by_default": true,
-  "sortnum": 9
+  "sortnum": 10
 }

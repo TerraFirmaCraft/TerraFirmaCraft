@@ -149,6 +149,27 @@
     "tfc:ceramic/unfired_vessel": 4,
     "tfc:ceramic/vessel": 4,
     "tfc:ceramic/unfired_jug": 6,
-    "tfc:ceramic/jug": 6
+    "tfc:ceramic/jug": 6,
+    "tfc:ceramic/unfired_ingot_mold": 9,
+    "tfc:ceramic/ingot_mold": 9,
+    "tfc:ceramic/unfired_propick_head_mold": 12,
+    "tfc:ceramic/unfired_pickaxe_head_mold": 13,
+    "tfc:ceramic/pickaxe_head_mold": 13,
+    "tfc:ceramic/unfired_saw_blade_mold": 14,
+    "tfc:ceramic/saw_blade_mold": 14,
+    "tfc:ceramic/unfired_scythe_blade_mold": 15,
+    "tfc:ceramic/scythe_blade_mold": 15,
+    "tfc:ceramic/unfired_chisel_head_mold": 16,
+    "tfc:ceramic/chisel_head_mold": 16,
+    "tfc:ceramic/unfired_axe_head_mold": 17,
+    "tfc:ceramic/axe_head_mold": 17,
+    "tfc:ceramic/unfired_hammer_head_mold": 18,
+    "tfc:ceramic/hammer_head_mold": 18,
+    "tfc:ceramic/unfired_knife_blade_mold": 19,
+    "tfc:ceramic/knife_blade_mold": 19,
+    "tfc:ceramic/unfired_hoe_head_mold": 20,
+    "tfc:ceramic/hoe_head_mold": 20,
+    "tfc:ceramic/unfired_shovel_head_mold": 21,
+    "tfc:ceramic/shovel_head_mold": 21
   }
 }

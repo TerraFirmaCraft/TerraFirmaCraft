@@ -3,7 +3,7 @@
   "tier": 4,
   "fluid": "tfc:metal/steel",
   "melt_temperature": 1540,
-  "heat_capacity": 0.35,
+  "specific_heat_capacity": 0.00857,
   "ingots": {
     "tag": "forge:ingots/steel"
   },

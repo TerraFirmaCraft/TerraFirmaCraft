@@ -854,11 +854,18 @@ public final class ForgeEventHandler
                 monster.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
         }
-        if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
+
+        if (!TFCConfig.SERVER.enableChickenJockies.get())
         {
-            event.setCanceled(true); // not tolerating this crap again
+            // Need to prevent both the chicken and the jockey from spawning
+            if ((entity instanceof Chicken chicken && chicken.isChickenJockey)
+                || (entity.getVehicle() != null && entity.getVehicle() instanceof Chicken vehicleChicken && vehicleChicken.isChickenJockey))
+            {
+                event.setCanceled(true);
+            }
         }
-        else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
+
+        if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
             event.setCanceled(true);
         }

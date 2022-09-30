@@ -41,10 +41,10 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue snowAccumulateChance;
     public final ForgeConfigSpec.IntValue snowMeltChance;
     // Blocks - Leaves
-    public final ForgeConfigSpec.BooleanValue enableLeavesSlowEntities;
+    public final ForgeConfigSpec.DoubleValue leavesMovementModifier;
     // Blocks - Plants
     public final ForgeConfigSpec.DoubleValue plantGrowthChance;
-    public final ForgeConfigSpec.BooleanValue enablePlantsSlowEntities;
+    public final ForgeConfigSpec.DoubleValue plantsMovementModifier;
     // Blocks - Cobblestone
     public final ForgeConfigSpec.BooleanValue enableMossyRockSpreading;
     public final ForgeConfigSpec.IntValue mossyRockSpreadRate;
@@ -86,6 +86,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
     public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
     public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
+    // Blocks - Thatch
+    public final ForgeConfigSpec.DoubleValue thatchMovementMultiplier;
     // Blocks - Thatch Bed
     public final ForgeConfigSpec.BooleanValue enableThatchBedSpawnSetting;
     public final ForgeConfigSpec.BooleanValue enableThatchBedSleeping;
@@ -217,11 +219,11 @@ public class ServerConfig
         innerBuilder.pop().push("plants");
 
         plantGrowthChance = builder.apply("plantGrowthChance").comment("Chance for a plant to grow each random tick, does not include crops. Lower = slower growth. Set to 0 to disable random plant growth.").defineInRange("plantGrowthChance", 0.05, 0, 1);
-        enablePlantsSlowEntities = builder.apply("enablePlantsSlowEntities").comment("[Requires MC Restart] If grass and other plants will slow players that move through them.").define("enablePlantsSlowEntities", true);
+        plantsMovementModifier = builder.apply("plantsMovementModifier").comment("A movement multiplier for players moving through plants. Individual plants will use a ratio of this value, and lower = slower.").defineInRange("plantsMovementModifier", 0.2, 0, 1);
 
         innerBuilder.pop().push("leaves");
 
-        enableLeavesSlowEntities = builder.apply("enableLeavesSlowEntities").comment("If leaves will slow entities passing through them and reduce fall damage.").define("enableLeavesSlowEntities", true);
+        leavesMovementModifier = builder.apply("leavesMovementModifier").comment("A movement multiplier for players moving through leaves. Lower = slower.").defineInRange("leavesMovementModifier", 0.4, 0, 1);
 
         innerBuilder.pop().push("cobblestone");
 
@@ -250,7 +252,7 @@ public class ServerConfig
         innerBuilder.pop().push("pitKiln");
 
         pitKilnTicks = builder.apply("pitKilnTicks").comment("Number of ticks required for a pit kiln to burn out. (1000 = 1 in game hour = 50 seconds), default is 8 hours.").defineInRange("pitKilnTicks", 8000, 20, Integer.MAX_VALUE);
-        pitKilnTemperature = builder.apply("pitKilnTemperature").comment("The maximum temperature which a pit kiln reaches. (1200 = Yellow**, 1600 = Brilliant White, for reference).").defineInRange("pitKilnTemperature", 1600, 0, Integer.MAX_VALUE);
+        pitKilnTemperature = builder.apply("pitKilnTemperature1").comment("The maximum temperature which a pit kiln reaches.").defineInRange("pitKilnTemperature1", 1400, 0, Integer.MAX_VALUE);
 
         innerBuilder.pop().push("crucible");
 
@@ -293,6 +295,10 @@ public class ServerConfig
         blastFurnaceFluidCapacity = builder.apply("blastFurnaceFluidCapacity").comment("Fluid capacity (in mB) of the output tank of the blast furnace.").defineInRange("blastFurnaceFluidCapacity", 10_000, 1, Integer.MAX_VALUE);
         blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
         blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
+
+        innerBuilder.pop().push("thatch");
+
+        thatchMovementMultiplier = builder.apply("thatchMovementMultiplier").comment("A movement multiplier for players moving through thatch. Lower = slower.").defineInRange("thatchMovementMultiplier", 0.6, 0, 1);
 
         innerBuilder.pop().push("thatchBed");
 

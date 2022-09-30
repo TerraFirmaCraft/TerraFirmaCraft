@@ -171,8 +171,12 @@ def analyze_tree_leaves(tree: Tree):
     else:
         raise NotImplementedError
 
-    # Every tree results in 2.5 saplings, on average, if every leaf was broken
-    print('%s: %.4f,' % (repr(tree.name), 2.5 / leaves))
+    # Base value: every tree results in 3.5 saplings, on average, if every leaf was broken
+    # We bias this towards returning larger values, for larger trees, as it requires more leaves to break
+    chance = 3.5 / leaves
+    if chance < 0.02:
+        chance = 0.2 * 0.02 + 0.8 * chance
+    print('%s: %.4f,' % (repr(tree.name), chance))
 
 
 def count_leaves_in_random_tree(base_name: str, count: int) -> float:

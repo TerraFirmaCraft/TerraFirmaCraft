@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:double_ingots/brass"
   },
-  "heat_capacity": 0.35,
+  "heat_capacity": 5.714,
   "forging_temperature": 558.0,
   "welding_temperature": 744.0
 }

@@ -6,12 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "游戏早期很难获得那些不受重力影响的方块——它们大部分都需要金属工具才能获得。不过仍然有几种方块可以在石器时代就获得。"
+      "text": "In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools."
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#mud_bricks)壤泥砖$()$(br)  2. $(l:getting_started/building_materials#wattle_and_daub)板条和涂料$()$(br)  3. $(l:getting_started/building_materials#clay_and_peat)粘土块和泥炭$()$(br)  4. $(l:getting_started/building_materials#alabaster)雪花石膏$()（需要金属镐）",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)",
       "title": "材料目录"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thatch",
+      "text": "With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.",
+      "title": "Thatch"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/thatch",
+      "recipe2": "tfc:crafting/straw"
     },
     {
       "type": "patchouli:crafting",
@@ -63,6 +74,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/soil/loam_mud_bricks",
+      "title": " ",
       "text": "这些干燥后的壤泥砖可以做成$(thing)壤泥砖块$()。它们也可以做成$(thing)楼梯$()、$(thing)台阶$()、或$(thing)墙$()。"
     },
     {
@@ -147,28 +159,6 @@
       "type": "patchouli:crafting",
       "recipe": "minecraft:clay",
       "title": "粘土块"
-    },
-    {
-      "type": "patchouli:text",
-      "anchor": "alabaster",
-      "text": "雪花石膏是一种用$(l:the_world/ores_and_minerals#gypsum)石膏$()矿做成的建筑材料。石膏只能从岩石里的矿脉中挖出来，所以你得先想办法做一把镐。石膏可以直接在物品栏中做成雪花石膏，不过等以后有了$(l:mechanics/barrels)桶$()会有更高效的制作方法。",
-      "title": "雪花石膏"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/alabaster_brick",
-      "recipe2": "tfc:crafting/alabaster_bricks",
-      "title": "雪花石膏砖"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "雪花石膏砖块可以用$(l:mechanics/barrels)桶$()染成任何颜色。普通雪花石膏砖块也可以使用$(thing)平滑$()模式的$(l:mechanics/chisel)凿$()雕刻成平滑雪花石膏砖块。"
-    },
-    {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/alabaster/magenta_polished_stairs",
-      "title": "雪花石膏装饰品",
-      "text": "普通的和平滑雪花石膏砖块都可以制作或$(l:mechanics/chisel)凿$()成楼梯、墙壁和台阶。"
     }
   ],
   "read_by_default": true,

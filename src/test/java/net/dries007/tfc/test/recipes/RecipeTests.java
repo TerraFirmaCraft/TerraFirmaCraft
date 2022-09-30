@@ -28,6 +28,7 @@ import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
 import net.dries007.tfc.mock.MockCraftingContainer;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TestAssertions.*;
@@ -61,13 +62,16 @@ public class RecipeTests
             final IFood food = Helpers.getCapability(output, FoodCapability.CAPABILITY);
             if (!output.isEmpty() && food != null && !food.isRotten())
             {
-                Calendars.SERVER.runTransaction(1_000_000_000, 1_000_000_000, () -> {
+                try (CalendarTransaction tr = Calendars.SERVER.transaction())
+                {
+                    tr.add(1_000_000_000);
+
                     final ItemStack oldOutput = getOutputOfRecipe(recipe);
                     final IFood oldFood = Helpers.getCapability(oldOutput, FoodCapability.CAPABILITY);
 
                     assertNotNull(oldFood);
                     assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " produced rotten output");
-                });
+                }
             }
         }
     }
