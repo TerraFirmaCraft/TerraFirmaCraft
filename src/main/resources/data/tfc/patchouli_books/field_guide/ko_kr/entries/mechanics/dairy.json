@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)유제품$()은 $(l:mechanics/animal_husbandry#dairy_animals)우유를 짤 수 있는 동물$()들에게서 짠 우유로 얻을 수 있는 $(l:the_world/food_and_water#nutrients)영양소$()입니다. 우유는 바로 마시거나 $(thing)치즈$()로 만들 수 있습니다. 우유는 주전자로 마실 수 있고 $(l:the_world/food_and_water#thirst)갈증$()을 해소합니다. 그러나 우유로 영양소를 얻기 위해서는 음식을 먹은 직후에 마셔야 합니다. 그러므로 우유를 2번 연속으로 마신다면 효과가 없습니다. 먼저 음식을 먹어야 합니다.",
+      "text": "$(thing)Dairy$() is a $(l:getting_started/food_and_water#nutrients)Nutrient$() obtained from the milk produced by $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). It can be drank, or processed into $(thing)Cheese$(). Drinking can be done out of a jug, and always restores $(l:getting_started/food_and_water#thirst)Thirst$(). However, it only adds to nutrition when drank after eating a food. Practically, this means that drinking milk twice in a row is ineffectual. A meal must precede it.",
       "title": "§l유제품"
     },
     {

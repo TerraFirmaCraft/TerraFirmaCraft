@@ -927,7 +927,7 @@
       "item": "tfc:ore/gypsum",
       "title": "Gypsum",
       "link_recipes": false,
-      "text": "Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:getting_started/building_materials#alabaster)Alabaster$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks."
+      "text": "Gypsum is a decorative $(thing)Mineral$() which can be used to make $(l:mechanics/advanced_building_materials#alabaster)Alabaster$(). It appears in dense disc like formations at elevations between y=30 and y=90. It can be found in $(l:the_world/geology#metamorphic)Metamorphic$() rocks."
     },
     {
       "type": "patchouli:multiblock",

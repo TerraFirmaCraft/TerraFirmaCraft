@@ -58,6 +58,7 @@
     },
     {
       "type": "tfc:rock_knapping_recipe",
+      "anchor": "knife",
       "recipes": [
         "tfc:rock_knapping/knife_head_sedimentary",
         "tfc:rock_knapping/knife_head_metamorphic",
@@ -69,33 +70,109 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/stone/knife_sedimentary",
-      "text": "获得石刀刃后，只需在物品栏中用木棍与之合成就能制成石刀。"
+      "text": "All stone tool heads can be crafted with a stick or twig to assemble them into a tool.$(br2)The stone knife can be used to harvest $(thing)Straw$() by breaking plants."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/wood/stick_from_twigs",
-      "text": "如果没有木棍，可以用小树枝代替。"
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/axe_head_sedimentary",
+        "tfc:rock_knapping/axe_head_metamorphic",
+        "tfc:rock_knapping/axe_head_igneous_extrusive",
+        "tfc:rock_knapping/axe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Axes$() can be used to cut down entire trees, logs and leaves included. However, saplings and sticks will only be obtained if leaves were broken individually."
     },
     {
-      "type": "patchouli:spotlight",
-      "item": "tfc:stone/knife/sedimentary",
-      "link_recipes": false,
-      "text": "刀是一个非常有用的工具。它们的主要用途之一是通过破坏植物来收集干草。大多数的高草和植物在用刀破坏时都会掉落干草。"
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/shovel_head_sedimentary",
+        "tfc:rock_knapping/shovel_head_metamorphic",
+        "tfc:rock_knapping/shovel_head_igneous_extrusive",
+        "tfc:rock_knapping/shovel_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Shovels$() can be used to dig soil type blocks. They can also be used to create $(thing)Paths$() by $(item)using$() them on $(thing)Dirt$() or $(thing)Grass$()."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "tfc:crafting/thatch",
-      "text": "干草可用于制作你的第一个建筑材料：$(thing)干草块$()。干草块是一种不受重力影响的轻质方块，但玩家和其他实体可以直接穿过它！"
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hoe_head_sedimentary",
+        "tfc:rock_knapping/hoe_head_metamorphic",
+        "tfc:rock_knapping/hoe_head_igneous_extrusive",
+        "tfc:rock_knapping/hoe_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Hoes$() are useful tools for $(l:mechanics/crops)Farming$(), but they can also be used to cut down leaves and other plant matter."
     },
     {
-      "type": "patchouli:text",
-      "text": "除了刀以外，其他几件工具对于早期生存也很有帮助。$(thing)斧$()可以用来砍树（想必你也尝试过空手撸树会发生啥了），也可以作为一件不太趁手的武器。$(thing)锤$()也可以作为武器使用，但早期的主要作用还是用来将原木方块打碎成木棍。"
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/hammer_head_sedimentary",
+        "tfc:rock_knapping/hammer_head_metamorphic",
+        "tfc:rock_knapping/hammer_head_igneous_extrusive",
+        "tfc:rock_knapping/hammer_head_igneous_intrusive"
+      ],
+      "text": "$(thing)Hammers$() can be used as $(l:mechanics/damage_types)Crushing$() weapons, but are more important tools used for $(l:getting_started/primitive_anvils)Forging$()."
     },
     {
-      "type": "patchouli:text",
-      "text": "最后，$(thing)铲$()和$(thing)锄$()作用和原版中的相同，而$(thing)标枪$()则是一种原始的一次性远程武器。"
+      "type": "tfc:rock_knapping_recipe",
+      "recipes": [
+        "tfc:rock_knapping/javelin_head_sedimentary",
+        "tfc:rock_knapping/javelin_head_metamorphic",
+        "tfc:rock_knapping/javelin_head_igneous_extrusive",
+        "tfc:rock_knapping/javelin_head_igneous_intrusive"
+      ],
+      "text": "Finally, a $(thing)Javelin$() can be used as a primitive weapon, capable of being thrown at targets, or used as a $(l:mechanics/damage_types)Piercing$() weapon."
     }
   ],
   "read_by_default": true,
-  "sortnum": 0
+  "sortnum": 0,
+  "extra_recipe_mappings": {
+    "tfc:stone/knife_head/sedimentary": 5,
+    "tfc:stone/knife_head/metamorphic": 5,
+    "tfc:stone/knife_head/igneous_extrusive": 5,
+    "tfc:stone/knife_head/igneous_intrusive": 5,
+    "tfc:stone/knife/sedimentary": 5,
+    "tfc:stone/knife/metamorphic": 5,
+    "tfc:stone/knife/igneous_extrusive": 5,
+    "tfc:stone/knife/igneous_intrusive": 5,
+    "tfc:stone/axe_head/sedimentary": 7,
+    "tfc:stone/axe_head/metamorphic": 7,
+    "tfc:stone/axe_head/igneous_extrusive": 7,
+    "tfc:stone/axe_head/igneous_intrusive": 7,
+    "tfc:stone/axe/sedimentary": 7,
+    "tfc:stone/axe/metamorphic": 7,
+    "tfc:stone/axe/igneous_extrusive": 7,
+    "tfc:stone/axe/igneous_intrusive": 7,
+    "tfc:stone/shovel_head/sedimentary": 8,
+    "tfc:stone/shovel_head/metamorphic": 8,
+    "tfc:stone/shovel_head/igneous_extrusive": 8,
+    "tfc:stone/shovel_head/igneous_intrusive": 8,
+    "tfc:stone/shovel/sedimentary": 8,
+    "tfc:stone/shovel/metamorphic": 8,
+    "tfc:stone/shovel/igneous_extrusive": 8,
+    "tfc:stone/shovel/igneous_intrusive": 8,
+    "tfc:stone/hoe_head/sedimentary": 9,
+    "tfc:stone/hoe_head/metamorphic": 9,
+    "tfc:stone/hoe_head/igneous_extrusive": 9,
+    "tfc:stone/hoe_head/igneous_intrusive": 9,
+    "tfc:stone/hoe/sedimentary": 9,
+    "tfc:stone/hoe/metamorphic": 9,
+    "tfc:stone/hoe/igneous_extrusive": 9,
+    "tfc:stone/hoe/igneous_intrusive": 9,
+    "tfc:stone/hammer_head/sedimentary": 10,
+    "tfc:stone/hammer_head/metamorphic": 10,
+    "tfc:stone/hammer_head/igneous_extrusive": 10,
+    "tfc:stone/hammer_head/igneous_intrusive": 10,
+    "tfc:stone/hammer/sedimentary": 10,
+    "tfc:stone/hammer/metamorphic": 10,
+    "tfc:stone/hammer/igneous_extrusive": 10,
+    "tfc:stone/hammer/igneous_intrusive": 10,
+    "tfc:stone/javelin_head/sedimentary": 11,
+    "tfc:stone/javelin_head/metamorphic": 11,
+    "tfc:stone/javelin_head/igneous_extrusive": 11,
+    "tfc:stone/javelin_head/igneous_intrusive": 11,
+    "tfc:stone/javelin/sedimentary": 11,
+    "tfc:stone/javelin/metamorphic": 11,
+    "tfc:stone/javelin/igneous_extrusive": 11,
+    "tfc:stone/javelin/igneous_intrusive": 11
+  }
 }
