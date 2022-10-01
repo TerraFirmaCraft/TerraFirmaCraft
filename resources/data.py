@@ -57,7 +57,7 @@ def generate(rm: ResourceManager):
 
     wrought_iron = METALS['wrought_iron']
 
-    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.specific_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
+    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
     item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
     item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)
     item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
@@ -73,7 +73,7 @@ def generate(rm: ResourceManager):
     item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
     item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1.0)
     item_heat(rm, 'egg', 'minecraft:egg', 1.0)
-    item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.specific_heat_capacity(), wrought_iron.melt_temperature, mb=100)
+    item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
 
     item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HEAT_CAPACITY)
     for pottery in SIMPLE_POTTERY:
