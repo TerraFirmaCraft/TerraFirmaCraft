@@ -180,8 +180,8 @@ public class BearModel extends EntityModel<Predator>
                     WALK.tick(parts, predator.walkProgress);
                 }
             }
-            head.xRot = headYaw * Mth.PI / 180F;
-            head.yRot = headPitch * Mth.PI / 180F;
+            head.xRot = headPitch * Mth.PI / 180F;
+            head.yRot = headYaw * Mth.PI / 180F;
         }
 
     }
