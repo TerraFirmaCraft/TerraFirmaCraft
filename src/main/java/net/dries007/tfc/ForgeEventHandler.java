@@ -68,6 +68,7 @@ import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
@@ -865,7 +866,11 @@ public final class ForgeEventHandler
             }
         }
 
-        if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
+        if (entity.getType() == EntityType.SKELETON)
+        {
+            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.SKELETON_WEAPONS, entity.level.getRandom()).orElse(Items.BOW).getDefaultInstance());
+        }
+        else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {
             event.setCanceled(true);
         }

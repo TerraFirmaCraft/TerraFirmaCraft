@@ -35,6 +35,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -159,7 +160,7 @@ public final class ClientEventHandler
 
                     Item javelin = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.JAVELIN).get();
                     ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
-                        entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                        entity != null && ((entity.isUsingItem() && entity.getUseItem() == stack) || (entity instanceof Monster monster && monster.isAggressive())) ? 1.0F : 0.0F
                     );
                 }
             }
@@ -167,7 +168,7 @@ public final class ClientEventHandler
             TFCItems.ROCK_TOOLS.values().forEach(tool -> {
                 Item javelin = tool.get(RockCategory.ItemType.JAVELIN).get();
                 ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
-                    entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                    entity != null && ((entity.isUsingItem() && entity.getUseItem() == stack) || (entity instanceof Monster monster && monster.isAggressive())) ? 1.0F : 0.0F
                 );
             });
 

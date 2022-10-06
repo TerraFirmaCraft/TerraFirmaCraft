@@ -181,6 +181,7 @@ public class TFCTags
         public static final TagKey<Item> MOB_HEAD_ARMOR = create("mob_head_armor"); // armor that mobs can put on their head
         public static final TagKey<Item> MOB_MAINHAND_WEAPONS = create("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
         public static final TagKey<Item> MOB_OFFHAND_WEAPONS = create("mob_offhand_weapons"); // armor that mobs can put on their mainhand
+        public static final TagKey<Item> SKELETON_WEAPONS = create("skeleton_weapons"); // stuff we force skeletons to hold. includes javelins and bows
         public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = create("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
         public static final TagKey<Item> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
         public static final TagKey<Item> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");
