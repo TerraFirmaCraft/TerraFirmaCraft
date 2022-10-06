@@ -326,7 +326,7 @@ public class BlockFirePit extends Block implements IBellowsConsumerBlock, ILight
             {
                 TFCGuiHandler.openGui(worldIn, pos, player, TFCGuiHandler.Type.FIRE_PIT);
             }
-            else if ((held == ItemStack.EMPTY) && (attachment != FirePitAttachment.NONE))
+            else if (held.isEmpty() && (attachment != FirePitAttachment.NONE))
             {
                 boolean anythingInTheInv = false;
                 if (tile != null)
