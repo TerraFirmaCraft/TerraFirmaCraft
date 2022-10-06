@@ -39,7 +39,7 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
     {
         final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final Random random = context.random();
         final BlockStateConfiguration config = context.config();
 
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
@@ -57,8 +57,9 @@ public class FruitTreeFeature extends Feature<BlockStateConfiguration>
                 mutablePos.move(0, 1, 0);
             }
             mutablePos.set(pos);
-            int saplings = Mth.nextInt(rand, 2, 4);
-            BlockState branch = config.state.getBlock().defaultBlockState().setValue(GrowingFruitTreeBranchBlock.SAPLINGS, saplings);
+            BlockState branch = config.state.getBlock().defaultBlockState();
+            branch = Helpers.setProperty(branch, GrowingFruitTreeBranchBlock.NATURAL, true);
+            branch = Helpers.setProperty(branch, GrowingFruitTreeBranchBlock.SAPLINGS, Mth.nextInt(random, 2, 4));
             setBlock(level, mutablePos, branch);
             level.getBlockEntity(mutablePos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(entity -> entity.reduceCounter(-1 * ICalendar.TICKS_IN_DAY * 300));
             level.scheduleTick(mutablePos, branch.getBlock(), 1);

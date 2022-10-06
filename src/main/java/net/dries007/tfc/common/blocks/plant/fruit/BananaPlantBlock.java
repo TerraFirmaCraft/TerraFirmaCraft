@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -129,7 +130,8 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
         // At that point the top block is able to fruit and flower
         // Once it is picked, the top block dies. And the plant is therefore dead.
 
-        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(bush -> {
+        if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity bush)
+        {
             Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
             Lifecycle expectedLifecycle = getLifecycleForCurrentMonth();
             // if we are not working with a plant that is or should be dormant
@@ -202,7 +204,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                     level.setBlockAndUpdate(pos, newState);
                 }
             }
-        });
+        }
     }
 
     @Override

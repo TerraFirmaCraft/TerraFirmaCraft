@@ -489,7 +489,7 @@ public final class Metal
         JAVELIN_HEAD(Type.TOOL, true),
         SWORD(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1f, metal.toolTier()), -2.4F, properties())),
         SWORD_BLADE(Type.TOOL, true),
-        MACE(Type.TOOL, metal -> new SwordItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3f, metal.toolTier()), -3, properties())),
+        MACE(Type.TOOL, metal -> new MaceItem(metal.toolTier(), (int) ToolItem.calculateVanillaAttackDamage(1.3f, metal.toolTier()), -3, properties())),
         MACE_HEAD(Type.TOOL, true),
         KNIFE(Type.TOOL, metal -> new ToolItem(metal.toolTier(), ToolItem.calculateVanillaAttackDamage(0.54f, metal.toolTier()), -1.5F, TFCTags.Blocks.MINEABLE_WITH_KNIFE, properties())),
         KNIFE_BLADE(Type.TOOL, true),

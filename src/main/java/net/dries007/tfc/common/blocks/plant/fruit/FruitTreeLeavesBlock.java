@@ -32,7 +32,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
+import net.dries007.tfc.common.blockentities.BerryBushBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -100,7 +100,8 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
         // Fruit tree leaves work like berry bushes, but don't have propagation or growth functionality.
         // Which makes them relatively simple, as then they only need to keep track of their lifecycle.
         if (state.getValue(PERSISTENT)) return; // persistent leaves don't grow
-        level.getBlockEntity(pos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(leaves -> {
+        if (level.getBlockEntity(pos) instanceof BerryBushBlockEntity leaves)
+        {
             Lifecycle currentLifecycle = state.getValue(LIFECYCLE);
             Lifecycle expectedLifecycle = getLifecycleForCurrentMonth();
             // if we are not working with a plant that is or should be dormant
@@ -164,7 +165,7 @@ public class FruitTreeLeavesBlock extends SeasonalPlantBlock implements IForgeBl
                     level.setBlock(pos, newState, 3);
                 }
             }
-        });
+        }
     }
 
     @Override
