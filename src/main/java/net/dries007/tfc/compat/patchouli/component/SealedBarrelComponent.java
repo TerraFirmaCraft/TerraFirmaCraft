@@ -27,7 +27,7 @@ public class SealedBarrelComponent extends BarrelComponent<SealedBarrelRecipe>
 
         if (!recipe.isInfinite())
         {
-            final Component tooltip = ICalendar.getTimeDelta(recipe.getDuration(), Calendars.CLIENT.getCalendarDaysInMonth());
+            final Component tooltip = Calendars.CLIENT.getTimeDelta(recipe.getDuration());
             final Font font = Minecraft.getInstance().font;
             final int centerX = 64 - 8 - font.width(tooltip.getString()) / 2; // Page width = 64, Offset = 8,
             font.draw(poseStack, tooltip, centerX, 28, 0x404040);

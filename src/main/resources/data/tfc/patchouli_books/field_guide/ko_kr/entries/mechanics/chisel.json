@@ -33,7 +33,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "조심하세요! 광산에서 끌을 사용하면 안전하지 않습니다. 끌을 사용할 때 마다 $(thing)무너질$() 가능성이 있습니다."
+      "text": "조심하세요! 광산에서 끌을 사용하면 안전하지 않습니다. 끌을 사용할 때 마다 $(l:mechanics/support_beams)무너질$() 가능성이 있습니다."
     }
   ],
   "read_by_default": true

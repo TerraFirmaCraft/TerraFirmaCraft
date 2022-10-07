@@ -38,6 +38,7 @@ public class ClientConfig
     public final ForgeConfigSpec.EnumValue<FoodExpiryTooltipStyle> foodExpiryTooltipStyle;
     public final ForgeConfigSpec.IntValue foodExpiryOverlayColor;
     public final ForgeConfigSpec.EnumValue<HeatTooltipStyle> heatTooltipStyle;
+    public final ForgeConfigSpec.EnumValue<TimeDeltaTooltipStyle> timeDeltaTooltipStyle;
     public final ForgeConfigSpec.BooleanValue enableTFCF3Overlays;
     public final ForgeConfigSpec.BooleanValue sendProspectResultsToActionbar;
     public final ForgeConfigSpec.BooleanValue showHoeOverlaysOnlyWhenShifting;
@@ -96,6 +97,13 @@ public class ClientConfig
             "CELSIUS = Exact degrees celsius",
             "FAHRENHEIT = Exact degrees fahrenheit"
         ).defineEnum("heatTooltipStyle", HeatTooltipStyle.COLOR);
+
+        timeDeltaTooltipStyle = builder.apply("timeDeltaTooltipStyle").comment(
+            "The style to display all time delta / duration tooltips in.",
+            "DAYS = Display values larger than a month as a number of days, i.e. '105 day(s)'",
+            "DAYS_MONTHS = Display values larger than a year as a number of months and days, i.e. '13 month(s), 1 day(s)'",
+            "DAYS_MONTHS_YEARS = Display values as normal, i.e. '1 year(s), 1 month(s), 1 day(s)'"
+        ).defineEnum("timeDeltaTooltipStyle", TimeDeltaTooltipStyle.DAYS_MONTHS_YEARS);
 
         enableTFCF3Overlays = builder.apply("enableTFCF3Overlays").comment("Enable TFC additions to the F3 menu, showing time, date, and climate information.").define("enableTFCF3Overlays", true);
 

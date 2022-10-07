@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.fluids.FluidStack;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
+import net.dries007.tfc.common.capabilities.heat.IHeat;
 
 /**
  * An un-writable, unmodifiable view of an alloy
@@ -47,6 +48,16 @@ public interface AlloyView
      * @return The maximum amount
      */
     int getMaxUnits();
+
+    /**
+     * @param leniency A value to scale down the heat capacity of larger alloys, making them more efficient. Should be between [0, 1], where higher values are closer to the exact heat capacity.
+     * @return The heat capacity (not the specific heat capacity) of the alloy mixture.
+     * @see IHeat#getHeatCapacity()
+     */
+    default float getHeatCapacity(float leniency)
+    {
+        return getResult().getHeatCapacity(Helpers.lerp(leniency, 1, getAmount()));
+    }
 
     /**
      * Returns a read-only copy of the metals in an alloy

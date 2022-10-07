@@ -17,11 +17,14 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.network.PacketDistributor;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.network.OpenFieldGuidePacket;
+import net.dries007.tfc.network.PacketHandler;
 import net.dries007.tfc.util.Helpers;
 import vazkii.patchouli.client.RenderHelper;
 import vazkii.patchouli.client.base.ClientTicker;
@@ -114,8 +117,11 @@ public final class PatchouliClientEventHandler
                 {
                     // Change: don't move the selected slot, because we're not opening from a stack
                     // minecraft.player.getInventory().selected = lexSlot;
-                    int spread = entry.getSecond();
-                    ClientBookRegistry.INSTANCE.displayBookGui(book.id, entry.getFirst().getId(), spread * 2);
+                    final int spread = entry.getSecond();
+
+                    // Change: don't open the book client side only
+                    // See Issue/2152
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new OpenFieldGuidePacket(entry.getFirst().getId(), spread * 2));
                 }
             }
             else

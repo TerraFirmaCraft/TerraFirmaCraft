@@ -189,9 +189,9 @@ public class ClientForgeEventHandler
             // 3. Debug information, that is only available in debug mode.
 
             ItemSizeManager.addTooltipInfo(stack, text);
+            PhysicalDamageType.addTooltipInfo(stack, text);
             ForgingBonus.addTooltipInfo(stack, text);
             Forging.addTooltipInfo(stack, text);
-            PhysicalDamageType.addTooltipInfo(stack, text);
 
             stack.getCapability(FoodCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));
             stack.getCapability(HeatCapability.CAPABILITY).ifPresent(cap -> cap.addTooltipInfo(stack, text));

@@ -35,7 +35,7 @@ public class NotRottenIngredient extends DelegateIngredient
     @Override
     public boolean test(@Nullable ItemStack stack)
     {
-        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(cap -> !cap.isRotten()).orElse(true);
+        return super.test(stack) && stack != null && stack.getCapability(FoodCapability.CAPABILITY).map(cap -> !cap.isRotten()).orElse(false);
     }
 
     @Override

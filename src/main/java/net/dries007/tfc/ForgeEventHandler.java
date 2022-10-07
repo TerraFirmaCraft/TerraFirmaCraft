@@ -68,6 +68,7 @@ import net.minecraftforge.event.world.*;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
@@ -586,12 +587,12 @@ public final class ForgeEventHandler
             level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.LOG_PILE.get())
+        else if (block == TFCBlocks.LOG_PILE.get() && event.isStrong())
         {
             BurningLogPileBlock.tryLightLogPile(level, pos);
             event.setCanceled(true);
         }
-        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15)
+        else if (block == TFCBlocks.PIT_KILN.get() && state.getValue(PitKilnBlock.STAGE) == 15 && event.isStrong())
         {
             if (level.getBlockEntity(pos) instanceof PitKilnBlockEntity kiln && kiln.tryLight())
             {
@@ -599,7 +600,7 @@ public final class ForgeEventHandler
                 event.setFireResult(StartFireEvent.FireResult.ALWAYS);
             }
         }
-        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos))
+        else if (block == TFCBlocks.CHARCOAL_PILE.get() && state.getValue(CharcoalPileBlock.LAYERS) >= 7 && CharcoalForgeBlock.isValid(level, pos) && event.isStrong())
         {
             CharcoalForgeBlockEntity.createFromCharcoalPile(level, pos);
             event.setCanceled(true);
@@ -620,7 +621,7 @@ public final class ForgeEventHandler
                 event.setCanceled(true);
             }
         }
-        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED))
+        else if (block == TFCBlocks.POWDERKEG.get() && state.getValue(PowderkegBlock.SEALED) && event.isStrong())
         {
             level.getBlockEntity(pos, TFCBlockEntities.POWDERKEG.get()).ifPresent(entity -> {
                 entity.setLit(true, event.getPlayer());
@@ -854,9 +855,20 @@ public final class ForgeEventHandler
                 monster.setItemInHand(InteractionHand.OFF_HAND, ItemStack.EMPTY);
             }
         }
-        if (entity instanceof Chicken chicken && chicken.isChickenJockey && !TFCConfig.SERVER.enableChickenJockies.get())
+
+        if (!TFCConfig.SERVER.enableChickenJockies.get())
         {
-            event.setCanceled(true); // not tolerating this crap again
+            // Need to prevent both the chicken and the jockey from spawning
+            if ((entity instanceof Chicken chicken && chicken.isChickenJockey)
+                || (entity.getVehicle() != null && entity.getVehicle() instanceof Chicken vehicleChicken && vehicleChicken.isChickenJockey))
+            {
+                event.setCanceled(true);
+            }
+        }
+
+        if (entity.getType() == EntityType.SKELETON)
+        {
+            entity.setItemSlot(EquipmentSlot.MAINHAND, Helpers.getRandomElement(ForgeRegistries.ITEMS, TFCTags.Items.SKELETON_WEAPONS, entity.level.getRandom()).orElse(Items.BOW).getDefaultInstance());
         }
         else if (entity.getType() == EntityType.SKELETON_HORSE && !TFCConfig.SERVER.enableVanillaSkeletonHorseSpawning.get())
         {

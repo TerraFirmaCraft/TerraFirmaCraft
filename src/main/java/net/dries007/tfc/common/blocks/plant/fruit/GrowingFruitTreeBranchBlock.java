@@ -26,11 +26,11 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.HitResult;
 
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
@@ -47,19 +47,8 @@ import net.dries007.tfc.util.climate.ClimateRange;
 public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements EntityBlockExtension
 {
     public static final IntegerProperty SAPLINGS = TFCBlockStateProperties.SAPLINGS;
+    public static final BooleanProperty NATURAL = TFCBlockStateProperties.NATURAL; // prevents climate check
     private static final Direction[] NOT_DOWN = new Direction[] {Direction.WEST, Direction.EAST, Direction.SOUTH, Direction.NORTH, Direction.UP};
-
-    private static boolean canGrowIntoLocations(LevelReader level, BlockPos... pos)
-    {
-        for (BlockPos p : pos)
-        {
-            if (!canGrowInto(level, p))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 
     private static boolean canGrowInto(LevelReader level, BlockPos pos)
     {
@@ -93,7 +82,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         this.leaves = leaves;
         this.climateRange = climateRange;
 
-        registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, true).setValue(STAGE, 0));
+        registerDefaultState(stateDefinition.any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(UP, false).setValue(DOWN, true).setValue(STAGE, 0).setValue(NATURAL, false));
     }
 
     @Override
@@ -106,6 +95,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     {
         FruitTreeBranchBlock body = (FruitTreeBranchBlock) this.body.get();
         BlockPos abovePos = pos.above();
+        final boolean natural = state.getValue(NATURAL);
         if (canGrowInto(level, abovePos) && abovePos.getY() < level.getMaxBuildHeight() - 1)
         {
             int stage = state.getValue(STAGE);
@@ -144,7 +134,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                 if (willGrowUpward && allNeighborsEmpty(level, abovePos, null) && canGrowInto(level, pos.above(2)))
                 {
                     placeBody(level, pos, stage);
-                    placeGrownFlower(level, abovePos, stage, state.getValue(SAPLINGS), cyclesLeft - 1);
+                    placeGrownFlower(level, abovePos, stage, state.getValue(SAPLINGS), cyclesLeft - 1, natural);
                 }
                 else if (stage < 2)
                 {
@@ -157,9 +147,17 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                         if (directions.contains(test))
                         {
                             mutablePos.setWithOffset(pos, test);
-                            if (canGrowIntoLocations(level, mutablePos, mutablePos.below()) && allNeighborsEmpty(level, mutablePos, test.getOpposite()))
+                            if (canGrowInto(level, mutablePos))
                             {
-                                placeGrownFlower(level, mutablePos, stage + 1, state.getValue(SAPLINGS), cyclesLeft - 1);
+                                mutablePos.move(0, -1, 0);
+                                if (canGrowInto(level, mutablePos))
+                                {
+                                    mutablePos.move(0, 1, 0);
+                                    if (allNeighborsEmpty(level, mutablePos, test.getOpposite()))
+                                    {
+                                        placeGrownFlower(level, mutablePos, stage + 1, state.getValue(SAPLINGS), cyclesLeft - 1, natural);
+                                    }
+                                }
                             }
                             directions.remove(test);
                             branches--;
@@ -178,7 +176,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        super.createBlockStateDefinition(builder.add(SAPLINGS));
+        super.createBlockStateDefinition(builder.add(SAPLINGS, NATURAL));
     }
 
     @Override
@@ -193,7 +191,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     {
         final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
         final float temp = Climate.getTemperature(level, pos);
-        if (!climateRange.get().checkBoth(hydration, temp, false))
+        if (!climateRange.get().checkBoth(hydration, temp, false) && !state.getValue(NATURAL))
         {
             TickCounterBlockEntity.reset(level, pos);
         }
@@ -204,7 +202,8 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
     public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand)
     {
         super.tick(state, level, pos, rand);
-        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+        {
             long days = counter.getTicksSinceUpdate() / ICalendar.TICKS_IN_DAY;
             int cycles = (int) (days / 5);
             if (cycles >= 1)
@@ -212,7 +211,7 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
                 grow(state, level, pos, rand, cycles);
                 counter.resetCounter();
             }
-        });
+        }
     }
 
     @Override
@@ -221,13 +220,14 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
         return ItemStack.EMPTY;
     }
 
-    private void placeGrownFlower(ServerLevel level, BlockPos pos, int stage, int saplings, int cycles)
+    private void placeGrownFlower(ServerLevel level, BlockPos pos, int stage, int saplings, int cycles, boolean natural)
     {
-        level.setBlock(pos, getStateForPlacement(level, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings), 3);
-        level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+        level.setBlock(pos, getStateForPlacement(level, pos).setValue(STAGE, stage).setValue(SAPLINGS, saplings).setValue(NATURAL, natural), 3);
+        if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+        {
             counter.resetCounter();
             counter.reduceCounter(-1L * ICalendar.TICKS_IN_DAY * cycles * 5);
-        });
+        }
         addLeaves(level, pos);
         level.getBlockState(pos).randomTick(level, pos, level.random);
     }
@@ -241,13 +241,14 @@ public class GrowingFruitTreeBranchBlock extends FruitTreeBranchBlock implements
 
     private void addLeaves(LevelAccessor level, BlockPos pos)
     {
+        final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         final BlockState leaves = this.leaves.get().defaultBlockState();
-        BlockState downState = level.getBlockState(pos.below(2));
+        mutablePos.setWithOffset(pos, 0, -2, 0);
+        final BlockState downState = level.getBlockState(mutablePos);
         if (!(downState.isAir() || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_LEAVES) || Helpers.isBlock(downState, TFCTags.Blocks.FRUIT_TREE_BRANCH)))
         {
             return;
         }
-        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (Direction d : NOT_DOWN)
         {
             mutablePos.setWithOffset(pos, d);

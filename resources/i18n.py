@@ -49,9 +49,15 @@ class I18n:
             # Use the lowercase of both keys, as difference in capitalization is almost surely not a translation issue
             distance, match = min(((Levenshtein.distance(text.lower(), key.lower()), key) for key in self.before.keys()))
             if distance / len(text) < 0.1 and distance < 20:  # Heuristic: < 5% of text, and < 20 overall distance
-                # Use the fuzzy match
-                self.fuzzy_matches += 1
-                translated = self.before[match]
+                if self.before[match] == match:
+                    # This has just matched a default key that was inserted in the translated files
+                    # So if we slightly modify the en_us default, we should change this value as well.
+                    self.fuzzy_non_matches += 1
+                    translated = text
+                else:
+                    # Use the fuzzy match
+                    self.fuzzy_matches += 1
+                    translated = self.before[match]
             else:
                 # Not available, but record and output anyway
                 self.fuzzy_non_matches += 1

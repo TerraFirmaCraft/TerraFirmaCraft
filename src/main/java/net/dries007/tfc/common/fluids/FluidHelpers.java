@@ -320,7 +320,7 @@ public final class FluidHelpers
         final FluidStack simulatedDrained = handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
         final Fluid fluid = simulatedDrained.getFluid();
 
-        final boolean willReplace = state.isAir() || state.canBeReplaced(fluid) || (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid));
+        final boolean willReplace = state.isAir() || state.canBeReplaced(fluid) || (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && allowPlacingSourceBlocks);
         if (!willReplace)
         {
             if (hit == null)
@@ -341,13 +341,19 @@ public final class FluidHelpers
             }
             return true;
         }
-        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME && allowPlacingSourceBlocks)
+        else if (block instanceof LiquidBlockContainer container && container.canPlaceLiquid(level, pos, state, fluid) && simulatedDrained.getAmount() >= BUCKET_VOLUME)
         {
-            // Delegate to the container to place the block
-            container.placeLiquid(level, pos, state, fluid.defaultFluidState());
-            handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
-            playTransferSound(level, pos, simulatedDrained, Transfer.DRAIN);
-            return true;
+            if (allowPlacingSourceBlocks)
+            {
+                // Delegate to the container to place the block
+                container.placeLiquid(level, pos, state, fluid.defaultFluidState());
+                handler.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+                playTransferSound(level, pos, simulatedDrained, Transfer.DRAIN);
+                return true;
+            }
+            // The iteration would've been one with a fluid container / waterloggable block, but we are not allowed to place source blocks
+            // So, we deny the behavior entirely.
+            return false;
         }
         else
         {

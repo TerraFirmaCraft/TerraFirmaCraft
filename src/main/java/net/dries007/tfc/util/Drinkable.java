@@ -74,6 +74,8 @@ public class Drinkable extends FluidDefinition
 
     public static void drinkFromPotion(ItemStack stack, Level level, LivingEntity entity)
     {
+        // todo: this method is unused as vanilla glass bottles need a lot of work to make them usable fluid handlers
+        // We just disable them as they break progression and are objectively better than jugs.
         if (entity instanceof Player player && !level.isClientSide)
         {
             // Unless there is more need, we only handle water potions.

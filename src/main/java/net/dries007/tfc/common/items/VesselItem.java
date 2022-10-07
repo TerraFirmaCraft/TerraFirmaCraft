@@ -15,9 +15,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -53,6 +57,30 @@ public class VesselItem extends Item
     public VesselItem(Properties properties)
     {
         super(properties);
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack carried, Slot slot, ClickAction action, Player player, SlotAccess carriedSlot)
+    {
+        final VesselLike vessel = VesselLike.get(stack);
+        if (vessel != null && TFCConfig.SERVER.enableSmallVesselInventoryInteraction.get() && vessel.mode() == VesselLike.Mode.INVENTORY && vessel.getTemperature() == 0f && !player.isCreative() && action == ClickAction.SECONDARY)
+        {
+            for (int i = 0; i < SLOTS; i++)
+            {
+                final ItemStack current = vessel.getStackInSlot(i);
+                if (current.isEmpty() && !carried.isEmpty())
+                {
+                    carriedSlot.set(vessel.insertItem(i, carried, false));
+                    return true;
+                }
+                else if (carried.isEmpty() && !current.isEmpty())
+                {
+                    carriedSlot.set(vessel.extractItem(i, 64, false));
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -144,6 +172,12 @@ public class VesselItem extends Item
 
         @Override
         public void onSlotTake(Player player, int slot, ItemStack stack)
+        {
+            FoodCapability.removeTrait(stack, FoodTraits.PRESERVED);
+        }
+
+        @Override
+        public void onCarried(ItemStack stack)
         {
             FoodCapability.removeTrait(stack, FoodTraits.PRESERVED);
         }
@@ -337,18 +371,29 @@ public class VesselItem extends Item
                 int count = 0;
                 for (ItemStack stack : Helpers.iterate(inventory))
                 {
-                    final IHeat heat = stack.getCapability(HeatCapability.CAPABILITY).resolve().orElse(null);
+                    final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
                     if (heat != null)
                     {
                         count += stack.getCount();
-                        value += heat.getHeatCapacity();
+                        value += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be stack size = 1, so we have to multiply here
                     }
                 }
-                value = count > 0 ? value / count : 1;
+                if (count > 0)
+                {
+                    // Vessel has contents
+                    // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
+                    value = HeatCapability.POTTERY_HEAT_CAPACITY + value * 0.85f + (value / count) * 0.15f;
+                }
+                else
+                {
+                    // Vessel has no contents, so the value is just the heat capacity of the vessel alone.
+                    value = HeatCapability.POTTERY_HEAT_CAPACITY;
+                }
             }
             else
             {
-                value = alloy.getResult().getHeatCapacity();
+                // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
+                value = HeatCapability.POTTERY_HEAT_CAPACITY + alloy.getHeatCapacity(0.7f);
             }
             heat.setHeatCapacity(value);
             if (save)

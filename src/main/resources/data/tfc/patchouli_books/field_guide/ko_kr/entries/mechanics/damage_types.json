@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Physical Damage Types$() describe the nature of the damage that can be dealt my players and mobs. There are three types: $(thing)Piercing$(), $(thing)Slashing$(), and $(thing)Crushing$(). Some entities are able to resist certain damage types, making it difficult or impossible to kill them with certain methods."
+      "text": "$(thing)Physical Damage Types$() describe the nature of the damage that can be dealt by players and mobs. There are three types: $(thing)Piercing$(), $(thing)Slashing$(), and $(thing)Crushing$(). Some entities are able to resist certain damage types, making it difficult or impossible to kill them with certain methods."
     },
     {
       "type": "patchouli:text",

@@ -13,9 +13,13 @@
             {
               "function": "minecraft:set_count",
               "count": {
+                "type": "tfc:animal_yield",
                 "min": 4,
-                "max": 10,
-                "type": "minecraft:uniform"
+                "max": {
+                  "type": "minecraft:uniform",
+                  "min": 7,
+                  "max": 13
+                }
               }
             }
           ]

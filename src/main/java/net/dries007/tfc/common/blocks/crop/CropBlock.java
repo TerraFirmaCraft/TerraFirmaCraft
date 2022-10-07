@@ -13,8 +13,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,6 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
+import net.dries007.tfc.common.blockentities.IFarmland;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
@@ -178,9 +177,19 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         text.add(FarmlandBlock.getTemperatureTooltip(level, pos, range, false));
         text.add(FarmlandBlock.getHydrationTooltip(level, sourcePos, range, false));
 
-        level.getBlockEntity(sourcePos, TFCBlockEntities.FARMLAND.get())
-            .or(() -> level.getBlockEntity(sourcePos.below(), TFCBlockEntities.FARMLAND.get())) // For 2-tall crops
-            .ifPresent(farmland -> farmland.addHoeOverlayInfo(level, farmland.getBlockPos(), text, false, true));
+        IFarmland farmland = null;
+        if (level.getBlockEntity(sourcePos) instanceof IFarmland found)
+        {
+            farmland = found;
+        }
+        else if (level.getBlockEntity(sourcePos.below()) instanceof IFarmland found)
+        {
+            farmland = found;
+        }
+        if (farmland instanceof HoeOverlayBlock overlay)
+        {
+            overlay.addHoeOverlayInfo(level, pos, state, text, isDebug);
+        }
 
         level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
             .ifPresent(crop -> {

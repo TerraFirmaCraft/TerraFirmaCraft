@@ -40,94 +40,65 @@ class Category(Enum):
 
 
 def generate(rm: ResourceManager):
-    # Metal Items
+
+    # === Metals ===
 
     for metal, metal_data in METALS.items():
-
-        # Metal
         rm.data(('tfc', 'metals', metal), {
             'tier': metal_data.tier,
             'fluid': 'tfc:metal/%s' % metal,
             'melt_temperature': metal_data.melt_temperature,
-            'heat_capacity': metal_data.heat_capacity,
+            'specific_heat_capacity': metal_data.specific_heat_capacity(),
             'ingots': utils.ingredient('#forge:ingots/%s' % metal),
             'sheets': utils.ingredient('#forge:sheets/%s' % metal)
         })
 
-        # Metal Items and Blocks
+    # === Item Heats ===
+
+    wrought_iron = METALS['wrought_iron']
+
+    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=400)  # made from one double sheet
+    item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
+    item_heat(rm, 'stick', '#forge:rods/wooden', 2.5)
+    item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 20.0)  # < ~9 x sticks
+    item_heat(rm, 'glass_shard', 'tfc:glass_shard', 0.3)  # ~ 4 x glass
+    item_heat(rm, 'sand', '#forge:sand', 0.8)
+    item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], POTTERY_HEAT_CAPACITY)
+    item_heat(rm, 'dough', '#tfc:foods/dough', 1.0)
+    item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1.0)
+    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1.0)
+    item_heat(rm, 'egg', 'minecraft:egg', 1.0)
+    item_heat(rm, 'blooms', '#tfc:blooms', wrought_iron.ingot_heat_capacity(), wrought_iron.melt_temperature, mb=100)
+
+    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HEAT_CAPACITY)
+    for pottery in SIMPLE_POTTERY:
+        item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HEAT_CAPACITY)
+
+    for color in COLORS:
+        item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HEAT_CAPACITY)
+        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HEAT_CAPACITY)
+
+    for item, item_data in METAL_ITEMS.items():
+        if item_data.mold:
+            item_heat(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HEAT_CAPACITY)
+            # No need to do fired molds, as they have their own capability implementation
+
+    for metal, metal_data in METALS.items():
         for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
             if item_data.type in metal_data.types or item_data.type == 'all':
-                item_name = 'tfc:metal/%s/%s' % (item, metal)
-                if item_data.tag is not None:
-                    rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
-                    rm.item_tag(item_data.tag + '/' + metal, item_name)
-                    ingredient = utils.item_stack('#%s/%s' % (item_data.tag, metal))
-                else:
-                    ingredient = utils.item_stack(item_name)
-
-                rm.item_tag('metal_item/%s' % metal, item_name)
-                if item in METAL_TOOL_HEADS:
-                    rm.item_tag('metal_item/%s_tools' % metal, item_name)
-                item_heat(rm, ('metal', metal + '_' + item), ingredient, metal_data.heat_capacity, metal_data.melt_temperature)
+                item_heat(rm, 'metal/%s_%s' % (metal, item), '#%s/%s' % (item_data.tag, metal) if item_data.tag else 'tfc:metal/%s/%s' % (item, metal), metal_data.ingot_heat_capacity(), metal_data.melt_temperature, mb=item_data.smelt_amount)
 
     for ore, ore_data in ORES.items():
         if ore_data.metal and ore_data.graded:
             metal_data = METALS[ore_data.metal]
-            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.heat_capacity, int(metal_data.melt_temperature))
+            item_heat(rm, ('ore', ore), ['tfc:ore/small_%s' % ore, 'tfc:ore/normal_%s' % ore, 'tfc:ore/poor_%s' % ore, 'tfc:ore/rich_%s' % ore], metal_data.ingot_heat_capacity(), int(metal_data.melt_temperature), mb=40)  # Average at 40 mB / ore piece - consolidating does reduce net heat capacity, but not overly so, and less so for higher richness ores.
 
-    rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
-    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
-    rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
-    rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
-    rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
-    rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
-    rm.entity_tag('land_prey', *['tfc:%s' % entity for entity in LAND_PREY], '#tfc:livestock')
-    rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
-    rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player')
-    rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
-    rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
-    rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
-    rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
-    rm.entity_tag('horses', 'tfc:horse', 'tfc:mule', 'tfc:donkey')
-    rm.entity_tag('animals', *['tfc:%s' % mob for mob in SPAWN_EGG_ENTITIES])
-    rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
-    rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
-    rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
-
-    # Item Heats
-
-    item_heat(rm, 'wrought_iron_grill', 'tfc:wrought_iron_grill', 0.35, 1535)
-    item_heat(rm, 'twigs', '#tfc:twigs', 0.6)
-    item_heat(rm, 'stick', '#forge:rods/wooden', 0.3)
-    item_heat(rm, 'stick_bunch', 'tfc:stick_bunch', 0.05)
-    item_heat(rm, 'glass_shard', 'tfc:glass_shard', 1)
-    item_heat(rm, 'sand', '#forge:sand', 0.8)
-    item_heat(rm, 'ceramic_unfired_brick', 'tfc:ceramic/unfired_brick', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_flower_pot', 'tfc:ceramic/unfired_flower_pot', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_jug', 'tfc:ceramic/unfired_jug', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_pan', 'tfc:ceramic/unfired_pan', POTTERY_HC)
-    item_heat(rm, 'ceramic_unfired_crucible', 'tfc:ceramic/unfired_crucible', POTTERY_HC)
-    item_heat(rm, 'terracotta', ['minecraft:terracotta', *['minecraft:%s_terracotta' % color for color in COLORS]], 0.8)
-    item_heat(rm, 'dough', '#tfc:foods/dough', 1)
-    item_heat(rm, 'meat', ['tfc:food/%s' % meat for meat in MEATS], 1)
-    item_heat(rm, 'edible_plants', ['tfc:plant/%s' % plant for plant in SEAWEED] + ['tfc:plant/giant_kelp_flower', 'tfc:groundcover/seaweed'], 1)
-    item_heat(rm, 'egg', 'minecraft:egg', 1)
-    item_heat(rm, 'blooms', '#tfc:blooms', 0.35, METALS['wrought_iron'].melt_temperature)
-
-    for pottery in SIMPLE_POTTERY:
-        item_heat(rm, 'unfired_' + pottery, 'tfc:ceramic/unfired_' + pottery, POTTERY_HC)
-    item_heat(rm, 'unfired_large_vessel', 'tfc:ceramic/unfired_large_vessel', POTTERY_HC)
-
-    for color in COLORS:
-        item_heat(rm, 'unfired_%s_vessel' % color, 'tfc:ceramic/%s_unfired_vessel' % color, POTTERY_HC)
-        item_heat(rm, 'unfired_large_vessel_%s' % color, 'tfc:ceramic/unfired_large_vessel/%s' % color, POTTERY_HC)
-
-    for item, item_data in METAL_ITEMS.items():
-        if item_data.mold:
-            item_heat(rm, 'unfired_%s_mold' % item, 'tfc:ceramic/unfired_%s_mold' % item, POTTERY_HC)
-            # No need to do fired molds, as they have their own capability implementation
-
-    # Supports
+    # === Supports ===
 
     for wood in WOODS:
         rm.data(('tfc', 'supports', wood), {
@@ -153,6 +124,7 @@ def generate(rm: ResourceManager):
     # =========
 
     rm.item_tag('forge:ingots/cast_iron', 'minecraft:iron_ingot')
+    rm.item_tag('forge:rods/wooden', '#tfc:twigs')
     rm.item_tag('firepit_sticks', '#forge:rods/wooden')
     rm.item_tag('firepit_kindling', 'tfc:straw', 'minecraft:paper', 'minecraft:book', 'tfc:groundcover/pinecone')
     rm.item_tag('starts_fires_with_durability', 'minecraft:flint_and_steel')
@@ -245,9 +217,10 @@ def generate(rm: ResourceManager):
     rm.item_tag('mob_helmet_armor', *['tfc:metal/helmet/%s' % metal for metal in MOB_ARMOR_METALS])
     rm.item_tag('mob_offhand_weapons', *['tfc:metal/shield/%s' % metal for metal in MOB_ARMOR_METALS])
     rm.item_tag('mob_mainhand_weapons', *['tfc:metal/%s/%s' % (tool, metal) for metal in MOB_ARMOR_METALS for tool in MOB_TOOLS], *['tfc:stone/%s/%s' % (tool, stone) for stone in ROCK_CATEGORIES for tool in STONE_MOB_TOOLS], 'tfc:large_raw_hide', 'tfc:medium_raw_hide', 'tfc:small_raw_hide', 'tfc:handstone')
+    rm.item_tag('skeleton_weapons', *['tfc:metal/javelin/%s' % metal for metal in MOB_ARMOR_METALS], *['tfc:stone/%s/%s' % (tool, stone) for stone in ROCK_CATEGORIES for tool in STONE_MOB_TOOLS], 'minecraft:bow')
     rm.item_tag('disabled_monster_held_items', 'minecraft:iron_sword', 'minecraft:iron_shovel', 'minecraft:fishing_rod', 'minecraft:nautilus_shell')
     rm.item_tag('deals_piercing_damage', '#tfc:javelins', '#tfc:knives')
-    rm.item_tag('deals_slashing_damage', '#tfc:swords', '#tfc:axes')
+    rm.item_tag('deals_slashing_damage', '#tfc:swords', '#tfc:axes', '#tfc:scythes')
     rm.item_tag('deals_crushing_damage', '#tfc:hammers', '#tfc:maces')
     rm.item_tag('fluid_item_ingredient_empty_containers', 'minecraft:bucket', 'tfc:wooden_bucket', 'tfc:ceramic/jug', 'tfc:metal/bucket/red_steel', 'tfc:metal/bucket/blue_steel')
 
@@ -306,13 +279,37 @@ def generate(rm: ResourceManager):
             rm.item_tag(TOOL_TAGS[tool], 'tfc:stone/%s/%s' % (tool, category))
             rm.item_tag("usable_on_tool_rack", 'tfc:stone/%s/%s' % (tool, category))
 
-    for metal, metal_data in METALS.items():  # Metal Tools
+    for metal, metal_data in METALS.items():
+        # Metal Ingots / Sheets, for Ingot/Sheet Piles
+        rm.item_tag('forge:ingots/%s' % metal)
+        rm.item_tag('forge:sheets/%s' % metal)
+        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
+        rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
+
+        # Metal Tools
+        if 'tool' in metal_data.types:
+            rm.item_tag('metal_item/%s_tools' % metal, *['tfc:metal/%s/%s' % (item, metal) for item in METAL_TOOL_HEADS])
+
+        # Metal Tool Tags
         if 'tool' in metal_data.types:
             for tool_type, tool_tag in TOOL_TAGS.items():
                 rm.item_tag(tool_tag, 'tfc:metal/%s/%s' % (tool_type, metal))
-                rm.item_tag("usable_on_tool_rack", 'tfc:metal/%s/%s' % (tool_type, metal))
-            rm.item_tag("usable_on_tool_rack", 'tfc:metal/fishing_rod/%s' % metal, 'tfc:metal/tuyere/%s' % metal)
-        
+                rm.item_tag('usable_on_tool_rack', 'tfc:metal/%s/%s' % (tool_type, metal))
+            rm.item_tag('usable_on_tool_rack', 'tfc:metal/fishing_rod/%s' % metal, 'tfc:metal/tuyere/%s' % metal)
+
+        # Metal Blocks + Items
+        for item, item_data in METAL_ITEMS_AND_BLOCKS.items():
+            if item_data.type in metal_data.types or item_data.type == 'all':
+                item_name = 'tfc:metal/%s/%s' % (item, metal)
+                if item_data.tag is not None:
+                    rm.item_tag(item_data.tag, '#%s/%s' % (item_data.tag, metal))
+                    rm.item_tag(item_data.tag + '/' + metal, item_name)
+
+                rm.item_tag('metal_item/%s' % metal, item_name)
+
+        if 'utility' in metal_data.types:
+            block_and_item_tag(rm, 'trapdoors', 'tfc:metal/trapdoor/%s' % metal)
+            block_and_item_tag(rm, 'lamps', 'tfc:metal/lamp/%s' % metal)
 
     for wood in WOODS.keys():
         block_and_item_tag(rm, 'tool_racks', 'tfc:wood/planks/%s_tool_rack' % wood)
@@ -322,13 +319,6 @@ def generate(rm: ResourceManager):
         block_and_item_tag(rm, 'plants', 'tfc:plant/%s' % plant)
     for plant in UNIQUE_PLANTS:
         rm.block_tag('plants', 'tfc:plant/%s' % plant)
-
-    # Metal Ingots / Sheets, for Ingot/Sheet Piles
-    for metal in METALS.keys():
-        rm.item_tag('forge:ingots/%s' % metal)
-        rm.item_tag('forge:sheets/%s' % metal)
-        rm.item_tag('tfc:pileable_ingots', '#forge:ingots/%s' % metal)
-        rm.item_tag('tfc:pileable_sheets', '#forge:sheets/%s' % metal)
 
     # ==========
     # BLOCK TAGS
@@ -427,6 +417,20 @@ def generate(rm: ResourceManager):
     for rock, rock_data in ROCKS.items():
         def block(block_type: str):
             return 'tfc:rock/%s/%s' % (block_type, rock)
+
+        # Type-Based Block Tags
+        rm.block_tag('rock/raw', block('raw'))
+        rm.block_tag('rock/hardened', block('hardened'))
+        rm.block_tag('rock/gravel', block('gravel'))
+        rm.block_tag('rock/smooth', block('smooth'))
+        rm.block_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
+
+        for ore, ore_data in ORES.items():
+            if ore_data.graded:
+                for grade in ORE_GRADES.keys():
+                    rm.block_tag('rock/ores', 'tfc:ore/%s_%s/%s' % (grade, ore, rock))
+            else:
+                rm.block_tag('rock/ores', 'tfc:ore/%s/%s' % (ore, rock))
 
         block_and_item_tag(rm, 'forge:gravel', 'tfc:rock/gravel/%s' % rock)
         block_and_item_tag(rm, 'forge:stone', block('raw'), block('hardened'))
@@ -656,6 +660,31 @@ def generate(rm: ResourceManager):
     rm.entity_tag('deals_slashing_damage', 'minecraft:polar_bear', 'minecraft:vex', 'minecraft:wolf', 'tfc:polar_bear', 'tfc:grizzly_bear', 'tfc:black_bear', 'tfc:cougar', 'tfc:panther', 'tfc:lion', 'tfc:sabertooth')
     rm.entity_tag('deals_crushing_damage', 'minecraft:drowned', 'minecraft:enderman', 'minecraft:endermite', 'minecraft:goat', 'minecraft:hoglin', 'minecraft:husk', 'minecraft:iron_golem', 'minecraft:piglin', 'minecraft:piglin_brute', 'minecraft:pillager', 'minecraft:ravager', 'minecraft:silverfish', 'minecraft:slime', 'minecraft:vindicator', 'minecraft:wither', 'minecraft:wither_skeleton', 'minecraft:zoglin', 'minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:zombified_piglin', 'minecraft:skeleton', 'minecraft:stray', 'tfc:falling_block', 'tfc:goat')
 
+    # Used for Entity Damage Resistance
+    rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')
+    rm.entity_tag('creepers', 'minecraft:creeper')
+    rm.entity_tag('zombies', 'minecraft:zombie', 'minecraft:husk', 'minecraft:zombie_villager')
+
+    # Misc tags
+    rm.entity_tag('turtle_friends', 'minecraft:player', 'tfc:dolphin')
+    rm.entity_tag('spawns_on_cold_blocks', 'tfc:penguin', 'tfc:polar_bear')
+    rm.entity_tag('destroys_floating_plants', 'minecraft:boat', *['tfc:boat/%s' % wood for wood in WOODS.keys()])
+    rm.entity_tag('bubble_column_immune', *['tfc:%s' % entity for entity in OCEAN_CREATURES.keys()], *['tfc:%s' % entity for entity in UNDERGROUND_WATER_CREATURES.keys()], *['tfc:%s' % entity for entity in OCEAN_AMBIENT.keys()])
+    rm.entity_tag('needs_large_fishing_bait', 'tfc:dolphin', 'tfc:orca')
+    rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
+    rm.entity_tag('land_prey', *['tfc:%s' % entity for entity in LAND_PREY], '#tfc:livestock')
+    rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
+    rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player')
+    rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
+    rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
+    rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
+    rm.entity_tag('vanilla_monsters', *['minecraft:%s' % entity for entity in VANILLA_MONSTERS.keys()])
+    rm.entity_tag('horses', 'tfc:horse', 'tfc:mule', 'tfc:donkey')
+    rm.entity_tag('animals', *['tfc:%s' % mob for mob in SPAWN_EGG_ENTITIES])
+    rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
+    rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
+    rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
+
     # Item Sizes
 
     item_size(rm, 'logs', '#minecraft:logs', Size.very_large, Weight.medium)
@@ -685,13 +714,14 @@ def generate(rm: ResourceManager):
     item_size(rm, 'jute', 'tfc:jute', Size.small, Weight.very_light)
     item_size(rm, 'bloomery', 'tfc:bloomery', Size.large, Weight.very_heavy)
     item_size(rm, 'sluice', '#tfc:sluices', Size.very_large, Weight.very_heavy)
-    item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.very_heavy)
+    item_size(rm, 'lamps', '#tfc:lamps', Size.normal, Weight.medium)
     item_size(rm, 'signs', '#minecraft:signs', Size.very_small, Weight.heavy)
-    item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.very_heavy)
+    item_size(rm, 'soups', '#tfc:soups', Size.very_small, Weight.medium)
     item_size(rm, 'salads', '#tfc:salads', Size.very_small, Weight.very_heavy)
     item_size(rm, 'buckets', '#tfc:buckets', Size.large, Weight.very_heavy)
     item_size(rm, 'anvils', '#tfc:anvils', Size.huge, Weight.very_heavy)
     item_size(rm, 'minecarts', '#tfc:minecarts', Size.very_large, Weight.heavy)
+    item_size(rm, 'boats', '#minecraft:boats', Size.very_large, Weight.heavy)
     item_size(rm, 'looms', '#tfc:looms', Size.large, Weight.very_heavy)
     item_size(rm, 'ingots', '#forge:ingots', Size.large, Weight.medium)
     item_size(rm, 'double_ingots', '#forge:double_ingots', Size.large, Weight.heavy)
@@ -699,6 +729,7 @@ def generate(rm: ResourceManager):
     item_size(rm, 'double_sheets', '#forge:double_sheets', Size.large, Weight.heavy)
     item_size(rm, 'rods', '#forge:rods', Size.normal, Weight.light)
     item_size(rm, 'tuyeres', '#tfc:tuyeres', Size.large, Weight.heavy)
+    item_size(rm, 'trapdoors', '#tfc:trapdoors', Size.large, Weight.heavy)
     item_size(rm, 'small_tools', ['#tfc:chisels', '#tfc:knives', '#tfc:shears'], Size.large, Weight.medium)
     item_size(rm, 'large_tools', ['#forge:fishing_rods', '#tfc:pickaxes', '#tfc:propicks', '#tfc:axes', '#tfc:shovels', '#tfc:hoes', '#tfc:hammers', '#tfc:saws', '#tfc:javelins', '#tfc:swords', '#tfc:maces', '#tfc:scythes'], Size.very_large, Weight.very_heavy)
     item_size(rm, 'ore_pieces', '#tfc:ore_pieces', Size.small, Weight.medium)
@@ -914,11 +945,6 @@ def generate(rm: ResourceManager):
     # Misc Block Loot
     rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
 
-    # Entity Damage Resistance
-    rm.entity_tag('skeletons', 'minecraft:skeleton', 'minecraft:wither_skeleton', 'minecraft:stray')
-    rm.entity_tag('creepers', 'minecraft:creeper')
-    rm.entity_tag('zombies', 'minecraft:zombie', 'minecraft:husk', 'minecraft:zombie_villager')
-
     entity_damage_resistance(rm, 'skeletons', 'tfc:skeletons', piercing=1000000000, crushing=-50)
     entity_damage_resistance(rm, 'creeper', 'tfc:creepers', slashing=-25, crushing=50)
     entity_damage_resistance(rm, 'zombies', 'tfc:zombies', piercing=-25, crushing=50)
@@ -943,22 +969,22 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'panther', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'lion', 'tfc:large_raw_hide', bones=6)
     mob_loot(rm, 'sabertooth', 'tfc:large_raw_hide', bones=8)
-    mob_loot(rm, 'pig', 'tfc:food/pork', 4, 10, 'medium', bones=3)
-    mob_loot(rm, 'cow', 'tfc:food/beef', 6, 12, 'large', bones=4)
-    mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4)
-    mob_loot(rm, 'yak', 'tfc:food/chevon', 8, 16, 'large', bones=4)
-    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'})
-    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'})
-    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 14, 'large', bones=4, extra_pool={'name': 'tfc:wool'})
-    mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
-    mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
-    mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]})
+    mob_loot(rm, 'pig', 'tfc:food/pork', 4, 10, 'medium', bones=3, livestock=True)
+    mob_loot(rm, 'cow', 'tfc:food/beef', 6, 12, 'large', bones=4, livestock=True)
+    mob_loot(rm, 'goat', 'tfc:food/chevon', 4, 10, 'medium', bones=4, livestock=True)
+    mob_loot(rm, 'yak', 'tfc:food/chevon', 8, 16, 'large', bones=4, livestock=True)
+    mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 14, 'large', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
+    mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
+    mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
+    mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
     mob_loot(rm, 'rabbit', 'tfc:food/rabbit', hide_size='small', hide_chance=0.5, bones=1, extra_pool={'name': 'minecraft:rabbit_foot', 'conditions': [loot_tables.random_chance(0.1)]})
     mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
-    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
-    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
-    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6)
+    mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
+    mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
+    mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'minecraft:zombie', 'minecraft:rotten_flesh', 0, 2)  # it drops vanilla stuff we do not want
 
 
@@ -970,9 +996,11 @@ def entity_damage_resistance(rm: ResourceManager, name_parts: ResourceIdentifier
         'crushing': crushing
     })
 
-def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None):
+def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max_amount: int = None, hide_size: str = None, hide_chance: float = 1, bones: int = 0, extra_pool: Dict[str, Any] = None, livestock: bool = False):
     func = None if max_amount is None else loot_tables.set_count(min_amount, max_amount)
     pools = [{'name': drop, 'functions': func}]
+    if livestock:
+        pools = [{'name': drop, 'functions': animal_yield(min_amount, (max(1, max_amount - 3), max_amount + 3))}]
     if hide_size is not None:
         func = None if hide_chance == 1 else loot_tables.random_chance(hide_chance)
         pools.append({'name': 'tfc:%s_raw_hide' % hide_size, 'conditions': func})
@@ -981,6 +1009,21 @@ def mob_loot(rm: ResourceManager, name: str, drop: str, min_amount: int = 1, max
     if extra_pool is not None:
         pools.append(extra_pool)
     rm.entity_loot(name, *pools)
+
+def animal_yield(lo: int, hi: Tuple[int, int]) -> utils.Json:
+    return {
+        'function': 'minecraft:set_count',
+        'count': {
+            'type': 'tfc:animal_yield',
+            'min': lo,
+            'max': {
+                'type': 'minecraft:uniform',
+                'min': hi[0],
+                'max': hi[1]
+            }
+        }
+    }
+
 
 def loot_invert(condition: utils.JsonObject):
     return {
@@ -1072,12 +1115,16 @@ def item_size(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredi
     })
 
 
-def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None):
+def item_heat(rm: ResourceManager, name_parts: utils.ResourceIdentifier, ingredient: utils.Json, heat_capacity: float, melt_temperature: Optional[float] = None, mb: Optional[int] = None):
     if melt_temperature is not None:
-        forging_temperature = melt_temperature * 0.6
-        welding_temperature = melt_temperature * 0.8
+        forging_temperature = round(melt_temperature * 0.6)
+        welding_temperature = round(melt_temperature * 0.8)
     else:
         forging_temperature = welding_temperature = None
+    if mb is not None:
+        # Interpret heat capacity as a specific heat capacity - so we need to scale by the mB present. Baseline is 100 mB (an ingot)
+        # Higher mB = higher heat capacity = heats and cools slower = consumes proportionally more fuel
+        heat_capacity = round(10 * heat_capacity * mb) / 1000
     rm.data(('tfc', 'item_heats', name_parts), {
         'ingredient': utils.ingredient(ingredient),
         'heat_capacity': heat_capacity,

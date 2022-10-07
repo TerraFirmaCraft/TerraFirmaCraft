@@ -12,6 +12,8 @@ import java.util.Random;
 
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.server.level.ServerPlayer;
@@ -146,6 +148,11 @@ public final class EntityHelpers
         {
             instance.setBaseValue(baseValue);
         }
+    }
+
+    public static int getIntOrDefault(CompoundTag nbt, String key, int defaultInt)
+    {
+        return nbt.contains(key, Tag.TAG_INT) ? nbt.getInt(key) : defaultInt;
     }
 
     /**

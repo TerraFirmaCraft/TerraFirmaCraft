@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.compat.jei.extension;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.core.NonNullList;
@@ -30,10 +31,22 @@ public record AdvancedShapelessExtension(AdvancedShapelessRecipe recipe) impleme
         final List<List<ItemStack>> inputs = ingredients.stream()
             .map(ingredient -> List.of(ingredient.getItems()))
             .toList();
-        List<IRecipeSlotBuilder> inputSlots = helper.createAndSetInputs(builder, JEIIntegration.ITEM_STACK, inputs, 0, 0);
+        final List<IRecipeSlotBuilder> inputSlots = helper.createAndSetInputs(builder, JEIIntegration.ITEM_STACK, inputs, 0, 0);
+
+        final Ingredient primaryIngredient = recipe.getPrimaryIngredient();
+        if (primaryIngredient == null)
+        {
+            // This recipe, despite being advanced, does not identity a primary ingredient
+            // It most likely relies on the crafting container instead
+            // todo: can we support setting the crafting container here?
+
+            final List<ItemStack> outputItemNoPrimary = Collections.singletonList(recipe.getResult().getSingleStack(ItemStack.EMPTY));
+            helper.createAndSetOutputs(builder, JEIIntegration.ITEM_STACK, outputItemNoPrimary);
+            return;
+        }
 
         // locate a matching ingredient to the primary ingredient
-        List<ItemStack> primaryItems = List.of(recipe.getPrimaryIngredient().getItems());
+        List<ItemStack> primaryItems = List.of(primaryIngredient.getItems());
         IRecipeSlotBuilder primary = null;
         int i = 0;
         for (List<ItemStack> testItems : inputs)
@@ -55,6 +68,7 @@ public record AdvancedShapelessExtension(AdvancedShapelessRecipe recipe) impleme
             }
             i++;
         }
+
         // a focus link here essentially says, this item causes that output
         if (primary != null)
         {

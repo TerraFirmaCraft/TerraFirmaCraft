@@ -18,7 +18,7 @@ public abstract class BlockEntityContainer<T extends InventoryBlockEntity<?>> ex
 
     protected BlockEntityContainer(MenuType<?> containerType, int windowId, T blockEntity)
     {
-        super(containerType, windowId);
+        super(blockEntity, containerType, windowId);
 
         this.blockEntity = blockEntity;
     }

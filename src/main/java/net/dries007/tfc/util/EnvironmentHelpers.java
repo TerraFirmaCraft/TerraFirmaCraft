@@ -186,8 +186,16 @@ public final class EnvironmentHelpers
     private static boolean placeSnowOrSnowPile(Level level, BlockPos initialPos, Random random)
     {
         // First, try and find an optimal position, to smoothen out snow accumulation
+        // This will only move to the side, if we're currently at a snow location
         final BlockPos pos = findOptimalSnowLocation(level, initialPos, level.getBlockState(initialPos), random);
         final BlockState state = level.getBlockState(pos);
+
+        // If we didn't move to the side, then we still need to pass a can see sky check
+        // If we did, we might've moved under an overhang from a previously valid snow location
+        if (initialPos.equals(pos) && !level.canSeeSky(pos))
+        {
+            return false;
+        }
 
         // Then, handle possibilities
         if (isSnow(state) && state.getValue(SnowLayerBlock.LAYERS) < 7)

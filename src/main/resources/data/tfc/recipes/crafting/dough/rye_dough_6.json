@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "type": "minecraft:crafting_shapeless",
+  "type": "tfc:advanced_shapeless_crafting",
   "ingredients": [
     {
       "type": "tfc:fluid_item",
@@ -47,7 +47,12 @@
     }
   ],
   "result": {
-    "item": "tfc:food/rye_dough",
-    "count": 12
+    "stack": {
+      "item": "tfc:food/rye_dough",
+      "count": 12
+    },
+    "modifiers": [
+      "tfc:copy_oldest_food"
+    ]
   }
 }

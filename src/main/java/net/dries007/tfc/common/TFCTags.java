@@ -25,6 +25,7 @@ public class TFCTags
         public static final TagKey<Block> CAN_COLLAPSE = create("can_collapse");
         public static final TagKey<Block> CAN_LANDSLIDE = create("can_landslide");
         public static final TagKey<Block> SUPPORTS_LANDSLIDE = create("supports_landslide"); // Non-full blocks that count as full blocks for the purposes of landslide side support check
+        public static final TagKey<Block> NOT_SOLID_SUPPORTING = create("not_solid_supporting"); // Blocks that don't count as supporting the block above for the purposes of collapse start checks
         public static final TagKey<Block> TOUGHNESS_1 = create("toughness_1"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> TOUGHNESS_2 = create("toughness_2"); // Tags for toughness of materials w.r.t falling blocks
         public static final TagKey<Block> TOUGHNESS_3 = create("toughness_3"); // Tags for toughness of materials w.r.t falling blocks
@@ -180,6 +181,7 @@ public class TFCTags
         public static final TagKey<Item> MOB_HEAD_ARMOR = create("mob_head_armor"); // armor that mobs can put on their head
         public static final TagKey<Item> MOB_MAINHAND_WEAPONS = create("mob_mainhand_weapons"); // armor that mobs can put on their mainhand
         public static final TagKey<Item> MOB_OFFHAND_WEAPONS = create("mob_offhand_weapons"); // armor that mobs can put on their mainhand
+        public static final TagKey<Item> SKELETON_WEAPONS = create("skeleton_weapons"); // stuff we force skeletons to hold. includes javelins and bows
         public static final TagKey<Item> DISABLED_MONSTER_HELD_ITEMS = create("disabled_monster_held_items"); // items Monsters will not spawn holding. also gated with ServerConfig#enableVanillaMobsSpawningWithVanillaEquipment
         public static final TagKey<Item> DEALS_SLASHING_DAMAGE = create("deals_slashing_damage");
         public static final TagKey<Item> DEALS_PIERCING_DAMAGE = create("deals_piercing_damage");

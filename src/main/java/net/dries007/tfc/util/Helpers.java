@@ -98,6 +98,7 @@ import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 public final class Helpers
 {
     public static final Direction[] DIRECTIONS = Direction.values();
+    public static final Direction[] DIRECTIONS_NOT_DOWN = Arrays.stream(DIRECTIONS).filter(d -> d != Direction.DOWN).toArray(Direction[]::new);
     public static final DyeColor[] DYE_COLORS = DyeColor.values();
 
     /**
@@ -257,8 +258,10 @@ public final class Helpers
 
     public static void slowEntityInBlock(Entity entity, float factor, int fallDamageReduction)
     {
-        Vec3 motion = entity.getDeltaMovement();
-        entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? factor : 1, factor));
+        final Vec3 motion = entity.getDeltaMovement();
+
+        // Affect falling very slightly, and don't affect jumping
+        entity.setDeltaMovement(motion.multiply(factor, motion.y < 0 ? 1 - 0.2f * (1 - factor) : 1, factor));
         if (entity.fallDistance > fallDamageReduction)
         {
             entity.causeFallDamage(entity.fallDistance - fallDamageReduction, 1.0f, DamageSource.FALL);

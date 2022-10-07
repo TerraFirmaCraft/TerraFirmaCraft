@@ -644,6 +644,8 @@ def generate(rm: ResourceManager):
                 rock_item = rock_item + suffix
                 if suffix == '' and rock_item == 'javelin':
                     item = make_javelin(rm, 'stone/%s/%s' % (rock_item, rock), 'tfc:item/stone/%s' % rock_item)
+                elif suffix == '' and rock_item == 'knife':
+                    item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='tfc:item/handheld_flipped')
                 else:
                     item = rm.item_model(('stone', rock_item, rock), 'tfc:item/stone/%s' % rock_item, parent='item/handheld')
                 item.with_lang(lang('stone %s', rock_item))
@@ -666,6 +668,7 @@ def generate(rm: ResourceManager):
                     item = make_javelin(rm, 'metal/%s/%s' % (metal_item, metal), 'tfc:item/metal/javelin/%s' % metal)
                 else:
                     item = rm.item_model(('metal', metal_item, metal), texture, parent=metal_item_data.parent_model)
+
                 if metal_item == 'propick':
                     item.with_lang('%s Prospector\'s Pick' % lang(metal))  # .title() works weird w.r.t the possessive.
                 elif metal_item == 'propick_head':
@@ -694,7 +697,6 @@ def generate(rm: ResourceManager):
                         'name': 'tfc:metal/lamp/%s' % metal,
                         'functions': [{'function': 'tfc:copy_fluid'}]
                     }).with_tag('lamps')
-                    rm.item_tag('lamps', 'tfc:metal/%s/%s' % (metal_block, metal))
                     rm.lang('block.tfc.metal.lamp.%s.filled' % metal, lang('filled %s lamp', metal))
                 elif metal_block == 'chain':
                     rm.block_model(('metal', 'chain', metal), {'all': metal_dir % (metal_block, metal), 'particle': metal_dir % (metal_block, metal)}, parent='minecraft:block/chain')

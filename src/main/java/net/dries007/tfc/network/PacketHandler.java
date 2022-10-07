@@ -68,7 +68,7 @@ public final class PacketHandler
         register(RequestClimateModelPacket.class, RequestClimateModelPacket::new, RequestClimateModelPacket::handle);
         register(ScribingTablePacket.class, ScribingTablePacket::encode, ScribingTablePacket::new, ScribingTablePacket::handle);
         register(StackFoodPacket.class, StackFoodPacket::encode, StackFoodPacket::new, StackFoodPacket::handle);
-
+        register(OpenFieldGuidePacket.class, OpenFieldGuidePacket::encode, OpenFieldGuidePacket::new, OpenFieldGuidePacket::handle);
     }
 
     @SuppressWarnings("unchecked")

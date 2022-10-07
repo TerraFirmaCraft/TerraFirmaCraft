@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:metal/trapdoor/black_steel"
   },
-  "heat_capacity": 0.35,
+  "heat_capacity": 5.714,
   "forging_temperature": 891.0,
   "welding_temperature": 1188.0
 }

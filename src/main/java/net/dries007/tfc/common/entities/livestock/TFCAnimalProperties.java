@@ -205,6 +205,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         entityData().define(animalData().uses(), 0);
         entityData().define(animalData().fertilized(), false);
         entityData().define(animalData().oldDay(), -1L);
+        entityData().define(animalData().geneticSize(), 16);
     }
 
     default void saveCommonAnimalData(CompoundTag nbt)
@@ -219,6 +220,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         nbt.putLong("mating", getMated());
         nbt.putInt("lastAge", getLastAge().ordinal());
         nbt.putLong("oldDay", getOldDay());
+        nbt.putInt("geneticSize", getGeneticSize());
     }
 
     default void readCommonAnimalData(CompoundTag nbt)
@@ -233,6 +235,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setMated(nbt.getLong("mating"));
         setLastAge(Age.valueOf(nbt.getInt("lastAge")));
         setOldDay(nbt.getLong("oldDay"));
+        setGeneticSize(EntityHelpers.getIntOrDefault(nbt, "geneticSize", 16));
     }
 
     default void initCommonAnimalData()
@@ -242,6 +245,7 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         setFamiliarity(0);
         setOldDay(-1L);
         setUses(0);
+        setGeneticSize(Mth.nextInt(getEntity().getRandom(), 4, 18));
         setFertilized(false);
         if (getEntity() instanceof AgeableMob mob)
         {
@@ -325,6 +329,24 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     }
 
     /**
+     * @return A value [1, 32] for the genetic size scale of the animal.
+     */
+    default int getGeneticSize()
+    {
+        return entityData().get(animalData().geneticSize());
+    }
+
+    default void setGeneticSize(int size)
+    {
+        entityData().set(animalData().geneticSize(), Mth.clamp(size, 1, 32));
+    }
+
+    default float getAgeScale()
+    {
+        return Mth.map(getGeneticSize(), 1, 32, 0.8f, 1.2f);
+    }
+
+    /**
      * Add a 'use' to the animal
      */
     default void addUses(int uses)
@@ -389,17 +411,6 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
         return true;
     }
 
-    /**
-     * //todo IMPLEMENT??? MIGHT NEED HACKS??? Used by model renderer to scale the size of the animal
-     *
-     * @return double value between 0(birthday) to 1(full grown adult)
-     */
-    default double getPercentToAdulthood()
-    {
-        long deltaDays = getCalendar().getTotalDays() - this.getBirthDay();
-        long adulthoodDay = this.getDaysToAdulthood();
-        return Math.max(0, Math.min(1, (double) deltaDays / adulthoodDay));
-    }
 
     /**
      * Get this entity's age, based on birthday and old day. Old Day is set in the animal data tick.

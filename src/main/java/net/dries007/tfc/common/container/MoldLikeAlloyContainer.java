@@ -79,9 +79,19 @@ public class MoldLikeAlloyContainer extends ItemStackContainer implements ISlotC
     }
 
     @Override
-    public boolean stillValid(Player playerIn)
+    public boolean stillValid(Player player)
     {
         return mold != null && (mold.isMolten() || mold.getFluidInTank(0).isEmpty()); // Don't close instantly as soon as the mold is empty.
+    }
+
+    @Override
+    protected boolean moveStack(ItemStack stack, int slotIndex)
+    {
+        return switch (typeOf(slotIndex))
+            {
+                case MAIN_INVENTORY, HOTBAR -> !moveItemStackTo(stack, 0, 1, false);
+                case CONTAINER -> !moveItemStackTo(stack, containerSlots, slots.size(), false);
+            };
     }
 
     @Override

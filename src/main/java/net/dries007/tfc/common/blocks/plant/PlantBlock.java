@@ -116,7 +116,8 @@ public abstract class PlantBlock extends TFCBushBlock
     @Override
     public float getSpeedFactor()
     {
-        return TFCConfig.SERVER.enablePlantsSlowEntities.get() ? speedFactor : 1f;
+        final float modifier = TFCConfig.SERVER.plantsMovementModifier.get().floatValue(); // 0.0 = full speed factor, 1.0 = no modifier
+        return Helpers.lerp(modifier, speedFactor, 1.0f);
     }
 
     protected BlockState updateStateWithCurrentMonth(BlockState state)

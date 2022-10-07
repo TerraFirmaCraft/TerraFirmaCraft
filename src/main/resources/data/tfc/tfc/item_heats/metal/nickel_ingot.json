@@ -3,7 +3,7 @@
   "ingredient": {
     "tag": "forge:ingots/nickel"
   },
-  "heat_capacity": 0.48,
-  "forging_temperature": 871.8,
-  "welding_temperature": 1162.4
+  "heat_capacity": 2.083,
+  "forging_temperature": 872,
+  "welding_temperature": 1162
 }

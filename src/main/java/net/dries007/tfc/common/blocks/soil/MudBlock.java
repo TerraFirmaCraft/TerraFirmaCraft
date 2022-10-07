@@ -52,4 +52,11 @@ public class MudBlock extends Block
     {
         return false;
     }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos)
+    {
+        return 0.2f;
+    }
 }

@@ -62,7 +62,7 @@ public class CaveColumnFeature extends Feature<NoneFeatureConfiguration>
 
         while (true)
         {
-            final BlockState state = data.getRock(mutablePos).raw().defaultBlockState();
+            final BlockState state = data.getRock(mutablePos).hardened().defaultBlockState();
             final int radius = (int) (amp * Mth.sin(period * y + offset) + 2);
             for (int x = -radius; x <= radius; x++)
             {

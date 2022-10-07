@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "tfc:metal/fish_hook/copper"
   },
-  "heat_capacity": 0.35,
+  "heat_capacity": 5.714,
   "forging_temperature": 648.0,
   "welding_temperature": 864.0
 }

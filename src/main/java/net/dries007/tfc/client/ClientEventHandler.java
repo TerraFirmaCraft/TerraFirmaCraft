@@ -32,13 +32,12 @@ import net.minecraft.client.renderer.blockentity.LecternRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.ClientRegistry;
@@ -74,7 +73,6 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.client.accessor.BiomeColorsAccessor;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
-import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.common.blocks.wood.Wood.BlockType.*;
 
@@ -162,7 +160,7 @@ public final class ClientEventHandler
 
                     Item javelin = TFCItems.METAL_ITEMS.get(metal).get(Metal.ItemType.JAVELIN).get();
                     ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
-                        entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                        entity != null && ((entity.isUsingItem() && entity.getUseItem() == stack) || (entity instanceof Monster monster && monster.isAggressive())) ? 1.0F : 0.0F
                     );
                 }
             }
@@ -170,7 +168,7 @@ public final class ClientEventHandler
             TFCItems.ROCK_TOOLS.values().forEach(tool -> {
                 Item javelin = tool.get(RockCategory.ItemType.JAVELIN).get();
                 ItemProperties.register(javelin, Helpers.identifier("throwing"), (stack, level, entity, unused) ->
-                    entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F
+                    entity != null && ((entity.isUsingItem() && entity.getUseItem() == stack) || (entity instanceof Monster monster && monster.isAggressive())) ? 1.0F : 0.0F
                 );
             });
 
@@ -357,7 +355,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.BOAR.get(), ctx -> new SimpleMobRenderer<>(ctx, new TFCPigModel<>(RenderHelpers.bakeSimple(ctx, "boar")), "boar", 0.3f, false, 0.6f));
         event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, ModelLayers.MULE, "mule"));
         event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, ModelLayers.DONKEY, "donkey"));
-        event.registerEntityRenderer(TFCEntities.HORSE.get(), HorseRenderer::new);
+        event.registerEntityRenderer(TFCEntities.HORSE.get(), TFCHorseRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());

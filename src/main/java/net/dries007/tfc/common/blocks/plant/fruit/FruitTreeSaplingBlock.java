@@ -136,7 +136,8 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
         // only go through this check if we are reasonably sure the plant would actually live
         if (stages[Calendars.SERVER.getCalendarMonthOfYear().ordinal()].active())
         {
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(counter -> {
+            if (level.getBlockEntity(pos) instanceof TickCounterBlockEntity counter)
+            {
                 if (counter.getTicksSinceUpdate() > (long) ICalendar.TICKS_IN_DAY * treeGrowthDays)
                 {
                     final int hydration = FruitTreeLeavesBlock.getHydration(level, pos);
@@ -150,7 +151,7 @@ public class FruitTreeSaplingBlock extends BushBlock implements IForgeBlockExten
                         createTree(level, pos, state, random);
                     }
                 }
-            });
+            }
         }
     }
 

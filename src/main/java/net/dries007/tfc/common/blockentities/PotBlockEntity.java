@@ -184,12 +184,12 @@ public class PotBlockEntity extends AbstractFirepitBlockEntity<PotBlockEntity.Po
     {
         if (output != null)
         {
-            InteractionResult result = output.onInteract(this, player, stack);
+            final InteractionResult result = output.onInteract(this, player, stack);
             if (output.isEmpty())
             {
                 output = null;
-                markForSync();
             }
+            markForSync();
             return result;
         }
         return InteractionResult.PASS;

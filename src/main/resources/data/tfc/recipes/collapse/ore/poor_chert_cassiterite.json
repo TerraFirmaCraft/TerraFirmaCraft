@@ -1,0 +1,6 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "tfc:collapse",
+  "ingredient": "tfc:ore/normal_cassiterite/chert",
+  "result": "tfc:ore/poor_cassiterite/chert"
+}
