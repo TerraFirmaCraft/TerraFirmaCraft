@@ -50,7 +50,7 @@ public class PenguinModel extends HierarchicalModel<Penguin>
         .addAnimation("rightWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 25f, 0f, 0f), noRotation(1f)))
         .build();
 
-    public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(0.5f).looping()
+    public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(1f).looping()
         .addAnimation("leftFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 45f, 0f, 0f), noRotation(1f)))
         .addAnimation("rightFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, -45f, 0f, 0f), noRotation(1f)))
         .addAnimation("leftWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 0f, 0f, -25f), noRotation(1f)))
@@ -90,8 +90,9 @@ public class PenguinModel extends HierarchicalModel<Penguin>
         }
         else
         {
-            VanillaAnimations.animate(this, entity.walkingAnimation, WALK, ageInTicks, limbSwingAmount * 2f);
-            VanillaAnimations.animate(this, entity.swimmingAnimation, SWIM, ageInTicks, limbSwingAmount * 2f);
+            final float speed = Math.min((float) entity.getDeltaMovement().lengthSqr() * 80f, 8f);
+            VanillaAnimations.animate(this, entity.walkingAnimation, WALK, ageInTicks, speed);
+            VanillaAnimations.animate(this, entity.swimmingAnimation, SWIM, ageInTicks);
 
             head.xRot = entity.isInWater() ? -1 : headPitch * Mth.PI / 180F;
             head.yRot = netHeadYaw * Mth.PI / 180F;

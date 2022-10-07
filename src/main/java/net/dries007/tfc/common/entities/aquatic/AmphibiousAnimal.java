@@ -113,7 +113,7 @@ public class AmphibiousAnimal extends PathfinderMob
     {
         getBrain().tick((ServerLevel) level, this);
         AmphibianAi.updateActivity(this);
-        if (!isNoAi())
+        if (!isNoAi() && !isInWaterOrBubble())
         {
             Optional<Integer> optionalTicks = this.getBrain().getMemory(MemoryModuleType.PLAY_DEAD_TICKS);
             setPlayingDead(optionalTicks.isPresent() && optionalTicks.get() > 0);

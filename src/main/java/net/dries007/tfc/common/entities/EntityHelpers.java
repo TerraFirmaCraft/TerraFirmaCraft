@@ -178,11 +178,12 @@ public final class EntityHelpers
 
     public static boolean isMovingOnLand(Entity entity)
     {
-        return entity.isOnGround() && entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && !entity.isInWaterOrBubble();
+        return entity.isOnGround() && entity.getDeltaMovement().lengthSqr() > 1.0E-6D && !entity.isInWaterOrBubble();
     }
 
     public static boolean isMovingInWater(Entity entity)
     {
-        return entity.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && entity.isInWaterOrBubble();
+        // todo: movement heuristic that actually works underwater
+        return entity.isInWaterOrBubble();
     }
 }
