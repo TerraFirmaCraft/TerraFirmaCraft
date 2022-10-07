@@ -33,25 +33,9 @@ public class Penguin extends AmphibiousAnimal
     {
         if (level.isClientSide)
         {
-            if (EntityHelpers.isMovingOnLand(this))
-            {
-                walkingAnimation.startIfStopped(tickCount);
-            }
-            else
-            {
-                walkingAnimation.stop();
-            }
-            if (EntityHelpers.isMovingInWater(this))
-            {
-                swimmingAnimation.startIfStopped(tickCount);
-            }
-            else
-            {
-                swimmingAnimation.stop();
-            }
+            EntityHelpers.startOrStop(walkingAnimation, EntityHelpers.isMovingOnLand(this), tickCount);
+            EntityHelpers.startOrStop(swimmingAnimation, EntityHelpers.isMovingInWater(this), tickCount);
         }
         super.tick();
     }
-
-
 }

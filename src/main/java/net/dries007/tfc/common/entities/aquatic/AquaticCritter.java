@@ -22,6 +22,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.AnimationState;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCAvoidEntityGoal;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.util.Helpers;
@@ -39,6 +41,7 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
         return new AquaticCritter(type, level, false);
     }
 
+    public final AnimationState swimmingAnimation = new AnimationState();
     private final Predicate<Fluid> fluidTest;
 
     public AquaticCritter(EntityType<? extends WaterAnimal> type, Level level, boolean salty)
@@ -47,6 +50,15 @@ public class AquaticCritter extends WaterAnimal implements AquaticMob
         this.fluidTest = salty ? f -> f.isSame(TFCFluids.SALT_WATER.getSource()) : f -> f.isSame(Fluids.WATER);
     }
 
+    @Override
+    public void tick()
+    {
+        if (level.isClientSide)
+        {
+            EntityHelpers.startOrStop(swimmingAnimation, !onGround, tickCount);
+        }
+        super.tick();
+    }
 
     @Override
     public void registerGoals()

@@ -6,23 +6,23 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import com.google.common.collect.ImmutableMap;
-
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.dries007.tfc.client.model.animation.AnimationChannel;
+import net.dries007.tfc.client.model.animation.AnimationDefinition;
+import net.dries007.tfc.client.model.animation.VanillaAnimations;
 import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
-import net.dries007.tfc.client.model.Animation;
-import net.dries007.tfc.client.model.Easing;
+
+import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
+
 
 import java.util.Map;
 
-public class LobsterModel extends EntityModel<AquaticCritter>
+public class LobsterModel extends HierarchicalModel<AquaticCritter>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -72,19 +72,18 @@ public class LobsterModel extends EntityModel<AquaticCritter>
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    public static final Animation SWIM = new Animation.Builder(0.45F)
-        .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -170F, 0F, -180F).rotation(0.125F, -180F, 0F, -180F).rotation(0.45F, -170F, 0F, -180F).build())
-        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30F, 0F, 0F).rotation(0.0417F, -60F, 0F, 0F).rotation(0.125F, -60F, 0F, 0F).rotation(0.45F, -30F, 0F, 0F).build())
-        .bone("tail2", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -50F, 0F, 0F).rotation(0.0833F, -80F, 0F, 0F).rotation(0.125F, -80F, 0F, 0F).rotation(0.45F, -50F, 0F, 0F).build())
-        .bone("tail3", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -47.5F, 0F, 0F).rotation(0.125F, -77.5F, 0F, 0F).rotation(0.45F, -47.5F, 0F, 0F).build())
-        .bone("armLeft", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 0F, 27.5F, 0F).noRotation(0.45F).build())
-        .bone("armRight", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 0F, -37.5F, 0F).noRotation(0.45F).build())
+    public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(0.45F)
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -170F, 0F, -180F), rotation(0.125F, -180F, 0F, -180F), rotation(0.45F, -170F, 0F, -180F)))
+        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -30F, 0F, 0F), rotation(0.0417F, -60F, 0F, 0F), rotation(0.125F, -60F, 0F, 0F), rotation(0.45F, -30F, 0F, 0F)))
+        .addAnimation("tail2", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -50F, 0F, 0F), rotation(0.0833F, -80F, 0F, 0F), rotation(0.125F, -80F, 0F, 0F), rotation(0.45F, -50F, 0F, 0F)))
+        .addAnimation("tail3", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -47.5F, 0F, 0F), rotation(0.125F, -77.5F, 0F, 0F), rotation(0.45F, -47.5F, 0F, 0F)))
+        .addAnimation("armLeft", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.125F, 0F, 27.5F, 0F), noRotation(0.45F)))
+        .addAnimation("armRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.125F, 0F, -37.5F, 0F), noRotation(0.45F)))
         .build();
 
-
-    public final Map<String, ModelPart> parts;
     public final Map<ModelPart, PartPose> defaults;
 
+    private final ModelPart root;
     private final ModelPart body;
     private final ModelPart tail1;
     private final ModelPart tail2;
@@ -98,6 +97,7 @@ public class LobsterModel extends EntityModel<AquaticCritter>
 
     public LobsterModel(ModelPart root)
     {
+        this.root = root;
         this.body = root.getChild("body");
         this.tail1 = body.getChild("tail1");
         this.tail2 = tail1.getChild("tail2");
@@ -109,20 +109,16 @@ public class LobsterModel extends EntityModel<AquaticCritter>
         this.clawTopLeft = armLeft.getChild("clawLeft").getChild("clawTopLeft");
         this.clawTopRight = armRight.getChild("clawRight").getChild("clawTopRight");
 
-        parts = new ImmutableMap.Builder<String, ModelPart>().put("body", body).put("tail1", tail1).put("tail2", tail2)
-            .put("tail3", tail3).put("leftAntenna", leftAntenna).put("rightAntenna", rightAntenna).put("armLeft", armLeft)
-            .put("armRight", armRight).put("clawTopLeft", clawTopLeft).put("clawTopRight", clawTopRight).build();
-        defaults = Animation.initDefaults(parts);
+        defaults = VanillaAnimations.save(root.getAllParts());
     }
 
     @Override
     public void setupAnim(AquaticCritter entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
         defaults.forEach(ModelPart::loadPose);
-        if (!entity.isOnGround())
+        if (entity.swimmingAnimation.isStarted())
         {
-            final float adjustedAgeInTicks = ageInTicks + limbSwingAmount * 2F;
-            SWIM.tick(parts, adjustedAgeInTicks);
+            VanillaAnimations.animate(this, entity.swimmingAnimation, SWIM, ageInTicks);
         }
         else
         {
@@ -137,10 +133,9 @@ public class LobsterModel extends EntityModel<AquaticCritter>
         }
     }
 
-
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public ModelPart root()
     {
-        body.render(poseStack, buffer, packedLight, packedOverlay);
+        return root;
     }
 }

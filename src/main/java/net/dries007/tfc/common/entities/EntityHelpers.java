@@ -186,4 +186,17 @@ public final class EntityHelpers
         // todo: movement heuristic that actually works underwater
         return entity.isInWaterOrBubble();
     }
+
+    public static boolean startOrStop(AnimationState state, boolean go, int tickCount)
+    {
+        if (go)
+        {
+            state.startIfStopped(tickCount);
+        }
+        else
+        {
+            state.stop();
+        }
+        return go;
+    }
 }
