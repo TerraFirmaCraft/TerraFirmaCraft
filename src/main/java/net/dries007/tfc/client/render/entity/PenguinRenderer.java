@@ -14,10 +14,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.model.entity.PenguinModel;
-import net.dries007.tfc.common.entities.aquatic.AmphibiousAnimal;
+import net.dries007.tfc.common.entities.aquatic.Penguin;
 import net.dries007.tfc.util.Helpers;
 
-public class PenguinRenderer extends MobRenderer<AmphibiousAnimal, PenguinModel>
+public class PenguinRenderer extends MobRenderer<Penguin, PenguinModel>
 {
     private static final ResourceLocation LOCATION = Helpers.animalTexture("penguin");
 
@@ -27,7 +27,7 @@ public class PenguinRenderer extends MobRenderer<AmphibiousAnimal, PenguinModel>
     }
 
     @Override
-    protected void setupRotations(AmphibiousAnimal animal, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
+    protected void setupRotations(Penguin animal, PoseStack stack, float ageInTicks, float rotationYaw, float partialTicks)
     {
         super.setupRotations(animal, stack, ageInTicks, rotationYaw, partialTicks);
         if (animal.isInWater())
@@ -39,7 +39,7 @@ public class PenguinRenderer extends MobRenderer<AmphibiousAnimal, PenguinModel>
     }
 
     @Override
-    public ResourceLocation getTextureLocation(AmphibiousAnimal model)
+    public ResourceLocation getTextureLocation(Penguin model)
     {
         return LOCATION;
     }

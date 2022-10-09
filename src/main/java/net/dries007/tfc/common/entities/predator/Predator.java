@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.predator;
 
 import java.util.function.Supplier;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -29,12 +30,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.client.particle.TFCParticles;
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.entities.AnimationState;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.WildAnimal;
 import net.dries007.tfc.common.entities.ai.predator.PredatorAi;
 
@@ -50,23 +54,25 @@ public class Predator extends WildAnimal
 
     public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(Predator.class, EntityDataSerializers.BOOLEAN);
 
-    private final int attackAnimationLength;
+    public final AnimationState walkingAnimation = new AnimationState();
+    public final AnimationState swimmingAnimation = new AnimationState();
+    public final AnimationState sleepingAnimation = new AnimationState();
+    public final AnimationState attackingAnimation = new AnimationState();
+    public final AnimationState runningAnimation = new AnimationState();
 
     private final Supplier<SoundEvent> attack;
     private final Supplier<SoundEvent> sleeping;
 
     public final boolean diurnal;
-    private int attackAnimationRemainingTicks = 0;
 
     public static Predator createBear(EntityType<? extends Predator> type, Level level)
     {
-        return new Predator(type, level, true, 20, 20, TFCSounds.BEAR);
+        return new Predator(type, level, true, 20, TFCSounds.BEAR);
     }
 
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int attackLength, int walkLength, TFCSounds.EntitySound sounds)
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int walkLength, TFCSounds.EntitySound sounds)
     {
         super(type, level, sounds, walkLength);
-        attackAnimationLength = attackLength;
         this.diurnal = diurnal;
         this.attack = sounds.attack().orElseThrow();
         this.sleeping = sounds.sleep().orElseThrow();
@@ -108,11 +114,36 @@ public class Predator extends WildAnimal
     @Override
     public void tick()
     {
-        super.tick();
-        if (level.isClientSide && isSleeping() && getRandom().nextInt(10) == 0)
+        if (level.isClientSide)
         {
-            level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
+            tickAnimationStates();
         }
+        super.tick();
+    }
+
+    public void tickAnimationStates()
+    {
+        if (isSleeping())
+        {
+            if (getRandom().nextInt(10) == 0)
+            {
+                level.addParticle(TFCParticles.SLEEP.get(), getX(), getY() + getEyeHeight(), getZ(), 0.01, 0.05, 0.01);
+            }
+            sleepingAnimation.startIfStopped(tickCount);
+        }
+        else
+        {
+            sleepingAnimation.stop();
+
+            final boolean walking = walkProgress > 0 || isMoving();
+            BlockPos blockPosBelow = getBlockPosBelowThatAffectsMyMovement();
+            BlockState blockStateBelow = level.getBlockState(blockPosBelow);
+
+            EntityHelpers.startOrStop(swimmingAnimation, isInWater() || (blockStateBelow.getFriction(level, blockPosBelow, null) > 0.7), tickCount);
+            EntityHelpers.startOrStop(runningAnimation, isAggressive() && walking, tickCount);
+            EntityHelpers.startOrStop(walkingAnimation, !isAggressive() && walking, tickCount);
+        }
+
     }
 
     @Override
@@ -132,7 +163,6 @@ public class Predator extends WildAnimal
     public boolean doHurtTarget(Entity target)
     {
         boolean hurt = super.doHurtTarget(target);
-        attackAnimationRemainingTicks = attackAnimationLength;
         level.broadcastEntityEvent(this, (byte) 4);
         playSound(getAttackSound(), 1.0f, getVoicePitch());
 
@@ -159,21 +189,11 @@ public class Predator extends WildAnimal
     }
 
     @Override
-    public void aiStep()
-    {
-        if (attackAnimationRemainingTicks > 0)
-        {
-            --attackAnimationRemainingTicks;
-        }
-        super.aiStep(); // this method is called on both sides of LivingEntity#tick. So the name is rather improper
-    }
-
-    @Override
     public void handleEntityEvent(byte id)
     {
         if (id == 4)
         {
-            attackAnimationRemainingTicks = 20;
+            attackingAnimation.start(tickCount);
             playSound(getAttackSound(), 1.0F, getVoicePitch());
         }
         super.handleEntityEvent(id);
@@ -203,11 +223,6 @@ public class Predator extends WildAnimal
     public void setSleeping(boolean asleep)
     {
         entityData.set(DATA_SLEEPING, asleep);
-    }
-
-    public int getAttackTicks()
-    {
-        return attackAnimationRemainingTicks <= 0 ? 0 : attackAnimationLength - attackAnimationRemainingTicks;
     }
 
     public SoundEvent getAttackSound()

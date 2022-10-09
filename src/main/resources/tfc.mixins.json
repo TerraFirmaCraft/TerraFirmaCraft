@@ -55,6 +55,7 @@
     "client.accessor.ClientLevelAccessor",
     "client.accessor.LevelRendererAccessor",
     "client.accessor.LocalPlayerAccessor",
+    "client.accessor.ModelPartAccessor",
     "client.accessor.SuspendedTownParticleAccessor",
     "client.compat.sodium.FluidRendererMixin"
   ],

@@ -8,7 +8,6 @@ package net.dries007.tfc.common.entities.aquatic;
 
 import java.util.Optional;
 
-import net.dries007.tfc.common.entities.TFCEntities;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -67,7 +66,7 @@ public class AmphibiousAnimal extends PathfinderMob
 
     public boolean isPlayingDeadEffective()
     {
-        return getType() == TFCEntities.TURTLE.get();
+        return true;
     }
 
     @Override
@@ -114,7 +113,7 @@ public class AmphibiousAnimal extends PathfinderMob
     {
         getBrain().tick((ServerLevel) level, this);
         AmphibianAi.updateActivity(this);
-        if (!isNoAi())
+        if (!isNoAi() && !isInWaterOrBubble())
         {
             Optional<Integer> optionalTicks = this.getBrain().getMemory(MemoryModuleType.PLAY_DEAD_TICKS);
             setPlayingDead(optionalTicks.isPresent() && optionalTicks.get() > 0);

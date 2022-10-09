@@ -10,27 +10,18 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import com.google.common.collect.ImmutableMap;
-
+import net.dries007.tfc.client.model.animation.AnimationChannel;
+import net.dries007.tfc.client.model.animation.AnimationDefinition;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.util.Mth;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.dries007.tfc.client.model.Animation;
-import net.dries007.tfc.client.model.Easing;
+import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
 
-import net.minecraft.world.entity.Pose;
-
-import java.util.Map;
-
-
-public class CougarModel extends EntityModel<FelinePredator>
+public class CougarModel extends FelinePredatorModel<FelinePredator>
 {
 
     public static LayerDefinition createBodyLayer()
@@ -78,67 +69,64 @@ public class CougarModel extends EntityModel<FelinePredator>
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    public static final Animation WALK = new Animation.Builder(1.0F)
-        .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, -1F).rotation(0.5F, 0F, 0F, 1F).rotation(1.0F, 0F, 0F, -1F).build())
-        .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -30.0F, 0F, 0F).rotation(0.25F, -30.43855F, 7.05302F, -7.10708F).rotation(0.75F, -30.47002F, -6.45856F, 6.51352F).rotation(1.0F, -30.0F, 0F, 0F).build())
-        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 50.0F, 0F, 0F).rotation(0.375F, 51.16156F, 8.64738F, 15.27269F).rotation(0.875F, 67.99327F, -4.47045F, -7.80797F).rotation(1.0F, 50.0F, 0F, 0F).build())
-        .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, 1F).rotation(0.5F, 0F, 0F, -1F).rotation(1.0F, 0F, 0F, 1F).build())
-        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -22.5F, 0F, 0F).noRotation(0.5417F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -22.5F, 0F, 0F).noRotation(0.4167F).rotation(0.75F, 22.5F, 0F, 0F).noRotation(1.0F).build())
-        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, 22.5F, 0F, 0F).noRotation(0.5F).rotation(0.75F, -22.5F, 0F, 0F).noRotation(1.0F).build())
+    public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(1.0F).looping()
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 0F, 0F, -1F), rotation(0.5F, 0F, 0F, 1F), rotation(1.0F, 0F, 0F, -1F)))
+        .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -30.0F, 0F, 0F), rotation(0.25F, -30.43855F, 7.05302F, -7.10708F), rotation(0.75F, -30.47002F, -6.45856F, 6.51352F), rotation(1.0F, -30.0F, 0F, 0F)))
+        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 50.0F, 0F, 0F), rotation(0.375F, 51.16156F, 8.64738F, 15.27269F), rotation(0.875F, 67.99327F, -4.47045F, -7.80797F), rotation(1.0F, 50.0F, 0F, 0F)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 0F, 0F, 1F), rotation(0.5F, 0F, 0F, -1F), rotation(1.0F, 0F, 0F, 1F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.25F, 22.5F, 0F, 0F), noRotation(0.5F), rotation(0.75F, -22.5F, 0F, 0F), noRotation(1.0F)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.25F, -22.5F, 0F, 0F), noRotation(0.5417F), rotation(0.75F, 22.5F, 0F, 0F), noRotation(1.0F)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, -22.5F, 0F, 0F), noRotation(0.4167F), rotation(0.75F, 22.5F, 0F, 0F), noRotation(1.0F)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.25F, 22.5F, 0F, 0F), noRotation(0.5F), rotation(0.75F, -22.5F, 0F, 0F), noRotation(1.0F)))
         .build();
 
-    public static final Animation RUN = new Animation.Builder(0.5F)
-        .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -7.5F, 0F, 0F).noRotation(0.3333F).rotation(0.4167F, 4.69F, 0F, 0F).noRotation(0.5F).build())
-        .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 60F, 0F, 0F).noRotation(0.5F).build())
-        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.25F, -90F, 0F, 0F).rotation(0.4167F, -2.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("head", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 7.5F, 0F, 0F).noRotation(0.3333F).rotation(0.4167F, -4.69F, 0F, 0F).noRotation(0.5F).build())
-        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -32.5F, 0F, 0F).rotation(0.375F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, -32.5F, 0F, 0F).rotation(0.3333F, 25.5F, 0F, 0F).noRotation(0.5F).build())
-        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.125F, 40F, 0F, 0F).rotation(0.3333F, -30F, 0F, 0F).noRotation(0.5F).build())
-        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 40F, 0F, 0F).rotation(0.375F, -30F, 0F, 0F).noRotation(0.5F).build())
+    public static final AnimationDefinition RUN = AnimationDefinition.Builder.withLength(0.5F).looping()
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, -7.5F, 0F, 0F), noRotation(0.3333F), rotation(0.4167F, 4.69F, 0F, 0F), noRotation(0.5F)))
+        .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.2083F, 60F, 0F, 0F), noRotation(0.5F)))
+        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.25F, -90F, 0F, 0F), rotation(0.4167F, -2.5F, 0F, 0F), noRotation(0.5F)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, 7.5F, 0F, 0F), noRotation(0.3333F), rotation(0.4167F, -4.69F, 0F, 0F), noRotation(0.5F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, -32.5F, 0F, 0F), rotation(0.375F, 25.5F, 0F, 0F), noRotation(0.5F)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.125F, -32.5F, 0F, 0F), rotation(0.3333F, 25.5F, 0F, 0F), noRotation(0.5F)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.125F, 40F, 0F, 0F), rotation(0.3333F, -30F, 0F, 0F), noRotation(0.5F)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, 40F, 0F, 0F), rotation(0.375F, -30F, 0F, 0F), noRotation(0.5F)))
         .build();
 
     //TODO: Add translations to body
-    public static final Animation ATTACK = new Animation.Builder(0.4F)
-        .bone("body", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("jaw", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.2083F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F).rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F).noRotation(0.4F).build())
-        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.0833F, -17.5F, 0F, -20F).rotation(0.1667F, -65.625F, 0F, -15F).noRotation(0.4F).build())
-        .bone("rear", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).noRotation(0.4F).build())
-        .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 95F, 0F, 0F).noRotation(0.4F).build())
-        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, -109.17912F, 0F, 0F).rotation(0.25F, -32.51868F, 0F, 0F).noRotation(0.4F).build())
-        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 15F, 0F, 0F).noRotation(0.4F).build())
-        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).noRotation(0.0F).rotation(0.1667F, 17.5F, 0F, 0F).noRotation(0.4F).build())
+    public static final AnimationDefinition ATTACK = AnimationDefinition.Builder.withLength(0.4F)
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, -15F, 0F, 0F), noRotation(0.4F)))
+        .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.2083F, 15F, 0F, 0F), noRotation(0.4F)))
+        .addAnimation("jaw", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.2083F, 15F, 0F, 0F), noRotation(0.4F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.0833F, -21.8848F, 23.55077F, 9.29137F), rotation(0.1667F, -58.9136F, 17.66308F, 6.96853F), noRotation(0.4F)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.0833F, -17.5F, 0F, -20F), rotation(0.1667F, -65.625F, 0F, -15F), noRotation(0.4F)))
+        .addAnimation("rear", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), noRotation(0.4F)))
+        .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, 95F, 0F, 0F), noRotation(0.4F)))
+        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, -109.17912F, 0F, 0F), rotation(0.25F, -32.51868F, 0F, 0F), noRotation(0.4F)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, 15F, 0F, 0F), noRotation(0.4F)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, 17.5F, 0F, 0F), noRotation(0.4F)))
         .build();
 
-    public static final Animation SLEEP = new Animation.Builder(2.0F)
-        .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 5F, 0F, 72.5F).rotation(0.5F, 5F, 0F, 72.5F).rotation(2.0F, 5F, 0F, 72.5F).build()) //.translation(0.0F,-7F,0F,2F).translation(1.0F,-7F,0F,2F)
-        .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 90F, 0F, 0F).rotation(2.0F, 90F, 0F, 0F).build()) //.translation(0.0F,0F,-2F,0F).translation(1.0F,0F,-2F,0F)
-        .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -35.17255F, 2.54237F, -1.37822F).rotation(0.0833F, -34.83923F, -11.59079F, 19.36245F).rotation(0.5F, -35.17255F, 2.54237F, -1.37822F).rotation(0.75F, -35.28937F, 4F, -3.43513F).rotation(2.0F, -35.17255F, 2.54237F, -1.37822F).build())
-        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 14F, -12.27659F, 12.56853F).rotation(0.0833F, -13F, 14F, -14.43276F).rotation(0.1667F, 11F, -16.87977F, 18.66145F).rotation(0.5F, -14F, -12.27659F, 12.56853F).rotation(0.75F, -15F, -8.80349F, 8.90928F).rotation(2.0F, -14F, -12.27659F, 12.56853F).build())
-        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0.22267F, 4.02155F, 6.33586F).rotation(0.5F, 0.22267F, 4.02155F, 6.33586F).rotation(2.0F, 0.22267F, 4.02155F, 6.33586F).build())
-        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 15F, 0F, 12.5F).rotation(0.5F, 15F, 0F, 12.5F).rotation(2.0F, 15F, 0F, 12.5F).build())
-        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 12.5F, 0F, 12.5F).rotation(0.5F, 12.5F, 0F, 12.5F).rotation(2.0F, 12.5F, 0F, 12.5F).build())
-        .bone("rear", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -45F, 0F, 0F).rotation(0.5F, -45F, 0F, 0F).rotation(2.0F, -45F, 0F, 0F).build())
+    public static final AnimationDefinition SLEEP = AnimationDefinition.Builder.withLength(2.0F).looping()
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 5F, 0F, 72.5F), rotation(0.5F, 5F, 0F, 72.5F), rotation(2.0F, 5F, 0F, 72.5F))) //.translation(0.0F,-7F,0F,2F).translation(1.0F,-7F,0F,2F)
+        .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 90F, 0F, 0F), rotation(2.0F, 90F, 0F, 0F))) //.translation(0.0F,0F,-2F,0F).translation(1.0F,0F,-2F,0F)
+        .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -35.17255F, 2.54237F, -1.37822F), rotation(0.0833F, -34.83923F, -11.59079F, 19.36245F), rotation(0.5F, -35.17255F, 2.54237F, -1.37822F), rotation(0.75F, -35.28937F, 4F, -3.43513F), rotation(2.0F, -35.17255F, 2.54237F, -1.37822F)))
+        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 14F, -12.27659F, 12.56853F), rotation(0.0833F, -13F, 14F, -14.43276F), rotation(0.1667F, 11F, -16.87977F, 18.66145F), rotation(0.5F, -14F, -12.27659F, 12.56853F), rotation(0.75F, -15F, -8.80349F, 8.90928F), rotation(2.0F, -14F, -12.27659F, 12.56853F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 0.22267F, 4.02155F, 6.33586F), rotation(0.5F, 0.22267F, 4.02155F, 6.33586F), rotation(2.0F, 0.22267F, 4.02155F, 6.33586F)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 15F, 0F, 12.5F), rotation(0.5F, 15F, 0F, 12.5F), rotation(2.0F, 15F, 0F, 12.5F)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 12.5F, 0F, 12.5F), rotation(0.5F, 12.5F, 0F, 12.5F), rotation(2.0F, 12.5F, 0F, 12.5F)))
+        .addAnimation("rear", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -45F, 0F, 0F), rotation(0.5F, -45F, 0F, 0F), rotation(2.0F, -45F, 0F, 0F)))
         .build();
 
-    public static final Animation CROUCH = new Animation.Builder(1.0F)
-        .bone("body", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 20F, 0F, -1F).rotation(0.5F, 18F, 0F, 1F).rotation(1.0F, 20F, 0F, -1F).build())
-        .bone("tail", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -55F, 0F, 0F).rotation(0.25F, -45.4385F, 7.05302F, -7.10708F).rotation(0.75F, -45.47F, -6.45856F, 6.51352F).rotation(1.0F, -55F, 0F, 0F).build())
-        .bone("tail1", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 60F, 0F, 0F).rotation(0.375F, 61.1616F, 8.64738F, 15.27269F).rotation(0.875F, 77.9933F, -4.47045F, -7.80797F).rotation(1.0F, 60F, 0F, 0F).build())
-        .bone("head", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, 0F, 0F, 1F).rotation(0.5F, 0F, 0F, -1F).rotation(1.0F, 0F, 0F, 1F).build())
-        .bone("right_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -75F, 0F, 0F).rotation(0.25F, -65F, 0F, 0F).rotation(0.5F, -75F, 0F, 0F).rotation(0.75F, -80F, 0F, 0F).rotation(1.0F, -75F, 0F, 0F).build())
-        .bone("left_front_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -75F, 0F, 0F).rotation(0.25F, -80F, 0F, 0F).rotation(0.5417F, -75F, 0F, 0F).rotation(0.75F, -65F, 0F, 0F).rotation(1.0F, -75F, 0F, 0F).build())
-        .bone("left_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -10F, 0F, 0F).rotation(0.1667F, -22.5F, 0F, 0F).rotation(0.4167F, -10F, 0F, 0F).rotation(0.75F, 2.5F, 0F, 0F).rotation(1.0F, -10F, 0F, 0F).build())
-        .bone("right_hind_leg", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -10F, 0F, 0F).rotation(0.25F, 2.5F, 0F, 0F).rotation(0.5F, -10F, 0F, 0F).rotation(0.75F, -22.5F, 0F, 0F).rotation(1.0F, -10F, 0F, 0F).build())
-        .bone("neck", new Animation.Bone.Builder(Easing.LINEAR).rotation(0.0F, -7.5F, 0F, 0F).rotation(0.5F, -5.5F, 0F, 0F).rotation(1.0F, -7.5F, 0F, 0F).build())
+    public static final AnimationDefinition CROUCH = AnimationDefinition.Builder.withLength(1.0F).looping()
+        .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 20F, 0F, -1F), rotation(0.5F, 18F, 0F, 1F), rotation(1.0F, 20F, 0F, -1F)))
+        .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -55F, 0F, 0F), rotation(0.25F, -45.4385F, 7.05302F, -7.10708F), rotation(0.75F, -45.47F, -6.45856F, 6.51352F), rotation(1.0F, -55F, 0F, 0F)))
+        .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 60F, 0F, 0F), rotation(0.375F, 61.1616F, 8.64738F, 15.27269F), rotation(0.875F, 77.9933F, -4.47045F, -7.80797F), rotation(1.0F, 60F, 0F, 0F)))
+        .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 0F, 0F, 1F), rotation(0.5F, 0F, 0F, -1F), rotation(1.0F, 0F, 0F, 1F)))
+        .addAnimation("right_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -75F, 0F, 0F), rotation(0.25F, -65F, 0F, 0F), rotation(0.5F, -75F, 0F, 0F), rotation(0.75F, -80F, 0F, 0F), rotation(1.0F, -75F, 0F, 0F)))
+        .addAnimation("left_front_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -75F, 0F, 0F), rotation(0.25F, -80F, 0F, 0F), rotation(0.5417F, -75F, 0F, 0F), rotation(0.75F, -65F, 0F, 0F), rotation(1.0F, -75F, 0F, 0F)))
+        .addAnimation("left_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -10F, 0F, 0F), rotation(0.1667F, -22.5F, 0F, 0F), rotation(0.4167F, -10F, 0F, 0F), rotation(0.75F, 2.5F, 0F, 0F), rotation(1.0F, -10F, 0F, 0F)))
+        .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -10F, 0F, 0F), rotation(0.25F, 2.5F, 0F, 0F), rotation(0.5F, -10F, 0F, 0F), rotation(0.75F, -22.5F, 0F, 0F), rotation(1.0F, -10F, 0F, 0F)))
+        .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -7.5F, 0F, 0F), rotation(0.5F, -5.5F, 0F, 0F), rotation(1.0F, -7.5F, 0F, 0F)))
         .build();
-
-    public final Map<String, ModelPart> parts;
-    public final Map<ModelPart, PartPose> defaults;
 
     private final ModelPart body;
     private final ModelPart tail1;
@@ -156,10 +144,9 @@ public class CougarModel extends EntityModel<FelinePredator>
     private final ModelPart rear;
 
 
-    private float prevLimbSwing;
-
     public CougarModel(ModelPart root)
     {
+        super(root, SLEEP, WALK, RUN, ATTACK);
         this.body = root.getChild("body");
         this.neck = body.getChild("neck");
         this.rear = body.getChild("rear");
@@ -175,60 +162,21 @@ public class CougarModel extends EntityModel<FelinePredator>
         this.legBR = rear.getChild("right_hind_leg");
         this.legBL = rear.getChild("left_hind_leg");
 
-        parts = new ImmutableMap.Builder<String, ModelPart>().put("body", body).put("tail", tail).put("tail1", tail1).put("head", head)
-            .put("jaw", jaw).put("earL", earL).put("earR", earR).put("right_front_leg", legFR).put("left_front_leg", legFL).put("right_hind_leg", legBR)
-            .put("left_hind_leg", legBL).put("nose", nose).put("neck", neck).put("rear", rear).build();
-        defaults = Animation.initDefaults(parts);
     }
 
     @Override
-    public void setupAnim(FelinePredator felinePredator, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+    public void setupSleeping()
     {
-        defaults.forEach(ModelPart::loadPose);
-
-        felinePredator.setLimbSwing(Math.min(Math.max((limbSwing - prevLimbSwing) * 10F, 0.4F), 1.4F));
-        prevLimbSwing = limbSwing;
-
-        if (felinePredator.isSleeping())
-        {
-            body.x = -8f;
-            body.z = -2f;
-            SLEEP.tick(parts, ageInTicks);
-        }
-        else
-        {
-            if (felinePredator.getAttackTicks() > 0)
-            {
-                ATTACK.tick(parts, ageInTicks);
-            }
-            else if (felinePredator.getPose() == Pose.CROUCHING)
-            {
-                body.y = 28f;
-                CROUCH.tick(parts, felinePredator.walkProgress);
-            }
-            else if (felinePredator.walkProgress > 0 || felinePredator.isMoving())
-            {
-                if (felinePredator.isAggressive())
-                {
-                    RUN.tick(parts, ageInTicks);
-                }
-                else
-                {
-                    WALK.tick(parts, felinePredator.walkProgress);
-                }
-            }
-
-            head.xRot = netHeadYaw * Mth.PI / 720F;
-            neck.xRot = netHeadYaw * Mth.PI / 720F;
-            head.yRot = headPitch * Mth.PI / 360F;
-            neck.yRot = headPitch * Mth.PI / 360F;
-        }
+        body.x = -8f;
+        body.z = -2f;
     }
 
-
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha)
+    public void setupHeadRotations(float yaw, float pitch)
     {
-        body.render(poseStack, buffer, packedLight, packedOverlay);
+        head.xRot = pitch * Mth.PI / 720F;
+        neck.xRot = pitch * Mth.PI / 720F;
+        head.yRot = yaw * Mth.PI / 360F;
+        neck.yRot = yaw * Mth.PI / 360F;
     }
 }
