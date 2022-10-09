@@ -507,7 +507,7 @@ public final class Metal
         UNFINISHED_BOOTS(Type.ARMOR, false),
         BOOTS(Type.ARMOR, metal -> new ArmorItem(metal.armorTier(), EquipmentSlot.FEET, properties())),
 
-        SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), new Item.Properties().tab(TFCItemGroup.TAB_COMBAT)));
+        SHIELD(Type.TOOL, metal -> new TFCShieldItem(metal.toolTier(), properties()));
 
         public static Item.Properties properties()
         {

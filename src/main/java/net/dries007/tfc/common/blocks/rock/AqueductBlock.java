@@ -6,9 +6,7 @@
 
 package net.dries007.tfc.common.blocks.rock;
 
-import java.util.Map;
 import java.util.Random;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -20,11 +18,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -33,6 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+import net.dries007.tfc.common.blocks.DirectionPropertyBlock;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
@@ -40,22 +39,14 @@ import net.dries007.tfc.common.fluids.IFluidLoggable;
 import org.jetbrains.annotations.Nullable;
 
 
-public class AqueductBlock extends Block implements IFluidLoggable
+public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidLoggable
 {
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
-    public static final DirectionProperty SOURCE = BlockStateProperties.HORIZONTAL_FACING;
 
     public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
-
-    private static final Map<Direction, BooleanProperty> PROPERTIES = ImmutableMap.<Direction, BooleanProperty>builder()
-        .put(Direction.NORTH, NORTH)
-        .put(Direction.EAST, EAST)
-        .put(Direction.SOUTH, SOUTH)
-        .put(Direction.WEST, WEST)
-        .build();
 
     private static final VoxelShape[] SHAPES = new VoxelShape[16];
 
@@ -77,7 +68,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
             box(12, 10, 12, 16, 16, 16)
         );
 
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < SHAPES.length; i++)
         {
             VoxelShape shape = base;
             for (Direction direction : Direction.Plane.HORIZONTAL)
@@ -115,13 +106,13 @@ public class AqueductBlock extends Block implements IFluidLoggable
                 openDirection = direction;
             }
 
-            state = state.setValue(PROPERTIES.get(direction), adjacentAqueduct);
+            state = state.setValue(DirectionPropertyBlock.getProperty(direction), adjacentAqueduct);
         }
 
         if (openSides == 1)
         {
             // If we only have a single open side, then we always treat this as a straight aqueduct.
-            state = state.setValue(PROPERTIES.get(openDirection.getOpposite()), true);
+            state = state.setValue(DirectionPropertyBlock.getProperty(openDirection.getOpposite()), true);
         }
 
         return state;
@@ -148,7 +139,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
     {
         super(properties);
 
-        registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(SOURCE, Direction.NORTH).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
+        registerDefaultState(getStateDefinition().any().setValue(NORTH, false).setValue(EAST, false).setValue(SOUTH, false).setValue(WEST, false).setValue(FACING, Direction.NORTH).setValue(getFluidProperty(), getFluidProperty().keyFor(Fluids.EMPTY)));
     }
 
     @Nullable
@@ -194,7 +185,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
     {
         FluidHelpers.tickFluid(level, pos, state);
         final BlockState newState = updateOpenSides(level, pos, state);
-        if (state != newState || (state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY ? direction.getAxis().getPlane() == Direction.Plane.HORIZONTAL && state.getValue(PROPERTIES.get(direction)) : direction == state.getValue(SOURCE)))
+        if (state != newState || (state.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY ? direction.getAxis().getPlane() == Direction.Plane.HORIZONTAL && state.getValue(DirectionPropertyBlock.getProperty(direction)) : direction == state.getValue(FACING)))
         {
             level.scheduleTick(pos, this, LONG_TICK_DELAY);
         }
@@ -204,7 +195,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
-        builder.add(NORTH, EAST, SOUTH, WEST, SOURCE, getFluidProperty());
+        builder.add(NORTH, EAST, SOUTH, WEST, FACING, getFluidProperty());
     }
 
     @Override
@@ -225,7 +216,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
     public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random)
     {
         // First, if we have a fluid, we have to check if this fluid is still valid
-        final Direction sourceDirection = state.getValue(SOURCE);
+        final Direction sourceDirection = state.getValue(FACING);
         final FluidProperty.FluidKey sourceFluid = state.getValue(getFluidProperty());
 
         if (sourceFluid.getFluid() != Fluids.EMPTY)
@@ -234,13 +225,13 @@ public class AqueductBlock extends Block implements IFluidLoggable
             boolean valid = false;
 
             // Must always be open on this side, otherwise it cannot possibly be valid
-            if (state.getValue(PROPERTIES.get(sourceDirection)))
+            if (state.getValue(DirectionPropertyBlock.getProperty(sourceDirection)))
             {
                 final BlockState sourceState = level.getBlockState(pos.relative(sourceDirection));
                 if (sourceState.getBlock() instanceof AqueductBlock)
                 {
                     // Validate that the aqueduct is not also expecting this block as a source, and it contains the same fluid.
-                    valid = sourceState.getValue(getFluidProperty()) == sourceFluid && sourceState.getValue(SOURCE) != sourceDirection.getOpposite();
+                    valid = sourceState.getValue(getFluidProperty()) == sourceFluid && sourceState.getValue(FACING) != sourceDirection.getOpposite();
                 }
                 else if (isValidSource(sourceState) && sourceState.getFluidState().getType().isSame(sourceFluid.getFluid()))
                 {
@@ -270,7 +261,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
             for (final Direction direction : Direction.Plane.HORIZONTAL)
             {
                 // Only consider directions where this block is open
-                if (!state.getValue(PROPERTIES.get(direction)))
+                if (!state.getValue(DirectionPropertyBlock.getProperty(direction)))
                 {
                     continue;
                 }
@@ -281,10 +272,10 @@ public class AqueductBlock extends Block implements IFluidLoggable
                 if (adjacentState.getBlock() instanceof AqueductBlock)
                 {
                     // Adjacent aqueduct - it must be open, and contain a fluid, and not pointing to this block as a source
-                    if (adjacentState.getValue(PROPERTIES.get(direction.getOpposite())) && adjacentState.getValue(SOURCE) != direction.getOpposite() && !(adjacentState.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY))
+                    if (adjacentState.getValue(DirectionPropertyBlock.getProperty(direction.getOpposite())) && adjacentState.getValue(FACING) != direction.getOpposite() && !(adjacentState.getValue(getFluidProperty()).getFluid() == Fluids.EMPTY))
                     {
                         // Then, the first one we find, we can flow into this block
-                        state = state.setValue(SOURCE, direction)
+                        state = state.setValue(FACING, direction)
                             .setValue(getFluidProperty(), adjacentState.getValue(getFluidProperty()));
                         filled = true;
                         break;
@@ -293,7 +284,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
                 else if (isValidSource(adjacentState) && getFluidProperty().canContain(adjacentFluid))
                 {
                     // Source blocks can always flow into an open aqueduct
-                    state = state.setValue(SOURCE, direction)
+                    state = state.setValue(FACING, direction)
                         .setValue(getFluidProperty(), getFluidProperty().keyFor(adjacentFluid));
                     filled = true;
                     break;
@@ -307,7 +298,7 @@ public class AqueductBlock extends Block implements IFluidLoggable
                 level.scheduleTick(pos, state.getFluidState().getType(), state.getFluidState().getType().getTickDelay(level));
 
                 // If we managed to fill this aqueduct in this tick, then we want to schedule ticks for all it's neighbors
-                tickAllAdjacentAqueducts(level, pos, LONG_TICK_DELAY, state.getValue(SOURCE));
+                tickAllAdjacentAqueducts(level, pos, LONG_TICK_DELAY, state.getValue(FACING));
             }
         }
     }

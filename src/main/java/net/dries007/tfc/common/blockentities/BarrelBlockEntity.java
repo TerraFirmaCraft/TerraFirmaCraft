@@ -147,14 +147,19 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
     {
         super(TFCBlockEntities.BARREL.get(), pos, state, BarrelInventory::new, NAME);
 
-        sidedInventory
-            .on(new PartialItemHandler(inventory).insert(SLOT_FLUID_CONTAINER_IN).extract(SLOT_FLUID_CONTAINER_OUT), Direction.Plane.HORIZONTAL)
-            .on(new PartialItemHandler(inventory).insert(SLOT_ITEM), Direction.UP)
-            .on(new PartialItemHandler(inventory).extract(SLOT_ITEM), Direction.DOWN);
+        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
 
-        sidedFluidInventory = new SidedHandler.Builder<IFluidHandler>(inventory)
-            .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
-            .on(new PartialFluidHandler(inventory).extract(), Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+        if (TFCConfig.SERVER.barrelEnableAutomation.get())
+        {
+            sidedInventory
+                .on(new PartialItemHandler(inventory).insert(SLOT_FLUID_CONTAINER_IN).extract(SLOT_FLUID_CONTAINER_OUT), Direction.Plane.HORIZONTAL)
+                .on(new PartialItemHandler(inventory).insert(SLOT_ITEM), Direction.UP)
+                .on(new PartialItemHandler(inventory).extract(SLOT_ITEM), Direction.DOWN);
+
+            sidedFluidInventory
+                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
+                .on(new PartialFluidHandler(inventory).extract(), Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
+        }
     }
 
     @Nullable

@@ -30,6 +30,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
+
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
     // Blocks - Grass Path
@@ -64,10 +65,12 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    public final ForgeConfigSpec.BooleanValue crucibleEnableAutomation;
     // Blocks - Anvil
     public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
+    public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
@@ -86,6 +89,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
     public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
     public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
+    public final ForgeConfigSpec.BooleanValue blastFurnaceEnableAutomation;
     // Blocks - Thatch
     public final ForgeConfigSpec.DoubleValue thatchMovementMultiplier;
     // Blocks - Thatch Bed
@@ -99,6 +103,15 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue usePlacedItemWhitelist;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
+    // Blocks - Charcoal Forge
+    public final ForgeConfigSpec.BooleanValue charcoalForgeEnableAutomation;
+    // Blocks - Fire Pit
+    public final ForgeConfigSpec.BooleanValue firePitEnableAutomation;
+    // Blocks - Nest Box
+    public final ForgeConfigSpec.BooleanValue nestBoxEnableAutomation;
+    // Blocks - Powder Keg
+    public final ForgeConfigSpec.BooleanValue powderKegEnableAutomation;
+
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -260,6 +273,7 @@ public class ServerConfig
 
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
+        crucibleEnableAutomation = builder.apply("crucibleEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("crucibleEnableAutomation", true);
 
         innerBuilder.pop().push("anvil");
 
@@ -268,6 +282,7 @@ public class ServerConfig
         innerBuilder.pop().push("barrel");
 
         barrelCapacity = builder.apply("barrelCapacity").comment("Tank capacity of a barrel (in mB).").defineInRange("barrelCapacity", 10000, 0, Integer.MAX_VALUE);
+        barrelEnableAutomation = builder.apply("barrelEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("barrelEnableAutomation", true);
 
         innerBuilder.pop().push("composter");
 
@@ -297,6 +312,7 @@ public class ServerConfig
         blastFurnaceFluidCapacity = builder.apply("blastFurnaceFluidCapacity").comment("Fluid capacity (in mB) of the output tank of the blast furnace.").defineInRange("blastFurnaceFluidCapacity", 10_000, 1, Integer.MAX_VALUE);
         blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
         blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
+        blastFurnaceEnableAutomation = builder.apply("blastFurnaceEnableAutomation").comment("If true, blast furnaces will interact with in-world automation such as hoppers on a side-specific basis.").define("blastFurnaceEnableAutomation", true);
 
         innerBuilder.pop().push("thatch");
 
@@ -318,6 +334,22 @@ public class ServerConfig
         maxPlacedLargeItemSize = builder.apply("maxPlacedLargeItemSize").comment("The maximum size of items that can be placed as a single item on the ground with V. Items are checked to see if they're the right size to be placed in a group of 4 items first.").defineEnum("maxPlacedLargeItemSize", Size.HUGE);
         enablePlacingItems = builder.apply("enablePlacingItems").comment("If true, players can place items on the ground with V.").define("enablePlacingItems", true);
         usePlacedItemWhitelist = builder.apply("usePlacedItemWhitelist").comment("If true, the tag 'tfc:placed_item_whitelist' will be checked to allow items to be in placed items and will exclude everything else.").define("usePlacedItemWhitelist", false);
+
+        innerBuilder.pop().push("charcoalForge");
+
+        charcoalForgeEnableAutomation = builder.apply("charcoalForgeEnableAutomation").comment("If true, charcoal forges will interact with in-world automation such as hoppers on a side-specific basis.").define("charcoalForgeEnableAutomation", true);
+
+        innerBuilder.pop().push("firePitEnableAutomation");
+
+        firePitEnableAutomation = builder.apply("firePitEnableAutomation").comment("If true, fire pits will interact with in-world automation such as hoppers on a side-specific basis.").define("firePitEnableAutomation", true);
+
+        innerBuilder.pop().push("nestBox");
+
+        nestBoxEnableAutomation = builder.apply("nestBoxEnableAutomation").comment("If true, nest boxes will interact with in-world automation such as hoppers on a side-specific basis.").define("nestBoxEnableAutomation", true);
+
+        innerBuilder.pop().push("powderKeg");
+
+        powderKegEnableAutomation = builder.apply("powderKegEnableAutomation").comment("If true, powder kegs will interact with in-world automation such as hoppers on a side-specific basis.").define("powderKegEnableAutomation", true);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
