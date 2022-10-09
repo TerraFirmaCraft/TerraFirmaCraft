@@ -6,9 +6,6 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import java.util.Map;
-
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -21,7 +18,7 @@ import net.dries007.tfc.common.entities.predator.Predator;
 
 import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
 
-public class BearModel extends HierarchicalModel<Predator>
+public class BearModel extends HierarchicalAnimatedModel<Predator>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -104,9 +101,6 @@ public class BearModel extends HierarchicalModel<Predator>
         .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 32.5F, 0F, 82.5F), rotation(0.5F, 42.5F, 0F, 82.5F), rotation(1.0F, 32.5F, 0F, 82.5F)))
         .build();
 
-    public final Map<ModelPart, PartPose> defaults;
-
-    private final ModelPart root;
     private final ModelPart body;
     private final ModelPart neck;
     private final ModelPart head;
@@ -121,7 +115,7 @@ public class BearModel extends HierarchicalModel<Predator>
 
     public BearModel(ModelPart root)
     {
-        this.root = root;
+        super(root);
         this.body = root.getChild("body");
         this.neck = body.getChild("neck");
         this.head = neck.getChild("head");
@@ -131,14 +125,12 @@ public class BearModel extends HierarchicalModel<Predator>
         this.left_front_leg = body.getChild("left_front_leg");
         this.left_hind_leg = body.getChild("left_hind_leg");
         this.right_hind_leg = body.getChild("right_hind_leg");
-
-        defaults = VanillaAnimations.save(root.getAllParts());
     }
 
     @Override
     public void setupAnim(Predator predator, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch)
     {
-        defaults.forEach(ModelPart::loadPose);
+        super.setupAnim(predator, limbSwing, limbSwingAmount, ageInTicks, headYaw, headPitch);
 
         predator.setLimbSwing(Mth.clamp((limbSwing - prevLimbSwing) * 10F, 0.4F, 1.4F));
         prevLimbSwing = limbSwing;
@@ -164,12 +156,6 @@ public class BearModel extends HierarchicalModel<Predator>
             head.xRot = headPitch * Mth.PI / 180F;
             head.yRot = headYaw * Mth.PI / 180F;
         }
-    }
-
-    @Override
-    public ModelPart root()
-    {
-        return root;
     }
 
     private void setupSwimming()
