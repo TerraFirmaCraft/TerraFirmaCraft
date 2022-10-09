@@ -9,105 +9,129 @@ from constants import *
 
 
 def generate(rm: ResourceManager):
-    # Rock block variants
+
+    # Rock Type Blocks
     for rock, rock_data in ROCKS.items():
-        for block_type in ROCK_BLOCK_TYPES:
-            if block_type == 'spike':
-                # Spikes have special block states
-                block = rm.blockstate(('rock', block_type, rock), variants=dict(('part=%s' % part, {'model': 'tfc:block/rock/%s/%s_%s' % (block_type, rock, part)}) for part in ROCK_SPIKE_PARTS))
-                block.with_lang(lang('%s spike', rock))
-                block.with_block_loot('1-2 tfc:rock/loose/%s' % rock)
-                # Individual models
-                rm.item_model(('rock', block_type, rock), 'tfc:block/rock/raw/%s' % rock, parent='tfc:block/rock/spike/%s_base' % rock)
-                for part in ROCK_SPIKE_PARTS:
-                    rm.block_model(('rock', block_type, '%s_%s' % (rock, part)), {
-                        'texture': 'tfc:block/rock/raw/%s' % rock,
-                        'particle': 'tfc:block/rock/raw/%s' % rock
-                    }, parent='tfc:block/rock/spike_%s' % part)
 
-            elif block_type == 'loose':
-                # One block state and multiple models for the block
-                block = rm.blockstate('rock/loose/%s' % rock, variants={
-                    'count=1': four_ways('tfc:block/rock/pebble/%s' % rock),
-                    'count=2': four_ways('tfc:block/rock/rubble/%s' % rock),
-                    'count=3': four_ways('tfc:block/rock/boulder/%s' % rock),
-                }, use_default_model=False)
-                for loose_type in ('pebble', 'rubble', 'boulder'):
-                    rm.block_model('tfc:rock/%s/%s' % (loose_type, rock), 'tfc:item/loose_rock/%s' % rock, parent='tfc:block/groundcover/%s' % loose_type)
+        # Aqueducts
+        block = rm.blockstate_multipart(('rock', 'aqueduct', rock), *[
+            {'model': 'tfc:block/rock/aqueduct/%s/base' % rock},
+            ({'north': 'false'}, {'model': 'tfc:block/rock/aqueduct/%s/north' % rock}),
+            ({'east': 'false'}, {'model': 'tfc:block/rock/aqueduct/%s/east' % rock}),
+            ({'south': 'false'}, {'model': 'tfc:block/rock/aqueduct/%s/south' % rock}),
+            ({'west': 'false'}, {'model': 'tfc:block/rock/aqueduct/%s/west' % rock}),
+        ])
 
-                block.with_lang(lang('loose %s', rock)).with_tag('can_be_snow_piled').with_block_loot({
+        block.with_lang(lang('%s aqueduct', rock))
+        block.with_block_loot('tfc:rock/aqueduct/%s' % rock)
+
+        rm.item_model(('rock', 'aqueduct', rock), parent='tfc:block/rock/aqueduct/%s/base' % rock, no_textures=True)
+
+        textures = {'texture': 'tfc:block/rock/bricks/%s' % rock, 'particle': 'tfc:block/rock/bricks/%s' % rock}
+        rm.block_model('rock/aqueduct/%s/base' % rock, textures, parent='tfc:block/aqueduct/base')
+        rm.block_model('rock/aqueduct/%s/north' % rock, textures, parent='tfc:block/aqueduct/north')
+        rm.block_model('rock/aqueduct/%s/east' % rock, textures, parent='tfc:block/aqueduct/east')
+        rm.block_model('rock/aqueduct/%s/south' % rock, textures, parent='tfc:block/aqueduct/south')
+        rm.block_model('rock/aqueduct/%s/west' % rock, textures, parent='tfc:block/aqueduct/west')
+
+        # Spikes
+        block = rm.blockstate(('rock', 'spike', rock), variants=dict(('part=%s' % part, {'model': 'tfc:block/rock/spike/%s_%s' % (rock, part)}) for part in ROCK_SPIKE_PARTS))
+        block.with_lang(lang('%s spike', rock))
+        block.with_block_loot('1-2 tfc:rock/loose/%s' % rock)
+
+        # Individual models
+        rm.item_model(('rock', 'spike', rock), 'tfc:block/rock/raw/%s' % rock, parent='tfc:block/rock/spike/%s_base' % rock)
+        for part in ROCK_SPIKE_PARTS:
+            rm.block_model(('rock', 'spike', '%s_%s' % (rock, part)), {
+                'texture': 'tfc:block/rock/raw/%s' % rock,
+                'particle': 'tfc:block/rock/raw/%s' % rock
+            }, parent='tfc:block/rock/spike_%s' % part)
+
+        # Loose Rocks
+        # One block state and multiple models for the block
+        block = rm.blockstate('rock/loose/%s' % rock, variants={
+            'count=1': four_ways('tfc:block/rock/pebble/%s' % rock),
+            'count=2': four_ways('tfc:block/rock/rubble/%s' % rock),
+            'count=3': four_ways('tfc:block/rock/boulder/%s' % rock),
+        }, use_default_model=False)
+        for loose_type in ('pebble', 'rubble', 'boulder'):
+            rm.block_model('tfc:rock/%s/%s' % (loose_type, rock), 'tfc:item/loose_rock/%s' % rock, parent='tfc:block/groundcover/%s' % loose_type)
+
+        block.with_lang(lang('loose %s', rock)).with_tag('can_be_snow_piled').with_block_loot({
+            'name': 'tfc:rock/loose/%s' % rock,
+            'functions': [
+                {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=2]' % rock)]},
+                {**loot_tables.set_count(3), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=3]' % rock)]},
+                loot_tables.explosion_decay()
+            ]
+        })
+
+        # Model for the item
+        rm.item_model(('rock', 'loose', rock), 'tfc:item/loose_rock/%s' % rock)
+
+        # Pressure Plate
+        block = rm.block(('rock', 'pressure_plate', rock))
+        block.make_pressure_plate(pressure_plate_suffix='', texture='tfc:block/rock/raw/%s' % rock)
+        block.with_lang(lang('%s pressure plate', rock))
+        block.with_block_loot('tfc:rock/pressure_plate/%s' % rock)
+
+        # Button
+        block = rm.block(('rock', 'button', rock))
+        block.make_button(button_suffix='', texture='tfc:block/rock/raw/%s' % rock)
+        block.with_lang(lang('%s button', rock))
+        block.with_block_loot('tfc:rock/button/%s' % rock)
+
+        for block_type in ('raw', 'hardened', 'bricks', 'cobble', 'gravel', 'smooth', 'mossy_cobble', 'mossy_bricks', 'cracked_bricks', 'chiseled'):
+            block = rm.blockstate(('rock', block_type, rock))
+            block.with_block_model('tfc:block/rock/%s/%s' % ('raw' if block_type == 'hardened' else block_type, rock))  # Hardened uses the raw model
+            block.with_item_model()
+
+            # Loot
+            if block_type == 'raw' or block_type == 'hardened':
+                block.with_block_loot(({
+                    'name': 'tfc:rock/raw/%s' % rock,
+                    'conditions': ['tfc:is_isolated'],
+                }, {
                     'name': 'tfc:rock/loose/%s' % rock,
-                    'functions': [
-                        {**loot_tables.set_count(2), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=2]' % rock)]},
-                        {**loot_tables.set_count(3), 'conditions': [loot_tables.block_state_property('tfc:rock/loose/%s[count=3]' % rock)]},
-                        loot_tables.explosion_decay()
-                    ]
-                })
-
-                # Model for the item
-                rm.item_model(('rock', 'loose', rock), 'tfc:item/loose_rock/%s' % rock)
-
-            elif block_type == 'pressure_plate':
-                block = rm.block(('rock', 'pressure_plate', rock))
-                block.make_pressure_plate(pressure_plate_suffix='', texture='tfc:block/rock/raw/%s' % rock)
-                block.with_lang(lang('%s pressure plate', rock))
-                block.with_block_loot('tfc:rock/pressure_plate/%s' % rock)
-            elif block_type == 'button':
-                block = rm.block(('rock', 'button', rock))
-                block.make_button(button_suffix='', texture='tfc:block/rock/raw/%s' % rock)
-                block.with_lang(lang('%s button', rock))
-                block.with_block_loot('tfc:rock/button/%s' % rock)
-            else:
-                block = rm.blockstate(('rock', block_type, rock))
-                if block_type == 'hardened':
-                    block.with_block_model('tfc:block/rock/raw/%s' % rock)  # Hardened uses the raw model
-                else:
-                    block.with_block_model('tfc:block/rock/%s/%s' % (block_type, rock))
-                block.with_item_model()
-
-                if block_type in CUTTABLE_ROCKS:
-                    # Stairs
-                    rm.block(('rock', block_type, rock)).make_stairs()
-                    rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', rock, block_type)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
-                    # Slabs
-                    rm.block(('rock', block_type, rock)).make_slab()
-                    rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', rock, block_type)).with_tag('minecraft:slabs')
-                    slab_loot(rm, 'tfc:rock/%s/%s_slab' % (block_type, rock))
-                    # Walls
-                    rm.block(('rock', block_type, rock)).make_wall()
-                    rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', rock, block_type)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock)).with_tag('minecraft:walls')
-                # Loot
-                if block_type == 'raw' or block_type == 'hardened':
-                    block.with_block_loot(({
-                        'name': 'tfc:rock/raw/%s' % rock,
-                        'conditions': ['tfc:is_isolated'],
+                    'functions': [loot_tables.set_count(1, 4)]
+                }))
+            elif block_type == 'gravel':
+                block.with_block_loot(({
+                    'conditions': [loot_tables.silk_touch()],
+                    'name': 'tfc:rock/gravel/%s' % rock
+                }, {
+                    'type': 'minecraft:alternatives',
+                    'conditions': 'minecraft:survives_explosion',
+                    'children': [{
+                        'type': 'minecraft:item',
+                        'conditions': [loot_tables.fortune_table((0.1, 0.14285715, 0.25, 1.0))],
+                        'name': 'minecraft:flint'
                     }, {
-                        'name': 'tfc:rock/loose/%s' % rock,
-                        'functions': [loot_tables.set_count(1, 4)]
-                    }))
-                elif block_type == 'gravel':
-                    block.with_block_loot(({
-                        'conditions': [loot_tables.silk_touch()],
+                        'type': 'minecraft:item',
                         'name': 'tfc:rock/gravel/%s' % rock
-                    }, {
-                        'type': 'minecraft:alternatives',
-                        'conditions': 'minecraft:survives_explosion',
-                        'children': [{
-                            'type': 'minecraft:item',
-                            'conditions': [loot_tables.fortune_table((0.1, 0.14285715, 0.25, 1.0))],
-                            'name': 'minecraft:flint'
-                        }, {
-                            'type': 'minecraft:item',
-                            'name': 'tfc:rock/gravel/%s' % rock
-                        }]
-                    }))
-                else:
-                    block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
-                # Lang
-                if block_type in {'smooth', 'raw', 'chiseled', 'hardened'}:
-                    block.with_lang(lang('%s %s', block_type, rock))
-                else:
-                    block.with_lang(lang('%s %s', rock, block_type))
+                    }]
+                }))
+            else:
+                block.with_block_loot('tfc:rock/%s/%s' % (block_type, rock))
+
+            # Lang
+            if block_type in {'smooth', 'raw', 'chiseled', 'hardened'}:
+                block.with_lang(lang('%s %s', block_type, rock))
+            else:
+                block.with_lang(lang('%s %s', rock, block_type))
+
+        # Decorations
+        for block_type in CUTTABLE_ROCKS:
+            # Stairs
+            rm.block(('rock', block_type, rock)).make_stairs()
+            rm.block(('rock', block_type, rock + '_stairs')).with_lang(lang('%s %s Stairs', rock, block_type)).with_block_loot('tfc:rock/%s/%s_stairs' % (block_type, rock))
+            # Slabs
+            rm.block(('rock', block_type, rock)).make_slab()
+            rm.block(('rock', block_type, rock + '_slab')).with_lang(lang('%s %s Slab', rock, block_type)).with_tag('minecraft:slabs')
+            slab_loot(rm, 'tfc:rock/%s/%s_slab' % (block_type, rock))
+            # Walls
+            rm.block(('rock', block_type, rock)).make_wall()
+            rm.block(('rock', block_type, rock + '_wall')).with_lang(lang('%s %s Wall', rock, block_type)).with_block_loot('tfc:rock/%s/%s_wall' % (block_type, rock)).with_tag('minecraft:walls')
 
         if rock_data.category == 'igneous_extrusive' or rock_data.category == 'igneous_intrusive':
             rm.blockstate('tfc:rock/anvil/%s' % rock, model='tfc:block/rock/anvil/%s' % rock).with_lang(lang('%s Anvil', rock)).with_block_loot('1-4 tfc:rock/loose/%s' % rock).with_item_model()

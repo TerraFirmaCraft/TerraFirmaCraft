@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/aqueduct/south",
+  "textures": {
+    "texture": "tfc:block/rock/bricks/slate",
+    "particle": "tfc:block/rock/bricks/slate"
+  }
+}
