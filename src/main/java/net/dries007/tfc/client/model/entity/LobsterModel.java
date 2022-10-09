@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -20,9 +19,7 @@ import net.dries007.tfc.common.entities.aquatic.AquaticCritter;
 import static net.dries007.tfc.client.model.animation.VanillaAnimations.*;
 
 
-import java.util.Map;
-
-public class LobsterModel extends HierarchicalModel<AquaticCritter>
+public class LobsterModel extends HierarchicalAnimatedModel<AquaticCritter>
 {
     public static LayerDefinition createBodyLayer()
     {
@@ -81,9 +78,6 @@ public class LobsterModel extends HierarchicalModel<AquaticCritter>
         .addAnimation("armRight", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.125F, 0F, -37.5F, 0F), noRotation(0.45F)))
         .build();
 
-    public final Map<ModelPart, PartPose> defaults;
-
-    private final ModelPart root;
     private final ModelPart body;
     private final ModelPart tail1;
     private final ModelPart tail2;
@@ -97,7 +91,7 @@ public class LobsterModel extends HierarchicalModel<AquaticCritter>
 
     public LobsterModel(ModelPart root)
     {
-        this.root = root;
+        super(root);
         this.body = root.getChild("body");
         this.tail1 = body.getChild("tail1");
         this.tail2 = tail1.getChild("tail2");
@@ -108,13 +102,12 @@ public class LobsterModel extends HierarchicalModel<AquaticCritter>
         this.armRight = body.getChild("armRight");
         this.clawTopLeft = armLeft.getChild("clawLeft").getChild("clawTopLeft");
         this.clawTopRight = armRight.getChild("clawRight").getChild("clawTopRight");
-
-        defaults = VanillaAnimations.save(root.getAllParts());
     }
 
     @Override
     public void setupAnim(AquaticCritter entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
     {
+        super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         defaults.forEach(ModelPart::loadPose);
         if (entity.swimmingAnimation.isStarted())
         {
@@ -133,9 +126,4 @@ public class LobsterModel extends HierarchicalModel<AquaticCritter>
         }
     }
 
-    @Override
-    public ModelPart root()
-    {
-        return root;
-    }
 }
