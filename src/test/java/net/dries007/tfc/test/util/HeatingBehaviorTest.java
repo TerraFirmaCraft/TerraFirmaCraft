@@ -35,6 +35,7 @@ import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.recipes.HeatingRecipe;
 import net.dries007.tfc.common.recipes.inventory.ItemStackInventory;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Fuel;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
@@ -48,6 +49,46 @@ public class HeatingBehaviorTest
     public Collection<TestFunction> generator()
     {
         return TestAssertions.unitTestGenerator();
+    }
+
+    @AutoGameTest
+    public void checkTicksToHeat10mBCopperInSmallVessel(GameTestHelper helper)
+    {
+        final ItemStack copper10mB = new ItemStack(TFCBlocks.SMALL_ORES.get(Ore.NATIVE_COPPER).get());
+        final ItemStack vessel = vesselWithContents(copper10mB);
+        checkTicksToHeatInForge(vessel, 1467, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
+        clearTemperature(vessel);
+        checkTicksToHeatInForge(vessel, 884, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
+    }
+
+    @AutoGameTest
+    public void checkTicksToHeat100mBCopperInSmallVessel(GameTestHelper helper)
+    {
+        final ItemStack copper100mB = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get(), 4);
+        final ItemStack vessel = vesselWithContents(copper100mB);
+        checkTicksToHeatInForge(vessel, 2850, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
+        clearTemperature(vessel);
+        checkTicksToHeatInForge(vessel, 1262, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
+    }
+
+    @AutoGameTest
+    public void checkTicksToHeat560mBCopperInSmallVessel(GameTestHelper helper)
+    {
+        final ItemStack copper560mB = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
+        final ItemStack vessel = vesselWithContents(copper560mB);
+        checkTicksToHeatInForge(vessel, 8475, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
+        clearTemperature(vessel);
+        checkTicksToHeatInForge(vessel, 3193, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
+    }
+
+    @AutoGameTest
+    public void checkTicksToHeat2240mBCopperInSmallVessel(GameTestHelper helper)
+    {
+        final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
+        final ItemStack vessel = vesselWithContents(copper16, copper16, copper16, copper16);
+        checkTicksToHeatInForge(vessel, 30827, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating ore
+        clearTemperature(vessel);
+        checkTicksToHeatInForge(vessel, 10249, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
     }
 
     @AutoGameTest
@@ -206,26 +247,26 @@ public class HeatingBehaviorTest
     @AutoGameTest
     public void checkCooking4SandInVesselWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(809, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
+        TestAssertions.assertEquals(737, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
     }
 
     @AutoGameTest
     public void checkCooking4SandSpreadOutInVesselWithHeat(GameTestHelper helper)
     {
         final ItemStack sand = new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get());
-        TestAssertions.assertEquals(809, ticksRequiredToMeltVessel(sand, sand, sand, sand));
+        TestAssertions.assertEquals(737, ticksRequiredToMeltVessel(sand, sand, sand, sand));
     }
 
     @AutoGameTest
     public void checkCooking8SandInVesselWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(1353, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
+        TestAssertions.assertEquals(1185, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
     }
 
     @AutoGameTest
     public void checkCooking16SandInVesselWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(2441, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
+        TestAssertions.assertEquals(2081, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
     }
 
     @AutoGameTest
@@ -334,6 +375,34 @@ public class HeatingBehaviorTest
         TestAssertions.assertEquals(expectedOreOutput, oreOutput);
 
         return String.format("grade = %s, castIntoIngotsFirst = %s, useCrucible = %s : fuelTicks = %d, oreOutput = %d, mBofOrePerFuelTick = %.3f", oreGrade, castIntoIngotsFirst, useCrucible, fuelTicks, oreOutput, (float) oreOutput / fuelTicks);
+    }
+
+    private void clearTemperature(ItemStack stack)
+    {
+        final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+        TestAssertions.assertNotNull(heat);
+        heat.setTemperature(0);
+        TestAssertions.assertEquals(0f, heat.getTemperature());
+    }
+
+    private void checkTicksToHeatInForge(ItemStack stack, int expectedTicks, float targetTemperature)
+    {
+        final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+        TestAssertions.assertNotNull(heat);
+
+        try (CalendarTransaction tr = Calendars.SERVER.transaction())
+        {
+            int ticks = 0;
+            while (heat.getTemperature() < targetTemperature)
+            {
+                ticks++;
+                tr.add(1);
+                HeatCapability.addTemp(heat, targetTemperature + 1f);
+                TestAssertions.assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack));
+            }
+
+            TestAssertions.assertEquals(expectedTicks, ticks, "Expected " + expectedTicks + " to heat " + TestAssertions.wrap(stack) + " to " + targetTemperature + "°C, got " + ticks);
+        }
     }
 
     private void checkTicksSpentMoltenAfterPitKiln(GameTestHelper helper, int expectedTicks, boolean expectEmpty, boolean whileDraining, Metal.Default moltenMetal, ItemStack... contents)

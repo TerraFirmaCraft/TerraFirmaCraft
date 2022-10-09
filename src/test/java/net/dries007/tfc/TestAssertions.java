@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonElement;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -29,6 +30,7 @@ import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 
@@ -77,10 +79,11 @@ public final class TestAssertions
         }
     }
 
-    public static Collection<TestFunction> unitTestGenerator()
+    public static Collection<TestFunction> unitTestGenerator(@Nullable String... isolatedTests)
     {
         try
         {
+            final Set<String> isolatedMethodNames = Arrays.stream(isolatedTests).collect(Collectors.toSet());
             final Class<?> clazz = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass();
             final List<TestFunction> functions = new ArrayList<>();
             final String className = clazz.getSimpleName();
@@ -90,29 +93,32 @@ public final class TestAssertions
                 if (method.isAnnotationPresent(AutoGameTest.class))
                 {
                     final String methodName = method.getName();
-                    functions.add(new TestFunction("defaultBatch", className + '.' + methodName, "tfc:empty", 100, 0, true, helper -> asUnitTest(className, methodName, helper, () -> {
-                        try
-                        {
-                            final Object ret = method.invoke(instance, helper);
-                            if (ret instanceof String output)
+                    if (isolatedMethodNames.isEmpty() || isolatedMethodNames.contains(methodName))
+                    {
+                        functions.add(new TestFunction("defaultBatch", className + '.' + methodName, "tfc:empty", 100, 0, true, helper -> asUnitTest(className, methodName, helper, () -> {
+                            try
                             {
-                                // Returning a string allows game tests to log some additional output even if they pass
-                                LOGGER.debug("Running AutoGameTest {}.{}() : {}", className, methodName, output);
+                                final Object ret = method.invoke(instance, helper);
+                                if (ret instanceof String output)
+                                {
+                                    // Returning a string allows game tests to log some additional output even if they pass
+                                    LOGGER.debug("Running AutoGameTest {}.{}() : {}", className, methodName, output);
+                                }
+                                else
+                                {
+                                    LOGGER.debug("Running AutoGameTest {}.{}()", className, methodName);
+                                }
                             }
-                            else
+                            catch (InvocationTargetException e)
                             {
-                                LOGGER.debug("Running AutoGameTest {}.{}()", className, methodName);
+                                if (e.getTargetException() instanceof AssertionError ae)
+                                {
+                                    throw ae;
+                                }
+                                throwAsUnchecked(e);
                             }
-                        }
-                        catch (InvocationTargetException e)
-                        {
-                            if (e.getTargetException() instanceof AssertionError ae)
-                            {
-                                throw ae;
-                            }
-                            throwAsUnchecked(e);
-                        }
-                    })));
+                        })));
+                    }
                 }
             }
             functions.sort(Comparator.comparing(TestFunction::getTestName));

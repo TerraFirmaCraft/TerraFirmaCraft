@@ -382,7 +382,7 @@ public class VesselItem extends Item
                 {
                     // Vessel has contents
                     // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
-                    value = HeatCapability.POTTERY_HEAT_CAPACITY + value * 0.85f + (value / count) * 0.15f;
+                    value = HeatCapability.POTTERY_HEAT_CAPACITY + value * 0.7f + (value / count) * 0.3f;
                 }
                 else
                 {

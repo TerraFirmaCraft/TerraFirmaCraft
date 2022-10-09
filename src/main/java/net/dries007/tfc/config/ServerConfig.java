@@ -125,7 +125,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue woodenBucketCapacity;
     public final ForgeConfigSpec.BooleanValue enableSourcesFromWoodenBucket;
     // Mechanics - Heat
-    public final ForgeConfigSpec.DoubleValue heatingModifier;
+    public final ForgeConfigSpec.DoubleValue deviceHeatingModifier;
+    public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
+    public final ForgeConfigSpec.DoubleValue itemCoolingModifier;
     public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
     public final ForgeConfigSpec.BooleanValue coolHotItemEntities;
     // Mechanics - Collapses
@@ -351,7 +353,9 @@ public class ServerConfig
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
-        heatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        deviceHeatingModifier = builder.apply("deviceHeatingModifier").comment("A multiplier for how fast devices themselves heat up. Higher = faster.").defineInRange("deviceHeatingModifier", 1, 0, Double.MAX_VALUE);
+        itemHeatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat in devices. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        itemCoolingModifier = builder.apply("itemCoolingModifier").comment("A multiplier for how fast items cool. Higher = faster.").defineInRange("itemCoolingModifier", 1, 0, Double.MAX_VALUE);
         coolHotItemEntities = builder.apply("coolHotItemEntities").comment("Should hot item entities cool off when in contact with blocks like water or snow?").define("coolHotItemEntities", true);
         ticksBeforeItemCool = builder.apply("ticksBeforeItemCool").comment("Ticks between each time an item loses temperature when sitting on a cold block. 20 ticks = 1 second.").defineInRange("ticksBeforeItemCool", 10, 1, Integer.MAX_VALUE);
 
