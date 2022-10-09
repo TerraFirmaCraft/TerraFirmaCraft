@@ -6,7 +6,9 @@
 
 package net.dries007.tfc.common.blockentities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +16,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -21,6 +25,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -70,6 +75,36 @@ public class CharcoalForgeBlockEntity extends TickableInventoryBlockEntity<ItemS
         {
             forge.needsRecipeUpdate = false;
             forge.updateCachedRecipes();
+        }
+
+        if (level.getGameTime() % 20 == 0)
+        {
+            // Slurp in charcoal or other fuel.
+            final AABB bounds = new AABB(pos.getX() - 0.2, pos.getY() + 0.875, pos.getZ() - 0.2, pos.getX() + 1.2, pos.getY() + 1.25, pos.getZ() + 1.2);
+            final List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, bounds, EntitySelector.ENTITY_STILL_ALIVE);
+            final List<ItemEntity> fuelItems = new ArrayList<>();
+
+            int availableFuel = 0;
+            int availableSlots = 0;
+
+            for (int slot = SLOT_FUEL_MIN; slot <= SLOT_FUEL_MAX; slot++)
+            {
+                if (forge.inventory.getStackInSlot(slot).isEmpty())
+                {
+                    availableSlots++;
+                }
+            }
+
+            for (ItemEntity entity : items)
+            {
+                if (forge.isItemValid(SLOT_FUEL_MIN, entity.getItem()))
+                {
+                    availableFuel += entity.getItem().getCount();
+                    fuelItems.add(entity);
+                }
+            }
+
+            Helpers.consumeItemsFromEntitiesIndividually(fuelItems, Math.min(availableSlots, availableFuel), item -> Helpers.insertSlots(forge.inventory, item, SLOT_FUEL_MIN, 1 + SLOT_FUEL_MAX));
         }
 
         boolean isRaining = level.isRainingAt(pos);
