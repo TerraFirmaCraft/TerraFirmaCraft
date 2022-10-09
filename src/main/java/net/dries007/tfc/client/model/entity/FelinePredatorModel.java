@@ -1,3 +1,9 @@
+/*
+ * Licensed under the EUPL, Version 1.2.
+ * You may obtain a copy of the Licence at:
+ * https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
+ */
+
 package net.dries007.tfc.client.model.entity;
 
 import net.minecraft.client.model.geom.ModelPart;
@@ -39,11 +45,12 @@ public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalA
         }
         else
         {
+            final float speed = getAdjustedLandSpeed(predator);
             // swimming is animated as walking. animations can be swapped with no consequences!
-            VanillaAnimations.animate(this, predator.swimmingAnimation, walk, ageInTicks);
-            VanillaAnimations.animate(this, predator.walkingAnimation, walk, ageInTicks);
-            VanillaAnimations.animate(this, predator.runningAnimation, run, ageInTicks);
-            VanillaAnimations.animate(this, predator.attackingAnimation, attack, ageInTicks);
+            VanillaAnimations.animate(this, predator.swimmingAnimation, walk, ageInTicks, speed);
+            VanillaAnimations.animate(this, predator.walkingAnimation, walk, ageInTicks, speed);
+            VanillaAnimations.animate(this, predator.runningAnimation, run, ageInTicks, speed);
+            VanillaAnimations.animate(this, predator.attackingAnimation, attack, ageInTicks, speed);
             setupHeadRotations(netHeadYaw, headPitch);
         }
     }

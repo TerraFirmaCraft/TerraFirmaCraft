@@ -44,17 +44,17 @@ public class PenguinModel extends HierarchicalModel<Penguin>
     public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(1f).looping()
         .addAnimation("core", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0f, 0f, 0f, 15f), rotation(0.5f, 0f, 0f, -15f), rotation(1f, 0f, 0f, 15f)))
         .addAnimation("head", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.33f, 0f, 0f, -15f), rotation(0.66f, 0f, 0f, 15f), noRotation(1f)))
-        .addAnimation("leftFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 45f, 0f, 0f), noRotation(1f)))
-        .addAnimation("rightFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, -45f, 0f, 0f), noRotation(1f)))
-        .addAnimation("leftWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 25f, 0f, 0f), noRotation(1f)))
-        .addAnimation("rightWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 25f, 0f, 0f), noRotation(1f)))
+        .addAnimation("leftfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("rightfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, -45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("leftwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 25f, 0f, 0f), noRotation(1f)))
+        .addAnimation("rightwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 25f, 0f, 0f), noRotation(1f)))
         .build();
 
     public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(1f).looping()
-        .addAnimation("leftFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 45f, 0f, 0f), noRotation(1f)))
-        .addAnimation("rightFoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, -45f, 0f, 0f), noRotation(1f)))
-        .addAnimation("leftWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 0f, 0f, -25f), noRotation(1f)))
-        .addAnimation("rightWing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 0f, 0f, 25f), noRotation(1f)))
+        .addAnimation("leftfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("rightfoot", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, -45f, 0f, 0f), noRotation(1f)))
+        .addAnimation("leftwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 0f, 0f, -25f), noRotation(1f)))
+        .addAnimation("rightwing", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0f), rotation(0.5f, 0f, 0f, 25f), noRotation(1f)))
         .build();
 
     public final Map<ModelPart, PartPose> defaults;

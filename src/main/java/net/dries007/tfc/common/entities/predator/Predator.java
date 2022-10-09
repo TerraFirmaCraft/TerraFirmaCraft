@@ -135,7 +135,7 @@ public class Predator extends WildAnimal
         {
             sleepingAnimation.stop();
 
-            final boolean walking = isAggressive() && (walkProgress > 0 || isMoving());
+            final boolean walking = walkProgress > 0 || isMoving();
             BlockPos blockPosBelow = getBlockPosBelowThatAffectsMyMovement();
             BlockState blockStateBelow = level.getBlockState(blockPosBelow);
 

@@ -69,7 +69,7 @@ public class CougarModel extends FelinePredatorModel<FelinePredator>
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
-    public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(1.0F)
+    public static final AnimationDefinition WALK = AnimationDefinition.Builder.withLength(1.0F).looping()
         .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 0F, 0F, -1F), rotation(0.5F, 0F, 0F, 1F), rotation(1.0F, 0F, 0F, -1F)))
         .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -30.0F, 0F, 0F), rotation(0.25F, -30.43855F, 7.05302F, -7.10708F), rotation(0.75F, -30.47002F, -6.45856F, 6.51352F), rotation(1.0F, -30.0F, 0F, 0F)))
         .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 50.0F, 0F, 0F), rotation(0.375F, 51.16156F, 8.64738F, 15.27269F), rotation(0.875F, 67.99327F, -4.47045F, -7.80797F), rotation(1.0F, 50.0F, 0F, 0F)))
@@ -80,7 +80,7 @@ public class CougarModel extends FelinePredatorModel<FelinePredator>
         .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.25F, 22.5F, 0F, 0F), noRotation(0.5F), rotation(0.75F, -22.5F, 0F, 0F), noRotation(1.0F)))
         .build();
 
-    public static final AnimationDefinition RUN = AnimationDefinition.Builder.withLength(0.5F)
+    public static final AnimationDefinition RUN = AnimationDefinition.Builder.withLength(0.5F).looping()
         .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, -7.5F, 0F, 0F), noRotation(0.3333F), rotation(0.4167F, 4.69F, 0F, 0F), noRotation(0.5F)))
         .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.2083F, 60F, 0F, 0F), noRotation(0.5F)))
         .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.25F, -90F, 0F, 0F), rotation(0.4167F, -2.5F, 0F, 0F), noRotation(0.5F)))
@@ -105,7 +105,7 @@ public class CougarModel extends FelinePredatorModel<FelinePredator>
         .addAnimation("right_hind_leg", new AnimationChannel(AnimationChannel.Targets.ROTATION, noRotation(0.0F), rotation(0.1667F, 17.5F, 0F, 0F), noRotation(0.4F)))
         .build();
 
-    public static final AnimationDefinition SLEEP = AnimationDefinition.Builder.withLength(2.0F)
+    public static final AnimationDefinition SLEEP = AnimationDefinition.Builder.withLength(2.0F).looping()
         .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 5F, 0F, 72.5F), rotation(0.5F, 5F, 0F, 72.5F), rotation(2.0F, 5F, 0F, 72.5F))) //.translation(0.0F,-7F,0F,2F).translation(1.0F,-7F,0F,2F)
         .addAnimation("neck", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 90F, 0F, 0F), rotation(2.0F, 90F, 0F, 0F))) //.translation(0.0F,0F,-2F,0F).translation(1.0F,0F,-2F,0F)
         .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -35.17255F, 2.54237F, -1.37822F), rotation(0.0833F, -34.83923F, -11.59079F, 19.36245F), rotation(0.5F, -35.17255F, 2.54237F, -1.37822F), rotation(0.75F, -35.28937F, 4F, -3.43513F), rotation(2.0F, -35.17255F, 2.54237F, -1.37822F)))
@@ -116,7 +116,7 @@ public class CougarModel extends FelinePredatorModel<FelinePredator>
         .addAnimation("rear", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -45F, 0F, 0F), rotation(0.5F, -45F, 0F, 0F), rotation(2.0F, -45F, 0F, 0F)))
         .build();
 
-    public static final AnimationDefinition CROUCH = AnimationDefinition.Builder.withLength(1.0F)
+    public static final AnimationDefinition CROUCH = AnimationDefinition.Builder.withLength(1.0F).looping()
         .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 20F, 0F, -1F), rotation(0.5F, 18F, 0F, 1F), rotation(1.0F, 20F, 0F, -1F)))
         .addAnimation("tail", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -55F, 0F, 0F), rotation(0.25F, -45.4385F, 7.05302F, -7.10708F), rotation(0.75F, -45.47F, -6.45856F, 6.51352F), rotation(1.0F, -55F, 0F, 0F)))
         .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, 60F, 0F, 0F), rotation(0.375F, 61.1616F, 8.64738F, 15.27269F), rotation(0.875F, 77.9933F, -4.47045F, -7.80797F), rotation(1.0F, 60F, 0F, 0F)))

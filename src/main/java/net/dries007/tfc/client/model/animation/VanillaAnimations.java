@@ -61,7 +61,7 @@ public final class VanillaAnimations
 
     }
 
-    private static Optional<ModelPart> findNamedPart(HierarchicalModel<?> model, String name)
+    public static Optional<ModelPart> findNamedPart(HierarchicalModel<?> model, String name)
     {
         return model.root().getAllParts()
             .filter((p) -> ((ModelPartAccessor) (Object) p).accessor$getChildren().containsKey(name)).findFirst()

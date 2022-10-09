@@ -134,7 +134,7 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
 
         predator.setLimbSwing(Mth.clamp((limbSwing - prevLimbSwing) * 10F, 0.4F, 1.4F));
         prevLimbSwing = limbSwing;
-        
+
         if (predator.sleepingAnimation.isStarted())
         {
             setupSleeping();
@@ -142,15 +142,16 @@ public class BearModel extends HierarchicalAnimatedModel<Predator>
         }
         else
         {
+            final float speed = getAdjustedLandSpeed(predator);
             if (predator.swimmingAnimation.isStarted())
             {
                 setupSwimming();
-                VanillaAnimations.animate(this, predator.swimmingAnimation, SWIM, ageInTicks);
+                VanillaAnimations.animate(this, predator.swimmingAnimation, SWIM, ageInTicks, speed);
             }
             else
             {
-                VanillaAnimations.animate(this, predator.walkingAnimation, WALK, ageInTicks);
-                VanillaAnimations.animate(this, predator.runningAnimation, RUN, ageInTicks);
+                VanillaAnimations.animate(this, predator.walkingAnimation, WALK, ageInTicks, speed);
+                VanillaAnimations.animate(this, predator.runningAnimation, RUN, ageInTicks, speed);
                 VanillaAnimations.animate(this, predator.attackingAnimation, ATTACK, ageInTicks);
             }
             head.xRot = headPitch * Mth.PI / 180F;

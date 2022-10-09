@@ -72,7 +72,7 @@ public class LobsterModel extends HierarchicalModel<AquaticCritter>
         return LayerDefinition.create(meshdefinition, 32, 32);
     }
 
-    public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(0.45F)
+    public static final AnimationDefinition SWIM = AnimationDefinition.Builder.withLength(0.45F).looping()
         .addAnimation("body", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -170F, 0F, -180F), rotation(0.125F, -180F, 0F, -180F), rotation(0.45F, -170F, 0F, -180F)))
         .addAnimation("tail1", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -30F, 0F, 0F), rotation(0.0417F, -60F, 0F, 0F), rotation(0.125F, -60F, 0F, 0F), rotation(0.45F, -30F, 0F, 0F)))
         .addAnimation("tail2", new AnimationChannel(AnimationChannel.Targets.ROTATION, rotation(0.0F, -50F, 0F, 0F), rotation(0.0833F, -80F, 0F, 0F), rotation(0.125F, -80F, 0F, 0F), rotation(0.45F, -50F, 0F, 0F)))
