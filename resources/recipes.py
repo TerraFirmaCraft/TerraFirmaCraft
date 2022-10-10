@@ -375,7 +375,6 @@ def generate(rm: ResourceManager):
     # Heat Recipes
     # ============
 
-    heat_recipe(rm, 'torch_from_twig', '#tfc:twigs', 60, result_item='tfc:torch')
     heat_recipe(rm, 'torch_from_stick', '#forge:rods/wooden', 60, result_item='2 tfc:torch')
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item='18 tfc:torch')
     heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 400, result_item='minecraft:glass')

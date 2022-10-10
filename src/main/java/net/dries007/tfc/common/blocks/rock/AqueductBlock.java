@@ -46,7 +46,7 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
     public static final BooleanProperty WEST = BlockStateProperties.WEST;
 
-    public static final FluidProperty FLUID = TFCBlockStateProperties.WATER;
+    public static final FluidProperty FLUID = TFCBlockStateProperties.ALL_WATER;
 
     private static final VoxelShape[] SHAPES = new VoxelShape[16];
 

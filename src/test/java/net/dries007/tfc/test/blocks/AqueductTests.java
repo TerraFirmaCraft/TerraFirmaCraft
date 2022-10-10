@@ -14,6 +14,7 @@ import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
 import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.common.blocks.TFCBlocks;
 
 @PrefixGameTestTemplate(false)
 @GameTestHolder(TerraFirmaCraft.MOD_ID)
@@ -93,6 +94,20 @@ public class AqueductTests
     {
         helper.setBlock(1, 2, 4, Blocks.POLISHED_ANDESITE); // Clear the water source
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 1, 2, 2));
+    }
+
+    @GameTest(template = "aqueduct/line_empty")
+    public void testAddingSaltWaterInLine(GameTestHelper helper)
+    {
+        helper.setBlock(1, 2, 1, TFCBlocks.SALT_WATER.get());
+        helper.succeedWhen(() -> helper.assertBlockPresent(TFCBlocks.SALT_WATER.get(), 5, 2, 1));
+    }
+
+    @GameTest(template = "aqueduct/line_empty")
+    public void testAddingSpringWaterInLine(GameTestHelper helper)
+    {
+        helper.setBlock(1, 2, 1, TFCBlocks.SPRING_WATER.get());
+        helper.succeedWhen(() -> helper.assertBlockPresent(TFCBlocks.SPRING_WATER.get(), 5, 2, 1));
     }
 
     @GameTest(template = "aqueduct/corner_empty")

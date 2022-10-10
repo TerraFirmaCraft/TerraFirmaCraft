@@ -413,7 +413,7 @@ public class ServerConfig
             "1.0 = A full hunger bar's worth of exhaustion every 2.5 days. Set to zero to disable completely.").defineInRange("passiveExhaustionMultiplier", 1d, 0d, 100d);
         thirstModifier = builder.apply("thirstModifier").comment(
             "A multiplier for how quickly the player gets thirsty.",
-            "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier", 8d, 0d, 100d);
+            "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier1", 5d, 0d, 100d);
         enableThirstOverheating = builder.apply("enableThirstOverheating").comment("Enables the player losing more thirst in hotter environments.").define("enableThirstOverheating", true);
         thirstGainedFromDrinkingInTheRain = builder.apply("thirstGainedFromDrinkingInTheRain").comment("How much thirst the player gains from drinking in the rain (standing outside in the rain and looking up) per tick.").defineInRange("thirstGainedFromDrinkingInTheRain", 5d / 24d, 0d, 100d);
         naturalRegenerationModifier = builder.apply("naturalRegenerationModifier").comment(

@@ -61,7 +61,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
     public static final float PASSIVE_EXHAUSTION_PER_TICK = MAX_HUNGER * EXHAUSTION_PER_HUNGER / (2.5f * ICalendar.TICKS_IN_DAY * EXHAUSTION_MULTIPLIER); // Passive exhaustion will deplete your food bar once every 2.5 days. Food bar holds ~5 "meals", this requires two per day
     public static final float PASSIVE_EXHAUSTION_PER_SECOND = 20 * PASSIVE_EXHAUSTION_PER_TICK;
 
-    public static final float MAX_TEMPERATURE_THIRST_DECAY = 6f;
+    public static final float MAX_TEMPERATURE_THIRST_DECAY = 0.4f;
 
     public static void replaceFoodStats(Player player)
     {
@@ -326,7 +326,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
      */
     public float getThirstModifier(Player player)
     {
-        return TFCConfig.SERVER.thirstModifier.get().floatValue() + getThirstContributionFromTemperature(player);
+        return TFCConfig.SERVER.thirstModifier.get().floatValue() * (1 + getThirstContributionFromTemperature(player));
     }
 
     /**
