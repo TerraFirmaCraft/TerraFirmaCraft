@@ -318,7 +318,7 @@ public class TFCFoodData extends net.minecraft.world.food.FoodData
 
     public float getHealthModifier()
     {
-        return Mth.clamp(0.25f + 1.5f * nutritionData.getAverageNutrition(), 0.2f, 3f);
+        return (float) Mth.clamp(0.25f + 1.5f * nutritionData.getAverageNutrition(), TFCConfig.SERVER.nutritionMinimumHealthModifier.get(), TFCConfig.SERVER.nutritionMaximumHealthModifier.get());
     }
 
     /**
