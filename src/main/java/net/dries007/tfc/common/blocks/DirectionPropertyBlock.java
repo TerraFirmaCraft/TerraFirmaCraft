@@ -22,6 +22,10 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
+/**
+ * Implementing this interface in a {@link Block} class is a sufficient condition for said block to have all the below properties.
+ * The static helper methods can be used without implementing this class, if the block does not use all sides.
+ */
 public interface DirectionPropertyBlock
 {
     BooleanProperty UP = BlockStateProperties.UP;

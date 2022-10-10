@@ -3,20 +3,87 @@
 
 from typing import Dict, List, Set, NamedTuple, Sequence, Optional, Literal, Tuple, Any
 
-Tier = Literal['stone', 'copper', 'bronze', 'wrought_iron', 'steel', 'black_steel', 'colored_steel']
-RockCategory = Literal['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
-BerryBushType = Literal['stationary', 'spreading', 'waterlogged']
-Rock = NamedTuple('Rock', category=RockCategory, sand=str)
-MetalItem = NamedTuple('MetalItem', type=str, smelt_amount=int, parent_model=str, tag=Optional[str], mold=bool, durability=bool)
-Ore = NamedTuple('Ore', metal=Optional[str], graded=bool, required_tool=Tier, tag=str)
-OreGrade = NamedTuple('OreGrade', weight=int, grind_amount=int)
-Vein = NamedTuple('Vein', ore=str, type=str, rarity=int, size=int, min_y=int, max_y=int, density=float, poor=float, normal=float, rich=float, rocks=List[str], spoiler_ore=str, spoiler_rarity=int, spoiler_rocks=List[str], biomes=Optional[str], height=Optional[int], deposits=bool)
-Plant = NamedTuple('Plant', clay=bool, min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=str)
-Wood = NamedTuple('Wood', temp=float, duration=int)
-Berry = NamedTuple('Berry', min_temp=float, max_temp=float, min_rain=float, max_rain=float, type=BerryBushType, min_forest=str, max_forest=str)
-Fruit = NamedTuple('Fruit', min_temp=float, max_temp=float, min_rain=float, max_rain=float)
-Crop = NamedTuple('Crop', type=str, stages=int, nutrient=str, min_temp=int, max_temp=int, min_rain=int, max_rain=int, min_hydration=int, max_hydration=int, min_forest=Optional[str], max_forest=Optional[str])
 
+class Rock(NamedTuple):
+    category: str
+    sand: str
+
+class MetalItem(NamedTuple):
+    type: str
+    smelt_amount: int
+    parent_model: str
+    tag: Optional[str]
+    mold: bool
+    durability: bool
+
+class Ore(NamedTuple):
+    metal: Optional[str]
+    graded: bool
+    required_tool: str
+    tag: str
+
+class OreGrade(NamedTuple):
+    weight: int
+    grind_amount: int
+
+class Vein(NamedTuple):
+    ore: str
+    type: str
+    rarity: int
+    size: int
+    min_y: int
+    max_y: int
+    density: float
+    poor: float
+    normal: float
+    rich: float
+    rocks: List[str]
+    spoiler_ore: str
+    spoiler_rarity: int
+    spoiler_rocks: List[str]
+    biomes: Optional[str]
+    height: Optional[int]
+    deposits: bool
+
+class Plant(NamedTuple):
+    clay: bool
+    min_temp: float
+    max_temp: float
+    min_rain: float
+    max_rain: float
+    type: str
+
+class Wood(NamedTuple):
+    temp: float
+    duration: int
+
+class Berry(NamedTuple):
+    min_temp: float
+    max_temp: float
+    min_rain: float
+    max_rain: float
+    type: str
+    min_forest: str
+    max_forest: str
+
+class Fruit(NamedTuple):
+    min_temp: float
+    max_temp: float
+    min_rain: float
+    max_rain: float
+
+class Crop(NamedTuple):
+    type: str
+    stages: int
+    nutrient: str
+    min_temp: float
+    max_temp: float
+    min_rain: float
+    max_rain: float
+    min_hydration: int
+    max_hydration: int
+    min_forest: Optional[str]
+    max_forest: Optional[str]
 
 class Metal(NamedTuple):
     tier: int
@@ -34,8 +101,8 @@ POTTERY_HEAT_CAPACITY = 1.2  # Heat Capacity
 
 HORIZONTAL_DIRECTIONS: List[str] = ['east', 'west', 'north', 'south']
 
-ROCK_CATEGORIES: List[str] = ['sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive']
-ROCK_CATEGORY_ITEMS: List[str] = ['axe', 'hammer', 'hoe', 'javelin', 'knife', 'shovel']
+ROCK_CATEGORIES = ('sedimentary', 'metamorphic', 'igneous_extrusive', 'igneous_intrusive')
+ROCK_CATEGORY_ITEMS = ('axe', 'hammer', 'hoe', 'javelin', 'knife', 'shovel')
 
 TOOL_TAGS: Dict[str, str] = {
     # Rock
@@ -166,6 +233,7 @@ METAL_ITEMS: Dict[str, MetalItem] = {
 }
 METAL_ITEMS_AND_BLOCKS: Dict[str, MetalItem] = {**METAL_ITEMS, **METAL_BLOCKS}
 METAL_TOOL_HEADS = ('chisel', 'hammer', 'hoe', 'javelin', 'knife', 'mace', 'pickaxe', 'propick', 'saw', 'scythe', 'shovel', 'sword', 'axe')
+
 ORES: Dict[str, Ore] = {
     'native_copper': Ore('copper', True, 'copper', 'copper'),
     'native_gold': Ore('gold', True, 'copper', 'gold'),
@@ -206,7 +274,7 @@ ORE_GRADES: Dict[str, OreGrade] = {
     'poor': OreGrade(30, 3),
     'rich': OreGrade(20, 7)
 }
-DEFAULT_FORGE_ORE_TAGS: List[str] = ['coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone']
+DEFAULT_FORGE_ORE_TAGS: Tuple[str, ...] = ('coal', 'diamond', 'emerald', 'gold', 'iron', 'lapis', 'netherite_scrap', 'quartz', 'redstone')
 
 
 def vein(ore: str, vein_type: str, rarity: int, size: int, min_y: int, max_y: int, density: float, poor: float, normal: float, rich: float, rocks: List[str], spoiler_ore: Optional[str] = None, spoiler_rarity: int = 0, spoiler_rocks: List[str] = None, biomes: str = None, height: int = 0, deposits: bool = False):
@@ -313,17 +381,12 @@ SANDSTONE_BLOCK_TYPES = ('raw', 'smooth', 'cut')
 SOIL_BLOCK_TYPES = ('dirt', 'grass', 'grass_path', 'clay', 'clay_grass', 'farmland', 'rooted_dirt', 'mud', 'mud_bricks', 'drying_bricks')
 SOIL_BLOCK_VARIANTS = ('silt', 'loam', 'sandy_loam', 'silty_loam')
 ORE_DEPOSITS = ('native_copper', 'cassiterite', 'native_silver', 'native_gold')
-
 GEMS = ('amethyst', 'diamond', 'emerald', 'lapis_lazuli', 'opal', 'pyrite', 'ruby', 'sapphire', 'topaz')
-
-MISC_GROUNDCOVER = ['bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick']
-
+MISC_GROUNDCOVER = ('bone', 'clam', 'driftwood', 'mollusk', 'mussel', 'pinecone', 'seaweed', 'stick', 'dead_grass', 'feather', 'flint', 'guano', 'humus', 'rotten_flesh', 'salt_lick')
 COLORS = ('white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black')
-
 SIMPLE_FLUIDS = ('brine', 'curdled_milk', 'limewater', 'lye', 'milk_vinegar', 'olive_oil', 'olive_oil_water', 'tallow', 'tannin', 'vinegar')
 ALCOHOLS = ('beer', 'cider', 'rum', 'sake', 'vodka', 'whiskey', 'corn_whiskey', 'rye_whiskey')
-
-VANILLA_WOODS = ['oak', 'spruce', 'acacia', 'birch', 'jungle', 'dark_oak', 'crimson', 'warped']
+VANILLA_WOODS = ('oak', 'spruce', 'acacia', 'birch', 'jungle', 'dark_oak', 'crimson', 'warped')
 
 WOODS: Dict[str, Wood] = {
     'acacia': Wood(650, 1000),
@@ -473,10 +536,7 @@ PLANTS: Dict[str, Plant] = {
     'yucca': Plant(False, -4, 22, 0, 75, 'dry'),
 }
 
-SMALL_FLOWERS = ('allium', 'anthurium', 'black_orchid', 'blood_lily', 'blue_orchid', 'blue_ginger', 'butterfly_milkweed', 'calendula', 'canna', 'dandelion', 'desert_flame', 'goldenrod',
-           'grape_hyacinth', 'guzmania', 'kangaroo_paw', 'labrador_tea', 'lotus', 'nasturtium', 'oxeye_daisy', 'pistia', 'poppy', 'primrose', 'pulsatilla',
-           'rose', 'sacred_datura', 'sagebrush', 'sapphire_tower', 'sargassum', 'silver_spurflower', 'snapdragon_red', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_yellow', 'strelitzia',
-           'trillium', 'tropical_milkweed', 'tulip_orange', 'tulip_red', 'tulip_pink', 'tulip_white', 'vriesea', 'water_lily', 'yucca')
+SMALL_FLOWERS = ('allium', 'anthurium', 'black_orchid', 'blood_lily', 'blue_orchid', 'blue_ginger', 'butterfly_milkweed', 'calendula', 'canna', 'dandelion', 'desert_flame', 'goldenrod', 'grape_hyacinth', 'guzmania', 'kangaroo_paw', 'labrador_tea', 'lotus', 'nasturtium', 'oxeye_daisy', 'pistia', 'poppy', 'primrose', 'pulsatilla', 'rose', 'sacred_datura', 'sagebrush', 'sapphire_tower', 'sargassum', 'silver_spurflower', 'snapdragon_red', 'snapdragon_pink', 'snapdragon_white', 'snapdragon_yellow', 'strelitzia', 'trillium', 'tropical_milkweed', 'tulip_orange', 'tulip_red', 'tulip_pink', 'tulip_white', 'vriesea', 'water_lily', 'yucca')
 
 TALL_FLOWERS = ('foxglove', 'hibiscus', 'lilac', 'toquilla_palm', 'marigold')
 

@@ -1,0 +1,8 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "tfc:block/aqueduct/north",
+  "textures": {
+    "texture": "tfc:block/rock/bricks/marble",
+    "particle": "tfc:block/rock/bricks/marble"
+  }
+}

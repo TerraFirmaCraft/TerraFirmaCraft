@@ -36,7 +36,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.fluids.FluidHelpers;
-import net.dries007.tfc.common.items.DiscreteFluidContainerItem;
+import net.dries007.tfc.common.items.FluidContainerItem;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.common.items.TFCMinecartItem;
 
@@ -71,7 +71,7 @@ public final class DispenserBehaviors
         {
             final Level level = source.getLevel();
             final BlockPos pos = source.getPos().relative(source.getBlockState().getValue(DispenserBlock.FACING));
-            if (stack.getItem() instanceof DiscreteFluidContainerItem item)
+            if (stack.getItem() instanceof FluidContainerItem item)
             {
                 final IFluidHandlerItem handler = Helpers.getCapability(stack, Capabilities.FLUID_ITEM);
                 if (handler != null)

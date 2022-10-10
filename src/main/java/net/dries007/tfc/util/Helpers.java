@@ -554,6 +554,11 @@ public final class Helpers
      */
     public static ItemStack insertAllSlots(IItemHandler inventory, ItemStack stack)
     {
+        return insertSlots(inventory, stack, 0, inventory.getSlots());
+    }
+
+    public static ItemStack insertSlots(IItemHandler inventory, ItemStack stack, int slotStartInclusive, int slotEndExclusive)
+    {
         for (int slot = 0; slot < inventory.getSlots(); slot++)
         {
             stack = inventory.insertItem(slot, stack, false);

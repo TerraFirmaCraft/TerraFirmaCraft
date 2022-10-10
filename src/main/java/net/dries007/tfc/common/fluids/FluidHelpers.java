@@ -364,7 +364,7 @@ public final class FluidHelpers
 
             // Are we allowed to create source blocks?
             final BlockState toPlace;
-            if (allowPlacingSourceBlocks)
+            if (allowPlacingSourceBlocks && simulatedDrained.getAmount() >= BUCKET_VOLUME)
             {
                 toPlace = fluid.defaultFluidState().createLegacyBlock();
             }

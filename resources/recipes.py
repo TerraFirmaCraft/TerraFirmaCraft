@@ -88,6 +88,7 @@ def generate(rm: ResourceManager):
 
         rm.crafting_shaped('crafting/rock/%s_hardened' % rock, ['XMX', 'MXM', 'XMX'], {'X': raw, 'M': '#tfc:mortar'}, (2, hardened)).with_advancement(raw)
         rm.crafting_shaped('crafting/rock/%s_bricks' % rock, ['XMX', 'MXM', 'XMX'], {'X': brick, 'M': '#tfc:mortar'}, (4, bricks)).with_advancement(brick)
+        rm.crafting_shaped('crafting/rock/%s_aqueduct' % rock, ['X X', 'MXM'], {'X': brick, 'M': '#tfc:mortar'}, 'tfc:rock/aqueduct/%s' % rock).with_advancement(brick)
 
         damage_shapeless(rm, 'crafting/rock/%s_cracked' % rock, (bricks, '#tfc:hammers'), cracked_bricks).with_advancement(bricks)
 
@@ -374,7 +375,6 @@ def generate(rm: ResourceManager):
     # Heat Recipes
     # ============
 
-    heat_recipe(rm, 'torch_from_twig', '#tfc:twigs', 60, result_item='tfc:torch')
     heat_recipe(rm, 'torch_from_stick', '#forge:rods/wooden', 60, result_item='2 tfc:torch')
     heat_recipe(rm, 'torch_from_stick_bunch', 'tfc:stick_bunch', 60, result_item='18 tfc:torch')
     heat_recipe(rm, 'glass_from_shards', 'tfc:glass_shard', 400, result_item='minecraft:glass')

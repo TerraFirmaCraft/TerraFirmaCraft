@@ -6,7 +6,6 @@
 
 package net.dries007.tfc.common.capabilities.heat;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
 import net.dries007.tfc.config.TFCConfig;
@@ -70,7 +68,7 @@ public final class HeatCapability
 
     public static float adjustTempTowards(float temp, float target, float deltaPositive, float deltaNegative)
     {
-        final float delta = TFCConfig.SERVER.heatingModifier.get().floatValue();
+        final float delta = TFCConfig.SERVER.deviceHeatingModifier.get().floatValue();
         if (temp < target)
         {
             return Math.min(temp + delta * deltaPositive, target);
@@ -145,7 +143,7 @@ public final class HeatCapability
         {
             return temperature;
         }
-        final float newTemperature = temperature - (float) (ticksSinceUpdate * TFCConfig.SERVER.heatingModifier.get()) / heatCapacity;
+        final float newTemperature = temperature - (float) (ticksSinceUpdate * TFCConfig.SERVER.itemCoolingModifier.get()) / heatCapacity;
         return newTemperature < 0 ? 0 : newTemperature;
     }
 
@@ -162,7 +160,7 @@ public final class HeatCapability
      */
     public static void addTemp(IHeat instance, float target, float modifier)
     {
-        float temp = instance.getTemperature() + modifier * TFCConfig.SERVER.heatingModifier.get().floatValue() / instance.getHeatCapacity();
+        float temp = instance.getTemperature() + (TFCConfig.SERVER.itemCoolingModifier.get().floatValue() - 1 + modifier * TFCConfig.SERVER.itemHeatingModifier.get().floatValue()) / instance.getHeatCapacity();
         if (temp > target)
         {
             temp = target;

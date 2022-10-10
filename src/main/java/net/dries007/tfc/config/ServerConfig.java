@@ -30,6 +30,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
+
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
     // Blocks - Grass Path
@@ -64,10 +65,12 @@ public class ServerConfig
     // Blocks - Crucible
     public final ForgeConfigSpec.IntValue crucibleCapacity;
     public final ForgeConfigSpec.IntValue cruciblePouringRate;
+    public final ForgeConfigSpec.BooleanValue crucibleEnableAutomation;
     // Blocks - Anvil
     public final ForgeConfigSpec.IntValue anvilAcceptableWorkRange;
     // Blocks - Barrel
     public final ForgeConfigSpec.IntValue barrelCapacity;
+    public final ForgeConfigSpec.BooleanValue barrelEnableAutomation;
     // Blocks - Composter
     public final ForgeConfigSpec.IntValue composterTicks;
     public final ForgeConfigSpec.BooleanValue composterRainfallCheck;
@@ -86,6 +89,7 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue blastFurnaceFluidCapacity;
     public final ForgeConfigSpec.IntValue blastFurnaceFuelConsumptionMultiplier;
     public final ForgeConfigSpec.IntValue blastFurnaceMaxChimneyHeight;
+    public final ForgeConfigSpec.BooleanValue blastFurnaceEnableAutomation;
     // Blocks - Thatch
     public final ForgeConfigSpec.DoubleValue thatchMovementMultiplier;
     // Blocks - Thatch Bed
@@ -99,6 +103,15 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue usePlacedItemWhitelist;
     // Blocks - Leaves
     public final ForgeConfigSpec.BooleanValue enableLeavesDecaySlowly;
+    // Blocks - Charcoal Forge
+    public final ForgeConfigSpec.BooleanValue charcoalForgeEnableAutomation;
+    // Blocks - Fire Pit
+    public final ForgeConfigSpec.BooleanValue firePitEnableAutomation;
+    // Blocks - Nest Box
+    public final ForgeConfigSpec.BooleanValue nestBoxEnableAutomation;
+    // Blocks - Powder Keg
+    public final ForgeConfigSpec.BooleanValue powderKegEnableAutomation;
+
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
     public final ForgeConfigSpec.EnumValue<Size> smallVesselMaximumItemSize;
@@ -125,7 +138,9 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue woodenBucketCapacity;
     public final ForgeConfigSpec.BooleanValue enableSourcesFromWoodenBucket;
     // Mechanics - Heat
-    public final ForgeConfigSpec.DoubleValue heatingModifier;
+    public final ForgeConfigSpec.DoubleValue deviceHeatingModifier;
+    public final ForgeConfigSpec.DoubleValue itemHeatingModifier;
+    public final ForgeConfigSpec.DoubleValue itemCoolingModifier;
     public final ForgeConfigSpec.IntValue ticksBeforeItemCool;
     public final ForgeConfigSpec.BooleanValue coolHotItemEntities;
     // Mechanics - Collapses
@@ -149,6 +164,8 @@ public class ServerConfig
     public final ForgeConfigSpec.IntValue foodDecayStackWindow;
     public final ForgeConfigSpec.DoubleValue foodDecayModifier;
     public final ForgeConfigSpec.BooleanValue enableOverburdening;
+    public final ForgeConfigSpec.DoubleValue nutritionMinimumHealthModifier;
+    public final ForgeConfigSpec.DoubleValue nutritionMaximumHealthModifier;
     // Mechanics - Vanilla Changes
     public final ForgeConfigSpec.BooleanValue enableVanillaBonemeal;
     public final ForgeConfigSpec.BooleanValue enableVanillaWeatherEffects;
@@ -258,6 +275,7 @@ public class ServerConfig
 
         crucibleCapacity = builder.apply("crucibleCapacity").comment("Tank capacity of a crucible (in mB).").defineInRange("crucibleCapacity", 4000, 0, Alloy.MAX_ALLOY);
         cruciblePouringRate = builder.apply("cruciblePouringRate").comment("A modifier for how fast fluid containers empty into crucibles. Containers will empty 1 mB every (this) number of ticks.").defineInRange("cruciblePouringRate", 4, 1, Integer.MAX_VALUE);
+        crucibleEnableAutomation = builder.apply("crucibleEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("crucibleEnableAutomation", true);
 
         innerBuilder.pop().push("anvil");
 
@@ -266,6 +284,7 @@ public class ServerConfig
         innerBuilder.pop().push("barrel");
 
         barrelCapacity = builder.apply("barrelCapacity").comment("Tank capacity of a barrel (in mB).").defineInRange("barrelCapacity", 10000, 0, Integer.MAX_VALUE);
+        barrelEnableAutomation = builder.apply("barrelEnableAutomation").comment("If true, barrels will interact with in-world automation such as hoppers on a side-specific basis.").define("barrelEnableAutomation", true);
 
         innerBuilder.pop().push("composter");
 
@@ -295,6 +314,7 @@ public class ServerConfig
         blastFurnaceFluidCapacity = builder.apply("blastFurnaceFluidCapacity").comment("Fluid capacity (in mB) of the output tank of the blast furnace.").defineInRange("blastFurnaceFluidCapacity", 10_000, 1, Integer.MAX_VALUE);
         blastFurnaceFuelConsumptionMultiplier = builder.apply("blastFurnaceFuelConsumptionMultiplier").comment("A multiplier for how fast the blast furnace consumes fuel. Higher values = faster fuel consumption.").defineInRange("blastFurnaceFuelConsumptionMultiplier", 4, 1, Integer.MAX_VALUE);
         blastFurnaceMaxChimneyHeight = builder.apply("blastFurnaceMaxChimneyHeight").comment("The maximum number of levels that can be built in a blast furnace multiblock, for added capacity.").defineInRange("blastFurnaceMaxChimneyHeight", 5, 1, Integer.MAX_VALUE);
+        blastFurnaceEnableAutomation = builder.apply("blastFurnaceEnableAutomation").comment("If true, blast furnaces will interact with in-world automation such as hoppers on a side-specific basis.").define("blastFurnaceEnableAutomation", true);
 
         innerBuilder.pop().push("thatch");
 
@@ -316,6 +336,22 @@ public class ServerConfig
         maxPlacedLargeItemSize = builder.apply("maxPlacedLargeItemSize").comment("The maximum size of items that can be placed as a single item on the ground with V. Items are checked to see if they're the right size to be placed in a group of 4 items first.").defineEnum("maxPlacedLargeItemSize", Size.HUGE);
         enablePlacingItems = builder.apply("enablePlacingItems").comment("If true, players can place items on the ground with V.").define("enablePlacingItems", true);
         usePlacedItemWhitelist = builder.apply("usePlacedItemWhitelist").comment("If true, the tag 'tfc:placed_item_whitelist' will be checked to allow items to be in placed items and will exclude everything else.").define("usePlacedItemWhitelist", false);
+
+        innerBuilder.pop().push("charcoalForge");
+
+        charcoalForgeEnableAutomation = builder.apply("charcoalForgeEnableAutomation").comment("If true, charcoal forges will interact with in-world automation such as hoppers on a side-specific basis.").define("charcoalForgeEnableAutomation", true);
+
+        innerBuilder.pop().push("firePitEnableAutomation");
+
+        firePitEnableAutomation = builder.apply("firePitEnableAutomation").comment("If true, fire pits will interact with in-world automation such as hoppers on a side-specific basis.").define("firePitEnableAutomation", true);
+
+        innerBuilder.pop().push("nestBox");
+
+        nestBoxEnableAutomation = builder.apply("nestBoxEnableAutomation").comment("If true, nest boxes will interact with in-world automation such as hoppers on a side-specific basis.").define("nestBoxEnableAutomation", true);
+
+        innerBuilder.pop().push("powderKeg");
+
+        powderKegEnableAutomation = builder.apply("powderKegEnableAutomation").comment("If true, powder kegs will interact with in-world automation such as hoppers on a side-specific basis.").define("powderKegEnableAutomation", true);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
@@ -351,7 +387,9 @@ public class ServerConfig
 
         innerBuilder.pop().pop().push("mechanics").push("heat");
 
-        heatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat and cool. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        deviceHeatingModifier = builder.apply("deviceHeatingModifier").comment("A multiplier for how fast devices themselves heat up. Higher = faster.").defineInRange("deviceHeatingModifier", 1, 0, Double.MAX_VALUE);
+        itemHeatingModifier = builder.apply("itemHeatingModifier").comment("A multiplier for how fast items heat in devices. Higher = faster.").defineInRange("itemHeatingModifier", 1, 0, Double.MAX_VALUE);
+        itemCoolingModifier = builder.apply("itemCoolingModifier").comment("A multiplier for how fast items cool. Higher = faster.").defineInRange("itemCoolingModifier", 0.8, 0, Double.MAX_VALUE);
         coolHotItemEntities = builder.apply("coolHotItemEntities").comment("Should hot item entities cool off when in contact with blocks like water or snow?").define("coolHotItemEntities", true);
         ticksBeforeItemCool = builder.apply("ticksBeforeItemCool").comment("Ticks between each time an item loses temperature when sitting on a cold block. 20 ticks = 1 second.").defineInRange("ticksBeforeItemCool", 10, 1, Integer.MAX_VALUE);
 
@@ -377,7 +415,7 @@ public class ServerConfig
             "1.0 = A full hunger bar's worth of exhaustion every 2.5 days. Set to zero to disable completely.").defineInRange("passiveExhaustionMultiplier", 1d, 0d, 100d);
         thirstModifier = builder.apply("thirstModifier").comment(
             "A multiplier for how quickly the player gets thirsty.",
-            "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier", 8d, 0d, 100d);
+            "The player loses thirst in sync with when they lose hunger. This represents how much thirst they lose. 0 = None, 100 = the entire thirst bar.").defineInRange("thirstModifier1", 5d, 0d, 100d);
         enableThirstOverheating = builder.apply("enableThirstOverheating").comment("Enables the player losing more thirst in hotter environments.").define("enableThirstOverheating", true);
         thirstGainedFromDrinkingInTheRain = builder.apply("thirstGainedFromDrinkingInTheRain").comment("How much thirst the player gains from drinking in the rain (standing outside in the rain and looking up) per tick.").defineInRange("thirstGainedFromDrinkingInTheRain", 5d / 24d, 0d, 100d);
         naturalRegenerationModifier = builder.apply("naturalRegenerationModifier").comment(
@@ -391,6 +429,8 @@ public class ServerConfig
             "Food made with different creation dates doesn't stack by default, unless it's within a specific window. This is the number of hours that different foods will try and stack together at the loss of a little extra expiry time.").defineInRange("foodDecayStackWindow", 1, 6, 100);
         foodDecayModifier = builder.apply("foodDecayModifier").comment("A multiplier for food decay, or expiration times. Larger values will result in naturally longer expiration times.").defineInRange("foodDecayModifier", 1d, 0d, 1000d);
         enableOverburdening = builder.apply("enableOverburdening").comment("Enables negative effects from carrying too many very heavy items, including potion effects.").define("enableOverburdening", true);
+        nutritionMinimumHealthModifier = builder.apply("nutritionMinimumHealthModifier").comment("A multiplier for the minimum health that the player will obtain, based on their nutrition").defineInRange("nutritionMinimumHealthModifier", 0.2, 0.001, 1000);
+        nutritionMaximumHealthModifier = builder.apply("nutritionMaximumHealthModifier").comment("A multiplier for the maximum health that the player will obtain, based on their nutrition").defineInRange("nutritionMaximumHealthModifier", 3, 0.001, 1000);
 
         innerBuilder.pop().push("vanillaChanges");
 
