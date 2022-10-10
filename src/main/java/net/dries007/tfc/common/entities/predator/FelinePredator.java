@@ -70,7 +70,7 @@ public class FelinePredator extends Predator
             sleepingAnimation.stop();
 
             EntityHelpers.startOrStop(swimmingAnimation, isInWater(), tickCount);
-            if (walkProgress > 0 || isMoving())
+            if (isMoving())
             {
                 EntityHelpers.startOrStop(runningAnimation, isAggressive(), tickCount);
                 EntityHelpers.startOrStop(walkingAnimation, !isAggressive(), tickCount);

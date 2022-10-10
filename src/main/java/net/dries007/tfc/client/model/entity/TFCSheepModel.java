@@ -17,6 +17,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraft.client.model.geom.builders.*;
 
+import com.mojang.math.Constants;
 import net.dries007.tfc.common.entities.livestock.WoolyAnimal;
 
 public class TFCSheepModel extends AgeableListModel<WoolyAnimal>
@@ -109,8 +110,8 @@ public class TFCSheepModel extends AgeableListModel<WoolyAnimal>
         rightHorn.visible = leftHorn.visible = sheep.displayMaleCharacteristics();
         woolBody.visible = woolHead.visible = woolLeftFrontLeg.visible = woolLeftHindLeg.visible = woolRightFrontLeg.visible = woolRightHindLeg.visible = sheep.hasProduct();
 
-        head.xRot = headPitch * ((float) Math.PI / 180F);
-        head.yRot = headYaw * ((float) Math.PI / 180F);
+        head.xRot = headPitch * Constants.DEG_TO_RAD;
+        head.yRot = headYaw * Constants.DEG_TO_RAD;
         rightHindLeg.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
         leftHindLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;
         rightFrontLeg.xRot = Mth.cos(limbSwing * 0.6662F + (float) Math.PI) * 1.4F * limbSwingAmount;

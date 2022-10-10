@@ -8,18 +8,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:food/quail",
+          "name": "tfc:food/venison",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
-                "type": "tfc:animal_yield",
-                "min": 1,
-                "max": {
-                  "type": "minecraft:uniform",
-                  "min": 1,
-                  "max": 6
-                }
+                "min": 4,
+                "max": 10,
+                "type": "minecraft:uniform"
               }
             }
           ]
@@ -32,13 +28,23 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:feather",
+          "name": "tfc:medium_raw_hide"
+        }
+      ]
+    },
+    {
+      "name": "loot_pool",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bone",
           "functions": [
             {
               "function": "minecraft:set_count",
               "count": {
-                "min": 4,
-                "max": 12,
+                "min": 1,
+                "max": 6,
                 "type": "minecraft:uniform"
               }
             }

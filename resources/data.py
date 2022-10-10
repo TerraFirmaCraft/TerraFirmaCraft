@@ -684,6 +684,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('bears', 'tfc:grizzly_bear', 'tfc:polar_bear', 'tfc:black_bear')
     rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
     rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
+    rm.entity_tag('leashable_wild_animals')
 
     # Item Sizes
 
@@ -933,6 +934,7 @@ def generate(rm: ResourceManager):
     rm.data(('tfc', 'fauna', 'rabbit'), fauna(climate=climate_config(min_rain=15)))
     rm.data(('tfc', 'fauna', 'fox'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'boar'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, max_forest='normal')))
+    rm.data(('tfc', 'fauna', 'deer'), fauna(climate=climate_config(min_rain=130, max_rain=400, max_temp=25, min_forest='edge')))
     rm.data(('tfc', 'fauna', 'donkey'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'mule'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
     rm.data(('tfc', 'fauna', 'horse'), fauna(climate=climate_config(min_rain=130, max_rain=400, min_temp=-15, max_forest='edge')))
@@ -976,12 +978,13 @@ def generate(rm: ResourceManager):
     mob_loot(rm, 'alpaca', 'tfc:food/camelidae', 6, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
     mob_loot(rm, 'sheep', 'tfc:food/mutton', 4, 10, 'medium', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
     mob_loot(rm, 'musk_ox', 'tfc:food/mutton', 6, 14, 'large', bones=4, extra_pool={'name': 'tfc:wool'}, livestock=True)
-    mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
-    mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
-    mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(1, 4)]}, livestock=True)
+    mob_loot(rm, 'chicken', 'tfc:food/chicken', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 12)]}, livestock=True)
+    mob_loot(rm, 'duck', 'tfc:food/duck', 2, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 10)]}, livestock=True)
+    mob_loot(rm, 'quail', 'tfc:food/quail', 1, 3, extra_pool={'name': 'minecraft:feather', 'functions': [loot_tables.set_count(4, 12)]}, livestock=True)
     mob_loot(rm, 'rabbit', 'tfc:food/rabbit', hide_size='small', hide_chance=0.5, bones=1, extra_pool={'name': 'minecraft:rabbit_foot', 'conditions': [loot_tables.random_chance(0.1)]})
     mob_loot(rm, 'fox', 'tfc:small_raw_hide', bones=2)
     mob_loot(rm, 'boar', 'tfc:food/pork', 1, 3, 'small', hide_chance=0.8, bones=3)
+    mob_loot(rm, 'deer', 'tfc:food/venison', 4, 10, 'medium', bones=6)
     mob_loot(rm, 'donkey', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'mule', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)
     mob_loot(rm, 'horse', 'tfc:food/horse_meat', 4, 10, 'medium', bones=6, livestock=True)

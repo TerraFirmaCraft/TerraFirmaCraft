@@ -231,6 +231,15 @@
       "tfc:entity/deer/hurt1"
     ]
   },
+  "entity.deer.step": {
+    "subtitle": "subtitles.entity.tfc.deer.step",
+    "sounds": [
+      {
+        "name": "minecraft:entity.wolf.step",
+        "type": "event"
+      }
+    ]
+  },
   "entity.lion.ambient": {
     "subtitle": "subtitles.entity.tfc.lion.ambient",
     "sounds": [

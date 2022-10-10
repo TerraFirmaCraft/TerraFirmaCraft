@@ -128,6 +128,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCRabbit>> RABBIT = register("rabbit", EntityType.Builder.of(TFCRabbit::new, MobCategory.CREATURE).sized(0.4F, 0.5F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<TFCFox>> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<Prey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.5f, 0.5f).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Prey>> DEER = register("deer", EntityType.Builder.of(TFCEntities::makeDeer, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
 
     public static final RegistryObject<EntityType<TFCDonkey>> DONKEY = register("donkey", EntityType.Builder.of(TFCDonkey::new, MobCategory.CREATURE).sized(1.3964844F, 1.5F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<TFCMule>> MULE = register("mule", EntityType.Builder.of(TFCMule::new, MobCategory.CREATURE).sized(1.3964844F, 1.6F).clientTrackingRange(8));
@@ -186,6 +187,7 @@ public class TFCEntities
         event.put(RABBIT.get(), TFCRabbit.createAttributes().build());
         event.put(FOX.get(), TFCFox.createAttributes().build());
         event.put(BOAR.get(), Prey.createAttributes().build());
+        event.put(DEER.get(), Prey.createAttributes().build());
         event.put(MULE.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(DONKEY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(HORSE.get(), AbstractHorse.createBaseHorseAttributes().build());
@@ -314,7 +316,12 @@ public class TFCEntities
 
     public static Prey makeBoar(EntityType<? extends Prey> animal, Level level)
     {
-        return new Prey(animal, level, TFCSounds.PIG, 20);
+        return new Prey(animal, level, TFCSounds.PIG);
+    }
+
+    public static Prey makeDeer(EntityType<? extends Prey> animal, Level level)
+    {
+        return new Prey(animal, level, TFCSounds.DEER);
     }
 
 }

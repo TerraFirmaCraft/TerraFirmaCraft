@@ -73,6 +73,7 @@ public final class TFCSounds
     public static final EntitySound COUGAR = createEntity("cougar", true, true);
     public static final EntitySound SABERTOOTH = createEntity("sabertooth", true, true);
     public static final EntitySound BEAR = createEntity("bear", true, true);
+    public static final EntitySound DEER = createEntity("deer", false, false);
 
     // Random
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG = create("random.rock_slide_long");

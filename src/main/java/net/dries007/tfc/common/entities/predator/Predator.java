@@ -31,7 +31,6 @@ import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
@@ -72,12 +71,10 @@ public class Predator extends WildAnimal
 
     public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int walkLength, TFCSounds.EntitySound sounds)
     {
-        super(type, level, sounds, walkLength);
+        super(type, level, sounds);
         this.diurnal = diurnal;
         this.attack = sounds.attack().orElseThrow();
         this.sleeping = sounds.sleep().orElseThrow();
-        this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, -1.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
     }
 
     public boolean isDiurnal()
@@ -135,13 +132,12 @@ public class Predator extends WildAnimal
         {
             sleepingAnimation.stop();
 
-            final boolean walking = walkProgress > 0 || isMoving();
             BlockPos blockPosBelow = getBlockPosBelowThatAffectsMyMovement();
             BlockState blockStateBelow = level.getBlockState(blockPosBelow);
 
             EntityHelpers.startOrStop(swimmingAnimation, isInWater() || (blockStateBelow.getFriction(level, blockPosBelow, null) > 0.7), tickCount);
-            EntityHelpers.startOrStop(runningAnimation, isAggressive() && walking, tickCount);
-            EntityHelpers.startOrStop(walkingAnimation, !isAggressive() && walking, tickCount);
+            EntityHelpers.startOrStop(runningAnimation, isAggressive() && isMoving(), tickCount);
+            EntityHelpers.startOrStop(walkingAnimation, !isAggressive() && isMoving(), tickCount);
         }
 
     }

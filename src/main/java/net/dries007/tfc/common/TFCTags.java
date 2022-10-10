@@ -226,6 +226,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> DEALS_CRUSHING_DAMAGE = create("deals_crushing_damage");
         public static final TagKey<EntityType<?>> HORSES = create("horses");
         public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = create("destroyed_by_leaves");
+        public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = create("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
 
         private static TagKey<EntityType<?>> create(String id)
         {

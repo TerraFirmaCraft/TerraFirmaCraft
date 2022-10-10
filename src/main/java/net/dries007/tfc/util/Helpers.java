@@ -983,6 +983,10 @@ public final class Helpers
         return new XoroshiroRandomSource(random.nextLong(), random.nextLong());
     }
 
+    /**
+     * todo: remove in 1.19. Borrowed for vanilla animation operability.
+     * <a href="https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline">https://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline</a>>
+     */
     public static float catMullRomSpline(float lerp, float lowAnchor, float start, float end, float endAnchor)
     {
         return 0.5F * (2F * start + (end - lowAnchor) * lerp + (2F * lowAnchor - 5F * start + 4F * end - endAnchor) * lerp * lerp + (3F * start - lowAnchor - 3F * end + endAnchor) * lerp * lerp * lerp);

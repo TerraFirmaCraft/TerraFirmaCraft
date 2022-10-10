@@ -41,7 +41,7 @@ public class FelinePredatorModel<E extends FelinePredator> extends HierarchicalA
         if (predator.sleepingAnimation.isStarted())
         {
             setupSleeping();
-            VanillaAnimations.animate(this, predator.swimmingAnimation, sleep, ageInTicks);
+            VanillaAnimations.animate(this, predator.sleepingAnimation, sleep, ageInTicks);
         }
         else
         {

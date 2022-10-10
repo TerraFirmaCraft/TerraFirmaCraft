@@ -9,11 +9,14 @@ package net.dries007.tfc.common.entities.livestock;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -23,6 +26,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.capabilities.egg.EggCapability;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.livestock.OviparousAi;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
@@ -150,6 +154,12 @@ public abstract class OviparousAnimal extends ProducingAnimal
             addUses(event.getUses());
         }
         return event.getProduct();
+    }
+
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        return EntityHelpers.pluck(player, hand, this) ? InteractionResult.sidedSuccess(level.isClientSide) : super.mobInteract(player, hand);
     }
 
     @Override

@@ -13,25 +13,29 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
-public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
+public class WildAnimal extends AgeableMob implements GenderedRenderAnimal
 {
     public static final EntityDataAccessor<Boolean> DATA_IS_MALE = SynchedEntityData.defineId(WildAnimal.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Boolean> DATA_IS_BABY = SynchedEntityData.defineId(WildAnimal.class, EntityDataSerializers.BOOLEAN);
 
     protected final Supplier<SoundEvent> ambient;
     protected final Supplier<SoundEvent> death;
@@ -40,19 +44,18 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
 
     @Nullable public Vec3 location;
     @Nullable public Vec3 prevLocation;
-    public float walkProgress = 0f;
-    public final int walkAnimationLength;
     protected float limbSwing = 1f;
 
-    public WildAnimal(EntityType<? extends PathfinderMob> type, Level level, TFCSounds.EntitySound sounds, int walkLength)
+    public WildAnimal(EntityType<? extends AgeableMob> type, Level level, TFCSounds.EntitySound sounds)
     {
         super(type, level);
-        getNavigation().setCanFloat(true);
-        this.walkAnimationLength = walkLength;
         this.ambient = sounds.ambient();
         this.death = sounds.death();
         this.hurt = sounds.hurt();
         this.step = sounds.step();
+        getNavigation().setCanFloat(true);
+        this.setPathfindingMalus(BlockPathTypes.POWDER_SNOW, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_POWDER_SNOW, -1.0F);
     }
 
     @Override
@@ -62,14 +65,9 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
         //Variable for smooth walk animation
         prevLocation = location;
         location = this.position();
-        if (walkProgress >= (float) walkAnimationLength)
+        if (level.getGameTime() % 4000 == 0 && random.nextInt(2000) == 0)
         {
-            walkProgress = 0f;
-        }
-
-        else if (this.isMoving() || walkProgress > 0f)
-        {
-            walkProgress = Math.min(walkProgress + limbSwing, (float) walkAnimationLength);
+            setBaby(false);
         }
     }
 
@@ -81,7 +79,7 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
     @Override
     public boolean displayMaleCharacteristics()
     {
-        return isMale();
+        return isMale() && !isBaby();
     }
 
     @Override
@@ -95,6 +93,7 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
     {
         super.defineSynchedData();
         entityData.define(DATA_IS_MALE, true);
+        entityData.define(DATA_IS_BABY, true);
     }
 
     public boolean isMale()
@@ -108,11 +107,40 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
     }
 
     @Override
+    public boolean isBaby()
+    {
+        return entityData.get(DATA_IS_BABY);
+    }
+
+    @Override
+    public void setBaby(boolean baby)
+    {
+        entityData.set(DATA_IS_BABY, baby);
+    }
+
+    @Override
+    public void setAge(int age)
+    {
+        super.setAge(0); // no-op vanilla aging
+    }
+
+    @Override
+    public int getAge()
+    {
+        return isBaby() ? -24000 : 0;
+    }
+
+    @Override
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType type, @Nullable SpawnGroupData data, @Nullable CompoundTag tag)
     {
         SpawnGroupData spawnData = super.finalizeSpawn(level, difficulty, type, data, tag);
         setIsMale(level.getRandom().nextBoolean());
-        return spawnData;
+        if (spawnData == null) spawnData = new AgeableMob.AgeableMobGroupData(true);
+        if (spawnData instanceof AgeableMob.AgeableMobGroupData ageableData && ageableData.isShouldSpawnBaby() && ageableData.getGroupSize() > 0 && this.random.nextFloat() <= ageableData.getBabySpawnChance())
+        {
+            setBaby(true);
+        }
+        return super.finalizeSpawn(level, difficulty, type, spawnData, tag);
     }
 
     @Override
@@ -120,6 +148,7 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
     {
         super.addAdditionalSaveData(tag);
         tag.putBoolean("male", isMale());
+        tag.putBoolean("baby", isBaby());
     }
 
     @Override
@@ -127,6 +156,14 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
     {
         super.readAdditionalSaveData(tag);
         setIsMale(tag.getBoolean("male"));
+        setBaby(tag.getBoolean("baby"));
+    }
+
+    @Nullable
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob mob)
+    {
+        return (AgeableMob) getType().create(level);
     }
 
     @Override
@@ -161,6 +198,12 @@ public class WildAnimal extends PathfinderMob implements GenderedRenderAnimal
     @Override
     public boolean canBeLeashed(Player player)
     {
-        return false;
+        return Helpers.isEntity(this, TFCTags.Entities.LEASHABLE_WILD_ANIMALS);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level)
+    {
+        return new TFCGroundPathNavigation(this, level);
     }
 }

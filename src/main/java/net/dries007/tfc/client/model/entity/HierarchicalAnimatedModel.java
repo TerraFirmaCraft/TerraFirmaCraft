@@ -37,9 +37,9 @@ public abstract class HierarchicalAnimatedModel<E extends Entity> extends Hierar
         return getAdjustedLandSpeed(entity, 80f, 8);
     }
 
-    public float getAdjustedLandSpeed(E entity, float scale, float min)
+    public float getAdjustedLandSpeed(E entity, float scale, float max)
     {
-        return Math.min((float) entity.getDeltaMovement().lengthSqr() * scale, min);
+        return Math.min((float) entity.getDeltaMovement().lengthSqr() * scale, max);
     }
 
     @Override
