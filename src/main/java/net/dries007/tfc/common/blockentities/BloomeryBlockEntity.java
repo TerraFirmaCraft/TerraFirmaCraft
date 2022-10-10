@@ -235,7 +235,7 @@ public class BloomeryBlockEntity extends TickableInventoryBlockEntity<BloomeryBl
             final long offset = Calendars.SERVER.getTicks() - finishTick;
             try (CalendarTransaction tr = Calendars.SERVER.transaction())
             {
-                tr.add(offset);
+                tr.add(-offset);
                 completeRecipe();
             }
         }

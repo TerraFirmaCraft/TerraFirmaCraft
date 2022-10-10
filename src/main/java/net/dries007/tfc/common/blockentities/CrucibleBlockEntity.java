@@ -174,15 +174,20 @@ public class CrucibleBlockEntity extends TickableInventoryBlockEntity<CrucibleBl
         lastFillTicks = 0;
         lastUpdateTick = Integer.MIN_VALUE;
 
-        // Inputs in top, the output slot is accessed via the sides
-        sidedInventory
-            .on(new PartialItemHandler(inventory).insert(0, 1, 2, 3, 4, 5, 6, 7, 8), Direction.UP)
-            .on(new PartialItemHandler(inventory).insert(SLOT_OUTPUT).extract(SLOT_OUTPUT), Direction.Plane.HORIZONTAL);
+        sidedFluidInventory = new SidedHandler.Builder<>(inventory);
 
-        // Fluids go in the top and out the sides
-        sidedFluidInventory = new SidedHandler.Builder<IFluidHandler>(inventory)
-            .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
-            .on(new PartialFluidHandler(inventory).extract(), Direction.Plane.HORIZONTAL);
+        // Inputs in top, the output slot is accessed via the sides
+        if (TFCConfig.SERVER.crucibleEnableAutomation.get())
+        {
+            sidedInventory
+                .on(new PartialItemHandler(inventory).insert(0, 1, 2, 3, 4, 5, 6, 7, 8), Direction.UP)
+                .on(new PartialItemHandler(inventory).insert(SLOT_OUTPUT).extract(SLOT_OUTPUT), Direction.Plane.HORIZONTAL);
+
+            // Fluids go in the top and out the sides
+            sidedFluidInventory
+                .on(new PartialFluidHandler(inventory).insert(), Direction.UP)
+                .on(new PartialFluidHandler(inventory).extract(), Direction.Plane.HORIZONTAL);
+        }
 
         // Heat can be accessed from all sides
         sidedHeat = new SidedHandler.Noop<>(inventory);
