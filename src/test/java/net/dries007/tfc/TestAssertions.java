@@ -9,9 +9,11 @@ package net.dries007.tfc;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonElement;
@@ -29,6 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
@@ -79,46 +82,43 @@ public final class TestAssertions
         }
     }
 
-    public static Collection<TestFunction> unitTestGenerator(@Nullable String... isolatedTests)
+    public static Collection<TestFunction> testGenerator()
     {
         try
         {
-            final Set<String> isolatedMethodNames = Arrays.stream(isolatedTests).collect(Collectors.toSet());
             final Class<?> clazz = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE).getCallerClass();
             final List<TestFunction> functions = new ArrayList<>();
             final String className = clazz.getSimpleName();
             final Object instance = clazz.getDeclaredConstructor().newInstance();
             for (Method method : clazz.getDeclaredMethods())
             {
-                if (method.isAnnotationPresent(AutoGameTest.class))
+                if (method.isAnnotationPresent(MyTest.class))
                 {
+                    final MyTest annotation = method.getAnnotation(MyTest.class);
                     final String methodName = method.getName();
-                    if (isolatedMethodNames.isEmpty() || isolatedMethodNames.contains(methodName))
-                    {
-                        functions.add(new TestFunction("defaultBatch", className + '.' + methodName, "tfc:empty", 100, 0, true, helper -> asUnitTest(className, methodName, helper, () -> {
-                            try
+
+                    final Consumer<GameTestHelper> action = helper -> {
+                        try
+                        {
+                            method.invoke(instance, helper);
+                        }
+                        catch (InvocationTargetException e)
+                        {
+                            if (e.getTargetException() instanceof AssertionError ae)
                             {
-                                final Object ret = method.invoke(instance, helper);
-                                if (ret instanceof String output)
-                                {
-                                    // Returning a string allows game tests to log some additional output even if they pass
-                                    LOGGER.debug("Running AutoGameTest {}.{}() : {}", className, methodName, output);
-                                }
-                                else
-                                {
-                                    LOGGER.debug("Running AutoGameTest {}.{}()", className, methodName);
-                                }
+                                throw ae;
                             }
-                            catch (InvocationTargetException e)
-                            {
-                                if (e.getTargetException() instanceof AssertionError ae)
-                                {
-                                    throw ae;
-                                }
-                                throwAsUnchecked(e);
-                            }
-                        })));
-                    }
+                            throwAsUnchecked(e);
+                        }
+                        catch (IllegalAccessException e)
+                        {
+                            throwAsUnchecked(e);
+                        }
+                    };
+
+                    final Consumer<GameTestHelper> testAction = annotation.unitTest() ? asUnitTest(className, methodName, action) : action;
+
+                    functions.add(new TestFunction("default", className + '.' + methodName, Helpers.identifier(annotation.structure()).toString(), annotation.timeoutTicks(), annotation.setupTicks(), true, testAction));
                 }
             }
             functions.sort(Comparator.comparing(TestFunction::getTestName));
@@ -134,23 +134,21 @@ public final class TestAssertions
      * Invoked from a {@link net.minecraft.gametest.framework.GameTest} method.
      * Treats the contents as a JUnit unit test, where an assertion failing indicates a failing test, otherwise the test succeeds.
      */
-    public static void asUnitTest(String className, String methodName, GameTestHelper helper, Action action)
+    public static Consumer<GameTestHelper> asUnitTest(String className, String methodName, Consumer<GameTestHelper> action)
     {
-        try
-        {
-            action.run();
-            helper.succeed();
-        }
-        catch (AssertionError e)
-        {
-            LOGGER.error("AutoGameTest {}.{}() failed: {}", className, methodName, e.getMessage());
-            LOGGER.error("Error", e);
-            helper.fail("Assertion Failed: " + e.getMessage());
-        }
-        catch (Exception e)
-        {
-            throwAsUnchecked(e);
-        }
+        return helper -> {
+            try
+            {
+                action.accept(helper);
+                helper.succeed();
+            }
+            catch (AssertionError e)
+            {
+                LOGGER.error("AutoGameTest {}.{}() failed: {}", className, methodName, e.getMessage());
+                LOGGER.error("Error", e);
+                helper.fail("Assertion Failed: " + e.getMessage());
+            }
+        };
     }
 
     // assertEquals() variants for vanilla types without equality()
@@ -319,7 +317,7 @@ public final class TestAssertions
     @FunctionalInterface
     public interface Action
     {
-        void run() throws Exception;
+        Object run(GameTestHelper helper) throws Exception;
     }
 
     interface Type {}

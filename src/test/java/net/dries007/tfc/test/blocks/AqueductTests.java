@@ -6,35 +6,43 @@
 
 package net.dries007.tfc.test.blocks;
 
+import java.util.Collection;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.gametest.framework.GameTest;
+import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.gametest.GameTestHolder;
-import net.minecraftforge.gametest.PrefixGameTestTemplate;
 
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.MyTest;
+import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.blocks.TFCBlocks;
 
-@PrefixGameTestTemplate(false)
-@GameTestHolder(TerraFirmaCraft.MOD_ID)
+@GameTestHolder
 public class AqueductTests
 {
-    @GameTest(template = "aqueduct/u_bend_empty", timeoutTicks = 200)
+    @GameTestGenerator
+    public Collection<TestFunction> generator()
+    {
+        return TestAssertions.testGenerator();
+    }
+
+    @MyTest(structure = "aqueduct/u_bend_empty", timeoutTicks = 200)
     public void testAddingWaterInUBend(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 1, Blocks.WATER);
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 1, 2, 3));
     }
 
-    @GameTest(template = "aqueduct/u_bend_water")
+    @MyTest(structure = "aqueduct/u_bend_water")
     public void testRemovingWaterInUBend(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 1, Blocks.POLISHED_ANDESITE); // Clear the water source
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 1, 2, 3));
     }
 
-    @GameTest(template = "aqueduct/u_bend_water")
+    @MyTest(structure = "aqueduct/u_bend_water")
     public void testRemovingAqueductInMiddleOfUBend(GameTestHelper helper)
     {
         helper.destroyBlock(new BlockPos(3, 2, 2));
@@ -44,35 +52,35 @@ public class AqueductTests
         });
     }
 
-    @GameTest(template = "aqueduct/cascade_empty")
+    @MyTest(structure = "aqueduct/cascade_empty")
     public void testAddingWaterInCascade(GameTestHelper helper)
     {
         helper.setBlock(1, 4, 1, Blocks.WATER);
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 7, 2, 1));
     }
 
-    @GameTest(template = "aqueduct/cascade_water")
+    @MyTest(structure = "aqueduct/cascade_water")
     public void testRemovingWaterInCascade(GameTestHelper helper)
     {
         helper.setBlock(1, 4, 1, Blocks.POLISHED_ANDESITE); // Clear the water source
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 7, 2, 1));
     }
 
-    @GameTest(template = "aqueduct/line_empty")
+    @MyTest(structure = "aqueduct/line_empty")
     public void testAddingWaterInLine(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 1, Blocks.WATER);
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 5, 2, 1));
     }
 
-    @GameTest(template = "aqueduct/line_water")
+    @MyTest(structure = "aqueduct/line_water")
     public void testRemovingAqueductInMiddleOfLine(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 1, Blocks.POLISHED_ANDESITE); // Clear the water source
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 5, 2, 1));
     }
 
-    @GameTest(template = "aqueduct/line_water")
+    @MyTest(structure = "aqueduct/line_water")
     public void testRemovingWaterInMiddleOfLine(GameTestHelper helper)
     {
         helper.destroyBlock(new BlockPos(3, 2, 1));
@@ -82,45 +90,45 @@ public class AqueductTests
         });
     }
 
-    @GameTest(template = "aqueduct/loops_empty", timeoutTicks = 400)
+    @MyTest(structure = "aqueduct/loops_empty", timeoutTicks = 400)
     public void testAddingWaterInLoops(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 4, Blocks.WATER);
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.WATER, 1, 2, 2));
     }
 
-    @GameTest(template = "aqueduct/loops_water")
+    @MyTest(structure = "aqueduct/loops_water")
     public void testRemovingWaterInLoops(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 4, Blocks.POLISHED_ANDESITE); // Clear the water source
         helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 1, 2, 2));
     }
 
-    @GameTest(template = "aqueduct/line_empty")
+    @MyTest(structure = "aqueduct/line_empty")
     public void testAddingSaltWaterInLine(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 1, TFCBlocks.SALT_WATER.get());
         helper.succeedWhen(() -> helper.assertBlockPresent(TFCBlocks.SALT_WATER.get(), 5, 2, 1));
     }
 
-    @GameTest(template = "aqueduct/line_empty")
+    @MyTest(structure = "aqueduct/line_empty")
     public void testAddingSpringWaterInLine(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 1, TFCBlocks.SPRING_WATER.get());
         helper.succeedWhen(() -> helper.assertBlockPresent(TFCBlocks.SPRING_WATER.get(), 5, 2, 1));
     }
 
-    @GameTest(template = "aqueduct/corner_empty")
+    @MyTest(structure = "aqueduct/corner_empty", setupTicks = 80)
     public void testFlowingWaterDoesNotFillAqueducts(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 3, Blocks.WATER);
-        helper.runAfterDelay(100, () -> {
-            helper.assertBlockPresent(Blocks.AIR, 3, 2, 3);
-            helper.succeed();
-        });
+        //helper.runAfterDelay(100, () -> {
+            //helper.assertBlockPresent(Blocks.AIR, 3, 2, 3);
+            helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 3, 2, 3));
+        //});
     }
 
-    @GameTest(template = "aqueduct/move_with_piston")
+    @MyTest(structure = "aqueduct/move_with_piston")
     public void testMovingWithPistonDoesNotLeaveSourceBlocks(GameTestHelper helper)
     {
         helper.pullLever(3, 2, 4);
