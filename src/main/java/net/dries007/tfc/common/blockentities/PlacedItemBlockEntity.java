@@ -116,7 +116,7 @@ public class PlacedItemBlockEntity extends InventoryBlockEntity<ItemStackHandler
             if (!current.isEmpty())
             {
                 ItemHandlerHelper.giveItemToPlayer(player, current.copy());
-                inventory.setStackInSlot(slot, ItemStack.EMPTY);
+                inventory.setStackInSlot(isHoldingLargeItem ? SLOT_LARGE_ITEM : slot, ItemStack.EMPTY);
 
                 // This is set to false no matter what happens earlier
                 isHoldingLargeItem = false;
