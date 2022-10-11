@@ -82,6 +82,7 @@ import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
@@ -160,6 +161,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onWorldLoad);
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
+        bus.addListener(ForgeEventHandler::onFluidCreateSource);
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
@@ -552,6 +554,14 @@ public final class ForgeEventHandler
         else if (Helpers.isBlock(state, Blocks.BASALT))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+    }
+
+    public static void onFluidCreateSource(BlockEvent.CreateFluidSourceEvent event)
+    {
+        if (event.getState().getBlock() instanceof AqueductBlock)
+        {
+            event.setResult(Event.Result.DENY); // Waterlogged aqueducts do not count as the source when creating source blocks
         }
     }
 

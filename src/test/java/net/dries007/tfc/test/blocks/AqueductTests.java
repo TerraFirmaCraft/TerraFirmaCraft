@@ -13,6 +13,7 @@ import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.gametest.GameTestHolder;
 
 import net.dries007.tfc.MyTest;
@@ -118,14 +119,14 @@ public class AqueductTests
         helper.succeedWhen(() -> helper.assertBlockPresent(TFCBlocks.SPRING_WATER.get(), 5, 2, 1));
     }
 
-    @MyTest(structure = "aqueduct/corner_empty", setupTicks = 80)
+    @MyTest(structure = "aqueduct/corner_empty")
     public void testFlowingWaterDoesNotFillAqueducts(GameTestHelper helper)
     {
         helper.setBlock(1, 2, 3, Blocks.WATER);
-        //helper.runAfterDelay(100, () -> {
-            //helper.assertBlockPresent(Blocks.AIR, 3, 2, 3);
+        helper.runAfterDelay(100, () -> {
+            helper.assertBlockPresent(Blocks.AIR, 3, 2, 3);
             helper.succeedWhen(() -> helper.assertBlockPresent(Blocks.AIR, 3, 2, 3));
-        //});
+        });
     }
 
     @MyTest(structure = "aqueduct/move_with_piston")
@@ -136,5 +137,37 @@ public class AqueductTests
             helper.assertBlockPresent(Blocks.AIR, 1, 2, 1);
             helper.assertBlockPresent(Blocks.AIR, 3, 2, 1);
         });
+    }
+
+    @MyTest(structure = "aqueduct/pickup_with_bucket")
+    public void testPickupWithBucketFromEnd(GameTestHelper helper)
+    {
+        helper.pullLever(6, 3, 0);
+        helper.succeedWhen(() -> helper.assertBlockState(new BlockPos(6, 2, 1), state -> state.getFluidState().is(Fluids.WATER), () -> "Expected water"));
+    }
+
+    @MyTest(structure = "aqueduct/pickup_with_bucket")
+    public void testPickupWithBucketFromMiddle(GameTestHelper helper)
+    {
+        helper.pullLever(3, 3, 0);
+        helper.succeedWhen(() -> helper.assertBlockState(new BlockPos(3, 2, 1), state -> state.getFluidState().is(Fluids.WATER), () -> "Expected water"));
+    }
+
+    @MyTest(structure = "aqueduct/two_source")
+    public void testAqueductCannotCreateNewSourceBlocks(GameTestHelper helper)
+    {
+        helper.setBlock(1, 2, 1, Blocks.WATER);
+        helper.setBlock(7, 2, 1, Blocks.WATER);
+        helper.runAfterDelay(80, () -> {
+            helper.assertBlockState(new BlockPos(4, 2, 1), state -> state.getFluidState().is(Fluids.FLOWING_WATER), () -> "Expected a non-source block of water");
+            helper.succeed();
+        });
+    }
+
+    @MyTest(structure = "aqueduct/place_with_bucket", setupTicks = 80)
+    public void testPlaceWithBucket(GameTestHelper helper)
+    {
+        helper.pullLever(1, 3, 0);
+        helper.assertBlockPresent(Blocks.AIR, 4, 2, 1);
     }
 }
