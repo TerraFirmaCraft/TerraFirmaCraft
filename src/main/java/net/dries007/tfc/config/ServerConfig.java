@@ -111,6 +111,8 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue nestBoxEnableAutomation;
     // Blocks - Powder Keg
     public final ForgeConfigSpec.BooleanValue powderKegEnableAutomation;
+    // Blocks - Hot Water
+    public final ForgeConfigSpec.DoubleValue hotWaterHealAmount;
 
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
@@ -352,6 +354,10 @@ public class ServerConfig
         innerBuilder.pop().push("powderKeg");
 
         powderKegEnableAutomation = builder.apply("powderKegEnableAutomation").comment("If true, powder kegs will interact with in-world automation such as hoppers on a side-specific basis.").define("powderKegEnableAutomation", true);
+
+        innerBuilder.pop().push("hotWater");
+
+        hotWaterHealAmount = builder.apply("hotWaterHealAmount").comment("An amount that sitting in hot water will restore health, approximately twice per second.").defineInRange("hotWaterHealAmount", 0.08, 0.0, 20.0);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 
