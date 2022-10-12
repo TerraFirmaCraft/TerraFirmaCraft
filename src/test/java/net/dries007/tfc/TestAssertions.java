@@ -9,14 +9,11 @@ package net.dries007.tfc;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
-import com.google.gson.JsonElement;
+import net.minecraft.gametest.framework.GameTestAssertException;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +30,6 @@ import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.slf4j.Logger;
 
@@ -105,6 +101,10 @@ public final class TestAssertions
                         catch (InvocationTargetException e)
                         {
                             if (e.getTargetException() instanceof AssertionError ae)
+                            {
+                                throw ae;
+                            }
+                            if (e.getTargetException() instanceof GameTestAssertException ae)
                             {
                                 throw ae;
                             }

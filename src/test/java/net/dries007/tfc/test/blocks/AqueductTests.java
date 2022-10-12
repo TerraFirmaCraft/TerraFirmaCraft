@@ -164,10 +164,13 @@ public class AqueductTests
         });
     }
 
-    @MyTest(structure = "aqueduct/place_with_bucket", setupTicks = 80)
+    @MyTest(structure = "aqueduct/place_with_bucket")
     public void testPlaceWithBucket(GameTestHelper helper)
     {
         helper.pullLever(1, 3, 0);
-        helper.assertBlockPresent(Blocks.AIR, 4, 2, 1);
+        helper.runAfterDelay(80, () -> {
+            helper.assertBlockPresent(Blocks.AIR, 4, 2, 1);
+            helper.succeed();
+        });
     }
 }
