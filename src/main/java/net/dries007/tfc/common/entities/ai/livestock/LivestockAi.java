@@ -35,7 +35,8 @@ public class LivestockAi
         MemoryModuleType.LOOK_TARGET, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.WALK_TARGET,
         MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATE_RECENTLY,
         MemoryModuleType.BREED_TARGET, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ADULT,
-        MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.AVOID_TARGET
+        MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.AVOID_TARGET,
+        MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY
     );
 
     /**
@@ -64,7 +65,6 @@ public class LivestockAi
     {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
             new Swim(0.8F), // float in water
-            new AnimalPanic(2.0F), // if memory of being hit, runs away
             new LookAtTargetSink(45, 90), // if memory of look target, looks at that
             new MoveToTargetSink(), // tries to walk to its internal walk target. This could just be a random block.
             new CountDownCooldownTicks(MemoryModuleType.TEMPTATION_COOLDOWN_TICKS) // cools down between being tempted if its concentration broke
@@ -80,6 +80,7 @@ public class LivestockAi
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
             Pair.of(0, new AvoidPredatorBehavior(true)),
             Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
+            Pair.of(1, new AnimalPanic(2.0F)), // if memory of being hit, runs away
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
             Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(4, createIdleMovementBehaviors())

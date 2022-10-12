@@ -214,6 +214,7 @@
   "tfc.tooltip.animal.low_familiarity": "This %s is not familiar enough to produce.",
   "tfc.tooltip.animal.no_milk": "This %s has no milk.",
   "tfc.tooltip.animal.no_wool": "This %s has no wool.",
+  "tfc.tooltip.animal.horse_angry_overburdened": "The horse kicked you off for putting too much weight on it!",
   "tfc.tooltip.scribing_table.missingink": "Ink is missing!",
   "tfc.tooltip.scribing_table.invalidink": "Item isn't ink!",
   "tfc.tooltip.deals_damage.slashing": "§7Deals §fSlashing§r Damage",

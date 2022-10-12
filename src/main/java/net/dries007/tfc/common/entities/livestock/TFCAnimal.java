@@ -21,10 +21,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -41,6 +38,7 @@ import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.entities.ai.prey.PreyAi;
 import net.dries007.tfc.config.animals.AnimalConfig;
 import net.dries007.tfc.util.calendar.Calendars;
 
@@ -91,6 +89,18 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     protected Brain<?> makeBrain(Dynamic<?> dynamic)
     {
         return LivestockAi.makeBrain(brainProvider().makeBrain(dynamic));
+    }
+
+    @Override
+    public boolean hurt(DamageSource src, float amount)
+    {
+        final boolean hurt = super.hurt(src, amount);
+        if (this.level.isClientSide) return hurt;
+        if (hurt && src.getEntity() instanceof LivingEntity living)
+        {
+            PreyAi.wasHurtBy(this, living);
+        }
+        return hurt;
     }
 
     @Override

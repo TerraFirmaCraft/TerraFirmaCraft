@@ -110,6 +110,12 @@ public class TFCHorse extends Horse implements HorseProperties
     // HORSE SPECIFIC STUFF
 
     @Override
+    public double getPassengersRidingOffset()
+    {
+        return super.getPassengersRidingOffset() * getAgeScale();
+    }
+
+    @Override
     public void createGenes(CompoundTag tag, TFCAnimalProperties maleProperties)
     {
         HorseProperties.super.createGenes(tag, maleProperties);

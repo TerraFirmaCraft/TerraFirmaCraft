@@ -390,9 +390,10 @@ public interface TFCAnimalProperties extends GenderedRenderAnimal
     /**
      * Do things on fertilization of females (ie: save the male genes for some sort of genetic selection)
      */
-    default void onFertilized(@Nonnull TFCAnimalProperties male)
+    default void onFertilized(TFCAnimalProperties male)
     {
         setFertilized(true);
+        male.addUses(5); // wear out the male
     }
 
     default void setBabyTraits(TFCAnimalProperties baby)

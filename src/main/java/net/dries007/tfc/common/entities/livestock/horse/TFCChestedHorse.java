@@ -99,6 +99,12 @@ public abstract class TFCChestedHorse extends AbstractChestedHorse implements Ho
 
     // HORSE SPECIFIC STUFF
 
+    @Override
+    public double getPassengersRidingOffset()
+    {
+        return super.getPassengersRidingOffset() * getAgeScale();
+    }
+
     public ItemStack getChestItem()
     {
         return entityData.get(CHEST_ITEM);
