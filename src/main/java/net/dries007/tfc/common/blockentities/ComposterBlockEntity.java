@@ -24,7 +24,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 
-public class ComposterBlockEntity extends TickCounterBlockEntity
+public class ComposterBlockEntity extends TickCounterBlockEntity implements Infestable
 {
     private int green, brown;
 
@@ -203,5 +203,11 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         assert level != null;
         level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.STAGE, stage));
+    }
+
+    @Override
+    public int getInfestation()
+    {
+        return isRotten() ? 5 : 0;
     }
 }

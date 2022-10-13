@@ -32,9 +32,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -81,6 +80,8 @@ import net.minecraftforge.server.ServerLifecycleHooks;
 import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.blockentities.Infestable;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -383,6 +384,53 @@ public final class Helpers
     public static Iterable<ItemStack> iterate(IItemHandler inventory)
     {
         return iterate(inventory, 0, inventory.getSlots());
+    }
+
+    public static int countInfestation(IItemHandler inventory)
+    {
+        int items = 0;
+        for (ItemStack item : iterate(inventory))
+        {
+            if (Helpers.isItem(item, TFCTags.Items.FOODS))
+            {
+                items++;
+                if (items == 5)
+                {
+                    break;
+                }
+            }
+        }
+        return items;
+    }
+
+    public static void tickInfestation(Level level, BlockPos pos)
+    {
+        if (level.getBlockEntity(pos) instanceof Infestable infestable)
+        {
+            final int infestation = Mth.clamp(infestable.getInfestation(), 0, 5);
+            if (infestation == 0)
+            {
+                return;
+            }
+            if (level.random.nextInt(120 - (20 * infestation)) == 0)
+            {
+                Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
+                    final Entity pest = type.create(level);
+                    if (pest instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
+                    {
+                        mob.moveTo(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+                        Vec3 checkPos = LandRandomPos.getPos(mob, 15, 10);
+                        if (checkPos != null)
+                        {
+                            mob.moveTo(checkPos);
+                            mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null, null);
+                            serverLevel.addFreshEntity(mob);
+                        }
+                    }
+                });
+            }
+        }
+
     }
 
     /**

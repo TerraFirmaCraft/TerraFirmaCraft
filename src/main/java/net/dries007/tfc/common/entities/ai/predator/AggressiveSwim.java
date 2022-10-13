@@ -21,7 +21,7 @@ import net.dries007.tfc.common.entities.predator.Predator;
 
 public class AggressiveSwim extends Behavior<Predator>
 {
-    private float jumpChance;
+    private final float jumpChance;
 
     public AggressiveSwim(float jumpChance)
     {

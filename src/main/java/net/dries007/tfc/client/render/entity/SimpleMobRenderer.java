@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Mob;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
+import net.dries007.tfc.client.model.ItemInMouthLayer;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,16 +28,22 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     private final ResourceLocation texture;
     @Nullable
     private final ResourceLocation babyTexture;
+    private final Function<T, ResourceLocation> textureGetter;
     private final boolean doesFlop;
     private final float scale;
 
-    public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow, boolean flop, float scale, boolean hasBabyTexture)
+    public SimpleMobRenderer(EntityRendererProvider.Context ctx, M model, String name, float shadow, boolean flop, float scale, boolean hasBabyTexture, boolean itemInMouth, @Nullable Function<T, ResourceLocation> textureGetter)
     {
         super(ctx, model, shadow);
         doesFlop = flop;
         texture = Helpers.animalTexture(name);
         babyTexture = hasBabyTexture ? Helpers.animalTexture(name + "_young") : null;
+        this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : texture;
         this.scale = scale;
+        if (itemInMouth)
+        {
+            addLayer(new ItemInMouthLayer<>(this));
+        }
     }
 
     @Override
@@ -75,7 +82,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
     @Override
     public ResourceLocation getTextureLocation(T entity)
     {
-        return babyTexture != null && entity.isBaby() ? babyTexture : texture;
+        return textureGetter.apply(entity);
     }
 
     public static class Builder<T extends Mob, M extends EntityModel<T>>
@@ -88,6 +95,8 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
         private boolean flop = false;
         private float scale = 1f;
         private boolean hasBabyTexture = false;
+        private boolean itemInMouth = false;
+        @Nullable private Function<T, ResourceLocation> textureGetter = null;
 
         public Builder(EntityRendererProvider.Context ctx, Function<ModelPart, M> model, String name)
         {
@@ -120,9 +129,21 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
             return this;
         }
 
+        public Builder<T, M> mouthy()
+        {
+            this.itemInMouth = true;
+            return this;
+        }
+
+        public Builder<T, M> texture(Function<T, ResourceLocation> getter)
+        {
+            this.textureGetter = getter;
+            return this;
+        }
+
         public SimpleMobRenderer<T, M> build()
         {
-            return new SimpleMobRenderer<>(ctx, model.apply(RenderHelpers.bakeSimple(ctx, name)), name, shadow, flop, scale, hasBabyTexture);
+            return new SimpleMobRenderer<>(ctx, model.apply(RenderHelpers.bakeSimple(ctx, name)), name, shadow, flop, scale, hasBabyTexture, itemInMouth, textureGetter);
         }
     }
 }

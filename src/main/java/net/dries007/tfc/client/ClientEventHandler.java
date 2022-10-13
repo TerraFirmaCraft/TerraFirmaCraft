@@ -64,6 +64,7 @@ import net.dries007.tfc.common.blocks.soil.SoilBlockType;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.common.entities.TFCEntities;
+import net.dries007.tfc.common.entities.aquatic.Jellyfish;
 import net.dries007.tfc.common.fluids.FluidType;
 import net.dries007.tfc.common.fluids.TFCFluids;
 import net.dries007.tfc.common.items.PanItem;
@@ -324,7 +325,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.TROPICAL_FISH.get(), TropicalFishRenderer::new);
         event.registerEntityRenderer(TFCEntities.PUFFERFISH.get(), PufferfishRenderer::new);
         event.registerEntityRenderer(TFCEntities.BLUEGILL.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, BluegillModel::new, "bluegill").flops().build());
-        event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), JellyfishRenderer::new);
+        event.registerEntityRenderer(TFCEntities.JELLYFISH.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, JellyfishModel::new, "jellyfish").flops().texture(Jellyfish::getTextureLocation).build());
         event.registerEntityRenderer(TFCEntities.LOBSTER.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, LobsterModel::new, "lobster").build());
         event.registerEntityRenderer(TFCEntities.CRAYFISH.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, LobsterModel::new, "crayfish").build());
         event.registerEntityRenderer(TFCEntities.ISOPOD.get(), ctx -> new SimpleMobRenderer.Builder<>(ctx, IsopodModel::new, "isopod").build());

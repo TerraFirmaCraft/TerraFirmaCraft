@@ -22,29 +22,10 @@ import net.dries007.tfc.util.Helpers;
 
 public class TFCGroundPathNavigation extends GroundPathNavigation
 {
-    public TFCGroundPathNavigation(Mob mob, Level level)
-    {
-        super(mob, level);
-    }
-
-    @Override
-    protected PathFinder createPathFinder(int followRange)
-    {
-        nodeEvaluator = new TFCWalkNodeEvaluator();
-        nodeEvaluator.setCanPassDoors(true);
-        return new PathFinder(nodeEvaluator, followRange);
-    }
-
-    @Override
-    protected Vec3 getTempMobPos()
-    {
-        return new Vec3(mob.getX(), getSurfaceY(), mob.getZ());
-    }
-
-    private int getSurfaceY()
+    public static int getSurfaceYRespectingFluid(GroundPathNavigation navigation, Mob mob, Level level)
     {
         final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-        if (mob.isInWater() && canFloat())
+        if (mob.isInWater() && navigation.canFloat())
         {
             BlockState state = level.getBlockState(cursor.set(mob.getX(), mob.getBlockY(), mob.getZ()));
             int checked = 0;
@@ -61,6 +42,25 @@ public class TFCGroundPathNavigation extends GroundPathNavigation
             return cursor.getY();
         }
         return Mth.floor(mob.getY() + 0.5D);
+    }
+
+    public TFCGroundPathNavigation(Mob mob, Level level)
+    {
+        super(mob, level);
+    }
+
+    @Override
+    protected PathFinder createPathFinder(int followRange)
+    {
+        nodeEvaluator = new TFCWalkNodeEvaluator();
+        nodeEvaluator.setCanPassDoors(true);
+        return new PathFinder(nodeEvaluator, followRange);
+    }
+
+    @Override
+    protected Vec3 getTempMobPos()
+    {
+        return new Vec3(mob.getX(), getSurfaceYRespectingFluid(this, mob, level), mob.getZ());
     }
 
     public static class TFCWalkNodeEvaluator extends WalkNodeEvaluator

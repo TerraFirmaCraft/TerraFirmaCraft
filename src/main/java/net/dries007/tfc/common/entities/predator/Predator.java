@@ -66,10 +66,10 @@ public class Predator extends WildAnimal
 
     public static Predator createBear(EntityType<? extends Predator> type, Level level)
     {
-        return new Predator(type, level, true, 20, TFCSounds.BEAR);
+        return new Predator(type, level, true, TFCSounds.BEAR);
     }
 
-    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, int walkLength, TFCSounds.EntitySound sounds)
+    public Predator(EntityType<? extends Predator> type, Level level, boolean diurnal, TFCSounds.EntitySound sounds)
     {
         super(type, level, sounds);
         this.diurnal = diurnal;

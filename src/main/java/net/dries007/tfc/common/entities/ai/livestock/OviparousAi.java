@@ -23,6 +23,7 @@ import net.minecraft.world.entity.schedule.Activity;
 
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.prey.AvoidPredatorBehavior;
 import net.dries007.tfc.common.entities.ai.prey.PreyAvoidBehavior;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 
@@ -62,7 +63,7 @@ public class OviparousAi
     {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(0, new PreyAvoidBehavior(true)),
+            Pair.of(0, new AvoidPredatorBehavior(true)),
             Pair.of(0, new LayEggBehavior()),
             Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
             Pair.of(1, new AnimalPanic(2.0F)), // if memory of being hit, runs away

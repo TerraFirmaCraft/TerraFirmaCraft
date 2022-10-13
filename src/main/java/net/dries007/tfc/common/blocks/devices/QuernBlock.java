@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -100,6 +101,17 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     public QuernBlock(ExtendedProperties properties)
     {
         super(properties, InventoryRemoveBehavior.DROP);
+    }
+
+    @Override
+    public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
+    {
+        level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
+            if (quern.isGrinding())
+            {
+                entity.setYRot((entity.getYRot() + 4f) % 360f);
+            }
+        });
     }
 
     @Override

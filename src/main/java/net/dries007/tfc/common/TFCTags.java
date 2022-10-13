@@ -86,6 +86,7 @@ public class TFCTags
         public static final TagKey<Block> RABBIT_RAIDABLE = create("rabbit_raidable"); // rabbits will break it
         public static final TagKey<Block> FOX_RAIDABLE = create("fox_raidable"); // foxes will eat the berries. only applies to seasonal plant blocks
         public static final TagKey<Block> SEASONAL_LEAVES = create("seasonal_leaves"); // drops fall leaf particles
+        public static final TagKey<Block> CAT_SITS_ON = create("cat_sits_on"); // cat will sleep here
 
         private static TagKey<Block> create(String id)
         {
@@ -152,6 +153,7 @@ public class TFCTags
         public static final TagKey<Item> SOUP_BOWLS = create("soup_bowls"); // Bowls that when right clicked on a pot, can extract soup
         public static final TagKey<Item> SALAD_BOWLS = create("salad_bowls"); // Bowls that when right clicked, open the salad UI
         public static final TagKey<Item> USABLE_IN_SALAD = create("foods/usable_in_salad"); // Items that are valid ingredients for a salad
+        public static final TagKey<Item> FOODS = create("foods");
         public static final TagKey<Item> PIG_FOOD = create("pig_food");
         public static final TagKey<Item> COW_FOOD = create("cow_food");
         public static final TagKey<Item> YAK_FOOD = create("yak_food");
@@ -227,6 +229,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> HORSES = create("horses");
         public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = create("destroyed_by_leaves");
         public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = create("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
+        public static final TagKey<EntityType<?>> PESTS = create("pests"); // spawned during infestations
 
         private static TagKey<EntityType<?>> create(String id)
         {

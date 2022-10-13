@@ -42,7 +42,7 @@ public class FelinePredator extends Predator
 
     public FelinePredator(EntityType<? extends Predator> type, Level level, boolean diurnal, int walkAnimationLength, double attackDistanceSquared, double crouchSpeedMod, double sprintSpeedMod, TFCSounds.EntitySound sounds)
     {
-        super(type, level, diurnal, walkAnimationLength, sounds);
+        super(type, level, diurnal, sounds);
 
         this.crouchSpeedMod = crouchSpeedMod;
         this.sprintSpeedMod = sprintSpeedMod;

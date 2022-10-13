@@ -14,17 +14,21 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.container.RestrictedChestContainer;
 import net.dries007.tfc.common.container.TFCContainerTypes;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.Helpers;
 
-public class TFCChestBlockEntity extends ChestBlockEntity
+public class TFCChestBlockEntity extends ChestBlockEntity implements Infestable
 {
     public static boolean isValid(ItemStack stack)
     {
         return ItemSizeManager.get(stack).getSize(stack).isEqualOrSmallerThan(TFCConfig.SERVER.chestMaximumItemSize.get());
     }
+
+    private int infestation = 0;
 
     public TFCChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state)
     {
@@ -52,5 +56,25 @@ public class TFCChestBlockEntity extends ChestBlockEntity
     public boolean canPlaceItem(int slot, ItemStack stack) // should be isItemValid but no access here
     {
         return isValid(stack);
+    }
+
+    @Override
+    public void onLoad()
+    {
+        super.onLoad();
+        getCapability(Capabilities.ITEM).ifPresent(inv -> infestation = Helpers.countInfestation(inv));
+    }
+
+    @Override
+    public void setChanged()
+    {
+        super.setChanged();
+        getCapability(Capabilities.ITEM).ifPresent(inv -> infestation = Helpers.countInfestation(inv));
+    }
+
+    @Override
+    public int getInfestation()
+    {
+        return infestation;
     }
 }
