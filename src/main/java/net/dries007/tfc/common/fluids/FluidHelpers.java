@@ -636,7 +636,8 @@ public final class FluidHelpers
             }
             if (!newContainerStack.isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, newContainerStack);
+                // Always ensure that we've only created one new container stack.
+                ItemHandlerHelper.giveItemToPlayer(player, Helpers.copyWithSize(newContainerStack, 1));
             }
         }
     }
