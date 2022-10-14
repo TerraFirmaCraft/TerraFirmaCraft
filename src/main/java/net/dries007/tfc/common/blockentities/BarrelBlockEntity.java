@@ -65,6 +65,15 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, BarrelBlockEntity barrel)
     {
+        // Must run before checkForCalendarUpdate(), as this sets the current recipe.
+        if (barrel.recipeName != null)
+        {
+            barrel.recipe = level.getRecipeManager().byKey(barrel.recipeName)
+                .map(b -> b instanceof SealedBarrelRecipe r ? r : null)
+                .orElse(null);
+            barrel.recipeName = null;
+        }
+
         barrel.checkForLastTickSync();
         barrel.checkForCalendarUpdate();
 
@@ -135,6 +144,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
 
     private final SidedHandler.Builder<IFluidHandler> sidedFluidInventory;
 
+    @Nullable private ResourceLocation recipeName;
     @Nullable private SealedBarrelRecipe recipe;
     private long lastUpdateTick = Integer.MIN_VALUE; // The last tick this barrel was updated in serverTick()
     private long sealedTick; // The tick this barrel was sealed
@@ -283,11 +293,16 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         recipeTick = nbt.getLong("recipeTick");
 
         recipe = null;
-        if (level != null && nbt.contains("recipe", Tag.TAG_STRING))
+        recipeName = null;
+        if (nbt.contains("recipe", Tag.TAG_STRING))
         {
-            recipe = level.getRecipeManager().byKey(new ResourceLocation(nbt.getString("recipe")))
-                .map(b -> b instanceof SealedBarrelRecipe r ? r : null)
-                .orElse(null);
+            recipeName = new ResourceLocation(nbt.getString("recipe"));
+            if (level != null)
+            {
+                recipe = level.getRecipeManager().byKey(recipeName)
+                    .map(b -> b instanceof SealedBarrelRecipe r ? r : null)
+                    .orElse(null);
+            }
         }
         super.loadAdditional(nbt);
     }
@@ -363,7 +378,7 @@ public class BarrelBlockEntity extends TickableInventoryBlockEntity<BarrelBlockE
         {
             // Will only work on a recipe as long as the 'excess' is empty
             recipe = level.getRecipeManager().getRecipeFor(TFCRecipeTypes.BARREL_SEALED.get(), inventory, level).orElse(null);
-            if (recipe != null && oldRecipe != recipe)
+            if (recipe != null && oldRecipe != recipe && (oldRecipe == null || !oldRecipe.getId().equals(recipe.getId())))
             {
                 // The recipe has changed to a new one, so update the recipe ticks
                 recipeTick = Calendars.get(level).getTicks();
