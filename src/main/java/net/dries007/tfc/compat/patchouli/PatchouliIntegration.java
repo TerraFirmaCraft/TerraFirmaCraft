@@ -127,7 +127,17 @@ public final class PatchouliIntegration
             {
                 for (int z = 0; z < 5; z++)
                 {
-                    access.getBlockEntity(new BlockPos(x, fullSize ? 2 : 1, z), TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.setAllMetalsFromOutsideWorld(wroughtIron));
+                    if (fullSize)
+                    {
+                        for (int y = 2; y <= 6; y++)
+                        {
+                            access.getBlockEntity(new BlockPos(x, y, z), TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.setAllMetalsFromOutsideWorld(wroughtIron));
+                        }
+                    }
+                    else
+                    {
+                        access.getBlockEntity(new BlockPos(x, 1, z), TFCBlockEntities.SHEET_PILE.get()).ifPresent(pile -> pile.setAllMetalsFromOutsideWorld(wroughtIron));
+                    }
                 }
             }
         });
