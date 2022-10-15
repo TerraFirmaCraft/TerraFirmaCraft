@@ -247,7 +247,7 @@ public final class FoodCapability
     }
 
     /**
-     * @return Gets the creation date to set a piece of food to, in order to stack items created nearby in time
+     * @return Gets the creation date to set a piece of food to, in order to stack items created nearby in time. Note that {@code getRoundedCreationDate(x) >= x} will always be true.
      */
     public static long getRoundedCreationDate()
     {
@@ -256,19 +256,19 @@ public final class FoodCapability
 
     public static long getRoundedCreationDate(long tick)
     {
-        final int window = TFCConfig.SERVER.foodDecayStackWindow.get();
-        return ((ICalendar.getTotalHours(tick - 1) + 1) / window) * ICalendar.TICKS_IN_HOUR * window;
+        final int window = TFCConfig.SERVER.foodDecayStackWindow.get() * ICalendar.TICKS_IN_HOUR;
+        return ((tick - 1) / window + 1) * window;
     }
 
     /**
      * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier
-     *
+     * <p>
      * To apply preservation p at time T: want remaining decay fraction to be invariant under preservation
      * Let Ri = (T - Ci) / (Ei - Ci) = (T - Ci) / d, Rf = (T - Cf) / (d * p)
      * Then if Ri = Rf
      * => d * p * (T - Ci) = d * (T - Cf)
      * => Cf = (1 - p) * T + p * Ci (affine combination)
-     *
+     * <p>
      * In order to show that E > T is invariant under preservation: (i.e. see TerraFirmaCraft#352)
      * Let T, Ci, Ei, d, p > 0 such that Ei > T (1.), and Ei = Ci + d
      * Cf = (1 - p) * T + p * Ci
