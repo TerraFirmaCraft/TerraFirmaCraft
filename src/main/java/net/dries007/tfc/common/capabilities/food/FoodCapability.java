@@ -261,23 +261,24 @@ public final class FoodCapability
     }
 
     /**
-     * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier
-     * <p>
+     * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier.
      * To apply preservation p at time T: want remaining decay fraction to be invariant under preservation
+     * <pre>
      * Let Ri = (T - Ci) / (Ei - Ci) = (T - Ci) / d, Rf = (T - Cf) / (d * p)
      * Then if Ri = Rf
-     * => d * p * (T - Ci) = d * (T - Cf)
-     * => Cf = (1 - p) * T + p * Ci (affine combination)
-     * <p>
+     * -> d * p * (T - Ci) = d * (T - Cf)
+     * -> Cf = (1 - p) * T + p * Ci
+     * </pre>
      * In order to show that E > T is invariant under preservation: (i.e. see TerraFirmaCraft#352)
+     * <pre>
      * Let T, Ci, Ei, d, p > 0 such that Ei > T (1.), and Ei = Ci + d
      * Cf = (1 - p) * T + p * Ci
-     * => Ef = Cf + p * d
-     * = (1 - p) * T + p * Ci + p * d
-     * = (1 - p) * T + p * (Ci + d)
+     * -> Ef = Cf + p * d
+     * -> (1 - p) * T + p * Ci + p * d
+     * -> (1 - p) * T + p * (Ci + d)
      * via 1. > (1 - p) * T + p * T = T
      * QED
-     *
+     * </pre>
      * @param ci The initial creation date
      * @param p  The decay date modifier (1 / standard decay modifier)
      * @return cf the final creation date, rounded to the nearest hour, for ease of stackability.
