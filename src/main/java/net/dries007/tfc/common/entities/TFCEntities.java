@@ -38,6 +38,7 @@ import net.dries007.tfc.common.entities.livestock.horse.TFCHorse;
 import net.dries007.tfc.common.entities.livestock.horse.TFCMule;
 import net.dries007.tfc.common.entities.predator.FelinePredator;
 import net.dries007.tfc.common.entities.predator.Predator;
+import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.common.entities.prey.Prey;
 import net.dries007.tfc.common.entities.prey.TFCFox;
 import net.dries007.tfc.common.entities.prey.TFCRabbit;
@@ -129,6 +130,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<TFCFox>> FOX = register("fox", EntityType.Builder.of(TFCFox::new, MobCategory.CREATURE).sized(0.6F, 0.7F).clientTrackingRange(8));
     public static final RegistryObject<EntityType<Prey>> BOAR = register("boar", EntityType.Builder.of(TFCEntities::makeBoar, MobCategory.CREATURE).sized(0.5f, 0.5f).clientTrackingRange(10));
     public static final RegistryObject<EntityType<Prey>> DEER = register("deer", EntityType.Builder.of(TFCEntities::makeDeer, MobCategory.CREATURE).sized(1.0F, 1.3F).clientTrackingRange(10));
+    public static final RegistryObject<EntityType<Pest>> RAT = register("rat", EntityType.Builder.of(TFCEntities::makeRat, MobCategory.CREATURE).sized(0.4f, 0.3f).clientTrackingRange(8));
 
     public static final RegistryObject<EntityType<TFCDonkey>> DONKEY = register("donkey", EntityType.Builder.of(TFCDonkey::new, MobCategory.CREATURE).sized(1.3964844F, 1.5F).clientTrackingRange(10));
     public static final RegistryObject<EntityType<TFCMule>> MULE = register("mule", EntityType.Builder.of(TFCMule::new, MobCategory.CREATURE).sized(1.3964844F, 1.6F).clientTrackingRange(8));
@@ -188,6 +190,7 @@ public class TFCEntities
         event.put(FOX.get(), TFCFox.createAttributes().build());
         event.put(BOAR.get(), Prey.createAttributes().build());
         event.put(DEER.get(), Prey.createAttributes().build());
+        event.put(RAT.get(), Pest.createAttributes().build());
         event.put(MULE.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(DONKEY.get(), AbstractChestedHorse.createBaseChestedHorseAttributes().build());
         event.put(HORSE.get(), AbstractHorse.createBaseHorseAttributes().build());
@@ -322,6 +325,11 @@ public class TFCEntities
     public static Prey makeDeer(EntityType<? extends Prey> animal, Level level)
     {
         return new Prey(animal, level, TFCSounds.DEER);
+    }
+
+    public static Pest makeRat(EntityType<? extends Pest> animal, Level level)
+    {
+        return new Pest(animal, level, TFCSounds.RAT);
     }
 
 }

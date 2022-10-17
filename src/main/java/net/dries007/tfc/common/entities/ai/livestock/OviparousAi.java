@@ -24,7 +24,6 @@ import net.minecraft.world.entity.schedule.Activity;
 import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.prey.AvoidPredatorBehavior;
-import net.dries007.tfc.common.entities.ai.prey.PreyAvoidBehavior;
 import net.dries007.tfc.common.entities.livestock.OviparousAnimal;
 
 public class OviparousAi

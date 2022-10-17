@@ -30,6 +30,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableForcedTFCGameRules;
     public final ForgeConfigSpec.BooleanValue enableFireArrowSpreading;
     public final ForgeConfigSpec.DoubleValue fireStarterChance;
+    public final ForgeConfigSpec.BooleanValue enableInfestations;
 
     // Blocks - Farmland
     public final ForgeConfigSpec.BooleanValue enableFarmlandCreation;
@@ -214,6 +215,7 @@ public class ServerConfig
         ).define("enableForcedTFCGameRules", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
+        enableInfestations = builder.apply("enableInfestations").comment("Enable rat infestations for improperly stored food.").define("enableInfestations", true);
 
         innerBuilder.pop().push("blocks").push("farmland");
 

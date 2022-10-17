@@ -42,6 +42,7 @@ public class TFCBrain
 
     public static final RegistryObject<MemoryModuleType<BlockPos>> NEST_BOX_MEMORY = registerMemory("nest");
     public static final RegistryObject<MemoryModuleType<GlobalPos>> SLEEP_POS = registerMemory("sleep_pos");
+    public static final RegistryObject<MemoryModuleType<GlobalPos>> SMELLY_POS = registerMemory("smelly_pos");
 
     public static final RegistryObject<Schedule> DIURNAL = registerSchedule("diurnal", () -> newSchedule().changeActivityAt(0, HUNT.get()).changeActivityAt(11000, Activity.REST).build());
     public static final RegistryObject<Schedule> NOCTURNAL = registerSchedule("nocturnal", () -> newSchedule().changeActivityAt(0, Activity.REST).changeActivityAt(11000, HUNT.get()).build());

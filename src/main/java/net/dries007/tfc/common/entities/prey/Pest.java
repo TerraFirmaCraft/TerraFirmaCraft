@@ -6,26 +6,30 @@
 
 package net.dries007.tfc.common.entities.prey;
 
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
+import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCClimberNavigation;
+import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,22 +37,38 @@ public class Pest extends Prey
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.MOVEMENT_SPEED, 0.6F);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 8.0D).add(Attributes.MOVEMENT_SPEED, 0.3F);
     }
 
     public static final EntityDataAccessor<Boolean> DATA_CLIMBING = SynchedEntityData.defineId(Pest.class, EntityDataSerializers.BOOLEAN);
 
-    public final AnimationState walkingAnimation = new AnimationState();
     public final AnimationState sniffingAnimation = new AnimationState();
     public final AnimationState searchingAnimation = new AnimationState();
     public final AnimationState eatingAnimation = new AnimationState();
     public final AnimationState draggingAnimation = new AnimationState();
 
+    private static final int DRAG_TIME = 200;
+    private static final int EAT_TIME = 200;
+
+    private int dragTicks = 0;
+
     public Pest(EntityType<? extends Prey> type, Level level, TFCSounds.EntitySound sounds)
     {
         super(type, level, sounds);
+        moveControl = new PestMoveControl(this);
     }
 
+    @Override
+    protected Brain.Provider<? extends Pest> brainProvider()
+    {
+        return Brain.provider(PestAi.MEMORY_TYPES, PestAi.SENSOR_TYPES);
+    }
+
+    @Override
+    protected Brain<?> makeBrain(Dynamic<?> dynamic)
+    {
+        return PestAi.makeBrain(brainProvider().makeBrain(dynamic));
+    }
 
     @Override
     protected void defineSynchedData()
@@ -76,11 +96,47 @@ public class Pest extends Prey
     @Override
     public void tick()
     {
-        if (level.isClientSide)
+        final ItemStack held = getMainHandItem();
+        if (!held.isEmpty())
         {
-            final boolean moving = EntityHelpers.isMovingOnLand(this);
-            EntityHelpers.startOrStop(walkingAnimation, moving, tickCount);
-            if (!moving && random.nextInt(220) == 0)
+            dragTicks++;
+            if (dragTicks < DRAG_TIME)
+            {
+                if (level.isClientSide)
+                {
+                    draggingAnimation.startIfStopped(tickCount);
+                }
+            }
+            else
+            {
+                if (level.isClientSide)
+                {
+                    draggingAnimation.stop();
+                    eatingAnimation.startIfStopped(tickCount);
+                    level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, held), getX(), getEyeY(), getZ(), Helpers.triangle(random), -random.nextFloat(), Helpers.triangle(random));
+                    if (random.nextInt(20) == 0)
+                    {
+                        playSound(SoundEvents.GENERIC_EAT, getSoundVolume(), getVoicePitch());
+                    }
+                }
+                if (dragTicks > DRAG_TIME + EAT_TIME)
+                {
+                    setItemSlot(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
+                    if (level.isClientSide)
+                    {
+                        eatingAnimation.stop();
+                    }
+                    playSound(SoundEvents.PLAYER_BURP, getSoundVolume(), getVoicePitch());
+                }
+            }
+        }
+        else
+        {
+            dragTicks = 0;
+        }
+        if (level.isClientSide && dragTicks == 0)
+        {
+            if (!EntityHelpers.isMovingOnLand(this) && random.nextInt(20) == 0)
             {
                 if (random.nextBoolean())
                 {
@@ -121,6 +177,31 @@ public class Pest extends Prey
         {
             setCustomName(Helpers.literal("Pak"));
         }
+        if (random.nextFloat() < 0.2f)
+        {
+            setBaby(true);
+        }
         return spawnData;
+    }
+
+
+    public static class PestMoveControl extends MoveControl
+    {
+        private final Pest pest;
+
+        public PestMoveControl(Pest mob)
+        {
+            super(mob);
+            this.pest = mob;
+        }
+
+        @Override
+        public void tick()
+        {
+            if (pest.dragTicks < DRAG_TIME + EAT_TIME)
+            {
+                super.tick();
+            }
+        }
     }
 }

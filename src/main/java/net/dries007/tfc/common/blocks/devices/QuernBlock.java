@@ -40,6 +40,7 @@ import static net.dries007.tfc.common.blockentities.QuernBlockEntity.*;
 public class QuernBlock extends DeviceBlock implements IHighlightHandler
 {
     private static final VoxelShape BASE_SHAPE = box(0.0D, 0.0D, 0.0D, 16.0D, 10.0D, 16.0D);
+    private static final AABB BASE_AABB = BASE_SHAPE.bounds().inflate(0.01D);
 
     private static final VoxelShape HANDSTONE_SHAPE = box(3.0D, 10.0D, 3.0D, 13.0D, 13.76D, 13.0D);
     private static final AABB HANDSTONE_AABB = HANDSTONE_SHAPE.bounds().inflate(0.01D);
@@ -107,7 +108,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity)
     {
         level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).ifPresent(quern -> {
-            if (quern.isGrinding())
+            if (quern.isGrinding() && HANDSTONE_AABB.move(pos).contains(entity.position()) && !BASE_AABB.contains(entity.position()))
             {
                 entity.setYRot((entity.getYRot() + 4f) % 360f);
             }

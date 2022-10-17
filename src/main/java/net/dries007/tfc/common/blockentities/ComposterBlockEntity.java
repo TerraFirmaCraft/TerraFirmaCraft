@@ -8,12 +8,10 @@ package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -24,7 +22,7 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 
-public class ComposterBlockEntity extends TickCounterBlockEntity implements Infestable
+public class ComposterBlockEntity extends TickCounterBlockEntity
 {
     private int green, brown;
 
@@ -40,14 +38,18 @@ public class ComposterBlockEntity extends TickCounterBlockEntity implements Infe
 
     public void randomTick()
     {
+        assert level != null;
         if (green >= 4 && brown >= 4 & !isRotten())
         {
-            assert level != null;
             if (getTicksSinceUpdate() > getReadyTicks())
             {
                 setState(TFCComposterBlock.CompostType.READY);
                 markForSync();
             }
+        }
+        if (isRotten())
+        {
+            Helpers.tickInfestation(level, getBlockPos(), 5, null, getBlockPos());
         }
     }
 
@@ -205,9 +207,4 @@ public class ComposterBlockEntity extends TickCounterBlockEntity implements Infe
         level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.STAGE, stage));
     }
 
-    @Override
-    public int getInfestation()
-    {
-        return isRotten() ? 5 : 0;
-    }
 }

@@ -361,6 +361,7 @@ public final class ClientEventHandler
         event.registerEntityRenderer(TFCEntities.MULE.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.92F, ModelLayers.MULE, "mule"));
         event.registerEntityRenderer(TFCEntities.DONKEY.get(), ctx -> new TFCChestedHorseRenderer<>(ctx, 0.87F, ModelLayers.DONKEY, "donkey"));
         event.registerEntityRenderer(TFCEntities.HORSE.get(), TFCHorseRenderer::new);
+        event.registerEntityRenderer(TFCEntities.RAT.get(), RatRenderer::new);
 
         // BEs
         event.registerBlockEntityRenderer(TFCBlockEntities.POT.get(), ctx -> new PotBlockEntityRenderer());
@@ -424,6 +425,7 @@ public final class ClientEventHandler
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("duck"), DuckModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("quail"), QuailModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("deer"), DeerModel::createBodyLayer);
+        event.registerLayerDefinition(RenderHelpers.modelIdentifier("rat"), RatModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("boar"), () -> TFCPigModel.createTFCBodyLayer(CubeDeformation.NONE));
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("javelin"), JavelinModel::createBodyLayer);
         event.registerLayerDefinition(RenderHelpers.modelIdentifier("chest_minecart"), MinecartModel::createBodyLayer);

@@ -40,7 +40,12 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     public static final EntityDataAccessor<Optional<UUID>> DATA_OWNER = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.OPTIONAL_UUID);
     public static final EntityDataAccessor<Integer> DATA_COMMAND = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Boolean> DATA_SLEEPING = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.BOOLEAN);
+    public static final EntityDataAccessor<Byte> DATA_PET_FLAGS = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.BYTE);
+
+    private static final int SLEEPING_FLAG = 1;
+    private static final int SITTING_FLAG = 4;
+    private static final int UNUSED_FLAG_1 = 8;
+    private static final int UNUSED_FLAG_2 = 16;
 
     public TamableMammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
@@ -53,18 +58,49 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         super.defineSynchedData();
         entityData.define(DATA_OWNER, Optional.empty());
         entityData.define(DATA_COMMAND, Command.RELAX.ordinal());
-        entityData.define(DATA_SLEEPING, false);
+        entityData.define(DATA_PET_FLAGS, (byte) 0);
+    }
+
+    /**
+     * Used to determine if the command can be on the pet screen on the client.
+     */
+    public boolean willListenTo(Command command)
+    {
+        return true;
+    }
+
+    /**
+     * Called on the server to process a command being received.
+     */
+    public void receiveCommand(ServerPlayer player, Command command)
+    {
+        setCommand(command);
     }
 
     @Override
     public boolean isSleeping()
     {
-        return entityData.get(DATA_SLEEPING);
+        return (entityData.get(DATA_PET_FLAGS) & SLEEPING_FLAG) != 0;
     }
 
     public void setSleeping(boolean sleep)
     {
-        entityData.set(DATA_SLEEPING, sleep);
+        entityData.set(DATA_PET_FLAGS, setBit(entityData.get(DATA_PET_FLAGS), SLEEPING_FLAG, sleep));
+    }
+
+    public boolean isSitting()
+    {
+        return (entityData.get(DATA_PET_FLAGS) & SITTING_FLAG) != 0;
+    }
+
+    public void setSitting(boolean sitting)
+    {
+        entityData.set(DATA_PET_FLAGS, setBit(entityData.get(DATA_PET_FLAGS), SITTING_FLAG, sitting));
+    }
+
+    private byte setBit(byte oldBit, int offset, boolean value)
+    {
+        return (byte) (value ? (oldBit | offset) : (oldBit & ~offset));
     }
 
     public Command getCommand()
@@ -132,6 +168,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
             tag.putUUID("Owner", getOwnerUUID());
         }
         tag.putInt("command", getCommand().ordinal());
+        tag.putByte("petFlags", entityData.get(DATA_PET_FLAGS));
     }
 
     @Override
@@ -143,6 +180,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
             setOwnerUUID(tag.getUUID("Owner"));
         }
         setCommand(Command.valueOf(tag.getInt("command")));
+        entityData.set(DATA_PET_FLAGS, tag.getByte("petFlags"));
     }
 
     @Override
@@ -158,11 +196,11 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     public enum Command
     {
-        RELAX,
-        HOME,
-        SIT,
-        FOLLOW,
-        HUNT;
+        RELAX, // hang around near home
+        HOME, // set a new home position
+        SIT, // sit for a period of time
+        FOLLOW, // follow but don't participate in combat
+        HUNT; // follow and participate in combat
 
         public static final Command[] VALUES = values();
 

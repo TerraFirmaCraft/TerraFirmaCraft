@@ -6,9 +6,11 @@
 
 package net.dries007.tfc.client.model;
 
+import net.minecraft.world.entity.LivingEntity;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 public interface MouthHolder
 {
-    void translateToMouth(PoseStack stack);
+    void translateToMouth(LivingEntity entity, PoseStack stack, float partialTicks);
 }

@@ -37,8 +37,7 @@ public class ItemInMouthLayer<E extends LivingEntity, M extends EntityModel<E>> 
             ItemStack itemstack = entity.getItemBySlot(EquipmentSlot.MAINHAND);
             poseStack.pushPose();
 
-            mouth.translateToMouth(poseStack);
-            poseStack.mulPose(Vector3f.XP.rotationDegrees(90f));
+            mouth.translateToMouth(entity, poseStack, partialTick);
             Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, itemstack, ItemTransforms.TransformType.GROUND, false, poseStack, buffer, packedLight);
 
             poseStack.popPose();

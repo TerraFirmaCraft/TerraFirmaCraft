@@ -744,7 +744,7 @@ MISC_FOODS = ('beet', 'cabbage', 'carrot', 'garlic', 'green_bean', 'green_bell_p
 MEATS = ('beef', 'pork', 'chicken', 'quail', 'mutton', 'bear', 'horse_meat', 'pheasant', 'venison', 'wolf', 'rabbit', 'hyena', 'duck', 'chevon', 'gran_feline', 'camelidae', 'cod', 'bluegill', 'salmon', 'tropical_fish', 'turtle', 'calamari', 'shellfish')
 NUTRIENTS = ('grain', 'fruit', 'vegetables', 'protein', 'dairy')
 
-SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer')
+SPAWN_EGG_ENTITIES = ('isopod', 'lobster', 'crayfish', 'cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'orca', 'dolphin', 'salmon', 'bluegill', 'manatee', 'penguin', 'turtle', 'horseshoe_crab', 'polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth', 'squid', 'octopoteuthis', 'pig', 'cow', 'goat', 'yak', 'alpaca', 'musk_ox', 'sheep', 'chicken', 'duck', 'quail', 'rabbit', 'fox', 'boar', 'donkey', 'mule', 'horse', 'deer', 'boar', 'rat')
 BUCKETABLE_FISH = ('cod', 'pufferfish', 'tropical_fish', 'jellyfish', 'salmon', 'bluegill')
 LAND_PREDATORS = ('polar_bear', 'grizzly_bear', 'black_bear', 'cougar', 'panther', 'lion', 'sabertooth')
 OCEAN_PREDATORS = ('dolphin', 'orca')
@@ -941,6 +941,10 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.deer.ambient': 'Deer brays',
     'subtitles.entity.tfc.deer.hurt': 'Deer yelps',
     'subtitles.entity.tfc.deer.step': 'Deer walks',
+    'subtitles.entity.tfc.rat.death': 'Rat dies',
+    'subtitles.entity.tfc.rat.ambient': 'Rat squeaks',
+    'subtitles.entity.tfc.rat.hurt': 'Rat squeals',
+    'subtitles.entity.tfc.rat.step': 'Rat patters',
 
     # Item groups
     'itemGroup.tfc.earth': 'TFC Earth',
@@ -962,6 +966,7 @@ DEFAULT_LANG = {
     'tfc.screen.fire_clay_knapping': 'Fire Clay Knapping',
     'tfc.screen.leather_knapping': 'Leather Knapping',
     'tfc.screen.scribing_table': 'Rename Items',
+    'tfc.screen.pet_command': 'Pet Commands',
     # Tooltips
     'tfc.tooltip.forging': '§f - Can Work',
     'tfc.tooltip.welding': '§f - Can Weld',
@@ -1087,6 +1092,7 @@ DEFAULT_LANG = {
     'tfc.tooltip.pot_boiling': 'Boiling!',
     'tfc.tooltip.pot_finished': 'Finished',
     'tfc.tooltip.pot_ready': 'Ready',
+    'tfc.tooltip.infestation': 'This chest has a foul smell.',
 
     'tfc.jade.sealed_date': 'Sealed Date: %s',
     'tfc.jade.catalyst_stacks': '%sx Catalyst Stacks',
@@ -1219,6 +1225,7 @@ DEFAULT_LANG = {
     'entity.tfc.fox': 'Fox',
     'entity.tfc.boar': 'Boar',
     'entity.tfc.deer': 'Deer',
+    'entity.tfc.rat': 'Rat',
     'entity.tfc.mule': 'Mule',
     'entity.tfc.mule.male': 'Mule',
     'entity.tfc.mule.female': 'Mule',
@@ -1313,6 +1320,16 @@ DEFAULT_LANG = {
     'tfc.enum.order.not_last': 'Not Last',
     'tfc.enum.order.second_last': 'Second Last',
     'tfc.enum.order.third_last': 'Third Last',
+    'tfc.enum.command.relax': 'Relax',
+    'tfc.enum.command.home': 'We\'re Home',
+    'tfc.enum.command.sit': 'Sit',
+    'tfc.enum.command.follow': 'Follow Me',
+    'tfc.enum.command.hunt': 'Hunt With Me',
+    'tfc.enum.command.relax.tooltip': 'The animal will wander around its home.',
+    'tfc.enum.command.home.tooltip': 'Tells the animal to recognize this location as home.',
+    'tfc.enum.command.sit.tooltip': 'The animal will sit for a while, but not forever.',
+    'tfc.enum.command.follow.tooltip': 'The animal will follow you, but not try to aid in combat.',
+    'tfc.enum.command.hunt.tooltip': 'The animal will follow you and engage in combat.',
     'tfc.rabbit_0': 'Brown Fur',
     'tfc.rabbit_1': 'White Fur',
     'tfc.rabbit_2': 'Black Fur',

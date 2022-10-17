@@ -38,7 +38,7 @@ public class Prey extends WildAnimal
     }
 
     @Override
-    protected Brain.Provider<Prey> brainProvider()
+    protected Brain.Provider<? extends Prey> brainProvider()
     {
         return Brain.provider(PreyAi.MEMORY_TYPES, PreyAi.SENSOR_TYPES);
     }

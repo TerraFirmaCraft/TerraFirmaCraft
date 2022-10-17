@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blockentities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -31,12 +30,10 @@ import org.jetbrains.annotations.Nullable;
 
 import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
 
-public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBlockEntity.VesselInventory> implements Infestable
+public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBlockEntity.VesselInventory>
 {
     public static final int SLOTS = 9;
     private static final Component NAME = Helpers.translatable(MOD_ID + ".block_entity.large_vessel");
-
-    private int infestation = 0;
 
     public LargeVesselBlockEntity(BlockPos pos, BlockState state)
     {
@@ -55,20 +52,6 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         return LargeVesselContainer.create(this, inv, windowID);
     }
 
-    @Override
-    public void setAndUpdateSlots(int slot)
-    {
-        super.setAndUpdateSlots(slot);
-        infestation = Helpers.countInfestation(inventory);
-    }
-
-    @Override
-    public void onLoad()
-    {
-        super.onLoad();
-        infestation = Helpers.countInfestation(inventory);
-    }
-
     public void onUnseal()
     {
         for (int i = 0; i < SLOTS; i++)
@@ -83,12 +66,6 @@ public class LargeVesselBlockEntity extends InventoryBlockEntity<LargeVesselBloc
         {
             inventory.setStackInSlot(i, FoodCapability.applyTrait(inventory.getStackInSlot(i).copy(), FoodTraits.PRESERVED));
         }
-    }
-
-    @Override
-    public int getInfestation()
-    {
-        return inventory.canModify() ? infestation : 0;
     }
 
     public static class VesselInventory extends InventoryItemHandler implements INBTSerializable<CompoundTag>

@@ -9,11 +9,14 @@ package net.dries007.tfc.common.entities.ai.pet;
 import java.util.Optional;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
+import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class CatSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
@@ -39,12 +42,18 @@ public class CatSleepBehavior extends MoveOntoBlockBehavior<TamableMammal>
     @Override
     protected Optional<BlockPos> getNearestTarget(TamableMammal mob)
     {
-        return Optional.empty();
+        return mob.getBrain().getMemory(TFCBrain.SLEEP_POS.get()).map(GlobalPos::pos);
     }
 
     @Override
     protected boolean isTargetAt(ServerLevel level, BlockPos pos)
     {
-        return false;
+        return Helpers.isBlock(level.getBlockState(pos), TFCTags.Blocks.CAT_SITS_ON);
+    }
+
+    @Override
+    protected boolean onTarget(ServerLevel level, TamableMammal mob)
+    {
+        return super.onTarget(level, mob) || isTargetAt(level, mob.blockPosition().below());
     }
 }

@@ -685,6 +685,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('small_fish', 'tfc:cod', 'tfc:salmon', 'tfc:tropical_fish', 'tfc:pufferfish', 'tfc:bluegill')
     rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
     rm.entity_tag('leashable_wild_animals')
+    rm.entity_tag('pests', 'tfc:rat')
 
     # Item Sizes
 

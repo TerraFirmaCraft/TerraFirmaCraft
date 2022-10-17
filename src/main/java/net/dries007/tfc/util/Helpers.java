@@ -81,7 +81,6 @@ import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.TFCTags;
-import net.dries007.tfc.common.blockentities.Infestable;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -89,6 +88,8 @@ import net.dries007.tfc.common.capabilities.size.IItemSize;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
+import net.dries007.tfc.common.entities.ai.prey.PestAi;
+import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.world.feature.MultipleFeature;
 import org.jetbrains.annotations.Nullable;
@@ -386,49 +387,37 @@ public final class Helpers
         return iterate(inventory, 0, inventory.getSlots());
     }
 
-    public static int countInfestation(IItemHandler inventory)
+    public static void tickInfestation(Level level, BlockPos pos, int infestation, @Nullable Player player, @Nullable BlockPos containerPos)
     {
-        int items = 0;
-        for (ItemStack item : iterate(inventory))
+        infestation = Mth.clamp(infestation, 0, 5);
+        if (infestation == 0)
         {
-            if (Helpers.isItem(item, TFCTags.Items.FOODS))
-            {
-                items++;
-                if (items == 5)
-                {
-                    break;
-                }
-            }
+            return;
         }
-        return items;
-    }
-
-    public static void tickInfestation(Level level, BlockPos pos)
-    {
-        if (level.getBlockEntity(pos) instanceof Infestable infestable)
+        if (level.random.nextInt(120 - (20 * infestation) - 19) == 0)
         {
-            final int infestation = Mth.clamp(infestable.getInfestation(), 0, 5);
-            if (infestation == 0)
-            {
-                return;
-            }
-            if (level.random.nextInt(120 - (20 * infestation)) == 0)
-            {
-                Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
-                    final Entity pest = type.create(level);
-                    if (pest instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
+            Helpers.getRandomElement(ForgeRegistries.ENTITIES, TFCTags.Entities.PESTS, level.random).ifPresent(type -> {
+                final Entity entity = type.create(level);
+                if (entity instanceof PathfinderMob mob && level instanceof ServerLevel serverLevel)
+                {
+                    mob.moveTo(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
+                    final Vec3 checkPos = LandRandomPos.getPos(mob, 15, 5);
+                    if (checkPos != null)
                     {
-                        mob.moveTo(new Vec3(pos.getX(), pos.getY(), pos.getZ()));
-                        Vec3 checkPos = LandRandomPos.getPos(mob, 15, 10);
-                        if (checkPos != null)
+                        mob.moveTo(checkPos);
+                        mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(new BlockPos(checkPos)), MobSpawnType.EVENT, null, null);
+                        serverLevel.addFreshEntity(mob);
+                        if (mob instanceof Pest pest && containerPos != null)
                         {
-                            mob.moveTo(checkPos);
-                            mob.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null, null);
-                            serverLevel.addFreshEntity(mob);
+                            PestAi.setSmelledPos(pest, containerPos);
+                        }
+                        if (player != null)
+                        {
+                            player.displayClientMessage(Helpers.translatable("tfc.tooltip.infestation"), true);
                         }
                     }
-                });
-            }
+                }
+            });
         }
 
     }

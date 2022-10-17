@@ -6,14 +6,14 @@
 
 package net.dries007.tfc.client.model.entity;
 
-import java.util.stream.Stream;
-
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.entity.LivingEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Constants;
+import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.model.MouthHolder;
 import net.dries007.tfc.client.model.animation.AnimationChannel;
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
@@ -118,8 +118,12 @@ public class RatModel extends HierarchicalAnimatedModel<Pest> implements MouthHo
     }
 
     @Override
-    public void translateToMouth(PoseStack stack)
+    public void translateToMouth(LivingEntity entity, PoseStack stack, float partialTicks)
     {
-        nose.translateAndRotate(stack);
+        head.translateAndRotate(stack);
+//        stack.translate(nose.x / 16f, nose.y / 16f, nose.z / 16f);
+//        stack.mulPose(Vector3f.ZP.rotationDegrees(head.zRot * Constants.RAD_TO_DEG));
+//        stack.mulPose(Vector3f.YP.rotationDegrees(head.yRot * Constants.RAD_TO_DEG));
+//        stack.mulPose(Vector3f.XP.rotationDegrees(head.xRot * Constants.RAD_TO_DEG));
     }
 }

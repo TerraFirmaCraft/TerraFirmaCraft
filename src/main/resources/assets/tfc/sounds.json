@@ -320,6 +320,38 @@
       "tfc:entity/pheasant/death1"
     ]
   },
+  "entity.rat.ambient": {
+    "subtitle": "subtitles.entity.tfc.rat.ambient",
+    "sounds": [
+      "minecraft:mob/silverfish/say1",
+      "minecraft:mob/silverfish/say2",
+      "minecraft:mob/silverfish/say3",
+      "minecraft:mob/silverfish/say4"
+    ]
+  },
+  "entity.rat.hurt": {
+    "subtitle": "subtitles.entity.tfc.rat.hurt",
+    "sounds": [
+      "minecraft:mob/silverfish/hit1",
+      "minecraft:mob/silverfish/hit2",
+      "minecraft:mob/silverfish/hit3"
+    ]
+  },
+  "entity.rat.death": {
+    "subtitle": "subtitles.entity.tfc.rat.death",
+    "sounds": [
+      "minecraft:mob/silverfish/kill"
+    ]
+  },
+  "entity.rat.step": {
+    "subtitle": "subtitles.entity.tfc.rat.step",
+    "sounds": [
+      "minecraft:mob/silverfish/step1",
+      "minecraft:mob/silverfish/step2",
+      "minecraft:mob/silverfish/step3",
+      "minecraft:mob/silverfish/step4"
+    ]
+  },
   "entity.sabertooth.ambient": {
     "subtitle": "subtitles.entity.tfc.sabertooth.ambient",
     "sounds": [

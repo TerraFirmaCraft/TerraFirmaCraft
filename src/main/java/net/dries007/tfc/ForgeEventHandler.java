@@ -35,6 +35,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
@@ -62,6 +63,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.player.PlayerContainerEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.*;
@@ -100,6 +102,8 @@ import net.dries007.tfc.common.capabilities.player.PlayerData;
 import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
+import net.dries007.tfc.common.container.BlockEntityContainer;
+import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.common.entities.Fauna;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -183,6 +187,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
         bus.addListener(ForgeEventHandler::onAnimalTame);
+        bus.addListener(ForgeEventHandler::onContainerOpen);
     }
 
     /**
@@ -1204,5 +1209,31 @@ public final class ForgeEventHandler
         {
             event.setCanceled(true); // cancel vanilla taming methods
         }
+    }
+
+    public static void onContainerOpen(PlayerContainerEvent.Open event)
+    {
+        final Player player = event.getPlayer();
+        final Level level = player.level;
+        if (level.isClientSide || (event.getContainer() instanceof LargeVesselContainer vessel && vessel.isSealed()))
+        {
+            return;
+        }
+        int amount = 0;
+        if (TFCConfig.SERVER.enableInfestations.get())
+        {
+            for (Slot slot : event.getContainer().slots)
+            {
+                if (Helpers.isItem(slot.getItem(), TFCTags.Items.FOODS))
+                {
+                    amount++;
+                    if (amount == 5)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+        Helpers.tickInfestation(level, player.blockPosition(), amount, player, event.getContainer() instanceof BlockEntityContainer<?> blockEntityContainer ? blockEntityContainer.getBlockEntity().getBlockPos() : null);
     }
 }

@@ -80,7 +80,7 @@ public class PreyAi
     public static void initRetreatActivity(Brain<? extends Prey> brain)
     {
         brain.addActivityAndRemoveMemoryWhenStopped(Activity.AVOID, 10, ImmutableList.of(
-                SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.3F, 15, false),
+                SetWalkTargetAwayFrom.entity(MemoryModuleType.AVOID_TARGET, 1.1F, 15, false),
                 createIdleMovementBehaviors(),
                 new RunSometimes<>(new SetEntityLookTarget(8.0F), UniformInt.of(30, 60)),
                 new EraseMemoryIf<>(PreyAi::wantsToStopFleeing, MemoryModuleType.AVOID_TARGET) // essentially ends the activity
