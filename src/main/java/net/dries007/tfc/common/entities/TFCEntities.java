@@ -75,6 +75,7 @@ public class TFCEntities
     public static final RegistryObject<EntityType<ThrownJavelin>> THROWN_JAVELIN = register("thrown_javelin", EntityType.Builder.<ThrownJavelin>of(ThrownJavelin::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20));
     public static final RegistryObject<EntityType<Seat>> SEAT = register("seat", EntityType.Builder.of(Seat::new, MobCategory.MISC).sized(0.1F, 0.1F).clientTrackingRange(4).updateInterval(20));
     public static final RegistryObject<EntityType<TFCMinecartChest>> CHEST_MINECART = register("chest_minecart", EntityType.Builder.of(TFCMinecartChest::new, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8));
+    public static final RegistryObject<EntityType<HoldingMinecart>> HOLDING_MINECART = register("holding_minecart", EntityType.Builder.<HoldingMinecart>of(HoldingMinecart::new, MobCategory.MISC).sized(0.98F, 0.7F).clientTrackingRange(8));
 
     public static final Map<Wood, RegistryObject<EntityType<TFCBoat>>> BOATS = Helpers.mapOfKeys(Wood.class, wood ->
         register("boat/" + wood.name(), EntityType.Builder.<TFCBoat>of((type, level) -> new TFCBoat(type, level, TFCItems.BOATS.get(wood)), MobCategory.MISC).sized(1.375F, 0.5625F).clientTrackingRange(10))

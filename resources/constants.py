@@ -1193,6 +1193,7 @@ DEFAULT_LANG = {
     'entity.tfc.falling_block': 'Falling Block',
     'entity.tfc.fishing_bobber': 'Fishing Bobber',
     'entity.tfc.chest_minecart': 'Chest Minecart',
+    'entity.tfc.holding_minecart': 'Holding Minecart',
     'entity.tfc.squid': 'Squid',
     'entity.tfc.octopoteuthis': 'Octopoteuthis',
     'entity.tfc.glow_arrow': 'Glowing Arrow',

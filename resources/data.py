@@ -382,6 +382,7 @@ def generate(rm: ResourceManager):
     rm.block_tag('tfc:bloomery_insulation', '#forge:stone', '#forge:cobblestone', '#forge:stone_bricks', '#forge:smooth_stone', 'minecraft:bricks', 'tfc:fire_bricks', '#forge:concrete')
     rm.block_tag('tfc:blast_furnace_insulation', 'tfc:fire_bricks')
     rm.block_tag('wild_crop_grows_on', '#tfc:bush_plantable_on')
+    rm.block_tag('minecart_holdable', 'tfc:crucible', '#tfc:barrels', '#tfc:anvils', 'tfc:powderkeg', '#tfc:large_vessels', )
     rm.block_tag('plants', *['tfc:wild_crop/%s' % crop for crop in CROPS.keys()])
     rm.block_tag('rabbit_raidable', 'tfc:crop/carrot', 'tfc:crop/cabbage', 'minecraft:carrots')
     rm.block_tag('single_block_replaceable', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass')

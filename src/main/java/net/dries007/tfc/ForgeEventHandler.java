@@ -36,6 +36,8 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
@@ -104,6 +106,7 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.common.entities.HoldingMinecart;
 import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
@@ -189,6 +192,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
         bus.addListener(ForgeEventHandler::onAnimalTame);
         bus.addListener(ForgeEventHandler::onMount);
+        bus.addListener(ForgeEventHandler::onEntityInteract);
     }
 
     /**
@@ -1209,6 +1213,28 @@ public final class ForgeEventHandler
         {
             // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
             event.setModel(new OverworldClimateModel());
+        }
+    }
+
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
+    {
+        final Player player = event.getPlayer();
+        if (event.getTarget().getType() == EntityType.MINECART && event.getTarget() instanceof Minecart oldCart && player.isShiftKeyDown() && player.isSecondaryUseActive())
+        {
+            ItemStack held = player.getItemInHand(event.getHand());
+            if (held.getItem() instanceof BlockItem bi && Helpers.isBlock(bi.getBlock(), TFCTags.Blocks.MINECART_HOLDABLE))
+            {
+                final ItemStack holdingItem = held.split(1);
+                if (!player.level.isClientSide)
+                {
+                    final HoldingMinecart minecart = new HoldingMinecart(player.level, oldCart.getX(), oldCart.getY(), oldCart.getZ());
+                    HoldingMinecart.copyMinecart(oldCart, minecart);
+                    minecart.setHoldItem(holdingItem);
+                    oldCart.discard();
+                    player.level.addFreshEntity(minecart);
+                }
+                event.setCancellationResult(InteractionResult.SUCCESS);
+            }
         }
     }
 
