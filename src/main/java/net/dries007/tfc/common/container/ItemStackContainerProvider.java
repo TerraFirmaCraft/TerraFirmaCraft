@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.container;
 
 import java.util.function.Consumer;
+
+import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -21,7 +23,7 @@ import net.minecraftforge.network.NetworkHooks;
 /**
  * Handling logic for containers that are opened via item stacks.
  * This represents a factory of {@link MenuProvider}s, which are created on demand for an individual {@link ItemStack}.
- * One piece of extra data is written, via the {@link NetworkHooks#openGui(ServerPlayer, MenuProvider, Consumer)} call, which contains the hand that this was opened from.
+ * One piece of extra data is written, via the {@link Helpers#openScreen(ServerPlayer, MenuProvider, Consumer)} call, which contains the hand that this was opened from.
  */
 public class ItemStackContainerProvider
 {

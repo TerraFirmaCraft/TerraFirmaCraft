@@ -24,12 +24,14 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -73,6 +75,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.util.thread.EffectiveSide;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
@@ -1060,6 +1063,22 @@ public final class Helpers
     public static float cube(float x)
     {
         return x * x * x;
+    }
+
+    // todo: 1.19. inline and remove these
+    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier)
+    {
+        NetworkHooks.openGui(player, containerSupplier);
+    }
+    
+    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, BlockPos pos)
+    {
+        NetworkHooks.openGui(player, containerSupplier, pos);
+    }
+
+    public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, Consumer<FriendlyByteBuf> extraDataWriter)
+    {
+        NetworkHooks.openGui(player, containerSupplier, extraDataWriter);
     }
 
     /**

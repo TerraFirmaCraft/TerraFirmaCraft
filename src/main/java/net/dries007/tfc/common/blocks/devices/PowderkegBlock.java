@@ -80,7 +80,7 @@ public class PowderkegBlock extends SealableDeviceBlock
             }
             else if (!level.isClientSide() && player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, powderkeg, powderkeg.getBlockPos());
+                Helpers.openScreen(serverPlayer, powderkeg, powderkeg.getBlockPos());
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
             return InteractionResult.PASS;

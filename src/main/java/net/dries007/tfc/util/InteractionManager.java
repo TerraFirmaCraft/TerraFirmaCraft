@@ -524,7 +524,7 @@ public final class InteractionManager
             {
                 if (context.getPlayer() instanceof ServerPlayer player)
                 {
-                    NetworkHooks.openGui(player, TFCContainerProviders.SALAD);
+                    Helpers.openScreen(player, TFCContainerProviders.SALAD);
                 }
                 return InteractionResult.SUCCESS;
             }
@@ -549,7 +549,7 @@ public final class InteractionManager
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, container.of(stack, context.getHand()), ItemStackContainerProvider.write(context.getHand()));
+                    Helpers.openScreen(serverPlayer, container.of(stack, context.getHand()), ItemStackContainerProvider.write(context.getHand()));
                 }
                 return InteractionResult.SUCCESS;
             }
