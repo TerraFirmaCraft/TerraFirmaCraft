@@ -35,6 +35,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
@@ -58,6 +59,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -102,6 +104,7 @@ import net.dries007.tfc.common.capabilities.player.PlayerDataCapability;
 import net.dries007.tfc.common.capabilities.size.ItemSizeManager;
 import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -185,6 +188,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onBoneMeal);
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
         bus.addListener(ForgeEventHandler::onAnimalTame);
+        bus.addListener(ForgeEventHandler::onMount);
     }
 
     /**
@@ -1205,6 +1209,14 @@ public final class ForgeEventHandler
         {
             // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
             event.setModel(new OverworldClimateModel());
+        }
+    }
+
+    public static void onMount(EntityMountEvent event)
+    {
+        if (event.getEntityBeingMounted() instanceof Boat && event.getEntityMounting() instanceof Predator)
+        {
+            event.setCanceled(true);
         }
     }
 
