@@ -1,0 +1,16 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "replace": false,
+  "values": [
+    "tfc:groundcover/humus",
+    "tfc:groundcover/dead_grass",
+    "tfc:groundcover/driftwood",
+    "tfc:groundcover/pinecone",
+    "minecraft:paper",
+    "tfc:melon",
+    "tfc:pumpkin",
+    "tfc:rotten_melon",
+    "tfc:rotten_pumpkin",
+    "tfc:jute_fiber"
+  ]
+}

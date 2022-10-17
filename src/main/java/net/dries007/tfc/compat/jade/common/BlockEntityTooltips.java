@@ -179,7 +179,7 @@ public final class BlockEntityTooltips
             {
                 if (!composter.isReady() && state.getValue(TFCComposterBlock.STAGE) == 8)
                 {
-                    tooltip.accept(Calendars.get(level).getTimeDelta(composter.getReadyTicks() - composter.getTicksSinceUpdate()));
+                    tooltip.accept(Calendars.get(level).getTimeDelta(Math.max(0, composter.getReadyTicks() - composter.getTicksSinceUpdate())));
                 }
             }
         }

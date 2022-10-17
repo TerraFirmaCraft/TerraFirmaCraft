@@ -1301,7 +1301,7 @@ def generate(rm: ResourceManager):
         # Groundcover
         for variant in ('twig', 'fallen_leaves'):
             block = rm.blockstate('wood/%s/%s' % (variant, wood), variants={"": four_ways('tfc:block/wood/%s/%s' % (variant, wood))}, use_default_model=False)
-            block.with_lang(lang('%s %s', wood, variant))
+            block.with_lang(lang('%s %s', wood, variant)).with_tag('tfc:single_block_replaceable')
 
             if variant == 'twig':
                 block.with_block_model({'side': 'tfc:block/wood/log/%s' % wood, 'top': 'tfc:block/wood/log_top/%s' % wood}, parent='tfc:block/groundcover/%s' % variant)

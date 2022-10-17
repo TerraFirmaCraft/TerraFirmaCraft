@@ -145,7 +145,11 @@ public class TFCTags
         public static final TagKey<Item> INEFFICIENT_LOGGING_AXES = create("inefficient_logging_axes"); // Axes which are 60% efficient at destroying logs
         public static final TagKey<Item> BUSH_CUTTING_TOOLS = create("bush_cutting_tools"); // Tools which can be used to create cuttings from bushes.
         public static final TagKey<Item> COMPOST_GREENS = create("compost_greens");
+        public static final TagKey<Item> COMPOST_GREENS_LOW = create("compost_greens_low");
+        public static final TagKey<Item> COMPOST_GREENS_HIGH = create("compost_greens_high");
         public static final TagKey<Item> COMPOST_BROWNS = create("compost_browns");
+        public static final TagKey<Item> COMPOST_BROWNS_LOW = create("compost_browns_low");
+        public static final TagKey<Item> COMPOST_BROWNS_HIGH = create("compost_browns_high");
         public static final TagKey<Item> COMPOST_POISONS = create("compost_poisons");
         public static final TagKey<Item> USABLE_ON_TOOL_RACK = create("usable_on_tool_rack");
         public static final TagKey<Item> USABLE_IN_POWDER_KEG = create("usable_in_powder_keg");
