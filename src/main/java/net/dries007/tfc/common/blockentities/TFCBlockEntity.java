@@ -83,7 +83,7 @@ public abstract class TFCBlockEntity extends BlockEntity
     protected void loadAdditional(CompoundTag tag) {}
 
     /**
-     * Syncs the TE data to client via means of a block update
+     * Syncs the block entity data to client via means of a block update.
      * Use for stuff that is updated infrequently, for data that is analogous to changing the state.
      */
     public void markForBlockUpdate()
@@ -97,13 +97,24 @@ public abstract class TFCBlockEntity extends BlockEntity
     }
 
     /**
-     * Marks a tile entity for syncing without sending a block update. Also internally marks dirty
+     * Marks a block entity for syncing without sending a block update. Also internally marks dirty.
      * Use preferentially over {@link InventoryBlockEntity#markForBlockUpdate()} if there's no reason to have a block update.
      */
     public void markForSync()
     {
         sendVanillaUpdatePacket();
         setChanged();
+    }
+
+    /**
+     * Marks a block entity as dirty, without updating the comparator output. Use preferentially for updates that want to mark themselves as dirty every tick, and don't require updating comparator output.
+     */
+    public void markDirty()
+    {
+        if (level != null)
+        {
+            level.blockEntityChanged(worldPosition);
+        }
     }
 
     public void sendVanillaUpdatePacket()

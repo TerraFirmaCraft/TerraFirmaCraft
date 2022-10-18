@@ -130,7 +130,7 @@ public class MoldItem extends Item
                 {
                     if (player instanceof ServerPlayer serverPlayer)
                     {
-                        NetworkHooks.openGui(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
+                        Helpers.openScreen(serverPlayer, TFCContainerProviders.MOLD_LIKE_ALLOY.of(stack, hand), ItemStackContainerProvider.write(hand));
                     }
                 }
                 else if (!mold.getFluidInTank(0).isEmpty())

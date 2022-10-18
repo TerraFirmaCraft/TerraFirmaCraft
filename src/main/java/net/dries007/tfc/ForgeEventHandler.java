@@ -36,6 +36,9 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.entity.vehicle.Boat;
+import net.minecraft.world.entity.vehicle.Minecart;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
@@ -59,6 +62,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.ToolActions;
 import net.minecraftforge.event.*;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMountEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.item.ItemExpireEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -84,6 +88,7 @@ import net.dries007.tfc.common.blocks.TFCCandleBlock;
 import net.dries007.tfc.common.blocks.devices.AnvilBlock;
 import net.dries007.tfc.common.blocks.devices.BlastFurnaceBlock;
 import net.dries007.tfc.common.blocks.devices.*;
+import net.dries007.tfc.common.blocks.rock.AqueductBlock;
 import net.dries007.tfc.common.blocks.rock.Rock;
 import net.dries007.tfc.common.blocks.rock.RockAnvilBlock;
 import net.dries007.tfc.common.blocks.wood.TFCLecternBlock;
@@ -105,6 +110,8 @@ import net.dries007.tfc.common.commands.TFCCommands;
 import net.dries007.tfc.common.container.BlockEntityContainer;
 import net.dries007.tfc.common.container.LargeVesselContainer;
 import net.dries007.tfc.common.entities.Fauna;
+import net.dries007.tfc.common.entities.HoldingMinecart;
+import net.dries007.tfc.common.entities.predator.Predator;
 import net.dries007.tfc.common.recipes.CollapseRecipe;
 import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.mixin.accessor.ChunkAccessAccessor;
@@ -164,6 +171,7 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onWorldLoad);
         bus.addListener(ForgeEventHandler::onCreateNetherPortal);
         bus.addListener(ForgeEventHandler::onFluidPlaceBlock);
+        bus.addListener(ForgeEventHandler::onFluidCreateSource);
         bus.addListener(ForgeEventHandler::onFireStart);
         bus.addListener(ForgeEventHandler::onProjectileImpact);
         bus.addListener(ForgeEventHandler::onPlayerTick);
@@ -188,6 +196,8 @@ public final class ForgeEventHandler
         bus.addListener(ForgeEventHandler::onSelectClimateModel);
         bus.addListener(ForgeEventHandler::onAnimalTame);
         bus.addListener(ForgeEventHandler::onContainerOpen);
+        bus.addListener(ForgeEventHandler::onMount);
+        bus.addListener(ForgeEventHandler::onEntityInteract);
     }
 
     /**
@@ -557,6 +567,14 @@ public final class ForgeEventHandler
         else if (Helpers.isBlock(state, Blocks.BASALT))
         {
             event.setNewState(TFCBlocks.ROCK_BLOCKS.get(net.dries007.tfc.common.blocks.rock.Rock.BASALT).get(Rock.BlockType.HARDENED).get().defaultBlockState());
+        }
+    }
+
+    public static void onFluidCreateSource(BlockEvent.CreateFluidSourceEvent event)
+    {
+        if (event.getState().getBlock() instanceof AqueductBlock)
+        {
+            event.setResult(Event.Result.DENY); // Waterlogged aqueducts do not count as the source when creating source blocks
         }
     }
 
@@ -1200,6 +1218,36 @@ public final class ForgeEventHandler
         {
             // TFC decides to select the climate model for the overworld, if we're using a TFC enabled chunk generator
             event.setModel(new OverworldClimateModel());
+        }
+    }
+
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
+    {
+        final Player player = event.getPlayer();
+        if (event.getTarget().getType() == EntityType.MINECART && event.getTarget() instanceof Minecart oldCart && player.isShiftKeyDown() && player.isSecondaryUseActive())
+        {
+            ItemStack held = player.getItemInHand(event.getHand());
+            if (held.getItem() instanceof BlockItem bi && Helpers.isBlock(bi.getBlock(), TFCTags.Blocks.MINECART_HOLDABLE))
+            {
+                final ItemStack holdingItem = held.split(1);
+                if (!player.level.isClientSide)
+                {
+                    final HoldingMinecart minecart = new HoldingMinecart(player.level, oldCart.getX(), oldCart.getY(), oldCart.getZ());
+                    HoldingMinecart.copyMinecart(oldCart, minecart);
+                    minecart.setHoldItem(holdingItem);
+                    oldCart.discard();
+                    player.level.addFreshEntity(minecart);
+                }
+                event.setCancellationResult(InteractionResult.SUCCESS);
+            }
+        }
+    }
+
+    public static void onMount(EntityMountEvent event)
+    {
+        if (event.getEntityBeingMounted() instanceof Boat && event.getEntityMounting() instanceof Predator)
+        {
+            event.setCanceled(true);
         }
     }
 

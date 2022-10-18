@@ -7,8 +7,11 @@
 package net.dries007.tfc.common.blockentities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +27,8 @@ import net.dries007.tfc.util.climate.Climate;
 
 public class ComposterBlockEntity extends TickCounterBlockEntity
 {
+    public static final int MAX_AMOUNT = 16;
+
     private int green, brown;
 
     public ComposterBlockEntity(BlockPos pos, BlockState state)
@@ -39,7 +44,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     public void randomTick()
     {
         assert level != null;
-        if (green >= 4 && brown >= 4 & !isRotten())
+        if (green >= MAX_AMOUNT && brown >= MAX_AMOUNT & !isRotten())
         {
             if (getTicksSinceUpdate() > getReadyTicks())
             {
@@ -56,7 +61,9 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     public long getReadyTicks()
     {
         assert level != null;
-        final float rainfall = Climate.getRainfall(level, getBlockPos());
+        final BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        cursor.set(getBlockPos());
+        final float rainfall = Climate.getRainfall(level, cursor);
         long readyTicks = TFCConfig.SERVER.composterTicks.get();
         if (TFCConfig.SERVER.composterRainfallCheck.get())
         {
@@ -69,6 +76,19 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
                 readyTicks *= (long) ((rainfall - 350f) / 50f + 1f);
             }
         }
+        cursor.move(0, 1, 0);
+        if (Helpers.isBlock(level.getBlockState(cursor), TFCTags.Blocks.SNOW))
+        {
+            readyTicks *= 0.9f;
+        }
+        for (Direction direction : Direction.Plane.HORIZONTAL)
+        {
+            cursor.setWithOffset(getBlockPos(), direction);
+            if (level.getBlockState(cursor).getBlock() instanceof TFCComposterBlock)
+            {
+                readyTicks *= 1.05f;
+            }
+        }
         return readyTicks;
     }
 
@@ -77,6 +97,12 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         green = nbt.getInt("green");
         brown = nbt.getInt("brown");
+        // todo: remove after some kind of grace period?
+        if (!nbt.contains("legacyFixed", Tag.TAG_BYTE))
+        {
+            green = Mth.clamp(green * 4, 0, MAX_AMOUNT);
+            brown = Mth.clamp(brown * 4, 0, MAX_AMOUNT);
+        }
         super.loadAdditional(nbt);
     }
 
@@ -85,6 +111,7 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         nbt.putInt("green", getGreen());
         nbt.putInt("brown", getBrown());
+        nbt.putBoolean("legacyFixed", true);
         super.saveAdditional(nbt);
     }
 
@@ -94,9 +121,20 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         final boolean rotten = isRotten();
         final BlockPos pos = getBlockPos();
         if (player.blockPosition().equals(pos)) return InteractionResult.FAIL;
+        final Compost compost = getCompost(stack);
         if (stack.isEmpty() && player.isShiftKeyDown()) // extract compost
         {
-            if (brown == 4 && green == 4 && isReady()) Helpers.spawnItem(level, pos.above(), new ItemStack(rotten ? TFCItems.ROTTEN_COMPOST.get() : TFCItems.COMPOST.get()));
+            if (brown == MAX_AMOUNT && green == MAX_AMOUNT)
+            {
+                if (isReady())
+                {
+                    Helpers.spawnItem(level, pos.above(), new ItemStack(TFCItems.COMPOST.get()));
+                }
+                else if (rotten)
+                {
+                    Helpers.spawnItem(level, pos.above(), new ItemStack(TFCItems.ROTTEN_COMPOST.get()));
+                }
+            }
             reset();
             Helpers.playSound(level, pos, SoundEvents.ROOTED_DIRT_BREAK);
             return finishUse(client);
@@ -106,20 +144,20 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
             if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.rotten"), true);
             return finishUse(client);
         }
-        else if (Helpers.isItem(stack, TFCTags.Items.COMPOST_POISONS))
+        else if (compost.type == AdditionType.POISON)
         {
             if (!client) setState(TFCComposterBlock.CompostType.ROTTEN);
             return finishUse(client);
         }
-        else if (green <= 4 && Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS))
+        else if (green <= MAX_AMOUNT && compost.type == AdditionType.GREEN)
         {
-            if (green == 4)
+            if (green == MAX_AMOUNT)
             {
                 if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.too_many_greens"), true);
             }
             else
             {
-                green += 1;
+                green = Math.min(green + compost.amount, MAX_AMOUNT);
                 if (!client)
                 {
                     if (!player.isCreative()) stack.shrink(1);
@@ -129,15 +167,15 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
             }
             return finishUse(client);
         }
-        else if (brown <= 4 && Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS))
+        else if (brown <= MAX_AMOUNT && compost.type == AdditionType.BROWN)
         {
-            if (brown == 4)
+            if (brown == MAX_AMOUNT)
             {
                 if (!client) player.displayClientMessage(Helpers.translatable("tfc.composter.too_many_browns"), true);
             }
             else
             {
-                brown += 1;
+                brown = Math.min(brown + compost.amount, MAX_AMOUNT);
                 if (!client)
                 {
                     if (!player.isCreative()) stack.shrink(1);
@@ -154,7 +192,12 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
     {
         if (!client)
         {
-            setState(green + brown);
+            int stage = (green + brown) / 4;
+            if (green + brown > 0)
+            {
+                stage = Math.max(stage, 1);
+            }
+            setState(stage);
             markForSync();
         }
         return InteractionResult.sidedSuccess(client);
@@ -207,4 +250,49 @@ public class ComposterBlockEntity extends TickCounterBlockEntity
         level.setBlockAndUpdate(getBlockPos(), level.getBlockState(getBlockPos()).setValue(TFCComposterBlock.STAGE, stage));
     }
 
+    /**
+     * Browns are checked first as some plants are in the plants tag, but we want them to be brown
+     */
+    public Compost getCompost(ItemStack stack)
+    {
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_POISONS))
+        {
+            return new Compost(AdditionType.POISON, 0);
+        }
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS_LOW))
+        {
+            return new Compost(AdditionType.BROWN, 1);
+        }
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS))
+        {
+            return new Compost(AdditionType.BROWN, 2);
+        }
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_BROWNS_HIGH))
+        {
+            return new Compost(AdditionType.BROWN, 4);
+        }
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_LOW))
+        {
+            return new Compost(AdditionType.GREEN, 1);
+        }
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS))
+        {
+            return new Compost(AdditionType.GREEN, 2);
+        }
+        if (Helpers.isItem(stack, TFCTags.Items.COMPOST_GREENS_HIGH))
+        {
+            return new Compost(AdditionType.GREEN, 4);
+        }
+        return new Compost(AdditionType.NONE, 0);
+    }
+
+    public record Compost(AdditionType type, int amount) {}
+
+    public enum AdditionType
+    {
+        NONE,
+        GREEN,
+        BROWN,
+        POISON
+    }
 }

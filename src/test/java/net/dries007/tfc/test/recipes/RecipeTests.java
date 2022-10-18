@@ -21,8 +21,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.gametest.GameTestHolder;
 
 import io.netty.buffer.Unpooled;
-import net.dries007.tfc.AutoGameTest;
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.IFood;
@@ -33,16 +32,16 @@ import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TestAssertions.*;
 
-@GameTestHolder(TerraFirmaCraft.MOD_ID)
+@GameTestHolder
 public class RecipeTests
 {
     @GameTestGenerator
     public Collection<TestFunction> generator()
     {
-        return TestAssertions.unitTestGenerator();
+        return TestAssertions.testGenerator();
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void testNoRecipeMatchesEmptyGrid(GameTestHelper helper)
     {
         for (CraftingRecipe recipe : helper.getLevel().getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING))
@@ -52,7 +51,7 @@ public class RecipeTests
         }
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void testNoRecipeProducesRottenOutput(GameTestHelper helper)
     {
         for (Recipe<?> recipe : helper.getLevel().getRecipeManager().getRecipes())
@@ -76,7 +75,7 @@ public class RecipeTests
         }
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void testAllRecipesEncodeAndDecode(GameTestHelper helper)
     {

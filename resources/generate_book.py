@@ -78,6 +78,7 @@ from patchouli import *
 GRADES = ['poor', 'normal', 'rich']  # Sorted so they appear in a nice order for animation
 GRADES_ALL = ['small', 'poor', 'normal', 'rich']
 TOOL_METALS = [key for key, val in METALS.items() if 'tool' in val.types]
+ANIMAL_NBT = '{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}'
 
 
 class LocalInstance:
@@ -598,7 +599,23 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         # todo: sluices
         # todo: powderkeg
         # todo: jack o lanterns, candles, torches (alt lighting page..?)
-        # todo: entity renderers have issues. many are babies, squids don't work. need to figure out what entity data to insert
+        # todo: entity renderers have issues. squids don't work.
+        entry('aqueducts', 'Aqueducts', 'tfc:rock/aqueduct/shale', pages=(
+            text('$(thing)Aqueducts$() are a tool used for moving $(thing)Water$() around. Unlike $(l:mechanics/wooden_buckets)Wooden Buckets$(), which are not able to transport water sources, $(thing)Aqueducts$() are able to move source blocks horizontally any distance to their destination. They can be used to transport any type of water, including $(thing)Fresh Water$(), $(thing)Salt Water$(), and even $()Hot Spring Water$().').link('#tfc:rock/aqueducts'),
+            crafting('tfc:crafting/rock/shale_aqueduct', text_contents='A singe aqueduct block can be crafted with some $(l:mechanics/advanced_building_materials)Bricks and Mortar$().'),
+            text('In order to use an $(thing)Aqueduct$(), you must simply connect them in a horizontal pattern, and place one end adjacent to either a $(thing)Source$() or $(thing)Falling$() water. After waiting a short while, water will begin to flow through the aqueduct network, and out the other end.$(br2)Note if aqueducts are removed, water will cease flowing, and $(thing)Aqueducts$() will not create permanent source blocks - any water will disappear after the aqueducts are removed.'),
+            multiblock('An Aqueduct Network', '', False, (
+                ('     ', '     ', '  0  ', '     ', '     '),
+                ('     ', '     ', '     ', '     ', '     '),
+                ('  B  ', '  B  ', 'CADAE', 'B   B', 'B   B'),
+            ), {
+                'A': 'tfc:rock/aqueduct/marble[south=true,north=true,fluid=water]',
+                'B': 'tfc:rock/aqueduct/marble[east=true,west=true,fluid=water]',
+                'C': 'tfc:rock/aqueduct/marble[east=true,south=true,fluid=water]',
+                'D': 'tfc:rock/aqueduct/marble[west=true,north=true,south=true,fluid=water]',
+                'E': 'tfc:rock/aqueduct/marble[east=true,north=true,fluid=water]',
+            }),
+        )),
         entry('animal_husbandry', 'Animal Husbandry', 'minecraft:egg', pages=(
             text('$(thing)Livestock$() are animals that can be tamed and bred by the player. Livestock can be either $(thing)male$() or $(thing)female$(). For some animals, it is possible to tell their sex visually. For example, male pigs have tusks.'),
             text('Livestock experience $(thing)aging$(). They are born as babies, which are smaller and cannot provide things for the player. After a certain number of days, they grow into $(thing)adult$() animals, which are able to do things like breed or produce milk. After they breed or are used enough times, animals become $(thing)old$(), and are only useful for their meat.'),
@@ -616,31 +633,31 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
             text('They need a $(thing)Saddle$() to ride, which can be $(thing)Knapped$(). This includes $(l:mechanics/animal_husbandry#mule)Mules$(), $(l:mechanics/animal_husbandry#donkey)Donkeys$(), and $(l:mechanics/animal_husbandry#horses)Horses$().$(br2)The next few pages will go over all livestock types.'),
             page_break(),
             text('$(thing)Pigs$() spawn in mild forests with $(l:the_world/climate#temperature)temperature$() between -10 and 35°C, and at least 200mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#mammals)Mammals$() with no special abilities. They will eat any food, even if it is rotten. They have 1-10 children, are pregnant for just 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Pigs').anchor('pig'),
-            entity('tfc:pig', 'A pig.', '', scale=1),
+            entity('tfc:pig' + ANIMAL_NBT, 'A pig.', '', scale=0.6),
             text('$(thing)Cows$() spawn in most climates, between $(l:the_world/climate#temperature)temperature$() -10 and 35°C, and at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They only eat $(thing)grains$(), which may be rotten. They can have 1-2 children, are pregnant for 58 days, and reach adulthood in 192 days. They can have children 13 times, if they are never milked, or be milked 128 times, if they are never bred. They produce milk every day.', title='Cows').anchor('cow'),
-            entity('tfc:cow', 'A cow.', '', scale=1),
+            entity('tfc:cow' + ANIMAL_NBT, 'A cow.', '', scale=0.75),
             text('$(thing)Goats$() spawn in moderate climates, with $(l:the_world/climate#temperature)temperature$() between -12 and 25°C, and at least 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), and $(thing)vegetables$(), which may be rotten. They can have 1-2 children, are pregnant for 32 days, and reach adulthood in 96 days. They can have children 6 times if they are never milked, or be milked 60 times if they are never bred. They produce milk every 3 days.', title='Goats').anchor('goat'),
-            entity('tfc:goat', 'A goat.', '', scale=1),
+            entity('tfc:goat' + ANIMAL_NBT, 'A goat.', '', scale=0.75),
             text('$(thing)Yaks$() spawn in cold climates, with $(l:the_world/climate#temperature)temperature$() of at most -11°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#dairy_animals)Dairy Animals$(). They eat only fresh $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 180 days. They can have children 23 times, if they are never milked, or be milked 230 times, if they are never bred. They produce milk once a day.', title='Yak').anchor('yak'),
-            entity('tfc:yak', 'A yak.', '', scale=1),
+            entity('tfc:yak' + ANIMAL_NBT, 'A yak.', '', scale=0.75),
             text('$(thing)Alpacas$() spawn in colder climates, with $(l:the_world/climate#temperature)temperature$() between -8 and 20°C, and at least 250mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1-2 children, are pregnant for 36 days, and reach adulthood in 98 days. They can have children 13 times, if they are never sheared, or be sheared 128 times, if they are never bred. They grow wool every 6 days.', title='Alpaca').anchor('alpaca'),
-            entity('tfc:alpaca', 'An alpaca.', '', scale=1),
+            entity('tfc:alpaca' + ANIMAL_NBT, 'An alpaca.', '', scale=0.75),
             text('$(thing)Sheep$() spawn in drier climates, with $(l:the_world/climate#temperature)temperature$() between 0 and 35°C, and between 70 and 300mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They have 1-2 children, are pregnant for 32 days, and reach adulthood in 56 days. They can have children 6 times, if they are never sheared, or be sheared 60 times, if they are never bred. They grow wool every 9 days.', title='Sheep').anchor('sheep'),
-            entity('tfc:sheep', 'A sheep.', '', scale=1),
+            entity('tfc:sheep' + ANIMAL_NBT, 'A sheep.', '', scale=0.75),
             text('$(thing)Musk Oxen$() spawn in moderate climates, with $(l:the_world/climate#temperature)temperature$() between 0 and 25°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#wooly_animals)Wooly Animals$(). They eat $(thing)grains$(). They always have 1 child, are pregnant for 64 days, and reach adulthood in 168 days. They can have children 16 times, if they are never sheared.', title='Musk Ox').anchor('musk_ox'),
-            entity('tfc:musk_ox', 'A musk ox.', '', scale=1),
+            entity('tfc:musk_ox' + ANIMAL_NBT, 'A musk ox.', '', scale=0.75),
             text('$(thing)Chickens$() spawn in warm forests, with $(l:the_world/climate#temperature)temperature$() of at least 14°C, and at least 225mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 24 days. They can lay eggs 100 times. They produce eggs every 30 hours.', title='Chickens').anchor('chicken'),
-            entity('tfc:chicken', 'A chicken.', '', scale=1),
+            entity('tfc:chicken' + ANIMAL_NBT, 'A chicken.', '', scale=0.7),
             text('$(thing)Ducks$() spawn in most plains, with $(l:the_world/climate#temperature)temperature$() between -25 and 30°C, and at least 100mm of $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), $(thing)bread$(), and $(thing)seeds$(). Their eggs hatch in 8 days, and become adults in 32 days. They can lay eggs 72 times. They produce eggs every 32 hours.', title='Ducks').anchor('duck'),
-            entity('tfc:duck', 'A duck.', '', scale=1),
+            entity('tfc:duck' + ANIMAL_NBT, 'A duck.', '', scale=0.7),
             text('$(thing)Quails$() spawn in colder climates, with $(l:the_world/climate#temperature)temperature$() between -15 and 15°C, and at least 200mm of  $(l:the_world/climate#rainfall)rainfall$(). They are $(l:mechanics/animal_husbandry#oviparous_animals)Oviparous Animals$(). They eat $(thing)grains$(), $(thing)fruits$(), $(thing)vegetables$(), and $(thing)seeds$(), which can be rotten. Their eggs hatch in 8 days, and become adults in 22 days. They can lay eggs 48 times. They produce eggs every 28 hours.', title='Quail').anchor('quail'),
-            entity('tfc:quail', 'A quail.', '', scale=1),
+            entity('tfc:quail' + ANIMAL_NBT, 'A quail.', '', scale=0.7),
             text('$(thing)Donkeys$() spawn in wetter plains, with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Donkeys').anchor('donkey'),
-            entity('tfc:donkey', 'A donkey.', '', scale=1),
+            entity('tfc:donkey' + ANIMAL_NBT, 'A donkey.', '', scale=0.6),
             text('$(thing)Mules$() spawn in plains with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$() that can carry a $(thing)chest$() and are the always-male product of a $(thing)horse$() and a $()donkey$(). They can have $(thing)grains$() and $(thing)fruits$(). They reach adulthood in 80 days.', title='Mules').anchor('mule'),
-            entity('tfc:mule', 'A mule.', '', scale=1),
+            entity('tfc:mule' + ANIMAL_NBT, 'A mule.', '', scale=0.6),
             text('$(thing)Horses$() spawn in plains with $(l:the_world/climate#temperature)temperature$() of at least -15°C, and between 130 and 400mm of $(l:the_world/climate#rainfall)rainfall$(). They are a kind of $(l:mechanics/animal_husbandry#horses)Equine$(). They eat $(thing)grains$() and $(thing)fruits$(). They have 1 child, are pregnant for 19 days, and reach adulthood in 80 days. They can have children 6 times.', title='Horses').anchor('horse'),
-            entity('tfc:horse', 'A horse.', '', scale=1),
+            entity('tfc:horse' + ANIMAL_NBT, 'A horse.', '', scale=0.6),
         )),
         entry('leather_making', 'Leather Making', 'minecraft:leather', pages=(
             text('$(thing)Leather$() is a sturdy material formed from animal hides. It is required to craft $(l:mechanics/armor)Armor$(), $(thing)Saddles$(), or a $(l:mechanics/bellows)Bellows$(). $()Raw Hides$() must be treated through several processes: $(l:mechanics/leather_making#soaking)soaking$(), $(l:mechanics/leather_making#scraping)scraping$(), $(l:mechanics/leather_making#preparing)preparing$(), and $(l:mechanics/leather_making#tanning)tanning$() to turn them into $(thing)Leather$().'),
@@ -950,9 +967,15 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
         )),
         entry('fertilizers', 'Fertilizers', 'tfc:powder/sylvite', pages=(
             text('Fertilizers are used to add nutrients to $(l:mechanics/crops)crops$(). $(item)$(k:key.use)$() with a fertilizer in your hand on some $(thing)Farmland$() or a $(thing)Crop$() to add the nutrients. Some particles should appear.', title='Fertilization'),
-            crafting('tfc:crafting/composter', text_contents='The composter is an essential tool for making fertilizer. It needs 4 $(2)green$() and 4 $(4)brown$() items to work. To add an item to it, $(item)$(k:key.use)$().'),
-            text('Green items include $(2)plants$(), $(2)fruits$(), $(2)vegetables$() and $(2)grains$(). Brown items include $(4)humus$(), $(4)paper$(), $(4)dead grass$(), $(4)driftwood$(), and $(4)pinecones$(). When compost is ready, the composter will begin to visually smoke.'),
-            item_spotlight('tfc:rotten_compost', text_contents='Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it.'),
+            crafting('tfc:crafting/composter', text_contents='The composter is an essential tool for making fertilizer. It needs both $(2)green$() and $(4)brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$().'),
+            item_spotlight(utils.ingredient('#tfc:compost_greens_low'), text_contents='Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter\'s appetite of green items, you need 16 of them.'),
+            item_spotlight(utils.ingredient('#tfc:compost_greens'), text_contents='Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter\'s appetite of green items, you need 8 of them.'),
+            item_spotlight(utils.ingredient('#tfc:compost_greens_high'), text_contents='Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter\'s appetite of green items, you need 4 of them.'),
+            item_spotlight(utils.ingredient('#tfc:compost_browns_low'), text_contents='Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter\'s appetite of brown items, you need 16 of them.'),
+            item_spotlight(utils.ingredient('#tfc:compost_browns'), text_contents='Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter\'s appetite of brown items, you need 8 of them.'),
+            item_spotlight(utils.ingredient('#tfc:compost_browns_high'), text_contents='Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter\'s appetite of brown items, you need 4 of them.'),
+            item_spotlight(utils.ingredient('#tfc:compost_poisons'), text_contents='Some items will $(c)poison$() your compost. These include $(c)meat$() and $(c)bones$(). Poison compost, when used on a crop, instantly kills it.'),
+            text('Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower. Also, composters that are touching other composters work slower.'),
             fertilizer('tfc:compost', 'Compost is the product of the composter.', 0.4, 0.2, 0.4),
             fertilizer('minecraft:bone_meal', 'Bonemeal is made of crushed bones.', p=0.1),
             fertilizer('tfc:powder/saltpeter', 'Saltpeter is made from its ore.', n=0.1, k=0.4),

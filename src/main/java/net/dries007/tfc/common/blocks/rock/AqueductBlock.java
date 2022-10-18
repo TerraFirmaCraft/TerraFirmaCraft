@@ -199,6 +199,27 @@ public class AqueductBlock extends HorizontalDirectionalBlock implements IFluidL
     }
 
     @Override
+    public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidStateIn)
+    {
+        final boolean result = IFluidLoggable.super.placeLiquid(level, pos, state, fluidStateIn);
+        if (result)
+        {
+            level.scheduleTick(pos, this, SHORT_TICK_DELAY);
+        }
+        return result;
+    }
+
+    @Override
+    public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state)
+    {
+        if (state.getValue(getFluidProperty()).getFluid() != Fluids.EMPTY)
+        {
+            level.scheduleTick(pos, this, LONG_TICK_DELAY);
+        }
+        return IFluidLoggable.super.pickupBlock(level, pos, state);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public FluidState getFluidState(BlockState state)
     {

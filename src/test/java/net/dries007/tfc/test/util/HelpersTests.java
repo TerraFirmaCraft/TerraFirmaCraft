@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 
 import static net.dries007.tfc.TestAssertions.*;
 
-public class HelpersTest extends TestHelper
+public class HelpersTests extends TestHelper
 {
     @Test
     public void testIterate()

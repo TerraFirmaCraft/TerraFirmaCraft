@@ -46,7 +46,7 @@ public class NestBoxBlock extends DeviceBlock
     {
         if (!player.isShiftKeyDown() && player instanceof ServerPlayer serverPlayer)
         {
-            level.getBlockEntity(pos, TFCBlockEntities.NEST_BOX.get()).ifPresent(nest -> NetworkHooks.openGui(serverPlayer, nest, pos));
+            level.getBlockEntity(pos, TFCBlockEntities.NEST_BOX.get()).ifPresent(nest -> Helpers.openScreen(serverPlayer, nest, pos));
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
         return InteractionResult.PASS;

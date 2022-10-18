@@ -29,7 +29,7 @@ import org.junit.jupiter.api.TestFactory;
 import static org.junit.jupiter.api.Assertions.*;
 import static net.dries007.tfc.TestAssertions.*;
 
-public class AdvancedShapedRecipeTest extends TestHelper
+public class AdvancedShapedRecipeTests extends TestHelper
 {
     /**
      * Test that the input stack used in {@link ItemStackProvider} is correctly located when using {@link AdvancedShapedRecipe}

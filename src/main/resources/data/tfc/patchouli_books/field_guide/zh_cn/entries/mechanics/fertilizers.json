@@ -12,17 +12,67 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/composter",
-      "text": "堆肥桶是制作肥料的必备工具。它需要 4 个$(2)绿色物品$()和 4 个$(4)棕色物品$()才能工作。手持物品对着堆肥桶按$(item)$(k:key.use)$()就能放进去。"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "绿色物品包括$(2)植物$()、$(2)水果$()、$(2)蔬菜$()和$(2)谷物$()。棕色物品包括 $(4)腐殖质$()、$(4)纸$()、$(4)枯萎的草$()、$(4)浮木$()和$(4)松果$()。材料准备完毕后，堆肥桶需要十几天的时间才能将废料转变为堆肥。在太干或太湿的气候中，堆肥桶的效率会有所下降。堆肥桶上开始冒烟时就说明可以收获了。"
+      "text": "The composter is an essential tool for making fertilizer. It needs both $(2)green$() and $(4)brown$() items to work. Different items contribute more to the amount of compost produced than others. To add an item to it, $(item)$(k:key.use)$()."
     },
     {
       "type": "patchouli:spotlight",
-      "item": "tfc:rotten_compost",
+      "item": {
+        "tag": "tfc:compost_greens_low"
+      },
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute little to the composter, such as plants. To fill a composter's appetite of green items, you need 16 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "tag": "tfc:compost_greens"
+      },
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute moderately to the composter, such as grains. To fill a composter's appetite of green items, you need 8 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "tag": "tfc:compost_greens_high"
+      },
+      "link_recipes": false,
+      "text": "Some $(2)green$() items contribute a great amount to the composter, such as fruits and vegetables. To fill a composter's appetite of green items, you need 4 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "tag": "tfc:compost_browns_low"
+      },
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute little to the composter, such as tall plants like dry phragmite, tree ferns, and vines, as well as fallen leaves. To fill a composter's appetite of brown items, you need 16 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "tag": "tfc:compost_browns"
+      },
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute moderately to the composter, such as wood ash and jute. To fill a composter's appetite of brown items, you need 8 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "tag": "tfc:compost_browns_high"
+      },
+      "link_recipes": false,
+      "text": "Some $(4)brown$() items contribute a great amount to the composter, such as melons, pumpkins, dead grass, pinecones, humus, and driftwood. To fill a composter's appetite of brown items, you need 4 of them."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": {
+        "tag": "tfc:compost_poisons"
+      },
       "link_recipes": false,
       "text": "有些物品会$(c)污染$()你的堆肥桶。比如$(c)肉$()和$(c)骨头$()。用腐烂的堆肥施肥会立刻使农作物死亡。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Composters operate better in certain conditions. Composters that have a block of snow on top work slightly faster. Composters in regions of less than 150mm or greater than 350mm of rainfall operate much slower. Also, composters that are touching other composters work slower."
     },
     {
       "type": "patchouli:spotlight",

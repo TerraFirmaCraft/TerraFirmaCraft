@@ -282,11 +282,20 @@ public final class FluidHelpers
     @Nullable
     public static FluidStack pickupFluid(Level level, BlockPos pos, BlockState state, IFluidHandler.FluidAction action)
     {
+        return pickupFluid(level, pos, state, action, fluid -> playTransferSound(level, pos, fluid, Transfer.FILL));
+    }
+
+    /**
+     * Pickup a fluid from a block in the world, leaving the block empty.
+     */
+    @Nullable
+    public static FluidStack pickupFluid(Level level, BlockPos pos, BlockState state, IFluidHandler.FluidAction action, Consumer<FluidStack> sound)
+    {
         final Block block = state.getBlock();
         if (block instanceof BucketPickupExtension pickup)
         {
             final FluidStack fluid = pickup.pickupBlock(level, pos, state, action);
-            playTransferSound(level, pos, fluid, Transfer.FILL);
+            sound.accept(fluid);
             return fluid;
         }
         if (block instanceof BucketPickup pickup)
@@ -298,7 +307,7 @@ public final class FluidHelpers
                 final FluidStack fluid = stack.getCapability(Capabilities.FLUID_ITEM)
                     .map(cap -> cap.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE))
                     .orElse(FluidStack.EMPTY);
-                playTransferSound(level, pos, fluid, Transfer.FILL);
+                sound.accept(fluid);
                 return fluid;
             }
             else
@@ -627,7 +636,8 @@ public final class FluidHelpers
             }
             if (!newContainerStack.isEmpty())
             {
-                ItemHandlerHelper.giveItemToPlayer(player, newContainerStack);
+                // Always ensure that we've only created one new container stack.
+                ItemHandlerHelper.giveItemToPlayer(player, Helpers.copyWithSize(newContainerStack, 1));
             }
         }
     }

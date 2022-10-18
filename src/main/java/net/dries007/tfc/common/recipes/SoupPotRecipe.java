@@ -40,7 +40,7 @@ public class SoupPotRecipe extends PotRecipe
     public static final int SOUP_HUNGER_VALUE = 4;
     public static final float SOUP_DECAY_MODIFIER = 3.5F;
 
-    protected SoupPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
+    public SoupPotRecipe(ResourceLocation id, List<Ingredient> itemIngredients, FluidStackIngredient fluidIngredient, int duration, float minTemp)
     {
         super(id, itemIngredients, fluidIngredient, duration, minTemp);
     }

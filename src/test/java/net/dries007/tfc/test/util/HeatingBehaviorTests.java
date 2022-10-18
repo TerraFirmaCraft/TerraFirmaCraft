@@ -19,8 +19,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.items.IItemHandler;
 
-import net.dries007.tfc.AutoGameTest;
-import net.dries007.tfc.TerraFirmaCraft;
+import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.blockentities.PitKilnBlockEntity;
 import net.dries007.tfc.common.blocks.TFCBlocks;
@@ -42,16 +41,16 @@ import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
-@GameTestHolder(TerraFirmaCraft.MOD_ID)
-public class HeatingBehaviorTest
+@GameTestHolder
+public class HeatingBehaviorTests
 {
     @GameTestGenerator
     public Collection<TestFunction> generator()
     {
-        return TestAssertions.unitTestGenerator();
+        return TestAssertions.testGenerator();
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToHeat10mBCopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper10mB = new ItemStack(TFCBlocks.SMALL_ORES.get(Ore.NATIVE_COPPER).get());
@@ -61,7 +60,7 @@ public class HeatingBehaviorTest
         checkTicksToHeatInForge(vessel, 884, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToHeat100mBCopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper100mB = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get(), 4);
@@ -71,7 +70,7 @@ public class HeatingBehaviorTest
         checkTicksToHeatInForge(vessel, 1262, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToHeat560mBCopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper560mB = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
@@ -81,7 +80,7 @@ public class HeatingBehaviorTest
         checkTicksToHeatInForge(vessel, 3194, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToHeat2240mBCopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
@@ -91,53 +90,53 @@ public class HeatingBehaviorTest
         checkTicksToHeatInForge(vessel, 10249, TFCConfig.SERVER.pitKilnTemperature.get()); // Heating liquid
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToCool10mBCopperInSmallVessel(GameTestHelper helper)
     {
         checkTicksSpentMoltenAfterPitKiln(helper, 505, false, false, Metal.Default.COPPER, new ItemStack(TFCBlocks.SMALL_ORES.get(Ore.NATIVE_COPPER).get()));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToCool100mBCopperInSmallVessel(GameTestHelper helper)
     {
         checkTicksSpentMoltenAfterPitKiln(helper, 720, false, false, Metal.Default.COPPER, new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get(), 4));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToCool560mBCopperInSmallVessel(GameTestHelper helper)
     {
         checkTicksSpentMoltenAfterPitKiln(helper, 1824, false, false, Metal.Default.COPPER, new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkTicksToCool2240mBCopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
         checkTicksSpentMoltenAfterPitKiln(helper, 5856, false, false, Metal.Default.COPPER, copper16, copper16, copper16, copper16);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMelt16CopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
         checkTicksSpentMoltenAfterPitKiln(helper, 560, true, true, Metal.Default.COPPER, copper16);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMelt64CopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
         checkTicksSpentMoltenAfterPitKiln(helper, 2219, false, true, Metal.Default.COPPER, copper16, copper16, copper16, copper16);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMelt100mBCopperInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper100mB = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.NORMAL).get(), 4);
         checkTicksSpentMoltenAfterPitKiln(helper, 100, true, true, Metal.Default.COPPER, copper100mB);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMelt100mBBronzeInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper90mB = new ItemStack(TFCBlocks.SMALL_ORES.get(Ore.NATIVE_COPPER).get(), 9);
@@ -145,7 +144,7 @@ public class HeatingBehaviorTest
         checkTicksSpentMoltenAfterPitKiln(helper, 100, true, true, Metal.Default.BRONZE, copper90mB, tin10mB);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMelt100mBBismuthBronzeInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper50mB = new ItemStack(TFCBlocks.SMALL_ORES.get(Ore.NATIVE_COPPER).get(), 5);
@@ -154,7 +153,7 @@ public class HeatingBehaviorTest
         checkTicksSpentMoltenAfterPitKiln(helper, 100, true, true, Metal.Default.BISMUTH_BRONZE, copper50mB, zinc30mB, bismuth20mB);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMelt100mBBlackBronzeInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper60mB = new ItemStack(TFCBlocks.SMALL_ORES.get(Ore.NATIVE_COPPER).get(), 6);
@@ -163,7 +162,7 @@ public class HeatingBehaviorTest
         checkTicksSpentMoltenAfterPitKiln(helper, 100, true, true, Metal.Default.BLACK_BRONZE, copper60mB, silver20mB, gold20mB);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMeltBronzeInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
@@ -172,7 +171,7 @@ public class HeatingBehaviorTest
         checkTicksSpentMoltenAfterPitKiln(helper, 1540, true, true, Metal.Default.BRONZE, copper16, copper16, copper8, tin4);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMeltBismuthBronzeInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
@@ -182,7 +181,7 @@ public class HeatingBehaviorTest
         checkTicksSpentMoltenAfterPitKiln(helper, 1750, true, true, Metal.Default.BISMUTH_BRONZE, copper16, copper10, bismuth10, zinc14);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanMeltBlackBronzeInSmallVessel(GameTestHelper helper)
     {
         final ItemStack copper16 = new ItemStack(TFCItems.GRADED_ORES.get(Ore.NATIVE_COPPER).get(Ore.Grade.RICH).get(), 16);
@@ -191,7 +190,7 @@ public class HeatingBehaviorTest
         checkTicksSpentMoltenAfterPitKiln(helper, 2235, false, true, Metal.Default.BLACK_BRONZE, copper16, copper16, gold16, silver16);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkPitKilnCanFirePottery(GameTestHelper helper)
     {
         final PitKilnBlockEntity pitKiln = pitKiln(helper);
@@ -220,128 +219,128 @@ public class HeatingBehaviorTest
         }
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCookingStickWithHeat(GameTestHelper helper)
     {
         TestAssertions.assertEquals(76, ticksRequiredToMelt(new ItemStack(Items.STICK)));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCookingStickBunchWithHeat(GameTestHelper helper)
     {
         TestAssertions.assertEquals(601, ticksRequiredToMelt(new ItemStack(TFCItems.STICK_BUNCH.get())));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCookingSandWithHeat(GameTestHelper helper)
     {
         TestAssertions.assertEquals(160, ticksRequiredToMelt(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCookingSandInVesselWithHeat(GameTestHelper helper)
     {
         TestAssertions.assertEquals(401, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCooking4SandInVesselWithHeat(GameTestHelper helper)
     {
         TestAssertions.assertEquals(737, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCooking4SandSpreadOutInVesselWithHeat(GameTestHelper helper)
     {
         final ItemStack sand = new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get());
         TestAssertions.assertEquals(737, ticksRequiredToMeltVessel(sand, sand, sand, sand));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCooking8SandInVesselWithHeat(GameTestHelper helper)
     {
         TestAssertions.assertEquals(1185, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkCooking16SandInVesselWithHeat(GameTestHelper helper)
     {
         TestAssertions.assertEquals(2081, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkBronzeIngotTimeSpentWorkable(GameTestHelper helper)
     {
         TestAssertions.assertEquals(1358, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.INGOT).get())));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkBronzeDoubleIngotTimeSpentWorkable(GameTestHelper helper)
     {
         TestAssertions.assertEquals(2715, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.DOUBLE_INGOT).get())));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkIronIngotTimeSpentWorkable(GameTestHelper helper)
     {
         TestAssertions.assertEquals(2193, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get())));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public void checkIronDoubleIngotTimeSpentWorkable(GameTestHelper helper)
     {
         TestAssertions.assertEquals(4386, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.DOUBLE_INGOT).get())));
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithPoorOres(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.POOR, false, false, 43200, 24 * 15);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithNormalOres(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.NORMAL, false, false, 43200, 24 * 25);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithRichOres(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.RICH, false, false, 43200, 24 * 35);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithPoorOresCastingIntoIngotsFirst(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.POOR, true, false, 9614, 24 * 15);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithNormalOresCastingIntoIngotsFirst(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.NORMAL, true, false, 15014, 24 * 25);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithRichOresCastingIntoIngotsFirst(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.RICH, true, false, 18614, 24 * 35);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithPoorOresAndCrucibleCastingIntoIngotsFirst(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.POOR, true, true, 6905, 24 * 15);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithNormalOresAndCrucibleCastingIntoIngotsFirst(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.NORMAL, true, true, 12305, 24 * 25);
     }
 
-    @AutoGameTest
+    @MyTest(unitTest = true)
     public String checkBloomeryFuelEfficiencyWithRichOresAndCrucibleCastingIntoIngotsFirst(GameTestHelper helper)
     {
         return checkBloomeryEfficiency(Ore.Grade.RICH, true, true, 15905, 24 * 35);

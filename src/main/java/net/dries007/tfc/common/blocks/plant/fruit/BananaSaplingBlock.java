@@ -35,7 +35,7 @@ public class BananaSaplingBlock extends FruitTreeSaplingBlock
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     @Override

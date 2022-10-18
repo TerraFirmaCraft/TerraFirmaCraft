@@ -97,7 +97,7 @@ public class LogPileBlock extends DeviceBlock implements IForgeBlockExtension, E
                 {
                     if (player instanceof ServerPlayer serverPlayer)
                     {
-                        NetworkHooks.openGui(serverPlayer, logPile, pos);
+                        Helpers.openScreen(serverPlayer, logPile, pos);
                     }
                 }
             });

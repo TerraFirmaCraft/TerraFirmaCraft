@@ -113,7 +113,7 @@ public class GrillBlock extends FirepitBlock
             {
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, firepit, pos);
+                    Helpers.openScreen(serverPlayer, firepit, pos);
                 }
                 return InteractionResult.SUCCESS;
             }

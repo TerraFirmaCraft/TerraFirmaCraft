@@ -17,6 +17,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifiable & INBTSerializable<CompoundTag>> extends InventoryBlockEntity<C>
 {
     protected boolean needsClientUpdate;
+    protected boolean isDirty;
 
     public TickableInventoryBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, InventoryFactory<C> inventory, Component defaultName)
     {
@@ -31,11 +32,22 @@ public abstract class TickableInventoryBlockEntity<C extends IItemHandlerModifia
             needsClientUpdate = false;
             super.markForSync();
         }
+        if (isDirty)
+        {
+            isDirty = false;
+            super.markDirty();
+        }
     }
 
     @Override
     public void markForSync()
     {
         needsClientUpdate = true;
+    }
+
+    @Override
+    public void markDirty()
+    {
+        isDirty = true;
     }
 }

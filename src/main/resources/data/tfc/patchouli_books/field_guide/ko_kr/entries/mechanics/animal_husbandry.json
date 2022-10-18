@@ -93,8 +93,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:pig",
-      "scale": 1,
+      "entity": "tfc:pig{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
       "text": "A pig."
     },
@@ -106,8 +106,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:cow",
-      "scale": 1,
+      "entity": "tfc:cow{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
       "text": "A cow."
     },
@@ -119,8 +119,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:goat",
-      "scale": 1,
+      "entity": "tfc:goat{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
       "text": "A goat."
     },
@@ -132,8 +132,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:yak",
-      "scale": 1,
+      "entity": "tfc:yak{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
       "text": "A yak."
     },
@@ -145,8 +145,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:alpaca",
-      "scale": 1,
+      "entity": "tfc:alpaca{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
       "text": "An alpaca."
     },
@@ -158,8 +158,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:sheep",
-      "scale": 1,
+      "entity": "tfc:sheep{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
       "text": "A sheep."
     },
@@ -171,8 +171,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:musk_ox",
-      "scale": 1,
+      "entity": "tfc:musk_ox{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.75,
       "name": " ",
       "text": "A musk ox."
     },
@@ -184,8 +184,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:chicken",
-      "scale": 1,
+      "entity": "tfc:chicken{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
       "name": " ",
       "text": "A chicken."
     },
@@ -197,8 +197,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:duck",
-      "scale": 1,
+      "entity": "tfc:duck{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
       "name": " ",
       "text": "A duck."
     },
@@ -210,8 +210,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:quail",
-      "scale": 1,
+      "entity": "tfc:quail{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.7,
       "name": " ",
       "text": "A quail."
     },
@@ -223,8 +223,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:donkey",
-      "scale": 1,
+      "entity": "tfc:donkey{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
       "text": "A donkey."
     },
@@ -236,8 +236,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:mule",
-      "scale": 1,
+      "entity": "tfc:mule{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
       "text": "A mule."
     },
@@ -249,8 +249,8 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "tfc:horse",
-      "scale": 1,
+      "entity": "tfc:horse{NoAI:1b,birth:-100000000L,oldDay:9223372036854775807L,geneticSize:16}",
+      "scale": 0.6,
       "name": " ",
       "text": "A horse."
     }

@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.devices;
 
 
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.fluids.TFCFluids;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -42,6 +44,11 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
 {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty UPPER = TFCBlockStateProperties.UPPER;
+
+    public static BlockPos getFluidOutputPos(BlockState state, BlockPos pos)
+    {
+        return pos.relative(state.getValue(FACING), 2).below();
+    }
 
     private static VoxelShape createTopShape(Direction direction)
     {
@@ -131,9 +138,9 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
     {
         if (!level.isClientSide)
         {
-            final BlockPos fluidPos = pos.relative(state.getValue(FACING).getOpposite()).below();
+            final BlockPos fluidPos = getFluidOutputPos(state, pos);
             final FluidState fluid = level.getFluidState(fluidPos);
-            if (Helpers.isFluid(fluid, FluidTags.WATER))
+            if (Helpers.isFluid(fluid, TFCTags.Fluids.USABLE_IN_SLUICE))
             {
                 level.setBlockAndUpdate(fluidPos, Blocks.AIR.defaultBlockState());
             }
@@ -160,10 +167,10 @@ public class SluiceBlock extends DeviceBlock implements EntityBlockExtension
     @Override
     public void wasExploded(Level level, BlockPos pos, Explosion explosion)
     {
-        BlockState state = level.getBlockState(pos);
+        final BlockState state = level.getBlockState(pos);
         if (state.hasProperty(FACING))
         {
-            BlockPos fluidPos = pos.relative(state.getValue(FACING).getOpposite()).below();
+            final BlockPos fluidPos = getFluidOutputPos(state, pos);
             if (Helpers.isFluid(level.getFluidState(fluidPos), FluidTags.WATER))
             {
                 level.setBlockAndUpdate(fluidPos, Blocks.AIR.defaultBlockState());

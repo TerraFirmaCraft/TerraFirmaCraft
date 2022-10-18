@@ -120,7 +120,7 @@ public class AnvilBlock extends DeviceBlock implements Tiered
             // Not shifting, so attempt to open the anvil gui
             if (player instanceof ServerPlayer serverPlayer)
             {
-                NetworkHooks.openGui(serverPlayer, anvil.anvilProvider(), pos);
+                Helpers.openScreen(serverPlayer, anvil.anvilProvider(), pos);
             }
             return InteractionResult.SUCCESS;
         }

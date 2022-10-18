@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.SupportType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
@@ -96,16 +97,17 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
         if (level.isClientSide() || placer == null) return;
         if (stack.getCount() > 2 && !placer.isShiftKeyDown()) // need two because the item block hasn't shrunk the stack yet
         {
-            BlockPos above = pos.above();
-            BlockPos above2 = above.above();
-            if (level.isEmptyBlock(above) && level.isEmptyBlock(above2))
+            final BlockPos above = pos.above(), above2 = above.above();
+            final BlockState stateAbove = level.getBlockState(above), stateAbove2 = level.getBlockState(above2);
+            final Fluid fluidAbove = stateAbove.getFluidState().getType(), fluidAbove2 = stateAbove2.getFluidState().getType();
+            if (isEmptyOrValidFluid(stateAbove) && isEmptyOrValidFluid(stateAbove2))
             {
                 if (level.getEntities(null, new AABB(above)).isEmpty())
                 {
-                    level.setBlock(above, defaultBlockState(), 2);
+                    level.setBlock(above, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidAbove)), 2);
                     if (level.getEntities(null, new AABB(above2)).isEmpty())
                     {
-                        level.setBlock(above2, defaultBlockState(), 2);
+                        level.setBlock(above2, defaultBlockState().setValue(getFluidProperty(), getFluidProperty().keyForOrEmpty(fluidAbove2)), 2);
                         stack.shrink(2);
                     }
                     else
@@ -198,5 +200,10 @@ public class VerticalSupportBlock extends Block implements IForgeBlockExtension,
             builder.put(state, shape);
         }
         return builder.build();
+    }
+
+    protected boolean isEmptyOrValidFluid(BlockState state)
+    {
+        return FluidHelpers.isAirOrEmptyFluid(state) && getFluidProperty().canContain(state.getFluidState().getType());
     }
 }

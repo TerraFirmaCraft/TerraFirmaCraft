@@ -127,7 +127,7 @@ public class PotBlock extends FirepitBlock
 
                 if (player instanceof ServerPlayer serverPlayer)
                 {
-                    NetworkHooks.openGui(serverPlayer, pot, pos);
+                    Helpers.openScreen(serverPlayer, pot, pos);
                 }
                 return InteractionResult.sidedSuccess(level.isClientSide);
             }
