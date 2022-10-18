@@ -91,4 +91,9 @@ public class BerryBushBlockEntity extends TFCBlockEntity implements ICalendarTic
     {
         lastTick = tick;
     }
+
+    public void setLastBushTick(long ticks)
+    {
+        lastUpdateTick = ticks;
+    }
 }

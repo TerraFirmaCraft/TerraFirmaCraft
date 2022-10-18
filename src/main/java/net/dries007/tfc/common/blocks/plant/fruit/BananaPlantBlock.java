@@ -162,7 +162,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                     {
                         BlockPos downPos = pos.below(3);
                         // increase the stage 1/3 of the time, or always if we realize we're starting to get tall
-                        if (!level.getBlockState(abovePos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH) && (level.random.nextInt(4) == 0 || level.getBlockState(downPos).is(TFCTags.Blocks.FRUIT_TREE_BRANCH)))
+                        if (!Helpers.isBlock(level.getBlockState(abovePos), this) && (level.random.nextInt(4) == 0 || Helpers.isBlock(level.getBlockState(downPos), this)))
                         {
                             stage++;
                         }
@@ -193,7 +193,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
                         {
                             level.setBlockAndUpdate(abovePos, newState);
                             final long newBushTicks = nextCalendarTick;
-                            level.getBlockEntity(abovePos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(newBush -> newBush.setLastUpdateTick(newBushTicks));
+                            level.getBlockEntity(abovePos, TFCBlockEntities.BERRY_BUSH.get()).ifPresent(newBush -> newBush.setLastBushTick(newBushTicks));
                         }
                     }
                 }
@@ -212,7 +212,7 @@ public class BananaPlantBlock extends SeasonalPlantBlock implements IBushBlock, 
     {
         BlockPos belowPos = pos.below();
         BlockState belowState = level.getBlockState(belowPos);
-        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, TFCTags.Blocks.FRUIT_TREE_BRANCH);
+        return Helpers.isBlock(belowState, TFCTags.Blocks.BUSH_PLANTABLE_ON) || Helpers.isBlock(belowState, this);
     }
 
     @Override
