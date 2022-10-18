@@ -9,19 +9,15 @@ package net.dries007.tfc.client.model.entity;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.LivingEntity;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Constants;
-import com.mojang.math.Vector3f;
-import net.dries007.tfc.client.model.MouthHolder;
 import net.dries007.tfc.client.model.animation.AnimationChannel;
 import net.dries007.tfc.client.model.animation.AnimationDefinition;
 import net.dries007.tfc.client.model.animation.Keyframe;
 import net.dries007.tfc.client.model.animation.VanillaAnimations;
 import net.dries007.tfc.common.entities.prey.Pest;
 
-public class RatModel extends HierarchicalAnimatedModel<Pest> implements MouthHolder
+public class RatModel extends HierarchicalAnimatedModel<Pest>
 {
     public static final AnimationDefinition RAT_SNIFF = AnimationDefinition.Builder.withLength(3f)
         .addAnimation("Head", new AnimationChannel(AnimationChannel.Targets.ROTATION, new Keyframe(0f, VanillaAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.16666666666666666f, VanillaAnimations.degreeVec(-10f, 0f, 0f), AnimationChannel.Interpolations.LINEAR), new Keyframe(0.75f, VanillaAnimations.degreeVec(-10.627584138330803f, 19.683498079413766f, -3.616441573002703f), AnimationChannel.Interpolations.LINEAR), new Keyframe(1.875f, VanillaAnimations.degreeVec(-10.627584138330803f, 19.683498079413766f, -3.616441573002703f), AnimationChannel.Interpolations.LINEAR), new Keyframe(2.75f, VanillaAnimations.degreeVec(-10.627584138330695f, -19.683498079413603f, 3.6164415730035033f), AnimationChannel.Interpolations.LINEAR), new Keyframe(3f, VanillaAnimations.degreeVec(0f, 0f, 0f), AnimationChannel.Interpolations.LINEAR)))
@@ -89,13 +85,11 @@ public class RatModel extends HierarchicalAnimatedModel<Pest> implements MouthHo
     }
 
     private final ModelPart head;
-    private final ModelPart nose;
 
     public RatModel(ModelPart root)
     {
         super(root);
         this.head = root.getChild("Body").getChild("Head");
-        this.nose = head.getChild("nose");
     }
 
     @Override
@@ -114,16 +108,6 @@ public class RatModel extends HierarchicalAnimatedModel<Pest> implements MouthHo
             this.head.xRot = headPitch * Constants.DEG_TO_RAD;
             this.head.yRot = netHeadYaw * Constants.DEG_TO_RAD;
         }
-
     }
 
-    @Override
-    public void translateToMouth(LivingEntity entity, PoseStack stack, float partialTicks)
-    {
-        head.translateAndRotate(stack);
-//        stack.translate(nose.x / 16f, nose.y / 16f, nose.z / 16f);
-//        stack.mulPose(Vector3f.ZP.rotationDegrees(head.zRot * Constants.RAD_TO_DEG));
-//        stack.mulPose(Vector3f.YP.rotationDegrees(head.yRot * Constants.RAD_TO_DEG));
-//        stack.mulPose(Vector3f.XP.rotationDegrees(head.xRot * Constants.RAD_TO_DEG));
-    }
 }

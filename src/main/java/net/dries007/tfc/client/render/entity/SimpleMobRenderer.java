@@ -19,7 +19,6 @@ import net.minecraft.world.entity.Mob;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
-import net.dries007.tfc.client.model.ItemInMouthLayer;
 import net.dries007.tfc.util.Helpers;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,10 +39,7 @@ public class SimpleMobRenderer<T extends Mob, M extends EntityModel<T>> extends 
         babyTexture = hasBabyTexture ? Helpers.animalTexture(name + "_young") : null;
         this.textureGetter = textureGetter != null ? textureGetter : e -> babyTexture != null && e.isBaby() ? babyTexture : texture;
         this.scale = scale;
-        if (itemInMouth)
-        {
-            addLayer(new ItemInMouthLayer<>(this));
-        }
+        // todo: re-add item in mouth layer when i can figure out how the heck to render it right.
     }
 
     @Override
