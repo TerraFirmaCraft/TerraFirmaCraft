@@ -194,8 +194,8 @@ dependencies {
         annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
     }
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    minecraftLibrary "org.junit.jupiter:junit-jupiter-api:5.9.0"
+    minecraftLibrary "org.junit.jupiter:junit-jupiter-engine:5.9.0"
 }
 
 test {

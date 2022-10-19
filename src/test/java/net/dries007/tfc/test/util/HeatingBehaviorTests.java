@@ -7,7 +7,6 @@
 package net.dries007.tfc.test.util;
 
 import java.util.Collection;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -18,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.items.IItemHandler;
+import org.junit.jupiter.api.Assertions;
 
 import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
@@ -40,6 +40,9 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
+
+import static net.dries007.tfc.TestAssertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @GameTestHolder
 public class HeatingBehaviorTests
@@ -196,7 +199,7 @@ public class HeatingBehaviorTests
         final PitKilnBlockEntity pitKiln = pitKiln(helper);
         final IItemHandler pitKilnInventory = Helpers.getCapability(pitKiln, Capabilities.ITEM);
 
-        TestAssertions.assertNotNull(pitKilnInventory);
+        assertNotNull(pitKilnInventory);
 
         try (CalendarTransaction tr = Calendars.SERVER.transaction())
         {
@@ -209,87 +212,87 @@ public class HeatingBehaviorTests
             final ItemStack outputStack = pitKilnInventory.extractItem(0, 1, false);
 
             // Can't compare NBT, as the new vessel will have heat
-            TestAssertions.assertEquals(TFCItems.VESSEL.get(), outputStack.getItem());
-            TestAssertions.assertEquals(1, outputStack.getCount());
+            Assertions.assertEquals(TFCItems.VESSEL.get(), outputStack.getItem());
+            Assertions.assertEquals(1, outputStack.getCount());
 
             final IHeat outputHeat = Helpers.getCapability(outputStack, HeatCapability.CAPABILITY);
 
-            TestAssertions.assertNotNull(outputHeat);
-            TestAssertions.assertEquals(1400.0f, outputHeat.getTemperature(), "Pit kiln did not reach expected temperature, got: " + outputHeat.getTemperature());
+            assertNotNull(outputHeat);
+            Assertions.assertEquals(1400.0f, outputHeat.getTemperature(), "Pit kiln did not reach expected temperature, got: " + outputHeat.getTemperature());
         }
     }
 
     @MyTest(unitTest = true)
     public void checkCookingStickWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(76, ticksRequiredToMelt(new ItemStack(Items.STICK)));
+        Assertions.assertEquals(76, ticksRequiredToMelt(new ItemStack(Items.STICK)));
     }
 
     @MyTest(unitTest = true)
     public void checkCookingStickBunchWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(601, ticksRequiredToMelt(new ItemStack(TFCItems.STICK_BUNCH.get())));
+        Assertions.assertEquals(601, ticksRequiredToMelt(new ItemStack(TFCItems.STICK_BUNCH.get())));
     }
 
     @MyTest(unitTest = true)
     public void checkCookingSandWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(160, ticksRequiredToMelt(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
+        Assertions.assertEquals(160, ticksRequiredToMelt(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkCookingSandInVesselWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(401, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
+        Assertions.assertEquals(401, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking4SandInVesselWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(737, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
+        Assertions.assertEquals(737, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking4SandSpreadOutInVesselWithHeat(GameTestHelper helper)
     {
         final ItemStack sand = new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get());
-        TestAssertions.assertEquals(737, ticksRequiredToMeltVessel(sand, sand, sand, sand));
+        Assertions.assertEquals(737, ticksRequiredToMeltVessel(sand, sand, sand, sand));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking8SandInVesselWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(1185, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
+        Assertions.assertEquals(1185, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking16SandInVesselWithHeat(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(2081, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
+        Assertions.assertEquals(2081, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
     }
 
     @MyTest(unitTest = true)
     public void checkBronzeIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(1358, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.INGOT).get())));
+        Assertions.assertEquals(1358, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.INGOT).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkBronzeDoubleIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(2715, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.DOUBLE_INGOT).get())));
+        Assertions.assertEquals(2715, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.DOUBLE_INGOT).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkIronIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(2193, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get())));
+        Assertions.assertEquals(2193, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkIronDoubleIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        TestAssertions.assertEquals(4386, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.DOUBLE_INGOT).get())));
+        Assertions.assertEquals(4386, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.DOUBLE_INGOT).get())));
     }
 
     @MyTest(unitTest = true)
@@ -353,8 +356,8 @@ public class HeatingBehaviorTests
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(ore);
         final int itemCount = 24; // Full sized bloomery
 
-        TestAssertions.assertNotNull(charcoal, "Missing fuel for " + charcoal);
-        TestAssertions.assertNotNull(recipe, "Missing heat recipe for " + ore);
+        assertNotNull(charcoal, "Missing fuel for " + charcoal);
+        assertNotNull(recipe, "Missing heat recipe for " + ore);
 
         final int oreOutput = itemCount * recipe.assembleFluid(new ItemStackInventory(ore)).getAmount();
         final int concurrentMelting = useCrucible ? 5 + 9 : 5;
@@ -370,8 +373,8 @@ public class HeatingBehaviorTests
             fuelTicks = itemCount * charcoal.getDuration();
         }
 
-        TestAssertions.assertEquals(expectedFuelTicks, fuelTicks);
-        TestAssertions.assertEquals(expectedOreOutput, oreOutput);
+        Assertions.assertEquals(expectedFuelTicks, fuelTicks);
+        Assertions.assertEquals(expectedOreOutput, oreOutput);
 
         return String.format("grade = %s, castIntoIngotsFirst = %s, useCrucible = %s : fuelTicks = %d, oreOutput = %d, mBofOrePerFuelTick = %.3f", oreGrade, castIntoIngotsFirst, useCrucible, fuelTicks, oreOutput, (float) oreOutput / fuelTicks);
     }
@@ -379,15 +382,15 @@ public class HeatingBehaviorTests
     private void clearTemperature(ItemStack stack)
     {
         final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
-        TestAssertions.assertNotNull(heat);
+        assertNotNull(heat);
         heat.setTemperature(0);
-        TestAssertions.assertEquals(0f, heat.getTemperature());
+        Assertions.assertEquals(0f, heat.getTemperature());
     }
 
     private void checkTicksToHeatInForge(ItemStack stack, int expectedTicks, float targetTemperature)
     {
         final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
-        TestAssertions.assertNotNull(heat);
+        assertNotNull(heat);
 
         try (CalendarTransaction tr = Calendars.SERVER.transaction())
         {
@@ -397,10 +400,10 @@ public class HeatingBehaviorTests
                 ticks++;
                 tr.add(1);
                 HeatCapability.addTemp(heat, targetTemperature + 1f);
-                TestAssertions.assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack));
+                assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack));
             }
 
-            TestAssertions.assertEquals(expectedTicks, ticks, "Expected " + expectedTicks + " to heat " + TestAssertions.wrap(stack) + " to " + targetTemperature + "°C, got " + ticks);
+            Assertions.assertEquals(expectedTicks, ticks, "Expected " + expectedTicks + " to heat " + TestAssertions.wrap(stack) + " to " + targetTemperature + "°C, got " + ticks);
         }
     }
 
@@ -412,8 +415,8 @@ public class HeatingBehaviorTests
         final ItemStack vesselStack = vesselWithContents(contents);
         final VesselLike vessel = VesselLike.get(vesselStack);
 
-        TestAssertions.assertNotNull(vessel);
-        TestAssertions.assertNotNull(pitKilnInventory);
+        assertNotNull(vessel);
+        assertNotNull(pitKilnInventory);
 
         try (CalendarTransaction tr = Calendars.SERVER.transaction())
         {
@@ -427,29 +430,29 @@ public class HeatingBehaviorTests
             final VesselLike outputVessel = VesselLike.get(outputStack);
 
             // Assert the content is molten and at the expected temperature
-            TestAssertions.assertNotNull(outputVessel);
-            TestAssertions.assertTrue(outputVessel.isMolten());
+            assertNotNull(outputVessel);
+            assertTrue(outputVessel.isMolten());
 
             // Extract metal while molten
             for (int i = 0; i < expectedTicks; i++)
             {
                 tr.add(1);
-                TestAssertions.assertTrue(outputVessel.isMolten(), "Not molten after " + i + " ticks, temperature is " + outputVessel.getTemperature() + " and mode is " + outputVessel.mode());
+                assertTrue(outputVessel.isMolten(), "Not molten after " + i + " ticks, temperature is " + outputVessel.getTemperature() + " and mode is " + outputVessel.mode());
                 if (whileDraining)
                 {
-                    TestAssertions.assertEquals(new FluidStack(TFCFluids.METALS.get(moltenMetal).getSource(), 1), outputVessel.drain(1, IFluidHandler.FluidAction.EXECUTE));
+                    assertEquals(new FluidStack(TFCFluids.METALS.get(moltenMetal).getSource(), 1), outputVessel.drain(1, IFluidHandler.FluidAction.EXECUTE));
                 }
             }
 
             tr.add(1);
             if (expectEmpty && whileDraining)
             {
-                TestAssertions.assertTrue(outputVessel.mode() == VesselLike.Mode.INVENTORY, "Vessel still contains metal, expected empty, at temperature " + outputVessel.getTemperature());
+                Assertions.assertSame(outputVessel.mode(), VesselLike.Mode.INVENTORY, "Vessel still contains metal, expected empty, at temperature " + outputVessel.getTemperature());
             }
             else
             {
                 // Assert not molten anymore
-                TestAssertions.assertTrue(outputVessel.mode() == VesselLike.Mode.SOLID_ALLOY, "Still molten after " + expectedTicks + " ticks, the temperature is " + outputVessel.getTemperature() + " with content " + outputVessel.mode());
+                Assertions.assertSame(outputVessel.mode(), VesselLike.Mode.SOLID_ALLOY, "Still molten after " + expectedTicks + " ticks, the temperature is " + outputVessel.getTemperature() + " with content " + outputVessel.mode());
             }
         }
     }
@@ -467,8 +470,8 @@ public class HeatingBehaviorTests
         final ItemStack vesselStack = new ItemStack(TFCItems.VESSEL.get());
         final VesselLike vessel = VesselLike.get(vesselStack);
 
-        TestAssertions.assertNotNull(vessel);
-        TestAssertions.assertTrue(stacks.length <= 4);
+        assertNotNull(vessel);
+        assertTrue(stacks.length <= 4);
 
         for (int i = 0; i < stacks.length; i++)
         {
@@ -485,8 +488,8 @@ public class HeatingBehaviorTests
         final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(contents[0]);
 
-        TestAssertions.assertNotNull(heat, "Heat missing for stack: " + heat);
-        TestAssertions.assertNotNull(recipe, "Recipe missing for vessel content: " + stack);
+        assertNotNull(heat, "Heat missing for stack: " + heat);
+        assertNotNull(recipe, "Recipe missing for vessel content: " + stack);
 
         int ticks = 0;
         try (CalendarTransaction tr = Calendars.SERVER.transaction())
@@ -497,7 +500,7 @@ public class HeatingBehaviorTests
                 tr.add(1);
                 ticks += 1;
 
-                TestAssertions.assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack) + " and recipe " + TestAssertions.wrap(recipe));
+                assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack) + " and recipe " + TestAssertions.wrap(recipe));
             }
         }
 
@@ -509,8 +512,8 @@ public class HeatingBehaviorTests
         final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
 
-        TestAssertions.assertNotNull(heat, "Heat missing for stack: " + heat);
-        TestAssertions.assertNotNull(recipe, "Recipe missing for stack: " + stack);
+        assertNotNull(heat, "Heat missing for stack: " + heat);
+        assertNotNull(recipe, "Recipe missing for stack: " + stack);
 
         int ticks = 0;
         try (CalendarTransaction tr = Calendars.SERVER.transaction())
@@ -521,7 +524,7 @@ public class HeatingBehaviorTests
                 tr.add(1);
                 ticks += 1;
 
-                TestAssertions.assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack) + " and recipe " + TestAssertions.wrap(recipe));
+                assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack) + " and recipe " + TestAssertions.wrap(recipe));
             }
         }
 
@@ -533,8 +536,8 @@ public class HeatingBehaviorTests
         final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
         final HeatingRecipe recipe = HeatingRecipe.getRecipe(stack);
 
-        TestAssertions.assertNotNull(heat, "Heat missing for stack: " + heat);
-        TestAssertions.assertNotNull(recipe, "Recipe missing for stack: " + stack);
+        assertNotNull(heat, "Heat missing for stack: " + heat);
+        assertNotNull(recipe, "Recipe missing for stack: " + stack);
 
         int ticks = 0;
         try (CalendarTransaction tr = Calendars.SERVER.transaction())
@@ -545,7 +548,7 @@ public class HeatingBehaviorTests
                 tr.add(1);
                 ticks += 1;
 
-                TestAssertions.assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack) + " and recipe " + TestAssertions.wrap(recipe));
+                assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack) + " and recipe " + TestAssertions.wrap(recipe));
             }
         }
 

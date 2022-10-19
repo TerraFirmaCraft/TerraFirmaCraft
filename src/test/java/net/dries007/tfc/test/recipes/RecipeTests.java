@@ -7,7 +7,7 @@
 package net.dries007.tfc.test.recipes;
 
 import java.util.Collection;
-
+import io.netty.buffer.Unpooled;
 import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
@@ -17,10 +17,9 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-
 import net.minecraftforge.gametest.GameTestHolder;
+import org.junit.jupiter.api.Assertions;
 
-import io.netty.buffer.Unpooled;
 import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -47,7 +46,7 @@ public class RecipeTests
         for (CraftingRecipe recipe : helper.getLevel().getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING))
         {
             final MockCraftingContainer container = new MockCraftingContainer(3, 3);
-            assertFalse(recipe.matches(container, helper.getLevel()), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " matches an empty grid");
+            Assertions.assertFalse(recipe.matches(container, helper.getLevel()), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " matches an empty grid");
         }
     }
 
@@ -68,8 +67,8 @@ public class RecipeTests
                     final ItemStack oldOutput = getOutputOfRecipe(recipe);
                     final IFood oldFood = Helpers.getCapability(oldOutput, FoodCapability.CAPABILITY);
 
-                    assertNotNull(oldFood);
-                    assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " produced rotten output");
+                    Assertions.assertNotNull(oldFood);
+                    Assertions.assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " produced rotten output");
                 }
             }
         }
@@ -85,7 +84,7 @@ public class RecipeTests
             ((RecipeSerializer) before.getSerializer()).toNetwork(buffer, before);
             final Recipe<?> after = before.getSerializer().fromNetwork(before.getId(), buffer);
 
-            assertEquals(0, buffer.readableBytes(), "Buffer has " + buffer.readableBytes() + " remaining bytes after reading recipe: " + before.getId());
+            Assertions.assertEquals(0, (Object) buffer.readableBytes(), "Buffer has " + buffer.readableBytes() + " remaining bytes after reading recipe: " + before.getId());
             assertEquals(before, after);
         }
     }

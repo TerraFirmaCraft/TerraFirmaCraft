@@ -8,11 +8,15 @@ package net.dries007.tfc;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
-import java.util.function.BiConsumer;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
+import com.mojang.logging.LogUtils;
 import net.minecraft.gametest.framework.GameTestAssertException;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
@@ -24,59 +28,17 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
 import net.minecraftforge.fluids.FluidStack;
+import org.junit.jupiter.api.Assertions;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.recipes.outputs.ItemStackModifier;
 import net.dries007.tfc.common.recipes.outputs.ItemStackProvider;
 import net.dries007.tfc.util.Helpers;
-import org.jetbrains.annotations.Contract;
-import org.junit.jupiter.api.Assertions;
-import org.slf4j.Logger;
 
 
 public final class TestAssertions
 {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final AssertionModel ASSERTIONS;
-
-    static
-    {
-        if (detectJUnitAssertions())
-        {
-            LOGGER.info("Using JUnit Assertions");
-            ASSERTIONS = new AssertionModel(
-                Assertions::assertEquals,
-                Assertions::assertNotEquals,
-                Assertions::assertNotNull,
-                Assertions::assertTrue,
-                Assertions::assertFalse
-            );
-        }
-        else
-        {
-            LOGGER.info("Using TFC Assertions");
-            ASSERTIONS = new AssertionModel(
-                AssertionsImpl::assertEquals,
-                AssertionsImpl::assertNotEquals,
-                AssertionsImpl::assertNotNull,
-                AssertionsImpl::assertTrue,
-                AssertionsImpl::assertFalse
-            );
-        }
-    }
-
-    private static boolean detectJUnitAssertions()
-    {
-        try
-        {
-            Class.forName("org.junit.jupiter.api.Assertions");
-            return true;
-        }
-        catch (ClassNotFoundException e)
-        {
-            return false;
-        }
-    }
 
     public static Collection<TestFunction> testGenerator()
     {
@@ -93,10 +55,33 @@ public final class TestAssertions
                     final MyTest annotation = method.getAnnotation(MyTest.class);
                     final String methodName = method.getName();
 
+                    final boolean isStatic = Modifier.isStatic(method.getModifiers());
+                    final boolean isNoArg = method.getParameterCount() == 0;
+                    final Function<GameTestHelper, Object[]> args;
+
+                    if (isStatic)
+                    {
+                        LOGGER.warn("@MyTest method should not be declared static");
+                    }
+
+                    if (isNoArg)
+                    {
+                        args = helper -> new Object[0];
+                    }
+                    else if (method.getParameterCount() == 1 && method.getParameterTypes()[0] == GameTestHelper.class)
+                    {
+                        args = helper -> new Object[]{ helper };
+                    }
+                    else
+                    {
+                        LOGGER.error("Incompatible parameter types {} for @MyTest method {}. This method will be skipped!", Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).toList(), methodName);
+                        continue;
+                    }
+
                     final Consumer<GameTestHelper> action = helper -> {
                         try
                         {
-                            method.invoke(instance, helper);
+                            method.invoke(isStatic ? null : instance, args.apply(helper));
                         }
                         catch (InvocationTargetException e)
                         {
@@ -155,118 +140,54 @@ public final class TestAssertions
 
     public static void assertEquals(FluidStack expected, FluidStack actual, String message)
     {
-        assertEquals(wrap(expected), wrap(actual), message);
+        Assertions.assertEquals(wrap(expected), wrap(actual), message);
     }
 
     public static void assertEquals(FluidStack expected, FluidStack actual)
     {
-        assertEquals(wrap(expected), wrap(actual));
+        Assertions.assertEquals(wrap(expected), wrap(actual));
     }
 
     public static void assertEquals(ItemStack expected, ItemStack actual, String message)
     {
-        assertEquals(wrap(expected), wrap(actual), message);
+        Assertions.assertEquals(wrap(expected), wrap(actual), message);
     }
 
     public static void assertEquals(ItemStack expected, ItemStack actual)
     {
-        assertEquals(wrap(expected), wrap(actual));
+        Assertions.assertEquals(wrap(expected), wrap(actual));
     }
 
     public static void assertEquals(Ingredient expected, Ingredient actual, String message)
     {
-        assertEquals(wrap(expected), wrap(actual), message);
+        Assertions.assertEquals(wrap(expected), wrap(actual), message);
     }
 
     public static void assertEquals(Ingredient expected, Ingredient actual)
     {
-        assertEquals(wrap(expected), wrap(actual));
+        Assertions.assertEquals(wrap(expected), wrap(actual));
     }
 
     public static void assertEquals(Recipe<?> expected, Recipe<?> actual, String message)
     {
-        assertEquals(wrap(expected), wrap(actual), message);
+        Assertions.assertEquals(wrap(expected), wrap(actual), message);
     }
 
     public static void assertEquals(Recipe<?> expected, Recipe<?> actual)
     {
-        assertEquals(wrap(expected), wrap(actual));
+        Assertions.assertEquals(wrap(expected), wrap(actual));
     }
 
     public static void assertEquals(ItemStackProvider expected, ItemStackProvider actual, String message)
     {
-        assertEquals(wrap(expected), wrap(actual), message);
+        Assertions.assertEquals(wrap(expected), wrap(actual), message);
     }
 
     public static void assertEquals(ItemStackProvider expected, ItemStackProvider actual)
     {
-        assertEquals(wrap(expected), wrap(actual));
+        Assertions.assertEquals(wrap(expected), wrap(actual));
     }
 
-    // Bouncers for JUnit Assertions, if present.
-    // Otherwise these use TFC Assertions in GameTest, where JUnit is not loaded.
-
-    @Contract(value = "null, null, _ -> _; null, !null, _ -> fail; !null, null, _ -> fail", pure = true)
-    public static void assertEquals(Object expected, Object actual, String message)
-    {
-        ASSERTIONS.assertEquals.accept(expected, actual, message);
-    }
-
-    @Contract(value = "null, null -> _; null, !null -> fail; !null, null -> fail", pure = true)
-    public static void assertEquals(Object expected, Object actual)
-    {
-        assertEquals(expected, actual, "Expected " + expected + " to be equal to " + actual);
-    }
-
-    @Contract(value = "null, null, _ -> fail; null, !null, _ -> _; !null, null, _ -> _", pure = true)
-    public static void assertNotEquals(Object expected, Object actual, String message)
-    {
-        ASSERTIONS.assertNotEquals.accept(expected, actual, message);
-    }
-
-    @Contract(value = "null, null -> fail; null, !null -> _; !null, null -> _", pure = true)
-    public static void assertNotEquals(Object expected, Object actual)
-    {
-        assertNotEquals(expected, actual, "Expected " + expected + " to be not equal to " + actual);
-    }
-
-    @Contract(value = "null, _ -> fail;", pure = true)
-    public static void assertNotNull(Object actual, String message)
-    {
-        ASSERTIONS.assertNotNull.accept(actual, message);
-    }
-
-    @Contract(value = "null -> fail;", pure = true)
-    public static void assertNotNull(Object actual)
-    {
-        assertNotNull(actual, "Expected non null");
-    }
-
-    @Contract(value = "null, _ -> fail;false, _ -> fail", pure = true)
-    public static void assertTrue(Boolean actual, String message)
-    {
-        ASSERTIONS.assertTrue.accept(actual, message);
-    }
-
-    @Contract(value = "null -> fail;false -> fail", pure = true)
-    public static void assertTrue(Boolean actual)
-    {
-        assertTrue(actual, "Expected true");
-    }
-
-    @Contract(value = "null, _ -> fail;true, _ -> fail", pure = true)
-    public static void assertFalse(Boolean actual, String message)
-    {
-        ASSERTIONS.assertFalse.accept(actual, message);
-    }
-
-    @Contract(value = "null -> fail;true -> fail", pure = true)
-    public static void assertFalse(Boolean actual)
-    {
-        assertFalse(actual, "Expected false");
-    }
-
-    // Wrapper methods
 
     public static Type wrap(FluidStack stack)
     {
@@ -314,12 +235,6 @@ public final class TestAssertions
         throw (E) e;
     }
 
-    @FunctionalInterface
-    public interface Action
-    {
-        Object run(GameTestHelper helper) throws Exception;
-    }
-
     interface Type {}
 
     record Named<T>(T t, String name) implements Type
@@ -328,48 +243,6 @@ public final class TestAssertions
         public String toString()
         {
             return name;
-        }
-    }
-
-    @FunctionalInterface
-    interface TriConsumer<A, B, C>
-    {
-        void accept(A first, B second, C third);
-    }
-
-    record AssertionModel(
-        TriConsumer<Object, Object, String> assertEquals,
-        TriConsumer<Object, Object, String> assertNotEquals,
-        BiConsumer<Object, String> assertNotNull,
-        BiConsumer<Boolean, String> assertTrue,
-        BiConsumer<Boolean, String> assertFalse
-    ) {}
-
-    static class AssertionsImpl
-    {
-        static void assertEquals(Object expected, Object actual, String message)
-        {
-            if (!expected.equals(actual)) throw new AssertionError(message);
-        }
-
-        static void assertNotEquals(Object expected, Object actual, String message)
-        {
-            if (expected.equals(actual)) throw new AssertionError(message);
-        }
-
-        static void assertNotNull(Object actual, String message)
-        {
-            if (actual == null) throw new AssertionError(message);
-        }
-
-        static void assertTrue(Boolean actual, String message)
-        {
-            if (!actual) throw new AssertionError(message);
-        }
-
-        static void assertFalse(Boolean actual, String message)
-        {
-            if (actual) throw new AssertionError(message);
         }
     }
 }
