@@ -8,6 +8,7 @@ package net.dries007.tfc.common.entities.livestock.pet;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -32,6 +33,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -104,7 +106,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     public void tickBrain()
     {
         ((Brain<TamableMammal>) getBrain()).tick((ServerLevel) level, this);
-        CatAi.updateActivity(this);
+        CatAi.updateActivity(this, tickCount % 20 == 0);
     }
 
     /**
@@ -299,11 +301,11 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     public enum Command
     {
-        RELAX, // hang around near home
-        HOME, // set a new home position
-        SIT, // sit for a period of time
-        FOLLOW, // follow but don't participate in combat
-        HUNT; // follow and participate in combat
+        RELAX(TFCBrain.IDLE_AT_HOME), // hang around near home
+        HOME(null), // set a new home position
+        SIT(TFCBrain.SIT), // sit for a period of time
+        FOLLOW(TFCBrain.FOLLOW), // follow but don't participate in combat
+        HUNT(TFCBrain.HUNT); // follow and participate in combat
 
         public static final Command[] VALUES = values();
 
@@ -312,5 +314,18 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
             return VALUES[id];
         }
 
+        @Nullable
+        public static Activity getActivity(Command command)
+        {
+            return command.activity == null ? null : command.activity.get();
+        }
+
+        @Nullable
+        private final Supplier<Activity> activity;
+
+        Command(@Nullable Supplier<Activity> activity)
+        {
+            this.activity = activity;
+        }
     }
 }

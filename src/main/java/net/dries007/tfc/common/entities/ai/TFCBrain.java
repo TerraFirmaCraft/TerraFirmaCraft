@@ -40,6 +40,7 @@ public class TFCBrain
     public static final RegistryObject<Activity> HUNT = registerActivity("hunt");
     public static final RegistryObject<Activity> IDLE_AT_HOME = registerActivity("idle_at_home");
     public static final RegistryObject<Activity> FOLLOW = registerActivity("follow");
+    public static final RegistryObject<Activity> SIT = registerActivity("sit");
 
     public static final RegistryObject<MemoryModuleType<BlockPos>> NEST_BOX_MEMORY = registerMemory("nest");
     public static final RegistryObject<MemoryModuleType<GlobalPos>> SLEEP_POS = registerMemory("sleep_pos", GlobalPos.CODEC);

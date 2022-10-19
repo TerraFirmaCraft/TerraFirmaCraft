@@ -6,14 +6,20 @@
 
 package net.dries007.tfc.common.entities.ai.pet;
 
+import java.util.Optional;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
+
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -43,6 +49,7 @@ public class CatAi
     );
 
     public static final int HOME_WANDER_DISTANCE = 36;
+    public static final int HOME_LOST_DISTANCE = 120;
 
     public static Brain<?> makeBrain(Brain<? extends TamableMammal> brain)
     {
@@ -51,6 +58,9 @@ public class CatAi
         initIdleAtHomeActivity(brain);
         initRestActivity(brain);
         initRetreatActivity(brain);
+        initFollowActivity(brain);
+        initHuntActivity(brain);
+        initSitActivity(brain);
 
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE)); // core activities run all the time
         brain.setDefaultActivity(Activity.IDLE); // the default activity is a useful way to have a fallback activity
@@ -116,7 +126,26 @@ public class CatAi
     public static void initHuntActivity(Brain<? extends TamableMammal> brain)
     {
         brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
-            Pair.of(0, new FollowOwnerBehavior())
+            Pair.of(0, new FollowOwnerBehavior()),
+            Pair.of(1, new StartAttacking<>(CatAi::getAttackTarget)),
+            Pair.of(2, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
+        ));
+    }
+
+    public static void initFollowActivity(Brain<? extends TamableMammal> brain)
+    {
+        brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
+            Pair.of(0, new FollowOwnerBehavior()),
+            Pair.of(1, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
+        ));
+    }
+
+    public static void initSitActivity(Brain<? extends TamableMammal> brain)
+    {
+        brain.addActivity(TFCBrain.SIT.get(), ImmutableList.of(
+            Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(MobCategory.CREATURE, 8f), UniformInt.of(30, 60))),
+            Pair.of(1, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 8f), UniformInt.of(30, 60))),
+            Pair.of(2, new DoNothing(30, 60))
         ));
     }
 
@@ -132,8 +161,18 @@ public class CatAi
 
     public static boolean isTooFarFromHome(TamableMammal entity)
     {
+        return isFarFromHome(entity, HOME_WANDER_DISTANCE);
+    }
+
+    public static boolean isExtremelyFarFromHome(TamableMammal entity)
+    {
+        return isFarFromHome(entity, HOME_LOST_DISTANCE);
+    }
+
+    public static boolean isFarFromHome(TamableMammal entity, int distance)
+    {
         final GlobalPos globalPos = entity.getBrain().getMemory(MemoryModuleType.HOME).orElseThrow();
-        return globalPos.dimension() != entity.level.dimension() || globalPos.pos().distSqr(entity.blockPosition()) > HOME_WANDER_DISTANCE * HOME_WANDER_DISTANCE;
+        return globalPos.dimension() != entity.level.dimension() || globalPos.pos().distSqr(entity.blockPosition()) > distance * distance;
     }
 
     public static boolean wantsToStopSitting(TamableMammal entity)
@@ -146,8 +185,73 @@ public class CatAi
         return brain.getMemory(TFCBrain.SIT_TIME.get()).filter(time -> Calendars.SERVER.getTicks() > time + 2000).isPresent();
     }
 
-    public static void updateActivity(TamableMammal entity)
+    public static void updateActivity(TamableMammal entity, boolean doMoreChecks)
     {
+        final var brain = entity.getBrain();
+        final Activity current = brain.getActiveNonCoreActivity().orElse(null);
+        final TamableMammal.Command command = entity.getCommand();
+        if (current != null)
+        {
+            if (brain.hasMemoryValue(MemoryModuleType.AVOID_TARGET) && couldFlee(entity))
+            {
+                brain.setActiveActivityIfPossible(Activity.AVOID);
+                return;
+            }
+            if (doMoreChecks)
+            {
+                if ((current.equals(TFCBrain.HUNT.get()) || current.equals(TFCBrain.FOLLOW.get())) && entity.getOwner() == null)
+                {
+                    if (isExtremelyFarFromHome(entity))
+                    {
+                        brain.setActiveActivityIfPossible(TFCBrain.IDLE_AT_HOME.get());
+                    }
+                    else
+                    {
+                        brain.setActiveActivityIfPossible(Activity.IDLE);
+                    }
+                }
+                else if (current.equals(TFCBrain.IDLE_AT_HOME.get()) && isExtremelyFarFromHome(entity))
+                {
+                    brain.setActiveActivityIfPossible(Activity.IDLE);
+                }
+            }
+            final Activity commandedActivity = TamableMammal.Command.getActivity(command);
+            if (commandedActivity != null && !current.equals(commandedActivity))
+            {
+                brain.setActiveActivityIfPossible(commandedActivity);
+            }
+        }
+    }
 
+    private static boolean couldFlee(TamableMammal entity)
+    {
+        final Activity active = entity.getBrain().getActiveNonCoreActivity().orElse(null);
+        if (active != null && active.equals(TFCBrain.HUNT.get()))
+        {
+            return entity.getHealth() < 5f || entity.isOnFire();
+        }
+        return true;
+    }
+
+    private static Optional<? extends LivingEntity> getAttackTarget(TamableMammal entity)
+    {
+        final var brain = entity.getBrain();
+        if (couldFlee(entity))
+        {
+            return Optional.empty();
+        }
+        if (entity.getOwner() instanceof ServerPlayer player)
+        {
+            final LivingEntity hurtBy = player.getLastHurtByMob();
+            if (hurtBy != null && hurtBy.tickCount < player.getLastHurtByMobTimestamp() + 120)
+            {
+                return Optional.of(hurtBy);
+            }
+        }
+        if (brain.hasMemoryValue(MemoryModuleType.HURT_BY_ENTITY))
+        {
+            return brain.getMemory(MemoryModuleType.HURT_BY_ENTITY);
+        }
+        return Optional.empty();
     }
 }

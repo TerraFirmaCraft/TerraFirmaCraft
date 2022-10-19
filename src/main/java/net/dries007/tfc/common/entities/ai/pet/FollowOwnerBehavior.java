@@ -11,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import net.minecraft.world.entity.ai.memory.WalkTarget;
 
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 
@@ -28,8 +29,11 @@ public class FollowOwnerBehavior extends Behavior<TamableMammal>
     }
 
     @Override
-    protected void start(ServerLevel pLevel, TamableMammal pEntity, long pGameTime)
+    protected void start(ServerLevel level, TamableMammal entity, long gameTime)
     {
-        super.start(pLevel, pEntity, pGameTime);
+        if (entity.getOwner() != null)
+        {
+            entity.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(entity.getOwner(), 1f, 8));
+        }
     }
 }
