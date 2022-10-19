@@ -18,7 +18,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,6 +27,7 @@ import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
+import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCClimberNavigation;
 import net.dries007.tfc.common.entities.ai.prey.PestAi;
 import net.dries007.tfc.util.Helpers;
@@ -55,7 +55,7 @@ public class Pest extends Prey
     public Pest(EntityType<? extends Prey> type, Level level, TFCSounds.EntitySound sounds)
     {
         super(type, level, sounds);
-        moveControl = new PestMoveControl(this);
+        moveControl = new PredicateMoveControl<>(this, p -> p.dragTicks > DRAG_TIME + EAT_TIME);
     }
 
     @Override
@@ -182,26 +182,5 @@ public class Pest extends Prey
             setBaby(true);
         }
         return spawnData;
-    }
-
-
-    public static class PestMoveControl extends MoveControl
-    {
-        private final Pest pest;
-
-        public PestMoveControl(Pest mob)
-        {
-            super(mob);
-            this.pest = mob;
-        }
-
-        @Override
-        public void tick()
-        {
-            if (pest.dragTicks < DRAG_TIME + EAT_TIME)
-            {
-                super.tick();
-            }
-        }
     }
 }

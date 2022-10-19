@@ -11,24 +11,43 @@ import java.util.UUID;
 
 import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.GlobalPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 
+import com.mojang.serialization.Dynamic;
+import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
+import net.dries007.tfc.common.entities.ai.TFCBrain;
+import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
+import net.dries007.tfc.common.entities.ai.pet.CatAi;
 import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.config.animals.MammalConfig;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.calendar.Calendars;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class TamableMammal extends Mammal implements OwnableEntity
@@ -50,6 +69,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     public TamableMammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
         super(animal, level, sounds, config);
+        moveControl = new PredicateMoveControl<>(this, e -> !e.isSitting() && !e.isSleeping());
     }
 
     @Override
@@ -59,6 +79,32 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         entityData.define(DATA_OWNER, Optional.empty());
         entityData.define(DATA_COMMAND, Command.RELAX.ordinal());
         entityData.define(DATA_PET_FLAGS, (byte) 0);
+    }
+
+    @Override
+    protected Brain.Provider<? extends TamableMammal> brainProvider()
+    {
+        return Brain.provider(LivestockAi.MEMORY_TYPES, LivestockAi.SENSOR_TYPES);
+    }
+
+    @Override
+    protected Brain<?> makeBrain(Dynamic<?> dynamic)
+    {
+        return CatAi.makeBrain(brainProvider().makeBrain(dynamic));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Brain<? extends TamableMammal> getBrain()
+    {
+        return (Brain<TamableMammal>) super.getBrain();
+    }
+
+    @SuppressWarnings("unchecked")
+    public void tickBrain()
+    {
+        ((Brain<TamableMammal>) getBrain()).tick((ServerLevel) level, this);
+        CatAi.updateActivity(this);
     }
 
     /**
@@ -74,7 +120,36 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
      */
     public void receiveCommand(ServerPlayer player, Command command)
     {
-        setCommand(command);
+        if (getOwner() != null && getOwner().equals(player))
+        {
+            switch (command)
+            {
+                case RELAX -> {
+                    setSitting(false);
+                    setSleeping(false);
+                }
+                case SIT -> {
+                    setSitting(true);
+                    setSleeping(false);
+                    getBrain().setMemory(TFCBrain.SIT_TIME.get(), Calendars.SERVER.getTicks());
+                }
+                case HOME -> {
+                    getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.dimension(), player.blockPosition()));
+                    command = Command.RELAX; // 'home' isn't a constant state, it defaults to relax after doing its thing
+                }
+                case FOLLOW, HUNT -> {
+                    setSitting(false);
+                    setSleeping(false);
+                    getBrain().eraseMemory(TFCBrain.SIT_TIME.get());
+                }
+            }
+            setCommand(command);
+
+        }
+        else
+        {
+            player.displayClientMessage(Helpers.translatable("tfc.pet.not_owner"), true);
+        }
     }
 
     @Override
@@ -139,9 +214,37 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         }
     }
 
+    @Override
+    public InteractionResult mobInteract(Player player, InteractionHand hand)
+    {
+        final ItemStack held = player.getItemInHand(hand);
+        if (held.isEmpty() && player.isShiftKeyDown() && getOwner() != null && getOwner().equals(player))
+        {
+            if (level.isClientSide)
+            {
+                ClientHelpers.openPetScreen(this);
+            }
+            return InteractionResult.SUCCESS;
+        }
+        if (getFamiliarity() > 0.15f && getOwnerUUID() == null && isFood(held) && isHungry())
+        {
+            tame(player);
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    public void spawnTamingParticles(ParticleOptions particle)
+    {
+        for (int i = 0; i < 7; ++i)
+        {
+            this.level.addParticle(particle, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D);
+        }
+    }
+
     public void tame(Player player)
     {
         this.setOwnerUUID(player.getUUID());
+        spawnTamingParticles(ParticleTypes.HEART);
         if (player instanceof ServerPlayer serverPlayer)
         {
             CriteriaTriggers.TAME_ANIMAL.trigger(serverPlayer, this);

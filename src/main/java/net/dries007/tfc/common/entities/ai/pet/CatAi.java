@@ -25,6 +25,7 @@ import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.livestock.BreedBehavior;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
+import net.dries007.tfc.util.calendar.Calendars;
 
 public class CatAi
 {
@@ -38,7 +39,7 @@ public class CatAi
         MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.LAST_SLEPT,
         MemoryModuleType.BREED_TARGET, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ADULT,
         MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.AVOID_TARGET,
-        MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY, MemoryModuleType.HOME, TFCBrain.SLEEP_POS.get()
+        MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY, MemoryModuleType.HOME, TFCBrain.SLEEP_POS.get(), TFCBrain.SIT_TIME.get()
     );
 
     public static final int HOME_WANDER_DISTANCE = 36;
@@ -112,6 +113,13 @@ public class CatAi
         );
     }
 
+    public static void initHuntActivity(Brain<? extends TamableMammal> brain)
+    {
+        brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
+            Pair.of(0, new FollowOwnerBehavior())
+        ));
+    }
+
     public static RunOne<TamableMammal> createIdleMovementBehaviors()
     {
         return new RunOne<>(ImmutableList.of(
@@ -126,5 +134,20 @@ public class CatAi
     {
         final GlobalPos globalPos = entity.getBrain().getMemory(MemoryModuleType.HOME).orElseThrow();
         return globalPos.dimension() != entity.level.dimension() || globalPos.pos().distSqr(entity.blockPosition()) > HOME_WANDER_DISTANCE * HOME_WANDER_DISTANCE;
+    }
+
+    public static boolean wantsToStopSitting(TamableMammal entity)
+    {
+        var brain = entity.getBrain();
+        if (brain.getMemory(MemoryModuleType.HURT_BY_ENTITY).isPresent())
+        {
+            return true;
+        }
+        return brain.getMemory(TFCBrain.SIT_TIME.get()).filter(time -> Calendars.SERVER.getTicks() > time + 2000).isPresent();
+    }
+
+    public static void updateActivity(TamableMammal entity)
+    {
+
     }
 }
