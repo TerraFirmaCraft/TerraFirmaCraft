@@ -429,7 +429,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('rock/gravel', block('gravel'))
         rm.block_tag('rock/smooth', block('smooth'))
         rm.block_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
-        rm.block_tag('rock/aqueducts', block('aqueduct'))
+        block_and_item_tag(rm, 'rock/aqueducts', block('aqueduct'))
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:
