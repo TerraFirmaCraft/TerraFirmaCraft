@@ -30,6 +30,7 @@ import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TestAssertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @GameTestHolder
 public class RecipeTests
@@ -46,7 +47,7 @@ public class RecipeTests
         for (CraftingRecipe recipe : helper.getLevel().getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING))
         {
             final MockCraftingContainer container = new MockCraftingContainer(3, 3);
-            Assertions.assertFalse(recipe.matches(container, helper.getLevel()), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " matches an empty grid");
+            assertFalse(recipe.matches(container, helper.getLevel()), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " matches an empty grid");
         }
     }
 
@@ -67,8 +68,8 @@ public class RecipeTests
                     final ItemStack oldOutput = getOutputOfRecipe(recipe);
                     final IFood oldFood = Helpers.getCapability(oldOutput, FoodCapability.CAPABILITY);
 
-                    Assertions.assertNotNull(oldFood);
-                    Assertions.assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " produced rotten output");
+                    assertNotNull(oldFood);
+                    assertFalse(oldFood.isRotten(), "Recipe: " + recipe.getId() + " of type " + recipe.getType() + " and serializer " + recipe.getSerializer().getRegistryName() + " produced rotten output");
                 }
             }
         }
@@ -84,7 +85,7 @@ public class RecipeTests
             ((RecipeSerializer) before.getSerializer()).toNetwork(buffer, before);
             final Recipe<?> after = before.getSerializer().fromNetwork(before.getId(), buffer);
 
-            Assertions.assertEquals(0, (Object) buffer.readableBytes(), "Buffer has " + buffer.readableBytes() + " remaining bytes after reading recipe: " + before.getId());
+            assertEquals(0, buffer.readableBytes(), "Buffer has " + buffer.readableBytes() + " remaining bytes after reading recipe: " + before.getId());
             assertEquals(before, after);
         }
     }

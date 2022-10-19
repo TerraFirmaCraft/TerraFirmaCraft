@@ -17,7 +17,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.gametest.GameTestHolder;
 import net.minecraftforge.items.IItemHandler;
-import org.junit.jupiter.api.Assertions;
 
 import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
@@ -42,6 +41,7 @@ import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TestAssertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 @GameTestHolder
@@ -212,87 +212,87 @@ public class HeatingBehaviorTests
             final ItemStack outputStack = pitKilnInventory.extractItem(0, 1, false);
 
             // Can't compare NBT, as the new vessel will have heat
-            Assertions.assertEquals(TFCItems.VESSEL.get(), outputStack.getItem());
-            Assertions.assertEquals(1, outputStack.getCount());
+            assertEquals(TFCItems.VESSEL.get(), outputStack.getItem());
+            assertEquals(1, outputStack.getCount());
 
             final IHeat outputHeat = Helpers.getCapability(outputStack, HeatCapability.CAPABILITY);
 
             assertNotNull(outputHeat);
-            Assertions.assertEquals(1400.0f, outputHeat.getTemperature(), "Pit kiln did not reach expected temperature, got: " + outputHeat.getTemperature());
+            assertEquals(1400.0f, outputHeat.getTemperature(), "Pit kiln did not reach expected temperature, got: " + outputHeat.getTemperature());
         }
     }
 
     @MyTest(unitTest = true)
     public void checkCookingStickWithHeat(GameTestHelper helper)
     {
-        Assertions.assertEquals(76, ticksRequiredToMelt(new ItemStack(Items.STICK)));
+        assertEquals(76, ticksRequiredToMelt(new ItemStack(Items.STICK)));
     }
 
     @MyTest(unitTest = true)
     public void checkCookingStickBunchWithHeat(GameTestHelper helper)
     {
-        Assertions.assertEquals(601, ticksRequiredToMelt(new ItemStack(TFCItems.STICK_BUNCH.get())));
+        assertEquals(601, ticksRequiredToMelt(new ItemStack(TFCItems.STICK_BUNCH.get())));
     }
 
     @MyTest(unitTest = true)
     public void checkCookingSandWithHeat(GameTestHelper helper)
     {
-        Assertions.assertEquals(160, ticksRequiredToMelt(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
+        assertEquals(160, ticksRequiredToMelt(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkCookingSandInVesselWithHeat(GameTestHelper helper)
     {
-        Assertions.assertEquals(401, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
+        assertEquals(401, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking4SandInVesselWithHeat(GameTestHelper helper)
     {
-        Assertions.assertEquals(737, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
+        assertEquals(737, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 4)));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking4SandSpreadOutInVesselWithHeat(GameTestHelper helper)
     {
         final ItemStack sand = new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get());
-        Assertions.assertEquals(737, ticksRequiredToMeltVessel(sand, sand, sand, sand));
+        assertEquals(737, ticksRequiredToMeltVessel(sand, sand, sand, sand));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking8SandInVesselWithHeat(GameTestHelper helper)
     {
-        Assertions.assertEquals(1185, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
+        assertEquals(1185, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 8)));
     }
 
     @MyTest(unitTest = true)
     public void checkCooking16SandInVesselWithHeat(GameTestHelper helper)
     {
-        Assertions.assertEquals(2081, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
+        assertEquals(2081, ticksRequiredToMeltVessel(new ItemStack(TFCBlocks.SAND.get(SandBlockType.BLACK).get(), 16)));
     }
 
     @MyTest(unitTest = true)
     public void checkBronzeIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        Assertions.assertEquals(1358, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.INGOT).get())));
+        assertEquals(1358, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.INGOT).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkBronzeDoubleIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        Assertions.assertEquals(2715, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.DOUBLE_INGOT).get())));
+        assertEquals(2715, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.BRONZE).get(Metal.ItemType.DOUBLE_INGOT).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkIronIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        Assertions.assertEquals(2193, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get())));
+        assertEquals(2193, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.INGOT).get())));
     }
 
     @MyTest(unitTest = true)
     public void checkIronDoubleIngotTimeSpentWorkable(GameTestHelper helper)
     {
-        Assertions.assertEquals(4386, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.DOUBLE_INGOT).get())));
+        assertEquals(4386, ticksRequiredToBeNotWorkable(new ItemStack(TFCItems.METAL_ITEMS.get(Metal.Default.WROUGHT_IRON).get(Metal.ItemType.DOUBLE_INGOT).get())));
     }
 
     @MyTest(unitTest = true)
@@ -373,8 +373,8 @@ public class HeatingBehaviorTests
             fuelTicks = itemCount * charcoal.getDuration();
         }
 
-        Assertions.assertEquals(expectedFuelTicks, fuelTicks);
-        Assertions.assertEquals(expectedOreOutput, oreOutput);
+        assertEquals(expectedFuelTicks, fuelTicks);
+        assertEquals(expectedOreOutput, oreOutput);
 
         return String.format("grade = %s, castIntoIngotsFirst = %s, useCrucible = %s : fuelTicks = %d, oreOutput = %d, mBofOrePerFuelTick = %.3f", oreGrade, castIntoIngotsFirst, useCrucible, fuelTicks, oreOutput, (float) oreOutput / fuelTicks);
     }
@@ -384,7 +384,7 @@ public class HeatingBehaviorTests
         final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
         assertNotNull(heat);
         heat.setTemperature(0);
-        Assertions.assertEquals(0f, heat.getTemperature());
+        assertEquals(0f, heat.getTemperature());
     }
 
     private void checkTicksToHeatInForge(ItemStack stack, int expectedTicks, float targetTemperature)
@@ -403,7 +403,7 @@ public class HeatingBehaviorTests
                 assertNotEquals(ticks, 1_000_000, "Loop did not terminate with stack " + TestAssertions.wrap(stack));
             }
 
-            Assertions.assertEquals(expectedTicks, ticks, "Expected " + expectedTicks + " to heat " + TestAssertions.wrap(stack) + " to " + targetTemperature + "°C, got " + ticks);
+            assertEquals(expectedTicks, ticks, "Expected " + expectedTicks + " to heat " + TestAssertions.wrap(stack) + " to " + targetTemperature + "°C, got " + ticks);
         }
     }
 
@@ -447,12 +447,12 @@ public class HeatingBehaviorTests
             tr.add(1);
             if (expectEmpty && whileDraining)
             {
-                Assertions.assertSame(outputVessel.mode(), VesselLike.Mode.INVENTORY, "Vessel still contains metal, expected empty, at temperature " + outputVessel.getTemperature());
+                assertSame(outputVessel.mode(), VesselLike.Mode.INVENTORY, "Vessel still contains metal, expected empty, at temperature " + outputVessel.getTemperature());
             }
             else
             {
                 // Assert not molten anymore
-                Assertions.assertSame(outputVessel.mode(), VesselLike.Mode.SOLID_ALLOY, "Still molten after " + expectedTicks + " ticks, the temperature is " + outputVessel.getTemperature() + " with content " + outputVessel.mode());
+                assertSame(outputVessel.mode(), VesselLike.Mode.SOLID_ALLOY, "Still molten after " + expectedTicks + " ticks, the temperature is " + outputVessel.getTemperature() + " with content " + outputVessel.mode());
             }
         }
     }
