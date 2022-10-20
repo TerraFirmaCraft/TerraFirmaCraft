@@ -64,6 +64,7 @@ public final class TFCSounds
     public static final EntitySound DONKEY = new EntitySound(() -> SoundEvents.DONKEY_AMBIENT, () -> SoundEvents.DONKEY_DEATH, () -> SoundEvents.DONKEY_HURT, () -> SoundEvents.HORSE_STEP);
     public static final EntitySound MULE = new EntitySound(() -> SoundEvents.MULE_AMBIENT, () -> SoundEvents.MULE_DEATH, () -> SoundEvents.MULE_HURT, () -> SoundEvents.HORSE_STEP);
     public static final EntitySound HORSE = new EntitySound(() -> SoundEvents.HORSE_AMBIENT, () -> SoundEvents.HORSE_DEATH, () -> SoundEvents.HORSE_HURT, () -> SoundEvents.HORSE_STEP);
+    public static final EntitySound CAT = new EntitySound(() -> SoundEvents.CAT_AMBIENT, () -> SoundEvents.CAT_DEATH, () -> SoundEvents.CAT_HURT, () -> SoundEvents.CHICKEN_STEP, Optional.of(() -> SoundEvents.CAT_HISS), Optional.of(() -> SoundEvents.CAT_PURR));
     public static final EntitySound ALPACA = createEntity("alpaca", false, false);
     public static final EntitySound YAK = createEntity("yak", false, false);
     public static final EntitySound MUSK_OX = createEntity("musk_ox", false, false);

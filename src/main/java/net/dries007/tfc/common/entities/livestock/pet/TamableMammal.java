@@ -15,22 +15,19 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
@@ -38,13 +35,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 
-import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
-import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
-import net.dries007.tfc.common.entities.ai.pet.CatAi;
 import net.dries007.tfc.common.entities.livestock.Mammal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.config.animals.MammalConfig;
@@ -68,9 +62,12 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     private static final int UNUSED_FLAG_1 = 8;
     private static final int UNUSED_FLAG_2 = 16;
 
+    private final Supplier<SoundEvent> sleeping;
+
     public TamableMammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
         super(animal, level, sounds, config);
+        sleeping = sounds.sleep().orElseThrow();
         moveControl = new PredicateMoveControl<>(this, e -> !e.isSitting() && !e.isSleeping());
     }
 
@@ -81,32 +78,6 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         entityData.define(DATA_OWNER, Optional.empty());
         entityData.define(DATA_COMMAND, Command.RELAX.ordinal());
         entityData.define(DATA_PET_FLAGS, (byte) 0);
-    }
-
-    @Override
-    protected Brain.Provider<? extends TamableMammal> brainProvider()
-    {
-        return Brain.provider(LivestockAi.MEMORY_TYPES, LivestockAi.SENSOR_TYPES);
-    }
-
-    @Override
-    protected Brain<?> makeBrain(Dynamic<?> dynamic)
-    {
-        return CatAi.makeBrain(brainProvider().makeBrain(dynamic));
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Brain<? extends TamableMammal> getBrain()
-    {
-        return (Brain<TamableMammal>) super.getBrain();
-    }
-
-    @SuppressWarnings("unchecked")
-    public void tickBrain()
-    {
-        ((Brain<TamableMammal>) getBrain()).tick((ServerLevel) level, this);
-        CatAi.updateActivity(this, tickCount % 20 == 0);
     }
 
     /**
@@ -297,6 +268,12 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         {
             serverPlayer.sendMessage(deathMessage, Util.NIL_UUID);
         }
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return isSleeping() ? sleeping.get() : super.getAmbientSound();
     }
 
     public enum Command
