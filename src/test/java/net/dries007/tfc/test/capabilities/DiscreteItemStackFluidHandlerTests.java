@@ -11,14 +11,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.junit.jupiter.api.Test;
 
 import net.dries007.tfc.TestHelper;
 import net.dries007.tfc.common.capabilities.DiscreteItemStackFluidHandler;
 import net.dries007.tfc.common.capabilities.ItemStackFluidHandler;
-import org.junit.jupiter.api.Test;
 
-import static net.dries007.tfc.TestAssertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static net.dries007.tfc.TestAssertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DiscreteItemStackFluidHandlerTests extends TestHelper
 {
@@ -26,7 +26,6 @@ public class DiscreteItemStackFluidHandlerTests extends TestHelper
     public void testFill()
     {
         final ItemStackFluidHandler handler = create();
-
         assertEquals(1000, handler.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.SIMULATE));
         assertEquals(FluidStack.EMPTY, handler.getFluidInTank());
         assertEquals(1000, handler.fill(new FluidStack(Fluids.WATER, 1000), IFluidHandler.FluidAction.EXECUTE));

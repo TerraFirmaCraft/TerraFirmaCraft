@@ -7,9 +7,6 @@
 package net.dries007.tfc.util;
 
 import java.util.stream.Stream;
-
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
 import net.minecraft.core.Direction;
@@ -29,8 +26,9 @@ import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.RailShape;
 import net.minecraft.world.phys.AABB;
-
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import org.apache.commons.lang3.mutable.Mutable;
+import org.apache.commons.lang3.mutable.MutableObject;
 
 import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
@@ -138,8 +136,7 @@ public final class DispenserBehaviors
                     }
 
                     BlockState offsetState = level.getBlockState(offsetPos.below());
-                    // noinspection deprecation
-                    RailShape offsetShape = offsetState.getBlock() instanceof BaseRailBlock ? offsetState.getValue(((BaseRailBlock) offsetState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
+                    @SuppressWarnings("deprecation") final RailShape offsetShape = offsetState.getBlock() instanceof BaseRailBlock ? offsetState.getValue(((BaseRailBlock) offsetState.getBlock()).getShapeProperty()) : RailShape.NORTH_SOUTH;
                     offset = direction != Direction.DOWN && offsetShape.isAscending() ? -0.4 : -0.9;
                 }
                 cartItem.createMinecartEntity(level, stack, x, y + offset, z);
