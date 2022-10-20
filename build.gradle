@@ -29,13 +29,6 @@ archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 version = System.getenv("VERSION") ?: "0.0.0-indev"
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-sourceSets {
-    test
-    main {
-        runtimeClasspath += sourceSets.test.output
-    }
-}
-
 
 repositories {
     mavenCentral()
@@ -92,26 +85,27 @@ minecraft {
                 jvmArg('-XX:+AllowEnhancedClassRedefinition')
             }
 
+            ideaModule("${project.getName()}.test")
+
             mods {
                 tfc {
-                    source sourceSets.main
-                    source sourceSets.test
+                    sources(sourceSets.main, sourceSets.test)
                 }
             }
         }
 
         client {
-            workingDirectory project.file("run/client")
+            workingDirectory(project.file("run/client"))
         }
 
         server {
-            workingDirectory project.file("run/server")
+            workingDirectory(project.file("run/server"))
 
             arg("--nogui")
         }
 
         gameTestServer {
-            workingDirectory project.file("run/gametest")
+            workingDirectory(project.file("run/gametest"))
 
             arg("--nogui")
             forceExit(false)

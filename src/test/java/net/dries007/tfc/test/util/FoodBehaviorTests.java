@@ -41,9 +41,9 @@ public class FoodBehaviorTests
     }
 
     @MyTest(unitTest = true)
-    public void testCreatingAlmostExpiredGrainIntoBreadDoesNotExpire(GameTestHelper helper)
+    public void testCreatingAlmostExpiredFlourIntoDoughDoesNotExpire(GameTestHelper helper)
     {
-        final ItemStack grainStack = new ItemStack(TFCItems.FOOD.get(Food.WHEAT_GRAIN).get());
+        final ItemStack grainStack = new ItemStack(TFCItems.FOOD.get(Food.WHEAT_FLOUR).get());
         final ItemStack waterStack = new ItemStack(Items.WATER_BUCKET);
         final IFood grainFood = Helpers.getCapability(grainStack, FoodCapability.CAPABILITY);
 
@@ -57,6 +57,7 @@ public class FoodBehaviorTests
 
             // Should be 10 ticks from rotten
             assertEquals(10, grainFood.getRottenDate() - Calendars.SERVER.getTicks());
+            assertFalse(grainFood.isRotten());
 
             final CraftingContainer container = new MockCraftingContainer(3, 3);
             container.setItem(0, grainStack);
