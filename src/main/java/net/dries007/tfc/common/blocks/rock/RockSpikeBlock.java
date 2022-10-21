@@ -11,7 +11,6 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -95,7 +94,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     {
         // Don't play the break sound, so don't call destroyBlock()
         level.setBlock(pos, level.getBlockState(pos).getFluidState().createLegacyBlock(), 3);
-        level.playSound(null, pos, TFCSounds.ROCK_SMASH.get(), SoundSource.BLOCKS, 0.6f, 0.8f + level.getRandom().nextFloat(0.4f));
+        Helpers.playSound(level, pos, TFCSounds.ROCK_SMASH.get());
     }
 
     @Override
@@ -118,7 +117,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         // Check support from above or below
         final BlockPos belowPos = pos.below();
         final BlockState belowState = level.getBlockState(belowPos);
-        if (belowState.getBlock() == this && belowState.getValue(PART).isLargerThan(state.getValue(PART)))
+        if (belowState.getBlock() instanceof RockSpikeBlock && belowState.getValue(PART).isLargerThan(state.getValue(PART)))
         {
             // Larger spike below. Tick that to ensure it is supported
             level.scheduleTick(belowPos, this, 1);
@@ -135,7 +134,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
             // No support below, try above
             final BlockPos abovePos = pos.above();
             final BlockState aboveState = level.getBlockState(abovePos);
-            if (aboveState.getBlock() == this && aboveState.getValue(PART).isLargerThan(state.getValue(PART)))
+            if (aboveState.getBlock() instanceof RockSpikeBlock && aboveState.getValue(PART).isLargerThan(state.getValue(PART)))
             {
                 // Larger spike above. Tick to ensure that it is supported
                 level.scheduleTick(abovePos, this, 1);
@@ -153,7 +152,7 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
         {
             // Additionally, run a tick on the block below, on the exact same tick.
             // This ensures the whole spike collapses at the same time, rather than the upper parts destroying the bottom parts.
-            if (belowState.getBlock() == this)
+            if (belowState.getBlock() instanceof RockSpikeBlock)
             {
                 checkForPossibleCollapse(belowState, level, belowPos, false);
             }

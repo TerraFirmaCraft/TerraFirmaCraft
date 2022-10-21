@@ -154,7 +154,8 @@ public class TFCFallingBlockEntity extends FallingBlockEntity
                 {
                     remove(RemovalReason.DISCARDED);
                 }
-                // If we spawn two falling block entities on the same tick, in adjacent positions, and the one above ticks first, it can cause a situation where the block below gets deleted by the falling block destruction code. This causes the next block entity to disappear. So, we don't do anything on first tick except capture and replace the block.
+                // If we spawn two falling block entities on the same tick, in adjacent positions, and the one above ticks first, it can cause a situation where the block below gets deleted by the falling block destruction code.
+                // This causes the next block entity to disappear. So, we don't do anything on first tick except capture and replace the block.
                 return;
             }
 
