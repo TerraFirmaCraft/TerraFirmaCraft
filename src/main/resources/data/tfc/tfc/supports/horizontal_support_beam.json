@@ -1,0 +1,65 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "ingredient": [
+    {
+      "item": "tfc:wood/horizontal_support/acacia"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/ash"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/aspen"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/birch"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/blackwood"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/chestnut"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/douglas_fir"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/hickory"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/kapok"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/maple"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/oak"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/palm"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/pine"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/rosewood"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/sequoia"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/spruce"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/sycamore"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/white_cedar"
+    },
+    {
+      "item": "tfc:wood/horizontal_support/willow"
+    }
+  ],
+  "support_up": 2,
+  "support_down": 2,
+  "support_horizontal": 4
+}

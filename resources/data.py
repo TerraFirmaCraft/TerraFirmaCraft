@@ -100,13 +100,12 @@ def generate(rm: ResourceManager):
 
     # === Supports ===
 
-    for wood in WOODS:
-        rm.data(('tfc', 'supports', wood), {
-            'ingredient': 'tfc:wood/horizontal_support/%s' % wood,
-            'support_up': 1,
-            'support_down': 1,
-            'support_horizontal': 4
-        })
+    rm.data(('tfc', 'supports', 'horizontal_support_beam'), {
+        'ingredient': utils.ingredient(['tfc:wood/horizontal_support/%s' % wood for wood in WOODS]),
+        'support_up': 2,
+        'support_down': 2,
+        'support_horizontal': 4
+    })
 
     # Fuels
 

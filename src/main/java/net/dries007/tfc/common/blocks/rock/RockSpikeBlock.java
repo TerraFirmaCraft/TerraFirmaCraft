@@ -93,9 +93,9 @@ public class RockSpikeBlock extends Block implements IFluidLoggable, IFallableBl
     @Override
     public void onceFinishedFalling(Level level, BlockPos pos, FallingBlockEntity fallingBlock)
     {
-        // todo: better shatter sound
-        level.destroyBlock(pos, false);
-        level.playSound(null, pos, TFCSounds.ROCK_SLIDE_SHORT.get(), SoundSource.BLOCKS, 0.8f, 2.0f);
+        // Don't play the break sound, so don't call destroyBlock()
+        level.setBlock(pos, level.getBlockState(pos).getFluidState().createLegacyBlock(), 3);
+        level.playSound(null, pos, TFCSounds.ROCK_SMASH.get(), SoundSource.BLOCKS, 0.6f, 0.8f + level.getRandom().nextFloat(0.4f));
     }
 
     @Override
