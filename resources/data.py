@@ -647,6 +647,8 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('drinkables', '#tfc:infinite_water', '#tfc:alcohols', '#tfc:milks')
     rm.fluid_tag('any_drinkables', '#tfc:drinkables', '#tfc:any_infinite_water')
 
+    rm.fluid_tag('molten_metals', *['tfc:metal/%s' % metal for metal in METALS.keys()])
+
     # Applications
     rm.fluid_tag('hydrating', '#tfc:any_fresh_water')
 
@@ -657,6 +659,8 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_blue_steel_bucket', 'minecraft:lava', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
+    rm.fluid_tag('usable_in_ingot_mold', '#tfc:molten_metals')
+    rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
 
     # Entity Tags
 
