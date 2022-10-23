@@ -7,7 +7,7 @@
 package net.dries007.tfc.test.recipes;
 
 import java.util.Collection;
-
+import io.netty.buffer.Unpooled;
 import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.gametest.framework.TestFunction;
@@ -17,10 +17,9 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-
 import net.minecraftforge.gametest.GameTestHolder;
+import org.junit.jupiter.api.Assertions;
 
-import io.netty.buffer.Unpooled;
 import net.dries007.tfc.MyTest;
 import net.dries007.tfc.TestAssertions;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
@@ -31,6 +30,7 @@ import net.dries007.tfc.util.calendar.CalendarTransaction;
 import net.dries007.tfc.util.calendar.Calendars;
 
 import static net.dries007.tfc.TestAssertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @GameTestHolder
 public class RecipeTests

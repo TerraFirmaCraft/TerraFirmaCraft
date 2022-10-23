@@ -111,7 +111,7 @@ public final class FoodCapability
                 newFood.getTraits().addAll(oldFood.getTraits());
                 // Applied trait decay DATE modifier = new / old
                 float decayDelta = newFood.getDecayDateModifier() / oldFood.getDecayDateModifier();
-                newFood.setCreationDate(calculateNewCreationDate(oldFood.getCreationDate(), decayDelta));
+                newFood.setCreationDate(calculateNewRoundedCreationDate(oldFood.getCreationDate(), decayDelta));
             }));
 
         return newStack;
@@ -260,6 +260,11 @@ public final class FoodCapability
         return ((tick - 1) / window + 1) * window;
     }
 
+    private static long calculateNewRoundedCreationDate(long ci, float p)
+    {
+        return getRoundedCreationDate(calculateNewCreationDate(ci, p));
+    }
+
     /**
      * T = current time, Ci / Cf = initial / final creation date, Ei / Ef = initial / final expiration date, d = decay time, p = preservation modifier.
      * To apply preservation p at time T: want remaining decay fraction to be invariant under preservation
@@ -286,7 +291,7 @@ public final class FoodCapability
     private static long calculateNewCreationDate(long ci, float p)
     {
         // Cf = (1 - p) * T + p * Ci
-        return getRoundedCreationDate((long) ((1 - p) * Calendars.get().getTicks() + p * ci));
+        return (long) ((1 - p) * Calendars.get().getTicks() + p * ci);
     }
 
     public static class Packet extends DataManagerSyncPacket<FoodDefinition> {}

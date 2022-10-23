@@ -9,10 +9,6 @@ package net.dries007.tfc.common.recipes;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import net.dries007.tfc.TerraFirmaCraft;
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -23,8 +19,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
+import net.dries007.tfc.TerraFirmaCraft;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.entities.TFCFallingBlockEntity;
@@ -71,23 +70,49 @@ public class CollapseRecipe extends SimpleBlockRecipe
         final Random random = level.getRandom();
         if (!level.isClientSide() && level.isAreaLoaded(pos, 32))
         {
-            if (random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get())
+            final boolean realCollapse = random.nextFloat() < TFCConfig.SERVER.collapseTriggerChance.get(),
+                fakeCollapse = !realCollapse && random.nextFloat() < TFCConfig.SERVER.collapseFakeTriggerChance.get();
+            if (realCollapse || fakeCollapse)
             {
                 // Random radius
                 final int radX = (random.nextInt(5) + 4) / 2;
                 final int radY = (random.nextInt(3) + 2) / 2;
                 final int radZ = (random.nextInt(5) + 4) / 2;
+
+                final List<BlockPos> fakeCollapseStarts = new ArrayList<>();
                 for (BlockPos checking : Support.findUnsupportedPositions(level, pos.offset(-radX, -radY, -radZ), pos.offset(radX, radY, radZ))) // 9x5x9 max
                 {
                     // Exclude the position being mined, as it's done before the mining is completed, which is unintuitive
                     if (!checking.equals(pos) && canStartCollapse(level, checking))
                     {
+                        if (fakeCollapse)
+                        {
+                            fakeCollapseStarts.add(checking.immutable());
+                            continue;
+                        }
                         if (startCollapse(level, checking))
                         {
                             level.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
                         }
                         return true; // Don't need to check other blocks, regardless of if we managed to collapse any blocks.
                     }
+                }
+
+                if (!fakeCollapseStarts.isEmpty())
+                {
+                    // Play sound
+                    level.playSound(null, pos, TFCSounds.ROCK_SLIDE_LONG_FAKE.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
+
+                    final List<BlockPos> startsToDisplay = fakeCollapseStarts.size() < 4 ?
+                        fakeCollapseStarts :
+                        Helpers.uniqueRandomSample(fakeCollapseStarts, Math.min(12, 3 + random.nextInt(fakeCollapseStarts.size() - 3)), random);
+                    for (BlockPos start : startsToDisplay)
+                    {
+                        final BlockState fakeStartState = level.getBlockState(start);
+                        level.levelEvent(null, LevelEvent.PARTICLES_DESTROY_BLOCK, start, Block.getId(fakeStartState));
+                    }
+
+                    return false; // No collapse actually occurred, just a fake one
                 }
             }
         }

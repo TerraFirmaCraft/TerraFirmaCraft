@@ -8,7 +8,6 @@ package net.dries007.tfc.config;
 
 import java.util.EnumMap;
 import java.util.function.Function;
-
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
@@ -19,7 +18,7 @@ import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Alloy;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Server Config
@@ -161,6 +160,7 @@ public class ServerConfig
     public final ForgeConfigSpec.BooleanValue enableBlockLandslides;
     public final ForgeConfigSpec.BooleanValue enableChiselsStartCollapses;
     public final ForgeConfigSpec.DoubleValue collapseTriggerChance;
+    public final ForgeConfigSpec.DoubleValue collapseFakeTriggerChance;
     public final ForgeConfigSpec.DoubleValue collapsePropagateChance;
     public final ForgeConfigSpec.DoubleValue collapseExplosionPropagateChance;
     public final ForgeConfigSpec.IntValue collapseMinRadius;
@@ -437,7 +437,8 @@ public class ServerConfig
         enableChiselsStartCollapses = builder.apply("enableChiselsStartCollapses").comment("Enable chisels starting collapses").define("enableChiselsStartCollapses", true);
 
         collapseTriggerChance = builder.apply("collapseTriggerChance").comment("Chance for a collapse to be triggered by mining a block.").defineInRange("collapseTriggerChance", 0.1, 0, 1);
-        collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = mor likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
+        collapseFakeTriggerChance = builder.apply("collapseFakeTriggerChance").comment("Chance for a collapse to be fake triggered by mining a block.").defineInRange("collapseFakeTriggerChance", 0.35, 0, 1);
+        collapsePropagateChance = builder.apply("collapsePropagateChance").comment("Chance for a block fo fall from mining collapse. Higher = more likely.").defineInRange("collapsePropagateChance", 0.55, 0, 1);
         collapseExplosionPropagateChance = builder.apply("collapseExplosionPropagateChance").comment("Chance for a block to fall from an explosion triggered collapse. Higher = mor likely.").defineInRange("collapseExplosionPropagateChance", 0.3, 0, 1);
         collapseMinRadius = builder.apply("collapseMinRadius").comment("Minimum radius for a collapse").defineInRange("collapseMinRadius", 3, 1, 32);
         collapseRadiusVariance = builder.apply("collapseRadiusVariance").comment("Variance of the radius of a collapse. Total size is in [minRadius, minRadius + radiusVariance]").defineInRange("collapseRadiusVariance", 16, 1, 32);
