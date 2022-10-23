@@ -62,7 +62,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:seeds/tomato"
+          "name": "minecraft:stick",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:crop/tomato",
+              "properties": {
+                "part": "bottom",
+                "stick": "true"
+              }
+            }
+          ]
         }
       ],
       "conditions": [

@@ -668,8 +668,8 @@ public final class ForgeEventHandler
         }
         else if (block instanceof TFCCandleBlock)
         {
-            level.setBlockAndUpdate(pos, state.setValue(TFCCandleBlock.LIT, true));
-            level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
+            level.setBlock(pos, state.setValue(TFCCandleBlock.LIT, true), Block.UPDATE_ALL_IMMEDIATE);
+            TickCounterBlockEntity.reset(level, pos);
             event.setCanceled(true);
         }
         else if (block == Blocks.CARVED_PUMPKIN)

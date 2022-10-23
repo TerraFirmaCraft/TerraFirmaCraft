@@ -1,0 +1,9 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "parent": "block/cube_column",
+  "textures": {
+    "north": "tfc:block/wood/planks/douglas_fir_bookshelf_stage6",
+    "side": "tfc:block/wood/planks/douglas_fir_bookshelf_side",
+    "end": "tfc:block/wood/planks/douglas_fir_bookshelf_top"
+  }
+}

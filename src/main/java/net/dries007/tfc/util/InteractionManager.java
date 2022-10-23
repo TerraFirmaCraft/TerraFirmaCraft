@@ -367,10 +367,11 @@ public final class InteractionManager
         }
 
         // Knapping
+        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> TFCConfig.SERVER.requireOffhandForRockKnapping.get() ? Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING) : stack.getCount() >= 2;
         register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));
-        register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction((stack, player) -> stack.getCount() >= 2, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
+        register(Ingredient.of(TFCTags.Items.ROCK_KNAPPING), false, true, createKnappingInteraction(rockPredicate, TFCContainerProviders.ROCK_KNAPPING)); // Don't target blocks for rock knapping, since rock items want to be able to be placed
 
         // Piles (Ingots + Sheets)
         // Shift + Click = Add to pile (either on the targeted pile, or create a new one)
@@ -381,7 +382,6 @@ public final class InteractionManager
             if (player != null && player.isShiftKeyDown())
             {
                 final Level level = context.getLevel();
-                final Direction direction = context.getClickedFace();
                 final BlockPos posClicked = context.getClickedPos();
                 final BlockState stateClicked = level.getBlockState(posClicked);
 

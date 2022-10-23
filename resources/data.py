@@ -172,6 +172,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('fox_spawns_with', 'minecraft:rabbit_foot', 'minecraft:feather', 'minecraft:bone', 'tfc:food/salmon', 'tfc:food/bluegill', 'minecraft:egg', 'tfc:small_raw_hide', 'tfc:food/cloudberry', 'tfc:food/strawberry', 'tfc:food/gooseberry', 'tfc:food/rabbit', 'minecraft:flint')
     rm.item_tag('placed_item_whitelist')
     rm.item_tag('placed_item_blacklist')
+    rm.item_tag('usable_in_bookshelf', 'minecraft:book', 'minecraft:written_book', 'minecraft:writable_book', 'minecraft:enchanted_book')
 
     rm.item_tag('pig_food', '#tfc:foods')
     rm.item_tag('cow_food', '#tfc:foods/grains')

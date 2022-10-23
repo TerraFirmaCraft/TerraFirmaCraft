@@ -223,7 +223,6 @@ def put_on_all_pixels(img: Image, color) -> Image:
 
 def main():
     for wood in WOODS.keys():
-        overlay_image(templates + 'bookshelf', path + 'block/wood/planks/%s' % wood, path + 'block/wood/planks/%s_bookshelf' % wood)
         overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/log/%s' % wood, path + 'block/wood/log_top/%s' % wood)
         overlay_image(templates + 'log_top/%s' % wood, path + 'block/wood/stripped_log/%s' % wood, path + 'block/wood/stripped_log_top/%s' % wood)
         for bench in ('workbench_front', 'workbench_side', 'workbench_top'):
@@ -235,6 +234,10 @@ def main():
         create_sign_item(wood, plank_color, log_color)
         for item in ('twig', 'boat', 'lumber'):
             easy_colorize(plank_color, templates + '/%s' % item, path + 'item/wood/%s/%s' % (item, wood), 2)
+        easy_colorize(plank_color, templates + '/bookshelf_side', path + 'block/wood/planks/%s_bookshelf_side' % wood, 2)
+        easy_colorize(plank_color, templates + '/bookshelf_top', path + 'block/wood/planks/%s_bookshelf_top' % wood, 2)
+        for i in range(0, 7):
+            overlay_image(templates + '/bookshelf_' + str(i), path + 'block/wood/planks/%s_bookshelf_side' % wood, path + 'block/wood/planks/%s_bookshelf_stage%s' % (wood, str(i)))
         create_chest_minecart(wood, plank_color)
         create_logs(wood, plank_color, log_color)
 

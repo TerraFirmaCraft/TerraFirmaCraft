@@ -32,6 +32,7 @@ import net.dries007.tfc.common.blocks.devices.BarrelBlock;
 import net.dries007.tfc.common.blocks.devices.SluiceBlock;
 import net.dries007.tfc.common.items.BarrelBlockItem;
 import net.dries007.tfc.common.items.ChestBlockItem;
+import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.registry.RegistryWood;
 import net.dries007.tfc.world.feature.tree.TFCTreeGrower;
@@ -123,6 +124,11 @@ public enum Wood implements RegistryWood
     @Override
     public int daysToGrow()
     {
+        return TFCConfig.SERVER.saplingGrowthDays.get(this).get();
+    }
+
+    public int defaultDaysToGrow()
+    {
         return daysToGrow;
     }
 
@@ -140,9 +146,9 @@ public enum Wood implements RegistryWood
         STRIPPED_WOOD(wood -> new LogBlock(properties(wood).strength(7.5f).requiresCorrectToolForDrops().flammableLikeLogs(), null), false),
         LEAVES(wood -> TFCLeavesBlock.create(ExtendedProperties.of(Material.LEAVES, wood.woodColor()).strength(0.5F).sound(SoundType.GRASS).randomTicks().noOcclusion().isViewBlocking(TFCBlocks::never).flammableLikeLeaves(), wood.maxDecayDistance()), false),
         PLANKS(wood -> new ExtendedBlock(properties(wood).strength(1.5f, 3.0F).flammableLikePlanks()), false),
-        SAPLING(wood -> new TFCSaplingBlock(wood.tree(), ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).flammableLikeLeaves().blockEntity(TFCBlockEntities.TICK_COUNTER), wood.daysToGrow()), false),
+        SAPLING(wood -> new TFCSaplingBlock(wood.tree(), ExtendedProperties.of(Material.PLANT).noCollission().randomTicks().strength(0).sound(SoundType.GRASS).flammableLikeLeaves().blockEntity(TFCBlockEntities.TICK_COUNTER), () -> wood.daysToGrow()), false),
         POTTED_SAPLING(wood -> new FlowerPotBlock(() -> (FlowerPotBlock) Blocks.FLOWER_POT, wood.getBlock(SAPLING), BlockBehaviour.Properties.of(Material.DECORATION).instabreak().noOcclusion()), false),
-        BOOKSHELF(wood -> new ExtendedBlock(properties(wood).strength(2.0F, 3.0F).flammable(20, 30).enchantmentPower(1)), true),
+        BOOKSHELF(wood -> new BookshelfBlock(properties(wood).strength(2.0F, 3.0F).flammable(20, 30).enchantmentPower(s -> s.getValue(BookshelfBlock.BOOKS_STORED) / 2f).blockEntity(TFCBlockEntities.BOOKSHELF)), true),
         DOOR(wood -> new TFCDoorBlock(properties(wood).strength(3.0F).noOcclusion().flammableLikePlanks()), true),
         TRAPDOOR(wood -> new TFCTrapDoorBlock(properties(wood).strength(3.0F).noOcclusion().flammableLikePlanks()), true),
         FENCE(wood -> new TFCFenceBlock(properties(wood).strength(2.0F, 3.0F).flammableLikePlanks()), true),

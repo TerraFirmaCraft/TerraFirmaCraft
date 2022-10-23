@@ -47,7 +47,16 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tfc:seeds/sugarcane"
+          "name": "tfc:seeds/sugarcane",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "tfc:crop/sugarcane",
+              "properties": {
+                "part": "bottom"
+              }
+            }
+          ]
         }
       ],
       "conditions": [
