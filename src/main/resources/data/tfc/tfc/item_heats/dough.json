@@ -3,5 +3,5 @@
   "ingredient": {
     "tag": "tfc:foods/dough"
   },
-  "heat_capacity": 1
+  "heat_capacity": 1.0
 }

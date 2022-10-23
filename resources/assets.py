@@ -1384,8 +1384,8 @@ def generate(rm: ResourceManager):
         ), use_default_model=False)
         for i in range(0, 7):
             rm.block_model('tfc:wood/planks/%s_bookshelf_%s' % (wood, i), parent='block/cube_column', textures={'north': 'tfc:block/wood/planks/%s_bookshelf_stage%s' % (wood, i), 'side': 'tfc:block/wood/planks/%s_bookshelf_side' % wood, 'end': 'tfc:block/wood/planks/%s_bookshelf_top' % wood})
-        block.with_item_model().with_lang(lang('%s bookshelf', wood)).with_block_loot('tfc:wood/planks/%s_bookshelf' % wood)
-        block.with_block_model({'end': 'tfc:block/wood/planks/%s' % wood, 'side': 'tfc:block/wood/planks/%s_bookshelf' % wood}, parent='minecraft:block/bookshelf')
+        block.with_lang(lang('%s bookshelf', wood)).with_block_loot('tfc:wood/planks/%s_bookshelf' % wood)
+        rm.item_model('tfc:wood/planks/%s_bookshelf' % wood, parent='tfc:block/wood/planks/%s_bookshelf_0' % wood, no_textures=True)
 
         # Workbench
         rm.blockstate(('wood', 'planks', '%s_workbench' % wood)).with_block_model(parent='minecraft:block/cube', textures={

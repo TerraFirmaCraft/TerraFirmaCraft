@@ -4,6 +4,6 @@
     "tag": "forge:double_ingots/bismuth"
   },
   "heat_capacity": 14.286,
-  "forging_temperature": 162.0,
-  "welding_temperature": 216.0
+  "forging_temperature": 162,
+  "welding_temperature": 216
 }
