@@ -856,7 +856,7 @@ def make_book(rm: ResourceManager, i18n: I18n, local_instance: bool = False, rev
                 })
                 for step in range(5)  # Duplicate the last step, to hold on the completed image
             ]),
-            text('Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 3 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)In addition to being supported by support beams, rock can be supported simply by the virtue of having a solid block below it, such as more rock. However, it is important to note that $(thing)Non Solid Blocks$() such as $(thing)Stairs$() and $(thing)Slabs$(), along with $(thing)Smooth Stone$(), do $(bold)not$() count as supporting.'),
+            text('Only $(thing)Horizontal Support Beams$() cause nearby blocks to be $(thing)Supported$(). Any block within a $(bold)9 x 5 x 9$() area centered on a horizontal support beam is considered $(thing)Supported$().$(br2)In addition to being supported by support beams, rock can be supported simply by the virtue of having a solid block below it, such as more rock. However, it is important to note that $(thing)Non Solid Blocks$() such as $(thing)Stairs$() and $(thing)Slabs$(), along with $(thing)Smooth Stone$(), do $(bold)not$() count as supporting.'),
             text('Finally, it is important to know that $(l:mechanics/chisel)Chiseling$() has the potential to cause collapses, just as easily as mining does, when it is done on any $(thing)Raw Rock$() that has potential to cause a nearby collapse.$(br2)$(br2)Remember kids: practice safe mining!', title='Chiseling'),
         )),
         entry('prospecting', 'Prospecting', 'tfc:metal/propick/wrought_iron', pages=(
