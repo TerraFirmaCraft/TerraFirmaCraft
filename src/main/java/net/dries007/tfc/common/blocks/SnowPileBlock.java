@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.blocks;
 
 import java.util.Random;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -24,6 +23,7 @@ import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
@@ -31,7 +31,6 @@ import net.dries007.tfc.util.EnvironmentHelpers;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.Climate;
 import net.dries007.tfc.util.climate.OverworldClimateModel;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This block is a snow layer block that hides / covers a block underneath
@@ -81,16 +80,31 @@ public class SnowPileBlock extends SnowLayerBlock implements IForgeBlockExtensio
 
     public static void removePileOrSnow(LevelAccessor level, BlockPos pos, BlockState state)
     {
-        removePileOrSnow(level, pos, state, false);
+        removePileOrSnow(level, pos, state, -1);
     }
 
+    /** @deprecated Use one of the overloads instead */
+    @Deprecated(forRemoval = true)
     public static void removePileOrSnow(LevelAccessor level, BlockPos pos, BlockState state, boolean removeAllLayers)
     {
+        removePileOrSnow(level, pos, state, removeAllLayers ? 0 : -1);
+    }
+
+    /**
+     * @param expectedLayers The expected number of snow layers. -1 = no expectation, just remove a single layer. 0 = remove all snow layers.
+     */
+    public static void removePileOrSnow(LevelAccessor level, BlockPos pos, BlockState state, int expectedLayers)
+    {
         final int layers = state.getValue(SnowLayerBlock.LAYERS);
-        if (layers > 1 && !removeAllLayers)
+        if (expectedLayers >= layers)
         {
-            // Remove one layer
-            level.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, layers - 1), Block.UPDATE_ALL);
+            // If we expect more layers than actually exist, don't remove anything
+            return;
+        }
+        if (layers > 1 && expectedLayers != 0)
+        {
+            // Remove layers, but keep the snow block intact
+            level.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, expectedLayers == -1 ? layers - 1 : expectedLayers), Block.UPDATE_ALL);
         }
         else if (state.getBlock() == Blocks.SNOW)
         {
