@@ -12,22 +12,21 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
 import com.google.common.collect.Sets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.mojang.logging.LogUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.network.NetworkEvent;
-
-import com.mojang.logging.LogUtils;
-import net.dries007.tfc.network.DataManagerSyncPacket;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import net.dries007.tfc.network.DataManagerSyncPacket;
 
 /**
  * An implementation of a json reload listener, which has an internal backing registry which is then populated via json.
@@ -97,6 +96,7 @@ public class RegisteredDataManager<T> extends DataManager<RegisteredDataManager.
                 catch (IllegalArgumentException | JsonParseException e)
                 {
                     LOGGER.error("{} '{}' failed to parse. {}: {}", typeName, name, e.getClass().getSimpleName(), e.getMessage());
+                    SelfTests.reportExternalDataManagerError();
                 }
             }
         }
