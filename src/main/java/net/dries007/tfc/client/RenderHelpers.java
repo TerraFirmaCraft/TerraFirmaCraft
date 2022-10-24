@@ -7,7 +7,16 @@
 package net.dries007.tfc.client;
 
 import java.util.function.Consumer;
-
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
@@ -16,6 +25,7 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -36,11 +46,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.util.Helpers;
@@ -466,24 +471,65 @@ public final class RenderHelpers
         return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(fluid.getFluid().getAttributes().getStillTexture(fluid));
     }
 
+    /** @deprecated Use the updated version below. */
+    @Deprecated(forRemoval = true)
     public static void fillAreaWithSprite(int left, int top, TextureAtlasSprite sprite, PoseStack poseStack, int startX, int endX, int endY, int fillHeight)
     {
-        int yPos = endY;
-        while (fillHeight > 0)
+        fillAreaWithSprite(poseStack, sprite, left + startX, top + endY - fillHeight, endX - startX, fillHeight, 16, 16);
+    }
+
+    /**
+     * Renders a solid rectangle over the region {@code [x, y] x [x + width, y + height]}, composed of the given sprite. The sprite is assumed to have a regular width and height of {@code spriteWidth x spriteHeight}. This will tile the given texture as many times as necessary to cover the region.
+     */
+    public static void fillAreaWithSprite(PoseStack stack, TextureAtlasSprite sprite, int x, int y, int regionWidth, int regionHeight, int spriteWidth, int spriteHeight)
+    {
+        final int tileWidth = Helpers.ceilDiv(regionWidth, spriteWidth);
+        final int tileHeight = Helpers.ceilDiv(regionHeight, spriteHeight);
+
+        for (int tileX = 0; tileX < tileWidth; tileX++)
         {
-            int yPixels = Math.min(fillHeight, 16);
-            int fillWidth = endX - startX;
-            int xPos = endX;
-            while (fillWidth > 0)
+            for (int tileY = 0; tileY < tileHeight; tileY++)
             {
-                int xPixels = Math.min(fillWidth, 16);
-                GuiComponent.blit(poseStack, left + xPos - xPixels, top + yPos - yPixels, 0, xPixels, yPixels, sprite);
-                fillWidth -= 16;
-                xPos -= 16;
+                // Top left (x, y) coordinate of this tile to be drawn
+                final int offsetX = tileX * spriteWidth;
+                final int offsetY = tileY * spriteHeight;
+
+                // The actual (width, height) pair of this tile, cut off by the region bounds, which are not an exact multiple of tile (width, height)
+                final int actualWidth = Math.min(spriteWidth, regionWidth - offsetX);
+                final int actualHeight = Math.min(spriteHeight, regionHeight - offsetY);
+
+                // The fraction in [0, 1] x [0, 1] of this tile that needs to be drawn
+                final float widthRatio = (float) actualWidth / spriteWidth;
+                final float heightRatio = (float) actualHeight / spriteHeight;
+
+                blit(stack, x + offsetX, y + offsetY, actualWidth, actualHeight, sprite.getU0(), sprite.getU(16 * widthRatio), sprite.getV0(), sprite.getV(16 * heightRatio));
             }
-            fillHeight -= 16;
-            yPos -= 16;
         }
+    }
+
+    /**
+     * Copied from {@link GuiComponent#blit(PoseStack, int, int, int, int, int, TextureAtlasSprite)} but with explicit arguments for {@code minU, maxU, minV, maxV}.
+     */
+    public static void blit(PoseStack stack, int x, int y, int width, int height, float minU, float maxU, float minV, float maxV)
+    {
+        blit(stack.last().pose(), x, x + width, y, y + height, 0, minU, maxU, minV, maxV);
+    }
+
+
+    /**
+     * Copied from {@link GuiComponent#innerBlit(Matrix4f, int, int, int, int, int, float, float, float, float)} because it's private.
+     */
+    public static void blit(Matrix4f pose, int x1, int x2, int y1, int y2, int blitOffset, float minU, float maxU, float minV, float maxV)
+    {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        final BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        builder.vertex(pose, x1, y2, blitOffset).uv(minU, maxV).endVertex();
+        builder.vertex(pose, x2, y2, blitOffset).uv(maxU, maxV).endVertex();
+        builder.vertex(pose, x2, y1, blitOffset).uv(maxU, minV).endVertex();
+        builder.vertex(pose, x1, y1, blitOffset).uv(minU, minV).endVertex();
+        builder.end();
+        BufferUploader.end(builder);
     }
 
     public static Button.OnTooltip makeButtonTooltip(Screen screen, Component component)
