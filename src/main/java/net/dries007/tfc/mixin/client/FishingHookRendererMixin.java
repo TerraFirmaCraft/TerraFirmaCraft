@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Mixin(FishingHookRenderer.class)
 public abstract class FishingHookRendererMixin
 {
-    @Redirect(method = "render(Lnet/minecraft/world/entity/projectile/FishingHook;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"))
+    @Redirect(method = "render(Lnet/minecraft/world/entity/projectile/FishingHook;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"), require=0)
     private boolean isAnyFishingRod(ItemStack stack, Item item)
     {
         return stack.getItem() instanceof FishingRodItem;

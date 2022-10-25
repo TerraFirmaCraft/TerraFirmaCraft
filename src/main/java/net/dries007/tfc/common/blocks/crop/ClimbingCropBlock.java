@@ -33,16 +33,17 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
+import net.dries007.tfc.util.registry.RegistryCrop;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhostBlockHandler
 {
     public static final BooleanProperty STICK = TFCBlockStateProperties.STICK;
 
-    public static ClimbingCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, Crop crop)
+    public static ClimbingCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, RegistryCrop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(singleStages + doubleStages - 1);
-        return new ClimbingCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
+        return new ClimbingCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, crop)
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -52,9 +53,9 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
         };
     }
 
-    protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
+    protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, RegistryCrop crop)
     {
-        super(properties, maxSingleAge, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxSingleAge, maxAge, crop);
         registerDefaultState(getStateDefinition().any().setValue(STICK, false).setValue(PART, Part.BOTTOM));
     }
 

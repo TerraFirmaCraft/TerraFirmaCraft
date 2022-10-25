@@ -6,30 +6,23 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.climate.ClimateRanges;
+import net.dries007.tfc.util.registry.RegistryCrop;
 
 public abstract class DefaultCropBlock extends CropBlock
 {
-    public static DefaultCropBlock create(ExtendedProperties properties, int stages, Crop crop)
+    public static DefaultCropBlock create(ExtendedProperties properties, int stages, RegistryCrop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(stages - 1);
-        return new DefaultCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
+        return new DefaultCropBlock(properties, stages - 1, crop)
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -39,9 +32,9 @@ public abstract class DefaultCropBlock extends CropBlock
         };
     }
 
-    protected DefaultCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
+    protected DefaultCropBlock(ExtendedProperties properties, int maxAge, RegistryCrop crop)
     {
-        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxAge, crop);
     }
 
     @Override

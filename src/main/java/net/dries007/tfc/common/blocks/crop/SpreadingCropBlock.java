@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,21 +19,17 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.DecayingBlockEntity;
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
-import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.climate.ClimateRanges;
+import net.dries007.tfc.util.registry.RegistryCrop;
 
 public abstract class SpreadingCropBlock extends DefaultCropBlock
 {
-    public static SpreadingCropBlock create(ExtendedProperties properties, int stages, Crop crop, Supplier<Supplier<? extends Block>> fruit)
+    public static SpreadingCropBlock create(ExtendedProperties properties, int stages, RegistryCrop crop, Supplier<Supplier<? extends Block>> fruit)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(stages - 1);
-        return new SpreadingCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop), fruit)
+        return new SpreadingCropBlock(properties, stages - 1, crop, fruit)
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -46,9 +41,9 @@ public abstract class SpreadingCropBlock extends DefaultCropBlock
 
     private final Supplier<Supplier<? extends Block>> fruit;
 
-    protected SpreadingCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange, Supplier<Supplier<? extends Block>> fruit)
+    protected SpreadingCropBlock(ExtendedProperties properties, int maxAge, RegistryCrop crop, Supplier<Supplier<? extends Block>> fruit)
     {
-        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxAge, crop);
         this.fruit = fruit;
     }
 

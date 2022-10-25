@@ -2,7 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "type": "tfc:barrel_instant_fluid",
   "primary_fluid": {
-    "ingredient": "minecraft:milk",
+    "ingredient": {
+      "tag": "tfc:milks"
+    },
     "amount": 9
   },
   "added_fluid": {

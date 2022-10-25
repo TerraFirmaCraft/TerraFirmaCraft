@@ -6,11 +6,9 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -21,25 +19,21 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
-import net.dries007.tfc.common.items.TFCItems;
-import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.climate.ClimateRanges;
+import net.dries007.tfc.util.registry.RegistryCrop;
 
 public abstract class FloodedCropBlock extends DefaultCropBlock implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
 
-    public static FloodedCropBlock create(ExtendedProperties properties, int stages, Crop crop)
+    public static FloodedCropBlock create(ExtendedProperties properties, int stages, RegistryCrop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(stages - 1);
-        return new FloodedCropBlock(properties, stages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
+        return new FloodedCropBlock(properties, stages - 1, crop)
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -49,9 +43,9 @@ public abstract class FloodedCropBlock extends DefaultCropBlock implements IFlui
         };
     }
 
-    protected FloodedCropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
+    protected FloodedCropBlock(ExtendedProperties properties, int maxAge, RegistryCrop crop)
     {
-        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
+        super(properties, maxAge, crop);
     }
 
     @Override

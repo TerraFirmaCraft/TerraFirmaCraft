@@ -25,20 +25,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.network.NetworkHooks;
 
 import net.dries007.tfc.client.IGhostBlockHandler;
 import net.dries007.tfc.common.TFCTags;
@@ -51,7 +46,7 @@ import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.advancements.TFCAdvancements;
 import org.jetbrains.annotations.Nullable;
 
-public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBellowsConsumer
+public class FirepitBlock extends BottomSupportedDeviceBlock implements IGhostBlockHandler, IBellowsConsumer
 {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
@@ -82,14 +77,14 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
         box(2, 0, 2, 14, 1.0, 14)
     );
 
-    public static boolean canSurvive(LevelReader level, BlockPos pos)
-    {
-        return level.getBlockState(pos.below()).isFaceSturdy(level, pos, Direction.UP);
-    }
-
     public FirepitBlock(ExtendedProperties properties)
     {
-        super(properties, InventoryRemoveBehavior.DROP);
+        this(properties, BASE_SHAPE);
+    }
+
+    public FirepitBlock(ExtendedProperties properties, VoxelShape shape)
+    {
+        super(properties, InventoryRemoveBehavior.DROP, shape);
 
         registerDefaultState(getStateDefinition().any().setValue(LIT, false));
     }
@@ -175,17 +170,6 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
 
     @Override
     @SuppressWarnings("deprecation")
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor level, BlockPos currentPos, BlockPos facingPos)
-    {
-        if (!stateIn.canSurvive(level, currentPos))
-        {
-            return Blocks.AIR.defaultBlockState();
-        }
-        return stateIn;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result)
     {
         final AbstractFirepitBlockEntity<?> firepit = level.getBlockEntity(pos, TFCBlockEntities.FIREPIT.get()).orElse(null);
@@ -221,20 +205,6 @@ public class FirepitBlock extends DeviceBlock implements IGhostBlockHandler, IBe
             }
         }
         return InteractionResult.PASS;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean canSurvive(BlockState state, LevelReader world, BlockPos pos)
-    {
-        return FirepitBlock.canSurvive(world, pos);
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
-    {
-        return BASE_SHAPE;
     }
 
     @Override

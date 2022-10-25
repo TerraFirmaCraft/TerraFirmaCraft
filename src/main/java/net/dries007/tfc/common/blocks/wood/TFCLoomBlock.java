@@ -6,6 +6,7 @@
 
 package net.dries007.tfc.common.blocks.wood;
 
+import net.dries007.tfc.common.blocks.devices.BottomSupportedDeviceBlock;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -26,12 +27,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.dries007.tfc.common.blockentities.LoomBlockEntity;
 import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
-import net.dries007.tfc.common.blocks.devices.DeviceBlock;
 
-public class TFCLoomBlock extends DeviceBlock
+public class TFCLoomBlock extends BottomSupportedDeviceBlock
 {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
@@ -55,7 +54,6 @@ public class TFCLoomBlock extends DeviceBlock
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return switch (state.getValue(FACING))
@@ -71,19 +69,15 @@ public class TFCLoomBlock extends DeviceBlock
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit)
     {
-        LoomBlockEntity loom = level.getBlockEntity(pos, TFCBlockEntities.LOOM.get()).orElse(null);
-        if (loom != null)
-        {
-            return loom.onRightClick(player);
-        }
-        return InteractionResult.PASS;
+        return level.getBlockEntity(pos, TFCBlockEntities.LOOM.get()).map(loom -> loom.onRightClick(player)).orElse(InteractionResult.PASS);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        return defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
+        final BlockState state = super.getStateForPlacement(context);
+        return state == null ? null : state.setValue(FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override

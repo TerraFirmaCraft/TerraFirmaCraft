@@ -4,13 +4,43 @@ from mcresources import utils
 
 assets_path = './src/main/resources/assets/'
 texture_forgiveness_paths = ('_fluff', 'block/burlap', 'block/molten_flow', 'yellow_bell', 'red_bell', 'green_bell', 'metal/full', 'plant/', 'sandstone/side', 'quiver', 'placed_item')
+lang_path = assets_path + 'tfc/lang/en_us.json'
+sounds_path = assets_path + 'tfc/sounds.json'
 
 def main():
     model_locations = glob(assets_path + 'tfc/models/**/*.json', recursive=True)
     state_locations = glob(assets_path + 'tfc/blockstates/**/*.json', recursive=True)
+    lang_json = load(lang_path)
+    sound_json = load(sounds_path)
+    validate_lang(state_locations, lang_json, sound_json)
     validate_model_parents(model_locations)
     validate_textures(model_locations)
     validate_blockstate_models(state_locations)
+
+def validate_lang(state_locations, lang_json, sound_json):
+    tested = 0
+    tested_sound = 0
+    errors = 0
+    for f in state_locations:
+        name = f.replace('\\', '/')
+        name = name.replace(assets_path + 'tfc/blockstates/', '')
+        name = name.replace('.json', '')
+        name = name.replace('/', '.')
+        if 'block.tfc.%s' % name not in lang_json and 'plant' not in name:
+            print('Block without lang entry: %s' % name)
+            errors += 1
+        tested += 1
+    for sound, data in sound_json.items():
+        tested_sound += 1
+        if 'subtitle' not in data:
+            print('Sound without subtitle key: %s' % sound)
+            errors += 1
+        else:
+            sub = data['subtitle']
+            if 'tfc' in sub and sub not in lang_json and 'deer' not in sub:
+                print('Sound subtitle missing for sound: %s with key: %s' % (sound, sub))
+                errors += 1
+    print('Lang Validation: %s blocks tested, %s sounds tested, %s errors' % (tested, tested_sound, errors))
 
 def validate_blockstate_models(state_locations):
     tested = 0

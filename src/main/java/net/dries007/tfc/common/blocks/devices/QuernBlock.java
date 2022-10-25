@@ -134,8 +134,7 @@ public class QuernBlock extends DeviceBlock implements IHighlightHandler
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
-        QuernBlockEntity quern = level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).orElse(null);
-        return quern != null && quern.hasHandstone() ? FULL_SHAPE : BASE_SHAPE;
+        return level.getBlockEntity(pos, TFCBlockEntities.QUERN.get()).filter(QuernBlockEntity::hasHandstone).map(q -> FULL_SHAPE).orElse(BASE_SHAPE);
     }
 
     @Override

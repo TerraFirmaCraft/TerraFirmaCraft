@@ -136,7 +136,7 @@ public class LampBlock extends ExtendedBlock implements EntityBlockExtension
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context)
     {
-        for(Direction direction : context.getNearestLookingDirections())
+        for (Direction direction : context.getNearestLookingDirections())
         {
             if (direction.getAxis() == Direction.Axis.Y)
             {

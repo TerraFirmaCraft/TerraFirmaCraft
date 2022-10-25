@@ -36,7 +36,9 @@ public final class CropHelpers
 {
     public static final long UPDATE_INTERVAL = 2 * ICalendar.TICKS_IN_DAY;
 
+    /** @deprecated use ICropBlock */
     public static final float GROWTH_FACTOR = 1f / (24 * ICalendar.TICKS_IN_DAY);
+    /** @deprecated use ICropBlock */
     public static final float NUTRIENT_CONSUMPTION = 1f / (12 * ICalendar.TICKS_IN_DAY);
     public static final float NUTRIENT_GROWTH_FACTOR = 0.5f;
     public static final float GROWTH_LIMIT = 1f;
@@ -86,15 +88,15 @@ public final class CropHelpers
         // As long as the crop exists it consumes nutrients.
 
         final FarmlandBlockEntity.NutrientType primaryNutrient = cropBlock.getPrimaryNutrient();
-        float nutrientsAvailable = 0, nutrientsRequired = NUTRIENT_CONSUMPTION * tickDelta, nutrientsConsumed = 0;
+        float nutrientsAvailable = 0, nutrientsRequired = cropBlock.getNutrientConsumptionFactor(level, pos, state, crop) * tickDelta, nutrientsConsumed = 0;
         if (level.getBlockEntity(sourcePos) instanceof IFarmland farmland)
         {
             nutrientsAvailable = farmland.getNutrient(primaryNutrient);
-            nutrientsConsumed = farmland.consumeNutrientAndResupplyOthers(primaryNutrient, nutrientsRequired);
+            nutrientsConsumed = farmland.consumeNutrientAndResupplyOthers(primaryNutrient, nutrientsRequired, cropBlock.getNutrientResupplyFactor(level, pos, state, crop));
         }
 
         // Total growth is based on the ticks and the nutrients consumed. It is then allocated to actual growth or expiry based on other factors.
-        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
+        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * cropBlock.getGrowthFactor(level, pos, state, crop) + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
         final float initialGrowth = crop.getGrowth();
         float growth = initialGrowth, expiry = crop.getExpiry(), actualYield = crop.getYield();
 
