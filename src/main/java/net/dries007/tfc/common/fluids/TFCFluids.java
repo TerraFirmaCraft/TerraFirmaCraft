@@ -108,7 +108,7 @@ public final class TFCFluids
         properties -> properties.block(TFCBlocks.SIMPLE_FLUIDS.get(fluid)).bucket(TFCItems.FLUID_BUCKETS.get(FluidType.asType(fluid))),
         FluidAttributes.builder(WATER_STILL, WATER_FLOW)
             .translationKey("fluid.tfc." + fluid.getId())
-            .color(fluid.getColor())
+            .color(fluid.isTransparent() ? ALPHA_MASK | fluid.getColor() : fluid.getColor())
             .overlay(WATER_OVERLAY)
             .sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY),
         MixingFluid.Source::new,

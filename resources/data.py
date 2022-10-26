@@ -650,6 +650,7 @@ def generate(rm: ResourceManager):
 
     # Applications
     rm.fluid_tag('hydrating', '#tfc:any_fresh_water')
+    rm.fluid_tag('mixable', '#minecraft:water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
@@ -660,6 +661,16 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
     rm.fluid_tag('usable_in_ingot_mold', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
+
+    # Required in order for fluids to have fluid-like properties
+    rm.fluid_tag('minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('minecraft:water', *['#tfc:%s' % fluid_type for fluid_type in (
+        'salt_water',
+        'spring_water',
+        *SIMPLE_FLUIDS,
+        *ALCOHOLS,
+        *['%s_dye' % c for c in COLORS]
+    )], 'tfc:river_water')
 
     # Entity Tags
 
