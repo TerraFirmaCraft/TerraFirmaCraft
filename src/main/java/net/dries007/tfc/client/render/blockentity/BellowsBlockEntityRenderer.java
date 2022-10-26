@@ -17,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.BellowsBlockEntity;
 import net.dries007.tfc.common.blocks.devices.BellowsBlock;
@@ -84,7 +83,7 @@ public class BellowsBlockEntityRenderer implements BlockEntityRenderer<BellowsBl
         final float width = 1 - bellows.getExtensionLength();
 
         poseStack.translate(0.5d, 0, 0.5d);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - 90.0F * meta));
+        poseStack.mulPose(RenderHelpers.rotateDegreesY(180.0F - 90.0F * meta));
         poseStack.translate(-0.5d, 0.0d, -0.5d);
 
         drawMiddle(buffer, poseStack, sideSprite, width, packedLight, packedOverlay);

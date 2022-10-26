@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.IngotPileBlockEntity;
 import net.dries007.tfc.common.blocks.devices.IngotPileBlock;
@@ -52,7 +51,7 @@ public class IngotPileBlockEntityRenderer implements BlockEntityRenderer<IngotPi
                 {
                     // Rotate 90 degrees every other layer
                     poseStack.translate(0.5f, 0f, 0.5f);
-                    poseStack.mulPose(Vector3f.YP.rotationDegrees(90f));
+                    poseStack.mulPose(RenderHelpers.rotateDegreesY(90f));
                     poseStack.translate(-0.5f, 0f, -0.5f);
                 }
 

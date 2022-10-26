@@ -37,8 +37,10 @@ public final class CropHelpers
     public static final long UPDATE_INTERVAL = 2 * ICalendar.TICKS_IN_DAY;
 
     /** @deprecated use ICropBlock */
+    @Deprecated
     public static final float GROWTH_FACTOR = 1f / (24 * ICalendar.TICKS_IN_DAY);
     /** @deprecated use ICropBlock */
+    @Deprecated
     public static final float NUTRIENT_CONSUMPTION = 1f / (12 * ICalendar.TICKS_IN_DAY);
     public static final float NUTRIENT_GROWTH_FACTOR = 0.5f;
     public static final float GROWTH_LIMIT = 1f;

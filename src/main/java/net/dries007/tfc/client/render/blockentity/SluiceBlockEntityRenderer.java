@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidAttributes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.client.TFCColors;
 import net.dries007.tfc.common.blockentities.SluiceBlockEntity;
@@ -40,7 +39,7 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         poseStack.pushPose();
         poseStack.translate(x, y, z);
         poseStack.scale(0.3F, 0.3F, 0.3F);
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(rotation));
+        poseStack.mulPose(RenderHelpers.rotateDegreesY(rotation));
         renderer.renderStatic(stack, ItemTransforms.TransformType.FIXED, combinedLight, combinedOverlay, poseStack, buffer, 0);
         poseStack.popPose();
     }
@@ -66,14 +65,14 @@ public class SluiceBlockEntityRenderer implements BlockEntityRenderer<SluiceBloc
         else if (facing == Direction.WEST)
         {
             poseStack.translate(1F, 0F, 0F);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180F));
+            poseStack.mulPose(RenderHelpers.rotateDegreesY(180F));
         }
         else if (facing == Direction.EAST)
         {
             poseStack.translate(0F, 0F, 1F);
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(180F));
+            poseStack.mulPose(RenderHelpers.rotateDegreesY(180F));
         }
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(state.getValue(SluiceBlock.FACING).get2DDataValue() * 90F));
+        poseStack.mulPose(RenderHelpers.rotateDegreesY(state.getValue(SluiceBlock.FACING).get2DDataValue() * 90F));
 
         final float rotation = RenderHelpers.itemTimeRotation();
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();

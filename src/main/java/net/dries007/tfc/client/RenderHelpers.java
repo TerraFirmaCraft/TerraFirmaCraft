@@ -40,6 +40,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
 import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
@@ -363,6 +364,22 @@ public final class RenderHelpers
         RenderSystem.setShaderColor(r, g, b, a);
     }
 
+    // todo 1.19.3: inline and remove
+    public static Quaternion rotateDegreesX(float degrees)
+    {
+        return Vector3f.XP.rotationDegrees(degrees);
+    }
+
+    public static Quaternion rotateDegreesY(float degrees)
+    {
+        return Vector3f.YP.rotationDegrees(degrees);
+    }
+
+    public static Quaternion rotateDegreesZ(float degrees)
+    {
+        return Vector3f.ZP.rotationDegrees(degrees);
+    }
+
     /**
      * This is the map code in {@link net.minecraft.client.renderer.ItemInHandRenderer}
      */
@@ -379,18 +396,18 @@ public final class RenderHelpers
         final float tilt = calculateTilt(pitch);
         poseStack.translate(0.0D, 0.04F + equipProgress * -1.2F + tilt * -0.5F, -0.72F);
         // tfc: clamp the tilt amount, and reverse the tilt direction based on the player looking around
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(Mth.clamp(tilt, 0.3F, 0.51F) * 85.0F));
+        poseStack.mulPose(rotateDegreesX(Mth.clamp(tilt, 0.3F, 0.51F) * 85.0F));
         if (!mc.player.isInvisible())
         {
             poseStack.pushPose();
-            poseStack.mulPose(Vector3f.YP.rotationDegrees(90.0F));
+            poseStack.mulPose(rotateDegreesY(90.0F));
             renderMapHand(mc, poseStack, source, combinedLight, HumanoidArm.RIGHT);
             renderMapHand(mc, poseStack, source, combinedLight, HumanoidArm.LEFT);
             poseStack.popPose();
         }
 
         addSiftingMovement(mc.player, poseStack); // tfc: rotate the pan due to sifting
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(Mth.sin(swingSqrt * (float) Math.PI) * 20.0F));
+        poseStack.mulPose(rotateDegreesX(Mth.sin(swingSqrt * (float) Math.PI) * 20.0F));
         poseStack.scale(2.0F, 2.0F, 2.0F);
 
         final boolean right = mc.player.getMainArm() == HumanoidArm.RIGHT;
@@ -516,9 +533,9 @@ public final class RenderHelpers
         PlayerRenderer playerrenderer = (PlayerRenderer) mc.getEntityRenderDispatcher().<AbstractClientPlayer>getRenderer(mc.player);
         poseStack.pushPose();
         final float side = arm == HumanoidArm.RIGHT ? 1.0F : -1.0F;
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(92.0F));
-        poseStack.mulPose(Vector3f.XP.rotationDegrees(45.0F));
-        poseStack.mulPose(Vector3f.ZP.rotationDegrees(side * -41.0F + calculateArmMovement(mc.player))); // tfc: jiggle the arms
+        poseStack.mulPose(rotateDegreesY(92.0F));
+        poseStack.mulPose(rotateDegreesX(45.0F));
+        poseStack.mulPose(rotateDegreesZ(side * -41.0F + calculateArmMovement(mc.player))); // tfc: jiggle the arms
         poseStack.translate(side * 0.3D, -1.1D, 0.45D);
         if (arm == HumanoidArm.RIGHT)
         {

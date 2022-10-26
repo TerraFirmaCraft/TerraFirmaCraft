@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.item.ItemStack;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.GrillBlockEntity;
 import net.dries007.tfc.common.capabilities.Capabilities;
 
@@ -35,8 +35,8 @@ public class GrillBlockEntityRenderer implements BlockEntityRenderer<GrillBlockE
                     poseStack.pushPose();
                     poseStack.translate(0.3, 0.003125D + yOffset, 0.28);
                     poseStack.scale(0.3f, 0.3f, 0.3f);
-                    poseStack.mulPose(Vector3f.XP.rotationDegrees(90F));
-                    poseStack.mulPose(Vector3f.ZP.rotationDegrees(180F));
+                    poseStack.mulPose(RenderHelpers.rotateDegreesX(90F));
+                    poseStack.mulPose(RenderHelpers.rotateDegreesZ(180F));
 
                     float translateAmount = -1.4F;
                     int ordinal = i - SLOT_EXTRA_INPUT_START;
