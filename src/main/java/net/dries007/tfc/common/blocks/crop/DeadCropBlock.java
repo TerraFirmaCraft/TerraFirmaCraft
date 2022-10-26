@@ -41,10 +41,10 @@ public class DeadCropBlock extends TFCBushBlock implements HoeOverlayBlock
 
     private final Supplier<ClimateRange> climateRange;
 
-    public DeadCropBlock(ExtendedProperties properties, Crop crop)
+    public DeadCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
     {
         super(properties);
-        this.climateRange = ClimateRanges.CROPS.get(crop);
+        this.climateRange = range;
         registerDefaultState(getStateDefinition().any().setValue(MATURE, false));
     }
 

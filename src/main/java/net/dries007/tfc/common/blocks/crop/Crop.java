@@ -82,17 +82,17 @@ public enum Crop implements StringRepresentable, RegistryCrop
 
     Crop(NutrientType primaryNutrient, int singleBlockStages, int growthDays, int nutrientTime, float resupplyFactor)
     {
-        this(primaryNutrient, self -> DefaultCropBlock.create(crop(), singleBlockStages, self), self -> new DeadCropBlock(dead(), self), self -> new WildCropBlock(dead()), growthDays, nutrientTime, resupplyFactor);
+        this(primaryNutrient, self -> DefaultCropBlock.create(crop(), singleBlockStages, self), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildCropBlock(dead()), growthDays, nutrientTime, resupplyFactor);
     }
 
     Crop(NutrientType primaryNutrient, int spreadingSingleBlockStages, Supplier<Supplier<? extends Block>> fruit, int growthDays, int nutrientTime, float resupplyFactor)
     {
-        this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self), self -> new WildSpreadingCropBlock(dead(), fruit), growthDays, nutrientTime, resupplyFactor);
+        this(primaryNutrient, self -> SpreadingCropBlock.create(crop(), spreadingSingleBlockStages, self, fruit), self -> new DeadCropBlock(dead(), self.getClimateRange()), self -> new WildSpreadingCropBlock(dead(), fruit), growthDays, nutrientTime, resupplyFactor);
     }
 
     Crop(NutrientType primaryNutrient, int floodedSingleBlockStages, boolean flooded, int growthDays, int nutrientTime, float resupplyFactor)
     {
-        this(primaryNutrient, self -> FloodedCropBlock.create(crop(), floodedSingleBlockStages, self), self -> new FloodedDeadCropBlock(dead(), self), self -> new FloodedWildCropBlock(dead()), growthDays, nutrientTime, resupplyFactor);
+        this(primaryNutrient, self -> FloodedCropBlock.create(crop(), floodedSingleBlockStages, self), self -> new FloodedDeadCropBlock(dead(), self.getClimateRange()), self -> new FloodedWildCropBlock(dead()), growthDays, nutrientTime, resupplyFactor);
         assert flooded;
     }
 
@@ -101,7 +101,7 @@ public enum Crop implements StringRepresentable, RegistryCrop
         this(primaryNutrient, requiresStick ?
             self -> ClimbingCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self) :
             self -> DoubleCropBlock.create(doubleCrop(), doubleBlockBottomStages, doubleBlockTopStages, self),
-            self -> new DeadClimbingCropBlock(dead(), self), self -> new WildDoubleCropBlock(dead()),
+            self -> new DeadClimbingCropBlock(dead(), self.getClimateRange()), self -> new WildDoubleCropBlock(dead()),
             growthDays, nutrientTime, resupplyFactor);
     }
 

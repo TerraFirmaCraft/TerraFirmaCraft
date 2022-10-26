@@ -7,6 +7,8 @@
 package net.dries007.tfc.common.blocks.crop;
 
 
+import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
@@ -23,14 +25,15 @@ import net.dries007.tfc.common.fluids.FluidHelpers;
 import net.dries007.tfc.common.fluids.FluidProperty;
 import net.dries007.tfc.common.fluids.IFluidLoggable;
 import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.climate.ClimateRange;
 
 public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggable
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
 
-    public FloodedDeadCropBlock(ExtendedProperties properties, Crop crop)
+    public FloodedDeadCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
     {
-        super(properties, crop);
+        super(properties, range);
     }
 
     @Override

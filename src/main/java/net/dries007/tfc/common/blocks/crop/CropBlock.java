@@ -32,7 +32,6 @@ import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
 import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blockentities.IFarmland;
-import net.dries007.tfc.common.blockentities.TFCBlockEntities;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.IForgeBlockExtension;
@@ -165,7 +164,10 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         {
             if (canSurvive(state, level, pos))
             {
-                level.getBlockEntity(pos, TFCBlockEntities.CROP.get()).ifPresent(crop -> growthTick(level, pos, state, crop));
+                if (level.getBlockEntity(pos) instanceof CropBlockEntity crop)
+                {
+                    growthTick(level, pos, state, crop);
+                }
             }
             else
             {
@@ -198,17 +200,17 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
             overlay.addHoeOverlayInfo(level, pos, state, text, isDebug);
         }
 
-        level.getBlockEntity(pos, TFCBlockEntities.CROP.get())
-            .ifPresent(crop -> {
-                if (isDebug)
-                {
-                    text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
-                }
-                if (crop.getGrowth() >= 1)
-                {
-                    text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
-                }
-            });
+        if (level.getBlockEntity(pos) instanceof CropBlockEntity crop)
+        {
+            if (isDebug)
+            {
+                text.add(Helpers.literal(String.format("[Debug] Growth = %.4f Yield = %.4f Last Tick = %d Delta = %d", crop.getGrowth(), crop.getYield(), crop.getLastGrowthTick(), Calendars.get(level).getTicks() - crop.getLastGrowthTick())));
+            }
+            if (crop.getGrowth() >= 1)
+            {
+                text.add(Helpers.translatable("tfc.tooltip.farmland.mature"));
+            }
+        }
     }
 
     @Override
