@@ -101,8 +101,7 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
         final BlockState stateAbove = level.getBlockState(posAbove);
         final boolean hasTop = stateAbove.getBlock() == this;
         final BlockState deadState = dead.get().defaultBlockState().setValue(DeadCropBlock.MATURE, fullyGrown).setValue(STICK, state.getValue(STICK));
-        // the dead immature version of the crop is NEVER two tall, so we cannot allow it to place the top block
-        if (hasTop && fullyGrown)
+        if (hasTop)
         {
             level.setBlock(posAbove, deadState.setValue(DeadDoubleCropBlock.PART, Part.TOP), Block.UPDATE_CLIENTS);
         }

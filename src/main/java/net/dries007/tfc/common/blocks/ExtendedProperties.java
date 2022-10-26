@@ -142,6 +142,13 @@ public class ExtendedProperties
         return this;
     }
 
+    @Deprecated
+    public ExtendedProperties enchantmentPower(int power)
+    {
+        enchantmentPower = s -> power;
+        return this;
+    }
+
     public ExtendedProperties enchantmentPower(ToFloatFunction<BlockState> powerGetter)
     {
         enchantmentPower = powerGetter;

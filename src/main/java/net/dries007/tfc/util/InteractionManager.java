@@ -367,7 +367,8 @@ public final class InteractionManager
         }
 
         // Knapping
-        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> TFCConfig.SERVER.requireOffhandForRockKnapping.get() ? Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING) : stack.getCount() >= 2;
+        final boolean requireOffhand = TFCConfig.SERVER.requireOffhandForRockKnapping.get();
+        final BiPredicate<ItemStack, Player> rockPredicate = (stack, player) -> (Helpers.isItem(player.getMainHandItem(), TFCTags.Items.ROCK_KNAPPING) && Helpers.isItem(player.getOffhandItem(), TFCTags.Items.ROCK_KNAPPING)) || (!requireOffhand && stack.getCount() >= 2);
         register(Ingredient.of(TFCTags.Items.CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.FIRE_CLAY_KNAPPING), true, createKnappingInteraction((stack, player) -> stack.getCount() >= 5, TFCContainerProviders.FIRE_CLAY_KNAPPING));
         register(Ingredient.of(TFCTags.Items.LEATHER_KNAPPING), true, createKnappingInteraction((stack, player) -> player.getInventory().contains(TFCTags.Items.KNIVES), TFCContainerProviders.LEATHER_KNAPPING));

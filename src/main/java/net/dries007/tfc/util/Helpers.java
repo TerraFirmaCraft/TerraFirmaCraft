@@ -517,14 +517,6 @@ public final class Helpers
     {
         final List<ItemEntity> availableItemEntities = new ArrayList<>();
         int availableItems = 0;
-        int availableSlots = 0;
-        for (int slot = minSlotInclusive; slot <= maxSlotInclusive; slot++)
-        {
-            if (inventory.getStackInSlot(slot).isEmpty())
-            {
-                availableSlots++;
-            }
-        }
         for (ItemEntity entity : items)
         {
             if (inventory.isItemValid(maxSlotInclusive, entity.getItem()))
@@ -533,7 +525,7 @@ public final class Helpers
                 availableItemEntities.add(entity);
             }
         }
-        Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, Math.min(availableSlots, availableItems), item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
+        Helpers.safelyConsumeItemsFromEntitiesIndividually(availableItemEntities, availableItems, item -> Helpers.insertSlots(inventory, item, minSlotInclusive, 1 + maxSlotInclusive).isEmpty());
     }
 
     /**
