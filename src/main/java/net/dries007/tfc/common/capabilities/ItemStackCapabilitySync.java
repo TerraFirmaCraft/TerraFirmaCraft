@@ -25,10 +25,13 @@ import net.dries007.tfc.common.capabilities.heat.HeatCapability;
  * - It needs to be overriden for items (which means it works for none of our event attached capabilities)
  * - In the cases where we could use it, it's not needed (because we just stick to using the stack tag which should ALWAYS be synced.)
  * - It's still ineffective in the case of the creative inventory.
- *
+ * <p>
  * So, in order to solve both problems (S -> C sync, and creative inventory C -> S sync):
  * - We patch the encode item stack to use this method, to sync non-stack-tag capabilities
  * - All other capabilities use the stack tag to avoid sync concerns.
+ * <p>
+ * Finally, in order to avoid issues caused by other mods due to incorrectly synced item stacks (see <a href="https://github.com/TerraFirmaCraft/TerraFirmaCraft/issues/2198">TerraFirmaCraft#2198</a>), we need to write and read this data in an as unconditional method as possible.
+ * This means we cannot check for empty stacks, or those that do not have a capability. In the best case, we write an additional +1 bytes per item stack (a typical item stack has ~4-6 bytes default). This is about as least-cost that we can make it (in the worst case, we write 1 + two nbt tags).
  */
 public final class ItemStackCapabilitySync
 {
@@ -39,17 +42,27 @@ public final class ItemStackCapabilitySync
 
     public static void writeToNetwork(ItemStack stack, FriendlyByteBuf buffer)
     {
-        writeToNetwork(FoodCapability.CAPABILITY, stack, buffer);
-        writeToNetwork(HeatCapability.CAPABILITY, stack, buffer);
+        if (hasSyncableCapability(stack))
+        {
+            buffer.writeBoolean(true);
+            writeToNetwork(FoodCapability.CAPABILITY, stack, buffer);
+            writeToNetwork(HeatCapability.CAPABILITY, stack, buffer);
+        }
+        else
+        {
+            buffer.writeBoolean(false);
+        }
     }
 
     public static void readFromNetwork(ItemStack stack, FriendlyByteBuf buffer)
     {
-        readFromNetwork(FoodCapability.CAPABILITY, stack, buffer);
-        readFromNetwork(HeatCapability.CAPABILITY, stack, buffer);
+        if (buffer.readBoolean())
+        {
+            readFromNetwork(FoodCapability.CAPABILITY, stack, buffer);
+            readFromNetwork(HeatCapability.CAPABILITY, stack, buffer);
+        }
     }
 
-    @SuppressWarnings("NullableProblems")
     private static void writeToNetwork(Capability<? extends INBTSerializable<CompoundTag>> capability, ItemStack stack, FriendlyByteBuf buffer)
     {
         buffer.writeNbt(stack.getCapability(capability)

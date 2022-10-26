@@ -123,6 +123,8 @@ dependencies {
     // runtimeOnly(fg.deobf("libs:FastWorkbench-1.18.2:6.1.0")) // File: libs/FastWorkbench-1.18.2-6.1.0.jar
     // runtimeOnly(fg.deobf("libs:Placebo-1.18.2:6.5.3")) // File: libs/Placebo-1.18.2-6.5.3.jar
     // runtimeOnly(fg.deobf("libs:rubidium:0.5.3a")) // File: libs/rubidium-0.5.3a.jar
+    // runtimeOnly(fg.deobf("libs:alchemistry-1.18.2:2.1.2")) // File: libs/alchemistry-1.18.2-2.1.2.jar
+    // runtimeOnly(fg.deobf("libs:chemlib-1.18.2:2.0.11")) // File: libs/chemlib-1.18.2-2.0.11.jar
 
     // JEI
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api"))

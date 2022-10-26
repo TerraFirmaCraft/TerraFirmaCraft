@@ -6,15 +6,34 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.function.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import com.google.common.collect.Iterators;
+import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -40,11 +59,20 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.*;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.BiomeGenerationSettings;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
@@ -82,8 +110,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.common.TFCEffects;
 import net.dries007.tfc.common.blockentities.InventoryBlockEntity;
@@ -96,10 +125,8 @@ import net.dries007.tfc.common.capabilities.size.Size;
 import net.dries007.tfc.common.capabilities.size.Weight;
 import net.dries007.tfc.mixin.accessor.RecipeManagerAccessor;
 import net.dries007.tfc.world.feature.MultipleFeature;
-import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public final class Helpers
 {
@@ -1115,6 +1142,16 @@ public final class Helpers
     public static float cube(float x)
     {
         return x * x * x;
+    }
+
+    /**
+     * Returns ceil(num / div)
+     *
+     * @see Math#floorDiv(int, int)
+     */
+    public static int ceilDiv(int num, int div)
+    {
+        return (num + div - 1) / div;
     }
 
     // todo: 1.19. inline and remove these
