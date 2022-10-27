@@ -44,3 +44,6 @@ jobs:
     - name: Validate Resources
       run: |
         python resources validate
+
+runs:
+  using: 'node16'
