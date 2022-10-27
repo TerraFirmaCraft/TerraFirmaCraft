@@ -5,7 +5,7 @@
       "model": "tfc:block/dead_crop/tomato_young"
     },
     "mature=false,stick=true,part=top": {
-      "model": "tfc:block/dead_crop/tomato_top"
+      "model": "tfc:block/crop/stick"
     },
     "mature=false,stick=true,part=bottom": {
       "model": "tfc:block/dead_crop/tomato_young_stick"
