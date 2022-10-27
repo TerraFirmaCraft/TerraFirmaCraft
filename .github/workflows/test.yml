@@ -16,11 +16,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        node-version: 16
     - name: Set up JDK 17
       uses: actions/setup-java@v2
       with:
         java-version: '17'
         distribution: 'adopt'
+        node-version: 16
     - name: Build, Test, Check Licenses
       uses: gradle/gradle-build-action@v2
       with:
@@ -37,6 +40,7 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.10"
+        node-version: 16
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -44,7 +48,3 @@ jobs:
     - name: Validate Resources
       run: |
         python resources validate
-
-runs:
-  using: 'node16'
-  main: 'main.js'
