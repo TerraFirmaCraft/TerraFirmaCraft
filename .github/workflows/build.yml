@@ -50,12 +50,12 @@ jobs:
     - name: Create Release
       id: create_release
       if: ${{ steps.version.outputs.result != 'indev' && success() }}
-      uses: ncipollo/release-action@v1@
+      uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag: v${{ steps.version.outputs.result }}
-        name: TerraFirmaCraft 1.18.x-${{ steps.version.outputs.result }}
+        tag_name: v${{ steps.version.outputs.result }}
+        release_name: TerraFirmaCraft 1.18.x-${{ steps.version.outputs.result }}
         body: |
           Version ${{ steps.version.outputs.result }}
           
