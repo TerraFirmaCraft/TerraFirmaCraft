@@ -6,15 +6,19 @@
 
 package net.dries007.tfc.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ImmutableSet;
+import com.mojang.logging.LogUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.BlockModelShaper;
@@ -33,7 +37,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,8 +52,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
+import org.slf4j.Logger;
 
-import com.mojang.logging.LogUtils;
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.TickCounterBlockEntity;
 import net.dries007.tfc.common.blocks.EntityBlockExtension;
@@ -65,9 +74,8 @@ import net.dries007.tfc.util.calendar.Month;
 import net.dries007.tfc.util.climate.KoppenClimateClassification;
 import net.dries007.tfc.world.chunkdata.ForestType;
 import net.dries007.tfc.world.chunkdata.PlateTectonicsClassification;
-import org.slf4j.Logger;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 /**
  * Central location for all self tests
@@ -80,6 +88,7 @@ public final class SelfTests
     private static final boolean THROW_ON_SELF_TEST_FAIL = true;
 
     private static boolean EXTERNAL_TAG_LOADING_ERROR = false;
+    private static boolean EXTERNAL_DATA_MANAGER_ERROR = false;
 
     @SuppressWarnings({"ConstantConditions", "deprecation"})
     public static void runWorldVersionTest()
@@ -111,7 +120,8 @@ public final class SelfTests
                 validateOwnBlockLootTables(),
                 validateOwnBlockMineableTags(),
                 validateOwnWallsTags(),
-                EXTERNAL_TAG_LOADING_ERROR
+                EXTERNAL_TAG_LOADING_ERROR,
+                EXTERNAL_DATA_MANAGER_ERROR
             );
             LOGGER.info("Server self tests passed in {}", tick.stop());
         }
@@ -261,6 +271,11 @@ public final class SelfTests
     public static void reportExternalTagLoadingErrors()
     {
         EXTERNAL_TAG_LOADING_ERROR = true;
+    }
+
+    public static void reportExternalDataManagerError()
+    {
+        EXTERNAL_DATA_MANAGER_ERROR = true;
     }
 
     private static boolean validateOwnBlockEntities()

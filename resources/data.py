@@ -100,13 +100,12 @@ def generate(rm: ResourceManager):
 
     # === Supports ===
 
-    for wood in WOODS:
-        rm.data(('tfc', 'supports', wood), {
-            'ingredient': 'tfc:wood/horizontal_support/%s' % wood,
-            'support_up': 1,
-            'support_down': 1,
-            'support_horizontal': 4
-        })
+    rm.data(('tfc', 'supports', 'horizontal_support_beam'), {
+        'ingredient': ['tfc:wood/horizontal_support/%s' % wood for wood in WOODS],
+        'support_up': 2,
+        'support_down': 2,
+        'support_horizontal': 4
+    })
 
     # Fuels
 
@@ -431,7 +430,7 @@ def generate(rm: ResourceManager):
         rm.block_tag('rock/gravel', block('gravel'))
         rm.block_tag('rock/smooth', block('smooth'))
         rm.block_tag('rock/bricks', block('bricks'), block('mossy_bricks'), block('cracked_bricks'))
-        rm.block_tag('rock/aqueducts', block('aqueduct'))
+        block_and_item_tag(rm, 'rock/aqueducts', block('aqueduct'))
 
         for ore, ore_data in ORES.items():
             if ore_data.graded:
@@ -649,8 +648,11 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('drinkables', '#tfc:infinite_water', '#tfc:alcohols', '#tfc:milks')
     rm.fluid_tag('any_drinkables', '#tfc:drinkables', '#tfc:any_infinite_water')
 
+    rm.fluid_tag('molten_metals', *['tfc:metal/%s' % metal for metal in METALS.keys()])
+
     # Applications
     rm.fluid_tag('hydrating', '#tfc:any_fresh_water')
+    rm.fluid_tag('mixable', '#minecraft:water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
@@ -659,6 +661,18 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_blue_steel_bucket', 'minecraft:lava', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_barrel', '#tfc:ingredients')
     rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
+    rm.fluid_tag('usable_in_ingot_mold', '#tfc:molten_metals')
+    rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
+
+    # Required in order for fluids to have fluid-like properties
+    rm.fluid_tag('minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('minecraft:water', *['#tfc:%s' % fluid_type for fluid_type in (
+        'salt_water',
+        'spring_water',
+        *SIMPLE_FLUIDS,
+        *ALCOHOLS,
+        *['%s_dye' % c for c in COLORS]
+    )], 'tfc:river_water')
 
     # Entity Tags
 

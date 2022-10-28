@@ -626,11 +626,6 @@
       "tfc:item/jug/blow1"
     ]
   },
-  "item.throw": {
-    "sounds": [
-      "tfc:itemthrow"
-    ]
-  },
   "item.armor.equip_copper": {
     "subtitle": "subtitles.item.armor.equip_copper",
     "sounds": [
@@ -827,13 +822,33 @@
   "random.rock_slide_long": {
     "sounds": [
       "tfc:random/rock_slide_long_1",
-      "tfc:random/rock_slide_long_2"
+      "tfc:random/rock_slide_long_2",
+      "tfc:random/rock_slide_long_3",
+      "tfc:random/rock_slide_long_4"
+    ]
+  },
+  "random.rock_slide_long_fake": {
+    "sounds": [
+      "tfc:random/rock_slide_long_fake_1",
+      "tfc:random/rock_slide_long_fake_2"
     ]
   },
   "random.rock_slide_short": {
     "sounds": [
       "tfc:random/rock_slide_short_1",
       "tfc:random/rock_slide_short_2"
+    ]
+  },
+  "random.rock_smash": {
+    "sounds": [
+      "tfc:random/rock_smash_1",
+      "tfc:random/rock_smash_2",
+      "tfc:random/rock_smash_3",
+      "tfc:random/rock_smash_4",
+      "tfc:random/rock_smash_5",
+      "tfc:random/rock_smash_6",
+      "tfc:random/rock_smash_7",
+      "tfc:random/rock_smash_8"
     ]
   },
   "block.charcoal.break": {

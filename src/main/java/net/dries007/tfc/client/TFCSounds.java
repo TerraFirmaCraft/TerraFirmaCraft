@@ -9,7 +9,6 @@ package net.dries007.tfc.client;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
-
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraftforge.common.util.ForgeSoundType;
@@ -20,7 +19,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.dries007.tfc.common.TFCArmorMaterials;
 import net.dries007.tfc.util.Helpers;
 
-import static net.dries007.tfc.TerraFirmaCraft.MOD_ID;
+import static net.dries007.tfc.TerraFirmaCraft.*;
 
 public final class TFCSounds
 {
@@ -79,8 +78,10 @@ public final class TFCSounds
 
     // Random
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG = create("random.rock_slide_long");
+    public static final RegistryObject<SoundEvent> ROCK_SLIDE_LONG_FAKE = create("random.rock_slide_long_fake");
     public static final RegistryObject<SoundEvent> ROCK_SLIDE_SHORT = create("random.rock_slide_short");
     public static final RegistryObject<SoundEvent> DIRT_SLIDE_SHORT = create("random.dirt_slide_short");
+    public static final RegistryObject<SoundEvent> ROCK_SMASH = create("random.rock_smash");
 
     private static RegistryObject<SoundEvent> create(String name)
     {

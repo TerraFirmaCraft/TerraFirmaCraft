@@ -1,63 +1,34 @@
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven {
-            url "https://repo.spongepowered.org/repository/maven-public/"
-            content { includeGroup "org.spongepowered" }
-        }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-        classpath 'org.parchmentmc:librarian:1.+'
-
-        classpath 'org.codehaus.groovy:groovy-json:3.0.10'
-    }
-}
-
 plugins {
-    id 'org.cadixdev.licenser' version '0.6.1'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id 'idea'
+    id("java")
+    id("idea")
+    id("org.cadixdev.licenser") version "0.6.1"
+    id("com.matthewprenger.cursegradle") version "1.4.0"
+    id("net.minecraftforge.gradle") version "5.1.+"
+    id("org.parchmentmc.librarian.forgegradle") version "1.+"
+    id("org.spongepowered.mixin") version "0.7.+"
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.parchmentmc.librarian.forgegradle'
-apply plugin: 'org.spongepowered.mixin'
-
-def localProperties = new File('./dev.gradle')
-localProperties.createNewFile()
-
+new File('./dev.gradle').createNewFile()
 apply from: 'dev.gradle'
 
 // These properties can all be customized from dev.gradle
-String mappingsChannel = project.hasProperty('mappings_channel') ? mappings_channel : 'official'
-String mappingsVersion = project.hasProperty('mappings_version') ? mappings_version : minecraft_version
-boolean minifyResources = project.hasProperty("minify_resources") ? minify_resources : true
-boolean advancedClassRedef = project.hasProperty('use_advanced_class_redefinition') ? use_advanced_class_redefinition : false
+String mappingsChannel = project.findProperty("mappings_channel") ?: "official"
+String mappingsVersion = project.findProperty("mappings_version") ?: minecraft_version
+boolean minifyResources = project.findProperty("minify_resources") ?: true
+boolean advancedClassRedef = project.findProperty("use_advanced_class_redefinition") ?: false
 
-println "Using mappings: " + mappingsChannel + " / " + mappingsVersion
+println "Using mappings: ${mappingsChannel} / ${mappingsVersion}"
 
 group = "net.dries007.tfc" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "TerraFirmaCraft-Forge-${minecraft_version}"
 
 // Use version from environment variable, if set
-def envVersion = System.getenv('VERSION')
-version = envVersion == null ? '0.0.0-indev' : envVersion
+version = System.getenv("VERSION") ?: "0.0.0-indev"
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-
-sourceSets {
-    test
-    main {
-        runtimeClasspath += sourceSets.test.output
-    }
-}
 
 repositories {
     mavenCentral()
@@ -84,118 +55,98 @@ repositories {
     }
     maven {
         // Jade
-        url "https://www.cursemaven.com"
+        url = "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
         }
     }
     flatDir {
-        dirs 'libs'
+        dirs "libs"
     }
 }
 
 minecraft {
     mappings channel: mappingsChannel, version: mappingsVersion
-    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
 
     runs {
-        client {
-            workingDirectory project.file('run')
-            args '-mixin.config=' + mod_id + '.mixins.json'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.enabledGameTestNamespaces', mod_id
-            jvmArgs('-ea', '-Xmx4G', '-Xms4G')
+        all {
+            args("-mixin.config=${mod_id}.mixins.json")
+
+            property("forge.logging.console.level", "debug")
+            property("forge.enabledGameTestNamespaces", mod_id)
+
+            property("mixin.env.remapRefMap", "true")
+            property("mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg")
+
+            jvmArgs("-ea", "-Xmx4G", "-Xms4G")
+
             if (advancedClassRedef) {
                 jvmArg('-XX:+AllowEnhancedClassRedefinition')
             }
 
+            ideaModule("${project.getName()}.test")
+
             mods {
                 tfc {
-                    source sourceSets.main
-                    source sourceSets.test
+                    sources(sourceSets.main, sourceSets.test)
                 }
             }
+        }
+
+        client {
+            workingDirectory(project.file("run/client"))
         }
 
         server {
-            workingDirectory project.file('run')
-            args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.enabledGameTestNamespaces', mod_id
-            jvmArgs('-ea', '-Xmx4G', '-Xms4G')
-            if (advancedClassRedef) {
-                jvmArg('-XX:+AllowEnhancedClassRedefinition')
-            }
+            workingDirectory(project.file("run/server"))
 
-            mods {
-                tfc {
-                    source sourceSets.main
-                    source sourceSets.test
-                }
-            }
+            arg("--nogui")
         }
 
         gameTestServer {
-            workingDirectory project.file('run/gametest')
-            args '-mixin.config=' + mod_id + '.mixins.json', '--nogui'
-            property 'forge.logging.markers', ''
-            property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.enabledGameTestNamespaces', mod_id
-            jvmArgs('-ea', '-Xmx4G', '-Xms4G')
-            if (advancedClassRedef) {
-                jvmArg('-XX:+AllowEnhancedClassRedefinition')
-            }
+            workingDirectory(project.file("run/gametest"))
 
-            forceExit false
-
-            mods {
-                tfc {
-                    source sourceSets.main
-                    source sourceSets.test
-                }
-            }
+            arg("--nogui")
+            forceExit(false)
         }
     }
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
 
-    // runtimeOnly fg.deobf("com.alcatrazescapee:cyanide-forge-1.18.2:2.1.0") { transitive = false }
-    // runtimeOnly fg.deobf("libs:journeymap-1.17.1:5.7.3rc3") // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
-    // runtimeOnly fg.deobf("libs:panorama:1.2.0") // File: libs/panorama-1.2.0.jar
-    // runtimeOnly fg.deobf("libs:ImmersiveEngineering-1.18.2:8.1.0-150") // File: libs/ImmersiveEngineering-1.18.2-8.1.0-150.jar
-    //runtimeOnly fg.deobf("libs:FastWorkbench-1.18.2:6.1.0") // File: libs/FastWorkbench-1.18.2-6.1.0.jar
-    //runtimeOnly fg.deobf("libs:Placebo-1.18.2:6.5.3") // File: libs/Placebo-1.18.2-6.5.3.jar
-    // runtimeOnly fg.deobf("libs:rubidium:0.5.3a") // File: libs/rubidium-0.5.3a.jar
+    // runtimeOnly(fg.deobf("com.alcatrazescapee:cyanide-forge-1.18.2:2.1.0")) { transitive = false }
+    // runtimeOnly(fg.deobf("libs:journeymap-1.17.1:5.7.3rc3")) // File: libs/journey,ap-1.17.1-5.7.3rc3.jar
+    // runtimeOnly(fg.deobf("libs:panorama:1.2.0")) // File: libs/panorama-1.2.0.jar
+    // runtimeOnly(fg.deobf("libs:ImmersiveEngineering-1.18.2:8.1.0-150")) // File: libs/ImmersiveEngineering-1.18.2-8.1.0-150.jar
+    // runtimeOnly(fg.deobf("libs:FastWorkbench-1.18.2:6.1.0")) // File: libs/FastWorkbench-1.18.2-6.1.0.jar
+    // runtimeOnly(fg.deobf("libs:Placebo-1.18.2:6.5.3")) // File: libs/Placebo-1.18.2-6.5.3.jar
+    // runtimeOnly(fg.deobf("libs:rubidium:0.5.3a")) // File: libs/rubidium-0.5.3a.jar
+    // runtimeOnly(fg.deobf("libs:alchemistry-1.18.2:2.1.2")) // File: libs/alchemistry-1.18.2-2.1.2.jar
+    // runtimeOnly(fg.deobf("libs:chemlib-1.18.2:2.0.11")) // File: libs/chemlib-1.18.2-2.0.11.jar
 
     // JEI
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}"))
 
     // Patchouli
     // We need to compile against the full JAR, not just the API, because we do some egregious hacks.
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")
+    compileOnly(fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}"))
+    runtimeOnly(fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}"))
 
     // Jade
-    compileOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
-    runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}")
-    compileOnly fg.deobf("curse.maven:top-245211:${top_version}")
-    //runtimeOnly fg.deobf("curse.maven:top-245211:${top_version}")
+    compileOnly(fg.deobf("curse.maven:jade-324717:${jade_version}"))
+    runtimeOnly(fg.deobf("curse.maven:jade-324717:${jade_version}"))
+    compileOnly(fg.deobf("curse.maven:top-245211:${top_version}"))
+    //runtimeOnly(fg.deobf("curse.maven:top-245211:${top_version}"))
 
     if (System.getProperty("idea.sync.active") != "true") {
-        annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+        annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
     }
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    minecraftLibrary("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    minecraftLibrary("org.junit.jupiter:junit-jupiter-engine:5.9.0")
 }
 
 test {
@@ -216,22 +167,19 @@ processResources {
         doLast {
             def jsonMinifyStart = System.currentTimeMillis()
             def jsonMinified = 0
-            def jsonBytesBefore = 0, jsonBytesAfter = 0;
+            def jsonBytesBefore = 0, jsonBytesAfter = 0
             fileTree(dir: outputs.files.asPath, include: "**/*.json").each { File file ->
                 jsonMinified++
-                def oldLength = file.length()
+                jsonBytesBefore += file.length()
                 try {
-                    file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
-                            .replace('"__comment__":"This file was automatically created by mcresources",', '')
-                }
-                catch (Exception e) {
-                    System.out.println("Parsing JSON error in " + file.path)
+                    file.text = JsonOutput.toJson(new JsonSlurper().parse(file)).replace('"__comment__":"This file was automatically created by mcresources",', '')
+                } catch (Exception e) {
+                    println("Parsing JSON error in ${file.path}")
                     throw e
                 }
-                jsonBytesBefore += oldLength;
-                jsonBytesAfter += file.length();
+                jsonBytesAfter += file.length()
             }
-            println('Minified ' + jsonMinified + ' json files. Reduced ' + (int) (jsonBytesBefore / 1024) + ' kB to ' + (int) (jsonBytesAfter / 1024) + ' kB (' + (String.format('%.2f', 100f * jsonBytesAfter / jsonBytesBefore)) + '%). Took ' + (System.currentTimeMillis() - jsonMinifyStart) + 'ms.')
+            println("Minified ${jsonMinified} json files. Reduced ${jsonBytesBefore / 1024} kB to ${(jsonBytesAfter / 1024)} kB. Took ${System.currentTimeMillis() - jsonMinifyStart} ms")
         }
     }
 }
@@ -247,9 +195,8 @@ idea {
 license {
     header = project.file('HEADER.txt')
 
-    include '**/*.java'
-
-    exclude 'net/dries007/tfc/world/noise/FastNoiseLite.java' // Fast Noise
+    include "**/*.java"
+    exclude "net/dries007/tfc/world/noise/FastNoiseLite.java" // Fast Noise
 }
 
 
@@ -264,29 +211,26 @@ jar {
 }
 
 mixin {
-    add sourceSets.main, "${mod_id}.refmap.json"
-    add sourceSets.test, "${mod_id}.refmap.json"
+    add(sourceSets.main, "${mod_id}.refmap.json")
+    add(sourceSets.test, "${mod_id}.refmap.json")
 }
 
 curseforge {
-    final String envApiKey = System.getenv('CURSEFORGE_API_KEY');
-    final String versionType = project.version.contains('beta') ? 'beta' : (project.version.contains('alpha') ? 'alpha' : 'release')
-
-    apiKey = envApiKey == null ? 'nope' : envApiKey
+    apiKey = System.getenv("CURSEFORGE_API_KEY") ?: "nope"
 
     project {
-        id = '302973'
+        id = "302973"
         changelog = "[Changelog ${version}](https://github.com/TerraFirmaCraft/TerraFirmaCraft/releases/tag/v${project.version})"
         changelogType = "markdown"
 
-        releaseType = versionType
-        addGameVersion "${minecraft_version}"
+        releaseType = project.version.contains("beta") ? "beta" : (project.version.contains("alpha") ? "alpha" : "release")
+        addGameVersion("${minecraft_version}")
 
         mainArtifact jar
 
         relations {
-            requiredDependency 'patchouli'
-            optionalDependency 'jei'
+            requiredDependency("patchouli")
+            optionalDependency("jei")
         }
     }
 }

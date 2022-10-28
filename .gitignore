@@ -20,6 +20,7 @@
 
 # Metadata
 !/build.gradle
+!/settings.gradle
 !/gradle.properties
 !/gradlew
 !/gradlew.bat

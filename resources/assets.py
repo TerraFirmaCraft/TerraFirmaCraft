@@ -1528,17 +1528,11 @@ def generate(rm: ResourceManager):
 
     # River water, since it doesn't have a bucket
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
-    rm.fluid_tag('minecraft:water', 'tfc:river_water')  # Need to use water fluid tag for behavior
-    rm.fluid_tag('mixable', 'tfc:river_water')
-
-    # Mixable tags for vanilla water
-    rm.fluid_tag('mixable', '#minecraft:water')
 
     for metal in METALS.keys():
         rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
         rm.lang('fluid.tfc.metal.%s' % metal, lang('Molten %s', metal))
         rm.fluid_tag(metal, 'tfc:metal/%s' % metal, 'tfc:metal/flowing_%s' % metal)
-        rm.fluid_tag('molten_metals', 'tfc:metal/%s' % metal)
 
         # todo: 1.19 rename to forge:fluid_container due to deprecation
         item = rm.custom_item_model(('bucket', 'metal', metal), 'forge:bucket', {
@@ -1588,8 +1582,6 @@ def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifie
 def water_based_fluid(rm: ResourceManager, name: str):
     rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang(name))
     rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
-    rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
-    rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
     # todo: 1.19 rename to forge:fluid_container due to deprecation
     item = rm.custom_item_model(('bucket', name), 'forge:bucket', {

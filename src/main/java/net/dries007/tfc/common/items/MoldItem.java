@@ -8,19 +8,20 @@ package net.dries007.tfc.common.items;
 
 import java.util.List;
 import java.util.function.IntSupplier;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.LazyOptional;
@@ -28,9 +29,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.capabilities.Capabilities;
 import net.dries007.tfc.common.capabilities.DelegateFluidHandler;
 import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
@@ -45,8 +48,6 @@ import net.dries007.tfc.config.TFCConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class MoldItem extends Item
 {
@@ -73,18 +74,27 @@ public class MoldItem extends Item
     }
 
     private final IntSupplier capacity;
+    private final TagKey<Fluid> fluidTag;
 
     public MoldItem(Metal.ItemType type, Properties properties)
     {
-        this(mapItemTypeToConfigValue(type), properties);
+        this(mapItemTypeToConfigValue(type), type == Metal.ItemType.INGOT ? TFCTags.Fluids.USABLE_IN_INGOT_MOLD : TFCTags.Fluids.USABLE_IN_TOOL_HEAD_MOLD, properties);
         assert type.hasMold(); // Easy sanity check
     }
 
+    /** @deprecated Use the variant with a {@code TagKey<Fluid>} */
+    @Deprecated(forRemoval = true)
     public MoldItem(IntSupplier capacity, Properties properties)
+    {
+        this(capacity, TFCTags.Fluids.USABLE_IN_TOOL_HEAD_MOLD, properties);
+    }
+
+    public MoldItem(IntSupplier capacity, TagKey<Fluid> fluidTag, Properties properties)
     {
         super(properties);
 
         this.capacity = capacity;
+        this.fluidTag = fluidTag;
     }
 
     @Override
@@ -147,7 +157,7 @@ public class MoldItem extends Item
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt)
     {
-        return new MoldCapability(stack, capacity.getAsInt());
+        return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
     }
 
     static class MoldCapability implements MoldLike, ICapabilityProvider, DelegateHeatHandler, DelegateFluidHandler
@@ -159,13 +169,13 @@ public class MoldItem extends Item
         private final FluidTank tank;
         private final int capacity;
 
-        MoldCapability(ItemStack stack, int capacity)
+        MoldCapability(ItemStack stack, int capacity, TagKey<Fluid> fluidTag)
         {
             this.stack = stack;
             this.capability = LazyOptional.of(() -> this);
 
             this.heat = new HeatHandler(1, 0, 0);
-            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null); // Must be a metal
+            this.tank = new FluidTank(capacity, fluid -> Metal.get(fluid.getFluid()) != null && Helpers.isFluid(fluid.getFluid(), fluidTag));
             this.capacity = capacity;
 
             load();
@@ -190,7 +200,7 @@ public class MoldItem extends Item
                 {
                     text.add(Helpers.translatable("tfc.tooltip.small_vessel.contents").withStyle(ChatFormatting.DARK_GREEN));
                     text.add(Tooltips.fluidUnitsAndCapacityOf(fluid, capacity)
-                        .append(Helpers.translatable(isMolten() ? "tfc.tooltip.small_vessel.molten" : "tfc.tooltip.small_vessel.solid")));
+                        .append(Tooltips.moltenOrSolid(isMolten())));
                 }
             }
         }

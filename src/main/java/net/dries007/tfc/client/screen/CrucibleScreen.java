@@ -6,6 +6,8 @@
 
 package net.dries007.tfc.client.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.language.I18n;
@@ -14,14 +16,15 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.blockentities.CrucibleBlockEntity;
 import net.dries007.tfc.common.capabilities.heat.Heat;
 import net.dries007.tfc.common.container.CrucibleContainer;
-import net.dries007.tfc.util.*;
+import net.dries007.tfc.util.AlloyView;
+import net.dries007.tfc.util.Helpers;
+import net.dries007.tfc.util.Metal;
+import net.dries007.tfc.util.Tooltips;
 
 public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, CrucibleContainer>
 {
@@ -98,11 +101,9 @@ public class CrucibleScreen extends BlockEntityScreen<CrucibleBlockEntity, Cruci
         if (alloy.getAmount() > 0)
         {
             final TextureAtlasSprite sprite = RenderHelpers.getAndBindFluidSprite(alloy.getResultAsFluidStack());
-            final int startY = 93;
-            final int endY = 124;
-            final int fillHeight = (int) Math.ceil((float) (endY - startY) * alloy.getAmount() / alloy.getMaxUnits());
+            final int fillHeight = (int) Math.ceil((float) 31 * alloy.getAmount() / alloy.getMaxUnits());
 
-            RenderHelpers.fillAreaWithSprite(leftPos, topPos, sprite, poseStack, 97, 133, endY, fillHeight);
+            RenderHelpers.fillAreaWithSprite(poseStack, sprite, leftPos + 97, topPos + 124 - fillHeight, 36, fillHeight, 16, 16);
 
             resetToBackgroundSprite();
 

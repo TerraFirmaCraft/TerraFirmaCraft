@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.items;
 
 import java.util.List;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +20,6 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -29,9 +27,16 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import net.dries007.tfc.common.capabilities.*;
+import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.capabilities.Capabilities;
+import net.dries007.tfc.common.capabilities.DelegateHeatHandler;
+import net.dries007.tfc.common.capabilities.DelegateItemHandler;
+import net.dries007.tfc.common.capabilities.InventoryItemHandler;
+import net.dries007.tfc.common.capabilities.SimpleFluidHandler;
+import net.dries007.tfc.common.capabilities.VesselLike;
 import net.dries007.tfc.common.capabilities.food.FoodCapability;
 import net.dries007.tfc.common.capabilities.food.FoodTraits;
 import net.dries007.tfc.common.capabilities.heat.HeatCapability;
@@ -47,8 +52,6 @@ import net.dries007.tfc.util.Alloy;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.Metal;
 import net.dries007.tfc.util.Tooltips;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class VesselItem extends Item
 {
@@ -226,7 +229,7 @@ public class VesselItem extends Item
                     case INVENTORY -> Helpers.addInventoryTooltipInfo(inventory, text);
                     case MOLTEN_ALLOY, SOLID_ALLOY -> {
                         text.add(Tooltips.fluidUnitsAndCapacityOf(alloy.getResult().getDisplayName(), alloy.getAmount(), capacity)
-                            .append(Helpers.translatable(mode == Mode.SOLID_ALLOY ? "tfc.tooltip.small_vessel.solid" : "tfc.tooltip.small_vessel.molten")));
+                                .append(Tooltips.moltenOrSolid(isMolten())));
                         if (!Helpers.isEmpty(inventory))
                         {
                             text.add(Helpers.translatable("tfc.tooltip.small_vessel.still_has_unmelted_items").withStyle(ChatFormatting.RED));
@@ -274,9 +277,9 @@ public class VesselItem extends Item
         }
 
         @Override
-        public boolean isFluidValid(int tank, @NotNull FluidStack stack)
+        public boolean isFluidValid(int tank, FluidStack stack)
         {
-            return Metal.get(stack.getFluid()) != null;
+            return Metal.get(stack.getFluid()) != null && Helpers.isFluid(stack.getFluid(), TFCTags.Fluids.USABLE_IN_VESSEL);
         }
 
         @Override
