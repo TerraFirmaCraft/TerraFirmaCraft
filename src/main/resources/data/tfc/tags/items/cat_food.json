@@ -2,6 +2,8 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:foods/breads"
+    "#tfc:foods/grains",
+    "#tfc:foods/cooked_meats",
+    "#tfc:foods/dairy"
   ]
 }

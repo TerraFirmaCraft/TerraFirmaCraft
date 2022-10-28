@@ -926,7 +926,7 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.cougar.death': 'Cougar dies',
     'subtitles.entity.tfc.cougar.attack': 'Cougar roars',
     'subtitles.entity.tfc.cougar.ambient': 'Cougar screams',
-    'subtitles.entity.tfc.cougar.hurt': 'ugar yowls',
+    'subtitles.entity.tfc.cougar.hurt': 'Cougar yowls',
     'subtitles.entity.tfc.cougar.sleep': 'Cougar snores',
     'subtitles.entity.tfc.lion.death': 'Lion dies',
     'subtitles.entity.tfc.lion.attack': 'Lion roars',
