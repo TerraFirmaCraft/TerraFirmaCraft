@@ -24,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -160,7 +161,7 @@ public class MoldItem extends Item
         return new MoldCapability(stack, capacity.getAsInt(), fluidTag);
     }
 
-    static class MoldCapability implements MoldLike, ICapabilityProvider, DelegateHeatHandler, DelegateFluidHandler
+    static class MoldCapability implements MoldLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateHeatHandler, DelegateFluidHandler
     {
         private final ItemStack stack;
         private final LazyOptional<MoldCapability> capability;
@@ -185,7 +186,6 @@ public class MoldItem extends Item
         public void setTemperature(float temperature)
         {
             heat.setTemperature(temperature);
-            save();
         }
 
         @Override
@@ -230,7 +230,7 @@ public class MoldItem extends Item
             final int amount = tank.fill(resource, action);
             if (amount > 0)
             {
-                updateHeatCapacity(true);
+                updateAndSave();
             }
             return amount;
         }
@@ -244,7 +244,7 @@ public class MoldItem extends Item
                 final FluidStack result = drain(resource.getAmount(), action);
                 if (!result.isEmpty())
                 {
-                    updateHeatCapacity(true);
+                    updateAndSave();
                 }
                 return result;
             }
@@ -264,7 +264,7 @@ public class MoldItem extends Item
             final FluidStack result = tank.drain(maxDrain, action);
             if (!result.isEmpty())
             {
-                updateHeatCapacity(true);
+                updateAndSave();
             }
             return result;
         }
@@ -295,29 +295,13 @@ public class MoldItem extends Item
         @Override
         public CompoundTag serializeNBT()
         {
-            return new CompoundTag(); // Unused since we serialize directly to stack tag
+            return heat.serializeNBT();
         }
 
         @Override
-        public void deserializeNBT(CompoundTag nbt) {}
-
-        private void load()
+        public void deserializeNBT(CompoundTag nbt)
         {
-            final CompoundTag tag = stack.getOrCreateTag();
-            tank.readFromNBT(tag.getCompound("tank"));
-
-            // Update heat capacity before we deserialize heat
-            // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
-            // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
-            updateHeatCapacity(false);
-            heat.deserializeNBT(tag.getCompound("heat"));
-        }
-
-        private void save()
-        {
-            final CompoundTag tag = stack.getOrCreateTag();
-            tag.put("tank", tank.writeToNBT(new CompoundTag()));
-            tag.put("heat", heat.serializeNBT());
+            heat.deserializeNBT(nbt);
         }
 
         @Nullable
@@ -326,7 +310,12 @@ public class MoldItem extends Item
             return Metal.get(tank.getFluid().getFluid());
         }
 
-        private void updateHeatCapacity(boolean save)
+        private void load()
+        {
+            tank.readFromNBT(stack.getOrCreateTag().getCompound("tank"));
+        }
+
+        private void updateAndSave()
         {
             final FluidStack fluid = tank.getFluid();
             final Metal metal = Metal.get(fluid.getFluid());
@@ -339,10 +328,10 @@ public class MoldItem extends Item
             }
 
             heat.setHeatCapacity(value);
-            if (save)
-            {
-                save();
-            }
+
+            final CompoundTag tag = stack.getOrCreateTag();
+            tag.put("tank", tank.writeToNBT(new CompoundTag()));
+            tag.put("heat", heat.serializeNBT());
         }
     }
 }
