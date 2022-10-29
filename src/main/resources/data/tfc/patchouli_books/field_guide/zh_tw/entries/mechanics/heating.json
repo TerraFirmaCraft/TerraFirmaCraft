@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "將物品加熱可以將其轉化爲另一種物品或熔化爲液體。$(l:getting_started/firepit)篝火$()、$(l:getting_started/pit_kiln)坑窯$()或$(l:mechanics/charcoal_forge)木炭爐$()等設備都可以加熱物品，它們的工作原理都大同小異。當將物品放入這些設備時，物品就會逐漸升溫。物品的工具提示中會說明它當前的溫度。"
+      "text": "將物品加熱可以將其轉化為另一種物品或熔化為液體。$(l:getting_started/firepit)篝火$()、$(l:getting_started/pit_kiln)坑窯$()或$(l:mechanics/charcoal_forge)木炭爐$()等裝置都可以加熱物品，它們的工作原理都大同小異。當將物品放入這些裝置時，物品就會逐漸升溫。物品的工具提示中會說明它當前的溫度。"
     },
     {
       "type": "patchouli:text",

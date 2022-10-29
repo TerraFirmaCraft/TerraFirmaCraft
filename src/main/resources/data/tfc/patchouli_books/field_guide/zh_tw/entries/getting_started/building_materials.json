@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "在遊戲的早期階段, 由於很多堅固的建築方塊需要金屬工具才能獲得, 建造房屋是比較困難的. 有一些建築方塊僅用石制工具就能獲得, $(br2)但$(l:mechanics/advanced_building_materials)更高級的建築材料$()就需要金屬工具了."
+      "text": "在遊戲的早期階段, 由於很多堅固的建築方塊需要金屬工具才能獲得, 建造房屋是比較困難的. 有一些建築方塊僅用石制工具就能獲得, $(br2)但$(l:mechanics/advanced_building_materials)更高階的建築材料$()就需要金屬工具了."
     },
     {
       "type": "patchouli:text",
@@ -29,7 +29,7 @@
       "anchor": "mud_bricks",
       "recipe": "tfc:crafting/soil/loam_drying_bricks",
       "title": "壤泥磚",
-      "text": "$(thing)壤泥$()會生成在地表、河流和湖底，或大量出現在低窪潮溼的生物羣系中。將它們和一束$(thing)乾草$()合成就能製成$()溼壤泥磚$()."
+      "text": "$(thing)壤泥$()會生成在地表、河流和湖底，或大量出現在低窪潮溼的生物群系中。將它們和一束$(thing)乾草$()合成就能製成$()溼壤泥磚$()."
     },
     {
       "type": "tfc:multimultiblock",
@@ -123,14 +123,14 @@
     },
     {
       "type": "patchouli:text",
-      "text": "可以在板條方塊的頂面、底面、和兩條對角線添加額外的木棍來添加裝飾花紋。手持$(thing)木棍$()並對着板條方塊按$(item)$(k:key.use)$()就可以添加一根木棍了。要裝飾不同的部位，只需瞄準板條不同的面即可。"
+      "text": "可以在板條方塊的頂面、底面、和兩條對角線新增額外的木棍來新增裝飾花紋。手持$(thing)木棍$()並對著板條方塊按$(item)$(k:key.use)$()就可以新增一根木棍了。要裝飾不同的部位，只需瞄準板條不同的面即可。"
     },
     {
       "type": "patchouli:image",
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_stick.png"
       ],
-      "text": "在板條上添加木棍。",
+      "text": "在板條上新增木棍。",
       "border": true
     },
     {
@@ -138,7 +138,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/wattle_add_daub.png"
       ],
-      "text": "對準$(thing)編織加固過的板條$()使用$(thing)塗料$()就能將其轉變爲實心方塊。",
+      "text": "對準$(thing)編織加固過的板條$()使用$(thing)塗料$()就能將其轉變為實心方塊。",
       "border": true
     },
     {
@@ -152,7 +152,7 @@
     {
       "type": "patchouli:text",
       "anchor": "clay_and_peat",
-      "text": "粘土球可以做成粘土塊。將粘土塊放在地上再挖掉就可以把它變回粘土球。雖然談不上美觀，它們至少很好獲得。$(br2)泥炭也是一種不受重力影響的方塊，常常會在水邊生成。有些植物也會生長在泥炭上。$(br2)然而，泥炭很容易着火。",
+      "text": "粘土球可以做成粘土塊。將粘土塊放在地上再挖掉就可以把它變回粘土球。雖然談不上美觀，它們至少很好獲得。$(br2)泥炭也是一種不受重力影響的方塊，常常會在水邊生成。有些植物也會生長在泥炭上。$(br2)然而，泥炭很容易著火。",
       "title": "粘土塊和泥炭"
     },
     {

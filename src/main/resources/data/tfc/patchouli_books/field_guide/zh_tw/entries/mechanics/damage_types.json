@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "傷害類型",
+  "name": "傷害型別",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/sword/red_steel",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)物理傷害的類型$()描述了玩家和生物可以造成的傷害的性質。一共有三種類型: $(thing)突刺傷害$(), $(thing)斬擊傷害$(), 和 $(thing)打擊傷害$(). 有的生物對某些傷害類型有更大的抗性, 因此很難使用這種傷害類型擊殺它."
+      "text": "$(thing)物理傷害的型別$()描述了玩家和生物可以造成的傷害的性質。一共有三種類型: $(thing)突刺傷害$(), $(thing)斬擊傷害$(), 和 $(thing)打擊傷害$(). 有的生物對某些傷害型別有更大的抗性, 因此很難使用這種傷害型別擊殺它."
     },
     {
       "type": "patchouli:text",

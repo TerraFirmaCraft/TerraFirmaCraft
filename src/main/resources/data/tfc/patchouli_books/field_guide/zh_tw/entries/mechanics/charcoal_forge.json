@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)木炭爐$()是一種用於$(l:mechanics/heating)加熱$()和熔化物品的設備。$(l:mechanics/crucible)坩堝$()也必須配合爐才能使用。木炭爐最大的作用是將物品加熱到可以在$(l:mechanics/anvils)砧$()上鍛造的溫度。$(br)將 5 塊$(thing)石頭$()圍繞一個 7 或 8 層的$(l:mechanics/charcoal_pit#charcoal_pile)木炭堆$()就能搭建成木炭爐了。"
+      "text": "$(thing)木炭爐$()是一種用於$(l:mechanics/heating)加熱$()和熔化物品的裝置。$(l:mechanics/crucible)坩堝$()也必須配合爐才能使用。木炭爐最大的作用是將物品加熱到可以在$(l:mechanics/anvils)砧$()上鍛造的溫度。$(br)將 5 塊$(thing)石頭$()圍繞一個 7 或 8 層的$(l:mechanics/charcoal_pit#charcoal_pile)木炭堆$()就能搭建成木炭爐了。"
     },
     {
       "type": "patchouli:multiblock",
@@ -55,7 +55,7 @@
       "images": [
         "tfc:textures/gui/book/gui/charcoal_forge.png"
       ],
-      "text": "木炭爐界面",
+      "text": "木炭爐介面",
       "border": false
     },
     {

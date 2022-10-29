@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "羣巒傳說的世界充滿了各種各樣的動物。有些動物會試圖和你在這個世界中共同生存，有些動物卻非常危險。這一章節是關於野生動物的。有關牲畜的信息，請參閱$(l:mechanics/animal_husbandry)畜牧業$()章節。"
+      "text": "群巒傳說的世界充滿了各種各樣的動物。有些動物會試圖和你在這個世界中共同生存，有些動物卻非常危險。這一章節是關於野生動物的。有關牲畜的資訊，請參閱$(l:mechanics/animal_husbandry)畜牧業$()章節。"
     },
     {
       "type": "patchouli:text",
-      "text": "動物可以大致被分爲幾類：$(l:the_world/wild_animals#predators)捕食者$()、$(l:the_world/wild_animals#prey)獵物$()、和$(l:the_world/wild_animals#aquatic)水生生物$()。$(br2)接下來的幾頁會詳細介紹以上每一種類別的生物。"
+      "text": "動物可以大致被分為幾類：$(l:the_world/wild_animals#predators)捕食者$()、$(l:the_world/wild_animals#prey)獵物$()、和$(l:the_world/wild_animals#aquatic)水生生物$()。$(br2)接下來的幾頁會詳細介紹以上每一種類別的生物。"
     },
     {
       "type": "patchouli:text",
@@ -70,7 +70,7 @@
     {
       "type": "patchouli:text",
       "anchor": "prey",
-      "text": "$(thing)獵物$()害怕玩家和捕食者。他們擅長逃離危險，但通常無法反擊。一些獵物喜歡偷喫農作物。",
+      "text": "$(thing)獵物$()害怕玩家和捕食者。他們擅長逃離危險，但通常無法反擊。一些獵物喜歡偷吃農作物。",
       "title": "獵物"
     },
     {
@@ -97,12 +97,12 @@
     {
       "type": "patchouli:text",
       "anchor": "aquatic",
-      "text": "$(thing)水生生物$()是一大類包含了多種習性迥異的生物的類別。可以大致分爲幾小類：$(thing)灘塗動物$()、$(thing)魚類$()、$(thing)貝殼類$()、或$(thing)大型海洋生物$()。",
+      "text": "$(thing)水生生物$()是一大類包含了多種習性迥異的生物的類別。可以大致分為幾小類：$(thing)灘塗動物$()、$(thing)魚類$()、$(thing)貝殼類$()、或$(thing)大型海洋生物$()。",
       "title": "海洋生物"
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)灘塗動物$()只會生成在海岸邊。它們一天中大部分時間都在水裏游泳，部分時間在沙灘上散步。它們天性好奇，會跟隨玩家，但無法被馴服。"
+      "text": "$(thing)灘塗動物$()只會生成在海岸邊。它們一天中大部分時間都在水裡游泳，部分時間在沙灘上散步。它們天性好奇，會跟隨玩家，但無法被馴服。"
     },
     {
       "type": "patchouli:entity",
@@ -168,7 +168,7 @@
     {
       "type": "patchouli:text",
       "anchor": "shellfish",
-      "text": "$(thing)貝類$()是生活在水底的小動物。它們不能被釣起來，但會掉落可以食用或製成$(l:mechanics/flux)助焊劑$()的殼。貝類可以作爲釣魚所需的$(l:mechanics/fishing)誘餌$()。",
+      "text": "$(thing)貝類$()是生活在水底的小動物。它們不能被釣起來，但會掉落可以食用或製成$(l:mechanics/flux)助焊劑$()的殼。貝類可以作為釣魚所需的$(l:mechanics/fishing)誘餌$()。",
       "title": "貝類"
     },
     {

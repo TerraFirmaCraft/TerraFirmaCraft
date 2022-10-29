@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "農作物是食物和其他一些材料的來源。雖然每種作物都略有不同，但其實都大同小異。要種植農作物，你需要先找一些$(thing)種子$()，破壞$(l:the_world/wild_crops)野生作物$()可以就得到一點。$(br2)有了種子，你還需要一把$(thing)鋤$()。種子也可以作爲$(l:mechanics/fishing)魚餌$()。"
+      "text": "農作物是食物和其他一些材料的來源。雖然每種作物都略有不同，但其實都大同小異。要種植農作物，你需要先找一些$(thing)種子$()，破壞$(l:the_world/wild_crops)野生作物$()可以就得到一點。$(br2)有了種子，你還需要一把$(thing)鋤$()。種子也可以作為$(l:mechanics/fishing)魚餌$()。"
     },
     {
       "type": "tfc:rock_knapping_recipe",
@@ -16,7 +16,7 @@
         "tfc:rock_knapping/hoe_head_igneous_extrusive",
         "tfc:rock_knapping/hoe_head_igneous_intrusive"
       ],
-      "text": "在石器時代，鋤頭可以如上圖所示通過石子$(thing)塑形$()出來。"
+      "text": "在石器時代，鋤頭可以如上圖所示透過石子$(thing)塑形$()出來。"
     },
     {
       "type": "patchouli:crafting",

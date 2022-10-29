@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "遊戲早期你可以做一張$(thing)乾草牀$()。雖然不能用它來跳過夜晚，但至少可以用來設置你的復活點。要搭建乾草牀，在地上放置兩個相鄰的$(thing)乾草塊$()，然後手持一張$(thing)大塊獸皮$()右擊乾草塊。只有大型動物會掉落大塊獸皮，例如$(thing)熊$()和$(thing)牛$()。"
+      "text": "遊戲早期你可以做一張$(thing)乾草床$()。雖然不能用它來跳過夜晚，但至少可以用來設定你的復活點。要搭建乾草床，在地上放置兩個相鄰的$(thing)乾草塊$()，然後手持一張$(thing)大塊獸皮$()右擊乾草塊。只有大型動物會掉落大塊獸皮，例如$(thing)熊$()和$(thing)牛$()。"
     },
     {
       "type": "patchouli:multiblock",
@@ -22,8 +22,8 @@
           "D": "tfc:thatch_bed[part=foot,facing=east]"
         }
       },
-      "name": "乾草牀",
-      "text": "一張乾草牀。",
+      "name": "乾草床",
+      "text": "一張乾草床。",
       "enable_visualize": false
     }
   ],

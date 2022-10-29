@@ -24,7 +24,7 @@
         }
       },
       "name": "野生小麥",
-      "text": "作爲示例，這是$(l:mechanics/crops#wheat)小麥$()的野生版本。",
+      "text": "作為示例，這是$(l:mechanics/crops#wheat)小麥$()的野生版本。",
       "enable_visualize": false
     },
     {

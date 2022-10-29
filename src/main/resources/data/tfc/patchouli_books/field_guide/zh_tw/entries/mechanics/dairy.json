@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)乳製品$()這種$(l:getting_started/food_and_water#nutrients)營養$()可以從$(l:mechanics/animal_husbandry#dairy_animals)產奶動物$()的奶獲得. 奶可以直接飲用, 或者加工成$(thing)乳酪$(). 奶可以直接從罐中飲用, 這樣肯定會回覆$(l:getting_started/food_and_water#thirst)口渴值$(), 但是隻有在飯後飲用纔會增加營養值. 這就意味着連喝兩次奶是浪費的, 你必須先喫頓飯.",
+      "text": "$(thing)乳製品$()這種$(l:getting_started/food_and_water#nutrients)營養$()可以從$(l:mechanics/animal_husbandry#dairy_animals)產奶動物$()的奶獲得. 奶可以直接飲用, 或者加工成$(thing)乳酪$(). 奶可以直接從罐中飲用, 這樣肯定會回覆$(l:getting_started/food_and_water#thirst)口渴值$(), 但是隻有在飯後飲用才會增加營養值. 這就意味著連喝兩次奶是浪費的, 你必須先吃頓飯.",
       "title": "乳製品"
     },
     {
       "type": "patchouli:text",
-      "text": "想要製作$(thing)奶酪$()，第一步是將$(thing)奶$()和$(thing)醋$()以 9 比 1 的比例在$(l:mechanics/barrels)大桶$()裏混合。最簡單的方法是先往桶裏倒 9 桶奶，然後再倒 1 桶醋。這樣就能得到$(thing)醋奶$()."
+      "text": "想要製作$(thing)乳酪$()，第一步是將$(thing)奶$()和$(thing)醋$()以 9 比 1 的比例在$(l:mechanics/barrels)大桶$()裡混合。最簡單的方法是先往桶裡倒 9 桶奶，然後再倒 1 桶醋。這樣就能得到$(thing)醋奶$()."
     },
     {
       "type": "tfc:sealed_barrel_recipe",
@@ -21,7 +21,7 @@
     {
       "type": "tfc:sealed_barrel_recipe",
       "recipe": "tfc:barrel/cheese",
-      "text": "製成煉乳之後先不要開蓋，繼續靜置 8 小時就能將煉乳凝固成奶酪了。奶酪是一種保質期很長的乳製品，且可以作爲某些餐點（比如$(l:mechanics/sandwiches)三明治$()）的食材以提供乳製品營養元素。"
+      "text": "製成煉乳之後先不要開蓋，繼續靜置 8 小時就能將煉乳凝固成乳酪了。乳酪是一種保質期很長的乳製品，且可以作為某些餐點（比如$(l:mechanics/sandwiches)三明治$()）的食材以提供乳製品營養元素。"
     }
   ],
   "read_by_default": true

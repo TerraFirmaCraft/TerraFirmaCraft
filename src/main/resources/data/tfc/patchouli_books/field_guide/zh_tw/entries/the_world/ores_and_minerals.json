@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "羣巒傳說中的礦物和礦石可稱得上是稀有資源。與原版不同，礦石只會生成在龐大，但稀少的$(thing)礦脈$()結構中。要想找到礦脈，就必須熟練掌握$(l:mechanics/prospecting)勘礦$()技巧。有些礦石只會出現在特定的岩石類型中或高度上。因此，勘礦的一大關鍵步驟便是找到正確的岩石類型和高度。"
+      "text": "群巒傳說中的礦物和礦石可稱得上是稀有資源。與原版不同，礦石只會生成在龐大，但稀少的$(thing)礦脈$()結構中。要想找到礦脈，就必須熟練掌握$(l:mechanics/prospecting)勘礦$()技巧。有些礦石只會出現在特定的岩石型別中或高度上。因此，勘礦的一大關鍵步驟便是找到正確的岩石型別和高度。"
     },
     {
       "type": "patchouli:text",
-      "text": "部分礦石是會分不同$(thing)品質$()的。礦石的品質有三種：貧瘠、普通、和富集。此外，每個礦脈結構的礦物密度也會有所不同。採掘同品質的礦石，在更$(thing)豐盛$()的礦脈中的效率會更高。$(br2)接下來的幾頁展示了不同類型的礦石，以及可以在哪裏找到它們。"
+      "text": "部分礦石是會分不同$(thing)品質$()的。礦石的品質有三種：貧瘠、普通、和富集。此外，每個礦脈結構的礦物密度也會有所不同。採掘同品質的礦石，在更$(thing)豐盛$()的礦脈中的效率會更高。$(br2)接下來的幾頁展示了不同型別的礦石，以及可以在哪裡找到它們。"
     },
     {
       "type": "patchouli:text",
@@ -648,7 +648,7 @@
         }
       },
       "name": "",
-      "text": "硅質岩中的煙煤。",
+      "text": "矽質岩中的煙煤。",
       "enable_visualize": false
     },
     {
@@ -819,7 +819,7 @@
       "item": "tfc:ore/sulfur",
       "title": "硫磺",
       "link_recipes": false,
-      "text": "硫磺是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火藥$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(l:the_world/geology#igneous_extrusive)噴出巖$()中。在$(thing)地質活躍$()的地區中，硫磺會更爲頻繁地出現在深度較淺的$(l:the_world/geology#igneous_extrusive)噴出巖$()和$(l:the_world/geology#igneous_extrusive)侵入岩$()中。"
+      "text": "硫磺是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)火藥$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(l:the_world/geology#igneous_extrusive)噴出巖$()中。在$(thing)地質活躍$()的地區中，硫磺會更為頻繁地出現在深度較淺的$(l:the_world/geology#igneous_extrusive)噴出巖$()和$(l:the_world/geology#igneous_extrusive)侵入岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -846,7 +846,7 @@
       "item": "tfc:ore/sylvite",
       "title": "鉀石鹽",
       "link_recipes": false,
-      "text": "鉀石鹽是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)鉀石鹽粉$()、用於$(l:mechanics/fertilizers)堆肥$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(thing)頁岩$()、$(thing)粘土巖$()和$(thing)硅質岩$()中。"
+      "text": "鉀石鹽是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)鉀石鹽粉$()、用於$(l:mechanics/fertilizers)堆肥$()的$(thing)礦物$()。它只會出現在 y=0 以上的$(thing)頁岩$()、$(thing)粘土巖$()和$(thing)矽質岩$()中。"
     },
     {
       "type": "patchouli:multiblock",
@@ -864,7 +864,7 @@
         }
       },
       "name": "",
-      "text": "硅質岩中的鉀鹽",
+      "text": "矽質岩中的鉀鹽",
       "enable_visualize": false
     },
     {
@@ -954,7 +954,7 @@
       "item": "tfc:ore/halite",
       "title": "石鹽",
       "link_recipes": false,
-      "text": "石鹽是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)鹽$()的$(thing)礦物$()，而鹽可以用來$(l:mechanics/decay#salting)保存食物$()。它會以一種密集碟狀礦脈的形式在 y=30 到 y=90 之間的$(l:the_world/geology#sedimentary)沉積岩$()中生成。"
+      "text": "石鹽是一種可以在$(l:mechanics/quern)手推磨$()中磨成$(thing)鹽$()的$(thing)礦物$()，而鹽可以用來$(l:mechanics/decay#salting)儲存食物$()。它會以一種密集碟狀礦脈的形式在 y=30 到 y=90 之間的$(l:the_world/geology#sedimentary)沉積岩$()中生成。"
     },
     {
       "type": "patchouli:multiblock",
@@ -1008,7 +1008,7 @@
       "item": "tfc:ore/diamond",
       "title": "金伯利岩",
       "link_recipes": false,
-      "text": "金伯利岩是一種用來做裝飾品的$(thing)無價之寶$()。它只會形成於一種被稱爲$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E5%B1%B1%E7%AD%92)火山筒$()的礦脈結構中，其垂直方向可達 60 方塊。金伯利岩只能在$(thing)輝長岩$()中生成。"
+      "text": "金伯利岩是一種用來做裝飾品的$(thing)無價之寶$()。它只會形成於一種被稱為$(l:https://zh.wikipedia.org/wiki/%E7%81%AB%E5%B1%B1%E7%AD%92)火山筒$()的礦脈結構中，其垂直方向可達 60 方塊。金伯利岩只能在$(thing)輝長岩$()中生成。"
     },
     {
       "type": "patchouli:multiblock",

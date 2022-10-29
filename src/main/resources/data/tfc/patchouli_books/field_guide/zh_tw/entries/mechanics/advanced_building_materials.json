@@ -1,12 +1,12 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "高級建築材料",
+  "name": "高階建築材料",
   "category": "tfc:mechanics",
   "icon": "tfc:brick/rhyolite",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "除了石器時代的基礎$(l:getting_started/building_materials)建築材料$(), 金屬工具可以幫你生產更多的高級建築材料"
+      "text": "除了石器時代的基礎$(l:getting_started/building_materials)建築材料$(), 金屬工具可以幫你生產更多的高階建築材料"
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "雪花石膏是一種由$(l:the_world/ores_and_minerals#gypsum)石膏$()製成的建築方塊. 它可以直接由$(l:the_world/ores_and_minerals#gypsum)石膏$()合成得到, 但你可以把一些$(l:the_world/ores_and_minerals#gypsum)石膏$()和 100 mB 的$(thing)石灰水$()密封在大桶裏來更高效的製造雪花石膏.",
+      "text": "雪花石膏是一種由$(l:the_world/ores_and_minerals#gypsum)石膏$()製成的建築方塊. 它可以直接由$(l:the_world/ores_and_minerals#gypsum)石膏$()合成得到, 但你可以把一些$(l:the_world/ores_and_minerals#gypsum)石膏$()和 100 mB 的$(thing)石灰水$()密封在大桶裡來更高效的製造雪花石膏.",
       "title": "雪花石膏"
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "雪花石膏可以被$(l:mechanics/barrels)大桶$()裏的染料染成對應顏色. 未加工的雪花石膏可以用鑿子的$(thing)平滑$()模式鑿制$(l:mechanics/chisel)鑿制$()成$(thing)平滑雪花石膏$(), 或者通過合成得到樓梯, 臺階, 或磚牆.",
+      "text": "雪花石膏可以被$(l:mechanics/barrels)大桶$()裡的染料染成對應顏色. 未加工的雪花石膏可以用鑿子的$(thing)平滑$()模式鑿制$(l:mechanics/chisel)鑿制$()成$(thing)平滑雪花石膏$(), 或者透過合成得到樓梯, 臺階, 或磚牆.",
       "title": "雪花石膏裝飾品"
     },
     {
@@ -39,7 +39,7 @@
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "將一些小石子$(l:mechanics/chisel)鑿制$()可以得到這種岩石的$(thing)磚$(). 然後需要使用$(thing)砂漿$()來形成一個堅固的磚方塊.$(br2)砂漿可以通過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到.",
+      "text": "將一些小石子$(l:mechanics/chisel)鑿制$()可以得到這種岩石的$(thing)磚$(). 然後需要使用$(thing)砂漿$()來形成一個堅固的磚方塊.$(br2)砂漿可以透過將$(thing)沙子$()加入裝有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到.",
       "title": "石磚和砂漿"
     },
     {

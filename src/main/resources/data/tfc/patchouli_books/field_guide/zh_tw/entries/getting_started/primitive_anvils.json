@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "用$(thing)砧$()鍛造金屬錠是不同於鑄造的另一種製作工具的方法。同時砧也是發展使用更高級金屬的必需品。砧既可以用來$(l:mechanics/anvils#working)鍛造$()，也可以用來$(l:mechanics/anvils#welding)焊接$()。這一章節我們只講如何獲得你的第一個原始石砧。"
+      "text": "用$(thing)砧$()鍛造金屬錠是不同於鑄造的另一種製作工具的方法。同時砧也是發展使用更高階金屬的必需品。砧既可以用來$(l:mechanics/anvils#working)鍛造$()，也可以用來$(l:mechanics/anvils#welding)焊接$()。這一章節我們只講如何獲得你的第一個原始石砧。"
     },
     {
       "type": "patchouli:text",
@@ -15,12 +15,12 @@
     {
       "type": "patchouli:text",
       "anchor": "stone_anvils",
-      "text": "你還需要一把任意材料製成的$(thing)錘$()。要把岩石變成砧，手持$(thing)錘$()右鍵點擊其$(thing)頂面$()即可。$(br2)砧是有不同$(l:mechanics/anvils#tiers)等級$()的。石砧的等級是 0 - 也就是最低等級。它只能用來$(l:mechanics/anvils#welding)焊接$() 1 級的金屬錠。",
+      "text": "你還需要一把任意材料製成的$(thing)錘$()。要把岩石變成砧，手持$(thing)錘$()右鍵點選其$(thing)頂面$()即可。$(br2)砧是有不同$(l:mechanics/anvils#tiers)等級$()的。石砧的等級是 0 - 也就是最低等級。它只能用來$(l:mechanics/anvils#welding)焊接$() 1 級的金屬錠。",
       "title": "石砧"
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "將中間那塊岩石作爲石砧。",
+      "text": "將中間那塊岩石作為石砧。",
       "multiblocks": [
         {
           "pattern": [
@@ -47,7 +47,7 @@
     },
     {
       "type": "tfc:multimultiblock",
-      "text": "挖掉一塊原石的所有六個鄰面 - 之後，中心塊將作爲物品掉落。",
+      "text": "挖掉一塊原石的所有六個鄰面 - 之後，中心塊將作為物品掉落。",
       "multiblocks": [
         {
           "pattern": [

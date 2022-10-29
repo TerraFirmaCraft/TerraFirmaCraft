@@ -29,7 +29,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/rock/marble_smooth",
-      "text": "直接用鑿子在合成欄合成以便批量製作方塊。"
+      "text": "直接用鑿子在合成欄合成以便批次製作方塊。"
     },
     {
       "type": "patchouli:text",

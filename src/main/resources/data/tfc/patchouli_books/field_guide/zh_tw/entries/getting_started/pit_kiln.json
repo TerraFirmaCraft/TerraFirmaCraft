@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "如何搭建坑窯：$(br2)$(bold)1. $()挖一個 1x1 的坑，按$(item)$(k:tfc.key.place_block)$()將你想燒製的物品放置在其中。$(br)$(bold)2. $()將 8 束$(thing)乾草$()放置到坑窯內（應完全覆蓋要燒製的物品）。$(br)$(bold)3. $()用 8 根$(thing)原木$()把坑窯填滿。$(br)$(bold)4. $()點燃坑窯！$(br2)坑窯將會燃燒 8 個小時，慢慢地$(l:mechanics/heating)加熱$()裏面的物品。"
+      "text": "如何搭建坑窯：$(br2)$(bold)1. $()挖一個 1x1 的坑，按$(item)$(k:tfc.key.place_block)$()將你想燒製的物品放置在其中。$(br)$(bold)2. $()將 8 束$(thing)乾草$()放置到坑窯內（應完全覆蓋要燒製的物品）。$(br)$(bold)3. $()用 8 根$(thing)原木$()把坑窯填滿。$(br)$(bold)4. $()點燃坑窯！$(br2)坑窯將會燃燒 8 個小時，慢慢地$(l:mechanics/heating)加熱$()裡面的物品。"
     },
     {
       "type": "patchouli:image",

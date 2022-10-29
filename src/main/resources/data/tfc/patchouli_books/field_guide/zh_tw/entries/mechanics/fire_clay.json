@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "耐火粘土能做成的東西不多，但每個都是科技進步上不可或缺的要素！耐火粘土比普通粘土能承受更高的高溫，因此某些高級設備只能用耐火粘土建造。"
+      "text": "耐火粘土能做成的東西不多，但每個都是科技進步上不可或缺的要素！耐火粘土比普通粘土能承受更高的高溫，因此某些高階裝置只能用耐火粘土建造。"
     },
     {
       "type": "patchouli:crafting",
@@ -23,7 +23,7 @@
       "type": "tfc:fire_clay_knapping_recipe",
       "anchor": "fire_bricks",
       "recipe": "tfc:fire_clay_knapping/brick",
-      "text": "作爲理想的隔熱材料，耐火磚是建造$(l:mechanics/blast_furnace)高爐$()的必需品。"
+      "text": "作為理想的隔熱材料，耐火磚是建造$(l:mechanics/blast_furnace)高爐$()的必需品。"
     }
   ],
   "read_by_default": true

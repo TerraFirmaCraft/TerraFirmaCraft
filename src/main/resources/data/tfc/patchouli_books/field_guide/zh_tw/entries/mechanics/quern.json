@@ -47,7 +47,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/quern_result.png"
       ],
-      "text": "產品會在手推磨底座周圍一圈出現。$(item)$(k:key.use)$()點擊底座就能取出。",
+      "text": "產品會在手推磨底座周圍一圈出現。$(item)$(k:key.use)$()點選底座就能取出。",
       "border": true
     },
     {
@@ -68,7 +68,7 @@
     {
       "type": "tfc:quern_recipe",
       "recipe": "tfc:quern/barley_grain",
-      "text": "$(thing)麪粉$()也可以用手推磨獲得。"
+      "text": "$(thing)麵粉$()也可以用手推磨獲得。"
     },
     {
       "type": "tfc:quern_recipe",

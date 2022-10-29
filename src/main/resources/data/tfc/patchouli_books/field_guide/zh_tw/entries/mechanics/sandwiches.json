@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "製作$(thing)三明治$()能將最多三種$(thing)蔬菜$()、$(thing)熟肉$()、或$(l:mechanics/dairy)奶酪$()，和兩片$(l:mechanics/bread)麪包$()組合成一頓$(thing)餐點$()。"
+      "text": "製作$(thing)三明治$()能將最多三種$(thing)蔬菜$()、$(thing)熟肉$()、或$(l:mechanics/dairy)乳酪$()，和兩片$(l:mechanics/bread)麵包$()組合成一頓$(thing)餐點$()。"
     },
     {
       "type": "patchouli:crafting",
@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "做出來的三明治會結合所用食材以及麪包所提供的營養元素、水分、和飽和度。三明治會包含麪包 50% 的營養和其他食材 80% 的營養。製作三明治所用的食材不能腐敗。三明治本身的保質期和所用食材剩餘的保質期無關。"
+      "text": "做出來的三明治會結合所用食材以及麵包所提供的營養元素、水分、和飽和度。三明治會包含麵包 50% 的營養和其他食材 80% 的營養。製作三明治所用的食材不能腐敗。三明治本身的保質期和所用食材剩餘的保質期無關。"
     }
   ],
   "read_by_default": true

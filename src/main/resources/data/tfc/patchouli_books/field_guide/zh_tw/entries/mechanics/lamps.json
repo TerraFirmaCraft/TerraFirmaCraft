@@ -29,13 +29,13 @@
     },
     {
       "type": "patchouli:text",
-      "text": "手持裝有燃料的桶對着燈按下$(item)$(k:key.use)$()以添加燃料，然後用$(thing)起火器$()或任何能生火的東西就能將其點亮。燈被破壞時會保留內部的燃料。"
+      "text": "手持裝有燃料的桶對著燈按下$(item)$(k:key.use)$()以新增燃料，然後用$(thing)起火器$()或任何能生火的東西就能將其點亮。燈被破壞時會保留內部的燃料。"
     },
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
       "recipe": "tfc:quern/olive",
-      "text": "$(thing)橄欖油$()就可以作爲燈的燃料。要獲得橄欖油，首先要製作橄欖糊。"
+      "text": "$(thing)橄欖油$()就可以作為燈的燃料。要獲得橄欖油，首先要製作橄欖糊。"
     },
     {
       "type": "patchouli:crafting",
@@ -44,7 +44,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "在$(l:mechanics/pot)鍋$()裏用$(thing)水$()煮$(thing)橄欖糊$()可以得到$(thing)毛橄欖油$(). 把它和$(thing)黃麻網$()一起密封在$(l:mechanics/barrels)大桶$()裏可以得到$(thing)橄欖油$(). 每單位橄欖油的燃燒時間是 8 Minecraft小時."
+      "text": "在$(l:mechanics/pot)鍋$()裡用$(thing)水$()煮$(thing)橄欖糊$()可以得到$(thing)毛橄欖油$(). 把它和$(thing)黃麻網$()一起密封在$(l:mechanics/barrels)大桶$()裡可以得到$(thing)橄欖油$(). 每單位橄欖油的燃燒時間是 8 Minecraft小時."
     },
     {
       "type": "patchouli:text",

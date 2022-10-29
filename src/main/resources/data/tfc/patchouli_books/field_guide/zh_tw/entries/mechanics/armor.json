@@ -25,7 +25,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "同等級的不同金屬製成的盔甲可能略有不同, 這體現在耐久度和對不同$(l:mechanics/damage_types)傷害類型$()的防禦上. 對於耐久度來說, 青銅家族的排名是: $(thing)鉍銅$()最好, 普通$(thing)青銅$(), 最後是$(thing)黑銅$(). 對於彩鋼, $(thing)紅鋼$()的耐久比$(thing)藍鋼$()好一些."
+      "text": "同等級的不同金屬製成的盔甲可能略有不同, 這體現在耐久度和對不同$(l:mechanics/damage_types)傷害型別$()的防禦上. 對於耐久度來說, 青銅家族的排名是: $(thing)鉍銅$()最好, 普通$(thing)青銅$(), 最後是$(thing)黑銅$(). 對於彩鋼, $(thing)紅鋼$()的耐久比$(thing)藍鋼$()好一些."
     },
     {
       "type": "patchouli:text",
