@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In addition to the primitive $(l:getting_started/building_materials)building materials$() of the stone age, the acquisition of metal tools allows the construction of more advanced building materials"
+      "text": "除了石器时代的基础$(l:getting_started/building_materials)建筑材料$(), 金属工具可以帮你生产更多的高级建筑材料"
     },
     {
       "type": "patchouli:text",
-      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)Alabaster$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)Bricks and Mortar$()$(br)",
+      "text": "$(br) 1. $(l:mechanics/advanced_building_materials#alabaster)雪花石膏$()$(br) 2. $(l:mechanics/advanced_building_materials#bricks_and_mortar)石砖和砂浆$()$(br)",
       "title": "材料目录"
     },
     {
       "type": "patchouli:text",
       "anchor": "alabaster",
-      "text": "Alabaster is a building block made from $(l:the_world/ores_and_minerals#gypsum)Gypsum$(). Alabaster can be made by directly crafting with $(l:the_world/ores_and_minerals#gypsum)Gypsum$(), however it can be made more efficiently by sealing some $(l:the_world/ores_and_minerals#gypsum)Gypsum$() with 100 mB of $(thing)Limewater$() in a barrel.",
+      "text": "雪花石膏是一种由$(l:the_world/ores_and_minerals#gypsum)石膏$()制成的建筑方块. 它可以直接由$(l:the_world/ores_and_minerals#gypsum)石膏$()合成得到, 但你可以把一些$(l:the_world/ores_and_minerals#gypsum)石膏$()和 100 mB 的$(thing)石灰水$()密封在大桶里来更高效的制造雪花石膏.",
       "title": "雪花石膏"
     },
     {
@@ -27,20 +27,20 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Alabaster can be dyed in a $(l:mechanics/barrels)Barrel$() of dye into any color. Raw Alabaster blocks can also be $(l:mechanics/chisel)chiseled$() into $(thing)Polished Alabaster$() using the $(thing)Smooth$() chisel mode, or crafted into stairs, slabs, or walls.",
+      "text": "雪花石膏可以被$(l:mechanics/barrels)大桶$()里的染料染成对应颜色. 未加工的雪花石膏可以用凿子的$(thing)平滑$()模式凿制$(l:mechanics/chisel)凿制$()成$(thing)平滑雪花石膏$(), 或者通过合成得到楼梯, 台阶, 或砖墙.",
       "title": "雪花石膏装饰品"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/alabaster/magenta_bricks_stairs",
       "recipe2": "tfc:crafting/alabaster/magenta_polished_slab",
-      "title": "Stairs and Slabs"
+      "title": "楼梯和台阶"
     },
     {
       "type": "patchouli:text",
       "anchor": "bricks_and_mortar",
-      "text": "$(thing)Stone Bricks$() can be made using a $(l:mechanics/chisel)Chisel$() with some individual loose rocks. It then requires $(thing)Mortar$() in order to form a strong building block.$(br2)Mortar can be made by adding $(thing)Sand$() to a barrel of $(l:mechanics/barrels#limewater)Limewater$().",
-      "title": "Bricks and Mortar"
+      "text": "将一些小石子$(l:mechanics/chisel)凿制$()可以得到这种岩石的$(thing)砖$(). 然后需要使用$(thing)砂浆$()来形成一个坚固的砖方块.$(br2)砂浆可以通过将$(thing)沙子$()加入装有$(l:mechanics/barrels#limewater)石灰水$()的大桶得到.",
+      "title": "石砖和砂浆"
     },
     {
       "type": "patchouli:crafting",
@@ -49,7 +49,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Other decorative stone blocks can also be made, such as both $(thing)Cracked Bricks$(), and $(thing)Chiseled Stone$(). $(thing)Mossy$() stone blocks can also be created by placing cobblestone or bricks underwater, near existing mossy bricks or cobblestone. The moss will start to spread to these nearby blocks."
+      "text": "也可以制作出其他的石头装饰方块, 例如$(thing)裂纹砖$()和$(thing)雕刻过的石砖$(). 将圆石或石砖方块放在水下的其他苔石旁, 苔藓就会扩散到邻近方块, 得到更多的$(thing)苔石$()或苔石砖."
     },
     {
       "type": "patchouli:crafting",

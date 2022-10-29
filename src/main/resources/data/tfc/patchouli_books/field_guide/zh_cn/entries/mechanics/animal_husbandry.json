@@ -29,7 +29,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/unfamiliarized_pig.png"
       ],
-      "text": "Livestock have a $(thing)Familiarity Indicator$() that shows how familiar they are with you. Hold $(item)$(k:key.sneak)$() and look at the animal to reveal it.",
+      "text": "牲畜有一个$(thing)亲密度$()指标, 显示它们对您的熟悉程度. 按住$(item)$(k:key.sneak)$()并指向这个动物来查看亲密度.",
       "border": true
     },
     {
@@ -37,7 +37,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/no_familiarity_decay_pig.png"
       ],
-      "text": "Familiarity decays a little each day if not fed. Raising the familiarity enough prevents decay, indicated by the white outlined heart.",
+      "text": "如果不喂食, 亲密度每天都会减少一点. 但如果亲密度高到一定程度(出现一个白色轮廓的心), 亲密度就不会因此减少了.",
       "border": true
     },
     {
@@ -45,7 +45,7 @@
       "images": [
         "tfc:textures/gui/book/tutorial/familiarity_limit_pig.png"
       ],
-      "text": "Adult livestock cannot be fully familiarized, indicated by the red outlined heart. Babies can reach 100% familiarity.",
+      "text": "成年牲畜无法达到100%的亲密度(也就是出现红色轮廓的心), 只有幼年牲畜可能达到100%的亲密度。",
       "border": true
     },
     {

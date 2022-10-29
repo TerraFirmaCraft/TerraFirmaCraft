@@ -6,18 +6,18 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "In the early stages of the game, building can be a challenge as many sturdy building blocks require metal tools to obtain. However, there are a few building blocks that can be obtained with just stone tools.$(br2)More $(l:mechanics/advanced_building_materials)building blocks$() are obtainable with metal tools."
+      "text": "在游戏的早期阶段, 由于很多坚固的建筑方块需要金属工具才能获得, 建造房屋是比较困难的. 有一些建筑方块仅用石制工具就能获得, $(br2)但$(l:mechanics/advanced_building_materials)更高级的建筑材料$()就需要金属工具了."
     },
     {
       "type": "patchouli:text",
-      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)Thatch$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)Mud Bricks$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)Wattle and Daub$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)Clay Blocks and Peat$()$(br)",
+      "text": "$(br)  1. $(l:getting_started/building_materials#thatch)干草块$()$(br)  2. $(l:getting_started/building_materials#mud_bricks)壤泥砖$()$(br)  3. $(l:getting_started/building_materials#wattle_and_daub)板条与涂料$()$(br)  4. $(l:getting_started/building_materials#clay_and_peat)粘土块和泥炭$()$(br)",
       "title": "材料目录"
     },
     {
       "type": "patchouli:text",
       "anchor": "thatch",
-      "text": "With just a $(l:getting_started/introduction#knife)Stone Knife$(), you are able to obtain $(thing)Straw$() by breaking plant like blocks. This can be used to craft a very simple building material: $(thing)Thatch$(). Thatch is a lightweight block that isn't affected by gravity, however players and other entities can pass right through it! It can also be crafted back into $(thing)Straw$() if needed.",
-      "title": "Thatch"
+      "text": "仅用一个$(l:getting_started/introduction#knife)石刀$(), 你就可以打碎草丛等植物来获取$(thing)干草$(). 它可以用于合成一种非常简单的建筑材料: $(thing)干草块$(). 干草块是一种轻量的建筑材料, 不受重力影响, 但是玩家或其他生物可以穿过它! 如果必要, 干草块也可以合成回$(thing)干草$().",
+      "title": "干草块"
     },
     {
       "type": "patchouli:crafting",
