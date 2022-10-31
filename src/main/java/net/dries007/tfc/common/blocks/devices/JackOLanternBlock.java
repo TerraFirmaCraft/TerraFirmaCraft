@@ -8,7 +8,6 @@ package net.dries007.tfc.common.blocks.devices;
 
 import java.util.Random;
 import java.util.function.Supplier;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.Block;

@@ -9,7 +9,6 @@ package net.dries007.tfc.common.blocks.devices;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
