@@ -1,0 +1,20 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X ",
+    "X ",
+    "Z "
+  ],
+  "key": {
+    "X": {
+      "tag": "tfc:high_quality_cloth"
+    },
+    "Z": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "result": {
+    "item": "minecraft:white_banner"
+  }
+}

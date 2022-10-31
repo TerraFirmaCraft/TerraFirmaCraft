@@ -195,7 +195,7 @@ def generate(rm: ResourceManager):
     rm.item_tag('compost_greens_low', '#tfc:plants')
     rm.item_tag('compost_greens', '#tfc:foods/grains')
     rm.item_tag('compost_greens_high', '#tfc:foods/vegetables', '#tfc:foods/fruits')
-    rm.item_tag('compost_browns_low', *['tfc:plant/%s' % p for p in BROWN_COMPOST_PLANTS], '#tfc:fallen_leaves')
+    rm.item_tag('compost_browns_low', *['tfc:plant/%s' % p for p in BROWN_COMPOST_PLANTS], '#tfc:fallen_leaves', 'minecraft:hanging_roots')
     rm.item_tag('compost_browns', 'tfc:powder/wood_ash', 'tfc:jute')
     rm.item_tag('compost_browns_high', 'tfc:groundcover/humus', 'tfc:groundcover/dead_grass', 'tfc:groundcover/driftwood', 'tfc:groundcover/pinecone', 'minecraft:paper', 'tfc:melon', 'tfc:pumpkin', 'tfc:rotten_melon', 'tfc:rotten_pumpkin', 'tfc:jute_fiber')
     rm.item_tag('compost_poisons', '#tfc:foods/meats', 'minecraft:bone')
@@ -652,6 +652,7 @@ def generate(rm: ResourceManager):
 
     # Applications
     rm.fluid_tag('hydrating', '#tfc:any_fresh_water')
+    rm.fluid_tag('mixable', '#minecraft:water')
 
     rm.fluid_tag('usable_in_pot', '#tfc:ingredients')
     rm.fluid_tag('usable_in_jug', '#tfc:drinkables')
@@ -662,6 +663,16 @@ def generate(rm: ResourceManager):
     rm.fluid_tag('usable_in_sluice', '#tfc:any_infinite_water')
     rm.fluid_tag('usable_in_ingot_mold', '#tfc:molten_metals')
     rm.fluid_tag('usable_in_tool_head_mold', 'tfc:metal/copper', 'tfc:metal/bismuth_bronze', 'tfc:metal/black_bronze', 'tfc:metal/bronze')
+
+    # Required in order for fluids to have fluid-like properties
+    rm.fluid_tag('minecraft:lava', '#tfc:molten_metals')
+    rm.fluid_tag('minecraft:water', *['#tfc:%s' % fluid_type for fluid_type in (
+        'salt_water',
+        'spring_water',
+        *SIMPLE_FLUIDS,
+        *ALCOHOLS,
+        *['%s_dye' % c for c in COLORS]
+    )], 'tfc:river_water')
 
     # Entity Tags
 
@@ -955,6 +966,7 @@ def generate(rm: ResourceManager):
 
     # Misc Block Loot
     rm.block_loot('minecraft:glass', {'name': 'tfc:glass_shard', 'conditions': [loot_invert(loot_tables.silk_touch())]}, {'name': 'minecraft:glass', 'conditions': [loot_tables.silk_touch()]})
+    rm.block_loot('minecraft:hanging_roots', {'name': 'minecraft:hanging_roots', 'conditions': [loot_tables.match_tag('tfc:sharp_tools')]})
 
     entity_damage_resistance(rm, 'skeletons', 'tfc:skeletons', piercing=1000000000, crushing=-50)
     entity_damage_resistance(rm, 'creeper', 'tfc:creepers', slashing=-25, crushing=50)

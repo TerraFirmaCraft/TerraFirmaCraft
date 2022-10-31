@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.core.Direction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -32,60 +31,66 @@ public class CaveVegetationFeature extends Feature<CaveVegetationConfig>
     @Override
     public boolean place(FeaturePlaceContext<CaveVegetationConfig> context)
     {
-        final WorldGenLevel worldIn = context.level();
+        final WorldGenLevel level = context.level();
         final BlockPos pos = context.origin();
-        final Random rand = context.random();
+        final Random random = context.random();
         final CaveVegetationConfig config = context.config();
 
         final BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
         for (int i = 0; i < 128; i++)
         {
-            if (rand.nextFloat() < 0.8f)//mossy cobble
+            if (random.nextFloat() < 0.8f)//mossy cobble
             {
-                mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), -1 * rand.nextInt(2) - 1, rand.nextInt(15) - rand.nextInt(15));
-                if (worldIn.isEmptyBlock(mutablePos))
+                mutablePos.setWithOffset(pos, random.nextInt(15) - random.nextInt(15), -1 * random.nextInt(2) - 1, random.nextInt(15) - random.nextInt(15));
+                if (level.isEmptyBlock(mutablePos))
                 {
                     for (int j = 0; j < 7; j++)
                     {
                         mutablePos.move(0, -1, 0);
-                        if (!worldIn.isEmptyBlock(mutablePos))
+                        if (!level.isEmptyBlock(mutablePos))
                         {
                             break;
                         }
                     }
-                    BlockState generateState = config.getStateToGenerate(worldIn.getBlockState(mutablePos), rand);
+                    BlockState generateState = config.getStateToGenerate(level.getBlockState(mutablePos), random);
                     if (generateState != null)
                     {
-                        setBlock(worldIn, mutablePos, generateState);
+                        setBlock(level, mutablePos, generateState);
                     }
                 }
             }
-            if (rand.nextFloat() < 0.003f)//extra springs
+            if (random.nextFloat() < 0.003f)//extra springs
             {
-                mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
-                if (worldIn.isEmptyBlock(mutablePos))
+                mutablePos.setWithOffset(pos, random.nextInt(15) - random.nextInt(15), 4 + random.nextInt(7), random.nextInt(15) - random.nextInt(15));
+                if (level.isEmptyBlock(mutablePos))
                 {
-                    mutablePos.move(Direction.UP);
-                    if (Helpers.isBlock(worldIn.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
+                    mutablePos.move(0, 1, 0);
+                    if (isStone(level, mutablePos))
                     {
-                        setBlock(worldIn, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
-                        worldIn.scheduleTick(mutablePos, Fluids.WATER, 0);
+                        setBlock(level, mutablePos, Fluids.WATER.defaultFluidState().createLegacyBlock());
+                        level.scheduleTick(mutablePos, Fluids.WATER, 0);
                     }
                 }
             }
-            if (rand.nextFloat() < 0.02f)//cobwebs
+            if (random.nextFloat() < 0.04f)//cobwebs and roots
             {
-                mutablePos.setWithOffset(pos, rand.nextInt(15) - rand.nextInt(15), 4 + rand.nextInt(7), rand.nextInt(15) - rand.nextInt(15));
-                if (Helpers.isBlock(worldIn.getBlockState(mutablePos), BlockTags.BASE_STONE_OVERWORLD))
+                mutablePos.setWithOffset(pos, random.nextInt(15) - random.nextInt(15), 4 + random.nextInt(7), random.nextInt(15) - random.nextInt(15));
+                if (isStone(level, pos))
                 {
-                    mutablePos.move(Direction.DOWN);
-                    if (worldIn.isEmptyBlock(mutablePos))
+                    mutablePos.move(0, -1, 0);
+                    if (level.isEmptyBlock(mutablePos))
                     {
-                        setBlock(worldIn, mutablePos, Blocks.COBWEB.defaultBlockState());
+                        final BlockState state = random.nextBoolean() ? Blocks.COBWEB.defaultBlockState() : Blocks.HANGING_ROOTS.defaultBlockState();
+                        setBlock(level, mutablePos, state);
                     }
                 }
             }
         }
         return true;
+    }
+
+    private static boolean isStone(WorldGenLevel level, BlockPos pos)
+    {
+        return Helpers.isBlock(level.getBlockState(pos), BlockTags.BASE_STONE_OVERWORLD);
     }
 }

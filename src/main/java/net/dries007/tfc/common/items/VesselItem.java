@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
@@ -126,7 +127,7 @@ public class VesselItem extends Item
         return new VesselCapability(stack);
     }
 
-    static class VesselCapability implements VesselLike, ICapabilityProvider, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
+    static class VesselCapability implements VesselLike, ICapabilityProvider, INBTSerializable<CompoundTag>, DelegateItemHandler, DelegateHeatHandler, SimpleFluidHandler
     {
         private final ItemStack stack;
         private final LazyOptional<VesselCapability> capability;
@@ -170,7 +171,7 @@ public class VesselItem extends Item
         {
             final ItemStack stack = inventory.getStackInSlot(slot);
             cachedRecipes[slot] = stack.isEmpty() ? null : HeatingRecipe.getRecipe(stack); // Update cached recipe for slot
-            updateHeatCapacity(true); // Update heat capacity as average of inventory slots
+            updateAndSave(); // Update heat capacity as average of inventory slots
         }
 
         @Override
@@ -212,7 +213,6 @@ public class VesselItem extends Item
         {
             heat.setTemperature(temperature);
             updateInventoryMelting();
-            save();
         }
 
         @Override
@@ -291,7 +291,7 @@ public class VesselItem extends Item
                 final int result = alloy.add(metal, resource.getAmount(), action.simulate());
                 if (action.execute())
                 {
-                    updateHeatCapacity(true);
+                    updateAndSave();
                 }
                 return result;
             }
@@ -315,7 +315,7 @@ public class VesselItem extends Item
                 final int amount = alloy.removeAlloy(maxDrain, action.simulate());
                 if (action.execute())
                 {
-                    updateHeatCapacity(true);
+                    updateAndSave();
                 }
                 return new FluidStack(result.getFluid(), amount);
             }
@@ -354,55 +354,13 @@ public class VesselItem extends Item
         @Override
         public CompoundTag serializeNBT()
         {
-            return new CompoundTag(); // Unused since we serialize directly to stack tag
+            return heat.serializeNBT();
         }
 
         @Override
-        public void deserializeNBT(CompoundTag nbt) {}
-
-        /**
-         * Updates the heat capacity.
-         * When in inventory mode, the heat capacity will be the weighted average of the contents, based on stack size.
-         * When in alloy mode, the heat capacity will be the capacity of the result metal.
-         * As a result, this needs to be called whenever a change is made either to the inventory, or the alloy (but not a heat change).
-         */
-        private void updateHeatCapacity(boolean save)
+        public void deserializeNBT(CompoundTag nbt)
         {
-            float value = 0;
-            if (mode() == Mode.INVENTORY)
-            {
-                int count = 0;
-                for (ItemStack stack : Helpers.iterate(inventory))
-                {
-                    final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
-                    if (heat != null)
-                    {
-                        count += stack.getCount();
-                        value += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be stack size = 1, so we have to multiply here
-                    }
-                }
-                if (count > 0)
-                {
-                    // Vessel has contents
-                    // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
-                    value = HeatCapability.POTTERY_HEAT_CAPACITY + value * 0.7f + (value / count) * 0.3f;
-                }
-                else
-                {
-                    // Vessel has no contents, so the value is just the heat capacity of the vessel alone.
-                    value = HeatCapability.POTTERY_HEAT_CAPACITY;
-                }
-            }
-            else
-            {
-                // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
-                value = HeatCapability.POTTERY_HEAT_CAPACITY + alloy.getHeatCapacity(0.7f);
-            }
-            heat.setHeatCapacity(value);
-            if (save)
-            {
-                save(); // Save, since we've changed the heat capacity, and possibly the temperature
-            }
+            heat.deserializeNBT(nbt);
         }
 
         /**
@@ -455,7 +413,7 @@ public class VesselItem extends Item
             }
             if (updatedAlloy)
             {
-                updateHeatCapacity(true);
+                updateAndSave();
             }
         }
 
@@ -465,12 +423,6 @@ public class VesselItem extends Item
             inventory.deserializeNBT(tag.getCompound("inventory"));
             alloy.deserializeNBT(tag.getCompound("alloy"));
 
-            // Update heat capacity before we deserialize heat
-            // Since setting heat capacity indirectly modifies the temperature, we need to make sure we get all three values correct when we receive a sync from server
-            // This may be out of sync because the current value of Calendars.get().getTicks() can be != to the last update tick stored here.
-            updateHeatCapacity(false);
-            heat.deserializeNBT(tag.getCompound("heat"));
-
             // Additionally, we need to update the contents of our cached recipes. Since we can experience modification (copy) which will invalidate our cache, that would not trigger setAndUpdateSlots
             for (int i = 0; i < inventory.getSlots(); i++)
             {
@@ -479,9 +431,43 @@ public class VesselItem extends Item
             }
         }
 
-        private void save()
+        private void updateAndSave()
         {
+            float value = 0;
+            if (mode() == Mode.INVENTORY)
+            {
+                int count = 0;
+                for (ItemStack stack : Helpers.iterate(inventory))
+                {
+                    final IHeat heat = Helpers.getCapability(stack, HeatCapability.CAPABILITY);
+                    if (heat != null)
+                    {
+                        count += stack.getCount();
+                        value += heat.getHeatCapacity() * stack.getCount(); // heat capacity is always assumed to be stack size = 1, so we have to multiply here
+                    }
+                }
+                if (count > 0)
+                {
+                    // Vessel has contents
+                    // Instead of an ideal mixture, we weight slightly so that heating items in a vessel is more efficient than heating individually.
+                    value = HeatCapability.POTTERY_HEAT_CAPACITY + value * 0.7f + (value / count) * 0.3f;
+                }
+                else
+                {
+                    // Vessel has no contents, so the value is just the heat capacity of the vessel alone.
+                    value = HeatCapability.POTTERY_HEAT_CAPACITY;
+                }
+            }
+            else
+            {
+                // Bias so that larger quantities of liquid cool faster (relative to a perfect mixture)
+                value = HeatCapability.POTTERY_HEAT_CAPACITY + alloy.getHeatCapacity(0.7f);
+            }
+
+            heat.setHeatCapacity(value);
+
             final CompoundTag tag = stack.getOrCreateTag();
+
             tag.put("inventory", inventory.serializeNBT());
             tag.put("alloy", alloy.serializeNBT());
             tag.put("heat", heat.serializeNBT());

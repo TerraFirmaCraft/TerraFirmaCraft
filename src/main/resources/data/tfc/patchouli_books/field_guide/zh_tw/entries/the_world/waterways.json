@@ -1,0 +1,84 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "河流流向何方？",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/rivers.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在你的探索之旅中，河流、湖泊和海洋大概會是你最為常見的水源。河流和湖泊含有$(thing)淡水$()，而海洋則含有$(thing)鹹水$()。喝淡水可以恢復口渴值。千萬不要喝鹹水，鹹水只會讓你變得更加口渴。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/river.png"
+      ],
+      "text": "一條河。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "群巒傳說中的河流會$(thing)流動$()。他們會像流動的水一樣推動物品、玩家和其他實體。河流會與沿途的其他分支匯合，最終流向$(l:the_world/biomes#ocean)海洋$()。偶爾，河流也會消失在地下，有時還會形成巨大的地下湖，但它最終總會通向某片海洋。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/biomes/underground_river.png"
+      ],
+      "text": "一條地下河。",
+      "border": true
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "ore_deposits",
+      "text": "河流和湖泊中也有不少有用的資源。首先，河流和湖泊的底部會偶爾生成混有礦物碎屑的沙子或砂礫。你可以製作一張$(l:mechanics/panning)淘金盤$()來將它們舀起到水面淘洗，以此獲得少量礦石。原生銅、原生銀、原生金和錫石都可以透過這種方式獲取。",
+      "title": "礦石沉積物"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:deposit/native_gold/slate"
+        }
+      },
+      "name": "示例",
+      "text": "板岩地貌中的原生金沉積物。",
+      "enable_visualize": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "gemstones",
+      "text": "除了砂礫之外，水底有時還會生成一些寶石礦脈。最常見的是紫水晶和蛋白石，它們會以地表層礦脈的形式生成於河流或湖泊之下。",
+      "title": "寶石"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "tfc:ore/amethyst/limestone"
+        }
+      },
+      "name": "示例",
+      "text": "石灰岩地貌中的紫水晶礦石。",
+      "enable_visualize": false
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 1
+}

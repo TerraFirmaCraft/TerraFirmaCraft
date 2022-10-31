@@ -254,8 +254,8 @@ def generate(rm: ResourceManager):
         rm.blockstate('rotten_' + name, model='tfc:block/rotten_%s' % name).with_lang(lang('rotten %s', name)).with_block_loot('tfc:rotten_%s' % name).with_tag('tfc:mineable_with_sharp_tool')
         rm.item_model('rotten_' + name, 'tfc:item/food/%s' % name)
 
-    rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('tfc:jack_o_lantern').with_lang(lang('Jack o\'Lantern'))
-    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern', no_textures=True)
+    rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('minecraft:carved_pumpkin').with_lang(lang('Jack o\'Lantern'))
+    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern')
 
     rm.blockstate('freshwater_bubble_column', model='minecraft:block/water').with_lang(lang('bubble column'))
     rm.blockstate('saltwater_bubble_column', model='tfc:block/fluid/salt_water').with_lang(lang('bubble column'))
@@ -1530,11 +1530,6 @@ def generate(rm: ResourceManager):
 
     # River water, since it doesn't have a bucket
     rm.blockstate(('fluid', 'river_water')).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang('water'))
-    rm.fluid_tag('minecraft:water', 'tfc:river_water')  # Need to use water fluid tag for behavior
-    rm.fluid_tag('mixable', 'tfc:river_water')
-
-    # Mixable tags for vanilla water
-    rm.fluid_tag('mixable', '#minecraft:water')
 
     for metal in METALS.keys():
         rm.blockstate(('fluid', 'metal', metal)).with_block_model({'particle': 'block/lava_still'}, parent=None).with_lang(lang('Molten %s', metal))
@@ -1589,8 +1584,6 @@ def item_model_property(rm: ResourceManager, name_parts: utils.ResourceIdentifie
 def water_based_fluid(rm: ResourceManager, name: str):
     rm.blockstate(('fluid', name)).with_block_model({'particle': 'minecraft:block/water_still'}, parent=None).with_lang(lang(name))
     rm.fluid_tag(name, 'tfc:%s' % name, 'tfc:flowing_%s' % name)
-    rm.fluid_tag('minecraft:water', 'tfc:%s' % name, 'tfc:flowing_%s' % name)  # Need to use water fluid tag for behavior
-    rm.fluid_tag('mixable', 'tfc:%s' % name, 'tfc:flowing_%s' % name)
 
     # todo: 1.19 rename to forge:fluid_container due to deprecation
     item = rm.custom_item_model(('bucket', name), 'forge:bucket', {

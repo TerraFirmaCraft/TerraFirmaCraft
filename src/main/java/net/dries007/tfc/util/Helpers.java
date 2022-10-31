@@ -53,10 +53,12 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.GameRules;
@@ -100,6 +102,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.server.ServerLifecycleHooks;
+
+import net.dries007.tfc.common.items.TFCShieldItem;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -1158,6 +1162,32 @@ public final class Helpers
     public static void openScreen(ServerPlayer player, MenuProvider containerSupplier, Consumer<FriendlyByteBuf> extraDataWriter)
     {
         NetworkHooks.openGui(player, containerSupplier, extraDataWriter);
+    }
+
+    /**
+     * Based on {@link net.minecraft.world.entity.Mob#maybeDisableShield} without hardcoding and whatever
+     */
+    public static void maybeDisableShield(ItemStack axe, ItemStack shield, Player player, LivingEntity attacker)
+    {
+        if (!axe.isEmpty() && !shield.isEmpty() && axe.canDisableShield(shield, player, attacker))
+        {
+            final float vanillaDisableChance = 0.25F + EnchantmentHelper.getBlockEfficiency(attacker) * 0.05F;
+            float chanceToDisable = vanillaDisableChance;
+            final Item shieldItem = shield.getItem();
+            if (shieldItem.equals(Items.SHIELD))
+            {
+                chanceToDisable = 1f; // deliberately making vanilla shields worse.
+            }
+            else if (shieldItem instanceof TFCShieldItem tfcShield)
+            {
+                chanceToDisable = (0.25f * vanillaDisableChance) + (0.75f * tfcShield.getDisableChance());
+            }
+            if (attacker.getRandom().nextFloat() < chanceToDisable)
+            {
+                player.getCooldowns().addCooldown(shieldItem, 100);
+                attacker.level.broadcastEntityEvent(player, (byte) 30);
+            }
+        }
     }
 
     /**
