@@ -1,0 +1,68 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "建造高爐",
+  "category": "tfc:mechanics",
+  "icon": "tfc:blast_furnace",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)高爐$()是一種用來煉$(thing)鋼$()的高階裝置。將$(thing)鐵礦石$()、$(thing)木炭$()、和$(thing)助焊劑$()在高熱環境中混合就能製造出一種比鍛鐵更強的金屬。$(br2)要搭建高爐，你必須先製作兩隻$(l:mechanics/crucible)坩堝$()、一根鍛鐵$(thing)鼓風口$()、和一個風箱。此外，你還會需要很多$(thing)鍛鐵薄板$()和$(thing)耐火磚塊$()。"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "tfc:crafting/blast_furnace",
+      "text": "製作高爐方塊本體就需要一隻$(thing)坩堝$()，以及八張$(thing)鍛鐵薄板$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "接下來就可以開始搭建高爐的$(thing)煙囪$()了。煙囪必須用足以承受鍊鋼高溫的$(l:mechanics/fire_clay#fire_bricks)耐火磚塊$()搭建。耐火磚塊的外層還需要用$(thing)鍛鐵薄板$()圍繞一圈加固。如果材料富裕，也可以用更高階的金屬薄板（如$(thing)鋼$()）來代替鍛鐵薄板。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:blast_furnace",
+      "name": "高爐",
+      "text": "最基礎的高爐結構。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "高爐的煙囪最多可以搭建 5 層，每層煙囪需要額外 4 塊$(thing)耐火磚塊$()和 12 張$(thing)鍛鐵薄板$()。每額外搭建一層煙囪，高爐就可以同時多燒煉 4 個物品，從而提升工作效率。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "必須從高爐的煙囪頂投入鍊鋼所需的素材。要鍊鋼，首先將等量的$(thing)鐵礦石$()和$(l:mechanics/flux)助焊劑$()投入高爐。鐵礦石可以用任何能被熔化成$(thing)鑄鐵$()的物品代替。另外，你還需要在高爐燃燒的過程中不斷加入$(l:mechanics/charcoal_pit)木炭$()來維持燃燒。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "與高爐方塊互動可以開啟高爐介面，如右圖所示。高爐介面會顯示爐中的金屬和燃料數量。螢幕右上角的空格必須放置一根$(thing)鼓風口$()。有了鼓風口高爐才能達到可以鍊鋼的溫度。可以在$(l:mechanics/anvils)砧$()上鍛造鼓風口。"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/blast_furnace.png"
+      ],
+      "text": "高爐介面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "要讓高爐達到鍊鋼的溫度，還需要在高爐方塊的任意鄰面放置一個$(l:mechanics/bellows)風箱$()。"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock_id": "tfc:full_blast_furnace",
+      "name": "",
+      "text": "一個最大的完整高爐結構，包含風箱。",
+      "enable_visualize": true
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最後，用$(l:getting_started/firepit#firestarter)起火器$()或$(thing)打火石$()點燃高爐方塊就可以開始鍊鋼了。高爐會緩慢加熱礦石，同時要注意不斷鼓風和新增木炭。當高爐內的溫度足以熔化礦石時，礦石就會熔化並轉化為$(l:mechanics/steel)生鐵$()。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "熔融生鐵會從高爐中流入任何直接放置在其下方的容器（如$(l:mechanics/crucible)坩堝$()）中。之後可從坩堝介面將熔融生鐵澆鑄至鑄錠模具中。你不能直接用生鐵製作工具或裝備，它還必須再經過一些其他工序處理之後才能使用。具體方法請參閱$(l:mechanics/steel)鍊鋼$()章節。"
+    }
+  ],
+  "read_by_default": true
+}

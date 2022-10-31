@@ -1,0 +1,64 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "曆法和氣候",
+  "category": "tfc:the_world",
+  "icon": "tfc:textures/gui/book/icons/thermometer.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "anchor": "calendar",
+      "text": "在群巒傳說中，氣候和時間都是影響生存的非常重要的要素。首先，我們先來談談$(thing)日曆$()。$(br2)在任何時候，只要開啟物品欄並點選$(thing)日曆$()選項卡就能檢視日曆。這裡會顯示當前的$(thing)季節$()、$(thing)日曆日$()和$(thing)日期$()."
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/calendar.png"
+      ],
+      "text": "日曆介面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "text": "群巒傳說的世界是有四季的，氣象和氣候也會隨之變化。每個季節根據月份分為$(thing)初期$()、$(thing)仲期$()和$(thing)暮期$()。以下是四季所對應的月份：$(br)$(li)$(bold)春季$()：三月 - 五月$(li)$(bold)夏季$()：六月 - 八月$(li)$(bold)秋季$()：九月 - 十一月$(li)$(bold)冬季$()：十二月 - 次年二月"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "當前季節會影響地區的溫度和降水（如果可以下雨或下雪）等。所以一定要經常檢視日曆，它對你的生存會有很大的幫助！$(br2)接下來，我們來談談氣候。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "climate",
+      "text": "物品欄介面中的另一個選項卡是$(thing)氣候$()介面。這個頁面會顯示有關當前地理位置的資訊。$(br2)第一行會顯示該地區的$(l:https://zh.wikipedia.org/wiki/%E6%9F%AF%E6%9C%AC%E6%B0%94%E5%80%99%E5%88%86%E7%B1%BB%E6%B3%95)氣候分類$()。$(br2)第二行會顯示$(l:the_world/geology)地質結構$()。$(br2)第三行則會顯示$(thing)年平均溫度$().",
+      "title": "氣候"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/climate.png"
+      ],
+      "text": "氣候介面",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "temperature",
+      "text": "一個地區的溫度是由幾個因素共同決定的。$(br)$(li)首先，地質結構和緯度（Z 座標）的影響是最大的。$(li)其次是當前的季節——夏天最熱，冬天最冷。$(li)最後，每天的不同時間溫度也會有所不同，且天和天之間也會有小幅變動。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "最後一行顯示的是當前由上述因素共同決定後的溫度。$(br2)溫度會影響很多事情：作物和植物是否會生長，冰雪是否會形成或融化等等。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "rainfall",
+      "text": "降雨量是一個會根據地理位置而變化的數值。年降雨量以毫米（mm）為單位，可以在 0mm - 500mm 之間取值。地表土壤是沙子還是淤泥，植被是仙人掌還是木棉樹都由降雨量決定。",
+      "title": "降雨量"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "一個區域的降雨量還決定了何種農作物能被種植在這兒。降雨量的多少是影響土地$(l:mechanics/hydration)溼潤度$()的一個重要因素，而溼潤度則決定了$(l:mechanics/crops)農作物$()、$(l:the_world/wild_fruits#fruit_trees)果樹$()、和$(l:the_world/wild_fruits#tall_bushes)灌木叢$()是否可以生長。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 4
+}

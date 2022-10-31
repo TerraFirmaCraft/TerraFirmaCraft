@@ -1,6 +1,6 @@
 {
   "__comment__": "This file was automatically created by mcresources",
-  "name": "油灯和蜡烛",
+  "name": "油燈和蠟燭",
   "category": "tfc:mechanics",
   "icon": "tfc:metal/lamp/bismuth_bronze",
   "pages": [
@@ -23,33 +23,33 @@
           "Y": "tfc:metal/lamp/copper[hanging=true,lit=true]"
         }
       },
-      "name": "灯",
-      "text": "灯是一种燃烧时间很长的光源。它们使用的是液体燃料。",
+      "name": "燈",
+      "text": "燈是一種燃燒時間很長的光源。它們使用的是液體燃料。",
       "enable_visualize": false
     },
     {
       "type": "patchouli:text",
-      "text": "手持装有燃料的桶对着灯按下$(item)$(k:key.use)$()以添加燃料，然后用$(thing)起火器$()或任何能生火的东西就能将其点亮。灯被破坏时会保留内部的燃料。"
+      "text": "手持裝有燃料的桶對著燈按下$(item)$(k:key.use)$()以新增燃料，然後用$(thing)起火器$()或任何能生火的東西就能將其點亮。燈被破壞時會保留內部的燃料。"
     },
     {
       "type": "tfc:quern_recipe",
       "anchor": "olives",
       "recipe": "tfc:quern/olive",
-      "text": "$(thing)橄榄油$()就可以作为灯的燃料。要获得橄榄油，首先要制作橄榄糊。"
+      "text": "$(thing)橄欖油$()就可以作為燈的燃料。要獲得橄欖油，首先要製作橄欖糊。"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "tfc:crafting/jute_net",
-      "text": "你得做一张黄麻网。"
+      "text": "你得做一張黃麻網。"
     },
     {
       "type": "patchouli:text",
-      "text": "在$(l:mechanics/pot)锅$()里用$(thing)水$()煮$(thing)橄榄糊$()可以得到$(thing)毛橄榄油$(). 把它和$(thing)黄麻网$()一起密封在$(l:mechanics/barrels)大桶$()里可以得到$(thing)橄榄油$(). 每单位橄榄油的燃烧时间是 8 Minecraft小时."
+      "text": "在$(l:mechanics/pot)鍋$()裡用$(thing)水$()煮$(thing)橄欖糊$()可以得到$(thing)毛橄欖油$(). 把它和$(thing)黃麻網$()一起密封在$(l:mechanics/barrels)大桶$()裡可以得到$(thing)橄欖油$(). 每單位橄欖油的燃燒時間是 8 Minecraft小時."
     },
     {
       "type": "patchouli:text",
       "anchor": "tallow",
-      "text": "另一种较弱的燃料是$(thing)蜡脂$()。要制作蜡脂，在$(l:mechanics/pot)陶锅$()中用淡水中煮 5 份$(thing)鲸脂$()。每单位蜡脂的燃烧时间只有不到 2 Minecraft小时。"
+      "text": "另一種較弱的燃料是$(thing)蠟脂$()。要製作蠟脂，在$(l:mechanics/pot)陶鍋$()中用淡水中煮 5 份$(thing)鯨脂$()。每單位蠟脂的燃燒時間只有不到 2 Minecraft小時。"
     },
     {
       "type": "patchouli:multiblock",
@@ -66,8 +66,8 @@
           "X": "tfc:candle[candles=3,lit=true]"
         }
       },
-      "name": "蜡烛",
-      "text": "将$(thing)线$()封入装有$(thing)蜡脂$()的桶中凝固就能制成蜡烛。",
+      "name": "蠟燭",
+      "text": "將$(thing)線$()封入裝有$(thing)蠟脂$()的桶中凝固就能製成蠟燭。",
       "enable_visualize": false
     },
     {
@@ -85,14 +85,14 @@
           "X": "tfc:metal/lamp/blue_steel[lit=true]"
         }
       },
-      "name": "熔岩灯",
-      "text": "熔岩灯是一种$(thing)永久光源$()。不过，只有$(l:mechanics/steel#blue_steel)蓝钢$()灯才能盛装熔岩。",
+      "name": "熔岩燈",
+      "text": "熔岩燈是一種$(thing)永久光源$()。不過，只有$(l:mechanics/steel#blue_steel)藍鋼$()燈才能盛裝熔岩。",
       "enable_visualize": false
     },
     {
       "type": "tfc:anvil_recipe",
       "recipe": "tfc:anvil/black_steel_chain",
-      "text": "$(thing)链子$()可以用来挂灯，在$(l:mechanics/anvils)砧$()上就能锻造。"
+      "text": "$(thing)鏈子$()可以用來掛燈，在$(l:mechanics/anvils)砧$()上就能鍛造。"
     }
   ],
   "read_by_default": true

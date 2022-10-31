@@ -1,0 +1,86 @@
+{
+  "__comment__": "This file was automatically created by mcresources",
+  "name": "食物和水",
+  "category": "tfc:getting_started",
+  "icon": "tfc:textures/item/food/orange.png",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "在TerraFirmaCraft中, 你不但要留意你的飢餓程度, 還要留意你的口渴程度. 飢餓和傳統Minecraft很類似, 大多數的食物會回覆大概五分之一的飢餓條, 有一些食物回覆的更少些, 例如$(thing)闊葉香蒲的根$(). 吃東西也會回覆你的$(thing)飽和度$(), 這可以理解為你吃的有多飽."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "有些食物非常的佔肚子, 會讓你更長時間不會飢餓. 而一些食物也可能有短暫的特殊效果.$(br2)你在遊玩遊戲的過程中會失去飢餓值, 如果你快跑, 游泳, 或者$(l:getting_started/size_and_weight#overburdening)負擔過重$(), 就會讓飢餓值減少的更快. 把滑鼠懸停在食物上就能看到食物的$(thing)飽和度$(), $(thing)含水量$(), 以及$(thing)營養成分$(). 按住$(item)$(k:key.sneak)$()就可以看到完整的工具提示."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "所有食物都可以用這種方法展開詳細的工具提示。食物的$(l:mechanics/decay)保質期$()也會在此顯示。需要注意的是，不是所有能吃的東西都有營養價值。比如$(l:mechanics/bread)麵糰$()可以吃，但毫無營養，而且也不會回覆飽和度或口渴度。這樣的食物吃了也沒多少好處。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "食物的工具提示一般看起來像這樣:$(br2)$(bold)橙子$()$(br)  $(2)$(bold)保質期: 1000年 六月4日 11:59 (約 1月 2天)$()$(br)  $(8)營養:$(br)  - 飽和度: 2%$(br)  - 口渴值: 10%$(br)$(a)  - 水果: 0.5"
+    },
+    {
+      "type": "patchouli:image",
+      "images": [
+        "tfc:textures/gui/book/gui/nutrition.png"
+      ],
+      "text": "這是營養介面。每個狀態條顯示了你目前的營養水平。",
+      "border": false
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "nutrients",
+      "text": "群巒傳說中有五種營養元素。它們都可以透過吃東西攝入：$(l)$(a)水果$()$()、$(l)$(2)蔬菜$()$()、$(l)$(c)蛋白質$()$()、$(l)$(6)穀物$()$()、和$(l)$(5)乳製品$()$()。保持每種營養元素都處於較高水平會增加你的最大生命值，反之則會降低生命值。食用食物就能攝入它所蘊含的營養元素了。透過製作$(l:mechanics/pot#soup)湯$()之類的$(thing)餐點$()可以將多種食材組合成為一頓食物。$(thing)用餐$()比分開吃烹飪材料更好，因為你的營養元素水平是根據你吃的最後幾個食物決定的。",
+      "title": "營養元素"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(a)水果$()$()：水果元素的主要來源於$(l:the_world/wild_fruits)果木$()。比如灌木和果樹。兩個值得注意的特例是$(l:mechanics/crops#pumpkin)南瓜$()和$(l:mechanics/crops#pumpkin)西瓜$()。這兩種植物也被算作是水果。$(br2)$(l)$(2)蔬菜$()$()：大部分$(l:mechanics/crops)農作物$()都蘊含這種營養元素。$(br2)$(l)$(c)蛋白質$()$()：$(l:the_world/wild_animals)動物$()肉都含有蛋白質。對於不想殺生的玩家來說，一個肉食的替代品則是$(l:mechanics/crops#soybean)大豆$()。大豆同時擁有蛋白質和蔬菜元素。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)$(6)穀物$()$()：穀物元素是由……呃，穀物提供的。比如$(l:mechanics/crops#barley)大麥$()。如何將穀物變成有用的食物主要寫在$(l:mechanics/bread)烤麵包$()章節。$(thing)香蒲根$()和$(thing)芋頭根$()也算穀物。$(br2)$(l)$(5)乳製品$()$()：所有乳製品都是用$(thing)奶$()製成的。想要獲得奶，就必須繁殖$(l:mechanics/animal_husbandry#dairy_animals)產奶動物$()。如何將生奶變成有用的食物主要寫在$(l:mechanics/dairy)奶製品$()章節。$(br2)食物一旦腐敗便完全不能吃了。關於防止食物腐敗的知識，請閱讀$(l:mechanics/decay)食物保鮮$()章節。"
+    },
+    {
+      "type": "patchouli:text",
+      "anchor": "thirst",
+      "text": "口渴度指的是你身體中的水分含量。口渴度和飢餓度一樣會緩慢流失。處於高溫環境，或進行劇烈運動都會使口渴度流失得更快。用$(item)$(k:key.use)$()點選$(thing)淡水$()水源方塊就可以回覆你的口渴度，但要注意喝鹹水反而會導致你損失更多口渴度，有時你還會獲得會讓你持續流失更多口渴度的$(thing)乾渴$()狀態效果。",
+      "title": "口渴度"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "multiblock": {
+        "pattern": [
+          [
+            "X"
+          ],
+          [
+            "Y"
+          ],
+          [
+            "0"
+          ]
+        ],
+        "mapping": {
+          "X": "minecraft:air",
+          "Y": "tfc:plant/cattail[part=lower,fluid=water]"
+        }
+      },
+      "name": "飲水安全",
+      "text": "河流和湖泊中的水往往都是淡水。另外，$(thing)闊葉香蒲$()之類的植物只會生長在淡水中。",
+      "enable_visualize": false
+    },
+    {
+      "type": "tfc:clay_knapping_recipe",
+      "recipe": "tfc:clay_knapping/jug",
+      "text": "將粘土$(l:getting_started/pottery)塑形$()並燒製成一隻$(l:getting_started/pottery#jug)罐$()便能將水帶在身邊了。手持空罐用$(item)$(k:key.use)$()點選水源就能盛水。按住$(item)$(k:key.use)$()便能從中喝水。"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "當你的飢餓度或口渴度太低時，你的移動和挖掘速度都會變得很緩慢，還會不斷受到傷害。你的營養元素會在死亡後重置。"
+    }
+  ],
+  "read_by_default": true,
+  "sortnum": 10
+}
