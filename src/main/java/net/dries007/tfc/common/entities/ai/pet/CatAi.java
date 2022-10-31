@@ -45,7 +45,8 @@ public class CatAi
         MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.LAST_SLEPT,
         MemoryModuleType.BREED_TARGET, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ADULT,
         MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.AVOID_TARGET,
-        MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY, MemoryModuleType.HOME, TFCBrain.SLEEP_POS.get(), TFCBrain.SIT_TIME.get()
+        MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.HURT_BY, MemoryModuleType.HOME, TFCBrain.SLEEP_POS.get(), TFCBrain.SIT_TIME.get(),
+        MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN
     );
 
     public static final int HOME_WANDER_DISTANCE = 36;
@@ -88,8 +89,8 @@ public class CatAi
     {
         brain.addActivity(TFCBrain.IDLE_AT_HOME.get(), ImmutableList.of(
             Pair.of(0, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60))), // looks at player, but its only try it every so often -- "Run Sometimes"
-            Pair.of(1, new BreedBehavior(1.0F)), // custom TFC breed behavior
-            Pair.of(1, new AnimalPanic(2.0F)), // if memory of being hit, runs away
+            Pair.of(1, new BreedBehavior(0.5f)), // custom TFC breed behavior
+            Pair.of(1, new AnimalPanic(1f)), // if memory of being hit, runs away
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
             Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(3, new RunIf<>(CatAi::isTooFarFromHome, new StrollToPoi(MemoryModuleType.HOME, 1F, 10, HOME_WANDER_DISTANCE - 10))),
@@ -106,7 +107,7 @@ public class CatAi
     {
         brain.addActivity(Activity.REST, 10, ImmutableList.of(
             new RunIf<>(e -> !e.isSleeping() && isTooFarFromHome(e), new StrollToPoi(MemoryModuleType.HOME, 1.2F, 5, HOME_WANDER_DISTANCE)),
-            new RunIf<>(e -> !e.isSleeping(), new CatFindSleepPos(1f)),
+            new RunIf<>(e -> !e.isSleeping(), new CatFindSleepPos()),
             new CatSleepBehavior()
         ));
     }
@@ -128,13 +129,14 @@ public class CatAi
         brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
             Pair.of(0, new FollowOwnerBehavior()),
             Pair.of(1, new StartAttacking<>(CatAi::getAttackTarget)),
-            Pair.of(2, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
+            Pair.of(2, new MeleeAttack(40)),
+            Pair.of(3, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
         ));
     }
 
     public static void initFollowActivity(Brain<? extends TamableMammal> brain)
     {
-        brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
+        brain.addActivity(TFCBrain.FOLLOW.get(), ImmutableList.of(
             Pair.of(0, new FollowOwnerBehavior()),
             Pair.of(1, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
         ));
@@ -153,8 +155,8 @@ public class CatAi
     {
         return new RunOne<>(ImmutableList.of(
             // Chooses one of these behaviors to run. Notice that all three of these are basically the fallback walking around behaviors, and it doesn't make sense to check them all every time
-            Pair.of(new RandomStroll(1.0F), 2), // picks a random place to walk to
-            Pair.of(new SetWalkTargetFromLookTarget(1.0F, 3), 2), // walk to what it is looking at
+            Pair.of(new RandomStroll(0.5f), 2), // picks a random place to walk to
+            Pair.of(new SetWalkTargetFromLookTarget(0.5F, 3), 2), // walk to what it is looking at
             Pair.of(new DoNothing(30, 60), 1))
         ); // do nothing for a certain period of time
     }
@@ -171,8 +173,9 @@ public class CatAi
 
     public static boolean isFarFromHome(TamableMammal entity, int distance)
     {
-        final GlobalPos globalPos = entity.getBrain().getMemory(MemoryModuleType.HOME).orElseThrow();
-        return globalPos.dimension() != entity.level.dimension() || globalPos.pos().distSqr(entity.blockPosition()) > distance * distance;
+        return entity.getBrain().getMemory(MemoryModuleType.HOME).map(globalPos ->
+            globalPos.dimension() != entity.level.dimension() || globalPos.pos().distSqr(entity.blockPosition()) > distance * distance
+        ).orElse(true);
     }
 
     public static boolean wantsToStopSitting(TamableMammal entity)
@@ -189,7 +192,6 @@ public class CatAi
     {
         final var brain = entity.getBrain();
         final Activity current = brain.getActiveNonCoreActivity().orElse(null);
-        final TamableMammal.Command command = entity.getCommand();
         if (current != null)
         {
             if (brain.hasMemoryValue(MemoryModuleType.AVOID_TARGET) && couldFlee(entity))
@@ -203,22 +205,28 @@ public class CatAi
                 {
                     if (isExtremelyFarFromHome(entity))
                     {
-                        brain.setActiveActivityIfPossible(TFCBrain.IDLE_AT_HOME.get());
+                        entity.setCommand(TamableMammal.Command.RELAX);
+                        brain.setActiveActivityIfPossible(Activity.IDLE);
                     }
                     else
                     {
+                        entity.setCommand(TamableMammal.Command.RELAX);
+                        brain.setActiveActivityIfPossible(TFCBrain.IDLE_AT_HOME.get());
+                    }
+                }
+                else if (current.equals(TFCBrain.IDLE_AT_HOME.get()))
+                {
+                    if (isExtremelyFarFromHome(entity))
+                    {
+                        entity.setCommand(TamableMammal.Command.RELAX);
                         brain.setActiveActivityIfPossible(Activity.IDLE);
                     }
                 }
-                else if (current.equals(TFCBrain.IDLE_AT_HOME.get()) && isExtremelyFarFromHome(entity))
+                else if (current.equals(TFCBrain.SIT.get()) && wantsToStopSitting(entity))
                 {
-                    brain.setActiveActivityIfPossible(Activity.IDLE);
+                    entity.setCommand(TamableMammal.Command.RELAX);
+                    brain.setActiveActivityIfPossible(TFCBrain.IDLE_AT_HOME.get());
                 }
-            }
-            final Activity commandedActivity = TamableMammal.Command.getActivity(command);
-            if (commandedActivity != null && !current.equals(commandedActivity))
-            {
-                brain.setActiveActivityIfPossible(commandedActivity);
             }
         }
     }

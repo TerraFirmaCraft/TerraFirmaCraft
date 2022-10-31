@@ -34,6 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.AnimationState;
 import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.TFCGroundPathNavigation;
 import net.dries007.tfc.common.entities.ai.livestock.LivestockAi;
@@ -54,6 +55,8 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     private static final EntityDataAccessor<Integer> GENETIC_SIZE = SynchedEntityData.defineId(TFCAnimal.class, EntityDataSerializers.INT);
 
     private static final CommonAnimalData ANIMAL_DATA = new CommonAnimalData(GENDER, BIRTHDAY, FAMILIARITY, USES, FERTILIZED, OLD_DAY, GENETIC_SIZE);
+
+    public final AnimationState walkingAnimation = new AnimationState();
 
     private long lastFed; //Last time(in days) this entity was fed
     private long lastFDecay; //Last time(in days) this entity's familiarity had decayed
@@ -257,6 +260,10 @@ public abstract class TFCAnimal extends Animal implements TFCAnimalProperties
     @Override
     public void tick()
     {
+        if (level.isClientSide)
+        {
+            EntityHelpers.startOrStop(walkingAnimation, EntityHelpers.isMovingOnLand(this), tickCount);
+        }
         super.tick();
         if (level.getGameTime() % 20 == 0)
         {

@@ -6,9 +6,11 @@
 
 package net.dries007.tfc.client.screen;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Widget;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.world.item.ItemStack;
 
 import net.minecraftforge.network.PacketDistributor;
 
@@ -16,6 +18,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.dries007.tfc.client.RenderHelpers;
 import net.dries007.tfc.common.entities.livestock.pet.TamableMammal;
 import net.dries007.tfc.network.PacketHandler;
+import net.dries007.tfc.network.PetCommandPacket;
 import net.dries007.tfc.network.ScreenButtonPacket;
 import net.dries007.tfc.util.Helpers;
 
@@ -39,7 +42,8 @@ public class PetCommandScreen extends Screen
             if (entity.willListenTo(command))
             {
                 addRenderableWidget(new Button(width / 2 - 100, height / 4 + y, 200, 20, Helpers.translateEnum(command), b -> {
-                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new ScreenButtonPacket(command.ordinal(), null));
+                    PacketHandler.send(PacketDistributor.SERVER.noArg(), new PetCommandPacket(entity, command));
+                    Minecraft.getInstance().setScreen(null);
                 }, RenderHelpers.makeButtonTooltip(this, Helpers.translatable(Helpers.getEnumTranslationKey(command) + ".tooltip"))));
                 y += 24;
             }
@@ -49,12 +53,18 @@ public class PetCommandScreen extends Screen
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTick)
     {
-        fillGradient(poseStack, 0, 0, width, height, 1615855616, -1602211792);
+        fillGradient(poseStack, 0, 0, width, height, -1072689136, -804253680);
         poseStack.pushPose();
         poseStack.scale(2.0F, 2.0F, 2.0F);
         drawCenteredString(poseStack, font, title, width / 2 / 2, 30, 16777215);
         poseStack.popPose();
         super.render(poseStack, mouseX, mouseY, partialTick);
+    }
+
+    @Override
+    protected void renderTooltip(PoseStack poseStack, ItemStack stack, int mouseX, int mouseY)
+    {
+        super.renderTooltip(poseStack, stack, mouseX, mouseY);
         for (Widget widget : renderables)
         {
             if (widget instanceof Button button && button.isHoveredOrFocused())

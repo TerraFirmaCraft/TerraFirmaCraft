@@ -20,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
@@ -37,10 +38,14 @@ import net.minecraft.world.level.Level;
 
 import net.dries007.tfc.client.ClientHelpers;
 import net.dries007.tfc.client.TFCSounds;
+import net.dries007.tfc.common.entities.AnimationState;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.PredicateMoveControl;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.livestock.Mammal;
+import net.dries007.tfc.common.entities.livestock.MammalProperties;
 import net.dries007.tfc.common.entities.livestock.TFCAnimal;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
@@ -50,12 +55,14 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 {
     public static AttributeSupplier.Builder createAttributes()
     {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 2F).add(Attributes.ATTACK_DAMAGE, 2f);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.MOVEMENT_SPEED, 0.3F).add(Attributes.ATTACK_DAMAGE, 2f);
     }
 
     public static final EntityDataAccessor<Optional<UUID>> DATA_OWNER = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.OPTIONAL_UUID);
-    public static final EntityDataAccessor<Integer> DATA_COMMAND = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Byte> DATA_PET_FLAGS = SynchedEntityData.defineId(TamableMammal.class, EntityDataSerializers.BYTE);
+
+    public final AnimationState sleepingAnimation = new AnimationState();
+    public final AnimationState sittingAnimation = new AnimationState();
 
     private static final int SLEEPING_FLAG = 1;
     private static final int SITTING_FLAG = 4;
@@ -63,6 +70,8 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     private static final int UNUSED_FLAG_2 = 16;
 
     private final Supplier<SoundEvent> sleeping;
+
+    protected Command command = Command.RELAX;
 
     public TamableMammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
@@ -72,16 +81,49 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     }
 
     @Override
+    public void createGenes(CompoundTag tag, TFCAnimalProperties male)
+    {
+        super.createGenes(tag, male);
+        if (getOwnerUUID() != null)
+        {
+            tag.putUUID("owner", getOwnerUUID());
+        }
+    }
+
+    @Override
+    public void applyGenes(CompoundTag tag, MammalProperties baby)
+    {
+        super.applyGenes(tag, baby);
+        if (baby instanceof TamableMammal tamable)
+        {
+            if (tag.hasUUID("owner"))
+            {
+                tamable.setOwnerUUID(tag.getUUID("owner"));
+            }
+        }
+    }
+
+    @Override
+    public void tick()
+    {
+        if (level.isClientSide)
+        {
+            EntityHelpers.startOrStop(sittingAnimation, isSitting(), tickCount);
+            EntityHelpers.startOrStop(sleepingAnimation, isSleeping(), tickCount);
+        }
+        super.tick();
+    }
+
+    @Override
     protected void defineSynchedData()
     {
         super.defineSynchedData();
         entityData.define(DATA_OWNER, Optional.empty());
-        entityData.define(DATA_COMMAND, Command.RELAX.ordinal());
         entityData.define(DATA_PET_FLAGS, (byte) 0);
     }
 
     /**
-     * Used to determine if the command can be on the pet screen on the client.
+     * Used to determine if the command can be on the pet screen on the client, and check permission for commands on the server
      */
     public boolean willListenTo(Command command)
     {
@@ -95,6 +137,10 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     {
         if (getOwner() != null && getOwner().equals(player))
         {
+            if (!willListenTo(command))
+            {
+                return;
+            }
             switch (command)
             {
                 case RELAX -> {
@@ -116,8 +162,12 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
                     getBrain().eraseMemory(TFCBrain.SIT_TIME.get());
                 }
             }
-            setCommand(command);
-
+            this.command = command;
+            Activity commandedActivity = Command.getActivity(command);
+            if (commandedActivity != null)
+            {
+                getBrain().setActiveActivityIfPossible(commandedActivity);
+            }
         }
         else
         {
@@ -149,16 +199,6 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     private byte setBit(byte oldBit, int offset, boolean value)
     {
         return (byte) (value ? (oldBit | offset) : (oldBit & ~offset));
-    }
-
-    public Command getCommand()
-    {
-        return Command.valueOf(entityData.get(DATA_COMMAND));
-    }
-
-    public void setCommand(Command command)
-    {
-        entityData.set(DATA_COMMAND, command.ordinal());
     }
 
     @Nullable
@@ -208,9 +248,9 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     public void spawnTamingParticles(ParticleOptions particle)
     {
-        for (int i = 0; i < 7; ++i)
+        if (level instanceof ServerLevel serverLevel)
         {
-            this.level.addParticle(particle, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D);
+            serverLevel.sendParticles(particle, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), 7, random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D, random.nextGaussian() * 0.02D, 1);
         }
     }
 
@@ -243,7 +283,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         {
             tag.putUUID("Owner", getOwnerUUID());
         }
-        tag.putInt("command", getCommand().ordinal());
+        tag.putInt("command", command.ordinal());
         tag.putByte("petFlags", entityData.get(DATA_PET_FLAGS));
     }
 
@@ -255,7 +295,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         {
             setOwnerUUID(tag.getUUID("Owner"));
         }
-        setCommand(Command.valueOf(tag.getInt("command")));
+        command = Command.valueOf(tag.getInt("command"));
         entityData.set(DATA_PET_FLAGS, tag.getByte("petFlags"));
     }
 

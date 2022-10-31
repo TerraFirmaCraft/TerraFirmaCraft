@@ -27,7 +27,10 @@ import net.minecraft.world.level.Level;
 import com.mojang.serialization.Dynamic;
 import net.dries007.tfc.client.TFCSounds;
 import net.dries007.tfc.common.TFCTags;
+import net.dries007.tfc.common.entities.EntityHelpers;
 import net.dries007.tfc.common.entities.ai.pet.CatAi;
+import net.dries007.tfc.common.entities.livestock.MammalProperties;
+import net.dries007.tfc.common.entities.livestock.TFCAnimalProperties;
 import net.dries007.tfc.config.TFCConfig;
 
 public class TFCCat extends TamableMammal
@@ -38,6 +41,33 @@ public class TFCCat extends TamableMammal
     public TFCCat(EntityType<? extends TamableMammal> type, Level level)
     {
         super(type, level, TFCSounds.CAT, TFCConfig.SERVER.catConfig);
+    }
+
+    @Override
+    public void createGenes(CompoundTag tag, TFCAnimalProperties male)
+    {
+        super.createGenes(tag, male);
+        if (male instanceof TFCCat maleCat)
+        {
+            tag.putInt("catType", random.nextBoolean() ? maleCat.getCatType() : getCatType());
+        }
+    }
+
+    @Override
+    public void applyGenes(CompoundTag tag, MammalProperties baby)
+    {
+        super.applyGenes(tag, baby);
+        if (baby instanceof TFCCat cat)
+        {
+            cat.setCatType(EntityHelpers.getIntOrDefault(tag, "catType", random.nextInt(10)));
+        }
+    }
+
+    @Override
+    public void initCommonAnimalData()
+    {
+        super.initCommonAnimalData();
+        setCatType(random.nextInt(10));
     }
 
     @Override

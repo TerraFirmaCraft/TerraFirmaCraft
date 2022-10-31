@@ -9,6 +9,7 @@ package net.dries007.tfc.common.entities.ai.pet;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.behavior.Behavior;
+import net.minecraft.world.entity.ai.behavior.EntityTracker;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.memory.WalkTarget;
@@ -19,7 +20,7 @@ public class FollowOwnerBehavior extends Behavior<TamableMammal>
 {
     public FollowOwnerBehavior()
     {
-        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_ABSENT));
+        super(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT));
     }
 
     @Override
@@ -33,7 +34,7 @@ public class FollowOwnerBehavior extends Behavior<TamableMammal>
     {
         if (entity.getOwner() != null)
         {
-            entity.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(entity.getOwner(), 1f, 8));
+            entity.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(new EntityTracker(entity.getOwner(), false), 1f, 6));
         }
     }
 }

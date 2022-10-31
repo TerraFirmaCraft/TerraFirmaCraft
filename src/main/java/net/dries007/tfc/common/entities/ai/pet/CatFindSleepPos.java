@@ -27,7 +27,7 @@ import net.dries007.tfc.util.Helpers;
 public class CatFindSleepPos extends Behavior<PathfinderMob>
 {
 
-    public CatFindSleepPos(float speedModifier)
+    public CatFindSleepPos()
     {
         super(ImmutableMap.of(MemoryModuleType.HOME, MemoryStatus.VALUE_PRESENT, MemoryModuleType.AVOID_TARGET, MemoryStatus.VALUE_ABSENT, MemoryModuleType.WALK_TARGET, MemoryStatus.REGISTERED, TFCBrain.SLEEP_POS.get(), MemoryStatus.REGISTERED));
     }
