@@ -28,17 +28,19 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
-import net.dries007.tfc.common.blocks.plant.ITallPlant;
-import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import org.jetbrains.annotations.Nullable;
 
 public class DeadDoubleCropBlock extends DeadCropBlock
 {
     public static final EnumProperty<DoubleCropBlock.Part> PART = TFCBlockStateProperties.DOUBLE_CROP_PART;
+
+    public DeadDoubleCropBlock(ExtendedProperties properties, Crop crop)
+    {
+        this(properties, crop.getClimateRange());
+    }
 
     public DeadDoubleCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
     {

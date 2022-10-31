@@ -21,6 +21,11 @@ public class DeadClimbingCropBlock extends DeadDoubleCropBlock
 {
     public static final BooleanProperty STICK = TFCBlockStateProperties.STICK;
 
+    public DeadClimbingCropBlock(ExtendedProperties properties, Crop crop)
+    {
+        this(properties, crop.getClimateRange());
+    }
+
     public DeadClimbingCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
     {
         super(properties, range);

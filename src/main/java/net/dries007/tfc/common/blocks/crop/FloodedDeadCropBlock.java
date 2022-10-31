@@ -31,6 +31,11 @@ public class FloodedDeadCropBlock extends DeadCropBlock implements IFluidLoggabl
 {
     public static final FluidProperty FLUID = TFCBlockStateProperties.FRESH_WATER;
 
+    public FloodedDeadCropBlock(ExtendedProperties properties, Crop crop)
+    {
+        this(properties, crop.getClimateRange());
+    }
+
     public FloodedDeadCropBlock(ExtendedProperties properties, Supplier<ClimateRange> range)
     {
         super(properties, range);

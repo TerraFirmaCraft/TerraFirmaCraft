@@ -138,15 +138,10 @@ public enum Crop implements StringRepresentable, RegistryCrop
         return wildFactory.get();
     }
 
-    public FarmlandBlockEntity.NutrientType getDefaultPrimaryNutrient()
+    @Override
+    public NutrientType getPrimaryNutrient()
     {
         return primaryNutrient;
-    }
-
-    @Override
-    public Supplier<FarmlandBlockEntity.NutrientType> getPrimaryNutrient()
-    {
-        return TFCConfig.SERVER.cropPrimaryNutrients.get(this);
     }
 
     @Override
@@ -167,36 +162,4 @@ public enum Crop implements StringRepresentable, RegistryCrop
         return TFCItems.CROP_SEEDS.get(this);
     }
 
-    public int getDefaultGrowthTime()
-    {
-        return growthTime;
-    }
-
-    @Override
-    public Supplier<Integer> getBaseGrowthTime()
-    {
-        return TFCConfig.SERVER.cropGrowthTimes.get(this);
-    }
-
-    public int getDefaultConsumptionTime()
-    {
-        return nutrientTime;
-    }
-
-    @Override
-    public Supplier<Integer> getNutrientConsumptionTime()
-    {
-        return TFCConfig.SERVER.cropNutrientConsumptionTimes.get(this);
-    }
-
-    public float getDefaultResupplyFactor()
-    {
-        return resupplyFactor;
-    }
-
-    @Override
-    public Supplier<Double> getNutrientResupplyFactor()
-    {
-        return TFCConfig.SERVER.cropNutrientResupplyFactors.get(this);
-    }
 }

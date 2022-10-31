@@ -40,7 +40,6 @@ import net.dries007.tfc.common.blocks.soil.HoeOverlayBlock;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.calendar.Calendars;
 import net.dries007.tfc.util.climate.ClimateRange;
-import net.dries007.tfc.util.registry.RegistryCrop;
 
 public abstract class CropBlock extends net.minecraft.world.level.block.CropBlock implements HoeOverlayBlock, ICropBlock, IForgeBlockExtension, EntityBlockExtension
 {
@@ -48,7 +47,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     public static final VoxelShape HALF_SHAPE = box(2, 0, 2, 14, 8, 14);
     public static final VoxelShape FULL_SHAPE = box(2, 0, 2, 14, 16, 14);
 
-    protected final Supplier<FarmlandBlockEntity.NutrientType> primaryNutrient;
+    protected final FarmlandBlockEntity.NutrientType primaryNutrient;
     protected final Supplier<? extends Block> dead;
     protected final Supplier<? extends Item> seeds;
     protected final Supplier<ClimateRange> climateRange;
@@ -56,17 +55,17 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     private final ExtendedProperties extendedProperties;
     private final int maxAge;
 
-    protected CropBlock(ExtendedProperties properties, int maxAge, RegistryCrop crop)
+    protected CropBlock(ExtendedProperties properties, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
     {
         super(properties.properties());
 
         this.extendedProperties = properties;
         this.maxAge = maxAge;
 
-        this.dead = crop.getDeadBlock();
-        this.seeds = crop.getSeedItem();
-        this.primaryNutrient = crop.getPrimaryNutrient();
-        this.climateRange = crop.getClimateRange();
+        this.dead = dead;
+        this.seeds = seeds;
+        this.primaryNutrient = primaryNutrient;
+        this.climateRange = climateRange;
 
         registerDefaultState(defaultBlockState().setValue(getAgeProperty(), 0));
     }
@@ -226,7 +225,7 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     @Override
     public FarmlandBlockEntity.NutrientType getPrimaryNutrient()
     {
-        return primaryNutrient.get();
+        return primaryNutrient;
     }
 
     protected abstract void postGrowthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);

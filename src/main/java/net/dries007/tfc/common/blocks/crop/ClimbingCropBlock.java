@@ -6,8 +6,8 @@
 
 package net.dries007.tfc.common.blocks.crop;
 
-import java.util.function.Supplier;
 
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -40,10 +40,10 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
 {
     public static final BooleanProperty STICK = TFCBlockStateProperties.STICK;
 
-    public static ClimbingCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, RegistryCrop crop)
+    public static ClimbingCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, Crop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(singleStages + doubleStages - 1);
-        return new ClimbingCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, crop)
+        return new ClimbingCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -53,9 +53,9 @@ public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhos
         };
     }
 
-    protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, RegistryCrop crop)
+    protected ClimbingCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
     {
-        super(properties, maxSingleAge, maxAge, crop);
+        super(properties, maxSingleAge, maxAge, dead, seeds, primaryNutrient, climateRange);
         registerDefaultState(getStateDefinition().any().setValue(STICK, false).setValue(PART, Part.BOTTOM));
     }
 

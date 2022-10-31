@@ -8,11 +8,13 @@ package net.dries007.tfc.common.blocks.crop;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -26,19 +28,23 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import net.dries007.tfc.common.TFCTags;
 import net.dries007.tfc.common.blockentities.CropBlockEntity;
+import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
 import net.dries007.tfc.common.blocks.ExtendedProperties;
 import net.dries007.tfc.common.blocks.TFCBlockStateProperties;
+import net.dries007.tfc.common.blocks.TFCBlocks;
+import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
-import net.dries007.tfc.util.registry.RegistryCrop;
+import net.dries007.tfc.util.climate.ClimateRange;
+import net.dries007.tfc.util.climate.ClimateRanges;
 
 public abstract class DoubleCropBlock extends CropBlock
 {
     public static final EnumProperty<Part> PART = TFCBlockStateProperties.DOUBLE_CROP_PART;
 
-    public static DoubleCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, RegistryCrop crop)
+    public static DoubleCropBlock create(ExtendedProperties properties, int singleStages, int doubleStages, Crop crop)
     {
         final IntegerProperty property = TFCBlockStateProperties.getAgeProperty(singleStages + doubleStages - 1);
-        return new DoubleCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, crop)
+        return new DoubleCropBlock(properties, singleStages - 1, singleStages + doubleStages - 1, TFCBlocks.DEAD_CROPS.get(crop), TFCItems.CROP_SEEDS.get(crop), crop.getPrimaryNutrient(), ClimateRanges.CROPS.get(crop))
         {
             @Override
             public IntegerProperty getAgeProperty()
@@ -51,9 +57,9 @@ public abstract class DoubleCropBlock extends CropBlock
     protected final int maxSingleAge;
     protected final float maxSingleGrowth;
 
-    protected DoubleCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, RegistryCrop crop)
+    protected DoubleCropBlock(ExtendedProperties properties, int maxSingleAge, int maxAge, Supplier<? extends Block> dead, Supplier<? extends Item> seeds, FarmlandBlockEntity.NutrientType primaryNutrient, Supplier<ClimateRange> climateRange)
     {
-        super(properties, maxAge, crop);
+        super(properties, maxAge, dead, seeds, primaryNutrient, climateRange);
 
         this.maxSingleAge = maxSingleAge;
         this.maxSingleGrowth = (float) maxSingleAge / maxAge;
