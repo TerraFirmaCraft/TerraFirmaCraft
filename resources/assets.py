@@ -255,7 +255,7 @@ def generate(rm: ResourceManager):
         rm.item_model('rotten_' + name, 'tfc:item/food/%s' % name)
 
     rm.blockstate('jack_o_lantern', variants=four_rotations('minecraft:block/jack_o_lantern', (90, 0, 180, 270))).with_tag('tfc:mineable_with_sharp_tool').with_block_loot('minecraft:carved_pumpkin').with_lang(lang('Jack o\'Lantern'))
-    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern')
+    rm.item_model('jack_o_lantern', parent='minecraft:block/jack_o_lantern', no_textures=True)
 
     rm.blockstate('freshwater_bubble_column', model='minecraft:block/water').with_lang(lang('bubble column'))
     rm.blockstate('saltwater_bubble_column', model='tfc:block/fluid/salt_water').with_lang(lang('bubble column'))

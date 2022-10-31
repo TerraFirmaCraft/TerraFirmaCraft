@@ -8,6 +8,9 @@ package net.dries007.tfc.mixin.client;
 
 import net.minecraft.client.renderer.entity.FishingHookRenderer;
 
+import net.minecraft.world.item.FishingRodItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
@@ -19,14 +22,18 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class FishingHookRendererMixin
 {
 
+    /**
+     * Allows our fishing rods to masquerade as vanilla fishing rods when checking what hand they should render in.
+     */
     @ModifyVariable(
         method = "render(Lnet/minecraft/world/entity/projectile/FishingHook;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-        at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/entity/player/Player;getMainHandItem()Lnet/minecraft/world/item/ItemStack;"),
+        at = @At(value = "LOAD", ordinal = 0),
+        ordinal = 0,
         index = 13,
-        ordinal = 0
+        name = "itemstack"
     )
-    private FishingHookRenderer flipFishingHook(FishingHookRenderer value)
+    private ItemStack allowAnyFishingRods(ItemStack stack)
     {
-        return value;
+        return stack.getItem() instanceof FishingRodItem ? new ItemStack(Items.FISHING_ROD) : stack;
     }
 }
