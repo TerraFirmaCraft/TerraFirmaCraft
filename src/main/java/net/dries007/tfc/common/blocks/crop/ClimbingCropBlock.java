@@ -33,7 +33,6 @@ import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.util.Helpers;
 import net.dries007.tfc.util.climate.ClimateRange;
 import net.dries007.tfc.util.climate.ClimateRanges;
-import net.dries007.tfc.util.registry.RegistryCrop;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ClimbingCropBlock extends DoubleCropBlock implements IGhostBlockHandler

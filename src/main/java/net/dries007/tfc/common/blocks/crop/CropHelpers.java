@@ -94,7 +94,7 @@ public final class CropHelpers
         }
 
         // Total growth is based on the ticks and the nutrients consumed. It is then allocated to actual growth or expiry based on other factors.
-        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * cropBlock.getGrowthFactor(level, pos, state, crop) + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
+        float totalGrowthDelta = Helpers.uniform(random, 0.9f, 1.1f) * tickDelta * CropHelpers.GROWTH_FACTOR + nutrientsConsumed * NUTRIENT_GROWTH_FACTOR;
         final float initialGrowth = crop.getGrowth();
         float growth = initialGrowth, expiry = crop.getExpiry(), actualYield = crop.getYield();
 
