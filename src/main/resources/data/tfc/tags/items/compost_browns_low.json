@@ -10,6 +10,7 @@
     "tfc:plant/dry_phragmite",
     "tfc:plant/ivy",
     "tfc:plant/jungle_vines",
-    "#tfc:fallen_leaves"
+    "#tfc:fallen_leaves",
+    "minecraft:hanging_roots"
   ]
 }
