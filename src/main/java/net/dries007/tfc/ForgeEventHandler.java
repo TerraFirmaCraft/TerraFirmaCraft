@@ -677,9 +677,10 @@ public final class ForgeEventHandler
             level.getBlockEntity(pos, TFCBlockEntities.TICK_COUNTER.get()).ifPresent(TickCounterBlockEntity::resetCounter);
             event.setCanceled(true);
         }
-        else if (block == Blocks.CARVED_PUMPKIN)
+        else if (block == Blocks.CARVED_PUMPKIN || block == TFCBlocks.JACK_O_LANTERN.get())
         {
             level.setBlockAndUpdate(pos, Helpers.copyProperty(TFCBlocks.JACK_O_LANTERN.get().defaultBlockState(), state, HorizontalDirectionalBlock.FACING));
+            TickCounterBlockEntity.reset(level, pos);
             event.setCanceled(true);
         }
     }
