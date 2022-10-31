@@ -38,9 +38,4 @@ public interface ICropBlock
 
     FarmlandBlockEntity.NutrientType getPrimaryNutrient();
 
-    float getGrowthFactor(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);
-
-    float getNutrientConsumptionFactor(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);
-
-    float getNutrientResupplyFactor(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);
 }

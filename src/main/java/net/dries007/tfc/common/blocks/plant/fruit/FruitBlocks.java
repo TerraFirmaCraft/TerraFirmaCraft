@@ -23,6 +23,7 @@ import net.dries007.tfc.common.blocks.TFCBlocks;
 import net.dries007.tfc.common.items.Food;
 import net.dries007.tfc.common.items.TFCItems;
 import net.dries007.tfc.config.TFCConfig;
+import net.dries007.tfc.util.calendar.ICalendar;
 import net.dries007.tfc.util.climate.ClimateRanges;
 
 import static net.dries007.tfc.common.blocks.plant.fruit.Lifecycle.*;
@@ -126,7 +127,7 @@ public final class FruitBlocks
             this.product = product;
             this.stages = stages;
             this.serializedName = name().toLowerCase(Locale.ROOT);
-            this.treeGrowthDays = treeGrowthDays;
+            this.treeGrowthDays = treeGrowthDays * ICalendar.TICKS_IN_DAY;
         }
 
         public Block createSapling()

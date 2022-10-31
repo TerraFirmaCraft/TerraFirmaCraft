@@ -945,7 +945,7 @@ DEFAULT_LANG = {
     'subtitles.entity.tfc.sabertooth.hurt': 'Sabertooth yowls',
     'subtitles.entity.tfc.sabertooth.sleep': 'Sabertooth snores',
     'subtitles.entity.tfc.rooster.cry': 'Rooster calls',
-    'subtitles.generic.tfc.dirt_slide': 'Dirt landslides',
+    'subtitles.generic.tfc.dirt_slide': 'Soil landslides',
     'subtitles.generic.tfc.rock_slide_long': 'Rock collapses',
     'subtitles.generic.tfc.rock_slide_long_fake': 'Rock creaks',
     'subtitles.generic.tfc.rock_slide_short': 'Rock crumbles',

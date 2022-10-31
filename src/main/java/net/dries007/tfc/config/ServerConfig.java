@@ -10,8 +10,6 @@ import java.util.EnumMap;
 import java.util.function.Function;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import net.dries007.tfc.common.blockentities.FarmlandBlockEntity;
-import net.dries007.tfc.common.blocks.crop.Crop;
 import net.dries007.tfc.common.blocks.plant.fruit.FruitBlocks;
 import net.dries007.tfc.common.blocks.wood.Wood;
 import net.dries007.tfc.common.capabilities.size.Size;
@@ -19,7 +17,6 @@ import net.dries007.tfc.config.animals.MammalConfig;
 import net.dries007.tfc.config.animals.OviparousAnimalConfig;
 import net.dries007.tfc.config.animals.ProducingMammalConfig;
 import net.dries007.tfc.util.Alloy;
-import net.dries007.tfc.util.calendar.ICalendar;
 
 import static net.dries007.tfc.TerraFirmaCraft.*;
 
@@ -126,10 +123,7 @@ public class ServerConfig
     public final EnumMap<FruitBlocks.Tree, ForgeConfigSpec.IntValue> fruitSaplingGrowthDays;
     public final ForgeConfigSpec.IntValue bananaSaplingGrowthDays;
     // Blocks - Crops
-    public final EnumMap<Crop, ForgeConfigSpec.EnumValue<FarmlandBlockEntity.NutrientType>> cropPrimaryNutrients;
-    public final EnumMap<Crop, ForgeConfigSpec.IntValue> cropGrowthTimes;
-    public final EnumMap<Crop, ForgeConfigSpec.IntValue> cropNutrientConsumptionTimes;
-    public final EnumMap<Crop, ForgeConfigSpec.DoubleValue> cropNutrientResupplyFactors;
+    public final ForgeConfigSpec.DoubleValue cropGrowthModifier;
 
     // Items - Small Vessel
     public final ForgeConfigSpec.IntValue smallVesselCapacity;
@@ -234,8 +228,10 @@ public class ServerConfig
         ).define("enableForcedTFCGameRules", true);
         enableFireArrowSpreading = builder.apply("enableFireArrowSpreading").comment("Enable fire arrows and fireballs to spread fire and light blocks.").define("enableFireArrowSpreading", true);
         fireStarterChance = builder.apply("fireStarterChance").comment("Base probability for a firestarter to start a fire. May change based on circumstances").defineInRange("fireStarterChance", 0.5, 0, 1);
-        requireOffhandForRockKnapping = builder.apply("requireOffhandForRockKnapping").comment("If a rock is needed in the offhand in order to knap.").define("requireOffhandForRockKnapping", false);
-
+        requireOffhandForRockKnapping = builder.apply("requireOffhandForRockKnapping").comment(
+            "If true, knapping with rocks will only work when one rock is held in each hand (main hand and off hand)",
+            "If false, knapping with rocks will work either with main and off hand, or by holding at least two rocks in the main hand"
+        ).define("requireOffhandForRockKnapping", false);
         innerBuilder.pop().push("blocks").push("farmland");
 
         enableFarmlandCreation = builder.apply("enableFarmlandCreation").comment("If TFC soil blocks are able to be created into farmland using a hoe.").define("enableFarmlandCreation", true);
@@ -380,14 +376,14 @@ public class ServerConfig
 
         innerBuilder.pop().push("saplings");
 
-        globalSaplingGrowthModifier = builder.apply("globalSaplingGrowthModifier").comment("Modifier applied to the growth time of every (non-fruit) sapling").defineInRange("globalSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
-        globalFruitSaplingGrowthModifier = builder.apply("globalFruitSaplingGrowthModifier").comment("Modifier applied to the growth time of every fruit tree sapling").defineInRange("globalFruitSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
+        globalSaplingGrowthModifier = builder.apply("globalSaplingGrowthModifier").comment("Modifier applied to the growth time of every (non-fruit) sapling. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("globalSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
+        globalFruitSaplingGrowthModifier = builder.apply("globalFruitSaplingGrowthModifier").comment("Modifier applied to the growth time of every fruit tree sapling. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("globalFruitSaplingGrowthModifier", 1d, 0d, Double.MAX_VALUE);
 
         saplingGrowthDays = new EnumMap<>(Wood.class);
         for (Wood wood : Wood.VALUES)
         {
             final String valueName = String.format("%sSaplingGrowthDays", wood.getSerializedName());
-            saplingGrowthDays.put(wood, builder.apply(valueName).comment(String.format("Days for a %s tree sapling to be eligible to grow", wood.getSerializedName())).defineInRange(valueName, wood.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
+            saplingGrowthDays.put(wood, builder.apply(valueName).comment(String.format("Days for a %s tree sapling to be ready to grow into a full tree.", wood.getSerializedName())).defineInRange(valueName, wood.defaultDaysToGrow(), 0, Integer.MAX_VALUE));
         }
         fruitSaplingGrowthDays = new EnumMap<>(FruitBlocks.Tree.class);
         for (FruitBlocks.Tree tree : FruitBlocks.Tree.values())
@@ -399,21 +395,7 @@ public class ServerConfig
 
         innerBuilder.pop().push("crops");
 
-        cropPrimaryNutrients = new EnumMap<>(Crop.class);
-        cropGrowthTimes = new EnumMap<>(Crop.class);
-        cropNutrientConsumptionTimes = new EnumMap<>(Crop.class);
-        cropNutrientResupplyFactors = new EnumMap<>(Crop.class);
-        for (Crop crop : Crop.values())
-        {
-            final String nutrient = String.format("%sPrimaryNutrient", crop.getSerializedName());
-            cropPrimaryNutrients.put(crop, builder.apply(nutrient).comment(String.format("Nutrient consumed by %s crops", crop.getSerializedName())).defineEnum(nutrient, crop.getDefaultPrimaryNutrient()));
-            final String growthTime = String.format("%sGrowthTime", crop.getSerializedName());
-            cropGrowthTimes.put(crop, builder.apply(growthTime).comment(String.format("Average time in ticks for a %s crop to grow without nutrients. This is not necessarily the time it will take to grow. 24000 ticks = 1 day", crop.getSerializedName())).defineInRange(growthTime, crop.getDefaultGrowthTime(), 1, Integer.MAX_VALUE));
-            final String nutTime = String.format("%sNutrientConsumptionTime", crop.getSerializedName());
-            cropNutrientConsumptionTimes.put(crop, builder.apply(nutTime).comment(String.format("Average time in ticks for a %s crop to consume the full amount of a nutrient. This is not necessarily the time it will take to do it. 24000 ticks = 1 day", crop.getSerializedName())).defineInRange(nutTime, crop.getDefaultConsumptionTime(), 1, Integer.MAX_VALUE));
-            final String resupply = String.format("%sNutrientResupplyFactor", crop.getSerializedName());
-            cropNutrientResupplyFactors.put(crop, builder.apply(resupply).comment(String.format("Fraction of nutrients consumed by %s crop provided to the other nutrients as resupply.", crop.getSerializedName())).defineInRange(resupply, crop.getDefaultResupplyFactor(), 0f, 1f));
-        }
+        cropGrowthModifier = builder.apply("cropGrowthModifier").comment("Modifier applied to the growth time of every crop. The modifier multiplies the ticks it takes to grow, so larger values cause longer growth times. For example, a value of 2 doubles the growth time.").defineInRange("cropGrowthModifier", 1, 0, Double.MAX_VALUE);
 
         innerBuilder.pop().pop().push("items").push("smallVessel");
 

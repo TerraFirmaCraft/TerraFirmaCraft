@@ -102,7 +102,7 @@ def validate_textures(model_locations):
                             tested += 1
                             path = ASSETS_PATH + 'tfc/textures/%s.png' % res.path
                             if len(glob(path)) == 0:
-                                print('Using missing texture, unable to load %s : java.io.FileNotFoundException: %s' % (f, path))
+                                print('Texture file not found. Name: %s Filepath: %s' % (f, path))
                                 errors += 1
                             else:
                                 existing_textures.append(path)

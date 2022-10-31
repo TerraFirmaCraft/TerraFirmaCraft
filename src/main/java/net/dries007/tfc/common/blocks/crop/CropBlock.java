@@ -52,9 +52,6 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     protected final Supplier<? extends Block> dead;
     protected final Supplier<? extends Item> seeds;
     protected final Supplier<ClimateRange> climateRange;
-    protected final Supplier<Integer> baseGrowthTime;
-    protected final Supplier<Integer> nutrientConsumptionTime;
-    protected final Supplier<Double> nutrientResupplyFactor;
 
     private final ExtendedProperties extendedProperties;
     private final int maxAge;
@@ -70,9 +67,6 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
         this.seeds = crop.getSeedItem();
         this.primaryNutrient = crop.getPrimaryNutrient();
         this.climateRange = crop.getClimateRange();
-        this.baseGrowthTime = crop.getBaseGrowthTime();
-        this.nutrientConsumptionTime = crop.getNutrientConsumptionTime();
-        this.nutrientResupplyFactor = crop.getNutrientResupplyFactor();
 
         registerDefaultState(defaultBlockState().setValue(getAgeProperty(), 0));
     }
@@ -233,24 +227,6 @@ public abstract class CropBlock extends net.minecraft.world.level.block.CropBloc
     public FarmlandBlockEntity.NutrientType getPrimaryNutrient()
     {
         return primaryNutrient.get();
-    }
-
-    @Override
-    public float getGrowthFactor(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)
-    {
-        return 1f / baseGrowthTime.get();
-    }
-
-    @Override
-    public float getNutrientConsumptionFactor(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)
-    {
-        return 1f / nutrientConsumptionTime.get();
-    }
-
-    @Override
-    public float getNutrientResupplyFactor(Level level, BlockPos pos, BlockState state, CropBlockEntity crop)
-    {
-        return nutrientResupplyFactor.get().floatValue();
     }
 
     protected abstract void postGrowthTick(Level level, BlockPos pos, BlockState state, CropBlockEntity crop);

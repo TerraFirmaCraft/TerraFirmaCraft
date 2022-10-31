@@ -32,12 +32,12 @@ public class RottenCompostItem extends Item
         final BlockPos pos = context.getClickedPos();
         final BlockState state = level.getBlockState(pos);
 
-        if (state.getBlock() instanceof ICropBlock crop)
+        if (state.getBlock() instanceof ICropBlock cropBlock)
         {
-            if (!level.isClientSide && level.getBlockEntity(pos) instanceof CropBlockEntity be)
+            if (!level.isClientSide && level.getBlockEntity(pos) instanceof CropBlockEntity cropBlockEntity)
             {
-                final boolean mature = be.getGrowth() >= 1f;
-                crop.die(level, pos, state, mature);
+                final boolean mature = cropBlockEntity.getGrowth() >= 1f;
+                cropBlock.die(level, pos, state, mature);
                 if (context.getPlayer() instanceof ServerPlayer player)
                 {
                     TFCAdvancements.ROTTEN_COMPOST_KILL.trigger(player);

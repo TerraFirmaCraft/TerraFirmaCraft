@@ -68,8 +68,7 @@ public interface IFarmland
     }
 
     /**
-     * @deprecated use resupplyModifier to interact with the crop's consumption/resupply. this is unused
-     * @return The fraction [0, 1] of a nutrient consumed to add to non-consumed nutrients
+     * @deprecated override consumeNutrientAndResupplyOthers
      */
     @Deprecated
     default float resupplyFraction()
@@ -78,25 +77,11 @@ public interface IFarmland
     }
 
     /**
-     * @return A positive number to multiply the resupply amount of a crop block by.
-     */
-    default float resupplyModifier()
-    {
-        return 1f;
-    }
-
-    @Deprecated
-    default float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
-    {
-        return consumeNutrientAndResupplyOthers(type, amount, 1 / 6f);
-    }
-
-    /**
      * Consume up to {@code amount} of nutrient {@code type}.
-     * Resupplies other nutrient by default what.
+     * Resupplies other nutrient by 1/6 of the amount consumed.
      * @return The amount of nutrient {@code type} that was actually consumed.
      */
-    default float consumeNutrientAndResupplyOthers(NutrientType type, float amount, float resupplyFraction)
+    default float consumeNutrientAndResupplyOthers(NutrientType type, float amount)
     {
         final float startValue = getNutrient(type);
         final float consumed = Math.min(startValue, amount);
@@ -106,7 +91,7 @@ public interface IFarmland
         {
             if (other != type)
             {
-                addNutrient(other, consumed * resupplyFraction * resupplyModifier());
+                addNutrient(other, consumed * 1 / 6f);
             }
         }
 

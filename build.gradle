@@ -213,8 +213,6 @@ jar {
 mixin {
     add(sourceSets.main, "${mod_id}.refmap.json")
     add(sourceSets.test, "${mod_id}.refmap.json")
-
-    showMessageTypes=true
 }
 
 curseforge {

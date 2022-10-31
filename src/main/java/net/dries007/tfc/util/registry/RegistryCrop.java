@@ -28,9 +28,4 @@ public interface RegistryCrop
 
     Supplier<? extends Item> getSeedItem();
 
-    Supplier<Integer> getBaseGrowthTime();
-
-    Supplier<Integer> getNutrientConsumptionTime();
-
-    Supplier<Double> getNutrientResupplyFactor();
 }
