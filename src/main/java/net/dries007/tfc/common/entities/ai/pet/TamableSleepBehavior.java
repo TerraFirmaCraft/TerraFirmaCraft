@@ -7,7 +7,6 @@
 package net.dries007.tfc.common.entities.ai.pet;
 
 import java.util.Optional;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.server.level.ServerLevel;
