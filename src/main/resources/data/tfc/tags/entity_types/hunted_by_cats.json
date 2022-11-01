@@ -2,8 +2,9 @@
   "__comment__": "This file was automatically created by mcresources",
   "replace": false,
   "values": [
-    "#tfc:land_predators",
-    "minecraft:player",
-    "tfc:cat"
+    "#tfc:small_fish",
+    "#tfc:land_prey",
+    "#tfc:pests",
+    "minecraft:player"
   ]
 }

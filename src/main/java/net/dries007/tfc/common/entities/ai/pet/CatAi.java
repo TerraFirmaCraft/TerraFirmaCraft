@@ -31,6 +31,7 @@ import com.mojang.datafixers.util.Pair;
 import net.dries007.tfc.common.entities.ai.TFCBrain;
 import net.dries007.tfc.common.entities.ai.livestock.BreedBehavior;
 import net.dries007.tfc.common.entities.ai.prey.PreyAi;
+import net.dries007.tfc.common.entities.prey.Pest;
 import net.dries007.tfc.util.calendar.Calendars;
 
 public class CatAi
@@ -61,6 +62,7 @@ public class CatAi
         initRetreatActivity(brain);
         initFollowActivity(brain);
         initHuntActivity(brain);
+        initFightActivity(brain);
         initSitActivity(brain);
 
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE)); // core activities run all the time
@@ -94,6 +96,7 @@ public class CatAi
             Pair.of(2, new FollowTemptation(e -> e.isBaby() ? 1.5F : 1.25F)), // sets the walk and look targets to whomever it has a memory of being tempted by
             Pair.of(3, new BabyFollowAdult<>(UniformInt.of(5, 16), 1.25F)), // babies follow any random adult around
             Pair.of(3, new RunIf<>(CatAi::isTooFarFromHome, new StrollToPoi(MemoryModuleType.HOME, 1F, 10, HOME_WANDER_DISTANCE - 10))),
+            Pair.of(3, new StartAttacking<>(CatAi::getUnwantedAttackTarget)), // rats or attackers only
             Pair.of(4, new RunOne<>(ImmutableList.of(
                 Pair.of(new StrollToPoi(MemoryModuleType.HOME, 0.6F, 10, HOME_WANDER_DISTANCE - 10), 2),
                 Pair.of(new StrollAroundPoi(MemoryModuleType.HOME, 0.6F, HOME_WANDER_DISTANCE), 3),
@@ -129,9 +132,17 @@ public class CatAi
         brain.addActivity(TFCBrain.HUNT.get(), ImmutableList.of(
             Pair.of(0, new FollowOwnerBehavior()),
             Pair.of(1, new StartAttacking<>(CatAi::getAttackTarget)),
-            Pair.of(2, new MeleeAttack(40)),
-            Pair.of(3, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
+            Pair.of(4, new RunSometimes<>(new SetEntityLookTarget(EntityType.PLAYER, 6.0F), UniformInt.of(30, 60)))
         ));
+    }
+
+    public static void initFightActivity(Brain<? extends TamableMammal> brain)
+    {
+        brain.addActivityAndRemoveMemoryWhenStopped(Activity.FIGHT, 10, ImmutableList.<Behavior<? super TamableMammal>>of(
+            new SetWalkTargetFromAttackTargetIfTargetOutOfReach(1.15F),
+            new MeleeAttack(40),
+            new StopAttackingIfTargetInvalid<>(e -> couldFlee(e), TamableMammal::refreshCommandOnNextTick)
+        ), MemoryModuleType.ATTACK_TARGET);
     }
 
     public static void initFollowActivity(Brain<? extends TamableMammal> brain)
@@ -199,46 +210,51 @@ public class CatAi
                 brain.setActiveActivityIfPossible(Activity.AVOID);
                 return;
             }
+            else if (brain.hasMemoryValue(MemoryModuleType.ATTACK_TARGET))
+            {
+                brain.setActiveActivityIfPossible(Activity.FIGHT);
+            }
             if (doMoreChecks)
             {
+                final boolean farFromHome = isExtremelyFarFromHome(entity);
                 if ((current.equals(TFCBrain.HUNT.get()) || current.equals(TFCBrain.FOLLOW.get())) && entity.getOwner() == null)
                 {
-                    if (isExtremelyFarFromHome(entity))
-                    {
-                        entity.setCommand(TamableMammal.Command.RELAX);
-                        brain.setActiveActivityIfPossible(Activity.IDLE);
-                    }
-                    else
-                    {
-                        entity.setCommand(TamableMammal.Command.RELAX);
-                        brain.setActiveActivityIfPossible(TFCBrain.IDLE_AT_HOME.get());
-                    }
+                    beginIdle(entity, !farFromHome);
                 }
                 else if (current.equals(TFCBrain.IDLE_AT_HOME.get()))
                 {
-                    if (isExtremelyFarFromHome(entity))
+                    if (farFromHome)
                     {
-                        entity.setCommand(TamableMammal.Command.RELAX);
-                        brain.setActiveActivityIfPossible(Activity.IDLE);
+                        beginIdle(entity, false);
                     }
                 }
                 else if (current.equals(TFCBrain.SIT.get()) && wantsToStopSitting(entity))
                 {
-                    entity.setCommand(TamableMammal.Command.RELAX);
-                    brain.setActiveActivityIfPossible(TFCBrain.IDLE_AT_HOME.get());
+                    beginIdle(entity, !farFromHome);
                 }
             }
         }
     }
 
-    private static boolean couldFlee(TamableMammal entity)
+    private static void beginIdle(TamableMammal entity, boolean home)
     {
-        final Activity active = entity.getBrain().getActiveNonCoreActivity().orElse(null);
-        if (active != null && active.equals(TFCBrain.HUNT.get()))
+        entity.setCommand(TamableMammal.Command.RELAX);
+        entity.getBrain().setActiveActivityIfPossible(home ? TFCBrain.IDLE_AT_HOME.get() : Activity.IDLE);
+    }
+
+    private static boolean couldFlee(LivingEntity entity)
+    {
+        return entity.getHealth() < 5f || entity.isOnFire();
+    }
+
+    private static Optional<? extends LivingEntity> getUnwantedAttackTarget(TamableMammal entity)
+    {
+        final var brain = entity.getBrain();
+        if (brain.hasMemoryValue(MemoryModuleType.HURT_BY_ENTITY))
         {
-            return entity.getHealth() < 5f || entity.isOnFire();
+            return brain.getMemory(MemoryModuleType.HURT_BY_ENTITY);
         }
-        return true;
+        return brain.getMemory(MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES).flatMap(memory -> memory.findClosest(e -> e instanceof Pest));
     }
 
     private static Optional<? extends LivingEntity> getAttackTarget(TamableMammal entity)
@@ -250,10 +266,15 @@ public class CatAi
         }
         if (entity.getOwner() instanceof ServerPlayer player)
         {
-            final LivingEntity hurtBy = player.getLastHurtByMob();
-            if (hurtBy != null && hurtBy.tickCount < player.getLastHurtByMobTimestamp() + 120)
+            LivingEntity target = player.getLastHurtByMob();
+            if (target != null && entity.canAttack(target) && target.tickCount < player.getLastHurtByMobTimestamp() + 120)
             {
-                return Optional.of(hurtBy);
+                return Optional.of(target);
+            }
+            target = player.getLastHurtMob();
+            if (target != null && entity.canAttack(target) && target.tickCount < player.getLastHurtMobTimestamp() + 120)
+            {
+                return Optional.of(target);
             }
         }
         if (brain.hasMemoryValue(MemoryModuleType.HURT_BY_ENTITY))

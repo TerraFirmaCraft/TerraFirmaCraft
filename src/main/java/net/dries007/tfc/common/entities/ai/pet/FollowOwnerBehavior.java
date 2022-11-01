@@ -34,7 +34,7 @@ public class FollowOwnerBehavior extends Behavior<TamableMammal>
     {
         if (entity.getOwner() != null)
         {
-            entity.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(new EntityTracker(entity.getOwner(), false), 1f, 6));
+            entity.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(new EntityTracker(entity.getOwner(), false), 1.1f, 5));
         }
     }
 }

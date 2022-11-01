@@ -239,6 +239,7 @@ public class TFCTags
         public static final TagKey<EntityType<?>> DESTROYED_BY_LEAVES = create("destroyed_by_leaves");
         public static final TagKey<EntityType<?>> LEASHABLE_WILD_ANIMALS = create("leashable_wild_animals"); // entities that can be leashed that aren't normally leashable. default empty
         public static final TagKey<EntityType<?>> PESTS = create("pests"); // spawned during infestations
+        public static final TagKey<EntityType<?>> HUNTED_BY_CATS = create("hunted_by_cats");
 
         private static TagKey<EntityType<?>> create(String id)
         {

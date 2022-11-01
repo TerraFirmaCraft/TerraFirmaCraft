@@ -696,7 +696,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('land_predators', *['tfc:%s' % entity for entity in LAND_PREDATORS])
     rm.entity_tag('land_prey', *['tfc:%s' % entity for entity in LAND_PREY], '#tfc:livestock')
     rm.entity_tag('livestock', *['tfc:%s' % entity for entity in LIVESTOCK])
-    rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player')
+    rm.entity_tag('hunts_land_prey', '#tfc:land_predators', 'minecraft:player', 'tfc:cat')
     rm.entity_tag('hunted_by_land_predators', '#tfc:land_prey')
     rm.entity_tag('ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREDATORS])
     rm.entity_tag('hunted_by_ocean_predators', *['tfc:%s' % entity for entity in OCEAN_PREY])
@@ -708,6 +708,7 @@ def generate(rm: ResourceManager):
     rm.entity_tag('destroyed_by_leaves', 'minecraft:snowball', 'minecraft:egg')
     rm.entity_tag('leashable_wild_animals')
     rm.entity_tag('pests', 'tfc:rat')
+    rm.entity_tag('hunted_by_cats', '#tfc:small_fish', '#tfc:land_prey', '#tfc:pests', 'minecraft:player')
 
     # Item Sizes
 

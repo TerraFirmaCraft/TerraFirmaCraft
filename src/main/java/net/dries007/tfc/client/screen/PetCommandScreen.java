@@ -39,7 +39,7 @@ public class PetCommandScreen extends Screen
         int y = 72;
         for (TamableMammal.Command command : TamableMammal.Command.VALUES)
         {
-            if (entity.willListenTo(command))
+            if (entity.willListenTo(command, true))
             {
                 addRenderableWidget(new Button(width / 2 - 100, height / 4 + y, 200, 20, Helpers.translateEnum(command), b -> {
                     PacketHandler.send(PacketDistributor.SERVER.noArg(), new PetCommandPacket(entity, command));

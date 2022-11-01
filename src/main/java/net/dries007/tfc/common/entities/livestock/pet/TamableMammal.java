@@ -71,7 +71,8 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
 
     private final Supplier<SoundEvent> sleeping;
 
-    protected Command command = Command.RELAX;
+    private Command command = Command.RELAX; // used to restore the last activity when reloading
+    private boolean needsCommandUpdate = false;
 
     public TamableMammal(EntityType<? extends TFCAnimal> animal, Level level, TFCSounds.EntitySound sounds, MammalConfig config)
     {
@@ -112,6 +113,11 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
             EntityHelpers.startOrStop(sleepingAnimation, isSleeping(), tickCount);
         }
         super.tick();
+        if (needsCommandUpdate && command.activity != null)
+        {
+            getBrain().setActiveActivityIfPossible(command.activity.get());
+            needsCommandUpdate = false;
+        }
     }
 
     @Override
@@ -125,7 +131,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     /**
      * Used to determine if the command can be on the pet screen on the client, and check permission for commands on the server
      */
-    public boolean willListenTo(Command command)
+    public boolean willListenTo(Command command, boolean isClientSide)
     {
         return true;
     }
@@ -137,8 +143,9 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     {
         if (getOwner() != null && getOwner().equals(player))
         {
-            if (!willListenTo(command))
+            if (!willListenTo(command, false))
             {
+                player.displayClientMessage(Helpers.translatable("tfc.pet.will_not_listen"), true);
                 return;
             }
             switch (command)
@@ -151,6 +158,8 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
                     setSitting(true);
                     setSleeping(false);
                     getBrain().setMemory(TFCBrain.SIT_TIME.get(), Calendars.SERVER.getTicks());
+                    getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+                    getBrain().eraseMemory(MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE);
                 }
                 case HOME -> {
                     getBrain().setMemory(MemoryModuleType.HOME, GlobalPos.of(level.dimension(), player.blockPosition()));
@@ -173,6 +182,16 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         {
             player.displayClientMessage(Helpers.translatable("tfc.pet.not_owner"), true);
         }
+    }
+
+    public void setCommand(Command command)
+    {
+        this.command = command;
+    }
+
+    public void refreshCommandOnNextTick()
+    {
+        needsCommandUpdate = true;
     }
 
     @Override
@@ -231,7 +250,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
     public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         final ItemStack held = player.getItemInHand(hand);
-        if (held.isEmpty() && player.isShiftKeyDown() && getOwner() != null && getOwner().equals(player))
+        if (held.isEmpty() && player.isShiftKeyDown() && getOwner() != null && getOwner().equals(player) && !isOnFire())
         {
             if (level.isClientSide)
             {
@@ -297,6 +316,7 @@ public abstract class TamableMammal extends Mammal implements OwnableEntity
         }
         command = Command.valueOf(tag.getInt("command"));
         entityData.set(DATA_PET_FLAGS, tag.getByte("petFlags"));
+        refreshCommandOnNextTick();
     }
 
     @Override

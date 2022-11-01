@@ -1341,6 +1341,7 @@ DEFAULT_LANG = {
     'tfc.enum.command.follow.tooltip': 'The animal will follow you, but not try to aid in combat.',
     'tfc.enum.command.hunt.tooltip': 'The animal will follow you and engage in combat.',
     'tfc.pet.not_owner': 'You are not its owner, this pet will not obey your commands!',
+    'tfc.pet.will_not_listen': 'It ignores your command.',
     'tfc.rabbit_0': 'Brown Fur',
     'tfc.rabbit_1': 'White Fur',
     'tfc.rabbit_2': 'Black Fur',
